@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import { View, BackHandler, Text, Image, TextInput, ScrollView,TouchableOpacity } from 'react-native';
-import { logos } from '../../../Themes/CommonVectors/Images';
+import { View, Text, Image, TextInput, ScrollView,TouchableOpacity } from 'react-native';
 import { TenantStyle } from './TenantStyle';
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton"
-import BottomTextsButton from './../../../components/Molecules/BottomTextsButton/BottomTextsButton'
 import TopHeader from "./../../../components/Molecules/Header/Header"
 import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar"
 import { VIEW_STYLES, FONTFAMILY, LABEL_STYLES, IMAGES, _COLORS } from "./../../../Themes/index"

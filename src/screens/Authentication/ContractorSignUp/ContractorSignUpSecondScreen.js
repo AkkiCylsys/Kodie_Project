@@ -18,7 +18,7 @@ export default ContractorSignUpSecondScreen = (props) => {
     <View style={ContractorSignupSecondStyle.container}>
       <TopHeader onPressLeftButton={() => _goBack(props)} />
       <StatusBar width={"50%"} />
-      <StepText _StepNo={"2"} _StepText={"Add photos and videos"} />
+      <StepText _StepNo={" 2"} _StepText={"Add photos and videos"} />
       <View style={ContractorSignupSecondStyle.logoContainer}>
         <Image
           source={IMAGES.userIcons}
@@ -33,6 +33,7 @@ export default ContractorSignUpSecondScreen = (props) => {
         <CustomSingleButton
           leftImage={IMAGES.uploadIcon}
           isLeftImage={true}
+          borderColor={_COLORS.Kodie_TransparentColor}
           _ButtonText={"Upload"}
           backgroundColor={_COLORS.Kodie_lightGreenColor}
         />

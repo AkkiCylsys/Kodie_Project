@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   View,
-  BackHandler,
   Text,
   TouchableOpacity,
   TextInput,
@@ -18,8 +17,6 @@ import {
   IMAGES,
   _COLORS,
 } from "./../../../Themes/index";
-
-import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { MultiSelect } from "react-native-element-dropdown";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import TopHeader from "./../../../components/Molecules/Header/Header"
@@ -48,15 +45,8 @@ export default ContractorSignUpFirstScreen = (props) => {
   const renderDataItem = (item) => {
     return (
       <View style={ContractorSignUpStyle.item}>
-        <Text style={ContractorSignUpStyle.selectedTextStyle}>
-          {item.label}
-        </Text>
-        <AntDesign
-          style={ContractorSignUpStyle.icon}
-          color="black"
-          name="check"
-          size={20}
-        />
+        <Text style={ContractorSignUpStyle.selectedTextStyle}>{item.label}</Text>
+        <AntDesign style={ContractorSignUpStyle.icon} color={_COLORS.Kodie_BlackColor} name="check" size={20}/>
       </View>
     );
   };
@@ -69,7 +59,7 @@ export default ContractorSignUpFirstScreen = (props) => {
     <View style={ContractorSignUpStyle.container}>
       <TopHeader onPressLeftButton={() => _goBack(props)} />
       <StatusBar width={"25%"} />
-      <StepText _StepNo={"1"} _StepText={"Enter your personal information"} />
+      <StepText _StepNo={" 1"} _StepText={"Enter your personal information"} />
       <ScrollView>
         <View style={ContractorSignUpStyle.formContainer}>
           <View style={ContractorSignUpStyle.card}>
@@ -203,7 +193,7 @@ export default ContractorSignUpFirstScreen = (props) => {
                 renderRightIcon={() => (
                   <AntDesign
                     style={ContractorSignUpStyle.icon}
-                    color="black"
+                    color={_COLORS.Kodie_BlackColor}
                     name="search1"
                     size={20}
                   />
@@ -221,13 +211,8 @@ export default ContractorSignUpFirstScreen = (props) => {
                 )}
               />
             </View>
-            <View style={ContractorSignUpStyle.inputContainer}>
-              <Text
-                style={[
-                  LABEL_STYLES._texinputLabel,
-                  ContractorSignUpStyle.cardHeight,
-                ]}
-              >
+            <View style={ContractorSignUpStyle.LastinputContainer}>
+              <Text style={[LABEL_STYLES._texinputLabel,ContractorSignUpStyle.cardHeight,]}>
                 Bio
               </Text>
               <TextInput
