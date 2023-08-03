@@ -30,6 +30,7 @@ import Login from "./../../screens/Authentication/LoginScreen/Login";
 import UserType from "./../../screens/Authentication/UserType/UserType";
 import ContractorSignUpFirstScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpFirstScreen";
 
+import TenantSignup from "../../screens/Authentication/TenantSignup/TenantSignupScreen";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -274,6 +275,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ContractorSignUpFirstScreen"}
           component={ContractorSignUpFirstScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TenantSignupScreen"}
+          component={TenantSignup}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
