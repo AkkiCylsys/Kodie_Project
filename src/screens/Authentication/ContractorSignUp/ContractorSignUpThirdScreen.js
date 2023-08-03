@@ -4,15 +4,20 @@ import StepText from "../../../components/Molecules/StepText/StepText";
 import { ContractorSignupThirdStyle } from "./ContractorSignUpThirdScreenCss";
 import {
   FONTFAMILY,
+  VIEW_STYLES,
   LABEL_STYLES,
   IMAGES,
   _COLORS,
 } from "./../../../Themes/index";
-
+import TopHeader from "./../../../components/Molecules/Header/Header"
+import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar"
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
+import { _goBack } from './../../../services/CommonServices/index'
 export default ContractorSignUpThirdScreen = (props) => {
   return (
     <View style={ContractorSignupThirdStyle.container}>
+                        <TopHeader onPressLeftButton={() => _goBack(props)} />
+            <StatusBar width={"25%"} />
       <StepText _StepNo={"3"} _StepText={" Add certification documents"} />
       <View style={ContractorSignupThirdStyle.pdfIconView}>
         <Image
@@ -37,6 +42,9 @@ export default ContractorSignUpThirdScreen = (props) => {
           _ButtonText={"Upload"}
           backgroundColor={_COLORS.Kodie_lightGreenColor}
         />
+      </View>
+      <View style={VIEW_STYLES._bottomButtonView}>
+        <CustomSingleButton onPress={() => props.navigation.navigate('ContractorSignUpSecondScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
       </View>
     </View>
   );

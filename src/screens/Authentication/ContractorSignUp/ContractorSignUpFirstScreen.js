@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
+import StepText from "../../../components/Molecules/StepText/StepText";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { ContractorSignUpStyle } from "./ContractorSignUpFirstScreenCSS";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -66,8 +67,9 @@ export default ContractorSignUpFirstScreen = (props) => {
 
   return (
     <View style={ContractorSignUpStyle.container}>
-                  <TopHeader onPressLeftButton={() => _goBack(props)} />
-            <StatusBar width={"25%"} />
+      <TopHeader onPressLeftButton={() => _goBack(props)} />
+      <StatusBar width={"25%"} />
+      <StepText _StepNo={"1"} _StepText={"Enter your personal information"} />
       <ScrollView>
         <View style={ContractorSignUpStyle.formContainer}>
           <View style={ContractorSignUpStyle.card}>
@@ -246,8 +248,8 @@ export default ContractorSignUpFirstScreen = (props) => {
         </View>
       </ScrollView>
       <View style={VIEW_STYLES._bottomButtonView}>
-                <CustomSingleButton onPress={() => props.navigation.navigate('UserTypeScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
-            </View>
+        <CustomSingleButton onPress={() => props.navigation.navigate('ContractorSignUpSecondScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
+      </View>
     </View>
   );
 };

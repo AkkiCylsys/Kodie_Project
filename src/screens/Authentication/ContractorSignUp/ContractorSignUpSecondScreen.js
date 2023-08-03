@@ -5,15 +5,19 @@ import { ContractorSignupSecondStyle } from "./ContractorSignUpSecondScreenCss";
 import {
   FONTFAMILY,
   LABEL_STYLES,
+  VIEW_STYLES,
   IMAGES,
   _COLORS,
 } from "./../../../Themes/index";
-
+import TopHeader from "./../../../components/Molecules/Header/Header"
+import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar"
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-
+import { _goBack } from './../../../services/CommonServices/index'
 export default ContractorSignUpSecondScreen = (props) => {
   return (
     <View style={ContractorSignupSecondStyle.container}>
+      <TopHeader onPressLeftButton={() => _goBack(props)} />
+      <StatusBar width={"50%"} />
       <StepText _StepNo={"2"} _StepText={"Add photos and videos"} />
       <View style={ContractorSignupSecondStyle.logoContainer}>
         <Image
@@ -32,6 +36,9 @@ export default ContractorSignUpSecondScreen = (props) => {
           _ButtonText={"Upload"}
           backgroundColor={_COLORS.Kodie_lightGreenColor}
         />
+      </View>
+      <View style={VIEW_STYLES._bottomButtonView}>
+        <CustomSingleButton onPress={() => props.navigation.navigate('ContractorSignUpThirdScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
       </View>
     </View>
   );
