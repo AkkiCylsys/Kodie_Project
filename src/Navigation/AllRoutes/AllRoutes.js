@@ -1,36 +1,38 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text } from "react-native";
 
 // import {useDispatch, useSelector} from 'react-redux';
-import LinearGradient from 'react-native-linear-gradient';
-import MacIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import MtIcon from 'react-native-vector-icons/MaterialIcons';
-import Octicons from 'react-native-vector-icons/Octicons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import LinearGradient from "react-native-linear-gradient";
+import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import MtIcon from "react-native-vector-icons/MaterialIcons";
+import Octicons from "react-native-vector-icons/Octicons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import {
   bgGradientColor,
   headerGradientColor,
   colors,
-} from '../../Themes/CommonColors/CommonColor';
-import {CommonStyles} from '../../Themes/CommonStyles/CommonStyles';
+} from "../../Themes/CommonColors/CommonColor";
+import { CommonStyles } from "../../Themes/CommonStyles/CommonStyles";
 
 import {
   NavigationContainer,
   createNavigationContainerRef,
-} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import CustomeDrawer from '../CustomeDrawer/CustomeDrawer';
+import CustomeDrawer from "../CustomeDrawer/CustomeDrawer";
 
-import SplashScreen from '../../screens/SplashScreen/SplashScreen';
-import Login from './../../screens/Authentication/LoginScreen/Login';
-import UserType from './../../screens/Authentication/UserType/UserType';
-import TenantSignup from "../../screens/Authentication/TenantSignup/TenantSignupScreen"
+import SplashScreen from "../../screens/SplashScreen/SplashScreen";
+import Login from "./../../screens/Authentication/LoginScreen/Login";
+import UserType from "./../../screens/Authentication/UserType/UserType";
+import ContractorSignUpFirstScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpFirstScreen";
+
+import TenantSignup from "../../screens/Authentication/TenantSignup/TenantSignupScreen";
 const Tab = createBottomTabNavigator();
-const BottomNav = props => {
+const BottomNav = (props) => {
   return (
     <Tab.Navigator
       initialRouteName="HomeScreen"
@@ -39,12 +41,13 @@ const BottomNav = props => {
       // barStyle={{backgroundColor: colors?.navyBlue}}
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: 'transparent',
+          backgroundColor: "transparent",
         },
         tabBarBackground: () => (
-          <LinearGradient colors={headerGradientColor} style={{flex: 1}} />
+          <LinearGradient colors={headerGradientColor} style={{ flex: 1 }} />
         ),
-      }}>
+      }}
+    >
       <Tab.Screen
         name="GeoTaggingAttendance"
         component={GeoTaggingAttendance}
@@ -53,20 +56,21 @@ const BottomNav = props => {
         options={{
           headerShown: false,
           tabBarShowLabel: false,
-          tabBarIconStyle: {flex: 1},
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIconStyle: { flex: 1 },
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
               <Octicons
-                name={'apps'}
+                name={"apps"}
                 size={focused ? 30 : 25}
                 color={focused ? colors?.fullWhite : colors?.chalkWhite}
               />
               <Text
                 style={[
                   CommonStyles?.commText,
-                  {color: focused ? colors?.fullWhite : colors?.chalkWhite},
-                ]}>
-                {'Attendance'}
+                  { color: focused ? colors?.fullWhite : colors?.chalkWhite },
+                ]}
+              >
+                {"Attendance"}
               </Text>
             </View>
           ),
@@ -78,20 +82,21 @@ const BottomNav = props => {
         options={{
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarIconStyle: {flex: 1},
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIconStyle: { flex: 1 },
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
               <MacIcon
-                name={'clipboard-check-multiple'}
+                name={"clipboard-check-multiple"}
                 size={focused ? 30 : 25}
                 color={focused ? colors?.fullWhite : colors?.chalkWhite}
               />
               <Text
                 style={[
                   CommonStyles?.commText,
-                  {color: focused ? colors?.fullWhite : colors?.chalkWhite},
-                ]}>
-                {'Project'}
+                  { color: focused ? colors?.fullWhite : colors?.chalkWhite },
+                ]}
+              >
+                {"Project"}
               </Text>
             </View>
           ),
@@ -104,11 +109,11 @@ const BottomNav = props => {
           tabBarOnPress: () => {},
           headerShown: false,
           tabBarShowLabel: false,
-          tabBarIconStyle: {flex: 1},
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIconStyle: { flex: 1 },
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
               <MacIcon
-                name={'home-outline'}
+                name={"home-outline"}
                 size={focused ? 50 : 35}
                 color={focused ? colors?.fullWhite : colors?.chalkWhite}
               />
@@ -122,20 +127,21 @@ const BottomNav = props => {
         options={{
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarIconStyle: {flex: 1},
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIconStyle: { flex: 1 },
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
               <Ionicons
-                name={'checkmark-done-circle-outline'}
+                name={"checkmark-done-circle-outline"}
                 size={focused ? 30 : 25}
                 color={focused ? colors?.fullWhite : colors?.chalkWhite}
               />
               <Text
                 style={[
                   CommonStyles?.commText,
-                  {color: focused ? colors?.fullWhite : colors?.chalkWhite},
-                ]}>
-                {'HRMS'}
+                  { color: focused ? colors?.fullWhite : colors?.chalkWhite },
+                ]}
+              >
+                {"HRMS"}
               </Text>
             </View>
           ),
@@ -147,20 +153,21 @@ const BottomNav = props => {
         options={{
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarIconStyle: {flex: 1},
-          tabBarIcon: ({focused}) => (
-            <View style={{alignItems: 'center'}}>
+          tabBarIconStyle: { flex: 1 },
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
               <MtIcon
-                name={'date-range'}
+                name={"date-range"}
                 size={focused ? 30 : 25}
                 color={focused ? colors?.fullWhite : colors?.chalkWhite}
               />
               <Text
                 style={[
                   CommonStyles?.commText,
-                  {color: focused ? colors?.fullWhite : colors?.chalkWhite},
-                ]}>
-                {'Timesheet'}
+                  { color: focused ? colors?.fullWhite : colors?.chalkWhite },
+                ]}
+              >
+                {"Timesheet"}
               </Text>
             </View>
           ),
@@ -171,52 +178,50 @@ const BottomNav = props => {
 };
 
 const Drawer = createDrawerNavigator();
-const DrawerNavigation = props => {
+const DrawerNavigation = (props) => {
   return (
     <Drawer.Navigator
-      drawerContent={props => <CustomeDrawer {...props} />}
+      drawerContent={(props) => <CustomeDrawer {...props} />}
       drawerStyle={{
         backgroundColor: colors.white,
-        width: '70%',
+        width: "70%",
       }}
-      initialRouteName="BottomNav">
+      initialRouteName="BottomNav"
+    >
       <Drawer.Screen
         name="BottomNav"
         component={BottomNav}
         // initialParams={{screen:'BottomNav'}}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Drawer.Screen
         name="LeaveTracker"
         component={LeaveTracker}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </Drawer.Navigator>
   );
 };
 
 const AuthStack = createNativeStackNavigator();
-const AuthStackRouts = props => {
+const AuthStackRouts = (props) => {
   return (
     <AuthStack.Navigator
-      screenOptions={{headerShown: false}}
-      initialRouteName={'LoginVerify'}>
+      screenOptions={{ headerShown: false }}
+      initialRouteName={"LoginVerify"}
+    >
       <Stack.Screen
-        name={'LoginScreen'}
+        name={"LoginScreen"}
         component={LoginScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
-
- 
-
-
     </AuthStack.Navigator>
   );
 };
 
 export const navigationRef = createNavigationContainerRef();
 const Stack = createNativeStackNavigator();
-const AllStackRouts = props => {
+const AllStackRouts = (props) => {
   const [routeName, setRouteName] = useState();
   return (
     <NavigationContainer
@@ -231,46 +236,52 @@ const AllStackRouts = props => {
       onReady={() => {
         // isReadyRef.current = true;
         setRouteName(navigationRef.getCurrentRoute().name);
-      }}>
+      }}
+    >
       <Stack.Navigator
-        screenOptions={{headerShown: false}}
-        initialRouteName={'SplashScreen'}>
+        screenOptions={{ headerShown: false }}
+        initialRouteName={"SplashScreen"}
+      >
         <Stack.Screen
-          name={'SplashScreen'}
+          name={"SplashScreen"}
           component={SplashScreen}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={'AuthStackRouts'}
+          name={"AuthStackRouts"}
           component={AuthStackRouts}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={'BottomNav'}
+          name={"BottomNav"}
           component={BottomNav}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={'DrawerNavigation'}
+          name={"DrawerNavigation"}
           component={DrawerNavigation}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={'LoginScreen'}
+          name={"LoginScreen"}
           component={Login}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
-                <Stack.Screen
-          name={'UserTypeScreen'}
+        <Stack.Screen
+          name={"UserTypeScreen"}
           component={UserType}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
-               <Stack.Screen
-          name={'TenantSignupScreen'}
+        <Stack.Screen
+          name={"ContractorSignUpFirstScreen"}
+          component={ContractorSignUpFirstScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TenantSignupScreen"}
           component={TenantSignup}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
