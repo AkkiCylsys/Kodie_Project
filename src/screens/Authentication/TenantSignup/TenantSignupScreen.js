@@ -5,7 +5,7 @@ import { TenantStyle } from './TenantStyle';
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton"
 import BottomTextsButton from './../../../components/Molecules/BottomTextsButton/BottomTextsButton'
 import TopHeader from "./../../../components/Molecules/Header/Header"
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon"
+import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar"
 import { VIEW_STYLES, FONTFAMILY, LABEL_STYLES, IMAGES, _COLORS } from "./../../../Themes/index"
 import { _goBack } from './../../../services/CommonServices/index'
 export default TenantSignup = (props) => {
@@ -18,6 +18,7 @@ export default TenantSignup = (props) => {
     return (
         <View style={TenantStyle.container}>
             <TopHeader onPressLeftButton={() => _goBack(props)} />
+           <StatusBar width={"25%"}/>
             <ScrollView >
                 <Text style={TenantStyle.title}>Enter your personal information</Text>
                 <View style={TenantStyle.formContainer}>
