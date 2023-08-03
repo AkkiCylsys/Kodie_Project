@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 import { colors } from "../CommonColors/CommonColor";
 import { FONTFAMILY, _COLORS } from "../index";
-import { fontFamily, fontWeight } from "../FontStyle/FontStyle";
+import { fontFamily } from "../FontStyle/FontStyle";
 export const LABEL_STYLES = StyleSheet.create({
   // kodie Common label CSS
   _texinputLabel: {
@@ -21,6 +21,15 @@ export const LABEL_STYLES = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
   },
 });
+export const VIEW_STYLES = StyleSheet.create({
+  // kodie Common View CSS
+  _bottomButtonView: {
+    bottom: 10,
+    position: "relative",
+    paddingHorizontal: 20,
+  },
+});
+
 const LabelStyles = StyleSheet.create({
   minTextLight: {
     fontSize: 9,

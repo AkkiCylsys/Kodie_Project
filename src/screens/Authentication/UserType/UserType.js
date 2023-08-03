@@ -29,13 +29,13 @@ export default UserType = (props) => {
             <CustomSingleButton
               _ButtonText={"I’m a Tenant"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
+              onPress={() => props.navigation.navigate("TenantSignupScreen")}
             />
             <CustomSingleButton
               _ButtonText={"I’m a Contractor"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               onPress={() =>
-                props.navigation.navigate("ContractorSignUpSecondScreen")
-                // alert("ok")
+                props.navigation.navigate("ContractorSignUpFirstScreen")
               }
             />
             <CustomSingleButton
