@@ -53,7 +53,25 @@ export const TenantStyle = StyleSheet.create({
     },
 _bottomButtonView:{
     bottom: 10, position: 'relative', paddingHorizontal: 20
-}
-
+},
+cardHeight: { marginBottom: 8 },
+inputContainer: {
+  marginBottom: 20,
+},
+passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  passwordInput: {
+    flex: 1,
+    height: 48,
+    paddingHorizontal: 10,
+  },
+  eyeIcon: {
+    padding: 10,
+  },
 });
 
