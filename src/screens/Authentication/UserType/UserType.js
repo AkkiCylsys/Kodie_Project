@@ -4,7 +4,7 @@ import { UserTypeStyles } from './UserTypeCss';
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton"
 import BottomTextsButton from './../../../components/Molecules/BottomTextsButton/BottomTextsButton'
 import { FONTFAMILY, LABEL_STYLES, BANNERS, _COLORS } from "./../../../Themes/index"
-export default UserType = () => {
+export default UserType = (props) => {
 
     return (
         <View style={UserTypeStyles.container}>
@@ -23,7 +23,7 @@ export default UserType = () => {
                 <View style={UserTypeStyles.formContainer}>
 
                     <View style={UserTypeStyles.card}>
-                        <CustomSingleButton _ButtonText={"I’m a Tenant"} backgroundColor={_COLORS.Kodie_WhiteColor} />
+                        <CustomSingleButton onPress={()=>props.navigation.navigate('TenantSignupScreen')} _ButtonText={"I’m a Tenant"} backgroundColor={_COLORS.Kodie_WhiteColor} />
                         <CustomSingleButton _ButtonText={"I’m a Contractor"} backgroundColor={_COLORS.Kodie_WhiteColor} />
                         <CustomSingleButton _ButtonText={"I’m a Landlord"} backgroundColor={_COLORS.Kodie_WhiteColor} />
                         <BottomTextsButton _LeftButtonText={"Already have an account?"} _RightButtonText={"Login"} onPress={() => alert('ok')} />

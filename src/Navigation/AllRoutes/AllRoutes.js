@@ -27,7 +27,8 @@ import CustomeDrawer from '../CustomeDrawer/CustomeDrawer';
 
 import SplashScreen from '../../screens/SplashScreen/SplashScreen';
 import Login from './../../screens/Authentication/LoginScreen/Login';
-import UserType from './../../screens/Authentication/UserType/UserType'
+import UserType from './../../screens/Authentication/UserType/UserType';
+import TenantSignup from "../../screens/Authentication/TenantSignup/TenantSignupScreen"
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -262,6 +263,11 @@ const AllStackRouts = props => {
                 <Stack.Screen
           name={'UserTypeScreen'}
           component={UserType}
+          options={{headerShown: false}}
+        />
+               <Stack.Screen
+          name={'TenantSignupScreen'}
+          component={TenantSignup}
           options={{headerShown: false}}
         />
 

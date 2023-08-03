@@ -12,6 +12,14 @@ export const LABEL_STYLES = StyleSheet.create({
   },
 
 })
+export const VIEW_STYLES = StyleSheet.create({
+  // kodie Common View CSS
+  _bottomButtonView:{
+    bottom: 10, position: 'relative', paddingHorizontal: 20
+  }
+
+})
+
 const LabelStyles = StyleSheet.create({
 
   minTextLight: {
