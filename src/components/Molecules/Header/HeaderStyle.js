@@ -5,6 +5,8 @@ export const HeaderStyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         height:55,
+       // borderBottomWidth:5,
+       // borderBottomColor:_COLORS.Kodie_lightGreenColor,
         paddingHorizontal:10
     },
     button: {
