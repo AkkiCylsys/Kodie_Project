@@ -10,6 +10,16 @@ export const LABEL_STYLES = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
+  commontext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  commonMidtext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Regular,
+  },
 });
 export const VIEW_STYLES = StyleSheet.create({
   // kodie Common View CSS

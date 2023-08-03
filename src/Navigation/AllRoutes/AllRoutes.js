@@ -28,6 +28,8 @@ import CustomeDrawer from "../CustomeDrawer/CustomeDrawer";
 import SplashScreen from "../../screens/SplashScreen/SplashScreen";
 import Login from "./../../screens/Authentication/LoginScreen/Login";
 import UserType from "./../../screens/Authentication/UserType/UserType";
+import ContractorSignUpSecondScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpSecondScreen";
+import ContractorSignUpThirdScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpThirdScreen";
 import ContractorSignUpFirstScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpFirstScreen";
 
 import TenantSignup from "../../screens/Authentication/TenantSignup/TenantSignupScreen";
@@ -270,6 +272,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"UserTypeScreen"}
           component={UserType}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ContractorSignUpSecondScreen"}
+          component={ContractorSignUpSecondScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ContractorSignUpThirdScreen"}
+          component={ContractorSignUpThirdScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen
