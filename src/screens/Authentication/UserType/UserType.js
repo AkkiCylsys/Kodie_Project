@@ -41,6 +41,9 @@ export default UserType = (props) => {
             <CustomSingleButton
               _ButtonText={"I’m a Landlord"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
+              onPress={() =>
+                props.navigation.navigate("CreateJobFirstScreen")
+              }
             />
             <BottomTextsButton
               _LeftButtonText={"Already have an account?"}

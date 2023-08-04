@@ -1,0 +1,167 @@
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
+import { CreateJobFirstStyle } from "./CreateJobFirstScreenCss";
+import StepText from "../../components/Molecules/StepText/StepText";
+import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
+import { VIEW_STYLES, _COLORS, LABEL_STYLES } from "../../Themes/index";
+import TopHeader from "../../components/Molecules/Header/Header";
+import { _goBack } from "../../services/CommonServices";
+import { Dropdown } from "react-native-element-dropdown";
+import Octicons from "react-native-vector-icons/Octicons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import { interpolate } from "react-native-reanimated";
+const data = [
+  { label: "Electricals", value: "1" },
+  { label: "Home cleaning", value: "2" },
+  { label: "Outdoor cleaning", value: "3" },
+  { label: "Heavy lifting", value: "4" },
+  { label: "Fixing & maintenance", value: "5" },
+];
+export default CreateJobFirstScreen = (props) => {
+  const [value, setValue] = useState(null);
+  const [jobDetails, setJobDetails] = useState("");
+  const [location, setLocation] = useState("");
+  return (
+    <View style={CreateJobFirstStyle.container}>
+      <TopHeader
+        onPressLeftButton={() => _goBack(props)}
+        MiddleText={"Create job"}
+      />
+      <StepText _StepNo={"1"} _StepText={"Job details"} />
+      <ScrollView>
+        <View style={CreateJobFirstStyle.mainView}>
+          <Text style={CreateJobFirstStyle.servicestext}>
+            {"What service are you looking for?"}
+          </Text>
+        </View>
+        <View style={CreateJobFirstStyle.formContainer}>
+          <View>
+            <Text style={LABEL_STYLES.commontext}>
+              {"Search for your trusted professional"}
+            </Text>
+            <Dropdown
+              style={CreateJobFirstStyle.dropdown}
+              placeholderStyle={CreateJobFirstStyle.placeholderStyle}
+              selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
+              inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
+              iconStyle={CreateJobFirstStyle.iconStyle}
+              data={data}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Electricals"
+              searchPlaceholder="Search..."
+              value={value}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+            />
+          </View>
+          <View style={CreateJobFirstStyle.jobDetailsView}>
+            <Text style={LABEL_STYLES.commontext}>{"Job details"}</Text>
+            <TextInput
+              style={[CreateJobFirstStyle.input, CreateJobFirstStyle.jobD_]}
+              value={jobDetails}
+              onChangeText={setJobDetails}
+              placeholder="Describe the job you need help with..."
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+              multiline
+              numberOfLines={5}
+              textAlignVertical={"top"}
+            />
+          </View>
+          <View style={CreateJobFirstStyle.jobDetailsView}>
+            <Text style={LABEL_STYLES.commontext}>{"Location"}</Text>
+            <Dropdown
+              style={CreateJobFirstStyle.dropdown}
+              placeholderStyle={CreateJobFirstStyle.placeholderStyle}
+              selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
+              inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
+              iconStyle={CreateJobFirstStyle.iconStyle}
+              data={data}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="123 Street, Brisbane, Australia"
+              searchPlaceholder="Search..."
+              value={value}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+            />
+          </View>
+
+          <View>
+            <View style={CreateJobFirstStyle.locationContainer}>
+              <TouchableOpacity>
+                <Octicons
+                  name={"location"}
+                  size={20}
+                  color={_COLORS.Kodie_MediumGrayColor}
+                  style={CreateJobFirstStyle.locationIcon}
+                />
+              </TouchableOpacity>
+              <TextInput
+                style={CreateJobFirstStyle.locationInput}
+                value={location}
+                onChangeText={setLocation}
+                placeholder="Enter new location"
+              />
+            </View>
+          </View>
+          <View style={CreateJobFirstStyle.jobDetailsView}>
+            <Text style={LABEL_STYLES.commontext}>{"Rating threshold"}</Text>
+            <Dropdown
+              style={CreateJobFirstStyle.dropdown}
+              placeholderStyle={CreateJobFirstStyle.placeholderStyle}
+              selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
+              inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
+              iconStyle={CreateJobFirstStyle.iconStyle}
+              data={data}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="1 star and above"
+              searchPlaceholder="Search..."
+              value={value}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+              renderLeftIcon={() => (
+                <AntDesign
+                  style={CreateJobFirstStyle.starIcon}
+                  color={_COLORS.Kodie_lightGreenColor}
+                  name="star"
+                  size={20}
+                />
+              )}
+            />
+          </View>
+          <View
+            style={[CreateJobFirstStyle.booking_insu, { marginBottom: 50 }]}
+          >
+            <Text style={CreateJobFirstStyle.bookingtext}>
+              {"Booking insurance?"}
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
+      <View style={VIEW_STYLES._bottomButtonView}>
+        <CustomSingleButton
+          onPress={() => props.navigation.navigate("CreateJobSecondScreen")}
+          _ButtonText={"Next"}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+        />
+      </View>
+    </View>
+  );
+};

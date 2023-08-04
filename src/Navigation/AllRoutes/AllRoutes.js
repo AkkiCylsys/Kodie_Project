@@ -31,8 +31,10 @@ import UserType from "./../../screens/Authentication/UserType/UserType";
 import ContractorSignUpSecondScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpSecondScreen";
 import ContractorSignUpThirdScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpThirdScreen";
 import ContractorSignUpFirstScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpFirstScreen";
-import ContractorSignUpFinalScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpFinalScreen"
+import ContractorSignUpFinalScreen from "../../screens/Authentication/ContractorSignUp/ContractorSignUpFinalScreen";
 import TenantSignup from "../../screens/Authentication/TenantSignup/TenantSignupScreen";
+import CreateJobFirstScreen from "../../screens/CreateJob/CreateJobFirstScreen";
+import CreateJobSecondScreen from "../../screens/CreateJob/CreateJobSecondScreen";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -289,15 +291,25 @@ const AllStackRouts = (props) => {
           component={ContractorSignUpFirstScreen}
           options={{ headerShown: false }}
         />
-                <Stack.Screen
+        <Stack.Screen
           name={"ContractorSignUpFinalScreen"}
           component={ContractorSignUpFinalScreen}
           options={{ headerShown: false }}
         />
-        
+
         <Stack.Screen
           name={"TenantSignupScreen"}
           component={TenantSignup}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CreateJobFirstScreen"}
+          component={CreateJobFirstScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CreateJobSecondScreen"}
+          component={CreateJobSecondScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
