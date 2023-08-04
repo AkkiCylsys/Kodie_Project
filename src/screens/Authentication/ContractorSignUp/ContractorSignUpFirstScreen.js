@@ -22,8 +22,8 @@ import {
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { MultiSelect } from "react-native-element-dropdown";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import TopHeader from "./../../../components/Molecules/Header/Header"
-import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar"
+import TopHeader from "./../../../components/Molecules/Header/Header";
+import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar";
 const DATA = [
   { label: "React Naive", value: "1" },
   { label: "Javascript", value: "2" },
@@ -34,7 +34,7 @@ const DATA = [
   { label: "HTML", value: "7" },
   { label: "CSS", value: "8" },
 ];
-import { _goBack } from './../../../services/CommonServices/index'
+import { _goBack } from "./../../../services/CommonServices/index";
 export default ContractorSignUpFirstScreen = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -248,7 +248,13 @@ export default ContractorSignUpFirstScreen = (props) => {
         </View>
       </ScrollView>
       <View style={VIEW_STYLES._bottomButtonView}>
-        <CustomSingleButton onPress={() => props.navigation.navigate('ContractorSignUpSecondScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
+        <CustomSingleButton
+          onPress={() =>
+            props.navigation.navigate("ContractorSignUpSecondScreen")
+          }
+          _ButtonText={"Next"}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+        />
       </View>
     </View>
   );
