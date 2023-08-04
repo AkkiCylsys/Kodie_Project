@@ -25,7 +25,8 @@ export const VIEW_STYLES = StyleSheet.create({
   // kodie Common View CSS
   _bottomButtonView: {
     bottom: 10,
-    position: "relative",
+    width:'100%',
+    position: 'absolute',
     paddingHorizontal: 20,
   },
 });

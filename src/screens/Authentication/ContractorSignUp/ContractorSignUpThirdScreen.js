@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image} from "react-native";
+import { View, Text, Image } from "react-native";
 import StepText from "../../../components/Molecules/StepText/StepText";
 import { ContractorSignupThirdStyle } from "./ContractorSignUpThirdScreenCss";
 import {
@@ -16,9 +16,9 @@ import { _goBack } from './../../../services/CommonServices/index'
 export default ContractorSignUpThirdScreen = (props) => {
   return (
     <View style={ContractorSignupThirdStyle.container}>
-                        <TopHeader onPressLeftButton={() => _goBack(props)} />
-            <StatusBar width={"25%"} />
-      <StepText _StepNo={"3"} _StepText={" Add certification documents"} />
+      <TopHeader onPressLeftButton={() => _goBack(props)} />
+      <StatusBar width={"75%"} />
+      <StepText _StepNo={" 3"} _StepText={" Add certification documents"} />
       <View style={ContractorSignupThirdStyle.pdfIconView}>
         <Image
           source={IMAGES.document}
@@ -39,12 +39,13 @@ export default ContractorSignUpThirdScreen = (props) => {
         <CustomSingleButton
           leftImage={IMAGES.uploadIcon}
           isLeftImage={true}
+          borderColor={_COLORS.Kodie_TransparentColor}
           _ButtonText={"Upload"}
           backgroundColor={_COLORS.Kodie_lightGreenColor}
         />
       </View>
       <View style={VIEW_STYLES._bottomButtonView}>
-        <CustomSingleButton onPress={() => props.navigation.navigate('ContractorSignUpSecondScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
+        <CustomSingleButton onPress={() => props.navigation.navigate('ContractorSignUpFinalScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
       </View>
     </View>
   );

@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
-import { View, BackHandler, Text, Image, TextInput, ScrollView } from 'react-native';
-import { logos } from '../../../Themes/CommonVectors/Images';
+import { View, Text, Image, TextInput, ScrollView,TouchableOpacity } from 'react-native';
 import { TenantStyle } from './TenantStyle';
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton"
-import BottomTextsButton from './../../../components/Molecules/BottomTextsButton/BottomTextsButton'
 import TopHeader from "./../../../components/Molecules/Header/Header"
 import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar"
 import { VIEW_STYLES, FONTFAMILY, LABEL_STYLES, IMAGES, _COLORS } from "./../../../Themes/index"
 import { _goBack } from './../../../services/CommonServices/index'
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 export default TenantSignup = (props) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+
+
+    const handleTogglePassword = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
+
 
     return (
         <View style={TenantStyle.container}>
@@ -46,15 +53,31 @@ export default TenantSignup = (props) => {
                             />
                         </View>
                         <View style={TenantStyle.inputContainer}>
-                            <Text style={LABEL_STYLES._texinputLabel}>Password</Text>
-                            <TextInput
-                                style={TenantStyle.input}
-                                value={password}
-                                onChangeText={setPassword}
-                                placeholder="Enter Password"
-                                placeholderTextColor="#999"
-                                secureTextEntry
-                            />
+                            <Text
+                                style={[
+                                    LABEL_STYLES._texinputLabel,
+                                    TenantStyle.cardHeight,
+                                ]}
+                            >
+                                Password
+                            </Text>
+                            <View style={TenantStyle.passwordContainer}>
+                                <TextInput
+                                    style={TenantStyle.passwordInput}
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    placeholder="Password"
+                                    secureTextEntry={!showPassword}
+                                />
+                                <TouchableOpacity onPress={handleTogglePassword}>
+                                    <MaterialCommunityIcons
+                                        name={showPassword ? "eye-off-outline" : "eye-outline"}
+                                        size={20}
+                                        color={_COLORS.Kodie_BlackColor}
+                                        style={TenantStyle.eyeIcon}
+                                    />
+                                </TouchableOpacity>
+                            </View>
                         </View>
                         <View style={TenantStyle.inputContainer}>
                             <Text style={LABEL_STYLES._texinputLabel}>Phone number</Text>

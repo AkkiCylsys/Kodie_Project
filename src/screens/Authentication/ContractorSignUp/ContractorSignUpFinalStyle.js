@@ -1,9 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { FONTFAMILY, IMAGES, _COLORS } from "./../../../Themes/index"
-export const TenantStyle = StyleSheet.create({
+export const C_SignUpFinalStyle = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: _COLORS.Kodie_WhiteColor
+    },
+    discription: {
+        fontSize: 12,
+        textAlign: 'left',
+        color: _COLORS.Kodie_MediumGrayColor,
+        marginTop: 0,
+        fontFamily: FONTFAMILY.K_Medium
     },
     logoContainer: {
         alignItems: 'center',
@@ -19,14 +26,6 @@ export const TenantStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    title: {
-        fontSize: 20,
-        color: _COLORS.Kodie_BlackColor,
-        paddingVertical: 15,
-        paddingHorizontal:20,
-        textAlign: 'left',
-        fontFamily: FONTFAMILY.K_SemiBold
-    },
     card: {
         width: '100%',
         backgroundColor: _COLORS.Kodie_TransparentColor,
@@ -38,10 +37,13 @@ export const TenantStyle = StyleSheet.create({
         padding: 20,
         marginBottom: 20,
     },
-    inputContainer: {
-        marginBottom: 20,
+    AccountNumberContainer: {
+        marginBottom: 5,
     },
-
+    ABNContainer: {
+        marginTop:10,
+        marginBottom: 5,
+    },
     input: {
         height: 48,
         borderRadius: 6,
@@ -51,27 +53,8 @@ export const TenantStyle = StyleSheet.create({
         paddingLeft: 10,
         fontFamily: FONTFAMILY.K_Medium
     },
-_bottomButtonView:{
-    bottom: 10, position: 'relative', paddingHorizontal: 20
-},
-cardHeight: { marginBottom: 8 },
 inputContainer: {
   marginBottom: 20,
 },
-passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-  passwordInput: {
-    flex: 1,
-    height: 48,
-    paddingHorizontal: 10,
-  },
-  eyeIcon: {
-    padding: 10,
-  },
 });
 

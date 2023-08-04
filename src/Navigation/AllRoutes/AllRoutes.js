@@ -289,6 +289,12 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name={"ContractorSignUpFinalScreen"}
+          component={ContractorSignUpFinalScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
           name={"TenantSignupScreen"}
           component={TenantSignup}
           options={{ headerShown: false }}
