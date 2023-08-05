@@ -6,7 +6,7 @@ import { _COLORS, LABEL_STYLES, IMAGES, VIEW_STYLES } from "../../Themes/index";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
-export default CreateJobSecondScreen = () => {
+export default CreateJobSecondScreen = (props) => {
   return (
     <View style={CreateJobSecondStyle.container}>
          <TopHeader onPressLeftButton={() => _goBack(props)} MiddleText={"Create job"} />
