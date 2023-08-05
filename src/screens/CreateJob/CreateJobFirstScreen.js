@@ -11,6 +11,7 @@ import StepText from "../../components/Molecules/StepText/StepText";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 import { VIEW_STYLES, _COLORS, LABEL_STYLES } from "../../Themes/index";
 import TopHeader from "../../components/Molecules/Header/Header";
+import RangeSlider from "../../components/Molecules/RangeSlider/RangeSlider";
 import { _goBack } from "../../services/CommonServices";
 import { Dropdown } from "react-native-element-dropdown";
 import Octicons from "react-native-vector-icons/Octicons";
@@ -96,26 +97,24 @@ export default CreateJobFirstScreen = (props) => {
               onChange={(item) => {
                 setValue(item.value);
               }}
+              renderLeftIcon={() => (
+                <Text style={CreateJobFirstStyle.HomeText}>{"Home :"}</Text>
+              )}
             />
           </View>
-
-          <View>
-            <View style={CreateJobFirstStyle.locationContainer}>
-              <TouchableOpacity>
-                <Octicons
-                  name={"location"}
-                  size={20}
-                  color={_COLORS.Kodie_MediumGrayColor}
-                  style={CreateJobFirstStyle.locationIcon}
-                />
-              </TouchableOpacity>
-              <TextInput
-                style={CreateJobFirstStyle.locationInput}
-                value={location}
-                onChangeText={setLocation}
-                placeholder="Enter new location"
-              />
-            </View>
+          <View style={CreateJobFirstStyle.locationContainer}>
+            <Octicons
+              name={"location"}
+              size={20}
+              color={_COLORS.Kodie_MediumGrayColor}
+              style={CreateJobFirstStyle.locationIcon}
+            />
+            <TextInput
+              style={CreateJobFirstStyle.locationInput}
+              value={location}
+              onChangeText={setLocation}
+              placeholder="Enter new location"
+            />
           </View>
           <View style={CreateJobFirstStyle.jobDetailsView}>
             <Text style={LABEL_STYLES.commontext}>{"Rating threshold"}</Text>
@@ -145,6 +144,10 @@ export default CreateJobFirstScreen = (props) => {
                 />
               )}
             />
+          </View>
+          <View style={CreateJobFirstStyle.budgetView}>
+            <Text style={CreateJobFirstStyle.budgetText}>{"Budget"}</Text>
+            <RangeSlider from={1} to={2000} />
           </View>
           <View
             style={[CreateJobFirstStyle.booking_insu, { marginBottom: 50 }]}

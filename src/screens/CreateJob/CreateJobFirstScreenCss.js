@@ -34,13 +34,13 @@ export const CreateJobFirstStyle = StyleSheet.create({
   },
 
   placeholderStyle: {
-    fontSize: 16,
+    fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
@@ -77,7 +77,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
   },
   booking_insu: {
-    marginTop: 10,
+    marginTop: 5,
   },
   bookingtext: {
     fontSize: 14,
@@ -103,7 +103,21 @@ export const CreateJobFirstStyle = StyleSheet.create({
   locationIcon: {
     marginLeft: 15,
   },
-  starIcon:{
-    marginLeft:15
-  }
+  starIcon: {
+    marginLeft: 15,
+  },
+  budgetView: {
+    marginTop: 24,
+  },
+  budgetText: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  HomeText: {
+    fontSize: 14,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft:15,
+  },
 });
