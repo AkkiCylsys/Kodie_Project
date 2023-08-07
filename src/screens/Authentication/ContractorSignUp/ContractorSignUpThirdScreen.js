@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import StepText from "../../../components/Molecules/StepText/StepText";
 import { ContractorSignupThirdStyle } from "./ContractorSignUpThirdScreenCss";
 import {
@@ -9,10 +9,11 @@ import {
   IMAGES,
   _COLORS,
 } from "./../../../Themes/index";
-import TopHeader from "./../../../components/Molecules/Header/Header"
-import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar"
+import TopHeader from "./../../../components/Molecules/Header/Header";
+import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _goBack } from './../../../services/CommonServices/index'
+import Entypo from "react-native-vector-icons/Entypo";
+import { _goBack } from "./../../../services/CommonServices/index";
 export default ContractorSignUpThirdScreen = (props) => {
   return (
     <View style={ContractorSignupThirdStyle.container}>
@@ -30,6 +31,14 @@ export default ContractorSignUpThirdScreen = (props) => {
           </Text>
           <Text style={ContractorSignupThirdStyle.docsubText}>{"1.3 MB"}</Text>
         </View>
+        <TouchableOpacity style={ContractorSignupThirdStyle.crossIcon}>
+          <Entypo
+            name="cross"
+            size={20}
+            color={_COLORS.Kodie_WhiteColor}
+            style={ContractorSignupThirdStyle.crossIconStyle}
+          />
+        </TouchableOpacity>
       </View>
       <View style={ContractorSignupThirdStyle.phototextView}>
         <Text style={LABEL_STYLES.commontext}>{"Certification documents"}</Text>
@@ -45,7 +54,13 @@ export default ContractorSignUpThirdScreen = (props) => {
         />
       </View>
       <View style={VIEW_STYLES._bottomButtonView}>
-        <CustomSingleButton onPress={() => props.navigation.navigate('ContractorSignUpFinalScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
+        <CustomSingleButton
+          onPress={() =>
+            props.navigation.navigate("ContractorSignUpFinalScreen")
+          }
+          _ButtonText={"Next"}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+        />
       </View>
     </View>
   );

@@ -59,7 +59,7 @@ export default ContractorSignUpFinalScreen = (props) => {
                 </View>
             </View>
             <View style={VIEW_STYLES._bottomButtonView}>
-                <CustomSingleButton onPress={() => props.navigation.navigate('UserTypeScreen')} _ButtonText={"Save"} Text_Color={_COLORS.Kodie_WhiteColor} />
+                <CustomSingleButton onPress={() => props.navigation.navigate('Contractorlist')} _ButtonText={"Save"} Text_Color={_COLORS.Kodie_WhiteColor} />
             </View>
         </View>
     );
