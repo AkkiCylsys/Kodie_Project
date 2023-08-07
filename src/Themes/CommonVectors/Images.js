@@ -12,6 +12,8 @@ export const IMAGES = {
   outdoor: require("../../assets/icons/outdoor.png"),
   heavyLifting: require("../../assets/icons/heavyLifting.png"),
   fixingTool: require("../../assets/icons/fixingTool.png"),
+  filter: require("../../assets/icons/filter.png"),
+  userImage: require("../../assets/icons/UserImage.png"),
 };
 
 export const BANNERS = {
