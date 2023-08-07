@@ -15,6 +15,7 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { _COLORS, IMAGES } from "../../Themes";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import ReadMore from "@fawazahmed/react-native-read-more";
+import RowButtons from "./../../components/Molecules/RowButtons/RowButtons"
 const data = [
   {
     id: "1",
@@ -119,6 +120,16 @@ export default ContractorList = (props) => {
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                   }
                 </ReadMore>
+                <RowButtons
+                  leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+                  RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+                  RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+                  LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+                  RightButtonborderColor={_COLORS.Kodie_BlackColor}
+                  LeftButtonText={"View Profile"}
+                  RightButtonText={"Hire"}
+                />
               </View>
               <View style={ContractorlistStyle.hor_Line} />
             </>

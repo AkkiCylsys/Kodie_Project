@@ -39,7 +39,7 @@ export const ContractorlistStyle = StyleSheet.create({
   },
   hor_Line: {
     borderBottomWidth: 1,
-    marginTop: 24,
+    marginTop: 15,
     borderBottomColor: _COLORS.Kodie_GrayColor,
   },
   usericon: {

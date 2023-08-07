@@ -35,15 +35,5 @@ RowButtons.defaultProps = {
     LeftButtonText: "Yes",
     RightButtonText: "No"
 };
-// Second Sample
-{/* <RowButtons 
-    leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-    RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-    LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-    RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-    LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-    RightButtonborderColor={_COLORS.Kodie_BlackColor}
-    LeftButtonText={"View Profile"}
-    RightButtonText={"Hire"}
-/> */}
+
 export default RowButtons;
