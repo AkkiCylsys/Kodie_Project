@@ -9,13 +9,14 @@ import {
 import { CreateJobFirstStyle } from "./CreateJobFirstScreenCss";
 import StepText from "../../components/Molecules/StepText/StepText";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
-import { VIEW_STYLES, _COLORS, LABEL_STYLES } from "../../Themes/index";
+import { VIEW_STYLES, _COLORS, LABEL_STYLES, IMAGES } from "../../Themes/index";
 import TopHeader from "../../components/Molecules/Header/Header";
 import RangeSlider from "../../components/Molecules/RangeSlider/RangeSlider";
 import { _goBack } from "../../services/CommonServices";
 import { Dropdown } from "react-native-element-dropdown";
 import Octicons from "react-native-vector-icons/Octicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import ServicesBox from "../../components/Molecules/ServicesBox/ServicesBox";
 const data = [
   { label: "Electricals", value: "1" },
   { label: "Home cleaning", value: "2" },
@@ -39,6 +40,26 @@ export default CreateJobFirstScreen = (props) => {
           <Text style={CreateJobFirstStyle.servicestext}>
             {"What service are you looking for?"}
           </Text>
+        </View>
+        <View style={CreateJobFirstStyle.servicesBoxView}>
+          <ServicesBox
+            Services_Name={"Home cleaning"}
+            Services_Icon={IMAGES.cleaner}
+          />
+          <ServicesBox
+            Services_Name={"Outdoor cleaning"}
+            Services_Icon={IMAGES.outdoor}
+          />
+        </View>
+        <View style={CreateJobFirstStyle.servicesBoxView}>
+          <ServicesBox
+            Services_Name={"Heavy lifting"}
+            Services_Icon={IMAGES.heavyLifting}
+          />
+          <ServicesBox
+            Services_Name={"Fixing & maintenance"}
+            Services_Icon={IMAGES.fixingTool}
+          />
         </View>
         <View style={CreateJobFirstStyle.formContainer}>
           <View>
@@ -113,6 +134,7 @@ export default CreateJobFirstScreen = (props) => {
               value={location}
               onChangeText={setLocation}
               placeholder="Enter new location"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
           </View>
           <View style={CreateJobFirstStyle.jobDetailsView}>
@@ -147,13 +169,6 @@ export default CreateJobFirstScreen = (props) => {
           <View style={CreateJobFirstStyle.budgetView}>
             <Text style={CreateJobFirstStyle.budgetText}>{"Budget"}</Text>
             <RangeSlider from={1} to={2000} />
-          </View>
-          <View
-            style={[CreateJobFirstStyle.booking_insu, { marginBottom: 50 }]}
-          >
-            <Text style={CreateJobFirstStyle.bookingtext}>
-              {"Booking insurance?"}
-            </Text>
           </View>
         </View>
       </ScrollView>

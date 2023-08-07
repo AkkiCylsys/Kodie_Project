@@ -8,6 +8,10 @@ export const IMAGES = {
   userIcons: require("../../assets/icons/UploadPhotos.png"),
   uploadIcon: require("../../assets/icons/cloud-upload.png"),
   document: require("../../assets/icons/doc-pdf.png"),
+  cleaner: require("../../assets/icons/cleaner.png"),
+  outdoor: require("../../assets/icons/outdoor.png"),
+  heavyLifting: require("../../assets/icons/heavyLifting.png"),
+  fixingTool: require("../../assets/icons/fixingTool.png"),
 };
 
 export const BANNERS = {

@@ -17,7 +17,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
   formContainer: {
     marginHorizontal: 16,
     marginTop: 24,
-    marginBottom: 24,
+    marginBottom: 65,
   },
   dropdown: {
     borderWidth: 1,
@@ -70,15 +70,6 @@ export const CreateJobFirstStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
   },
-  booking_insu: {
-    marginTop: 5,
-  },
-  bookingtext: {
-    fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_SemiBold,
-    marginTop: 24,
-  },
 
   locationContainer: {
     flexDirection: "row",
@@ -113,5 +104,12 @@ export const CreateJobFirstStyle = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 15,
+  },
+  servicesBoxView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+    marginTop: 10,
   },
 });
