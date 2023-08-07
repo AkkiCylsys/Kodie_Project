@@ -78,7 +78,7 @@ export default Login = (props) => {
             <CustomSingleButton
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
-              _ButtonText={"Login with Goggle"}
+              _ButtonText={"Login with Google"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton

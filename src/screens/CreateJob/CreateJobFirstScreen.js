@@ -16,7 +16,6 @@ import { _goBack } from "../../services/CommonServices";
 import { Dropdown } from "react-native-element-dropdown";
 import Octicons from "react-native-vector-icons/Octicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import { interpolate } from "react-native-reanimated";
 const data = [
   { label: "Electricals", value: "1" },
   { label: "Home cleaning", value: "2" },

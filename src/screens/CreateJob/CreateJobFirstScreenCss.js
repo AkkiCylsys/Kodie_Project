@@ -1,11 +1,5 @@
 import { StyleSheet } from "react-native";
-import {
-  FONTFAMILY,
-  LABEL_STYLES,
-  VIEW_STYLES,
-  IMAGES,
-  _COLORS,
-} from "../../Themes/index";
+import { FONTFAMILY, _COLORS } from "../../Themes/index";
 export const CreateJobFirstStyle = StyleSheet.create({
   container: {
     flex: 1,
@@ -118,6 +112,6 @@ export const CreateJobFirstStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
-    marginLeft:15,
+    marginLeft: 15,
   },
 });
