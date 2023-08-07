@@ -19,7 +19,6 @@ import {
   _COLORS,
 } from "./../../../Themes/index";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
-
 export default Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
