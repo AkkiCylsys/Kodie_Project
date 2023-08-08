@@ -37,4 +37,9 @@ export const ContractorSignupThirdStyle = StyleSheet.create({
   doctextView: {
     marginLeft: 10,
   },
+  crossIcon: {
+    flex: 1,
+    alignItems: "flex-end",
+  },
+  crossIconStyle:{backgroundColor:_COLORS.Kodie_MediumGrayColor,borderRadius:10}
 });

@@ -23,13 +23,11 @@ export default TenantSignup = (props) => {
 
     return (
         <View style={TenantStyle.container}>
-            <TopHeader onPressLeftButton={() => _goBack(props)} />
+            <TopHeader  onPressLeftButton={() => _goBack(props)} />
             <StatusBar width={"25%"} />
             <ScrollView >
                 <Text style={TenantStyle.title}>Enter your personal information</Text>
                 <View style={TenantStyle.formContainer}>
-
-
 
                     <View style={TenantStyle.card}>
                         <View style={TenantStyle.inputContainer}>

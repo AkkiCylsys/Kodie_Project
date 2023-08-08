@@ -16,15 +16,19 @@ const TopHeader = (props) => {
         { backgroundColor: props?.backgroundColor },
       ]}
     >
-      <TouchableOpacity
-        onPress={props?.onPressLeftButton}
-        style={[HeaderStyle.button]}
-      >
-        <Image source={props.leftImage} style={HeaderStyle.leftIcon} />
-      </TouchableOpacity>
-      <Text style={[HeaderStyle.LabelText, { color: props.Text_Color }]}>
-        {props.MiddleText}
-      </Text>
+      <View style={HeaderStyle.leftButtonView}>
+        <TouchableOpacity
+          onPress={props?.onPressLeftButton}
+          style={[HeaderStyle.button]}
+        >
+          <Image source={props.leftImage} style={HeaderStyle.leftIcon} />
+        </TouchableOpacity>
+      </View>
+      <View style={HeaderStyle.middleTextView}>
+        <Text style={[HeaderStyle.LabelText, { color: props.Text_Color }]}>
+          {props.MiddleText}
+        </Text>
+      </View>
       {props.isrightImage ? (
         <TouchableOpacity
           onPress={props?.onPressRightButton}
@@ -33,7 +37,7 @@ const TopHeader = (props) => {
           <Image source={props.RightImage} style={HeaderStyle.leftIcon} />
         </TouchableOpacity>
       ) : (
-        <View></View>
+        <View style={HeaderStyle.nullView}></View>
       )}
     </View>
   );
