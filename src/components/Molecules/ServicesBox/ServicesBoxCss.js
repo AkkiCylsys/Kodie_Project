@@ -1,12 +1,11 @@
 import { StyleSheet } from "react-native";
-import { FONTFAMILY, IMAGES, _COLORS } from "../../../Themes/index";
+import { FONTFAMILY, _COLORS } from "../../../Themes/index";
 export const ServicesBoxStyle = StyleSheet.create({
   mainConatiner: {
     flex: 1,
   },
   boxcontainer: {
     flex: 1,
-    width: 155,
     height: 76,
     backgroundColor: _COLORS.Kodie_lightGreenColor,
     justifyContent: "center",
