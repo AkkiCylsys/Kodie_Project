@@ -15,7 +15,7 @@ import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { _COLORS, IMAGES } from "../../Themes";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import ReadMore from "@fawazahmed/react-native-read-more";
-import RowButtons from "./../../components/Molecules/RowButtons/RowButtons"
+import RowButtons from "./../../components/Molecules/RowButtons/RowButtons";
 const data = [
   {
     id: "1",
@@ -129,6 +129,9 @@ export default ContractorList = (props) => {
                   RightButtonborderColor={_COLORS.Kodie_BlackColor}
                   LeftButtonText={"View Profile"}
                   RightButtonText={"Hire"}
+                  onPressRightButton={() =>
+                    props.navigation.navigate("HireContractor")
+                  }
                 />
               </View>
               <View style={ContractorlistStyle.hor_Line} />
