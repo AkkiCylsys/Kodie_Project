@@ -18,4 +18,5 @@ export const IMAGES = {
 
 export const BANNERS = {
   BannerFirst: require("../../assets/images/Banners/amico.png"),
+  BannerSecond: require("../../assets/images/Banners/alfonso.png"),
 };
