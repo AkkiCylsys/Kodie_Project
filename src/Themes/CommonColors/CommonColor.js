@@ -48,6 +48,7 @@ export const _COLORS = {
   Kodie_VeryLightGrayColor: '#B7C2B7',
   Kodie_lightGreenColor: '#8AFBA5',
   Kodie_GreenColor: '#45B742',
+  Kodie_MostLiteGreyColor: '#F5F5F5',
   Kodie_TransparentColor: 'transparent',
   
   

@@ -32,7 +32,7 @@ export default ContractorProfile = (props) => {
               style={ContractorProfileStyle.playButtonContainer}
             >
               <AntDesign
-                name="playcircleo"
+                name="play"
                 size={35}
                 color={_COLORS.Kodie_WhiteColor}
               />
@@ -104,19 +104,24 @@ export default ContractorProfile = (props) => {
           keyExtractor={(item) => item?.id}
           renderItem={proposalData}
         />
-        <View style={ContractorProfileStyle.rowBtnView}>
-          <RowButtons
-            leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-            RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-            RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-            LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-            RightButtonborderColor={_COLORS.Kodie_BlackColor}
-            LeftButtonText={"Message"}
-            RightButtonText={"Hire"}
-          />
-        </View>
       </ScrollView>
+      <View style={ContractorProfileStyle.rowBtnView}>
+        <RowButtons
+          leftButtonHeight={50}
+          RightButtonHeight={50}
+          leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+          RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+          LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+          RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+          LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+          RightButtonborderColor={_COLORS.Kodie_BlackColor}
+          LeftButtonText={"Message"}
+          RightButtonText={"Hire"}
+          onPressRightButton={() => {
+            props.navigation.navigate("DocumentList");
+          }}
+        />
+      </View>
     </View>
   );
 };

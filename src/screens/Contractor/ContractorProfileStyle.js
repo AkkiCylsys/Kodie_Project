@@ -102,6 +102,7 @@ export const ContractorProfileStyle = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 16,
+    marginBottom:10
   },
   imageBackground: {
     flex: 1,
