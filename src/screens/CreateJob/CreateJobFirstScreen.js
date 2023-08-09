@@ -17,6 +17,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import Octicons from "react-native-vector-icons/Octicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import ServicesBox from "../../components/Molecules/ServicesBox/ServicesBox";
+import RowButtons from "../../components/Molecules/RowButtons/RowButtons";
 const data = [
   { label: "Electricals", value: "1" },
   { label: "Home cleaning", value: "2" },
@@ -45,20 +46,28 @@ export default CreateJobFirstScreen = (props) => {
           <ServicesBox
             Services_Name={"Home cleaning"}
             Services_Icon={IMAGES.cleaner}
+            BoxStyling={{ backgroundColor: _COLORS.Kodie_lightGreenColor }}
           />
+
+          <View style={CreateJobFirstStyle.spaceView} />
           <ServicesBox
             Services_Name={"Outdoor cleaning"}
             Services_Icon={IMAGES.outdoor}
+            BoxStyling={{ backgroundColor: _COLORS.Kodie_lightGreenColor }}
           />
         </View>
         <View style={CreateJobFirstStyle.servicesBoxView}>
           <ServicesBox
             Services_Name={"Heavy lifting"}
             Services_Icon={IMAGES.heavyLifting}
+            BoxStyling={{ backgroundColor: _COLORS.Kodie_lightGreenColor }}
           />
+          <View style={CreateJobFirstStyle.spaceView} />
           <ServicesBox
             Services_Name={"Fixing & maintenance"}
             Services_Icon={IMAGES.fixingTool}
+            BoxStyling={CreateJobFirstStyle.box_style}
+            textColor={CreateJobFirstStyle.box_Text_Style}
           />
         </View>
         <View style={CreateJobFirstStyle.formContainer}>
@@ -170,7 +179,9 @@ export default CreateJobFirstScreen = (props) => {
             <Text style={CreateJobFirstStyle.budgetText}>{"Budget"}</Text>
             <RangeSlider from={1} to={2000} />
           </View>
+          <RowButtons LeftButtonText={'Yes ($1.50)'} />
         </View>
+        
       </ScrollView>
       <View style={VIEW_STYLES._bottomButtonView}>
         <CustomSingleButton

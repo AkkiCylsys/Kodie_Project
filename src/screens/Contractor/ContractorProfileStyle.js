@@ -1,52 +1,57 @@
 import { StyleSheet } from "react-native";
 import { FONTFAMILY, _COLORS } from "../../Themes/index";
-export const ContractorlistStyle = StyleSheet.create({
+export const ContractorProfileStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
-  hor_Line: {
-    borderBottomWidth: 1,
-    marginTop: 15,
-    borderBottomColor: _COLORS.Kodie_GrayColor,
+  profileImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    resizeMode: "cover",
   },
-  usericon: {
-    height: 56,
-    width: 56,
-    borderRadius: 56 / 2,
-    borderColor: _COLORS.Kodie_GrayColor,
-    marginHorizontal: 16,
-    marginTop: 20,
-  },
-  usermainView: {
-    flexDirection: "row",
-    marginHorizontal: 16,
-  },
-  nameView: {
-    flex: 1,
+  profileView: {
+    alignSelf: "center",
     justifyContent: "center",
     marginTop: 20,
   },
-  nameText: {
+  userName: {
     fontSize: 16,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
+    textAlign: "center",
+    marginTop: 16,
+  },
+  profileName: {
+    fontSize: 14,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    textAlign: "center",
+    marginTop: 16,
+  },
+  Propose_Con: {
+    flex: 1,
+    flexDirection: "row",
+    alignSelf: "center",
+    marginTop: 8,
   },
   ProposeText: {
     fontSize: 14,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 8,
+    alignSelf: "center",
   },
   prize: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 8,
+    alignSelf: "center",
   },
   autoView: {
     alignItems: "center",
-    justifyContent: "center",
   },
   button: {
     backgroundColor: _COLORS.Kodie_lightGreenColor,
@@ -60,13 +65,9 @@ export const ContractorlistStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 13,
     fontFamily: FONTFAMILY.K_Medium,
-  },
-  Propose_Con: {
-    flex: 1,
-    flexDirection: "row",
+    alignSelf: "center",
   },
   ratingView: {
-    flex: 1,
     flexDirection: "row",
     marginTop: 10,
     marginLeft: 5,
@@ -75,26 +76,48 @@ export const ContractorlistStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
+    alignSelf: "center",
   },
-  root: {
-    flex: 1,
-    padding: 16,
+  hor_Line: {
+    borderBottomWidth: 1,
+    marginTop: 16,
+    borderBottomColor: _COLORS.Kodie_GrayColor,
+    marginHorizontal: 16,
   },
-  textStyle: {
-    fontSize: 12,
-    color: _COLORS.Kodie_GrayColor,
-    fontFamily: FONTFAMILY.K_Regular,
+  proposalView: {
+    marginHorizontal: 16,
+    marginTop: 16,
   },
-  CoverText: {
-    fontSize: 12,
+  proposalText: {
+    fontSize: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
   },
-  readMore: {
-    color: _COLORS.Kodie_GreenColor,
+  descriptionText: {
     fontSize: 12,
-    fontFamily: FONTFAMILY.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Regular,
+    marginVertical: 10,
   },
+  container: {
+    flex: 1,
+    marginHorizontal: 16,
+  },
+  imageBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 179,
+    width: 333,
+    borderRadius: 10,
+    overflow: "hidden",
+    marginTop: 16,
+  },
+  playButtonContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  rowBtnView: { marginHorizontal: 16, marginBottom: 20 },
   verticalLine: {
     height: "50%",
     width: 1,

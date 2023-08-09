@@ -9,10 +9,10 @@ import {
   IMAGES,
   _COLORS,
 } from "./../../../Themes/index";
-import TopHeader from "./../../../components/Molecules/Header/Header"
-import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar"
+import TopHeader from "./../../../components/Molecules/Header/Header";
+import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _goBack } from './../../../services/CommonServices/index'
+import { _goBack } from "./../../../services/CommonServices/index";
 export default ContractorSignUpSecondScreen = (props) => {
   return (
     <View style={ContractorSignupSecondStyle.container}>
@@ -39,7 +39,13 @@ export default ContractorSignUpSecondScreen = (props) => {
         />
       </View>
       <View style={VIEW_STYLES._bottomButtonView}>
-        <CustomSingleButton onPress={() => props.navigation.navigate('ContractorSignUpThirdScreen')} _ButtonText={"Next"} Text_Color={_COLORS.Kodie_WhiteColor} />
+        <CustomSingleButton
+          onPress={() =>
+            props.navigation.navigate("ContractorSignUpThirdScreen")
+          }
+          _ButtonText={"Next"}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+        />
       </View>
     </View>
   );

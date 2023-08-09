@@ -38,6 +38,7 @@ import CreateJobSecondScreen from "../../screens/CreateJob/CreateJobSecondScreen
 import Contractorlist from "../../screens/Contractor/Contractorlist";
 import HireContractor from "../../screens/Contractor/HireContractor/HireContractor";
 import JobCompletion from "../../screens/Contractor/JobCompletion/JobCompletion";
+import ContractorProfile from "../../screens/Contractor/ContractorProfile";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -321,13 +322,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"HireContractor"}
-          component={HireContractor}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={"JobCompletion"}
-          component={JobCompletion}
+          name={"ContractorProfile"}
+          component={ContractorProfile}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

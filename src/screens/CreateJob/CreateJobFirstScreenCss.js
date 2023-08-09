@@ -17,7 +17,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
   formContainer: {
     marginHorizontal: 16,
     marginTop: 24,
-    marginBottom: 65,
+    marginBottom: 80,
   },
   dropdown: {
     borderWidth: 1,
@@ -112,4 +112,10 @@ export const CreateJobFirstStyle = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 10,
   },
+  spaceView:{margin:8},
+  box_style:{
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderColor: _COLORS.Kodie_GrayColor,
+  },
+  box_Text_Style:{ color: _COLORS.Kodie_MediumGrayColor }
 });
