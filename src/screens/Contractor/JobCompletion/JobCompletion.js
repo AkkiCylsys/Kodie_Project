@@ -7,6 +7,7 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import { _goBack } from "./../../../services/CommonServices/index";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
+import RowTexts from "../../../components/Molecules/RowTexts/RowTexts";
 export default JobCompletion = (props) => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
@@ -66,76 +67,16 @@ export default JobCompletion = (props) => {
             numberOfLines={5}
             textAlignVertical={"top"}
           />
-          <View style={JobCompletionCss.TextView}>
-            <Text
-              style={[LABEL_STYLES.commonMidtext, JobCompletionCss.leftText]}
-            >
-              Contractor name
-            </Text>
-            <Text style={[LABEL_STYLES.commontext, JobCompletionCss.leftText]}>
-              Jason Statham
-            </Text>
-          </View>
-          <View style={JobCompletionCss.TextView}>
-            <Text
-              style={[LABEL_STYLES.commonMidtext, JobCompletionCss.leftText]}
-            >
-              Job
-            </Text>
-            <Text style={[LABEL_STYLES.commontext, JobCompletionCss.leftText]}>
-              Plasterer to fix wall
-            </Text>
-          </View>
-          <View style={JobCompletionCss.TextView}>
-            <Text
-              style={[LABEL_STYLES.commonMidtext, JobCompletionCss.leftText]}
-            >
-              Location
-            </Text>
-            <Text style={[LABEL_STYLES.commontext, JobCompletionCss.leftText]}>
-              1729 Melbourne St Australia
-            </Text>
-          </View>
-          <View style={JobCompletionCss.TextView}>
-            <Text
-              style={[LABEL_STYLES.commonMidtext, JobCompletionCss.leftText]}
-            >
-              Date
-            </Text>
-            <Text style={[LABEL_STYLES.commontext, JobCompletionCss.leftText]}>
-              Nov 11, 2022
-            </Text>
-          </View>
-          <View style={JobCompletionCss.TextView}>
-            <Text
-              style={[LABEL_STYLES.commonMidtext, JobCompletionCss.leftText]}
-            >
-              Time
-            </Text>
-            <Text style={[LABEL_STYLES.commontext, JobCompletionCss.leftText]}>
-              10pm - 2am (4 hours)
-            </Text>
-          </View>
-          <View style={JobCompletionCss.TextView}>
-            <Text
-              style={[LABEL_STYLES.commonMidtext, JobCompletionCss.leftText]}
-            >
-              Who pays?
-            </Text>
-            <Text style={[LABEL_STYLES.commontext, JobCompletionCss.leftText]}>
-              Landlord
-            </Text>
-          </View>
-          <View style={JobCompletionCss.TextView}>
-            <Text
-              style={[LABEL_STYLES.commonMidtext, JobCompletionCss.leftText]}
-            >
-              Budget
-            </Text>
-            <Text style={[LABEL_STYLES.commontext, JobCompletionCss.leftText]}>
-              $200
-            </Text>
-          </View>
+          <RowTexts leftText={"Contractor name"} rightText={"Jason Statham"} />
+          <RowTexts leftText={"Job"} rightText={"Plasterer to fix wall"} />
+          <RowTexts
+            leftText={"Location"}
+            rightText={"1729 Melbourne St Australia"}
+          />
+          <RowTexts leftText={"Date"} rightText={"Nov 11, 2022"} />
+          <RowTexts leftText={"Time"} rightText={"10pm - 2am (4 hours)"} />
+          <RowTexts leftText={"Who pays?"} rightText={"Landlord"} />
+          <RowTexts leftText={"Budget"} rightText={"$200"} />
           <Text style={JobCompletionCss.photo}>Photo Confirmation</Text>
 
           <Image source={BANNERS.BannerSecond} style={JobCompletionCss.image} />
@@ -143,7 +84,7 @@ export default JobCompletion = (props) => {
       </ScrollView>
       <View style={JobCompletionCss.ButtonView}>
         <CustomSingleButton
-          onPress={() => alert("ok")}
+          onPress={() => props.navigation.navigate("RejectConfirm")}
           _ButtonText={"Continue"}
           Text_Color={_COLORS.Kodie_WhiteColor}
         />

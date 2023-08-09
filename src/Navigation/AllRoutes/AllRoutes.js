@@ -39,6 +39,7 @@ import Contractorlist from "../../screens/Contractor/Contractorlist";
 import HireContractor from "../../screens/Contractor/HireContractor/HireContractor";
 import JobCompletion from "../../screens/Contractor/JobCompletion/JobCompletion";
 import ContractorProfile from "../../screens/Contractor/ContractorProfile";
+import RejectConfirm from "../../screens/Landlord/RejectConfirm/RejectConfirm";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -334,6 +335,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"JobCompletion"}
           component={JobCompletion}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"RejectConfirm"}
+          component={RejectConfirm}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
