@@ -141,7 +141,7 @@ export default JobCompletion = (props) => {
           <Image source={BANNERS.BannerSecond} style={JobCompletionCss.image} />
         </View>
       </ScrollView>
-      <View style={{ marginHorizontal: 16, marginBottom: 10 }}>
+      <View style={JobCompletionCss.ButtonView}>
         <CustomSingleButton
           onPress={() => alert("ok")}
           _ButtonText={"Continue"}

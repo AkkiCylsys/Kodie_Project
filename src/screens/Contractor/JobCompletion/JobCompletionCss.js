@@ -37,4 +37,5 @@ export const JobCompletionCss = StyleSheet.create({
     marginTop: 10,
     resizeMode: "cover",
   },
+  ButtonView: { marginHorizontal: 16, marginBottom: 10 },
 });
