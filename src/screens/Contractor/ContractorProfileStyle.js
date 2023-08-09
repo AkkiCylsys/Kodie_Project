@@ -109,7 +109,7 @@ export const ContractorProfileStyle = StyleSheet.create({
     alignItems: "center",
     height: 179,
     width: 333,
-    borderRadius: 10,
+    borderRadius: 8,
     overflow: "hidden",
     marginTop: 16,
   },
