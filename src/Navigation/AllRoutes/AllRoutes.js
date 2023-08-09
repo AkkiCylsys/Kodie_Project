@@ -326,6 +326,16 @@ const AllStackRouts = (props) => {
           component={ContractorProfile}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name={"HireContractor"}
+          component={HireContractor}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"JobCompletion"}
+          component={JobCompletion}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
