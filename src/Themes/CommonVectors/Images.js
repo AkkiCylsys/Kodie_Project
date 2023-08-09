@@ -14,6 +14,9 @@ export const IMAGES = {
   fixingTool: require("../../assets/icons/fixingTool.png"),
   filter: require("../../assets/icons/filter.png"),
   userImage: require("../../assets/icons/UserImage.png"),
+  redLine: require("../../assets/icons/RedLine.png"),
+  blueLine: require("../../assets/icons/BlueLine.png"),
+  greenLine: require("../../assets/icons/GreenLine.png"),
 };
 
 export const BANNERS = {

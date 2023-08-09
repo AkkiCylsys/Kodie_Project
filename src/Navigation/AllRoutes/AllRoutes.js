@@ -41,6 +41,7 @@ import JobCompletion from "../../screens/Contractor/JobCompletion/JobCompletion"
 import ContractorProfile from "../../screens/Contractor/ContractorProfile";
 import DocumentList from "../../screens/DocumentList/DocumentList";
 import RejectConfirm from "../../screens/Landlord/RejectConfirm/RejectConfirm";
+import Notice from "../../screens/NotiesList/Notice";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -346,6 +347,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"RejectConfirm"}
           component={RejectConfirm}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Notice"}
+          component={Notice}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

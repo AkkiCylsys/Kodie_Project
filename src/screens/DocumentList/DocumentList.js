@@ -79,6 +79,9 @@ export default DocumentList = (props) => {
       <View style={DocumentListStyle.btnView}>
         <CustomSingleButton
           height={45}
+          onPress={() => {
+            props.navigation.navigate("Notice");
+          }}
           _ButtonText={"Upload Document"}
           backgroundColor={_COLORS.Kodie_lightGreenColor}
           Text_Color={_COLORS.Kodie_BlackColor}
