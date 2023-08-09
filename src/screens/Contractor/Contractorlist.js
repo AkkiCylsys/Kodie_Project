@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { ContractorlistStyle } from "./ContractorlistStyle";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
@@ -98,6 +92,9 @@ export default ContractorList = (props) => {
             onPressLeftButton={() =>
               props.navigation.navigate("ContractorProfile")
             }
+            onPressRightButton={() => {
+              props.navigation.navigate("HireContractor");
+            }}
           />
         </View>
         <View style={ContractorlistStyle.hor_Line} />

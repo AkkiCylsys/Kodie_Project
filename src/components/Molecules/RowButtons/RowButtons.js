@@ -8,7 +8,7 @@ const RowButtons = (props) => {
     <View style={RowButtonsStyle.mainView}>
       <View style={RowButtonsStyle.leftButtonView}>
         <CustomSingleButton
-          height={45}
+          height={props.leftButtonHeight}
           onPress={props.onPressLeftButton}
           backgroundColor={props.leftButtonbackgroundColor}
           _ButtonText={props.LeftButtonText}
@@ -18,7 +18,7 @@ const RowButtons = (props) => {
       </View>
       <View style={RowButtonsStyle.leftButtonView}>
         <CustomSingleButton
-          height={45}
+          height={props.RightButtonHeight}
           onPress={props.onPressRightButton}
           backgroundColor={props.RightButtonbackgroundColor}
           _ButtonText={props.RightButtonText}
@@ -38,6 +38,8 @@ RowButtons.defaultProps = {
   RightButtonborderColor: _COLORS.Kodie_LightWhiteColor,
   LeftButtonText: "Yes",
   RightButtonText: "No",
+  leftButtonHeight: 45,
+  RightButtonHeight: 45,
 };
 
 export default RowButtons;

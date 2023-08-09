@@ -36,6 +36,8 @@ import TenantSignup from "../../screens/Authentication/TenantSignup/TenantSignup
 import CreateJobFirstScreen from "../../screens/CreateJob/CreateJobFirstScreen";
 import CreateJobSecondScreen from "../../screens/CreateJob/CreateJobSecondScreen";
 import Contractorlist from "../../screens/Contractor/Contractorlist";
+import HireContractor from "../../screens/Contractor/HireContractor/HireContractor";
+import JobCompletion from "../../screens/Contractor/JobCompletion/JobCompletion";
 import ContractorProfile from "../../screens/Contractor/ContractorProfile";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
@@ -322,6 +324,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ContractorProfile"}
           component={ContractorProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"HireContractor"}
+          component={HireContractor}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"JobCompletion"}
+          component={JobCompletion}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
