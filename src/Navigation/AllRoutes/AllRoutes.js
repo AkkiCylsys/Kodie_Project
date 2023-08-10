@@ -35,12 +35,13 @@ import ContractorSignUpFinalScreen from "../../screens/Authentication/Contractor
 import TenantSignup from "../../screens/Authentication/TenantSignup/TenantSignupScreen";
 import CreateJobFirstScreen from "../../screens/CreateJob/CreateJobFirstScreen";
 import CreateJobSecondScreen from "../../screens/CreateJob/CreateJobSecondScreen";
-import Contractorlist from "../../screens/Contractor/Contractorlist";
+import Contractorlist from "../../screens/Contractor/ContractorList/Contractorlist";
 import HireContractor from "../../screens/Contractor/HireContractor/HireContractor";
 import JobCompletion from "../../screens/Contractor/JobCompletion/JobCompletion";
-import ContractorProfile from "../../screens/Contractor/ContractorProfile";
+import ContractorProfile from "../../screens/Contractor/ContractorProfile/ContractorProfile";
 import DocumentList from "../../screens/DocumentList/DocumentList";
 import RejectConfirm from "../../screens/Landlord/RejectConfirm/RejectConfirm";
+import InviteTenant from "../../screens/Landlord/InviteTenant/InviteTenant";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -341,8 +342,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"DocumentList"}
           component={DocumentList}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name={"RejectConfirm"}
           component={RejectConfirm}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"InviteTenant"}
+          component={InviteTenant}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -9,11 +9,11 @@ import {
   FlatList,
 } from "react-native";
 import { ContractorProfileStyle } from "./ContractorProfileStyle";
-import { _COLORS, IMAGES, BANNERS } from "../../Themes";
+import { _COLORS, IMAGES, BANNERS } from "../../../Themes";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import TopHeader from "../../components/Molecules/Header/Header";
-import { _goBack } from "../../services/CommonServices";
-import RowButtons from "../../components/Molecules/RowButtons/RowButtons";
+import TopHeader from "../../../components/Molecules/Header/Header";
+import { _goBack } from "../../../services/CommonServices";
+import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 const data = [
   { id: "1", image: BANNERS.previewImage },
   { id: "2", image: BANNERS.previewImage },
