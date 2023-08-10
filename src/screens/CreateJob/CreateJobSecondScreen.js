@@ -68,6 +68,7 @@ export default CreateJobSecondScreen = (props) => {
       </View>
       <View style={VIEW_STYLES._bottomButtonView}>
         <CustomSingleButton
+          onPress={() => props.navigation.navigate("PropertyList")}
           _ButtonText={"Next"}
           Text_Color={_COLORS.Kodie_WhiteColor}
         />

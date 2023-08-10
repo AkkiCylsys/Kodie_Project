@@ -17,6 +17,15 @@ export const IMAGES = {
   redLine: require("../../assets/icons/RedLine.png"),
   blueLine: require("../../assets/icons/BlueLine.png"),
   greenLine: require("../../assets/icons/GreenLine.png"),
+  noteBook: require("../../assets/icons/noteBook.png"),
+  dashboard: require("../../assets/icons/dashboard-chart.png"),
+  greenDeshboard: require("../../assets/icons/greenDeshboard.png"),
+  property: require("../../assets/icons/property.png"),
+  greenproperty: require("../../assets/icons/greenproperty.png"),
+  repair: require("../../assets/icons/repair.png"),
+  greenRepair: require("../../assets/icons/greenRepair.png"),
+  chat: require("../../assets/icons/chat.png"),
+  greenChat: require("../../assets/icons/greenChat.png"),
 };
 
 export const BANNERS = {
@@ -24,4 +33,7 @@ export const BANNERS = {
   BannerSecond: require("../../assets/images/Banners/alfonso.png"),
   wallImage: require("../../assets/images/Banners/wall.png"),
   previewImage: require("../../assets/images/Banners/preview.png"),
+  apartment: require("../../assets/images/Banners/Apartment.png"),
+  house: require("../../assets/images/Banners/House.png"),
+  cottage: require("../../assets/images/Banners/Cottage.png"),
 };

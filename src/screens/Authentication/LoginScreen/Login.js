@@ -69,7 +69,7 @@ export default Login = (props) => {
               />
             </View>
             <CustomSingleButton
-              onPress={() => props.navigation.navigate("UserTypeScreen")}
+              onPress={() => props.navigation.navigate("BottomNav")}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />

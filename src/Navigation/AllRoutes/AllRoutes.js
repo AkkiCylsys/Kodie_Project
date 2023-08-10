@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Image } from "react-native";
 
 // import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from "react-native-linear-gradient";
@@ -12,6 +12,7 @@ import {
   bgGradientColor,
   headerGradientColor,
   colors,
+  _COLORS,
 } from "../../Themes/CommonColors/CommonColor";
 import { CommonStyles } from "../../Themes/CommonStyles/CommonStyles";
 
@@ -42,143 +43,211 @@ import ContractorProfile from "../../screens/Contractor/ContractorProfile";
 import DocumentList from "../../screens/DocumentList/DocumentList";
 import RejectConfirm from "../../screens/Landlord/RejectConfirm/RejectConfirm";
 import Notice from "../../screens/NotiesList/Notice";
+import PropertyList from "../../screens/Landlord/PropertyList/PropertyList";
+import Dashboard from "../../screens/Dashboard/Dashboard";
+import { IMAGES, LABEL_STYLES } from "../../Themes";
+import { fontFamily } from "../../Themes/FontStyle/FontStyle";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
     <Tab.Navigator
-      initialRouteName="HomeScreen"
-      // activeColor="#f0edf6"
-      // inactiveColor="#3e2465"
-      // barStyle={{backgroundColor: colors?.navyBlue}}
+      initialRouteName="Dashboard"
       screenOptions={{
         tabBarStyle: {
-          backgroundColor: "transparent",
+          backgroundColor: _COLORS.Kodie_WhiteColor,
+          height: 65,
         },
-        tabBarBackground: () => (
-          <LinearGradient colors={headerGradientColor} style={{ flex: 1 }} />
-        ),
       }}
     >
       <Tab.Screen
-        name="GeoTaggingAttendance"
-        component={GeoTaggingAttendance}
-        // name="MarkAttendance"
-        // component={MarkAttendance}
+        name="Dashboard"
+        component={Dashboard}
         options={{
           headerShown: false,
           tabBarShowLabel: false,
           tabBarIconStyle: { flex: 1 },
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center" }}>
-              <Octicons
-                name={"apps"}
-                size={focused ? 30 : 25}
-                color={focused ? colors?.fullWhite : colors?.chalkWhite}
-              />
-              <Text
-                style={[
-                  CommonStyles?.commText,
-                  { color: focused ? colors?.fullWhite : colors?.chalkWhite },
-                ]}
-              >
-                {"Attendance"}
-              </Text>
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="ProjectScreen"
-        component={ProjectScreen}
-        options={{
-          tabBarShowLabel: false,
-          headerShown: false,
-          tabBarIconStyle: { flex: 1 },
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center" }}>
-              <MacIcon
+              {/* <MacIcon
                 name={"clipboard-check-multiple"}
                 size={focused ? 30 : 25}
-                color={focused ? colors?.fullWhite : colors?.chalkWhite}
+                color={
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                }
+              /> */}
+              <Image
+                source={focused ? IMAGES.greenDeshboard : IMAGES.dashboard}
+                style={{
+                  height: 30,
+                  width: 30,
+                }}
               />
+
               <Text
                 style={[
-                  CommonStyles?.commText,
-                  { color: focused ? colors?.fullWhite : colors?.chalkWhite },
+                  {
+                    fontSize: 12,
+                    fontFamily: fontFamily.K_Bold,
+                    color: focused
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
                 ]}
               >
-                {"Project"}
+                {"Dashboard"}
               </Text>
             </View>
           ),
         }}
       />
       <Tab.Screen
-        name="HomeScreen"
-        component={HomeScreen}
+        name="PropertyList"
+        component={PropertyList}
         options={{
-          tabBarOnPress: () => {},
-          headerShown: false,
           tabBarShowLabel: false,
+          headerShown: false,
+          tabBarIconStyle: { flex: 1 },
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
+              {/* <MacIcon
+                name={"clipboard-check-multiple"}
+                size={focused ? 30 : 25}
+                color={
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                }
+              /> */}
+              <Image
+                source={focused ? IMAGES.greenproperty : IMAGES.property}
+                style={{
+                  height: 30,
+                  width: 30,
+                }}
+              />
+              <Text
+                style={[
+                  {
+                    fontSize: 12,
+                    fontFamily: fontFamily.K_Bold,
+                    color: focused
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
+                ]}
+              >
+                {"Properties"}
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="RejectConfirm"
+        component={RejectConfirm}
+        options={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarIconStyle: { flex: 1 },
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
+              {/* <MacIcon
+                name={"clipboard-check-multiple"}
+                size={focused ? 30 : 25}
+                color={
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                }
+              /> */}
+              <Image
+                source={focused ? IMAGES.greenRepair : IMAGES.repair}
+                style={{
+                  height: 30,
+                  width: 30,
+                }}
+              />
+              <Text
+                style={[
+                  {
+                    fontSize: 12,
+                    fontFamily: fontFamily.K_Bold,
+                    color: focused
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
+                ]}
+              >
+                {"Repair"}
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Notice"
+        component={Notice}
+        options={{
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarIconStyle: { flex: 1 },
+          tabBarIcon: ({ focused }) => (
+            <View style={{ alignItems: "center" }}>
+              {/* <MacIcon
+                name={"chat-processing-outline"}
+                size={focused ? 30 : 25}
+                color={
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                }
+              /> */}
+              <Image
+                source={focused ? IMAGES.greenChat : IMAGES.chat}
+                style={{
+                  height: 30,
+                  width: 30,
+                }}
+              />
+              <Text
+                style={[
+                  {
+                    fontSize: 12,
+                    fontFamily: fontFamily.K_Bold,
+                    color: focused
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
+                ]}
+              >
+                {"Chat"}
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="DocumentList"
+        component={DocumentList}
+        options={{
+          tabBarShowLabel: false,
+          headerShown: false,
           tabBarIconStyle: { flex: 1 },
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center" }}>
               <MacIcon
-                name={"home-outline"}
-                size={focused ? 50 : 35}
-                color={focused ? colors?.fullWhite : colors?.chalkWhite}
-              />
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="HRMSScreen"
-        component={HRMSScreen}
-        options={{
-          tabBarShowLabel: false,
-          headerShown: false,
-          tabBarIconStyle: { flex: 1 },
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center" }}>
-              <Ionicons
-                name={"checkmark-done-circle-outline"}
-                size={focused ? 30 : 25}
-                color={focused ? colors?.fullWhite : colors?.chalkWhite}
+                name={"account-outline"}
+                size={30}
+                color={
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                }
               />
               <Text
                 style={[
-                  CommonStyles?.commText,
-                  { color: focused ? colors?.fullWhite : colors?.chalkWhite },
+                  {
+                    fontSize: 12,
+                    fontFamily: fontFamily.K_Bold,
+                    color: focused
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
                 ]}
               >
-                {"HRMS"}
-              </Text>
-            </View>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="TimeSheetScreen"
-        component={TimeSheetScreen}
-        options={{
-          tabBarShowLabel: false,
-          headerShown: false,
-          tabBarIconStyle: { flex: 1 },
-          tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center" }}>
-              <MtIcon
-                name={"date-range"}
-                size={focused ? 30 : 25}
-                color={focused ? colors?.fullWhite : colors?.chalkWhite}
-              />
-              <Text
-                style={[
-                  CommonStyles?.commText,
-                  { color: focused ? colors?.fullWhite : colors?.chalkWhite },
-                ]}
-              >
-                {"Timesheet"}
+                {"Profile"}
               </Text>
             </View>
           ),
@@ -352,6 +421,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"Notice"}
           component={Notice}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyList"}
+          component={PropertyList}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
