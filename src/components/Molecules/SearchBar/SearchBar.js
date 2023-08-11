@@ -3,11 +3,11 @@ import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { SearchBarStyle } from "./SearchBarStyle";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import { _COLORS, IMAGES } from "../../../Themes/index";
-const SearchBar = () => {
+const SearchBar = (props) => {
   const [search, setSearch] = useState("");
   return (
     <View style={SearchBarStyle.serchheaderView}>
-      <View style={SearchBarStyle.container}>
+      <View style={[SearchBarStyle.container, { height: props.height }]}>
         <EvilIcons
           name="search"
           size={28}
@@ -21,9 +21,11 @@ const SearchBar = () => {
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />
       </View>
-      <TouchableOpacity style={SearchBarStyle.filterView}>
-        <Image source={IMAGES.filter} />
-      </TouchableOpacity>
+      {props.isFilterImage ? (
+        <TouchableOpacity style={SearchBarStyle.filterView}>
+          <Image source={props.filterImage} />
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
