@@ -60,8 +60,8 @@ const BottomNav = (props) => {
       }}
     >
       <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
+        name="UserType"
+        component={UserType}
         options={{
           headerShown: false,
           tabBarShowLabel: false,

@@ -43,9 +43,9 @@ const Calendar = (props) => {
       >
         <MacIcon
           name={props?.iconName || "calendar-month-outline"}
-          size={25}
+          size={23}
           color={_COLORS.Kodie_BlackColor}
-          style={[{ alignSelf: "center" }]}
+          style={{ paddingVertical: 3, alignSelf: "center" }}
         />
       </TouchableOpacity>
 

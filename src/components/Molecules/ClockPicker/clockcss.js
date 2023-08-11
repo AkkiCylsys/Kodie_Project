@@ -10,5 +10,5 @@ export const clockStyle = StyleSheet.create({
     borderRadius: 6,
     padding: 2,
   },
-  iconStyle: { alignSelf: "center" },
+  iconStyle: { paddingVertical: 3 },
 });

@@ -34,7 +34,7 @@ const TimePicker = (props) => {
       >
         <MacIcon
           name={props?.iconName || "clock-outline"}
-          size={25}
+          size={23}
           color={_COLORS.Kodie_BlackColor}
           style={[clockStyle.iconStyle]}
         />
