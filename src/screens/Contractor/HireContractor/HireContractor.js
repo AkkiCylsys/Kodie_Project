@@ -107,23 +107,23 @@ export default HireContractor = (props) => {
             RightButtonText={"PM"}
             RightButtonbackgroundColor={
               isLeftButtonClicked
-                ? _COLORS.Kodie_GreenColor
+                ? _COLORS.Kodie_lightGreenColor
                 : _COLORS.Kodie_WhiteColor
             }
             leftButtonbackgroundColor={
               isLeftButtonClicked
                 ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_GreenColor
+                : _COLORS.Kodie_lightGreenColor
             }
             RightButtonborderColor={
               isLeftButtonClicked
-                ? _COLORS.Kodie_GreenColor
+                ? _COLORS.Kodie_lightGreenColor
                 : _COLORS.Kodie_GrayColor
             }
             LeftButtonborderColor={
               isLeftButtonClicked
                 ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_GreenColor
+                : _COLORS.Kodie_lightGreenColor
             }
             LeftButtonTextColor={
               isLeftButtonClicked
