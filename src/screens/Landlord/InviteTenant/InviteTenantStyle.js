@@ -42,6 +42,9 @@ export const InviteTenantStyle = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 10,
   },
+  staricon: { flexDirection: "row", marginTop: 8 },
+  startRating: { paddingHorizontal: 1 },
+  star: { alignSelf: "center" },
   desc_View: { flexDirection: "row", marginTop: 2 },
   desc_heading: {
     fontSize: 12,
@@ -68,6 +71,4 @@ export const InviteTenantStyle = StyleSheet.create({
     textDecorationLine: "underline",
     textDecorationColor: _COLORS.Kodie_GreenColor,
   },
-  staricon: { flexDirection: "row", marginTop: 8 },
-  startRating: { paddingHorizontal: 1 },
 });

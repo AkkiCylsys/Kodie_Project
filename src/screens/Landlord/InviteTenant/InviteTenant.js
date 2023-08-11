@@ -55,7 +55,7 @@ export default InviteTenant = (props) => {
                 name="star"
                 size={15}
                 color={_COLORS.Kodie_GrayColor}
-                style={{ alignSelf: "center" }}
+                style={InviteTenantStyle.star}
               />
               <Text style={InviteTenantStyle.ratingText}>{item.rating}</Text>
               <Text style={InviteTenantStyle.subrating}>({item.view})</Text>
