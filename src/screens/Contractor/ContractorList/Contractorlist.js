@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { ContractorlistStyle } from "./ContractorlistStyle";
-import TopHeader from "../../components/Molecules/Header/Header";
-import { _goBack } from "../../services/CommonServices";
-import { _COLORS, IMAGES } from "../../Themes";
+import TopHeader from "../../../components/Molecules/Header/Header";
+import { _goBack } from "../../../services/CommonServices";
+import { _COLORS, IMAGES } from "../../../Themes";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import ReadMore from "@fawazahmed/react-native-read-more";
-import RowButtons from "./../../components/Molecules/RowButtons/RowButtons";
-import SearchBar from "../../components/Molecules/SearchBar/SearchBar";
+import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
+import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 const data = [
   {
     id: "1",

@@ -106,4 +106,11 @@ export const PropertyListCSS = StyleSheet.create({
   },
   noteIcon: { height: 25, width: 25, marginRight: 8 },
   rentView: { flex: 1, alignItems: "flex-end" },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
 });

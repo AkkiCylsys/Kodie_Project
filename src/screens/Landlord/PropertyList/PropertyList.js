@@ -1,5 +1,12 @@
-import React, { useState } from "react";
-import { View, Text, ScrollView, FlatList, Image } from "react-native";
+import React, { useState, useRef } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { _COLORS, LABEL_STYLES, BANNERS, IMAGES } from "../../../Themes";
 import { PropertyListCSS } from "./PropertyListCSS";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -8,7 +15,8 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-
+import RBSheet from "react-native-raw-bottom-sheet";
+import BottomModalData from "../../../components/Molecules/BottomModal/BottomModalData";
 const HorizontalData = [
   "Occupied",
   "Vacant",
@@ -109,6 +117,8 @@ const property_List = [
 
 export default PropertyList = (props) => {
   const [expandedItems, setExpandedItems] = useState([]);
+  const refRBSheet = useRef();
+
   const horizontal_render = ({ item }) => {
     return (
       <View style={PropertyListCSS.flatlistView}>
@@ -143,15 +153,23 @@ export default PropertyList = (props) => {
             <Image source={item.image} style={PropertyListCSS.imageStyle} />
             <View style={PropertyListCSS.flexContainer}>
               <View style={PropertyListCSS.noteStyle}>
-                <Image
-                  source={IMAGES.noteBook}
-                  style={PropertyListCSS.noteIcon}
-                />
-                <MaterialCommunityIcons
-                  name={"dots-horizontal"}
-                  size={25}
-                  color={_COLORS.Kodie_LightGrayColor}
-                />
+                <TouchableOpacity>
+                  <Image
+                    source={IMAGES.noteBook}
+                    style={PropertyListCSS.noteIcon}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    refRBSheet.current.open();
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name={"dots-horizontal"}
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                  />
+                </TouchableOpacity>
               </View>
               <View
                 style={[
@@ -224,6 +242,22 @@ export default PropertyList = (props) => {
           </View>
         )}
         <DividerIcon />
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "transparent",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: PropertyListCSS.bottomModal_container,
+          }}
+        >
+          <BottomModalData />
+        </RBSheet>
       </>
     );
   };

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { FONTFAMILY, _COLORS } from "../../Themes/index";
+import { FONTFAMILY, _COLORS } from "../../../Themes/index";
 export const ContractorlistStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,

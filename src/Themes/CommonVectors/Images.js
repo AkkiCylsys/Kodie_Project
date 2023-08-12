@@ -26,6 +26,11 @@ export const IMAGES = {
   greenRepair: require("../../assets/icons/greenRepair.png"),
   chat: require("../../assets/icons/chat.png"),
   greenChat: require("../../assets/icons/greenChat.png"),
+  View_property: require("../../assets/icons/View_property.png"),
+  Documents: require("../../assets/icons/Documents.png"),
+  Reminder: require("../../assets/icons/Reminder.png"),
+  Chat_Tenant: require("../../assets/icons/Chat_Tenant.png"),
+  Delete: require("../../assets/icons/Delete.png"),
 };
 
 export const BANNERS = {

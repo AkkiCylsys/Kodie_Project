@@ -71,6 +71,7 @@ export default CreateJobSecondScreen = (props) => {
           onPress={() => props.navigation.navigate("PropertyList")}
           _ButtonText={"Next"}
           Text_Color={_COLORS.Kodie_WhiteColor}
+          onPress={() => props.navigation.navigate("InviteTenant")}
         />
       </View>
     </View>
