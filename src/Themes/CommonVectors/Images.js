@@ -31,6 +31,7 @@ export const IMAGES = {
   Reminder: require("../../assets/icons/Reminder.png"),
   Chat_Tenant: require("../../assets/icons/Chat_Tenant.png"),
   Delete: require("../../assets/icons/Delete.png"),
+  estimate: require("../../assets/icons/estimate.png"),
 };
 
 export const BANNERS = {

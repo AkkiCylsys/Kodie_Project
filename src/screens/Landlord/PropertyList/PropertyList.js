@@ -121,10 +121,10 @@ export default PropertyList = (props) => {
 
   const horizontal_render = ({ item }) => {
     return (
-      <View style={PropertyListCSS.flatlistView}>
+      <TouchableOpacity style={PropertyListCSS.flatlistView}>
         <View style={PropertyListCSS.round} />
         <Text style={PropertyListCSS.item_style}>{item}</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -279,14 +279,14 @@ export default PropertyList = (props) => {
             height={40}
           />
           <View style={PropertyListCSS.flat_MainView}>
-            <View style={PropertyListCSS.AllView}>
+            <TouchableOpacity style={PropertyListCSS.AllView}>
               <Text style={PropertyListCSS.item_style}>ALL</Text>
               <MaterialCommunityIcons
                 name={"check"}
                 size={18}
                 color={_COLORS.Kodie_WhiteColor}
               />
-            </View>
+            </TouchableOpacity>
             <FlatList
               horizontal
               showsHorizontalScrollIndicator={false}

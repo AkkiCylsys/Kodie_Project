@@ -26,6 +26,11 @@ const SearchBar = (props) => {
           <Image source={props.filterImage} />
         </TouchableOpacity>
       ) : null}
+      {props.isButtonShow ? (
+        <TouchableOpacity style={SearchBarStyle.buttonView}>
+          <Text style={SearchBarStyle.buttonText}>{props.buttonName}</Text>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
