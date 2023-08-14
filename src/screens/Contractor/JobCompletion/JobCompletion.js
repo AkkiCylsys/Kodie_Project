@@ -53,7 +53,7 @@ export default JobCompletion = (props) => {
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_GrayColor}
             LeftButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-            RightButtonbackgroundColor={_COLORS.Kodie_GreenColor}
+            RightButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
             RightButtonborderColor={_COLORS.Kodie_GreenColor}
             RightButtonTextColor={_COLORS.Kodie_BlackColor}
           />

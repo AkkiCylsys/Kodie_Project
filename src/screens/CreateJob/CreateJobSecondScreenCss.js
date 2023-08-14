@@ -9,6 +9,7 @@ export const CreateJobSecondStyle = StyleSheet.create({
     flex: 1,
     marginHorizontal: 16,
     marginTop: 24,
+    marginBottom:80
   },
   videoView: { marginTop: 10 },
   imagebackground: {
@@ -24,4 +25,5 @@ export const CreateJobSecondStyle = StyleSheet.create({
     alignSelf: "center",
     justifyContent: "center",
   },
+  uploadImagebox:{flexDirection:"row"}
 });
