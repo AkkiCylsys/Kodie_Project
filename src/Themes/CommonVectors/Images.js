@@ -40,6 +40,9 @@ export const IMAGES = {
   Contact: require("../../assets/icons/Contact.png"),
   SwitchAcc_: require("../../assets/icons/SwitchAcc_.png"),
   Logout: require("../../assets/icons/Logout.png"),
+  Subscription: require("../../assets/icons/Subscription.png"),
+  Storage: require("../../assets/icons/Storage.png"),
+  language: require("../../assets/icons/language.png"),
 };
 
 export const BANNERS = {

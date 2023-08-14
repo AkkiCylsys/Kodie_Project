@@ -14,7 +14,7 @@ const LandlordData = [
     id: "2",
     Heading: "Manage Subscription",
     Sub_heading: "Manage your subscription plans",
-    img:IMAGES.Account
+    img:IMAGES.Subscription
   },
   {
     id: "3",
@@ -32,13 +32,13 @@ const LandlordData = [
     id: "5",
     Heading: "Storage & Data",
     Sub_heading: "Manage your account settings",
-    img:IMAGES.Account
+    img:IMAGES.Storage
   },
   {
     id: "6",
     Heading: "Language",
     Sub_heading: "Change language",
-    img:IMAGES.Account
+    img:IMAGES.language
   },
   {
     id: "7",
