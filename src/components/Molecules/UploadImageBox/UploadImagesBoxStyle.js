@@ -22,5 +22,7 @@ export const uploadImageBoxStyle = StyleSheet.create({
     fontSize: 18,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_MediumGrayColor,
+    alignSelf:"center",
+    justifyContent:"center"
   },
 });

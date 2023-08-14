@@ -46,6 +46,7 @@ import InviteTenant from "../../screens/Landlord/InviteTenant/InviteTenant";
 import Notice from "../../screens/NotiesList/Notice";
 import PropertyList from "../../screens/Landlord/PropertyList/PropertyList";
 import Dashboard from "../../screens/Dashboard/Dashboard";
+import LandlordProfile from "../../screens/Landlord/Landlordprofile/LandlordProfile";
 import { IMAGES, LABEL_STYLES } from "../../Themes";
 import { fontFamily } from "../../Themes/FontStyle/FontStyle";
 const Tab = createBottomTabNavigator();
@@ -222,8 +223,8 @@ const BottomNav = (props) => {
         }}
       />
       <Tab.Screen
-        name="DocumentList"
-        component={DocumentList}
+        name="LandlordProfile"
+        component={LandlordProfile}
         options={{
           tabBarShowLabel: false,
           headerShown: false,

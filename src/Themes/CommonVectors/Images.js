@@ -6,6 +6,7 @@ export const IMAGES = {
   GoogleIcon: require("../../assets/icons/google.png"),
   FacebookIcon: require("../../assets/icons/_Facebook.png"),
   userIcons: require("../../assets/icons/UploadPhotos.png"),
+  Landlordprofile: require("../../assets/icons/landlordProfile.png"),
   uploadIcon: require("../../assets/icons/cloud-upload.png"),
   document: require("../../assets/icons/doc-pdf.png"),
   cleaner: require("../../assets/icons/cleaner.png"),
@@ -31,6 +32,14 @@ export const IMAGES = {
   Reminder: require("../../assets/icons/Reminder.png"),
   Chat_Tenant: require("../../assets/icons/Chat_Tenant.png"),
   Delete: require("../../assets/icons/Delete.png"),
+  contactDetails: require("../../assets/icons/contactDetails.png"),
+  Account: require("../../assets/icons/Account.png"),
+  Privacy: require("../../assets/icons/Privacy.png"),
+  Notification: require("../../assets/icons/Notification.png"),
+  FeedBack: require("../../assets/icons/FeedBack.png"),
+  Contact: require("../../assets/icons/Contact.png"),
+  SwitchAcc_: require("../../assets/icons/SwitchAcc_.png"),
+  Logout: require("../../assets/icons/Logout.png"),
 };
 
 export const BANNERS = {
