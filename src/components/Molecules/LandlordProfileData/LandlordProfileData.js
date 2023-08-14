@@ -8,61 +8,61 @@ const LandlordData = [
     id: "1",
     Heading: "Account",
     Sub_heading: "Manage your account settings",
-    img:IMAGES.Account
+    img: IMAGES.Account,
   },
   {
     id: "2",
     Heading: "Manage Subscription",
     Sub_heading: "Manage your subscription plans",
-    img:IMAGES.Account
+    img: IMAGES.Account,
   },
   {
     id: "3",
     Heading: "Privacy & Security",
     Sub_heading: "View your privacy and security settings",
-    img:IMAGES.Privacy
+    img: IMAGES.Privacy,
   },
   {
     id: "4",
     Heading: "Notifications",
     Sub_heading: "Manage in-app notifications",
-    img:IMAGES.Notification
+    img: IMAGES.Notification,
   },
   {
     id: "5",
     Heading: "Storage & Data",
     Sub_heading: "Manage your account settings",
-    img:IMAGES.Account
+    img: IMAGES.Account,
   },
   {
     id: "6",
     Heading: "Language",
     Sub_heading: "Change language",
-    img:IMAGES.Account
+    img: IMAGES.Account,
   },
   {
     id: "7",
     Heading: "Help & Feedback",
     Sub_heading: "Get help and leave feedback",
-    img:IMAGES.FeedBack
+    img: IMAGES.FeedBack,
   },
   {
     id: "8",
     Heading: "Tell a Friend",
     Sub_heading: "Tell your friends about Kodie",
-    img:IMAGES.Contact
+    img: IMAGES.Contact,
   },
   {
     id: "9",
     Heading: "Switch Account",
     Sub_heading: "Switch to another Kodie account",
-    img:IMAGES.SwitchAcc_
+    img: IMAGES.SwitchAcc_,
   },
   {
     id: "10",
     Heading: "Logout",
     Sub_heading: "Logout of your Kodie profile",
-    img:IMAGES.Logout
+    img: IMAGES.Logout,
   },
 ];
 const LandlordProfileData = (props) => {

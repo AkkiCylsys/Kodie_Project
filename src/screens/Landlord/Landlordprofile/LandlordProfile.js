@@ -8,7 +8,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { _COLORS, IMAGES } from "../../../Themes/index";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import LandlordProfileData from "../../../components/Molecules/LandlordProfileData/LandlordProfileData";
-export default LandlordProfile = () => {
+export default LandlordProfile = (props) => {
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
@@ -16,7 +16,7 @@ export default LandlordProfile = () => {
         MiddleText={"Profile"}
       />
       <ScrollView>
-      <SearchBar />
+        <SearchBar />
         <View style={LandlordProfileStyle.profilemainView}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
             <Image
@@ -41,7 +41,10 @@ export default LandlordProfile = () => {
               <Text style={LandlordProfileStyle.subrating}>({"231"})</Text>
             </View>
           </View>
-          <TouchableOpacity style={LandlordProfileStyle.contactIconView}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate("Help_FeedBack")}
+            style={LandlordProfileStyle.contactIconView}
+          >
             <Image
               source={IMAGES.contactDetails}
               style={LandlordProfileStyle.contactIcon}

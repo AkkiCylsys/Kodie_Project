@@ -41,6 +41,10 @@ export const IMAGES = {
   Contact: require("../../assets/icons/Contact.png"),
   SwitchAcc_: require("../../assets/icons/SwitchAcc_.png"),
   Logout: require("../../assets/icons/Logout.png"),
+  helpCenter: require("../../assets/icons/helpCenter.png"),
+  TermPrivacy: require("../../assets/icons/TermPrivacy.png"),
+  contactus: require("../../assets/icons/contactus.png"),
+  AppInfo: require("../../assets/icons/AppInfo.png"),
 };
 
 export const BANNERS = {
