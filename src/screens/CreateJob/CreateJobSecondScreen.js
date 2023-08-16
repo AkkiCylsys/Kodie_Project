@@ -55,11 +55,14 @@ export default CreateJobSecondScreen = (props) => {
           </View>
           <View style={CreateJobSecondStyle.uploadImagebox}>
             <UploadImagebox _BoxText={"Upload Front Image"} icon={"camera"} />
-            <UploadImagebox _BoxText={"Upload Back Side Image"} icon={"camera"} />
+            <UploadImagebox
+              _BoxText={"Upload Back Side Image"}
+              icon={"camera"}
+            />
           </View>
           <View style={CreateJobSecondStyle.uploadImagebox}>
             <UploadImagebox _BoxText={"Upload Side Image"} icon={"camera"} />
-            <UploadImagebox _BoxText={"Upload  Video"} icon={"video"}  />
+            <UploadImagebox _BoxText={"Upload  Video"} icon={"video"} />
           </View>
           <CustomSingleButton
             leftImage={IMAGES.uploadIcon}

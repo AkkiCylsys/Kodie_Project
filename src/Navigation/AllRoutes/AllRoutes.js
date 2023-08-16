@@ -45,10 +45,12 @@ import RejectConfirm from "../../screens/Landlord/RejectConfirm/RejectConfirm";
 import InviteTenant from "../../screens/Landlord/InviteTenant/InviteTenant";
 import Notice from "../../screens/NotiesList/Notice";
 import PropertyList from "../../screens/Landlord/PropertyList/PropertyList";
+import Repair from "../../screens/Tenant/Repair/Repair";
 import Dashboard from "../../screens/Dashboard/Dashboard";
 import LandlordProfile from "../../screens/Landlord/Landlordprofile/LandlordProfile";
 import { IMAGES, LABEL_STYLES } from "../../Themes";
 import { fontFamily } from "../../Themes/FontStyle/FontStyle";
+import Help_FeedBack from "../../screens/Landlord/Help&FeedBack/Help_FeedBack";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -143,8 +145,8 @@ const BottomNav = (props) => {
         }}
       />
       <Tab.Screen
-        name="RejectConfirm"
-        component={RejectConfirm}
+        name="Repair"
+        component={Repair}
         options={{
           tabBarShowLabel: false,
           headerShown: false,
@@ -433,6 +435,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"PropertyList"}
           component={PropertyList}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Repair"}
+          component={Repair}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Help_FeedBack"}
+          component={Help_FeedBack}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

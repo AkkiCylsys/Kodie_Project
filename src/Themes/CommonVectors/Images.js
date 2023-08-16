@@ -32,6 +32,7 @@ export const IMAGES = {
   Reminder: require("../../assets/icons/Reminder.png"),
   Chat_Tenant: require("../../assets/icons/Chat_Tenant.png"),
   Delete: require("../../assets/icons/Delete.png"),
+  estimate: require("../../assets/icons/estimate.png"),
   contactDetails: require("../../assets/icons/contactDetails.png"),
   Account: require("../../assets/icons/Account.png"),
   Privacy: require("../../assets/icons/Privacy.png"),
@@ -43,6 +44,10 @@ export const IMAGES = {
   Subscription: require("../../assets/icons/Subscription.png"),
   Storage: require("../../assets/icons/Storage.png"),
   language: require("../../assets/icons/language.png"),
+  helpCenter: require("../../assets/icons/helpCenter.png"),
+  TermPrivacy: require("../../assets/icons/TermPrivacy.png"),
+  contactus: require("../../assets/icons/contactus.png"),
+  AppInfo: require("../../assets/icons/AppInfo.png"),
 };
 
 export const BANNERS = {
