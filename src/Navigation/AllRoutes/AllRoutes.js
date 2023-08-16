@@ -51,6 +51,7 @@ import LandlordProfile from "../../screens/Landlord/Landlordprofile/LandlordProf
 import { IMAGES, LABEL_STYLES } from "../../Themes";
 import { fontFamily } from "../../Themes/FontStyle/FontStyle";
 import Help_FeedBack from "../../screens/Landlord/Help&FeedBack/Help_FeedBack";
+import Language from "../../screens/Landlord/Language/Language";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -445,6 +446,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"Help_FeedBack"}
           component={Help_FeedBack}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Language"}
+          component={Language}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
