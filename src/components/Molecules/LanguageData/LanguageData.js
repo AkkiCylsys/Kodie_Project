@@ -1,16 +1,8 @@
 import React, { useState } from "react";
-import { Text, View, FlatList } from "react-native";
-import { IMAGES, _COLORS } from "../../../Themes/index";
-import { RadioButton } from "react-native-paper";
+import { Text, View, FlatList, TouchableOpacity } from "react-native";
+import { _COLORS } from "../../../Themes/index";
+
 import { LanguageDataStyle } from "./LanguageDatastyle";
-import DividerIcon from "../../Atoms/Devider/DividerIcon";
-// const language = [
-//   "English",
-//   "Spanish",
-//   "French",
-//   "German",
-//   // Add more languages as needed
-// ];
 const languages = [
   {
     id: "1",
@@ -19,36 +11,87 @@ const languages = [
   },
   {
     id: "2",
-    language: "English",
-    sub_lang: "english",
+    language: "العربية",
+    sub_lang: "Arabic",
+  },
+  {
+    id: "3",
+    language: "беларускі",
+    sub_lang: "Belarusian",
+  },
+  {
+    id: "4",
+    language: "Hrvatski",
+    sub_lang: "Croatian",
+  },
+  {
+    id: "5",
+    language: "Nederlands",
+    sub_lang: "Dutch",
+  },
+  {
+    id: "6",
+    language: "Feancais",
+    sub_lang: "French",
+  },
+  {
+    id: "7",
+    language: "Deutsch",
+    sub_lang: "German",
+  },
+  {
+    id: "8",
+    language: "Bahasa Insonesia",
+    sub_lang: "Indonesian",
+  },
+  {
+    id: "9",
+    language: "한국인",
+    sub_lang: "Korean",
+  },
+  {
+    id: "10",
+    language: "فارسی",
+    sub_lang: "Persian",
+  },
+  {
+    id: "11",
+    language: "Español",
+    sub_lang: "Spanish",
   },
 ];
 const LanguageData = (props) => {
-  const [selectedLanguage, setSelectedLanguage] = useState("");
-  const handleLanguageChange = (language) => {
-    setSelectedLanguage(language);
-  };
+  const [selectedLanguage, setSelectedLanguage] = useState(1);
   const Language_renderData = ({ item, index }) => {
     return (
       <>
-        <View>
-          <View style={LanguageDataStyle.Container}>
-            <View style={LanguageDataStyle.radioBtn} key={index}>
-              <RadioButton
-                value={item.language}
-                status={
-                  selectedLanguage === item.language ? "checked" : "unchecked"
-                }
-                onPress={() => handleLanguageChange(item.language)}
-              />
-              <Text style={LanguageDataStyle.languageText}>
-                {item.language}
+        <View style={LanguageDataStyle.mainConatiner}>
+          <View style={LanguageDataStyle.container}>
+            <TouchableOpacity onPress={() => setSelectedLanguage(item.id)}>
+              <View
+                style={[
+                  LanguageDataStyle.radio_View,
+                  {
+                    borderColor:
+                      selectedLanguage == item.id
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_ExtraLightGrayColor,
+                  },
+                ]}
+              >
+                {selectedLanguage == item.id ? (
+                  <View style={LanguageDataStyle.radioBg}></View>
+                ) : null}
+              </View>
+            </TouchableOpacity>
+            <Text style={LanguageDataStyle.languageText}>{item.language}</Text>
+            <View style={LanguageDataStyle.language_SubtextView}>
+              <Text style={LanguageDataStyle.language_subtext}>
+                {item.sub_lang}
               </Text>
             </View>
-
-            <Text style={LanguageDataStyle.sublanguage}>{item.sub_lang}</Text>
           </View>
-          <DividerIcon />
+          <View style={LanguageDataStyle.hor_Line} />
         </View>
       </>
     );

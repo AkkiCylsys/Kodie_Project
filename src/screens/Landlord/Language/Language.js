@@ -9,6 +9,7 @@ import SwitchToggle from "react-native-switch-toggle";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import LanguageData from "../../../components/Molecules/LanguageData/LanguageData";
+import { ScrollView } from "react-native-gesture-handler";
 export default Language = () => {
   const [on, setOn] = useState(true);
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
@@ -18,58 +19,60 @@ export default Language = () => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Language"}
       />
-      <View style={Languagestyle.subConatainer}>
-        <View style={Languagestyle.translate_view}>
-          <Text style={Languagestyle.translate_Text}>
-            {"Translate Message"}
-          </Text>
-          <View style={Languagestyle.premium_view}>
-            <MaterialIcons
-              name="lock"
-              size={15}
-              color={_COLORS.Kodie_GreenColor}
-              style={Languagestyle.lock_Icon}
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={Languagestyle.subConatainer}>
+          <View style={Languagestyle.translate_view}>
+            <Text style={Languagestyle.translate_Text}>
+              {"Translate Message"}
+            </Text>
+            <View style={Languagestyle.premium_view}>
+              <MaterialIcons
+                name="lock"
+                size={15}
+                color={_COLORS.Kodie_GreenColor}
+                style={Languagestyle.lock_Icon}
+              />
+              <Text style={Languagestyle.premium_Text}>{"Premium"}</Text>
+            </View>
+          </View>
+          <View style={Languagestyle.tranlateBtn_View}>
+            <Text style={Languagestyle.translateBtn_Text}>
+              {"Show Translate  Button"}
+            </Text>
+            <SwitchToggle
+              switchOn={on}
+              onPress={() => setOn(!on)}
+              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+              circleColorOn={_COLORS.Kodie_GreenColor}
+              backgroundColorOn="#F1F1F1"
+              backgroundColorOff="#F1F1F1"
+              containerStyle={Languagestyle.toggle_con}
+              circleStyle={Languagestyle.toggle_circle}
             />
-            <Text style={Languagestyle.premium_Text}>{"Premium"}</Text>
+          </View>
+          <View style={Languagestyle.tranlateBtn_View}>
+            <Text style={Languagestyle.translateBtn_Text}>
+              {"Translate Entire Chats"}
+            </Text>
+            <SwitchToggle
+              switchOn={on}
+              onPress={() => setOn(!on)}
+              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+              circleColorOn={_COLORS.Kodie_GreenColor}
+              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+              containerStyle={Languagestyle.toggle_con}
+              circleStyle={Languagestyle.toggle_circle}
+            />
           </View>
         </View>
-        <View style={Languagestyle.tranlateBtn_View}>
-          <Text style={Languagestyle.translateBtn_Text}>
-            {"Show Translate  Button"}
-          </Text>
-          <SwitchToggle
-            switchOn={on}
-            onPress={() => setOn(!on)}
-            circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-            circleColorOn={_COLORS.Kodie_GreenColor}
-            backgroundColorOn="#F1F1F1"
-            backgroundColorOff="#F1F1F1"
-            containerStyle={Languagestyle.toggle_con}
-            circleStyle={Languagestyle.toggle_circle}
-          />
+        <DividerIcon style={Languagestyle.deviderStyle} />
+        <View style={Languagestyle.language_view}>
+          <Text style={Languagestyle.language_Text}>{"Language"}</Text>
         </View>
-        <View style={Languagestyle.tranlateBtn_View}>
-          <Text style={Languagestyle.translateBtn_Text}>
-            {"Translate Entire Chats"}
-          </Text>
-          <SwitchToggle
-            switchOn={on}
-            onPress={() => setOn(!on)}
-            circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-            circleColorOn={_COLORS.Kodie_GreenColor}
-            backgroundColorOn="#F1F1F1"
-            backgroundColorOff="#F1F1F1"
-            containerStyle={Languagestyle.toggle_con}
-            circleStyle={Languagestyle.toggle_circle}
-          />
-        </View>
-      </View>
-      <DividerIcon />
-      <View style={Languagestyle.language_view}>
-        <Text style={Languagestyle.language_Text}>{"Language"}</Text>
-      </View>
-      <SearchBar backSearchIcon />
-      <LanguageData/>
+        <SearchBar backSearchIcon />
+        <LanguageData />
+      </ScrollView>
     </View>
   );
 };

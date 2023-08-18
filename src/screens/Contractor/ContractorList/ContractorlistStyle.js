@@ -103,4 +103,9 @@ export const ContractorlistStyle = StyleSheet.create({
     alignSelf: "center",
     marginTop: 10,
   },
+  hor_Line: {
+    borderBottomWidth: 1,
+    marginTop: 15,
+    borderBottomColor: _COLORS.Kodie_GrayColor,
+  },
 });

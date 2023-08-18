@@ -52,6 +52,8 @@ import { IMAGES, LABEL_STYLES } from "../../Themes";
 import { fontFamily } from "../../Themes/FontStyle/FontStyle";
 import Help_FeedBack from "../../screens/Landlord/Help&FeedBack/Help_FeedBack";
 import Language from "../../screens/Landlord/Language/Language";
+import SignUp from "../../screens/Authentication/SignUpScreen/SignUp";
+import SignUpVerification from "../../screens/Authentication/SignUpScreen/SignUpVerification";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -451,6 +453,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"Language"}
           component={Language}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SignUp"}
+          component={SignUp}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SignUpVerification"}
+          component={SignUpVerification}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

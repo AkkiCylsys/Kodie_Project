@@ -40,6 +40,7 @@ export const _COLORS = {
   // Kodie App Color
   Kodie_BlackColor: "#212121",
   Kodie_WhiteColor: "#FFFFFF",
+  Kodie_LiteWhiteColor: "#F1F1F1",
   Kodie_LightWhiteColor: "#DDDDDD",
   Kodie_LightGrayColor: "#D9D9D9",
   Kodie_ExtraLightGrayColor: "#A1A1A1",

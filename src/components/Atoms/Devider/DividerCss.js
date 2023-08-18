@@ -11,6 +11,7 @@ export const Dividerstyles = StyleSheet.create({
   Divider_Text: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
+    color:_COLORS.Kodie_MediumGrayColor
   },
   iconView: {
     paddingHorizontal: 2,

@@ -63,4 +63,5 @@ export const Languagestyle = StyleSheet.create({
     fontSize:16,
     fontFamily:FONTFAMILY.K_SemiBold
   },
+  deviderStyle:{ borderBottomWidth: 7, borderColor: _COLORS.Kodie_LiteWhiteColor }
 });
