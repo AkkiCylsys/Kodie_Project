@@ -96,6 +96,7 @@ export default SignUpVerification = (props) => {
           <CustomSingleButton
             _ButtonText={"Complete sign up"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            onPress={() => props.navigation.navigate("Location")}
           />
         </View>
         <View style={SignUpVerificationStyle.goBack_View}>

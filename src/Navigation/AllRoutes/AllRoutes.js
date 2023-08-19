@@ -54,6 +54,7 @@ import Help_FeedBack from "../../screens/Landlord/Help&FeedBack/Help_FeedBack";
 import Language from "../../screens/Landlord/Language/Language";
 import SignUp from "../../screens/Authentication/SignUpScreen/SignUp";
 import SignUpVerification from "../../screens/Authentication/SignUpScreen/SignUpVerification";
+import Location from "../../screens/Authentication/SignUpScreen/Location";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -463,6 +464,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"SignUpVerification"}
           component={SignUpVerification}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Location"}
+          component={Location}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

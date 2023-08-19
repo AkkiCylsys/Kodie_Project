@@ -48,6 +48,7 @@ export const IMAGES = {
   TermPrivacy: require("../../assets/icons/TermPrivacy.png"),
   contactus: require("../../assets/icons/contactus.png"),
   AppInfo: require("../../assets/icons/AppInfo.png"),
+  Shape: require("../../assets/icons/Shape.png"),
 };
 
 export const BANNERS = {
