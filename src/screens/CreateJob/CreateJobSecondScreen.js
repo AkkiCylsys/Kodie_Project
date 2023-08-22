@@ -21,6 +21,7 @@ import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import UploadImagebox from "../../components/Molecules/UploadImageBox/UploadImageBox";
+import UploadImageBoxes from "../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 export default CreateJobSecondScreen = (props) => {
   return (
     <View style={CreateJobSecondStyle.container}>
@@ -53,7 +54,7 @@ export default CreateJobSecondScreen = (props) => {
               </TouchableOpacity>
             </ImageBackground>
           </View>
-          <View style={CreateJobSecondStyle.uploadImagebox}>
+          {/* <View style={CreateJobSecondStyle.uploadImagebox}>
             <UploadImagebox _BoxText={"Upload Front Image"} icon={"camera"} />
             <UploadImagebox
               _BoxText={"Upload Back Side Image"}
@@ -63,7 +64,23 @@ export default CreateJobSecondScreen = (props) => {
           <View style={CreateJobSecondStyle.uploadImagebox}>
             <UploadImagebox _BoxText={"Upload Side Image"} icon={"camera"} />
             <UploadImagebox _BoxText={"Upload  Video"} icon={"video"} />
-          </View>
+          </View> */}
+          <UploadImageBoxes
+            heading_Text={"Upload clear images of the front profile"}
+            Box_Text={'Add Photo'}
+          />
+          <UploadImageBoxes
+            heading_Text={"Upload clear images of the left side profile"}
+            Box_Text={'Add Photo'}
+          />
+          <UploadImageBoxes
+            heading_Text={"Upload clear images of the right side profile"}
+            Box_Text={'Add Photo'}
+          />
+          <UploadImageBoxes
+            heading_Text={"Upload a video clearly showing and describing the job that you need completed"}
+            Box_Text={'Add Video'}
+          />
           <CustomSingleButton
             leftImage={IMAGES.uploadIcon}
             isLeftImage={true}

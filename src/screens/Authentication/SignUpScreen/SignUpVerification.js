@@ -15,6 +15,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 export default SignUpVerification = (props) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(1);
+
   return (
     <View style={SignUpVerificationStyle.mainContainer}>
       <TopHeader

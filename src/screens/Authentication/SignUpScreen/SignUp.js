@@ -40,6 +40,7 @@ export default SignUp = (props) => {
           <CustomSingleButton
             _ButtonText={"Sign up now"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            onPress={()=>{props.navigation.navigate('AboutYou')}}
           />
           <DividerIcon
             DeviderText={"or"}
