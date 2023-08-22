@@ -26,5 +26,7 @@ export const UploadImageStyle = StyleSheet.create({
     fontSize:20,
     fontFamily:FONTFAMILY.K_Bold
   },
-  content_View:{ flexDirection: "row",marginTop:24,marginHorizontal:16 }
+  content_View:{ flexDirection: "row",
+  marginTop:10,
+  marginHorizontal:16 }
 });

@@ -7,16 +7,16 @@ const data = [
   {
     id: "1",
     Data: "Take photo",
-    Img: IMAGES.Documents,
+    Img: IMAGES.camera,
   },
   {
     id: "2",
     Data: "Choose photo from library",
-    Img: IMAGES.Documents,
+    Img: IMAGES.gallery,
   },
 ];
 
-const UploadImageData = () => {
+const UploadImageData = (props) => {
   const UploadImageContent = ({ item, index }) => {
     return (
       <>
@@ -32,7 +32,9 @@ const UploadImageData = () => {
   return (
     <View style={UploadImageStyle.mainContainer}>
       <View style={UploadImageStyle.upload_View}>
-        <Text style={UploadImageStyle.uploadImgText}>{"Upload image"}</Text>
+        <Text style={UploadImageStyle.uploadImgText}>
+          {props.heading_Text || "Upload image"}
+        </Text>
         <TouchableOpacity>
           <Entypo
             name="cross"

@@ -22,7 +22,7 @@ const UploadImageBoxes = (props) => {
           <View style={UploadImageBoxesStyle.circle}>
             <Text style={UploadImageBoxesStyle.circleText}>{props.Box_Text}</Text>
           </View>
-          <TouchableOpacity style={UploadImageBoxesStyle.plusIcon}>
+          <TouchableOpacity style={UploadImageBoxesStyle.plusIcon} onPress={props.onPress}>
             <AntDesign
               name="pluscircle"
               size={25}

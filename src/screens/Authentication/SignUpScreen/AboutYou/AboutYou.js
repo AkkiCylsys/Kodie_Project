@@ -148,12 +148,14 @@ export default AboutYou = (props) => {
             />
           </View>
           <View style={AboutYouStyle.locationContainer}>
+            <TouchableOpacity onPress={()=>{props.navigation.navigate('Location')}}>
             <Octicons
               name={"location"}
               size={20}
               color={_COLORS.Kodie_MediumGrayColor}
               style={AboutYouStyle.locationIcon}
             />
+            </TouchableOpacity>
             <TextInput
               style={AboutYouStyle.locationInput}
               value={location}
@@ -209,7 +211,7 @@ export default AboutYou = (props) => {
               container: AboutYouStyle.bottomModal_container,
             }}
           >
-            <UploadImageData />
+            <UploadImageData heading_Text={"Upload image"} />
           </RBSheet>
         </View>
       </ScrollView>

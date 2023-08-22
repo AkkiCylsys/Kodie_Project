@@ -117,7 +117,7 @@ export default InviteTenant = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Invite Tenant"}
       />
-      <SearchBar />
+      <SearchBar filterImage={IMAGES.filter} isFilterImage />
       <DividerIcon />
       <FlatList
         data={data}

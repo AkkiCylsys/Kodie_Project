@@ -10,7 +10,7 @@ import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import LanguageData from "../../../components/Molecules/LanguageData/LanguageData";
 import { ScrollView } from "react-native-gesture-handler";
-export default Language = () => {
+export default Language = (props) => {
   const [on, setOn] = useState(true);
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
   return (

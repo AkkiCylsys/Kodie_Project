@@ -22,10 +22,7 @@ const HorizontalData = [
   "Vacant",
   "Rent Pending",
   "Rent Received",
-  "Occupied",
-  "Vacant",
-  "Rent Pending",
-  "Rent Received",
+  "Archive",
 ];
 const property_List = [
   {
@@ -269,7 +266,7 @@ export default PropertyList = (props) => {
         MiddleText={"Property list"}
       />
       <ScrollView>
-        <SearchBar height={40} />
+        <SearchBar filterImage={IMAGES.filter} isFilterImage frontSearchIcon />
         <View style={PropertyListCSS.Container}>
           <CustomSingleButton
             onPress={() => {}}

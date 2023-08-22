@@ -49,6 +49,8 @@ export const IMAGES = {
   contactus: require("../../assets/icons/contactus.png"),
   AppInfo: require("../../assets/icons/AppInfo.png"),
   Shape: require("../../assets/icons/Shape.png"),
+  camera: require("../../assets/icons/camera.png"),
+  gallery: require("../../assets/icons/gallery.png"),
 };
 
 export const BANNERS = {

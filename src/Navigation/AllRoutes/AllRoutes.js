@@ -56,6 +56,7 @@ import SignUp from "../../screens/Authentication/SignUpScreen/SignUp";
 import SignUpVerification from "../../screens/Authentication/SignUpScreen/SignUpVerification";
 import Location from "../../screens/Authentication/SignUpScreen/Location";
 import AboutYou from "../../screens/Authentication/SignUpScreen/AboutYou/AboutYou";
+import CreateJobTermsScreen from "../../screens/CreateJob/CreateJobTermsScreen/CreateJobTermsScreen";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -183,7 +184,7 @@ const BottomNav = (props) => {
                   },
                 ]}
               >
-                {"Repair"}
+                {"jobs"}
               </Text>
             </View>
           ),
@@ -475,6 +476,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"AboutYou"}
           component={AboutYou}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CreateJobTermsScreen"}
+          component={CreateJobTermsScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
