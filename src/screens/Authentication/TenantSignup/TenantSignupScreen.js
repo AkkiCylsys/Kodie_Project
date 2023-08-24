@@ -99,7 +99,7 @@ export default TenantSignup = (props) => {
         </View>
         <View style={{ marginHorizontal: 16 }}>
           <CustomSingleButton
-            onPress={() => props.navigation.navigate("UserTypeScreen")}
+            onPress={() => props.navigation.navigate("InviteTenant")}
             _ButtonText={"Next"}
             Text_Color={_COLORS.Kodie_WhiteColor}
           />

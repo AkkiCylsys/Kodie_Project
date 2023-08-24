@@ -13,8 +13,6 @@ import { Dropdown } from "react-native-element-dropdown";
 import {
   _COLORS,
   LABEL_STYLES,
-  IMAGES,
-  FONTFAMILY,
 } from "../../../Themes/index";
 import Calendar from "../../../components/Molecules/Calander/Calendar";
 import TimePicker from "../../../components/Molecules/ClockPicker/TimePicker";
@@ -160,7 +158,7 @@ export default CreateJobTermsScreen = (props) => {
             <CustomSingleButton
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
-              onPress={() => props.navigation.navigate("InviteTenant")}
+              onPress={() => props.navigation.navigate("ConfirmJobCompletion")}
             />
           </View>
           <View style={CreateJobTermsStyle.goBack_View}>

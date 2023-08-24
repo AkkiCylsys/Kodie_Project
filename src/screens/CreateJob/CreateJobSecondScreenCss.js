@@ -15,10 +15,16 @@ export const CreateJobSecondStyle = StyleSheet.create({
     width: 10,
     height: 10,
     borderRadius: 10,
-    marginHorizontal: 1,
+    // marginHorizontal: 1,
     padding: 0,
     margin: 0,
   },
+  heading_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  heading_View: { flexDirection: "row", marginTop: 10 },
   goBack_View: {
     flexDirection: "row",
     alignSelf: "center",
@@ -44,8 +50,10 @@ export const CreateJobSecondStyle = StyleSheet.create({
     elevation: 10,
   },
   slider_view: {
+    flex: 1,
     justifyContent: "center",
-     borderWidth: 1,
+    alignSelf: "center",
+    // borderWidth: 1,
     marginVertical: 25,
   },
 });

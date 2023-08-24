@@ -5,7 +5,6 @@ import { _COLORS } from "../../../Themes";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
-import RBSheet from "react-native-raw-bottom-sheet";
 
 const Calendar = (props) => {
   const refRBSheet = useRef();
@@ -29,7 +28,6 @@ const Calendar = (props) => {
       <TouchableOpacity
         disabled={props?.isDisable ? true : false}
         onPress={() => {
-          // refRBSheet.current.open();
           setDatePickerVisibility(true);
         }}
         style={[
@@ -65,34 +63,6 @@ const Calendar = (props) => {
           onCanceling(date);
         }}
       />
-      {/* <RBSheet
-        ref={refRBSheet}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "transparent",
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
-          // container: PropertyListCSS.bottomModal_container,
-        }}
-      >       
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          date={selectedDate ? selectedDate : new Date()}
-          display={"spinner"}
-          mode={"date"}
-          is24Hour={false}
-          onConfirm={(date) => {
-            handleConfirm(date);
-          }}
-          onCancel={(date) => {
-            onCanceling(date);
-          }}
-        />
-      </RBSheet> */}
     </View>
   );
 };

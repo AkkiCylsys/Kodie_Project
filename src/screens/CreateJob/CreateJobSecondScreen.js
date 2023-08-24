@@ -26,6 +26,7 @@ import { SliderBox } from "react-native-image-slider-box";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../components/Molecules/UploadImage/UploadImage";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 const images = [
   BANNERS.wallImage,
   BANNERS.BannerFirst,
@@ -48,49 +49,90 @@ export default CreateJobSecondScreen = (props) => {
               "Images should be formatted .jpg or .png Videos should be formatting .mp4 or .mov or .m4 Size per file should not exceed 5 MB"
             }
           </Text>
-
-          <View
-            style={CreateJobSecondStyle.slider_view}
-          >
+          <View style={CreateJobSecondStyle.slider_view}>
             <SliderBox
               images={images}
-              resizeMethod={"resize"}
-              resizeMode={"cover"}
-              sliderBoxHeight={180}
+              sliderBoxHeight={200}
               onCurrentImagePressed={(index) =>
                 console.warn(`image ${index} pressed`)
               }
-              ImageComponentStyle={{}}
-              dotColor={_COLORS.Kodie_VeryLightGrayColor}
               inactiveDotColor={_COLORS.Kodie_GrayColor}
+              dotColor={_COLORS.Kodie_GreenColor}
+              autoplay
+              circleLoop
+              resizeMethod={"resize"}
+              resizeMode={"cover"}
               dotStyle={CreateJobSecondStyle.dotStyle}
+              ImageComponentStyle={{
+                flex: 1,
+                resizeMode: "cover",
+                borderRadius: 15,
+                width: "90%",
+                // position: "relative",
+              }}
+            />
+          </View>
+          <View style={CreateJobSecondStyle.heading_View}>
+            <Text style={CreateJobSecondStyle.heading_Text}>
+              {"Upload clear images of the front profile"}
+            </Text>
+            <MaterialCommunityIcons
+              name="information"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
             />
           </View>
           <UploadImageBoxes
-            heading_Text={"Upload clear images of the front profile"}
             Box_Text={"Add Photo"}
             onPress={() => {
               refRBSheet.current.open();
             }}
           />
+          <View style={CreateJobSecondStyle.heading_View}>
+            <Text style={CreateJobSecondStyle.heading_Text}>
+              {"Upload clear images of the left side profile"}
+            </Text>
+            <MaterialCommunityIcons
+              name="information"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+            />
+          </View>
           <UploadImageBoxes
-            heading_Text={"Upload clear images of the left side profile"}
             Box_Text={"Add Photo"}
             onPress={() => {
               refRBSheet.current.open();
             }}
           />
+          <View style={CreateJobSecondStyle.heading_View}>
+            <Text style={CreateJobSecondStyle.heading_Text}>
+              {"Upload clear images of the right side profile"}
+            </Text>
+            <MaterialCommunityIcons
+              name="information"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+            />
+          </View>
+          
           <UploadImageBoxes
-            heading_Text={"Upload clear images of the right side profile"}
             Box_Text={"Add Photo"}
             onPress={() => {
               refRBSheet.current.open();
             }}
           />
+          <View style={CreateJobSecondStyle.heading_View}>
+            <Text style={CreateJobSecondStyle.heading_Text}>
+              {"Upload a video clearly showing and describing the job that you need completed"}
+            </Text>
+            <MaterialCommunityIcons
+              name="information"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+            />
+          </View>
           <UploadImageBoxes
-            heading_Text={
-              "Upload a video clearly showing and describing the job that you need completed"
-            }
+            
             Box_Text={"Add Video"}
             onPress={() => {
               refRBSheet.current.open();

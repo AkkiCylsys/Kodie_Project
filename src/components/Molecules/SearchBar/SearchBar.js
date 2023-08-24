@@ -37,7 +37,7 @@ const SearchBar = (props) => {
         </TouchableOpacity>
       ) : null}
       {props.isButtonShow ? (
-        <TouchableOpacity style={SearchBarStyle.buttonView}>
+        <TouchableOpacity style={SearchBarStyle.buttonView}  onPress={props.onPress}>
           <Text style={SearchBarStyle.buttonText}>{props.buttonName}</Text>
         </TouchableOpacity>
       ) : null}

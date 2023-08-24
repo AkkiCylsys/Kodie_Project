@@ -7,7 +7,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 const UploadImageBoxes = (props) => {
   return (
     <View style={UploadImageBoxesStyle.mainContainer}>
-      <View style={UploadImageBoxesStyle.heading_View}>
+      {/* <View style={UploadImageBoxesStyle.heading_View}>
         <Text style={UploadImageBoxesStyle.heading_Text}>
           {props.heading_Text}
         </Text>
@@ -16,13 +16,13 @@ const UploadImageBoxes = (props) => {
           size={25}
           color={_COLORS.Kodie_GrayColor}
         />
-      </View>
-      <View style={UploadImageBoxesStyle.container}>
+      </View> */}
+      <TouchableOpacity style={UploadImageBoxesStyle.container}  onPress={props.onPress}>
         <View>
           <View style={UploadImageBoxesStyle.circle}>
             <Text style={UploadImageBoxesStyle.circleText}>{props.Box_Text}</Text>
           </View>
-          <TouchableOpacity style={UploadImageBoxesStyle.plusIcon} onPress={props.onPress}>
+          <TouchableOpacity style={UploadImageBoxesStyle.plusIcon}>
             <AntDesign
               name="pluscircle"
               size={25}
@@ -30,7 +30,7 @@ const UploadImageBoxes = (props) => {
             />
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

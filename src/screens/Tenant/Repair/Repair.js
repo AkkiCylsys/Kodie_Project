@@ -177,7 +177,14 @@ export default Repair = (props) => {
         MiddleText={"Repair"}
       />
       <ScrollView>
-        <SearchBar isButtonShow height={40} buttonName={"Create Job"} />
+        <SearchBar
+          isButtonShow
+          height={40}
+          buttonName={"Create Job"}
+          onPress={() => {
+            props.navigation.navigate('CreateJobFirstScreen')
+          }}
+        />
         <View style={RepairCss.Container}>
           <Text style={[LABEL_STYLES.commontext, RepairCss.filter]}>
             Filter
