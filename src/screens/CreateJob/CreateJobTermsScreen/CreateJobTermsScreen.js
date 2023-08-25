@@ -10,10 +10,7 @@ import { CreateJobTermsStyle } from "./CreateJobTermsStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
 import { Dropdown } from "react-native-element-dropdown";
-import {
-  _COLORS,
-  LABEL_STYLES,
-} from "../../../Themes/index";
+import { _COLORS, LABEL_STYLES } from "../../../Themes/index";
 import Calendar from "../../../components/Molecules/Calander/Calendar";
 import TimePicker from "../../../components/Molecules/ClockPicker/TimePicker";
 import moment from "moment";
@@ -21,6 +18,9 @@ import RangeSlider from "../../../components/Molecules/RangeSlider/RangeSlider";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
+import TimerModal from "../../../components/Molecules/TimerModal/TimerModal";
 const data = [
   { label: "3 hours", value: "1" },
   { label: "4 hours", value: "2" },
@@ -31,6 +31,17 @@ export default CreateJobTermsScreen = (props) => {
   const [currentDate, setCurrentDate] = useState("");
   const [currentTime, setCurrentTime] = useState("");
   const [value, setValue] = useState(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const handleDayPress = (day) => {
+    setSelectedDate(day.dateString);
+  };
+
   // useEffect(() => {
   //   setCurrentDate(moment(new Date()).format("DD-MM-YYYY"));
   //   setCurrentTime(moment(new Date()).format("hh:mm "));
@@ -48,19 +59,49 @@ export default CreateJobTermsScreen = (props) => {
             {" Request date and time"}
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
-            <View style={CreateJobTermsStyle.calenderView}>
+            {/* <View style={CreateJobTermsStyle.calenderView}>
               <Text style={CreateJobTermsStyle.textInputStyle}>
                 {currentDate && currentDate != ""
                   ? String(currentDate)
                   : "Select date "}
-              </Text>
-              <Calendar
+              </Text> */}
+            <CalendarModal
+              SelectDate={selectedDate ? selectedDate : "Select Date"}
+              _textInputStyle={{
+                color: selectedDate
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor,
+              }}
+              calenderIcon={toggleModal}
+              onDayPress={handleDayPress}
+              Visible={isModalVisible}
+              onRequestClose={toggleModal}
+              markedDates={{
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: _COLORS.Kodie_lightGreenColor,
+                  selectedTextColor: _COLORS.Kodie_BlackColor,
+                },
+              }}
+              _closeButton={toggleModal}
+              _ApplyButton={toggleModal}
+            />
+            {/* <TouchableOpacity>
+                <MacIcon
+          name={"calendar-month-outline"}
+          size={23}
+          color={_COLORS.Kodie_MediumGrayColor}
+          style={{ paddingVertical: 5, alignSelf: "center",paddingHorizontal:3 }}
+        />
+        </TouchableOpacity>
+               */}
+            {/* <Calendar
                 data={new Date()}
                 getData={(date) =>
                   setCurrentDate(moment(date).format("DD-MM-YYYY"))
                 }
-              />
-            </View>
+              /> */}
+            {/* </View> */}
             <View style={CreateJobTermsStyle.spaceView} />
             <View style={[CreateJobTermsStyle.calenderView]}>
               <Text style={CreateJobTermsStyle.textInputStyle}>
@@ -68,6 +109,8 @@ export default CreateJobTermsScreen = (props) => {
                   ? String(currentTime)
                   : "Select time"}
               </Text>
+              {/* <TimerModal 
+              /> */}
               <TimePicker
                 data={new Date()}
                 getData={(date) => {
@@ -132,7 +175,7 @@ export default CreateJobTermsScreen = (props) => {
 
             <RowButtons
               LeftButtonText={"Tenant"}
-              leftButtonbackgroundColor={_COLORS.Kodie_LightWhiteColor}
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
               LeftButtonTextColor={_COLORS.Kodie_MediumGrayColor}
               LeftButtonborderColor={_COLORS.Kodie_LightWhiteColor}
               RightButtonText={"Landlord"}
@@ -150,7 +193,7 @@ export default CreateJobTermsScreen = (props) => {
             LeftButtonTextColor={_COLORS.Kodie_BlackColor}
             LeftButtonborderColor={_COLORS.Kodie_GrayColor}
             RightButtonText={"No"}
-            RightButtonbackgroundColor={_COLORS.Kodie_LightWhiteColor}
+            RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
             RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
           />
