@@ -104,6 +104,7 @@ export default InviteTenant = (props) => {
             RightButtonText="Invite Tenant"
             RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+            onPressRightButton = {()=>props.navigation.navigate('Language')}
           />
         </View>
         <DividerIcon />
@@ -116,7 +117,7 @@ export default InviteTenant = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Invite Tenant"}
       />
-      <SearchBar />
+      <SearchBar filterImage={IMAGES.filter} isFilterImage />
       <DividerIcon />
       <FlatList
         data={data}

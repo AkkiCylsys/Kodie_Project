@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { _COLORS } from "../../../Themes";
 
@@ -7,6 +7,7 @@ import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import moment from "moment";
 
 const Calendar = (props) => {
+  const refRBSheet = useRef();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setselectedDate] = useState(new Date());
   const handleConfirm = (date) => {
@@ -44,7 +45,7 @@ const Calendar = (props) => {
         <MacIcon
           name={props?.iconName || "calendar-month-outline"}
           size={23}
-          color={_COLORS.Kodie_BlackColor}
+          color={_COLORS.Kodie_MediumGrayColor}
           style={{ paddingVertical: 3, alignSelf: "center" }}
         />
       </TouchableOpacity>

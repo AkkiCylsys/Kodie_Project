@@ -45,7 +45,7 @@ export const SearchBarStyle = StyleSheet.create({
   },
   buttonText: {
     fontSize: 14,
-    fontFamily: fontFamily.K_Regular,
+    fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_WhiteColor,
     textAlign: "center",
     alignSelf: "center",

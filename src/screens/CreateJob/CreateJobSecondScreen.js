@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   View,
   Text,
@@ -21,7 +21,20 @@ import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import UploadImagebox from "../../components/Molecules/UploadImageBox/UploadImageBox";
+import UploadImageBoxes from "../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
+import { SliderBox } from "react-native-image-slider-box";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import RBSheet from "react-native-raw-bottom-sheet";
+import UploadImageData from "../../components/Molecules/UploadImage/UploadImage";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+const images = [
+  BANNERS.wallImage,
+  BANNERS.BannerFirst,
+  BANNERS.BannerSecond,
+  BANNERS.previewImage,
+];
 export default CreateJobSecondScreen = (props) => {
+  const refRBSheet = useRef();
   return (
     <View style={CreateJobSecondStyle.container}>
       <TopHeader
@@ -29,61 +42,145 @@ export default CreateJobSecondScreen = (props) => {
         MiddleText={"Create job"}
       />
       <ScrollView>
-        <StepText _StepNo={"2"} _StepText={" Photo and Video"} />
+        <StepText _StepNo={"2"} _StepText={"Images & videos of job required"} />
         <View style={CreateJobSecondStyle.phototextView}>
-          <Text style={LABEL_STYLES.commontext}>{"Photos and Video"}</Text>
           <Text style={LABEL_STYLES.commonMidtext}>
-            {"You can upload photo and video here"}
+            {
+              "Images should be formatted .jpg or .png Videos should be formatting .mp4 or .mov or .m4 Size per file should not exceed 5 MB"
+            }
           </Text>
-
-          <Text style={LABEL_STYLES.commontext}>
-            {"How to upload photos watch video"}
-          </Text>
-          <View style={CreateJobSecondStyle.videoView}>
-            <ImageBackground
-              source={BANNERS.wallImage}
-              style={CreateJobSecondStyle.imagebackground}
-            >
-              <TouchableOpacity style={CreateJobSecondStyle.playBtn}>
-                <AntDesign
-                  name="playcircleo"
-                  size={35}
-                  color={_COLORS.Kodie_WhiteColor}
-                />
-              </TouchableOpacity>
-            </ImageBackground>
-          </View>
-          <View style={CreateJobSecondStyle.uploadImagebox}>
-            <UploadImagebox _BoxText={"Upload Front Image"} icon={"camera"} />
-            <UploadImagebox
-              _BoxText={"Upload Back Side Image"}
-              icon={"camera"}
+          <View style={CreateJobSecondStyle.slider_view}>
+            <SliderBox
+              images={images}
+              sliderBoxHeight={200}
+              onCurrentImagePressed={(index) =>
+                console.warn(`image ${index} pressed`)
+              }
+              inactiveDotColor={_COLORS.Kodie_GrayColor}
+              dotColor={_COLORS.Kodie_GreenColor}
+              autoplay
+              circleLoop
+              resizeMethod={"resize"}
+              resizeMode={"cover"}
+              dotStyle={CreateJobSecondStyle.dotStyle}
+              ImageComponentStyle={{
+                flex: 1,
+                resizeMode: "cover",
+                borderRadius: 15,
+                width: "90%",
+                // position: "relative",
+              }}
             />
           </View>
-          <View style={CreateJobSecondStyle.uploadImagebox}>
-            <UploadImagebox _BoxText={"Upload Side Image"} icon={"camera"} />
-            <UploadImagebox _BoxText={"Upload  Video"} icon={"video"} />
+          <View style={CreateJobSecondStyle.heading_View}>
+            <Text style={CreateJobSecondStyle.heading_Text}>
+              {"Upload clear images of the front profile"}
+            </Text>
+            <MaterialCommunityIcons
+              name="information"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+            />
           </View>
-          <CustomSingleButton
+          <UploadImageBoxes
+            Box_Text={"Add Photo"}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+          />
+          <View style={CreateJobSecondStyle.heading_View}>
+            <Text style={CreateJobSecondStyle.heading_Text}>
+              {"Upload clear images of the left side profile"}
+            </Text>
+            <MaterialCommunityIcons
+              name="information"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+            />
+          </View>
+          <UploadImageBoxes
+            Box_Text={"Add Photo"}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+          />
+          <View style={CreateJobSecondStyle.heading_View}>
+            <Text style={CreateJobSecondStyle.heading_Text}>
+              {"Upload clear images of the right side profile"}
+            </Text>
+            <MaterialCommunityIcons
+              name="information"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+            />
+          </View>
+          
+          <UploadImageBoxes
+            Box_Text={"Add Photo"}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+          />
+          <View style={CreateJobSecondStyle.heading_View}>
+            <Text style={CreateJobSecondStyle.heading_Text}>
+              {"Upload a video clearly showing and describing the job that you need completed"}
+            </Text>
+            <MaterialCommunityIcons
+              name="information"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+            />
+          </View>
+          <UploadImageBoxes
+            
+            Box_Text={"Add Video"}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+          />
+          {/* <CustomSingleButton
             leftImage={IMAGES.uploadIcon}
             isLeftImage={true}
             borderColor={_COLORS.Kodie_TransparentColor}
             _ButtonText={"Upload"}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
-          />
-          <Text style={LABEL_STYLES.commonMidtext}>
-            {
-              "Image type should be Jpg & PNG,and size should not be greater then 2MB"
-            }
-          </Text>
-        </View>
+            onPress={() => props.navigation.navigate("CreateJobTermsScreen")}
+          /> */}
 
-        <View style={VIEW_STYLES._bottomButtonView}>
-          <CustomSingleButton
-            _ButtonText={"Next"}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={() => props.navigation.navigate("InviteTenant")}
-          />
+          <View style={CreateJobSecondStyle.next_Btn}>
+            <CustomSingleButton
+              _ButtonText={"Next"}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              onPress={() => props.navigation.navigate("CreateJobTermsScreen")}
+            />
+          </View>
+          <View style={CreateJobSecondStyle.goBack_View}>
+            <TouchableOpacity style={CreateJobSecondStyle.backIcon}>
+              <Ionicons
+                name="chevron-back"
+                size={22}
+                color={_COLORS.Kodie_MediumGrayColor}
+              />
+            </TouchableOpacity>
+            <Text style={CreateJobSecondStyle.goBack_Text}>{"Go back"}</Text>
+          </View>
+          <RBSheet
+            ref={refRBSheet}
+            closeOnDragDown={true}
+            closeOnPressMask={false}
+            height={180}
+            customStyles={{
+              wrapper: {
+                backgroundColor: "transparent",
+              },
+              draggableIcon: {
+                backgroundColor: _COLORS.Kodie_LightGrayColor,
+              },
+              container: CreateJobSecondStyle.bottomModal_container,
+            }}
+          >
+            <UploadImageData heading_Text={"Upload more images"} />
+          </RBSheet>
         </View>
       </ScrollView>
     </View>

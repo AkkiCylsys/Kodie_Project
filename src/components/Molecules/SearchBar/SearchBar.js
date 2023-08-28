@@ -8,11 +8,14 @@ const SearchBar = (props) => {
   return (
     <View style={SearchBarStyle.serchheaderView}>
       <View style={[SearchBarStyle.container, { height: props.height }]}>
-        <EvilIcons
-          name="search"
-          size={28}
-          color={_COLORS.Kodie_MediumGrayColor}
-        />
+        {props.frontSearchIcon ? (
+          <EvilIcons
+            name="search"
+            size={28}
+            color={_COLORS.Kodie_MediumGrayColor}
+          />
+        ) : null}
+
         <TextInput
           style={SearchBarStyle.input}
           value={search}
@@ -20,6 +23,13 @@ const SearchBar = (props) => {
           placeholder="Search"
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />
+        {props.backSearchIcon ? (
+          <EvilIcons
+            name="search"
+            size={28}
+            color={_COLORS.Kodie_MediumGrayColor}
+          />
+        ) : null}
       </View>
       {props.isFilterImage ? (
         <TouchableOpacity style={SearchBarStyle.filterView}>
@@ -27,7 +37,7 @@ const SearchBar = (props) => {
         </TouchableOpacity>
       ) : null}
       {props.isButtonShow ? (
-        <TouchableOpacity style={SearchBarStyle.buttonView}>
+        <TouchableOpacity style={SearchBarStyle.buttonView}  onPress={props.onPress}>
           <Text style={SearchBarStyle.buttonText}>{props.buttonName}</Text>
         </TouchableOpacity>
       ) : null}

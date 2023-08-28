@@ -48,7 +48,7 @@ export default UserType = (props) => {
             <BottomTextsButton
               _LeftButtonText={"Already have an account?"}
               _RightButtonText={"Login"}
-              onPress={() => alert("ok")}
+              onPress={() => props.navigation.navigate('SignUp')}
             />
           </View>
         </View>

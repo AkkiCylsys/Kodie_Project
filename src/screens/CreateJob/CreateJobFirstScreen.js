@@ -29,6 +29,7 @@ export default CreateJobFirstScreen = (props) => {
   const [value, setValue] = useState(null);
   const [jobDetails, setJobDetails] = useState("");
   const [location, setLocation] = useState("");
+  const [isClick, setIsClick] = useState(false);
   return (
     <View style={CreateJobFirstStyle.container}>
       <TopHeader
@@ -45,29 +46,94 @@ export default CreateJobFirstScreen = (props) => {
         <View style={CreateJobFirstStyle.servicesBoxView}>
           <ServicesBox
             Services_Name={"Home cleaning"}
-            Services_Icon={IMAGES.cleaner}
-            BoxStyling={{ backgroundColor: _COLORS.Kodie_lightGreenColor }}
+            Services_Icon={isClick ? IMAGES.cleaner : IMAGES.lightCleaner}
+            BoxStyling={[
+              CreateJobFirstStyle.box_style,
+              {
+                backgroundColor: isClick
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[
+              CreateJobFirstStyle.box_Text_Style,
+              {
+                color: isClick
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor,
+              },
+            ]}
+            onPress={() => setIsClick(!isClick)}
           />
 
           <View style={CreateJobFirstStyle.spaceView} />
           <ServicesBox
             Services_Name={"Outdoor cleaning"}
-            Services_Icon={IMAGES.outdoor}
-            BoxStyling={{ backgroundColor: _COLORS.Kodie_lightGreenColor }}
+            Services_Icon={isClick ? IMAGES.outdoor : IMAGES.lightOutdorCleaner}
+            BoxStyling={[
+              CreateJobFirstStyle.box_style,
+              {
+                backgroundColor: isClick
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[
+              CreateJobFirstStyle.box_Text_Style,
+              {
+                color: isClick
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor,
+              },
+            ]}
+            onPress={() => setIsClick(!isClick)}
           />
         </View>
         <View style={CreateJobFirstStyle.servicesBoxView}>
           <ServicesBox
             Services_Name={"Heavy lifting"}
-            Services_Icon={IMAGES.heavyLifting}
-            BoxStyling={{ backgroundColor: _COLORS.Kodie_lightGreenColor }}
+            Services_Icon={
+              isClick ? IMAGES.heavyLifting : IMAGES.lightHeavylifting
+            }
+            BoxStyling={[
+              CreateJobFirstStyle.box_style,
+              {
+                backgroundColor: isClick
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[
+              CreateJobFirstStyle.box_Text_Style,
+              {
+                color: isClick
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor,
+              },
+            ]}
+            onPress={() => setIsClick(!isClick)}
           />
           <View style={CreateJobFirstStyle.spaceView} />
           <ServicesBox
             Services_Name={"Fixing & maintenance"}
-            Services_Icon={IMAGES.fixingTool}
-            BoxStyling={CreateJobFirstStyle.box_style}
-            textColor={CreateJobFirstStyle.box_Text_Style}
+            Services_Icon={isClick ? IMAGES.fixing : IMAGES.fixingTool}
+            BoxStyling={[
+              CreateJobFirstStyle.box_style,
+              {
+                backgroundColor: isClick
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[
+              CreateJobFirstStyle.box_Text_Style,
+              {
+                color: isClick
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor,
+              },
+            ]}
+            onPress={() => setIsClick(!isClick)}
           />
         </View>
         <View style={CreateJobFirstStyle.formContainer}>
@@ -175,13 +241,12 @@ export default CreateJobFirstScreen = (props) => {
               )}
             />
           </View>
-          <View style={CreateJobFirstStyle.budgetView}>
+          {/* <View style={CreateJobFirstStyle.budgetView}>
             <Text style={CreateJobFirstStyle.budgetText}>{"Budget"}</Text>
             <RangeSlider from={1} to={2000} />
           </View>
-          <RowButtons LeftButtonText={'Yes ($1.50)'} />
+          <RowButtons LeftButtonText={"Yes ($1.50)"} /> */}
         </View>
-        
       </ScrollView>
       <View style={VIEW_STYLES._bottomButtonView}>
         <CustomSingleButton

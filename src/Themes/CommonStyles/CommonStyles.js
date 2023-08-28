@@ -9,6 +9,7 @@ export const LABEL_STYLES = StyleSheet.create({
     fontSize: 16,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
+    marginBottom:12
   },
   commontext: {
     fontSize: 14,
