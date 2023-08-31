@@ -12,9 +12,25 @@ import { _goBack } from "../../../services/CommonServices";
 import { _COLORS } from "../../../Themes";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
+const CELL_COUNT = 6;
+
+
 export default SignUpVerification = (props) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(1);
+  const [value, setValue] = useState('');
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
+  const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
 
   return (
     <View style={SignUpVerificationStyle.mainContainer}>
@@ -29,26 +45,34 @@ export default SignUpVerification = (props) => {
         <Text style={SignUpVerificationStyle.verify_Text}>
           {"Enter the 6-digit verification  code sent to your email"}
         </Text>
-        <View style={SignUpVerificationStyle.formContainer}>
-          <View style={SignUpVerificationStyle.card}>
-            <View>
-              <TextInput
-                style={SignUpVerificationStyle.input}
-                value={verificationCode}
-                onChangeText={setVerificationCode}
-                placeholder="Enter the 6-digit verification  code "
-                placeholderTextColor="#999"
-              />
-            </View>
-          </View>
+
+        <View style={SignUpVerificationStyle.otp_view}>
+          <CodeField
+            ref={ref}
+            {...prop}
+            value={value}
+            onChangeText={setValue}
+            cellCount={CELL_COUNT}
+            rootStyle={SignUpVerificationStyle.CodeField}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={({ index, symbol, isFocused }) => (
+              <Text
+                key={index}
+                style={[SignUpVerificationStyle.cell, isFocused && SignUpVerificationStyle.focusCell]}
+                onLayout={getCellOnLayoutHandler(index)}>
+                {symbol || (isFocused ? <Cursor /> : null)}
+              </Text>
+            )}
+          />
         </View>
         <Text style={SignUpVerificationStyle.accept_Text}>
           {"Accept the terms of use"}
         </Text>
         <View style={SignUpVerificationStyle.termView}>
           <TouchableOpacity>
-            <View style={SignUpVerificationStyle.radio_View}>
-              <View style={SignUpVerificationStyle.radioBg}></View>
+            <View style={SignUpVerificationStyle.CheckBox_View}>
+              <FontAwesome name="check" size={15} color={_COLORS.Kodie_GreenColor} style={SignUpVerificationStyle.checkbox_BG} />
             </View>
           </TouchableOpacity>
 
@@ -71,8 +95,8 @@ export default SignUpVerification = (props) => {
         </View>
         <View style={SignUpVerificationStyle.termView}>
           <TouchableOpacity>
-            <View style={SignUpVerificationStyle.radio_View}>
-              <View style={SignUpVerificationStyle.radioBg}></View>
+            <View style={SignUpVerificationStyle.CheckBox_View}>
+              <FontAwesome name="check" size={15} color={_COLORS.Kodie_GreenColor} style={SignUpVerificationStyle.checkbox_BG} />
             </View>
           </TouchableOpacity>
 

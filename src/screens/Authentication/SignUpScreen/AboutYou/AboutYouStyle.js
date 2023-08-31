@@ -118,24 +118,28 @@ export const AboutYouStyle = StyleSheet.create({
     alignSelf:"center",
     marginLeft:16
   },
-  radio_View: {
-    height: 18,
-    width: 18,
-    borderRadius: 18 / 2,
+  checkbox_View: {
+    height:20,
+    width:20,
+    borderWidth:1,
+    borderRadius:5,
     borderColor: _COLORS.Kodie_BlackColor,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_BlackColor,
     marginTop: 4,
   },
-  radioBg: {
-    height: 12,
-    width: 12,
-    borderRadius: 12 / 2,
-    borderColor: _COLORS.Kodie_BlackColor,
-    borderWidth: 1,
-    margin: 2,
-    backgroundColor: _COLORS.Kodie_BlackColor,
-    borderColor: _COLORS.Kodie_BlackColor,
+  // radioBg: {
+  //   height: 12,
+  //   width: 12,
+  //   borderRadius: 12 / 2,
+  //   borderColor: _COLORS.Kodie_BlackColor,
+  //   borderWidth: 1,
+  //   margin: 2,
+  //   backgroundColor: _COLORS.Kodie_BlackColor,
+  //   borderColor: _COLORS.Kodie_BlackColor,
+  // },
+  Check_Icon:{
+    marginTop:2
   },
   goBack_View: {
     flexDirection: "row",
