@@ -127,4 +127,5 @@ export const ContractorProfileStyle = StyleSheet.create({
     alignSelf: "center",
     marginTop: 10,
   },
+
 });

@@ -22,58 +22,28 @@ export const SignUpVerificationStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     marginTop: 24,
   },
-  formContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  card: {
-    width: "100%",
-    backgroundColor: _COLORS.Kodie_TransparentColor,
-    borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    marginTop: 12,
-    marginBottom: 24,
-  },
-  input: {
-    height: 48,
-    borderRadius: 6,
-    borderWidth: 1,
-    borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
-    paddingLeft: 10,
-    fontFamily: FONTFAMILY.K_Medium,
-  },
   accept_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
+    marginTop:24
   },
   termView: {
     flexDirection: "row",
     marginTop: 5,
   },
-  radio_View: {
-    height: 18,
-    width: 18,
-    borderRadius: 18 / 2,
+  CheckBox_View: {
+    height: 20,
+    width: 20,
+    borderWidth: 1,
+    borderRadius: 5,
     borderColor: _COLORS.Kodie_BlackColor,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_BlackColor,
-    alignSelf: "center",
     marginTop: 4,
   },
-  radioBg: {
-    height: 12,
-    width: 12,
-    borderRadius: 12 / 2,
-    borderColor: _COLORS.Kodie_BlackColor,
-    borderWidth: 1,
-    margin: 2,
-    backgroundColor: _COLORS.Kodie_BlackColor,
-    borderColor: _COLORS.Kodie_BlackColor,
+  checkbox_BG: {
+    margin: 1.5
   },
   termsConView: {
     flexDirection: "row",
@@ -107,4 +77,26 @@ export const SignUpVerificationStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
+  codeFieldRoot: {
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+  cell: {
+    width:50 ,
+    height:50,
+    borderRadius: 11,
+    lineHeight: 45,
+    fontSize: 25,
+    color:_COLORS.Kodie_GrayColor,
+    borderWidth: 1,
+    borderColor:_COLORS.Kodie_GrayColor,
+    textAlign: 'center',
+  },
+  focusCell: {
+    borderWidth: 2,
+    borderColor:_COLORS.Kodie_GrayColor,  
+    color:_COLORS.Kodie_GrayColor,  
+    alignSelf: 'center',
+  },
+  otp_view: { marginTop: 24 }
 });

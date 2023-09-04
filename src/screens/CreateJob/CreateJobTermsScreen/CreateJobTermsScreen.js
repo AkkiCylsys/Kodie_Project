@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  TextInput,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
@@ -11,16 +10,13 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
 import { Dropdown } from "react-native-element-dropdown";
 import { _COLORS, LABEL_STYLES } from "../../../Themes/index";
-import Calendar from "../../../components/Molecules/Calander/Calendar";
 import TimePicker from "../../../components/Molecules/ClockPicker/TimePicker";
 import moment from "moment";
 import RangeSlider from "../../../components/Molecules/RangeSlider/RangeSlider";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
-import TimerModal from "../../../components/Molecules/TimerModal/TimerModal";
 const data = [
   { label: "3 hours", value: "1" },
   { label: "4 hours", value: "2" },
@@ -37,15 +33,9 @@ export default CreateJobTermsScreen = (props) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
-
-  // useEffect(() => {
-  //   setCurrentDate(moment(new Date()).format("DD-MM-YYYY"));
-  //   setCurrentTime(moment(new Date()).format("hh:mm "));
-  // }, []);
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
@@ -59,12 +49,6 @@ export default CreateJobTermsScreen = (props) => {
             {" Request date and time"}
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
-            {/* <View style={CreateJobTermsStyle.calenderView}>
-              <Text style={CreateJobTermsStyle.textInputStyle}>
-                {currentDate && currentDate != ""
-                  ? String(currentDate)
-                  : "Select date "}
-              </Text> */}
             <CalendarModal
               SelectDate={selectedDate ? selectedDate : "Select Date"}
               _textInputStyle={{
@@ -86,22 +70,7 @@ export default CreateJobTermsScreen = (props) => {
               _closeButton={toggleModal}
               _ApplyButton={toggleModal}
             />
-            {/* <TouchableOpacity>
-                <MacIcon
-          name={"calendar-month-outline"}
-          size={23}
-          color={_COLORS.Kodie_MediumGrayColor}
-          style={{ paddingVertical: 5, alignSelf: "center",paddingHorizontal:3 }}
-        />
-        </TouchableOpacity>
-               */}
-            {/* <Calendar
-                data={new Date()}
-                getData={(date) =>
-                  setCurrentDate(moment(date).format("DD-MM-YYYY"))
-                }
-              /> */}
-            {/* </View> */}
+
             <View style={CreateJobTermsStyle.spaceView} />
             <View style={[CreateJobTermsStyle.calenderView]}>
               <Text style={CreateJobTermsStyle.textInputStyle}>
@@ -109,8 +78,7 @@ export default CreateJobTermsScreen = (props) => {
                   ? String(currentTime)
                   : "Select time"}
               </Text>
-              {/* <TimerModal 
-              /> */}
+
               <TimePicker
                 data={new Date()}
                 getData={(date) => {

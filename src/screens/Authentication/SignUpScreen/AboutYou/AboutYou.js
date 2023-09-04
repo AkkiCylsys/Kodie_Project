@@ -12,6 +12,7 @@ import { AboutYouStyle } from "./AboutYouStyle";
 import { IMAGES, LABEL_STYLES, _COLORS } from "../../../../Themes";
 import { Dropdown } from "react-native-element-dropdown";
 import Octicons from "react-native-vector-icons/Octicons";
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -59,31 +60,41 @@ export default AboutYou = (props) => {
   const [personalbio, setPersonalbio] = useState("");
   const [value, setValue] = useState(null);
   const [location, setLocation] = useState("");
-  const [Check, setCheck] = useState(1);
+  // const [Check, setCheck] = useState(1);
   const refRBSheet = useRef();
-
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const toggleCheckbox = (itemId) => {
+    const isSelected = selectedCheckboxes.includes(itemId);
+    if (isSelected) {
+      setSelectedCheckboxes(selectedCheckboxes.filter(id => id !== itemId));
+    } else {
+      setSelectedCheckboxes([...selectedCheckboxes, itemId]);
+    }
+  };
   const wantList = ({ item, index }) => {
+    const isSelected = selectedCheckboxes.includes(item.id);
     return (
       <View>
         <View style={AboutYouStyle.want_List_View}>
           <TouchableOpacity
             onPress={() => {
-              setCheck(item.id);
+              // setCheck(item.id);
+              toggleCheckbox(item.id)
             }}
           >
             <View
               style={[
-                AboutYouStyle.radio_View,
+                AboutYouStyle.checkbox_View,
                 {
                   borderColor:
-                    Check == item.id
+                    isSelected
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_ExtraLightGrayColor,
                 },
               ]}
             >
-              {Check == item.id ? (
-                <View style={AboutYouStyle.radioBg}></View>
+              {isSelected ? (
+                <FontAwesome name="check" size={15} color={_COLORS.Kodie_GreenColor} style={AboutYouStyle.Check_Icon} />
               ) : null}
             </View>
           </TouchableOpacity>
@@ -94,8 +105,8 @@ export default AboutYou = (props) => {
   };
   return (
     <View style={AboutYouStyle.mainContainer}>
-      <TopHeader   MiddleText={"Set up your Kodie account"}
-        onPressLeftButton={() => _goBack(props)}/>
+      <TopHeader MiddleText={"Set up your Kodie account"}
+        onPressLeftButton={() => _goBack(props)} />
       <ScrollView>
         <View style={AboutYouStyle.Container}>
           <Text style={AboutYouStyle.heading_Text}>
@@ -148,13 +159,13 @@ export default AboutYou = (props) => {
             />
           </View>
           <View style={AboutYouStyle.locationContainer}>
-            <TouchableOpacity onPress={()=>{props.navigation.navigate('Location')}}>
-            <Octicons
-              name={"location"}
-              size={20}
-              color={_COLORS.Kodie_MediumGrayColor}
-              style={AboutYouStyle.locationIcon}
-            />
+            <TouchableOpacity onPress={() => { props.navigation.navigate('Location') }}>
+              <Octicons
+                name={"location"}
+                size={20}
+                color={_COLORS.Kodie_MediumGrayColor}
+                style={AboutYouStyle.locationIcon}
+              />
             </TouchableOpacity>
             <TextInput
               style={AboutYouStyle.locationInput}

@@ -21,8 +21,8 @@ import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import UploadImagebox from "../../components/Molecules/UploadImageBox/UploadImageBox";
-import UploadImageBoxes from "../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 import { SliderBox } from "react-native-image-slider-box";
+import UploadImageBoxes from '../../components/Molecules/UploadImageBoxes/UploadImageBoxes'
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../components/Molecules/UploadImage/UploadImage";
