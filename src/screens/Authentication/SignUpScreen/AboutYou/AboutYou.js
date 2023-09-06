@@ -49,6 +49,7 @@ const List = [
 ];
 export default AboutYou = (props) => {
   const [isClick, setIsClick] = useState(false);
+  const refRBSheet = useRef();
   const initialSelectedServices = {
     Tenant: false,
     Landlord: false,
@@ -56,12 +57,10 @@ export default AboutYou = (props) => {
     "Property Manager": false,
   };
 
-  // State to keep track of selected services
   const [selectedServices, setSelectedServices] = useState(
     initialSelectedServices
   );
 
-  // Function to toggle the selection of a service
   const toggleService = (serviceName) => {
     setSelectedServices((prevSelectedServices) => ({
       ...prevSelectedServices,
@@ -71,7 +70,6 @@ export default AboutYou = (props) => {
   const handleBoxPress = (boxNumber) => {
     setIsClick(boxNumber);
   };
-  const refRBSheet = useRef();
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const toggleCheckbox = (itemId) => {
     const isSelected = selectedCheckboxes.includes(itemId);
