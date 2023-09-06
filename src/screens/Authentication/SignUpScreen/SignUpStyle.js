@@ -23,7 +23,7 @@ export const SignUpStyles = StyleSheet.create({
   signBtnView: {
     marginHorizontal: 16,
     marginBottom: 30,
-  }, 
+  },
   maintextView: {
     padding: 20,
   },
@@ -34,4 +34,79 @@ export const SignUpStyles = StyleSheet.create({
     marginTop: 10,
     fontFamily: FONTFAMILY.K_Medium,
   },
+  card: {
+    width: "100%",
+    backgroundColor: _COLORS.Kodie_TransparentColor,
+    borderRadius: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    padding: 20,
+    marginBottom: 20,
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+
+  input: {
+    height: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  cardHeight: { marginBottom: 8 },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  passwordInput: {
+    flex: 1,
+    height: 48,
+    paddingHorizontal: 10,
+  },
+  eyeIcon: {
+    padding: 10,
+  },
+  accept_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginTop: 5,
+  },
+  termView: {
+    flexDirection: "row",
+    marginTop: 5,
+  },
+  CheckBox_View: {
+    height: 20,
+    width: 20,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: _COLORS.Kodie_BlackColor,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_BlackColor,
+    marginTop: 4,
+  },
+  checkbox_BG: {
+    margin: 1.5,
+  },
+  termsConView: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginLeft: 16,
+    justifyContent: "center",
+  },
+  termsText: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  terms_Condition: { color: _COLORS.Kodie_GreenColor },
 });

@@ -62,11 +62,11 @@ export const ContractorSignUpStyle = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
-    fontFamily:FONTFAMILY.K_Regular
+    fontFamily: FONTFAMILY.K_Regular,
   },
   selectedTextStyle: {
     fontSize: 14,
-    fontFamily:FONTFAMILY.K_Regular
+    fontFamily: FONTFAMILY.K_Regular,
   },
   iconStyle: {
     width: 20,
@@ -75,7 +75,7 @@ export const ContractorSignUpStyle = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    fontFamily:FONTFAMILY.K_Regular
+    fontFamily: FONTFAMILY.K_Regular,
   },
   icon: {
     marginRight: 5,

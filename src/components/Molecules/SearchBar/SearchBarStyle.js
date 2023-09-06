@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
 import { FONTFAMILY, _COLORS } from "../../../Themes/index";
 export const SearchBarStyle = StyleSheet.create({
   container: {

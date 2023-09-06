@@ -21,8 +21,9 @@ import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import UploadImagebox from "../../components/Molecules/UploadImageBox/UploadImageBox";
+// import UploadImageBoxes from "../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 import { SliderBox } from "react-native-image-slider-box";
-import UploadImageBoxes from '../../components/Molecules/UploadImageBoxes/UploadImageBoxes'
+import UploadImageBoxes from "../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../components/Molecules/UploadImage/UploadImage";
@@ -114,7 +115,7 @@ export default CreateJobSecondScreen = (props) => {
               color={_COLORS.Kodie_GrayColor}
             />
           </View>
-          
+
           <UploadImageBoxes
             Box_Text={"Add Photo"}
             onPress={() => {
@@ -123,7 +124,9 @@ export default CreateJobSecondScreen = (props) => {
           />
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
-              {"Upload a video clearly showing and describing the job that you need completed"}
+              {
+                "Upload a video clearly showing and describing the job that you need completed"
+              }
             </Text>
             <MaterialCommunityIcons
               name="information"
@@ -132,7 +135,6 @@ export default CreateJobSecondScreen = (props) => {
             />
           </View>
           <UploadImageBoxes
-            
             Box_Text={"Add Video"}
             onPress={() => {
               refRBSheet.current.open();

@@ -56,4 +56,5 @@ export const CreateJobSecondStyle = StyleSheet.create({
     // borderWidth: 1,
     marginVertical: 25,
   },
+  uploadImagebox:{flexDirection:"row"}
 });
