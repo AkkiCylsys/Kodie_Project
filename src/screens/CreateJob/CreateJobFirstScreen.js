@@ -5,11 +5,18 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import { CreateJobFirstStyle } from "./CreateJobFirstScreenCss";
 import StepText from "../../components/Molecules/StepText/StepText";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
-import { VIEW_STYLES, _COLORS, LABEL_STYLES, IMAGES } from "../../Themes/index";
+import {
+  VIEW_STYLES,
+  _COLORS,
+  LABEL_STYLES,
+  IMAGES,
+  FONTFAMILY,
+} from "../../Themes/index";
 import TopHeader from "../../components/Molecules/Header/Header";
 import RangeSlider from "../../components/Molecules/RangeSlider/RangeSlider";
 import { _goBack } from "../../services/CommonServices";
@@ -25,11 +32,64 @@ const data = [
   { label: "Heavy lifting", value: "4" },
   { label: "Fixing & maintenance", value: "5" },
 ];
+const jod_Priority = [
+  {
+    id: 1,
+    name: "Urgent",
+  },
+  {
+    id: 2,
+    name: "Medium",
+  },
+  {
+    id: 3,
+    name: "High",
+  },
+  {
+    id: 4,
+    name: "Low",
+  },
+];
 export default CreateJobFirstScreen = (props) => {
   const [value, setValue] = useState(null);
   const [jobDetails, setJobDetails] = useState("");
   const [location, setLocation] = useState("");
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState(null);
+  const [Check, setCheck] = useState(1);
+
+  const handleBoxPress = (boxNumber) => {
+    setIsClick(boxNumber);
+  };
+  const priority_render = ({ item, index }) => {
+    return (
+      <View style={CreateJobFirstStyle.priority_container}>
+        <View style={CreateJobFirstStyle.priority_view}>
+          <TouchableOpacity
+            onPress={() => {
+              setCheck(item.id);
+            }}
+          >
+            <View
+              style={[
+                CreateJobFirstStyle.checkbox_View,
+                {
+                  borderColor:
+                    Check == item.id
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_ExtraLightGrayColor,
+                },
+              ]}
+            >
+              {Check == item.id ? (
+                <View style={CreateJobFirstStyle.radioBg}></View>
+              ) : null}
+            </View>
+          </TouchableOpacity>
+          <Text style={CreateJobFirstStyle.priority_Text}>{item?.name}</Text>
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={CreateJobFirstStyle.container}>
       <TopHeader
@@ -46,34 +106,37 @@ export default CreateJobFirstScreen = (props) => {
         <View style={CreateJobFirstStyle.servicesBoxView}>
           <ServicesBox
             Services_Name={"Home cleaning"}
-            Services_Icon={isClick ? IMAGES.cleaner : IMAGES.lightCleaner}
+            Services_Icon={isClick === 1 ? IMAGES.cleaner : IMAGES.lightCleaner}
             BoxStyling={[
               CreateJobFirstStyle.box_style,
               {
-                backgroundColor: isClick
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor,
+                backgroundColor:
+                  isClick === 1
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
               },
             ]}
             textColor={[
               CreateJobFirstStyle.box_Text_Style,
               {
-                color: isClick
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
+                color:
+                  isClick === 1
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
-            onPress={() => setIsClick(!isClick)}
+            // onPress={() => setIsClick(!isClick)}
+            onPress={() => handleBoxPress(1)}
           />
 
           <View style={CreateJobFirstStyle.spaceView} />
           <ServicesBox
             Services_Name={"Outdoor cleaning"}
-            Services_Icon={isClick ? IMAGES.outdoor : IMAGES.lightOutdorCleaner}
+            Services_Icon={isClick===2 ? IMAGES.outdoor : IMAGES.lightOutdorCleaner}
             BoxStyling={[
               CreateJobFirstStyle.box_style,
               {
-                backgroundColor: isClick
+                backgroundColor: isClick===2
                   ? _COLORS.Kodie_lightGreenColor
                   : _COLORS.Kodie_WhiteColor,
               },
@@ -81,24 +144,24 @@ export default CreateJobFirstScreen = (props) => {
             textColor={[
               CreateJobFirstStyle.box_Text_Style,
               {
-                color: isClick
+                color: isClick===2
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
-            onPress={() => setIsClick(!isClick)}
+            onPress={() => handleBoxPress(2)}
           />
         </View>
         <View style={CreateJobFirstStyle.servicesBoxView}>
           <ServicesBox
             Services_Name={"Heavy lifting"}
             Services_Icon={
-              isClick ? IMAGES.heavyLifting : IMAGES.lightHeavylifting
+              isClick ===3? IMAGES.heavyLifting : IMAGES.lightHeavylifting
             }
             BoxStyling={[
               CreateJobFirstStyle.box_style,
               {
-                backgroundColor: isClick
+                backgroundColor: isClick===3
                   ? _COLORS.Kodie_lightGreenColor
                   : _COLORS.Kodie_WhiteColor,
               },
@@ -106,21 +169,21 @@ export default CreateJobFirstScreen = (props) => {
             textColor={[
               CreateJobFirstStyle.box_Text_Style,
               {
-                color: isClick
+                color: isClick===3
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
-            onPress={() => setIsClick(!isClick)}
+            onPress={() => handleBoxPress(3)}
           />
           <View style={CreateJobFirstStyle.spaceView} />
           <ServicesBox
             Services_Name={"Fixing & maintenance"}
-            Services_Icon={isClick ? IMAGES.fixing : IMAGES.fixingTool}
+            Services_Icon={isClick===4 ? IMAGES.fixing : IMAGES.fixingTool}
             BoxStyling={[
               CreateJobFirstStyle.box_style,
               {
-                backgroundColor: isClick
+                backgroundColor: isClick===4
                   ? _COLORS.Kodie_lightGreenColor
                   : _COLORS.Kodie_WhiteColor,
               },
@@ -128,12 +191,12 @@ export default CreateJobFirstScreen = (props) => {
             textColor={[
               CreateJobFirstStyle.box_Text_Style,
               {
-                color: isClick
+                color: isClick===4
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
-            onPress={() => setIsClick(!isClick)}
+            onPress={() => handleBoxPress(4)}
           />
         </View>
         <View style={CreateJobFirstStyle.formContainer}>
@@ -171,6 +234,18 @@ export default CreateJobFirstScreen = (props) => {
               multiline
               numberOfLines={5}
               textAlignVertical={"top"}
+            />
+          </View>
+          <View style={CreateJobFirstStyle.jobDetailsView}>
+            <Text style={LABEL_STYLES.commontext}>{"Job priority"}</Text>
+            <FlatList
+              data={jod_Priority}
+              scrollEnabled
+              numColumns={2}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{}}
+              keyExtractor={(item) => item?.id}
+              renderItem={priority_render}
             />
           </View>
           <View style={CreateJobFirstStyle.jobDetailsView}>
@@ -241,11 +316,6 @@ export default CreateJobFirstScreen = (props) => {
               )}
             />
           </View>
-          {/* <View style={CreateJobFirstStyle.budgetView}>
-            <Text style={CreateJobFirstStyle.budgetText}>{"Budget"}</Text>
-            <RangeSlider from={1} to={2000} />
-          </View>
-          <RowButtons LeftButtonText={"Yes ($1.50)"} /> */}
         </View>
       </ScrollView>
       <View style={VIEW_STYLES._bottomButtonView}>
