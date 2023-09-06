@@ -336,6 +336,7 @@ export default AboutYou = (props) => {
             ref={refRBSheet}
             closeOnDragDown={true}
             closeOnPressMask={false}
+            height={200}
             customStyles={{
               wrapper: {
                 backgroundColor: "transparent",

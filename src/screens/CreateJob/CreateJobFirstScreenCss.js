@@ -117,5 +117,34 @@ export const CreateJobFirstStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_GrayColor,
   },
-  box_Text_Style:{ color: _COLORS.Kodie_MediumGrayColor }
+  box_Text_Style:{ color: _COLORS.Kodie_MediumGrayColor },
+  checkbox_View: {
+    height:18,
+    width:18,
+    borderWidth:1,
+    borderRadius:18/2,
+    borderColor: _COLORS.Kodie_BlackColor,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_BlackColor,
+    marginTop: 4,
+  },
+  radioBg: {
+    height: 12,
+    width: 12,
+    borderRadius: 12 / 2,
+    borderColor: _COLORS.Kodie_BlackColor,
+    borderWidth: 1,
+    margin: 2,
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    borderColor: _COLORS.Kodie_BlackColor,
+  },
+  priority_Text:{ marginLeft: 22,color:_COLORS.Kodie_BlackColor,fontSize:16,alignSelf:"center",fontFamily:FONTFAMILY.K_Medium },
+  priority_container:{
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginLeft: "8%",
+    marginTop: 10,
+  },
+  priority_view:{ flexDirection: "row", justifyContent: "space-between" }
 });
