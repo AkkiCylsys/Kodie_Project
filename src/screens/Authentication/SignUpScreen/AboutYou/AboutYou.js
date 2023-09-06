@@ -4,28 +4,19 @@ import {
   Text,
   Image,
   TouchableOpacity,
-  TextInput,
   ScrollView,
   FlatList,
 } from "react-native";
 import { AboutYouStyle } from "./AboutYouStyle";
-import { IMAGES, LABEL_STYLES, _COLORS } from "../../../../Themes";
-import { Dropdown } from "react-native-element-dropdown";
-import Octicons from "react-native-vector-icons/Octicons";
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import ServicesBox from "../../../../components/Molecules/ServicesBox/ServicesBox";
+import { IMAGES, _COLORS } from "../../../../Themes";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
-const data = [
-  { label: "123 Street, Brisbane, Australia", value: "1" },
-  { label: "123 Street, Brisbane, America", value: "2" },
-  { label: "123 Street, Brisbane, Australia", value: "3" },
-  { label: "123 Street, Brisbane, Australia", value: "4" },
-  { label: "123 Street, Brisbane, Australia", value: "5" },
-];
 const List = [
   {
     id: "1",
@@ -57,16 +48,35 @@ const List = [
   },
 ];
 export default AboutYou = (props) => {
-  const [personalbio, setPersonalbio] = useState("");
-  const [value, setValue] = useState(null);
-  const [location, setLocation] = useState("");
-  // const [Check, setCheck] = useState(1);
+  const [isClick, setIsClick] = useState(false);
+  const initialSelectedServices = {
+    Tenant: false,
+    Landlord: false,
+    Contractor: false,
+    "Property Manager": false,
+  };
+
+  // State to keep track of selected services
+  const [selectedServices, setSelectedServices] = useState(
+    initialSelectedServices
+  );
+
+  // Function to toggle the selection of a service
+  const toggleService = (serviceName) => {
+    setSelectedServices((prevSelectedServices) => ({
+      ...prevSelectedServices,
+      [serviceName]: !prevSelectedServices[serviceName],
+    }));
+  };
+  const handleBoxPress = (boxNumber) => {
+    setIsClick(boxNumber);
+  };
   const refRBSheet = useRef();
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const toggleCheckbox = (itemId) => {
     const isSelected = selectedCheckboxes.includes(itemId);
     if (isSelected) {
-      setSelectedCheckboxes(selectedCheckboxes.filter(id => id !== itemId));
+      setSelectedCheckboxes(selectedCheckboxes.filter((id) => id !== itemId));
     } else {
       setSelectedCheckboxes([...selectedCheckboxes, itemId]);
     }
@@ -79,22 +89,26 @@ export default AboutYou = (props) => {
           <TouchableOpacity
             onPress={() => {
               // setCheck(item.id);
-              toggleCheckbox(item.id)
+              toggleCheckbox(item.id);
             }}
           >
             <View
               style={[
                 AboutYouStyle.checkbox_View,
                 {
-                  borderColor:
-                    isSelected
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_ExtraLightGrayColor,
+                  borderColor: isSelected
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_ExtraLightGrayColor,
                 },
               ]}
             >
               {isSelected ? (
-                <FontAwesome name="check" size={15} color={_COLORS.Kodie_GreenColor} style={AboutYouStyle.Check_Icon} />
+                <FontAwesome
+                  name="check"
+                  size={15}
+                  color={_COLORS.Kodie_GreenColor}
+                  style={AboutYouStyle.Check_Icon}
+                />
               ) : null}
             </View>
           </TouchableOpacity>
@@ -105,8 +119,10 @@ export default AboutYou = (props) => {
   };
   return (
     <View style={AboutYouStyle.mainContainer}>
-      <TopHeader MiddleText={"Set up your Kodie account"}
-        onPressLeftButton={() => _goBack(props)} />
+      <TopHeader
+        MiddleText={"Set up your Kodie account"}
+        onPressLeftButton={() => _goBack(props)}
+      />
       <ScrollView>
         <View style={AboutYouStyle.Container}>
           <Text style={AboutYouStyle.heading_Text}>
@@ -121,64 +137,172 @@ export default AboutYou = (props) => {
           >
             <Image source={IMAGES.userIcons} style={AboutYouStyle.logo} />
           </TouchableOpacity>
-          <View style={AboutYouStyle.Bio_View}>
-            <Text style={LABEL_STYLES.commontext}>{"Personal bio"}</Text>
-            <TextInput
-              style={[AboutYouStyle.input, AboutYouStyle.BioD_]}
-              value={personalbio}
-              onChangeText={setPersonalbio}
-              placeholder="Tell us more about you."
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              multiline
-              numberOfLines={5}
-              textAlignVertical={"top"}
+          <Text style={AboutYouStyle.want_Heading}>
+            {
+              "How would you describe yourself? (you can select multiple options)"
+            }
+          </Text>
+          <View style={AboutYouStyle.servicesBoxView}>
+            <ServicesBox
+              Services_Name={"Tenant"}
+              Services_Icon={
+                selectedServices["Tenant"]
+                  ? IMAGES.cleaner
+                  : IMAGES.lightCleaner
+              }
+              BoxStyling={[
+                AboutYouStyle.box_style,
+                {
+                  backgroundColor: selectedServices["Tenant"]
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              textColor={[AboutYouStyle.box_Text_Style]}
+              onPress={() => toggleService("Tenant")}
             />
-          </View>
-          <View style={AboutYouStyle.Bio_View}>
-            <Text style={LABEL_STYLES.commontext}>{"Physical address"}</Text>
-            <Dropdown
-              style={AboutYouStyle.dropdown}
-              placeholderStyle={AboutYouStyle.placeholderStyle}
-              selectedTextStyle={AboutYouStyle.selectedTextStyle}
-              inputSearchStyle={AboutYouStyle.inputSearchStyle}
-              iconStyle={AboutYouStyle.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="123 Street, Brisbane, Australia"
-              searchPlaceholder="Search..."
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
-              renderLeftIcon={() => (
-                <Text style={AboutYouStyle.HomeText}>{"Home :"}</Text>
-              )}
-            />
-          </View>
-          <View style={AboutYouStyle.locationContainer}>
-            <TouchableOpacity onPress={() => { props.navigation.navigate('Location') }}>
-              <Octicons
-                name={"location"}
-                size={20}
-                color={_COLORS.Kodie_MediumGrayColor}
-                style={AboutYouStyle.locationIcon}
-              />
-            </TouchableOpacity>
-            <TextInput
-              style={AboutYouStyle.locationInput}
-              value={location}
-              onChangeText={setLocation}
-              placeholder="Enter new location"
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+
+            <View style={AboutYouStyle.spaceView} />
+            <ServicesBox
+              Services_Name={"Landlord"}
+              Services_Icon={
+                selectedServices["Landlord"]
+                  ? IMAGES.outdoor
+                  : IMAGES.lightOutdorCleaner
+              }
+              BoxStyling={[
+                AboutYouStyle.box_style,
+                {
+                  backgroundColor: selectedServices["Landlord"]
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              textColor={[AboutYouStyle.box_Text_Style]}
+              onPress={() => toggleService("Landlord")}
             />
           </View>
 
+          <View style={AboutYouStyle.servicesBoxView}>
+            <ServicesBox
+              Services_Name={"Contractor"}
+              Services_Icon={
+                selectedServices["Contractor"]
+                  ? IMAGES.cleaner
+                  : IMAGES.lightCleaner
+              }
+              BoxStyling={[
+                AboutYouStyle.box_style,
+                {
+                  backgroundColor: selectedServices["Contractor"]
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              textColor={[AboutYouStyle.box_Text_Style]}
+              onPress={() => toggleService("Contractor")}
+            />
+
+            <View style={AboutYouStyle.spaceView} />
+            <ServicesBox
+              Services_Name={"Property Manager"}
+              Services_Icon={
+                selectedServices["Property Manager"]
+                  ? IMAGES.outdoor
+                  : IMAGES.lightOutdorCleaner
+              }
+              BoxStyling={[
+                AboutYouStyle.box_style,
+                {
+                  backgroundColor: selectedServices["Property Manager"]
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              textColor={[AboutYouStyle.box_Text_Style]}
+              onPress={() => toggleService("Property Manager")}
+            />
+          </View>
+          <Text style={AboutYouStyle.want_Heading}>
+            {" How many properties do you own, manage or rent?"}
+          </Text>
+          <View style={AboutYouStyle.servicesBoxView}>
+            <ServicesBox
+              Services_Name={"1 - 3 properties"}
+              Services_Icon={isClick ? IMAGES.cleaner : IMAGES.lightCleaner}
+              BoxStyling={[
+                AboutYouStyle.box_style,
+                {
+                  backgroundColor:
+                    isClick === 1
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              textColor={[AboutYouStyle.box_Text_Style]}
+              onPress={() => handleBoxPress(1)}
+            />
+
+            <View style={AboutYouStyle.spaceView} />
+            <ServicesBox
+              Services_Name={"4 - 10 properties"}
+              Services_Icon={
+                isClick ? IMAGES.outdoor : IMAGES.lightOutdorCleaner
+              }
+              BoxStyling={[
+                AboutYouStyle.box_style,
+                {
+                  backgroundColor:
+                    isClick === 2
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              textColor={[AboutYouStyle.box_Text_Style]}
+              onPress={() => handleBoxPress(2)}
+            />
+          </View>
+
+          <View style={AboutYouStyle.servicesBoxView}>
+            <ServicesBox
+              Services_Name={"10 - 20 properties"}
+              Services_Icon={isClick ? IMAGES.cleaner : IMAGES.lightCleaner}
+              BoxStyling={[
+                AboutYouStyle.box_style,
+                {
+                  backgroundColor:
+                    isClick === 3
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              textColor={[AboutYouStyle.box_Text_Style]}
+              onPress={() => handleBoxPress(3)}
+            />
+
+            <View style={AboutYouStyle.spaceView} />
+            <ServicesBox
+              Services_Name={"> 20 properties"}
+              Services_Icon={
+                isClick ? IMAGES.outdoor : IMAGES.lightOutdorCleaner
+              }
+              BoxStyling={[
+                AboutYouStyle.box_style,
+                {
+                  backgroundColor:
+                    isClick === 4
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              textColor={[AboutYouStyle.box_Text_Style]}
+              onPress={() => handleBoxPress(4)}
+            />
+          </View>
           <Text style={AboutYouStyle.want_Heading}>
             {"What do you want to do first with Kodie"}
           </Text>
+
           <FlatList
             data={List}
             scrollEnabled

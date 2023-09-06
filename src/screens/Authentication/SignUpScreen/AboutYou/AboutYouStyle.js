@@ -103,7 +103,7 @@ export const AboutYouStyle = StyleSheet.create({
   },
   want_List_View: {
     flexDirection: "row",
-    marginVertical:6
+    marginVertical: 6,
   },
   want_Heading: {
     marginTop: 24,
@@ -115,14 +115,14 @@ export const AboutYouStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
-    alignSelf:"center",
-    marginLeft:16
+    alignSelf: "center",
+    marginLeft: 16,
   },
   checkbox_View: {
-    height:20,
-    width:20,
-    borderWidth:1,
-    borderRadius:5,
+    height: 20,
+    width: 20,
+    borderWidth: 1,
+    borderRadius: 5,
     borderColor: _COLORS.Kodie_BlackColor,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_BlackColor,
@@ -138,8 +138,9 @@ export const AboutYouStyle = StyleSheet.create({
   //   backgroundColor: _COLORS.Kodie_BlackColor,
   //   borderColor: _COLORS.Kodie_BlackColor,
   // },
-  Check_Icon:{
-    marginTop:2
+  Check_Icon: {
+    marginTop: 2,
+    alignSelf: "center",
   },
   goBack_View: {
     flexDirection: "row",
@@ -164,8 +165,17 @@ export const AboutYouStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
-  
- 
-  
- 
+  servicesBoxView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  spaceView: { margin: 3 },
+  box_style: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderColor: _COLORS.Kodie_GrayColor,
+    height: 32,
+  },
+  box_Text_Style: { color: _COLORS.Kodie_BlackColor },
 });

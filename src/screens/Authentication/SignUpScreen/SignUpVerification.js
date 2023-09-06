@@ -9,23 +9,21 @@ import {
 import { SignUpVerificationStyle } from "./SignUpVerificationStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
-import { _COLORS } from "../../../Themes";
+import { LABEL_STYLES, _COLORS } from "../../../Themes";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {
   CodeField,
   Cursor,
   useBlurOnFulfill,
   useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
+} from "react-native-confirmation-code-field";
 const CELL_COUNT = 6;
-
 
 export default SignUpVerification = (props) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(1);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [prop, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
@@ -59,64 +57,23 @@ export default SignUpVerification = (props) => {
             renderCell={({ index, symbol, isFocused }) => (
               <Text
                 key={index}
-                style={[SignUpVerificationStyle.cell, isFocused && SignUpVerificationStyle.focusCell]}
-                onLayout={getCellOnLayoutHandler(index)}>
+                style={[
+                  SignUpVerificationStyle.cell,
+                  isFocused && SignUpVerificationStyle.focusCell,
+                ]}
+                onLayout={getCellOnLayoutHandler(index)}
+              >
                 {symbol || (isFocused ? <Cursor /> : null)}
               </Text>
             )}
           />
         </View>
-        <Text style={SignUpVerificationStyle.accept_Text}>
-          {"Accept the terms of use"}
+        <Text
+          style={[LABEL_STYLES.commonMidtext, SignUpVerificationStyle.textcode]}
+        >
+          {"It may take a few minutes to receive your code. "}
         </Text>
-        <View style={SignUpVerificationStyle.termView}>
-          <TouchableOpacity>
-            <View style={SignUpVerificationStyle.CheckBox_View}>
-              <FontAwesome name="check" size={15} color={_COLORS.Kodie_GreenColor} style={SignUpVerificationStyle.checkbox_BG} />
-            </View>
-          </TouchableOpacity>
 
-          <View style={SignUpVerificationStyle.termsConView}>
-            <Text style={SignUpVerificationStyle.termsText}>
-              {"I have read the"}
-            </Text>
-            <TouchableOpacity>
-              <Text
-                style={[
-                  SignUpVerificationStyle.termsText,
-                  SignUpVerificationStyle.terms_Condition,
-                ]}
-              >
-                {"Terms & Conditions"}
-              </Text>
-            </TouchableOpacity>
-            <Text style={SignUpVerificationStyle.termsText}>{"And agree"}</Text>
-          </View>
-        </View>
-        <View style={SignUpVerificationStyle.termView}>
-          <TouchableOpacity>
-            <View style={SignUpVerificationStyle.CheckBox_View}>
-              <FontAwesome name="check" size={15} color={_COLORS.Kodie_GreenColor} style={SignUpVerificationStyle.checkbox_BG} />
-            </View>
-          </TouchableOpacity>
-
-          <View style={SignUpVerificationStyle.termsConView}>
-            <Text style={SignUpVerificationStyle.termsText}>
-              {"I have read the"}
-            </Text>
-            <TouchableOpacity>
-              <Text
-                style={[
-                  SignUpVerificationStyle.termsText,
-                  SignUpVerificationStyle.terms_Condition,
-                ]}
-              >
-                {"Privacy Policy"}
-              </Text>
-            </TouchableOpacity>
-            <Text style={SignUpVerificationStyle.termsText}>{"And agree"}</Text>
-          </View>
-        </View>
         <View style={SignUpVerificationStyle.customBtn}>
           <CustomSingleButton
             _ButtonText={"Complete sign up"}

@@ -45,6 +45,7 @@ export default CreateJobFirstScreen = (props) => {
         </View>
         <View style={CreateJobFirstStyle.servicesBoxView}>
           <ServicesBox
+            images
             Services_Name={"Home cleaning"}
             Services_Icon={isClick ? IMAGES.cleaner : IMAGES.lightCleaner}
             BoxStyling={[
@@ -68,6 +69,7 @@ export default CreateJobFirstScreen = (props) => {
 
           <View style={CreateJobFirstStyle.spaceView} />
           <ServicesBox
+            images
             Services_Name={"Outdoor cleaning"}
             Services_Icon={isClick ? IMAGES.outdoor : IMAGES.lightOutdorCleaner}
             BoxStyling={[
@@ -91,6 +93,7 @@ export default CreateJobFirstScreen = (props) => {
         </View>
         <View style={CreateJobFirstStyle.servicesBoxView}>
           <ServicesBox
+            images
             Services_Name={"Heavy lifting"}
             Services_Icon={
               isClick ? IMAGES.heavyLifting : IMAGES.lightHeavylifting
@@ -115,6 +118,7 @@ export default CreateJobFirstScreen = (props) => {
           />
           <View style={CreateJobFirstStyle.spaceView} />
           <ServicesBox
+            images
             Services_Name={"Fixing & maintenance"}
             Services_Icon={isClick ? IMAGES.fixing : IMAGES.fixingTool}
             BoxStyling={[

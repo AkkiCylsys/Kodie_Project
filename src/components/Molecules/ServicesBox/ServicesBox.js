@@ -9,7 +9,13 @@ const ServicesBox = (props) => {
         onPress={props.onPress}
       >
         <View style={[ServicesBoxStyle.boxcontainer, props.BoxStyling]}>
-          <Image source={props.Services_Icon} style={ServicesBoxStyle.image} />
+          {props.images ? (
+            <Image
+              source={props.Services_Icon}
+              style={ServicesBoxStyle.image}
+            />
+          ) : null}
+
           <Text style={[ServicesBoxStyle.text, props.textColor]}>
             {props.Services_Name}
           </Text>

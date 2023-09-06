@@ -22,44 +22,11 @@ export const SignUpVerificationStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     marginTop: 24,
   },
-  accept_Text: {
-    color: _COLORS.Kodie_BlackColor,
-    fontSize: 14,
-    fontFamily: FONTFAMILY.K_SemiBold,
-    marginTop:24
+  textcode: {
+    marginTop: 24,
   },
-  termView: {
-    flexDirection: "row",
-    marginTop: 5,
-  },
-  CheckBox_View: {
-    height: 20,
-    width: 20,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: _COLORS.Kodie_BlackColor,
-    borderWidth: 1,
-    borderColor: _COLORS.Kodie_BlackColor,
-    marginTop: 4,
-  },
-  checkbox_BG: {
-    margin: 1.5
-  },
-  termsConView: {
-    flexDirection: "row",
-    alignSelf: "center",
-    marginLeft: 16,
-    justifyContent: "center",
-  },
-  termsText: {
-    color: _COLORS.Kodie_BlackColor,
-    fontSize: 12,
-    fontFamily: FONTFAMILY.K_Medium,
-  },
-  terms_Condition: { color: _COLORS.Kodie_GreenColor },
   customBtn: {
-    justifyContent: "flex-end",
-    flex: 1,
+    marginTop: 25,
   },
   goBack_View: {
     flexDirection: "row",
@@ -78,25 +45,25 @@ export const SignUpVerificationStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
   codeFieldRoot: {
-    alignSelf: 'center',
+    alignSelf: "center",
     marginTop: 10,
   },
   cell: {
-    width:50 ,
-    height:50,
+    width: 50,
+    height: 50,
     borderRadius: 11,
     lineHeight: 45,
     fontSize: 25,
-    color:_COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_GrayColor,
     borderWidth: 1,
-    borderColor:_COLORS.Kodie_GrayColor,
-    textAlign: 'center',
+    borderColor: _COLORS.Kodie_GrayColor,
+    textAlign: "center",
   },
   focusCell: {
     borderWidth: 2,
-    borderColor:_COLORS.Kodie_GrayColor,  
-    color:_COLORS.Kodie_GrayColor,  
-    alignSelf: 'center',
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_GrayColor,
+    alignSelf: "center",
   },
-  otp_view: { marginTop: 24 }
+  otp_view: { marginTop: 24 },
 });
