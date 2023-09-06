@@ -145,11 +145,6 @@ export default AboutYou = (props) => {
           <View style={AboutYouStyle.servicesBoxView}>
             <ServicesBox
               Services_Name={"Tenant"}
-              Services_Icon={
-                selectedServices["Tenant"]
-                  ? IMAGES.cleaner
-                  : IMAGES.lightCleaner
-              }
               BoxStyling={[
                 AboutYouStyle.box_style,
                 {
@@ -165,11 +160,6 @@ export default AboutYou = (props) => {
             <View style={AboutYouStyle.spaceView} />
             <ServicesBox
               Services_Name={"Landlord"}
-              Services_Icon={
-                selectedServices["Landlord"]
-                  ? IMAGES.outdoor
-                  : IMAGES.lightOutdorCleaner
-              }
               BoxStyling={[
                 AboutYouStyle.box_style,
                 {
@@ -186,11 +176,6 @@ export default AboutYou = (props) => {
           <View style={AboutYouStyle.servicesBoxView}>
             <ServicesBox
               Services_Name={"Contractor"}
-              Services_Icon={
-                selectedServices["Contractor"]
-                  ? IMAGES.cleaner
-                  : IMAGES.lightCleaner
-              }
               BoxStyling={[
                 AboutYouStyle.box_style,
                 {
@@ -206,11 +191,6 @@ export default AboutYou = (props) => {
             <View style={AboutYouStyle.spaceView} />
             <ServicesBox
               Services_Name={"Property Manager"}
-              Services_Icon={
-                selectedServices["Property Manager"]
-                  ? IMAGES.outdoor
-                  : IMAGES.lightOutdorCleaner
-              }
               BoxStyling={[
                 AboutYouStyle.box_style,
                 {
@@ -229,7 +209,6 @@ export default AboutYou = (props) => {
           <View style={AboutYouStyle.servicesBoxView}>
             <ServicesBox
               Services_Name={"1 - 3 properties"}
-              Services_Icon={isClick ? IMAGES.cleaner : IMAGES.lightCleaner}
               BoxStyling={[
                 AboutYouStyle.box_style,
                 {
@@ -246,9 +225,6 @@ export default AboutYou = (props) => {
             <View style={AboutYouStyle.spaceView} />
             <ServicesBox
               Services_Name={"4 - 10 properties"}
-              Services_Icon={
-                isClick ? IMAGES.outdoor : IMAGES.lightOutdorCleaner
-              }
               BoxStyling={[
                 AboutYouStyle.box_style,
                 {
@@ -266,7 +242,6 @@ export default AboutYou = (props) => {
           <View style={AboutYouStyle.servicesBoxView}>
             <ServicesBox
               Services_Name={"10 - 20 properties"}
-              Services_Icon={isClick ? IMAGES.cleaner : IMAGES.lightCleaner}
               BoxStyling={[
                 AboutYouStyle.box_style,
                 {
@@ -283,9 +258,6 @@ export default AboutYou = (props) => {
             <View style={AboutYouStyle.spaceView} />
             <ServicesBox
               Services_Name={"> 20 properties"}
-              Services_Icon={
-                isClick ? IMAGES.outdoor : IMAGES.lightOutdorCleaner
-              }
               BoxStyling={[
                 AboutYouStyle.box_style,
                 {
