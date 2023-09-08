@@ -58,6 +58,8 @@ import Location from "../../screens/Authentication/SignUpScreen/Location";
 import AboutYou from "../../screens/Authentication/SignUpScreen/AboutYou/AboutYou";
 import CreateJobTermsScreen from "../../screens/CreateJob/CreateJobTermsScreen/CreateJobTermsScreen";
 import ConfirmJobCompletion from "../../screens/CreateJob/ConfirmJobCompletion/ConfirmJobCompletion";
+import Account from "../../screens/Authentication/SignUpScreen/Account/Account";
+import FirstProperty from "../../screens/Authentication/SignUpScreen/FirstProperty/FirstProperty";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -71,8 +73,8 @@ const BottomNav = (props) => {
       }}
     >
       <Tab.Screen
-        name="UserType"
-        component={UserType}
+        name="Dashboard"
+        component={Dashboard}
         options={{
           headerShown: false,
           tabBarShowLabel: false,
@@ -112,8 +114,8 @@ const BottomNav = (props) => {
         }}
       />
       <Tab.Screen
-        name="PropertyList"
-        component={PropertyList}
+        name="UserType"
+        component={UserType}
         options={{
           tabBarShowLabel: false,
           headerShown: false,
@@ -487,6 +489,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ConfirmJobCompletion"}
           component={ConfirmJobCompletion}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Account"}
+          component={Account}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"FirstProperty"}
+          component={FirstProperty}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

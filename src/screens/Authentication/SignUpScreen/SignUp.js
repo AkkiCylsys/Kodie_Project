@@ -143,7 +143,7 @@ export default SignUp = (props) => {
             _ButtonText={"Sign up now"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={() => {
-              props.navigation.navigate("AboutYou");
+              props.navigation.navigate("Account");
             }}
           />
           <DividerIcon
