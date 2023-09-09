@@ -14,6 +14,7 @@ const CustomSingleButton = (props) => {
           borderColor: props.borderColor,
           marginTop: props.marginTop,
           height: props.height,
+          marginBottom: props.marginBottom,
         },
       ]}
     >
@@ -34,6 +35,6 @@ CustomSingleButton.defaultProps = {
   Text_Color: _COLORS.Kodie_BlackColor,
   borderColor: _COLORS.Kodie_LightWhiteColor,
   marginTop: 10,
-  height:58
+  height: 58,
 };
 export default CustomSingleButton;

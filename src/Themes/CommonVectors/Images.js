@@ -55,6 +55,7 @@ export const IMAGES = {
   Shape: require("../../assets/icons/Shape.png"),
   camera: require("../../assets/icons/camera.png"),
   gallery: require("../../assets/icons/gallery.png"),
+  CheckIcon: require("../../assets/icons/checkIcon.png"),
 };
 
 export const BANNERS = {
