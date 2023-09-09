@@ -20,6 +20,8 @@ export default SignUp = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [check, setIsCheck] = useState(false);
+  const [privacycheck, setPrivacycheckCheck] = useState(false);
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -75,14 +77,20 @@ export default SignUp = (props) => {
             {"Accept the terms of use"}
           </Text>
           <View style={SignUpStyles.termView}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setIsCheck(!check);
+              }}
+            >
               <View style={SignUpStyles.CheckBox_View}>
-                <FontAwesome
-                  name="check"
-                  size={15}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={SignUpStyles.checkbox_BG}
-                />
+                {check && (
+                  <FontAwesome
+                    name="check"
+                    size={15}
+                    color={_COLORS.Kodie_GreenColor}
+                    style={SignUpStyles.checkbox_BG}
+                  />
+                )}
               </View>
             </TouchableOpacity>
 
@@ -99,14 +107,20 @@ export default SignUp = (props) => {
             </View>
           </View>
           <View style={SignUpStyles.termView}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setPrivacycheckCheck(!privacycheck);
+              }}
+            >
               <View style={SignUpStyles.CheckBox_View}>
-                <FontAwesome
-                  name="check"
-                  size={15}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={SignUpStyles.checkbox_BG}
-                />
+                {privacycheck && (
+                  <FontAwesome
+                    name="check"
+                    size={15}
+                    color={_COLORS.Kodie_GreenColor}
+                    style={SignUpStyles.checkbox_BG}
+                  />
+                )}
               </View>
             </TouchableOpacity>
 

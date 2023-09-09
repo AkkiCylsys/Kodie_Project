@@ -76,7 +76,7 @@ export default SignUpVerification = (props) => {
 
         <View style={SignUpVerificationStyle.customBtn}>
           <CustomSingleButton
-            _ButtonText={"Complete sign up"}
+            _ButtonText={"Verify email"}
             Text_Color={_COLORS.Kodie_WhiteColor}
           />
         </View>
