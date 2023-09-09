@@ -285,6 +285,9 @@ export default AboutYou = (props) => {
             <CustomSingleButton
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
+              onPress={()=>{
+                props.navigation.navigate('FirstProperty')
+              }}
             />
             <CustomSingleButton
               _ButtonText={"Fill these details out later"}
