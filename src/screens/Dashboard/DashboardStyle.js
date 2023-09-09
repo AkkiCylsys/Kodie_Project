@@ -13,7 +13,7 @@ export const DashboardStyle = StyleSheet.create({
     fontSize: 22,
     fontFamily: FONTFAMILY.K_Bold,
   },
-  welcome_Text:{
+  welcome_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Regular,
@@ -21,7 +21,7 @@ export const DashboardStyle = StyleSheet.create({
   dropdown: {
     borderWidth: 1,
     height: 40,
-    marginHorizontal:5,
+    marginHorizontal: 5,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 12,
     borderRadius: 8,
@@ -48,5 +48,47 @@ export const DashboardStyle = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+  },
+  card: {
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderRadius: 16,
+    marginVertical: 16,
+  },
+  headerView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  header: {
+    fontSize: 18,
+    fontFamily: FONTFAMILY.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+    alignSelf: "center",
+  },
+  lineChartStl: {
+    borderRadius: 16,
+    marginVertical: 16,
+  },
+  icon: { alignSelf: "center" },
+  chartfooterView: { flexDirection: "row", justifyContent: "space-evenly" },
+  incomeBox: {
+    height: 8,
+    width: 8,
+    alignSelf: "center",
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+  },
+  incomeText: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Regular,
+    alignSelf: "center",
+    textAlign: "center",
+    marginLeft: 5,
+  },
+  expBox: {
+    height: 8,
+    width: 8,
+    alignSelf: "center",
+    backgroundColor: _COLORS.Kodie_BlackColor,
   },
 });
