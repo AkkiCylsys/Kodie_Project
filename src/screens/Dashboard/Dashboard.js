@@ -4,8 +4,9 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  ScrollView,
   Image,
+  Dimensions,
+  ScrollView,
 } from "react-native";
 import { DashboardStyle } from "./DashboardStyle";
 import TopHeader from "../../components/Molecules/Header/Header";
@@ -15,6 +16,9 @@ import { IMAGES, _COLORS } from "../../Themes/index";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
+import DeshboardNotice from "../../components/Molecules/deshboardNoice/DeshboardNotice";
+import { LineChart } from "react-native-chart-kit";
+import { Card } from "react-native-paper";
 const IncomeData = [
   {
     id: "1",
@@ -58,6 +62,7 @@ const Notice = [
     location: "65 Mountain View Parade",
   },
 ];
+
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },
@@ -114,158 +119,219 @@ export default Dashboard = (props) => {
         MiddleText={"Kodie"}
         onPressLeftButton={() => _goBack(props)}
       />
-      <ScrollView>
-        <View style={DashboardStyle.container}>
-          <Text style={DashboardStyle.Name_Text}>{"Hii Jason!"}</Text>
-          <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
-          <View style={DashboardStyle.dropdown_view}>
-            <Dropdown
-              style={[DashboardStyle.dropdown, { flex: 1 }]}
-              placeholderStyle={DashboardStyle.placeholderStyle}
-              selectedTextStyle={DashboardStyle.selectedTextStyle}
-              inputSearchStyle={DashboardStyle.inputSearchStyle}
-              iconStyle={DashboardStyle.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="All Properties"
-              searchPlaceholder="Search..."
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
+      <ScrollView
+        style={DashboardStyle.container}
+        showsVerticalScrollIndicator={false}
+      >
+        <DeshboardNotice />
+
+        <Text style={DashboardStyle.Name_Text}>{"Hii Jason!"}</Text>
+        <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
+        <View
+          style={{
+            // flex: 1,
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Dropdown
+            style={[DashboardStyle.dropdown, { flex: 1 }]}
+            placeholderStyle={DashboardStyle.placeholderStyle}
+            selectedTextStyle={DashboardStyle.selectedTextStyle}
+            inputSearchStyle={DashboardStyle.inputSearchStyle}
+            iconStyle={DashboardStyle.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="All Properties"
+            searchPlaceholder="Search..."
+            value={value}
+            onChange={(item) => {
+              setValue(item.value);
+            }}
+          />
+          <Dropdown
+            style={[DashboardStyle.dropdown, { flex: 1 }]}
+            placeholderStyle={DashboardStyle.placeholderStyle}
+            selectedTextStyle={DashboardStyle.selectedTextStyle}
+            inputSearchStyle={DashboardStyle.inputSearchStyle}
+            iconStyle={DashboardStyle.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Year to date"
+            searchPlaceholder="Search..."
+            value={value}
+            onChange={(item) => {
+              setValue(item.value);
+            }}
+          />
+          <Dropdown
+            style={[DashboardStyle.dropdown, { flex: 1 }]}
+            placeholderStyle={DashboardStyle.placeholderStyle}
+            selectedTextStyle={DashboardStyle.selectedTextStyle}
+            inputSearchStyle={DashboardStyle.inputSearchStyle}
+            iconStyle={DashboardStyle.iconStyle}
+            data={data}
+            search
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Cash flow"
+            searchPlaceholder="Search..."
+            value={value}
+            onChange={(item) => {
+              setValue(item.value);
+            }}
+          />
+        </View>
+        <Card style={DashboardStyle.card}>
+          <Card.Content>
+            <View style={DashboardStyle.headerView}>
+              <Text style={DashboardStyle.header}>Cash flow overview</Text>
+              <TouchableOpacity>
+                <Entypo
+                  name={"dots-three-horizontal"}
+                  size={20}
+                  color={_COLORS.Kodie_GrayColor}
+                  style={DashboardStyle.icon}
+                />
+              </TouchableOpacity>
+            </View>
+            <LineChart
+              data={{
+                labels: ["Jan", "Feb", "Mar", "Apr"],
+                datasets: [
+                  {
+                    data: [
+                      Math.random(),
+                      Math.random() * 100,
+                      Math.random() * 120,
+                      Math.random() * 140,
+                      Math.random() * 160,
+                    ],
+                  },
+                ],
               }}
-            />
-            <Dropdown
-              style={[DashboardStyle.dropdown, { flex: 1 }]}
-              placeholderStyle={DashboardStyle.placeholderStyle}
-              selectedTextStyle={DashboardStyle.selectedTextStyle}
-              inputSearchStyle={DashboardStyle.inputSearchStyle}
-              iconStyle={DashboardStyle.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Year to date"
-              searchPlaceholder="Search..."
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
+              width={Dimensions.get("window").width - 56} // from react-native
+              height={160}
+              yAxisLabel={"$"}
+              chartConfig={{
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+                backgroundGradientFrom: _COLORS.Kodie_WhiteColor,
+                backgroundGradientTo: _COLORS.Kodie_WhiteColor,
+                // decimalPlaces: 2, // optional, defaults to 2dp
+                color: (opacity = 255) => `	rgb(0, 0, ${opacity})`,
               }}
+              bezier
+              style={DashboardStyle.lineChartStl}
             />
-            <Dropdown
-              style={[DashboardStyle.dropdown, { flex: 1 }]}
-              placeholderStyle={DashboardStyle.placeholderStyle}
-              selectedTextStyle={DashboardStyle.selectedTextStyle}
-              inputSearchStyle={DashboardStyle.inputSearchStyle}
-              iconStyle={DashboardStyle.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Cash flow"
-              searchPlaceholder="Search..."
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
+            <View style={DashboardStyle.chartfooterView}>
+              <View style={DashboardStyle.headerView}>
+                <View style={DashboardStyle.incomeBox} />
+                <Text style={DashboardStyle.incomeText}>Total Income</Text>
+              </View>
+              <View style={DashboardStyle.headerView}>
+                <View style={DashboardStyle.expBox} />
+                <Text style={DashboardStyle.incomeText}>Total expenses</Text>
+              </View>
+            </View>
+          </Card.Content>
+        </Card>
+        <FlatList
+          data={IncomeData}
+          scrollEnabled
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{}}
+          keyExtractor={(item) => item?.id}
+          renderItem={Income_render}
+        />
+        <View style={DashboardStyle.maintenance_statusView}>
+          <View style={DashboardStyle.maintenance_view}>
+            <Text style={DashboardStyle.maintenance_Text}>
+              {"Maintenance status"}
+            </Text>
+            <TouchableOpacity>
+              <Entypo
+                name="dots-three-horizontal"
+                size={20}
+                color={_COLORS.Kodie_GrayColor}
+              />
+            </TouchableOpacity>
+          </View>
+          <View>
+            <View style={DashboardStyle.maintenance_main_menu}>
+              <View style={DashboardStyle.maintenance_menu}>
+                <AntDesign
+                  name="infocirlce"
+                  size={18}
+                  color={_COLORS.Kodie_yellow}
+                />
+                <Text style={DashboardStyle.request_Text}>{"Requested"}</Text>
+              </View>
+              <View style={DashboardStyle.maintenance_menu}>
+                <AntDesign
+                  name="checkcircle"
+                  size={18}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+                <Text style={DashboardStyle.request_Text}>{"Approved"}</Text>
+              </View>
+              <View style={DashboardStyle.maintenance_menu}>
+                <Entypo
+                  name="circle-with-cross"
+                  size={18}
+                  color={_COLORS.Kodie_redColor}
+                />
+                <Text style={DashboardStyle.request_Text}>{"Rejected"}</Text>
+              </View>
+            </View>
+            <View style={DashboardStyle.maintenance_sts_NOView}>
+              <Text style={DashboardStyle.maintenance_sts_NOText}>{"8"}</Text>
+              <Text style={DashboardStyle.maintenance_sts_NOText}>{"5"}</Text>
+              <Text style={DashboardStyle.maintenance_sts_NOText}>{"3"}</Text>
+            </View>
+            <CustomSingleButton
+              _ButtonText={"View all jobs"}
+              Text_Color={_COLORS.Kodie_BlackColor}
+              backgroundColor={_COLORS.Kodie_lightGreenColor}
+              height={45}
             />
+          </View>
+        </View>
+        <View style={DashboardStyle.Noticemain_View}>
+          <View style={DashboardStyle.Notice_view}>
+            <Text style={DashboardStyle.maintenance_Text}>{"Notices"}</Text>
+            <TouchableOpacity>
+              <Entypo
+                name="dots-three-horizontal"
+                size={20}
+                color={_COLORS.Kodie_GrayColor}
+              />
+            </TouchableOpacity>
           </View>
 
           <FlatList
-            data={IncomeData}
+            data={Notice}
             scrollEnabled
-            horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
             keyExtractor={(item) => item?.id}
-            renderItem={Income_render}
+            renderItem={NoticeData}
           />
-          <View style={DashboardStyle.maintenance_statusView}>
-            <View style={DashboardStyle.maintenance_view}>
-              <Text style={DashboardStyle.maintenance_Text}>
-                {"Maintenance status"}
-              </Text>
-              <TouchableOpacity>
-                <Entypo
-                  name="dots-three-horizontal"
-                  size={20}
-                  color={_COLORS.Kodie_GrayColor}
-                />
-              </TouchableOpacity>
-            </View>
-            <View>
-              <View style={DashboardStyle.maintenance_main_menu}>
-                <View style={DashboardStyle.maintenance_menu}>
-                  <AntDesign
-                    name="infocirlce"
-                    size={18}
-                    color={_COLORS.Kodie_yellow}
-                  />
-                  <Text style={DashboardStyle.request_Text}>{"Requested"}</Text>
-                </View>
-                <View style={DashboardStyle.maintenance_menu}>
-                  <AntDesign
-                    name="checkcircle"
-                    size={18}
-                    color={_COLORS.Kodie_GreenColor}
-                  />
-                  <Text style={DashboardStyle.request_Text}>{"Approved"}</Text>
-                </View>
-                <View style={DashboardStyle.maintenance_menu}>
-                  <Entypo
-                    name="circle-with-cross"
-                    size={18}
-                    color={_COLORS.Kodie_redColor}
-                  />
-                  <Text style={DashboardStyle.request_Text}>{"Rejected"}</Text>
-                </View>
-              </View>
-              <View style={DashboardStyle.maintenance_sts_NOView}>
-                <Text style={DashboardStyle.maintenance_sts_NOText}>{"8"}</Text>
-                <Text style={DashboardStyle.maintenance_sts_NOText}>{"5"}</Text>
-                <Text style={DashboardStyle.maintenance_sts_NOText}>{"3"}</Text>
-              </View>
-              <CustomSingleButton
-                _ButtonText={"View all jobs"}
-                Text_Color={_COLORS.Kodie_BlackColor}
-                backgroundColor={_COLORS.Kodie_lightGreenColor}
-                height={45}
-              />
-            </View>
-          </View>
-          <View style={DashboardStyle.Noticemain_View}>
-            <View style={DashboardStyle.Notice_view}>
-              <Text style={DashboardStyle.maintenance_Text}>{"Notices"}</Text>
-              <TouchableOpacity>
-                <Entypo
-                  name="dots-three-horizontal"
-                  size={20}
-                  color={_COLORS.Kodie_GrayColor}
-                />
-              </TouchableOpacity>
-            </View>
-
-            <FlatList
-              data={Notice}
-              scrollEnabled
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{}}
-              keyExtractor={(item) => item?.id}
-              renderItem={NoticeData}
+          <View style={DashboardStyle.btnView}>
+            <CustomSingleButton
+              height={45}
+              _ButtonText={"View all notices"}
+              backgroundColor={_COLORS.Kodie_lightGreenColor}
+              Text_Color={_COLORS.Kodie_BlackColor}
+              borderColor={_COLORS.Kodie_GreenColor}
             />
-            <View style={DashboardStyle.btnView}>
-              <CustomSingleButton
-                height={45}
-                _ButtonText={"View all notices"}
-                backgroundColor={_COLORS.Kodie_lightGreenColor}
-                Text_Color={_COLORS.Kodie_BlackColor}
-                borderColor={_COLORS.Kodie_GreenColor}
-              />
-            </View>
           </View>
         </View>
       </ScrollView>
