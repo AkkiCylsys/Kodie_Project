@@ -26,7 +26,11 @@ const Properties = (props) => {
         Tab3={"Rental offers"}
       />
       <View style={PropertiesCSS.Line} />
-      {activeTab === "Tab1" && <PropertyList />}
+      {activeTab === "Tab1" && (
+        <PropertyList
+          propertyDetail={props.navigation.navigate("PropertyDetails")}
+        />
+      )}
       {activeTab === "Tab2" && <PropertyList2 />}
       {activeTab === "Tab3" && <PropertyList3 />}
     </View>

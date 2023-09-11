@@ -487,7 +487,8 @@ export default PropertyList = (props) => {
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
             height={38}
-            marginTop={3}          
+            marginTop={3}
+            onPress={() => props.propertyDetail}
           />
         </View>
         <DividerIcon
