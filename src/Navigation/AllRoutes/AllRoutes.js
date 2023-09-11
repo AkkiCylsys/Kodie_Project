@@ -118,8 +118,8 @@ const BottomNav = (props) => {
         }}
       />
       <Tab.Screen
-        name="UserType"
-        component={UserType}
+        name="Properties"
+        component={Properties}
         options={{
           tabBarShowLabel: false,
           headerShown: false,
