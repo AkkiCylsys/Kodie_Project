@@ -286,7 +286,7 @@ export default PropertyFeature = (props) => {
                 )}
               />
             </View>
-<            View style={PropertyFeatureStyle.btnView}>
+            <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton
                 _ButtonText={"Next"}
                 Text_Color={_COLORS.Kodie_WhiteColor}

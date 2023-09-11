@@ -53,4 +53,43 @@ export const PropertyReviewStyle = StyleSheet.create({
     marginVertical: 10,
     alignSelf: "center",
   },
+  propery_det: {
+    fontSize: 12,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
+  propety_details_view: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+  },
+  down_Arrow_icon:{
+    borderWidth:1,
+    paddingHorizontal:3,
+    paddingVertical:3,
+    borderRadius:5,
+    borderColor:_COLORS.Kodie_GrayColor
+  },
+  goBack_View: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginVertical: 29,
+  },
+  goBack_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginLeft: 5,
+  },
+  backIcon: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+  },
+  btnView: {
+    marginTop: 24,
+    marginHorizontal:16
+  },
+  DetailsView:{ flex:1,flexDirection: "row"},
+  DetailsIcon:{ height: 30, width: 30 }
 });

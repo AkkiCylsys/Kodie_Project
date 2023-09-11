@@ -11,6 +11,10 @@ import { PropertyReviewStyle } from "./PropertyReviewStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
 import { SliderBox } from "react-native-image-slider-box";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
+import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS, BANNERS, LABEL_STYLES, IMAGES } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
 import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
@@ -28,12 +32,12 @@ const Detail = [
   },
   {
     id: "2",
-    images: IMAGES.BedroomIcon,
+    images: IMAGES.Bathroom,
     name: "Bathrooms: 2",
   },
   {
     id: "3",
-    images: IMAGES.BedroomIcon,
+    images: IMAGES.Parking,
     name: "Garages: 1",
   },
   {
@@ -64,12 +68,12 @@ const Detail = [
 ];
 export default PropertyReview = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
-  const Detail_rander = (item) => {
+  const Detail_rander = ({ item, index }) => {
     return (
       <>
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <Image source={item.images} style={{ height: 25, width: 25 }} />
-          <Text style={LABEL_STYLES.commonMidtext}>{item.name}</Text>
+        <View style={PropertyReviewStyle.DetailsView}>
+          <Image source={item.images} style={PropertyReviewStyle.DetailsIcon} />
+          <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
         </View>
       </>
     );
@@ -157,9 +161,92 @@ export default PropertyReview = (props) => {
 
           <FlatList
             data={Detail}
-            keyExtractor={(item) => item.id}
+            scrollEnabled
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{}}
+            numColumns={2}
+            keyExtractor={(item) => item?.id}
             renderItem={Detail_rander}
           />
+        </View>
+        <DividerIcon borderBottomWidth={1} color={_COLORS.Kodie_GrayColor} />
+        <View style={PropertyReviewStyle.subContainer}>
+          <View style={PropertyReviewStyle.propety_details_view}>
+            <Text style={PropertyReviewStyle.propery_det}>
+              {"Property details"}
+            </Text>
+
+            <TouchableOpacity style={PropertyReviewStyle.down_Arrow_icon}>
+              <AntDesign
+                name="down"
+                size={15}
+                color={_COLORS.Kodie_GrayColor}
+              />
+            </TouchableOpacity>
+          </View>
+          <DividerIcon marginTop={8} />
+        </View>
+        <View style={PropertyReviewStyle.subContainer}>
+          <View style={PropertyReviewStyle.propety_details_view}>
+            <Text style={PropertyReviewStyle.propery_det}>{"Rooms"}</Text>
+
+            <TouchableOpacity style={PropertyReviewStyle.down_Arrow_icon}>
+              <AntDesign
+                name="down"
+                size={15}
+                color={_COLORS.Kodie_GrayColor}
+              />
+            </TouchableOpacity>
+          </View>
+          <DividerIcon marginTop={8} />
+        </View>
+        <View style={PropertyReviewStyle.subContainer}>
+          <View style={PropertyReviewStyle.propety_details_view}>
+            <Text style={PropertyReviewStyle.propery_det}>
+              {"External featuress"}
+            </Text>
+
+            <TouchableOpacity style={PropertyReviewStyle.down_Arrow_icon}>
+              <AntDesign
+                name="down"
+                size={15}
+                color={_COLORS.Kodie_GrayColor}
+              />
+            </TouchableOpacity>
+          </View>
+          <DividerIcon marginTop={8} />
+        </View>
+        <View style={PropertyReviewStyle.subContainer}>
+          <View style={PropertyReviewStyle.propety_details_view}>
+            <Text style={PropertyReviewStyle.propery_det}>
+              {"Points of interest"}
+            </Text>
+
+            <TouchableOpacity style={PropertyReviewStyle.down_Arrow_icon}>
+              <AntDesign
+                name="down"
+                size={15}
+                color={_COLORS.Kodie_GrayColor}
+              />
+            </TouchableOpacity>
+          </View>
+          <DividerIcon marginTop={8} />
+        </View>
+        <View style={PropertyReviewStyle.btnView}>
+          <CustomSingleButton
+            _ButtonText={"Add property"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+          />
+        </View>
+        <View style={PropertyReviewStyle.goBack_View}>
+          <TouchableOpacity style={PropertyReviewStyle.backIcon}>
+            <Ionicons
+              name="chevron-back"
+              size={22}
+              color={_COLORS.Kodie_MediumGrayColor}
+            />
+          </TouchableOpacity>
+          <Text style={PropertyReviewStyle.goBack_Text}>{"Go back"}</Text>
         </View>
       </ScrollView>
     </View>
