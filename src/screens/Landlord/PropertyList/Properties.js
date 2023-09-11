@@ -21,6 +21,7 @@ const Properties = (props) => {
       <CustomTabNavigator
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        TAB3
         Tab1={"My properties"}
         Tab2={"Search for rentals"}
         Tab3={"Rental offers"}

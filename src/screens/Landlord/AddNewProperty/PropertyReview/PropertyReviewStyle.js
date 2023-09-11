@@ -41,9 +41,16 @@ export const PropertyReviewStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Regular,
   },
-  melbourne_Text:{
-    fontSize:18,
-    fontFamily:FONTFAMILY.K_Bold,
-    color:_COLORS.Kodie_BlackColor
-  }
+  melbourne_Text: {
+    fontSize: 18,
+    fontFamily: FONTFAMILY.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  welcome_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Regular,
+    marginVertical: 10,
+    alignSelf: "center",
+  },
 });

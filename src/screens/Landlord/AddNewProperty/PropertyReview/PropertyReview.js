@@ -1,18 +1,79 @@
-import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  Image,
+} from "react-native";
 import { PropertyReviewStyle } from "./PropertyReviewStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
 import { SliderBox } from "react-native-image-slider-box";
-import { _COLORS, BANNERS, LABEL_STYLES } from "../../../../Themes";
+import { _COLORS, BANNERS, LABEL_STYLES, IMAGES } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
+import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
   BANNERS.BannerSecond,
   BANNERS.previewImage,
 ];
-export default PropertyReview = () => {
+const Detail = [
+  {
+    id: "1",
+    images: IMAGES.BedroomIcon,
+    name: "Bedrooms: 3",
+  },
+  {
+    id: "2",
+    images: IMAGES.BedroomIcon,
+    name: "Bathrooms: 2",
+  },
+  {
+    id: "3",
+    images: IMAGES.BedroomIcon,
+    name: "Garages: 1",
+  },
+  {
+    id: "4",
+    images: IMAGES.BedroomIcon,
+    name: "Parkings: 1",
+  },
+  {
+    id: "5",
+    images: IMAGES.BedroomIcon,
+    name: "Garden",
+  },
+  {
+    id: "6",
+    images: IMAGES.BedroomIcon,
+    name: "Pool",
+  },
+  {
+    id: "7",
+    images: IMAGES.BedroomIcon,
+    name: "Furnished",
+  },
+  {
+    id: "8",
+    images: IMAGES.BedroomIcon,
+    name: "WiFi",
+  },
+];
+export default PropertyReview = (props) => {
+  const [activeTab, setActiveTab] = useState("Tab1");
+  const Detail_rander = (item) => {
+    return (
+      <>
+        <View style={{ flex: 1, flexDirection: "row" }}>
+          <Image source={item.images} style={{ height: 25, width: 25 }} />
+          <Text style={LABEL_STYLES.commonMidtext}>{item.name}</Text>
+        </View>
+      </>
+    );
+  };
   return (
     <View style={PropertyReviewStyle.mainContainer}>
       <TopHeader
@@ -42,9 +103,6 @@ export default PropertyReview = () => {
             ImageComponentStyle={{
               flex: 1,
               resizeMode: "cover",
-              // borderRadius: 15,
-              // width: "90%",
-              // position: "relative",
             }}
           />
         </View>
@@ -80,13 +138,28 @@ export default PropertyReview = () => {
             />
             <Text>{"8502 Preston Rd.Inglewood,Queensland,Australia,."}</Text>
           </View>
-          <View>
-            <Text>
-              {
-                "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
-              }
-            </Text>
-          </View>
+          <CustomTabNavigator
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            TAB3
+            TAB4
+            Tab1={"Details"}
+            Tab2={"Leases"}
+            Tab3={"Expenses"}
+            Tab4={"Documents"}
+          />
+
+          <Text style={PropertyReviewStyle.welcome_Text}>
+            {
+              "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
+            }
+          </Text>
+
+          <FlatList
+            data={Detail}
+            keyExtractor={(item) => item.id}
+            renderItem={Detail_rander}
+          />
         </View>
       </ScrollView>
     </View>
