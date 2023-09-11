@@ -44,7 +44,7 @@ import DocumentList from "../../screens/DocumentList/DocumentList";
 import RejectConfirm from "../../screens/Landlord/RejectConfirm/RejectConfirm";
 import InviteTenant from "../../screens/Landlord/InviteTenant/InviteTenant";
 import Notice from "../../screens/NotiesList/Notice";
-import PropertyList from "../../screens/Landlord/PropertyList/PropertyList";
+import Properties from "../../screens/Landlord/PropertyList/Properties";
 import Repair from "../../screens/Tenant/Repair/Repair";
 import Dashboard from "../../screens/Dashboard/Dashboard";
 import LandlordProfile from "../../screens/Landlord/Landlordprofile/LandlordProfile";
@@ -118,8 +118,8 @@ const BottomNav = (props) => {
         }}
       />
       <Tab.Screen
-        name="PropertyList"
-        component={PropertyList}
+        name="UserType"
+        component={UserType}
         options={{
           tabBarShowLabel: false,
           headerShown: false,
@@ -446,8 +446,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"PropertyList"}
-          component={PropertyList}
+          name={"Properties"}
+          component={Properties}
           options={{ headerShown: false }}
         />
         <Stack.Screen

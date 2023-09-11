@@ -182,8 +182,9 @@ export default Repair = (props) => {
           height={40}
           buttonName={"Create Job"}
           onPress={() => {
-            props.navigation.navigate('CreateJobFirstScreen')
+            props.navigation.navigate("CreateJobFirstScreen");
           }}
+          marginTop={20}
         />
         <View style={RepairCss.Container}>
           <Text style={[LABEL_STYLES.commontext, RepairCss.filter]}>

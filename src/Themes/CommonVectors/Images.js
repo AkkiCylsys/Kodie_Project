@@ -56,6 +56,10 @@ export const IMAGES = {
   camera: require("../../assets/icons/camera.png"),
   gallery: require("../../assets/icons/gallery.png"),
   CheckIcon: require("../../assets/icons/checkIcon.png"),
+  AspactRatio: require("../../assets/icons/aspactRatio.png"),
+  Bathroom: require("../../assets/icons/bathroom.png"),
+  BedroomIcon: require("../../assets/icons/bedroomIcon.png"),
+  Parking: require("../../assets/icons/parking.png"),
 };
 
 export const BANNERS = {

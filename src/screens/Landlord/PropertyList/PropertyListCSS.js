@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../Themes";
 
-import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
 export const PropertyListCSS = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -13,7 +12,7 @@ export const PropertyListCSS = StyleSheet.create({
   },
   item_style: {
     fontSize: 12,
-    fontFamily: fontFamily.K_Regular,
+    fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_VeryLightGrayColor,
   },
   flat_MainView: { flex: 1, flexDirection: "row", alignItems: "center" },
@@ -89,7 +88,7 @@ export const PropertyListCSS = StyleSheet.create({
   buttonText: {
     fontSize: 12,
     color: _COLORS.Kodie_DarkOrange,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     alignSelf: "center",
   },
   flatListContainer: { marginHorizontal: 30 },
@@ -113,4 +112,53 @@ export const PropertyListCSS = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
+  propertyRentMainView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+  },
+  payButtonMainView: { justifyContent: "flex-end", flex: 0.7 },
+  payButtonView: {
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    justifyContent: "center",
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 5,
+  },
+  payButtonText: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_WhiteColor,
+    alignSelf: "center",
+    textAlign: "center",
+  },
+  LeftTextView: {
+    justifyContent: "flex-start",
+    flex: 1,
+    alignSelf: "center",
+  },
+  LeftText: {
+    fontSize: 10,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  LeftTextRentText: {
+    fontSize: 10,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_ExtraDarkGreen,
+  },
+  leftIconsView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignSelf: "center",
+  },
+  ImagesStyle: { height: 25, width: 25 },
+  bedroomStl: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Bold,
+    alignSelf: "center",
+    marginLeft: -10,
+  },
+  weeklyRent: { flex: 0.5, alignItems: "flex-end" },
 });

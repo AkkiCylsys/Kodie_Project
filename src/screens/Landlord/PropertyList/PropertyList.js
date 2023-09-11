@@ -7,7 +7,13 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { _COLORS, LABEL_STYLES, BANNERS, IMAGES } from "../../../Themes";
+import {
+  _COLORS,
+  LABEL_STYLES,
+  BANNERS,
+  IMAGES,
+  FONTFAMILY,
+} from "../../../Themes";
 import { PropertyListCSS } from "./PropertyListCSS";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "./../../../services/CommonServices/index";
@@ -17,6 +23,7 @@ import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import RBSheet from "react-native-raw-bottom-sheet";
 import BottomModalData from "../../../components/Molecules/BottomModal/BottomModalData";
+import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 const HorizontalData = [
   "Occupied",
   "Vacant",
@@ -24,14 +31,14 @@ const HorizontalData = [
   "Rent Received",
   "Archive",
 ];
-const property_List = [
+const property_List1 = [
   {
     id: "1",
     propertyName: "Apartment",
     name: "Melbourne",
     location: "8502 Preston Rd. Inglewood",
     image: BANNERS.apartment,
-    buttonName: "Rent Pending",
+    buttonName: "Late payment",
     tanentname: "Jason Stathom",
     rent: "$850",
     spend: "$830",
@@ -111,8 +118,28 @@ const property_List = [
     isinviteTenants: true,
   },
 ];
+const property_List2 = [
+  {
+    id: "1",
+    propertyName: "Apartment",
+    name: "Melbourne",
+    location: "8502 Preston Rd. Inglewood",
+    image: BANNERS.apartment,
+    buttonName: "Late Payment",
+    tanentname: "Jason Stathom",
+    rent: "$850.00",
+    badroom: "3",
+    bathroom: "2",
+    parking: "1",
+    aspact_ratio: "86m2",
+    isRentPanding: true,
+    isRentReceived: false,
+    isinviteTenants: false,
+  },
+];
 
 export default PropertyList = (props) => {
+  const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
   const refRBSheet = useRef();
 
@@ -125,7 +152,7 @@ export default PropertyList = (props) => {
     );
   };
 
-  const propertyData_render = ({ item }) => {
+  const propertyData1_render = ({ item }) => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
@@ -258,44 +285,265 @@ export default PropertyList = (props) => {
       </>
     );
   };
+  const propertyData2_render = ({ item }) => {
+    const isExpanded = expandedItems.includes(item.id);
+    return (
+      <>
+        <View style={PropertyListCSS.flatListContainer}>
+          <View style={PropertyListCSS.flat_MainView}>
+            <View style={PropertyListCSS.flexContainer}>
+              <Text style={PropertyListCSS.apartmentText}>
+                {item.propertyName}
+              </Text>
+              <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
+              <View style={PropertyListCSS.flat_MainView}>
+                <MaterialCommunityIcons
+                  name={"map-marker"}
+                  size={12}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+                <Text style={PropertyListCSS.locationText}>
+                  {item.location}
+                </Text>
+              </View>
+            </View>
+            <Image source={item.image} style={PropertyListCSS.imageStyle} />
+            <View style={PropertyListCSS.flexContainer}>
+              <View style={PropertyListCSS.noteStyle}>
+                <TouchableOpacity>
+                  <Image
+                    source={IMAGES.noteBook}
+                    style={PropertyListCSS.noteIcon}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    refRBSheet.current.open();
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name={"dots-horizontal"}
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={[
+                  PropertyListCSS.buttonView,
+                  {
+                    backgroundColor: item.isRentPanding
+                      ? _COLORS.Kodie_LightOrange
+                      : item.isRentReceived
+                      ? _COLORS.Kodie_mostLightGreenColor
+                      : _COLORS.Kodie_LightGrayColor,
+                  },
+                ]}
+              >
+                <View
+                  style={[
+                    PropertyListCSS.roundButton,
+                    {
+                      backgroundColor: item.isRentPanding
+                        ? _COLORS.Kodie_DarkOrange
+                        : item.isRentReceived
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_LightGrayColor,
+                    },
+                  ]}
+                />
+                <Text
+                  style={[
+                    PropertyListCSS.buttonText,
+                    {
+                      color: item.isRentPanding
+                        ? _COLORS.Kodie_DarkOrange
+                        : item.isRentReceived
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_MediumGrayColor,
+                    },
+                  ]}
+                >
+                  {item.buttonName}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <DividerIcon
+            IsShowIcon
+            iconName={isExpanded ? "chevron-up" : "chevron-down"}
+            onPress={() => {
+              if (isExpanded) {
+                setExpandedItems(expandedItems.filter((id) => id !== item.id));
+              } else {
+                setExpandedItems([...expandedItems, item.id]);
+              }
+            }}
+          />
+        </View>
+        {isExpanded && (
+          <View style={PropertyListCSS.expandedContent}>
+            <View style={PropertyListCSS.leftIconsView}>
+              <Image
+                source={IMAGES.BedroomIcon}
+                style={PropertyListCSS.ImagesStyle}
+              />
+              <Text style={PropertyListCSS.bedroomStl}>{item.badroom}</Text>
+              <Image
+                source={IMAGES.Bathroom}
+                style={PropertyListCSS.ImagesStyle}
+              />
+              <Text style={PropertyListCSS.bedroomStl}>{item.bathroom}</Text>
+              <Image
+                source={IMAGES.Parking}
+                style={PropertyListCSS.ImagesStyle}
+              />
+              <Text style={PropertyListCSS.bedroomStl}>{item.parking}</Text>
+              <Image
+                source={IMAGES.AspactRatio}
+                style={PropertyListCSS.ImagesStyle}
+              />
+              <Text style={PropertyListCSS.bedroomStl}>
+                {item.aspact_ratio}
+              </Text>
+            </View>
+            <View style={[PropertyListCSS.weeklyRent]}>
+              <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
+              <Text style={LABEL_STYLES.commontext}>{item.rent}</Text>
+            </View>
+          </View>
+        )}
+        <DividerIcon />
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "transparent",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: PropertyListCSS.bottomModal_container,
+          }}
+        >
+          <BottomModalData />
+        </RBSheet>
+      </>
+    );
+  };
 
   return (
     <View style={PropertyListCSS.mainContainer}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Property list"}
-      />
-      <ScrollView>
-        <SearchBar filterImage={IMAGES.filter} isFilterImage frontSearchIcon />
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ marginBottom: 50 }}
+      >
+        <View style={PropertyListCSS.Container}>
+          <RowButtons
+            LeftButtonText={"Properties I own"}
+            leftButtonHeight={40}
+            leftButtonbackgroundColor={
+              activeScreen
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_lightGreenColor
+            }
+            LeftButtonborderColor={
+              activeScreen
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_lightGreenColor
+            }
+            RightButtonText={"Properties I rent"}
+            RightButtonbackgroundColor={
+              activeScreen
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonborderColor={
+              activeScreen
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_GrayColor
+            }
+            LeftButtonTextColor={
+              activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
+            }
+            RightButtonTextColor={
+              activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+            }
+            RightButtonHeight={40}
+            onPressLeftButton={() => setActiveScreen(false)}
+            onPressRightButton={() => setActiveScreen(true)}
+          />
+        </View>
+        <DividerIcon
+          borderBottomWidth={9}
+          color={_COLORS.Kodie_LiteWhiteColor}
+        />
         <View style={PropertyListCSS.Container}>
           <CustomSingleButton
             _ButtonText={"+ Add New Property"}
-            Text_Color={_COLORS.Kodie_BlackColor}
-            backgroundColor={_COLORS.Kodie_lightGreenColor}
-            height={40}
-            onPress={() => {
-              props.navigation.navigate("PropertyDetails");
-            }}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            text_Size={14}
+            backgroundColor={_COLORS.Kodie_BlackColor}
+            height={38}
+            marginTop={3}
           />
-          <View style={PropertyListCSS.flat_MainView}>
-            <TouchableOpacity style={PropertyListCSS.AllView}>
-              <Text style={PropertyListCSS.item_style}>ALL</Text>
-              <MaterialCommunityIcons
-                name={"check"}
-                size={18}
-                color={_COLORS.Kodie_WhiteColor}
-              />
-            </TouchableOpacity>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              data={HorizontalData}
-              renderItem={horizontal_render}
-            />
-          </View>
         </View>
-        <DividerIcon />
-        <FlatList data={property_List} renderItem={propertyData_render} />
+        <DividerIcon
+          borderBottomWidth={9}
+          color={_COLORS.Kodie_LiteWhiteColor}
+        />
+
+        <SearchBar filterImage={IMAGES.filter} frontSearchIcon marginTop={3} />
+        {activeScreen ? (
+          <>
+            <DividerIcon />
+
+            <FlatList data={property_List2} renderItem={propertyData2_render} />
+            <View style={PropertyListCSS.propertyRentMainView}>
+              <View style={PropertyListCSS.LeftTextView}>
+                <Text style={PropertyListCSS.LeftText}>
+                  Your rent is due. You have not selected autopay as a payment
+                  option.
+                </Text>
+                <Text style={PropertyListCSS.LeftTextRentText}>
+                  Would you like to pay your rent now?
+                </Text>
+              </View>
+              <View style={PropertyListCSS.payButtonMainView}>
+                <TouchableOpacity style={PropertyListCSS.payButtonView}>
+                  <Text style={PropertyListCSS.payButtonText}>
+                    Pay $850 now
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={PropertyListCSS.Container}>
+              <View style={PropertyListCSS.flat_MainView}>
+                <TouchableOpacity style={PropertyListCSS.AllView}>
+                  <Text style={PropertyListCSS.item_style}>ALL</Text>
+                  <MaterialCommunityIcons
+                    name={"check"}
+                    size={18}
+                    color={_COLORS.Kodie_WhiteColor}
+                  />
+                </TouchableOpacity>
+                <FlatList
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  data={HorizontalData}
+                  renderItem={horizontal_render}
+                />
+              </View>
+            </View>
+            <DividerIcon />
+            <FlatList data={property_List1} renderItem={propertyData1_render} />
+          </>
+        )}
       </ScrollView>
     </View>
   );

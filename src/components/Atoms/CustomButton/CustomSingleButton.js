@@ -15,6 +15,7 @@ const CustomSingleButton = (props) => {
           marginTop: props.marginTop,
           height: props.height,
           marginBottom: props.marginBottom,
+          marginHorizontal: props.marginHorizontal,
         },
       ]}
     >
@@ -22,7 +23,10 @@ const CustomSingleButton = (props) => {
         <Image source={props.leftImage} style={CustomButtonstyles.leftIcon} />
       ) : null}
       <Text
-        style={[CustomButtonstyles.buttonText, { color: props.Text_Color }]}
+        style={[
+          CustomButtonstyles.buttonText,
+          { color: props.Text_Color, fontSize: props.text_Size },
+        ]}
       >
         {props._ButtonText}
       </Text>
