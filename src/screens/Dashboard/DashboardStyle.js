@@ -30,7 +30,6 @@ export const DashboardStyle = StyleSheet.create({
     marginTop: 12,
     borderRadius: 8,
   },
-
   placeholderStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
