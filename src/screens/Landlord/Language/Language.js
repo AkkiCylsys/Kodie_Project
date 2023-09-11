@@ -70,7 +70,7 @@ export default Language = (props) => {
         <View style={Languagestyle.language_view}>
           <Text style={Languagestyle.language_Text}>{"Language"}</Text>
         </View>
-        <SearchBar backSearchIcon />
+        <SearchBar backSearchIcon height={48} marginTop={20} />
         <LanguageData />
       </ScrollView>
     </View>

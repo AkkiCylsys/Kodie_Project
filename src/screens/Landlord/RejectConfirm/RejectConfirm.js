@@ -114,7 +114,7 @@ export default RejectConfirm = (props) => {
             LeftButtonText={"Reject"}
             RightButtonText={"Confirm"}
             onPressRightButton={() => {
-              props.navigation.navigate("PropertyList");
+              props.navigation.navigate("Properties");
             }}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_WhiteColor}

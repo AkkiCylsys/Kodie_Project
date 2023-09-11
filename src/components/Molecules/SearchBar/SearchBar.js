@@ -7,7 +7,12 @@ const SearchBar = (props) => {
   const [search, setSearch] = useState("");
   return (
     <View style={SearchBarStyle.serchheaderView}>
-      <View style={[SearchBarStyle.container, { height: props.height }]}>
+      <View
+        style={[
+          SearchBarStyle.container,
+          { height: props.height, marginTop: props.marginTop },
+        ]}
+      >
         {props.frontSearchIcon ? (
           <EvilIcons
             name="search"
@@ -37,7 +42,10 @@ const SearchBar = (props) => {
         </TouchableOpacity>
       ) : null}
       {props.isButtonShow ? (
-        <TouchableOpacity style={SearchBarStyle.buttonView}  onPress={props.onPress}>
+        <TouchableOpacity
+          style={SearchBarStyle.buttonView}
+          onPress={props.onPress}
+        >
           <Text style={SearchBarStyle.buttonText}>{props.buttonName}</Text>
         </TouchableOpacity>
       ) : null}

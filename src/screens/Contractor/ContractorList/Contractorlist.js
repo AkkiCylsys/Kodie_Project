@@ -107,7 +107,12 @@ export default ContractorList = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Broken door handle"}
       />
-      <SearchBar filterImage={IMAGES.filter} isFilterImage />
+      <SearchBar
+        filterImage={IMAGES.filter}
+        isFilterImage
+        height={48}
+        marginTop={20}
+      />
       <View style={ContractorlistStyle.hor_Line} />
       <FlatList
         data={data}

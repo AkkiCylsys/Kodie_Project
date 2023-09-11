@@ -9,7 +9,9 @@ const DividerIcon = (props) => {
       <View style={Dividerstyles.mainView}>
         <View
           style={{
-            borderBottomWidth: 0.8,
+            borderBottomWidth: props.borderBottomWidth
+              ? props.borderBottomWidth
+              : 0.8,
             borderColor: props.color ? props.color : colors.Kodie_GrayColor,
             borderStyle: props.dashed ? "dashed" : "solid",
             marginTop: 15,
@@ -38,7 +40,9 @@ const DividerIcon = (props) => {
 
         <View
           style={{
-            borderBottomWidth: 0.8,
+            borderBottomWidth: props.borderBottomWidth
+              ? props.borderBottomWidth
+              : 0.8,
             borderColor: props.color ? props.color : colors.Kodie_GrayColor,
             borderStyle: props.dashed ? "dashed" : "solid",
             marginTop: 15,
