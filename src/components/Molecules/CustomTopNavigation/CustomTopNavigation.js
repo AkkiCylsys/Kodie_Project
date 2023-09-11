@@ -55,28 +55,52 @@ const CustomTabNavigator = (props) => {
           {props.Tab2}
         </Text>
       </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          TopNavigationstyles.tabButton,
-          activeTab === "Tab3" && TopNavigationstyles.activeTab,
-        ]}
-        onPress={() => handleTabPress("Tab3")}
-      >
-        <Text
+      {props.TAB3 ? (
+        <TouchableOpacity
           style={[
-            TopNavigationstyles.tabText,
-            {
-              color:
-                activeTab === "Tab3"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
-            },
+            TopNavigationstyles.tabButton,
+            activeTab === "Tab3" && TopNavigationstyles.activeTab,
           ]}
+          onPress={() => handleTabPress("Tab3")}
         >
-          {props.Tab3}
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={[
+              TopNavigationstyles.tabText,
+              {
+                color:
+                  activeTab === "Tab3"
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor,
+              },
+            ]}
+          >
+            {props.Tab3}
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+      {props.TAB4 ? (
+        <TouchableOpacity
+          style={[
+            TopNavigationstyles.tabButton,
+            activeTab === "Tab4" && TopNavigationstyles.activeTab,
+          ]}
+          onPress={() => handleTabPress("Tab4")}
+        >
+          <Text
+            style={[
+              TopNavigationstyles.tabText,
+              {
+                color:
+                  activeTab === "Tab4"
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor,
+              },
+            ]}
+          >
+            {props.Tab4}
+          </Text>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
