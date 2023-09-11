@@ -269,11 +269,13 @@ export default PropertyList = (props) => {
         <SearchBar filterImage={IMAGES.filter} isFilterImage frontSearchIcon />
         <View style={PropertyListCSS.Container}>
           <CustomSingleButton
-            onPress={() => {}}
             _ButtonText={"+ Add New Property"}
             Text_Color={_COLORS.Kodie_BlackColor}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             height={40}
+            onPress={() => {
+              props.navigation.navigate("PropertyDetails");
+            }}
           />
           <View style={PropertyListCSS.flat_MainView}>
             <TouchableOpacity style={PropertyListCSS.AllView}>

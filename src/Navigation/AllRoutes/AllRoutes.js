@@ -60,6 +60,10 @@ import CreateJobTermsScreen from "../../screens/CreateJob/CreateJobTermsScreen/C
 import ConfirmJobCompletion from "../../screens/CreateJob/ConfirmJobCompletion/ConfirmJobCompletion";
 import Account from "../../screens/Authentication/SignUpScreen/Account/Account";
 import FirstProperty from "../../screens/Authentication/SignUpScreen/FirstProperty/FirstProperty";
+import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
+import PropertyFeature from "../../screens/Landlord/AddNewProperty/PropertyFeature/PropertyFeature";
+import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages/PropertyImages";
+import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -114,8 +118,8 @@ const BottomNav = (props) => {
         }}
       />
       <Tab.Screen
-        name="UserType"
-        component={UserType}
+        name="PropertyList"
+        component={PropertyList}
         options={{
           tabBarShowLabel: false,
           headerShown: false,
@@ -194,8 +198,8 @@ const BottomNav = (props) => {
         }}
       />
       <Tab.Screen
-        name="Notice"
-        component={Notice}
+        name="UserType"
+        component={UserType}
         options={{
           tabBarShowLabel: false,
           headerShown: false,
@@ -499,6 +503,26 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"FirstProperty"}
           component={FirstProperty}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyDetails"}
+          component={PropertyDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyFeature"}
+          component={PropertyFeature}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyImages"}
+          component={PropertyImages}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyReview"}
+          component={PropertyReview}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

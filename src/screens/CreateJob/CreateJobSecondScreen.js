@@ -3,8 +3,6 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Image,
-  ImageBackground,
   ScrollView,
 } from "react-native";
 import StepText from "../../components/Molecules/StepText/StepText";
@@ -12,16 +10,11 @@ import { CreateJobSecondStyle } from "./CreateJobSecondScreenCss";
 import {
   _COLORS,
   LABEL_STYLES,
-  IMAGES,
-  VIEW_STYLES,
   BANNERS,
 } from "../../Themes/index";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import UploadImagebox from "../../components/Molecules/UploadImageBox/UploadImageBox";
-// import UploadImageBoxes from "../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 import { SliderBox } from "react-native-image-slider-box";
 import UploadImageBoxes from "../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -139,16 +132,7 @@ export default CreateJobSecondScreen = (props) => {
             onPress={() => {
               refRBSheet.current.open();
             }}
-          />
-          {/* <CustomSingleButton
-            leftImage={IMAGES.uploadIcon}
-            isLeftImage={true}
-            borderColor={_COLORS.Kodie_TransparentColor}
-            _ButtonText={"Upload"}
-            backgroundColor={_COLORS.Kodie_lightGreenColor}
-            onPress={() => props.navigation.navigate("CreateJobTermsScreen")}
-          /> */}
-
+          />        
           <View style={CreateJobSecondStyle.next_Btn}>
             <CustomSingleButton
               _ButtonText={"Next"}
