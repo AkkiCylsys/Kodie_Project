@@ -64,6 +64,7 @@ export const IMAGES = {
 
 export const BANNERS = {
   BannerFirst: require("../../assets/images/Banners/amico.png"),
+  Apartment: require("../../assets/images/Banners/Apartment.png"),
   BannerSecond: require("../../assets/images/Banners/alfonso.png"),
   wallImage: require("../../assets/images/Banners/wall.png"),
   previewImage: require("../../assets/images/Banners/preview.png"),

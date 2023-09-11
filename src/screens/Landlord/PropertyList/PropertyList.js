@@ -482,7 +482,6 @@ export default PropertyList = (props) => {
         />
         <View style={PropertyListCSS.Container}>
           <CustomSingleButton
-            onPress={() => {}}
             _ButtonText={"+ Add New Property"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             text_Size={14}

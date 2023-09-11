@@ -50,7 +50,7 @@ const renderDataItem = (item) => {
 export default FirstProperty = (props) => {
   const [location, setLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = useState([]);
   const [value, setValue] = useState(null);
   return (
     <View style={FirstPropertyStyle.mainContainer}>
@@ -60,7 +60,9 @@ export default FirstProperty = (props) => {
       />
       <ScrollView>
         <View style={FirstPropertyStyle.headingView}>
-          <Text style={FirstPropertyStyle.heading}>{"Property details"}</Text>
+          <Text style={FirstPropertyStyle.heading}>
+            {"Add your first property"}
+          </Text>
         </View>
         <View style={FirstPropertyStyle.card}>
           <View style={FirstPropertyStyle.inputContainer}>
