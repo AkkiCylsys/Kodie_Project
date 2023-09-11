@@ -280,13 +280,17 @@ export default PropertyFeature = (props) => {
                       <Text style={PropertyFeatureStyle.textSelectedStyle}>
                         {item.label}
                       </Text>
-                      <AntDesign color={_COLORS.Kodie_WhiteColor} name="close" size={17} />
+                      <AntDesign
+                        color={_COLORS.Kodie_WhiteColor}
+                        name="close"
+                        size={17}
+                      />
                     </View>
                   </TouchableOpacity>
                 )}
               />
             </View>
-<            View style={PropertyFeatureStyle.btnView}>
+            <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton
                 _ButtonText={"Next"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
