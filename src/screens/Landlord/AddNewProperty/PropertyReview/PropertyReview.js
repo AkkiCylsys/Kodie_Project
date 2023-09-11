@@ -32,12 +32,12 @@ const Detail = [
   },
   {
     id: "2",
-    images: IMAGES.BedroomIcon,
+    images: IMAGES.Bathroom,
     name: "Bathrooms: 2",
   },
   {
     id: "3",
-    images: IMAGES.BedroomIcon,
+    images: IMAGES.Parking,
     name: "Garages: 1",
   },
   {
@@ -68,12 +68,12 @@ const Detail = [
 ];
 export default PropertyReview = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
-  const Detail_rander = (item) => {
+  const Detail_rander = ({ item, index }) => {
     return (
       <>
-        <View style={{ flex: 1, flexDirection: "row" }}>
-          <Image source={item.images} style={{ height: 25, width: 25 }} />
-          <Text style={LABEL_STYLES.commonMidtext}>{item.name}</Text>
+        <View style={PropertyReviewStyle.DetailsView}>
+          <Image source={item.images} style={PropertyReviewStyle.DetailsIcon} />
+          <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
         </View>
       </>
     );
@@ -161,7 +161,11 @@ export default PropertyReview = (props) => {
 
           <FlatList
             data={Detail}
-            keyExtractor={(item) => item.id}
+            scrollEnabled
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{}}
+            numColumns={2}
+            keyExtractor={(item) => item?.id}
             renderItem={Detail_rander}
           />
         </View>

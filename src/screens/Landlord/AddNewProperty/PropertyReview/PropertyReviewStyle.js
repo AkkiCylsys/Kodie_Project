@@ -90,4 +90,6 @@ export const PropertyReviewStyle = StyleSheet.create({
     marginTop: 24,
     marginHorizontal:16
   },
+  DetailsView:{ flex:1,flexDirection: "row"},
+  DetailsIcon:{ height: 30, width: 30 }
 });
