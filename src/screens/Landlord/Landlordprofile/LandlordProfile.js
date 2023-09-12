@@ -16,7 +16,7 @@ export default LandlordProfile = (props) => {
         MiddleText={"Profile"}
       />
       <ScrollView>
-        <SearchBar height={48} marginTop={20} />
+        <SearchBar  height={48} marginTop={20} />
         <View style={LandlordProfileStyle.profilemainView}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
             <Image
