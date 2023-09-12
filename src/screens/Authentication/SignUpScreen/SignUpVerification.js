@@ -12,7 +12,7 @@ import { _goBack } from "../../../services/CommonServices";
 import { LABEL_STYLES, _COLORS } from "../../../Themes";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native";
+
 import {
   CodeField,
   Cursor,
@@ -31,11 +31,7 @@ export default SignUpVerification = (props) => {
     setValue,
   });
 
-  const navigation = useNavigation();
-
-  const handlehelp = () => {
-    navigation.navigate("HelpOrFeedback");
-  };
+ 
 
   return (
     <View style={SignUpVerificationStyle.mainContainer}>
@@ -85,7 +81,9 @@ export default SignUpVerification = (props) => {
           <CustomSingleButton
             _ButtonText={"Verify email"}
             Text_Color={_COLORS.Kodie_WhiteColor}
-            onPressLeftButton={handlehelp}
+            onPress={()=>{
+              props.navigation.navigate("HelpOrFeedback")
+            }}
           />
         </View>
         <View style={SignUpVerificationStyle.goBack_View}>
