@@ -21,6 +21,14 @@ const data = [
   { label: "Australia", value: "2" },
   { label: "America", value: "3" },
 ];
+const Apartment_data = [
+  { label: "House", value: "1" },
+  { label: "Cottage", value: "2" },
+  { label: "Apartment / Flat", value: "3" },
+  { label: "Townhouse", value: "4" },
+  { label: "ApLand / vacant plot", value: "5" },
+  { label: "Farm", value: "6" },
+];
 export default PropertyDetails = (props) => {
   const [location, setLocation] = useState("");
   const [value, setValue] = useState(null);
@@ -91,7 +99,7 @@ export default PropertyDetails = (props) => {
               selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
               inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
               iconStyle={PropertyDetailsStyle.iconStyle}
-              data={data}
+              data={Apartment_data}
               maxHeight={300}
               labelField="label"
               valueField="value"
