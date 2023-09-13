@@ -65,7 +65,8 @@ import PropertyFeature from "../../screens/Landlord/AddNewProperty/PropertyFeatu
 import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages/PropertyImages";
 import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
 import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback";
-
+import Contactus from "../../screens/Setting/ContactUs/Contactus";
+import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -528,9 +529,21 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
 
-       <Stack.Screen
+        <Stack.Screen
           name={"HelpOrFeedback"}
           component={HelpOrFeedback}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Contactus"}
+          component={Contactus}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"AppInfo"}
+          component={AppInfo}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

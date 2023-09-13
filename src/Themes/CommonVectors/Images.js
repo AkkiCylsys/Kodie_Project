@@ -60,6 +60,7 @@ export const IMAGES = {
   Bathroom: require("../../assets/icons/bathroom.png"),
   BedroomIcon: require("../../assets/icons/bedroomIcon.png"),
   Parking: require("../../assets/icons/parking.png"),
+  rightarrow: require("../../assets/icons/rightarrow.png"),
 };
 
 export const BANNERS = {
