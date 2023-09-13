@@ -10,6 +10,7 @@ import Leases from "./Leases/Leases";
 import Details from "./Details/Details";
 import Expenses from "./Expenses/Expenses";
 import Documents from "./Documents/Documents";
+import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
@@ -104,31 +105,32 @@ export default PropertyReview = (props) => {
                 setTabValue("Details");
               }}
             >
-              <Text>{"Details"}</Text>
+              <Text style={[PropertyReviewStyle.Tab_text]}>{"Details"}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 setTabValue("Leases");
               }}
             >
-              <Text>{"Leases"}</Text>
+              <Text style={PropertyReviewStyle.Tab_text}>{"Leases"}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 setTabValue("Expenses");
               }}
             >
-              <Text>{"Expenses"}</Text>
+              <Text style={PropertyReviewStyle.Tab_text}>{"Expenses"}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 setTabValue("Documents");
               }}
             >
-              <Text>{"Documents"}</Text>
+              <Text style={PropertyReviewStyle.Tab_text}>{"Documents"}</Text>
             </TouchableOpacity>
           </View>
         </View>
+        <DividerIcon borderBottomWidth={3} />
         {checkTabs()}
       </ScrollView>
     </View>
