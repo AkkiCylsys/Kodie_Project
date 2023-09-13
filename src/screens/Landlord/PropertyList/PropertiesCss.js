@@ -6,7 +6,7 @@ export const PropertiesCSS = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   Line: {
-    borderBottomWidth: 2,
+    borderBottomWidth: 1,
     borderBottomColor: _COLORS.Kodie_LiteWhiteColor,
     elevation: 4,
   },

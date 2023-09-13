@@ -17,7 +17,7 @@ const CustomTabNavigator = (props) => {
           TopNavigationstyles.tabButton,
           activeTab === "Tab1" && TopNavigationstyles.activeTab,
         ]}
-        onPress={() => handleTabPress("Tab1")}
+        onPress={props.onPressTab1}
       >
         <Text
           style={[
@@ -39,7 +39,7 @@ const CustomTabNavigator = (props) => {
           TopNavigationstyles.tabButton,
           activeTab === "Tab2" && TopNavigationstyles.activeTab,
         ]}
-        onPress={() => handleTabPress("Tab2")}
+        onPress={props.onPressTab2}
       >
         <Text
           style={[
@@ -61,7 +61,7 @@ const CustomTabNavigator = (props) => {
             TopNavigationstyles.tabButton,
             activeTab === "Tab3" && TopNavigationstyles.activeTab,
           ]}
-          onPress={() => handleTabPress("Tab3")}
+          onPress={props.onPressTab3}
         >
           <Text
             style={[
@@ -84,7 +84,7 @@ const CustomTabNavigator = (props) => {
             TopNavigationstyles.tabButton,
             activeTab === "Tab4" && TopNavigationstyles.activeTab,
           ]}
-          onPress={() => handleTabPress("Tab4")}
+          onPress={props.onPressTab4}
         >
           <Text
             style={[

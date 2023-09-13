@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { SearchBarStyle } from "./SearchBarStyle";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
+import Icon from "react-native-vector-icons/Ionicons";
 import { _COLORS, IMAGES } from "../../../Themes/index";
 const SearchBar = (props) => {
   const [search, setSearch] = useState("");
@@ -10,7 +11,10 @@ const SearchBar = (props) => {
       <View
         style={[
           SearchBarStyle.container,
-          { height: props.height, marginTop: props.marginTop },
+          {
+            height: props.height,
+            marginTop: props.marginTop ? props.marginTop : 20,
+          },
         ]}
       >
         {props.frontSearchIcon ? (
@@ -41,6 +45,24 @@ const SearchBar = (props) => {
           <Image source={props.filterImage} />
         </TouchableOpacity>
       ) : null}
+      {props.mapIcon ? (
+        <TouchableOpacity style={SearchBarStyle.filterView}>
+          <View style={SearchBarStyle.groupIconView}>
+            <Icon
+              name="map-outline"
+              size={30}
+              color={_COLORS.Kodie_MediumGrayColor}
+            />
+            <Icon
+              name="location-outline"
+              size={9}
+              color={_COLORS.Kodie_MediumGrayColor}
+              style={SearchBarStyle.groupIcon}
+            />
+          </View>
+        </TouchableOpacity>
+      ) : null}
+
       {props.isButtonShow ? (
         <TouchableOpacity
           style={SearchBarStyle.buttonView}
