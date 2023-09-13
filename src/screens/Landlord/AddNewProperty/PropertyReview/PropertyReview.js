@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -18,6 +18,12 @@ import CustomSingleButton from "../../../../components/Atoms/CustomButton/Custom
 import { _COLORS, BANNERS, LABEL_STYLES, IMAGES } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
 import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
+import Leases from "../Leases/Leases";
+import {
+  useIsFocused,
+  CommonActions,
+  useFocusEffect,
+} from "@react-navigation/native";
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
@@ -68,15 +74,45 @@ const Detail = [
 ];
 export default PropertyReview = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
+  const [tabValue, setTabValue] = useState("PropertyReview");
+
+  useFocusEffect(
+    useCallback(() => {
+      checkTabs(tabValue);
+    }, [props, tabValue])
+  );
   const Detail_rander = ({ item, index }) => {
     return (
       <>
         <View style={PropertyReviewStyle.DetailsView}>
           <Image source={item.images} style={PropertyReviewStyle.DetailsIcon} />
-          <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
+          <Text style={PropertyReviewStyle.details_text}>{item.name}</Text>
         </View>
       </>
     );
+  };
+
+  const checkTabs = (data) => {
+    console.log("checkTabs_data......", data);
+    switch (data) {
+      case "PropertyReview":
+        setTabValue("PropertyReview");
+        break;
+      case "Leases":
+        setTabValue("Leases");
+        // props.navigation.navigate("Leases");
+        break;
+      case "Expenses":
+        setTabValue("Expenses");
+        break;
+      case "Documents":
+        setTabValue("Documents");
+        break;
+
+      default:
+        setTabValue("PropertyReview");
+        break;
+    }
   };
   return (
     <View style={PropertyReviewStyle.mainContainer}>
@@ -142,7 +178,7 @@ export default PropertyReview = (props) => {
             />
             <Text>{"8502 Preston Rd.Inglewood,Queensland,Australia,."}</Text>
           </View>
-          <CustomTabNavigator
+          {/* <CustomTabNavigator
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             TAB3
@@ -151,7 +187,29 @@ export default PropertyReview = (props) => {
             Tab2={"Leases"}
             Tab3={"Expenses"}
             Tab4={"Documents"}
-          />
+          /> */}
+          <View style={PropertyReviewStyle.Details_Tab}>
+            <TouchableOpacity
+              onPress={() => {
+                checkTabs("PropertyReview");
+              }}
+            >
+              <Text>{"Details"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                checkTabs("Leases");
+              }}
+            >
+              <Text>{"Leases"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>{"Expenses"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Text>{"Documents"}</Text>
+            </TouchableOpacity>
+          </View>
 
           <Text style={PropertyReviewStyle.welcome_Text}>
             {
@@ -236,6 +294,9 @@ export default PropertyReview = (props) => {
           <CustomSingleButton
             _ButtonText={"Add property"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            onPress={() => {
+              props.navigation.navigate("NewInspection");
+            }}
           />
         </View>
         <View style={PropertyReviewStyle.goBack_View}>

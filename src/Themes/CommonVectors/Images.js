@@ -18,6 +18,7 @@ export const IMAGES = {
   fixingTool: require("../../assets/icons/fixingTool.png"),
   fixing: require("../../assets/icons/fixing.png"),
   filter: require("../../assets/icons/filter.png"),
+  up_down_Arrow: require("../../assets/icons/up_down_Arrow.png"),
   userImage: require("../../assets/icons/UserImage.png"),
   redLine: require("../../assets/icons/RedLine.png"),
   blueLine: require("../../assets/icons/BlueLine.png"),

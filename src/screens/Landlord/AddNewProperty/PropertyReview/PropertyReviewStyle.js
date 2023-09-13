@@ -63,12 +63,12 @@ export const PropertyReviewStyle = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 16,
   },
-  down_Arrow_icon:{
-    borderWidth:1,
-    paddingHorizontal:3,
-    paddingVertical:3,
-    borderRadius:5,
-    borderColor:_COLORS.Kodie_GrayColor
+  down_Arrow_icon: {
+    borderWidth: 1,
+    paddingHorizontal: 3,
+    paddingVertical: 3,
+    borderRadius: 5,
+    borderColor: _COLORS.Kodie_GrayColor,
   },
   goBack_View: {
     flexDirection: "row",
@@ -88,8 +88,26 @@ export const PropertyReviewStyle = StyleSheet.create({
   },
   btnView: {
     marginTop: 24,
-    marginHorizontal:16
+    marginHorizontal: 16,
   },
-  DetailsView:{ flex:1,flexDirection: "row"},
-  DetailsIcon:{ height: 30, width: 30 }
+  DetailsView: {
+    flex: 1,
+    flexDirection: "row",
+    marginVertical: 5,
+    marginLeft: 15,
+  },
+  DetailsIcon: { height: 30, width: 30 },
+  details_text: {
+    fontSize: 12,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Regular,
+    alignSelf: "center",
+    marginLeft: 5,
+  },
+  Details_Tab: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+    marginVertical: 10,
+  },
 });
