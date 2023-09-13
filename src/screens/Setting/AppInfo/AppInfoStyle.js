@@ -10,10 +10,10 @@ export const AppInfoStyle = StyleSheet.create({
 
   propertytext: {
     fontSize: 15,
-    fontWeight: "700",
+    fontWeight: "600",
     lineHeight: 20,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Medium,
+    fontFamily: FONTFAMILY.K_Bold,
   },
 
   versiontext: {
@@ -21,7 +21,7 @@ export const AppInfoStyle = StyleSheet.create({
     fontWeight: "500",
     lineHeight: 20,
     top:5,
-    fontFamily: FONTFAMILY.K_Light,
+    fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_BlackColor,
   },
 
