@@ -1,4 +1,4 @@
-import React ,{useState}from "react";
+import React, { useState } from "react";
 import { View, Text, ScrollView, TextInput } from "react-native";
 import { AddExpensesDetailsStyle } from "./AddExpensesDetailsStyle";
 import { _COLORS } from "../../../../../../Themes";
