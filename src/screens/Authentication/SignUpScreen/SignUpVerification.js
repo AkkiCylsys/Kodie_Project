@@ -12,6 +12,7 @@ import { _goBack } from "../../../services/CommonServices";
 import { LABEL_STYLES, _COLORS } from "../../../Themes";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
 import {
   CodeField,
   Cursor,
@@ -29,6 +30,8 @@ export default SignUpVerification = (props) => {
     value,
     setValue,
   });
+
+ 
 
   return (
     <View style={SignUpVerificationStyle.mainContainer}>
@@ -74,10 +77,13 @@ export default SignUpVerification = (props) => {
           {"It may take a few minutes to receive your code. "}
         </Text>
 
-        <View style={SignUpVerificationStyle.customBtn}>
+        <View style={SignUpVerificationStyle.customBtn} >
           <CustomSingleButton
             _ButtonText={"Verify email"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            onPress={()=>{
+              props.navigation.navigate("ChangeContactInput")
+            }}
           />
         </View>
         <View style={SignUpVerificationStyle.goBack_View}>

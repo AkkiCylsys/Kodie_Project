@@ -30,11 +30,11 @@ const data = [
     Img: IMAGES.Delete,
   },
 ];
-const BottomModalData = () => {
+const BottomModalData = (props) => {
   const BottomData = ({ item, index }) => {
     return (
       <>
-        <TouchableOpacity style={BottomModalDataStyle.container}>
+        <TouchableOpacity style={BottomModalDataStyle.container} onPress={props.onPress}>
           <Image source={item.Img} style={BottomModalDataStyle.Icons} />
           <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
         </TouchableOpacity>

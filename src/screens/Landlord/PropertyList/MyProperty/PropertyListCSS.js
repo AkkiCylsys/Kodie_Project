@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../Themes";
+import { _COLORS, FONTFAMILY } from "../../../../Themes";
 
 export const PropertyListCSS = StyleSheet.create({
   mainContainer: {
