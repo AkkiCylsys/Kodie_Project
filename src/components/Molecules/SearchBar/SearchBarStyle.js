@@ -28,7 +28,7 @@ export const SearchBarStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
-    paddingVertical: 12,
+    paddingVertical: 8,
     paddingHorizontal: 12,
     marginRight: 16,
     marginTop: 18,
@@ -48,6 +48,16 @@ export const SearchBarStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_WhiteColor,
     textAlign: "center",
+    alignSelf: "center",
+  },
+  groupIconView: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  groupIcon: {
+    position: "absolute",
+    left: 10,
+    top: 10,
     alignSelf: "center",
   },
 });

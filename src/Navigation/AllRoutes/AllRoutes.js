@@ -73,6 +73,11 @@ import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
 import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
 import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/PropertyExpenses/PropertyExpenses";
+import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
+import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/SearchResult";
+import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
+import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
+import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -563,6 +568,7 @@ const AllStackRouts = (props) => {
           name={"ChangeContactInput"}
           component={ChangeContactInput}
        />
+       
         <Stack.Screen
           name={"NewInspection"}
           component={NewInspection}
@@ -571,6 +577,26 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"PropertyExpenses"}
           component={PropertyExpenses}
+          options={{ headerShown: false }}
+          />
+          <Stack.Screen
+          name={"Invitefriend"}
+          component={Invitefriend}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SearchResult"}
+          component={SearchResult}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ViewPropertyDetails"}
+          component={ViewPropertyDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SubmitApplication"}
+          component={SubmitApplication}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
