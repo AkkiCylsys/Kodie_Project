@@ -10,4 +10,8 @@ export const PropertiesCSS = StyleSheet.create({
     borderBottomColor: _COLORS.Kodie_LiteWhiteColor,
     elevation: 4,
   },
+  activeTab: {
+    backgroundColor: "white",
+    borderBottomWidth: 1,
+  },
 });

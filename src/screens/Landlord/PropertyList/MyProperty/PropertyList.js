@@ -13,17 +13,17 @@ import {
   BANNERS,
   IMAGES,
   FONTFAMILY,
-} from "../../../Themes";
+} from "../../../../Themes";
 import { PropertyListCSS } from "./PropertyListCSS";
-import TopHeader from "../../../components/Molecules/Header/Header";
-import { _goBack } from "./../../../services/CommonServices/index";
-import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
+import TopHeader from "../../../../components/Molecules/Header/Header";
+import { _goBack } from "../../../../services/CommonServices/index";
+import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+import SearchBar from "../../../../components/Molecules/SearchBar/SearchBar";
+import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RBSheet from "react-native-raw-bottom-sheet";
-import BottomModalData from "../../../components/Molecules/BottomModal/BottomModalData";
-import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
+import BottomModalData from "../../../../components/Molecules/BottomModal/BottomModalData";
+import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 const HorizontalData = [
   "Occupied",
   "Vacant",

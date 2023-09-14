@@ -65,9 +65,10 @@ import PropertyFeature from "../../screens/Landlord/AddNewProperty/PropertyFeatu
 import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages/PropertyImages";
 import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
 import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
-
-//
+import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/SearchResult";
+import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
+import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -538,6 +539,21 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"Invitefriend"}
           component={Invitefriend}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SearchResult"}
+          component={SearchResult}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ViewPropertyDetails"}
+          component={ViewPropertyDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SubmitApplication"}
+          component={SubmitApplication}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
