@@ -66,12 +66,10 @@ import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages
 import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
 
 //
-import Invitefriend from "./../../screens/InviteFriend/Invitefriend"
 import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback";
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
-import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
 import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/PropertyExpenses/PropertyExpenses";
 import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
 import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/SearchResult";
