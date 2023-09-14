@@ -579,11 +579,7 @@ const AllStackRouts = (props) => {
           component={PropertyExpenses}
           options={{ headerShown: false }}
           />
-          <Stack.Screen
-          name={"Invitefriend"}
-          component={Invitefriend}
-          options={{ headerShown: false }}
-        />
+          
         <Stack.Screen
           name={"SearchResult"}
           component={SearchResult}
