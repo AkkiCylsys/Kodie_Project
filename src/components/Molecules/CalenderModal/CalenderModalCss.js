@@ -36,6 +36,7 @@ export const CalenderCss = StyleSheet.create({
           alignSelf: "center",
           marginTop: 15,
           flex: 1,
+          paddingVertical:5
         },
         textInputStyle: {
           alignSelf: "center",

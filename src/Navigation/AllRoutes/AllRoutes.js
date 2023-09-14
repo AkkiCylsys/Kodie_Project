@@ -71,6 +71,8 @@ import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
+import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
+import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/PropertyExpenses/PropertyExpenses";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -560,6 +562,15 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ChangeContactInput"}
           component={ChangeContactInput}
+       />
+        <Stack.Screen
+          name={"NewInspection"}
+          component={NewInspection}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyExpenses"}
+          component={PropertyExpenses}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
