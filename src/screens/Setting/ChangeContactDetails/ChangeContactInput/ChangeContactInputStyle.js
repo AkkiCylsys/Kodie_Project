@@ -7,11 +7,12 @@ export const ChangeContactInputStyle = StyleSheet.create({
     top:25,
   },
   oldnumbertext: {
-    fontSize: 14,
+    fontSize: 13,
     fontWeight: "600",
     lineHeight: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
+    marginRight:15
   },
   input: {
     height: 50,
@@ -20,9 +21,11 @@ export const ChangeContactInputStyle = StyleSheet.create({
     width: 330,
     // borderColor:_COLORS.Kodie_GrayColor,
     borderRadius: 8,
-    color: _COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_MediumGrayColor,
     paddingLeft: 68,
-    top:5
+    top:4,
+    fontFamily:FONTFAMILY.K_SemiBold,
+    opacity:0.5
   },
   numbercode: {
     position: "absolute",
@@ -35,7 +38,7 @@ export const ChangeContactInputStyle = StyleSheet.create({
   },
   downarrowimg: {
     width: 12,
-    height: 5,
+    height: 6,
     position: "absolute",
     left: 0,
     marginLeft: 50,
@@ -43,21 +46,29 @@ export const ChangeContactInputStyle = StyleSheet.create({
   },
   lineimg: {
     height: 21,
-    width: 20,
+    width: 45,
     position: "absolute",
     left: 0,
-    marginLeft: 60,
+    marginLeft: 48,
     marginTop: 30,
+    padding:10
   },
   Vectorimg: {
     width: 15,
     height: 17,
-    color: "#CED5D7",
+    tintColor: "#CED5D7",
     position: "absolute",
     right: 0,
     marginTop: 35,
     marginRight: 30,
   },
+  // HorizontallineImage:{
+  //  width:17,
+  //  tintColor:'#CED5D7',
+  //  position:'absolute',
+  //  right:0,
+  //  paddingBottom:50
+  // },
   secondview:{
     alignItems: "center",
     top:45,

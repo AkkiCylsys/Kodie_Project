@@ -68,6 +68,8 @@ import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
+import ChangeContactNotify from "../../screens/Setting/ChangeContactDetails/ChangeContactNotify/ChangeContactNotify";
+import DeleteAccount from "../../screens/Setting/DeleteAccount/DeleteAccount";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -551,6 +553,18 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ChangeContactInput"}
           component={ChangeContactInput}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"ChangeContactNotify"}
+          component={ChangeContactNotify}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"DeleteAccount"}
+          component={DeleteAccount}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

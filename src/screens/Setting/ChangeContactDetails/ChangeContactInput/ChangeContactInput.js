@@ -28,7 +28,7 @@ const ChangeContactInput = () => {
             />
             <Image
               style={ChangeContactInputStyle.lineimg}
-              source={require("../../../../assets/icons/line.png")}
+              source={require("../../../../assets/icons/verticalLineimg.png")}
             />
             {/* <View  style={ChangeContactInputStyle.downarrowimg}></View> */}
           </View>
@@ -58,7 +58,7 @@ const ChangeContactInput = () => {
             />
             <Image
               style={ChangeContactInputStyle.lineimg}
-              source={require("../../../../assets/icons/line.png")}
+              source={require("../../../../assets/icons/verticalLineimg.png")}
             />
             {/* <View  style={ChangeContactInputStyle.downarrowimg}></View> */}
           </View>
@@ -71,6 +71,10 @@ const ChangeContactInput = () => {
             style={ChangeContactInputStyle.Vectorimg}
             source={require("../../../../assets/icons/Vector.png")}
           />
+          {/* <Image
+            style={ChangeContactInputStyle.HorizontallineImage}
+            source={require("../../../../assets/icons/HorizontallineImage.png")}
+          /> */}
         </View>
       </View>
 
@@ -80,8 +84,10 @@ const ChangeContactInput = () => {
          Text_Color={_COLORS.Kodie_WhiteColor}
          />
       </View>
+    
     </>
-  );
+
+    );
 };
 
 export default ChangeContactInput;
