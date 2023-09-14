@@ -9,7 +9,7 @@ export const LABEL_STYLES = StyleSheet.create({
     fontSize: 16,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginBottom:12
+    marginBottom: 12,
   },
   commontext: {
     fontSize: 14,
@@ -26,8 +26,8 @@ export const VIEW_STYLES = StyleSheet.create({
   // kodie Common View CSS
   _bottomButtonView: {
     bottom: 10,
-    width:'100%',
-    position: 'absolute',
+    width: "100%",
+    position: "absolute",
     paddingHorizontal: 20,
   },
 });

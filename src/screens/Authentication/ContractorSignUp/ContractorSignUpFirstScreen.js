@@ -40,7 +40,7 @@ export default ContractorSignUpFirstScreen = (props) => {
   const [address, setAddress] = useState("");
   const [bio, setBio] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = useState([]);
 
   const renderDataItem = (item) => {
     return (

@@ -52,17 +52,10 @@ const CalendarModal = (props) => {
   return (
     <View style={CalenderCss.container}>
       <View style={CalenderCss.calenderView}>
-        <Text
-          style={[
-            CalenderCss.textInputStyle,
-            props._textInputStyle,
-          ]}
-        >
+        <Text style={[CalenderCss.textInputStyle, props._textInputStyle]}>
           {props.SelectDate}
         </Text>
-        <TouchableOpacity 
-        onPress={props.calenderIcon}
-        >
+        <TouchableOpacity onPress={props.calenderIcon}>
           <MacIcon
             name={"calendar-month-outline"}
             size={23}
@@ -80,45 +73,34 @@ const CalendarModal = (props) => {
       >
         <View style={CalenderCss.modalContainer}>
           <View style={CalenderCss.modalContent}>
-            <View
-              style={CalenderCss.headingView}
-            >
+            <View style={CalenderCss.headingView}>
               <Text style={CalenderCss.Select_date_text}>{"Select date"}</Text>
-              <TouchableOpacity  onPress={props._closeButton}>
-                <Entypo name="cross" size={25} color={_COLORS.Kodie_BlackColor} />
+              <TouchableOpacity onPress={props._closeButton}>
+                <Entypo
+                  name="cross"
+                  size={25}
+                  color={_COLORS.Kodie_BlackColor}
+                />
               </TouchableOpacity>
             </View>
             <Calendar
               onDayPress={props.onDayPress}
-              todayTextColor= {_COLORS.Kodie_BlackColor}
+              todayTextColor={_COLORS.Kodie_BlackColor}
               dayTextColor={_COLORS.Kodie_BlackColor}
               markedDates={props.markedDates}
             />
-            <View
-              style={CalenderCss.ButtonView}
-            >
+            <View style={CalenderCss.ButtonView}>
               <TouchableOpacity
-                style={[
-                  CalenderCss.closeButton,
-                 CalenderCss.closeText
-                ]}
+                style={[CalenderCss.closeButton, CalenderCss.closeText]}
                 onPress={props._closeButton}
               >
                 <Text style={LABEL_STYLES.commontext}>cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[
-                  CalenderCss.closeButton,
-                  CalenderCss.applyText
-                ]}
+                style={[CalenderCss.closeButton, CalenderCss.applyText]}
                 onPress={props._ApplyButton}
               >
-                <Text
-                  style={[
-                    LABEL_STYLES.commontext,
-                   CalenderCss.text
-                  ]}
-                >
+                <Text style={[LABEL_STYLES.commontext, CalenderCss.text]}>
                   Apply
                 </Text>
               </TouchableOpacity>
@@ -129,7 +111,5 @@ const CalendarModal = (props) => {
     </View>
   );
 };
-
-
 
 export default CalendarModal;

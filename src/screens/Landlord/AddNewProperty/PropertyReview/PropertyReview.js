@@ -1,82 +1,39 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  Image,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { PropertyReviewStyle } from "./PropertyReviewStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
 import { SliderBox } from "react-native-image-slider-box";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
-import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS, BANNERS, LABEL_STYLES, IMAGES } from "../../../../Themes";
+import { _COLORS, BANNERS } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
-import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
+import Leases from "./Leases/Leases";
+import Details from "./Details/Details";
+import Expenses from "./Expenses/Expenses";
+import Documents from "./Documents/Documents";
+import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
   BANNERS.BannerSecond,
   BANNERS.previewImage,
 ];
-const Detail = [
-  {
-    id: "1",
-    images: IMAGES.BedroomIcon,
-    name: "Bedrooms: 3",
-  },
-  {
-    id: "2",
-    images: IMAGES.Bathroom,
-    name: "Bathrooms: 2",
-  },
-  {
-    id: "3",
-    images: IMAGES.Parking,
-    name: "Garages: 1",
-  },
-  {
-    id: "4",
-    images: IMAGES.BedroomIcon,
-    name: "Parkings: 1",
-  },
-  {
-    id: "5",
-    images: IMAGES.BedroomIcon,
-    name: "Garden",
-  },
-  {
-    id: "6",
-    images: IMAGES.BedroomIcon,
-    name: "Pool",
-  },
-  {
-    id: "7",
-    images: IMAGES.BedroomIcon,
-    name: "Furnished",
-  },
-  {
-    id: "8",
-    images: IMAGES.BedroomIcon,
-    name: "WiFi",
-  },
-];
+
 export default PropertyReview = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
-  const Detail_rander = ({ item, index }) => {
-    return (
-      <>
-        <View style={PropertyReviewStyle.DetailsView}>
-          <Image source={item.images} style={PropertyReviewStyle.DetailsIcon} />
-          <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
-        </View>
-      </>
-    );
+  const [tabValue, setTabValue] = useState("");
+  const checkTabs = () => {
+    switch (tabValue) {
+      case "Details":
+        return <Details />;
+      case "Leases":
+        return <Leases />;
+      case "Expenses":
+        return <Expenses />;
+      case "Documents":
+        return <Documents />;
+      default:
+        return <Details />;
+    }
   };
   return (
     <View style={PropertyReviewStyle.mainContainer}>
@@ -142,112 +99,39 @@ export default PropertyReview = (props) => {
             />
             <Text>{"8502 Preston Rd.Inglewood,Queensland,Australia,."}</Text>
           </View>
-          <CustomTabNavigator
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            TAB3
-            TAB4
-            Tab1={"Details"}
-            Tab2={"Leases"}
-            Tab3={"Expenses"}
-            Tab4={"Documents"}
-          />
-
-          <Text style={PropertyReviewStyle.welcome_Text}>
-            {
-              "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
-            }
-          </Text>
-
-          <FlatList
-            data={Detail}
-            scrollEnabled
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{}}
-            numColumns={2}
-            keyExtractor={(item) => item?.id}
-            renderItem={Detail_rander}
-          />
-        </View>
-        <DividerIcon borderBottomWidth={1} color={_COLORS.Kodie_GrayColor} />
-        <View style={PropertyReviewStyle.subContainer}>
-          <View style={PropertyReviewStyle.propety_details_view}>
-            <Text style={PropertyReviewStyle.propery_det}>
-              {"Property details"}
-            </Text>
-
-            <TouchableOpacity style={PropertyReviewStyle.down_Arrow_icon}>
-              <AntDesign
-                name="down"
-                size={15}
-                color={_COLORS.Kodie_GrayColor}
-              />
+          <View style={PropertyReviewStyle.Details_Tab}>
+            <TouchableOpacity
+              onPress={() => {
+                setTabValue("Details");
+              }}
+            >
+              <Text style={[PropertyReviewStyle.Tab_text]}>{"Details"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setTabValue("Leases");
+              }}
+            >
+              <Text style={PropertyReviewStyle.Tab_text}>{"Leases"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setTabValue("Expenses");
+              }}
+            >
+              <Text style={PropertyReviewStyle.Tab_text}>{"Expenses"}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setTabValue("Documents");
+              }}
+            >
+              <Text style={PropertyReviewStyle.Tab_text}>{"Documents"}</Text>
             </TouchableOpacity>
           </View>
-          <DividerIcon marginTop={8} />
         </View>
-        <View style={PropertyReviewStyle.subContainer}>
-          <View style={PropertyReviewStyle.propety_details_view}>
-            <Text style={PropertyReviewStyle.propery_det}>{"Rooms"}</Text>
-
-            <TouchableOpacity style={PropertyReviewStyle.down_Arrow_icon}>
-              <AntDesign
-                name="down"
-                size={15}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            </TouchableOpacity>
-          </View>
-          <DividerIcon marginTop={8} />
-        </View>
-        <View style={PropertyReviewStyle.subContainer}>
-          <View style={PropertyReviewStyle.propety_details_view}>
-            <Text style={PropertyReviewStyle.propery_det}>
-              {"External featuress"}
-            </Text>
-
-            <TouchableOpacity style={PropertyReviewStyle.down_Arrow_icon}>
-              <AntDesign
-                name="down"
-                size={15}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            </TouchableOpacity>
-          </View>
-          <DividerIcon marginTop={8} />
-        </View>
-        <View style={PropertyReviewStyle.subContainer}>
-          <View style={PropertyReviewStyle.propety_details_view}>
-            <Text style={PropertyReviewStyle.propery_det}>
-              {"Points of interest"}
-            </Text>
-
-            <TouchableOpacity style={PropertyReviewStyle.down_Arrow_icon}>
-              <AntDesign
-                name="down"
-                size={15}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            </TouchableOpacity>
-          </View>
-          <DividerIcon marginTop={8} />
-        </View>
-        <View style={PropertyReviewStyle.btnView}>
-          <CustomSingleButton
-            _ButtonText={"Add property"}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-          />
-        </View>
-        <View style={PropertyReviewStyle.goBack_View}>
-          <TouchableOpacity style={PropertyReviewStyle.backIcon}>
-            <Ionicons
-              name="chevron-back"
-              size={22}
-              color={_COLORS.Kodie_MediumGrayColor}
-            />
-          </TouchableOpacity>
-          <Text style={PropertyReviewStyle.goBack_Text}>{"Go back"}</Text>
-        </View>
+        <DividerIcon borderBottomWidth={3} />
+        {checkTabs()}
       </ScrollView>
     </View>
   );

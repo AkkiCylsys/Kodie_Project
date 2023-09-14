@@ -64,12 +64,20 @@ import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetai
 import PropertyFeature from "../../screens/Landlord/AddNewProperty/PropertyFeature/PropertyFeature";
 import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages/PropertyImages";
 import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
+
+//
 import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback";
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
 import ChangeContactNotify from "../../screens/Setting/ChangeContactDetails/ChangeContactNotify/ChangeContactNotify";
 import DeleteAccount from "../../screens/Setting/DeleteAccount/DeleteAccount";
+import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/PropertyExpenses/PropertyExpenses";
+import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
+import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/SearchResult";
+import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
+import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
+import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -531,6 +539,12 @@ const AllStackRouts = (props) => {
           component={PropertyReview}
           options={{ headerShown: false }}
         />
+          <Stack.Screen
+          name={"Invitefriend"}
+          component={Invitefriend}
+          options={{ headerShown: false }}
+        />
+   
 
         <Stack.Screen
           name={"HelpOrFeedback"}
@@ -553,6 +567,36 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ChangeContactInput"}
           component={ChangeContactInput}
+       />
+       
+        <Stack.Screen
+          name={"NewInspection"}
+          component={NewInspection}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyExpenses"}
+          component={PropertyExpenses}
+          options={{ headerShown: false }}
+          />
+          <Stack.Screen
+          name={"Invitefriend"}
+          component={Invitefriend}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SearchResult"}
+          component={SearchResult}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ViewPropertyDetails"}
+          component={ViewPropertyDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SubmitApplication"}
+          component={SubmitApplication}
           options={{ headerShown: false }}
         />
 

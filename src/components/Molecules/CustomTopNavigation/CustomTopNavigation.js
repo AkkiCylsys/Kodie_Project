@@ -4,7 +4,7 @@ import { FONTFAMILY, _COLORS } from "../../../Themes";
 import { TopNavigationstyles } from "./CustomTopNavigationCss";
 
 const CustomTabNavigator = (props) => {
-  const [activeTab, setActiveTab] = useState("Tab1"); // Track the active tab
+  const [activeTab, setActiveTab] = useState(""); // Track the active tab
 
   const handleTabPress = (tabName) => {
     setActiveTab(tabName);
@@ -14,19 +14,18 @@ const CustomTabNavigator = (props) => {
     <View style={TopNavigationstyles.container}>
       <TouchableOpacity
         style={[
-          TopNavigationstyles.tabButton,
-          activeTab === "Tab1" && TopNavigationstyles.activeTab,
+          TopNavigationstyles.tabButton,props.styleTab1
         ]}
-        onPress={() => handleTabPress("Tab1")}
+        onPress={props.onPressTab1}
       >
         <Text
           style={[
             TopNavigationstyles.tabText,
             {
-              color:
-                activeTab === "Tab1"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
+              color: props.colorTab1,
+                // activeTab === "Tab1"
+                //   ? _COLORS.Kodie_BlackColor
+                //   : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
         >
@@ -37,18 +36,16 @@ const CustomTabNavigator = (props) => {
       <TouchableOpacity
         style={[
           TopNavigationstyles.tabButton,
-          activeTab === "Tab2" && TopNavigationstyles.activeTab,
+          props.styleTab2
         ]}
-        onPress={() => handleTabPress("Tab2")}
+        onPress={props.onPressTab2}
       >
         <Text
           style={[
             TopNavigationstyles.tabText,
             {
-              color:
-                activeTab === "Tab2"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
+              color:props.colorTab2
+                
             },
           ]}
         >
@@ -58,19 +55,16 @@ const CustomTabNavigator = (props) => {
       {props.TAB3 ? (
         <TouchableOpacity
           style={[
-            TopNavigationstyles.tabButton,
-            activeTab === "Tab3" && TopNavigationstyles.activeTab,
+            TopNavigationstyles.tabButton,props.styleTab3
           ]}
-          onPress={() => handleTabPress("Tab3")}
+          onPress={props.onPressTab3}
         >
           <Text
             style={[
               TopNavigationstyles.tabText,
               {
                 color:
-                  activeTab === "Tab3"
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor,
+                 props.colorTab3
               },
             ]}
           >
@@ -84,7 +78,7 @@ const CustomTabNavigator = (props) => {
             TopNavigationstyles.tabButton,
             activeTab === "Tab4" && TopNavigationstyles.activeTab,
           ]}
-          onPress={() => handleTabPress("Tab4")}
+          onPress={props.onPressTab4}
         >
           <Text
             style={[

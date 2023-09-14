@@ -14,18 +14,23 @@ const data = [
     Data: "Choose photo from library",
     Img: IMAGES.gallery,
   },
+  {
+    id: "2",
+    Data: "Choose file from folder",
+    Img: IMAGES.Upload,
+  },
 ];
 
 const UploadImageData = (props) => {
   const UploadImageContent = ({ item, index }) => {
     return (
       <>
-        <View style={UploadImageStyle.content_View}>
+        <TouchableOpacity style={UploadImageStyle.content_View}>
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
             <Image source={item.Img} style={UploadImageStyle.Icons} />
           </TouchableOpacity>
           <Text style={UploadImageStyle.text}>{item.Data}</Text>
-        </View>
+        </TouchableOpacity>
       </>
     );
   };
