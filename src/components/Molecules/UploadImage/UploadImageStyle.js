@@ -7,7 +7,7 @@ export const UploadImageStyle = StyleSheet.create({
     alignItems: "center",
     padding: 10,
     marginHorizontal:10,
-    backgroundColor:_COLORS.Kodie_WhiteColor
+    backgroundColor:_COLORS.Kodie_WhiteColor,
     
   },
   text: {
@@ -18,7 +18,7 @@ export const UploadImageStyle = StyleSheet.create({
     alignSelf:"center"
   },
   Icons: { width: 40, height: 40, resizeMode: "cover" },
-  upload_View:{ flexDirection: "row", justifyContent: "space-between" },
+  upload_View:{ flexDirection: "row", justifyContent: "space-between",marginTop:10 },
   crossIconStyle:{alignSelf:"center",marginRight:10},
   uploadImgText:{
     marginHorizontal:16,

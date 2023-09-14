@@ -28,8 +28,9 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     marginBottom: 20,
   },
   inputContainer: {
-    marginBottom: 15,
+    marginTop: 15,
   },
+  Tax_input_cont: { flex: 1, marginLeft: 8 },
   input: {
     height: 45,
     borderRadius: 6,
@@ -39,5 +40,66 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
+  },
+  tax_main_view: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  datePickerView: { flexDirection: "row" },
+  dropdown: {
+    borderWidth: 1,
+    height: 50,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 10,
+    borderRadius: 8,
+  },
+
+  placeholderStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_GreenColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    marginRight: 16,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  ButtonView: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginRight: 10,
+    marginTop: 20,
+  },
+  closeText: {
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+    borderRadius: 4,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  applyText: {
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  text: {
+    color: _COLORS.Kodie_WhiteColor,
+    alignSelf:"center",
+    fontSize:14,
+    fontFamily:FONTFAMILY.K_SemiBold
   },
 });

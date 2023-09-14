@@ -65,6 +65,7 @@ import PropertyFeature from "../../screens/Landlord/AddNewProperty/PropertyFeatu
 import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages/PropertyImages";
 import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
 import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
+import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/PropertyExpenses/PropertyExpenses";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -530,6 +531,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"NewInspection"}
           component={NewInspection}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyExpenses"}
+          component={PropertyExpenses}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

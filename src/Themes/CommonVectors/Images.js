@@ -8,6 +8,7 @@ export const IMAGES = {
   userIcons: require("../../assets/icons/UploadPhotos.png"),
   Landlordprofile: require("../../assets/icons/landlordProfile.png"),
   uploadIcon: require("../../assets/icons/cloud-upload.png"),
+  Upload: require("../../assets/icons/Upload.png"),
   document: require("../../assets/icons/doc-pdf.png"),
   cleaner: require("../../assets/icons/cleaner.png"),
   lightCleaner: require("../../assets/icons/lightCleaner.png"),
