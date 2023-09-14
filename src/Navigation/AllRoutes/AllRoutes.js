@@ -67,6 +67,10 @@ import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview
 
 //
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend"
+import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback";
+import Contactus from "../../screens/Setting/ContactUs/Contactus";
+import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
+import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -534,6 +538,30 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
    
+
+        <Stack.Screen
+          name={"HelpOrFeedback"}
+          component={HelpOrFeedback}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Contactus"}
+          component={Contactus}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"AppInfo"}
+          component={AppInfo}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"ChangeContactInput"}
+          component={ChangeContactInput}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

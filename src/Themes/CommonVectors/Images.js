@@ -63,6 +63,7 @@ export const IMAGES = {
     // common images
     Share: require("../../assets/images/Common/Share.png"),
   
+  rightarrow: require("../../assets/icons/rightarrow.png"),
 };
 
 export const BANNERS = {
