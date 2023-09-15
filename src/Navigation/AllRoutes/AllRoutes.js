@@ -64,8 +64,6 @@ import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetai
 import PropertyFeature from "../../screens/Landlord/AddNewProperty/PropertyFeature/PropertyFeature";
 import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages/PropertyImages";
 import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
-
-//
 import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback";
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
@@ -78,6 +76,7 @@ import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/S
 import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
+import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -539,12 +538,11 @@ const AllStackRouts = (props) => {
           component={PropertyReview}
           options={{ headerShown: false }}
         />
-          <Stack.Screen
+        <Stack.Screen
           name={"Invitefriend"}
           component={Invitefriend}
           options={{ headerShown: false }}
         />
-   
 
         <Stack.Screen
           name={"HelpOrFeedback"}
@@ -567,8 +565,8 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ChangeContactInput"}
           component={ChangeContactInput}
-       />
-       
+        />
+
         <Stack.Screen
           name={"NewInspection"}
           component={NewInspection}
@@ -578,8 +576,8 @@ const AllStackRouts = (props) => {
           name={"PropertyExpenses"}
           component={PropertyExpenses}
           options={{ headerShown: false }}
-          />
-          
+        />
+
         <Stack.Screen
           name={"SearchResult"}
           component={SearchResult}
@@ -605,6 +603,12 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"DeleteAccount"}
           component={DeleteAccount}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"EditProfile"}
+          component={EditProfile}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
