@@ -108,7 +108,7 @@ export default Login = (props) => {
             />
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
-            onPress={()=>props.navigation.navigate("Invitefriend")}
+              onPress={() => props.navigation.navigate("Invitefriend")}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
               _ButtonText={"Login with Google"}

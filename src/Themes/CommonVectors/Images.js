@@ -62,6 +62,9 @@ export const IMAGES = {
   Bathroom: require("../../assets/icons/bathroom.png"),
   BedroomIcon: require("../../assets/icons/bedroomIcon.png"),
   Parking: require("../../assets/icons/parking.png"),
+  AddManually: require("../../assets/icons/AddManually.png"),
+  InviteTenant: require("../../assets/icons/InviteTenant.png"),
+  InviteContact: require("../../assets/icons/InviteContact.png"),
     // common images
     Share: require("../../assets/images/Common/Share.png"),
   
