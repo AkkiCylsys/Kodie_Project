@@ -66,6 +66,7 @@ export const IMAGES = {
     Share: require("../../assets/images/Common/Share.png"),
   
   rightarrow: require("../../assets/icons/rightarrow.png"),
+  kodie_icon: require("../../assets/icons/kodie_icon.png"),
 };
 
 export const BANNERS = {
