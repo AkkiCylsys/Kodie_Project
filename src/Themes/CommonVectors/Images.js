@@ -8,6 +8,7 @@ export const IMAGES = {
   userIcons: require("../../assets/icons/UploadPhotos.png"),
   Landlordprofile: require("../../assets/icons/landlordProfile.png"),
   uploadIcon: require("../../assets/icons/cloud-upload.png"),
+  Upload: require("../../assets/icons/Upload.png"),
   document: require("../../assets/icons/doc-pdf.png"),
   cleaner: require("../../assets/icons/cleaner.png"),
   lightCleaner: require("../../assets/icons/lightCleaner.png"),
@@ -61,9 +62,13 @@ export const IMAGES = {
   Bathroom: require("../../assets/icons/bathroom.png"),
   BedroomIcon: require("../../assets/icons/bedroomIcon.png"),
   Parking: require("../../assets/icons/parking.png"),
-    // common images
-    Share: require("../../assets/images/Common/Share.png"),
-  
+  AddManually: require("../../assets/icons/AddManually.png"),
+  InviteTenant: require("../../assets/icons/InviteTenant.png"),
+  InviteContact: require("../../assets/icons/InviteContact.png"),
+  // common images
+  Share: require("../../assets/images/Common/Share.png"),
+
+  rightarrow: require("../../assets/icons/rightarrow.png"),
 };
 
 export const BANNERS = {

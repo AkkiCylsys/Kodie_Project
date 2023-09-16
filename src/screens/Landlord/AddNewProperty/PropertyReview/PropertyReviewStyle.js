@@ -108,6 +108,11 @@ export const PropertyReviewStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 16,
-    marginVertical: 10,
+    marginTop: 10,
+  },
+  Tab_text: {
+    fontSize: 11,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,
   },
 });
