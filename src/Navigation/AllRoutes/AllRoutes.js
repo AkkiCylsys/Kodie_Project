@@ -70,6 +70,7 @@ import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
+import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/PropertyExpenses/PropertyExpenses";
 import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
 import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/SearchResult";
 import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
@@ -537,6 +538,22 @@ const AllStackRouts = (props) => {
           component={PropertyReview}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name={"ChangeContactInput"}
+          component={ChangeContactInput}
+        />
+
+        <Stack.Screen
+          name={"NewInspection"}
+          component={NewInspection}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyExpenses"}
+          component={PropertyExpenses}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={"Invitefriend"}
           component={Invitefriend}
@@ -560,18 +577,6 @@ const AllStackRouts = (props) => {
           component={AppInfo}
           options={{ headerShown: false }}
         />
-
-        <Stack.Screen
-          name={"ChangeContactInput"}
-          component={ChangeContactInput}
-        />
-
-        <Stack.Screen
-          name={"NewInspection"}
-          component={NewInspection}
-          options={{ headerShown: false }}
-        />
-
         <Stack.Screen
           name={"SearchResult"}
           component={SearchResult}

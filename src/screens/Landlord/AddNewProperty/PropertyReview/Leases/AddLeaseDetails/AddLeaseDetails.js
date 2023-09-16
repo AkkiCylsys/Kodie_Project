@@ -30,7 +30,7 @@ const reminder_data = [
   { label: "2-day", value: "3" },
 ];
 
-export default AddLeaseDetails = (props) => {
+export default AddLeaseDetails = () => {
   const [value, setValue] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);

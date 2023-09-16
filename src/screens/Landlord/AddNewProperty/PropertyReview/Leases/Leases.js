@@ -25,7 +25,7 @@ export default Leases = (props) => {
             }}
           />
         </View>
-        <LeaseSummary/>
+        <LeaseSummary />
         <RBSheet
           ref={refRBSheet}
           height={510}
