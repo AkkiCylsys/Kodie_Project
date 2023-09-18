@@ -138,5 +138,6 @@ export const DeleteAccountStyle = StyleSheet.create({
     top:4,
     fontFamily:FONTFAMILY.K_SemiBold,
     opacity:0.5,
-  }
+  },
+  
 });
