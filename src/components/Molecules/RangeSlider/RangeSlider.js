@@ -32,6 +32,10 @@ const RangeSlider = ({ from, to }) => {
     <>
       <View style={RangeSliderStyle.rangecomponetView}>
         <RangeSliderRN
+        selectionColor="#4286f4"
+        thumbColor="#45B742"
+        thumbBorderColor="#45B742"
+        //style={{backgroundColor:'red'}}
           min={from}
           max={to}
           step={1}

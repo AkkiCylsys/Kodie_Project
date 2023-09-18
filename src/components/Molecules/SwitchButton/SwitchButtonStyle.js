@@ -21,6 +21,7 @@ export const SwitchButtonStyle = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderColor: "red",
+    
   },
   activeButton: {
     flex: 1,

@@ -115,6 +115,8 @@ export default Login = (props) => {
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
+            onPress={()=>props.navigation.navigate("ManageSubscription")}
+            
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={"Login with Facebook"}
