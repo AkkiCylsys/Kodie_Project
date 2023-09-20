@@ -4,10 +4,11 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import PropertyList from "./MyProperty/PropertyList";
 import PropertyList2 from "./SearchForRentals/PropertyList2";
-import PropertyList3 from "./PropertyList3";
+
 import { _goBack } from "./../../../services/CommonServices/index";
 import { _COLORS } from "../../../Themes";
 import { PropertiesCSS } from "./PropertiesCss";
+import RantalOffer from "./RentalOffer/RantalOffer";
 
 const Properties = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
@@ -20,10 +21,13 @@ const Properties = (props) => {
           />
         );
       case "Tab2":
-        return <PropertyList2 
-        SearchButton={()=>props.navigation.navigate("SearchResult")}/>;
+        return (
+          <PropertyList2
+            SearchButton={() => props.navigation.navigate("SearchResult")}
+          />
+        );
       case "Tab3":
-        return <PropertyList />;
+        return <RantalOffer />;
 
       default:
         return <PropertyList />;
@@ -46,20 +50,25 @@ const Properties = (props) => {
         onPressTab1={() => setActiveTab("Tab1")}
         onPressTab2={() => setActiveTab("Tab2")}
         onPressTab3={() => setActiveTab("Tab3")}
-        colorTab1={activeTab === "Tab1"
-          ? _COLORS.Kodie_BlackColor
-          : _COLORS.Kodie_MediumGrayColor}
-        colorTab2={activeTab === "Tab2"
-          ? _COLORS.Kodie_BlackColor
-          : _COLORS.Kodie_MediumGrayColor}
-        colorTab3={activeTab === "Tab3"
-          ? _COLORS.Kodie_BlackColor
-          : _COLORS.Kodie_MediumGrayColor}
-          styleTab1={activeTab === "Tab1" && PropertiesCSS.activeTab}
-          styleTab2={activeTab === "Tab2" && PropertiesCSS.activeTab}
-          styleTab3={activeTab === "Tab3" && PropertiesCSS.activeTab}
-         
-          />
+        colorTab1={
+          activeTab === "Tab1"
+            ? _COLORS.Kodie_BlackColor
+            : _COLORS.Kodie_MediumGrayColor
+        }
+        colorTab2={
+          activeTab === "Tab2"
+            ? _COLORS.Kodie_BlackColor
+            : _COLORS.Kodie_MediumGrayColor
+        }
+        colorTab3={
+          activeTab === "Tab3"
+            ? _COLORS.Kodie_BlackColor
+            : _COLORS.Kodie_MediumGrayColor
+        }
+        styleTab1={activeTab === "Tab1" && PropertiesCSS.activeTab}
+        styleTab2={activeTab === "Tab2" && PropertiesCSS.activeTab}
+        styleTab3={activeTab === "Tab3" && PropertiesCSS.activeTab}
+      />
       <View style={PropertiesCSS.Line} />
       {checkTabs()}
       {/* {activeTab === "Tab1" && (
