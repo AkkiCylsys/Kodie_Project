@@ -4,7 +4,6 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import PropertyList from "./MyProperty/PropertyList";
 import PropertyList2 from "./SearchForRentals/PropertyList2";
-
 import { _goBack } from "./../../../services/CommonServices/index";
 import { _COLORS } from "../../../Themes";
 import { PropertiesCSS } from "./PropertiesCss";

@@ -20,7 +20,6 @@ import CustomSingleButton from "../../../../components/Atoms/CustomButton/Custom
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import BottomTrandingScreeningModal from "../../../../components/Molecules/BottomTrandingScreeningModal/BottomTrandingScreeningModal";
-import { BottomTrandingScreeningModalCss } from "../../../../components/Molecules/BottomTrandingScreeningModal/BottomTrandingScreeningModalCss";
 
 export default SubmitApplication = (props) => {
   const [modalVisible, setModalVisible] = useState(false);

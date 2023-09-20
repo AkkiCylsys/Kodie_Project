@@ -550,8 +550,23 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"PropertyExpenses"}
-          component={PropertyExpenses}
+          name={"SearchResult"}
+          component={SearchResult}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ViewPropertyDetails"}
+          component={ViewPropertyDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SubmitApplication"}
+          component={SubmitApplication}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"AddTenantDetails"}
+          component={AddTenantDetails}
           options={{ headerShown: false }}
         />
         <Stack.Screen
