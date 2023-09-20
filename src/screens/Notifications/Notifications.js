@@ -214,7 +214,7 @@ const Notifications = (props) => {
       </View>
       <RBSheet
         ref={refRBSheet}
-        height={510}
+        height={280}
         customStyles={{
           wrapper: {
             backgroundColor: "transparent",
