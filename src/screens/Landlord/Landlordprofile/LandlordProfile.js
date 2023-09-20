@@ -16,7 +16,7 @@ export default LandlordProfile = (props) => {
         MiddleText={"Profile"}
       />
       <ScrollView>
-        <SearchBar  height={48} marginTop={20} />
+        <SearchBar  frontSearchIcon={true}  height={48} marginTop={20} />
         <View style={LandlordProfileStyle.profilemainView}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
             <Image
@@ -53,7 +53,25 @@ export default LandlordProfile = (props) => {
           </TouchableOpacity>
         </View>
         <DividerIcon />
-        <LandlordProfileData />
+        <Text style={LandlordProfileStyle.AllcontactsText}>
+                    Settings
+                </Text>
+                <RowTab  IsDivider={false} isSecondRowText={true} LeftImage={IMAGES.Accountsetting} TabTaxt="Account" TabSubTaxt="Manage your account & payment settings"/>
+                <RowTab IsDivider={false} isSecondRowText={true} LeftImage={IMAGES.ManageSubscription} TabTaxt="Manage Subscription" TabSubTaxt="Manage your subscription plans"/>
+                <RowTab IsDivider={false} isSecondRowText={true} LeftImage={IMAGES.Privacy} TabTaxt="Privacy & Security" TabSubTaxt="View your privacy and security settings"/>
+                <Text style={LandlordProfileStyle.AllcontactsText}>
+                Feedback
+                </Text>
+
+                <RowTab  IsDivider={false} isSecondRowText={true} LeftImage={IMAGES.Accountsetting} TabTaxt="Help & Feedback" TabSubTaxt="Get help and leave feedback"/>
+                <RowTab IsDivider={false} isSecondRowText={true} LeftImage={IMAGES.Subscription} TabTaxt="Follow us on social media" TabSubTaxt="Follow us for news, insights and more!"/>
+                <Text style={LandlordProfileStyle.AllcontactsText}>
+                Share
+                </Text>
+                <RowTab IsDivider={false} isSecondRowText={true} LeftImage={IMAGES.Subscription} TabTaxt="Tell a Friend" TabSubTaxt="Tell your friends about Kodie"/>
+                <RowTab IsDivider={false} isSecondRowText={true} LeftImage={IMAGES.RateKodie} TabTaxt="Rate Kodie" TabSubTaxt="Rate your Kodie experience"/>
+                <RowTab IsDivider={false} isSecondRowText={true} LeftImage={IMAGES.Logout} TabTaxt="Logout" TabSubTaxt="Logout of your Kodie profile"/>
+        {/* <LandlordProfileData /> */}
       </ScrollView>
     </View>
   );

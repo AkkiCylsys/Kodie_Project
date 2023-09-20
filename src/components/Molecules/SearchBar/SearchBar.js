@@ -29,7 +29,7 @@ const SearchBar = (props) => {
           style={SearchBarStyle.input}
           value={search}
           onChange={(text) => setSearch(text)}
-          placeholder="Search"
+          placeholder={props.placeholder}
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />
         {props.backSearchIcon ? (
@@ -82,5 +82,9 @@ const SearchBar = (props) => {
     </View>
   );
 };
+SearchBar.defaultProps = {
+  placeholder: "Search",
+//  RightImage: IMAGES.rightarrow,
 
+};
 export default SearchBar;

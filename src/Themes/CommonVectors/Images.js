@@ -46,7 +46,7 @@ export const IMAGES = {
   FeedBack: require("../../assets/icons/FeedBack.png"),
   Contact: require("../../assets/icons/Contact.png"),
   SwitchAcc_: require("../../assets/icons/SwitchAcc_.png"),
-  Logout: require("../../assets/icons/Logout.png"),
+  //Logout: require("../../assets/icons/Logout.png"),
   Subscription: require("../../assets/icons/Subscription.png"),
   Storage: require("../../assets/icons/Storage.png"),
   language: require("../../assets/icons/language.png"),
@@ -69,6 +69,26 @@ export const IMAGES = {
   Share: require("../../assets/images/Common/Share.png"),
 
   rightarrow: require("../../assets/icons/rightarrow.png"),
+  HelpCentre: require("../../assets/icons/HelpCentre.png"),
+  ContactUs: require("../../assets/images/Common/ContactUs.png"),
+  TermsandPolicy: require("../../assets/images/Common/TermsandPolicy.png"),
+  AppInfoNew: require("../../assets/images/Common/TermsandPolicy.png"),
+  instagram: require("../../assets/images/Common/instagram.png"),
+  Facebook: require("../../assets/images/Common/Facebook.png"),
+  linkdin: require("../../assets/images/Common/linkdin.png"),
+  Twitter: require("../../assets/images/Common/Twitter.png"),
+
+  Accountsetting: require("../../assets/images/Common/Accountsetting.png"),
+  Autopayment: require("../../assets/images/Common/Autopayment.png"),
+  kodiepayment: require("../../assets/images/Common/kodiepayment.png"),
+  delete: require("../../assets/images/Common/delete.png"),
+  changecontact: require("../../assets/images/Common/changecontact.png"),
+  Logout: require("../../assets/images/Common/Logout.png"),
+  RateKodie: require("../../assets/images/Common/RateKodie.png"),
+  ManageSubscription: require("../../assets/images/Common/ManageSubscription.png"),
+  Subscription: require("../../assets/images/Common/Subscription.png"),
+
+  Done: require("../../assets/images/Common/Done.png"),
 };
 
 export const BANNERS = {

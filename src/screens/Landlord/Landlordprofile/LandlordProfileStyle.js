@@ -65,5 +65,11 @@ export const LandlordProfileStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightGrayColor,
     marginTop: 10,
   },
-contactIcon:{height:16,width:16}
+contactIcon:{height:16,width:16},
+AllcontactsText: {
+  fontSize: 16,
+  paddingHorizontal: 16,
+  color: _COLORS.Kodie_BlackColor,
+  fontFamily: FONTFAMILY.K_SemiBold,
+},
 });

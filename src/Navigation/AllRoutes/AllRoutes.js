@@ -77,6 +77,10 @@ import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRe
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
 import AddTenantDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
+import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
+import SearchUser from "../../screens/Authentication/BlockUser/SearchUser";
+import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
+import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -592,6 +596,27 @@ const AllStackRouts = (props) => {
           component={AppInfo}
           options={{ headerShown: false }}
         />
+
+        <Stack.Screen
+          name={"ChangeContactInput"}
+          component={ChangeContactInput}
+        />
+
+        <Stack.Screen
+          name={"NewInspection"}
+          component={NewInspection}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyExpenses"}
+          component={PropertyExpenses}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SocialMedia"}
+          component={SocialMedia}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={"SearchResult"}
           component={SearchResult}
@@ -610,6 +635,21 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"AddTenantDetails"}
           component={AddTenantDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SearchUser"}
+          component={SearchUser}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"AccountSetting"}
+          component={AccountSetting}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ManageSubscription"}
+          component={ManageSubscription}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
