@@ -68,6 +68,9 @@ export const IMAGES = {
   kodie_icon: require("../../assets/icons/kodie_icon.png"),
   menuIcon: require("../../assets/icons/menuIcon.png"),
   star: require("../../assets/icons/star.png"),
+  RightLeftarrow: require("../../assets/icons/RightLeftArrow.png"),
+  adduser: require("../../assets/icons/adduser.png"),
+  notificationbell: require('../../assets/icons/notificationbell.png'),
 
 };
 

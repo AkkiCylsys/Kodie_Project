@@ -78,6 +78,7 @@ import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
 import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
 import Notifications from "../../screens/Notifications/Notifications";
+import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -616,6 +617,12 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"Notifications"}
           component={Notifications}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"AddNewNotice"}
+          component={AddNewNotice}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
