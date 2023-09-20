@@ -45,7 +45,7 @@ import RejectConfirm from "../../screens/Landlord/RejectConfirm/RejectConfirm";
 import InviteTenant from "../../screens/Landlord/InviteTenant/InviteTenant";
 import Notice from "../../screens/NotiesList/Notice";
 import Properties from "../../screens/Landlord/PropertyList/Properties";
-import Repair from "../../screens/Tenant/Repair/Repair";
+import Jobs from "../../screens/Tenant/Jobs/Jobs";
 import Dashboard from "../../screens/Dashboard/Dashboard";
 import LandlordProfile from "../../screens/Landlord/Landlordprofile/LandlordProfile";
 import { IMAGES, LABEL_STYLES } from "../../Themes";
@@ -66,11 +66,11 @@ import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages
 import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
 
 //
+import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Expenses/PropertyExpenses/PropertyExpenses";
 import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback";
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
-import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/PropertyExpenses/PropertyExpenses";
 import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
 import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/SearchResult";
 import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
@@ -175,8 +175,8 @@ const BottomNav = (props) => {
         }}
       />
       <Tab.Screen
-        name="Repair"
-        component={Repair}
+        name="Jobs"
+        component={Jobs}
         options={{
           tabBarShowLabel: false,
           headerShown: false,
@@ -468,8 +468,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"Repair"}
-          component={Repair}
+          name={"Jobs"}
+          component={Jobs}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -549,11 +549,6 @@ const AllStackRouts = (props) => {
         />
 
         <Stack.Screen
-          name={"NewInspection"}
-          component={NewInspection}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name={"SearchResult"}
           component={SearchResult}
           options={{ headerShown: false }}
@@ -598,11 +593,6 @@ const AllStackRouts = (props) => {
         />
 
         <Stack.Screen
-          name={"ChangeContactInput"}
-          component={ChangeContactInput}
-        />
-
-        <Stack.Screen
           name={"NewInspection"}
           component={NewInspection}
           options={{ headerShown: false }}
@@ -617,26 +607,7 @@ const AllStackRouts = (props) => {
           component={SocialMedia}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name={"SearchResult"}
-          component={SearchResult}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={"ViewPropertyDetails"}
-          component={ViewPropertyDetails}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={"SubmitApplication"}
-          component={SubmitApplication}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={"AddTenantDetails"}
-          component={AddTenantDetails}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name={"SearchUser"}
           component={SearchUser}
