@@ -1,11 +1,14 @@
 import { StyleSheet } from "react-native";
-import { IMAGES, _COLORS,FONTFAMILY } from "./../../../Themes/index";
+import { IMAGES, _COLORS, FONTFAMILY } from "./../../../Themes/index";
 
 export const AppInfoStyle = StyleSheet.create({
-
+  maincontainer: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    height:'100%'
+  },
   headingview: {
     alignItems: "center",
-    top: 100,
+    marginVertical:50
   },
 
   propertytext: {
@@ -20,20 +23,20 @@ export const AppInfoStyle = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     lineHeight: 20,
-    top:5,
+    marginTop: 5,
     fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_BlackColor,
   },
 
   mainlogo: {
-    top:30,
+    marginVertical:40,
     width: 220,
     height: 43,
   },
 
   timedurationview: {
     alignItems: "center",
-    top: 240,
+    marginVertical:50
   },
 
   timedurationtext: {
@@ -43,10 +46,10 @@ export const AppInfoStyle = StyleSheet.create({
     marginBottom: 15,
     fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_BlackColor,
+    marginVertical:40
   },
-  buttonview:{
-    top:240,
-    marginLeft:20,
-    marginRight:20
-  }
+  buttonview: {
+    marginVertical:5,
+    marginHorizontal:20,
+  },
 });

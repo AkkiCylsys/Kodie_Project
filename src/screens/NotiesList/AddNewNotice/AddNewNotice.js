@@ -3,10 +3,11 @@ import { View, Text, TextInput, Image, ScrollView } from "react-native";
 import { AddNewNoticeStyle } from "./AddNewNoticeStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { Dropdown } from "react-native-element-dropdown";
-import { PropertyDetailsStyle } from "../../Landlord/AddNewProperty/PropertyDetails/PropertyDetailsStyle";
 import { _COLORS, IMAGES } from "../../../Themes";
 import { Divider } from "react-native-paper";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Entypo from "react-native-vector-icons/Entypo";
 import ToggleSwitch from "toggle-switch-react-native";
 import AddGuest from "../../../components/Molecules/AddGuests/AddGuest";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -32,11 +33,11 @@ const AddNewNotice = () => {
             Select the type of notice you want to create
           </Text>
           <Dropdown
-            style={PropertyDetailsStyle.dropdown}
+            style={AddNewNoticeStyle.dropdown}
             placeholderStyle={AddNewNoticeStyle.placeholderStyle}
-            selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
-            inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
-            iconStyle={PropertyDetailsStyle.iconStyle}
+            selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
+            inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
+            iconStyle={AddNewNoticeStyle.iconStyle}
             data={data}
             maxHeight={300}
             labelField="label"
@@ -50,7 +51,7 @@ const AddNewNotice = () => {
 
           {/* second part start here */}
           <View style={AddNewNoticeStyle.Noticeview}>
-            <Text style={AddNewNoticeStyle.noticetitletext}>Notice title</Text>
+            <Text style={AddNewNoticeStyle.noticehead}>Notice title</Text>
             <TextInput
               style={AddNewNoticeStyle.locationInput}
               value={location}
@@ -69,12 +70,12 @@ const AddNewNotice = () => {
             <View style={AddNewNoticeStyle.noticedropdownview}>
               <Dropdown
                 style={[
-                  PropertyDetailsStyle.dropdown,
+                  AddNewNoticeStyle.dropdown,
                   AddNewNoticeStyle.dropdownNotice,
                 ]}
                 placeholderStyle={AddNewNoticeStyle.placeholderStyle}
-                selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
-                inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
+                selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
+                inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
                 iconStyle={AddNewNoticeStyle.iconStyle}
                 data={data}
                 maxHeight={300}
@@ -129,19 +130,22 @@ const AddNewNotice = () => {
               <Text style={AddNewNoticeStyle.addlocationtext}>
                 Add location
               </Text>
+              <View style={AddNewNoticeStyle.locationInputview}>
+              <Entypo name="location-pin" size={20}/>
               <TextInput
-                style={AddNewNoticeStyle.locationInput}
+                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 value={location}
                 onChangeText={setLocation}
-                placeholder="Search location"
+                placeholder="Enter new location"
               />
+              </View>
             </View>
             <Divider style={AddNewNoticeStyle.dividerfourth} />
 
             {/*seven part start here */}
             <View style={AddNewNoticeStyle.setnotificationview}>
               <View style={AddNewNoticeStyle.notificationbind}>
-                <Image source={IMAGES.notificationbell} />
+                <SimpleLineIcons name="bell" size={25} />
                 <Text style={AddNewNoticeStyle.settext}>Set notification </Text>
               </View>
               <ToggleSwitch
@@ -163,8 +167,8 @@ const AddNewNotice = () => {
               <Dropdown
                 style={AddNewNoticeStyle.setnotificationdrop}
                 placeholderStyle={AddNewNoticeStyle.placeholderStyle}
-                selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
-                inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
+                selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
+                inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
                 iconStyle={AddNewNoticeStyle.iconStyle}
                 data={data}
                 maxHeight={300}

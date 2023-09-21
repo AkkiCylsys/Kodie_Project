@@ -26,18 +26,18 @@ const EditProfile = () => {
       />
       <ScrollView>
         <View style={EditProfileStyle.profilviewmain}>
-          <View style={EditProfileStyle.editlogoview}>
-            <Image
-              style={EditProfileStyle.editlogo}
-              source={require("../../../assets/icons/edit.png")}
-            />
-          </View>
           <View style={EditProfile.profileviewimg}>
             <Image
               style={EditProfileStyle.profilelogo}
               source={IMAGES.Landlordprofile}
               resizeMode="contain"
             />
+          <View style={EditProfileStyle.editlogoview}>
+            <Image
+              style={EditProfileStyle.editlogo}
+              source={require("../../../assets/icons/edit.png")}
+            />
+          </View>
           </View>
           <Text style={EditProfileStyle.edittext}>Edit profile photo</Text>
         </View>
@@ -48,11 +48,11 @@ const EditProfile = () => {
           <View style={EditProfileStyle.firstview}>
             <Text style={EditProfileStyle.oldnumbertext}>Full name</Text>
 
-            <View>
+            <View style={EditProfileStyle.simpleinputview}>
               <TextInput
                 keyboardType="numeric"
                 placeholder="Jason Stathom"
-                style={EditProfileStyle.simpleinput}
+                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               />
               <Image
                 style={EditProfileStyle.Vectorimg}
@@ -64,11 +64,10 @@ const EditProfile = () => {
           <View style={EditProfileStyle.firstview}>
             <Text style={EditProfileStyle.oldnumbertext}>Email address</Text>
 
-            <View>
+            <View style={EditProfileStyle.simpleinputview}>
               <TextInput
                 keyboardType="numeric"
                 placeholder="jason5@gmail.com"
-                style={EditProfileStyle.simpleinput}
               />
               <Image
                 style={EditProfileStyle.Vectorimg}
@@ -79,10 +78,11 @@ const EditProfile = () => {
 
           <View style={EditProfileStyle.firstview}>
             <Text style={EditProfileStyle.oldnumbertext}>Phone number</Text>
-
-            <View>
-              <View>
+            <View style={EditProfileStyle.phoneinputbindview}>
+              <View style={EditProfileStyle.phoneinput}>
+                <View style={EditProfileStyle.bindnumberview}>
                 <Text style={EditProfileStyle.numbercode}>+61</Text>
+
                 <Image
                   style={EditProfileStyle.downarrowimg}
                   source={require("../../../assets/icons/downarrow.png")}
@@ -91,32 +91,34 @@ const EditProfile = () => {
                   style={EditProfileStyle.lineimg}
                   source={require("../../../assets/icons/verticalLineimg.png")}
                 />
-              </View>
-              <TextInput
-                keyboardType="numeric"
-                placeholder="1234567890"
-                style={EditProfileStyle.input}
-              />
+                <TextInput
+                  keyboardType="numeric"
+                  placeholder="1234567890"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+                </View>
               <Image
                 style={EditProfileStyle.Vectorimg}
                 source={require("../../../assets/icons/Vector.png")}
               />
+              </View>
             </View>
           </View>
 
           <View style={EditProfileStyle.firstview}>
             <Text style={EditProfileStyle.oldnumbertext}>Physical address</Text>
 
-            <View>
-              <Image
-                style={EditProfileStyle.locationimg}
-                source={require("../../../assets/icons/location.png")}
-              />
-              <TextInput
-                keyboardType="numeric"
-                placeholder="Search new location"
-                style={EditProfileStyle.simpleinputphysical}
-              />
+            <View style={EditProfileStyle.simpleinputphysical}>
+              <View style={EditProfileStyle.physicalsecondview}>
+                <Image
+                  style={EditProfileStyle.locationimg}
+                  source={require("../../../assets/icons/location.png")}
+                />
+                <TextInput
+                  keyboardType="numeric"
+                  placeholder="Search new location"
+                />
+              </View>
               <Image
                 style={EditProfileStyle.Vectorimg}
                 source={require("../../../assets/icons/Vector.png")}
@@ -158,22 +160,22 @@ const EditProfile = () => {
         </View>
 
         <View style={EditProfileStyle.buttonview}>
-        <CustomSingleButton
-          leftImage={IMAGES.uploadIcon}
-          isLeftImage={true}
-          borderColor={_COLORS.Kodie_TransparentColor}
-          _ButtonText={"Add photo ID"}
-          backgroundColor={_COLORS.Kodie_lightGreenColor}
-        />
+          <CustomSingleButton
+            leftImage={IMAGES.uploadIcon}
+            isLeftImage={true}
+            borderColor={_COLORS.Kodie_TransparentColor}
+            _ButtonText={"Add photo ID"}
+            backgroundColor={_COLORS.Kodie_lightGreenColor}
+          />
 
           <View style={EditProfileStyle.secondbuttonview}>
-          <CustomSingleButton
-          leftImage={IMAGES.uploadIcon}
-          isLeftImage={true}
-          borderColor={_COLORS.Kodie_TransparentColor}
-          _ButtonText={"Add second ID"}
-          backgroundColor={_COLORS.Kodie_lightGreenColor}
-        />
+            <CustomSingleButton
+              leftImage={IMAGES.uploadIcon}
+              isLeftImage={true}
+              borderColor={_COLORS.Kodie_TransparentColor}
+              _ButtonText={"Add second ID"}
+              backgroundColor={_COLORS.Kodie_lightGreenColor}
+            />
           </View>
         </View>
       </ScrollView>

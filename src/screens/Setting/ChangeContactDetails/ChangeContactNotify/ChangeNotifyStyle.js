@@ -2,18 +2,22 @@ import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY, IMAGES } from "../../../../Themes";
 
 export const ChangeNotifyStyle = StyleSheet.create({
+  maincontainer: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    height: "100%",
+  },
   headingview: {
     width: 306,
     height: 40,
-    top: 28,
+    marginTop: 15,
     alignItems: "center",
-    marginLeft: 40,
+    marginHorizontal: 30,
   },
   alltext: {
     fontSize: 14,
     fontWeight: "500",
     fontFamily: FONTFAMILY.K_SemiBold,
-    color: "#A1A1A1",
+    color: _COLORS.Kodie_LightGrayColor,
   },
   numberview: {
     flexDirection: "row",
@@ -27,23 +31,23 @@ export const ChangeNotifyStyle = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     fontFamily: FONTFAMILY.K_SemiBold,
-    color: "#A1A1A1",
+    color: _COLORS.Kodie_LightGrayColor,
   },
   secondnumbertext: {
     color: _COLORS.Kodie_ExtraDarkGreen,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   Dividerline: {
-    color: "#DBDBDB",
+    color: _COLORS.Kodie_LightGrayColor,
     height: 1.3,
-    marginTop: 60,
+    marginTop: 30,
   },
+
   notifyview: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginLeft: 20,
-    marginRight: 20,
-    top: 35,
+    marginHorizontal: 20,
+    marginTop: 30,
   },
   notifytext: {
     fontSize: 14,
@@ -55,11 +59,10 @@ export const ChangeNotifyStyle = StyleSheet.create({
   Dividerlinesecond: {
     color: "#DBDBDB",
     height: 1.5,
-    marginTop: 75,
+    marginTop: 45,
   },
-  buttonview:{
-    marginLeft:20,
-    marginRight:20,
-    top:30
-  }
+  buttonview: {
+    marginHorizontal: 20,
+    marginTop: 30,
+  },
 });

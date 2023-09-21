@@ -2,74 +2,74 @@ import { StyleSheet } from "react-native";
 import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
 
 export const DeleteAccountStyle = StyleSheet.create({
+  container: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    height: "100%",
+  },
   headingview: {
     flexDirection: "row",
     alignItems: "center",
-    marginLeft: 10,
-    top: 20,
+    marginHorizontal: 10,
+    marginTop:20
   },
   helpimg: {
     width: 18,
     height: 18,
-    borderRadius:8
+    borderRadius: 8,
   },
-  accounttext:{
-    fontSize:16,
-    lineHeight:20,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_Bold,
-    marginLeft:10
+  accounttext: {
+    fontSize: 16,
+    lineHeight: 20,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal: 10,
   },
-  Pointsview:{
-    top:30,
-    // alignItems:'center',
-  
+  Pointsview: {
+    marginTop: 15,
   },
-  textpoint:{
-    fontSize:10,
-    textAlign:'justify',
-    marginLeft:40,
-    lineHeight:18,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    color:'#A1A1A1',
+  textpoint: {
+    fontSize: 10,
+    textAlign: "justify",
+    lineHeight: 22,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_ExtraLightGrayColor,
     opacity: 0.7,
+    marginHorizontal: 30,
   },
-  logoutview:{
-    flexDirection:'row',
-    alignItems:'center',
-    marginTop:45,
-    marginLeft:10
+  logoutview: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 30,
+    marginHorizontal: 10,
   },
-  Logoutimg:{
-    width:32,
-    height:32,
-    borderRadius:8
+  Logoutimg: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
   },
-  insteadtext:{
-    fontSize:16,
-    lineHeight:20,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_Bold,
-    marginLeft:3
+  insteadtext: {
+    fontSize: 16,
+    lineHeight: 20,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal: 3,
   },
-  buttonview:{
-    marginLeft:10,
-    marginRight:10,
-    top:10
+  buttonview: {
+    marginHorizontal: 10,
+    marginTop: 15,
   },
-  toconfirmview:{
-  top:30,
-  marginLeft:5,
-  marginRight:5,
+  toconfirmview: {
+    marginTop: 25,
+    marginHorizontal: 5,
   },
-  toconfirmtext:{
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_Bold,
-    fontSize:15,
-    textAlign:'center'
+  toconfirmtext: {
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    fontSize: 15,
+    textAlign: "center",
   },
   firstview: {
-    top:55,
+    marginTop: 30,
   },
   oldnumbertext: {
     fontSize: 13,
@@ -77,57 +77,43 @@ export const DeleteAccountStyle = StyleSheet.create({
     lineHeight: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    marginRight:15,
-    marginLeft:20
+   marginHorizontal:20
   },
-  input: {
+  inputview: {
     height: 50,
-    margin: 12,
     borderWidth: 0.3,
-    width: 330,
-    // borderColor:_COLORS.Kodie_GrayColor,
+    width: '90%',
     borderRadius: 6,
     color: _COLORS.Kodie_MediumGrayColor,
-    paddingLeft: 68,
-    top:4,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    opacity:0.5,
+    marginTop: 4,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    flexDirection:'row',
+    alignItems:'center',
+    marginHorizontal:15,
+    paddingHorizontal:10
   },
   numbercode: {
-    position: "absolute",
-    top: 28,
-    marginLeft: 23,
-    color:_COLORS.Kodie_BlackColor,
-    fontSize:13,
-    fontWeight:'400',
-    fontFamily:FONTFAMILY.K_SemiBold
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 13,
+    fontWeight: "400",
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
   downarrowimg: {
     width: 12,
     height: 6,
-    position: "absolute",
-    left: 0,
-    marginLeft: 50,
-    marginTop: 37,
   },
   lineimg: {
     height: 21,
     width: 43,
-    position: "absolute",
-    left: 0,
-    marginLeft: 48,
+  },
+  firstemailview: {
     marginTop: 30,
-    padding:10
   },
-  firstemailview:{
-    top:65
+  buttonblackview: {
+marginHorizontal:10,
+    marginTop: 50,
   },
-  buttonblackview:{
-    marginLeft:10,
-    marginRight:10,
-    top:180
-  },
-  inputemail:{
+  inputemail: {
     height: 50,
     margin: 12,
     borderWidth: 0.3,
@@ -135,9 +121,7 @@ export const DeleteAccountStyle = StyleSheet.create({
     borderRadius: 6,
     color: _COLORS.Kodie_MediumGrayColor,
     paddingLeft: 18,
-    top:4,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    opacity:0.5,
+    marginTop: 4,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
-  
 });

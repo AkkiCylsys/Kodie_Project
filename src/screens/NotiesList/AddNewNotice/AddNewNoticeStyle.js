@@ -27,22 +27,40 @@ export const AddNewNoticeStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     marginHorizontal: 10,
   },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    marginRight: 16,
+  },
 
-  locationInput: {
-    height: 48,
-    paddingHorizontal: 10,
+  locationInputview: {
+   height:48,
     borderWidth: 0.4,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 5,
-    marginTop: 10,
+    marginTop: 4,
+    flexDirection:'row',
+    alignItems:'center',
+    paddingHorizontal:10
   },
   Noticeview: {
     flex: 1,
   },
-  noticetitletext: {
+  noticehead: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
-    fontWeight: FONTFAMILY.K_Bold,
+    fontFamily:FONTFAMILY.K_Bold,
     marginTop: 15,
   },
   mainreapeatview: {
@@ -124,7 +142,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flex: 1,
   },
   addlocationmainview: {
-    marginTop: 15,
+    marginTop: 10,
   },
   addlocationtext: {
     fontSize: 14,

@@ -6,11 +6,13 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import { _COLORS } from "../../../Themes";
 const DeleteAccount = () => {
   return (
-    <View style={{ backgroundColor: "#FFFFFF", height: "100%" }}>
-      <TopHeader
+    <>
+
+    <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Delete this account"}
       />
+    <View style={DeleteAccountStyle.container}>
 
       <View style={DeleteAccountStyle.headingview}>
         <Image
@@ -68,7 +70,7 @@ const DeleteAccount = () => {
         </Text>
 
         <View>
-          <View>
+          <View style={DeleteAccountStyle.inputview}>
             <Text style={DeleteAccountStyle.numbercode}>+61</Text>
             <Image
               style={DeleteAccountStyle.downarrowimg}
@@ -78,12 +80,12 @@ const DeleteAccount = () => {
               style={DeleteAccountStyle.lineimg}
               source={require("../../../assets/icons/verticalLineimg.png")}
             />
-          </View>
           <TextInput
             keyboardType="numeric"
             placeholder="Phone number"
-            style={DeleteAccountStyle.input}
+            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
           />
+          </View>
         </View>
       </View>
 
@@ -97,6 +99,7 @@ const DeleteAccount = () => {
             keyboardType="text"
             placeholder="Email"
             style={DeleteAccountStyle.inputemail}
+            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
           />
         </View>
       </View>
@@ -110,6 +113,7 @@ const DeleteAccount = () => {
       </View>
 
     </View>
+    </>
   );
 };
 

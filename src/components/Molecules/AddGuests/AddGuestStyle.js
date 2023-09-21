@@ -2,48 +2,42 @@ import { StyleSheet } from "react-native";
 import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
 
 export const AddGuestStyle = StyleSheet.create({
+  maincontainer: {
+    marginTop:5
+  },
   addgusttext: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
   },
-  Noticetextview: {
-    marginTop: 10,
-    marginHorizontal: 10,
-  },
-  bindview: {
-    flex:1,
+  mainviewinput: {
+    flex: 1,
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginTop: 5,
+    justifyContent: "space-between",
+    marginTop:5
   },
-  locationInput: {
-    height: 48,
-    paddingHorizontal: 10,
-    borderWidth: 0.6,
+    bindview: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems:'center',
+    width:'80%',
+    borderWidth:0.6,
+    borderRadius:5,
     borderColor: _COLORS.Kodie_GrayColor,
-    borderRadius: 5,
-    width: 250,
+    paddingHorizontal:10
   },
 
   adduserimg: {
-    position: "absolute",
-    right: 0,
-    marginTop: 15,
-    marginHorizontal: 10,
+    marginHorizontal: 8,
   },
   vecentview: {
-    width: 56,
-    height: 48,
+    width: '18%',
     borderRadius: 8,
     backgroundColor: _COLORS.Kodie_lightGreenColor,
-    marginLeft:15
+    alignItems:'center',
+    paddingTop:3
   },
-  chatview: {
-    position: "absolute",
-    paddingHorizontal:30,
-    paddingTop: 3,
-  },
+
   chatimage: {
     tintColor: _COLORS.Kodie_WhiteColor,
   },
