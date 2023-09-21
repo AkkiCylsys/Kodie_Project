@@ -14,7 +14,7 @@ export const NotificationOptionsStyle = StyleSheet.create({
   },
   optionsmainview: {
     marginLeft: 20,
-    top: 8,
+    marginTop: 8,
   },
   optionsview: {
     flexDirection: "row",

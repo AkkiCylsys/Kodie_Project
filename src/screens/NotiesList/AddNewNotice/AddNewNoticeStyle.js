@@ -45,29 +45,29 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
 
   locationInputview: {
-   height:48,
+    height: 48,
     borderWidth: 0.4,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 5,
     marginTop: 4,
-    flexDirection:'row',
-    alignItems:'center',
-    paddingHorizontal:10
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 10,
   },
   Noticeview: {
     flex: 1,
   },
-  locationInput:{
-borderWidth:0.4,
-borderRadius:5,
-paddingHorizontal:15,
-marginTop:5,
-borderColor:_COLORS.Kodie_ExtraminLiteGrayColor
+  locationInput: {
+    borderWidth: 0.4,
+    borderRadius: 5,
+    paddingHorizontal: 15,
+    marginTop: 5,
+    borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
   },
   noticehead: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     marginTop: 15,
   },
   mainreapeatview: {
@@ -114,14 +114,14 @@ borderColor:_COLORS.Kodie_ExtraminLiteGrayColor
     marginHorizontal: 10,
     marginTop: 15,
   },
-  alldayview:{
-  flexDirection:'row',
+  alldayview: {
+    flexDirection: "row",
   },
   alldaytext: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft:15
+    marginLeft: 15,
   },
   datetimeview: {
     marginHorizontal: 10,
@@ -161,7 +161,7 @@ borderColor:_COLORS.Kodie_ExtraminLiteGrayColor
 
   dividerfourth: {
     marginTop: 20,
-    marginBottom:5
+    marginBottom: 5,
   },
 
   setnotificationview: {
@@ -170,8 +170,8 @@ borderColor:_COLORS.Kodie_ExtraminLiteGrayColor
     justifyContent: "space-between",
     marginHorizontal: 5,
     padding: 5,
-    flex:1,
-    marginTop:15
+    flex: 1,
+    marginTop: 15,
   },
   rightimgview: {
     borderWidth: 0.5,
@@ -185,53 +185,53 @@ borderColor:_COLORS.Kodie_ExtraminLiteGrayColor
     width: 6,
     height: 11,
   },
-  setnoticeviewdrop:{
-    flex:1,
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
+  setnoticeviewdrop: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
-  notificationbind:{
-  flex:1,
-  flexDirection:'row',
+  notificationbind: {
+    flex: 1,
+    flexDirection: "row",
   },
-  settext:{
-  fontSize:14,
-  color:_COLORS.Kodie_BlackColor,
-  fontFamily:FONTFAMILY.K_SemiBold,
-  marginLeft:10
+  settext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginLeft: 10,
   },
-  setnotificationdrop:{
+  setnotificationdrop: {
     borderWidth: 0.5,
-    width:115,
+    width: 115,
     height: 40,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 10,
     borderRadius: 8,
   },
-  setcustomview:{
-    flex:1,
-    flexDirection:'row',
-    justifyContent:'space-between',
-    marginTop:10,
-    marginHorizontal:15
+  setcustomview: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+    marginHorizontal: 15,
   },
-  setcustometext:{
-    fontSize:14,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    marginLeft:35
+  setcustometext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginLeft: 35,
   },
-  Notificationtypetext:{
-    fontSize:14,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    marginLeft:15
+  Notificationtypetext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginLeft: 15,
   },
   inputContainer: {
     marginBottom: 15,
-    flex:1,
-    marginTop:15
+    flex: 1,
+    marginTop: 15,
   },
   input: {
     height: 100,
@@ -241,19 +241,19 @@ borderColor:_COLORS.Kodie_ExtraminLiteGrayColor
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop:5
+    marginTop: 5,
   },
-  propertydesctext:{
-    fontSize:14,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_SemiBold,
+  propertydesctext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
-  addattachmentbtnview:{
-  flex:1
+  addattachmentbtnview: {
+    flex: 1,
   },
-  addattachment:{
-    fontSize:14,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_SemiBold
-  }
+  addattachment: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
 });
