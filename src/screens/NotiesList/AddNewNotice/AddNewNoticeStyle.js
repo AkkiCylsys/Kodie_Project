@@ -57,6 +57,13 @@ export const AddNewNoticeStyle = StyleSheet.create({
   Noticeview: {
     flex: 1,
   },
+  locationInput:{
+borderWidth:0.4,
+borderRadius:5,
+paddingHorizontal:15,
+marginTop:5,
+borderColor:_COLORS.Kodie_ExtraminLiteGrayColor
+  },
   noticehead: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
