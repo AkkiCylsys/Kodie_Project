@@ -79,6 +79,7 @@ import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRent
 import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia"
 import SearchUser from "../../screens/Authentication/BlockUser/SearchUser"
 import AccountSetting from "./../../screens/Setting/Account/AccountSetting"
+import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription"
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
@@ -611,9 +612,14 @@ const AllStackRouts = (props) => {
           component={AccountSetting}
           options={{ headerShown: false }}
         />
-                  <Stack.Screen
+          <Stack.Screen
           name={"ManageSubscription"}
           component={ManageSubscription}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"GeneralSetting"}
+          component={GeneralSetting}
           options={{ headerShown: false }}
         />
         
