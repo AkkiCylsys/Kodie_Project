@@ -79,6 +79,7 @@ import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRent
 import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
 import Notifications from "../../screens/Notifications/Notifications";
 import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
+import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -623,6 +624,12 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"AddNewNotice"}
           component={AddNewNotice}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"AccountStep"}
+          component={AccountStep}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

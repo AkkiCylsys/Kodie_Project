@@ -71,6 +71,7 @@ export const IMAGES = {
   RightLeftarrow: require("../../assets/icons/RightLeftArrow.png"),
   adduser: require("../../assets/icons/adduser.png"),
   notificationbell: require('../../assets/icons/notificationbell.png'),
+  Location : require('../../assets/icons/location.png'),
 
 };
 
