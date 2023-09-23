@@ -80,6 +80,7 @@ import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
 import Notifications from "../../screens/Notifications/Notifications";
 import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
+import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -630,6 +631,12 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"AccountStep"}
           component={AccountStep}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Billinginformation"}
+          component={Billinginformation}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

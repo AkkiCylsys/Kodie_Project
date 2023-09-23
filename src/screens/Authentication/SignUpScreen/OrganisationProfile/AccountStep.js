@@ -62,11 +62,11 @@ const AccountStep = (props) => {
               <View style={AccountStepStyle.inputimgeview}>
                 <Image
                   style={AccountStepStyle.pencleimg}
-                  source={require("../../../../assets/icons/Vector.png")}
+                  source={IMAGES.pencile}
                 />
                 <Image
                   style={AccountStepStyle.buttomlineimg}
-                  source={require("../../../../assets/icons/HorizontallineImage.png")}
+                  source={IMAGES.HorizentalLine}
                 />
               </View>
             </View>
@@ -95,11 +95,11 @@ const AccountStep = (props) => {
               <View style={AccountStepStyle.inputimgeview}>
                 <Image
                   style={AccountStepStyle.pencleimg}
-                  source={require("../../../../assets/icons/Vector.png")}
+                  source={IMAGES.pencile}
                 />
                 <Image
                   style={AccountStepStyle.buttomlineimg}
-                  source={require("../../../../assets/icons/HorizontallineImage.png")}
+                  source={IMAGES.HorizentalLine}
                 />
               </View>
             </View>
@@ -125,11 +125,11 @@ const AccountStep = (props) => {
                 <Text style={AccountStepStyle.numbercode}>61</Text>
                 <Image
                   style={AccountStepStyle.downarrowimg}
-                  source={require("../../../../assets/icons/downarrow.png")}
+                  source={IMAGES.downarrow}
                 />
                 <Image
                   style={AccountStepStyle.lineimg}
-                  source={require("../../../../assets/icons/verticalLineimg.png")}
+                  source={IMAGES.verticalLine}
                 />
                 <TextInput
                   placeholder="1234567890"
@@ -141,11 +141,11 @@ const AccountStep = (props) => {
               <View style={AccountStepStyle.inputimgeview}>
                 <Image
                   style={AccountStepStyle.pencleimg}
-                  source={require("../../../../assets/icons/Vector.png")}
+                  source={IMAGES.pencile}
                 />
                 <Image
                   style={AccountStepStyle.buttomlineimg}
-                  source={require("../../../../assets/icons/HorizontallineImage.png")}
+                  source={IMAGES.HorizentalLine}
                 />
               </View>
             </View>
@@ -177,11 +177,11 @@ const AccountStep = (props) => {
               <View style={AccountStepStyle.inputimgeview}>
                 <Image
                   style={AccountStepStyle.pencleimg}
-                  source={require("../../../../assets/icons/Vector.png")}
+                  source={IMAGES.pencile}
                 />
                 <Image
                   style={AccountStepStyle.buttomlineimg}
-                  source={require("../../../../assets/icons/HorizontallineImage.png")}
+                  source={IMAGES.HorizentalLine}
                 />
               </View>
             </View>
@@ -231,11 +231,11 @@ const AccountStep = (props) => {
               <View style={AccountStepStyle.inputimgeview}>
                 <Image
                   style={AccountStepStyle.pencleimg}
-                  source={require("../../../../assets/icons/Vector.png")}
+                  source={IMAGES.pencile}
                 />
                 <Image
                   style={AccountStepStyle.buttomlineimg}
-                  source={require("../../../../assets/icons/HorizontallineImage.png")}
+                  source={IMAGES.HorizentalLine}
                 />
               </View>
             </View>

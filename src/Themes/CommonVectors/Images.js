@@ -72,6 +72,10 @@ export const IMAGES = {
   adduser: require("../../assets/icons/adduser.png"),
   notificationbell: require('../../assets/icons/notificationbell.png'),
   Location : require('../../assets/icons/location.png'),
+  pencile : require('../../assets/icons/Vector.png'),
+  HorizentalLine : require('../../assets/icons/HorizontallineImage.png'),
+  downarrow : require('../../assets/icons/downarrow.png'),
+  verticalLine : require('../../assets/icons/verticalLineimg.png')
 
 };
 
