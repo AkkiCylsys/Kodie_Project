@@ -4,7 +4,7 @@ import { ChangeContactInputStyle } from "./ChangeContactInputStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS } from "../../../../Themes";
-
+// Screen no : 206
 const ChangeContactInput = () => {
   return (
     <>
@@ -31,8 +31,11 @@ const ChangeContactInput = () => {
                 source={require("../../../../assets/icons/verticalLineimg.png")}
               />
 
-              <TextInput keyboardType="numeric" placeholder="1234567890" 
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}/>
+              <TextInput
+                keyboardType="numeric"
+                placeholder="1234567890"
+                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+              />
             </View>
             <Image
               style={ChangeContactInputStyle.Vectorimg}
@@ -59,8 +62,11 @@ const ChangeContactInput = () => {
                 source={require("../../../../assets/icons/verticalLineimg.png")}
               />
 
-              <TextInput keyboardType="numeric" placeholder="1234567890" 
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}/>
+              <TextInput
+                keyboardType="numeric"
+                placeholder="1234567890"
+                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+              />
             </View>
             <Image
               style={ChangeContactInputStyle.Vectorimg}

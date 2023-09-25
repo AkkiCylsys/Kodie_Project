@@ -1,3 +1,4 @@
+// Screen no:226
 import { View, Text, Image } from "react-native";
 import React from "react";
 import { AppInfoStyle } from "./AppInfoStyle";

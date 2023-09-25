@@ -8,6 +8,7 @@ import { CreateJobFirstStyle } from "../../CreateJob/CreateJobFirstScreenCss";
 import { ScrollView } from "react-native-gesture-handler";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS, IMAGES } from "../../../Themes";
+// Screen no:189,190,192,193,194
 const data = [
   { label: "Delhi", value: "1" },
   { label: "Mumbai", value: "2" },
@@ -32,12 +33,12 @@ const EditProfile = () => {
               source={IMAGES.Landlordprofile}
               resizeMode="contain"
             />
-          <View style={EditProfileStyle.editlogoview}>
-            <Image
-              style={EditProfileStyle.editlogo}
-              source={require("../../../assets/icons/edit.png")}
-            />
-          </View>
+            <View style={EditProfileStyle.editlogoview}>
+              <Image
+                style={EditProfileStyle.editlogo}
+                source={require("../../../assets/icons/edit.png")}
+              />
+            </View>
           </View>
           <Text style={EditProfileStyle.edittext}>Edit profile photo</Text>
         </View>
@@ -81,26 +82,26 @@ const EditProfile = () => {
             <View style={EditProfileStyle.phoneinputbindview}>
               <View style={EditProfileStyle.phoneinput}>
                 <View style={EditProfileStyle.bindnumberview}>
-                <Text style={EditProfileStyle.numbercode}>+61</Text>
+                  <Text style={EditProfileStyle.numbercode}>+61</Text>
 
-                <Image
-                  style={EditProfileStyle.downarrowimg}
-                  source={require("../../../assets/icons/downarrow.png")}
-                />
-                <Image
-                  style={EditProfileStyle.lineimg}
-                  source={require("../../../assets/icons/verticalLineimg.png")}
-                />
-                <TextInput
-                  keyboardType="numeric"
-                  placeholder="1234567890"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                />
+                  <Image
+                    style={EditProfileStyle.downarrowimg}
+                    source={require("../../../assets/icons/downarrow.png")}
+                  />
+                  <Image
+                    style={EditProfileStyle.lineimg}
+                    source={require("../../../assets/icons/verticalLineimg.png")}
+                  />
+                  <TextInput
+                    keyboardType="numeric"
+                    placeholder="1234567890"
+                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  />
                 </View>
-              <Image
-                style={EditProfileStyle.Vectorimg}
-                source={require("../../../assets/icons/Vector.png")}
-              />
+                <Image
+                  style={EditProfileStyle.Vectorimg}
+                  source={require("../../../assets/icons/Vector.png")}
+                />
               </View>
             </View>
           </View>
