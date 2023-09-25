@@ -75,6 +75,8 @@ import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRe
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
 import SearchUser from "../../screens/Authentication/BlockUser/SearchUser"
+import AccountSetting from "./../../screens/Setting/Account/AccountSetting"
+import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription"
 import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser"
 import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu"
@@ -699,6 +701,12 @@ const AllStackRouts = (props) => {
           component={GeneralSettings}
           options={{ headerShown: false }}
         />
+          <Stack.Screen
+          name={"GeneralSetting"}
+          component={GeneralSetting}
+          options={{ headerShown: false }}
+        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
