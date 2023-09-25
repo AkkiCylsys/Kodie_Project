@@ -70,7 +70,8 @@ const Billinginformation = (props) => {
                   More info
                 </Text>
                 <Image
-                  source={IMAGES.downarrow}
+                  // source={IMAGES.downarrow}
+                  source={show ? IMAGES.upArrow : IMAGES.downarrow}
                   style={BillinginformationStyle.downarrowimg}
                 />
               </TouchableOpacity>
@@ -151,12 +152,14 @@ const Billinginformation = (props) => {
             </View>
           </View>
 
+          <View>
+          <Text style={[BillinginformationStyle.totalcosttext,BillinginformationStyle.jobinvoicetext]}>Job invoice</Text>
           <View style={BillinginformationStyle.textContainer}>
             <View style={BillinginformationStyle.bindfile}>
               <Image source={IMAGES.document} />
               <View>
                 <Text style={BillinginformationStyle.pdfName}>
-                  {"Company document.pdf"}
+                  {"Invoice.pdf"}
                 </Text>
                 <Text style={BillinginformationStyle.pdfSize}>{"4.8 MB"}</Text>
               </View>
@@ -167,6 +170,7 @@ const Billinginformation = (props) => {
               style={BillinginformationStyle.doticon}
             />
           </View>
+          </View>
 
           <View style={BillinginformationStyle.buttonview}>
             <CustomSingleButton
@@ -174,7 +178,7 @@ const Billinginformation = (props) => {
               isLeftImage={true}
               Text_Color={_COLORS.Kodie_WhiteColor}
               borderColor={_COLORS.Kodie_TransparentColor}
-              _ButtonText={"Save"}
+              _ButtonText={"Pay $173.25 now"}
               backgroundColor={_COLORS.Kodie_BlackColor}
             />
 

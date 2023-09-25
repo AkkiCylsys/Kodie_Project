@@ -34,6 +34,7 @@ export const BillinginformationStyle = StyleSheet.create({
     height: 23,
     alignItems: "center",
     borderRadius: 10,
+
   },
   starimg: {
     tintColor: _COLORS.Kodie_ExtraDarkGreen,
@@ -77,7 +78,7 @@ export const BillinginformationStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
     width: 330,
     height: 120,
-    borderRadius:10,
+    borderRadius:8,
   },
   jobbindview: {
     flexDirection: "row",
@@ -140,6 +141,9 @@ export const BillinginformationStyle = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 5,
   },
+  jobinvoicetext:{
+  marginTop:15
+  },
   dividersecond: {
     height: 1,
     opacity: 0.5,
@@ -188,7 +192,7 @@ export const BillinginformationStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    marginTop: 20,
+    marginTop: 8,
     borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
   },
   bindfile: {

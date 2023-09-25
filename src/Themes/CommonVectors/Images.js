@@ -64,7 +64,7 @@ export const IMAGES = {
   Parking: require("../../assets/icons/parking.png"),
     // common images
     Share: require("../../assets/images/Common/Share.png"),
-  rightarrow: require("../../assets/icons/rightarrow.png"),
+  rightarrow: require("../../assets/icons/Rightarrow.png"),
   kodie_icon: require("../../assets/icons/kodie_icon.png"),
   menuIcon: require("../../assets/icons/menuIcon.png"),
   star: require("../../assets/icons/star.png"),
@@ -75,7 +75,12 @@ export const IMAGES = {
   pencile : require('../../assets/icons/Vector.png'),
   HorizentalLine : require('../../assets/icons/HorizontallineImage.png'),
   downarrow : require('../../assets/icons/downarrow.png'),
-  verticalLine : require('../../assets/icons/verticalLineimg.png')
+  verticalLine : require('../../assets/icons/verticalLineimg.png'),
+  upArrow : require("../../assets/icons/upaarow.png"),
+  Tax : require('../../assets/icons/Tax.png'),
+  Group : require('../../assets/icons/Group.png'),
+  Calendar : require('../../assets/icons/Calendar.png'),
+  currency : require('../../assets/icons/Doller.png')
 
 };
 
