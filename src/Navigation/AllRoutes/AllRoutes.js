@@ -73,17 +73,14 @@ import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/S
 import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
-import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia"
 import SearchUser from "../../screens/Authentication/BlockUser/SearchUser"
-import AccountSetting from "./../../screens/Setting/Account/AccountSetting"
 import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription"
 import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser"
 import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu"
 import AddTenantDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
-import SearchUser from "../../screens/Authentication/BlockUser/SearchUser";
 import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
-import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription";
+
 import ViewApplication from "../../screens/Landlord/PropertyList/RentalOffer/ViewApplication";
 import PropertyInspection from "../../screens/Inspection/PropertyInspection/PropertyInspection";
 import CreateNewInspection from "../../screens/Inspection/NewInspections/CreateNewInspection";
