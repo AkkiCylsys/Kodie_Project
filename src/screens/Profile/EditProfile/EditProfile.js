@@ -35,7 +35,7 @@ const EditProfile = () => {
           <View style={EditProfileStyle.editlogoview}>
             <Image
               style={EditProfileStyle.editlogo}
-              source={require("../../../assets/icons/edit.png")}
+              source={IMAGES.edit}
             />
           </View>
           </View>
@@ -56,7 +56,7 @@ const EditProfile = () => {
               />
               <Image
                 style={EditProfileStyle.Vectorimg}
-                source={require("../../../assets/icons/Vector.png")}
+                source={IMAGES.pencile}
               />
             </View>
           </View>
@@ -71,7 +71,7 @@ const EditProfile = () => {
               />
               <Image
                 style={EditProfileStyle.Vectorimg}
-                source={require("../../../assets/icons/Vector.png")}
+                source={IMAGES.pencile}
               />
             </View>
           </View>
@@ -85,11 +85,11 @@ const EditProfile = () => {
 
                 <Image
                   style={EditProfileStyle.downarrowimg}
-                  source={require("../../../assets/icons/downarrow.png")}
+                  source={IMAGES.downarrow}
                 />
                 <Image
                   style={EditProfileStyle.lineimg}
-                  source={require("../../../assets/icons/verticalLineimg.png")}
+                  source={IMAGES.verticalLine}
                 />
                 <TextInput
                   keyboardType="numeric"
@@ -99,7 +99,7 @@ const EditProfile = () => {
                 </View>
               <Image
                 style={EditProfileStyle.Vectorimg}
-                source={require("../../../assets/icons/Vector.png")}
+                source={IMAGES.pencile}
               />
               </View>
             </View>
@@ -112,7 +112,7 @@ const EditProfile = () => {
               <View style={EditProfileStyle.physicalsecondview}>
                 <Image
                   style={EditProfileStyle.locationimg}
-                  source={require("../../../assets/icons/location.png")}
+                  source={IMAGES.Location}
                 />
                 <TextInput
                   keyboardType="numeric"
@@ -121,7 +121,7 @@ const EditProfile = () => {
               </View>
               <Image
                 style={EditProfileStyle.Vectorimg}
-                source={require("../../../assets/icons/Vector.png")}
+                source={IMAGES.pencile}
               />
             </View>
           </View>

@@ -82,7 +82,6 @@ import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser"
 import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu"
 import AddTenantDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
-import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
 
 import ViewApplication from "../../screens/Landlord/PropertyList/RentalOffer/ViewApplication";
 import PropertyInspection from "../../screens/Inspection/PropertyInspection/PropertyInspection";

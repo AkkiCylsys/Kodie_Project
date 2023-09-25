@@ -3,7 +3,7 @@ import React from "react";
 import { ChangeContactInputStyle } from "./ChangeContactInputStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS } from "../../../../Themes";
+import { _COLORS,IMAGES } from "../../../../Themes";
 
 const ChangeContactInput = () => {
   return (
@@ -23,12 +23,12 @@ const ChangeContactInput = () => {
               <Text style={ChangeContactInputStyle.numbercode}>+61</Text>
               <Image
                 style={ChangeContactInputStyle.downarrowimg}
-                source={require("../../../../assets/icons/downarrow.png")}
+                source={IMAGES.downarrow}
               />
 
               <Image
                 style={ChangeContactInputStyle.lineimg}
-                source={require("../../../../assets/icons/verticalLineimg.png")}
+                source={IMAGES.verticalLine}
               />
 
               <TextInput keyboardType="numeric" placeholder="1234567890" 
@@ -36,7 +36,7 @@ const ChangeContactInput = () => {
             </View>
             <Image
               style={ChangeContactInputStyle.Vectorimg}
-              source={require("../../../../assets/icons/Vector.png")}
+              source={IMAGES.pencile}
             />
           </View>
         </View>
@@ -51,12 +51,12 @@ const ChangeContactInput = () => {
               <Text style={ChangeContactInputStyle.numbercode}>+61</Text>
               <Image
                 style={ChangeContactInputStyle.downarrowimg}
-                source={require("../../../../assets/icons/downarrow.png")}
+                source={IMAGES.downarrow}
               />
 
               <Image
                 style={ChangeContactInputStyle.lineimg}
-                source={require("../../../../assets/icons/verticalLineimg.png")}
+                source={IMAGES.verticalLine}
               />
 
               <TextInput keyboardType="numeric" placeholder="1234567890" 
@@ -64,7 +64,7 @@ const ChangeContactInput = () => {
             </View>
             <Image
               style={ChangeContactInputStyle.Vectorimg}
-              source={require("../../../../assets/icons/Vector.png")}
+              source={IMAGES.pencile}
             />
           </View>
         </View>

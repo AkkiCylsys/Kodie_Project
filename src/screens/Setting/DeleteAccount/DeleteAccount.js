@@ -3,7 +3,7 @@ import React from "react";
 import { DeleteAccountStyle } from "./DeleteAccountStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS } from "../../../Themes";
+import { _COLORS,IMAGES } from "../../../Themes";
 const DeleteAccount = () => {
   return (
     <>
@@ -17,7 +17,7 @@ const DeleteAccount = () => {
       <View style={DeleteAccountStyle.headingview}>
         <Image
           style={DeleteAccountStyle.helpimg}
-          source={require("../../../assets/icons/helpCenter.png")}
+          source={IMAGES.helpCenter}
         />
         <Text style={DeleteAccountStyle.accounttext}>
           If you delete this account
@@ -42,7 +42,7 @@ const DeleteAccount = () => {
       <View style={DeleteAccountStyle.logoutview}>
         <Image
           style={DeleteAccountStyle.Logoutimg}
-          source={require("../../../assets/icons/Logout.png")}
+          source={IMAGES.Logout}
         />
         <Text style={DeleteAccountStyle.insteadtext}>
           Change number instead?
@@ -74,11 +74,11 @@ const DeleteAccount = () => {
             <Text style={DeleteAccountStyle.numbercode}>+61</Text>
             <Image
               style={DeleteAccountStyle.downarrowimg}
-              source={require("../../../assets/icons/downarrow.png")}
+              source={IMAGES.downarrow}
             />
             <Image
               style={DeleteAccountStyle.lineimg}
-              source={require("../../../assets/icons/verticalLineimg.png")}
+              source={IMAGES.verticalLine}
             />
           <TextInput
             keyboardType="numeric"

@@ -101,7 +101,7 @@ const AddNewNotice = () => {
               onColor="#D8D8D8"
               offColor="#D8D8D8"
               size="small"
-              thumbOnStyle={{ backgroundColor: "green" }}
+              thumbOnStyle={{ backgroundColor: _COLORS.Kodie_GreenColor}}
               thumbOffStyle={{ backgroundColor: _COLORS.Kodie_BlackColor }}
               onToggle={(isOn) => console.log("changed to : ", isOn)}
             />
@@ -153,7 +153,7 @@ const AddNewNotice = () => {
                 onColor="#D8D8D8"
                 offColor="#D8D8D8"
                 size="small"
-                thumbOnStyle={{ backgroundColor: "green" }}
+                thumbOnStyle={{ backgroundColor: _COLORS.Kodie_GreenColor }}
                 thumbOffStyle={{ backgroundColor: _COLORS.Kodie_BlackColor }}
                 onToggle={(isOn) => console.log("changed to : ", isOn)}
               />

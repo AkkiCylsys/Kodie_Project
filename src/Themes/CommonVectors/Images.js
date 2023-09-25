@@ -80,7 +80,7 @@ export const IMAGES = {
   // common images
   Share: require("../../assets/images/Common/Share.png"),
 
-  rightarrow: require("../../assets/icons/rightarrow.png"),
+  rightarrow: require("../../assets/icons/Rightarrow.png"),
   HelpCentre: require("../../assets/icons/HelpCentre.png"),
   ContactUs: require("../../assets/images/Common/ContactUs.png"),
   TermsandPolicy: require("../../assets/images/Common/TermsandPolicy.png"),
@@ -104,10 +104,10 @@ export const IMAGES = {
   NotificationIcon: require("../../assets/images/Common/NotificationIcon.png"),
 
   //Rahul
-  kodie_icon: require("../../assets/icons/kodie_icon.png"),
-  menuIcon: require("../../assets/icons/menuIcon.png"),
-  star: require("../../assets/icons/star.png"),
-  RightLeftarrow: require("../../assets/icons/RightLeftArrow.png"),
+  kodie_icon : require("../../assets/icons/kodie_icon.png"),
+  menuIcon : require("../../assets/icons/menuicon.png"),
+  star : require("../../assets/icons/star.png"),
+  RightLeftarrow : require("../../assets/icons/RightLeftArrow.png"),
   adduser: require("../../assets/icons/adduser.png"),
   notificationbell: require('../../assets/icons/notificationbell.png'),
   Location : require('../../assets/icons/location.png'),
@@ -119,7 +119,8 @@ export const IMAGES = {
   Tax : require('../../assets/icons/Tax.png'),
   Group : require('../../assets/icons/Group.png'),
   Calendar : require('../../assets/icons/Calendar.png'),
-  currency : require('../../assets/icons/Doller.png')
+  currency : require('../../assets/icons/Doller.png'),
+  edit : require('../../assets/icons/edit.png'),
 };
 
 export const BANNERS = {
