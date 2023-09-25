@@ -7,10 +7,15 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { _COLORS, LABEL_STYLES, BANNERS, IMAGES } from "../../../../Themes";
+import {
+  _COLORS,
+  LABEL_STYLES,
+  BANNERS,
+  IMAGES,
+  FONTFAMILY,
+} from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
 import Fontisto from "react-native-vector-icons/Fontisto";
-import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "./../../../../services/CommonServices/index";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
@@ -19,6 +24,8 @@ import BottomModalData from "../../../../components/Molecules/BottomModal/Bottom
 import { RantalOfferCss } from "./RantalOfferCss";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import SearchBar from "../../../../components/Molecules/SearchBar/SearchBar";
+import MultiSelectDropDown from "../../../../components/Molecules/MultiSelectDropdown/MultiSelectDropDown";
+import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 
 const property_List2 = [
   {
@@ -77,6 +84,60 @@ const property_List2 = [
     aspact_ratio: "86m2",
     availableDate: false,
     availablenow: true,
+  },
+];
+const DropdownOption = [
+  { name: "All" },
+  { name: "8502 Preston Rd. Inglewood" },
+  { name: "2118 Thornridge Cir. Syracuse" },
+  { name: "1729 Sickle St, QLD, 4010 " },
+  { name: "5 Aspen Villas, Morningside, NSW" },
+  { name: "792 Zetland Road, Zetland, NSW" },
+];
+const offersForProperties = [
+  {
+    id: 1,
+    banner: BANNERS.Apartment,
+    apartment: "Apartment",
+    Name: "Melbourne",
+    bidAmount: "$870",
+    location: "8502 preston Rd Inglewood",
+    star: "3.9",
+    roundimage: IMAGES.userImage,
+    roundName: "Jenny dio",
+  },
+  {
+    id: 2,
+    banner: BANNERS.Apartment,
+    apartment: "Apartment",
+    Name: "Melbourne",
+    bidAmount: "$870",
+    location: "8502 preston Rd Inglewood",
+    star: "3.9",
+    roundimage: IMAGES.userImage,
+    roundName: "Jenny dio",
+  },
+  {
+    id: 3,
+    banner: BANNERS.Apartment,
+    apartment: "Apartment",
+    Name: "Melbourne",
+    bidAmount: "$870",
+    location: "8502 preston Rd Inglewood",
+    star: "3.9",
+    roundimage: IMAGES.userImage,
+    roundName: "Jenny dio",
+  },
+  {
+    id: 4,
+    banner: BANNERS.Apartment,
+    apartment: "Apartment",
+    Name: "Melbourne",
+    bidAmount: "$870",
+    location: "8502 preston Rd Inglewood",
+    star: "3.9",
+    roundimage: IMAGES.userImage,
+    roundName: "Jenny dio",
   },
 ];
 
@@ -261,6 +322,90 @@ export default RantalOffer = (props) => {
     );
   };
 
+  const offer_Properties = ({ item }) => {
+    return (
+      <>
+        <View style={RantalOfferCss.flatListContainer}>
+          <View style={RantalOfferCss.flat_MainView}>
+            <Image
+              source={BANNERS.Apartment}
+              style={RantalOfferCss.Imagestl}
+              resizeMode={"center"}
+            />
+            <View style={RantalOfferCss.margin}>
+              <View
+                style={[RantalOfferCss.flat_MainView, RantalOfferCss.flat_View]}
+              >
+                <View>
+                  <Text style={RantalOfferCss.apartmentText}>
+                    {item.apartment}
+                  </Text>
+                  <Text style={LABEL_STYLES.commontext}>{item.Name}</Text>
+                </View>
+                <View style={RantalOfferCss.bidView}>
+                  <Text style={RantalOfferCss.bidText}>Bid amount</Text>
+                  <Text
+                    style={{
+                      fontSize: 13,
+                      fontFamily: FONTFAMILY.K_Bold,
+                      color: _COLORS.Kodie_GreenColor,
+                      textAlign: "right",
+                    }}
+                  >
+                    {item.bidAmount}
+                  </Text>
+                </View>
+              </View>
+              <View style={RantalOfferCss.flat_MainView}>
+                <MaterialCommunityIcons
+                  name={"map-marker"}
+                  size={12}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+                <Text style={RantalOfferCss.locationText}>{item.location}</Text>
+              </View>
+              <View style={RantalOfferCss.flat_MainView}>
+                <Image
+                  source={item.roundimage}
+                  resizeMode={"center"}
+                  style={RantalOfferCss.RoundImage}
+                />
+                <Text
+                  style={[RantalOfferCss.apartmentText, RantalOfferCss.margin]}
+                >
+                  {item.roundName}
+                </Text>
+                <View
+                  style={[
+                    RantalOfferCss.flat_MainView,
+                    RantalOfferCss.StarView,
+                  ]}
+                >
+                  <Fontisto
+                    name="star"
+                    color={_COLORS.Kodie_lightGreenColor}
+                    size={12}
+                  />
+                  <Text style={RantalOfferCss.starText}>{item.star}</Text>
+                </View>
+              </View>
+            </View>
+          </View>
+          <DividerIcon />
+          <CustomSingleButton
+            _ButtonText={"View application"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            backgroundColor={_COLORS.Kodie_BlackColor}
+            height={40}
+            marginTop={1}
+            onPress={props.ViewApplication}
+          />
+        </View>
+        <DividerIcon />
+      </>
+    );
+  };
+
   return (
     <View style={RantalOfferCss.mainContainer}>
       <ScrollView showsHorizontalScrollIndicator={false}>
@@ -315,7 +460,23 @@ export default RantalOffer = (props) => {
           borderBottomWidth={2}
           color={_COLORS.Kodie_LiteWhiteColor}
         />
-        <FlatList data={property_List2} renderItem={propertyData2_render} />
+        {activeScreen ? (
+          <FlatList data={property_List2} renderItem={propertyData2_render} />
+        ) : (
+          <>
+            <View style={RantalOfferCss.Container}>
+              <MultiSelectDropDown
+                options={DropdownOption}
+                modalmarginTop={250}
+              />
+            </View>
+            <DividerIcon />
+            <FlatList
+              data={offersForProperties}
+              renderItem={offer_Properties}
+            />
+          </>
+        )}
       </ScrollView>
     </View>
   );

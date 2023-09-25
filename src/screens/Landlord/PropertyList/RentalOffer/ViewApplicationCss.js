@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../../Themes";
-export const SubmitApplicationCss = StyleSheet.create({
+export const ViewApplicationCss = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -62,7 +62,7 @@ export const SubmitApplicationCss = StyleSheet.create({
   },
   propery_det: {
     fontSize: 12,
-    color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_GreenColor,
     fontFamily: FONTFAMILY.K_Bold,
   },
   propety_details_view: {
@@ -143,6 +143,7 @@ export const SubmitApplicationCss = StyleSheet.create({
     fontFamily: 14,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
+    marginBottom: 10,
   },
   bottomButtonView: {
     borderTopWidth: 1,
@@ -179,7 +180,7 @@ export const SubmitApplicationCss = StyleSheet.create({
   iconStl: { alignSelf: "center" },
   verifystl: {
     fontSize: 12,
-    color: _COLORS.Kodie_lightGreenColor,
+    color: _COLORS.Kodie_GreenColor,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: "center",
     marginHorizontal: 5,
@@ -227,4 +228,40 @@ export const SubmitApplicationCss = StyleSheet.create({
     alignSelf: "center",
   },
   checkStl: { height: 120, width: 120, alignSelf: "center" },
+  readMore: {
+    color: _COLORS.Kodie_GreenColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
+  textStyle: {
+    fontSize: 12,
+    color: _COLORS.Kodie_GrayColor,
+    fontFamily: FONTFAMILY.K_Regular,
+  },
+  PdfContainer: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+  },
+  Pdfview: { flex: 1, flexDirection: "row" },
+  pdfTextView: { marginLeft: 10 },
+  PDF_Text: {
+    fontSize: 12,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    alignSelf: "center",
+  },
+
+  MBText: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_MediumGrayColor,
+    textAlign: "left",
+  },
+  closeIconView: { justifyContent: "center", alignItems: "flex-end" },
 });

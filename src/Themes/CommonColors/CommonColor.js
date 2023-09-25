@@ -45,7 +45,7 @@ export const _COLORS = {
   Kodie_LightWhiteColor: "#DDDDDD",
   Kodie_LightGrayColor: "#D9D9D9",
   Kodie_LightGrayLineColor: "#DBDBDB",
-  
+
   Kodie_ExtraLightGrayColor: "#A1A1A1",
   Kodie_minLiteGrayColor: "#EFF2F2",
   Kodie_ExtraLiteGrayColor: "#92929D",
@@ -68,6 +68,7 @@ export const _COLORS = {
   Kodie_mostLightBlueColor: "#E7F1FF",
   Kodie_redColor: "#D30000",
   Kodie_ExtraDarkGreen: "#309E63",
+  Kodie_lightRedColor: "#FF5A5A",
 };
 export const headerGradientColor = ["#2273AC", "#0F5F93"];
 export const bgGradientColor = ["#4694CC", "#116A9B"];

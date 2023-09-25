@@ -127,7 +127,7 @@ export default NewInspection = (props) => {
             _ButtonText={"Create new inspection"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={() => {
-              props.navigation.navigate("NewInspection");
+              props.navigation.navigate("CreateNewInspection");
             }}
           />
         </View>

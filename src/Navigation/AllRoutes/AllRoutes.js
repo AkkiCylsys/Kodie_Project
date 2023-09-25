@@ -71,7 +71,6 @@ import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
-import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
 import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/SearchResult";
 import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
@@ -81,6 +80,11 @@ import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
 import SearchUser from "../../screens/Authentication/BlockUser/SearchUser";
 import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
 import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription";
+import ViewApplication from "../../screens/Landlord/PropertyList/RentalOffer/ViewApplication";
+import PropertyInspection from "../../screens/Inspection/PropertyInspection/PropertyInspection";
+import CreateNewInspection from "../../screens/Inspection/NewInspections/CreateNewInspection";
+import NewInspection from "../../screens/Inspection/NewInspections/NewInspection";
+import Bedroom from "../../screens/Inspection/PropertyInspection/Inspection/Bedroom/Bedroom";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -621,6 +625,26 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ManageSubscription"}
           component={ManageSubscription}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ViewApplication"}
+          component={ViewApplication}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyInspection"}
+          component={PropertyInspection}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CreateNewInspection"}
+          component={CreateNewInspection}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Bedroom"}
+          component={Bedroom}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

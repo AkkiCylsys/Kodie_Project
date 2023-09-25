@@ -26,7 +26,7 @@ const Properties = (props) => {
           />
         );
       case "Tab3":
-        return <RantalOffer />;
+        return <RantalOffer ViewApplication={()=> props.navigation.navigate("ViewApplication")}/>;
 
       default:
         return <PropertyList />;

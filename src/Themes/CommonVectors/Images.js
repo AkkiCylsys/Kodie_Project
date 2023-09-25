@@ -65,6 +65,15 @@ export const IMAGES = {
   AddManually: require("../../assets/icons/AddManually.png"),
   InviteTenant: require("../../assets/icons/InviteTenant.png"),
   InviteContact: require("../../assets/icons/InviteContact.png"),
+  Adduser: require("../../assets/icons/Adduser.png"),
+  diningRoom: require("../../assets/icons/diningRoom.png"),
+  Exterior: require("../../assets/icons/Exterior.png"),
+  Garage: require("../../assets/icons/Garage.png"),
+  Garden: require("../../assets/icons/Garden.png"),
+  kitchen: require("../../assets/icons/kitchen.png"),
+  LivingRoom: require("../../assets/icons/LivingRoom.png"),
+  Roof: require("../../assets/icons/Roof.png"),
+  Duplicate: require("../../assets/icons/Duplicate.png"),
   // common images
   Share: require("../../assets/images/Common/Share.png"),
 
@@ -87,7 +96,6 @@ export const IMAGES = {
   RateKodie: require("../../assets/images/Common/RateKodie.png"),
   ManageSubscription: require("../../assets/images/Common/ManageSubscription.png"),
   Subscription: require("../../assets/images/Common/Subscription.png"),
-
   Done: require("../../assets/images/Common/Done.png"),
 };
 

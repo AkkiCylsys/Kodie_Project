@@ -6,7 +6,7 @@ import { _COLORS } from "../../../../../../../Themes";
 import Person from "./Person/Person";
 import Company from "./Company/Company";
 export default AddTenantDetails = () => {
-  const [tabValue, setTabValue] = useState("");
+  const [tabValue, setTabValue] = useState("Person");
   const checkTabs = () => {
     switch (tabValue) {
       case "Person":
@@ -34,19 +34,58 @@ export default AddTenantDetails = () => {
         <View>
           <View style={AddTenantDetailsStyle.btn_main_view}>
             <TouchableOpacity
-              style={AddTenantDetailsStyle.person_view}
+              style={[
+                AddTenantDetailsStyle.person_view,
+                {
+                  backgroundColor:
+                    tabValue === "Person"
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
               onPress={() => {
                 setTabValue("Person");
               }}
             >
-              <Text style={AddTenantDetailsStyle.person_text}>{"Person"}</Text>
+              <Text
+                style={[
+                  AddTenantDetailsStyle.person_text,
+                  {
+                    color:
+                      tabValue === "Person"
+                        ? _COLORS.Kodie_WhiteColor
+                        : _COLORS.Kodie_BlackColor,
+                  },
+                ]}
+              >
+                {"Person"}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity
+              style={[
+                AddTenantDetailsStyle.person_view,
+                {
+                  backgroundColor:
+                    tabValue === "Company"
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
               onPress={() => {
                 setTabValue("Company");
               }}
             >
-              <Text style={AddTenantDetailsStyle.company_text}>
+              <Text
+                style={[
+                  AddTenantDetailsStyle.company_text,
+                  {
+                    color:
+                      tabValue === "Company"
+                        ? _COLORS.Kodie_WhiteColor
+                        : _COLORS.Kodie_BlackColor,
+                  },
+                ]}
+              >
                 {"Company"}
               </Text>
             </TouchableOpacity>
