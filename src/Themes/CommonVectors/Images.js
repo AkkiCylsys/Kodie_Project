@@ -65,11 +65,23 @@ export const IMAGES = {
   Bathroom: require("../../assets/icons/bathroom.png"),
   BedroomIcon: require("../../assets/icons/bedroomIcon.png"),
   Parking: require("../../assets/icons/parking.png"),
-  HelpCentre:require("../../assets/icons/HelpCentre.png"),
-    // common images
-    Share: require("../../assets/images/Common/Share.png"),
-  
-  rightarrow: require("../../assets/images/Common/RightArrow.png"),
+  AddManually: require("../../assets/icons/AddManually.png"),
+  InviteTenant: require("../../assets/icons/InviteTenant.png"),
+  InviteContact: require("../../assets/icons/InviteContact.png"),
+  Adduser: require("../../assets/icons/Adduser.png"),
+  diningRoom: require("../../assets/icons/diningRoom.png"),
+  Exterior: require("../../assets/icons/Exterior.png"),
+  Garage: require("../../assets/icons/Garage.png"),
+  Garden: require("../../assets/icons/Garden.png"),
+  kitchen: require("../../assets/icons/kitchen.png"),
+  LivingRoom: require("../../assets/icons/LivingRoom.png"),
+  Roof: require("../../assets/icons/Roof.png"),
+  Duplicate: require("../../assets/icons/Duplicate.png"),
+  // common images
+  Share: require("../../assets/images/Common/Share.png"),
+
+  rightarrow: require("../../assets/icons/rightarrow.png"),
+  HelpCentre: require("../../assets/icons/HelpCentre.png"),
   ContactUs: require("../../assets/images/Common/ContactUs.png"),
   TermsandPolicy: require("../../assets/images/Common/TermsandPolicy.png"),
   AppInfoNew: require("../../assets/images/Common/TermsandPolicy.png"),

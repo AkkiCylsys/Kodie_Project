@@ -24,7 +24,13 @@ export default PropertyReview = (props) => {
   const checkTabs = () => {
     switch (tabValue) {
       case "Details":
-        return <Details />;
+        return (
+          <Details
+            AddProperty={() => {
+              props.navigation.navigate("NewInspection");
+            }}
+          />
+        );
       case "Leases":
         return <Leases />;
       case "Expenses":

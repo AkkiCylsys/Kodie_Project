@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../Themes";
+import { _COLORS, FONTFAMILY } from "../../../../Themes";
 
-import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
+import { fontFamily } from "../../../../Themes/FontStyle/FontStyle";
 export const RepairCss = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -100,6 +100,13 @@ export const RepairCss = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: fontFamily.K_Regular,
+    textAlign: "right",
+  },
+  bugetText: {
+    fontSize: 12,
+    color: _COLORS.Kodie_GrayColor,
+    fontFamily: fontFamily.K_Regular,
+    textAlign: "right",
   },
   readMore: {
     color: _COLORS.Kodie_BlackColor,

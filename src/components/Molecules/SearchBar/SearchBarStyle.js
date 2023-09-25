@@ -28,7 +28,7 @@ export const SearchBarStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
-    paddingVertical: 8,
+    paddingVertical: 10,
     paddingHorizontal: 12,
     marginRight: 16,
     marginTop: 18,

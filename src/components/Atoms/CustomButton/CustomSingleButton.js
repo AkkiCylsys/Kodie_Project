@@ -16,6 +16,7 @@ const CustomSingleButton = (props) => {
           height: props.height,
           marginBottom: props.marginBottom,
           marginHorizontal: props.marginHorizontal,
+          width: props.width ? props.width : "100%",
         },
       ]}
     >

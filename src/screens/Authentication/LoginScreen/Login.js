@@ -108,15 +108,17 @@ export default Login = (props) => {
             />
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
-            onPress={()=>props.navigation.navigate("Invitefriend")}
+              onPress={() => {
+                // props.navigation.navigate("Invitefriend"),
+                props.navigation.navigate("Bedroom");
+              }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
               _ButtonText={"Login with Google"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
-            onPress={()=>props.navigation.navigate("ManageSubscription")}
-            
+              onPress={() => props.navigation.navigate("ManageSubscription")}
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={"Login with Facebook"}
