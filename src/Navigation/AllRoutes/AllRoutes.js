@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 
-// import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from "react-native-linear-gradient";
 import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import MtIcon from "react-native-vector-icons/MaterialIcons";
@@ -24,7 +23,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import CustomeDrawer from "../CustomeDrawer/CustomeDrawer";
 
 import SplashScreen from "../../screens/SplashScreen/SplashScreen";
 import Login from "./../../screens/Authentication/LoginScreen/Login";
@@ -64,30 +62,40 @@ import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetai
 import PropertyFeature from "../../screens/Landlord/AddNewProperty/PropertyFeature/PropertyFeature";
 import PropertyImages from "../../screens/Landlord/AddNewProperty/PropertyImages/PropertyImages";
 import PropertyReview from "../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReview";
-
-//
 import PropertyExpenses from "../../screens/Landlord/AddNewProperty/PropertyReview/Expenses/PropertyExpenses/PropertyExpenses";
 import HelpOrFeedback from "../../screens/Setting/Help & Feedback/HelpOrFeedback";
 import Contactus from "../../screens/Setting/ContactUs/Contactus";
 import AppInfo from "../../screens/Setting/AppInfo/AppInfo";
 import ChangeContactInput from "../../screens/Setting/ChangeContactDetails/ChangeContactInput/ChangeContactInput";
+import ChangeContactNotify from "../../screens/Setting/ChangeContactDetails/ChangeContactNotify/ChangeContactNotify";
+import DeleteAccount from "../../screens/Setting/DeleteAccount/DeleteAccount";
+//import NewInspection from "../../screens/Landlord/Inspections/NewInspection";
 import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/SearchResult";
 import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
+import SearchUser from "../../screens/Authentication/BlockUser/SearchUser"
+import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription"
+import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser"
+import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu"
 import AddTenantDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
-import SearchUser from "../../screens/Authentication/BlockUser/SearchUser";
 import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
-import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription";
+
 import ViewApplication from "../../screens/Landlord/PropertyList/RentalOffer/ViewApplication";
 import PropertyInspection from "../../screens/Inspection/PropertyInspection/PropertyInspection";
 import CreateNewInspection from "../../screens/Inspection/NewInspections/CreateNewInspection";
 import NewInspection from "../../screens/Inspection/NewInspections/NewInspection";
 import Bedroom from "../../screens/Inspection/PropertyInspection/Inspection/Bedroom/Bedroom";
+import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
+import Notifications from "../../screens/Notifications/Notifications";
+import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
+import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
+import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
+import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
-  return (
+  return ( 
     <Tab.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
@@ -295,32 +303,18 @@ const BottomNav = (props) => {
   );
 };
 
-const Drawer = createDrawerNavigator();
-const DrawerNavigation = (props) => {
-  return (
-    <Drawer.Navigator
-      drawerContent={(props) => <CustomeDrawer {...props} />}
-      drawerStyle={{
-        backgroundColor: colors.white,
-        width: "70%",
-      }}
-      initialRouteName="BottomNav"
-    >
-      <Drawer.Screen
-        name="BottomNav"
-        component={BottomNav}
-        // initialParams={{screen:'BottomNav'}}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        name="LeaveTracker"
-        component={LeaveTracker}
-        options={{ headerShown: false }}
-      />
-    </Drawer.Navigator>
+ const Drawer = createDrawerNavigator();
+ const DrawerNavigstorLeftMenu = (props) => {
+  return ( 
+
+<Drawer.Navigator initialRouteName="Dashboard"
+drawerContent={(props )=> <CustomSidebarMenu {...props} />}>
+        <Drawer.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }}/>
+        <Drawer.Screen name="ContractorSignUpThirdScreen" component={ContractorSignUpThirdScreen} options={{ headerShown: false }}/>
+      </Drawer.Navigator>
+
   );
 };
-
 const AuthStack = createNativeStackNavigator();
 const AuthStackRouts = (props) => {
   return (
@@ -375,11 +369,7 @@ const AllStackRouts = (props) => {
           component={BottomNav}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name={"DrawerNavigation"}
-          component={DrawerNavigation}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name={"LoginScreen"}
           component={Login}
@@ -547,10 +537,7 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
-          name={"ChangeContactInput"}
-          component={ChangeContactInput}
-        />
+      
 
         <Stack.Screen
           name={"SearchResult"}
@@ -597,6 +584,11 @@ const AllStackRouts = (props) => {
         />
 
         <Stack.Screen
+          name={"ChangeContactInput"}
+          component={ChangeContactInput}
+        />
+
+        <Stack.Screen
           name={"NewInspection"}
           component={NewInspection}
           options={{ headerShown: false }}
@@ -617,6 +609,7 @@ const AllStackRouts = (props) => {
           component={SearchUser}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
           name={"AccountSetting"}
           component={AccountSetting}
@@ -627,6 +620,17 @@ const AllStackRouts = (props) => {
           component={ManageSubscription}
           options={{ headerShown: false }}
         />
+                  <Stack.Screen
+          name={"BlockedUser"}
+          component={BlockedUser}
+          options={{ headerShown: false }}
+        />
+              <Stack.Screen
+          name={"DrawerNavigstorLeftMenu"}
+          component={DrawerNavigstorLeftMenu}
+          options={{ headerShown: false }}
+        />
+       
         <Stack.Screen
           name={"ViewApplication"}
           component={ViewApplication}
@@ -645,6 +649,54 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"Bedroom"}
           component={Bedroom}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"ChangeContactNotify"}
+          component={ChangeContactNotify}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"DeleteAccount"}
+          component={DeleteAccount}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"EditProfile"}
+          component={EditProfile}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Notifications"}
+          component={Notifications}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"AddNewNotice"}
+          component={AddNewNotice}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"AccountStep"}
+          component={AccountStep}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Billinginformation"}
+          component={Billinginformation}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"GeneralSettings"}
+          component={GeneralSettings}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

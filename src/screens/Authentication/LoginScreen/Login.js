@@ -33,7 +33,7 @@ export default Login = (props) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const refRBSheet = useRef();
-  const buttonLabels = ["Next", "Next", "Save", "Back to login"];
+  const buttonLabels = ["Send verification code", "Next", "Save", "Back to login"];
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -79,7 +79,7 @@ export default Login = (props) => {
                 style={LoginStyles.input}
                 value={email}
                 onChangeText={setEmail}
-                placeholder="Your Email Address"
+                placeholder="Your email address"
                 placeholderTextColor="#999"
               />
             </View>
@@ -89,7 +89,7 @@ export default Login = (props) => {
                 style={LoginStyles.input}
                 value={password}
                 onChangeText={setPassword}
-                placeholder="Enter Password"
+                placeholder="Enter password"
                 placeholderTextColor="#999"
                 secureTextEntry
               />
@@ -126,9 +126,9 @@ export default Login = (props) => {
             />
             <BottomTextsButton
               _LeftButtonText={"Don't have an account yet?"}
-              _RightButtonText={"Register"}
+              _RightButtonText={"Sign up"}
               onPress={() => {
-                props.navigation.navigate("ContractorSignUpFirstScreen");
+                props.navigation.navigate("SignUp");
               }}
             />
           </View>
@@ -194,7 +194,7 @@ export default Login = (props) => {
                 />
               </View>
               <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
+                <View style={[LoginStyles.inputContainer, { flex: 1 ,}]}>
                   <Text style={LABEL_STYLES._texinputLabel}>
                     Verification code
                   </Text>
@@ -301,7 +301,7 @@ export default Login = (props) => {
                 <Text
                   style={[LABEL_STYLES._texinputLabel, LoginStyles.passchange]}
                 >
-                  Password change
+                  Password successfully updated
                 </Text>
                 <Image
                   source={IMAGES.CheckIcon}

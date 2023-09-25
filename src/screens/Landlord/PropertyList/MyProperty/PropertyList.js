@@ -31,6 +31,7 @@ const HorizontalData = [
   "Rent Received",
   "Archive",
 ];
+
 const property_List1 = [
   {
     id: "1",

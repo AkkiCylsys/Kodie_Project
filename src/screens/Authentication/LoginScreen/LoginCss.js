@@ -90,7 +90,9 @@ export const LoginStyles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 20,
   },
-  codeMargin: { margin: 5 },
+  codeMargin: { 
+    margin: 5
+   },
   getButton: {
     fontSize: 14,
     color: _COLORS.Kodie_WhiteColor,

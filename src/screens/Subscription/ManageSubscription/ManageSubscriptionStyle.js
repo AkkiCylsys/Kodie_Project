@@ -26,7 +26,39 @@ backgroundColor:_COLORS.Kodie_WhiteColor
     fontSize: 18,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf:'center'
+    alignSelf:'flex-start',
+    paddingHorizontal: 10, 
+  },
+  MainHeading:{
+    fontSize: 18,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    alignSelf:'center',
+
+  },
+  Subscriptionprice:{
+    fontSize: 24,
+    color: _COLORS.Kodie_GreenColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    alignSelf:'flex-start',
+    paddingHorizontal: 10, 
+  },
+  SubscriptionpriceText:{
+    fontSize: 24,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Regular,
+    alignSelf:'flex-start',
+    paddingHorizontal: 10, 
+  },
+  ShadowLine:{
+    height:.5,
+    backgroundColor:_COLORS.Kodie_MediumGrayColor,
+    shadowOffset: {width: -2, height: 2},  
+    shadowColor: _COLORS.Kodie_MediumGrayColor,  
+    shadowOpacity: 0.5,  
+    shadowRadius: 3, 
+    marginTop:10 ,
+    elevation:5
   },
   SubHeading:{
       fontSize: 14,
@@ -58,20 +90,31 @@ RangeSliderView:{
 },
 SubscriptionDataView:{
   width:300,
+  marginTop:20,
+  marginRight:20,
+  padding:10,
   marginBottom:20,
   marginLeft:10,
-  borderWidth: 1,
+  //borderWidth: 0.2,
   borderRadius:8,
   backgroundColor:_COLORS.Kodie_WhiteColor,
   borderColor:_COLORS.Kodie_BlackColor,
-  shadowColor: "#000000",
-  shadowOffset: { width: 0, height: -1 },
-  shadowOpacity: 0.16,
-  shadowRadius: 6
+  //backgroundColor:_COLORS.Kodie_MediumGrayColor,
+  shadowOffset: {width: -2, height: 4},  
+  shadowColor: _COLORS.Kodie_BlackColor,  
+  shadowOpacity: 0.7,  
+  shadowRadius: 8,
+  elevation: 20,  
 },
-switchBtn_view:{
-  marginTop:50,
-  height:50
-}
 
+switchBtn_view:{
+flex:0.5
+},
+getText:{
+  fontSize: 12,
+paddingHorizontal:10,
+  color: _COLORS.Kodie_BlackColor,
+  fontFamily: FONTFAMILY.K_Medium,
+
+}
 });

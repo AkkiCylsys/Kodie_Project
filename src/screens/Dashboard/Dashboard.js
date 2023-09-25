@@ -8,17 +8,19 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { DashboardStyle } from "./DashboardStyle";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
 import { Dropdown } from "react-native-element-dropdown";
-import { IMAGES, _COLORS } from "../../Themes/index";
+import { IMAGES,SMALLICON, _COLORS } from "../../Themes/index";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 import DeshboardNotice from "../../components/Molecules/deshboardNoice/DeshboardNotice";
 import { LineChart } from "react-native-chart-kit";
 import { Card } from "react-native-paper";
+import { logos } from "../../Themes/CommonVectors/Images";
 const IncomeData = [
   {
     id: "1",
@@ -70,7 +72,7 @@ const data = [
 ];
 export default Dashboard = (props) => {
   const [value, setValue] = useState(null);
-
+  const navigation = useNavigation();
   const Income_render = ({ item, index }) => {
     return (
       <>
@@ -116,8 +118,13 @@ export default Dashboard = (props) => {
   return (
     <View style={DashboardStyle.mainContainer}>
       <TopHeader
+      isMiddleImage={true}
+      IsNotification={true}
+      RightUserProfile={IMAGES.Landlordprofile}
+      MiddleImage={logos.MainLogoWhite}
+        leftImage={SMALLICON.menuicon} 
         MiddleText={"Kodie"}
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() =>props.navigation.navigate('DrawerNavigstorLeftMenu')}
       />
       <ScrollView
         style={DashboardStyle.container}

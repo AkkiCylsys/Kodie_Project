@@ -20,7 +20,7 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 const CELL_COUNT = 6;
-
+//ScreenNo:8
 export default SignUpVerification = (props) => {
   const [verificationCode, setVerificationCode] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(1);
@@ -82,7 +82,7 @@ export default SignUpVerification = (props) => {
             _ButtonText={"Verify email"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={()=>{
-              props.navigation.navigate("ChangeContactInput")
+              props.navigation.navigate("Account")
             }}
           />
         </View>

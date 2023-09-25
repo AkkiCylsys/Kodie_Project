@@ -1,5 +1,8 @@
 export const logos = {
   mainLogo: require("./../../assets/images/Logo/MainLogo.png"),
+  KodieSplash: require("./../../assets/images/Logo/KodieSplash.png"),
+  MainLogoWhite:require("./../../assets/images/Logo/MainLogoWhite.png"),
+
 };
 
 export const IMAGES = {
@@ -96,7 +99,27 @@ export const IMAGES = {
   RateKodie: require("../../assets/images/Common/RateKodie.png"),
   ManageSubscription: require("../../assets/images/Common/ManageSubscription.png"),
   Subscription: require("../../assets/images/Common/Subscription.png"),
-  Done: require("../../assets/images/Common/Done.png"),
+
+  Done: require("../../assets/images/Common/Done.png"), 
+  NotificationIcon: require("../../assets/images/Common/NotificationIcon.png"),
+
+  //Rahul
+  kodie_icon: require("../../assets/icons/kodie_icon.png"),
+  menuIcon: require("../../assets/icons/menuIcon.png"),
+  star: require("../../assets/icons/star.png"),
+  RightLeftarrow: require("../../assets/icons/RightLeftArrow.png"),
+  adduser: require("../../assets/icons/adduser.png"),
+  notificationbell: require('../../assets/icons/notificationbell.png'),
+  Location : require('../../assets/icons/location.png'),
+  pencile : require('../../assets/icons/Vector.png'),
+  HorizentalLine : require('../../assets/icons/HorizontallineImage.png'),
+  downarrow : require('../../assets/icons/downarrow.png'),
+  verticalLine : require('../../assets/icons/verticalLineimg.png'),
+  upArrow : require("../../assets/icons/upaarow.png"),
+  Tax : require('../../assets/icons/Tax.png'),
+  Group : require('../../assets/icons/Group.png'),
+  Calendar : require('../../assets/icons/Calendar.png'),
+  currency : require('../../assets/icons/Doller.png')
 };
 
 export const BANNERS = {
