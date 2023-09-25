@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Image, SafeAreaView } from 'react-native';
+import { Text, Image, ImageBackground, SafeAreaView, View } from 'react-native';
 
 import { logos } from '../../Themes/CommonVectors/Images';
 import { SplashStyles } from "../../screens/SplashScreen/SplashScreenCss"
@@ -25,10 +25,16 @@ const Splash = props => {
 
   return (
     <SafeAreaView style={SplashStyles.mainView}>
-      <Image
-        source={logos.mainLogo}
-        style={SplashStyles.mainIcon}
-      />
+      <ImageBackground source={logos.KodieSplash} resizeMode="cover" style={SplashStyles.mainIcon}>
+        <Image
+          source={logos.MainLogoWhite}
+          style={SplashStyles.mainSmallIcon}
+        />
+        <View style={{ top: 150 }}>
+          <Text style={SplashStyles.text}>Welcome to Kodie!</Text>
+          <Text style={SplashStyles.subtext}>Foster strong relationships with transparent, simple, hassle free property management.</Text>
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 };

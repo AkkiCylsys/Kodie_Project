@@ -1,5 +1,8 @@
 export const logos = {
   mainLogo: require("./../../assets/images/Logo/MainLogo.png"),
+  KodieSplash: require("./../../assets/images/Logo/KodieSplash.png"),
+  MainLogoWhite:require("./../../assets/images/Logo/MainLogoWhite.png"),
+
 };
 
 export const IMAGES = {
@@ -85,7 +88,8 @@ export const IMAGES = {
   ManageSubscription: require("../../assets/images/Common/ManageSubscription.png"),
   Subscription: require("../../assets/images/Common/Subscription.png"),
 
-  Done: require("../../assets/images/Common/Done.png"),  
+  Done: require("../../assets/images/Common/Done.png"), 
+  NotificationIcon: require("../../assets/images/Common/NotificationIcon.png"),
 };
 
 export const BANNERS = {

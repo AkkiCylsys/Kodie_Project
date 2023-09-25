@@ -16,6 +16,7 @@ import { IMAGES, _COLORS } from "./../../../Themes/index";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LABEL_STYLES } from "../../../Themes/CommonStyles/CommonStyles";
+//ScreenNo:7
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -143,7 +144,7 @@ export default SignUp = (props) => {
             _ButtonText={"Sign up now"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={() => {
-              props.navigation.navigate("Account");
+              props.navigation.navigate("SignUpVerification");
             }}
           />
           <DividerIcon

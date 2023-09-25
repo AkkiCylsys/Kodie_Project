@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 
-// import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from "react-native-linear-gradient";
 import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import MtIcon from "react-native-vector-icons/MaterialIcons";
@@ -24,7 +23,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import CustomeDrawer from "../CustomeDrawer/CustomeDrawer";
 
 import SplashScreen from "../../screens/SplashScreen/SplashScreen";
 import Login from "./../../screens/Authentication/LoginScreen/Login";
@@ -80,9 +78,11 @@ import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia"
 import SearchUser from "../../screens/Authentication/BlockUser/SearchUser"
 import AccountSetting from "./../../screens/Setting/Account/AccountSetting"
 import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription"
+import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser"
+import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu"
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
-  return (
+  return ( 
     <Tab.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
@@ -290,32 +290,18 @@ const BottomNav = (props) => {
   );
 };
 
-const Drawer = createDrawerNavigator();
-const DrawerNavigation = (props) => {
-  return (
-    <Drawer.Navigator
-      drawerContent={(props) => <CustomeDrawer {...props} />}
-      drawerStyle={{
-        backgroundColor: colors.white,
-        width: "70%",
-      }}
-      initialRouteName="BottomNav"
-    >
-      <Drawer.Screen
-        name="BottomNav"
-        component={BottomNav}
-        // initialParams={{screen:'BottomNav'}}
-        options={{ headerShown: false }}
-      />
-      <Drawer.Screen
-        name="LeaveTracker"
-        component={LeaveTracker}
-        options={{ headerShown: false }}
-      />
-    </Drawer.Navigator>
+ const Drawer = createDrawerNavigator();
+ const DrawerNavigstorLeftMenu = (props) => {
+  return ( 
+
+<Drawer.Navigator initialRouteName="Dashboard"
+drawerContent={(props )=> <CustomSidebarMenu {...props} />}>
+        <Drawer.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }}/>
+        <Drawer.Screen name="ContractorSignUpThirdScreen" component={ContractorSignUpThirdScreen} options={{ headerShown: false }}/>
+      </Drawer.Navigator>
+
   );
 };
-
 const AuthStack = createNativeStackNavigator();
 const AuthStackRouts = (props) => {
   return (
@@ -370,11 +356,7 @@ const AllStackRouts = (props) => {
           component={BottomNav}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name={"DrawerNavigation"}
-          component={DrawerNavigation}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name={"LoginScreen"}
           component={Login}
@@ -616,7 +598,17 @@ const AllStackRouts = (props) => {
           component={ManageSubscription}
           options={{ headerShown: false }}
         />
-        
+                  <Stack.Screen
+          name={"BlockedUser"}
+          component={BlockedUser}
+          options={{ headerShown: false }}
+        />
+              <Stack.Screen
+          name={"DrawerNavigstorLeftMenu"}
+          component={DrawerNavigstorLeftMenu}
+          options={{ headerShown: false }}
+        />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );
