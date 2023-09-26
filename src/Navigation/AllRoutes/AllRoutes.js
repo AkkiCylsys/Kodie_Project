@@ -80,7 +80,7 @@ import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser"
 import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu"
 import AddTenantDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
-import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
+// import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
 
 import ViewApplication from "../../screens/Landlord/PropertyList/RentalOffer/ViewApplication";
 import PropertyInspection from "../../screens/Inspection/PropertyInspection/PropertyInspection";
@@ -98,8 +98,8 @@ import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 // import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription"
 
 // import TomProperty from "../../screens/Landlord/AddNewProperty/TomsProperty/TomsProperty";
-// import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
-
+import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
+import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return ( 
@@ -716,16 +716,22 @@ const AllStackRouts = (props) => {
           component={GeneralSetting}
           options={{ headerShown: false }}
         />
+          <Stack.Screen
+          name={"Reviewjobdetails"}
+          component={Reviewjobdetails}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"ContractorDashboard"}
+          component={ContractorDashboard}
+          options={{ headerShown: false }}
+        />
           {/* <Stack.Screen
           name={"TomProperty"}
           component={TomProperty}
           options={{ headerShown: false }}
         /> */}
-          {/* <Stack.Screen
-          name={"Reviewjobdetails"}
-          component={Reviewjobdetails}
-          options={{headerShown: false}}
-          /> */}
+          
         
       </Stack.Navigator>
     </NavigationContainer>

@@ -122,7 +122,7 @@ export default Login = (props) => {
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
-              _ButtonText={"Login with Google"}
+              _ButtonText={" Google"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
@@ -136,7 +136,7 @@ export default Login = (props) => {
               _LeftButtonText={"Don't have an account yet?"}
               _RightButtonText={"Sign up"}
               onPress={() => {
-                props.navigation.navigate("Reviewjobdetails");
+                props.navigation.navigate("ContractorDashboard");
               }}
             />
           </View>
