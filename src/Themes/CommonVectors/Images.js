@@ -66,12 +66,12 @@ export const IMAGES = {
   BedroomIcon: require("../../assets/icons/bedroomIcon.png"),
   Parking: require("../../assets/icons/parking.png"),
   AddManually: require("../../assets/icons/AddManually.png"),
-  InviteTenant: require("../../assets/icons/InviteTenant.png"),
-  InviteContact: require("../../assets/icons/InviteContact.png"),
-  Adduser: require("../../assets/icons/Adduser.png"),
-  diningRoom: require("../../assets/icons/diningRoom.png"),
-  Exterior: require("../../assets/icons/Exterior.png"),
-  Garage: require("../../assets/icons/Garage.png"),
+  // InviteTenant: require("../../assets/icons/InviteTenant.png"),
+  // InviteContact: require("../../assets/icons/InviteContact.png"),
+  // Adduser: require("../../assets/icons/Adduser.png"),
+  // diningRoom: require("../../assets/icons/diningRoom.png"),
+  // Exterior: require("../../assets/icons/Exterior.png"),
+  // Garage: require("../../assets/icons/Garage.png"),
   Garden: require("../../assets/icons/Garden.png"),
   kitchen: require("../../assets/icons/kitchen.png"),
   LivingRoom: require("../../assets/icons/LivingRoom.png"),
@@ -121,6 +121,9 @@ export const IMAGES = {
   Calendar : require('../../assets/icons/Calendar.png'),
   currency : require('../../assets/icons/Doller.png'),
   edit : require('../../assets/icons/edit.png'),
+  Message : require('../../assets/icons/Message.png'),
+  Mute : require('../../assets/icons/Mute.png'),
+  Archive : require('../../assets/icons/Archive.png'),
 };
 
 export const BANNERS = {
