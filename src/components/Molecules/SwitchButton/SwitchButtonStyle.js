@@ -21,7 +21,6 @@ export const SwitchButtonStyle = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderColor: "red",
-    
   },
   activeButton: {
     flex: 1,
@@ -32,5 +31,6 @@ export const SwitchButtonStyle = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
+    alignSelf: "center",
   },
 });

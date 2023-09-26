@@ -17,15 +17,22 @@ const UploadImageBoxes = (props) => {
           color={_COLORS.Kodie_GrayColor}
         />
       </View> */}
-      <TouchableOpacity style={UploadImageBoxesStyle.container}  onPress={props.onPress}>
+      <TouchableOpacity
+        style={UploadImageBoxesStyle.container}
+        onPress={props.onPress}
+      >
         <View>
-          <View style={UploadImageBoxesStyle.circle}>
-            <Text style={UploadImageBoxesStyle.circleText}>{props.Box_Text}</Text>
+          <View style={[UploadImageBoxesStyle.circle, props.circlestyle]}>
+            <Text style={UploadImageBoxesStyle.circleText}>
+              {props.Box_Text}
+            </Text>
           </View>
-          <TouchableOpacity style={UploadImageBoxesStyle.plusIcon}>
+          <TouchableOpacity
+            style={[UploadImageBoxesStyle.plusIcon, props.pluacircle]}
+          >
             <AntDesign
               name="pluscircle"
-              size={25}
+              size={props.size ? props.size : 25}
               color={_COLORS.Kodie_LightWhiteColor}
             />
           </TouchableOpacity>

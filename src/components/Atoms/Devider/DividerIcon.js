@@ -12,10 +12,10 @@ const DividerIcon = (props) => {
             borderBottomWidth: props.borderBottomWidth
               ? props.borderBottomWidth
               : 0.8,
-            borderColor: props.color ? props.color : colors.Kodie_GrayColor,
+            borderColor: props.color ? props.color : _COLORS.Kodie_GrayColor,
             borderStyle: props.dashed ? "dashed" : "solid",
-            marginTop: props.marginTop?props.marginTop: 15,
-            marginBottom: 15,
+            marginTop: props.marginTop ? props.marginTop : 15,
+            marginBottom: props.marginBottom ? props.marginBottom : 15,
             flex: 1,
             ...props.style,
           }}
@@ -45,8 +45,9 @@ const DividerIcon = (props) => {
               : 0.8,
             borderColor: props.color ? props.color : colors.Kodie_GrayColor,
             borderStyle: props.dashed ? "dashed" : "solid",
-            marginTop: props.marginTop?props.marginTop: 15,
-            marginBottom: 15,
+            marginTop: props.marginTop ? props.marginTop : 15,
+            marginBottom: props.marginBottom ? props.marginBottom : 15,
+
             flex: 1,
             ...props.style,
           }}

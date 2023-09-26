@@ -36,5 +36,21 @@ export const HeaderStyle = StyleSheet.create({
     resizeMode: "contain",
     alignSelf: "center",
   },
-  nullView: { width: "25%" },
+  MiddleIcon: {
+    width: 180,
+    height: 15,
+    resizeMode: "contain",
+    alignSelf: "center",
+  },
+  usericon: {
+    height: 40,
+    width: 40,
+    marginLeft:10,
+    justifyContent: "center",
+    alignSelf: "center",
+},
+  nullView: { width: "25%",flexDirection:'row',justifyContent:'center' },
+  notificationButton:{
+    flexDirection:'column',justifyContent:'center'
+  }
 });

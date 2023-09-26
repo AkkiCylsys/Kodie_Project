@@ -55,7 +55,7 @@ const Detail = [
     name: "WiFi",
   },
 ];
-export default Details = () => {
+export default Details = (props) => {
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -146,9 +146,7 @@ export default Details = () => {
           <CustomSingleButton
             _ButtonText={"Add property"}
             Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={() => {
-              props.navigation.navigate("NewInspection");
-            }}
+            onPress={props.AddProperty}
           />
         </View>
         <View style={DetailsStyle.goBack_View}>

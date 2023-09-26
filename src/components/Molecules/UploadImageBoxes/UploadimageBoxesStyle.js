@@ -8,9 +8,8 @@ export const UploadImageBoxesStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
- 
   },
-  heading_View:{ flexDirection: "row",marginTop:10 },
+  heading_View: { flexDirection: "row", marginTop: 10 },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -22,22 +21,21 @@ export const UploadImageBoxesStyle = StyleSheet.create({
     marginTop: 12,
   },
   circle: {
-    width: 65,
-    height: 65,
-    borderRadius: 65/2,
+    width: 55,
+    height: 55,
+    borderRadius: 55 / 2,
     backgroundColor: _COLORS.Kodie_minLiteGrayColor,
     borderColor: _COLORS.Kodie_LightWhiteColor,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-   
   },
   circleText: {
     fontSize: 10,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_GreenColor,
-    justifyContent:"center",
-    alignSelf:"center"
+    justifyContent: "center",
+    alignSelf: "center",
   },
   circleImage: {
     width: 80,

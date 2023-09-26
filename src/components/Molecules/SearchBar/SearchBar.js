@@ -41,7 +41,15 @@ const SearchBar = (props) => {
         ) : null}
       </View>
       {props.isFilterImage ? (
-        <TouchableOpacity style={SearchBarStyle.filterView}>
+        <TouchableOpacity
+          style={[
+            SearchBarStyle.filterView,
+            {
+              height: props.height,
+              marginTop: props.marginTop ? props.marginTop : 20,
+            },
+          ]}
+        >
           <Image source={props.filterImage} />
         </TouchableOpacity>
       ) : null}

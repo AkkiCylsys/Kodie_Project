@@ -25,7 +25,7 @@ const UploadImageData = (props) => {
   const UploadImageContent = ({ item, index }) => {
     return (
       <>
-        <TouchableOpacity style={UploadImageStyle.content_View}>
+        <TouchableOpacity style={UploadImageStyle.content_View} onPress={props?.onPress}>
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
             <Image source={item.Img} style={UploadImageStyle.Icons} />
           </TouchableOpacity>

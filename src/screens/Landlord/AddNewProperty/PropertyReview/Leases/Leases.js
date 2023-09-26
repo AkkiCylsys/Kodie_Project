@@ -5,6 +5,7 @@ import { _COLORS } from "../../../../../Themes";
 import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
 import RBSheet from "react-native-raw-bottom-sheet";
 import AddLeaseDetails from "./AddLeaseDetails/AddLeaseDetails";
+import LeaseSummary from "./LeaseSummary/LeaseSummary";
 export default Leases = (props) => {
   const refRBSheet = useRef();
   return (
@@ -24,6 +25,7 @@ export default Leases = (props) => {
             }}
           />
         </View>
+        <LeaseSummary />
         <RBSheet
           ref={refRBSheet}
           height={510}

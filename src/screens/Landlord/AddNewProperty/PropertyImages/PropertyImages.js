@@ -28,7 +28,7 @@ export default PropertyImages = (props) => {
       />
       <ScrollView>
         <View style={PropertyImagesStyle.headingView}>
-          <Text style={PropertyImagesStyle.heading}>{"Property features"}</Text>
+          <Text style={PropertyImagesStyle.heading}>{"Property images"}</Text>
         </View>
         <View style={PropertyImagesStyle.phototextView}>
           <View style={PropertyImagesStyle.slider_view}>
@@ -100,6 +100,9 @@ export default PropertyImages = (props) => {
               _ButtonText={"Add property photos later"}
               Text_Color={_COLORS.Kodie_BlackColor}
               backgroundColor={_COLORS.Kodie_WhiteColor}
+              onPress={() => {
+                props.navigation.navigate("AddTenantDetails");
+              }}
             />
           </View>
           <View style={PropertyImagesStyle.goBack_View}>
