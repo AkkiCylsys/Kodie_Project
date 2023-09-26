@@ -24,7 +24,7 @@ export const SwitchButtonStyle = StyleSheet.create({
   },
   activeButton: {
     flex: 1,
-    backgroundColor: _COLORS.Kodie_BlackColor,
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
   },
   buttonText: {
     flex: 1,

@@ -1,3 +1,4 @@
+// Screen 2,3,4,5,6
 import React, { useState, useRef } from "react";
 import {
   View,
@@ -33,7 +34,12 @@ export default Login = (props) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const refRBSheet = useRef();
-  const buttonLabels = ["Send verification code", "Next", "Save", "Back to login"];
+  const buttonLabels = [
+    "Send verification code",
+    "Next",
+    "Save",
+    "Back to login",
+  ];
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -110,7 +116,9 @@ export default Login = (props) => {
             <CustomSingleButton
               onPress={() => {
                 // props.navigation.navigate("Invitefriend"),
-                props.navigation.navigate("Bedroom");
+                // props.navigation.navigate("Bedroom");
+                // props.navigation.navigate("ConfirmJobCompletion");
+                props.navigation.navigate("JobCompletion");
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
@@ -194,7 +202,7 @@ export default Login = (props) => {
                 />
               </View>
               <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, { flex: 1 ,}]}>
+                <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
                   <Text style={LABEL_STYLES._texinputLabel}>
                     Verification code
                   </Text>

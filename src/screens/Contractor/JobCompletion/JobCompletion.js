@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TextInput, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TextInput,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import StarRating from "react-native-star-rating";
 import { _COLORS, LABEL_STYLES, BANNERS } from "../../../Themes";
 import { JobCompletionCss } from "./JobCompletionCss";
@@ -8,6 +15,7 @@ import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import { _goBack } from "./../../../services/CommonServices/index";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import RowTexts from "../../../components/Molecules/RowTexts/RowTexts";
+import RangeSlider from "../../../components/Molecules/RangeSlider/RangeSlider";
 // Screen no. 156
 export default JobCompletion = (props) => {
   const [review, setReview] = useState("");
@@ -20,8 +28,11 @@ export default JobCompletion = (props) => {
       />
       <ScrollView>
         <View style={JobCompletionCss.Container}>
+          <Text style={JobCompletionCss.HeadingText}>
+            {"Please rate your experience"}
+          </Text>
           <Text style={[LABEL_STYLES.commontext, JobCompletionCss.review]}>
-            Rate contractor
+            {"How would you rate the service you received overall?"}
           </Text>
           <View style={JobCompletionCss.starStyle}>
             <StarRating
@@ -30,18 +41,18 @@ export default JobCompletion = (props) => {
               rating={rating}
               fullStarColor={_COLORS.Kodie_lightGreenColor}
               emptyStarColor={_COLORS.Kodie_GrayColor}
-              starSize={32}
+              starSize={45}
               selectedStar={(rating) => setRating(rating)}
             />
           </View>
           <Text style={[LABEL_STYLES.commontext, JobCompletionCss.review]}>
-            Review
+            {"How would you describe the level of communication throughout?"}
           </Text>
           <RowButtons
             leftButtonHeight={38}
             RightButtonHeight={38}
-            LeftButtonText={"Clean job"}
-            RightButtonText={"Neat"}
+            LeftButtonText={"Great!"}
+            RightButtonText={"Neutral"}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_GrayColor}
             LeftButtonTextColor={_COLORS.Kodie_MediumGrayColor}
@@ -49,7 +60,7 @@ export default JobCompletion = (props) => {
           <RowButtons
             leftButtonHeight={38}
             RightButtonHeight={38}
-            LeftButtonText={"Fast hand"}
+            LeftButtonText={"Poor"}
             RightButtonText={"Other"}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_GrayColor}
@@ -58,6 +69,13 @@ export default JobCompletion = (props) => {
             RightButtonborderColor={_COLORS.Kodie_GreenColor}
             RightButtonTextColor={_COLORS.Kodie_BlackColor}
           />
+          <Text style={[LABEL_STYLES.commontext, JobCompletionCss.review]}>
+            {"Rate the quality of the work performed from 1 - 10."}
+          </Text>
+          <RangeSlider from={1} to={10} />
+          <Text style={[LABEL_STYLES.commontext, JobCompletionCss.review]}>
+            {"Please leave written feedback below."}
+          </Text>
           <TextInput
             style={[JobCompletionCss.input]}
             value={review}
@@ -68,28 +86,33 @@ export default JobCompletion = (props) => {
             numberOfLines={5}
             textAlignVertical={"top"}
           />
-          <RowTexts leftText={"Contractor name"} rightText={"Jason Statham"} />
-          <RowTexts leftText={"Job"} rightText={"Plasterer to fix wall"} />
-          <RowTexts
-            leftText={"Location"}
-            rightText={"1729 Melbourne St Australia"}
+          <Text style={[LABEL_STYLES.commontext, JobCompletionCss.review]}>
+            {"Would you recommend Jason Statham to other Kodie users?"}
+          </Text>
+          <RowButtons
+            LeftButtonText={"Yes"}
+            leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
+            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+            LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+            RightButtonText={"No"}
+            RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+            RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
+            RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
           />
-          <RowTexts leftText={"Date"} rightText={"Nov 11, 2022"} />
-          <RowTexts leftText={"Time"} rightText={"10pm - 2am (4 hours)"} />
-          <RowTexts leftText={"Who pays?"} rightText={"Landlord"} />
-          <RowTexts leftText={"Budget"} rightText={"$200"} />
-          <Text style={JobCompletionCss.photo}>Photo Confirmation</Text>
-
-          <Image source={BANNERS.BannerSecond} style={JobCompletionCss.image} />
+        </View>
+        <View style={JobCompletionCss.ButtonView}>
+          <CustomSingleButton
+            onPress={() => props.navigation.navigate("RejectConfirm")}
+            _ButtonText={"Submit"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+          />
+          <TouchableOpacity>
+            <Text style={JobCompletionCss.SkipText}>
+              {"Skip & return home"}
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
-      <View style={JobCompletionCss.ButtonView}>
-        <CustomSingleButton
-          onPress={() => props.navigation.navigate("RejectConfirm")}
-          _ButtonText={"Continue"}
-          Text_Color={_COLORS.Kodie_WhiteColor}
-        />
-      </View>
     </View>
   );
 };

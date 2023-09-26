@@ -2,43 +2,47 @@ import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../Themes";
 export const BillinginformationStyle = StyleSheet.create({
   maincontainer: {
-    // backgroundColor: _COLORS.Kodie_WhiteColor,
+    flex: 1,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   topsectionview: {
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
     flexDirection: "row",
-    width: 330,
-    height: 135,
-    backgroundColor: _COLORS.Kodie_WhiteColor,
     borderRadius: 10,
     marginHorizontal: 15,
     marginTop: 20,
+    elevation: 1,
   },
   mainimgview: {},
   mainimg: {
     width: 147,
     height: 123,
-    marginRight: 5,
+    // marginRight: 5,
     borderRadius: 15,
-    marginTop: 12,
-    overflow: "hidden",
+    marginTop: 8,
+    // overflow: "hidden",
   },
   toptextmainview: {
     justifyContent: "center",
     marginHorizontal: 5,
+    // borderWidth: 1,
   },
   startextview: {
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+    elevation: 10,
     flexDirection: "row",
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderWidth: 0.3,
-    width: 50,
-    height: 23,
+    paddingHorizontal: 5,
     alignItems: "center",
+    alignSelf: "flex-start",
     borderRadius: 10,
-
   },
-  starimg: {
-    tintColor: _COLORS.Kodie_ExtraDarkGreen,
-  },
+  // starimg: {
+  //   tintColor: _COLORS.Kodie_ExtraDarkGreen,
+  // },
   ratingtext: {
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -66,19 +70,20 @@ export const BillinginformationStyle = StyleSheet.create({
     marginTop: 12,
   },
   jobdetailsview: {
-    marginHorizontal: 15,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+    elevation: 10,
+    marginHorizontal: 16,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     marginTop: 10,
-    width: 330,
-    height: 230,
     borderRadius: 10,
   },
-  moreinfo:{
+  moreinfo: {
     marginHorizontal: 15,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     width: 330,
     height: 120,
-    borderRadius:8,
+    borderRadius: 8,
   },
   jobbindview: {
     flexDirection: "row",
@@ -130,8 +135,9 @@ export const BillinginformationStyle = StyleSheet.create({
     marginHorizontal: 15,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     marginTop: 15,
-    width: 330,
-    height: 155,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+    elevation: 10,
     borderRadius: 15,
   },
   totalcosttext: {
@@ -141,8 +147,8 @@ export const BillinginformationStyle = StyleSheet.create({
     marginHorizontal: 15,
     marginVertical: 5,
   },
-  jobinvoicetext:{
-  marginTop:15
+  jobinvoicetext: {
+    marginTop: 15,
   },
   dividersecond: {
     height: 1,
