@@ -6,10 +6,9 @@ export const GeneralSettingStyle = StyleSheet.create({
 flex:1,
 backgroundColor:_COLORS.Kodie_WhiteColor,
 },
-container:{
-    marginHorizontal:30,
-    marginTop:20
-    
+Container:{
+    marginHorizontal:35,
+    marginTop:20 
   },
   TextCalendar:{
     fontSize:16,
@@ -98,8 +97,19 @@ container:{
     width: 70,
     // marginTop:10,
   },
-  Box:{
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+  toggle_con: {
+    width: 48,
+    height: 25,
+    borderRadius: 20,
+    padding: 5,
+    marginTop: 20,
   },
+  toggle_circle: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+  },
+  Crossicon:{
+    marginLeft:8
+  }
 });

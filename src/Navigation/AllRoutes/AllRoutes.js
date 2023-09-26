@@ -93,6 +93,13 @@ import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
+import AccountSetting from "./../../screens/Setting/Account/AccountSetting"
+import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
+// import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription"
+
+// import TomProperty from "../../screens/Landlord/AddNewProperty/TomsProperty/TomsProperty";
+// import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
+
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return ( 
@@ -699,6 +706,27 @@ const AllStackRouts = (props) => {
           component={GeneralSettings}
           options={{ headerShown: false }}
         />
+          {/* <Stack.Screen
+          name={"ManageSubscription"}
+          component={ManageSubscription}
+          options={{ headerShown: false }}
+        /> */}
+          <Stack.Screen
+          name={"GeneralSetting"}
+          component={GeneralSetting}
+          options={{ headerShown: false }}
+        />
+          {/* <Stack.Screen
+          name={"TomProperty"}
+          component={TomProperty}
+          options={{ headerShown: false }}
+        /> */}
+          {/* <Stack.Screen
+          name={"Reviewjobdetails"}
+          component={Reviewjobdetails}
+          options={{headerShown: false}}
+          /> */}
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
