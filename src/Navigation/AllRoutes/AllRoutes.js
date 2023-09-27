@@ -100,6 +100,8 @@ import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 // import TomProperty from "../../screens/Landlord/AddNewProperty/TomsProperty/TomsProperty";
 import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
 import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
+import LinkedDevice from "../../screens/Authentication/LinkedDevice/LinkedDevice";
+
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return ( 
@@ -724,6 +726,11 @@ const AllStackRouts = (props) => {
           <Stack.Screen
           name={"ContractorDashboard"}
           component={ContractorDashboard}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"LinkedDevice"}
+          component={LinkedDevice}
           options={{ headerShown: false }}
         />
           {/* <Stack.Screen

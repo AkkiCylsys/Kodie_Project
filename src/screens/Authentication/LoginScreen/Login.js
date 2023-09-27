@@ -136,7 +136,7 @@ export default Login = (props) => {
               _LeftButtonText={"Don't have an account yet?"}
               _RightButtonText={"Sign up"}
               onPress={() => {
-                props.navigation.navigate("ContractorDashboard");
+                props.navigation.navigate("LinkedDevice");
               }}
             />
           </View>

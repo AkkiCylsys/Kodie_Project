@@ -1,26 +1,23 @@
 import { StyleSheet } from "react-native";
-import { _COLORS } from "../../Themes";
+import { _COLORS, FONTFAMILY } from "../../Themes";
 export const ContractorDashboardStyle = StyleSheet.create({
   Mainview: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
-  Container:{
-    marginHorizontal:35,
+  container:{
+    marginHorizontal:25,
     marginTop:20 
   },
-  TextCalendar:{
+  TextContractor:{
     fontSize:16,
     fontFamily:FONTFAMILY.K_Bold,
     color:_COLORS.Kodie_BlackColor
   },
   text:{
-    textAlign:"justify",
-    marginTop:10,
-    lineHeight:20,
-    color:_COLORS.Kodie_BlackColor,
+    marginTop:15,
     fontSize:12,
-    fontFamily:'Plus Jakarta Sans'
+    alignItems:'center'
   },
   activeTab: {
     backgroundColor: "white",
@@ -31,4 +28,7 @@ export const ContractorDashboardStyle = StyleSheet.create({
     borderBottomColor: _COLORS.Kodie_LiteWhiteColor,
     elevation: 4,
   },
+  Button:{
+    marginTop: 24
+  }
 });
