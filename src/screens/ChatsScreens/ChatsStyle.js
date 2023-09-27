@@ -2,9 +2,12 @@ import { StyleSheet } from "react-native";
 import { _COLORS,FONTFAMILY,IMAGES } from "../../Themes";
 
 export const ChatsStyle = StyleSheet.create({
-    maincontainer:{
+    container:{
         backgroundColor:_COLORS.Kodie_WhiteColor,
-        height:'100%',
+        height:'100%'
+    },
+    maincontainer:{
+        // height:'100%',
     },
     componentview:{
         marginVertical:15

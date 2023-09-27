@@ -13,15 +13,17 @@ export const ChatStyle = StyleSheet.create({
     alignItems: "center",
   },
   profileimage: {
-    width: 44,
-    height: 44,
+    width: 40,
+    height: 40,
   },
   bindtextview: {
     marginLeft: 15,
+    alignItems:'center',
+    flexDirection:'row'
   },
   headingtext: {
     fontSize: 16,
-    fontFamily: FONTFAMILY.K_Bold,
+    fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
   },
   descriptiontext: {

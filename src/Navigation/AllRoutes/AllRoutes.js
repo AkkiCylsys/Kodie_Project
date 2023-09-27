@@ -95,6 +95,8 @@ import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginf
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
 import Chats from "../../screens/ChatsScreens/Chats";
 import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
+import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
+import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -722,6 +724,18 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ScheduleMeeting"}
           component={ScheduleMeeting}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"JobDetails"}
+          component={JobDetails}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"StorageSettings"}
+          component={StorageSettings}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

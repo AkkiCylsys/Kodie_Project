@@ -124,6 +124,7 @@ export const IMAGES = {
   Message : require('../../assets/icons/Message.png'),
   Mute : require('../../assets/icons/Mute.png'),
   Archive : require('../../assets/icons/Archive.png'),
+  wifi : require('../../assets/icons/wifi.png'),
 };
 
 export const BANNERS = {
