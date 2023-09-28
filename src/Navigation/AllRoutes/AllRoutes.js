@@ -93,7 +93,7 @@ import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
-import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
+// import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
 import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
 import LinkedDevice from "../../screens/Authentication/LinkedDevice/LinkedDevice";
 import TwoStepVerification from "../../screens/Authentication/LinkedDevice/TwoStepVerification";
@@ -103,6 +103,11 @@ import TwoStepVerification3 from "../../screens/Authentication/LinkedDevice/TwoS
 import TwoStepVerification4 from "../../screens/Authentication/LinkedDevice/TwoStepVerification4";
 import TwoStepVerification5 from "../../screens/Authentication/LinkedDevice/TwoStepVerification5";
 import TwoStepVerification6 from "../../screens/Authentication/LinkedDevice/TwoStepVerification6";
+import Chats from "../../screens/ChatsScreens/Chats";
+import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
+import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
+import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
+import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -753,11 +758,11 @@ const AllStackRouts = (props) => {
           component={PaymentMethod}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={"Reviewjobdetails"}
           component={Reviewjobdetails}
           options={{ headerShown: false }}
-        />
+        /> */}
         <Stack.Screen
           name={"ContractorDashboard"}
           component={ContractorDashboard}

@@ -84,7 +84,7 @@ export const IMAGES = {
   // common images
   Share: require("../../assets/images/Common/Share.png"),
 
-  rightarrow: require("../../assets/icons/Rightarrow.png"),
+  // rightarrow: require("../../assets/icons/Rightarrow.png"),
   HelpCentre: require("../../assets/icons/HelpCentre.png"),
   ContactUs: require("../../assets/images/Common/ContactUs.png"),
   TermsandPolicy: require("../../assets/images/Common/TermsandPolicy.png"),
