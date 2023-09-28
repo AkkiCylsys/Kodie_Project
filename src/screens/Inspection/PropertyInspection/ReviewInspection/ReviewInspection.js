@@ -1,4 +1,6 @@
-//Screen no. 105,106
+
+//ScreenNo:105
+//ScreenNo:106
 import React, { useState, useRef } from "react";
 import { View, Text, TouchableOpacity, TextInput, Image } from "react-native";
 import { ReviewInspectionCss } from "./ReviewInspectionCss";

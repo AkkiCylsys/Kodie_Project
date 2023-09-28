@@ -1,4 +1,4 @@
-// Screen no:196
+//ScreenNo:196
 import { View, Text, Image } from "react-native";
 import React from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
