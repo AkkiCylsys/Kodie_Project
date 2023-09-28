@@ -5,7 +5,7 @@ import React from "react";
 import { AppInfoStyle } from "./AppInfoStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS } from "../../../Themes";
+import { _COLORS,logos } from "../../../Themes";
 
 const AppInfo = () => {
   return (
@@ -24,7 +24,7 @@ const AppInfo = () => {
           <View>
             <Image
               style={AppInfoStyle.mainlogo}
-              source={require("../../../assets/images/Logo/MainLogo.png")}
+              source={logos.mainLogo}
             />
           </View>
         </View>

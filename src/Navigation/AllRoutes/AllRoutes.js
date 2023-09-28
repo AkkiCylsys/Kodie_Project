@@ -74,14 +74,13 @@ import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRe
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
 import SearchUser from "../../screens/Authentication/BlockUser/SearchUser";
-// import AccountSetting from "./../../screens/Setting/Account/AccountSetting"
+import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
 import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription";
 import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser";
 import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu";
 import AddTenantDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
-import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
 
 import ViewApplication from "../../screens/Landlord/PropertyList/RentalOffer/ViewApplication";
 import PropertyInspection from "../../screens/Inspection/PropertyInspection/PropertyInspection";
@@ -94,6 +93,11 @@ import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
+import Chats from "../../screens/ChatsScreens/Chats";
+import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
+import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
+import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
+import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -717,6 +721,36 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"GeneralSetting"}
           component={GeneralSetting}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Chats"}
+          component={Chats}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"ScheduleMeeting"}
+          component={ScheduleMeeting}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"JobDetails"}
+          component={JobDetails}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"StorageSettings"}
+          component={StorageSettings}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"PaymentMethod"}
+          component={PaymentMethod}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

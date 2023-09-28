@@ -1,6 +1,7 @@
 import { View, Text, Image } from "react-native";
 import React from "react";
 import { GeneralSettingStyle } from "./GeneralSettingStyle";
+
 const GeneralSetting = (props) => {
   return (
     <View>
