@@ -125,6 +125,11 @@ export const IMAGES = {
   Mute : require('../../assets/icons/Mute.png'),
   Archive : require('../../assets/icons/Archive.png'),
   wifi : require('../../assets/icons/wifi.png'),
+  visa : require('../../assets/icons/Visa.png'),
+  Mastercard : require('../../assets/icons/Mastercard.png'),
+  Base : require('../../assets/icons/BASE.png'),
+  PayPal :require('../../assets/icons/PayPal.png'),
+  GCash : require('../../assets/icons/GCash.png'),
 };
 
 export const BANNERS = {
