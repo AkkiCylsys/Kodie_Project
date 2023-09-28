@@ -108,7 +108,9 @@ export default Login = (props) => {
               <Text style={LoginStyles.forgot}>Forgot password?</Text>
             </TouchableOpacity>
             <CustomSingleButton
-              onPress={() => props.navigation.navigate("BottomNav")}
+              onPress={() =>
+                props.navigation.navigate("DrawerNavigstorLeftMenu")
+              }
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />

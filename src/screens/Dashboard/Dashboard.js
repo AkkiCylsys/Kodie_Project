@@ -8,12 +8,12 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from "@react-navigation/native";
 import { DashboardStyle } from "./DashboardStyle";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
 import { Dropdown } from "react-native-element-dropdown";
-import { IMAGES,SMALLICON, _COLORS } from "../../Themes/index";
+import { IMAGES, SMALLICON, _COLORS } from "../../Themes/index";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
@@ -118,13 +118,13 @@ export default Dashboard = (props) => {
   return (
     <View style={DashboardStyle.mainContainer}>
       <TopHeader
-      isMiddleImage={true}
-      IsNotification={true}
-      RightUserProfile={IMAGES.Landlordprofile}
-      MiddleImage={logos.MainLogoWhite}
-        leftImage={SMALLICON.menuicon} 
+        isMiddleImage={true}
+        IsNotification={true}
+        RightUserProfile={IMAGES.Landlordprofile}
+        MiddleImage={logos.MainLogoWhite}
+        leftImage={"menu"}
         MiddleText={"Kodie"}
-        onPressLeftButton={() =>props.navigation.navigate('DrawerNavigstorLeftMenu')}
+        onPressLeftButton={() => props.navigation.openDrawer()}
       />
       <ScrollView
         style={DashboardStyle.container}

@@ -23,7 +23,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-
 import SplashScreen from "../../screens/SplashScreen/SplashScreen";
 import Login from "./../../screens/Authentication/LoginScreen/Login";
 import UserType from "./../../screens/Authentication/UserType/UserType";
@@ -74,12 +73,12 @@ import SearchResult from "../../screens/Landlord/PropertyList/SearchForRentals/S
 import ViewPropertyDetails from "../../screens/Landlord/PropertyList/SearchForRentals/ViewPropertyDetails";
 import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
-import SearchUser from "../../screens/Authentication/BlockUser/SearchUser"
-import AccountSetting from "./../../screens/Setting/Account/AccountSetting"
+import SearchUser from "../../screens/Authentication/BlockUser/SearchUser";
+// import AccountSetting from "./../../screens/Setting/Account/AccountSetting"
 import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
-import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription"
-import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser"
-import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu"
+import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription";
+import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser";
+import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu";
 import AddTenantDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
 import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
@@ -97,7 +96,7 @@ import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginf
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
-  return ( 
+  return (
     <Tab.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
@@ -305,16 +304,32 @@ const BottomNav = (props) => {
   );
 };
 
- const Drawer = createDrawerNavigator();
- const DrawerNavigstorLeftMenu = (props) => {
-  return ( 
+const Drawer = createDrawerNavigator();
+const DrawerNavigstorLeftMenu = (props) => {
+  return (
+    <Drawer.Navigator
+      initialRouteName="Dashboard"
+      drawerStyle={{
+        backgroundColor: colors.white,
+        width: "40%",
+      }}
+      drawerContent={(props) => <CustomSidebarMenu {...props} />}
+    >
+      <Drawer.Screen
+        name="BottomNav"
+        component={BottomNav}
+        options={{
+          title: "Dashboard",
+          headerShown: false,
+        }}
+      />
 
-<Drawer.Navigator initialRouteName="Dashboard"
-drawerContent={(props )=> <CustomSidebarMenu {...props} />}>
-        <Drawer.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }}/>
-        <Drawer.Screen name="ContractorSignUpThirdScreen" component={ContractorSignUpThirdScreen} options={{ headerShown: false }}/>
-      </Drawer.Navigator>
-
+      <Drawer.Screen
+        name="ContractorSignUpThirdScreen"
+        component={ContractorSignUpThirdScreen}
+        options={{ headerShown: false }}
+      />
+    </Drawer.Navigator>
   );
 };
 const AuthStack = createNativeStackNavigator();
@@ -369,6 +384,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"BottomNav"}
           component={BottomNav}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"DrawerNavigstorLeftMenu"}
+          component={DrawerNavigstorLeftMenu}
           options={{ headerShown: false }}
         />
 
@@ -539,8 +559,6 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
 
-      
-
         <Stack.Screen
           name={"SearchResult"}
           component={SearchResult}
@@ -622,17 +640,12 @@ const AllStackRouts = (props) => {
           component={ManageSubscription}
           options={{ headerShown: false }}
         />
-                  <Stack.Screen
+        <Stack.Screen
           name={"BlockedUser"}
           component={BlockedUser}
           options={{ headerShown: false }}
         />
-              <Stack.Screen
-          name={"DrawerNavigstorLeftMenu"}
-          component={DrawerNavigstorLeftMenu}
-          options={{ headerShown: false }}
-        />
-       
+
         <Stack.Screen
           name={"ViewApplication"}
           component={ViewApplication}
@@ -701,12 +714,11 @@ const AllStackRouts = (props) => {
           component={GeneralSettings}
           options={{ headerShown: false }}
         />
-          <Stack.Screen
+        <Stack.Screen
           name={"GeneralSetting"}
           component={GeneralSetting}
           options={{ headerShown: false }}
         />
-        
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -119,6 +119,16 @@ export const IMAGES = {
   Group: require("../../assets/icons/Group.png"),
   Calendar: require("../../assets/icons/Calendar.png"),
   currency: require("../../assets/icons/Doller.png"),
+  Inspections: require("../../assets/icons/Inspections.png"),
+  Maintenancejobs: require("../../assets/icons/Maintenancejobs.png"),
+  Noticesreminders: require("../../assets/icons/Notices&reminders.png"),
+  Partner: require("../../assets/icons/Partner.png"),
+  PropertyListing: require("../../assets/icons/PropertyListing.png"),
+  RentalOffers: require("../../assets/icons/RentalOffers.png"),
+  Reports: require("../../assets/icons/Reports.png"),
+  Tenants: require("../../assets/icons/Tenants.png"),
+  vacantProperties: require("../../assets/icons/vacantProperties.png"),
+  ContractorDrawer: require("../../assets/icons/ContractorDrawer.png"),
 };
 
 export const BANNERS = {
