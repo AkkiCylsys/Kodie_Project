@@ -118,7 +118,8 @@ export default Login = (props) => {
                 // props.navigation.navigate("Invitefriend"),
                 // props.navigation.navigate("Bedroom");
                 // props.navigation.navigate("ConfirmJobCompletion");
-                props.navigation.navigate("JobCompletion");
+                // props.navigation.navigate("JobCompletion");
+                props.navigation.navigate("ContractorSignUpFirstScreen");
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
@@ -222,7 +223,10 @@ export default Login = (props) => {
             </>
           )}
           {isClick === 2 && (
-            <ScrollView contentContainerStyle={{ marginBottom: 90 }}>
+            <ScrollView
+              contentContainerStyle={{ marginBottom: 90 }}
+              showsVerticalScrollIndicator={false}
+            >
               <View style={LoginStyles.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput

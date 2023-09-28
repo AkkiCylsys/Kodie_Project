@@ -13,9 +13,7 @@ const CustomTabNavigator = (props) => {
   return (
     <View style={TopNavigationstyles.container}>
       <TouchableOpacity
-        style={[
-          TopNavigationstyles.tabButton,props.styleTab1
-        ]}
+        style={[TopNavigationstyles.tabButton, props.styleTab1]}
         onPress={props.onPressTab1}
       >
         <Text
@@ -23,9 +21,9 @@ const CustomTabNavigator = (props) => {
             TopNavigationstyles.tabText,
             {
               color: props.colorTab1,
-                // activeTab === "Tab1"
-                //   ? _COLORS.Kodie_BlackColor
-                //   : _COLORS.Kodie_MediumGrayColor,
+              // activeTab === "Tab1"
+              //   ? _COLORS.Kodie_BlackColor
+              //   : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
         >
@@ -34,18 +32,14 @@ const CustomTabNavigator = (props) => {
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[
-          TopNavigationstyles.tabButton,
-          props.styleTab2
-        ]}
+        style={[TopNavigationstyles.tabButton, props.styleTab2]}
         onPress={props.onPressTab2}
       >
         <Text
           style={[
             TopNavigationstyles.tabText,
             {
-              color:props.colorTab2
-                
+              color: props.colorTab2,
             },
           ]}
         >
@@ -54,17 +48,14 @@ const CustomTabNavigator = (props) => {
       </TouchableOpacity>
       {props.TAB3 ? (
         <TouchableOpacity
-          style={[
-            TopNavigationstyles.tabButton,props.styleTab3
-          ]}
+          style={[TopNavigationstyles.tabButton, props.styleTab3]}
           onPress={props.onPressTab3}
         >
           <Text
             style={[
               TopNavigationstyles.tabText,
               {
-                color:
-                 props.colorTab3
+                color: props.colorTab3,
               },
             ]}
           >
@@ -84,10 +75,7 @@ const CustomTabNavigator = (props) => {
             style={[
               TopNavigationstyles.tabText,
               {
-                color:
-                  activeTab === "Tab4"
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor,
+                color: props.colorTab4,
               },
             ]}
           >

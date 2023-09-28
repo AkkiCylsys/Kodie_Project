@@ -28,11 +28,13 @@ const Splash = (props) => {
         resizeMode="cover"
         style={SplashStyles.mainIcon}
       >
-        <Image
-          source={logos.MainLogoWhite}
-          style={SplashStyles.mainSmallIcon}
-        />
-        <View style={{ top: 150 }}>
+        <View style={SplashStyles.logoContainer}>
+          <Image
+            source={logos.MainLogoWhite}
+            style={SplashStyles.mainSmallIcon}
+          />
+        </View>
+        <View style={SplashStyles.bottomTextContainer}>
           <Text style={SplashStyles.text}>Welcome to Kodie!</Text>
           <Text style={SplashStyles.subtext}>
             Foster strong relationships with transparent, simple, hassle free
