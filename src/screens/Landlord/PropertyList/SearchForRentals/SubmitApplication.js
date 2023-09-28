@@ -1,4 +1,7 @@
-// screen no . 80,81,83,
+
+//ScreenNo:80
+//ScreenNo:81
+//ScreenNo:83
 import React, { useState, useRef } from "react";
 import {
   View,

@@ -1,4 +1,4 @@
-//Screen no : 228
+//ScreenNo:228
 import React from "react";
 import {
   View,

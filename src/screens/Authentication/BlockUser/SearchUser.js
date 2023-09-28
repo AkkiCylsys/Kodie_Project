@@ -11,7 +11,8 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices/CommonMethods";
 import { SearchUserStyle } from "./SearchUserStyle";
 import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
-// Screen no. 212
+
+//ScreenNo:212
 import { _COLORS, IMAGES } from "../../../Themes/index";
 const LandlordData = [
   {

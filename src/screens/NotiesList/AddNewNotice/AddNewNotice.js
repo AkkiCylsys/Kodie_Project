@@ -1,4 +1,4 @@
-// Screen no: 159
+//ScreenNo:159
 import React, { useState } from "react";
 import { View, Text, TextInput, Image, ScrollView } from "react-native";
 import { AddNewNoticeStyle } from "./AddNewNoticeStyle";

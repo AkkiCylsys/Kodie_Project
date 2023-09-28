@@ -8,7 +8,12 @@ import { CreateJobFirstStyle } from "../../CreateJob/CreateJobFirstScreenCss";
 import { ScrollView } from "react-native-gesture-handler";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS, IMAGES } from "../../../Themes";
-// Screen no:189,190,192,193,194
+
+//ScreenNo:189
+//ScreenNo:190
+//ScreenNo:192
+//ScreenNo:193
+//ScreenNo:194
 const data = [
   { label: "Delhi", value: "1" },
   { label: "Mumbai", value: "2" },

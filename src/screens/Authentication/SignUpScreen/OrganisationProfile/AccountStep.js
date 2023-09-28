@@ -1,4 +1,4 @@
-// Screen no:199,200,201,202
+//ScreenNo:199,200,201,202
 import {
   View,
   Text,

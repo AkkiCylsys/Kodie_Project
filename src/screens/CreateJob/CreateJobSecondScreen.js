@@ -1,4 +1,6 @@
-// screen no: 126,127
+
+//ScreenNo:126
+//ScreenNo:127
 import React, { useRef } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import StepText from "../../components/Molecules/StepText/StepText";
