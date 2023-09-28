@@ -93,11 +93,16 @@ import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
-import Chats from "../../screens/ChatsScreens/Chats";
-import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
-import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
-import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
-import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
+import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
+import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
+import LinkedDevice from "../../screens/Authentication/LinkedDevice/LinkedDevice";
+import TwoStepVerification from "../../screens/Authentication/LinkedDevice/TwoStepVerification";
+import TwoStepVerification1 from "../../screens/Authentication/LinkedDevice/TwoStepVerification1";
+import TwoStepVerification2 from "../../screens/Authentication/LinkedDevice/TwoStepVerification2";
+import TwoStepVerification3 from "../../screens/Authentication/LinkedDevice/TwoStepVerification3";
+import TwoStepVerification4 from "../../screens/Authentication/LinkedDevice/TwoStepVerification4";
+import TwoStepVerification5 from "../../screens/Authentication/LinkedDevice/TwoStepVerification5";
+import TwoStepVerification6 from "../../screens/Authentication/LinkedDevice/TwoStepVerification6";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -718,11 +723,6 @@ const AllStackRouts = (props) => {
           component={GeneralSettings}
           options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name={"GeneralSetting"}
-          component={GeneralSetting}
-          options={{ headerShown: false }}
-        />
 
         <Stack.Screen
           name={"Chats"}
@@ -753,6 +753,61 @@ const AllStackRouts = (props) => {
           component={PaymentMethod}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name={"Reviewjobdetails"}
+          component={Reviewjobdetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ContractorDashboard"}
+          component={ContractorDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"LinkedDevice"}
+          component={LinkedDevice}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TwoStepVerification"}
+          component={TwoStepVerification}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TwoStepVerification1"}
+          component={TwoStepVerification1}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TwoStepVerification2"}
+          component={TwoStepVerification2}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TwoStepVerification3"}
+          component={TwoStepVerification3}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TwoStepVerification4"}
+          component={TwoStepVerification4}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TwoStepVerification5"}
+          component={TwoStepVerification5}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"TwoStepVerification6"}
+          component={TwoStepVerification6}
+          options={{ headerShown: false }}
+        />
+        {/* <Stack.Screen
+          name={"TomProperty"}
+          component={TomProperty}
+          options={{ headerShown: false }}
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

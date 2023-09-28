@@ -75,7 +75,12 @@ export const IMAGES = {
   kitchen: require("../../assets/icons/kitchen.png"),
   LivingRoom: require("../../assets/icons/LivingRoom.png"),
   Roof: require("../../assets/icons/Roof.png"),
+  chrome: require("../../assets/icons/chrome.png"),
+  firefox: require("../../assets/icons/firefox.png"),
+  windows: require("../../assets/icons/windows.png"),
+  locketone: require("../../assets/icons/locketone.png"),
   Duplicate: require("../../assets/icons/Duplicate.png"),
+  lock: require("../../assets/icons/lock.png"),
   // common images
   Share: require("../../assets/images/Common/Share.png"),
 
