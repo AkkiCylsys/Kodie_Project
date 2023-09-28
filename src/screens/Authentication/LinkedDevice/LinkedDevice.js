@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  Button,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
@@ -100,21 +99,22 @@ const LinkedDevice = (props) => {
         </ScrollView>
         <RBSheet
           ref={refRBSheet}
-          height={150}
+          height={140}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.20)",
             },
             draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
+              backgroundColor: _COLORS.Kodie_BlackColor,
             },
             container: LinkedDeviceStyle.bottomModal_container,
+            
           }}
         >
           <View style={LinkedDeviceStyle.item}>
             <Text style={LinkedDeviceStyle.Logouttext}>Logout from device</Text>
             <TouchableOpacity>
-              <Entypo name="cross" size={20} />
+              <Entypo name="cross" size={30} color={'black'} />
             </TouchableOpacity>
           </View>
           <View style={LinkedDeviceStyle.btn}>

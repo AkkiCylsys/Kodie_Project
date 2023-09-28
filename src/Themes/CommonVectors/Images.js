@@ -80,6 +80,7 @@ export const IMAGES = {
   windows: require("../../assets/icons/windows.png"),
   locketone: require("../../assets/icons/locketone.png"),
   Duplicate: require("../../assets/icons/Duplicate.png"),
+  lock: require("../../assets/icons/lock.png"),
   // common images
   Share: require("../../assets/images/Common/Share.png"),
 

@@ -64,13 +64,13 @@ Devicetext:{
     justifyContent:"space-between",
     alignItems:"center",
     marginHorizontal:25,
-    marginTop:20
+    marginTop:20,
    },
    btn:{
     flexDirection: "row",
     justifyContent:"space-between",
     marginHorizontal:30,
-    marginTop:46,
+    marginTop:40,
     alignItems:'center'
    },
    Cancelbtn:{
@@ -94,4 +94,12 @@ Devicetext:{
     padding:10,
     borderRadius:5
    },
+
+   bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
 });

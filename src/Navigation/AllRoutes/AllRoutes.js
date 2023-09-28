@@ -101,7 +101,13 @@ import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
 import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
 import LinkedDevice from "../../screens/Authentication/LinkedDevice/LinkedDevice";
-
+import TwoStepVerification from "../../screens/Authentication/LinkedDevice/TwoStepVerification";
+import TwoStepVerification1 from "../../screens/Authentication/LinkedDevice/TwoStepVerification1";
+import TwoStepVerification2 from "../../screens/Authentication/LinkedDevice/TwoStepVerification2";
+import TwoStepVerification3 from "../../screens/Authentication/LinkedDevice/TwoStepVerification3";
+import TwoStepVerification4 from "../../screens/Authentication/LinkedDevice/TwoStepVerification4";
+import TwoStepVerification5 from "../../screens/Authentication/LinkedDevice/TwoStepVerification5";
+import TwoStepVerification6 from "../../screens/Authentication/LinkedDevice/TwoStepVerification6";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return ( 
@@ -731,6 +737,41 @@ const AllStackRouts = (props) => {
           <Stack.Screen
           name={"LinkedDevice"}
           component={LinkedDevice}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"TwoStepVerification"}
+          component={TwoStepVerification}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"TwoStepVerification1"}
+          component={TwoStepVerification1}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"TwoStepVerification2"}
+          component={TwoStepVerification2}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"TwoStepVerification3"}
+          component={TwoStepVerification3}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"TwoStepVerification4"}
+          component={TwoStepVerification4}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"TwoStepVerification5"}
+          component={TwoStepVerification5}
+          options={{ headerShown: false }}
+        />
+          <Stack.Screen
+          name={"TwoStepVerification6"}
+          component={TwoStepVerification6}
           options={{ headerShown: false }}
         />
           {/* <Stack.Screen
