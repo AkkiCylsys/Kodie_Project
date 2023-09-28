@@ -1,3 +1,5 @@
+// Screen no.143,139,121
+
 import React, { useState } from "react";
 import {
   View,
@@ -134,21 +136,25 @@ export default CreateJobFirstScreen = (props) => {
           <ServicesBox
             images
             Services_Name={"Outdoor cleaning"}
-            Services_Icon={isClick===2 ? IMAGES.outdoor : IMAGES.lightOutdorCleaner}
+            Services_Icon={
+              isClick === 2 ? IMAGES.outdoor : IMAGES.lightOutdorCleaner
+            }
             BoxStyling={[
               CreateJobFirstStyle.box_style,
               {
-                backgroundColor: isClick===2
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor,
+                backgroundColor:
+                  isClick === 2
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
               },
             ]}
             textColor={[
               CreateJobFirstStyle.box_Text_Style,
               {
-                color: isClick===2
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
+                color:
+                  isClick === 2
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
             onPress={() => handleBoxPress(2)}
@@ -159,22 +165,24 @@ export default CreateJobFirstScreen = (props) => {
             images
             Services_Name={"Heavy lifting"}
             Services_Icon={
-              isClick ===3? IMAGES.heavyLifting : IMAGES.lightHeavylifting
+              isClick === 3 ? IMAGES.heavyLifting : IMAGES.lightHeavylifting
             }
             BoxStyling={[
               CreateJobFirstStyle.box_style,
               {
-                backgroundColor: isClick===3
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor,
+                backgroundColor:
+                  isClick === 3
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
               },
             ]}
             textColor={[
               CreateJobFirstStyle.box_Text_Style,
               {
-                color: isClick===3
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
+                color:
+                  isClick === 3
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
             onPress={() => handleBoxPress(3)}
@@ -183,21 +191,23 @@ export default CreateJobFirstScreen = (props) => {
           <ServicesBox
             images
             Services_Name={"Fixing & maintenance"}
-            Services_Icon={isClick===4 ? IMAGES.fixing : IMAGES.fixingTool}
+            Services_Icon={isClick === 4 ? IMAGES.fixing : IMAGES.fixingTool}
             BoxStyling={[
               CreateJobFirstStyle.box_style,
               {
-                backgroundColor: isClick===4
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor,
+                backgroundColor:
+                  isClick === 4
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
               },
             ]}
             textColor={[
               CreateJobFirstStyle.box_Text_Style,
               {
-                color: isClick===4
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
+                color:
+                  isClick === 4
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
             onPress={() => handleBoxPress(4)}

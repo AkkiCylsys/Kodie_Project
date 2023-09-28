@@ -15,7 +15,7 @@ const AddGuest = () => {
             onChangeText={setLocation}
             placeholder="Add guests"
           />
-          <Image source={IMAGES.adduser} style={AddGuestStyle.adduserimg} />
+          <Image source={IMAGES.Adduser} style={AddGuestStyle.adduserimg} />
         </View>
 
         <View style={AddGuestStyle.vecentview}>

@@ -1,3 +1,4 @@
+// Screen no: 159
 import React, { useState } from "react";
 import { View, Text, TextInput, Image, ScrollView } from "react-native";
 import { AddNewNoticeStyle } from "./AddNewNoticeStyle";
@@ -131,13 +132,13 @@ const AddNewNotice = () => {
                 Add location
               </Text>
               <View style={AddNewNoticeStyle.locationInputview}>
-              <Entypo name="location-pin" size={20}/>
-              <TextInput
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                value={location}
-                onChangeText={setLocation}
-                placeholder="Enter new location"
-              />
+                <Entypo name="location-pin" size={20} />
+                <TextInput
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  value={location}
+                  onChangeText={setLocation}
+                  placeholder="Enter new location"
+                />
               </View>
             </View>
             <Divider style={AddNewNoticeStyle.dividerfourth} />

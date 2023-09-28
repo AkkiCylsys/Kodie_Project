@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  TouchableOpacity, 
-  Text,
-} from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { SwitchButtonStyle } from "./SwitchButtonStyle";
 import { _COLORS } from "../../../Themes";
 const SwitchButton = (props) => {

@@ -1,4 +1,12 @@
-import { View, Text, Image, TextInput, ScrollView ,TouchableOpacity} from "react-native";
+// Screen no:199,200,201,202
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState, useRef } from "react";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
@@ -167,7 +175,7 @@ const AccountStep = (props) => {
               ]}
             >
               <View style={AccountStepStyle.locationbindfield}>
-              <Image source={IMAGES.Location} />
+                <Image source={IMAGES.Location} />
                 <TextInput
                   placeholder="Search new location"
                   style={AccountStepStyle.inputbox}
@@ -221,7 +229,7 @@ const AccountStep = (props) => {
               ]}
             >
               <View style={AccountStepStyle.locationbindfield}>
-              <Image source={IMAGES.Location} />
+                <Image source={IMAGES.Location} />
                 <TextInput
                   placeholder="Search new location"
                   style={AccountStepStyle.inputbox}
@@ -255,36 +263,44 @@ const AccountStep = (props) => {
 
           {visible && (
             <View>
-              <TouchableOpacity style={AccountStepStyle.textContainer}  
-              onPress={() => {
-                refRBSheet.current.open();
-              }}>
+              <TouchableOpacity
+                style={AccountStepStyle.textContainer}
+                onPress={() => {
+                  refRBSheet.current.open();
+                }}
+              >
                 <View style={AccountStepStyle.bindfile}>
-                {/* <MaterialCommunityIcons name="file" size={35} /> */}
-                <Image source={IMAGES.document} />
-                <View>
-
-                  <Text style={AccountStepStyle.pdfName}>
-                    {"Company document.pdf"}
-                  </Text>
-                  <Text style={AccountStepStyle.pdfSize}>{"4.8 MB"}</Text>
+                  {/* <MaterialCommunityIcons name="file" size={35} /> */}
+                  <Image source={IMAGES.document} />
+                  <View>
+                    <Text style={AccountStepStyle.pdfName}>
+                      {"Company document.pdf"}
+                    </Text>
+                    <Text style={AccountStepStyle.pdfSize}>{"4.8 MB"}</Text>
+                  </View>
                 </View>
-                </View>
-                <Entypo name="dots-three-vertical" size={20} style={AccountStepStyle.doticon}/>
+                <Entypo
+                  name="dots-three-vertical"
+                  size={20}
+                  style={AccountStepStyle.doticon}
+                />
               </TouchableOpacity>
 
-              <View style={AccountStepStyle.textContainer} >
+              <View style={AccountStepStyle.textContainer}>
                 <View style={AccountStepStyle.bindfile}>
-                <Image source={IMAGES.document} />
-                <View>
-
-                  <Text style={AccountStepStyle.pdfName}>
-                    {"Company document.pdf"}
-                  </Text>
-                  <Text style={AccountStepStyle.pdfSize}>{"4.8 MB"}</Text>
+                  <Image source={IMAGES.document} />
+                  <View>
+                    <Text style={AccountStepStyle.pdfName}>
+                      {"Company document.pdf"}
+                    </Text>
+                    <Text style={AccountStepStyle.pdfSize}>{"4.8 MB"}</Text>
+                  </View>
                 </View>
-                </View>
-                <Entypo name="dots-three-vertical" size={20} style={AccountStepStyle.doticon}/>
+                <Entypo
+                  name="dots-three-vertical"
+                  size={20}
+                  style={AccountStepStyle.doticon}
+                />
               </View>
             </View>
           )}
