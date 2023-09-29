@@ -126,6 +126,7 @@ export const IMAGES = {
   Tenants: require("../../assets/icons/Tenants.png"),
   vacantProperties: require("../../assets/icons/vacantProperties.png"),
   ContractorDrawer: require("../../assets/icons/ContractorDrawer.png"),
+  DocumentDrawer: require("../../assets/icons/DocumentDrawer.png"),
   notificationbell: require("../../assets/icons/notificationbell.png"),
   Location: require("../../assets/icons/location.png"),
   pencile: require("../../assets/icons/Vector.png"),
@@ -147,6 +148,9 @@ export const IMAGES = {
   Base: require("../../assets/icons/BASE.png"),
   PayPal: require("../../assets/icons/PayPal.png"),
   GCash: require("../../assets/icons/GCash.png"),
+  TurnOff: require("../../assets/icons/TurnOff.png"),
+  ChangePin: require("../../assets/icons/ChangePin.png"),
+  changeEmail: require("../../assets/icons/changeEmail.png"),
 };
 
 export const BANNERS = {
