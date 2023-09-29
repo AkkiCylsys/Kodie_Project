@@ -27,7 +27,7 @@ export const IMAGES = {
   blueLine: require("../../assets/icons/BlueLine.png"),
   greenLine: require("../../assets/icons/GreenLine.png"),
   noteBook: require("../../assets/icons/noteBook.png"),
-  dashboard: require("../../assets/icons/dashboard-chart.png"),
+  dashboard: require("../../assets/icons/dashboard.png"),
   greenDeshboard: require("../../assets/icons/greenDeshboard.png"),
   property: require("../../assets/icons/property.png"),
   greenproperty: require("../../assets/icons/greenproperty.png"),

@@ -30,7 +30,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Inspection":
         setselectedId("Inspection");
-        props.navigation.navigate("LinkedDevice");
+        props.navigation.navigate("AboutYou");
         break;
       case "Tetants":
         setselectedId("Tetants");

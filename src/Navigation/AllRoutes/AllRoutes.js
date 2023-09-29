@@ -1,20 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
-
-import LinearGradient from "react-native-linear-gradient";
-import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
-import MtIcon from "react-native-vector-icons/MaterialIcons";
-import Octicons from "react-native-vector-icons/Octicons";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
-import {
-  bgGradientColor,
-  headerGradientColor,
-  colors,
-  _COLORS,
-} from "../../Themes/CommonColors/CommonColor";
-import { CommonStyles } from "../../Themes/CommonStyles/CommonStyles";
-
+import { colors, _COLORS } from "../../Themes/CommonColors/CommonColor";
 import {
   NavigationContainer,
   createNavigationContainerRef,
@@ -22,7 +9,6 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-
 import SplashScreen from "../../screens/SplashScreen/SplashScreen";
 import Login from "./../../screens/Authentication/LoginScreen/Login";
 import UserType from "./../../screens/Authentication/UserType/UserType";
@@ -74,13 +60,11 @@ import Invitefriend from "./../../screens/InviteFriend/Invitefriend";
 import SubmitApplication from "../../screens/Landlord/PropertyList/SearchForRentals/SubmitApplication";
 import SearchUser from "../../screens/Authentication/BlockUser/SearchUser";
 import AccountSetting from "./../../screens/Setting/Account/AccountSetting";
-import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 import ManageSubscription from "./../../screens/Subscription/ManageSubscription/ManageSubscription";
 import BlockedUser from "./../../screens/Authentication/BlockUser/BlockedUser";
 import CustomSidebarMenu from "./../CustomeDrawer/CustomSidebarMenu";
 import AddTenantDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 import SocialMedia from "./../../screens/Setting/SocielMedia/SocialMedia";
-
 import ViewApplication from "../../screens/Landlord/PropertyList/RentalOffer/ViewApplication";
 import PropertyInspection from "../../screens/Inspection/PropertyInspection/PropertyInspection";
 import CreateNewInspection from "../../screens/Inspection/NewInspections/CreateNewInspection";
@@ -92,7 +76,6 @@ import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
-// import Reviewjobdetails from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails";
 import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
 import LinkedDevice from "../../screens/Authentication/LinkedDevice/LinkedDevice";
 import TwoStepVerification from "../../screens/Authentication/LinkedDevice/TwoStepVerification";
@@ -126,7 +109,7 @@ const BottomNav = (props) => {
                 name={"clipboard-check-multiple"}
                 size={focused ? 30 : 25}
                 color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
                 }
               /> */}
               <Image
@@ -141,10 +124,10 @@ const BottomNav = (props) => {
                 style={[
                   {
                     fontSize: 12,
-                    fontFamily: fontFamily.K_Bold,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_GrayColor,
+                      : _COLORS.Kodie_MediumGrayColor,
                   },
                 ]}
               >
@@ -167,7 +150,7 @@ const BottomNav = (props) => {
                 name={"clipboard-check-multiple"}
                 size={focused ? 30 : 25}
                 color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
                 }
               /> */}
               <Image
@@ -181,10 +164,10 @@ const BottomNav = (props) => {
                 style={[
                   {
                     fontSize: 12,
-                    fontFamily: fontFamily.K_Bold,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_GrayColor,
+                      : _COLORS.Kodie_MediumGrayColor,
                   },
                 ]}
               >
@@ -207,7 +190,7 @@ const BottomNav = (props) => {
                 name={"clipboard-check-multiple"}
                 size={focused ? 30 : 25}
                 color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
                 }
               /> */}
               <Image
@@ -221,10 +204,10 @@ const BottomNav = (props) => {
                 style={[
                   {
                     fontSize: 12,
-                    fontFamily: fontFamily.K_Bold,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_GrayColor,
+                      : _COLORS.Kodie_MediumGrayColor,
                   },
                 ]}
               >
@@ -247,7 +230,7 @@ const BottomNav = (props) => {
                 name={"chat-processing-outline"}
                 size={focused ? 30 : 25}
                 color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                  focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
                 }
               /> */}
               <Image
@@ -261,10 +244,10 @@ const BottomNav = (props) => {
                 style={[
                   {
                     fontSize: 12,
-                    fontFamily: fontFamily.K_Bold,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_GrayColor,
+                      : _COLORS.Kodie_MediumGrayColor,
                   },
                 ]}
               >
@@ -283,25 +266,27 @@ const BottomNav = (props) => {
           tabBarIconStyle: { flex: 1 },
           tabBarIcon: ({ focused }) => (
             <View style={{ alignItems: "center" }}>
-              <MacIcon
-                name={"account-outline"}
-                size={30}
+              <Ionicons
+                name={"settings-outline"}
+                size={28}
                 color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_GrayColor
+                  focused
+                    ? _COLORS.Kodie_GreenColor
+                    : _COLORS.Kodie_MediumGrayColor
                 }
               />
               <Text
                 style={[
                   {
                     fontSize: 12,
-                    fontFamily: fontFamily.K_Bold,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_GrayColor,
+                      : _COLORS.Kodie_MediumGrayColor,
                   },
                 ]}
               >
-                {"Profile"}
+                {"Setting"}
               </Text>
             </View>
           ),

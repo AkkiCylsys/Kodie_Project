@@ -36,7 +36,7 @@ const TwoStepVerification = (props) => {
   const buttonLabels = ["Turn on", "Next", "Next", "Next", "Next", "Done"];
   const handleButtonPress = () => {
     if (isClick === 5) {
-      setDoneContent(doneContent);
+      setDoneContent(!doneContent);
     } else {
       setIsClick((prev) => (prev + 1) % 6);
     }
@@ -48,7 +48,7 @@ const TwoStepVerification = (props) => {
           onPressLeftButton={() => _goBack(props)}
           MiddleText={"Two-step verification"}
         />
-        {doneContent ? (
+        {!doneContent ? (
           <ScrollView>
             <View style={TwoStepVerificationStyle.container}>
               {isClick === 0 && (
