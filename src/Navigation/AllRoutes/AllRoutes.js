@@ -98,6 +98,8 @@ import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/Schedule
 import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
 import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
 import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
+import Notices from "../../screens/NotiesList/Notices/Notices";
+import Reports from "../../screens/Reports/Reports";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -743,6 +745,18 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"PaymentMethod"}
           component={PaymentMethod}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Notices"}
+          component={Notices}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Reports"}
+          component={Reports}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
