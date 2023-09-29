@@ -1,3 +1,4 @@
+//ScreenNo:225
 import { View, Text, TextInput, Image } from "react-native";
 import React from "react";
 import { ContactusStyle } from "./ContactusStyle";
@@ -8,7 +9,7 @@ import { _COLORS } from "../../../Themes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 const Contactus = (props) => {
   return (
-    <View style={{ backgroundColor: "#FFFFFF",height:'100%' }}>
+    <View style={{ backgroundColor: "#FFFFFF", height: "100%" }}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Contact us"}

@@ -31,8 +31,11 @@ const ChangeContactInput = () => {
                 source={IMAGES.verticalLine}
               />
 
-              <TextInput keyboardType="numeric" placeholder="1234567890" 
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}/>
+              <TextInput
+                keyboardType="numeric"
+                placeholder="1234567890"
+                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+              />
             </View>
             <Image
               style={ChangeContactInputStyle.Vectorimg}
@@ -59,8 +62,11 @@ const ChangeContactInput = () => {
                 source={IMAGES.verticalLine}
               />
 
-              <TextInput keyboardType="numeric" placeholder="1234567890" 
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}/>
+              <TextInput
+                keyboardType="numeric"
+                placeholder="1234567890"
+                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+              />
             </View>
             <Image
               style={ChangeContactInputStyle.Vectorimg}

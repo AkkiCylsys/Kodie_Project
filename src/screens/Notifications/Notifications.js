@@ -1,3 +1,6 @@
+
+//ScreenNo:175
+//ScreenNo:176
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useState, useRef } from "react";
 import TopHeader from "../../components/Molecules/Header/Header";
@@ -24,7 +27,7 @@ const Notifications = (props) => {
       img: IMAGES.kodie_icon,
       time: "3m ago",
       starimg: IMAGES.star,
-      menuimg: IMAGES.menuIcon,
+      // menuimg: IMAGES.menuIcon,
     },
     {
       id: 2,
@@ -33,7 +36,7 @@ const Notifications = (props) => {
       img: IMAGES.kodie_icon,
       time: "4h ago",
       starimg: IMAGES.star,
-      menuimg: IMAGES.menuIcon,
+      // menuimg: IMAGES.menuIcon,
     },
     {
       id: 3,
@@ -43,7 +46,7 @@ const Notifications = (props) => {
       img: IMAGES.kodie_icon,
       time: "7h ago",
       starimg: IMAGES.star,
-      menuimg: IMAGES.menuIcon,
+      // menuimg: IMAGES.menuIcon,
     },
   ];
 
@@ -56,7 +59,7 @@ const Notifications = (props) => {
       imgmain: IMAGES.kodie_icon,
       times: "5d ago",
       starimgs: IMAGES.star,
-      menuimgs: IMAGES.menuIcon,
+      // menuimgs: IMAGES.menuIcon,
     },
   ];
 

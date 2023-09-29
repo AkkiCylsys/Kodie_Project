@@ -21,16 +21,16 @@ export const SwitchButtonStyle = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderColor: "red",
-    
   },
   activeButton: {
     flex: 1,
-    backgroundColor: _COLORS.Kodie_BlackColor,
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
   },
   buttonText: {
     flex: 1,
     color: _COLORS.Kodie_MediumGrayColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
+    alignSelf: "center",
   },
 });

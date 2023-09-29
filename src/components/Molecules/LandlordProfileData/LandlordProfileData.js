@@ -1,3 +1,5 @@
+
+//ScreenNo:187
 import React from "react";
 import { Text, View, Image, TouchableOpacity, FlatList } from "react-native";
 import { LandlordProfileDataStyle } from "./LandlordProfileDataStyle";

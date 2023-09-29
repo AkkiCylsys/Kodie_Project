@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  TouchableOpacity, 
-  Text,
-} from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 import { SwitchButtonStyle } from "./SwitchButtonStyle";
 import { _COLORS } from "../../../Themes";
 const SwitchButton = (props) => {
@@ -29,7 +25,7 @@ const SwitchButton = (props) => {
               {
                 color:
                   activeButton === "button1"
-                    ? _COLORS.Kodie_WhiteColor
+                    ? _COLORS.Kodie_BlackColor
                     : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
@@ -50,7 +46,7 @@ const SwitchButton = (props) => {
               {
                 color:
                   activeButton === "button2"
-                    ? _COLORS.Kodie_WhiteColor
+                    ? _COLORS.Kodie_BlackColor
                     : _COLORS.Kodie_MediumGrayColor,
               },
             ]}

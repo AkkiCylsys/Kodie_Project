@@ -20,6 +20,7 @@ const data = [
   { label: "Australia", value: "2" },
   { label: "America", value: "3" },
 ];
+// Screen no:9
 export default Account = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

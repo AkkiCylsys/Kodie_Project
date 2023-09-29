@@ -1,17 +1,11 @@
+
+//ScreenNo:126
+//ScreenNo:127
 import React, { useRef } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import StepText from "../../components/Molecules/StepText/StepText";
 import { CreateJobSecondStyle } from "./CreateJobSecondScreenCss";
-import {
-  _COLORS,
-  LABEL_STYLES,
-  BANNERS,
-} from "../../Themes/index";
+import { _COLORS, LABEL_STYLES, BANNERS } from "../../Themes/index";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
@@ -132,7 +126,7 @@ export default CreateJobSecondScreen = (props) => {
             onPress={() => {
               refRBSheet.current.open();
             }}
-          />        
+          />
           <View style={CreateJobSecondStyle.next_Btn}>
             <CustomSingleButton
               _ButtonText={"Next"}

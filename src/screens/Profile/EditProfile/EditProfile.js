@@ -8,6 +8,12 @@ import { CreateJobFirstStyle } from "../../CreateJob/CreateJobFirstScreenCss";
 import { ScrollView } from "react-native-gesture-handler";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS, IMAGES } from "../../../Themes";
+
+//ScreenNo:189
+//ScreenNo:190
+//ScreenNo:192
+//ScreenNo:193
+//ScreenNo:194
 const data = [
   { label: "Delhi", value: "1" },
   { label: "Mumbai", value: "2" },
@@ -81,7 +87,7 @@ const EditProfile = () => {
             <View style={EditProfileStyle.phoneinputbindview}>
               <View style={EditProfileStyle.phoneinput}>
                 <View style={EditProfileStyle.bindnumberview}>
-                <Text style={EditProfileStyle.numbercode}>+61</Text>
+                  <Text style={EditProfileStyle.numbercode}>+61</Text>
 
                 <Image
                   style={EditProfileStyle.downarrowimg}

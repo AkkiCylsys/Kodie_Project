@@ -1,10 +1,9 @@
+
+//ScreenNo:123
+//ScreenNo:124
+//ScreenNo:125
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { CreateJobTermsStyle } from "./CreateJobTermsStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
