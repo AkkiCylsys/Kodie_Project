@@ -130,6 +130,8 @@ export const IMAGES = {
   PayPal :require('../../assets/icons/PayPal.png'),
   GCash : require('../../assets/icons/GCash.png'),
   Report : require('../../assets/icons/Report.png'),
+  Save : require('../../assets/icons/Save.png'),
+  Email : require('../../assets/icons/Email.png'),
 };
 
 export const BANNERS = {

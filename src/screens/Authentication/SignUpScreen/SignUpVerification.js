@@ -82,7 +82,7 @@ export default SignUpVerification = (props) => {
             _ButtonText={"Verify email"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={()=>{
-              props.navigation.navigate("Reports")
+              props.navigation.navigate("GenerateReport")
             }}
           />
         </View>

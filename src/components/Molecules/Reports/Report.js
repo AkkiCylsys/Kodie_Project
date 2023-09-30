@@ -2,15 +2,19 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { ReportsStyle } from "./ReportsStyle";
 import Entypo from "react-native-vector-icons/Entypo";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import { _COLORS, FONTFAMILY } from "../../../Themes";
 import { useState } from "react";
 
 const Report = (props) => {
-  const [heart , setHeart] = useState(false)
+  const [heart, setHeart] = useState(false);
+  const [greenheart, setGreenHeart] = useState(false);
   const togglechange = () => {
-    setHeart(!heart)
-  }
+    setHeart(!heart);
+  };
+  const toggle = () => {
+    setGreenHeart(!greenheart);
+  };
   return (
     <>
       <View style={ReportsStyle.mainContainer}>
@@ -40,19 +44,36 @@ const Report = (props) => {
               </TouchableOpacity>
             </View>
 
+            <TouchableOpacity onPress={toggle}>
+              {props.solidheart ? (
+                <AntDesign
+                  name={heart ? "hearto" : "heart"}
+                  size={28}
+                  color={
+                    greenheart
+                    ? _COLORS.Kodie_LightGrayColor
+                     :_COLORS.Kodie_lightGreenColor
+                  }
+                  style={ReportsStyle.heartimg}
+                />
+              ) : null}
+            </TouchableOpacity>
+
             <TouchableOpacity onPress={togglechange}>
               {props.hearting ? (
-                <EvilIcons
-                  name="heart"
-                  size={30}
-                  color={heart ? _COLORS.Kodie_ExtralightGreenColor : _COLORS.Kodie_LightGrayColor}
+                <AntDesign
+                  name={heart ? "heart" : "hearto"}
+                  size={28}
+                  color={
+                    heart
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_LightGrayColor
+                  }
                   style={ReportsStyle.heartimg}
                 />
               ) : null}
             </TouchableOpacity>
           </View>
-
-
         </View>
       </View>
     </>
@@ -62,6 +83,10 @@ Report.defaultProps = {
   hearting: false,
   marginTop: 10,
   height: 58,
+};
+
+Report.defaultProps = {
+  solidheart: false,
 };
 
 export default Report;
