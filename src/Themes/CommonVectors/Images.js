@@ -132,6 +132,12 @@ export const IMAGES = {
   Report : require('../../assets/icons/Report.png'),
   Save : require('../../assets/icons/Save.png'),
   Email : require('../../assets/icons/Email.png'),
+  DataPartners : require('../../assets/images/Common/DataPartners.png'),
+  DebtCollectors : require('../../assets/images/Common/DebtCollectors.png'),
+  LegalPartners : require('../../assets/images/Common/LegalPartners.png'),
+  RentalPaymentPartners : require('../../assets/images/Common/RentalPaymentPartners.png'),
+  TanantScreeningPartners : require('../../assets/images/Common/TanantScreeningPartners.png'),
+
 };
 
 export const BANNERS = {

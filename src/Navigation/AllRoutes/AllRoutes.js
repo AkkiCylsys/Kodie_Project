@@ -101,6 +101,7 @@ import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
 import Notices from "../../screens/NotiesList/Notices/Notices";
 import Reports from "../../screens/Reports/Reports";
 import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport";
+import Partners from "../../screens/Partners/Partners";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -764,6 +765,12 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"GenerateReport"}
           component={GenerateReport}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Partners"}
+          component={Partners}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

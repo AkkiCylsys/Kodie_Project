@@ -173,6 +173,10 @@ const GenerateReport = (props) => {
             Header="Generate report"
             imageSource={IMAGES.View_property}
             title="View report"
+            secondimg={IMAGES.Save}
+            secondDesc='Save report to files'
+            thirdimg={IMAGES.Email}
+            thirdDesc='Share report to email'
           />
 
         </RBSheet>

@@ -31,15 +31,16 @@ const GenerateReportCommon = (props) => {
           </View>
         </View>
 
+
         <View style={GeneralReportCommonStyle.optionsmenu}>
           <View>
             <Image
-              source={IMAGES.Save}
+              source={props.secondimg}
               style={GeneralReportCommonStyle.image}
             />
           </View>
           <View>
-            <Text  style={GeneralReportCommonStyle.title}>Save report to files</Text>
+            <Text  style={GeneralReportCommonStyle.title}>{props.secondDesc}</Text>
           </View>
         </View>
 
@@ -49,12 +50,12 @@ const GenerateReportCommon = (props) => {
             }}>
           <View>
             <Image
-              source={IMAGES.Email}
+              source={props.thirdimg}
               style={GeneralReportCommonStyle.image}
             />
           </View>
           <View>
-            <Text  style={GeneralReportCommonStyle.title}>Share report to email</Text>
+            <Text  style={GeneralReportCommonStyle.title}>{props.thirdDesc}</Text>
           </View>
         </TouchableOpacity>
 
