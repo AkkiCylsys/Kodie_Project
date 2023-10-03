@@ -1,80 +1,308 @@
-import React from 'react';
+import React, { useState } from "react";
 import {
   SafeAreaView,
-  View,
   StyleSheet,
   Image,
   Text,
-  Linking,
-} from 'react-native';
-
-import {
-  DrawerContentScrollView,
-  DrawerItemList,
-  DrawerItem,
-} from '@react-navigation/drawer';
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { IMAGES, _COLORS } from "../../Themes";
+import DividerIcon from "../../components/Atoms/Devider/DividerIcon";
+import { DrawerStyle } from "./DrawerStyle";
 
 const CustomSidebarMenu = (props) => {
-  const BASE_PATH =
-    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/';
-  const proileImage = 'react_logo.png';
+  const [selectedId, setselectedId] = useState("");
 
+  const check = (data) => {
+    switch (data) {
+      case "PropertyLinking":
+        setselectedId("PropertyLinking");
+        props.navigation.navigate("BottomNav");
+        break;
+      case "RentalOffers":
+        setselectedId("RentalOffers");
+        props.navigation.navigate("BlockedUser");
+        break;
+      case "vacantProperties":
+        setselectedId("vacantProperties");
+        props.navigation.navigate("SearchUser");
+        break;
+      case "Inspection":
+        setselectedId("Inspection");
+        props.navigation.navigate("AboutYou");
+        break;
+      case "Tetants":
+        setselectedId("Tetants");
+        props.navigation.navigate("TwoStepVerification");
+        break;
+      case "MaintenanceJobs":
+        setselectedId("MaintenanceJobs");
+        props.navigation.navigate("Account");
+        break;
+      case "Contractors":
+        setselectedId("Contractors");
+        props.navigation.navigate("SignUp");
+        break;
+      case "Notices":
+        setselectedId("Notices");
+        props.navigation.navigate("NoticeList");
+        break;
+      case "Documents":
+        setselectedId("Documents");
+        props.navigation.navigate("AccountStep");
+        break;
+      case "Reports":
+        setselectedId("Reports");
+        props.navigation.navigate("TenantSignupScreen");
+        break;
+      case "Partners":
+        setselectedId("Partners");
+        props.navigation.navigate("StorageSettings");
+        break;
+
+      default:
+        setselectedId("Dashboard");
+        break;
+    }
+  };
   return (
-    <SafeAreaView style={{flex: 1}}>
-      {/*Top Large Image */}
-      <Image
-        source={{uri: BASE_PATH + proileImage}}
-        style={styles.sideMenuProfileIcon}
-      />
-      <DrawerContentScrollView {...props}>
-        <DrawerItemList {...props} />
-        <DrawerItem
-          label="Visit Us"
-          onPress={() => Linking.openURL('https://aboutreact.com/')}
-        />
-        <View style={styles.customItem}>
-          <Text
-            onPress={() => {
-              Linking.openURL('https://aboutreact.com/');
-            }}>
-            Rate Us
-          </Text>
+    <SafeAreaView style={DrawerStyle.mainContainer}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={DrawerStyle.Container}
+      >
+        <Text style={DrawerStyle.HeaderText}>{"Properties"}</Text>
+        <TouchableOpacity
+          style={[
+            DrawerStyle.SubHeadingView,
+            {
+              backgroundColor:
+                selectedId == "PropertyLinking"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("PropertyLinking")}
+        >
           <Image
-            source={{uri: BASE_PATH + 'star_filled.png'}}
-            style={styles.iconStyle}
+            source={IMAGES.PropertyListing}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
           />
-        </View>
-      </DrawerContentScrollView>
-      <Text
-        style={{
-          fontSize: 16,
-          textAlign: 'center',
-          color: 'grey'
-        }}>
-        www.aboutreact.com
-      </Text>
+          <Text style={DrawerStyle.SubHeading}>{"Property listings"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "RentalOffers"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("RentalOffers")}
+        >
+          <Image
+            source={IMAGES.RentalOffers}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Rental offers"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "vacantProperties"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("vacantProperties")}
+        >
+          <Image
+            source={IMAGES.vacantProperties}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Vacant properties"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "Inspection"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("Inspection")}
+        >
+          <Image
+            source={IMAGES.Inspections}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Inspections"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "Tetants"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("Tetants")}
+        >
+          <Image
+            source={IMAGES.Tenants}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Tenants"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+
+        <Text style={DrawerStyle.HeaderText}>{"Jobs"}</Text>
+        <TouchableOpacity
+          style={[
+            DrawerStyle.SubHeadingView,
+            {
+              backgroundColor:
+                selectedId == "MaintenanceJobs"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("MaintenanceJobs")}
+        >
+          <Image
+            source={IMAGES.Maintenancejobs}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Maintenance  jobs"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "Contractors"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("Contractors")}
+        >
+          <Image
+            source={IMAGES.ContractorDrawer}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Contractors"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <Text style={DrawerStyle.HeaderText}>{"Other"}</Text>
+        <TouchableOpacity
+          style={[
+            DrawerStyle.SubHeadingView,
+            {
+              backgroundColor:
+                selectedId == "Notices"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("Notices")}
+        >
+          <Image
+            source={IMAGES.Noticesreminders}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Notices & reminders"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+
+        <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "Documents"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("Documents")}
+        >
+          <Image
+            source={IMAGES.DocumentDrawer}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Documents"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+
+        <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "Reports"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("Reports")}
+        >
+          <Image
+            source={IMAGES.Reports}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Reports"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+        <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "Partners"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("Partners")}
+        >
+          <Image
+            source={IMAGES.Partner}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Partners"}</Text>
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  sideMenuProfileIcon: {
-    resizeMode: 'center',
-    width: 100,
-    height: 100,
-    borderRadius: 100 / 2,
-    alignSelf: 'center',
-  },
-  iconStyle: {
-    width: 15,
-    height: 15,
-    marginHorizontal: 5,
-  },
-  customItem: {
-    padding: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
+const styles = StyleSheet.create({});
 
 export default CustomSidebarMenu;
