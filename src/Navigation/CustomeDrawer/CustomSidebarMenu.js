@@ -58,7 +58,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Partners":
         setselectedId("Partners");
-        props.navigation.navigate("StorageSettings");
+        props.navigation.navigate("Partners");
         break;
 
       default:

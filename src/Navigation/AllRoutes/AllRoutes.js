@@ -87,6 +87,7 @@ import Notices from "../../screens/NotiesList/Notices/Notices";
 import Reports from "../../screens/Reports/Reports";
 import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport";
 import Partners from "../../screens/Partners/Partners";
+import PropertyListings from "../../screens/PropertyListings/PropertyListings";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -716,11 +717,11 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name={"ScheduleMeeting"}
           component={ScheduleMeeting}
           options={{ headerShown: false }}
-        />
+        /> */}
 
         <Stack.Screen
           name={"JobDetails"}
@@ -761,6 +762,12 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"Partners"}
           component={Partners}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"PropertyListings"}
+          component={PropertyListings}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
