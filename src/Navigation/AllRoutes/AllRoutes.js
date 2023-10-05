@@ -88,6 +88,7 @@ import Reports from "../../screens/Reports/Reports";
 import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport";
 import Partners from "../../screens/Partners/Partners";
 import PropertyListings from "../../screens/PropertyListings/PropertyListings";
+import VacantPropertiesList from "../../screens/VacantProperties/VacantPropertiesList";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -768,6 +769,12 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"PropertyListings"}
           component={PropertyListings}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"VacantPropertiesList"}
+          component={VacantPropertiesList}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

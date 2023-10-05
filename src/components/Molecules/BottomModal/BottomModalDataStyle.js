@@ -17,4 +17,11 @@ export const BottomModalDataStyle = StyleSheet.create({
     marginLeft: 10,
   },
   Icons: { width: 40, height: 40, resizeMode: "cover" },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
 });

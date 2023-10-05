@@ -7,6 +7,7 @@ import { PropertyListingCss } from "./PropertyListingCss";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { _COLORS, IMAGES, BANNERS } from "../../../Themes";
 import AddBiddingDetails from "../AddBiddingDetails/AddBiddingDetails";
+import InviteTenant from "../InviteTenant/InviteTenant";
 const property_List1 = [
   {
     id: "1",
@@ -90,7 +91,9 @@ const property_List1 = [
 ];
 
 const PropertyListing = () => {
-  const refRBSheet = useRef();
+  const refRBSheet1 = useRef();
+  const refRBSheet2 = useRef();
+  const refRBSheet3 = useRef();
   const [expandedItems, setExpandedItems] = useState([]);
   const propertyData1_render = ({ item }) => {
     const isExpanded = expandedItems.includes(item.id);
@@ -125,7 +128,7 @@ const PropertyListing = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    refRBSheet.current.open();
+                    refRBSheet1.current.open();
                   }}
                 >
                   <MaterialCommunityIcons
@@ -170,6 +173,9 @@ const PropertyListing = () => {
                         : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
+                  onPress={() => {
+                    refRBSheet3.current.open();
+                  }}
                 >
                   {item.buttonName}
                 </Text>
@@ -209,8 +215,9 @@ const PropertyListing = () => {
           </View>
         )}
         <DividerIcon />
+        {/* three dot click popup menu */}
         <RBSheet
-          ref={refRBSheet}
+          ref={refRBSheet1}
           closeOnDragDown={true}
           height={330}
           closeOnPressMask={false}
@@ -226,13 +233,13 @@ const PropertyListing = () => {
         >
           <BottomModalData
             onPress={() => {
-              refRBSheet.current.open();
+              refRBSheet2.current.open();
             }}
           />
         </RBSheet>
-
+        {/* AddBiddingDetails popup */}
         <RBSheet
-          ref={refRBSheet}
+          ref={refRBSheet2}
           closeOnDragDown={true}
           height={760}
           closeOnPressMask={false}
@@ -246,7 +253,26 @@ const PropertyListing = () => {
             container: PropertyListingCss.bottomModal_container,
           }}
         >
-         <AddBiddingDetails />
+          <AddBiddingDetails />
+        </RBSheet>
+
+        {/* invite tenent popup */}
+        <RBSheet
+          ref={refRBSheet3}
+          closeOnDragDown={true}
+          height={230}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "transparent",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: PropertyListingCss.bottomModal_container,
+          }}
+        >
+          <InviteTenant />
         </RBSheet>
       </>
     );
