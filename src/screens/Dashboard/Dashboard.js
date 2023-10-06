@@ -21,6 +21,7 @@ import DeshboardNotice from "../../components/Molecules/deshboardNoice/Deshboard
 import { LineChart } from "react-native-chart-kit";
 import { Card } from "react-native-paper";
 import { logos } from "../../Themes/CommonVectors/Images";
+import CircleProgress from "../../components/Molecules/CircleProgress/CircleProgress";
 const IncomeData = [
   {
     id: "1",
@@ -249,6 +250,11 @@ export default Dashboard = (props) => {
             </View>
           </Card.Content>
         </Card>
+
+        <View>
+          <CircleProgress/>
+        </View>
+        
         <FlatList
           data={IncomeData}
           scrollEnabled
