@@ -108,6 +108,9 @@ import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
 import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
 import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
 import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
+import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
+import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
+import Contractors1 from "../../screens/Managingcontractors/Contractors1";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -808,6 +811,22 @@ const AllStackRouts = (props) => {
           component={TwoStepVerification6}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name={"PrivacySecurity"}
+          component={PrivacySecurity}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Managingcontractors"}
+          component={Managingcontractors}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Contractors1"}
+          component={Contractors1}
+          options={{ headerShown: false }}
+        />
+        
         {/* <Stack.Screen
           name={"TomProperty"}
           component={TomProperty}
