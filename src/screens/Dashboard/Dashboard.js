@@ -122,7 +122,7 @@ export default Dashboard = (props) => {
       IsNotification={true}
       RightUserProfile={IMAGES.Landlordprofile}
       MiddleImage={logos.MainLogoWhite}
-        leftImage={SMALLICON.menuicon} 
+        //leftImage={SMALLICON.menuicon} 
         MiddleText={"Kodie"}
         onPressLeftButton={() =>props.navigation.navigate('DrawerNavigstorLeftMenu')}
       />

@@ -13,7 +13,7 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices/CommonMethods";
 import { BlockedUserstyle } from "./BlockedUserstyle";
 import { _COLORS, IMAGES } from "../../../Themes/index";
-//ScreenNo:211
+
 const LandlordData = [
   {
     id: "1",
