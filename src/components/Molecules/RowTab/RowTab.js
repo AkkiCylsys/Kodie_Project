@@ -1,8 +1,9 @@
 import React from "react";
 import { TouchableOpacity, View, Text, Image } from "react-native";
-import { LABEL_STYLES, IMAGES } from "../../../Themes";
+import { LABEL_STYLES} from "../../../Themes";
 import { RowTabStyle } from "./RowTabStyle";
 import DividerIcon from "../../Atoms/Devider/DividerIcon";
+import { _COLORS,IMAGES } from "../../../Themes";
 export default RowTab = (props) => {
     return (
         <>
