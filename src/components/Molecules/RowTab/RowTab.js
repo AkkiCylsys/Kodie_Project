@@ -6,7 +6,7 @@ import DividerIcon from "../../Atoms/Devider/DividerIcon";
 export default RowTab = (props) => {
     return (
         <>
-            <TouchableOpacity onPress={props?.RowPressed} style={RowTabStyle.Helpview}>
+            <View onPress={props?.RowPressed} style={RowTabStyle.Helpview}>
                 <View style={RowTabStyle.Helpselctionview}>
                     <View style={RowTabStyle.Helpimgview}>
                         <Image source={props?.LeftImage} style={RowTabStyle.imgbox} />
@@ -25,7 +25,7 @@ export default RowTab = (props) => {
                         style={RowTabStyle.rightarrowicon}
                     />
                 </View>
-            </TouchableOpacity>
+            </View>
             {props.IsDivider ?
                 <View style={RowTabStyle.hairlinebuttom} />
                 : null}
