@@ -52,7 +52,7 @@ const PropertyListings = (props) => {
             isOpen && { color: _COLORS.Kodie_WhiteColor },
           ]}
         >
-          {item.title}
+          {item.title} 
         </Text>
       </TouchableOpacity>
     );

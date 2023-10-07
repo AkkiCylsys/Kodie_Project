@@ -136,7 +136,7 @@ export default LandlordProfile = (props) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
+        <TouchableOpacity 
           onPress={() => {
             props.navigation.navigate("PropertyExpenses");
           }}>
