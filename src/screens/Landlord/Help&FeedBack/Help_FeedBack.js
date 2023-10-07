@@ -5,6 +5,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import { IMAGES, _COLORS } from "../../../Themes/index";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+import { _goBack } from "../../../services/CommonServices";
 const feedbackData = [
   {
     id: "1",

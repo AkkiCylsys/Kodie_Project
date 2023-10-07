@@ -2,16 +2,49 @@ import { View, Text } from "react-native";
 import React from "react";
 import { CircleProgressStyle } from "./CircleProgressStyle";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Entypo from "react-native-vector-icons/Entypo";
+import { _COLORS } from "../../../Themes";
 const CircleProgress = () => {
   return (
-    <View>
-      <View style={CircleProgressStyle.mainview}>
+    <>
 
-        <View style={CircleProgressStyle.circle}>
-          <MaterialCommunityIcons name="home-city" size={20} style={CircleProgressStyle.homeicon}/>
+      <View style={CircleProgressStyle.maincontainerview}>
+        <View style={CircleProgressStyle.mainview}>
+          <View style={CircleProgressStyle.bindview}>
+            <View style={CircleProgressStyle.circle}>
+              <MaterialCommunityIcons
+                name="home-city"
+                size={20}
+                style={CircleProgressStyle.homeicon}
+              />
+            </View>
+            <View style={CircleProgressStyle.persentview}>
+              <Text style={CircleProgressStyle.persenttext}>80%</Text>
+              <Text style={CircleProgressStyle.ratetext}>Occupancy rate</Text>
+            </View>
+          </View>
+
+          <View style={CircleProgressStyle.bindview}>
+            <View style={CircleProgressStyle.circle}>
+              <MaterialCommunityIcons
+                name="home-city"
+                size={20}
+                style={CircleProgressStyle.homeicon}
+              />
+            </View>
+            <View style={CircleProgressStyle.persentview}>
+              <Text style={CircleProgressStyle.persenttext}>95%</Text>
+              <Text style={CircleProgressStyle.ratetext}>
+                Rental collection
+              </Text>
+            </View>
+          </View>
         </View>
+      <View style={CircleProgressStyle.plusview}>
+        <Entypo name="plus" size={40} color={_COLORS.Kodie_WhiteColor} />
       </View>
-    </View>
+      </View>
+    </>
   );
 };
 
