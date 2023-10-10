@@ -1,4 +1,3 @@
-
 //ScreenNo:88
 //ScreenNo:89
 //ScreenNo:90
@@ -24,10 +23,21 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _goBack } from "../../../services/CommonServices";
-const data = [
-  { label: "Cleaning inspection", value: "1" },
-  { label: "Bond inspection", value: "2" },
-  { label: "Ad-hoc inspection", value: "3" },
+import CustomDropdown from "../../../components/Molecules/CustomDropdown/CustomDropdown";
+
+const inspection_type = [
+  "All",
+  "Cleaning inspection",
+  "Bond inspection",
+  "Ad-hoc inspection",
+];
+
+const select_property = [
+  "All",
+  "2118 Thornridge Cir. Syracuse",
+  "8502 Preston Rd. Inglewood",
+  "1729 Sickle St, QLD",
+  "5 Aspen Villas"
 ];
 const Detail = [
   {
@@ -68,7 +78,7 @@ const Detail = [
   },
 ];
 
-const CreateNewInspection = () => {
+const CreateNewInspection = (props) => {
   const [inspectionType, setInspectionType] = useState([]);
   const [currentTime, setCurrentTime] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
@@ -84,6 +94,15 @@ const CreateNewInspection = () => {
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
+
+  // ----data come from dropdown and define these condition
+  const handleApply = (selectedOptions) => {
+    console.log("Clear Action");
+  };
+  const handleClear = () => {
+    console.log("Clear Action");
+  };
+
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -115,24 +134,15 @@ const CreateNewInspection = () => {
           {"What type if inspection is this?"}
         </Text>
 
-        <Dropdown
-          style={CreateNewInspectionStyle.dropdown}
-          placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
-          selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-          inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-          iconStyle={CreateNewInspectionStyle.iconStyle}
-          data={data}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Select inspection type"
-          searchPlaceholder="Search..."
-          value={inspectionType}
-          onChange={(item) => {
-            setInspectionType(item.value);
-          }}
-        />
+        <View>
+          <CustomDropdown
+            data={inspection_type}
+            placeholdertext="Select inspection type"
+            onApply={handleApply}
+            onClear={handleClear}
+            btnview={true}
+          />
+        </View>
         <Text style={LABEL_STYLES.commontext}>
           {"Schedule time and date of inspection"}
         </Text>
@@ -178,24 +188,16 @@ const CreateNewInspection = () => {
         <Text style={LABEL_STYLES.commontext}>
           {"Where is the inspection taking place?"}
         </Text>
-        <Dropdown
-          style={CreateNewInspectionStyle.dropdown}
-          placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
-          selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-          inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-          iconStyle={CreateNewInspectionStyle.iconStyle}
-          data={data}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder="Select property"
-          searchPlaceholder="Search..."
-          value={selectedProperty}
-          onChange={(item) => {
-            setSelectedProperty(item.value);
-          }}
-        />
+
+        <View>
+          <CustomDropdown
+            data={select_property}
+            placeholdertext="Select property"
+            onApply={handleApply}
+            onClear={handleClear}
+            btnview={true}
+          />
+        </View>
         <View style={CreateNewInspectionStyle.locationContainer}>
           <TouchableOpacity
             onPress={() => {

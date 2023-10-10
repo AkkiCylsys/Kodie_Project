@@ -35,8 +35,6 @@ const CustomDropdown = (props) => {
     }
   };
 
-  
-
   const toggleshow = () => {
     setShow(!show);
   };
@@ -45,7 +43,7 @@ const CustomDropdown = (props) => {
     setAppliedOptions(selectedOptions);
     setShow(false);
     if (props.onApply) {
-        props.onApply(selectedOptions); // Callback to parent component
+        props.onApply(selectedOptions); // -------Callback to parent component
       }
   };
   //  -------this is clearing data code here
@@ -54,7 +52,7 @@ const CustomDropdown = (props) => {
     console.warn('selected')
     setAppliedOptions([]);
         if (props.onClear) {
-      props.onClear(); // Callback to parent component
+      props.onClear(); //------ Callback to parent component
     }
   };
 

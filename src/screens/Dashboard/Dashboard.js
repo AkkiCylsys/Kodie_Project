@@ -22,7 +22,7 @@ import { LineChart } from "react-native-chart-kit";
 import { Card } from "react-native-paper";
 import { logos } from "../../Themes/CommonVectors/Images";
 import CircleProgress from "../../components/Molecules/CircleProgress/CircleProgress";
-import CustomDropdown from "../../components/Molecules/CustomDropdown/CustomDropdown";
+
 const IncomeData = [
   {
     id: "1",
@@ -256,9 +256,6 @@ export default Dashboard = (props) => {
           <CircleProgress/>
         </View>
 
-        <View>
-          <CustomDropdown placeholdertext={'ahdgfgfdwud'} btnview={true}/>
-        </View>
         
         <FlatList
           data={IncomeData}

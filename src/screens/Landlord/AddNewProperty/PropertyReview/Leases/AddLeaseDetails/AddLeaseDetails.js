@@ -14,11 +14,15 @@ import CalendarModal from "../../../../../../components/Molecules/CalenderModal/
 import { Dropdown } from "react-native-element-dropdown";
 import RowButtons from "../../../../../../components/Molecules/RowButtons/RowButtons";
 import SwitchToggle from "react-native-switch-toggle";
-
+import CustomDropdown from "../../../../../../components/Molecules/CustomDropdown/CustomDropdown";
 const data = [
-  { label: "3-month", value: "1" },
-  { label: "6-month", value: "2" },
-  { label: "12-month", value: "3" },
+  "All",
+  "2- Month",
+  "4- Month",
+  "6- Month",
+  "8- Month",
+  "10- Month",
+  "1- Year",
 ];
 const notification_data = [
   { label: "Notification", value: "1" },
@@ -49,6 +53,14 @@ export default AddLeaseDetails = (props) => {
   };
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
+  };
+
+  // ----data come from dropdown and define these condition
+  const handleApply = (selectedOptions) => {
+    console.log("Clear Action");
+  };
+  const handleClear = () => {
+    console.log("Clear Action");
   };
   return (
     <View style={AddLeaseDetailsStyle.mainContainer}>
@@ -91,25 +103,16 @@ export default AddLeaseDetails = (props) => {
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Rental lease term"}</Text>
-            <Dropdown
-              style={AddLeaseDetailsStyle.dropdown}
-              placeholderStyle={[
-                AddLeaseDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
-              ]}
-              selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
-              inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
-              iconStyle={AddLeaseDetailsStyle.iconStyle}
-              data={data}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="6-month"
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
-            />
+
+            <View >
+              <CustomDropdown
+                data={data}
+                placeholdertext="6-month"
+                onApply={handleApply}
+                onClear={handleClear}
+                btnview={true}
+              />
+            </View>
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Rental amount"}</Text>
