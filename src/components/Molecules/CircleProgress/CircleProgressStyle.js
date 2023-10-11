@@ -47,16 +47,22 @@ export const CircleProgressStyle = StyleSheet.create({
     fontSize:12,
     color:_COLORS.Kodie_ExtraminLiteGrayColor
   },
-  plusview:{
+
+  floatbtn:{
     position: 'absolute',
     right:0,
-    width:45,
-    height:45,
-    borderRadius:25,
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:_COLORS.Kodie_GreenColor,
-    marginVertical:-10,
-    zIndex:1
-  }
+    marginVertical:60,
+    marginHorizontal:-30,
+    zIndex:1,
+
+  },
+  overlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Gray overlay color
+    zIndex: 1, // Ensure the overlay is above other content
+  },
 });

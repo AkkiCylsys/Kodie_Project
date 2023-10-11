@@ -142,7 +142,12 @@ export const IMAGES = {
   LegalPartners : require('../../assets/images/Common/LegalPartners.png'),
   RentalPaymentPartners : require('../../assets/images/Common/RentalPaymentPartners.png'),
   TanantScreeningPartners : require('../../assets/images/Common/TanantScreeningPartners.png'),
-
+  EditDashboard : require('../../assets/icons/EditDashboard.png'),
+  AddProperty : require('../../assets/icons/AddProperty.png'),
+  InviteProspectiveTenant : require('../../assets/icons/Inviteprospectivetenant.png'),
+  InviteContractor : require('../../assets/icons/InviteContractor.png'),
+  AddNoticeReminder : require('../../assets/icons/AddNoticeReminder.png'),
+  CreateNewJob : require('../../assets/icons/CreateNewJob.png'),
 };
 
 export const BANNERS = {

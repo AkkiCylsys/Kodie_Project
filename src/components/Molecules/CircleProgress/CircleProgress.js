@@ -1,14 +1,17 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React,{useState} from "react";
 import { CircleProgressStyle } from "./CircleProgressStyle";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { _COLORS } from "../../../Themes";
+import { _COLORS,IMAGES } from "../../../Themes";
+import FloatingActionButton from "../FloatingActionButton/FloatingActionButton";
+
 const CircleProgress = () => {
+
   return (
     <>
-
       <View style={CircleProgressStyle.maincontainerview}>
+
         <View style={CircleProgressStyle.mainview}>
           <View style={CircleProgressStyle.bindview}>
             <View style={CircleProgressStyle.circle}>
@@ -39,10 +42,13 @@ const CircleProgress = () => {
               </Text>
             </View>
           </View>
+      
         </View>
-      <View style={CircleProgressStyle.plusview}>
-        <Entypo name="plus" size={40} color={_COLORS.Kodie_WhiteColor} />
-      </View>
+
+        <View style={CircleProgressStyle.floatbtn}>
+          <FloatingActionButton />
+
+        </View>
       </View>
     </>
   );
