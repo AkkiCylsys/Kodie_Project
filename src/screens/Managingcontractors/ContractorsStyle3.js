@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { _COLORS ,FONTFAMILY} from "../../Themes";
-export const ContractorsStyle1 = StyleSheet.create({
+export const ContractorsStyle3 = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_ExtraLiteWhiteColor,

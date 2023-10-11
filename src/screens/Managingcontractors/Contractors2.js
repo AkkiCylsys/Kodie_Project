@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
-import { ContractorsStyle1 } from "./ContractorsStyle1";
+import { Contractors2Style } from "./Contractors2Style";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
 import { _COLORS, IMAGES, LABEL_STYLES } from "../../Themes";
@@ -12,7 +12,7 @@ import ContractorsComponent from "../../components/Molecules/ContractorsComponen
 import RBSheet from "react-native-raw-bottom-sheet";
 import ContractorsImage from "../../components/Molecules/Contractors/ContractorsImage/ContractorsImage";
 
-const Contractors1 = (props) => {
+const Contractors2 = (props) => {
   const refRBSheet = useRef();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -33,7 +33,7 @@ const Contractors1 = (props) => {
     }
   };
   return (
-    <View style={ContractorsStyle1.mainContainer}>
+    <View style={Contractors2Style.mainContainer}>
       <TopHeader
         IsNotification={true}
         RightUserProfile={IMAGES.Landlordprofile}
@@ -42,8 +42,8 @@ const Contractors1 = (props) => {
         onPressLeftButton={() => props.navigation.openDrawer()}
       />
       <ScrollView>
-        <View style={ContractorsStyle1.container}>
-          <View style={ContractorsStyle1.tabview}>
+        <View style={Contractors2Style.container}>
+          <View style={Contractors2Style.tabview}>
             <CustomTabNavigator
               activeTab={activeTab}
               setActiveTab={setActiveTab}
@@ -69,12 +69,12 @@ const Contractors1 = (props) => {
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_MediumGrayColor
               }
-              styleTab1={activeTab === "Tab1" && ContractorsStyle1.activeTab}
-              styleTab2={activeTab === "Tab2" && ContractorsStyle1.activeTab}
-              styleTab3={activeTab === "Tab3" && ContractorsStyle1.activeTab}
+              styleTab1={activeTab === "Tab1" && Contractors2Style.activeTab}
+              styleTab2={activeTab === "Tab2" && Contractors2Style.activeTab}
+              styleTab3={activeTab === "Tab3" && Contractors2Style.activeTab}
             />
           </View>
-          <View style={ContractorsStyle1.Line} />
+          <View style={Contractors2Style.Line} />
           <SearchBar
             marginTop={20}
             frontSearchIcon
@@ -82,8 +82,8 @@ const Contractors1 = (props) => {
             filterImage={IMAGES.filter}
             height={48}
           />
-          <View style={ContractorsStyle1.Line1} />
-          <View style={ContractorsStyle1.buttonview}>
+          <View style={Contractors2Style.Line1} />
+          <View style={Contractors2Style.buttonview}>
             <CustomSingleButton
               _ButtonText={activeScreen ? "" : "+ Add contractor"}
               Text_Color={_COLORS.Kodie_WhiteColor}
@@ -96,7 +96,7 @@ const Contractors1 = (props) => {
               }}
             />
           </View>
-          <View style={ContractorsStyle1.Line1} />
+          <View style={Contractors2Style.Line1} />
           <ContractorsComponent
             name="Jason Stathom"
             filedname="Handyman"
@@ -116,17 +116,17 @@ const Contractors1 = (props) => {
           />
 
           {expanded && (
-            <View style={ContractorsStyle1.expandedContent}>
-              <View style={ContractorsStyle1.flexContainer}>
+            <View style={Contractors2Style.expandedContent}>
+              <View style={Contractors2Style.flexContainer}>
                 <Text style={LABEL_STYLES.commonMidtext}>Current tenant:</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.tanentname}</Text>
               </View>
 
-              <View style={[ContractorsStyle1.rentView]}>
+              <View style={[Contractors2Style.rentView]}>
                 <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.rent}</Text>
               </View>
-              <View style={[ContractorsStyle1.rentView]}>
+              <View style={[Contractors2Style.rentView]}>
                 <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.spend}</Text>
               </View>
@@ -151,17 +151,17 @@ const Contractors1 = (props) => {
           />
 
           {expanded && (
-            <View style={ContractorsStyle1.expandedContent}>
-              <View style={ContractorsStyle1.flexContainer}>
+            <View style={Contractors2Style.expandedContent}>
+              <View style={Contractors2Style.flexContainer}>
                 <Text style={LABEL_STYLES.commonMidtext}>Current tenant:</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.tanentname}</Text>
               </View>
 
-              <View style={[ContractorsStyle1.rentView]}>
+              <View style={[Contractors2Style.rentView]}>
                 <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.rent}</Text>
               </View>
-              <View style={[ContractorsStyle1.rentView]}>
+              <View style={[Contractors2Style.rentView]}>
                 <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.spend}</Text>
               </View>
@@ -185,17 +185,17 @@ const Contractors1 = (props) => {
           />
 
           {expanded && (
-            <View style={ContractorsStyle1.expandedContent}>
-              <View style={ContractorsStyle1.flexContainer}>
+            <View style={Contractors2Style.expandedContent}>
+              <View style={Contractors2Style.flexContainer}>
                 <Text style={LABEL_STYLES.commonMidtext}>Current tenant:</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.tanentname}</Text>
               </View>
 
-              <View style={[ContractorsStyle1.rentView]}>
+              <View style={[Contractors2Style.rentView]}>
                 <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.rent}</Text>
               </View>
-              <View style={[ContractorsStyle1.rentView]}>
+              <View style={[Contractors2Style.rentView]}>
                 <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
                 <Text style={LABEL_STYLES.commontext}>{props.spend}</Text>
               </View>
@@ -213,7 +213,7 @@ const Contractors1 = (props) => {
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_BlackColor,
           },
-          container: ContractorsStyle1.bottomModal_container,
+          container: Contractors2Style.bottomModal_container,
         }}
       >
         <ContractorsImage
@@ -224,4 +224,4 @@ const Contractors1 = (props) => {
     </View>
   );
 };
-export default Contractors1;
+export default Contractors2;

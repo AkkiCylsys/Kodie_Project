@@ -84,13 +84,6 @@ const Contractors = (props) => {
               </View>
             </View>
           </View>
-          {/* <Text>
-            <Text>{props.CoverText}  </Text>{props.CoverText} 
-          </Text>
-          <Text>
-          {props.CoverText} 
-          </Text> */}
-          {/* button section here */}
           <View>
             <RowButtons
               LeftButtonText={"View profile"}

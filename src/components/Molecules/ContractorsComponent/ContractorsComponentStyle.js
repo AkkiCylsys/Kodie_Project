@@ -80,7 +80,7 @@ export const ContractorsComponentStyle = StyleSheet.create({
     justifyContent: "space-between",
   },
   CoverView:{
-    marginTop:10,
+    marginTop:40,
   },
   CoverTextView: {
     color: _COLORS.Kodie_BlackColor,

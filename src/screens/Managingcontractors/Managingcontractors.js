@@ -141,7 +141,6 @@ const Managingcontractors = (props) => {
         }}
       >
         <ContractorsImage
-          heading_Text={"Upload  documents"}
           onPress={toggleView}
         />
       </RBSheet>

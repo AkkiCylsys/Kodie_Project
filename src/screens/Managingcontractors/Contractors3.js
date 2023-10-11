@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { View, ScrollView, Text, TouchableOpacity } from "react-native";
-import { ContractorsStyle1 } from "./ContractorsStyle1";
+import { ContractorsStyle3 } from "./ContractorsStyle3";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
 import { _COLORS, IMAGES, LABEL_STYLES } from "../../Themes";
@@ -12,17 +12,12 @@ import ContractorsComponent from "../../components/Molecules/ContractorsComponen
 import RBSheet from "react-native-raw-bottom-sheet";
 import ContractorsImage from "../../components/Molecules/Contractors/ContractorsImage/ContractorsImage";
 
-const Contractors1 = (props) => {
+const Contractors3 = (props) => {
   const refRBSheet = useRef();
   const [activeScreen, setActiveScreen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState("Tab2");
+  const [activeTab, setActiveTab] = useState("Tab3");
   const toggleView = () => {
     setVisible(!visible);
-  };
-
-  const toggleItems = () => {
-    setExpanded(!expanded);
   };
 
   const checkTabs = () => {
@@ -33,7 +28,7 @@ const Contractors1 = (props) => {
     }
   };
   return (
-    <View style={ContractorsStyle1.mainContainer}>
+    <View style={ContractorsStyle3.mainContainer}>
       <TopHeader
         IsNotification={true}
         RightUserProfile={IMAGES.Landlordprofile}
@@ -42,8 +37,8 @@ const Contractors1 = (props) => {
         onPressLeftButton={() => props.navigation.openDrawer()}
       />
       <ScrollView>
-        <View style={ContractorsStyle1.container}>
-          <View style={ContractorsStyle1.tabview}>
+        <View style={ContractorsStyle3.container}>
+          <View style={ContractorsStyle3.tabview}>
             <CustomTabNavigator
               activeTab={activeTab}
               setActiveTab={setActiveTab}
@@ -69,12 +64,12 @@ const Contractors1 = (props) => {
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_MediumGrayColor
               }
-              styleTab1={activeTab === "Tab1" && ContractorsStyle1.activeTab}
-              styleTab2={activeTab === "Tab2" && ContractorsStyle1.activeTab}
-              styleTab3={activeTab === "Tab3" && ContractorsStyle1.activeTab}
+              styleTab1={activeTab === "Tab1" && ContractorsStyle3.activeTab}
+              styleTab2={activeTab === "Tab2" && ContractorsStyle3.activeTab}
+              styleTab3={activeTab === "Tab3" && ContractorsStyle3.activeTab}
             />
           </View>
-          <View style={ContractorsStyle1.Line} />
+          <View style={ContractorsStyle3.Line} />
           <SearchBar
             marginTop={20}
             frontSearchIcon
@@ -82,8 +77,8 @@ const Contractors1 = (props) => {
             filterImage={IMAGES.filter}
             height={48}
           />
-          <View style={ContractorsStyle1.Line1} />
-          <View style={ContractorsStyle1.buttonview}>
+          <View style={ContractorsStyle3.Line1} />
+          <View style={ContractorsStyle3.buttonview}>
             <CustomSingleButton
               _ButtonText={activeScreen ? "" : "+ Add contractor"}
               Text_Color={_COLORS.Kodie_WhiteColor}
@@ -96,7 +91,7 @@ const Contractors1 = (props) => {
               }}
             />
           </View>
-          <View style={ContractorsStyle1.Line1} />
+          <View style={ContractorsStyle3.Line1} />
           <ContractorsComponent
             name="Jason Stathom"
             filedname="Handyman"
@@ -109,29 +104,7 @@ const Contractors1 = (props) => {
             CoverText3="read more"
           />
 
-          <DividerIcon
-            IsShowIcon
-            iconName={expanded ? "chevron-up" : "chevron-down"}
-            onPress={toggleItems}
-          />
-
-          {expanded && (
-            <View style={ContractorsStyle1.expandedContent}>
-              <View style={ContractorsStyle1.flexContainer}>
-                <Text style={LABEL_STYLES.commonMidtext}>Current tenant:</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.tanentname}</Text>
-              </View>
-
-              <View style={[ContractorsStyle1.rentView]}>
-                <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.rent}</Text>
-              </View>
-              <View style={[ContractorsStyle1.rentView]}>
-                <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.spend}</Text>
-              </View>
-            </View>
-          )}
+          <DividerIcon/>
           <ContractorsComponent
             name="Mesut Ozil"
             filedname="Plumber"
@@ -144,29 +117,7 @@ const Contractors1 = (props) => {
             CoverText3="read more"
           />
 
-          <DividerIcon
-            IsShowIcon
-            iconName={expanded ? "chevron-up" : "chevron-down"}
-            onPress={toggleItems}
-          />
-
-          {expanded && (
-            <View style={ContractorsStyle1.expandedContent}>
-              <View style={ContractorsStyle1.flexContainer}>
-                <Text style={LABEL_STYLES.commonMidtext}>Current tenant:</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.tanentname}</Text>
-              </View>
-
-              <View style={[ContractorsStyle1.rentView]}>
-                <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.rent}</Text>
-              </View>
-              <View style={[ContractorsStyle1.rentView]}>
-                <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.spend}</Text>
-              </View>
-            </View>
-          )}
+          <DividerIcon/>
           <ContractorsComponent
             name="Jack Black"
             filedname="Handyman"
@@ -178,29 +129,7 @@ const Contractors1 = (props) => {
             CoverText2="I am the best contractor in town, ready to go. Check my best works portfolio and..."
             CoverText3="read more"
           />
-          <DividerIcon
-            IsShowIcon
-            iconName={expanded ? "chevron-up" : "chevron-down"}
-            onPress={toggleItems}
-          />
-
-          {expanded && (
-            <View style={ContractorsStyle1.expandedContent}>
-              <View style={ContractorsStyle1.flexContainer}>
-                <Text style={LABEL_STYLES.commonMidtext}>Current tenant:</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.tanentname}</Text>
-              </View>
-
-              <View style={[ContractorsStyle1.rentView]}>
-                <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.rent}</Text>
-              </View>
-              <View style={[ContractorsStyle1.rentView]}>
-                <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
-                <Text style={LABEL_STYLES.commontext}>{props.spend}</Text>
-              </View>
-            </View>
-          )}
+          <DividerIcon/>
         </View>
       </ScrollView>
       <RBSheet
@@ -213,7 +142,7 @@ const Contractors1 = (props) => {
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_BlackColor,
           },
-          container: ContractorsStyle1.bottomModal_container,
+          container: ContractorsStyle3.bottomModal_container,
         }}
       >
         <ContractorsImage
@@ -224,4 +153,4 @@ const Contractors1 = (props) => {
     </View>
   );
 };
-export default Contractors1;
+export default Contractors3;
