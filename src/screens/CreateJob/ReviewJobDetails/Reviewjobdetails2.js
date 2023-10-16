@@ -6,7 +6,7 @@ import { ReviewjobdetailsStyle2 } from "./ReviewjobdetailsStyle2";
 import { _COLORS } from "../../../Themes";
 import ProgressBar from "react-native-progress/Bar";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-import EditDashboard from "../../../components/Molecules/EditDashboard/EditDashboard";
+import CustomStepIndicator from "../../../components/Molecules/StepIndicator/CustomStepIndicator";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 
 const Reviewjobdetails2 = (props) => {
@@ -101,17 +101,7 @@ const Reviewjobdetails2 = (props) => {
                   style={ReviewjobdetailsStyle2.progresBar}
                 />   
             </View>
-            <EditDashboard
-            name="Jason Stathom"
-            filedname="Handyman"
-            startRating="4.6"
-            ratingnumber="231"
-            address="1234, Contractor’s address. Australia"
-            notverified="Not verified"
-            CoverText1="Cover letter -"
-            CoverText2="I am the best contractor in town, ready to go. Check my best works portfolio and..."
-            CoverText3="read more"
-          />
+            <CustomStepIndicator/>
           </View>
         </ScrollView>
       </View>

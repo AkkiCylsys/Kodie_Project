@@ -118,6 +118,8 @@ import Reviewjobdetails2 from "../../screens/CreateJob/Reviewjobdetails/Reviewjo
 import Reviewjobdetails3 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails3";
 import CompletedJobs from "../../screens/CreateJob/Reviewjobdetails/CompletedJobs";
 import Ratingandfeedback from "../../screens/CreateJob/Reviewjobdetails/Ratingandfeedback";
+import EditDashboard from "../../screens/Dashboard/EditDashboard";
+
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -866,6 +868,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"Ratingandfeedback"}
           component={Ratingandfeedback}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"EditDashboard"}
+          component={EditDashboard}
           options={{ headerShown: false }}
         />
         

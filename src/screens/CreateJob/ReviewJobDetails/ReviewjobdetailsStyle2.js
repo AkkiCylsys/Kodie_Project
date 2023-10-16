@@ -44,30 +44,32 @@ export const ReviewjobdetailsStyle2 = StyleSheet.create({
     textAlign: "center",
     color: _COLORS.Kodie_WhiteColor,
   },
-  progresBar: { 
-
-    alignSelf: "center" ,
-    borderRadius:10,
- },
- progressborder:{
+  progresBar: {
+    alignSelf: "center",
+    borderRadius: 10,
+  },
+  progressborder: {
+    elevation: 1,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderWidth: 1,
+    marginVertical: 10,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    padding: 10,
+    borderRadius: 10,
+    width: 353,
     height: 71,
-    borderWidth: 0.6,
-    borderRadius:10,
-    marginTop:10,
-    justifyContent:"center",
-    borderTopColor:_COLORS.Kodie_ExtraLightGrayColor,
- },
- Inputbox:{
-    flexDirection:"row" ,
-   justifyContent:"space-around",
-},
-Inpouttext:{
-   color:_COLORS.Kodie_BlackColor,
-   marginRight:50,
-   fontSize:14
-},
-Inpouttext1:{
-   fontSize:14,
-   color:_COLORS.Kodie_GreenColor
-},
+  },
+  Inputbox: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  Inpouttext: {
+    color: _COLORS.Kodie_BlackColor,
+    marginRight: 50,
+    fontSize: 14,
+  },
+  Inpouttext1: {
+    fontSize: 14,
+    color: _COLORS.Kodie_GreenColor,
+  },
 });
