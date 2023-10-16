@@ -62,7 +62,7 @@ const FloatingActionButton = () => {
           actions={actions}
           actionsPaddingTopBottom={10}
           color={_COLORS.Kodie_GreenColor}
-          // overlayColor='gray' 
+          overlayColor='gray' 
           onPressItem={name => {
             Alert.alert("Icon pressed", `the icon ${name} was pressed`);
           }}
@@ -75,7 +75,7 @@ const FloatingActionButton = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: _COLORS.Kodie_WhiteColor,
+    backgroundColor: _COLORS.Kodie_GrayColor,
   },
 });
 
