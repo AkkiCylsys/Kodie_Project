@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,9 @@ import { LineChart } from "react-native-chart-kit";
 import { Card } from "react-native-paper";
 import { logos } from "../../Themes/CommonVectors/Images";
 import CircleProgress from "../../components/Molecules/CircleProgress/CircleProgress";
+import SelectProperties from "../../components/Molecules/SelectProperties/SelectProperties";
+import SelectDate from "../../components/Molecules/SelectDate/SelectDate";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const IncomeData = [
   {
@@ -72,9 +75,12 @@ const data = [
   { label: "Australia", value: "2" },
   { label: "America", value: "3" },
 ];
+
 export default Dashboard = (props) => {
   const [value, setValue] = useState(null);
   const navigation = useNavigation();
+  const refRBSheet = useRef();
+  const refRBSheet2 = useRef();
   const Income_render = ({ item, index }) => {
     return (
       <>
@@ -161,6 +167,7 @@ export default Dashboard = (props) => {
               setValue(item.value);
             }}
           />
+
           <Dropdown
             style={[DashboardStyle.dropdown, { flex: 1 }]}
             placeholderStyle={DashboardStyle.placeholderStyle}
@@ -253,10 +260,9 @@ export default Dashboard = (props) => {
         </Card>
 
         <View>
-          <CircleProgress/>
+          <CircleProgress />
         </View>
 
-        
         <FlatList
           data={IncomeData}
           scrollEnabled
@@ -271,7 +277,11 @@ export default Dashboard = (props) => {
             <Text style={DashboardStyle.maintenance_Text}>
               {"Maintenance status"}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                refRBSheet2.current.open();
+              }}
+            >
               <Entypo
                 name="dots-three-horizontal"
                 size={20}
@@ -303,6 +313,7 @@ export default Dashboard = (props) => {
                   size={18}
                   color={_COLORS.Kodie_redColor}
                 />
+
                 <Text style={DashboardStyle.request_Text}>{"Rejected"}</Text>
               </View>
             </View>
@@ -322,7 +333,11 @@ export default Dashboard = (props) => {
         <View style={DashboardStyle.Noticemain_View}>
           <View style={DashboardStyle.Notice_view}>
             <Text style={DashboardStyle.maintenance_Text}>{"Notices"}</Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                refRBSheet.current.open();
+              }}
+            >
               <Entypo
                 name="dots-three-horizontal"
                 size={20}
@@ -350,6 +365,43 @@ export default Dashboard = (props) => {
           </View>
         </View>
       </ScrollView>
+      {/* RBSheet define here */}
+      <RBSheet
+        ref={refRBSheet}
+        height={280}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: DashboardStyle.bottomModal_container,
+        }}
+      >
+        <SelectProperties />
+      </RBSheet>
+
+      {/* RBSheet 2 define here */}
+      <RBSheet
+        ref={refRBSheet2}
+        height={705}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: DashboardStyle.bottomModal_container,
+        }}
+      >
+        <SelectDate />
+      </RBSheet>
     </View>
   );
 };

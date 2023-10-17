@@ -244,4 +244,11 @@ export const DashboardStyle = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: _COLORS.Kodie_BlackColor,
   },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
 });
