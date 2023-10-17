@@ -53,11 +53,12 @@ linetext1:{
 text:{
   fontSize:12,
   color:_COLORS.Kodie_BlackColor,
-  marginRight:110
+  justifyContent:"space-between",
+  flex:1
 },
 text100:{
   color:_COLORS.Kodie_BlackColor,
   fontFamily:FONTFAMILY.K_Bold,
   fontSize:12 
-}
+},
 });

@@ -17,6 +17,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import BottomTextsButton from "./../../../components/Molecules/BottomTextsButton/BottomTextsButton";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   FONTFAMILY,
@@ -140,7 +141,7 @@ export default Login = (props) => {
               _RightButtonText={"Sign up"}
               onPress={() => {
                 // props.navigation.navigate("SignUp");
-                props.navigation.navigate("EditDashboard");
+                props.navigation.navigate("AddNewNotice");
               }}
             />
           </View>
