@@ -1,3 +1,4 @@
+// Screen no. 150,151
 import {
   View,
   Text,
@@ -15,6 +16,8 @@ import { Divider } from "react-native-paper";
 import Entypo from "react-native-vector-icons/Entypo";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import { normalizeUnits } from "moment";
 const Billinginformation = (props) => {
   const [show, setShow] = useState(false);
   const toggleView = () => {
@@ -38,9 +41,14 @@ const Billinginformation = (props) => {
 
             <View style={BillinginformationStyle.toptextmainview}>
               <View style={BillinginformationStyle.startextview}>
-                <Image
+                {/* <Image
                   source={IMAGES.star}
                   style={BillinginformationStyle.starimg}
+                /> */}
+                <AntDesign
+                  name={"star"}
+                  size={15}
+                  color={_COLORS.Kodie_lightGreenColor}
                 />
                 <Text style={BillinginformationStyle.ratingtext}>4.6</Text>
               </View>
@@ -153,23 +161,32 @@ const Billinginformation = (props) => {
           </View>
 
           <View>
-          <Text style={[BillinginformationStyle.totalcosttext,BillinginformationStyle.jobinvoicetext]}>Job invoice</Text>
-          <View style={BillinginformationStyle.textContainer}>
-            <View style={BillinginformationStyle.bindfile}>
-              <Image source={IMAGES.document} />
-              <View>
-                <Text style={BillinginformationStyle.pdfName}>
-                  {"Invoice.pdf"}
-                </Text>
-                <Text style={BillinginformationStyle.pdfSize}>{"4.8 MB"}</Text>
+            <Text
+              style={[
+                BillinginformationStyle.totalcosttext,
+                BillinginformationStyle.jobinvoicetext,
+              ]}
+            >
+              Job invoice
+            </Text>
+            <View style={BillinginformationStyle.textContainer}>
+              <View style={BillinginformationStyle.bindfile}>
+                <Image source={IMAGES.document} />
+                <View>
+                  <Text style={BillinginformationStyle.pdfName}>
+                    {"Invoice.pdf"}
+                  </Text>
+                  <Text style={BillinginformationStyle.pdfSize}>
+                    {"4.8 MB"}
+                  </Text>
+                </View>
               </View>
+              <Entypo
+                name="cross"
+                size={20}
+                style={BillinginformationStyle.doticon}
+              />
             </View>
-            <Entypo
-              name="cross"
-              size={20}
-              style={BillinginformationStyle.doticon}
-            />
-          </View>
           </View>
 
           <View style={BillinginformationStyle.buttonview}>

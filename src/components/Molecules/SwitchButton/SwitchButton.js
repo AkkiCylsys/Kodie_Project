@@ -25,7 +25,7 @@ const SwitchButton = (props) => {
               {
                 color:
                   activeButton === "button1"
-                    ? _COLORS.Kodie_WhiteColor
+                    ? _COLORS.Kodie_BlackColor
                     : _COLORS.Kodie_MediumGrayColor,
               },
             ]}
@@ -46,7 +46,7 @@ const SwitchButton = (props) => {
               {
                 color:
                   activeButton === "button2"
-                    ? _COLORS.Kodie_WhiteColor
+                    ? _COLORS.Kodie_BlackColor
                     : _COLORS.Kodie_MediumGrayColor,
               },
             ]}

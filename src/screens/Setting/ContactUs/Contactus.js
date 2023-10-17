@@ -6,6 +6,7 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { CustomButtonstyles } from "../../../components/Atoms/CustomButton/CustomButtonCss";
 import { _COLORS } from "../../../Themes";
+import Ionicons from "react-native-vector-icons/Ionicons";
 const Contactus = (props) => {
   return (
     <View style={{ backgroundColor: "#FFFFFF", height: "100%" }}>
@@ -23,10 +24,7 @@ const Contactus = (props) => {
         </View>
 
         <View style={ContactusStyle.checkboxview}>
-          <Image
-            style={ContactusStyle.imgcheckbox}
-            source={require("../../../assets/icons/checkbox.png")}
-          />
+          <Ionicons name="checkbox" style={ContactusStyle.imgcheckbox} />
           <View style={ContactusStyle.checkboxtextview}>
             <Text style={ContactusStyle.optionaltext}>
               Include device information? (optional)

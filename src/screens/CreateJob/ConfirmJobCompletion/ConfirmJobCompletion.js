@@ -1,3 +1,4 @@
+// Screen no: 149
 import React from "react";
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { ConfirmJobCompletionStyle } from "./ConfirmJobCompletionStyle";
@@ -49,12 +50,12 @@ export default ConfirmJobCompletion = (props) => {
             <Text style={ConfirmJobCompletionStyle.job_Details_txt}>
               {"Job billing"}
             </Text>
-            <RowTexts leftText={"Name of job owner"} rightText={"Tom"} />
+            <RowTexts leftText={"Final cost"} rightText={"$165"} />
+            <RowTexts leftText={"Completed date"} rightText={"Nov 11, 2022"} />
             <RowTexts
-              leftText={"Location"}
-              rightText={"1729 Melbourne St Australia"}
+              leftText={"Number of hours spent"}
+              rightText={"2 hours"}
             />
-            <RowTexts leftText={"Proposed date"} rightText={"Nov 11, 2022"} />
           </View>
           <View style={ConfirmJobCompletionStyle.job_billing}>
             <Text style={ConfirmJobCompletionStyle.job_Details_txt}>
@@ -119,7 +120,7 @@ export default ConfirmJobCompletion = (props) => {
         <CustomSingleButton
           _ButtonText={"Confirm"}
           Text_Color={_COLORS.Kodie_WhiteColor}
-          onPress={() => props.navigation.navigate("ConfirmJobCompletion")}
+          onPress={() => props.navigation.navigate("Billinginformation")}
         />
       </View>
     </View>

@@ -8,6 +8,7 @@ import Notch from "./Notch";
 import Rail from "./Rail";
 import RailSelected from "./RailSelected";
 import Thumb from "./Thumb";
+import { _COLORS } from "../../../Themes";
 
 const RangeSlider = ({ from, to }) => {
   // const RangeSlider = () => {
@@ -32,10 +33,10 @@ const RangeSlider = ({ from, to }) => {
     <>
       <View style={RangeSliderStyle.rangecomponetView}>
         <RangeSliderRN
-        selectionColor="#4286f4"
-        thumbColor="#45B742"
-        thumbBorderColor="#45B742"
-        //style={{backgroundColor:'red'}}
+          selectionColor="#4286f4"
+          thumbColor={_COLORS.Kodie_BlueColor}
+          thumbBorderColor="#45B742"
+          //style={{backgroundColor:'red'}}
           min={from}
           max={to}
           step={1}
@@ -50,10 +51,10 @@ const RangeSlider = ({ from, to }) => {
       </View>
       <View style={RangeSliderStyle.rangeContainer}>
         <View>
-          <Text style={RangeSliderStyle.range}>${low}</Text>
+          <Text style={RangeSliderStyle.range}>{low}</Text>
         </View>
         <View>
-          <Text style={RangeSliderStyle.range}>${high}</Text>
+          <Text style={RangeSliderStyle.range}>{high}</Text>
         </View>
       </View>
     </>

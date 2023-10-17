@@ -1,5 +1,3 @@
-
-//ScreenNo:211
 import React from "react";
 import {
   View,

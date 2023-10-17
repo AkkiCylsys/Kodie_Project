@@ -30,6 +30,7 @@ export const HeaderStyle = StyleSheet.create({
     textAlign: "center",
     fontFamily: FONTFAMILY.K_SemiBold,
   },
+  MenuIcon: { resizeMode: "contain", alignSelf: "center" },
   leftIcon: {
     width: 18,
     height: 18,
@@ -45,12 +46,13 @@ export const HeaderStyle = StyleSheet.create({
   usericon: {
     height: 40,
     width: 40,
-    marginLeft:10,
+    marginLeft: 10,
     justifyContent: "center",
     alignSelf: "center",
-},
-  nullView: { width: "25%",flexDirection:'row',justifyContent:'center' },
-  notificationButton:{
-    flexDirection:'column',justifyContent:'center'
-  }
+  },
+  nullView: { width: "25%", flexDirection: "row", justifyContent: "center" },
+  notificationButton: {
+    flexDirection: "column",
+    justifyContent: "center",
+  },
 });

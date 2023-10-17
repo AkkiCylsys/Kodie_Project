@@ -6,29 +6,31 @@ export const GeneralSettingStyle = StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-between',
     marginHorizontal:15,
+    alignItems:'center'
    },
    bindview:{
     flexDirection:'row',
+    alignItems:'center'
    },
    headingtext:{
     fontSize:14,
     color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    marginHorizontal:10
+    fontFamily:FONTFAMILY.K_Bold,
+    marginHorizontal:15
    },
    desctext:{
     fontSize:12,
     color:_COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily:FONTFAMILY.K_SemiBold,
-    marginHorizontal:10
+    marginHorizontal:15
    },
    image:{
-    width:18,
-    height:18
+    width:20,
+    height:20
    },
    imageview:{
-      width:32,
-      height:32,
+      width:38,
+      height:38,
       borderWidth:0.4,
       borderRadius:8,
       flexDirection:'row',

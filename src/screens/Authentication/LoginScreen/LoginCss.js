@@ -76,7 +76,7 @@ export const LoginStyles = StyleSheet.create({
     marginVertical: 10,
   },
   ModalMainView: { flexDirection: "row", justifyContent: "space-between" },
-  passchange: { alignSelf: "center" },
+  passchange: { alignSelf: "center", fontSize: 21, textAlign: "center" },
   checkicon: { alignSelf: "center", height: 120, width: 120, marginTop: 20 },
   varifycode: { flexDirection: "row", justifyContent: "space-between" },
   getButtonView: {
@@ -90,9 +90,9 @@ export const LoginStyles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 20,
   },
-  codeMargin: { 
-    margin: 5
-   },
+  codeMargin: {
+    margin: 5,
+  },
   getButton: {
     fontSize: 14,
     color: _COLORS.Kodie_WhiteColor,

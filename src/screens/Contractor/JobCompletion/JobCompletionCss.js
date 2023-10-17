@@ -8,10 +8,16 @@ export const JobCompletionCss = StyleSheet.create({
   },
   Container: {
     marginHorizontal: 16,
+    marginVertical: 16,
   },
-  starStyle: { marginTop: 10, marginHorizontal: 56 },
+  HeadingText: {
+    fontSize: 24,
+    fontFamily: fontFamily.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  starStyle: { marginTop: 10, marginHorizontal: 5 },
 
-  review: { marginTop: 15, textAlign: "center" },
+  review: { marginTop: 15 },
   input: {
     height: 100,
     borderRadius: 6,
@@ -19,6 +25,7 @@ export const JobCompletionCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     color: "#333",
     paddingLeft: 10,
+    marginTop: 10,
     fontFamily: FONTFAMILY.K_Medium,
   },
   TextView: { flex: 1, flexDirection: "row", marginTop: 10 },
@@ -38,4 +45,11 @@ export const JobCompletionCss = StyleSheet.create({
     resizeMode: "cover",
   },
   ButtonView: { marginHorizontal: 16, marginBottom: 10 },
+  SkipText: {
+    fontSize: 16,
+    fontFamily: fontFamily.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+    marginVertical: 15,
+    textAlign: "center",
+  },
 });

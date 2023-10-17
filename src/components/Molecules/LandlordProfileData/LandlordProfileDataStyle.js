@@ -45,9 +45,8 @@ export const LandlordProfileDataStyle = StyleSheet.create({
   ArrowIconStyle: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderRadius: 5,
-    borderWidth:1,
-    borderColor:_COLORS.Kodie_LightGrayColor,
-    alignSelf:"center"
-
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    alignSelf: "center",
   },
 });

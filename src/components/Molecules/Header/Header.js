@@ -7,6 +7,7 @@ import {
   IMAGES,
   _COLORS,
 } from "./../../../Themes/index";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const TopHeader = (props) => {
   return (
@@ -21,17 +22,24 @@ const TopHeader = (props) => {
           onPress={props?.onPressLeftButton}
           style={[HeaderStyle.button]}
         >
-          <Image source={props.leftImage} style={HeaderStyle.leftIcon} />
+          {/* <Image source={props.leftImage} style={HeaderStyle.leftIcon} /> */}
+
+          <Icon
+            name={props.leftImage}
+            size={30}
+            color={_COLORS.Kodie_WhiteColor}
+            style={HeaderStyle.MenuIcon}
+          />
         </TouchableOpacity>
       </View>
       <View style={HeaderStyle.middleTextView}>
-        {props.isMiddleImage?
-        <Image source={props.MiddleImage} style={HeaderStyle.MiddleIcon} />
-        :
-        <Text style={[HeaderStyle.LabelText, { color: props.Text_Color }]}>
-          {props.MiddleText}
-        </Text>
-}
+        {props.isMiddleImage ? (
+          <Image source={props.MiddleImage} style={HeaderStyle.MiddleIcon} />
+        ) : (
+          <Text style={[HeaderStyle.LabelText, { color: props.Text_Color }]}>
+            {props.MiddleText}
+          </Text>
+        )}
       </View>
       {props.isrightImage ? (
         <TouchableOpacity
@@ -43,11 +51,14 @@ const TopHeader = (props) => {
       ) : (
         <View style={HeaderStyle.nullView}>
           <TouchableOpacity style={HeaderStyle.notificationButton}>
-            {props.IsNotification?
-           <Image source={IMAGES.NotificationIcon} style={HeaderStyle.leftIcon} />
-           :null}
-           </TouchableOpacity>
-           <Image source={props.RightUserProfile} style={HeaderStyle.usericon} />
+            {props.IsNotification ? (
+              <Image
+                source={IMAGES.NotificationIcon}
+                style={HeaderStyle.leftIcon}
+              />
+            ) : null}
+          </TouchableOpacity>
+          <Image source={props.RightUserProfile} style={HeaderStyle.usericon} />
         </View>
       )}
     </View>
@@ -55,9 +66,9 @@ const TopHeader = (props) => {
 };
 TopHeader.defaultProps = {
   isrightImage: false,
-  IsNotification:false,
-  isMiddleImage:false,
-  leftImage: SMALLICON.BackArrow,
+  IsNotification: false,
+  isMiddleImage: false,
+  leftImage: "chevron-left",
   MiddleText: "Set up your profile",
   backgroundColor: _COLORS.Kodie_BlackColor,
   Text_Color: _COLORS.Kodie_WhiteColor,

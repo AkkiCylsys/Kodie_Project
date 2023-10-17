@@ -1,3 +1,4 @@
+// Screen 2,3,4,5,6
 import React, { useState, useRef } from "react";
 import {
   View,
@@ -33,7 +34,12 @@ export default Login = (props) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const refRBSheet = useRef();
-  const buttonLabels = ["Send verification code", "Next", "Save", "Back to login"];
+  const buttonLabels = [
+    "Send verification code",
+    "Next",
+    "Save",
+    "Back to login",
+  ];
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -102,7 +108,9 @@ export default Login = (props) => {
               <Text style={LoginStyles.forgot}>Forgot password?</Text>
             </TouchableOpacity>
             <CustomSingleButton
-              onPress={() => props.navigation.navigate("BottomNav")}
+              onPress={() =>
+                props.navigation.navigate("DrawerNavigstorLeftMenu")
+              }
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />
@@ -110,11 +118,14 @@ export default Login = (props) => {
             <CustomSingleButton
               onPress={() => {
                 // props.navigation.navigate("Invitefriend"),
-                props.navigation.navigate("Bedroom");
+                // props.navigation.navigate("Bedroom");
+                // props.navigation.navigate("ConfirmJobCompletion");
+                // props.navigation.navigate("JobCompletion");
+                props.navigation.navigate("ContractorSignUpFirstScreen");
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
-              _ButtonText={"Login with Google"}
+              _ButtonText={" Google"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
@@ -128,7 +139,8 @@ export default Login = (props) => {
               _LeftButtonText={"Don't have an account yet?"}
               _RightButtonText={"Sign up"}
               onPress={() => {
-                props.navigation.navigate("SignUp");
+                // props.navigation.navigate("SignUp");
+                props.navigation.navigate("TwoStepVerification6");
               }}
             />
           </View>
@@ -194,7 +206,7 @@ export default Login = (props) => {
                 />
               </View>
               <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, { flex: 1 ,}]}>
+                <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
                   <Text style={LABEL_STYLES._texinputLabel}>
                     Verification code
                   </Text>
@@ -214,7 +226,10 @@ export default Login = (props) => {
             </>
           )}
           {isClick === 2 && (
-            <ScrollView contentContainerStyle={{ marginBottom: 90 }}>
+            <ScrollView
+              contentContainerStyle={{ marginBottom: 90 }}
+              showsVerticalScrollIndicator={false}
+            >
               <View style={LoginStyles.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
