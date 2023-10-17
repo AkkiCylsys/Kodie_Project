@@ -24,6 +24,7 @@ import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RBSheet from "react-native-raw-bottom-sheet";
 import BottomModalData from "../../../../components/Molecules/BottomModal/BottomModalData";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
+
 const HorizontalData = [
   "Occupied",
   "Vacant",
@@ -543,9 +544,13 @@ export default PropertyList = (props) => {
               </View>
             </View>
             <DividerIcon />
-            <FlatList data={property_List1} renderItem={propertyData1_render} />
+            <FlatList data={property_List1} renderItem={propertyData1_render}
+             />
           </>
         )}
+         
+      
+
       </ScrollView>
     </View>
   );

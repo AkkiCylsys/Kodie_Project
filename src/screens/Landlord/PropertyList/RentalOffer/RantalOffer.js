@@ -473,6 +473,8 @@ export default RantalOffer = (props) => {
                 options={DropdownOption}
                 modalmarginTop={250}
               />
+            
+
             </View>
             <DividerIcon />
             <FlatList

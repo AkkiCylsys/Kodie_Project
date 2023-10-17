@@ -83,7 +83,12 @@ import Chats from "../../screens/ChatsScreens/Chats";
 import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
 import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
 import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
-import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
+import Notices from "../../screens/NotiesList/Notices/Notices";
+import Reports from "../../screens/Reports/Reports";
+import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport";
+import Partners from "../../screens/Partners/Partners";
+import PropertyListings from "../../screens/PropertyListings/PropertyListings";
+import VacantPropertiesList from "../../screens/VacantProperties/VacantPropertiesList";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -713,11 +718,11 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name={"ScheduleMeeting"}
           component={ScheduleMeeting}
           options={{ headerShown: false }}
-        />
+        /> */}
 
         <Stack.Screen
           name={"JobDetails"}
@@ -736,24 +741,40 @@ const AllStackRouts = (props) => {
           component={PaymentMethod}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-          name={"Reviewjobdetails"}
-          component={Reviewjobdetails}
-          options={{ headerShown: false }}
-        /> */}
+
         <Stack.Screen
-          name={"ContractorDashboard"}
-          component={ContractorDashboard}
+          name={"Notices"}
+          component={Notices}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
-          name={"LinkedDevice"}
-          component={LinkedDevice}
+          name={"Reports"}
+          component={Reports}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
-          name={"TwoStepVerification"}
-          component={TwoStepVerification}
+          name={"GenerateReport"}
+          component={GenerateReport}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Partners"}
+          component={Partners}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"PropertyListings"}
+          component={PropertyListings}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"VacantPropertiesList"}
+          component={VacantPropertiesList}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

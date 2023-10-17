@@ -38,9 +38,12 @@ const EditProfile = () => {
               source={IMAGES.Landlordprofile}
               resizeMode="contain"
             />
-            <View style={EditProfileStyle.editlogoview}>
-              <Image style={EditProfileStyle.editlogo} source={IMAGES.edit} />
-            </View>
+          <View style={EditProfileStyle.editlogoview}>
+            <Image
+              style={EditProfileStyle.editlogo}
+              source={IMAGES.edit}
+            />
+          </View>
           </View>
           <Text style={EditProfileStyle.edittext}>Edit profile photo</Text>
         </View>
@@ -86,24 +89,24 @@ const EditProfile = () => {
                 <View style={EditProfileStyle.bindnumberview}>
                   <Text style={EditProfileStyle.numbercode}>+61</Text>
 
-                  <Image
-                    style={EditProfileStyle.downarrowimg}
-                    source={IMAGES.downarrow}
-                  />
-                  <Image
-                    style={EditProfileStyle.lineimg}
-                    source={IMAGES.verticalLine}
-                  />
-                  <TextInput
-                    keyboardType="numeric"
-                    placeholder="1234567890"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  />
-                </View>
                 <Image
-                  style={EditProfileStyle.Vectorimg}
-                  source={IMAGES.pencile}
+                  style={EditProfileStyle.downarrowimg}
+                  source={IMAGES.downarrow}
                 />
+                <Image
+                  style={EditProfileStyle.lineimg}
+                  source={IMAGES.verticalLine}
+                />
+                <TextInput
+                  keyboardType="numeric"
+                  placeholder="1234567890"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+                </View>
+              <Image
+                style={EditProfileStyle.Vectorimg}
+                source={IMAGES.pencile}
+              />
               </View>
             </View>
           </View>
