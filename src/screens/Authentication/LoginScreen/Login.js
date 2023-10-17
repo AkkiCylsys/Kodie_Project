@@ -140,7 +140,7 @@ export default Login = (props) => {
               _RightButtonText={"Sign up"}
               onPress={() => {
                 // props.navigation.navigate("SignUp");
-                props.navigation.navigate("TwoStepVerification6");
+                props.navigation.navigate("EditDashboard");
               }}
             />
           </View>
