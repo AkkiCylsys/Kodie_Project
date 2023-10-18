@@ -56,7 +56,7 @@ const SelectDate = (props) => {
     setClose(!close);
   };
   return (
-    <View>
+    <View >
       <View style={SelectDateStyle.headingview}>
         <Text style={SelectDateStyle.headingtext}>Select date</Text>
         <TouchableOpacity onPress={toggleclose}>
