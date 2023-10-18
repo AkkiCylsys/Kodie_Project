@@ -10,7 +10,7 @@ const CircleProgress = () => {
 
   return (
     <>
-      <View style={CircleProgressStyle.maincontainerview}>
+      <View  style={CircleProgressStyle.maincontainerview}>
 
         <View style={CircleProgressStyle.mainview}>
           <View style={CircleProgressStyle.bindview}>
@@ -47,7 +47,6 @@ const CircleProgress = () => {
 
         <View style={CircleProgressStyle.floatbtn}>
           <FloatingActionButton />
-
         </View>
       </View>
     </>

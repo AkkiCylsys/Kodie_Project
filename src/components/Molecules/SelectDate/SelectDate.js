@@ -20,7 +20,8 @@ const SelectDate = (props) => {
   const [customerange, setCustomeRange] = useState(false);
   const refRBSheet = useRef();
   const [selected, setSelected] = useState("");
-const [calender , setCalender ] = useState(false)
+  const [calender, setCalender] = useState(false);
+  const [close, setClose] = useState(false);
   const toggleyesterday = () => {
     setYesterday(!yesterday);
   };
@@ -49,15 +50,22 @@ const [calender , setCalender ] = useState(false)
     setPopupVisible(true);
   };
   const togglecalender = () => {
-    setCalender(!calender)
-  }
-
+    setCalender(!calender);
+  };
+  const toggleclose = () => {
+    setClose(!close);
+  };
   return (
     <View>
       <View style={SelectDateStyle.headingview}>
         <Text style={SelectDateStyle.headingtext}>Select date</Text>
-        <TouchableOpacity onPress={handleClosePopup}>
-          <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+        <TouchableOpacity onPress={toggleclose}>
+          <Entypo
+            name="cross"
+            size={24}
+            color={_COLORS.Kodie_BlackColor}
+       
+          />
         </TouchableOpacity>
       </View>
 
@@ -224,9 +232,7 @@ const [calender , setCalender ] = useState(false)
               <View style={SelectDateStyle.bindview}>
                 <TouchableOpacity onPress={togglecalender}>
                   <View style={SelectDateStyle.optionsiconview}>
-                    <TouchableOpacity
-                      onPress={togglecalender}
-                    >
+                    <TouchableOpacity onPress={togglecalender}>
                       <MaterialCommunityIcons
                         size={25}
                         color={_COLORS.Kodie_GrayColor}
@@ -241,47 +247,27 @@ const [calender , setCalender ] = useState(false)
                 </TouchableOpacity>
                 <Text style={SelectDateStyle.textoption}>Custom range</Text>
               </View>
-
             </View>
 
             {calender && (
-                <View>
-                  <Calendar
-                    onDayPress={(day) => {
-                      setSelected(day.dateString);
-                    }}
-                    markedDates={{
-                      [selected]: {
-                        selected: true,
-                        disableTouchEvent: true,
-                        selectedDotColor: "orange",
-                      },
-                    }}
-                  />
-                </View>
-              )}
-         
+              <View>
+                <Calendar
+                  onDayPress={(day) => {
+                    setSelected(day.dateString);
+                  }}
+                  markedDates={{
+                    [selected]: {
+                      selected: true,
+                      disableTouchEvent: true,
+                      selectedDotColor: "orange",
+                    },
+                  }}
+                />
+              </View>
+            )}
           </ScrollView>
         </View>
       </ScrollView>
-      {/* RBSheet  define here */}
-      {/* <RBSheet
-        ref={refRBSheet}
-        height={330}
-        closeOnDragDown={true}
-        closeOnPressMask={false}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "transparent",
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
-          container: SelectDateStyle.bottomModal_container,
-        }}
-      >
-        <Date />
-      </RBSheet> */}
     </View>
   );
 };

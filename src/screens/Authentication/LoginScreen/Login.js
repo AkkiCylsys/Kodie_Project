@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
   Platform,
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
@@ -18,6 +19,7 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import BottomTextsButton from "./../../../components/Molecules/BottomTextsButton/BottomTextsButton";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 import {
   FONTFAMILY,
   LABEL_STYLES,
@@ -34,6 +36,9 @@ export default Login = (props) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const refRBSheet = useRef();
+  const [apiData, setApiData] = useState({});
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -63,13 +68,52 @@ export default Login = (props) => {
 
   const handleButtonPress = () => {
     if (isClick === 3) {
-      // If it's the "Finish" screen, close the modal
       refRBSheet.current.close();
     } else {
-      // Otherwise, proceed to the next screen
-      setIsClick((prev) => (prev + 1) % 4);
+      // setIsClick((prev) => (prev + 1) % 4);
+      setIsClick(isClick + 1);
     }
   };
+
+  const makeApiLogin = () => {
+    // -----loading set true here
+    setIsLoading(true);
+    const url =
+      "https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/login";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("API Response:", result);
+        // -----write inner conditon here if / else
+        if (result.message === "Login successful") {
+          setIsLoading(false);
+          alert("Login successful");
+          setIsAuthenticated(true);
+          props.navigation.navigate("DrawerNavigstorLeftMenu");
+        } else {
+          alert("Please check your email and password.");
+          setIsAuthenticated(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsAuthenticated(false);
+      })
+      // loding
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <View style={LoginStyles.container}>
       <ScrollView>
@@ -89,6 +133,7 @@ export default Login = (props) => {
                 placeholderTextColor="#999"
               />
             </View>
+
             <View style={LoginStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>Password</Text>
               <TextInput
@@ -107,13 +152,22 @@ export default Login = (props) => {
             >
               <Text style={LoginStyles.forgot}>Forgot password?</Text>
             </TouchableOpacity>
+
             <CustomSingleButton
-              onPress={() =>
-                props.navigation.navigate("DrawerNavigstorLeftMenu")
-              }
+              onPress={makeApiLogin}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />
+            {/* -----loading section code here */}
+            {isLoading && (
+              <View style={LoginStyles.loderview}>
+                <ActivityIndicator
+                  size={50}
+                  color={_COLORS.Kodie_BlackColor}
+                />
+              </View>
+            )}
+            <View style={LoginStyles.loderview}></View>
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
               onPress={() => {
@@ -146,6 +200,7 @@ export default Login = (props) => {
           </View>
         </View>
       </ScrollView>
+
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}

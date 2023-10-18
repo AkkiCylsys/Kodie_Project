@@ -124,7 +124,7 @@ export default Dashboard = (props) => {
     );
   };
   return (
-    <View style={DashboardStyle.mainContainer}>
+    <View style={DashboardStyle.mainContainer} >
       <TopHeader
         isMiddleImage={true}
         IsNotification={true}
@@ -186,7 +186,7 @@ export default Dashboard = (props) => {
               setValue(item.value);
             }}
           />
-          <Dropdown
+          {/* <Dropdown
             style={[DashboardStyle.dropdown, { flex: 1 }]}
             placeholderStyle={DashboardStyle.placeholderStyle}
             selectedTextStyle={DashboardStyle.selectedTextStyle}
@@ -203,7 +203,7 @@ export default Dashboard = (props) => {
             onChange={(item) => {
               setValue(item.value);
             }}
-          />
+          /> */}
         </View>
         <Card style={DashboardStyle.card}>
           <Card.Content>
@@ -387,7 +387,7 @@ export default Dashboard = (props) => {
       {/* RBSheet 2 define here */}
       <RBSheet
         ref={refRBSheet2}
-        height={705}
+        height={420}
         closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{
