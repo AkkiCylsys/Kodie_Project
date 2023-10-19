@@ -1,11 +1,5 @@
 import React, { useRef } from "react";
-import {
-  Text,
-  View,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
 import { LinkedDeviceStyle } from "../../Authentication/LinkedDevice/LinkedDeviceStyle";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS, IMAGES } from "../../../Themes";
@@ -108,20 +102,22 @@ const LinkedDevice = (props) => {
               backgroundColor: _COLORS.Kodie_BlackColor,
             },
             container: LinkedDeviceStyle.bottomModal_container,
-            
           }}
         >
           <View style={LinkedDeviceStyle.item}>
             <Text style={LinkedDeviceStyle.Logouttext}>Logout from device</Text>
-            <TouchableOpacity>
-              <Entypo name="cross" size={30} color={'black'} />
+            <TouchableOpacity
+              onPress={() => {
+                refRBSheet.current.close();
+              }}
+            >
+              <Entypo name="cross" size={30} color={"black"} />
             </TouchableOpacity>
           </View>
           <View style={LinkedDeviceStyle.btn}>
             <Text style={LinkedDeviceStyle.Cancelbtn}>Cancel</Text>
             <View style={LinkedDeviceStyle.Logoutbtnview}>
-
-            <Text style={LinkedDeviceStyle.Logoutbtn}>Logout</Text>
+              <Text style={LinkedDeviceStyle.Logoutbtn}>Logout</Text>
             </View>
           </View>
         </RBSheet>

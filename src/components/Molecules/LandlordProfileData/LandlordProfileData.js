@@ -1,4 +1,3 @@
-
 //ScreenNo:187
 import React from "react";
 import { Text, View, Image, TouchableOpacity, FlatList } from "react-native";
@@ -89,8 +88,8 @@ const LandlordProfileData = (props) => {
           <TouchableOpacity style={LandlordProfileDataStyle.ArrowIcon}>
             <Entypo
               name="chevron-small-right"
-              size={23}
-              color={_COLORS.Kodie_GrayColor}
+              size={20}
+              color={_COLORS.Kodie_BlackColor}
               style={LandlordProfileDataStyle.ArrowIconStyle}
             />
           </TouchableOpacity>

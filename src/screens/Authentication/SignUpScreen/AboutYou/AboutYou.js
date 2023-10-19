@@ -1,3 +1,5 @@
+//ScreenNo:11
+//ScreenNo:12
 import React, { useState, useRef } from "react";
 import {
   View,
@@ -285,8 +287,8 @@ export default AboutYou = (props) => {
             <CustomSingleButton
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
-              onPress={()=>{
-                props.navigation.navigate('FirstProperty')
+              onPress={() => {
+                props.navigation.navigate("FirstProperty");
               }}
             />
             <CustomSingleButton
