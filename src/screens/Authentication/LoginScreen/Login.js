@@ -141,7 +141,7 @@ export default Login = (props) => {
               _RightButtonText={"Sign up"}
               onPress={() => {
                 // props.navigation.navigate("SignUp");
-                props.navigation.navigate("PropertyDetails");
+                props.navigation.navigate("Account");
               }}
             />
           </View>
