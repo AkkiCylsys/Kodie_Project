@@ -43,7 +43,7 @@ export default LandlordProfile = (props) => {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("Help_FeedBack")}
+            onPress={() => props.navigation.navigate("EditProfile")}
             style={LandlordProfileStyle.contactIconView}
           >
             <Image
@@ -138,7 +138,7 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity 
           onPress={() => {
-            props.navigation.navigate("PropertyExpenses");
+            props.navigation.navigate("GenerateReport");
           }}>
           <RowTab
             IsDivider={false}
