@@ -96,10 +96,10 @@ export default CreateJobFirstScreen = (props) => {
   };
   return (
     <View style={CreateJobFirstStyle.container}>
-      <TopHeader
+      {/* <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Create job"}
-      />
+      /> */}
       <StepText _StepNo={"1"} _StepText={"Job details"} />
       <ScrollView>
         <View style={CreateJobFirstStyle.mainView}>

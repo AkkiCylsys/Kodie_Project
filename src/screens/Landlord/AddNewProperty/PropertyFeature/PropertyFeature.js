@@ -302,16 +302,18 @@ export default PropertyFeature = (props) => {
                 backgroundColor={_COLORS.Kodie_WhiteColor}
               />
             </View>
-            <View style={PropertyFeatureStyle.goBack_View}>
-              <TouchableOpacity style={PropertyFeatureStyle.backIcon}>
+            <TouchableOpacity style={PropertyFeatureStyle.goBack_View}
+            onPress={() => {
+              props.navigation.navigate("PropertyDetails");}}>
+              <View style={PropertyFeatureStyle.backIcon}>
                 <Ionicons
                   name="chevron-back"
                   size={22}
                   color={_COLORS.Kodie_MediumGrayColor}
                 />
-              </TouchableOpacity>
+              </View>
               <Text style={PropertyFeatureStyle.goBack_Text}>{"Go back"}</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

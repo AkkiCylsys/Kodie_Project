@@ -25,7 +25,6 @@ import CircleProgress from "../../components/Molecules/CircleProgress/CircleProg
 import SelectProperties from "../../components/Molecules/SelectProperties/SelectProperties";
 import SelectDate from "../../components/Molecules/SelectDate/SelectDate";
 import RBSheet from "react-native-raw-bottom-sheet";
-
 const IncomeData = [
   {
     id: "1",

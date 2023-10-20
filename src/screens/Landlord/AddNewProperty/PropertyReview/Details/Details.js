@@ -149,16 +149,21 @@ export default Details = (props) => {
             onPress={props.AddProperty}
           />
         </View>
-        <View style={DetailsStyle.goBack_View}>
-          <TouchableOpacity style={DetailsStyle.backIcon}>
+        <TouchableOpacity
+          style={DetailsStyle.goBack_View}
+          // onPress={() => {
+          //   props.navigation.navigate("PropertyImages");
+          // }}
+        >
+          <View style={DetailsStyle.backIcon}>
             <Ionicons
               name="chevron-back"
               size={22}
               color={_COLORS.Kodie_MediumGrayColor}
             />
-          </TouchableOpacity>
+          </View>
           <Text style={DetailsStyle.goBack_Text}>{"Go back"}</Text>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

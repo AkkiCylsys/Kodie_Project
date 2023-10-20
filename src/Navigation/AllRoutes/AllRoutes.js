@@ -224,7 +224,8 @@ const BottomNav = (props) => {
       />
       <Tab.Screen
         name="UserType"
-        component={UserType}
+        // component={UserType}
+        component={Chats}
         options={{
           tabBarShowLabel: false,
           headerShown: false,

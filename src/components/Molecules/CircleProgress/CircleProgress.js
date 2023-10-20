@@ -105,7 +105,7 @@ const CircleProgress = () => {
                 onPressItem={(name) => {
                   Alert.alert("Icon pressed", `the icon ${name} was pressed`);
                 }}
-                overlayColor="rgba(0, 0, 0, 0.5)"
+                // overlayColor="rgba(0, 0, 0, 0.5)"
               />
           </View>
         </View>
