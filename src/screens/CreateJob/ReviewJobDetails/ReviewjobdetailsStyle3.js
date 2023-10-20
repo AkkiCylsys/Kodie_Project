@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { _COLORS,FONTFAMILY } from "../../../Themes/index";
-export const ReviewjobdetailsStyle = StyleSheet.create({
+export const ReviewjobdetailsStyle3 = StyleSheet.create({
 
   Mainview: {
 flex:1,
@@ -76,6 +76,12 @@ marginBottom:20
   },
   file:{
     fontFamily: FONTFAMILY.K_Italic,
+  },
+  selecttext:{
+    marginTop:20,
+    color:_COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    fontSize:14
   },
   
 });

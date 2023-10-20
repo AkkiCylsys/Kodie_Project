@@ -3,7 +3,7 @@ import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
 
 export const AddGuestStyle = StyleSheet.create({
   maincontainer: {
-    marginTop:5
+    marginTop: 5,
   },
   addgusttext: {
     fontSize: 14,
@@ -14,32 +14,36 @@ export const AddGuestStyle = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop:5
+    marginTop: 5,
   },
-    bindview: {
+  bindview: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems:'center',
-    width:'80%',
-    borderWidth:0.6,
-    borderRadius:5,
+    alignItems: "center",
+    width: "80%",
+    borderWidth: 0.6,
+    borderRadius: 5,
     borderColor: _COLORS.Kodie_GrayColor,
-    paddingHorizontal:10
+    paddingHorizontal: 10,
   },
 
   adduserimg: {
     marginHorizontal: 8,
+    width:25,
+    height:20
   },
   vecentview: {
-    width: '18%',
+    width: "18%",
     borderRadius: 8,
     backgroundColor: _COLORS.Kodie_lightGreenColor,
-    alignItems:'center',
-    paddingTop:3
+    alignItems: "center",
+    paddingTop: 3,
   },
 
   chatimage: {
     tintColor: _COLORS.Kodie_WhiteColor,
+    width:25,
+    height:20
   },
   chattext: {
     color: _COLORS.Kodie_WhiteColor,

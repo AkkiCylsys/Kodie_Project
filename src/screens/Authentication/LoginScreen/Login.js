@@ -18,6 +18,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import BottomTextsButton from "./../../../components/Molecules/BottomTextsButton/BottomTextsButton";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 import {
@@ -161,10 +162,7 @@ export default Login = (props) => {
             {/* -----loading section code here */}
             {isLoading && (
               <View style={LoginStyles.loderview}>
-                <ActivityIndicator
-                  size={50}
-                  color={_COLORS.Kodie_BlackColor}
-                />
+                <ActivityIndicator size={50} color={_COLORS.Kodie_BlackColor} />
               </View>
             )}
             <View style={LoginStyles.loderview}></View>

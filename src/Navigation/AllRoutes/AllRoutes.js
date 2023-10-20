@@ -91,6 +91,18 @@ import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport"
 import Partners from "../../screens/Partners/Partners";
 import PropertyListings from "../../screens/PropertyListings/PropertyListings";
 import VacantPropertiesList from "../../screens/VacantProperties/VacantPropertiesList";
+import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
+import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
+import Contractors1 from "../../screens/Managingcontractors/Contractors1";
+import Contractors2 from "../../screens/Managingcontractors/Contractors2";
+import Contractors3 from "../../screens/Managingcontractors/Contractors3";
+import Reviewjobdetails1 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails1";
+import Reviewjobdetails2 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails2";
+import Reviewjobdetails3 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails3";
+import CompletedJobs from "../../screens/CreateJob/Reviewjobdetails/CompletedJobs";
+import Ratingandfeedback from "../../screens/CreateJob/Reviewjobdetails/Ratingandfeedback";
+import EditDashboard from "../../screens/Dashboard/EditDashboard";
+
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (

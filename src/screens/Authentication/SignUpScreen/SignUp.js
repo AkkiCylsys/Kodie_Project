@@ -20,13 +20,50 @@ import { LABEL_STYLES } from "../../../Themes/CommonStyles/CommonStyles";
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [term, setTerm] = useState(false);
+  const [privacy,setPrivacy] =useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [check, setIsCheck] = useState(false);
   const [privacycheck, setPrivacycheckCheck] = useState(false);
+  
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-  return (
+const handleSignUp = () => {
+  fetch("https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/signup", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password,
+      is_term_condition: 1,
+      is_privacy_policy: 1,
+    }),
+    timeout: 10000,
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.success) {
+        props.navigation.navigate("Login");
+      } else {
+        alert("Signup failed. Please try again.");
+      }
+    })
+    .catch(error => {
+      console.error("Signup error:", error);
+      alert("Network request timed out. Please check your connection or try again later.");
+    });
+  }  
+
+ 
+return (
     <View style={SignUpStyles.container}>
       <ScrollView>
         <View style={SignUpStyles.logoContainer}>
@@ -88,6 +125,8 @@ export default SignUp = (props) => {
                   <FontAwesome
                     name="check"
                     size={15}
+                    value={term}
+                    onChangeText={setTerm}
                     color={_COLORS.Kodie_GreenColor}
                     style={SignUpStyles.checkbox_BG}
                   />
@@ -118,6 +157,8 @@ export default SignUp = (props) => {
                   <FontAwesome
                     name="check"
                     size={15}
+                    value={privacy}
+                    onChangeText={setPrivacy}
                     color={_COLORS.Kodie_GreenColor}
                     style={SignUpStyles.checkbox_BG}
                   />
@@ -143,9 +184,7 @@ export default SignUp = (props) => {
           <CustomSingleButton
             _ButtonText={"Sign up now"}
             Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={() => {
-              props.navigation.navigate("SignUpVerification");
-            }}
+            onPress={handleSignUp}
           />
           <DividerIcon
             DeviderText={"or"}
