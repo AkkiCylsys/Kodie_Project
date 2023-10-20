@@ -83,7 +83,7 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Contactus");
+            props.navigation.navigate("PrivacySecurity");
           }}>
           <RowTab
             IsDivider={false}

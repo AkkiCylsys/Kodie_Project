@@ -36,6 +36,7 @@ export const PrivacySecurityStyle = StyleSheet.create({
   bindview:{
     flexDirection:'row',
     alignItems:'center',
+    justifyContent:'space-between'
   },
   innertextview:{
     marginLeft:15
@@ -46,28 +47,26 @@ export const PrivacySecurityStyle = StyleSheet.create({
     color:_COLORS.Kodie_BlackColor,
   },
   checkimgview:{
-    width:32,
-    height:32,
-    borderWidth:1,
-    borderColor:_COLORS.Kodie_GrayColor,
     borderRadius:8,
     flexDirection:'row',
-    justifyContent:'center',
     alignItems:'center'
   },
   RowView: {
     flexDirection: "row",
   },
-  texticon:{
-    flexDirection:'row',
-  },
   icon:{
-    marginHorizontal:15
+    marginLeft:20,
   },
   text3:{
-    marginHorizontal:160
+    color:_COLORS.Kodie_ExtraminLiteGrayColor,
+    fontSize:14
   },
   text0:{
     marginHorizontal:130
+  },
+  subtext:{
+    fontSize:12,
+    color:_COLORS.Kodie_MediumGrayColor,
+    marginTop:3
   }
 });

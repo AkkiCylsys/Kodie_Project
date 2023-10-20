@@ -1,4 +1,3 @@
-
 //ScreenNo:77
 //ScreenNo:84
 //ScreenNo:85
@@ -30,6 +29,7 @@ import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import SearchBar from "../../../../components/Molecules/SearchBar/SearchBar";
 import MultiSelectDropDown from "../../../../components/Molecules/MultiSelectDropdown/MultiSelectDropDown";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
+import TopHeader from "../../../../components/Molecules/Header/Header";
 
 const property_List2 = [
   {
@@ -145,7 +145,7 @@ const offersForProperties = [
   },
 ];
 
-export default RantalOffer = (props) => {
+const RantalOffer = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
   const refRBSheet = useRef();
@@ -411,79 +411,89 @@ export default RantalOffer = (props) => {
   };
 
   return (
-    <View style={RantalOfferCss.mainContainer}>
-      <ScrollView showsHorizontalScrollIndicator={false}>
-        <View style={RantalOfferCss.propertyRentMainView}>
-          <RowButtons
-            LeftButtonText={"Offers for my properties"}
-            leftButtonHeight={40}
-            leftButtonbackgroundColor={
-              activeScreen
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_lightGreenColor
-            }
-            LeftButtonborderColor={
-              activeScreen
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_lightGreenColor
-            }
-            RightButtonText={"My current offers"}
-            RightButtonbackgroundColor={
-              activeScreen
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonborderColor={
-              activeScreen
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_GrayColor
-            }
-            LeftButtonTextColor={
-              activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
-            }
-            RightButtonTextColor={
-              activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
-            }
-            RightButtonHeight={40}
-            onPressLeftButton={() => setActiveScreen(false)}
-            onPressRightButton={() => setActiveScreen(true)}
-          />
-        </View>
-        <DividerIcon
-          borderBottomWidth={7}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-        <SearchBar
-          marginTop={1}
-          frontSearchIcon
-          isFilterImage
-          filterImage={IMAGES.filter}
-          height={40}
-        />
-        <DividerIcon
-          borderBottomWidth={2}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-        {activeScreen ? (
-          <FlatList data={property_List2} renderItem={propertyData2_render} />
-        ) : (
-          <>
-            <View style={RantalOfferCss.Container}>
-              <MultiSelectDropDown
-                options={DropdownOption}
-                modalmarginTop={250}
-              />
-            
-
-            </View>
-            <DividerIcon />
-            <FlatList
-              data={offersForProperties}
-              renderItem={offer_Properties}
+    <>
+      <TopHeader
+        onPressLeftButton={() => _goBack(props)}
+        MiddleText={"RantalOffers"}
+      />
+      <View style={RantalOfferCss.mainContainer}>
+        <ScrollView showsHorizontalScrollIndicator={false}>
+          <View style={RantalOfferCss.propertyRentMainView}>
+            <RowButtons
+              LeftButtonText={"Offers for my properties"}
+              leftButtonHeight={40}
+              leftButtonbackgroundColor={
+                activeScreen
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_lightGreenColor
+              }
+              LeftButtonborderColor={
+                activeScreen
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_lightGreenColor
+              }
+              RightButtonText={"My current offers"}
+              RightButtonbackgroundColor={
+                activeScreen
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonborderColor={
+                activeScreen
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_GrayColor
+              }
+              LeftButtonTextColor={
+                activeScreen
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonTextColor={
+                activeScreen
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor
+              }
+              RightButtonHeight={40}
+              onPressLeftButton={() => setActiveScreen(false)}
+              onPressRightButton={() => setActiveScreen(true)}
             />
-          </>
-        )}
-      </ScrollView>
-    </View>
+          </View>
+          <DividerIcon
+            borderBottomWidth={7}
+            color={_COLORS.Kodie_LiteWhiteColor}
+          />
+          <SearchBar
+            marginTop={1}
+            frontSearchIcon
+            isFilterImage
+            filterImage={IMAGES.filter}
+            height={40}
+          />
+          <DividerIcon
+            borderBottomWidth={2}
+            color={_COLORS.Kodie_LiteWhiteColor}
+          />
+          {activeScreen ? (
+            <FlatList data={property_List2} renderItem={propertyData2_render} />
+          ) : (
+            <>
+              <View style={RantalOfferCss.Container}>
+                <MultiSelectDropDown
+                  options={DropdownOption}
+                  modalmarginTop={250}
+                />
+              </View>
+              <DividerIcon />
+              <FlatList
+                data={offersForProperties}
+                renderItem={offer_Properties}
+              />
+            </>
+          )}
+        </ScrollView>
+      </View>
+    </>
   );
 };
+
+export default RantalOffer;

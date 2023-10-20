@@ -102,6 +102,7 @@ import Reviewjobdetails3 from "../../screens/CreateJob/ReviewJobDetails/Reviewjo
 import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
 import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
 import EditDashboard from "../../screens/Dashboard/EditDashboard";
+import RantalOffer from "../../screens/Landlord/PropertyList/RentalOffer/RantalOffer";
 
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
@@ -733,11 +734,11 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
 
-        {/* <Stack.Screen
+        <Stack.Screen
           name={"ScheduleMeeting"}
           component={ScheduleMeeting}
           options={{ headerShown: false }}
-        /> */}
+        />
 
         <Stack.Screen
           name={"JobDetails"}
@@ -795,6 +796,81 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"TwoStepVerification"}
           component={TwoStepVerification}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PrivacySecurity"}
+          component={PrivacySecurity}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Managingcontractors"}
+          component={Managingcontractors}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Contractors1"}
+          component={Contractors1}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Contractors2"}
+          component={Contractors2}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Contractors3"}
+          component={Contractors3}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Reviewjobdetails1"}
+          component={Reviewjobdetails1}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Reviewjobdetails2"}
+          component={Reviewjobdetails2}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Reviewjobdetails3"}
+          component={Reviewjobdetails3}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CompletedJobs"}
+          component={CompletedJobs}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Ratingandfeedback"}
+          component={Ratingandfeedback}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"EditDashboard"}
+          component={EditDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"Account"}
+          component={Account}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ContractorDashboard"}
+          component={ContractorDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"LinkedDevice"}
+          component={LinkedDevice}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"RantalOffer"}
+          component={RantalOffer}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

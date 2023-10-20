@@ -22,7 +22,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "RentalOffers":
         setselectedId("RentalOffers");
-        props.navigation.navigate("BlockedUser");
+        props.navigation.navigate("RantalOffer");
         break;
       case "vacantProperties":
         setselectedId("vacantProperties");
@@ -30,7 +30,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Inspection":
         setselectedId("Inspection");
-        props.navigation.navigate("AboutYou");
+        props.navigation.navigate("NewInspection");
         break;
       case "Tetants":
         setselectedId("Tetants");
@@ -38,7 +38,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "MaintenanceJobs":
         setselectedId("MaintenanceJobs");
-        props.navigation.navigate("Account");
+        props.navigation.navigate("Reviewjobdetails1");
         break;
       case "Contractors":
         setselectedId("Contractors");
@@ -84,6 +84,7 @@ const CustomSidebarMenu = (props) => {
             },
           ]}
           onPress={() => check("PropertyLinking")}
+       
         >
           <Image
             source={IMAGES.PropertyListing}
