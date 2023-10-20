@@ -1,12 +1,13 @@
 import React from "react";
 import { TouchableOpacity, View, Text, Image } from "react-native";
-import { LABEL_STYLES, IMAGES } from "../../../Themes";
+import { LABEL_STYLES} from "../../../Themes";
 import { RowTabStyle } from "./RowTabStyle";
 import DividerIcon from "../../Atoms/Devider/DividerIcon";
+import { _COLORS,IMAGES } from "../../../Themes";
 export default RowTab = (props) => {
     return (
         <>
-            <TouchableOpacity onPress={props?.RowPressed} style={RowTabStyle.Helpview}>
+            <View onPress={props?.RowPressed} style={RowTabStyle.Helpview}>
                 <View style={RowTabStyle.Helpselctionview}>
                     <View style={RowTabStyle.Helpimgview}>
                         <Image source={props?.LeftImage} style={RowTabStyle.imgbox} />
@@ -25,7 +26,7 @@ export default RowTab = (props) => {
                         style={RowTabStyle.rightarrowicon}
                     />
                 </View>
-            </TouchableOpacity>
+            </View>
             {props.IsDivider ?
                 <View style={RowTabStyle.hairlinebuttom} />
                 : null}

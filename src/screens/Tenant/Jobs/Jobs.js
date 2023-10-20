@@ -15,10 +15,13 @@ const Jobs = (props) => {
         return <Repair />;
       case "Tab2":
         return (
-          <View>
+          <View >
             <Text>khgfdgfjhdfgsdhfgdf</Text>
+            
           </View>
+
         );
+    
       case "Tab3":
         return (
           <View>

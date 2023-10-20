@@ -16,6 +16,7 @@ import { LABEL_STYLES } from "../../../../Themes";
 import { _COLORS, FONTFAMILY } from "../../../../Themes";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
+import CustomDropdown from "../../../../components/Molecules/CustomDropdown/CustomDropdown";
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },
@@ -39,12 +40,13 @@ export default PropertyDetails = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Add new property"}
       />
+    <ScrollView>
       <View style={PropertyDetailsStyle.headingView}>
         <Text style={PropertyDetailsStyle.heading}>
           {"Property details"}
         </Text>
       </View>
-      <ScrollView>
+    
         <View style={PropertyDetailsStyle.card}>
           <View style={PropertyDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
@@ -90,25 +92,7 @@ export default PropertyDetails = (props) => {
             <Text style={PropertyDetailsStyle.property_Text}>
               Property type
             </Text>
-            <Dropdown
-              style={PropertyDetailsStyle.dropdown}
-              placeholderStyle={[
-                PropertyDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
-              ]}
-              selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
-              inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
-              iconStyle={PropertyDetailsStyle.iconStyle}
-              data={Apartment_data}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Apartment"
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
-            />
+            <CustomDropdown btnview={true} placeholdertext={"Apartment"} />
           </View>
           <View style={PropertyDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>

@@ -3,7 +3,7 @@ import React from "react";
 import { ChangeContactInputStyle } from "./ChangeContactInputStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS, IMAGES } from "../../../../Themes";
+import { _COLORS,IMAGES } from "../../../../Themes";
 
 const ChangeContactInput = () => {
   return (
