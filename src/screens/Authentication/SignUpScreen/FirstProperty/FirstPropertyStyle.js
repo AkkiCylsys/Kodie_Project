@@ -43,10 +43,6 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 6,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
   },
   locationInput: {
     flex: 1,
@@ -79,7 +75,6 @@ export const FirstPropertyStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -122,26 +117,18 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
   },
   textSelectedStyle: {
     marginRight: 5,
     fontSize: 14,
   },
-  addition_featureText:{
-    marginTop:10
+  addition_featureText: {
+    marginTop: 10,
   },
-  AutoList_text:{
-    color:_COLORS.Kodie_BlackColor,
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_SemiBold
+  AutoList_text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
   goBack_View: {
     flexDirection: "row",
@@ -155,11 +142,11 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginLeft: 5,
   },
   backIcon: {
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  btnView:{
-    marginTop:24
-  }
+  btnView: {
+    marginTop: 24,
+  },
 });

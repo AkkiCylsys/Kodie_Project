@@ -84,6 +84,7 @@ import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
 import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
 import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
 import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
+import SignUpSteps from "../../screens/Authentication/SignUpScreen/SignUpSteps/SignUpSteps";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -521,8 +522,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"Account"}
-          component={Account}
+          name={"SignUpSteps"}
+          component={SignUpSteps}
           options={{ headerShown: false }}
         />
         <Stack.Screen

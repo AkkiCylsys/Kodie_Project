@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+//ScreenNo:8
 import {
   View,
   Text,
@@ -31,8 +32,6 @@ export default SignUpVerification = (props) => {
     setValue,
   });
 
- 
-
   return (
     <View style={SignUpVerificationStyle.mainContainer}>
       <TopHeader
@@ -44,7 +43,9 @@ export default SignUpVerification = (props) => {
           {"Check your email"}
         </Text>
         <Text style={SignUpVerificationStyle.verify_Text}>
-          {"Enter the 6-digit verification  code sent to your email"}
+          {
+            "Please confirm your account by entering the 6-digit verification  code sent to your email."
+          }
         </Text>
 
         <View style={SignUpVerificationStyle.otp_view}>
@@ -77,12 +78,12 @@ export default SignUpVerification = (props) => {
           {"It may take a few minutes to receive your code. "}
         </Text>
 
-        <View style={SignUpVerificationStyle.customBtn} >
+        <View style={SignUpVerificationStyle.customBtn}>
           <CustomSingleButton
             _ButtonText={"Verify email"}
             Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={()=>{
-              props.navigation.navigate("PaymentMethod")
+            onPress={() => {
+              props.navigation.navigate("SignUpSteps");
             }}
           />
         </View>
