@@ -134,16 +134,16 @@ export default CreateJobSecondScreen = (props) => {
               onPress={() => props.navigation.navigate("CreateJobTermsScreen")}
             />
           </View>
-          <View style={CreateJobSecondStyle.goBack_View}>
-            <TouchableOpacity style={CreateJobSecondStyle.backIcon}>
+          <TouchableOpacity style={CreateJobSecondStyle.goBack_View}>
+            <View style={CreateJobSecondStyle.backIcon}>
               <Ionicons
                 name="chevron-back"
                 size={22}
                 color={_COLORS.Kodie_MediumGrayColor}
               />
-            </TouchableOpacity>
+            </View>
             <Text style={CreateJobSecondStyle.goBack_Text}>{"Go back"}</Text>
-          </View>
+          </TouchableOpacity>
           <RBSheet
             ref={refRBSheet}
             closeOnDragDown={true}

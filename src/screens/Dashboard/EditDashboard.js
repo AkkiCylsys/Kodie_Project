@@ -326,16 +326,16 @@ const EditDashboard = (props) => {
               backgroundColor={_COLORS.Kodie_BlackColor}
             />
 
-            <View style={EditDashboardStyle.goBack_View}>
-              <TouchableOpacity style={EditDashboardStyle.backIcon}>
+            <TouchableOpacity style={EditDashboardStyle.goBack_View}>
+              <View style={EditDashboardStyle.backIcon}>
                 <Ionicons
                   name="chevron-back"
                   size={22}
                   color={_COLORS.Kodie_MediumGrayColor}
                 />
-              </TouchableOpacity>
+              </View>
               <Text style={EditDashboardStyle.goBack_Text}>{"Go back"}</Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </ScrollView>
       </View>

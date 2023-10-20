@@ -188,16 +188,16 @@ const SignUpSteps = (props) => {
                     backgroundColor={_COLORS.Kodie_WhiteColor}
                   />
 
-                  <View style={SignUpStepStyle.goBack_View}>
-                    <TouchableOpacity style={SignUpStepStyle.backIcon}>
+                  <TouchableOpacity style={SignUpStepStyle.goBack_View}>
+                    <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
                         name="chevron-back"
                         size={22}
                         color={_COLORS.Kodie_MediumGrayColor}
                       />
-                    </TouchableOpacity>
+                    </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                  </View>
+                  </TouchableOpacity>
                 </>
               ) : null}
             </View>

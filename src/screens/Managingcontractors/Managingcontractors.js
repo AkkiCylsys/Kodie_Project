@@ -11,6 +11,7 @@ import CustomTabNavigator from "../../components/Molecules/CustomTopNavigation/C
 import Contractors from "../../components/Molecules/Contractors/Contractors";
 import RBSheet from "react-native-raw-bottom-sheet";
 import ContractorsImage from "../../components/Molecules/Contractors/ContractorsImage/ContractorsImage";
+
 const Managingcontractors = (props) => {
   const refRBSheet = useRef();
   const [activeScreen, setActiveScreen] = useState(false);
@@ -27,13 +28,20 @@ const Managingcontractors = (props) => {
   };
   return (
     <View style={ManagingcontractorsStyle.mainContainer}>
-      <TopHeader
+      {/* <TopHeader
         IsNotification={true}
         RightUserProfile={IMAGES.Landlordprofile}
         MiddleText={"Contractors"}
         leftImage={"menu"}
         onPressLeftButton={() => props.navigation.openDrawer()}
+      /> */}
+      <TopHeader
+        onPressLeftButton={() => _goBack(props)}
+        MiddleText={"Contractors"}
+        RightUserProfile={IMAGES.Landlordprofile}
+        IsNotification={true}
       />
+
       <ScrollView>
         <View style={ManagingcontractorsStyle.container}>
           <View style={ManagingcontractorsStyle.tabview}>
@@ -140,9 +148,7 @@ const Managingcontractors = (props) => {
           container: ManagingcontractorsStyle.bottomModal_container,
         }}
       >
-        <ContractorsImage
-          onPress={toggleView}
-        />
+        <ContractorsImage onPress={toggleView} />
       </RBSheet>
     </View>
   );

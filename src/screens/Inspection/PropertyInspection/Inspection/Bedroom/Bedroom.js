@@ -238,16 +238,16 @@ const Bedroom = (props) => {
               props.navigation.navigate("AboutYou");
             }}
           />
-          <View style={BedroomCss.goBack_View}>
-            <TouchableOpacity style={BedroomCss.backIcon}>
+          <TouchableOpacity style={BedroomCss.goBack_View}>
+            <View style={BedroomCss.backIcon}>
               <Feather
                 name="chevron-left"
                 size={22}
                 color={_COLORS.Kodie_MediumGrayColor}
               />
-            </TouchableOpacity>
+            </View>
             <Text style={BedroomCss.goBack_Text}>{"Go back"}</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <RBSheet

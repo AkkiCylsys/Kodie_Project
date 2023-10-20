@@ -171,16 +171,16 @@ export default CreateJobTermsScreen = (props) => {
               onPress={() => props.navigation.navigate("ConfirmJobCompletion")}
             />
           </View>
-          <View style={CreateJobTermsStyle.goBack_View}>
-            <TouchableOpacity style={CreateJobTermsStyle.backIcon}>
+          <TouchableOpacity style={CreateJobTermsStyle.goBack_View}>
+            <View style={CreateJobTermsStyle.backIcon}>
               <Ionicons
                 name="chevron-back"
                 size={22}
                 color={_COLORS.Kodie_MediumGrayColor}
               />
-            </TouchableOpacity>
+            </View>
             <Text style={CreateJobTermsStyle.goBack_Text}>{"Go back"}</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>

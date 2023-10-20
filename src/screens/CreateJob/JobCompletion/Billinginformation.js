@@ -199,18 +199,18 @@ const Billinginformation = (props) => {
               backgroundColor={_COLORS.Kodie_BlackColor}
             />
 
-            <View style={BillinginformationStyle.goBack_View}>
-              <TouchableOpacity style={BillinginformationStyle.backIcon}>
+            <TouchableOpacity style={BillinginformationStyle.goBack_View}>
+              <View style={BillinginformationStyle.backIcon}>
                 <Ionicons
                   name="chevron-back"
                   size={22}
                   color={_COLORS.Kodie_MediumGrayColor}
                 />
-              </TouchableOpacity>
+              </View>
               <Text style={BillinginformationStyle.goBack_Text}>
                 {"Go back"}
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
