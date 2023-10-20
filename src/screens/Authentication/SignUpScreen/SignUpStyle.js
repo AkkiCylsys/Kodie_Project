@@ -89,9 +89,8 @@ export const SignUpStyles = StyleSheet.create({
     width: 20,
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: _COLORS.Kodie_BlackColor,
+    borderColor: _COLORS.Kodie_GrayColor,
     borderWidth: 1,
-    borderColor: _COLORS.Kodie_BlackColor,
     marginTop: 4,
   },
   checkbox_BG: {
