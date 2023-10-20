@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { _COLORS,FONTFAMILY } from "../../../Themes/index";
+import { _COLORS, FONTFAMILY} from "../../../Themes/index";
 export const ReviewjobdetailsStyle = StyleSheet.create({
 
   Mainview: {
