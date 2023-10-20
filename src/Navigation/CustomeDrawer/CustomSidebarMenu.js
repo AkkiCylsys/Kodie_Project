@@ -18,7 +18,7 @@ const CustomSidebarMenu = (props) => {
     switch (data) {
       case "PropertyLinking":
         setselectedId("PropertyLinking");
-        props.navigation.navigate("BottomNav");
+        props.navigation.navigate("PropertyListings");
         break;
       case "RentalOffers":
         setselectedId("RentalOffers");
@@ -26,7 +26,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "vacantProperties":
         setselectedId("vacantProperties");
-        props.navigation.navigate("SearchUser");
+        props.navigation.navigate("VacantPropertiesList");
         break;
       case "Inspection":
         setselectedId("Inspection");
@@ -58,7 +58,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Partners":
         setselectedId("Partners");
-        props.navigation.navigate("StorageSettings");
+        props.navigation.navigate("Partners");
         break;
 
       default:

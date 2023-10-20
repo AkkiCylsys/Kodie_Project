@@ -115,4 +115,10 @@ export const LoginStyles = StyleSheet.create({
   eyeIcon: {
     padding: 10,
   },
+  loderview:{
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
 });

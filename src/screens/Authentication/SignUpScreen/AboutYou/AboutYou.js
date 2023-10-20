@@ -118,214 +118,183 @@ export default AboutYou = (props) => {
     );
   };
   return (
-    <View style={AboutYouStyle.mainContainer}>
-      <TopHeader
-        MiddleText={"Set up your Kodie account"}
-        onPressLeftButton={() => _goBack(props)}
-      />
-      <ScrollView>
-        <View style={AboutYouStyle.Container}>
-          <Text style={AboutYouStyle.heading_Text}>
-            {"Tell us more about you"}
-          </Text>
-          <Text style={AboutYouStyle.profile_Text}>{"Profile photo"}</Text>
-          <TouchableOpacity
-            style={AboutYouStyle.logoContainer}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-          >
-            <Image source={IMAGES.userIcons} style={AboutYouStyle.logo} />
-          </TouchableOpacity>
-          <Text style={AboutYouStyle.want_Heading}>
-            {
-              "How would you describe yourself? (you can select multiple options)"
-            }
-          </Text>
-          <View style={AboutYouStyle.servicesBoxView}>
-            <ServicesBox
-              Services_Name={"Tenant"}
-              BoxStyling={[
-                AboutYouStyle.box_style,
-                {
-                  backgroundColor: selectedServices["Tenant"]
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              textColor={[AboutYouStyle.box_Text_Style]}
-              onPress={() => toggleService("Tenant")}
-            />
-
-            <View style={AboutYouStyle.spaceView} />
-            <ServicesBox
-              Services_Name={"Landlord"}
-              BoxStyling={[
-                AboutYouStyle.box_style,
-                {
-                  backgroundColor: selectedServices["Landlord"]
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              textColor={[AboutYouStyle.box_Text_Style]}
-              onPress={() => toggleService("Landlord")}
-            />
-          </View>
-
-          <View style={AboutYouStyle.servicesBoxView}>
-            <ServicesBox
-              Services_Name={"Contractor"}
-              BoxStyling={[
-                AboutYouStyle.box_style,
-                {
-                  backgroundColor: selectedServices["Contractor"]
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              textColor={[AboutYouStyle.box_Text_Style]}
-              onPress={() => toggleService("Contractor")}
-            />
-
-            <View style={AboutYouStyle.spaceView} />
-            <ServicesBox
-              Services_Name={"Property Manager"}
-              BoxStyling={[
-                AboutYouStyle.box_style,
-                {
-                  backgroundColor: selectedServices["Property Manager"]
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              textColor={[AboutYouStyle.box_Text_Style]}
-              onPress={() => toggleService("Property Manager")}
-            />
-          </View>
-          <Text style={AboutYouStyle.want_Heading}>
-            {" How many properties do you own, manage or rent?"}
-          </Text>
-          <View style={AboutYouStyle.servicesBoxView}>
-            <ServicesBox
-              Services_Name={"1 - 3 properties"}
-              BoxStyling={[
-                AboutYouStyle.box_style,
-                {
-                  backgroundColor:
-                    isClick === 1
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              textColor={[AboutYouStyle.box_Text_Style]}
-              onPress={() => handleBoxPress(1)}
-            />
-
-            <View style={AboutYouStyle.spaceView} />
-            <ServicesBox
-              Services_Name={"4 - 10 properties"}
-              BoxStyling={[
-                AboutYouStyle.box_style,
-                {
-                  backgroundColor:
-                    isClick === 2
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              textColor={[AboutYouStyle.box_Text_Style]}
-              onPress={() => handleBoxPress(2)}
-            />
-          </View>
-
-          <View style={AboutYouStyle.servicesBoxView}>
-            <ServicesBox
-              Services_Name={"10 - 20 properties"}
-              BoxStyling={[
-                AboutYouStyle.box_style,
-                {
-                  backgroundColor:
-                    isClick === 3
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              textColor={[AboutYouStyle.box_Text_Style]}
-              onPress={() => handleBoxPress(3)}
-            />
-
-            <View style={AboutYouStyle.spaceView} />
-            <ServicesBox
-              Services_Name={"> 20 properties"}
-              BoxStyling={[
-                AboutYouStyle.box_style,
-                {
-                  backgroundColor:
-                    isClick === 4
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              textColor={[AboutYouStyle.box_Text_Style]}
-              onPress={() => handleBoxPress(4)}
-            />
-          </View>
-          <Text style={AboutYouStyle.want_Heading}>
-            {"What do you want to do first with Kodie"}
-          </Text>
-
-          <FlatList
-            data={List}
-            scrollEnabled
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
-            renderItem={wantList}
+    <ScrollView>
+      <View style={AboutYouStyle.Container}>
+        <Text style={AboutYouStyle.heading_Text}>
+          {"Tell us more about you"}
+        </Text>
+        <Text style={AboutYouStyle.profile_Text}>{"Profile photo"}</Text>
+        <TouchableOpacity
+          style={AboutYouStyle.logoContainer}
+          onPress={() => {
+            refRBSheet.current.open();
+          }}
+        >
+          <Image source={IMAGES.userIcons} style={AboutYouStyle.logo} />
+        </TouchableOpacity>
+        <Text style={AboutYouStyle.want_Heading}>
+          {"How would you describe yourself? (you can select multiple options)"}
+        </Text>
+        <View style={AboutYouStyle.servicesBoxView}>
+          <ServicesBox
+            Services_Name={"Tenant"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor: selectedServices["Tenant"]
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => toggleService("Tenant")}
           />
-          <View>
-            <CustomSingleButton
-              _ButtonText={"Next"}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              onPress={() => {
-                props.navigation.navigate("FirstProperty");
-              }}
-            />
-            <CustomSingleButton
-              _ButtonText={"Fill these details out later"}
-              Text_Color={_COLORS.Kodie_BlackColor}
-              backgroundColor={_COLORS.Kodie_WhiteColor}
-            />
-          </View>
-          <View style={AboutYouStyle.goBack_View}>
-            <TouchableOpacity style={AboutYouStyle.backIcon}>
-              <Ionicons
-                name="chevron-back"
-                size={22}
-                color={_COLORS.Kodie_MediumGrayColor}
-              />
-            </TouchableOpacity>
-            <Text style={AboutYouStyle.goBack_Text}>{"Go back"}</Text>
-          </View>
-          <RBSheet
-            ref={refRBSheet}
-            closeOnDragDown={true}
-            closeOnPressMask={false}
-            height={200}
-            customStyles={{
-              wrapper: {
-                backgroundColor: "transparent",
+
+          <View style={AboutYouStyle.spaceView} />
+          <ServicesBox
+            Services_Name={"Landlord"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor: selectedServices["Landlord"]
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
               },
-              draggableIcon: {
-                backgroundColor: _COLORS.Kodie_LightGrayColor,
-              },
-              container: AboutYouStyle.bottomModal_container,
-            }}
-          >
-            <UploadImageData heading_Text={"Upload image"} />
-          </RBSheet>
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => toggleService("Landlord")}
+          />
         </View>
-      </ScrollView>
-    </View>
+
+        <View style={AboutYouStyle.servicesBoxView}>
+          <ServicesBox
+            Services_Name={"Contractor"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor: selectedServices["Contractor"]
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => toggleService("Contractor")}
+          />
+
+          <View style={AboutYouStyle.spaceView} />
+          <ServicesBox
+            Services_Name={"Property Manager"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor: selectedServices["Property Manager"]
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => toggleService("Property Manager")}
+          />
+        </View>
+        <Text style={AboutYouStyle.want_Heading}>
+          {" How many properties do you own, manage or rent?"}
+        </Text>
+        <View style={AboutYouStyle.servicesBoxView}>
+          <ServicesBox
+            Services_Name={"1 - 3 properties"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor:
+                  isClick === 1
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => handleBoxPress(1)}
+          />
+
+          <View style={AboutYouStyle.spaceView} />
+          <ServicesBox
+            Services_Name={"4 - 10 properties"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor:
+                  isClick === 2
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => handleBoxPress(2)}
+          />
+        </View>
+
+        <View style={AboutYouStyle.servicesBoxView}>
+          <ServicesBox
+            Services_Name={"10 - 20 properties"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor:
+                  isClick === 3
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => handleBoxPress(3)}
+          />
+
+          <View style={AboutYouStyle.spaceView} />
+          <ServicesBox
+            Services_Name={"> 20 properties"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor:
+                  isClick === 4
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => handleBoxPress(4)}
+          />
+        </View>
+        <Text style={AboutYouStyle.want_Heading}>
+          {"What do you want to do first with Kodie"}
+        </Text>
+
+        <FlatList
+          data={List}
+          scrollEnabled
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{}}
+          keyExtractor={(item) => item?.id}
+          renderItem={wantList}
+        />
+
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          height={200}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "transparent",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: AboutYouStyle.bottomModal_container,
+          }}
+        >
+          <UploadImageData heading_Text={"Upload image"} />
+        </RBSheet>
+      </View>
+    </ScrollView>
   );
 };

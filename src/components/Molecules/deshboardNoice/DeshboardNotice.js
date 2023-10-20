@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity } from "react-native";
 import ProgressBar from "react-native-progress/Bar";
 import { _COLORS } from "../../../Themes";
 import { DeshBoardNoticeCss } from "./DeshboardNoticeCss";
-
-const DeshboardNotice = () => {
+import Entypo from "react-native-vector-icons/Entypo";
+const DeshboardNotice = (props) => {
   const [progress, setProgress] = useState(0.4);
 
   const handlePress = () => {
@@ -14,6 +14,12 @@ const DeshboardNotice = () => {
   return (
     <>
       <View style={DeshBoardNoticeCss.MainView}>
+        <TouchableOpacity
+          onPress={props._closeButton}
+          style={DeshBoardNoticeCss.crossview}
+        >
+          <Entypo name="cross" size={20} color={_COLORS.Kodie_WhiteColor} />
+        </TouchableOpacity>
         <View style={DeshBoardNoticeCss.progressView}>
           <Text style={DeshBoardNoticeCss.progressText}>
             {(progress * 100).toFixed(0)}% complete, nice work!
@@ -28,9 +34,9 @@ const DeshboardNotice = () => {
           <Text style={DeshBoardNoticeCss.profileText}>
             We are happy to have you on board. You have almost completed your
             profile set up.
-            <TouchableOpacity>
+            <TouchableOpacity >
               <Text style={DeshBoardNoticeCss.continueText}>
-                Top to continue
+                Tap to continue
               </Text>
             </TouchableOpacity>
           </Text>

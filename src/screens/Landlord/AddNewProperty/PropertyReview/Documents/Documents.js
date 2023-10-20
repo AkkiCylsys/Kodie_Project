@@ -15,21 +15,27 @@ import CustomSingleButton from "../../../../../components/Atoms/CustomButton/Cus
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
+import CustomDropdown from "../../../../../components/Molecules/CustomDropdown/CustomDropdown";
 
 const Property_documents = [
-  { label: "Pre + post inspection reports", value: "1" },
-  { label: "Property images", value: "2" },
-  { label: "Property floor plan", value: "3" },
+  "All",
+  "Pre+post inspection reports",
+  "Property images",
+  "Property floor plan",
 ];
+
 const Lease_documents = [
-  { label: "Rental invoices", value: "1" },
-  { label: "Lease agreement", value: "2" },
-  { label: "Expense bills", value: "3" },
+  "All",
+  "Rental invoices",
+  "Lease agreement",
+  "Expense bills",
 ];
+
 const Tenant_documents = [
-  { label: "Tenant screening report", value: "1" },
-  { label: "Copy of ID without photo", value: "2" },
-  { label: "Copy of ID with photo", value: "3" },
+  "All",
+  "Tenant screening report",
+  "Copy of ID without photo",
+  "Copy of ID with photo",
 ];
 const data = [
   {
@@ -48,6 +54,14 @@ const data = [
     pdfSize: "2.2MB",
   },
 ];
+
+// ----data come from dropdown and define these condition
+const handleApply = (selectedOptions) => {
+  console.log("Clear Action");
+};
+const handleClear = () => {
+  console.log("Clear Action");
+};
 export default Documents = () => {
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
@@ -96,26 +110,19 @@ export default Documents = () => {
             <Text style={LABEL_STYLES.commontext}>
               {"Select type of document"}
             </Text>
-            <Dropdown
-              style={DocumentsStyle.dropdown}
-              placeholderStyle={[
-                DocumentsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
-              ]}
-              selectedTextStyle={DocumentsStyle.selectedTextStyle}
-              inputSearchStyle={DocumentsStyle.inputSearchStyle}
-              iconStyle={DocumentsStyle.iconStyle}
-              data={Property_documents}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Property documents"
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
-            />
+
+            <View>
+              <CustomDropdown
+                data={Property_documents}
+                placeholdertext="Property documents"
+                onApply={handleApply}
+                onClear={handleClear}
+                btnview={true}
+              />
+            </View>
+
           </View>
+
           <FlatList
             data={data}
             scrollEnabled
@@ -126,47 +133,25 @@ export default Documents = () => {
           />
 
           <View>
-            <Dropdown
-              style={DocumentsStyle.dropdown}
-              placeholderStyle={[
-                DocumentsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
-              ]}
-              selectedTextStyle={DocumentsStyle.selectedTextStyle}
-              inputSearchStyle={DocumentsStyle.inputSearchStyle}
-              iconStyle={DocumentsStyle.iconStyle}
+            <CustomDropdown
               data={Lease_documents}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Lease documents"
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
+              placeholdertext="Lease documents"
+              onApply={handleApply}
+              onClear={handleClear}
+              btnview={true}
             />
           </View>
+
           <View>
-            <Dropdown
-              style={DocumentsStyle.dropdown}
-              placeholderStyle={[
-                DocumentsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
-              ]}
-              selectedTextStyle={DocumentsStyle.selectedTextStyle}
-              inputSearchStyle={DocumentsStyle.inputSearchStyle}
-              iconStyle={DocumentsStyle.iconStyle}
+            <CustomDropdown
               data={Tenant_documents}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Tenant documents"
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
+              placeholdertext="Tenant documents"
+              onApply={handleApply}
+              onClear={handleClear}
+              btnview={true}
             />
           </View>
+
           <View>
             <Dropdown
               style={DocumentsStyle.dropdown}

@@ -1,18 +1,14 @@
 import { StyleSheet } from "react-native";
-import { _COLORS,FONTFAMILY } from "../../../../Themes";
+import { _COLORS, FONTFAMILY } from "../../../../Themes";
 export const AccountStyle = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: _COLORS.Kodie_WhiteColor,
-  },
   headingView: {
     marginHorizontal: 16,
-    marginTop:10
+    marginTop: 10,
   },
-  heading:{
-    color:_COLORS.Kodie_BlackColor,
-    fontSize:24,
-    fontFamily:FONTFAMILY.K_Bold
+  heading: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 24,
+    fontFamily: FONTFAMILY.K_Bold,
   },
   card: {
     width: "100%",
@@ -43,10 +39,10 @@ export const AccountStyle = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 6,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    // shadowColor: _COLORS.Kodie_LightWhiteColor,
+    // shadowOffset: { width: 0, height: 1 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 1,
   },
   locationInput: {
     flex: 1,
@@ -54,7 +50,7 @@ export const AccountStyle = StyleSheet.create({
     paddingHorizontal: 10,
   },
   locationIcon: {
-    marginLeft: 15,
+    marginLeft: 10,
   },
   dropdown: {
     borderWidth: 1,
@@ -79,18 +75,17 @@ export const AccountStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
   },
-  org_desc:{
-    fontSize:16,
-    color:_COLORS.Kodie_ExtraminLiteGrayColor,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    marginBottom:24
+  org_desc: {
+    fontSize: 16,
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginBottom: 24,
   },
   goBack_View: {
     flexDirection: "row",
@@ -104,8 +99,13 @@ export const AccountStyle = StyleSheet.create({
     marginLeft: 5,
   },
   backIcon: {
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
+  },
+  progresBar: {
+    backgroundColor: _COLORS.Kodie_GrayColor,
+    alignSelf: "center",
+    borderColor: _COLORS.Kodie_GrayColor,
   },
 });

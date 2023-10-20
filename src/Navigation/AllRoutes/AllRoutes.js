@@ -84,16 +84,23 @@ import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
 import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
 import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
 import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
+import SignUpSteps from "../../screens/Authentication/SignUpScreen/SignUpSteps/SignUpSteps";
+import Notices from "../../screens/NotiesList/Notices/Notices";
+import Reports from "../../screens/Reports/Reports";
+import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport";
+import Partners from "../../screens/Partners/Partners";
+import PropertyListings from "../../screens/PropertyListings/PropertyListings";
+import VacantPropertiesList from "../../screens/VacantProperties/VacantPropertiesList";
 import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
 import Contractors1 from "../../screens/Managingcontractors/Contractors1";
 import Contractors2 from "../../screens/Managingcontractors/Contractors2";
 import Contractors3 from "../../screens/Managingcontractors/Contractors3";
-import Reviewjobdetails1 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails1";
-import Reviewjobdetails2 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails2";
-import Reviewjobdetails3 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails3";
-import CompletedJobs from "../../screens/CreateJob/Reviewjobdetails/CompletedJobs";
-import Ratingandfeedback from "../../screens/CreateJob/Reviewjobdetails/Ratingandfeedback";
+import Reviewjobdetails1 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails1";
+import Reviewjobdetails2 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails2";
+import Reviewjobdetails3 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails3";
+import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
+import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
 import EditDashboard from "../../screens/Dashboard/EditDashboard";
 
 const Tab = createBottomTabNavigator();
@@ -533,8 +540,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"Account"}
-          component={Account}
+          name={"SignUpSteps"}
+          component={SignUpSteps}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -725,11 +732,11 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
 
-        <Stack.Screen
+        {/* <Stack.Screen
           name={"ScheduleMeeting"}
           component={ScheduleMeeting}
           options={{ headerShown: false }}
-        />
+        /> */}
 
         <Stack.Screen
           name={"JobDetails"}
@@ -748,19 +755,40 @@ const AllStackRouts = (props) => {
           component={PaymentMethod}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
-          name={"Reviewjobdetails"}
-          component={Reviewjobdetails}
-          options={{ headerShown: false }}
-        /> */}
+
         <Stack.Screen
-          name={"ContractorDashboard"}
-          component={ContractorDashboard}
+          name={"Notices"}
+          component={Notices}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
-          name={"LinkedDevice"}
-          component={LinkedDevice}
+          name={"Reports"}
+          component={Reports}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"GenerateReport"}
+          component={GenerateReport}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"Partners"}
+          component={Partners}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"PropertyListings"}
+          component={PropertyListings}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"VacantPropertiesList"}
+          component={VacantPropertiesList}
           options={{ headerShown: false }}
         />
         <Stack.Screen

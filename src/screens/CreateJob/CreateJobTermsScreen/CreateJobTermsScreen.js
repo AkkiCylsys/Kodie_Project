@@ -28,7 +28,7 @@ export default CreateJobTermsScreen = (props) => {
   const [value, setValue] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
-
+ 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
