@@ -120,5 +120,6 @@ export const LoginStyles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  error_text: {color: 'red', marginLeft: 10},
 
 });

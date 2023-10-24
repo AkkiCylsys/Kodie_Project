@@ -30,7 +30,9 @@ import {
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 export default Login = (props) => {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [newpassword, setNewPassword] = useState("");
   const [Resetpassword, setResetpassword] = useState("");
   const [isClick, setIsClick] = useState(0);
@@ -115,6 +117,44 @@ export default Login = (props) => {
       });
   };
 
+  const validateEmail = email => {
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailPattern.test(email);
+  };
+
+  const handleEmailChange = text => {
+    setEmail(text);
+    if (text.trim() === '') {
+      setEmailError('Email is required');
+    } else if (!validateEmail(text)) {
+      setEmailError('Hold on, this email appears to be invalid. Please enter a valid email address.');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  // const handlePasswordChange = text => {
+  //   setPassword(text);
+  //   if (text.trim() === '') {
+  //     setPasswordError('Password is required');
+  //   } else {
+  //     setPasswordError('');
+  //   }
+  // };
+
+  const handleSubmit = () => {
+    if (email.trim() === '') {
+      setEmailError('Email is required');
+    } else if (!validateEmail(email)) {
+      setEmailError('Hold on, this email appears to be invalid. Please enter a valid email address.');
+    } else if (password.trim() === '') {
+      setPasswordError('Hmm, it seems like the password you entered is invalid. Please try again.');
+    } else {
+      makeApiLogin();
+    }
+  };
+
+
   return (
     <View style={LoginStyles.container}>
       <ScrollView>
@@ -130,22 +170,29 @@ export default Login = (props) => {
                 style={LoginStyles.input}
                 value={email}
                 onChangeText={setEmail}
+                onBlur={()=>handleEmailChange(email)}
                 placeholder="Your email address"
                 placeholderTextColor="#999"
               />
             </View>
-
+            {emailError ? (
+            <Text style={LoginStyles.error_text}>{emailError}</Text>
+          ) : null}
             <View style={LoginStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>Password</Text>
               <TextInput
                 style={LoginStyles.input}
                 value={password}
                 onChangeText={setPassword}
+                // onBlur={()=>{handlePasswordChange(password)}}
                 placeholder="Enter password"
                 placeholderTextColor="#999"
                 secureTextEntry
               />
             </View>
+            {passwordError ? (
+            <Text style={LoginStyles.error_text}>{passwordError}</Text>
+          ) : null}
             <TouchableOpacity
               onPress={() => {
                 refRBSheet.current.open();
@@ -155,7 +202,7 @@ export default Login = (props) => {
             </TouchableOpacity>
 
             <CustomSingleButton
-              onPress={makeApiLogin}
+              onPress={handleSubmit}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />
