@@ -80,6 +80,8 @@ export default Dashboard = (props) => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
+
+
   const Income_render = ({ item, index }) => {
     return (
       <>
@@ -386,7 +388,7 @@ export default Dashboard = (props) => {
       {/* RBSheet 2 define here */}
       <RBSheet
         ref={refRBSheet2}
-        height={420}
+        height={450}
         closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{
@@ -399,7 +401,7 @@ export default Dashboard = (props) => {
           container: DashboardStyle.bottomModal_container,
         }}
       >
-        <SelectDate />
+        <SelectDate  />
       </RBSheet>
     </View>
   );

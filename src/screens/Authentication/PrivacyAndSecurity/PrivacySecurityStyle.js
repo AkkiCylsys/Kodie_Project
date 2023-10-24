@@ -55,7 +55,7 @@ export const PrivacySecurityStyle = StyleSheet.create({
     flexDirection: "row",
   },
   icon:{
-    marginLeft:20,
+    marginLeft:2,
   },
   text3:{
     color:_COLORS.Kodie_ExtraminLiteGrayColor,
