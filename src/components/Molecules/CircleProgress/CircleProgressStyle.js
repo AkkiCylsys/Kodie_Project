@@ -6,7 +6,7 @@ export const CircleProgressStyle = StyleSheet.create({
     backgroundColor:_COLORS.Kodie_WhiteColor
   },
   mainview: {
-    width: 325,
+    width: '100%',
     height: 75,
     borderWidth: 0.5,
     borderRadius: 12,
