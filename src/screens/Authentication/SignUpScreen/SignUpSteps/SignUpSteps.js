@@ -10,6 +10,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _COLORS } from "../../../../Themes";
+import { _goBack } from "../../../../services/CommonServices";
 import Account from "../Account/Account";
 import ProgressBar from "react-native-progress/Bar";
 import AboutYou from "../AboutYou/AboutYou";
@@ -188,16 +189,16 @@ const SignUpSteps = (props) => {
                     backgroundColor={_COLORS.Kodie_WhiteColor}
                   />
 
-                  <View style={SignUpStepStyle.goBack_View}>
-                    <TouchableOpacity style={SignUpStepStyle.backIcon}>
+                  <TouchableOpacity style={SignUpStepStyle.goBack_View}>
+                    <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
                         name="chevron-back"
                         size={22}
                         color={_COLORS.Kodie_MediumGrayColor}
                       />
-                    </TouchableOpacity>
+                    </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                  </View>
+                  </TouchableOpacity>
                 </>
               ) : null}
             </View>

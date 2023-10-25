@@ -29,38 +29,38 @@ export default SignUp = (props) => {
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-const handleSignUp = () => {
-  fetch("https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: email,
-      password: password,
-      is_term_condition: 1,
-      is_privacy_policy: 1,
-    }),
-    timeout: 10000,
-  })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.success) {
-        props.navigation.navigate("Login");
-      } else {
-        alert("Signup failed. Please try again.");
-      }
-    })
-    .catch(error => {
-      console.error("Signup error:", error);
-      alert("Network request timed out. Please check your connection or try again later.");
-    });
-  }  
+// const handleSignUp = () => {
+//   fetch("https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/signup", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       email: email,
+//       password: password,
+//       is_term_condition: 1,
+//       is_privacy_policy: 1,
+//     }),
+//     timeout: 10000,
+//   })
+//     .then(response => {
+//       if (!response.ok) {
+//         throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
+//       }
+//       return response.json();
+//     })
+//     .then(data => {
+//       if (data.success) {
+//         props.navigation.navigate("Login");
+//       } else {
+//         alert("Signup failed. Please try again.");
+//       }
+//     })
+//     .catch(error => {
+//       console.error("Signup error:", error);
+//       alert("Network request timed out. Please check your connection or try again later.");
+//     });
+//   }  
 
  
 return (
@@ -184,7 +184,10 @@ return (
           <CustomSingleButton
             _ButtonText={"Sign up now"}
             Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={handleSignUp}
+            // onPress={handleSignUp}
+            onPress={() => {
+              props.navigation.navigate("SignUpVerification");
+            }}
           />
           <DividerIcon
             DeviderText={"or"}
