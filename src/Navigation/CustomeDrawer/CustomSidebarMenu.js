@@ -54,7 +54,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Reports":
         setselectedId("Reports");
-        props.navigation.navigate("TenantSignupScreen");
+        props.navigation.navigate("Reports");
         break;
       case "Partners":
         setselectedId("Partners");
