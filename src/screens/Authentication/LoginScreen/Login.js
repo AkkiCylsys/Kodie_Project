@@ -30,8 +30,17 @@ import {
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 export default Login = (props) => {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetEmailError, setResetEmailError] = useState("");
+  const [verificationcode, setVerificationcode] = useState("");
+  const [verificationcodeError, setVerificationcodeError] = useState("");
   const [newpassword, setNewPassword] = useState("");
+  const [newpasswordError, setNewPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [Resetpassword, setResetpassword] = useState("");
   const [isClick, setIsClick] = useState(0);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -66,10 +75,61 @@ export default Login = (props) => {
   const handleToggleResetPassword = () => {
     setShowResetPassword((prevShowPassword) => !prevShowPassword);
   };
+  // Reset validation..
+
+  const handleforgetValidation = () => {
+    if (resetEmail.trim() === "") {
+      setResetEmailError("Email is required!");
+    } else {
+      setIsClick(isClick + 1);
+    }
+  };
+  const validateResetEmail = (resetEmail) => {
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailPattern.test(resetEmail);
+  };
+
+  const handleResetEmailChange = (text) => {
+    setResetEmail(text);
+    if (text.trim() === "") {
+      setResetEmailError("Email is required");
+    } else if (!validateResetEmail(text)) {
+      setResetEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else {
+      setResetEmailError("");
+    }
+  };
+  const handleverificationcodes = () => {
+    if (verificationcode.trim() === "") {
+      setVerificationcodeError("Please enter verification code");
+    } else {
+      setIsClick(isClick + 1);
+    }
+  };
+  const handleResetpasswordCheck = () => {
+    if (newpassword.trim() === "") {
+      setNewPasswordError("Please create a new password");
+    } else if (confirmPassword.trim() === "") {
+      setConfirmPasswordError("Please enter a confirmation password");
+    } else if (newpassword !== confirmPassword) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError(""); // Clear the error message
+      setIsClick(isClick + 1);
+    }
+  };
 
   const handleButtonPress = () => {
     if (isClick === 3) {
       refRBSheet.current.close();
+    } else if (isClick === 0) {
+      handleforgetValidation();
+    } else if (isClick === 1) {
+      handleverificationcodes();
+    } else if (isClick === 2) {
+      handleResetpasswordCheck();
     } else {
       // setIsClick((prev) => (prev + 1) % 4);
       setIsClick(isClick + 1);
@@ -80,7 +140,8 @@ export default Login = (props) => {
     // -----loading set true here
     setIsLoading(true);
     const url =
-      "https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/login";
+      // "https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/login";
+      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/login";
     fetch(url, {
       method: "POST",
       headers: {
@@ -101,8 +162,111 @@ export default Login = (props) => {
           setIsAuthenticated(true);
           props.navigation.navigate("DrawerNavigstorLeftMenu");
         } else {
-          alert("Please check your email and password.");
+          // alert("Please check your email and password.");
+          setPasswordError(
+            "Hmm, it seems like the credential you entered is invalid. Please try again."
+          );
           setIsAuthenticated(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsAuthenticated(false);
+      })
+      // loding
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const validateEmail = (email) => {
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailPattern.test(email);
+  };
+
+  const handleEmailChange = (text) => {
+    setEmail(text);
+    if (text.trim() === "") {
+      setEmailError("Email is required");
+    } else if (!validateEmail(text)) {
+      setEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    if (text.trim() === "") {
+      setPasswordError("Password is required");
+    } else {
+      setPasswordError("");
+    }
+  };
+  const handleNewPassword = (text) => {
+    setNewPassword(text);
+    if (text.trim() === "") {
+      setNewPasswordError("New Password is required");
+    } else {
+      setNewPasswordError("");
+    }
+  };
+  const handleConfirmpassword = (text) => {
+    setConfirmPassword(text);
+    if (text.trim() === "") {
+      setConfirmPasswordError("Please enter a confirmation password");
+    } else if (newpassword !== text) {
+      setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError(""); // Clear the error message
+    }
+  };
+  const handleSubmit = () => {
+    if (email.trim() === "") {
+      setEmailError("Email is required!");
+    } else if (!validateEmail(email)) {
+      setEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else if (password.trim() === "") {
+      setPasswordError("Password is required");
+    } else {
+      makeApiLogin();
+    }
+  };
+
+  const handleverificationCode = (text) => {
+    setVerificationcode(text);
+    if (text.trim() === "") {
+      setVerificationcodeError("verification code is required");
+    } else {
+      setVerificationcodeError("");
+    }
+  };
+
+  const forgetPassword = () => {
+    // -----loading set true here
+    setIsLoading(true);
+    const url =
+      "https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/login";
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("API Response:", result);
+        if (result) {
+          setIsClick(isClick + 1);
+        } else {
+          alert("verification code is not send");
         }
       })
       .catch((error) => {
@@ -127,25 +291,48 @@ export default Login = (props) => {
             <View style={LoginStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
               <TextInput
-                style={LoginStyles.input}
+                style={[
+                  LoginStyles.input,
+                  {
+                    borderColor: emailError
+                      ? _COLORS.Kodie_lightRedColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
+                ]}
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={handleEmailChange}
+                onBlur={() => handleEmailChange(email)}
                 placeholder="Your email address"
                 placeholderTextColor="#999"
               />
             </View>
-
+            {emailError ? (
+              <Text style={LoginStyles.error_text}>{emailError}</Text>
+            ) : null}
             <View style={LoginStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>Password</Text>
               <TextInput
-                style={LoginStyles.input}
+                style={[
+                  LoginStyles.input,
+                  {
+                    borderColor: passwordError
+                      ? _COLORS.Kodie_lightRedColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
+                ]}
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={handlePasswordChange}
+                onBlur={() => {
+                  handlePasswordChange(password);
+                }}
                 placeholder="Enter password"
                 placeholderTextColor="#999"
                 secureTextEntry
               />
             </View>
+            {passwordError ? (
+              <Text style={LoginStyles.error_text}>{passwordError}</Text>
+            ) : null}
             <TouchableOpacity
               onPress={() => {
                 refRBSheet.current.open();
@@ -155,7 +342,7 @@ export default Login = (props) => {
             </TouchableOpacity>
 
             <CustomSingleButton
-              onPress={makeApiLogin}
+              onPress={handleSubmit}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />
@@ -197,7 +384,6 @@ export default Login = (props) => {
           </View>
         </View>
       </ScrollView>
-
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -236,13 +422,24 @@ export default Login = (props) => {
                   Enter your email address
                 </Text>
                 <TextInput
-                  style={LoginStyles.input}
-                  value={email}
-                  onChangeText={setEmail}
+                  style={[
+                    LoginStyles.input,
+                    {
+                      borderColor: resetEmailError
+                        ? _COLORS.Kodie_lightRedColor
+                        : _COLORS.Kodie_GrayColor,
+                    },
+                  ]}
+                  value={resetEmail}
+                  onChangeText={handleResetEmailChange}
+                  onBlur={() => handleResetEmailChange(resetEmail)}
                   placeholder="Your Email Address"
                   placeholderTextColor="#999"
                 />
               </View>
+              {resetEmailError ? (
+                <Text style={LoginStyles.error_text}>{resetEmailError}</Text>
+              ) : null}
             </>
           )}
           {isClick === 1 && (
@@ -251,10 +448,12 @@ export default Login = (props) => {
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
                   style={LoginStyles.input}
-                  value={email}
-                  onChangeText={setEmail}
+                  value={resetEmail}
+                  // onChangeText={handleEmailChange}
+                  // onBlur={() => handleEmailChange(email)}
                   placeholder="Your Email Address"
                   placeholderTextColor="#999"
+                  editable={false}
                 />
               </View>
               <View style={LoginStyles.varifycode}>
@@ -263,9 +462,17 @@ export default Login = (props) => {
                     Verification code
                   </Text>
                   <TextInput
-                    style={LoginStyles.input}
-                    value={email}
-                    onChangeText={setEmail}
+                    style={[
+                      LoginStyles.input,
+                      {
+                        borderColor: verificationcodeError
+                          ? _COLORS.Kodie_lightRedColor
+                          : _COLORS.Kodie_GrayColor,
+                      },
+                    ]}
+                    value={verificationcode}
+                    onChangeText={handleverificationCode}
+                    onBlur={() => handleverificationCode(verificationcode)}
                     placeholder="code"
                     placeholderTextColor="#999"
                   />
@@ -275,6 +482,11 @@ export default Login = (props) => {
                   <Text style={LoginStyles.getButton}>Get</Text>
                 </View>
               </View>
+              {verificationcodeError ? (
+                <Text style={LoginStyles.error_text}>
+                  {verificationcodeError}
+                </Text>
+              ) : null}
             </>
           )}
           {isClick === 2 && (
@@ -286,12 +498,14 @@ export default Login = (props) => {
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
                   style={LoginStyles.input}
-                  value={email}
-                  onChangeText={setEmail}
+                  value={resetEmail}
+                  // onChangeText={handleEmailChange}
+                  // onBlur={() => handleEmailChange(email)}
                   placeholder="Your Email Address"
                   placeholderTextColor="#999"
                 />
               </View>
+
               <View style={LoginStyles.varifycode}>
                 <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
                   <Text style={LABEL_STYLES._texinputLabel}>
@@ -299,28 +513,46 @@ export default Login = (props) => {
                   </Text>
                   <TextInput
                     style={LoginStyles.input}
-                    value={email}
-                    onChangeText={setEmail}
+                    value={verificationcode}
+                    onChangeText={handleverificationCode}
+                    onBlur={() => handleverificationCode(verificationcode)}
                     placeholder="code"
                     placeholderTextColor="#999"
+                    editable={false}
                   />
                 </View>
+
                 <View style={LoginStyles.codeMargin} />
                 <View style={LoginStyles.getButtonView}>
                   <Text style={LoginStyles.getButton}>Get</Text>
                 </View>
               </View>
+              {verificationcodeError ? (
+                <Text style={LoginStyles.error_text}>
+                  {verificationcodeError}
+                </Text>
+              ) : null}
               <View style={LoginStyles.inputContainer}>
                 <Text
                   style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}
                 >
                   New password
                 </Text>
-                <View style={LoginStyles.passwordContainer}>
+                <View
+                  style={[
+                    LoginStyles.passwordContainer,
+                    {
+                      borderColor: newpasswordError
+                        ? _COLORS.Kodie_lightRedColor
+                        : _COLORS.Kodie_GrayColor,
+                    },
+                  ]}
+                >
                   <TextInput
                     style={LoginStyles.passwordInput}
                     value={newpassword}
-                    onChangeText={setNewPassword}
+                    onChangeText={handleNewPassword}
+                    onBlur={() => handleNewPassword(newpassword)}
                     placeholder="Password"
                     secureTextEntry={!showNewPassword}
                   />
@@ -333,6 +565,9 @@ export default Login = (props) => {
                     />
                   </TouchableOpacity>
                 </View>
+                {newpasswordError ? (
+                  <Text style={LoginStyles.error_text}>{newpasswordError}</Text>
+                ) : null}
               </View>
               <View style={LoginStyles.inputContainer}>
                 <Text
@@ -340,11 +575,16 @@ export default Login = (props) => {
                 >
                   Confirm password
                 </Text>
-                <View style={LoginStyles.passwordContainer}>
+                <View style={[LoginStyles.passwordContainer,{
+                      borderColor: confirmPasswordError
+                        ? _COLORS.Kodie_lightRedColor
+                        : _COLORS.Kodie_GrayColor,
+                    },]}>
                   <TextInput
                     style={LoginStyles.passwordInput}
-                    value={Resetpassword}
-                    onChangeText={setResetpassword}
+                    value={confirmPassword}
+                    onChangeText={handleConfirmpassword}
+                    onBlur={() => handleConfirmpassword(confirmPassword)}
                     placeholder="Password"
                     secureTextEntry={!showResetPassword}
                   />
@@ -359,6 +599,11 @@ export default Login = (props) => {
                     />
                   </TouchableOpacity>
                 </View>
+                {confirmPasswordError ? (
+                  <Text style={LoginStyles.error_text}>
+                    {confirmPasswordError}
+                  </Text>
+                ) : null}
               </View>
             </ScrollView>
           )}

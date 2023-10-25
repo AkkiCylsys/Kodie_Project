@@ -140,7 +140,7 @@ const property_List2 = [
   },
 ];
 
-export default PropertyList = (props) => {
+const PropertyList = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
   const refRBSheet = useRef();
@@ -555,3 +555,5 @@ export default PropertyList = (props) => {
     </View>
   );
 };
+
+export default PropertyList;

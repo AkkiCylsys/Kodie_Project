@@ -18,8 +18,6 @@ export const ChatStyle = StyleSheet.create({
   },
   bindtextview: {
     marginLeft: 15,
-    alignItems:'center',
-    flexDirection:'row'
   },
   headingtext: {
     fontSize: 16,

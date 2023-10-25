@@ -82,9 +82,9 @@ export const IMAGES = {
   Duplicate: require("../../assets/icons/Duplicate.png"),
   lock: require("../../assets/icons/lock.png"),
   // common images
-  Share: require("../../assets/images/Common/Share.png"),
+  Share : require('../../assets/images/Common/Share.png'),
 
-  rightarrow: require("../../assets/icons/rightarrow.png"),
+  rightarrow: require("../../assets/icons/RightArrowcopy.png"),
   HelpCentre: require("../../assets/icons/HelpCentre.png"),
   ContactUs: require("../../assets/images/Common/ContactUs.png"),
   TermsandPolicy: require("../../assets/images/Common/TermsandPolicy.png"),
@@ -149,6 +149,16 @@ export const IMAGES = {
   AddNoticeReminder: require("../../assets/icons/AddNoticeReminder.png"),
   CreateNewJob: require("../../assets/icons/CreateNewJob.png"),
   PropertyListing: require("../../assets/icons/PropertyListing.png"),
+  RentalOffers : require('../../assets/icons/RentalOffers.png'),
+  vacantProperties : require('../../assets/icons/vacantProperties.png'),
+  Inspections : require('../../assets/icons/Inspections.png'),
+  Tenants : require('../../assets/icons/Tenants.png'),
+  Maintenancejobs : require('../../assets/icons/Maintenancejobs.png'),
+  ContractorDrawer : require('../../assets/icons/ContractorDrawer.png'),
+  Noticesreminders : require('../../assets/icons/Notices&reminders.png'),
+  DocumentDrawer : require('../../assets/icons/DocumentDrawer.png'),
+  Reports : require('../../assets/icons/Reports.png'),
+  Partner : require('../../assets/icons/Partner.png'),
 };
 
 export const BANNERS = {

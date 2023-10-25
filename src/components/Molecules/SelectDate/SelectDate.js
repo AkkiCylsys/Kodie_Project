@@ -55,6 +55,9 @@ const SelectDate = (props) => {
   const toggleclose = () => {
     setClose(!close);
   };
+  const togglecustomrange = () => {
+    updateRBSheetHeight(750); // Call the callback to update the RBSheet height
+  };
   return (
     <View >
       <View style={SelectDateStyle.headingview}>

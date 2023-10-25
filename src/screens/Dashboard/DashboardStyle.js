@@ -251,4 +251,5 @@ export const DashboardStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
+
 });

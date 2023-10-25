@@ -40,13 +40,11 @@ export default PropertyDetails = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Add new property"}
       />
-    <ScrollView>
-      <View style={PropertyDetailsStyle.headingView}>
-        <Text style={PropertyDetailsStyle.heading}>
-          {"Property details"}
-        </Text>
-      </View>
-    
+      <ScrollView>
+        <View style={PropertyDetailsStyle.headingView}>
+          <Text style={PropertyDetailsStyle.heading}>{"Property details"}</Text>
+        </View>
+
         <View style={PropertyDetailsStyle.card}>
           <View style={PropertyDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
@@ -138,16 +136,19 @@ export default PropertyDetails = (props) => {
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
           </View>
-          <View style={PropertyDetailsStyle.goBack_View}>
-            <TouchableOpacity style={PropertyDetailsStyle.backIcon}>
+          <TouchableOpacity
+            style={PropertyDetailsStyle.goBack_View}
+            onPress={() => {
+              props.navigation.navigate("PropertyList");}}>
+            <View style={PropertyDetailsStyle.backIcon}>
               <Ionicons
                 name="chevron-back"
                 size={22}
                 color={_COLORS.Kodie_MediumGrayColor}
               />
-            </TouchableOpacity>
+            </View>
             <Text style={PropertyDetailsStyle.goBack_Text}>{"Go back"}</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </View>

@@ -87,7 +87,12 @@ export default SignUpVerification = (props) => {
             }}
           />
         </View>
-        <TouchableOpacity style={SignUpVerificationStyle.goBack_View}>
+        <TouchableOpacity
+          style={SignUpVerificationStyle.goBack_View}
+          onPress={() => {
+            props.navigation.navigate("SignUp");
+          }}
+        >
           <View style={SignUpVerificationStyle.backIcon}>
             <Ionicons
               name="chevron-back"

@@ -105,16 +105,18 @@ export default PropertyImages = (props) => {
               }}
             />
           </View>
-          <View style={PropertyImagesStyle.goBack_View}>
-            <TouchableOpacity style={PropertyImagesStyle.backIcon}>
+          <TouchableOpacity style={PropertyImagesStyle.goBack_View}
+           onPress={() => {
+            props.navigation.navigate("PropertyFeature");}}>
+            <View style={PropertyImagesStyle.backIcon}>
               <Ionicons
                 name="chevron-back"
                 size={22}
                 color={_COLORS.Kodie_MediumGrayColor}
               />
-            </TouchableOpacity>
+            </View>
             <Text style={PropertyImagesStyle.goBack_Text}>{"Go back"}</Text>
-          </View>
+          </TouchableOpacity>
           <RBSheet
             ref={refRBSheet}
             closeOnDragDown={true}

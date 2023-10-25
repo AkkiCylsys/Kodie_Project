@@ -46,7 +46,7 @@ const AccountStep = (props) => {
         <View style={AccountStepStyle.maincontainer}>
           <View style={AccountStepStyle.topheading}>
             <Image
-              source={IMAGES.kodie_icon}
+              source={IMAGES.Landlordprofile}
               resizeMode="contain"
               style={AccountStepStyle.mainimg}
             />

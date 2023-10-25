@@ -57,7 +57,7 @@ export default LandlordProfile = (props) => {
         <Text style={LandlordProfileStyle.AllcontactsText}>Settings</Text>
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Account");
+            props.navigation.navigate("AccountSetting");
           }}>
           <RowTab
             IsDivider={false}
@@ -83,7 +83,7 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Contactus");
+            props.navigation.navigate("PrivacySecurity");
           }}>
           <RowTab
             IsDivider={false}
