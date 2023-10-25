@@ -11,7 +11,7 @@ export const AccountStepStyle = StyleSheet.create({
   },
   mainimg: {
     width: 88,
-    height: 100,
+    height: 102,
   },
   toptextheading: {
     fontSize: 13,

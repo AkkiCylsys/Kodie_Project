@@ -76,6 +76,7 @@ import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
+import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
 import LinkedDevice from "../../screens/Authentication/LinkedDevice/LinkedDevice";
 import TwoStepVerification from "../../screens/Authentication/LinkedDevice/TwoStepVerification";
@@ -727,7 +728,11 @@ const AllStackRouts = (props) => {
           component={GeneralSettings}
           options={{ headerShown: false }}
         />
-
+        <Stack.Screen
+          name={"GeneralSetting"}
+          component={GeneralSetting}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={"Chats"}
           component={Chats}

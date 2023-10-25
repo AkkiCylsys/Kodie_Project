@@ -11,6 +11,7 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices/CommonMethods";
 import { BlockedUserstyle } from "./BlockedUserstyle";
 import { _COLORS, IMAGES } from "../../../Themes/index";
+import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 //ScreenNo:211
 const LandlordData = [
   {
@@ -134,6 +135,16 @@ export default BlockedUser = (props) => {
         Blocked users will no longer be able to send you messages, or be able to
         to see your interactions on Kodie.
       </Text>
+      <View style={BlockedUserstyle.btnview}>
+        <CustomSingleButton
+          _ButtonText={"Save"}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+          backgroundColor={_COLORS.Kodie_BlackColor}
+          onPress={() => {
+            props.navigation.navigate("SearchUser");
+          }}
+        />
+      </View>
 
       <View style={{ height: 300 }}></View>
     </View>
