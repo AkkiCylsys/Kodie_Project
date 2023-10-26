@@ -6,7 +6,7 @@ const CommonLoader = props => {
     <View style={[styles.loaderFrameStyle]}>
       <ActivityIndicator
         animating={true}
-        color={_COLORS?.Kodie_BlackColor}
+        color={_COLORS?.Kodie_DarkOrange}
         size={'large'}
         style={{alignSelf: 'center'}}
       />

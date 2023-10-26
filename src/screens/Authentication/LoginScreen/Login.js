@@ -312,7 +312,8 @@ export default Login = (props) => {
           alert(result?.message)
           setIsClick(isClick + 1);
         } else {
-          alert("Verification code is not valid");
+          alert("The verification code is incorrect");
+          setVerificationcodeError('The verification code is incorrect')
         }
       })
       .catch((error) => {
