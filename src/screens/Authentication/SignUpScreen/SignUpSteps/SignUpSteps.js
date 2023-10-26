@@ -10,6 +10,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _COLORS } from "../../../../Themes";
+import { _goBack } from "../../../../services/CommonServices";
 import Account from "../Account/Account";
 import ProgressBar from "react-native-progress/Bar";
 import AboutYou from "../AboutYou/AboutYou";
