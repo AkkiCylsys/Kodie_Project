@@ -29,6 +29,7 @@ import Octicons from "react-native-vector-icons/Octicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import ServicesBox from "../../components/Molecules/ServicesBox/ServicesBox";
 import RowButtons from "../../components/Molecules/RowButtons/RowButtons";
+
 const data = [
   { label: "Electricals", value: "1" },
   { label: "Home cleaning", value: "2" },
@@ -336,7 +337,7 @@ export default CreateJobFirstScreen = (props) => {
       </ScrollView>
       <View style={VIEW_STYLES._bottomButtonView}>
         <CustomSingleButton
-          onPress={() => props.navigation.navigate("CreateJobSecondScreen")}
+          // onPress={() => props.navigation.navigate("CreateJobSecondScreen")}
           _ButtonText={"Next"}
           Text_Color={_COLORS.Kodie_WhiteColor}
         />

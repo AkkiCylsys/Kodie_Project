@@ -92,7 +92,6 @@ import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport"
 import Partners from "../../screens/Partners/Partners";
 import PropertyListings from "../../screens/PropertyListings/PropertyListings";
 import VacantPropertiesList from "../../screens/VacantProperties/VacantPropertiesList";
-
 import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
 import Contractors1 from "../../screens/Managingcontractors/Contractors1";
@@ -117,7 +116,6 @@ import RantalOffer from "../../screens/Landlord/PropertyList/RentalOffer/RantalO
 // import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
 // import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
 // import EditDashboard from "../../screens/Dashboard/EditDashboard";
-
 
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
@@ -806,6 +804,7 @@ const AllStackRouts = (props) => {
           component={PropertyListings}
           options={{ headerShown: false }}
         />
+
 
         <Stack.Screen
           name={"VacantPropertiesList"}

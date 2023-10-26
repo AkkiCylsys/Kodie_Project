@@ -21,7 +21,7 @@ const images = [
   BANNERS.BannerSecond,
   BANNERS.previewImage,
 ];
-export default CreateJobSecondScreen = (props) => {
+const CreateJobSecondScreen = (props) => {
   const refRBSheet = useRef();
   return (
     <View style={CreateJobSecondStyle.container}>
@@ -166,3 +166,6 @@ export default CreateJobSecondScreen = (props) => {
     </View>
   );
 };
+
+
+export default CreateJobSecondScreen
