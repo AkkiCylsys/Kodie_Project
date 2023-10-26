@@ -159,18 +159,19 @@ export default Login = (props) => {
       .then((result) => {
         console.log("API Response:", result);
         // -----write inner conditon here if / else
-        if (result.message === "Login successful") {
+        if (result.status ===true ) {
           setIsLoading(false);
-          alert("Login successful");
+          alert(result.message);
           setIsAuthenticated(true);
           props.navigation.navigate("DrawerNavigstorLeftMenu");
         } else {
-          // alert("Please check your email and password.");
+          alert("Please check your email and password.");
           setPasswordError(
             "Hmm, it seems like the credential you entered is invalid. Please try again."
           );
           setIsAuthenticated(false);
         }
+        
       })
       .catch((error) => {
         console.error("API failed", error);
@@ -311,7 +312,7 @@ export default Login = (props) => {
           alert(result?.message)
           setIsClick(isClick + 1);
         } else {
-          alert("Verification code is not valid");
+          alert(result?.message);
         }
       })
       .catch((error) => {
