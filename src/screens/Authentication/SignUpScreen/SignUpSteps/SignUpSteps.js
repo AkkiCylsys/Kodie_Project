@@ -189,7 +189,8 @@ const SignUpSteps = (props) => {
                     backgroundColor={_COLORS.Kodie_WhiteColor}
                   />
 
-                  <TouchableOpacity style={SignUpStepStyle.goBack_View}>
+                  <TouchableOpacity style={SignUpStepStyle.goBack_View}
+                  >
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
                         name="chevron-back"

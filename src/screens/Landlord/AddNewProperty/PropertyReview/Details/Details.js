@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { DetailsStyle } from "./DetailsStyles";
+import { _goBack } from "../../../../../services/CommonServices";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DividerIcon from "../../../../../components/Atoms/Devider/DividerIcon";

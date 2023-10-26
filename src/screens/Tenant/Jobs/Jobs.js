@@ -38,7 +38,7 @@ const Jobs = (props) => {
 
   return (
     <View style={JobsCss.Container}>
-      <TopHeader onPressLeftButton={() => _goBack(props)} MiddleText={"Jobs"} />
+      <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} />
       <CustomTabNavigator
         activeTab={activeTab}
         setActiveTab={setActiveTab}

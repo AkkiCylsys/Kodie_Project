@@ -36,7 +36,7 @@ const Properties = (props) => {
   return (
     <View style={PropertiesCSS.Container}>
       <TopHeader
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Properties"}
       />
       <CustomTabNavigator
