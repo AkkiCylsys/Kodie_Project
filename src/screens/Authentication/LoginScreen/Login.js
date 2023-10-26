@@ -28,6 +28,7 @@ import {
   _COLORS,
 } from "./../../../Themes/index";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 export default Login = (props) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -81,8 +82,8 @@ export default Login = (props) => {
     if (resetEmail.trim() === "") {
       setResetEmailError("Email is required!");
     } else {
-      forgetPassword();
-      setIsClick(isClick + 1);
+      send_verification_code();
+      // setIsClick(isClick + 1);
     }
   };
   const validateResetEmail = (resetEmail) => {
@@ -106,8 +107,8 @@ export default Login = (props) => {
     if (verificationcode.trim() === "") {
       setVerificationcodeError("Please enter verification code");
     } else {
-
-      setIsClick(isClick + 1);
+      verify_Otp();
+      // setIsClick(isClick + 1);
     }
   };
   const handleResetpasswordCheck = () => {
@@ -119,7 +120,8 @@ export default Login = (props) => {
       setConfirmPasswordError("Passwords do not match");
     } else {
       setConfirmPasswordError(""); // Clear the error message
-      setIsClick(isClick + 1);
+      create_password()
+      // setIsClick(isClick + 1);
     }
   };
 
@@ -248,38 +250,120 @@ export default Login = (props) => {
     }
   };
 
-  const forgetPassword = () => {
-    // -----loading set true here
+  const send_verification_code = () => {
+    // Set loading to true before making the API call
     setIsLoading(true);
-    const url =
-      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password1";
+
+    const url = "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password1";
+    console.log("url...", url)
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
+        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
       }),
     })
+
       .then((response) => response.json())
       .then((result) => {
-        console.log("API Response:", result);
-        if (result) {
+        console.log("API Response send otp:", result);
+        if (result?.status === true) {
+          // If the API call is successful, increment isClick
+          alert("The otp has been sent your email")
           setIsClick(isClick + 1);
         } else {
-          alert("verification code is not send");
+          alert("Verification code is not sent");
         }
       })
       .catch((error) => {
         console.error("API failed", error);
         setIsAuthenticated(false);
       })
-      // loding
       .finally(() => {
+        // Always set loading to false, whether the API call succeeds or fails
         setIsLoading(false);
       });
   };
+
+  const verify_Otp = () => {
+    // Set loading to true before making the API call
+    setIsLoading(true);
+
+    const url = "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password2";
+    console.log("url...", url)
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
+        otp: verificationcode
+      }),
+    })
+
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("API Response verify otp:", result);
+        if (result?.status === true) {
+          // If the API call is successful, increment isClick
+          alert(result?.message)
+          setIsClick(isClick + 1);
+        } else {
+          alert("Verification code is not valid");
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsAuthenticated(false);
+      })
+      .finally(() => {
+        // Always set loading to false, whether the API call succeeds or fails
+        setIsLoading(false);
+      });
+  };
+  const create_password = () => {
+    // Set loading to true before making the API call
+    setIsLoading(true);
+
+    const url = "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password";
+    console.log("url...", url)
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
+        // otp:verificationcode,
+        password: newpassword
+
+      }),
+    })
+
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("API Response create_password:", result);
+        if (result) {
+          // If the API call is successful, increment isClick
+          alert(result.message[0][0])
+          setIsClick(isClick + 1);
+        } else {
+          alert("password not created");
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsAuthenticated(false);
+      })
+      .finally(() => {
+        // Always set loading to false, whether the API call succeeds or fails
+        setIsLoading(false);
+      });
+  };
+
 
   return (
     <View style={LoginStyles.container}>
@@ -347,13 +431,7 @@ export default Login = (props) => {
               onPress={handleSubmit}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
-            />
-            {/* -----loading section code here */}
-            {isLoading && (
-              <View style={LoginStyles.loderview}>
-                <ActivityIndicator size={50} color={_COLORS.Kodie_BlackColor} />
-              </View>
-            )}
+            />         
             <View style={LoginStyles.loderview}></View>
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
@@ -577,11 +655,11 @@ export default Login = (props) => {
                 >
                   Confirm password
                 </Text>
-                <View style={[LoginStyles.passwordContainer,{
-                      borderColor: confirmPasswordError
-                        ? _COLORS.Kodie_lightRedColor
-                        : _COLORS.Kodie_GrayColor,
-                    },]}>
+                <View style={[LoginStyles.passwordContainer, {
+                  borderColor: confirmPasswordError
+                    ? _COLORS.Kodie_lightRedColor
+                    : _COLORS.Kodie_GrayColor,
+                },]}>
                   <TextInput
                     style={LoginStyles.passwordInput}
                     value={confirmPassword}
@@ -625,6 +703,12 @@ export default Login = (props) => {
               </View>
             </>
           )}
+          {isLoading && (
+            <View style={LoginStyles.secondloder}>
+              <ActivityIndicator size={50} color={_COLORS.Kodie_BlackColor} />
+            </View>
+          )}
+
           <View style={{ marginBottom: 800 }}>
             <CustomSingleButton
               onPress={handleButtonPress}
@@ -636,13 +720,14 @@ export default Login = (props) => {
                     ? "1%"
                     : "50%"
                   : Platform.OS === "android"
-                  ? "20%"
-                  : "80%"
+                    ? "20%"
+                    : "80%"
               }
             />
           </View>
         </View>
       </RBSheet>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
