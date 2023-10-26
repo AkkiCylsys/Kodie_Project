@@ -28,6 +28,7 @@ import {
   _COLORS,
 } from "./../../../Themes/index";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 export default Login = (props) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -253,9 +254,9 @@ export default Login = (props) => {
   const send_verification_code = () => {
     // Set loading to true before making the API call
     setIsLoading(true);
-  
+
     const url = "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password1";
-    console.log("url...",url)
+    console.log("url...", url)
     fetch(url, {
       method: "POST",
       headers: {
@@ -265,7 +266,6 @@ export default Login = (props) => {
         email: resetEmail, // Assuming you have 'email' defined or passed as an argument
       }),
     })
-   
       .then((response) => response.json())
       .then((result) => {
         console.log("API Response send otp:", result);
@@ -365,6 +365,7 @@ export default Login = (props) => {
   };
   
 
+
   return (
     <View style={LoginStyles.container}>
       <ScrollView>
@@ -431,13 +432,7 @@ export default Login = (props) => {
               onPress={handleSubmit}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
-            />
-            {/* -----loading section code here */}
-            {isLoading && (
-              <View style={LoginStyles.loderview}>
-                <ActivityIndicator size={50} color={_COLORS.Kodie_BlackColor} />
-              </View>
-            )}
+            />         
             <View style={LoginStyles.loderview}></View>
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
@@ -661,11 +656,11 @@ export default Login = (props) => {
                 >
                   Confirm password
                 </Text>
-                <View style={[LoginStyles.passwordContainer,{
-                      borderColor: confirmPasswordError
-                        ? _COLORS.Kodie_lightRedColor
-                        : _COLORS.Kodie_GrayColor,
-                    },]}>
+                <View style={[LoginStyles.passwordContainer, {
+                  borderColor: confirmPasswordError
+                    ? _COLORS.Kodie_lightRedColor
+                    : _COLORS.Kodie_GrayColor,
+                },]}>
                   <TextInput
                     style={LoginStyles.passwordInput}
                     value={confirmPassword}
@@ -709,11 +704,12 @@ export default Login = (props) => {
               </View>
             </>
           )}
-            {isLoading && (
-              <View style={LoginStyles.secondloder}>
-                <ActivityIndicator size={50} color={_COLORS.Kodie_BlackColor} />
-              </View>
-            )}
+          {isLoading && (
+            <View style={LoginStyles.secondloder}>
+              <ActivityIndicator size={50} color={_COLORS.Kodie_BlackColor} />
+            </View>
+          )}
+
           <View style={{ marginBottom: 800 }}>
             <CustomSingleButton
               onPress={handleButtonPress}
@@ -725,13 +721,14 @@ export default Login = (props) => {
                     ? "1%"
                     : "50%"
                   : Platform.OS === "android"
-                  ? "20%"
-                  : "80%"
+                    ? "20%"
+                    : "80%"
               }
             />
           </View>
         </View>
       </RBSheet>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
