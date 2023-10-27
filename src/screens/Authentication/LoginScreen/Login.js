@@ -1,5 +1,5 @@
 // Screen 2,3,4,5,6
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   BackHandler,
@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
+  Button
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
 import { LoginStyles } from "./LoginCss";
@@ -50,6 +51,8 @@ export default Login = (props) => {
   const [apiData, setApiData] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [verifyButtonEnabled, setVerifyButtonEnabled] = useState(false);
+  const [countdown, setCountdown] = useState(60);
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -70,6 +73,41 @@ export default Login = (props) => {
       };
     }, [])
   );
+
+  // ...countdown
+  const startTimer = () => {
+    setCountdown(60);
+    const timer = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        if (prevCountdown === 1) {
+          // If the countdown reaches 0, clear the interval and return 0
+          clearInterval(timer);
+          return 0;
+        } else if (prevCountdown > 0) {
+          // Only decrement the countdown if it's greater than 0
+          return prevCountdown - 1;
+        }
+        return prevCountdown;
+      });
+    }, 1000);
+  };
+  // UseEffect to start the timer when verify_Otp is called
+  useEffect(() => {
+    if (isLoading) {
+      startTimer();
+    }
+  }, [isLoading]);
+
+  // UseEffect to enable the verify button when countdown reaches 0
+  useEffect(() => {
+    if (countdown === 0) {
+      setVerifyButtonEnabled(true);
+    } else {
+      setVerifyButtonEnabled(false);
+    }
+  }, [countdown]);
+
+
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -105,8 +143,8 @@ export default Login = (props) => {
   };
   const handleverificationcodes = () => {
     if (verificationcode.trim() === "") {
-      setVerificationcodeError("Please enter verification code");
-    } else {
+      setVerificationcodeError("verification code is required");
+    }else {
       verify_Otp();
       // setIsClick(isClick + 1);
     }
@@ -132,7 +170,8 @@ export default Login = (props) => {
       handleforgetValidation();
     } else if (isClick === 1) {
       handleverificationcodes();
-    } else if (isClick === 2) {
+    }
+    else if (isClick === 2) {
       handleResetpasswordCheck();
     } else {
       // setIsClick((prev) => (prev + 1) % 4);
@@ -165,6 +204,10 @@ export default Login = (props) => {
           alert("Login successful");
           setIsAuthenticated(true);
           props.navigation.navigate("DrawerNavigstorLeftMenu");
+
+          setEmail("");
+          setPassword("");
+
         } else {
           // alert("Please check your email and password.");
           setPasswordError(
@@ -185,6 +228,7 @@ export default Login = (props) => {
 
   const validateEmail = (email) => {
     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    // const emailPattern = /^[A-Z0-9._%+-]+@[gmail.-]+\.[com]$/i;
     return emailPattern.test(email);
   };
 
@@ -272,13 +316,22 @@ export default Login = (props) => {
         if (result?.status === true) {
           // If the API call is successful, increment isClick
           alert("The otp has been sent your email")
-          setIsClick(isClick + 1);
+
+          if (isClick == 1) {
+            setIsClick(1);
+            setVerificationcode('')
+          } else {
+            setIsClick(isClick + 1);
+          }
+
+
         } else {
           alert("Verification code is not sent");
         }
       })
       .catch((error) => {
         console.error("API failed", error);
+        alert(error)
         setIsAuthenticated(false);
       })
       .finally(() => {
@@ -312,8 +365,8 @@ export default Login = (props) => {
           alert(result?.message)
           setIsClick(isClick + 1);
         } else {
-          alert("The verification code is incorrect");
-          setVerificationcodeError('The verification code is incorrect')
+          // alert("The verification code is incorrect");
+          setVerificationcodeError('The verification code you’ve entered is incorrect. Please try again.')
         }
       })
       .catch((error) => {
@@ -356,6 +409,7 @@ export default Login = (props) => {
         }
       })
       .catch((error) => {
+        alert(error)
         console.error("API failed", error);
         setIsAuthenticated(false);
       })
@@ -432,7 +486,7 @@ export default Login = (props) => {
               onPress={handleSubmit}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
-            />         
+            />
             <View style={LoginStyles.loderview}></View>
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
@@ -554,14 +608,29 @@ export default Login = (props) => {
                     value={verificationcode}
                     onChangeText={handleverificationCode}
                     onBlur={() => handleverificationCode(verificationcode)}
+                    // onChangeText={(text) => setVerificationcode(text)}
+                    // editable={!isLoading && countdown > 0}
                     placeholder="code"
                     placeholderTextColor="#999"
+                    keyboardType='number-pad'
+                    maxLength={6}
+
                   />
                 </View>
                 <View style={LoginStyles.codeMargin} />
-                <View style={LoginStyles.getButtonView}>
-                  <Text style={LoginStyles.getButton}>Get</Text>
-                </View>
+                <TouchableOpacity style={LoginStyles.getButtonView} onPress={countdown === 0 ? handleverificationcodes : verify_Otp}
+                  disabled={countdown === 0}>
+                  {isLoading || !verifyButtonEnabled ? (
+                    <Text style={LoginStyles.getButton}>{verificationcode ? 'Verify' : countdown}</Text>
+                  )
+                    : (
+                      <TouchableOpacity onPress={send_verification_code}>
+                        <Text style={[LoginStyles.getButton, { marginRight:13}]}>{"Resend"}</Text>
+                      </TouchableOpacity>
+                    )
+                  }
+                </TouchableOpacity>
+
               </View>
               {verificationcodeError ? (
                 <Text style={LoginStyles.error_text}>
@@ -595,8 +664,8 @@ export default Login = (props) => {
                   <TextInput
                     style={LoginStyles.input}
                     value={verificationcode}
-                    onChangeText={handleverificationCode}
-                    onBlur={() => handleverificationCode(verificationcode)}
+                    // onChangeText={handleverificationCode}
+                    // onBlur={() => handleverificationCode(verificationcode)}
                     placeholder="code"
                     placeholderTextColor="#999"
                     editable={false}
