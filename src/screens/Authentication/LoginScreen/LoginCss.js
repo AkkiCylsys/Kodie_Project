@@ -99,6 +99,17 @@ export const LoginStyles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
   },
+  VerifyButtonView:{
+    flex: 0.4,
+    alignSelf: "center",
+    justifyContent: "center",
+  },
+  verifyButton:{
+    fontSize: 14,
+    color: _COLORS.Kodie_WhiteColor,
+    alignSelf: "center",
+    textAlign: "center",
+  },
   cardHeight: { marginBottom: 8 },
   passwordContainer: {
     flexDirection: "row",

@@ -52,9 +52,6 @@ export default Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   //get button const here
 
-  const [showTimer, setShowTimer] = useState(false);
-
-  const [timer, setTimer] = useState(0);
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -116,6 +113,7 @@ export default Login = (props) => {
       // setIsClick(isClick + 1);
     }
   };
+
   const handleResetpasswordCheck = () => {
     if (newpassword.trim() === "") {
       setNewPasswordError("Please create a new password");
@@ -246,34 +244,19 @@ export default Login = (props) => {
     }
   };
 
-  // const handleverificationCode = (text) => {
-  //   setVerificationcode(text);
-  //   if (text.trim() === "") {
-  //     setVerificationcodeError("verification code is required");
-  //   }
-  //   else {
-  //     setVerificationcodeError("");
-  //   }
-  // };
   const handleverificationCode = (text) => {
     setVerificationcode(text);
-    if (text.trim() === '') {
-      setVerificationcodeError('verification code is required');
-      setShowTimer(false);
+    if (text.trim() === "") {
+      setVerificationcodeError("verification code is required");
     } else {
-      setVerificationcodeError('');
-      setShowTimer(true);
-      setTimer(50);
+      setVerificationcodeError("");
     }
   };
-
 
   //------ send_verification_code Api code here
   const send_verification_code = () => {
     // Set loading to true before making the API call
     setIsLoading(true);
-    // Start the 50-second timer
-    setTimer(50);
     const url =
       "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password1";
     console.log("url...", url);
@@ -293,7 +276,6 @@ export default Login = (props) => {
           // If the API call is successful, increment isClick
           alert("The otp has been sent your email");
           setIsClick(isClick + 1);
-          setShowTimer(false);
         } else {
           alert("Verification code is not sent");
         }
@@ -303,7 +285,7 @@ export default Login = (props) => {
         setIsAuthenticated(false);
       })
       .finally(() => {
-        // Always set loading to false, whether the API call succeeds or fails
+        //--- Always set loading to false, whether the API call succeeds or fails
         setIsLoading(false);
       });
   };
@@ -347,20 +329,6 @@ export default Login = (props) => {
       });
   };
 
-  //get button code here------------
-  useEffect(() => {
-    // Automatically start the countdown when the timer is greater than 0
-    if (timer > 0) {
-      const countdownInterval = setInterval(() => {
-        setTimer(timer - 1);
-      }, 1000);
-
-      // Clear the interval when the timer reaches 0
-      return () => {
-        clearInterval(countdownInterval);
-      };
-    }
-  }, [timer]);
   //------ create_password Api code here
   const create_password = () => {
     // Set loading to true before making the API call
@@ -595,25 +563,7 @@ export default Login = (props) => {
                 </View>
                 <View style={LoginStyles.codeMargin} />
                 <TouchableOpacity style={LoginStyles.getButtonView}>
-                  {/* <Text style={LoginStyles.getButton}>
-                    Get
-                  </Text> */}
-                  
-                  {timer > 0 ? (
-                    <Text
-                      style={LoginStyles.getButton}
-                    >{`Get ${timer} sec`}</Text>
-                  ) : (
-                    <TouchableOpacity
-                      style={LoginStyles.getButtonView}
-                      onPress={send_verification_code}
-                    >
-                      <Text style={LoginStyles.getButton}>Get</Text>
-                    </TouchableOpacity>
-                  )}
-
-
-                  {/* get code here */}
+                  <Text style={LoginStyles.getButton}>Get</Text>
                 </TouchableOpacity>
               </View>
 
