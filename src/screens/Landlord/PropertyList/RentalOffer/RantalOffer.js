@@ -319,7 +319,8 @@ const RantalOffer = (props) => {
           }}
         >
           <BottomModalData
-            onPress={() => props.navigation.navigate("ViewPropertyDetails")}
+            // onPress={() => props.navigation.navigate("ViewPropertyDetails")}
+     
           />
         </RBSheet>
       </>
@@ -412,10 +413,10 @@ const RantalOffer = (props) => {
 
   return (
     <>
-      <TopHeader
+      {/* <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"RantalOffers"}
-      />
+      /> */}
       <View style={RantalOfferCss.mainContainer}>
         <ScrollView showsHorizontalScrollIndicator={false}>
           <View style={RantalOfferCss.propertyRentMainView}>

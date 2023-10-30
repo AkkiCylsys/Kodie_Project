@@ -48,7 +48,7 @@ export const IMAGES = {
   FeedBack: require("../../assets/icons/FeedBack.png"),
   Contact: require("../../assets/icons/Contact.png"),
   SwitchAcc_: require("../../assets/icons/SwitchAcc_.png"),
-  //Logout: require("../../assets/icons/Logout.png"),
+  Log_Out: require('../../assets/icons/Logout.png'),
   Subscription: require("../../assets/icons/Subscription.png"),
   Storage: require("../../assets/icons/Storage.png"),
   language: require("../../assets/icons/language.png"),

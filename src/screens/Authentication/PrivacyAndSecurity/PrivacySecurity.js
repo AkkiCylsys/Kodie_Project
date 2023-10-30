@@ -21,7 +21,11 @@ const PrivacySecurity = (props) => {
         />
         <ScrollView>
           <View style={PrivacySecurityStyle.container}>
-            <View>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate("BlockedUser");
+              }}
+            >
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
@@ -41,10 +45,14 @@ const PrivacySecurity = (props) => {
                 </View>
                 <Text style={PrivacySecurityStyle.text3}>3</Text>
               </View>
-            </View>
+            </TouchableOpacity>
             <DividerIcon style={PrivacySecurityStyle.divider} />
 
-            <View>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate("LinkedDevice");
+              }}
+            >
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
@@ -64,10 +72,14 @@ const PrivacySecurity = (props) => {
                 </View>
                 <Text style={PrivacySecurityStyle.text3}>0</Text>
               </View>
-            </View>
+            </TouchableOpacity>
             <DividerIcon style={PrivacySecurityStyle.divider} />
 
-            <View>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate("TwoStepVerification");
+              }}
+            >
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
@@ -95,7 +107,7 @@ const PrivacySecurity = (props) => {
                   </TouchableOpacity>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
             <DividerIcon style={PrivacySecurityStyle.divider} />
           </View>
         </ScrollView>

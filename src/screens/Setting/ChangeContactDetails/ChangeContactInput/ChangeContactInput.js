@@ -3,9 +3,10 @@ import React from "react";
 import { ChangeContactInputStyle } from "./ChangeContactInputStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS,IMAGES } from "../../../../Themes";
-
-const ChangeContactInput = () => {
+import { _COLORS, IMAGES } from "../../../../Themes";
+import { _goBack } from "../../../../services/CommonServices";
+//screen number 206
+const ChangeContactInput = (props) => {
   return (
     <>
       <TopHeader
@@ -79,6 +80,9 @@ const ChangeContactInput = () => {
           <CustomSingleButton
             _ButtonText={"Next"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            onPress={() => {
+              props.navigation.navigate("ChangeContactNotify");
+            }}
           />
         </View>
       </View>

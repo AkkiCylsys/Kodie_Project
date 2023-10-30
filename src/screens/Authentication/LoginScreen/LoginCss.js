@@ -115,11 +115,16 @@ export const LoginStyles = StyleSheet.create({
   eyeIcon: {
     padding: 10,
   },
-  loderview:{
+  loderview: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginVertical: 20,
   },
-  error_text: {color: 'red', marginLeft: 10},
-
+  secondloder: {
+    flex: 1,
+    marginVertical: 25,
+    alignItems: "center",
+  },
+  error_text: { color: "red", marginLeft: 10 },
 });

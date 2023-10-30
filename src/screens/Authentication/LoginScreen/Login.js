@@ -1,5 +1,5 @@
 // Screen 2,3,4,5,6
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   BackHandler,
@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
+  Button,
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
 import { LoginStyles } from "./LoginCss";
@@ -28,6 +29,7 @@ import {
   _COLORS,
 } from "./../../../Themes/index";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 export default Login = (props) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -49,6 +51,9 @@ export default Login = (props) => {
   const [apiData, setApiData] = useState({});
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [verifyButtonEnabled, setVerifyButtonEnabled] = useState(false);
+  const [countdown, setCountdown] = useState(60);
+
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -61,14 +66,44 @@ export default Login = (props) => {
         BackHandler.exitApp();
         return true;
       };
-
       BackHandler.addEventListener("hardwareBackPress", onBackPress);
-
       return () => {
         BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
     }, [])
   );
+  // ...countdown
+  const startTimer = () => {
+    setCountdown(60);
+    const timer = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        if (prevCountdown === 1) {
+          // If the countdown reaches 0, clear the interval and return 0
+          clearInterval(timer);
+          return 0;
+        } else if (prevCountdown > 0) {
+          // Only decrement the countdown if it's greater than 0
+          return prevCountdown - 1;
+        }
+        return prevCountdown;
+      });
+    }, 1000);
+  };
+  // UseEffect to start the timer when verify_Otp is called
+  useEffect(() => {
+    if (isLoading) {
+      startTimer();
+    }
+  }, [isLoading]);
+  // UseEffect to enable the verify button when countdown reaches 0
+  useEffect(() => {
+    if (countdown === 0) {
+      setVerifyButtonEnabled(true);
+    } else {
+      setVerifyButtonEnabled(false);
+    }
+  }, [countdown]);
+
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -81,7 +116,8 @@ export default Login = (props) => {
     if (resetEmail.trim() === "") {
       setResetEmailError("Email is required!");
     } else {
-      setIsClick(isClick + 1);
+      send_verification_code();
+      // setIsClick(isClick + 1);
     }
   };
   const validateResetEmail = (resetEmail) => {
@@ -103,9 +139,9 @@ export default Login = (props) => {
   };
   const handleverificationcodes = () => {
     if (verificationcode.trim() === "") {
-      setVerificationcodeError("Please enter verification code");
+      setVerificationcodeError("verification code is required");
     } else {
-      setIsClick(isClick + 1);
+      verify_Otp();
     }
   };
   const handleResetpasswordCheck = () => {
@@ -117,7 +153,8 @@ export default Login = (props) => {
       setConfirmPasswordError("Passwords do not match");
     } else {
       setConfirmPasswordError(""); // Clear the error message
-      setIsClick(isClick + 1);
+      create_password();
+      // setIsClick(isClick + 1);
     }
   };
 
@@ -161,6 +198,9 @@ export default Login = (props) => {
           alert("Login successful");
           setIsAuthenticated(true);
           props.navigation.navigate("DrawerNavigstorLeftMenu");
+
+          setEmail("");
+          setPassword("");
         } else {
           // alert("Please check your email and password.");
           setPasswordError(
@@ -181,6 +221,7 @@ export default Login = (props) => {
 
   const validateEmail = (email) => {
     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    // const emailPattern = /^[A-Z0-9._%+-]+@[gmail.-]+\.[com]$/i;
     return emailPattern.test(email);
   };
 
@@ -246,35 +287,125 @@ export default Login = (props) => {
     }
   };
 
-  const forgetPassword = () => {
-    // -----loading set true here
+  const send_verification_code = () => {
+    // Set loading to true before making the API call
     setIsLoading(true);
+
     const url =
-      "https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/login";
+      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password1";
+    console.log("url...", url);
     fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: email,
+        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
       }),
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log("API Response:", result);
-        if (result) {
+        console.log("API Response send otp:", result);
+        if (result?.status === true) {
+          // If the API call is successful, increment isClick
+          alert("The otp has been sent your email");
+
+          if (isClick == 1) {
+            setIsClick(1);
+            setVerificationcode("");
+          } else {
+            setIsClick(isClick + 1);
+          }
+        } else {
+          alert("Verification code is not sent");
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        alert(error);
+        setIsAuthenticated(false);
+      })
+      .finally(() => {
+        // Always set loading to false, whether the API call succeeds or fails
+        setIsLoading(false);
+      });
+  };
+
+  const verify_Otp = () => {
+    // Set loading to true before making the API call
+    setIsLoading(true);
+    const url =
+      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password2";
+    console.log("url...", url);
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
+        otp: verificationcode,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("API Response verify otp:", result);
+        if (result?.status === true) {
+          // If the API call is successful, increment isClick
+          alert(result?.message);
           setIsClick(isClick + 1);
         } else {
-          alert("verification code is not send");
+          // alert("The verification code is incorrect");
+          setVerificationcodeError(
+            "The verification code you’ve entered is incorrect. Please try again."
+          );
         }
       })
       .catch((error) => {
         console.error("API failed", error);
         setIsAuthenticated(false);
       })
-      // loding
       .finally(() => {
+        // Always set loading to false, whether the API call succeeds or fails
+        setIsLoading(false);
+      });
+  };
+  const create_password = () => {
+    // Set loading to true before making the API call
+    setIsLoading(true);
+
+    const url =
+      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password";
+    console.log("url...", url);
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
+        // otp:verificationcode,
+        password: newpassword,
+      }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("API Response create_password:", result);
+        if (result) {
+          // If the API call is successful, increment isClick
+          alert(result.message[0][0]);
+          setIsClick(isClick + 1);
+        } else {
+          alert("password not created");
+        }
+      })
+      .catch((error) => {
+        alert(error);
+        console.error("API failed", error);
+        setIsAuthenticated(false);
+      })
+      .finally(() => {
+        // Always set loading to false, whether the API call succeeds or fails
         setIsLoading(false);
       });
   };
@@ -300,7 +431,8 @@ export default Login = (props) => {
                   },
                 ]}
                 value={email}
-                onChangeText={handleEmailChange}
+                // onChangeText={handleEmailChange}
+                onChangeText={setEmail}
                 onBlur={() => handleEmailChange(email)}
                 placeholder="Your email address"
                 placeholderTextColor="#999"
@@ -346,12 +478,6 @@ export default Login = (props) => {
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />
-            {/* -----loading section code here */}
-            {isLoading && (
-              <View style={LoginStyles.loderview}>
-                <ActivityIndicator size={50} color={_COLORS.Kodie_BlackColor} />
-              </View>
-            )}
             <View style={LoginStyles.loderview}></View>
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
@@ -431,7 +557,8 @@ export default Login = (props) => {
                     },
                   ]}
                   value={resetEmail}
-                  onChangeText={handleResetEmailChange}
+                  // onChangeText={handleResetEmailChange}
+                  onChangeText={setResetEmail}
                   onBlur={() => handleResetEmailChange(resetEmail)}
                   placeholder="Your Email Address"
                   placeholderTextColor="#999"
@@ -447,7 +574,10 @@ export default Login = (props) => {
               <View style={LoginStyles.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
-                  style={LoginStyles.input}
+                  style={[
+                    LoginStyles.input,
+                    { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
+                  ]}
                   value={resetEmail}
                   // onChangeText={handleEmailChange}
                   // onBlur={() => handleEmailChange(email)}
@@ -473,13 +603,30 @@ export default Login = (props) => {
                     value={verificationcode}
                     onChangeText={handleverificationCode}
                     onBlur={() => handleverificationCode(verificationcode)}
+                    // onChangeText={(text) => setVerificationcode(text)}
+                    // editable={!isLoading && countdown > 0}
                     placeholder="code"
                     placeholderTextColor="#999"
+                    keyboardType="number-pad"
+                    maxLength={6}
                   />
                 </View>
                 <View style={LoginStyles.codeMargin} />
                 <View style={LoginStyles.getButtonView}>
-                  <Text style={LoginStyles.getButton}>Get</Text>
+                  {isLoading || !verifyButtonEnabled ? (
+                    <Text style={LoginStyles.getButton}>
+                      {/* {verificationcode ? "Resend" : countdown} */}
+                      {countdown} S
+                    </Text>
+                  ) : (
+                    <TouchableOpacity onPress={send_verification_code}>
+                      <Text
+                        style={[LoginStyles.getButton, { marginRight: 13 }]}
+                      >
+                        {"Resend"}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
                 </View>
               </View>
               {verificationcodeError ? (
@@ -497,7 +644,10 @@ export default Login = (props) => {
               <View style={LoginStyles.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
-                  style={LoginStyles.input}
+                  style={[
+                    LoginStyles.input,
+                    { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
+                  ]}
                   value={resetEmail}
                   // onChangeText={handleEmailChange}
                   // onBlur={() => handleEmailChange(email)}
@@ -512,10 +662,13 @@ export default Login = (props) => {
                     Verification code
                   </Text>
                   <TextInput
-                    style={LoginStyles.input}
+                    style={[
+                      LoginStyles.input,
+                      { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
+                    ]}
                     value={verificationcode}
-                    onChangeText={handleverificationCode}
-                    onBlur={() => handleverificationCode(verificationcode)}
+                    // onChangeText={handleverificationCode}
+                    // onBlur={() => handleverificationCode(verificationcode)}
                     placeholder="code"
                     placeholderTextColor="#999"
                     editable={false}
@@ -575,11 +728,16 @@ export default Login = (props) => {
                 >
                   Confirm password
                 </Text>
-                <View style={[LoginStyles.passwordContainer,{
+                <View
+                  style={[
+                    LoginStyles.passwordContainer,
+                    {
                       borderColor: confirmPasswordError
                         ? _COLORS.Kodie_lightRedColor
                         : _COLORS.Kodie_GrayColor,
-                    },]}>
+                    },
+                  ]}
+                >
                   <TextInput
                     style={LoginStyles.passwordInput}
                     value={confirmPassword}
@@ -623,6 +781,12 @@ export default Login = (props) => {
               </View>
             </>
           )}
+          {isLoading && (
+            <View style={LoginStyles.secondloder}>
+              <ActivityIndicator size={40} color={_COLORS.Kodie_BlackColor} />
+            </View>
+          )}
+
           <View style={{ marginBottom: 800 }}>
             <CustomSingleButton
               onPress={handleButtonPress}
@@ -641,6 +805,7 @@ export default Login = (props) => {
           </View>
         </View>
       </RBSheet>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

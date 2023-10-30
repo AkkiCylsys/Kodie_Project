@@ -138,15 +138,60 @@ const ManageSubscription = (props) => {
               </View>
             </View>
 
-            <View style={ManageSubscriptionStyle.SubscriptionDataView}>
+            <View style={[ManageSubscriptionStyle.SubscriptionDataView,ManageSubscriptionStyle.secondcard]}>
               <Text style={ManageSubscriptionStyle.Heading}>
                 {"Property Essential"}
               </Text>
               <Text style={ManageSubscriptionStyle.Subscriptionprice}>
-                $69
+                $149
                 <Text style={ManageSubscriptionStyle.SubscriptionpriceText}>
                   /Month
                 </Text>
+              </Text>
+              <Text style={ManageSubscriptionStyle.SubDataText}>
+                The best place to get started
+              </Text>
+              <View style={ManageSubscriptionStyle.ShadowLine} />
+              <Text style={ManageSubscriptionStyle.getText}>You get:</Text>
+              <RowsData DataTexts="Easily manage up to 3 properties" />
+              <RowsData DataTexts="Single user" />
+              <RowsData DataTexts="Standard financial dashboard (revenues & expenses)" />
+              <RowsData DataTexts="Service & maintenance requests with ease" />
+              <RowsData DataTexts="Standard access to contractors" />
+              <RowsData DataTexts="Income & expense tracking" />
+              <RowsData DataTexts="Tenant screening" />
+              <RowsData DataTexts="Standard document management" />
+              <RowsData DataTexts="Standard rental property listings on Kodie Property Marketplace" />
+              <View style={{ padding: 5 }}>
+                <RowButtons
+                  leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+                  RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+                  RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+                  LeftButtonborderColor={_COLORS.Kodie_TransparentColor}
+                  RightButtonborderColor={_COLORS.Kodie_BlackColor}
+                  LeftButtonText={"Contact us"}
+                  RightButtonText={"Subscribe"}
+                  onPressLeftButton={() =>
+                    props.navigation.navigate("ContractorProfile")
+                  }
+                  onPressRightButton={() => {
+                    props.navigation.navigate("HireContractor");
+                  }}
+                />
+              </View>
+            </View>
+
+            <View style={ManageSubscriptionStyle.SubscriptionDataView}>
+              <Text style={ManageSubscriptionStyle.Heading}>
+                {"Property Mogul"}
+              </Text>
+              <Text style={ManageSubscriptionStyle.Subscriptionprice}>
+                {/* $69
+                <Text style={ManageSubscriptionStyle.SubscriptionpriceText}>
+                  /Month
+                </Text> */}
+                Contact Us
               </Text>
               <Text style={ManageSubscriptionStyle.SubDataText}>
                 The best place to get started

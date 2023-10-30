@@ -6,8 +6,9 @@ import { Divider } from "react-native-paper";
 import ToggleSwitch from "toggle-switch-react-native";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS } from "../../../../Themes";
+import { _goBack } from "../../../../services/CommonServices";
 //ScreenNo:207
-const ChangeContactNotify = () => {
+const ChangeContactNotify = (props) => {
   return (
     <>
       <TopHeader

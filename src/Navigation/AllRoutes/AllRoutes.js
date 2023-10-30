@@ -76,6 +76,7 @@ import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
+import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
 import LinkedDevice from "../../screens/Authentication/LinkedDevice/LinkedDevice";
 import TwoStepVerification from "../../screens/Authentication/LinkedDevice/TwoStepVerification";
@@ -103,6 +104,21 @@ import CompletedJobs from "../../screens/CreateJob/Reviewjobdetails/CompletedJob
 import Ratingandfeedback from "../../screens/CreateJob/Reviewjobdetails/Ratingandfeedback";
 import EditDashboard from "../../screens/Dashboard/EditDashboard";
 import RantalOffer from "../../screens/Landlord/PropertyList/RentalOffer/RantalOffer";
+
+
+
+// import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
+// import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
+// import Contractors1 from "../../screens/Managingcontractors/Contractors1";
+// import Contractors2 from "../../screens/Managingcontractors/Contractors2";
+// import Contractors3 from "../../screens/Managingcontractors/Contractors3";
+// import Reviewjobdetails1 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails1";
+// import Reviewjobdetails2 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails2";
+// import Reviewjobdetails3 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails3";
+// import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
+// import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
+// import EditDashboard from "../../screens/Dashboard/EditDashboard";
+
 
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
@@ -727,7 +743,11 @@ const AllStackRouts = (props) => {
           component={GeneralSettings}
           options={{ headerShown: false }}
         />
-
+        <Stack.Screen
+          name={"GeneralSetting"}
+          component={GeneralSetting}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={"Chats"}
           component={Chats}
@@ -787,6 +807,7 @@ const AllStackRouts = (props) => {
           component={PropertyListings}
           options={{ headerShown: false }}
         />
+
 
         <Stack.Screen
           name={"VacantPropertiesList"}

@@ -110,6 +110,9 @@ SubscriptionDataView:{
 switchBtn_view:{
 flex:0.5
 },
+secondcard:{
+  backgroundColor:_COLORS.Kodie_MediumGreenColor
+},
 getText:{
   fontSize: 12,
 paddingHorizontal:10,
