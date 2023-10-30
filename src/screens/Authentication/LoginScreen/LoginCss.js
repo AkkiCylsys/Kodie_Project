@@ -85,7 +85,7 @@ export const LoginStyles = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     backgroundColor: _COLORS.Kodie_lightGreenColor,
     height: 48,
-    alignItems: "flex-end",
+    alignItems:'center',
     alignSelf: "center",
     justifyContent: "center",
     marginTop: 20,
