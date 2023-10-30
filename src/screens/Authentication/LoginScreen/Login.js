@@ -29,7 +29,10 @@ import {
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import {useDispatch, useSelector} from 'react-redux';
+import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 export default Login = (props) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
@@ -48,6 +51,9 @@ export default Login = (props) => {
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(true);
+  const [loginResponse, setLoginResponse] = useState(true);
+  const Login_response = useSelector(state => state?.authenticationReducer?.data);
+  console.log("Login_response.....",Login_response)
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -144,7 +150,6 @@ export default Login = (props) => {
     // -----loading set true here
     setIsLoading(true);
     const url =
-      // "https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/login";
       "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/login";
     fetch(url, {
       method: "POST",
@@ -159,26 +164,26 @@ export default Login = (props) => {
       .then((response) => response.json())
       .then((result) => {
         console.log("API Response:", result);
+        setLoginResponse(result)
         // -----write inner conditon here if / else
-        if (result.message === "Login successful") {
-          setIsLoading(false);
+        if (result.status == true ) {
           alert("Login successful");
-          setIsAuthenticated(true);
-          props.navigation.navigate("DrawerNavigstorLeftMenu");
-
+          // dispatch(fetchLoginSuccess(loginResponse));
+          props.navigation.navigate("DrawerNavigatorLeftMenu");
           setEmail("");
           setPassword("");
+          setIsLoading(false);
         } else {
           // alert("Please check your email and password.");
           setPasswordError(
             "Hmm, it seems like the credential you entered is invalid. Please try again."
           );
-          setIsAuthenticated(false);
         }
+       
       })
       .catch((error) => {
         console.error("API failed", error);
-        setIsAuthenticated(false);
+        setIsLoading(false)
       })
       // loding
       .finally(() => {
@@ -288,7 +293,7 @@ export default Login = (props) => {
       .catch((error) => {
         console.error("API failed", error);
         alert(error);
-        setIsAuthenticated(false);
+        setIsLoading(false)
       })
       .finally(() => {
         setIsLoading(false);
@@ -299,7 +304,7 @@ export default Login = (props) => {
     // Set loading to true before making the API call
     setIsLoading(true);
     const url =
-      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password2";
+      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup_verifyotp";
     console.log("url...", url);
     fetch(url, {
       method: "POST",
@@ -327,7 +332,7 @@ export default Login = (props) => {
       })
       .catch((error) => {
         console.error("API failed", error);
-        setIsAuthenticated(false);
+        setIsLoading(false);
       })
       .finally(() => {
         // Always set loading to false, whether the API call succeeds or fails
@@ -355,9 +360,9 @@ export default Login = (props) => {
       .then((response) => response.json())
       .then((result) => {
         console.log("API Response create_password:", result);
-        if (result) {
+        if (result?.status === true) {
           // If the API call is successful, increment isClick
-          alert(result.message[0][0]);
+          alert(result.message);
           setIsClick(isClick + 1);
         } else {
           alert("password not created.");
@@ -366,7 +371,7 @@ export default Login = (props) => {
       .catch((error) => {
         alert(error);
         console.error("API failed", error);
-        setIsAuthenticated(false);
+        setIsLoading(false);
       })
       .finally(() => {
         // Always set loading to false, whether the API call succeeds or fails

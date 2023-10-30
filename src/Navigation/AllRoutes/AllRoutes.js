@@ -331,7 +331,7 @@ const BottomNav = (props) => {
 };
 
 const Drawer = createDrawerNavigator();
-const DrawerNavigstorLeftMenu = (props) => {
+const DrawerNavigatorLeftMenu = (props) => {
   return (
     <Drawer.Navigator
       initialRouteName="Dashboard"
@@ -413,8 +413,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"DrawerNavigstorLeftMenu"}
-          component={DrawerNavigstorLeftMenu}
+          name={"DrawerNavigatorLeftMenu"}
+          component={DrawerNavigatorLeftMenu}
           options={{ headerShown: false }}
         />
 
