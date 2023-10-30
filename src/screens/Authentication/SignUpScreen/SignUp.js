@@ -1,3 +1,4 @@
+//ScreenNo:7
 import React, { useState } from "react";
 import {
   View,
@@ -16,54 +17,99 @@ import { IMAGES, _COLORS } from "./../../../Themes/index";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LABEL_STYLES } from "../../../Themes/CommonStyles/CommonStyles";
-//ScreenNo:7
+import axios from "axios";
+
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
-  const [term, setTerm] = useState(false);
-  const [privacy,setPrivacy] =useState(false);
+  const [passwordError, setPasswordError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [check, setIsCheck] = useState(false);
-  const [privacycheck, setPrivacycheckCheck] = useState(false);
-  
+  const [term, setTerm] = useState(false);
+  const [privacy, setPrivacy] = useState(false);
+
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-// const handleSignUp = () => {
-//   fetch("https://cylsys-kodie-api-027-6d8a135bd60f.herokuapp.com/api/v1/signup", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       email: email,
-//       password: password,
-//       is_term_condition: 1,
-//       is_privacy_policy: 1,
-//     }),
-//     timeout: 10000,
-//   })
-//     .then(response => {
-//       if (!response.ok) {
-//         throw new Error(`Network response was not ok: ${response.status} - ${response.statusText}`);
-//       }
-//       return response.json();
-//     })
-//     .then(data => {
-//       if (data.success) {
-//         props.navigation.navigate("Login");
-//       } else {
-//         alert("Signup failed. Please try again.");
-//       }
-//     })
-//     .catch(error => {
-//       console.error("Signup error:", error);
-//       alert("Network request timed out. Please check your connection or try again later.");
-//     });
-//   }  
+  //... Regex signup email validation
+  const validateSignUpEmail = (email) => {
+    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    return emailPattern.test(email);
+  };
 
- 
-return (
+  //...... email validation define here
+  const handleSignUpEmail = (text) => {
+    setEmail(text);
+    if (text.trim() === "") {
+      setEmailError("Email is required");
+    } else if (!validateSignUpEmail(text)) {
+      setEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else {
+      setEmailError("");
+    }
+  };
+
+  //...... password validation define here
+  const handleSignUpPassword = (text) => {
+    setPassword(text);
+    if (text.trim() === "") {
+      setPasswordError("Password is required");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  //.......... Api comign data define here
+  const SignUpData = {
+    email: email,
+    password: password,
+    is_term_condition: term,
+    is_privacy_policy: privacy,
+  };
+
+  //.......... Api method define here
+  const signApi =
+    'https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup';
+
+  const Signuphandle = () => {
+    axios
+      .post(signApi, SignUpData)
+      .then((response) => {
+        if (response.status === true) {
+          alert(response.message);
+          props.navigation.navigate("SignUpVerification");
+        } 
+         else if (response.status === false) {
+          alert(response.error);
+        } else {
+          setEmailError("");
+        }
+      })
+      .catch((error) => {
+        console.error("Signup error:", error);
+      });
+  };
+
+  //....... handle signup button validation here
+  const handleSubmit = () => {
+    if (email.trim() === "") {
+      setEmailError("Email is required!");
+    } else if (!validateSignUpEmail(email)) {
+      setEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else if (password.trim() === "") {
+      setPasswordError("Password is required");
+    } else if (!term || !privacy) {
+      alert("Please accept both Terms & Conditions and Privacy Policy.");
+    } else {
+      Signuphandle();
+    }
+  };
+
+  return (
     <View style={SignUpStyles.container}>
       <ScrollView>
         <View style={SignUpStyles.logoContainer}>
@@ -76,17 +122,31 @@ return (
             no hassle.
           </Text>
         </View>
+
+        {/*.............. signup input field start here ..................*/}
         <View style={SignUpStyles.card}>
           <View style={SignUpStyles.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>Email address*</Text>
             <TextInput
-              style={SignUpStyles.input}
+              style={[
+                SignUpStyles.input,
+                {
+                  borderColor: emailError
+                    ? _COLORS.Kodie_lightRedColor
+                    : _COLORS.Kodie_GrayColor,
+                },
+              ]}
               value={email}
               onChangeText={setEmail}
+              onBlur={() => handleSignUpEmail(email)}
               placeholder="Enter Your Email Address"
               placeholderTextColor="#999"
             />
+            {emailError ? (
+              <Text style={SignUpStyles.error_text}>{emailError}</Text>
+            ) : null}
           </View>
+
           <View style={SignUpStyles.inputContainer}>
             <Text
               style={[LABEL_STYLES._texinputLabel, SignUpStyles.cardHeight]}
@@ -98,6 +158,7 @@ return (
                 style={SignUpStyles.passwordInput}
                 value={password}
                 onChangeText={setPassword}
+                onBlur={() => handleSignUpPassword(password)}
                 placeholder="Password"
                 secureTextEntry={!showPassword}
               />
@@ -110,18 +171,23 @@ return (
                 />
               </TouchableOpacity>
             </View>
+            {passwordError ? (
+              <Text style={SignUpStyles.error_text}>{passwordError}</Text>
+            ) : null}
           </View>
           <Text style={SignUpStyles.accept_Text}>
             {"Accept the terms of use"}
           </Text>
+
+          {/*.............. checkbox field start here ..................*/}
           <View style={SignUpStyles.termView}>
             <TouchableOpacity
               onPress={() => {
-                setIsCheck(!check);
+                setTerm(!term);
               }}
             >
               <View style={SignUpStyles.CheckBox_View}>
-                {check && (
+                {term && (
                   <FontAwesome
                     name="check"
                     size={15}
@@ -149,11 +215,11 @@ return (
           <View style={SignUpStyles.termView}>
             <TouchableOpacity
               onPress={() => {
-                setPrivacycheckCheck(!privacycheck);
+                setPrivacy(!privacy);
               }}
             >
               <View style={SignUpStyles.CheckBox_View}>
-                {privacycheck && (
+                {privacy && (
                   <FontAwesome
                     name="check"
                     size={15}
@@ -180,19 +246,19 @@ return (
           </View>
         </View>
 
+        {/*.............. signup button  here ..................*/}
         <View style={SignUpStyles.signBtnView}>
           <CustomSingleButton
             _ButtonText={"Sign up now"}
             Text_Color={_COLORS.Kodie_WhiteColor}
-            // onPress={handleSignUp}
-            onPress={() => {
-              props.navigation.navigate("SignUpVerification");
-            }}
+            onPress={handleSubmit}
           />
           <DividerIcon
             DeviderText={"or"}
             style={{ marginTop: 32, marginBottom: 30 }}
           />
+
+          {/*.............. signup option field here ..................*/}
           <CustomSingleButton
             leftImage={IMAGES.GoogleIcon}
             isLeftImage={true}
