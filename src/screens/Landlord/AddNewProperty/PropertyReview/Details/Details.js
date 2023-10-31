@@ -145,16 +145,16 @@ export default Details = (props) => {
         </View>
         <View style={DetailsStyle.btnView}>
           <CustomSingleButton
-            _ButtonText={"Add property"}
+            _ButtonText={"Edit details"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={props.AddProperty}
           />
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={DetailsStyle.goBack_View}
-          // onPress={() => {
-          //   props.navigation.navigate("PropertyImages");
-          // }}
+          onPress={() => {
+            props.navigation.navigate("PropertyImages");
+          }}
         >
           <View style={DetailsStyle.backIcon}>
             <Ionicons
@@ -164,7 +164,7 @@ export default Details = (props) => {
             />
           </View>
           <Text style={DetailsStyle.goBack_Text}>{"Go back"}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </View>
   );

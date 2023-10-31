@@ -8,19 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AccountStyle } from "./AccountStyle";
-import TopHeader from "../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../services/CommonServices";
 import { LABEL_STYLES } from "../../../../Themes";
 import { _COLORS } from "../../../../Themes";
-import Entypo from "react-native-vector-icons/Entypo";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Dropdown } from "react-native-element-dropdown";
-import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-const data = [
-  { label: "Bharat", value: "1" },
-  { label: "Australia", value: "2" },
-  { label: "America", value: "3" },
-];
+import Entypo from "react-native-vector-icons/Entypo";
+
 export default Account = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -28,10 +20,57 @@ export default Account = (props) => {
   const [location, setLocation] = useState("");
   const [organisation, setOrganisation] = useState("");
   const [value, setValue] = useState(null);
+
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [mobileNumberError, setMobileNumberError] = useState("");
+
+  // Validation for First Name
+  const validateFirstName = (text) => {
+    if (text === "") {
+      setFirstNameError("First name is required");
+    } else if (!/^[A-Za-z]+$/.test(text)) {
+      setFirstNameError("First name should contain only alphabetic characters");
+    } else {
+      setFirstNameError("");
+    }
+    setFirstName(text);
+  };
+  
+
+  // Validation for Last Name
+  const validateLastName = (text) => {
+    if (text === "") {
+      setLastNameError("Last name is required");
+    } else if (!/^[A-Za-z]+$/.test(text)) {
+      setLastNameError("Last name should contain only alphabetic characters");
+    } else {
+      setLastNameError("");
+    }
+    setLastName(text);
+  };
+  
+
+  // Validation for Phone Number
+  const validateMobileNumber = (text) => {
+    if (text === "") {
+      setMobileNumberError("Phone number is required");
+    } else if (!/^\d{10}$/.test(text)) {
+      setMobileNumberError("Invalid phone number format");
+    } else {
+      setMobileNumberError("");
+    }
+    setMobileNumber(text);
+  };
+
+  const data = [
+    { label: "Bharat", value: "1" },
+    { label: "Australia", value: "2" },
+    { label: "America", value: "3" },
+  ];
+
   return (
-    // <View style={AccountStyle.mainContainer}>
-    // <ScrollView>
-    <>
+    <ScrollView>
       <View style={AccountStyle.headingView}>
         <Text style={AccountStyle.heading}>
           {"Introduce yourself to Kodie"}
@@ -43,20 +82,22 @@ export default Account = (props) => {
           <TextInput
             style={AccountStyle.input}
             value={firstName}
-            onChangeText={setFirstName}
+            onChangeText={validateFirstName}
             placeholder="Enter your first name"
             placeholderTextColor="#999"
           />
+          <Text style={AccountStyle.errorText}>{firstNameError}</Text>
         </View>
         <View style={AccountStyle.inputContainer}>
           <Text style={LABEL_STYLES._texinputLabel}>Last name*</Text>
           <TextInput
             style={AccountStyle.input}
             value={lastName}
-            onChangeText={setLastName}
+            onChangeText={validateLastName}
             placeholder="Enter your last name"
             placeholderTextColor="#999"
           />
+          <Text style={AccountStyle.errorText}>{lastNameError}</Text>
         </View>
         <View style={AccountStyle.inputContainer}>
           <Text style={LABEL_STYLES._texinputLabel}>
@@ -65,11 +106,12 @@ export default Account = (props) => {
           <TextInput
             style={AccountStyle.input}
             value={mobileNumber}
-            onChangeText={setMobileNumber}
-            placeholder="Enter your last name"
+            onChangeText={validateMobileNumber}
+            placeholder="Enter your phone number"
             placeholderTextColor="#999"
-            keyboardType="number-pad"
+            keyboardType="phone-pad"
           />
+          <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
         </View>
         <View style={AccountStyle.inputContainer}>
           <Text style={LABEL_STYLES._texinputLabel}>
@@ -96,24 +138,6 @@ export default Account = (props) => {
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
           </View>
-          <Dropdown
-            style={AccountStyle.dropdown}
-            placeholderStyle={AccountStyle.placeholderStyle}
-            selectedTextStyle={AccountStyle.selectedTextStyle}
-            inputSearchStyle={AccountStyle.inputSearchStyle}
-            iconStyle={AccountStyle.iconStyle}
-            data={data}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="Enter address manually"
-            searchPlaceholder="Search..."
-            value={value}
-            onChange={(item) => {
-              setValue(item.value);
-            }}
-          />
         </View>
         <View style={AccountStyle.inputContainer}>
           <Text style={LABEL_STYLES._texinputLabel}>Organisation name</Text>
@@ -140,24 +164,7 @@ export default Account = (props) => {
             placeholderTextColor="#999"
           />
         </View>
-        {/* <CustomSingleButton
-          _ButtonText={"Next"}
-          Text_Color={_COLORS.Kodie_WhiteColor}
-          onPress={() => {
-            // props.navigation.navigate("AboutYou");s
-          }}
-        />
-        <View style={AccountStyle.goBack_View}>
-          <TouchableOpacity style={AccountStyle.backIcon}>
-            <Ionicons
-              name="chevron-back"
-              size={22}
-              color={_COLORS.Kodie_MediumGrayColor}
-            />
-          </TouchableOpacity>
-          <Text style={AccountStyle.goBack_Text}>{"Go back"}</Text>
-        </View> */}
       </View>
-    </>
+    </ScrollView>
   );
 };
