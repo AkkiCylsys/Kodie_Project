@@ -24,6 +24,7 @@ const CELL_COUNT = 6;
 //ScreenNo:8
 export default SignUpVerification = (props) => {
   const [verificationCode, setVerificationCode] = useState("");
+  const [verificationCodeError, setVerificationCodeError] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState(1);
   const [value, setValue] = useState("");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
@@ -31,6 +32,60 @@ export default SignUpVerification = (props) => {
     value,
     setValue,
   });
+  const [isLoading, setIsLoading] = useState(false);
+
+  //.......... input box validation define here
+  const handleverification_code = (text) => {
+    setVerificationCode(text);
+    if (text.trim() === "") {
+      setVerificationCodeError(" Otp is required.");
+    } else {
+      setVerificationCodeError("");
+    }
+  };
+
+  //.......... Api body define here
+  const Signup_verification_Data = {
+    email: email,
+    otp: verificationCode,
+  };
+
+  //.......... Api method define here
+  const sign_verification_Api =
+    "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup";
+
+  const handle_Signup_verification = () => {
+    setIsLoading(true);
+
+    axios
+      .post(sign_verification_Api, Signup_verification_Data)
+      .then((response) => {
+        console.log("sign_verification_Api responce", response.data);
+        if (response.data.status === true) {
+          alert(response.data.message);
+          setEmail("");
+          setVerificationCode("");
+          props.navigation.navigate("SignUpSteps");
+          setIsLoading(false);
+        } else {
+          verificationCodeError(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("signup Verification error:", error);
+        setIsLoading(false);
+      });
+  };
+
+  //.......... Handle button define here
+  const handleSubmit = () => {
+    if (verificationCode.trim() === "") {
+      verificationCodeError("Otp is required!");
+    } else {
+      handle_Signup_verification();
+    }
+  };
 
   return (
     <View style={SignUpVerificationStyle.mainContainer}>
@@ -52,8 +107,9 @@ export default SignUpVerification = (props) => {
           <CodeField
             ref={ref}
             {...prop}
-            value={value}
-            onChangeText={setValue}
+            value={verificationCode}
+            onChangeText={setVerificationCode}
+            onBlur={() => handleverification_code(verificationCode)}
             cellCount={CELL_COUNT}
             rootStyle={SignUpVerificationStyle.CodeField}
             keyboardType="number-pad"
@@ -72,6 +128,11 @@ export default SignUpVerification = (props) => {
             )}
           />
         </View>
+        {verificationCodeError ? (
+          <Text style={SignUpVerificationStyle.error_text}>
+            {verificationCodeError}
+          </Text>
+        ) : null}
         <Text
           style={[LABEL_STYLES.commonMidtext, SignUpVerificationStyle.textcode]}
         >
@@ -82,9 +143,7 @@ export default SignUpVerification = (props) => {
           <CustomSingleButton
             _ButtonText={"Verify email"}
             Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={() => {
-              props.navigation.navigate("SignUpSteps");
-            }}
+            onPress={handleSubmit()}
           />
         </View>
 
@@ -104,6 +163,7 @@ export default SignUpVerification = (props) => {
           <Text style={SignUpVerificationStyle.goBack_Text}>{"Go back"}</Text>
         </TouchableOpacity>
       </View>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

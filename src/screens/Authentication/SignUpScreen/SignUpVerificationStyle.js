@@ -66,4 +66,5 @@ export const SignUpVerificationStyle = StyleSheet.create({
     alignSelf: "center",
   },
   otp_view: { marginTop: 24 },
+  error_text: { color: "red", marginLeft: 10 },
 });
