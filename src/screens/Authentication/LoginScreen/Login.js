@@ -31,6 +31,8 @@ import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveL
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
+import axios from "axios";
+import { Config } from "../../../Config";
 export default Login = (props) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -52,10 +54,11 @@ export default Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(true);
   const [loginResponse, setLoginResponse] = useState(true);
-  const Login_response = useSelector(
-    (state) => state?.authenticationReducer?.data
-  );
-  console.log("Login_response.....", Login_response);
+  
+  // const Login_response = useSelector(
+  //   (state) => state?.authenticationReducer?.data
+  // );
+  // console.log("Login_response.....", Login_response);
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -155,52 +158,6 @@ export default Login = (props) => {
       setIsClick(isClick + 1);
     }
   };
-
-  //........ Login APi define  here
-  const makeApiLogin = () => {
-    // -----loading set true here
-    setIsLoading(true);
-    const url =
-      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/login";
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("API Response:", result);
-        setLoginResponse(result);
-        // -----write inner conditon here if / else
-        if (result.status == true) {
-          alert("Login successful");
-          // dispatch(fetchLoginSuccess(loginResponse));
-          props.navigation.navigate("DrawerNavigatorLeftMenu");
-          setEmail("");
-          setPassword("");
-          setIsLoading(false);
-        } else {
-          alert("Please check your email and password.");
-          setPasswordError(
-            "Hmm, it seems like the credential you entered is invalid. Please try again."
-          );
-        }
-      })
-      .catch((error) => {
-        console.error("API failed", error);
-        setIsLoading(false);
-      })
-      // loding
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
   //... inner reset password rejex variable define here
   const validateEmail = (email) => {
     const emailPattern =
@@ -282,74 +239,92 @@ export default Login = (props) => {
     }
   };
 
-  //------ send_verification_code Api code here
+  //  login Api ...
+  const makeApiLogin = () => {
+    const url = Config.API_URL;
+    const loginurl = url + "login";
+    console.log("Request URL:", loginurl);
+    setIsLoading(true);
+    // const url =
+    //   "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/login";
+
+    axios
+      .post(loginurl, {
+        email: email,
+        password: password,
+      })
+      .then((response) => {
+        console.log("API Response:", response.data);
+        setLoginResponse(response.data);
+
+        if (response.data.status === true) {
+          alert("Login successful");
+          // dispatch(fetchLoginSuccess(loginResponse));
+          props.navigation.navigate("DrawerNavigatorLeftMenu");
+          setEmail("");
+          setPassword("");
+        } else {
+          alert("Please check your email and password.");
+          setPasswordError(
+            "Hmm, it seems like the credentials you entered are invalid. Please try again."
+          );
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+      });
+  };
+  //send_verification_code Api code here....
   const send_verification_code = () => {
-    // Set loading to true before making the API call
     setIsLoading(true);
     const url =
       "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password1";
-    console.log("url...", url);
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+
+    axios
+      .post(url, {
         email: resetEmail,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("API Response send otp:", result);
-        if (result?.status === true) {
-          alert("The otp has been sent your email.");
+      })
+      .then((response) => {
+        console.log("API Response send otp:", response.data);
+        if (response.data.status === true) {
+          alert("The otp has been sent to your email.");
           setIsTimeron(true);
-          if (isClick == 1) {
+          if (isClick === 1) {
             setIsClick(1);
             setVerificationcode("");
           } else {
             setIsClick(isClick + 1);
           }
         } else {
-          alert(result?.message);
+          alert(response.data.message);
         }
       })
       .catch((error) => {
         console.error("API failed", error);
-        alert(error);
         setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
+        // alert(error);
       });
   };
 
-  //------ verify_otp Api code here
+  //verify_otp Api code here.....
   const verify_Otp = () => {
-    // Set loading to true before making the API call
     setIsLoading(true);
     const url =
       "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup_verifyotp";
-    console.log("url...", url);
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
+
+    axios
+      .post(url, {
+        email: resetEmail,
         otp: verificationcode,
-      }),
-    })
-    .then((response) => response.json())
-      .then((result) => {
-        console.log("API Response verify otp:", result);
-        if (result?.status === true) {
-          // If the API call is successful, increment isClick
-          alert(result?.message);
+      })
+      .then((response) => {
+        console.log("API Response verify otp:", response.data);
+        if (response.data.status === true) {
+          alert(response.data.message);
           setIsClick(isClick + 1);
-        }      
-        else {         
+        } else {
           setVerificationcodeError(
             "The verification code you’ve entered is incorrect. Please try again."
           );
@@ -358,10 +333,6 @@ export default Login = (props) => {
       .catch((error) => {
         console.error("API failed", error);
         setIsLoading(false);
-      })
-      .finally(() => {
-        // Always set loading to false, whether the API call succeeds or fails
-        setIsLoading(false);
       });
   };
 
@@ -369,40 +340,27 @@ export default Login = (props) => {
   const create_password = () => {
     // Set loading to true before making the API call
     setIsLoading(true);
-
     const url =
       "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password";
-    console.log("url...", url);
-    fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
-        // otp:verificationcode,
+    axios
+      .post(url, {
+        email: resetEmail,
         password: newpassword,
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("API Response create_password:", result);
-        if (result?.status === true) {
+      })
+      .then((response) => {
+        console.log("API Response create_password:", response.data);
+        if (response.data.status === true) {
           // If the API call is successful, increment isClick
-          alert(result.message);
+          alert(response.data.message);
           setIsClick(isClick + 1);
         } else {
-          alert("password not created.");
+          alert("Password not created.");
         }
       })
       .catch((error) => {
-        alert(error);
         console.error("API failed", error);
         setIsLoading(false);
-      })
-      .finally(() => {
-        // Always set loading to false, whether the API call succeeds or fails
-        setIsLoading(false);
+        // alert(error);
       });
   };
 

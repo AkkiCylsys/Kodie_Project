@@ -15,6 +15,7 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import axios from "axios";
+import { Config } from "../../../Config";
 import {
   CodeField,
   Cursor,
@@ -44,14 +45,12 @@ export default SignUpVerification = (props) => {
     email: email,
     otp: value,
   };
-
   // .......... Api method define here
-  const sign_verification_Api =
-    "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup_verifyotp";
-
   const handle_Signup_verification = () => {
+    const url = Config.API_URL;
+    const sign_verification_Api = url + "signup_verifyotp";
+    console.log("Request URL:", sign_verification_Api);
     setIsLoading(true);
-
     axios
       .post(sign_verification_Api, Signup_verification_Data)
       .then((response) => {

@@ -19,7 +19,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LABEL_STYLES } from "../../../Themes/CommonStyles/CommonStyles";
 import axios from "axios";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
-
+import { Config } from "../../../Config";
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -35,7 +35,8 @@ export default SignUp = (props) => {
 
   //... Regex signup email validation
   const validateSignUpEmail = (email) => {
-    const emailPattern =  /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
 
@@ -70,37 +71,33 @@ export default SignUp = (props) => {
     is_term_condition: term,
     is_privacy_policy: privacy,
   };
-
-  //.......... Api method define here
-  const signApi =
-    'https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup';
-
   const Signuphandle = () => {
-    setIsLoading(true); 
+    const url = Config.API_URL;
+    const signupUrl = url + "signup";
+    console.log("Request URL:", signupUrl);
+    setIsLoading(true);
     axios
-      .post(signApi, SignUpData)
+      .post(signupUrl, SignUpData)
       .then((response) => {
-        console.log('SignUp responce', response.data);
+        console.log("SignUp responce", response.data);
         if (response.data.status === true) {
           alert(response.data.message);
-          props.navigation.navigate("SignUpVerification",{
-            email:email
-          }); 
-          setEmail('')
-          setPassword('')
-          setTerm(false)
-          setPrivacy(false)     
-          setIsLoading(false);   
-
-        } 
-         else  {
+          props.navigation.navigate("SignUpVerification", {
+            email: email,
+          });
+          setEmail("");
+          setPassword("");
+          setTerm(false);
+          setPrivacy(false);
+          setIsLoading(false);
+        } else {
           setEmailError(response.data.message);
-          setIsLoading(false);   
-        } 
+          setIsLoading(false);
+        }
       })
       .catch((error) => {
         console.error("Signup error:", error);
-        alert(error)
+        alert(error);
         setIsLoading(false);
       });
   };
@@ -293,7 +290,7 @@ export default SignUp = (props) => {
           />
         </View>
       </ScrollView>
-        {isLoading?<CommonLoader />:null}
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
