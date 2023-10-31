@@ -29,7 +29,7 @@ import {
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 export default Login = (props) => {
   const dispatch = useDispatch();
@@ -52,8 +52,10 @@ export default Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(true);
   const [loginResponse, setLoginResponse] = useState(true);
-  const Login_response = useSelector(state => state?.authenticationReducer?.data);
-  console.log("Login_response.....",Login_response)
+  const Login_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
+  console.log("Login_response.....", Login_response);
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -95,14 +97,14 @@ export default Login = (props) => {
     }
   };
 
-   //... Regex login email validation
+  //... Regex login email validation
   const validateResetEmail = (resetEmail) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(resetEmail);
   };
 
-   //... inner reset password email variable define here
+  //... inner reset password email variable define here
   const handleResetEmailChange = (text) => {
     setResetEmail(text);
     if (text.trim() === "") {
@@ -116,7 +118,7 @@ export default Login = (props) => {
     }
   };
 
-     //... inner reset password varification_Code variable define here
+  //... inner reset password varification_Code variable define here
   const handleverificationcodes = () => {
     if (verificationcode.trim() === "") {
       setVerificationcodeError("verification code is required");
@@ -125,7 +127,7 @@ export default Login = (props) => {
     }
   };
 
-   //... inner reset password Password_Check variable define here
+  //... inner reset password Password_Check variable define here
   const handleResetpasswordCheck = () => {
     if (newpassword.trim() === "") {
       setNewPasswordError("Please enter a new password");
@@ -139,7 +141,7 @@ export default Login = (props) => {
     }
   };
 
-     //... inner reset password Next Button code define here
+  //... inner reset password Next Button code define here
   const handleButtonPress = () => {
     if (isClick === 3) {
       refRBSheet.current.close();
@@ -154,7 +156,7 @@ export default Login = (props) => {
     }
   };
 
-    //........ Login APi define  here
+  //........ Login APi define  here
   const makeApiLogin = () => {
     // -----loading set true here
     setIsLoading(true);
@@ -173,9 +175,9 @@ export default Login = (props) => {
       .then((response) => response.json())
       .then((result) => {
         console.log("API Response:", result);
-        setLoginResponse(result)
+        setLoginResponse(result);
         // -----write inner conditon here if / else
-        if (result.status == true ) {
+        if (result.status == true) {
           alert("Login successful");
           // dispatch(fetchLoginSuccess(loginResponse));
           props.navigation.navigate("DrawerNavigatorLeftMenu");
@@ -188,11 +190,10 @@ export default Login = (props) => {
             "Hmm, it seems like the credential you entered is invalid. Please try again."
           );
         }
-       
       })
       .catch((error) => {
         console.error("API failed", error);
-        setIsLoading(false)
+        setIsLoading(false);
       })
       // loding
       .finally(() => {
@@ -200,14 +201,14 @@ export default Login = (props) => {
       });
   };
 
-   //... inner reset password rejex variable define here
+  //... inner reset password rejex variable define here
   const validateEmail = (email) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
 
-     //... inner  email variable define here
+  //... inner  email variable define here
   const handleEmailChange = (text) => {
     setEmail(text);
     if (text.trim() === "") {
@@ -221,7 +222,7 @@ export default Login = (props) => {
     }
   };
 
-   //... inner reset password password variable define here
+  //... inner reset password password variable define here
   const handlePasswordChange = (text) => {
     setPassword(text);
     if (text.trim() === "") {
@@ -231,7 +232,7 @@ export default Login = (props) => {
     }
   };
 
-    //... inner reset password new password variable define here
+  //... inner reset password new password variable define here
   const handleNewPassword = (text) => {
     setNewPassword(text);
     if (text.trim() === "") {
@@ -241,7 +242,7 @@ export default Login = (props) => {
     }
   };
 
-    //... inner reset password confirm password variable define here
+  //... inner reset password confirm password variable define here
   const handleConfirmpassword = (text) => {
     setConfirmPassword(text);
     if (text.trim() === "") {
@@ -253,7 +254,7 @@ export default Login = (props) => {
     }
   };
 
-     //... inner reset password submit button variable define here
+  //... inner reset password submit button variable define here
   const handleSubmit = () => {
     if (email.trim() === "") {
       setEmailError("Email is required!");
@@ -268,11 +269,14 @@ export default Login = (props) => {
     }
   };
 
-    //...  verification variable define here
+  //...  verification variable define here
   const handleverificationCode = (text) => {
+    const regex = /^[0-9]+$/;
     setVerificationcode(text);
     if (text.trim() === "") {
       setVerificationcodeError("verification code is required.");
+    } else if (!regex.test(text)) {
+      setVerificationcodeError("Verification code must contain only numbers.");
     } else {
       setVerificationcodeError("");
     }
@@ -313,7 +317,7 @@ export default Login = (props) => {
       .catch((error) => {
         console.error("API failed", error);
         alert(error);
-        setIsLoading(false)
+        setIsLoading(false);
       })
       .finally(() => {
         setIsLoading(false);
@@ -337,15 +341,17 @@ export default Login = (props) => {
         otp: verificationcode,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {     
+        response.json();
+      })
       .then((result) => {
         console.log("API Response verify otp:", result);
         if (result?.status === true) {
           // If the API call is successful, increment isClick
           alert(result?.message);
           setIsClick(isClick + 1);
-        } else {
-          // alert("The verification code is incorrect");
+        }      
+        else {         
           setVerificationcodeError(
             "The verification code you’ve entered is incorrect. Please try again."
           );
@@ -508,7 +514,7 @@ export default Login = (props) => {
         </View>
       </ScrollView>
 
-       {/* ------ Rest password code start  here ........... */}
+      {/* ------ Rest password code start  here ........... */}
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -549,8 +555,7 @@ export default Login = (props) => {
           </TouchableOpacity>
         </View>
         <View style={LoginStyles.card}>
-
-        {/* ------ Reset passowrd 0 section start code  here ........... */}
+          {/* ------ Reset passowrd 0 section start code  here ........... */}
           {isClick === 0 && (
             <>
               <View style={LoginStyles.inputContainer}>
@@ -799,14 +804,14 @@ export default Login = (props) => {
             </>
           )}
 
-        {/* ------ Loder section start code  here ........... */}
+          {/* ------ Loder section start code  here ........... */}
           {isLoading && (
             <View style={LoginStyles.secondloder}>
               <ActivityIndicator size={40} color={_COLORS.Kodie_BlackColor} />
             </View>
           )}
 
-         {/* ------ Next button section start code  here ........... */}
+          {/* ------ Next button section start code  here ........... */}
           <View style={{ marginBottom: 800 }}>
             <CustomSingleButton
               onPress={handleButtonPress}
