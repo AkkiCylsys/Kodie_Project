@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Platform,
-  Button
+  Button,
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
 import { LoginStyles } from "./LoginCss";
@@ -53,6 +53,7 @@ export default Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [verifyButtonEnabled, setVerifyButtonEnabled] = useState(false);
   const [countdown, setCountdown] = useState(60);
+
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -65,14 +66,12 @@ export default Login = (props) => {
         BackHandler.exitApp();
         return true;
       };
-
       BackHandler.addEventListener("hardwareBackPress", onBackPress);
       return () => {
         BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
     }, [])
   );
-
   // ...countdown
   const startTimer = () => {
     setCountdown(60);
@@ -96,7 +95,6 @@ export default Login = (props) => {
       startTimer();
     }
   }, [isLoading]);
-
   // UseEffect to enable the verify button when countdown reaches 0
   useEffect(() => {
     if (countdown === 0) {
@@ -106,7 +104,6 @@ export default Login = (props) => {
     }
   }, [countdown]);
 
-  //... password new and confirm in reset password 
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -148,9 +145,8 @@ export default Login = (props) => {
   const handleverificationcodes = () => {
     if (verificationcode.trim() === "") {
       setVerificationcodeError("verification code is required");
-    }else {
+    } else {
       verify_Otp();
-      // setIsClick(isClick + 1);
     }
   };
 
@@ -178,8 +174,7 @@ export default Login = (props) => {
       handleforgetValidation();
     } else if (isClick === 1) {
       handleverificationcodes();
-    }
-    else if (isClick === 2) {
+    } else if (isClick === 2) {
       handleResetpasswordCheck();
     } else {
       // setIsClick((prev) => (prev + 1) % 4);
@@ -215,7 +210,6 @@ export default Login = (props) => {
 
           setEmail("");
           setPassword("");
-
         } else {
           alert("Please check your email and password.");
           setPasswordError(
@@ -333,23 +327,21 @@ export default Login = (props) => {
         console.log("API Response send otp:", result);
         if (result?.status === true) {
           // If the API call is successful, increment isClick
-          alert("The otp has been sent your email")
+          alert("The otp has been sent your email");
 
           if (isClick == 1) {
             setIsClick(1);
-            setVerificationcode('')
+            setVerificationcode("");
           } else {
             setIsClick(isClick + 1);
           }
-
-
         } else {
           alert("Verification code is not sent");
         }
       })
       .catch((error) => {
         console.error("API failed", error);
-        alert(error)
+        alert(error);
         setIsAuthenticated(false);
       })
       .finally(() => {
@@ -362,7 +354,6 @@ export default Login = (props) => {
   const verify_Otp = () => {
     // Set loading to true before making the API call
     setIsLoading(true);
-
     const url =
       "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password2";
     console.log("url...", url);
@@ -385,7 +376,9 @@ export default Login = (props) => {
           setIsClick(isClick + 1);
         } else {
           // alert("The verification code is incorrect");
-          setVerificationcodeError('The verification code you’ve entered is incorrect. Please try again.')
+          setVerificationcodeError(
+            "The verification code you’ve entered is incorrect. Please try again."
+          );
         }
       })
       .catch((error) => {
@@ -429,7 +422,7 @@ export default Login = (props) => {
         }
       })
       .catch((error) => {
-        alert(error)
+        alert(error);
         console.error("API failed", error);
         setIsAuthenticated(false);
       })
@@ -461,7 +454,8 @@ export default Login = (props) => {
                   },
                 ]}
                 value={email}
-                onChangeText={handleEmailChange}
+                // onChangeText={handleEmailChange}
+                onChangeText={setEmail}
                 onBlur={() => handleEmailChange(email)}
                 placeholder="Your email address"
                 placeholderTextColor="#999"
@@ -590,7 +584,8 @@ export default Login = (props) => {
                     },
                   ]}
                   value={resetEmail}
-                  onChangeText={handleResetEmailChange}
+                  // onChangeText={handleResetEmailChange}
+                  onChangeText={setResetEmail}
                   onBlur={() => handleResetEmailChange(resetEmail)}
                   placeholder="Your Email Address"
                   placeholderTextColor="#999"
@@ -608,7 +603,10 @@ export default Login = (props) => {
               <View style={LoginStyles.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
-                  style={LoginStyles.input}
+                  style={[
+                    LoginStyles.input,
+                    { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
+                  ]}
                   value={resetEmail}
                   // onChangeText={handleEmailChange}
                   // onBlur={() => handleEmailChange(email)}
@@ -638,25 +636,27 @@ export default Login = (props) => {
                     // editable={!isLoading && countdown > 0}
                     placeholder="code"
                     placeholderTextColor="#999"
-                    keyboardType='number-pad'
+                    keyboardType="number-pad"
                     maxLength={6}
-
                   />
                 </View>
                 <View style={LoginStyles.codeMargin} />
-                <TouchableOpacity style={LoginStyles.getButtonView} onPress={countdown === 0 ? handleverificationcodes : verify_Otp}
-                  disabled={countdown === 0}>
+                <View style={LoginStyles.getButtonView}>
                   {isLoading || !verifyButtonEnabled ? (
-                    <Text style={LoginStyles.getButton}>{verificationcode ? 'Verify' : countdown}</Text>
-                  )
-                    : (
-                      <TouchableOpacity onPress={send_verification_code}>
-                        <Text style={[LoginStyles.getButton, { marginRight:13}]}>{"Resend"}</Text>
-                      </TouchableOpacity>
-                    )
-                  }
-                </TouchableOpacity>
-
+                    <Text style={LoginStyles.getButton}>
+                      {/* {verificationcode ? "Resend" : countdown} */}
+                      {countdown} S
+                    </Text>
+                  ) : (
+                    <TouchableOpacity onPress={send_verification_code}>
+                      <Text
+                        style={[LoginStyles.getButton, { marginRight: 13 }]}
+                      >
+                        {"Resend"}
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
               </View>
 
               {verificationcodeError ? (
@@ -676,7 +676,10 @@ export default Login = (props) => {
               <View style={LoginStyles.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
-                  style={LoginStyles.input}
+                  style={[
+                    LoginStyles.input,
+                    { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
+                  ]}
                   value={resetEmail}
                   // onChangeText={handleEmailChange}
                   // onBlur={() => handleEmailChange(email)}
@@ -691,7 +694,10 @@ export default Login = (props) => {
                     Verification code
                   </Text>
                   <TextInput
-                    style={LoginStyles.input}
+                    style={[
+                      LoginStyles.input,
+                      { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
+                    ]}
                     value={verificationcode}
                     // onChangeText={handleverificationCode}
                     // onBlur={() => handleverificationCode(verificationcode)}
@@ -813,7 +819,7 @@ export default Login = (props) => {
         {/* ------ Loder section start code  here ........... */}
           {isLoading && (
             <View style={LoginStyles.secondloder}>
-              <ActivityIndicator size={50} color={_COLORS.Kodie_BlackColor} />
+              <ActivityIndicator size={40} color={_COLORS.Kodie_BlackColor} />
             </View>
           )}
 

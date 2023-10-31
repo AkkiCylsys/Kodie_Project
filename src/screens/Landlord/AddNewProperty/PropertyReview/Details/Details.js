@@ -8,6 +8,7 @@ import {
   Image,
 } from "react-native";
 import { DetailsStyle } from "./DetailsStyles";
+import { _goBack } from "../../../../../services/CommonServices";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DividerIcon from "../../../../../components/Atoms/Devider/DividerIcon";
@@ -144,16 +145,16 @@ export default Details = (props) => {
         </View>
         <View style={DetailsStyle.btnView}>
           <CustomSingleButton
-            _ButtonText={"Add property"}
+            _ButtonText={"Edit details"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={props.AddProperty}
           />
         </View>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={DetailsStyle.goBack_View}
-          // onPress={() => {
-          //   props.navigation.navigate("PropertyImages");
-          // }}
+          onPress={() => {
+            props.navigation.navigate("PropertyImages");
+          }}
         >
           <View style={DetailsStyle.backIcon}>
             <Ionicons
@@ -163,7 +164,7 @@ export default Details = (props) => {
             />
           </View>
           <Text style={DetailsStyle.goBack_Text}>{"Go back"}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </View>
   );

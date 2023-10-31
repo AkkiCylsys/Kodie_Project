@@ -139,7 +139,7 @@ export default PropertyDetails = (props) => {
           <TouchableOpacity
             style={PropertyDetailsStyle.goBack_View}
             onPress={() => {
-              props.navigation.navigate("PropertyList");}}>
+              props.navigation.navigate("Properties");}}>
             <View style={PropertyDetailsStyle.backIcon}>
               <Ionicons
                 name="chevron-back"

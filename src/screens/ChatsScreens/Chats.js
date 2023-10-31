@@ -18,7 +18,8 @@ const Chats = (props) => {
   return (
     <View style={ChatsStyle.container}>
       <TopHeader
-        onPressLeftButton={() => _goBack(props)}
+        // onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Chats"}
       />
       <ScrollView>

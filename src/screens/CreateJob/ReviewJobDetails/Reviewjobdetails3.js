@@ -1,7 +1,7 @@
 import { View, Text, Image, ScrollView } from "react-native";
 import React, { useState } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
-import { ReviewjobdetailsStyle3 } from "../ReviewJobDetails/ReviewjobdetailsStyle3";
+import {ReviewjobdetailsStyle3} from "../Reviewjobdetails/ReviewjobdetailsStyle3";
 import { _goBack } from "../../../services/CommonServices/CommonMethods";
 import { _COLORS, IMAGES } from "../../../Themes";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";

@@ -146,7 +146,6 @@ export default SignUpVerification = (props) => {
             onPress={handleSubmit()}
           />
         </View>
-
         <TouchableOpacity
           style={SignUpVerificationStyle.goBack_View}
           onPress={() => {

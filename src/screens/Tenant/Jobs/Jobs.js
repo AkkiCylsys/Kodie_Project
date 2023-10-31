@@ -38,6 +38,9 @@ const Jobs = (props) => {
 
   return (
     <View style={JobsCss.Container}>
+
+      <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} />
+
       <TopHeader 
       // onPressLeftButton={() => _goBack(props)} 
       onPressLeftButton={() => props.navigation.navigate("Dashboard")}
