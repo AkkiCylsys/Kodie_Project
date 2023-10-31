@@ -18,6 +18,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LABEL_STYLES } from "../../../Themes/CommonStyles/CommonStyles";
 import axios from "axios";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
@@ -27,10 +28,11 @@ export default SignUp = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [term, setTerm] = useState(false);
   const [privacy, setPrivacy] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
   //... Regex signup email validation
   const validateSignUpEmail = (email) => {
     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -74,21 +76,29 @@ export default SignUp = (props) => {
     'https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup';
 
   const Signuphandle = () => {
+    setIsLoading(true); 
     axios
       .post(signApi, SignUpData)
       .then((response) => {
-        if (response.status === true) {
-          alert(response.message);
-          props.navigation.navigate("SignUpVerification");
+        console.log('SignUp responce', response.data);
+        if (response.data.status === true) {
+          alert(response.data.message);
+          props.navigation.navigate("SignUpVerification"); 
+          setEmail('')
+          setPassword('')
+          setTerm('')
+          setPrivacy('')
+          setIsLoading(false);   
+
         } 
-         else if (response.status === false) {
-          alert(response.error);
-        } else {
-          setEmailError("");
-        }
+         else  {
+          setEmailError(response.data.message);
+          setIsLoading(false);   
+        } 
       })
       .catch((error) => {
         console.error("Signup error:", error);
+        setIsLoading(false);
       });
   };
 
@@ -280,6 +290,7 @@ export default SignUp = (props) => {
           />
         </View>
       </ScrollView>
+        {isLoading?<CommonLoader />:null}
     </View>
   );
 };
