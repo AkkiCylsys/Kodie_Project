@@ -341,9 +341,7 @@ export default Login = (props) => {
         otp: verificationcode,
       }),
     })
-      .then((response) => {     
-        response.json();
-      })
+    .then((response) => response.json())
       .then((result) => {
         console.log("API Response verify otp:", result);
         if (result?.status === true) {
