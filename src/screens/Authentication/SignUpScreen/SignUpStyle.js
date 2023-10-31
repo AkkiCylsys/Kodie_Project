@@ -108,4 +108,5 @@ export const SignUpStyles = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
   },
   terms_Condition: { color: _COLORS.Kodie_GreenColor },
+  error_text: { color: "red", marginLeft: 10 },
 });

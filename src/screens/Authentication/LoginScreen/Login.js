@@ -81,8 +81,8 @@ export default Login = (props) => {
   const handleToggleResetPassword = () => {
     setShowResetPassword((prevShowPassword) => !prevShowPassword);
   };
-  // Reset validation..
 
+  // Reset validation email..
   const handleforgetValidation = () => {
     if (resetEmail.trim() === "") {
       setResetEmailError("Email is required!");
@@ -94,12 +94,15 @@ export default Login = (props) => {
       send_verification_code();
     }
   };
+
+   //... Regex login email validation
   const validateResetEmail = (resetEmail) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(resetEmail);
   };
 
+   //... inner reset password email variable define here
   const handleResetEmailChange = (text) => {
     setResetEmail(text);
     if (text.trim() === "") {
@@ -112,6 +115,8 @@ export default Login = (props) => {
       setResetEmailError("");
     }
   };
+
+     //... inner reset password varification_Code variable define here
   const handleverificationcodes = () => {
     if (verificationcode.trim() === "") {
       setVerificationcodeError("verification code is required");
@@ -119,6 +124,8 @@ export default Login = (props) => {
       verify_Otp();
     }
   };
+
+   //... inner reset password Password_Check variable define here
   const handleResetpasswordCheck = () => {
     if (newpassword.trim() === "") {
       setNewPasswordError("Please enter a new password");
@@ -132,6 +139,7 @@ export default Login = (props) => {
     }
   };
 
+     //... inner reset password Next Button code define here
   const handleButtonPress = () => {
     if (isClick === 3) {
       refRBSheet.current.close();
@@ -146,6 +154,7 @@ export default Login = (props) => {
     }
   };
 
+    //........ Login APi define  here
   const makeApiLogin = () => {
     // -----loading set true here
     setIsLoading(true);
@@ -174,7 +183,7 @@ export default Login = (props) => {
           setPassword("");
           setIsLoading(false);
         } else {
-          // alert("Please check your email and password.");
+          alert("Please check your email and password.");
           setPasswordError(
             "Hmm, it seems like the credential you entered is invalid. Please try again."
           );
@@ -191,12 +200,14 @@ export default Login = (props) => {
       });
   };
 
+   //... inner reset password rejex variable define here
   const validateEmail = (email) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
 
+     //... inner  email variable define here
   const handleEmailChange = (text) => {
     setEmail(text);
     if (text.trim() === "") {
@@ -210,6 +221,7 @@ export default Login = (props) => {
     }
   };
 
+   //... inner reset password password variable define here
   const handlePasswordChange = (text) => {
     setPassword(text);
     if (text.trim() === "") {
@@ -218,6 +230,8 @@ export default Login = (props) => {
       setPasswordError("");
     }
   };
+
+    //... inner reset password new password variable define here
   const handleNewPassword = (text) => {
     setNewPassword(text);
     if (text.trim() === "") {
@@ -226,6 +240,8 @@ export default Login = (props) => {
       setNewPasswordError("");
     }
   };
+
+    //... inner reset password confirm password variable define here
   const handleConfirmpassword = (text) => {
     setConfirmPassword(text);
     if (text.trim() === "") {
@@ -236,6 +252,8 @@ export default Login = (props) => {
       setConfirmPasswordError(""); // Clear the error message
     }
   };
+
+     //... inner reset password submit button variable define here
   const handleSubmit = () => {
     if (email.trim() === "") {
       setEmailError("Email is required!");
@@ -250,6 +268,7 @@ export default Login = (props) => {
     }
   };
 
+    //...  verification variable define here
   const handleverificationCode = (text) => {
     setVerificationcode(text);
     if (text.trim() === "") {
@@ -259,6 +278,7 @@ export default Login = (props) => {
     }
   };
 
+  //------ send_verification_code Api code here
   const send_verification_code = () => {
     // Set loading to true before making the API call
     setIsLoading(true);
@@ -300,6 +320,7 @@ export default Login = (props) => {
       });
   };
 
+  //------ verify_otp Api code here
   const verify_Otp = () => {
     // Set loading to true before making the API call
     setIsLoading(true);
@@ -339,6 +360,8 @@ export default Login = (props) => {
         setIsLoading(false);
       });
   };
+
+  //------ create_password Api code here
   const create_password = () => {
     // Set loading to true before making the API call
     setIsLoading(true);
@@ -385,6 +408,7 @@ export default Login = (props) => {
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
         </View>
+        {/* ------ login code start  here ........... */}
         <View style={LoginStyles.formContainer}>
           <Text style={LoginStyles.title}>Login</Text>
           <View style={LoginStyles.card}>
@@ -483,6 +507,8 @@ export default Login = (props) => {
           </View>
         </View>
       </ScrollView>
+
+       {/* ------ Rest password code start  here ........... */}
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -523,6 +549,8 @@ export default Login = (props) => {
           </TouchableOpacity>
         </View>
         <View style={LoginStyles.card}>
+
+        {/* ------ Reset passowrd 0 section start code  here ........... */}
           {isClick === 0 && (
             <>
               <View style={LoginStyles.inputContainer}>
@@ -550,6 +578,8 @@ export default Login = (props) => {
               ) : null}
             </>
           )}
+
+          {/* ------ Reset passowrd 1 section start code  here ........... */}
           {isClick === 1 && (
             <>
               <View style={LoginStyles.inputContainer}>
@@ -615,6 +645,7 @@ export default Login = (props) => {
                   )}
                 </View>
               </View>
+
               {verificationcodeError ? (
                 <Text style={LoginStyles.error_text}>
                   {verificationcodeError}
@@ -622,6 +653,8 @@ export default Login = (props) => {
               ) : null}
             </>
           )}
+
+          {/* ------ Reset passowrd 2 section start code  here ........... */}
           {isClick === 2 && (
             <ScrollView
               contentContainerStyle={{ marginBottom: 90 }}
@@ -747,6 +780,8 @@ export default Login = (props) => {
               </View>
             </ScrollView>
           )}
+
+          {/* ------ Reset passowrd 3 section start code  here ........... */}
           {isClick === 3 && (
             <>
               <View style={LoginStyles.inputContainer}>
@@ -763,12 +798,15 @@ export default Login = (props) => {
               </View>
             </>
           )}
+
+        {/* ------ Loder section start code  here ........... */}
           {isLoading && (
             <View style={LoginStyles.secondloder}>
               <ActivityIndicator size={40} color={_COLORS.Kodie_BlackColor} />
             </View>
           )}
 
+         {/* ------ Next button section start code  here ........... */}
           <View style={{ marginBottom: 800 }}>
             <CustomSingleButton
               onPress={handleButtonPress}
