@@ -19,9 +19,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import BottomTextsButton from "./../../../components/Molecules/BottomTextsButton/BottomTextsButton";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
 import {
   FONTFAMILY,
   LABEL_STYLES,
@@ -30,7 +28,11 @@ import {
 } from "./../../../Themes/index";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 export default Login = (props) => {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
@@ -43,27 +45,30 @@ export default Login = (props) => {
   const [newpasswordError, setNewPasswordError] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [Resetpassword, setResetpassword] = useState("");
   const [isClick, setIsClick] = useState(0);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const refRBSheet = useRef();
-  const [apiData, setApiData] = useState({});
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [verifyButtonEnabled, setVerifyButtonEnabled] = useState(false);
-  const [countdown, setCountdown] = useState(60);
-
+  const [isTimeron, setIsTimeron] = useState(true);
+  const [loginResponse, setLoginResponse] = useState(true);
+  const Login_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
+  console.log("Login_response.....", Login_response);
   const buttonLabels = [
     "Send verification code",
     "Next",
     "Save",
     "Back to login",
   ];
+
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
         BackHandler.exitApp();
+        refRBSheet.current.close();
+        setIsClick(0);
         return true;
       };
       BackHandler.addEventListener("hardwareBackPress", onBackPress);
@@ -72,38 +77,6 @@ export default Login = (props) => {
       };
     }, [])
   );
-  // ...countdown
-  const startTimer = () => {
-    setCountdown(60);
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        if (prevCountdown === 1) {
-         //...If the countdown reaches 0, clear the interval and return 0
-          clearInterval(timer);
-          return 0;
-        } else if (prevCountdown > 0) {
-          //... Only decrement the countdown if it's greater than 0
-          return prevCountdown - 1;
-        }
-        return prevCountdown;
-      });
-    }, 1000);
-  };
-  // UseEffect to start the timer when verify_Otp is called
-  useEffect(() => {
-    if (isLoading) {
-      startTimer();
-    }
-  }, [isLoading]);
-  // UseEffect to enable the verify button when countdown reaches 0
-  useEffect(() => {
-    if (countdown === 0) {
-      setVerifyButtonEnabled(true);
-    } else {
-      setVerifyButtonEnabled(false);
-    }
-  }, [countdown]);
-
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -115,19 +88,23 @@ export default Login = (props) => {
   const handleforgetValidation = () => {
     if (resetEmail.trim() === "") {
       setResetEmailError("Email is required!");
+    } else if (!validateResetEmail(resetEmail)) {
+      setResetEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
     } else {
       send_verification_code();
-      // setIsClick(isClick + 1);
     }
   };
 
-   //... Regex login email validation
+  //... Regex login email validation
   const validateResetEmail = (resetEmail) => {
-    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(resetEmail);
   };
 
-   //... inner reset password email variable define here
+  //... inner reset password email variable define here
   const handleResetEmailChange = (text) => {
     setResetEmail(text);
     if (text.trim() === "") {
@@ -141,7 +118,7 @@ export default Login = (props) => {
     }
   };
 
-     //... inner reset password varification_Code variable define here
+  //... inner reset password varification_Code variable define here
   const handleverificationcodes = () => {
     if (verificationcode.trim() === "") {
       setVerificationcodeError("verification code is required");
@@ -150,23 +127,21 @@ export default Login = (props) => {
     }
   };
 
-   //... inner reset password Password_Check variable define here
+  //... inner reset password Password_Check variable define here
   const handleResetpasswordCheck = () => {
     if (newpassword.trim() === "") {
-      setNewPasswordError("Please create a new password");
+      setNewPasswordError("Please enter a new password");
     } else if (confirmPassword.trim() === "") {
       setConfirmPasswordError("Please enter a confirmation password");
     } else if (newpassword !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
     } else {
-      // Clear the error message
       setConfirmPasswordError("");
       create_password();
-      // setIsClick(isClick + 1);
     }
   };
 
-     //... inner reset password Next Button code define here
+  //... inner reset password Next Button code define here
   const handleButtonPress = () => {
     if (isClick === 3) {
       refRBSheet.current.close();
@@ -177,12 +152,11 @@ export default Login = (props) => {
     } else if (isClick === 2) {
       handleResetpasswordCheck();
     } else {
-      // setIsClick((prev) => (prev + 1) % 4);
       setIsClick(isClick + 1);
     }
   };
 
-    //........ Login APi define  here
+  //........ Login APi define  here
   const makeApiLogin = () => {
     // -----loading set true here
     setIsLoading(true);
@@ -201,26 +175,25 @@ export default Login = (props) => {
       .then((response) => response.json())
       .then((result) => {
         console.log("API Response:", result);
+        setLoginResponse(result);
         // -----write inner conditon here if / else
-        if (result.status === true) {
-          setIsLoading(false);
-          alert(result.message);
-          setIsAuthenticated(true);
-          props.navigation.navigate("DrawerNavigstorLeftMenu");
-
+        if (result.status == true) {
+          alert("Login successful");
+          // dispatch(fetchLoginSuccess(loginResponse));
+          props.navigation.navigate("DrawerNavigatorLeftMenu");
           setEmail("");
           setPassword("");
+          setIsLoading(false);
         } else {
           alert("Please check your email and password.");
           setPasswordError(
             "Hmm, it seems like the credential you entered is invalid. Please try again."
           );
-          setIsAuthenticated(false);
         }
       })
       .catch((error) => {
         console.error("API failed", error);
-        setIsAuthenticated(false);
+        setIsLoading(false);
       })
       // loding
       .finally(() => {
@@ -228,18 +201,18 @@ export default Login = (props) => {
       });
   };
 
-   //... inner reset password rejex variable define here
+  //... inner reset password rejex variable define here
   const validateEmail = (email) => {
-    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    // const emailPattern = /^[A-Z0-9._%+-]+@[gmail.-]+\.[com]$/i;
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
 
-     //... inner  email variable define here
+  //... inner  email variable define here
   const handleEmailChange = (text) => {
     setEmail(text);
     if (text.trim() === "") {
-      setEmailError("Email is required");
+      setEmailError("Email is required.");
     } else if (!validateEmail(text)) {
       setEmailError(
         "Hold on, this email appears to be invalid. Please enter a valid email address."
@@ -249,39 +222,39 @@ export default Login = (props) => {
     }
   };
 
-   //... inner reset password password variable define here
+  //... inner reset password password variable define here
   const handlePasswordChange = (text) => {
     setPassword(text);
     if (text.trim() === "") {
-      setPasswordError("Password is required");
+      setPasswordError("Password is required.");
     } else {
       setPasswordError("");
     }
   };
 
-    //... inner reset password new password variable define here
+  //... inner reset password new password variable define here
   const handleNewPassword = (text) => {
     setNewPassword(text);
     if (text.trim() === "") {
-      setNewPasswordError("New Password is required");
+      setNewPasswordError("New Password is required.");
     } else {
       setNewPasswordError("");
     }
   };
 
-    //... inner reset password confirm password variable define here
+  //... inner reset password confirm password variable define here
   const handleConfirmpassword = (text) => {
     setConfirmPassword(text);
     if (text.trim() === "") {
-      setConfirmPasswordError("Please enter a confirmation password");
+      setConfirmPasswordError("Please enter a confirmation password.");
     } else if (newpassword !== text) {
-      setConfirmPasswordError("Passwords do not match");
+      setConfirmPasswordError("Passwords do not match.");
     } else {
       setConfirmPasswordError(""); // Clear the error message
     }
   };
 
-     //... inner reset password submit button variable define here
+  //... inner reset password submit button variable define here
   const handleSubmit = () => {
     if (email.trim() === "") {
       setEmailError("Email is required!");
@@ -290,17 +263,20 @@ export default Login = (props) => {
         "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else if (password.trim() === "") {
-      setPasswordError("Password is required");
+      setPasswordError("Password is required.");
     } else {
       makeApiLogin();
     }
   };
 
-    //...  verification variable define here
+  //...  verification variable define here
   const handleverificationCode = (text) => {
+    const regex = /^[0-9]+$/;
     setVerificationcode(text);
     if (text.trim() === "") {
-      setVerificationcodeError("verification code is required");
+      setVerificationcodeError("verification code is required.");
+    } else if (!regex.test(text)) {
+      setVerificationcodeError("Verification code must contain only numbers.");
     } else {
       setVerificationcodeError("");
     }
@@ -319,16 +295,15 @@ export default Login = (props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: resetEmail, // Assuming you have 'email' defined or passed as an argument
+        email: resetEmail,
       }),
     })
       .then((response) => response.json())
       .then((result) => {
         console.log("API Response send otp:", result);
         if (result?.status === true) {
-          // If the API call is successful, increment isClick
-          alert("The otp has been sent your email");
-
+          alert("The otp has been sent your email.");
+          setIsTimeron(true);
           if (isClick == 1) {
             setIsClick(1);
             setVerificationcode("");
@@ -336,16 +311,15 @@ export default Login = (props) => {
             setIsClick(isClick + 1);
           }
         } else {
-          alert("Verification code is not sent");
+          alert(result?.message);
         }
       })
       .catch((error) => {
         console.error("API failed", error);
         alert(error);
-        setIsAuthenticated(false);
+        setIsLoading(false);
       })
       .finally(() => {
-        //--- Always set loading to false, whether the API call succeeds or fails
         setIsLoading(false);
       });
   };
@@ -355,7 +329,7 @@ export default Login = (props) => {
     // Set loading to true before making the API call
     setIsLoading(true);
     const url =
-      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password2";
+      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup_verifyotp";
     console.log("url...", url);
     fetch(url, {
       method: "POST",
@@ -367,15 +341,17 @@ export default Login = (props) => {
         otp: verificationcode,
       }),
     })
-      .then((response) => response.json())
+      .then((response) => {     
+        response.json();
+      })
       .then((result) => {
         console.log("API Response verify otp:", result);
         if (result?.status === true) {
           // If the API call is successful, increment isClick
           alert(result?.message);
           setIsClick(isClick + 1);
-        } else {
-          // alert("The verification code is incorrect");
+        }      
+        else {         
           setVerificationcodeError(
             "The verification code you’ve entered is incorrect. Please try again."
           );
@@ -383,7 +359,7 @@ export default Login = (props) => {
       })
       .catch((error) => {
         console.error("API failed", error);
-        setIsAuthenticated(false);
+        setIsLoading(false);
       })
       .finally(() => {
         // Always set loading to false, whether the API call succeeds or fails
@@ -413,18 +389,18 @@ export default Login = (props) => {
       .then((response) => response.json())
       .then((result) => {
         console.log("API Response create_password:", result);
-        if (result) {
+        if (result?.status === true) {
           // If the API call is successful, increment isClick
-          alert(result.message[0][0]);
+          alert(result.message);
           setIsClick(isClick + 1);
         } else {
-          alert("password not created");
+          alert("password not created.");
         }
       })
       .catch((error) => {
         alert(error);
         console.error("API failed", error);
-        setIsAuthenticated(false);
+        setIsLoading(false);
       })
       .finally(() => {
         // Always set loading to false, whether the API call succeeds or fails
@@ -454,7 +430,6 @@ export default Login = (props) => {
                   },
                 ]}
                 value={email}
-                // onChangeText={handleEmailChange}
                 onChangeText={setEmail}
                 onBlur={() => handleEmailChange(email)}
                 placeholder="Your email address"
@@ -491,6 +466,15 @@ export default Login = (props) => {
             <TouchableOpacity
               onPress={() => {
                 refRBSheet.current.open();
+                setIsClick(0);
+                setResetEmail("");
+                setVerificationcode("");
+                setVerificationcodeError("");
+                setNewPassword("");
+                setPasswordError("");
+                setConfirmPassword("");
+                setConfirmPasswordError("");
+                setResetEmailError("");
               }}
             >
               <Text style={LoginStyles.forgot}>Forgot password?</Text>
@@ -505,15 +489,11 @@ export default Login = (props) => {
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
               onPress={() => {
-                // props.navigation.navigate("Invitefriend"),
-                // props.navigation.navigate("Bedroom");
-                // props.navigation.navigate("ConfirmJobCompletion");
-                // props.navigation.navigate("JobCompletion");
                 props.navigation.navigate("ContractorSignUpFirstScreen");
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
-              _ButtonText={" Google"}
+              _ButtonText={"Login with Google"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
@@ -534,7 +514,7 @@ export default Login = (props) => {
         </View>
       </ScrollView>
 
-       {/* ------ Rest password code start  here ........... */}
+      {/* ------ Rest password code start  here ........... */}
       <RBSheet
         ref={refRBSheet}
         closeOnDragDown={true}
@@ -555,6 +535,15 @@ export default Login = (props) => {
           <TouchableOpacity
             onPress={() => {
               refRBSheet.current.close();
+              setIsClick(0);
+              setResetEmail("");
+              setVerificationcode("");
+              setVerificationcodeError("");
+              setNewPassword("");
+              setPasswordError("");
+              setConfirmPassword("");
+              setConfirmPasswordError("");
+              setResetEmailError("");
             }}
           >
             <Entypo
@@ -566,8 +555,7 @@ export default Login = (props) => {
           </TouchableOpacity>
         </View>
         <View style={LoginStyles.card}>
-
-        {/* ------ Reset passowrd 0 section start code  here ........... */}
+          {/* ------ Reset passowrd 0 section start code  here ........... */}
           {isClick === 0 && (
             <>
               <View style={LoginStyles.inputContainer}>
@@ -584,10 +572,9 @@ export default Login = (props) => {
                     },
                   ]}
                   value={resetEmail}
-                  // onChangeText={handleResetEmailChange}
                   onChangeText={setResetEmail}
                   onBlur={() => handleResetEmailChange(resetEmail)}
-                  placeholder="Your Email Address"
+                  placeholder="Your email address"
                   placeholderTextColor="#999"
                 />
               </View>
@@ -608,8 +595,6 @@ export default Login = (props) => {
                     { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
                   ]}
                   value={resetEmail}
-                  // onChangeText={handleEmailChange}
-                  // onBlur={() => handleEmailChange(email)}
                   placeholder="Your Email Address"
                   placeholderTextColor="#999"
                   editable={false}
@@ -632,8 +617,6 @@ export default Login = (props) => {
                     value={verificationcode}
                     onChangeText={handleverificationCode}
                     onBlur={() => handleverificationCode(verificationcode)}
-                    // onChangeText={(text) => setVerificationcode(text)}
-                    // editable={!isLoading && countdown > 0}
                     placeholder="code"
                     placeholderTextColor="#999"
                     keyboardType="number-pad"
@@ -641,19 +624,28 @@ export default Login = (props) => {
                   />
                 </View>
                 <View style={LoginStyles.codeMargin} />
+
                 <View style={LoginStyles.getButtonView}>
-                  {isLoading || !verifyButtonEnabled ? (
-                    <Text style={LoginStyles.getButton}>
-                      {/* {verificationcode ? "Resend" : countdown} */}
-                      {countdown} S
-                    </Text>
+                  {isTimeron ? (
+                    <CountdownCircleTimer
+                      isPlaying
+                      trailColor={_COLORS.Kodie_lightGreenColor}
+                      duration={50}
+                      size={50}
+                      colors={_COLORS.Kodie_lightGreenColor}
+                      onComplete={() => {
+                        setIsTimeron(false);
+                      }}
+                    >
+                      {({ remainingTime }) => (
+                        <Text style={{ color: _COLORS.Kodie_WhiteColor }}>
+                          {remainingTime} S
+                        </Text>
+                      )}
+                    </CountdownCircleTimer>
                   ) : (
                     <TouchableOpacity onPress={send_verification_code}>
-                      <Text
-                        style={[LoginStyles.getButton, { marginRight: 13 }]}
-                      >
-                        {"Resend"}
-                      </Text>
+                      <Text style={LoginStyles.getButton}>{"Resend"}</Text>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -681,9 +673,7 @@ export default Login = (props) => {
                     { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
                   ]}
                   value={resetEmail}
-                  // onChangeText={handleEmailChange}
-                  // onBlur={() => handleEmailChange(email)}
-                  placeholder="Your Email Address"
+                  placeholder="Your email address"
                   placeholderTextColor="#999"
                 />
               </View>
@@ -699,8 +689,6 @@ export default Login = (props) => {
                       { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
                     ]}
                     value={verificationcode}
-                    // onChangeText={handleverificationCode}
-                    // onBlur={() => handleverificationCode(verificationcode)}
                     placeholder="code"
                     placeholderTextColor="#999"
                     editable={false}
@@ -738,7 +726,7 @@ export default Login = (props) => {
                     value={newpassword}
                     onChangeText={handleNewPassword}
                     onBlur={() => handleNewPassword(newpassword)}
-                    placeholder="Password"
+                    placeholder=" Enter New Password"
                     secureTextEntry={!showNewPassword}
                   />
                   <TouchableOpacity onPress={handleToggleNewPassword}>
@@ -775,7 +763,7 @@ export default Login = (props) => {
                     value={confirmPassword}
                     onChangeText={handleConfirmpassword}
                     onBlur={() => handleConfirmpassword(confirmPassword)}
-                    placeholder="Password"
+                    placeholder=" Enter Confirm Password"
                     secureTextEntry={!showResetPassword}
                   />
                   <TouchableOpacity onPress={handleToggleResetPassword}>
@@ -816,14 +804,14 @@ export default Login = (props) => {
             </>
           )}
 
-        {/* ------ Loder section start code  here ........... */}
+          {/* ------ Loder section start code  here ........... */}
           {isLoading && (
             <View style={LoginStyles.secondloder}>
               <ActivityIndicator size={40} color={_COLORS.Kodie_BlackColor} />
             </View>
           )}
 
-         {/* ------ Next button section start code  here ........... */}
+          {/* ------ Next button section start code  here ........... */}
           <View style={{ marginBottom: 800 }}>
             <CustomSingleButton
               onPress={handleButtonPress}

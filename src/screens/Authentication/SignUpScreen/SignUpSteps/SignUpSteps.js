@@ -174,7 +174,7 @@ const SignUpSteps = (props) => {
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
                   if (currentPage === 2) {
-                    props.navigation.navigate("DrawerNavigstorLeftMenu");
+                    props.navigation.navigate("DrawerNavigatorLeftMenu");
                   } else {
                     setCurrentPage(currentPage + 1);
                   }
