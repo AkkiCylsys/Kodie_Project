@@ -35,7 +35,7 @@ export default SignUp = (props) => {
 
   //... Regex signup email validation
   const validateSignUpEmail = (email) => {
-    const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    const emailPattern =  /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
 
@@ -83,11 +83,13 @@ export default SignUp = (props) => {
         console.log('SignUp responce', response.data);
         if (response.data.status === true) {
           alert(response.data.message);
-          props.navigation.navigate("SignUpVerification"); 
+          props.navigation.navigate("SignUpVerification",{
+            email:email
+          }); 
           setEmail('')
           setPassword('')
-          setTerm('')
-          setPrivacy('')
+          setTerm(false)
+          setPrivacy(false)     
           setIsLoading(false);   
 
         } 
@@ -98,6 +100,7 @@ export default SignUp = (props) => {
       })
       .catch((error) => {
         console.error("Signup error:", error);
+        alert(error)
         setIsLoading(false);
       });
   };
