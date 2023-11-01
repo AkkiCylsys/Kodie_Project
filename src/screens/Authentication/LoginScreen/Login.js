@@ -258,6 +258,7 @@ export default Login = (props) => {
           alert("Login successful");
           // dispatch(fetchLoginSuccess(loginResponse));
           props.navigation.navigate("DrawerNavigatorLeftMenu");
+          
           setEmail("");
           setPassword("");
         } else {
@@ -453,7 +454,8 @@ export default Login = (props) => {
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
               onPress={() => {
-                props.navigation.navigate("ContractorSignUpFirstScreen");
+                // props.navigation.navigate("ContractorSignUpFirstScreen");
+                props.navigation.navigate("SignUpSteps");
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}

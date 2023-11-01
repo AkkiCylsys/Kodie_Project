@@ -12,15 +12,17 @@ import { LABEL_STYLES } from "../../../../Themes";
 import { _COLORS } from "../../../../Themes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
-
+import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 export default Account = (props) => {
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [location, setLocation] = useState("");
   const [organisation, setOrganisation] = useState("");
+  const [referral, setRefferral] = useState("");
   const [value, setValue] = useState(null);
-
+ 
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [mobileNumberError, setMobileNumberError] = useState("");
@@ -36,7 +38,6 @@ export default Account = (props) => {
     }
     setFirstName(text);
   };
-  
 
   // Validation for Last Name
   const validateLastName = (text) => {
@@ -49,18 +50,30 @@ export default Account = (props) => {
     }
     setLastName(text);
   };
-  
-
   // Validation for Phone Number
   const validateMobileNumber = (text) => {
+    const mobileReg = /^\d{10}$/;
     if (text === "") {
       setMobileNumberError("Phone number is required");
-    } else if (!/^\d{10}$/.test(text)) {
+    } else if (!mobileReg.test(text)) {
       setMobileNumberError("Invalid phone number format");
     } else {
       setMobileNumberError("");
     }
     setMobileNumber(text);
+  };
+
+  const handleNextBtn = () => {
+    if (firstName.trim() === "") {
+      setFirstNameError("First name is required.");
+    } else if (lastName.trim() === "") {
+      setLastNameError("Last name is required.");
+    } else if (mobileNumber.trim() == "") {
+      setMobileNumberError("Phone number is required.");
+    } else {
+      props.navigation.navigate("AboutYou");
+      // alert("done")
+    }
   };
 
   const data = [
@@ -110,6 +123,7 @@ export default Account = (props) => {
             placeholder="Enter your phone number"
             placeholderTextColor="#999"
             keyboardType="phone-pad"
+            maxLength={10}
           />
           <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
         </View>
@@ -158,8 +172,8 @@ export default Account = (props) => {
           <Text style={LABEL_STYLES._texinputLabel}>Referral code</Text>
           <TextInput
             style={AccountStyle.input}
-            value={organisation}
-            onChangeText={setOrganisation}
+            value={referral}
+            onChangeText={setRefferral}
             placeholder="If you have a referral code, enter it here"
             placeholderTextColor="#999"
           />

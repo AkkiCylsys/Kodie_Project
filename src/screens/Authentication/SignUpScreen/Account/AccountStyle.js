@@ -3,7 +3,6 @@ import { _COLORS, FONTFAMILY } from "../../../../Themes";
 export const AccountStyle = StyleSheet.create({
   headingView: {
     marginHorizontal: 16,
-    marginTop: 10,
   },
   heading: {
     color: _COLORS.Kodie_BlackColor,
@@ -22,7 +21,7 @@ export const AccountStyle = StyleSheet.create({
     marginBottom: 20,
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom:5,
   },
   input: {
     height: 48,
@@ -108,4 +107,5 @@ export const AccountStyle = StyleSheet.create({
     alignSelf: "center",
     borderColor: _COLORS.Kodie_GrayColor,
   },
+  errorText: { color: "red", marginLeft: 10 },
 });

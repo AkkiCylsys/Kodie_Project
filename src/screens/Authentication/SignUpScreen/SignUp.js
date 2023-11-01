@@ -188,7 +188,6 @@ export default SignUp = (props) => {
           <Text style={SignUpStyles.accept_Text}>
             {"Accept the terms of use"}
           </Text>
-
           {/*.............. checkbox field start here ..................*/}
           <View style={SignUpStyles.termView}>
             <TouchableOpacity
