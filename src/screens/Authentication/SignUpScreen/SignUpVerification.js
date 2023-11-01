@@ -48,7 +48,7 @@ export default SignUpVerification = (props) => {
   // .......... Api method define here
   const handle_Signup_verification = () => {
     const url = Config.API_URL;
-    const sign_verification_Api = url + "signup_verifyotp";
+    const sign_verification_Api = url + "user_signup_verifyotp";
     console.log("Request URL:", sign_verification_Api);
     setIsLoading(true);
     axios

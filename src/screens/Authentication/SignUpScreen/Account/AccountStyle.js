@@ -32,6 +32,18 @@ export const AccountStyle = StyleSheet.create({
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
   },
+  flor_input: {
+    height:40,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    width:'23%',
+    marginLeft:10,
+    marginTop:8
+  },
   locationContainer: {
     flexDirection: "row",
     alignItems: "center",

@@ -73,7 +73,7 @@ export default SignUp = (props) => {
   };
   const Signuphandle = () => {
     const url = Config.API_URL;
-    const signupUrl = url + "signup";
+    const signupUrl = url + "user_signup";
     console.log("Request URL:", signupUrl);
     setIsLoading(true);
     axios

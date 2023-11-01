@@ -242,7 +242,7 @@ export default Login = (props) => {
   //  login Api ...
   const makeApiLogin = () => {
     const url = Config.API_URL;
-    const loginurl = url + "login";
+    const loginurl = url + "user_login";
     console.log("Request URL:", loginurl);
     setIsLoading(true);
     axios
@@ -258,7 +258,6 @@ export default Login = (props) => {
           alert("Login successful");
           // dispatch(fetchLoginSuccess(loginResponse));
           props.navigation.navigate("DrawerNavigatorLeftMenu");
-          
           setEmail("");
           setPassword("");
         } else {
@@ -282,7 +281,7 @@ export default Login = (props) => {
   //send_verification_code Api code here....
   const send_verification_code = () => {
     const url = Config.API_URL;
-    const verification_code_url = url + "reset_password1";
+    const verification_code_url = url + "user_reset_password_email_verify";
     console.log("Request URL:", verification_code_url);
     setIsLoading(true);
     axios
@@ -316,7 +315,7 @@ export default Login = (props) => {
   //verify_otp Api code here.....
   const verify_Otp = () => {
     const url = Config.API_URL;
-    const verify_Otp_url = url + "signup_verifyotp";
+    const verify_Otp_url = url + "user_signup_verifyotp";
     console.log("Request URL:", verify_Otp_url);
     setIsLoading(true);
     axios
@@ -346,7 +345,7 @@ export default Login = (props) => {
   //------ create_password Api code here
   const create_password = () => {
     const url = Config.API_URL;
-    const create_password_url = url + "reset_password";
+    const create_password_url = url + "user_reset_password";
     console.log("Request URL:", create_password_url);
     setIsLoading(true);
     axios

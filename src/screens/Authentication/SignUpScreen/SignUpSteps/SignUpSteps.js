@@ -39,6 +39,9 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { Dropdown } from "react-native-element-dropdown";
 import { MultiSelect } from "react-native-element-dropdown";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
+import { Config } from "../../../../Config";
+import axios from "axios";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 const List = [
   {
     id: "1",
@@ -123,13 +126,13 @@ const SignUpSteps = (props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
-  const [location, setLocation] = useState("");
+  const [physicalAddress, setPhysicalAddress] = useState("");
   const [organisation, setOrganisation] = useState("");
   const [referral, setRefferral] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [mobileNumberError, setMobileNumberError] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   // about you
   const [isClick, setIsClick] = useState(false);
   const refRBSheet = useRef();
@@ -201,6 +204,7 @@ const SignUpSteps = (props) => {
   // First Property..
   const [propertyLocation, setPropertyLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
+  const [florSize, setFlorSize] = useState("");
   const [selected, setSelected] = useState([]);
   const [value, setValue] = useState(null);
 
@@ -280,17 +284,75 @@ const SignUpSteps = (props) => {
       setMobileNumberError("Phone number is required.");
     } else {
       if (currentPage === 0) {
-        // props.navigation.navigate("AboutYou");
         setCurrentPage(currentPage + 1);
-        // console.log(firstName, lastName, mobileNumber, "account Data 1");
       } else if (currentPage === 1) {
         setCurrentPage(currentPage + 1);
-        // console.log(firstName, lastName, mobileNumber, "account Data 2");
       } else if (currentPage === 2) {
-        props.navigation.navigate("DrawerNavigatorLeftMenu");
-        // console.log(firstName, lastName, mobileNumber, "account Data 3");
+        // props.navigation.navigate("DrawerNavigatorLeftMenu");
+        handleSaveSignup();
+      } else {
+        null;
       }
     }
+  };
+
+  const handleSaveSignup = () => {
+    const accountDetailsData = {
+      account_details: {
+        user: "46",
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: mobileNumber,
+        physical_address: physicalAddress,
+        organisation_name: organisation,
+        referral_code: referral,
+        profile_photo: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+        describe_yourself: "1,2,3",
+        property_manage: 2,
+        kodie_help: 4,
+      },
+      property_details: {
+        location: propertyLocation,
+        location_longitude: "102.002.001",
+        location_latitude: "104.004.002",
+        islocation: "1",
+        property_description: propertyDesc,
+        property_type: "1",
+        key_features: "2,4",
+        additional_features: "4,5",
+      },
+    };
+    const url = Config.API_URL;
+    const saveAccountDetails = url + "user_save_signup_account_details";
+    console.log("Request URL:", saveAccountDetails);
+    setIsLoading(true);
+    axios
+      .post(saveAccountDetails, accountDetailsData)
+      .then((response) => {
+        console.log("Save Account Details", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false); // You may want to set isLoading to false
+          alert(response.data.message);
+          // props.navigation.navigate("DrawerNavigatorLeftMenu");
+          props.navigation.navigate("LoginScreen");
+          setCurrentPage(0);
+          setFirstName("");
+          setLastName("");
+          setMobileNumber("");
+          setPhysicalAddress("");
+          setOrganisation("");
+          setRefferral("");
+        } else {
+          // Handle errors or non-successful response here
+          console.error("Save Account Details error:", response.data.error);
+          alert(response.data.error);
+        }
+      })
+      .catch((error) => {
+        console.error("Signup error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
   };
 
   const onStepPress = (position) => {
@@ -402,8 +464,8 @@ const SignUpSteps = (props) => {
                   </TouchableOpacity>
                   <TextInput
                     style={AccountStyle.locationInput}
-                    value={location}
-                    onChangeText={setLocation}
+                    value={physicalAddress}
+                    onChangeText={setPhysicalAddress}
                     placeholder="Enter new location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
@@ -830,28 +892,12 @@ const SignUpSteps = (props) => {
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Floor size"}
                     </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                        { flex: 0.3, height: 40, marginLeft: 10 },
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
-                      maxHeight={300}
-                      labelField="label"
-                      valueField="value"
-                      placeholder="3"
-                      value={value}
-                      onChange={(item) => {
-                        setValue(item.value);
-                      }}
+                    <TextInput
+                      style={AccountStyle.flor_input}
+                      value={florSize}
+                      onChangeText={setFlorSize}
+                      placeholder="102m2"
+                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                     />
                   </View>
                 </View>
@@ -974,24 +1020,25 @@ const SignUpSteps = (props) => {
               }}
             >
               <CustomSingleButton
-                _ButtonText={"Next"}
+                _ButtonText={currentPage == 2 ? "Save" : "Next"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  // if (currentPage === 2) {
-                  //   props.navigation.navigate("DrawerNavigatorLeftMenu");
-                  // } else {
-                  //   setCurrentPage(currentPage + 1);
-                  // }
                   handleNextBtn();
                 }}
               />
-
               {currentPage === 1 || currentPage === 2 ? (
                 <>
                   <CustomSingleButton
                     _ButtonText={"Fill these details out later"}
                     Text_Color={_COLORS.Kodie_BlackColor}
                     backgroundColor={_COLORS.Kodie_WhiteColor}
+                    onPress={() => {
+                      if (currentPage === 2) {
+                        handleNextBtn();
+                      } else {
+                        setCurrentPage(currentPage + 1);
+                      }
+                    }}
                   />
 
                   <TouchableOpacity style={SignUpStepStyle.goBack_View}>
@@ -1021,6 +1068,7 @@ const SignUpSteps = (props) => {
             </View>
           </View>
         </ScrollView>
+        {isLoading ? <CommonLoader /> : null}
       </View>
     </>
   );
