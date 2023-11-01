@@ -54,7 +54,7 @@ export default Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(true);
   const [loginResponse, setLoginResponse] = useState(true);
-  
+
   // const Login_response = useSelector(
   //   (state) => state?.authenticationReducer?.data
   // );
@@ -245,9 +245,6 @@ export default Login = (props) => {
     const loginurl = url + "login";
     console.log("Request URL:", loginurl);
     setIsLoading(true);
-    // const url =
-    //   "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/login";
-
     axios
       .post(loginurl, {
         email: email,
@@ -269,28 +266,32 @@ export default Login = (props) => {
             "Hmm, it seems like the credentials you entered are invalid. Please try again."
           );
         }
-        setIsLoading(false);
       })
       .catch((error) => {
         console.error("API failed", error);
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
+        // alert(error);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
   //send_verification_code Api code here....
   const send_verification_code = () => {
+    const url = Config.API_URL;
+    const verification_code_url = url + "reset_password1";
+    console.log("Request URL:", verification_code_url);
     setIsLoading(true);
-    const url =
-      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password1";
-
     axios
-      .post(url, {
+      .post(verification_code_url, {
         email: resetEmail,
       })
       .then((response) => {
         console.log("API Response send otp:", response.data);
         if (response.data.status === true) {
           alert("The otp has been sent to your email.");
-          setIsTimeron(true);
           if (isClick === 1) {
             setIsClick(1);
             setVerificationcode("");
@@ -305,17 +306,20 @@ export default Login = (props) => {
         console.error("API failed", error);
         setIsLoading(false);
         // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
   //verify_otp Api code here.....
   const verify_Otp = () => {
+    const url = Config.API_URL;
+    const verify_Otp_url = url + "signup_verifyotp";
+    console.log("Request URL:", verify_Otp_url);
     setIsLoading(true);
-    const url =
-      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/signup_verifyotp";
-
     axios
-      .post(url, {
+      .post(verify_Otp_url, {
         email: resetEmail,
         otp: verificationcode,
       })
@@ -332,18 +336,20 @@ export default Login = (props) => {
       })
       .catch((error) => {
         console.error("API failed", error);
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
 
   //------ create_password Api code here
   const create_password = () => {
-    // Set loading to true before making the API call
+    const url = Config.API_URL;
+    const create_password_url = url + "reset_password";
+    console.log("Request URL:", create_password_url);
     setIsLoading(true);
-    const url =
-      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/reset_password";
     axios
-      .post(url, {
+      .post(create_password_url, {
         email: resetEmail,
         password: newpassword,
       })
@@ -359,8 +365,10 @@ export default Login = (props) => {
       })
       .catch((error) => {
         console.error("API failed", error);
-        setIsLoading(false);
         // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
