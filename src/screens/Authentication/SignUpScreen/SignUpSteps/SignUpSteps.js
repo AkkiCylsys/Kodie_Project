@@ -208,6 +208,11 @@ const SignUpSteps = (props) => {
   const [florSize, setFlorSize] = useState("");
   const [selected, setSelected] = useState([]);
   const [value, setValue] = useState(null);
+  // key features ........
+  const [bedroomOptions, setBedroomOptions] = useState([]);
+  const [garageOptions, setGarageOptions] = useState([]);
+  const [bathroomOptions, setBathroomOptions] = useState([]);
+  const [parkingOptions, setParkingOptions] = useState([]);
 
   const DATA = [
     { label: "Pool", value: "1" },
@@ -291,7 +296,7 @@ const SignUpSteps = (props) => {
       } else if (currentPage === 2) {
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
-        console.log(selectedServices, firstName, lastName);
+        console.log(selectedServices, firstName, lastName, selectedCheckboxes);
       } else {
         null;
       }
@@ -299,6 +304,7 @@ const SignUpSteps = (props) => {
   };
 
   const handleSaveSignup = () => {
+    // Account lookup key define here......
     const serviceLookup = {
       Tenant: 2,
       Landlord: 3,
@@ -306,19 +312,44 @@ const SignUpSteps = (props) => {
       "Property Manager": 10,
     };
 
+    // properties question lookup key define here......
+    const kodieHelpLookup = {
+      1: 14,
+      2: 15,
+      3: 16,
+      4: 17,
+      5: 18,
+      6: 19,
+      7: 20,
+    };
     // Initialize an array to store the selected service lookup keys........
     const selectedServiceKeys = [];
+    // properties question empthy array define here......
+    const selectedKodieHelpKeys = [];
 
+    //Account an array to store the selected service lookup keys........
     for (const serviceName in selectedServices) {
       if (selectedServices[serviceName]) {
         selectedServiceKeys.push(serviceLookup[serviceName]);
       }
     }
-      
+
+    // properties question Loop through selected checkboxes  lookup keys to the array....
+    for (const itemId of selectedCheckboxes) {
+      const lookupKey = kodieHelpLookup[itemId];
+      if (lookupKey) {
+        selectedKodieHelpKeys.push(lookupKey);
+      }
+    }
+
     // Create a comma-separated string of selected service lookup keys........
     const describeYourselfValue =
-      selectedServiceKeys.length > 0 ? selectedServiceKeys.join(',') : '0';
-    
+      selectedServiceKeys.length > 0 ? selectedServiceKeys.join(",") : "0";
+
+    // Create a comma-separated string of question selected kodie_help lookup keys
+    const kodieHelpValue =
+      selectedKodieHelpKeys.length > 0 ? selectedKodieHelpKeys.join(",") : "0";
+
     const accountDetailsData = {
       account_details: {
         user: "46",
@@ -332,7 +363,7 @@ const SignUpSteps = (props) => {
         describe_yourself: describeYourselfValue,
         property_manage: 1,
         property_manage: 1,
-        kodie_help: 4,
+        kodie_help: kodieHelpValue,
       },
       property_details: {
         location: propertyLocation,
@@ -378,6 +409,32 @@ const SignUpSteps = (props) => {
       });
   };
 
+  // key features APi define here.............
+  const fetchLookupData = async (parentCode) => {
+    try {
+      const response = await axios.get(
+        `https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/lookup_details?P_PARENT_CODE=${parentCode}`
+      );
+      return response.data.data;
+    } catch (error) {
+      console.error("Error fetching lookup data:", error);
+      return [];
+    }
+  };
+
+  //useeffect key features...
+  useEffect(() => {
+    const fetchDataForDropdown = async (parentCode, setOptions) => {
+      const lookupData = await fetchLookupData(parentCode);
+      setOptions(lookupData);
+    };
+  
+    fetchDataForDropdown('BEDROOM', setBedroomOptions);
+    fetchDataForDropdown('GARAGES', setGarageOptions);
+    fetchDataForDropdown('BATHROOM', setBathroomOptions);
+    fetchDataForDropdown('PARKING', setParkingOptions);
+  }, []);
+
   const onStepPress = (position) => {
     setCurrentPage(position);
   };
@@ -387,10 +444,10 @@ const SignUpSteps = (props) => {
       position === 0
         ? "Account"
         : position === 1
-        ? "About you"
-        : position === 2
-        ? "First Property"
-        : "circle";
+          ? "About you"
+          : position === 2
+            ? "First Property"
+            : "circle";
 
     return (
       <View style={SignUpStepStyle.labelContainer}>
@@ -815,10 +872,10 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
+                      data={bedroomOptions}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="description"
+                      valueField="lookup_key"
                       placeholder="3"
                       value={value}
                       onChange={(item) => {
@@ -842,10 +899,10 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
+                      data={garageOptions}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="description"
+                      valueField="lookup_key"
                       placeholder="1"
                       value={value}
                       onChange={(item) => {
@@ -871,10 +928,10 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
+                      data={bathroomOptions}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="description"
+                      valueField="lookup_key"
                       placeholder="3"
                       value={value}
                       onChange={(item) => {
@@ -898,10 +955,10 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
+                      data={parkingOptions}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="description"
+                      valueField="lookup_key"
                       placeholder="1"
                       value={value}
                       onChange={(item) => {
