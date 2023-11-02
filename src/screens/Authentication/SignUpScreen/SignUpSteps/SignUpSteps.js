@@ -210,17 +210,15 @@ const SignUpSteps = (props) => {
   const [florSize, setFlorSize] = useState("");
   const [selected, setSelected] = useState([]);
   const [value, setValue] = useState(null);
-  // key features ........
-  const [bedroomOptions, setBedroomOptions] = useState([]);
-  const [garageOptions, setGarageOptions] = useState([]);
-  const [bathroomOptions, setBathroomOptions] = useState([]);
-  const [parkingOptions, setParkingOptions] = useState([]);
+  
 
   const [bedroomValue, setbedroomValue] = useState([]);
   const [garagesValue, setGaragesValue] = useState([]);
   const [bathRoomValue, setBathRoomValue] = useState([]);
   const [parkingValue, setParkingValue] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
+  const [bedRoomData, setBedRoomData] = useState([]);
+
   const [manage_property_Data, setmanage_property_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [ImageName, setImageName] = useState("");
@@ -234,26 +232,26 @@ const SignUpSteps = (props) => {
     { label: "Furnished", value: "3" },
     { label: "Flat", value: "4" },
   ];
-  const BedroomData = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-  ];
-  const GaragesData = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-  ];
-  const BathroomData = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-  ];
-  const ParkingData = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-  ];
+  // const BedroomData = [
+  //   { label: "1", value: "1" },
+  //   { label: "2", value: "2" },
+  //   { label: "3", value: "3" },
+  // ];
+  // const GaragesData = [
+  //   { label: "1", value: "1" },
+  //   { label: "2", value: "2" },
+  //   { label: "3", value: "3" },
+  // ];
+  // const BathroomData = [
+  //   { label: "1", value: "1" },
+  //   { label: "2", value: "2" },
+  //   { label: "3", value: "3" },
+  // ];
+  // const ParkingData = [
+  //   { label: "1", value: "1" },
+  //   { label: "2", value: "2" },
+  //   { label: "3", value: "3" },
+  // ];
 
   const renderItem = ({ item }) => (
     <ServicesBox
@@ -346,8 +344,13 @@ const SignUpSteps = (props) => {
       } else if (currentPage === 2) {
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
-        console.log(selectedServices, firstName, lastName, selectedCheckboxes);
-        console.log(selectManageProperty, "property....");
+        console.log(
+          selectedServices,
+          firstName,
+          selectedCheckboxes,
+          selectManageProperty,
+          options
+        );
       } else {
         null;
       }
@@ -422,7 +425,7 @@ const SignUpSteps = (props) => {
         islocation: "1",
         property_description: propertyDesc,
         property_type: property_value,
-        key_features: "29,30,31,32,33",
+        key_features: "1,2,3",
         additional_features: "4,5",
       },
     };
@@ -465,29 +468,46 @@ const SignUpSteps = (props) => {
   };
 
   // key features APi define here.............
-  const fetchLookupData = async (parentCode) => {
-    try {
-      const response = await axios.get(
-        `https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/lookup_details?P_PARENT_CODE=${parentCode}`
-      );
-      return response.data.data;
-    } catch (error) {
-      console.error("Error fetching lookup data:", error);
-      return [];
-    }
-  };
+  
+  // const handleKey_Features = () => {
+  //   const propertyData = {
+  //     P_PARENT_CODE: "PROP_TYPE",
+  //     P_TYPE: "OPTION",
+  //   };
+  //   const url = Config.API_URL;
+  //   const propertyType = url + "lookup_details";
+  //   console.log("Request URL:", propertyType);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(propertyType, propertyData)
+  //     .then((response) => {
+  //       console.log("property_type", response.data);
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+  //         console.log("propertyData....", response.data.data);
+  //         setProperty_Data(response.data.data);
+
+  //         console.log("manage_property_data", response.data.data);
+  //       } else {
+  //         console.error("property_type_error:", response.data.error);
+  //         alert(response.data.error);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("property_type error:", error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
 
   //useeffect key features...
   useEffect(() => {
-    const fetchDataForDropdown = async (parentCode, setOptions) => {
-      const lookupData = await fetchLookupData(parentCode);
-      setOptions(lookupData);
-    };
 
-    fetchDataForDropdown("BEDROOM", setBedroomOptions);
-    fetchDataForDropdown("GARAGES", setGarageOptions);
-    fetchDataForDropdown("BATHROOM", setBathroomOptions);
-    fetchDataForDropdown("PARKING", setParkingOptions);
+   
+    handleProperty_Type();
+    handle_manage_property();
+    handle_bedRoom();
   }, []);
 
   const handleProperty_Type = () => {
@@ -550,11 +570,35 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
-  useEffect(() => {
-    handleProperty_Type();
-    handle_manage_property();
-  }, []);
-
+  const handle_bedRoom = () => {
+    const bedRoomData = {
+      P_PARENT_CODE: "BEDROOM",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const bedroomApi = url + "lookup_details";
+    console.log("Request URL:", bedroomApi);
+    setIsLoading(true);
+    axios
+      .post(bedroomApi, bedRoomData)
+      .then((response) => {
+        console.log("bedRoom_data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("bedRoom_data....", response.data.data);
+          setBedRoomData(response.data.data);         
+        } else {
+          console.error("bedRoom_data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("bedRoom_data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
   const onStepPress = (position) => {
     setCurrentPage(position);
   };
@@ -1013,14 +1057,14 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bedroomOptions}
+                      data={bedRoomData}
                       maxHeight={300}
                       labelField="description"
                       valueField="lookup_key"
                       placeholder="3"
                       value={bedroomValue}
                       onChange={(item) => {
-                        setbedroomValue(item.value);
+                        setbedroomValue(item.lookup_key);
                         // alert(item.value);
                       }}
                     />
@@ -1041,7 +1085,7 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={garageOptions}
+                      data={bedRoomData}
                       maxHeight={300}
                       labelField="description"
                       valueField="lookup_key"
@@ -1071,7 +1115,7 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bathroomOptions}
+                      data={bedRoomData}
                       maxHeight={300}
                       labelField="description"
                       valueField="lookup_key"
@@ -1098,7 +1142,7 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={parkingOptions}
+                      data={bedRoomData}
                       maxHeight={300}
                       labelField="description"
                       valueField="lookup_key"
