@@ -210,7 +210,6 @@ const SignUpSteps = (props) => {
   const [florSize, setFlorSize] = useState("");
   const [selected, setSelected] = useState([]);
   const [value, setValue] = useState(null);
-  
 
   const [bedroomValue, setbedroomValue] = useState([]);
   const [garagesValue, setGaragesValue] = useState([]);
@@ -218,6 +217,9 @@ const SignUpSteps = (props) => {
   const [parkingValue, setParkingValue] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
   const [bedRoomData, setBedRoomData] = useState([]);
+  const [garagesData, setGaragesData] = useState([]);
+  const [bathroomData, setBathroomData] = useState([]);
+  const [parkingData, setParkingData] = useState([]);
 
   const [manage_property_Data, setmanage_property_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
@@ -349,8 +351,9 @@ const SignUpSteps = (props) => {
           firstName,
           selectedCheckboxes,
           selectManageProperty,
-          options
+          keyFeatureData
         );
+        alert(keyFeatureData);
       } else {
         null;
       }
@@ -425,7 +428,7 @@ const SignUpSteps = (props) => {
         islocation: "1",
         property_description: propertyDesc,
         property_type: property_value,
-        key_features: "1,2,3",
+        key_features: keyFeatureData,
         additional_features: "4,5",
       },
     };
@@ -468,7 +471,7 @@ const SignUpSteps = (props) => {
   };
 
   // key features APi define here.............
-  
+
   // const handleKey_Features = () => {
   //   const propertyData = {
   //     P_PARENT_CODE: "PROP_TYPE",
@@ -503,13 +506,24 @@ const SignUpSteps = (props) => {
 
   //useeffect key features...
   useEffect(() => {
-
-   
     handleProperty_Type();
     handle_manage_property();
     handle_bedRoom();
+    handle_Garages();
+    handle_Bathroom();
+    handle_parking();
   }, []);
-
+  const keyFeatureData =
+    bedroomValue +
+    ", " +
+    garagesValue +
+    ", " +
+    bathRoomValue +
+    ", " +
+    parkingValue +
+    ", " +
+    florSize;
+  // alert(keyFeatureData);
   const handleProperty_Type = () => {
     const propertyData = {
       P_PARENT_CODE: "PROP_TYPE",
@@ -527,8 +541,6 @@ const SignUpSteps = (props) => {
           setIsLoading(false);
           console.log("propertyData....", response.data.data);
           setProperty_Data(response.data.data);
-
-          console.log("manage_property_data", response.data.data);
         } else {
           console.error("property_type_error:", response.data.error);
           alert(response.data.error);
@@ -571,7 +583,7 @@ const SignUpSteps = (props) => {
       });
   };
   const handle_bedRoom = () => {
-    const bedRoomData = {
+    const bedRoom_Data = {
       P_PARENT_CODE: "BEDROOM",
       P_TYPE: "OPTION",
     };
@@ -580,13 +592,13 @@ const SignUpSteps = (props) => {
     console.log("Request URL:", bedroomApi);
     setIsLoading(true);
     axios
-      .post(bedroomApi, bedRoomData)
+      .post(bedroomApi, bedRoom_Data)
       .then((response) => {
         console.log("bedRoom_data", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
           console.log("bedRoom_data....", response.data.data);
-          setBedRoomData(response.data.data);         
+          setBedRoomData(response.data.data);
         } else {
           console.error("bedRoom_data_error:", response.data.error);
           alert(response.data.error);
@@ -595,6 +607,93 @@ const SignUpSteps = (props) => {
       })
       .catch((error) => {
         console.error("bedRoom_data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  const handle_Garages = () => {
+    const garages_Data = {
+      P_PARENT_CODE: "GARAGES",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const garagesApi = url + "lookup_details";
+    console.log("Request URL:", garagesApi);
+    setIsLoading(true);
+    axios
+      .post(garagesApi, garages_Data)
+      .then((response) => {
+        console.log("garages_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("garages_Data....", response.data.data);
+          setGaragesData(response.data.data);
+        } else {
+          console.error("garages_Data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("garages_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  const handle_Bathroom = () => {
+    const Bathroom_Data = {
+      P_PARENT_CODE: "BATHROOM",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const bathrooApi = url + "lookup_details";
+    console.log("Request URL:", bathrooApi);
+    setIsLoading(true);
+    axios
+      .post(bathrooApi, Bathroom_Data)
+      .then((response) => {
+        console.log("bathroom_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("bathroom_Data....", response.data.data);
+          setBathroomData(response.data.data);
+        } else {
+          console.error("bathroom_Data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("bathroom_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  const handle_parking = () => {
+    const parking_Data = {
+      P_PARENT_CODE: "PARKING",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const parkingApi = url + "lookup_details";
+    console.log("Request URL:", parking_Data);
+    setIsLoading(true);
+    axios
+      .post(parkingApi, parking_Data)
+      .then((response) => {
+        console.log("parking_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("parking_Data....", response.data.data);
+          setParkingData(response.data.data);
+        } else {
+          console.error("parking_Data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("parking_Data error:", error);
         alert(error);
         setIsLoading(false);
       });
@@ -1085,15 +1184,15 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bedRoomData}
+                      data={garagesData}
                       maxHeight={300}
                       labelField="description"
                       valueField="lookup_key"
                       placeholder="1"
                       value={garagesValue}
                       onChange={(item) => {
-                        setGaragesValue(item.value);
-                        // alert(item.value);
+                        setGaragesValue(item.lookup_key);
+                        // alert(item.lookup_key);
                       }}
                     />
                   </View>
@@ -1115,14 +1214,14 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bedRoomData}
+                      data={bathroomData}
                       maxHeight={300}
                       labelField="description"
                       valueField="lookup_key"
                       placeholder="3"
                       value={bathRoomValue}
                       onChange={(item) => {
-                        setBathRoomValue(item.value);
+                        setBathRoomValue(item.lookup_key);
                       }}
                     />
                   </View>
@@ -1142,14 +1241,14 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bedRoomData}
+                      data={parkingData}
                       maxHeight={300}
                       labelField="description"
                       valueField="lookup_key"
                       placeholder="1"
                       value={parkingValue}
                       onChange={(item) => {
-                        setParkingValue(item.value);
+                        setParkingValue(item.lookup_key);
                       }}
                     />
                   </View>
