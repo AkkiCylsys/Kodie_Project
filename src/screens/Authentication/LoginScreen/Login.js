@@ -278,6 +278,7 @@ export default Login = (props) => {
         setIsLoading(false);
       });
   };
+  
   //send_verification_code Api code here....
   const send_verification_code = () => {
     const url = Config.API_URL;
