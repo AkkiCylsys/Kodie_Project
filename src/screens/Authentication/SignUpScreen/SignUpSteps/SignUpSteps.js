@@ -134,7 +134,8 @@ const SignUpSteps = (props) => {
   const [mobileNumberError, setMobileNumberError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   // about you
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState(null);
+  const [selectManageProperty, setSelectManageProperty] = useState("");
   const refRBSheet = useRef();
   const initialSelectedServices = {
     Tenant: false,
@@ -154,8 +155,9 @@ const SignUpSteps = (props) => {
     }));
   };
 
-  const handleBoxPress = (boxNumber) => {
-    setIsClick(boxNumber);
+  const handleBoxPress = (lookupID) => {
+    setIsClick(lookupID);
+    setSelectManageProperty(lookupID);
   };
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const toggleCheckbox = (itemId) => {
@@ -213,6 +215,7 @@ const SignUpSteps = (props) => {
   const [bathRoomValue, setBathRoomValue] = useState([]);
   const [parkingValue, setParkingValue] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
+  const [manage_property_Data, setmanage_property_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [ImageName, setImageName] = useState("");
   const handleImageNameChange = (newImageName) => {
@@ -246,6 +249,26 @@ const SignUpSteps = (props) => {
     { label: "3", value: "3" },
   ];
 
+  const renderItem = ({ item }) => (
+    <ServicesBox
+      Services_Name={item?.description}
+      BoxStyling={[
+        AboutYouStyle.box_style,
+        {
+          margin: 4,
+          backgroundColor:
+            isClick === item.lookup_key
+              ? _COLORS.Kodie_lightGreenColor
+              : _COLORS.Kodie_WhiteColor,
+        },
+      ]}
+      textColor={[AboutYouStyle.box_Text_Style]}
+      onPress={() => {
+        handleBoxPress(item.lookup_key),
+          setSelectManageProperty(item.lookup_key);
+      }}
+    />
+  );
   const renderDataItem = (item) => {
     return (
       <View style={FirstPropertyStyle.item}>
@@ -318,6 +341,7 @@ const SignUpSteps = (props) => {
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
         console.log(selectedServices, firstName, lastName);
+        console.log(selectManageProperty, "property....");
       } else {
         null;
       }
@@ -340,11 +364,11 @@ const SignUpSteps = (props) => {
         selectedServiceKeys.push(serviceLookup[serviceName]);
       }
     }
-      
+
     // Create a comma-separated string of selected service lookup keys........
     const describeYourselfValue =
-      selectedServiceKeys.length > 0 ? selectedServiceKeys.join(',') : '0';
-    
+      selectedServiceKeys.length > 0 ? selectedServiceKeys.join(",") : "0";
+
     const accountDetailsData = {
       account_details: {
         User_Key: "46",
@@ -354,10 +378,9 @@ const SignUpSteps = (props) => {
         physical_address: physicalAddress,
         organisation_name: organisation,
         referral_code: referral,
-        profile_photo: ImageName,
+        profile_photo: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
         describe_yourself: describeYourselfValue,
-        property_manage: 1,
-        property_manage: 1,
+        property_manage: selectManageProperty,
         kodie_help: 4,
       },
       property_details: {
@@ -426,6 +449,37 @@ const SignUpSteps = (props) => {
           setIsLoading(false);
           console.log("propertyData....", response.data.data);
           setProperty_Data(response.data.data);
+
+          console.log("manage_property_data", response.data.data);
+        } else {
+          console.error("property_type_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_type error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  const handle_manage_property = () => {
+    const propertyData = {
+      P_PARENT_CODE: "TEN_PROPERTY",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("maneg_property_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("maneg_property_type....", response.data.data);
+          setmanage_property_Data(response.data.data);
         } else {
           console.error("property_type_error:", response.data.error);
           alert(response.data.error);
@@ -440,6 +494,7 @@ const SignUpSteps = (props) => {
   };
   useEffect(() => {
     handleProperty_Type();
+    handle_manage_property();
   }, []);
 
   const onStepPress = (position) => {
@@ -685,7 +740,13 @@ const SignUpSteps = (props) => {
               <Text style={AboutYouStyle.want_Heading}>
                 {" How many properties do you own, manage or rent?"}
               </Text>
-              <View style={AboutYouStyle.servicesBoxView}>
+              <FlatList
+                data={manage_property_Data}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.lookup_key.toString()}
+                numColumns={2} // Display two columns in each row
+              />
+              {/* <View style={AboutYouStyle.servicesBoxView}>
                 <ServicesBox
                   Services_Name={"1 - 3 properties"}
                   BoxStyling={[
@@ -749,7 +810,7 @@ const SignUpSteps = (props) => {
                   textColor={[AboutYouStyle.box_Text_Style]}
                   onPress={() => handleBoxPress(4)}
                 />
-              </View>
+              </View> */}
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
               </Text>
