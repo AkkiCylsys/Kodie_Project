@@ -1,7 +1,7 @@
 import { View, Text, IMAGES, Image } from "react-native";
 import React, { useState } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
-import { ReviewjobdetailsStyle } from "../ReviewJobdetails/ReviewjobdetailsStyle";
+import { ReviewjobdetailsStyle } from "../Reviewjobdetails/ReviewjobdetailsStyle";
 import { _goBack } from "../../../services/CommonServices/CommonMethods";
 import { _COLORS } from "../../../Themes";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";

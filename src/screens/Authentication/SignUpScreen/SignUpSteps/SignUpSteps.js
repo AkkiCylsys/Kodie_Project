@@ -2,7 +2,7 @@
 //ScreenNo:12
 //ScreenNo:13
 //ScreenNo:14
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -207,18 +207,44 @@ const SignUpSteps = (props) => {
   const [florSize, setFlorSize] = useState("");
   const [selected, setSelected] = useState([]);
   const [value, setValue] = useState(null);
-
+  const [bedroomValue, setbedroomValue] = useState([]);
+  const [garagesValue, setGaragesValue] = useState([]);
+  const [bathRoomValue, setBathRoomValue] = useState([]);
+  const [parkingValue, setParkingValue] = useState([]);
+  const [property_Data, setProperty_Data] = useState([]);
+  const [property_value, setProperty_value] = useState([]);
+  const [ImageName, setImageName] = useState("");
+  const handleImageNameChange = (newImageName) => {
+    setImageName(newImageName);
+    console.log("................ImageNAme", ImageName);
+  };
   const DATA = [
     { label: "Pool", value: "1" },
     { label: "Garden", value: "2" },
     { label: "Furnished", value: "3" },
     { label: "Flat", value: "4" },
   ];
-  const key_features = [
+  const BedroomData = [
     { label: "1", value: "1" },
     { label: "2", value: "2" },
     { label: "3", value: "3" },
   ];
+  const GaragesData = [
+    { label: "1", value: "1" },
+    { label: "2", value: "2" },
+    { label: "3", value: "3" },
+  ];
+  const BathroomData = [
+    { label: "1", value: "1" },
+    { label: "2", value: "2" },
+    { label: "3", value: "3" },
+  ];
+  const ParkingData = [
+    { label: "1", value: "1" },
+    { label: "2", value: "2" },
+    { label: "3", value: "3" },
+  ];
+
   const renderDataItem = (item) => {
     return (
       <View style={FirstPropertyStyle.item}>
@@ -299,7 +325,7 @@ const SignUpSteps = (props) => {
   const handleSaveSignup = () => {
     const accountDetailsData = {
       account_details: {
-        user: "46",
+        User_Key: "46",
         first_name: firstName,
         last_name: lastName,
         phone_number: mobileNumber,
@@ -307,9 +333,9 @@ const SignUpSteps = (props) => {
         organisation_name: organisation,
         referral_code: referral,
         profile_photo: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-        describe_yourself: "1,2,3",
-        property_manage: 2,
-        kodie_help: 4,
+        describe_yourself: "2,3,4,10",
+        property_manage: 6,
+        kodie_help: "14,15,16",
       },
       property_details: {
         location: propertyLocation,
@@ -317,8 +343,8 @@ const SignUpSteps = (props) => {
         location_latitude: "104.004.002",
         islocation: "1",
         property_description: propertyDesc,
-        property_type: "1",
-        key_features: "2,4",
+        property_type: property_value,
+        key_features: "29,30,31,32,33",
         additional_features: "4,5",
       },
     };
@@ -342,6 +368,11 @@ const SignUpSteps = (props) => {
           setPhysicalAddress("");
           setOrganisation("");
           setRefferral("");
+          setProperty_value("");
+          setbedroomValue("");
+          setGaragesValue("");
+          setBathRoomValue("");
+          setParkingValue("");
         } else {
           // Handle errors or non-successful response here
           console.error("Save Account Details error:", response.data.error);
@@ -354,6 +385,39 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
+
+  const handleProperty_Type = () => {
+    const propertyData = {
+      P_PARENT_CODE: "PROP_TYPE",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("property_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("propertyData....", response.data.data);
+          setProperty_Data(response.data.data);
+        } else {
+          console.error("property_type_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_type error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  useEffect(() => {
+    handleProperty_Type();
+  }, []);
 
   const onStepPress = (position) => {
     setCurrentPage(position);
@@ -377,6 +441,7 @@ const SignUpSteps = (props) => {
             marginTop: 1,
             marginHorizontal: 10,
             color: iconColor,
+            alignSelf: "center",
           }}
         >{`Step ${position + 1}`}</Text>
         <Text
@@ -516,7 +581,17 @@ const SignUpSteps = (props) => {
                   refRBSheet.current.open();
                 }}
               >
-                <Image source={IMAGES.userIcons} style={AboutYouStyle.logo} />
+                {ImageName ? (
+                  <Image
+                    source={{ uri: ImageName }}
+                    style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
+                  />
+                ) : (
+                  <Image
+                    source={IMAGES?.userIcons}
+                    style={[AboutYouStyle.logo]}
+                  />
+                )}
               </TouchableOpacity>
               <Text style={AboutYouStyle.want_Heading}>
                 {
@@ -668,7 +743,7 @@ const SignUpSteps = (props) => {
               <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown={true}
-                closeOnPressMask={false}
+                closeOnPressMask={true}
                 height={200}
                 customStyles={{
                   wrapper: {
@@ -680,7 +755,10 @@ const SignUpSteps = (props) => {
                   container: AboutYouStyle.bottomModal_container,
                 }}
               >
-                <UploadImageData heading_Text={"Upload image"} />
+                <UploadImageData
+                  heading_Text={"Upload image"}
+                  ImageName={handleImageNameChange}
+                />
               </RBSheet>
             </View>
           </ScrollView>
@@ -762,14 +840,15 @@ const SignUpSteps = (props) => {
                   selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                   inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                   iconStyle={FirstPropertyStyle.iconStyle}
-                  data={data}
+                  data={property_Data}
                   maxHeight={300}
-                  labelField="label"
-                  valueField="value"
+                  labelField="description"
+                  valueField="lookup_key"
                   placeholder="Apartment"
-                  value={value}
+                  value={property_value}
                   onChange={(item) => {
-                    setValue(item.value);
+                    setProperty_value(item.lookup_key);
+                    // alert(item.lookup_key)
                   }}
                 />
               </View>
@@ -792,14 +871,15 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
+                      data={BedroomData}
                       maxHeight={300}
                       labelField="label"
                       valueField="value"
                       placeholder="3"
-                      value={value}
+                      value={bedroomValue}
                       onChange={(item) => {
-                        setValue(item.value);
+                        setbedroomValue(item.value);
+                        // alert(item.value);
                       }}
                     />
                   </View>
@@ -819,14 +899,15 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
+                      data={GaragesData}
                       maxHeight={300}
                       labelField="label"
                       valueField="value"
                       placeholder="1"
-                      value={value}
+                      value={garagesValue}
                       onChange={(item) => {
-                        setValue(item.value);
+                        setGaragesValue(item.value);
+                        // alert(item.value);
                       }}
                     />
                   </View>
@@ -848,14 +929,14 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
+                      data={BathroomData}
                       maxHeight={300}
                       labelField="label"
                       valueField="value"
                       placeholder="3"
-                      value={value}
+                      value={bathRoomValue}
                       onChange={(item) => {
-                        setValue(item.value);
+                        setBathRoomValue(item.value);
                       }}
                     />
                   </View>
@@ -875,14 +956,14 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={key_features}
+                      data={ParkingData}
                       maxHeight={300}
                       labelField="label"
                       valueField="value"
                       placeholder="1"
-                      value={value}
+                      value={parkingValue}
                       onChange={(item) => {
-                        setValue(item.value);
+                        setParkingValue(item.value);
                       }}
                     />
                   </View>
@@ -979,13 +1060,13 @@ const SignUpSteps = (props) => {
         MiddleText={"Set up your Kodie account"}
         onPressLeftButton={() => _goBack(props)}
       />
-      <ProgressBar
+      {/* <ProgressBar
         progress={0.4}
         width={800}
         height={5}
         color={_COLORS.Kodie_lightGreenColor}
         style={SignUpStepStyle.progresBar}
-      />
+      /> */}
       <View style={SignUpStepStyle.container}>
         <View style={SignUpStepStyle.stepIndicator}>
           <StepIndicator
