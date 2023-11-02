@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 import { IMAGES, _COLORS } from "../../../Themes";
 import { UploadImageStyle } from "./UploadImageStyle";
@@ -23,6 +23,8 @@ const data = [
 ];
 
 const UploadImageData = (props) => {
+  const [imageName, setImageName] = useState("");
+  const [image, setImage] = useState({});
   const UploadImageContent = ({ item, index }) => {
     return (
       <>
@@ -30,21 +32,19 @@ const UploadImageData = (props) => {
           style={UploadImageStyle.content_View}
           onPress={() => {
             if (item.id === "1") {
-              // Navigate to Take photo when Contact Us is clicked.....
-              // navigation.navigate("");
               ImagePicker.openCamera({
                 width: 300,
                 height: 400,
                 cropping: true,
+                compressImageQuality: 0.5,
               })
-                .then((image) => {
-                  console.log(image);
+                .then(image => {
+                  // console.log('image....', image);
+                  setImage(image);
+                  setImageName(image?.path);
                 })
-                .catch((error) => {
-                  console.log(
-                    "Error occurred while opening the camera: ",
-                    error
-                  );
+                .catch(err => {
+                  console.log('err...', err);
                 });
             }
             if (item.id === "2") {
@@ -53,9 +53,17 @@ const UploadImageData = (props) => {
                 width: 300,
                 height: 400,
                 cropping: true,
-              }).then((image) => {
-                console.log(image);
-              });
+                compressImageQuality: 0.5,
+              })
+                .then(image => {
+                  // console.log(image);
+                  setImage(image);
+                  setImageName(image?.path);
+                  console.log("ImagePath..",imageName)
+                })
+                .catch(err => {
+                  console.log('err...', err);
+                });
             }
           }}
         >

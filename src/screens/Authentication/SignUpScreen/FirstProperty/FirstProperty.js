@@ -50,7 +50,7 @@ const renderDataItem = (item) => {
   );
 };
 export default FirstProperty = (props) => {
-  const [location, setLocation] = useState("");
+  const [propertyLocation, setPropertyLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
   const [selected, setSelected] = useState([]);
   const [value, setValue] = useState(null);
@@ -80,8 +80,8 @@ export default FirstProperty = (props) => {
             </TouchableOpacity>
             <TextInput
               style={FirstPropertyStyle.locationInput}
-              value={location}
-              onChangeText={setLocation}
+              value={propertyLocation}
+              onChangeText={setPropertyLocation}
               placeholder="Search location"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />

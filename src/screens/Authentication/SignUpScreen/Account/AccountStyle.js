@@ -3,7 +3,6 @@ import { _COLORS, FONTFAMILY } from "../../../../Themes";
 export const AccountStyle = StyleSheet.create({
   headingView: {
     marginHorizontal: 16,
-    marginTop: 10,
   },
   heading: {
     color: _COLORS.Kodie_BlackColor,
@@ -22,7 +21,7 @@ export const AccountStyle = StyleSheet.create({
     marginBottom: 20,
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom:5,
   },
   input: {
     height: 48,
@@ -32,6 +31,18 @@ export const AccountStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
+  },
+  flor_input: {
+    height:40,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    width:'23%',
+    marginLeft:10,
+    marginTop:8
   },
   locationContainer: {
     flexDirection: "row",
@@ -108,4 +119,5 @@ export const AccountStyle = StyleSheet.create({
     alignSelf: "center",
     borderColor: _COLORS.Kodie_GrayColor,
   },
+  errorText: { color: "red", marginLeft: 10 },
 });

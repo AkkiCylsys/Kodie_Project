@@ -28,6 +28,7 @@ export const AboutYouStyle = StyleSheet.create({
     width: 110,
     height: 110,
     resizeMode: "cover",
+    
   },
   personal_Text: {
     marginTop: 24,
