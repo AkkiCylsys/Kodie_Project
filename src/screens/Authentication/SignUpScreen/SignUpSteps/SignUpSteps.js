@@ -306,7 +306,7 @@ const SignUpSteps = (props) => {
       "Property Manager": 10,
     };
 
-    // Initialize an array to store the selected service lookup keys
+    // Initialize an array to store the selected service lookup keys........
     const selectedServiceKeys = [];
 
     for (const serviceName in selectedServices) {
@@ -314,8 +314,8 @@ const SignUpSteps = (props) => {
         selectedServiceKeys.push(serviceLookup[serviceName]);
       }
     }
-    
-    // Create a comma-separated string of selected service lookup keys
+      
+    // Create a comma-separated string of selected service lookup keys........
     const describeYourselfValue =
       selectedServiceKeys.length > 0 ? selectedServiceKeys.join(',') : '0';
     
