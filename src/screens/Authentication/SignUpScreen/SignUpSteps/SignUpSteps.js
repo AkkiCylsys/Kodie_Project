@@ -153,6 +153,7 @@ const SignUpSteps = (props) => {
       [serviceName]: !prevSelectedServices[serviceName],
     }));
   };
+
   const handleBoxPress = (boxNumber) => {
     setIsClick(boxNumber);
   };
@@ -316,6 +317,7 @@ const SignUpSteps = (props) => {
       } else if (currentPage === 2) {
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
+        console.log(selectedServices, firstName, lastName);
       } else {
         null;
       }
@@ -323,6 +325,26 @@ const SignUpSteps = (props) => {
   };
 
   const handleSaveSignup = () => {
+    const serviceLookup = {
+      Tenant: 2,
+      Landlord: 3,
+      Contractor: 4,
+      "Property Manager": 10,
+    };
+
+    // Initialize an array to store the selected service lookup keys........
+    const selectedServiceKeys = [];
+
+    for (const serviceName in selectedServices) {
+      if (selectedServices[serviceName]) {
+        selectedServiceKeys.push(serviceLookup[serviceName]);
+      }
+    }
+      
+    // Create a comma-separated string of selected service lookup keys........
+    const describeYourselfValue =
+      selectedServiceKeys.length > 0 ? selectedServiceKeys.join(',') : '0';
+    
     const accountDetailsData = {
       account_details: {
         User_Key: "46",
@@ -332,10 +354,11 @@ const SignUpSteps = (props) => {
         physical_address: physicalAddress,
         organisation_name: organisation,
         referral_code: referral,
-        profile_photo: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-        describe_yourself: "2,3,4,10",
-        property_manage: 6,
-        kodie_help: "14,15,16",
+        profile_photo: ImageName,
+        describe_yourself: describeYourselfValue,
+        property_manage: 1,
+        property_manage: 1,
+        kodie_help: 4,
       },
       property_details: {
         location: propertyLocation,
