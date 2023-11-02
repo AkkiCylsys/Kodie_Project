@@ -20,7 +20,7 @@ const SearchPlaces = () => {
           textInputContainer: {
             marginHorizontal: 16,
             borderWidth: 1,
-            marginTop: 13,
+            // marginTop: 13,
             borderRadius: 8,
             borderColor: _COLORS.Kodie_ExtraLightGrayColor,
           },

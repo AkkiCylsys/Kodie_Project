@@ -42,6 +42,9 @@ const UploadImageData = (props) => {
                   // console.log('image....', image);
                   setImage(image);
                   setImageName(image?.path);
+                  props?.ImageName(imageName)
+
+                  console.log("ImagePath..",imageName)
                 })
                 .catch(err => {
                   console.log('err...', err);
@@ -59,6 +62,7 @@ const UploadImageData = (props) => {
                   // console.log(image);
                   setImage(image);
                   setImageName(image?.path);
+                  props?.ImageName(imageName)
                   console.log("ImagePath..",imageName)
                 })
                 .catch(err => {

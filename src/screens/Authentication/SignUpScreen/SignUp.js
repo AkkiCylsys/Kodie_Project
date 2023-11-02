@@ -215,10 +215,10 @@ export default SignUp = (props) => {
                 <Text
                   style={[SignUpStyles.termsText, SignUpStyles.terms_Condition]}
                 >
-                  {"Terms & Conditions"}
+                  {" Terms & Conditions "}
                 </Text>
               </TouchableOpacity>
-              <Text style={SignUpStyles.termsText}>{"And agree"}</Text>
+              <Text style={SignUpStyles.termsText}>{" and agree"}</Text>
             </View>
           </View>
           <View style={SignUpStyles.termView}>
@@ -247,10 +247,10 @@ export default SignUp = (props) => {
                 <Text
                   style={[SignUpStyles.termsText, SignUpStyles.terms_Condition]}
                 >
-                  {"Privacy Policy"}
+                  {" Privacy Policy "}
                 </Text>
               </TouchableOpacity>
-              <Text style={SignUpStyles.termsText}>{"And agree"}</Text>
+              <Text style={SignUpStyles.termsText}>{"and agree"}</Text>
             </View>
           </View>
         </View>

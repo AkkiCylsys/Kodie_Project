@@ -6,7 +6,7 @@ export const SignUpStepStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   stepIndicator: {
-    marginVertical: 20,
+    marginTop:15
   },
   progresBar: {
     backgroundColor: _COLORS.Kodie_GrayColor,
