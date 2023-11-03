@@ -20,6 +20,8 @@ import { LABEL_STYLES } from "../../../Themes/CommonStyles/CommonStyles";
 import axios from "axios";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { Config } from "../../../Config";
+import { fetchRegistrationSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
+import { useDispatch, useSelector } from "react-redux";
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -29,6 +31,13 @@ export default SignUp = (props) => {
   const [term, setTerm] = useState(false);
   const [privacy, setPrivacy] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const signUp_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
+  console.log("Login_response.....", signUp_response);
+
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -80,6 +89,7 @@ export default SignUp = (props) => {
       .post(signupUrl, SignUpData)
       .then((response) => {
         console.log("SignUp responce", response.data);
+        // dispatch(fetchRegistrationSuccess(response.data));
         if (response.data.status === true) {
           alert(response.data.message);
           props.navigation.navigate("SignUpVerification", {

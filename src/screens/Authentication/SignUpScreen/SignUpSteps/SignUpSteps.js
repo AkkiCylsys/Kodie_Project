@@ -224,6 +224,10 @@ const SignUpSteps = (props) => {
   const [manage_property_Data, setmanage_property_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [ImageName, setImageName] = useState("");
+  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButtonId, setSelectedButtonId] = useState(0);
+
+
   const handleImageNameChange = (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", ImageName);
@@ -234,27 +238,7 @@ const SignUpSteps = (props) => {
     { label: "Furnished", value: "3" },
     { label: "Flat", value: "4" },
   ];
-  // const BedroomData = [
-  //   { label: "1", value: "1" },
-  //   { label: "2", value: "2" },
-  //   { label: "3", value: "3" },
-  // ];
-  // const GaragesData = [
-  //   { label: "1", value: "1" },
-  //   { label: "2", value: "2" },
-  //   { label: "3", value: "3" },
-  // ];
-  // const BathroomData = [
-  //   { label: "1", value: "1" },
-  //   { label: "2", value: "2" },
-  //   { label: "3", value: "3" },
-  // ];
-  // const ParkingData = [
-  //   { label: "1", value: "1" },
-  //   { label: "2", value: "2" },
-  //   { label: "3", value: "3" },
-  // ];
-
+  // manage property renderItem in about you page 
   const renderItem = ({ item }) => (
     <ServicesBox
       Services_Name={item?.description}
@@ -353,7 +337,6 @@ const SignUpSteps = (props) => {
           selectManageProperty,
           keyFeatureData
         );
-        alert(keyFeatureData);
       } else {
         null;
       }
@@ -470,41 +453,6 @@ const SignUpSteps = (props) => {
       });
   };
 
-  // key features APi define here.............
-
-  // const handleKey_Features = () => {
-  //   const propertyData = {
-  //     P_PARENT_CODE: "PROP_TYPE",
-  //     P_TYPE: "OPTION",
-  //   };
-  //   const url = Config.API_URL;
-  //   const propertyType = url + "lookup_details";
-  //   console.log("Request URL:", propertyType);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(propertyType, propertyData)
-  //     .then((response) => {
-  //       console.log("property_type", response.data);
-  //       if (response.data.status === true) {
-  //         setIsLoading(false);
-  //         console.log("propertyData....", response.data.data);
-  //         setProperty_Data(response.data.data);
-
-  //         console.log("manage_property_data", response.data.data);
-  //       } else {
-  //         console.error("property_type_error:", response.data.error);
-  //         alert(response.data.error);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("property_type error:", error);
-  //       alert(error);
-  //       setIsLoading(false);
-  //     });
-  // };
-
-  //useeffect key features...
   useEffect(() => {
     handleProperty_Type();
     handle_manage_property();
@@ -513,6 +461,7 @@ const SignUpSteps = (props) => {
     handle_Bathroom();
     handle_parking();
   }, []);
+
   const keyFeatureData =
     bedroomValue +
     ", " +
@@ -523,7 +472,8 @@ const SignUpSteps = (props) => {
     parkingValue +
     ", " +
     florSize;
-  // alert(keyFeatureData);
+
+  // property Type API with LookupKey...
   const handleProperty_Type = () => {
     const propertyData = {
       P_PARENT_CODE: "PROP_TYPE",
@@ -553,6 +503,7 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
+  // manage property API with lookup key...
   const handle_manage_property = () => {
     const propertyData = {
       P_PARENT_CODE: "TEN_PROPERTY",
@@ -582,6 +533,7 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
+  //  key feature module BedRoom API....
   const handle_bedRoom = () => {
     const bedRoom_Data = {
       P_PARENT_CODE: "BEDROOM",
@@ -611,6 +563,8 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
+
+  //  key feature module Garages API....
   const handle_Garages = () => {
     const garages_Data = {
       P_PARENT_CODE: "GARAGES",
@@ -640,6 +594,8 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
+
+  // key feature module Bathroom API....
   const handle_Bathroom = () => {
     const Bathroom_Data = {
       P_PARENT_CODE: "BATHROOM",
@@ -669,6 +625,8 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
+
+  // // key feature module Bathroom API....
   const handle_parking = () => {
     const parking_Data = {
       P_PARENT_CODE: "PARKING",
@@ -707,10 +665,10 @@ const SignUpSteps = (props) => {
       position === 0
         ? "Account"
         : position === 1
-        ? "About you"
-        : position === 2
-        ? "First Property"
-        : "circle";
+          ? "About you"
+          : position === 2
+            ? "First Property"
+            : "circle";
 
     return (
       <View style={SignUpStepStyle.labelContainer}>
@@ -1322,13 +1280,22 @@ const SignUpSteps = (props) => {
               </Text>
               <RowButtons
                 LeftButtonText={"Yes"}
-                leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-                LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+                leftButtonbackgroundColor={!selectedButton ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_MediumGrayColor}
+                LeftButtonTextColor={!selectedButton ? _COLORS.Kodie_MediumGrayColor : _COLORS.Kodie_BlackColor}
+                LeftButtonborderColor={!selectedButton ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor}
+                onPressLeftButton={() => {
+                  setSelectedButton(false)
+                  setSelectedButtonId(1)
+
+                }}
                 RightButtonText={"No"}
-                RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-                RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+                RightButtonbackgroundColor={selectedButton ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_MediumGrayColor}
+                RightButtonTextColor={selectedButton ? _COLORS.Kodie_MediumGrayColor : _COLORS.Kodie_BlackColor}
+                RightButtonborderColor={selectedButton ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor}
+                onPressRightButton={() => {
+                  setSelectedButton(true)
+                  setSelectedButtonId(2)
+                }}
               />
             </View>
           </ScrollView>
