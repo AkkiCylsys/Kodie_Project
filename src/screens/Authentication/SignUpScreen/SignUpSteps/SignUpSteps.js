@@ -134,7 +134,8 @@ const SignUpSteps = (props) => {
   const [mobileNumberError, setMobileNumberError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   // about you
-  const [isClick, setIsClick] = useState(false);
+  const [isClick, setIsClick] = useState(null);
+  const [selectManageProperty, setSelectManageProperty] = useState("");
   const refRBSheet = useRef();
   const initialSelectedServices = {
     Tenant: false,
@@ -154,8 +155,9 @@ const SignUpSteps = (props) => {
     }));
   };
 
-  const handleBoxPress = (boxNumber) => {
-    setIsClick(boxNumber);
+  const handleBoxPress = (lookupID) => {
+    setIsClick(lookupID);
+    setSelectManageProperty(lookupID);
   };
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const toggleCheckbox = (itemId) => {
@@ -208,13 +210,24 @@ const SignUpSteps = (props) => {
   const [florSize, setFlorSize] = useState("");
   const [selected, setSelected] = useState([]);
   const [value, setValue] = useState(null);
+
   const [bedroomValue, setbedroomValue] = useState([]);
   const [garagesValue, setGaragesValue] = useState([]);
   const [bathRoomValue, setBathRoomValue] = useState([]);
   const [parkingValue, setParkingValue] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
+  const [bedRoomData, setBedRoomData] = useState([]);
+  const [garagesData, setGaragesData] = useState([]);
+  const [bathroomData, setBathroomData] = useState([]);
+  const [parkingData, setParkingData] = useState([]);
+
+  const [manage_property_Data, setmanage_property_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [ImageName, setImageName] = useState("");
+  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButtonId, setSelectedButtonId] = useState(0);
+
+
   const handleImageNameChange = (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", ImageName);
@@ -225,27 +238,27 @@ const SignUpSteps = (props) => {
     { label: "Furnished", value: "3" },
     { label: "Flat", value: "4" },
   ];
-  const BedroomData = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-  ];
-  const GaragesData = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-  ];
-  const BathroomData = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-  ];
-  const ParkingData = [
-    { label: "1", value: "1" },
-    { label: "2", value: "2" },
-    { label: "3", value: "3" },
-  ];
-
+  // manage property renderItem in about you page 
+  const renderItem = ({ item }) => (
+    <ServicesBox
+      Services_Name={item?.description}
+      BoxStyling={[
+        AboutYouStyle.box_style,
+        {
+          margin: 4,
+          backgroundColor:
+            isClick === item.lookup_key
+              ? _COLORS.Kodie_lightGreenColor
+              : _COLORS.Kodie_WhiteColor,
+        },
+      ]}
+      textColor={[AboutYouStyle.box_Text_Style]}
+      onPress={() => {
+        handleBoxPress(item.lookup_key),
+          setSelectManageProperty(item.lookup_key);
+      }}
+    />
+  );
   const renderDataItem = (item) => {
     return (
       <View style={FirstPropertyStyle.item}>
@@ -317,7 +330,13 @@ const SignUpSteps = (props) => {
       } else if (currentPage === 2) {
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
-        console.log(selectedServices, firstName, lastName);
+        console.log(
+          selectedServices,
+          firstName,
+          selectedCheckboxes,
+          selectManageProperty,
+          keyFeatureData
+        );
       } else {
         null;
       }
@@ -325,6 +344,7 @@ const SignUpSteps = (props) => {
   };
 
   const handleSaveSignup = () => {
+    // Account lookup key define here......
     const serviceLookup = {
       Tenant: 2,
       Landlord: 3,
@@ -332,19 +352,44 @@ const SignUpSteps = (props) => {
       "Property Manager": 10,
     };
 
+    // properties question lookup key define here......
+    const kodieHelpLookup = {
+      1: 14,
+      2: 15,
+      3: 16,
+      4: 17,
+      5: 18,
+      6: 19,
+      7: 20,
+    };
     // Initialize an array to store the selected service lookup keys........
     const selectedServiceKeys = [];
+    // properties question empthy array define here......
+    const selectedKodieHelpKeys = [];
 
+    //Account an array to store the selected service lookup keys........
     for (const serviceName in selectedServices) {
       if (selectedServices[serviceName]) {
         selectedServiceKeys.push(serviceLookup[serviceName]);
       }
     }
-      
+
+    // properties question Loop through selected checkboxes  lookup keys to the array....
+    for (const itemId of selectedCheckboxes) {
+      const lookupKey = kodieHelpLookup[itemId];
+      if (lookupKey) {
+        selectedKodieHelpKeys.push(lookupKey);
+      }
+    }
+
     // Create a comma-separated string of selected service lookup keys........
     const describeYourselfValue =
-      selectedServiceKeys.length > 0 ? selectedServiceKeys.join(',') : '0';
-    
+      selectedServiceKeys.length > 0 ? selectedServiceKeys.join(",") : "0";
+
+    // Create a comma-separated string of question selected kodie_help lookup keys
+    const kodieHelpValue =
+      selectedKodieHelpKeys.length > 0 ? selectedKodieHelpKeys.join(",") : "0";
+
     const accountDetailsData = {
       account_details: {
         User_Key: "46",
@@ -354,11 +399,10 @@ const SignUpSteps = (props) => {
         physical_address: physicalAddress,
         organisation_name: organisation,
         referral_code: referral,
-        profile_photo: ImageName,
+        profile_photo: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
         describe_yourself: describeYourselfValue,
-        property_manage: 1,
-        property_manage: 1,
-        kodie_help: 4,
+        kodie_help: kodieHelpValue,
+        property_manage: selectManageProperty,
       },
       property_details: {
         location: propertyLocation,
@@ -367,7 +411,7 @@ const SignUpSteps = (props) => {
         islocation: "1",
         property_description: propertyDesc,
         property_type: property_value,
-        key_features: "29,30,31,32,33",
+        key_features: keyFeatureData,
         additional_features: "4,5",
       },
     };
@@ -409,6 +453,27 @@ const SignUpSteps = (props) => {
       });
   };
 
+  useEffect(() => {
+    handleProperty_Type();
+    handle_manage_property();
+    handle_bedRoom();
+    handle_Garages();
+    handle_Bathroom();
+    handle_parking();
+  }, []);
+
+  const keyFeatureData =
+    bedroomValue +
+    ", " +
+    garagesValue +
+    ", " +
+    bathRoomValue +
+    ", " +
+    parkingValue +
+    ", " +
+    florSize;
+
+  // property Type API with LookupKey...
   const handleProperty_Type = () => {
     const propertyData = {
       P_PARENT_CODE: "PROP_TYPE",
@@ -438,10 +503,159 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
-  useEffect(() => {
-    handleProperty_Type();
-  }, []);
+  // manage property API with lookup key...
+  const handle_manage_property = () => {
+    const propertyData = {
+      P_PARENT_CODE: "TEN_PROPERTY",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("maneg_property_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("maneg_property_type....", response.data.data);
+          setmanage_property_Data(response.data.data);
+        } else {
+          console.error("property_type_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_type error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  //  key feature module BedRoom API....
+  const handle_bedRoom = () => {
+    const bedRoom_Data = {
+      P_PARENT_CODE: "BEDROOM",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const bedroomApi = url + "lookup_details";
+    console.log("Request URL:", bedroomApi);
+    setIsLoading(true);
+    axios
+      .post(bedroomApi, bedRoom_Data)
+      .then((response) => {
+        console.log("bedRoom_data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("bedRoom_data....", response.data.data);
+          setBedRoomData(response.data.data);
+        } else {
+          console.error("bedRoom_data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("bedRoom_data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
 
+  //  key feature module Garages API....
+  const handle_Garages = () => {
+    const garages_Data = {
+      P_PARENT_CODE: "GARAGES",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const garagesApi = url + "lookup_details";
+    console.log("Request URL:", garagesApi);
+    setIsLoading(true);
+    axios
+      .post(garagesApi, garages_Data)
+      .then((response) => {
+        console.log("garages_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("garages_Data....", response.data.data);
+          setGaragesData(response.data.data);
+        } else {
+          console.error("garages_Data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("garages_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+
+  // key feature module Bathroom API....
+  const handle_Bathroom = () => {
+    const Bathroom_Data = {
+      P_PARENT_CODE: "BATHROOM",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const bathrooApi = url + "lookup_details";
+    console.log("Request URL:", bathrooApi);
+    setIsLoading(true);
+    axios
+      .post(bathrooApi, Bathroom_Data)
+      .then((response) => {
+        console.log("bathroom_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("bathroom_Data....", response.data.data);
+          setBathroomData(response.data.data);
+        } else {
+          console.error("bathroom_Data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("bathroom_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+
+  // // key feature module Bathroom API....
+  const handle_parking = () => {
+    const parking_Data = {
+      P_PARENT_CODE: "PARKING",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const parkingApi = url + "lookup_details";
+    console.log("Request URL:", parking_Data);
+    setIsLoading(true);
+    axios
+      .post(parkingApi, parking_Data)
+      .then((response) => {
+        console.log("parking_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("parking_Data....", response.data.data);
+          setParkingData(response.data.data);
+        } else {
+          console.error("parking_Data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("parking_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
   const onStepPress = (position) => {
     setCurrentPage(position);
   };
@@ -451,10 +665,10 @@ const SignUpSteps = (props) => {
       position === 0
         ? "Account"
         : position === 1
-        ? "About you"
-        : position === 2
-        ? "First Property"
-        : "circle";
+          ? "About you"
+          : position === 2
+            ? "First Property"
+            : "circle";
 
     return (
       <View style={SignUpStepStyle.labelContainer}>
@@ -685,7 +899,13 @@ const SignUpSteps = (props) => {
               <Text style={AboutYouStyle.want_Heading}>
                 {" How many properties do you own, manage or rent?"}
               </Text>
-              <View style={AboutYouStyle.servicesBoxView}>
+              <FlatList
+                data={manage_property_Data}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.lookup_key.toString()}
+                numColumns={2} // Display two columns in each row
+              />
+              {/* <View style={AboutYouStyle.servicesBoxView}>
                 <ServicesBox
                   Services_Name={"1 - 3 properties"}
                   BoxStyling={[
@@ -749,7 +969,7 @@ const SignUpSteps = (props) => {
                   textColor={[AboutYouStyle.box_Text_Style]}
                   onPress={() => handleBoxPress(4)}
                 />
-              </View>
+              </View> */}
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
               </Text>
@@ -894,14 +1114,14 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={BedroomData}
+                      data={bedRoomData}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="description"
+                      valueField="lookup_key"
                       placeholder="3"
                       value={bedroomValue}
                       onChange={(item) => {
-                        setbedroomValue(item.value);
+                        setbedroomValue(item.lookup_key);
                         // alert(item.value);
                       }}
                     />
@@ -922,15 +1142,15 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={GaragesData}
+                      data={garagesData}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="description"
+                      valueField="lookup_key"
                       placeholder="1"
                       value={garagesValue}
                       onChange={(item) => {
-                        setGaragesValue(item.value);
-                        // alert(item.value);
+                        setGaragesValue(item.lookup_key);
+                        // alert(item.lookup_key);
                       }}
                     />
                   </View>
@@ -952,14 +1172,14 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={BathroomData}
+                      data={bathroomData}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="description"
+                      valueField="lookup_key"
                       placeholder="3"
                       value={bathRoomValue}
                       onChange={(item) => {
-                        setBathRoomValue(item.value);
+                        setBathRoomValue(item.lookup_key);
                       }}
                     />
                   </View>
@@ -979,14 +1199,14 @@ const SignUpSteps = (props) => {
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
-                      data={ParkingData}
+                      data={parkingData}
                       maxHeight={300}
-                      labelField="label"
-                      valueField="value"
+                      labelField="description"
+                      valueField="lookup_key"
                       placeholder="1"
                       value={parkingValue}
                       onChange={(item) => {
-                        setParkingValue(item.value);
+                        setParkingValue(item.lookup_key);
                       }}
                     />
                   </View>
@@ -1060,13 +1280,22 @@ const SignUpSteps = (props) => {
               </Text>
               <RowButtons
                 LeftButtonText={"Yes"}
-                leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-                LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+                leftButtonbackgroundColor={!selectedButton ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_MediumGrayColor}
+                LeftButtonTextColor={!selectedButton ? _COLORS.Kodie_MediumGrayColor : _COLORS.Kodie_BlackColor}
+                LeftButtonborderColor={!selectedButton ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor}
+                onPressLeftButton={() => {
+                  setSelectedButton(false)
+                  setSelectedButtonId(1)
+
+                }}
                 RightButtonText={"No"}
-                RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-                RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+                RightButtonbackgroundColor={selectedButton ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_MediumGrayColor}
+                RightButtonTextColor={selectedButton ? _COLORS.Kodie_MediumGrayColor : _COLORS.Kodie_BlackColor}
+                RightButtonborderColor={selectedButton ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor}
+                onPressRightButton={() => {
+                  setSelectedButton(true)
+                  setSelectedButtonId(2)
+                }}
               />
             </View>
           </ScrollView>
