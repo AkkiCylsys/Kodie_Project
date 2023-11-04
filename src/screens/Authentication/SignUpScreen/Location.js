@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,12 @@ import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { _COLORS, FONTFAMILY, IMAGES } from "../../../Themes";
 export default Location = (props) => {
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  const handleLocationSelect = (locationDetails) => {
+    setSelectedLocation(locationDetails);
+  };
+
   return (
     <View style={LocationStyle.mainContainer}>
       <TopHeader

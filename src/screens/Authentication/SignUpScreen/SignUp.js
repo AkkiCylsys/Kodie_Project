@@ -30,13 +30,14 @@ export default SignUp = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [term, setTerm] = useState(false);
   const [privacy, setPrivacy] = useState(false);
+  const [signupResponse, setSignupResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const signUp_response = useSelector(
     (state) => state?.authenticationReducer?.data
   );
-  console.log("Login_response.....", signUp_response);
+  console.log("signup_response.....", signUp_response);
 
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -88,13 +89,15 @@ export default SignUp = (props) => {
     axios
       .post(signupUrl, SignUpData)
       .then((response) => {
+        setSignupResponse(response.data);
         console.log("SignUp responce", response.data);
-        // dispatch(fetchRegistrationSuccess(response.data));
         if (response.data.status === true) {
           alert(response.data.message);
           props.navigation.navigate("SignUpVerification", {
             email: email,
           });
+          // dispatch(fetchRegistrationSuccess(response.data));
+
           setEmail("");
           setPassword("");
           setTerm(false);
