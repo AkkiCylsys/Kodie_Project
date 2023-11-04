@@ -74,18 +74,8 @@ export default Location = (props) => {
       }
     );
   };
-  const calculateDistance = (_reg) => {
-    var dis = getDistance(
-      { latitude: _reg.latitude, longitude: _reg.longitude },
-      { latitude: 79.508, longitude: 20.78 }
-    );
-    // alert(
-    //   `Distance\n\n${dis} Meter\nOR\n${dis / 1000} KM`
-    // );
-  };
 
   const onRegionChange = (Region) => {
-    calculateDistance(Region);
     //alert(JSON.stringify(Region.latitude))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
@@ -99,10 +89,6 @@ export default Location = (props) => {
         // alert(JSON.stringify(json.results))
         let MainFullAddress = json.results[0].formatted_address;
         var addressComponent2 = json.results[0].address_components[1];
-        // setCity(addressComponent2.long_name);
-        // setZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // setAddress(MainFullAddress);
-        // alert(JSON.stringify(Address))
       })
       .catch((error) => console.warn(error));
   };
@@ -122,13 +108,6 @@ export default Location = (props) => {
 
       <View style={LocationStyle.mapsty}>
         <MapScreen
-          // style={{
-          //   borderRadius: 20,
-          //   borderWidth: 1,
-          //   //marginTop: wp('10%'),
-          //   alignSelf: "center",
-          //   marginBottom: 10,
-          // }}
           onRegionChange={onRegionChange}
           // Maplat={locationInfo?.latitude || latitude}
           // Maplng={locationInfo?.longitude || longitude}

@@ -137,6 +137,9 @@ const SignUpSteps = (props) => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
+  const [data_add, setData_add] = useState(
+    []
+  );
 
   const fs = RNFetchBlob.fs;
 
@@ -208,12 +211,58 @@ const SignUpSteps = (props) => {
       });
   };
 
-  const DATA = [
-    { label: "Pool", value: "1" },
-    { label: "Garden", value: "2" },
-    { label: "Furnished", value: "3" },
-    { label: "Flat", value: "4" },
-  ];
+  const DATA = 
+    [
+      {
+        "label": "Pool",
+        "value": 1
+      },
+      {
+        "label": "Garage",
+        "value": 2
+      },
+      {
+        "label": "Balcony",
+        "value": 3
+      },
+      {
+        "label": "Outdoor Area",
+        "value": 4
+      },
+      {
+        "label": "Ensuit",
+        "value": 5
+      },
+      {
+        "label": "Dishwasher",
+        "value": 6
+      },
+      {
+        "label": "Study",
+        "value": 7
+      },
+      {
+        "label": "Built in Robes",
+        "value": 8
+      },
+      {
+        "label": "Air Conditioning",
+        "value": 9
+      },
+      {
+        "label": "Solar Panels",
+        "value": 10
+      },
+      {
+        "label": "Heating",
+        "value": 11
+      },
+      {
+        "label": "Hight Energy Efficiency",
+        "value": 12
+      }
+    ]
+  ;
   // manage property renderItem in about you page
   const renderItem = ({ item }) => (
     <ServicesBox
@@ -698,6 +747,7 @@ const SignUpSteps = (props) => {
           setIsLoading(false);
           console.log("additional_features....", response.data);
           setAdditionalfeatureskey(response.data.PAF_KEY);
+          setData_add(response.data.PAF_KEY)
           console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
         } else {
           console.error("additional_features_error:", response.data.error);
@@ -1177,6 +1227,45 @@ const SignUpSteps = (props) => {
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}
+                    data={DATA}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Search"
+                    value={additionalfeatureskeyvalue}
+                    search
+                    searchPlaceholder="Search..."
+                    onChange={(item) => {
+                      setAdditionalFeaturesKeyValue(item);
+                      alert(item);
+                    }}
+                    renderRightIcon={() => (
+                      <AntDesign
+                        style={FirstPropertyStyle.icon}
+                        color={_COLORS.Kodie_BlackColor}
+                        name="search1"
+                        size={20}
+                      />
+                    )}
+                    renderItem={renderDataItem}
+                    renderSelectedItem={(item, unSelect) => (
+                      <TouchableOpacity
+                        onPress={() => unSelect && unSelect(item)}
+                      >
+                        <View style={FirstPropertyStyle.selectedStyle}>
+                          <Text style={FirstPropertyStyle.textSelectedStyle}>
+                            {item.label}
+                          </Text>
+                          <AntDesign color="black" name="close" size={17} />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  />
+                  {/* <MultiSelect
+                    style={FirstPropertyStyle.dropdown}
+                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
+                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+                    iconStyle={FirstPropertyStyle.iconStyle}
                     data={additionalfeatureskey}
                     labelField="PAF_ADDITIONAL_FEATURES_NAME"
                     valueField="PAF_KEY"
@@ -1209,7 +1298,7 @@ const SignUpSteps = (props) => {
                         </View>
                       </TouchableOpacity>
                     )}
-                  />
+                  /> */}
                 </View>
               </View>
 

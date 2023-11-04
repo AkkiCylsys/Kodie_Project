@@ -19,8 +19,8 @@ export const LocationStyle = StyleSheet.create({
   shapImg: { alignSelf: "center", height: 25, width: 25 },
   searchPlc: {
     flex: 1,
-    //  top: -250,
-    top: -520,
+     top: -250,
+    // top: -520,
     position: "relative",
   },
   mapsty: {

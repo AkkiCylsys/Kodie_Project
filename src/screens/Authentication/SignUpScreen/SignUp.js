@@ -86,23 +86,26 @@ export default SignUp = (props) => {
     const signupUrl = url + "user_signup";
     console.log("Request URL:", signupUrl);
     setIsLoading(true);
+
     axios
       .post(signupUrl, SignUpData)
       .then((response) => {
         setSignupResponse(response.data);
-        console.log("SignUp responce", response.data);
+        console.log("SignUp response", response.data);
         if (response.data.status === true) {
           alert(response.data.message);
-          props.navigation.navigate("SignUpVerification", {
-            email: email,
-          });
+          // Dispatch the action here if needed
           // dispatch(fetchRegistrationSuccess(response.data));
-
           setEmail("");
           setPassword("");
           setTerm(false);
           setPrivacy(false);
           setIsLoading(false);
+
+          // Redirect to SignUpVerification screen
+          props.navigation.navigate("SignUpVerification", {
+            email: email,
+          });
         } else {
           setEmailError(response.data.message);
           setIsLoading(false);
@@ -114,6 +117,7 @@ export default SignUp = (props) => {
         setIsLoading(false);
       });
   };
+
 
   //....... handle signup button validation here
   const handleSubmit = () => {
