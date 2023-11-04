@@ -5,10 +5,6 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { SearchPlacesStyle } from "./SearchPlacesStyle";
 const SearchPlaces = () => {
   const [selectedLocation, setSelectedLocation]=useState('')
-  const handleLocationSelect = (selectedLocation) => {
-    // Call the function to send the selected location to the parent component (MapScreen in this case)
-    props.onLocationSelect(selectedLocation);
-  };
   return (
     <View style={SearchPlacesStyle.container}>
       <GooglePlacesAutocomplete
