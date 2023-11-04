@@ -335,7 +335,7 @@ const SignUpSteps = (props) => {
           firstName,
           selectedCheckboxes,
           selectManageProperty,
-          keyFeatureData
+          keyFeatureData,
         );
       } else {
         null;
@@ -412,7 +412,7 @@ const SignUpSteps = (props) => {
         property_description: propertyDesc,
         property_type: property_value,
         key_features: keyFeatureData,
-        additional_features: "4,5",
+        additional_features: "1,2",
       },
     };
     const url = Config.API_URL;
@@ -656,6 +656,10 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
+
+    
+      
+
   const onStepPress = (position) => {
     setCurrentPage(position);
   };
@@ -1250,6 +1254,7 @@ const SignUpSteps = (props) => {
                     onChange={(item) => {
                       setSelected(item);
                     }}
+                    
                     renderRightIcon={() => (
                       <AntDesign
                         style={FirstPropertyStyle.icon}
@@ -1271,7 +1276,8 @@ const SignUpSteps = (props) => {
                         </View>
                       </TouchableOpacity>
                     )}
-                  />
+                  /> 
+                  
                 </View>
               </View>
 
