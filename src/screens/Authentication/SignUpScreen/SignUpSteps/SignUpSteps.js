@@ -211,7 +211,7 @@ const SignUpSteps = (props) => {
       });
   };
 
-  const DATA = 
+  const DATA =
     [
       {
         "label": "Pool",
@@ -262,7 +262,7 @@ const SignUpSteps = (props) => {
         "value": 12
       }
     ]
-  ;
+    ;
   // manage property renderItem in about you page
   const renderItem = ({ item }) => (
     <ServicesBox
@@ -487,6 +487,7 @@ const SignUpSteps = (props) => {
     handle_kodiehelp();
     handle_describe_yourself();
     additional_features();
+
   }, []);
   // property Type API with LookupKey...
   const handleProperty_Type = () => {
@@ -766,15 +767,21 @@ const SignUpSteps = (props) => {
     setCurrentPage(position);
   };
   const renderLabel = ({ position, stepStatus }) => {
-    const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    const iconColor =
+      position === currentPage // Check if it's the current step
+        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+        : stepStatus === "finished"
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Account"
         : position === 1
-        ? "About you"
-        : position === 2
-        ? "First Property"
-        : "circle";
+          ? "About you"
+          : position === 2
+            ? "First Property"
+            : "circle";
 
     return (
       <View style={SignUpStepStyle.labelContainer}>
