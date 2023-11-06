@@ -715,6 +715,15 @@ const SignUpSteps = (props) => {
   const onStepPress = (position) => {
     setCurrentPage(position);
   };
+
+  //  go back button...............
+  const goBack = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    } else if (currentPage === 0) {
+      props.navigation.navigate("SignUp");
+    }
+  };
   const renderLabel = ({ position, stepStatus }) => {
     const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconName =
@@ -1188,7 +1197,6 @@ const SignUpSteps = (props) => {
                       setAdditionalFeaturesKeyValue(item);
                       alert(item);
                     }}
-                    
                     renderRightIcon={() => (
                       <AntDesign
                         style={FirstPropertyStyle.icon}
@@ -1210,8 +1218,7 @@ const SignUpSteps = (props) => {
                         </View>
                       </TouchableOpacity>
                     )}
-                  /> 
-                  
+                  />
                 </View>
               </View>
 
@@ -1273,7 +1280,7 @@ const SignUpSteps = (props) => {
     <>
       <TopHeader
         MiddleText={"Set up your Kodie account"}
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={goBack}
       />
       <View style={SignUpStepStyle.container}>
         <View style={SignUpStepStyle.stepIndicator}>

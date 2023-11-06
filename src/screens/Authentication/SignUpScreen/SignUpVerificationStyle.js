@@ -26,7 +26,7 @@ export const SignUpVerificationStyle = StyleSheet.create({
     marginTop: 24,
   },
   customBtn: {
-    marginTop: 15,
+    marginTop: 50,
   },
   goBack_View: {
     flexDirection: "row",

@@ -297,7 +297,7 @@ export default SignUp = (props) => {
             _LeftButtonText={"Already have an account?"}
             _RightButtonText={"Login"}
             onPress={() => {
-              props.navigation.navigate("SignUpVerification");
+              props.navigation.navigate("LoginScreen");
             }}
           />
         </View>

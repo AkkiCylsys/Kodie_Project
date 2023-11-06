@@ -76,37 +76,80 @@ export default SignUpVerification = (props) => {
       });
   };
 
-    //send_verification_code OTP  Api code here....
-    const send_verification_code = () => {
-      const url = Config.API_URL;
-      const verification_code_url = url + "user_reset_password_email_verify";
-      console.log("Request URL:", verification_code_url);
-      setIsLoading(true);
-      axios
-        .post(verification_code_url, {
-          email: email,
-          otp: value,
-        })
-        .then((response) => {
-          console.log("API Response send otp:", response.data);
-          if (response.data.status === true) {
-            alert("The otp has been sent to your email.");
-            setVerificationCode("");
-          } else {
-            alert(response.data.message);
-            setIsLoading(false);
-          }
-        })
-        .catch((error) => {
-          console.error("API failed", error);
+  // send_verification_code OTP  Api code here....
+  const send_verification_code = () => {
+    const url = Config.API_URL;
+    const verification_code_url = url + "user_reset_password_email_verify";
+    console.log("Request URL:", verification_code_url);
+    setIsLoading(true);
+    axios
+      .post(verification_code_url, {
+        email: email,
+        otp: value,
+      })
+      .then((response) => {
+        console.log("API Response send otp:", response.data);
+        if (response.data.status === true) {
+          alert("The otp has been sent to your email.");
+          setVerificationCode("");
+        } else {
+          alert(response.data.message);
           setIsLoading(false);
-          // alert(error);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    };
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  // const send_verification_code = () => {
+  //   const url = Config.API_URL;
+  //   const verification_code_url = url + "user_reset_password_email_verify";
+  //   console.log("Request URL:", verification_code_url);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(verification_code_url, {
+  //       email: email,
+  //       otp: value,
+  //     })
+  //     .then((response) => {
+  //       console.log("API Response send otp:", response.data);
+  //       if (response.data.status === true) {
+  //         setVerificationCode("");
+  //         // OTP sent successfully, now you can show the alert
+  //         Alert.alert(
+  //           "OTP Sent",
+  //           "The OTP has been sent to your email.",
+  //           [
+  //             {
+  //               text: "OK",
+  //               onPress: () => {
+  //                 setIsLoading(false);
+  //                 startTimer();
+  //               },
+  //             },
+  //           ],
+  //           { cancelable: false }
+  //         );
+  //       } else {
+  //         alert(response.data.message);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("API failed", error);
+  //       setIsLoading(false);
+  //       // alert(error);
+  //     });
+  // };
 
+  // const startTimer = () => {
+  //   setIsTimerActive(true); // Start the timer
+  // };
 
   const handleverification_code = (text) => {
     setValue(text);
@@ -115,8 +158,8 @@ export default SignUpVerification = (props) => {
     } else {
       setValueError("");
     }
-     // Reset the timer when the value changes
-  setIsTimerActive(true);
+    // Reset the timer when the value changes
+    setIsTimerActive(true);
   };
   //.......... Handle button define here
   const handleSubmit = () => {
@@ -179,13 +222,13 @@ export default SignUpVerification = (props) => {
 
         {/* resend otp or timer buton code here................ */}
         <View style={SignUpVerificationStyle.getBindButtonView}>
-          <View style={SignUpVerificationStyle.getButtonView}>
+          {/* <View style={SignUpVerificationStyle.getButtonView}>
             {isTimerActive ? (
               <CountdownCircleTimer
                 isPlaying
                 trailColor={_COLORS.Kodie_lightGreenColor}
                 duration={50}
-                size={50}
+                size={45}
                 colors={_COLORS.Kodie_lightGreenColor}
                 onComplete={() => {
                   setIsTimerActive(false);
@@ -198,10 +241,44 @@ export default SignUpVerification = (props) => {
                 )}
               </CountdownCircleTimer>
             ) : (
-              <TouchableOpacity onPress={() => {
-                send_verification_code();
-                setIsTimerActive(true); // Start the timer again
-              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  send_verification_code();
+                }}
+              >
+                <Text style={SignUpVerificationStyle.getButton}>
+                  {"Resend"}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View> */}
+          <View style={SignUpVerificationStyle.getButtonView}>
+            {isLoading ? (
+              <Text style={{ color: _COLORS.Kodie_WhiteColor }}>Resend</Text>
+            ) : isTimerActive ? (
+              <CountdownCircleTimer
+                isPlaying
+                trailColor={_COLORS.Kodie_lightGreenColor}
+                duration={50}
+                size={45}
+                colors={_COLORS.Kodie_lightGreenColor}
+                onComplete={() => {
+                  setIsTimerActive(false);
+                }}
+              >
+                {({ remainingTime }) => (
+                  <Text style={{ color: _COLORS.Kodie_WhiteColor }}>
+                    {remainingTime} S
+                  </Text>
+                )}
+              </CountdownCircleTimer>
+            ) : (
+              <TouchableOpacity
+                onPress={() => {
+                  send_verification_code();
+                  setIsTimerActive(true); // Start the timer
+                }}
+              >
                 <Text style={SignUpVerificationStyle.getButton}>
                   {"Resend"}
                 </Text>
