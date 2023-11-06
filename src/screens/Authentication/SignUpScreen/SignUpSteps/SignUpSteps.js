@@ -137,6 +137,7 @@ const SignUpSteps = (props) => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
+  const [data_add, setData_add] = useState([]);
 
   const fs = RNFetchBlob.fs;
 
@@ -191,28 +192,73 @@ const SignUpSteps = (props) => {
     );
   };
 
-  const handleImageNameChange = (newImageName) => {
+  const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
 
     console.log("................ImageNAme", newImageName);
+    console.log("................ImageNAme", newImageName.path);
 
-    RNFetchBlob.fs
-      .readFile(newImageName, "base64")
-      .then((base64Data) => {
-        // Here's the base64 encoded image
-        setImagePath(base64Data);
-        console.log("imagepath....", base64Data);
-      })
-      .catch((error) => {
-        console.error("Error reading file:", error);
-      });
+    // RNFetchBlob.fs
+    //   .readFile(newImageName, "base64")
+    //   .then((base64Data) => {
+    //     // Here's the base64 encoded image
+    //     setImagePath(base64Data);
+    //     console.log("imagepath....", base64Data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error reading file:", error);
+    //   });
   };
 
   const DATA = [
-    { label: "Pool", value: "1" },
-    { label: "Garden", value: "2" },
-    { label: "Furnished", value: "3" },
-    { label: "Flat", value: "4" },
+    {
+      label: "Pool",
+      value: 1,
+    },
+    {
+      label: "Garage",
+      value: 2,
+    },
+    {
+      label: "Balcony",
+      value: 3,
+    },
+    {
+      label: "Outdoor Area",
+      value: 4,
+    },
+    {
+      label: "Ensuit",
+      value: 5,
+    },
+    {
+      label: "Dishwasher",
+      value: 6,
+    },
+    {
+      label: "Study",
+      value: 7,
+    },
+    {
+      label: "Built in Robes",
+      value: 8,
+    },
+    {
+      label: "Air Conditioning",
+      value: 9,
+    },
+    {
+      label: "Solar Panels",
+      value: 10,
+    },
+    {
+      label: "Heating",
+      value: 11,
+    },
+    {
+      label: "Hight Energy Efficiency",
+      value: 12,
+    },
   ];
   // manage property renderItem in about you page
   const renderItem = ({ item }) => (
@@ -359,73 +405,115 @@ const SignUpSteps = (props) => {
     }
   };
 
-  const handleSaveSignup = () => {
+  const handleSaveSignup = async () => {
     const selectedServiceKeysString = selectedServices.join(",");
     const kodieHelpValue = selectedLookupKeys.join(",");
     const selectedKeyFeature = selectedkey_features.join(",");
 
-    const accountDetailsData = {
-      account_details: {
-        user: "46",
-        first_name: firstName,
-        last_name: lastName,
-        phone_number: mobileNumber,
-        physical_address: physicalAddress,
-        organisation_name: organisation,
-        referral_code: referral,
-        profile_photo: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-        // profile_photo: imagePath,
-        describe_yourself: selectedServiceKeysString,
-        kodie_help: kodieHelpValue,
-        property_manage: selectManageProperty,
-      },
-      property_details: {
-        location: propertyLocation,
-        location_longitude: "102.002.001",
-        location_latitude: "104.004.002",
-        islocation: "1",
-        property_description: propertyDesc,
-        property_type: property_value,
-        key_features: selectedKeyFeature,
-        additional_features: additionalfeatureskeyvalue,
-      },
-    };
+    const formData = new FormData();
+    formData.append("user", "46");
+    formData.append("first_name", firstName);
+    formData.append("last_name", lastName);
+    formData.append("phone_number", mobileNumber);
+    formData.append("physical_address", physicalAddress);
+    formData.append("organisation_name", organisation);
+    formData.append("referral_code", referral);
+    formData.append("describe_yourself", selectedServiceKeysString);
+    formData.append("kodie_help", kodieHelpValue);
+    formData.append("property_manage", selectManageProperty);
+    formData.append("location", propertyLocation);
+    formData.append("location_longitude", "102.002.001");
+    formData.append("location_latitude", "104.004.002");
+    formData.append("islocation", "1");
+    formData.append("property_description", propertyDesc);
+    formData.append("property_type", property_value);
+    formData.append("key_features", selectedKeyFeature);
+    formData.append("additional_features", additionalfeatureskeyvalue);
+    formData.append("auto_list", "1");
+
+    // if (ImageName?.path) {
+    //   formData.append("profile_photo", {
+    //     // uri: ImageName?.path || "",
+    //     type: ImageName?.mime || "image/jpeg",
+    //     // name: String(ImageName?.path.split("/").pop()),
+    //   });
+    // }
+
+    if (ImageName?.path) {
+      const imageUri = ImageName.path;
+      // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      const imageName = "text";
+      const imageType = ImageName.mime || "image/jpeg";
+      formData.append("profile_photo", {
+        // uri: imageUri,
+        // type: imageType,
+        // name: imageName,
+        uri: imageUri, // your file path string
+        name: "my_photo.jpg",
+        type: "image/jpeg",
+      });
+      console.log("imageName", imageName);
+    }
+
+    // if (ImageName?.path) {
+    //   const imageUri = ImageName.path;
+
+    //   // Create a Blob from the image file
+    //   const response = await fetch(imageUri);
+    //   const blob = await response.blob();
+
+    //   formData.append("profile_photo", blob, "my_photo.jpg");
+
+    //   console.log("Image Blob:", blob);
+    // }
+
     const url = Config.API_URL;
     const saveAccountDetails = url + "user_save_signup_account_details";
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
-    axios
-      .post(saveAccountDetails, accountDetailsData)
-      .then((response) => {
-        console.log("Save Account Details", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false); // You may want to set isLoading to false
-          alert(response.data.message);
-          // props.navigation.navigate("DrawerNavigatorLeftMenu");
-          props.navigation.navigate("LoginScreen");
-          setCurrentPage(0);
-          setFirstName("");
-          setLastName("");
-          setMobileNumber("");
-          setPhysicalAddress("");
-          setOrganisation("");
-          setRefferral("");
-          setProperty_value("");
-          setbedroomValue("");
-          setGaragesValue("");
-          setBathRoomValue("");
-          setParkingValue("");
-        } else {
-          // Handle errors or non-successful response here
-          console.error("Save Account Details error:", response.data.error);
-          alert(response.data.error);
-        }
-      })
-      .catch((error) => {
-        console.error("Account_Details error:", error);
-        alert(error);
-        setIsLoading(false);
+
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          // Accept: "application/json",
+          "content-type": "multipart/form-data",
+          // // 'Accept': 'application/x-www-form-urlencoded',
+          // // 'Content-Type':'application/x-www-form-urlencoded',
+          // "Access-Control-Allow-Origin": "*",
+          // "Access-Control-Allow-Methods": "POST, GET, PUT, OPTIONS, DELETE",
+          // "Access-Control-Allow-Headers":
+          //   "Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type",
+        },
       });
+
+      console.log("Save Account Details", response.data);
+
+      if (response.data.status === true) {
+        setIsLoading(false);
+        alert(response.data.message);
+        props.navigation.navigate("LoginScreen");
+        // setCurrentPage(0);
+        setFirstName("");
+        setLastName("");
+        setMobileNumber("");
+        setPhysicalAddress("");
+        setOrganisation("");
+        setRefferral("");
+        setProperty_value("");
+        setbedroomValue("");
+        setGaragesValue("");
+        setBathRoomValue("");
+        setParkingValue("");
+      } else {
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
+      console.error("Account_Details error:", error);
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -698,6 +786,7 @@ const SignUpSteps = (props) => {
           setIsLoading(false);
           console.log("additional_features....", response.data);
           setAdditionalfeatureskey(response.data.PAF_KEY);
+          setData_add(response.data.PAF_KEY);
           console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
         } else {
           console.error("additional_features_error:", response.data.error);
@@ -725,7 +814,13 @@ const SignUpSteps = (props) => {
     }
   };
   const renderLabel = ({ position, stepStatus }) => {
-    const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    const iconColor =
+      position === currentPage // Check if it's the current step
+        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+        : stepStatus === "finished"
+        ? "#000000"
+        : "#808080";
     const iconName =
       position === 0
         ? "Account"
@@ -885,7 +980,7 @@ const SignUpSteps = (props) => {
               >
                 {ImageName ? (
                   <Image
-                    source={{ uri: ImageName }}
+                    source={{ uri: ImageName.path }}
                     style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
                   />
                 ) : (
@@ -1186,6 +1281,45 @@ const SignUpSteps = (props) => {
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}
+                    data={DATA}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Search"
+                    value={additionalfeatureskeyvalue}
+                    search
+                    searchPlaceholder="Search..."
+                    onChange={(item) => {
+                      setAdditionalFeaturesKeyValue(item);
+                      // alert(item);
+                    }}
+                    renderRightIcon={() => (
+                      <AntDesign
+                        style={FirstPropertyStyle.icon}
+                        color={_COLORS.Kodie_BlackColor}
+                        name="search1"
+                        size={20}
+                      />
+                    )}
+                    renderItem={renderDataItem}
+                    renderSelectedItem={(item, unSelect) => (
+                      <TouchableOpacity
+                        onPress={() => unSelect && unSelect(item)}
+                      >
+                        <View style={FirstPropertyStyle.selectedStyle}>
+                          <Text style={FirstPropertyStyle.textSelectedStyle}>
+                            {item.label}
+                          </Text>
+                          <AntDesign color="black" name="close" size={17} />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  />
+                  {/* <MultiSelect
+                    style={FirstPropertyStyle.dropdown}
+                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
+                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+                    iconStyle={FirstPropertyStyle.iconStyle}
                     data={additionalfeatureskey}
                     labelField="PAF_ADDITIONAL_FEATURES_NAME"
                     valueField="PAF_KEY"
@@ -1218,7 +1352,7 @@ const SignUpSteps = (props) => {
                         </View>
                       </TouchableOpacity>
                     )}
-                  />
+                  /> */}
                 </View>
               </View>
 
