@@ -14,9 +14,9 @@ import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlace
 import { _COLORS, FONTFAMILY, IMAGES } from "../../../Themes";
 export default Location = (props) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
-
-  const handleLocationSelect = (locationDetails) => {
-    setSelectedLocation(locationDetails);
+  const handleLocationSelect = (data, details) => {
+    // setSelectedLocation(locationDetails);
+    console.log("Selected location:", data, details);
   };
 
   return (
@@ -31,7 +31,9 @@ export default Location = (props) => {
       </View>
 
       <View style={LocationStyle.searchPlc}>
-        <SearchPlaces />
+        <SearchPlaces onLocationSelect={handleLocationSelect}/>
+
+
       </View>
       <TouchableOpacity style={LocationStyle.shapeIcon}>
         <Image source={IMAGES.Shape} style={LocationStyle.shapImg} />

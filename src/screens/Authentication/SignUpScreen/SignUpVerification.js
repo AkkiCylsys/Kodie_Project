@@ -16,6 +16,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import axios from "axios";
 import { Config } from "../../../Config";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
 import {
   CodeField,
   Cursor,
@@ -35,6 +36,7 @@ export default SignUpVerification = (props) => {
     value,
     setValue,
   });
+  const [isTimeron, setIsTimeron] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   let email = props?.route?.params?.email;
   console.log("email..........", email);
@@ -139,6 +141,36 @@ export default SignUpVerification = (props) => {
         >
           {"It may take a few minutes to receive your code. "}
         </Text>
+
+        {/* resend otp or timer buton code here................ */}
+        <View style={SignUpVerificationStyle.getBindButtonView}>
+          <View style={SignUpVerificationStyle.getButtonView}>
+            {isTimeron ? (
+              <CountdownCircleTimer
+                isPlaying
+                trailColor={_COLORS.Kodie_lightGreenColor}
+                duration={50}
+                size={50}
+                colors={_COLORS.Kodie_lightGreenColor}
+                onComplete={() => {
+                  setIsTimeron(false);
+                }}
+              >
+                {({ remainingTime }) => (
+                  <Text style={{ color: _COLORS.Kodie_WhiteColor }}>
+                    {remainingTime} S
+                  </Text>
+                )}
+              </CountdownCircleTimer>
+            ) : (
+              <TouchableOpacity>
+                <Text style={SignUpVerificationStyle.getButton}>
+                  {"Resend"}
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
 
         <View style={SignUpVerificationStyle.customBtn}>
           <CustomSingleButton

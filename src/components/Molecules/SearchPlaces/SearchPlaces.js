@@ -3,19 +3,17 @@ import { View, Text } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../Themes";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { SearchPlacesStyle } from "./SearchPlacesStyle";
-const SearchPlaces = () => {
-  const [selectedLocation, setSelectedLocation]=useState('')
-  const handleLocationSelect = (selectedLocation) => {
-    // Call the function to send the selected location to the parent component (MapScreen in this case)
-    props.onLocationSelect(selectedLocation);
-  };
+const SearchPlaces = (props) => {
+
   return (
     <View style={SearchPlacesStyle.container}>
       <GooglePlacesAutocomplete
         placeholder="Search"
+        debounce={400}
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
           console.log(data, details);
+          alert(data,details,"location....")
         }}
         query={{
           key: "AIzaSyDLWZtQIx0JsQciFm7VLzSKJOS_QqjJsoA",
