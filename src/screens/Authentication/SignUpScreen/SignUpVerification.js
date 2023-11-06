@@ -36,7 +36,8 @@ export default SignUpVerification = (props) => {
     value,
     setValue,
   });
-  const [isTimeron, setIsTimeron] = useState(true);
+  // const [isTimeron, setIsTimeron] = useState(true);
+  const [isTimerActive, setIsTimerActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   let email = props?.route?.params?.email;
   console.log("email..........", email);
@@ -75,6 +76,38 @@ export default SignUpVerification = (props) => {
       });
   };
 
+    //send_verification_code OTP  Api code here....
+    const send_verification_code = () => {
+      const url = Config.API_URL;
+      const verification_code_url = url + "user_reset_password_email_verify";
+      console.log("Request URL:", verification_code_url);
+      setIsLoading(true);
+      axios
+        .post(verification_code_url, {
+          email: email,
+          otp: value,
+        })
+        .then((response) => {
+          console.log("API Response send otp:", response.data);
+          if (response.data.status === true) {
+            alert("The otp has been sent to your email.");
+            setVerificationCode("");
+          } else {
+            alert(response.data.message);
+            setIsLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error("API failed", error);
+          setIsLoading(false);
+          // alert(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
+
+
   const handleverification_code = (text) => {
     setValue(text);
     if (text.trim() === "") {
@@ -82,6 +115,8 @@ export default SignUpVerification = (props) => {
     } else {
       setValueError("");
     }
+     // Reset the timer when the value changes
+  setIsTimerActive(true);
   };
   //.......... Handle button define here
   const handleSubmit = () => {
@@ -145,7 +180,7 @@ export default SignUpVerification = (props) => {
         {/* resend otp or timer buton code here................ */}
         <View style={SignUpVerificationStyle.getBindButtonView}>
           <View style={SignUpVerificationStyle.getButtonView}>
-            {isTimeron ? (
+            {isTimerActive ? (
               <CountdownCircleTimer
                 isPlaying
                 trailColor={_COLORS.Kodie_lightGreenColor}
@@ -153,7 +188,7 @@ export default SignUpVerification = (props) => {
                 size={50}
                 colors={_COLORS.Kodie_lightGreenColor}
                 onComplete={() => {
-                  setIsTimeron(false);
+                  setIsTimerActive(false);
                 }}
               >
                 {({ remainingTime }) => (
@@ -163,7 +198,10 @@ export default SignUpVerification = (props) => {
                 )}
               </CountdownCircleTimer>
             ) : (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => {
+                send_verification_code();
+                setIsTimerActive(true); // Start the timer again
+              }}>
                 <Text style={SignUpVerificationStyle.getButton}>
                   {"Resend"}
                 </Text>
