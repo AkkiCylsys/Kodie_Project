@@ -30,13 +30,14 @@ export default SignUp = (props) => {
   const [showPassword, setShowPassword] = useState(false);
   const [term, setTerm] = useState(false);
   const [privacy, setPrivacy] = useState(false);
+  const [signupResponse, setSignupResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const signUp_response = useSelector(
     (state) => state?.authenticationReducer?.data
   );
-  console.log("Login_response.....", signUp_response);
+  console.log("signup_response.....", signUp_response);
 
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -85,21 +86,26 @@ export default SignUp = (props) => {
     const signupUrl = url + "user_signup";
     console.log("Request URL:", signupUrl);
     setIsLoading(true);
+
     axios
       .post(signupUrl, SignUpData)
       .then((response) => {
-        console.log("SignUp responce", response.data);
-        // dispatch(fetchRegistrationSuccess(response.data));
+        setSignupResponse(response.data);
+        console.log("SignUp response", response.data);
         if (response.data.status === true) {
           alert(response.data.message);
-          props.navigation.navigate("SignUpVerification", {
-            email: email,
-          });
+          // Dispatch the action here if needed
+          // dispatch(fetchRegistrationSuccess(response.data));
           setEmail("");
           setPassword("");
           setTerm(false);
           setPrivacy(false);
           setIsLoading(false);
+
+          // Redirect to SignUpVerification screen
+          props.navigation.navigate("SignUpVerification", {
+            email: email,
+          });
         } else {
           setEmailError(response.data.message);
           setIsLoading(false);
@@ -111,6 +117,7 @@ export default SignUp = (props) => {
         setIsLoading(false);
       });
   };
+
 
   //....... handle signup button validation here
   const handleSubmit = () => {

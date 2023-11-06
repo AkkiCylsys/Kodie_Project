@@ -17,22 +17,16 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
-import Account from "../Account/Account";
-import ProgressBar from "react-native-progress/Bar";
-import AboutYou from "../AboutYou/AboutYou";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import FirstProperty from "../FirstProperty/FirstProperty";
 import { SignUpStepStyle } from "./SignUpStepsStyle";
 import { AccountStyle } from "../Account/AccountStyle";
 import { LABEL_STYLES, _COLORS, IMAGES } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
-// about you...
 import { AboutYouStyle } from "../AboutYou/AboutYouStyle";
 import ServicesBox from "../../../../components/Molecules/ServicesBox/ServicesBox";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
-// First property...
 import { FirstPropertyStyle } from "../FirstProperty/FirstPropertyStyle";
 import Octicons from "react-native-vector-icons/Octicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -42,36 +36,7 @@ import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-const List = [
-  {
-    id: "1",
-    list: "I have properties I would like to manage",
-  },
-  {
-    id: "2",
-    list: "I am looking for a property to rente",
-  },
-  {
-    id: "3",
-    list: "I would like to find contractors easily",
-  },
-  {
-    id: "4",
-    list: "I would like to offer my contracting services",
-  },
-  {
-    id: "5",
-    list: "I need a way to manage my rental documents",
-  },
-  {
-    id: "6",
-    list: "I would like to advertise my properties",
-  },
-  {
-    id: "7",
-    list: "I want to set notifications to remind me of key dates",
-  },
-];
+import RNFetchBlob from "rn-fetch-blob";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -122,7 +87,6 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
 };
 const SignUpSteps = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -133,50 +97,75 @@ const SignUpSteps = (props) => {
   const [lastNameError, setLastNameError] = useState("");
   const [mobileNumberError, setMobileNumberError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // about you
   const [isClick, setIsClick] = useState(null);
   const [selectManageProperty, setSelectManageProperty] = useState("");
-  const refRBSheet = useRef();
-  const initialSelectedServices = {
-    Tenant: false,
-    Landlord: false,
-    Contractor: false,
-    "Property Manager": false,
-  };
+  const [propertyLocation, setPropertyLocation] = useState("");
+  const [propertyDesc, setPropertyDesc] = useState("");
+  const [florSize, setFlorSize] = useState("");
+  const [selected, setSelected] = useState([]);
+  const [value, setValue] = useState(null);
+  const [bedroomValue, setbedroomValue] = useState([]);
+  const [garagesValue, setGaragesValue] = useState([]);
+  const [bathRoomValue, setBathRoomValue] = useState([]);
+  const [parkingValue, setParkingValue] = useState([]);
+  const [property_Data, setProperty_Data] = useState([]);
+  const [bedRoomData, setBedRoomData] = useState([]);
+  const [garagesData, setGaragesData] = useState([]);
+  const [bathroomData, setBathroomData] = useState([]);
+  const [parkingData, setParkingData] = useState([]);
+  const [kodiehelpData, setKodiehelpData] = useState([]);
+  const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
+    []
+  );
+  const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
+    useState("");
+  const [manage_property_Data, setmanage_property_Data] = useState([]);
+  const [property_value, setProperty_value] = useState([]);
+  const [ImageName, setImageName] = useState("");
+  const [imagePath, setImagePath] = useState("");
 
-  const [selectedServices, setSelectedServices] = useState(
-    initialSelectedServices
+  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButtonId, setSelectedButtonId] = useState(0);
+  const [kodiehelplookupid, setKodiehelplookupid] = useState(0);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const refRBSheet = useRef();
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedkey_features, setSelectedkey_features] = useState([]);
+  const [selectedLookupKeys, setSelectedLookupKeys] = useState([]); // State to store selected lookup keys
+
+  const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
+  const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
+    []
+  );
+  const [data_add, setData_add] = useState(
+    []
   );
 
-  const toggleService = (serviceName) => {
-    setSelectedServices((prevSelectedServices) => ({
-      ...prevSelectedServices,
-      [serviceName]: !prevSelectedServices[serviceName],
-    }));
-  };
+  const fs = RNFetchBlob.fs;
 
   const handleBoxPress = (lookupID) => {
     setIsClick(lookupID);
     setSelectManageProperty(lookupID);
   };
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const toggleCheckbox = (itemId) => {
-    const isSelected = selectedCheckboxes.includes(itemId);
-    if (isSelected) {
-      setSelectedCheckboxes(selectedCheckboxes.filter((id) => id !== itemId));
+  const toggleCheckbox = (lookupKey) => {
+    if (selectedLookupKeys.includes(lookupKey)) {
+      setSelectedLookupKeys(
+        selectedLookupKeys.filter((key) => key !== lookupKey)
+      );
     } else {
-      setSelectedCheckboxes([...selectedCheckboxes, itemId]);
+      setSelectedLookupKeys([...selectedLookupKeys, lookupKey]);
     }
   };
-  const wantList = ({ item, index }) => {
-    const isSelected = selectedCheckboxes.includes(item.id);
+  const wantList = ({ item }) => {
+    const isSelected = selectedLookupKeys.includes(item.lookup_key);
+
     return (
       <View>
         <View style={AboutYouStyle.want_List_View}>
           <TouchableOpacity
             onPress={() => {
-              // setCheck(item.id);
-              toggleCheckbox(item.id);
+              toggleCheckbox(item.lookup_key);
+              setKodiehelplookupid(item.lookup_key);
             }}
           >
             <View
@@ -199,46 +188,82 @@ const SignUpSteps = (props) => {
               ) : null}
             </View>
           </TouchableOpacity>
-          <Text style={AboutYouStyle.want_List_text}>{item.list}</Text>
+          <Text style={AboutYouStyle.want_List_text}>{item.description}</Text>
         </View>
       </View>
     );
   };
-  // First Property..
-  const [propertyLocation, setPropertyLocation] = useState("");
-  const [propertyDesc, setPropertyDesc] = useState("");
-  const [florSize, setFlorSize] = useState("");
-  const [selected, setSelected] = useState([]);
-  const [value, setValue] = useState(null);
-
-  const [bedroomValue, setbedroomValue] = useState([]);
-  const [garagesValue, setGaragesValue] = useState([]);
-  const [bathRoomValue, setBathRoomValue] = useState([]);
-  const [parkingValue, setParkingValue] = useState([]);
-  const [property_Data, setProperty_Data] = useState([]);
-  const [bedRoomData, setBedRoomData] = useState([]);
-  const [garagesData, setGaragesData] = useState([]);
-  const [bathroomData, setBathroomData] = useState([]);
-  const [parkingData, setParkingData] = useState([]);
-
-  const [manage_property_Data, setmanage_property_Data] = useState([]);
-  const [property_value, setProperty_value] = useState([]);
-  const [ImageName, setImageName] = useState("");
-  const [selectedButton, setSelectedButton] = useState(false);
-  const [selectedButtonId, setSelectedButtonId] = useState(0);
-
 
   const handleImageNameChange = (newImageName) => {
     setImageName(newImageName);
-    console.log("................ImageNAme", ImageName);
+
+    console.log("................ImageNAme", newImageName);
+
+    RNFetchBlob.fs
+      .readFile(newImageName, "base64")
+      .then((base64Data) => {
+        // Here's the base64 encoded image
+        setImagePath(base64Data);
+        console.log("imagepath....", base64Data);
+      })
+      .catch((error) => {
+        console.error("Error reading file:", error);
+      });
   };
-  const DATA = [
-    { label: "Pool", value: "1" },
-    { label: "Garden", value: "2" },
-    { label: "Furnished", value: "3" },
-    { label: "Flat", value: "4" },
-  ];
-  // manage property renderItem in about you page 
+
+  const DATA =
+    [
+      {
+        "label": "Pool",
+        "value": 1
+      },
+      {
+        "label": "Garage",
+        "value": 2
+      },
+      {
+        "label": "Balcony",
+        "value": 3
+      },
+      {
+        "label": "Outdoor Area",
+        "value": 4
+      },
+      {
+        "label": "Ensuit",
+        "value": 5
+      },
+      {
+        "label": "Dishwasher",
+        "value": 6
+      },
+      {
+        "label": "Study",
+        "value": 7
+      },
+      {
+        "label": "Built in Robes",
+        "value": 8
+      },
+      {
+        "label": "Air Conditioning",
+        "value": 9
+      },
+      {
+        "label": "Solar Panels",
+        "value": 10
+      },
+      {
+        "label": "Heating",
+        "value": 11
+      },
+      {
+        "label": "Hight Energy Efficiency",
+        "value": 12
+      }
+    ]
+    ;
+  // manage property renderItem in about you page
   const renderItem = ({ item }) => (
     <ServicesBox
       Services_Name={item?.description}
@@ -256,6 +281,45 @@ const SignUpSteps = (props) => {
       onPress={() => {
         handleBoxPress(item.lookup_key),
           setSelectManageProperty(item.lookup_key);
+      }}
+    />
+  );
+
+  const toggleSelection = (lookup_key) => {
+    if (selectedServices.includes(lookup_key)) {
+      setSelectedServices(
+        selectedServices.filter((item) => item !== lookup_key)
+      );
+    } else {
+      setSelectedServices([...selectedServices, lookup_key]);
+    }
+  };
+  const handle_key_feature = (lookup_key) => {
+    if (selectedkey_features.includes(lookup_key)) {
+      setSelectedkey_features(
+        selectedkey_features.filter((item) => item !== lookup_key)
+      );
+    } else {
+      setSelectedkey_features([...selectedkey_features, lookup_key]);
+    }
+  };
+
+  const renderItemDescribeYourself = ({ item }) => (
+    <ServicesBox
+      Services_Name={item?.description}
+      BoxStyling={[
+        AboutYouStyle.box_style,
+        {
+          margin: 4,
+          backgroundColor: selectedServices.includes(item.lookup_key)
+            ? _COLORS.Kodie_lightGreenColor
+            : _COLORS.Kodie_WhiteColor,
+        },
+      ]}
+      textColor={[AboutYouStyle.box_Text_Style]}
+      onPress={() => {
+        toggleSelection(item.lookup_key);
+        setKodieDescribeYourselfDataId(item.lookup_key);
       }}
     />
   );
@@ -333,9 +397,10 @@ const SignUpSteps = (props) => {
         console.log(
           selectedServices,
           firstName,
-          selectedCheckboxes,
+          // selectedCheckboxes,
           selectManageProperty,
-          keyFeatureData
+          selectedkey_features,
+          additionalfeatureskeyvalue
         );
       } else {
         null;
@@ -344,55 +409,13 @@ const SignUpSteps = (props) => {
   };
 
   const handleSaveSignup = () => {
-    // Account lookup key define here......
-    const serviceLookup = {
-      Tenant: 2,
-      Landlord: 3,
-      Contractor: 4,
-      "Property Manager": 10,
-    };
-
-    // properties question lookup key define here......
-    const kodieHelpLookup = {
-      1: 14,
-      2: 15,
-      3: 16,
-      4: 17,
-      5: 18,
-      6: 19,
-      7: 20,
-    };
-    // Initialize an array to store the selected service lookup keys........
-    const selectedServiceKeys = [];
-    // properties question empthy array define here......
-    const selectedKodieHelpKeys = [];
-
-    //Account an array to store the selected service lookup keys........
-    for (const serviceName in selectedServices) {
-      if (selectedServices[serviceName]) {
-        selectedServiceKeys.push(serviceLookup[serviceName]);
-      }
-    }
-
-    // properties question Loop through selected checkboxes  lookup keys to the array....
-    for (const itemId of selectedCheckboxes) {
-      const lookupKey = kodieHelpLookup[itemId];
-      if (lookupKey) {
-        selectedKodieHelpKeys.push(lookupKey);
-      }
-    }
-
-    // Create a comma-separated string of selected service lookup keys........
-    const describeYourselfValue =
-      selectedServiceKeys.length > 0 ? selectedServiceKeys.join(",") : "0";
-
-    // Create a comma-separated string of question selected kodie_help lookup keys
-    const kodieHelpValue =
-      selectedKodieHelpKeys.length > 0 ? selectedKodieHelpKeys.join(",") : "0";
+    const selectedServiceKeysString = selectedServices.join(",");
+    const kodieHelpValue = selectedLookupKeys.join(",");
+    const selectedKeyFeature = selectedkey_features.join(",");
 
     const accountDetailsData = {
       account_details: {
-        User_Key: "46",
+        user: "46",
         first_name: firstName,
         last_name: lastName,
         phone_number: mobileNumber,
@@ -400,7 +423,8 @@ const SignUpSteps = (props) => {
         organisation_name: organisation,
         referral_code: referral,
         profile_photo: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
-        describe_yourself: describeYourselfValue,
+        // profile_photo: imagePath,
+        describe_yourself: selectedServiceKeysString,
         kodie_help: kodieHelpValue,
         property_manage: selectManageProperty,
       },
@@ -411,8 +435,8 @@ const SignUpSteps = (props) => {
         islocation: "1",
         property_description: propertyDesc,
         property_type: property_value,
-        key_features: keyFeatureData,
-        additional_features: "4,5",
+        key_features: selectedKeyFeature,
+        additional_features: additionalfeatureskeyvalue,
       },
     };
     const url = Config.API_URL;
@@ -447,7 +471,7 @@ const SignUpSteps = (props) => {
         }
       })
       .catch((error) => {
-        console.error("Signup error:", error);
+        console.error("Account_Details error:", error);
         alert(error);
         setIsLoading(false);
       });
@@ -460,19 +484,11 @@ const SignUpSteps = (props) => {
     handle_Garages();
     handle_Bathroom();
     handle_parking();
+    handle_kodiehelp();
+    handle_describe_yourself();
+    additional_features();
+
   }, []);
-
-  const keyFeatureData =
-    bedroomValue +
-    ", " +
-    garagesValue +
-    ", " +
-    bathRoomValue +
-    ", " +
-    parkingValue +
-    ", " +
-    florSize;
-
   // property Type API with LookupKey...
   const handleProperty_Type = () => {
     const propertyData = {
@@ -656,11 +672,108 @@ const SignUpSteps = (props) => {
         setIsLoading(false);
       });
   };
+  const handle_kodiehelp = () => {
+    const kodiehelp_Data = {
+      P_PARENT_CODE: "KODIE_HELP",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const kodiehelpApi = url + "lookup_details";
+    console.log("Request URL:", kodiehelp_Data);
+    setIsLoading(true);
+    axios
+      .post(kodiehelpApi, kodiehelp_Data)
+      .then((response) => {
+        console.log("kodie_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("kodie_Data....", response.data.data);
+          setKodiehelpData(response.data.data);
+        } else {
+          console.error("kodie_Data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("kodie_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  const handle_describe_yourself = () => {
+    const describe_yourself_Data = {
+      P_PARENT_CODE: "TEN_DESC",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const describeYourselfApi = url + "lookup_details";
+    console.log("Request URL:", describeYourselfApi);
+    setIsLoading(true);
+    axios
+      .post(describeYourselfApi, describe_yourself_Data)
+      .then((response) => {
+        console.log("kodie_describeYouself_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("kodie_describeYouself_Data....", response.data.data);
+          setKodieDescribeYourselfData(response.data.data);
+        } else {
+          console.error(
+            "kodie_describeYouself_Data_error:",
+            response.data.error
+          );
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("kodie_describeYouself_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+
+  const additional_features = () => {
+    const url = Config.API_URL;
+    const additionalApi = url + "key_features";
+    console.log("Request URL:", additionalApi);
+    // const url = 'https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/key_features';
+    setIsLoading(true);
+    axios
+      .get(additionalApi) // Change from .post to .get
+      .then((response) => {
+        console.log("additional_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("additional_features....", response.data);
+          setAdditionalfeatureskey(response.data.PAF_KEY);
+          setData_add(response.data.PAF_KEY)
+          console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
+        } else {
+          console.error("additional_features_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("additional_features error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+
   const onStepPress = (position) => {
     setCurrentPage(position);
   };
   const renderLabel = ({ position, stepStatus }) => {
-    const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    const iconColor =
+      position === currentPage // Check if it's the current step
+        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+        : stepStatus === "finished"
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Account"
@@ -835,67 +948,12 @@ const SignUpSteps = (props) => {
                   "How would you describe yourself? (you can select multiple options)"
                 }
               </Text>
-              <View style={AboutYouStyle.servicesBoxView}>
-                <ServicesBox
-                  Services_Name={"Tenant"}
-                  BoxStyling={[
-                    AboutYouStyle.box_style,
-                    {
-                      backgroundColor: selectedServices["Tenant"]
-                        ? _COLORS.Kodie_lightGreenColor
-                        : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  textColor={[AboutYouStyle.box_Text_Style]}
-                  onPress={() => toggleService("Tenant")}
-                />
-
-                <View style={AboutYouStyle.spaceView} />
-                <ServicesBox
-                  Services_Name={"Landlord"}
-                  BoxStyling={[
-                    AboutYouStyle.box_style,
-                    {
-                      backgroundColor: selectedServices["Landlord"]
-                        ? _COLORS.Kodie_lightGreenColor
-                        : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  textColor={[AboutYouStyle.box_Text_Style]}
-                  onPress={() => toggleService("Landlord")}
-                />
-              </View>
-
-              <View style={AboutYouStyle.servicesBoxView}>
-                <ServicesBox
-                  Services_Name={"Contractor"}
-                  BoxStyling={[
-                    AboutYouStyle.box_style,
-                    {
-                      backgroundColor: selectedServices["Contractor"]
-                        ? _COLORS.Kodie_lightGreenColor
-                        : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  textColor={[AboutYouStyle.box_Text_Style]}
-                  onPress={() => toggleService("Contractor")}
-                />
-
-                <View style={AboutYouStyle.spaceView} />
-                <ServicesBox
-                  Services_Name={"Property Manager"}
-                  BoxStyling={[
-                    AboutYouStyle.box_style,
-                    {
-                      backgroundColor: selectedServices["Property Manager"]
-                        ? _COLORS.Kodie_lightGreenColor
-                        : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  textColor={[AboutYouStyle.box_Text_Style]}
-                  onPress={() => toggleService("Property Manager")}
-                />
-              </View>
+              <FlatList
+                data={kodieDescribeYourselfData}
+                renderItem={renderItemDescribeYourself}
+                keyExtractor={(item) => item.lookup_key.toString()}
+                numColumns={2}
+              />
               <Text style={AboutYouStyle.want_Heading}>
                 {" How many properties do you own, manage or rent?"}
               </Text>
@@ -903,79 +961,14 @@ const SignUpSteps = (props) => {
                 data={manage_property_Data}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.lookup_key.toString()}
-                numColumns={2} // Display two columns in each row
+                numColumns={2}
               />
-              {/* <View style={AboutYouStyle.servicesBoxView}>
-                <ServicesBox
-                  Services_Name={"1 - 3 properties"}
-                  BoxStyling={[
-                    AboutYouStyle.box_style,
-                    {
-                      backgroundColor:
-                        isClick === 1
-                          ? _COLORS.Kodie_lightGreenColor
-                          : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  textColor={[AboutYouStyle.box_Text_Style]}
-                  onPress={() => handleBoxPress(1)}
-                />
-
-                <View style={AboutYouStyle.spaceView} />
-                <ServicesBox
-                  Services_Name={"4 - 10 properties"}
-                  BoxStyling={[
-                    AboutYouStyle.box_style,
-                    {
-                      backgroundColor:
-                        isClick === 2
-                          ? _COLORS.Kodie_lightGreenColor
-                          : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  textColor={[AboutYouStyle.box_Text_Style]}
-                  onPress={() => handleBoxPress(2)}
-                />
-              </View>
-
-              <View style={AboutYouStyle.servicesBoxView}>
-                <ServicesBox
-                  Services_Name={"10 - 20 properties"}
-                  BoxStyling={[
-                    AboutYouStyle.box_style,
-                    {
-                      backgroundColor:
-                        isClick === 3
-                          ? _COLORS.Kodie_lightGreenColor
-                          : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  textColor={[AboutYouStyle.box_Text_Style]}
-                  onPress={() => handleBoxPress(3)}
-                />
-
-                <View style={AboutYouStyle.spaceView} />
-                <ServicesBox
-                  Services_Name={"> 20 properties"}
-                  BoxStyling={[
-                    AboutYouStyle.box_style,
-                    {
-                      backgroundColor:
-                        isClick === 4
-                          ? _COLORS.Kodie_lightGreenColor
-                          : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  textColor={[AboutYouStyle.box_Text_Style]}
-                  onPress={() => handleBoxPress(4)}
-                />
-              </View> */}
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
               </Text>
 
               <FlatList
-                data={List}
+                data={kodiehelpData}
                 scrollEnabled
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{}}
@@ -1009,7 +1002,6 @@ const SignUpSteps = (props) => {
       case 2:
         // return <FirstProperty />;
         return (
-          // <View style={FirstPropertyStyle.mainContainer}>
           <ScrollView>
             <View style={FirstPropertyStyle.headingView}>
               <Text style={FirstPropertyStyle.heading}>
@@ -1122,7 +1114,7 @@ const SignUpSteps = (props) => {
                       value={bedroomValue}
                       onChange={(item) => {
                         setbedroomValue(item.lookup_key);
-                        // alert(item.value);
+                        handle_key_feature(item.lookup_key);
                       }}
                     />
                   </View>
@@ -1150,7 +1142,7 @@ const SignUpSteps = (props) => {
                       value={garagesValue}
                       onChange={(item) => {
                         setGaragesValue(item.lookup_key);
-                        // alert(item.lookup_key);
+                        handle_key_feature(item.lookup_key);
                       }}
                     />
                   </View>
@@ -1180,6 +1172,7 @@ const SignUpSteps = (props) => {
                       value={bathRoomValue}
                       onChange={(item) => {
                         setBathRoomValue(item.lookup_key);
+                        handle_key_feature(item.lookup_key);
                       }}
                     />
                   </View>
@@ -1207,6 +1200,7 @@ const SignUpSteps = (props) => {
                       value={parkingValue}
                       onChange={(item) => {
                         setParkingValue(item.lookup_key);
+                        handle_key_feature(item.lookup_key);
                       }}
                     />
                   </View>
@@ -1244,11 +1238,12 @@ const SignUpSteps = (props) => {
                     labelField="label"
                     valueField="value"
                     placeholder="Search"
-                    value={selected}
+                    value={additionalfeatureskeyvalue}
                     search
                     searchPlaceholder="Search..."
                     onChange={(item) => {
-                      setSelected(item);
+                      setAdditionalFeaturesKeyValue(item);
+                      alert(item);
                     }}
                     renderRightIcon={() => (
                       <AntDesign
@@ -1272,6 +1267,45 @@ const SignUpSteps = (props) => {
                       </TouchableOpacity>
                     )}
                   />
+                  {/* <MultiSelect
+                    style={FirstPropertyStyle.dropdown}
+                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
+                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+                    iconStyle={FirstPropertyStyle.iconStyle}
+                    data={additionalfeatureskey}
+                    labelField="PAF_ADDITIONAL_FEATURES_NAME"
+                    valueField="PAF_KEY"
+                    placeholder="Search"
+                    value={additionalfeatureskeyvalue}
+                    search
+                    searchPlaceholder="Search..."
+                    onChange={(item) => {
+                      setAdditionalFeaturesKeyValue(item);
+                      alert(item);
+                    }}
+                    renderRightIcon={() => (
+                      <AntDesign
+                        style={FirstPropertyStyle.icon}
+                        color={_COLORS.Kodie_BlackColor}
+                        name="search1"
+                        size={20}
+                      />
+                    )}
+                    renderItem={renderDataItem}
+                    renderSelectedItem={(item, unSelect) => (
+                      <TouchableOpacity
+                        onPress={() => unSelect && unSelect(item)}
+                      >
+                        <View style={FirstPropertyStyle.selectedStyle}>
+                          <Text style={FirstPropertyStyle.textSelectedStyle}>
+                            {item.label}
+                          </Text>
+                          <AntDesign color="black" name="close" size={17} />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  /> */}
                 </View>
               </View>
 
@@ -1280,21 +1314,44 @@ const SignUpSteps = (props) => {
               </Text>
               <RowButtons
                 LeftButtonText={"Yes"}
-                leftButtonbackgroundColor={!selectedButton ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_MediumGrayColor}
-                LeftButtonTextColor={!selectedButton ? _COLORS.Kodie_MediumGrayColor : _COLORS.Kodie_BlackColor}
-                LeftButtonborderColor={!selectedButton ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor}
+                leftButtonbackgroundColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_MediumGrayColor
+                    : _COLORS.Kodie_BlackColor
+                }
+                LeftButtonborderColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
                 onPressLeftButton={() => {
-                  setSelectedButton(false)
-                  setSelectedButtonId(1)
-
+                  setSelectedButton(false);
+                  setSelectedButtonId(1);
                 }}
                 RightButtonText={"No"}
-                RightButtonbackgroundColor={selectedButton ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_MediumGrayColor}
-                RightButtonTextColor={selectedButton ? _COLORS.Kodie_MediumGrayColor : _COLORS.Kodie_BlackColor}
-                RightButtonborderColor={selectedButton ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor}
+                RightButtonbackgroundColor={
+                  selectedButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
                 onPressRightButton={() => {
-                  setSelectedButton(true)
-                  setSelectedButtonId(2)
+                  setSelectedButton(true);
+                  setSelectedButtonId(2);
                 }}
               />
             </View>
@@ -1312,19 +1369,12 @@ const SignUpSteps = (props) => {
         MiddleText={"Set up your Kodie account"}
         onPressLeftButton={() => _goBack(props)}
       />
-      {/* <ProgressBar
-        progress={0.4}
-        width={800}
-        height={5}
-        color={_COLORS.Kodie_lightGreenColor}
-        style={SignUpStepStyle.progresBar}
-      /> */}
       <View style={SignUpStepStyle.container}>
         <View style={SignUpStepStyle.stepIndicator}>
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={currentPage}
-            onPress={onStepPress}
+            // onPress={onStepPress}
             renderStepIndicator={renderStepIndicator}
             labels={labels}
             stepCount={3}

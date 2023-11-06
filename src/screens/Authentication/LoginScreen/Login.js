@@ -631,7 +631,7 @@ export default Login = (props) => {
               contentContainerStyle={{ marginBottom: 90 }}
               showsVerticalScrollIndicator={false}
             >
-              <View style={LoginStyles.inputContainer}>
+              {/* <View style={LoginStyles.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
                 <TextInput
                   style={[
@@ -670,7 +670,7 @@ export default Login = (props) => {
                 <Text style={LoginStyles.error_text}>
                   {verificationcodeError}
                 </Text>
-              ) : null}
+              ) : null} */}
               <View style={LoginStyles.inputContainer}>
                 <Text
                   style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}
