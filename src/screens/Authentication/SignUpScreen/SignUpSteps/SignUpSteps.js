@@ -1286,7 +1286,7 @@ const SignUpSteps = (props) => {
                 onPressLeftButton={() => {
                   setSelectedButton(false)
                   setSelectedButtonId(1)
-
+                  alert(selectedButtonId)
                 }}
                 RightButtonText={"No"}
                 RightButtonbackgroundColor={selectedButton ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_MediumGrayColor}
@@ -1294,7 +1294,8 @@ const SignUpSteps = (props) => {
                 RightButtonborderColor={selectedButton ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor}
                 onPressRightButton={() => {
                   setSelectedButton(true)
-                  setSelectedButtonId(2)
+                  setSelectedButtonId(0)
+                  alert(selectedButtonId)
                 }}
               />
             </View>
