@@ -212,7 +212,7 @@ export default Login = (props) => {
   };
 
   //... inner reset password submit button variable define here
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (email.trim() === "") {
       setEmailError("Email is required!");
     } else if (!validateEmail(email)) {
@@ -223,6 +223,7 @@ export default Login = (props) => {
       setPasswordError("Password is required.");
     } else {
       makeApiLogin();
+      // let response = await dispatch(fetchLoginSuccess(loginResponse));
     }
   };
 
@@ -278,7 +279,7 @@ export default Login = (props) => {
         setIsLoading(false);
       });
   };
-  
+
   //send_verification_code Api code here....
   const send_verification_code = () => {
     const url = Config.API_URL;

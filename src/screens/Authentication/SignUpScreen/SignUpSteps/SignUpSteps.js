@@ -529,12 +529,13 @@ const SignUpSteps = (props) => {
     formData.append("property_type", property_value);
     formData.append("key_features", selectedKeyFeature);
     formData.append("additional_features", additionalfeatureskeyvalue);
-    formData.append("auto_list", "1");
+    formData.append("auto_list", selectedButtonId);
   
     if (ImageName?.path) {
       const imageUri = ImageName.path;
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       const imageType = ImageName.mime || "image/jpeg";
+      console.log("imageType...",ImageName.mime)
   
       formData.append("profile_photo", {
         uri: imageUri,
@@ -1438,8 +1439,8 @@ const SignUpSteps = (props) => {
                 }
                 LeftButtonTextColor={
                   !selectedButton
-                    ? _COLORS.Kodie_MediumGrayColor
-                    : _COLORS.Kodie_BlackColor
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS. Kodie_MediumGrayColor
                 }
                 LeftButtonborderColor={
                   !selectedButton
@@ -1449,6 +1450,7 @@ const SignUpSteps = (props) => {
                 onPressLeftButton={() => {
                   setSelectedButton(false);
                   setSelectedButtonId(1);
+                  // alert(selectedButtonId)
                 }}
                 RightButtonText={"No"}
                 RightButtonbackgroundColor={
@@ -1469,6 +1471,8 @@ const SignUpSteps = (props) => {
                 onPressRightButton={() => {
                   setSelectedButton(true);
                   setSelectedButtonId(2);
+                  // alert(selectedButtonId)
+
                 }}
               />
             </View>

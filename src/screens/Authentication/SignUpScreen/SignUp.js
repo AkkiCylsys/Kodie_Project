@@ -105,6 +105,9 @@ export default SignUp = (props) => {
           // Redirect to SignUpVerification screen
           props.navigation.navigate("SignUpVerification", {
             email: email,
+            password: password,
+            is_term_condition: term,
+            is_privacy_policy: privacy,
           });
         } else {
           setEmailError(response.data.message);
@@ -117,7 +120,6 @@ export default SignUp = (props) => {
         setIsLoading(false);
       });
   };
-
 
   //....... handle signup button validation here
   const handleSubmit = () => {

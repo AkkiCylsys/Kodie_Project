@@ -40,6 +40,9 @@ export default SignUpVerification = (props) => {
   const [isTimerActive, setIsTimerActive] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   let email = props?.route?.params?.email;
+  let password = props?.route?.params?.password;
+  let is_term_condition = props?.route?.params?.is_term_condition;
+  let is_privacy_policy = props?.route?.params?.is_privacy_policy;
   console.log("email..........", email);
   //.......... input box validation define here
 
@@ -79,18 +82,21 @@ export default SignUpVerification = (props) => {
   // send_verification_code OTP  Api code here....
   const send_verification_code = () => {
     const url = Config.API_URL;
-    const verification_code_url = url + "user_reset_password_email_verify";
-    console.log("Request URL:", verification_code_url);
+    const sennd_verification_code_url = url + "user_signup";
+    console.log("Request URL:", sennd_verification_code_url);
     setIsLoading(true);
     axios
-      .post(verification_code_url, {
+      .post(sennd_verification_code_url, {
         email: email,
-        otp: value,
+        password: password,
+        is_term_condition: is_term_condition,
+        is_privacy_policy: is_privacy_policy,
+        // otp: value,
       })
       .then((response) => {
         console.log("API Response send otp:", response.data);
         if (response.data.status === true) {
-          alert("The otp has been sent to your email.");
+          alert(response.data.message);
           setVerificationCode("");
         } else {
           alert(response.data.message);
