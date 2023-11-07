@@ -196,7 +196,7 @@ const SignUpSteps = (props) => {
     setImageName(newImageName);
 
     console.log("................ImageNAme", newImageName);
-    console.log("................ImageNAme", newImageName.path);
+    console.log("................ImageNAmepath", newImageName.path);
 
     // RNFetchBlob.fs
     //   .readFile(newImageName, "base64")
@@ -504,12 +504,12 @@ const SignUpSteps = (props) => {
   //     setIsLoading(false);
   //   }
   // };
-  
-  const handleSaveSignup = async () => {
+
+  const handleSaveSignup = async (imageUri) => {
     const selectedServiceKeysString = selectedServices.join(",");
     const kodieHelpValue = selectedLookupKeys.join(",");
     const selectedKeyFeature = selectedkey_features.join(",");
-  
+
     const formData = new FormData();
     formData.append("user", "46");
     formData.append("first_name", firstName);
@@ -530,33 +530,44 @@ const SignUpSteps = (props) => {
     formData.append("key_features", selectedKeyFeature);
     formData.append("additional_features", additionalfeatureskeyvalue);
     formData.append("auto_list", "1");
-  
-    if (ImageName?.path) {
-      const imageUri = ImageName.path;
+
+    if (ImageName) {
+      const imageUri = ImageName;
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      const imageType = ImageName.mime || "image/jpeg";
-  
+      // const imageType = ImageName.mime || "image/jpeg";
+
       formData.append("profile_photo", {
         uri: imageUri,
-        type: imageType,
+        // type: imageType,
         name: imageName,
       });
     }
-  
+    // if (ImageName?.path) {
+    //   const imageUri = ImageName.path;
+    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   const imageType = ImageName.mime || "image/jpeg";
+
+    //   formData.append("profile_photo", {
+    //     uri: imageUri,
+    //     type: imageType,
+    //     name: imageName,
+    //   });
+    // }
+
     const url = Config.API_URL;
     const saveAccountDetails = url + "user_save_signup_account_details";
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
-  
+
     try {
       const response = await axios.post(saveAccountDetails, formData, {
         headers: {
           "content-type": "multipart/form-data",
         },
       });
-  
+
       console.log("Save Account Details", response.data);
-  
+
       if (response.data.status === true) {
         setIsLoading(false);
         alert(response.data.message);
@@ -584,7 +595,6 @@ const SignUpSteps = (props) => {
       setIsLoading(false);
     }
   };
-  
 
   useEffect(() => {
     handleProperty_Type();
@@ -1050,7 +1060,7 @@ const SignUpSteps = (props) => {
               >
                 {ImageName ? (
                   <Image
-                    source={{ uri: ImageName.path }}
+                    source={{ uri: ImageName.path || ImageName }}
                     style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
                   />
                 ) : (
