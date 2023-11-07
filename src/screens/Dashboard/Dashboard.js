@@ -81,7 +81,6 @@ export default Dashboard = (props) => {
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
 
-
   const Income_render = ({ item, index }) => {
     return (
       <>
@@ -125,7 +124,7 @@ export default Dashboard = (props) => {
     );
   };
   return (
-    <View style={DashboardStyle.mainContainer} >
+    <View style={DashboardStyle.mainContainer}>
       <TopHeader
         isMiddleImage={true}
         IsNotification={true}
@@ -141,7 +140,7 @@ export default Dashboard = (props) => {
       >
         <DeshboardNotice />
 
-        <Text style={DashboardStyle.Name_Text}>{"Hii Jason!"}</Text>
+        <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text>
         <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
         <View
           style={{
@@ -261,7 +260,7 @@ export default Dashboard = (props) => {
         </Card>
 
         <View>
-          <CircleProgress  />
+          <CircleProgress />
         </View>
 
         <FlatList
@@ -393,16 +392,15 @@ export default Dashboard = (props) => {
         closeOnPressMask={false}
         customStyles={{
           wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: DashboardStyle.bottomModal_container,
         }}
- 
       >
-        <SelectDate  />
+        <SelectDate />
       </RBSheet>
     </View>
   );
