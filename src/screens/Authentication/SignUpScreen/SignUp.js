@@ -92,7 +92,7 @@ export default SignUp = (props) => {
       .then((response) => {
         setSignupResponse(response.data);
         console.log("SignUp response", response.data);
-        if (response.data.status === true) {
+        if (response.data.message === "User Signup Successful") {
           alert(response.data.message);
           // Dispatch the action here if needed
           // dispatch(fetchRegistrationSuccess(response.data));
@@ -101,8 +101,22 @@ export default SignUp = (props) => {
           setTerm(false);
           setPrivacy(false);
           setIsLoading(false);
-
           // Redirect to SignUpVerification screen
+          props.navigation.navigate("SignUpVerification", {
+            email: email,
+            password: password,
+            is_term_condition: term,
+            is_privacy_policy: privacy,
+          });
+        } else if (
+          response.data.message === "User Already Exists But Not Verified"
+        ) {
+          alert(response.data.message);
+          setEmail("");
+          setPassword("");
+          setTerm(false);
+          setPrivacy(false);
+          setIsLoading(false);
           props.navigation.navigate("SignUpVerification", {
             email: email,
             password: password,
