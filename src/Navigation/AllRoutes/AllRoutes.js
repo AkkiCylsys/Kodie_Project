@@ -104,7 +104,7 @@ import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJob
 import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
 import EditDashboard from "../../screens/Dashboard/EditDashboard";
 import RantalOffer from "../../screens/Landlord/PropertyList/RentalOffer/RantalOffer";
-
+import AddPropertyMainPage from "../../screens/Landlord/AddNewProperty/AddPropertyMainPage";
 // import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 // import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
 // import Contractors1 from "../../screens/Managingcontractors/Contractors1";
@@ -565,8 +565,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"PropertyDetails"}
-          component={PropertyDetails}
+          name={"AddPropertyMainPage"}
+          component={AddPropertyMainPage}
           options={{ headerShown: false }}
         />
         <Stack.Screen

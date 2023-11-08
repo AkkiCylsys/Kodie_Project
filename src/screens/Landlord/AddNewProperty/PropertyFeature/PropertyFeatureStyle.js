@@ -92,7 +92,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -127,7 +127,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    backgroundColor:_COLORS.Kodie_BlackColor,
+    backgroundColor: _COLORS.Kodie_BlackColor,
     shadowColor: "#000",
     marginTop: 8,
     marginRight: 12,
@@ -147,7 +147,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
   textSelectedStyle: {
     marginRight: 5,
     fontSize: 14,
-    color:_COLORS.Kodie_WhiteColor
+    color: _COLORS.Kodie_WhiteColor,
   },
   additional_key_view: {
     marginTop: 15,

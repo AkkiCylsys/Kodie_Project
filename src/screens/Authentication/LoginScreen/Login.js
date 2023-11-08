@@ -788,10 +788,10 @@ export default Login = (props) => {
                 isClick
                   ? Platform.OS === "android"
                     ? "1%"
-                    : "50%"
+                    : "1%"
                   : Platform.OS === "android"
                   ? "20%"
-                  : "80%"
+                  : "60%"
               }
             />
           </View>

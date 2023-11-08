@@ -274,8 +274,8 @@ const SignUpSteps = (props) => {
   const toggleSelection = (lookup_key) => {
     if (selectedServices.includes(lookup_key)) {
       setSelectedServices(
-        selectedServices.filter((item) => item !== lookup_key),
-        alert(selectedServices.filter((item) => item !== lookup_key))
+        selectedServices.filter((item) => item !== lookup_key)
+        // alert(selectedServices.filter((item) => item !== lookup_key))
       );
     } else {
       setSelectedServices([...selectedServices, lookup_key]);
@@ -375,11 +375,11 @@ const SignUpSteps = (props) => {
     } else if (mobileNumber.trim() === "") {
       setMobileNumberError("Phone number is required.");
     } else {
-      if (currentPage === 0) {
+      if (currentPage == 0) {
         setCurrentPage(currentPage + 1);
-      } else if (currentPage === 1) {
+      } else if (currentPage == 1) {
         setCurrentPage(currentPage + 1);
-      } else if (currentPage === 2) {
+      } else if (currentPage == 2) {
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
         console.log(
