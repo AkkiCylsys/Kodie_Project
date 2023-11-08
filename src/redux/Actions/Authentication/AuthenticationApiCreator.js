@@ -6,25 +6,24 @@ import {
   fetchSendOtp, fetchSendOtpSuccess,
   fetchSendOtpError, fetchVerifyOtp,
   fetchVerifyOtpSuccess, fetchVerifyOtpError,
-  fetchLogout,fetchSavePassword,
-  fetchSavePasswordSuccess,fetchSavePasswordError
+  fetchLogout, fetchSavePassword,
+  fetchSavePasswordSuccess, fetchSavePasswordError
 } from './AuthenticationApiAction';
-import { Config } from './../../../Config/index'
+// import { Config } from './../../../Config/index'
+import { Config } from '../../../Config';
 
-const url = Config.DEV_API_URL;
+const url = Config.API_URL;
 
 export const loginApiActionCreator = (data) => async dispatch => {
- //alert(url)
+  //alert(url)
   dispatch(fetchLoginData());
   try {
     //const res = await axios.get(url + loginParameters)
-    const res =  await axios.post(url+'AuthenticationWebApi/dologin', data,{
+    const res = await axios.post(url + 'user_login', data, {
       "headers": {
-          "Content-Type": "application/json",
-          },
+        "Content-Type": "application/json",
+      },
     })
-
-
     dispatch(fetchLoginSuccess(res));
     return res;
   }
@@ -44,19 +43,18 @@ export const logoutActionCreator = () => async dispatch => {
 }
 
 
-export const RegisterAsAgent = async(data) => {
+export const RegisterAsAgent = async (data) => {
   // dispatch(fetchLoginData());
-   try {
-     const res =  await axios.post(url+'AgentRequest/AddEditAgentRequest', data,{
-       "headers": {
-           "Content-Type": "application/json",
-           },
-     })
-     return res;
-   }
-   catch (error) {
-     console.log(error);
-   }
- 
- }
- 
+  try {
+    const res = await axios.post(url + 'AgentRequest/AddEditAgentRequest', data, {
+      "headers": {
+        "Content-Type": "application/json",
+      },
+    })
+    return res;
+  }
+  catch (error) {
+    console.log(error);
+  }
+
+}
