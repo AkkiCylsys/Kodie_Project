@@ -61,10 +61,12 @@ const firstIndicatorSignUpStepStyle = {
 
 const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   const iconConfig = {
-    name: "feed",
+    name: "stepbackward",
+    // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
     color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
-    size: 25,
+    size: 20,
   };
+
   switch (position) {
     case 0: {
       iconConfig.name = stepStatus === "finished" ? "check" : null;
@@ -138,7 +140,6 @@ const SignUpSteps = (props) => {
     []
   );
   const [data_add, setData_add] = useState([]);
-
   const fs = RNFetchBlob.fs;
 
   const handleBoxPress = (lookupID) => {
@@ -194,20 +195,8 @@ const SignUpSteps = (props) => {
 
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
-
     console.log("................ImageNAme", newImageName);
-    console.log("................ImageNAmepath", newImageName.path);
-
-    // RNFetchBlob.fs
-    //   .readFile(newImageName, "base64")
-    //   .then((base64Data) => {
-    //     // Here's the base64 encoded image
-    //     setImagePath(base64Data);
-    //     console.log("imagepath....", base64Data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error reading file:", error);
-    //   });
+    console.log("................ImageNAme", newImageName.path);
   };
 
   const DATA = [
@@ -285,7 +274,8 @@ const SignUpSteps = (props) => {
   const toggleSelection = (lookup_key) => {
     if (selectedServices.includes(lookup_key)) {
       setSelectedServices(
-        selectedServices.filter((item) => item !== lookup_key)
+        selectedServices.filter((item) => item !== lookup_key),
+        alert(selectedServices.filter((item) => item !== lookup_key))
       );
     } else {
       setSelectedServices([...selectedServices, lookup_key]);
@@ -317,6 +307,7 @@ const SignUpSteps = (props) => {
       onPress={() => {
         toggleSelection(item.lookup_key);
         setKodieDescribeYourselfDataId(item.lookup_key);
+        // alert(item.lookup_key);
       }}
     />
   );
@@ -529,12 +520,18 @@ const SignUpSteps = (props) => {
     formData.append("property_type", property_value);
     formData.append("key_features", selectedKeyFeature);
     formData.append("additional_features", additionalfeatureskeyvalue);
-    formData.append("auto_list", "1");
+    formData.append("auto_list", selectedButtonId);
 
     if (ImageName) {
       const imageUri = ImageName;
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       // const imageType = ImageName.mime || "image/jpeg";
+
+      // if (ImageName?.path) {
+      //   const imageUri = ImageName.path;
+      //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      //   const imageType = ImageName.mime || "image/jpeg";
+      //   console.log("imageType...", ImageName.mime);
 
       formData.append("profile_photo", {
         uri: imageUri,
@@ -542,17 +539,6 @@ const SignUpSteps = (props) => {
         name: imageName,
       });
     }
-    // if (ImageName?.path) {
-    //   const imageUri = ImageName.path;
-    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-    //   const imageType = ImageName.mime || "image/jpeg";
-
-    //   formData.append("profile_photo", {
-    //     uri: imageUri,
-    //     type: imageType,
-    //     name: imageName,
-    //   });
-    // }
 
     const url = Config.API_URL;
     const saveAccountDetails = url + "user_save_signup_account_details";
@@ -571,7 +557,7 @@ const SignUpSteps = (props) => {
       if (response.data.status === true) {
         setIsLoading(false);
         alert(response.data.message);
-        props.navigation.navigate("LoginScreen");
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
         setCurrentPage(0);
         setFirstName("");
         setLastName("");
@@ -1081,15 +1067,21 @@ const SignUpSteps = (props) => {
                 keyExtractor={(item) => item.lookup_key.toString()}
                 numColumns={2}
               />
-              <Text style={AboutYouStyle.want_Heading}>
-                {" How many properties do you own, manage or rent?"}
-              </Text>
-              <FlatList
-                data={manage_property_Data}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.lookup_key.toString()}
-                numColumns={2}
-              />
+              {kodieDescribeYourselfId === 2 ||
+              kodieDescribeYourselfId === 4 ? null : (
+                <View>
+                  <Text style={AboutYouStyle.want_Heading}>
+                    {"How many properties do you own, manage or rent?"}
+                  </Text>
+                  <FlatList
+                    data={manage_property_Data}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.lookup_key.toString()}
+                    numColumns={2}
+                  />
+                </View>
+              )}
+
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
               </Text>
@@ -1448,8 +1440,8 @@ const SignUpSteps = (props) => {
                 }
                 LeftButtonTextColor={
                   !selectedButton
-                    ? _COLORS.Kodie_MediumGrayColor
-                    : _COLORS.Kodie_BlackColor
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
                 }
                 LeftButtonborderColor={
                   !selectedButton
@@ -1459,6 +1451,7 @@ const SignUpSteps = (props) => {
                 onPressLeftButton={() => {
                   setSelectedButton(false);
                   setSelectedButtonId(1);
+                  // alert(selectedButtonId)
                 }}
                 RightButtonText={"No"}
                 RightButtonbackgroundColor={
@@ -1479,6 +1472,7 @@ const SignUpSteps = (props) => {
                 onPressRightButton={() => {
                   setSelectedButton(true);
                   setSelectedButtonId(2);
+                  // alert(selectedButtonId)
                 }}
               />
             </View>
