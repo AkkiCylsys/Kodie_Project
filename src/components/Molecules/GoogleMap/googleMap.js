@@ -18,8 +18,8 @@ const MapScreen = (props) => {
       style={props?.style ? props?.style : GoogleMapStyle.MapView}
       showsUserLocation={true}
       initialRegion={{
-        latitude: props?.Maplat ? parseFloat(props?.Maplat) : 37.785834,
-        longitude: props?.Maplng ? parseFloat(props?.Maplng) : -122.406417,
+        latitude: props?.Maplat ? parseFloat(props?.Maplat) :22.924898263688327,
+        longitude: props?.Maplng ? parseFloat(props?.Maplng) : 78.77681708434507,
         latitudeDelta: 0.02,
         longitudeDelta: 0.02,
       }}
