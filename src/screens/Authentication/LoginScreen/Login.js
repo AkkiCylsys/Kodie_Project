@@ -295,6 +295,7 @@ export default Login = (props) => {
         if (response.data.status === true) {
           alert("The otp has been sent to your email.");
           if (isClick === 1) {
+            setIsTimeron(true);
             setIsClick(1);
             setVerificationcode("");
           } else {

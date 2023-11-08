@@ -37,6 +37,7 @@ import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
+import { useScrollToTop } from "@react-navigation/native";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -88,6 +89,9 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   return iconConfig;
 };
 const SignUpSteps = (props) => {
+  const ref = React.useRef(null);
+
+  const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -139,6 +143,7 @@ const SignUpSteps = (props) => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
+  const [describeBtn, setDescribeBtn] = useState([]);
   const [data_add, setData_add] = useState([]);
   const fs = RNFetchBlob.fs;
 
@@ -274,13 +279,15 @@ const SignUpSteps = (props) => {
   const toggleSelection = (lookup_key) => {
     if (selectedServices.includes(lookup_key)) {
       setSelectedServices(
-        selectedServices.filter((item) => item !== lookup_key),
-        alert(selectedServices.filter((item) => item !== lookup_key))
+        selectedServices.filter((item) => item !== lookup_key)
+        // alert(selectedServices.filter((item) => item !== lookup_key))
       );
     } else {
       setSelectedServices([...selectedServices, lookup_key]);
+      // alert([...selectedServices]);
     }
   };
+
   const handle_key_feature = (lookup_key) => {
     if (selectedkey_features.includes(lookup_key)) {
       setSelectedkey_features(
@@ -307,7 +314,7 @@ const SignUpSteps = (props) => {
       onPress={() => {
         toggleSelection(item.lookup_key);
         setKodieDescribeYourselfDataId(item.lookup_key);
-        // alert(item.lookup_key);
+        alert(item.lookup_key);
       }}
     />
   );
@@ -368,6 +375,7 @@ const SignUpSteps = (props) => {
     setMobileNumber(text);
   };
   const handleNextBtn = () => {
+    scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
     if (firstName.trim() === "") {
       setFirstNameError("First name is required.");
     } else if (lastName.trim() === "") {
@@ -377,9 +385,12 @@ const SignUpSteps = (props) => {
     } else {
       if (currentPage === 0) {
         setCurrentPage(currentPage + 1);
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
       } else if (currentPage === 1) {
         setCurrentPage(currentPage + 1);
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
       } else if (currentPage === 2) {
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
         console.log(
@@ -397,6 +408,7 @@ const SignUpSteps = (props) => {
   };
 
   const handleSaveSignup = async () => {
+    alert(selectedServices);
     const selectedServiceKeysString = selectedServices.join(",");
     const kodieHelpValue = selectedLookupKeys.join(",");
     const selectedKeyFeature = selectedkey_features.join(",");
@@ -478,6 +490,7 @@ const SignUpSteps = (props) => {
   };
 
   useEffect(() => {
+    scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
     handleProperty_Type();
     handle_manage_property();
     handle_bedRoom();
@@ -824,7 +837,7 @@ const SignUpSteps = (props) => {
       case 0:
         // return <Account />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={AccountStyle.headingView}>
               <Text style={AccountStyle.heading}>
                 {"Introduce yourself to Kodie"}
@@ -927,7 +940,7 @@ const SignUpSteps = (props) => {
       case 1:
         // return <AboutYou />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={AboutYouStyle.Container}>
               <Text style={AboutYouStyle.heading_Text}>
                 {"Tell us more about you"}
@@ -961,7 +974,7 @@ const SignUpSteps = (props) => {
                 renderItem={renderItemDescribeYourself}
                 keyExtractor={(item) => item.lookup_key.toString()}
                 numColumns={2}
-              />            
+              />
               {kodieDescribeYourselfId === 2 ||
               kodieDescribeYourselfId === 4 ? null : (
                 <View>
@@ -976,6 +989,17 @@ const SignUpSteps = (props) => {
                   />
                 </View>
               )}
+              {/* <View>
+                <Text style={AboutYouStyle.want_Heading}>
+                  {"How many properties do you own, manage or rent?"}
+                </Text>
+                <FlatList
+                  data={manage_property_Data}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.lookup_key.toString()}
+                  numColumns={2}
+                />
+              </View> */}
 
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
@@ -1016,7 +1040,7 @@ const SignUpSteps = (props) => {
       case 2:
         // return <FirstProperty />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={FirstPropertyStyle.headingView}>
               <Text style={FirstPropertyStyle.heading}>
                 {"Add your first property"}
