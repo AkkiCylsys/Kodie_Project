@@ -913,7 +913,7 @@ const SignUpSteps = (props) => {
                 </View>
               </View>
               <View style={AccountStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>
+                <Text style={[LABEL_STYLES._texinputLabel, { marginTop: 16 }]}>
                   Organisation name
                 </Text>
                 <TextInput
@@ -994,18 +994,6 @@ const SignUpSteps = (props) => {
                   />
                 </View>
               )}
-              {/* <View>
-                <Text style={AboutYouStyle.want_Heading}>
-                  {"How many properties do you own, manage or rent?"}
-                </Text>
-                <FlatList
-                  data={manage_property_Data}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.lookup_key.toString()}
-                  numColumns={2}
-                />
-              </View> */}
-
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
               </Text>
@@ -1132,6 +1120,7 @@ const SignUpSteps = (props) => {
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Key features</Text>
+
                 <View style={FirstPropertyStyle.key_feature_mainView}>
                   <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
@@ -1248,6 +1237,7 @@ const SignUpSteps = (props) => {
                     />
                   </View>
                 </View>
+
                 <View style={FirstPropertyStyle.key_feature_mainView}>
                   <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
@@ -1262,6 +1252,7 @@ const SignUpSteps = (props) => {
                     />
                   </View>
                 </View>
+
                 <View style={FirstPropertyStyle.inputContainer}>
                   <Text
                     style={[
@@ -1280,7 +1271,7 @@ const SignUpSteps = (props) => {
                     data={DATA}
                     labelField="label"
                     valueField="value"
-                    placeholder="Search"
+                    placeholder="Select additional features"
                     value={additionalfeatureskeyvalue}
                     search
                     searchPlaceholder="Search..."
@@ -1288,14 +1279,14 @@ const SignUpSteps = (props) => {
                       setAdditionalFeaturesKeyValue(item);
                       // alert(item);
                     }}
-                    renderRightIcon={() => (
-                      <AntDesign
-                        style={FirstPropertyStyle.icon}
-                        color={_COLORS.Kodie_BlackColor}
-                        name="search1"
-                        size={20}
-                      />
-                    )}
+                    // renderRightIcon={() => (
+                    //   <AntDesign
+                    //     style={FirstPropertyStyle.icon}
+                    //     color={_COLORS.Kodie_BlackColor}
+                    //     name="search1"
+                    //     size={20}
+                    //   />
+                    // )}
                     renderItem={renderDataItem}
                     renderSelectedItem={(item, unSelect) => (
                       <TouchableOpacity
@@ -1468,7 +1459,7 @@ const SignUpSteps = (props) => {
                       }
                     }}
                   />
-
+                  {/* 
                   <TouchableOpacity style={SignUpStepStyle.goBack_View}>
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
@@ -1478,11 +1469,14 @@ const SignUpSteps = (props) => {
                       />
                     </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </>
               ) : null}
-              {currentPage === 0 ? (
-                <TouchableOpacity style={SignUpStepStyle.goBack_View}>
+              {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
+                <TouchableOpacity
+                  style={SignUpStepStyle.goBack_View}
+                  onPress={goBack}
+                >
                   <View style={SignUpStepStyle.backIcon}>
                     <Ionicons
                       name="chevron-back"
