@@ -383,7 +383,7 @@ const SignUpSteps = (props) => {
     } else if (mobileNumber.trim() === "") {
       setMobileNumberError("Phone number is required.");
     } else {
-      if (currentPage === 0) {
+      if (currentPage == 0) {
         setCurrentPage(currentPage + 1);
         scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
       } else if (currentPage === 1) {
@@ -434,15 +434,20 @@ const SignUpSteps = (props) => {
     formData.append("additional_features", additionalfeatureskeyvalue);
     formData.append("auto_list", selectedButtonId);
 
-    if (ImageName?.path) {
-      const imageUri = ImageName.path;
+    if (ImageName) {
+      const imageUri = ImageName;
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      const imageType = ImageName.mime || "image/jpeg";
-      console.log("imageType...", ImageName.mime);
+      // const imageType = ImageName.mime || "image/jpeg";
+
+      // if (ImageName?.path) {
+      //   const imageUri = ImageName.path;
+      //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      //   const imageType = ImageName.mime || "image/jpeg";
+      //   console.log("imageType...", ImageName.mime);
 
       formData.append("profile_photo", {
         uri: imageUri,
-        type: imageType,
+        // type: imageType,
         name: imageName,
       });
     }
@@ -954,7 +959,7 @@ const SignUpSteps = (props) => {
               >
                 {ImageName ? (
                   <Image
-                    source={{ uri: ImageName.path }}
+                    source={{ uri: ImageName.path || ImageName }}
                     style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
                   />
                 ) : (

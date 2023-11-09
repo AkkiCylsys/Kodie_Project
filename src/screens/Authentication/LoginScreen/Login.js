@@ -181,14 +181,14 @@ export default Login = (props) => {
   };
 
   //... inner reset password password variable define here
-  const handlePasswordChange = (text) => {
-    setPassword(text);
-    if (text.trim() === "") {
-      setPasswordError("Password is required.");
-    } else {
-      setPasswordError("");
-    }
-  };
+  // const handlePasswordChange = (text) => {
+  //   setPassword(text);
+  //   if (text.trim() === "") {
+  //     setPasswordError("Password is required.");
+  //   } else {
+  //     setPasswordError("");
+  //   }
+  // };
 
   //... inner reset password new password variable define here
   const handleNewPassword = (text) => {
@@ -221,7 +221,7 @@ export default Login = (props) => {
         "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else if (password.trim() === "") {
-      setPasswordError("Password is required.");
+      // setPasswordError("Password is required.");
     } else {
       makeApiLogin();
       // alert("click")
@@ -321,6 +321,7 @@ export default Login = (props) => {
             setIsTimeron(true);
             setIsClick(1);
             setVerificationcode("");
+            setIsTimeron(true);
           } else {
             setIsClick(isClick + 1);
           }
@@ -441,10 +442,8 @@ export default Login = (props) => {
                   },
                 ]}
                 value={password}
-                onChangeText={handlePasswordChange}
-                onBlur={() => {
-                  handlePasswordChange(password);
-                }}
+                onChangeText={setPassword}
+                // onBlur={() => handlePasswordChange(password)}
                 placeholder="Enter password"
                 placeholderTextColor="#999"
                 secureTextEntry
@@ -815,10 +814,10 @@ export default Login = (props) => {
                 isClick
                   ? Platform.OS === "android"
                     ? "1%"
-                    : "50%"
+                    : "1%"
                   : Platform.OS === "android"
                   ? "20%"
-                  : "80%"
+                  : "60%"
               }
             />
           </View>

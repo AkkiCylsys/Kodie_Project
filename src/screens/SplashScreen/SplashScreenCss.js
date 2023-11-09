@@ -4,6 +4,7 @@ import {
   View,
   Image,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../Themes";
 export const SplashStyles = StyleSheet.create({
@@ -15,7 +16,7 @@ export const SplashStyles = StyleSheet.create({
     justifyContent: "center",
   },
   mainSmallIcon: {
-    height: 50,
+    height: Platform.OS == "android" ? 50 : 75,
     marginTop: 250,
     width: "90%",
     resizeMode: "center",

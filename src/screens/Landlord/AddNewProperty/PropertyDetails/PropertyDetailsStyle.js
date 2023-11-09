@@ -44,9 +44,9 @@ export const PropertyDetailsStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 6,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 2,
   },
   locationInput: {
     flex: 1,
@@ -79,7 +79,6 @@ export const PropertyDetailsStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -110,5 +109,4 @@ export const PropertyDetailsStyle = StyleSheet.create({
   btnView: {
     marginTop: 24,
   },
- 
 });
