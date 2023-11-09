@@ -181,14 +181,14 @@ export default Login = (props) => {
   };
 
   //... inner reset password password variable define here
-  // const handlePasswordChange = (text) => {
-  //   setPassword(text);
-  //   if (text.trim() === "") {
-  //     setPasswordError("Password is required.");
-  //   } else {
-  //     setPasswordError("");
-  //   }
-  // };
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    if (text.trim() === "") {
+      setPasswordError("Password is required.");
+    } else {
+      setPasswordError("");
+    }
+  };
 
   //... inner reset password new password variable define here
   const handleNewPassword = (text) => {
@@ -221,7 +221,7 @@ export default Login = (props) => {
         "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else if (password.trim() === "") {
-      // setPasswordError("Password is required.");
+      setPasswordError("Password is required.");
     } else {
       makeApiLogin();
       // alert("click")
@@ -443,7 +443,7 @@ export default Login = (props) => {
                 ]}
                 value={password}
                 onChangeText={setPassword}
-                // onBlur={() => handlePasswordChange(password)}
+                onBlur={() => handlePasswordChange(password)}
                 placeholder="Enter password"
                 placeholderTextColor="#999"
                 secureTextEntry

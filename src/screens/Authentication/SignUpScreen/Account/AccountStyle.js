@@ -40,7 +40,7 @@ export const AccountStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    width:'23%',
+    width:'21%',
     marginLeft:10,
     marginTop:8
   },

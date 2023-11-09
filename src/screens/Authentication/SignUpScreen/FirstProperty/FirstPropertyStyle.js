@@ -53,6 +53,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginLeft: 15,
   },
   dropdown: {
+    flex:1,
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
@@ -81,7 +82,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  key_feature_Dropdownstyle: { flex: 0.9, height: 40 },
+  key_feature_Dropdownstyle: { flex:0.9, height: 40, },
   key_feature_mainView: {
     flex: 1,
     flexDirection: "row",

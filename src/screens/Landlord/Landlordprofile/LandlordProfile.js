@@ -159,7 +159,7 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Dashboard");
+            props.navigation.navigate("LoginScreen");
           }}
         >
           <RowTab
