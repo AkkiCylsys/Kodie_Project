@@ -56,10 +56,10 @@ export default Login = (props) => {
   const [isTimeron, setIsTimeron] = useState(true);
   const [loginResponse, setLoginResponse] = useState(true);
 
-  const Login_response = useSelector(
-    (state) => state?.authenticationReducer?.data
-  );
-  console.log("Login_response.....", Login_response);
+  // const Login_response = useSelector(
+  //   (state) => state?.authenticationReducer?.data
+  // );
+  // console.log("Login_response.....", Login_response);
   const buttonLabels = [
     "Send verification code",
     "Next",
@@ -225,17 +225,19 @@ export default Login = (props) => {
     } else {
       // makeApiLogin();
       // alert("click")
-      setIsLoading(true)
+      setIsLoading(true);
       let data = {
         email: email,
         password: password,
-      }
-      setIsLoading(true)
-      let res = await dispatch(loginApiActionCreator(data))
-      console.log("res....", res)
+      };
+      setIsLoading(true);
+      let res = await dispatch(loginApiActionCreator(data));
+      alert(res.data.status);
+
+      console.log("res....", res);
       if (res.data.status === true) {
         alert("Login successful");
-        setIsLoading(false)
+        setIsLoading(false);
         props.navigation.navigate("DrawerNavigatorLeftMenu");
         setEmail("");
         setPassword("");
@@ -486,7 +488,10 @@ export default Login = (props) => {
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
-              onPress={() => props.navigation.navigate("ManageSubscription")}
+              onPress={() =>
+                // props.navigation.navigate("ManageSubscription")
+                props.navigation.navigate("DrawerNavigatorLeftMenu")
+              }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={"Login with Facebook"}
@@ -812,8 +817,8 @@ export default Login = (props) => {
                     ? "1%"
                     : "50%"
                   : Platform.OS === "android"
-                    ? "20%"
-                    : "80%"
+                  ? "20%"
+                  : "80%"
               }
             />
           </View>
