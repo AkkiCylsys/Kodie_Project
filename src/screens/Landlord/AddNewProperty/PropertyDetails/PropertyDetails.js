@@ -16,10 +16,10 @@ import { LABEL_STYLES } from "../../../../Themes";
 import { _COLORS, FONTFAMILY } from "../../../../Themes";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import CustomDropdown from "../../../../components/Molecules/CustomDropdown/CustomDropdown";
 import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import CustomSingleDropdown from "../../../../components/Molecules/CustomSingleDropdown/CustomSingleDropdown";
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },
@@ -40,20 +40,13 @@ export default PropertyDetails = (props) => {
   // add api state to here
   const [isLoading, setIsLoading] = useState(false);
   const [propertyTypeData, setPropertyTypeData] = useState([]);
-  const [property_value, setProperty_value] = useState([]);
-  const [selectedPropertyType, setSelectedPropertyType] = useState(null); // Store the selected property type
+  const [property_value, setProperty_value] = useState("");
   // handle property details api start to here
   const handlePropertyDetails = async () => {
-    if (!selectedPropertyType) {
-      // Ensure a property type is selected
-      alert("Please select a property type.");
-      return;
-    }
     property_details();
   };
 
   const property_details = () => {
- 
     const url = Config.API_URL;
     const additionalApi = url + "add_property_details";
     console.log("Request URL:", additionalApi);
@@ -64,8 +57,7 @@ export default PropertyDetails = (props) => {
         user_account_details_id: 82,
         islocation: 1,
         location: location,
-        // property_type: property_value,
-        property_type: selectedPropertyType,
+        property_type:property_value,
         property_description: propertyDesc,
         autolist: 1,
       })
@@ -75,7 +67,7 @@ export default PropertyDetails = (props) => {
           setIsLoading(false);
           props.navigation.navigate("PropertyFeature");
           console.log("property_details....", response.data);
-          console.log(location, propertyDesc, propertyTypeData);
+          console.log(location, propertyDesc, propertyTypeData, selectedOption);
         } else {
           console.error("property_details_error:", response.data.error);
           alert(response.data.error);
@@ -88,11 +80,9 @@ export default PropertyDetails = (props) => {
         setIsLoading(false);
       });
   };
-  
 
   // property Type API with LookupKey...
   const handleProperty_Type_Data = () => {
-
     const propertyData = {
       P_PARENT_CODE: "PROP_TYPE",
       P_TYPE: "OPTION",
@@ -111,7 +101,7 @@ export default PropertyDetails = (props) => {
             response.data.data.map((item) => item.description)
           );
           setProperty_value(response.data.data.map((item) => item.lookup_key));
-          setProperty_value("");
+          console.log(response.data.data.map((item) => item.lookup_key));
         } else {
           console.error("handleProperty_Type_Data_error:", response.data.error);
           alert(response.data.error);
@@ -126,11 +116,11 @@ export default PropertyDetails = (props) => {
   };
 
   useEffect(() => {
+   
     property_details();
     handleProperty_Type_Data();
+
   }, []);
-
-
 
   return (
     <View style={PropertyDetailsStyle.mainContainer}>
@@ -189,12 +179,18 @@ export default PropertyDetails = (props) => {
             <Text style={PropertyDetailsStyle.property_Text}>
               Property type
             </Text>
-            <CustomDropdown
+            <CustomSingleDropdown
               btnview={true}
               placeholdertext={"Apartment"}
               data={propertyTypeData}
-              onApply={(selectedOption) => setSelectedPropertyType(selectedOption)} // Capture the selected property type
+              value={property_value}
+              onChange={(item) => {
+                setProperty_value(item.lookup_key);
+                alert(item);
+                alert(`Selected lookup_key: ${item.lookup_key}`);
+              }}
             />
+           
           </View>
 
           <View style={PropertyDetailsStyle.inputContainer}>
@@ -229,9 +225,6 @@ export default PropertyDetails = (props) => {
             <CustomSingleButton
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
-              // onPress={() => {
-              //   props.navigation.navigate("PropertyFeature");
-              // }}
               onPress={handlePropertyDetails}
             />
           </View>
@@ -263,34 +256,3 @@ export default PropertyDetails = (props) => {
     </View>
   );
 };
-
-// property Type API with LookupKey...
-// const handleProperty_Type = () => {
-//   const propertyData = {
-//     P_PARENT_CODE: "PROP_TYPE",
-//     P_TYPE: "OPTION",
-//   };
-//   const url = Config.API_URL;
-//   const propertyType = url + "lookup_details";
-//   console.log("Request URL:", propertyType);
-//   setIsLoading(true);
-//   axios
-//     .post(propertyType, propertyData)
-//     .then((response) => {
-//       console.log("property_type", response.data);
-//       if (response.data.status === true) {
-//         setIsLoading(false);
-//         console.log("propertyData....", response.data.data);
-//         setProperty_Data(response.data.data);
-//       } else {
-//         console.error("property_type_error:", response.data.error);
-//         alert(response.data.error);
-//         setIsLoading(false);
-//       }
-//     })
-//     .catch((error) => {
-//       console.error("property_type error:", error);
-//       alert(error);
-//       setIsLoading(false);
-//     });
-// };
