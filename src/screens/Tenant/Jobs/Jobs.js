@@ -14,17 +14,22 @@ const Jobs = (props) => {
       case "Tab1":
         return <Repair />;
       case "Tab2":
-        return (
-          <View>
-            <Text>khgfdgfjhdfgsdhfgdf</Text>
-          </View>
-        );
+        // return (
+        //   <View >
+        //     <Text>khgfdgfjhdfgsdhfgdf</Text>
+
+        //   </View>
+
+        // );
+        return <CreateJobFirstScreen />;
+
       case "Tab3":
-        return (
-          <View>
-            <Text>khgfd gfjv fhfghhf ghfg hfghghfgh fhgh hdfgsdhfgdf</Text>
-          </View>
-        );
+        // return (
+        //   <View>
+        //     <Text>khgfd gfjv fhfghhf ghfg hfghghfgh fhgh hdfgsdhfgdf</Text>
+        //   </View>
+        // );
+        return <CreateJobFirstScreen />;
 
       default:
         return <Repair />;
@@ -33,7 +38,13 @@ const Jobs = (props) => {
 
   return (
     <View style={JobsCss.Container}>
-      <TopHeader onPressLeftButton={() => _goBack(props)} MiddleText={"Jobs"} />
+
+      {/* <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} /> */}
+
+      <TopHeader 
+      // onPressLeftButton={() => _goBack(props)} 
+      onPressLeftButton={() => props.navigation.navigate("Dashboard")}
+      MiddleText={"Jobs"} />
       <CustomTabNavigator
         activeTab={activeTab}
         setActiveTab={setActiveTab}

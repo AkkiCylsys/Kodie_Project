@@ -256,4 +256,5 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
+
 });

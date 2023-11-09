@@ -76,6 +76,7 @@ import AddNewNotice from "../../screens/NotiesList/AddNewNotice/AddNewNotice";
 import AccountStep from "../../screens/Authentication/SignUpScreen/OrganisationProfile/AccountStep";
 import Billinginformation from "../../screens/CreateJob/JobCompletion/Billinginformation";
 import GeneralSettings from "../../screens/Landlord/Landlordprofile/GeneralSettings/GeneralSettings";
+import GeneralSetting from "../../screens/Setting/Account/GeneralSetting";
 import ContractorDashboard from "../../screens/Dashboard/ContractorDashboard";
 import LinkedDevice from "../../screens/Authentication/LinkedDevice/LinkedDevice";
 import TwoStepVerification from "../../screens/Authentication/LinkedDevice/TwoStepVerification";
@@ -83,24 +84,40 @@ import Chats from "../../screens/ChatsScreens/Chats";
 import JobDetails from "../../screens/Tenant/Jobs/JobDetails/JobDetails";
 import StorageSettings from "../../screens/Authentication/StorageSettings/StorageSettings";
 import PaymentMethod from "../../screens/PaymentMethod/PaymentMethod";
+import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
+import SignUpSteps from "../../screens/Authentication/SignUpScreen/SignUpSteps/SignUpSteps";
 import Notices from "../../screens/NotiesList/Notices/Notices";
 import Reports from "../../screens/Reports/Reports";
 import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport";
 import Partners from "../../screens/Partners/Partners";
 import PropertyListings from "../../screens/PropertyListings/PropertyListings";
 import VacantPropertiesList from "../../screens/VacantProperties/VacantPropertiesList";
-import ScheduleMeeting from "../../screens/ChatsScreens/ScheduleMeeting/ScheduleMeeting";
+
 import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
-import Contractors1 from "../../screens/Managingcontractors/Contractors1";
+import Contractors1 from '../../screens/Managingcontractors/Contractors1';
 import Contractors2 from "../../screens/Managingcontractors/Contractors2";
 import Contractors3 from "../../screens/Managingcontractors/Contractors3";
-import Reviewjobdetails1 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails1";
-import Reviewjobdetails2 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails2";
-import Reviewjobdetails3 from "../../screens/CreateJob/Reviewjobdetails/Reviewjobdetails3";
-import CompletedJobs from "../../screens/CreateJob/Reviewjobdetails/CompletedJobs";
-import Ratingandfeedback from "../../screens/CreateJob/Reviewjobdetails/Ratingandfeedback";
+import Reviewjobdetails1 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails1";
+import Reviewjobdetails2 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails2";
+import Reviewjobdetails3 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails3";
+import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
+import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
 import EditDashboard from "../../screens/Dashboard/EditDashboard";
+import RantalOffer from "../../screens/Landlord/PropertyList/RentalOffer/RantalOffer";
+import AddPropertyMainPage from "../../screens/Landlord/AddNewProperty/AddPropertyMainPage";
+
+// import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
+// import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
+// import Contractors1 from "../../screens/Managingcontractors/Contractors1";
+// import Contractors2 from "../../screens/Managingcontractors/Contractors2";
+// import Contractors3 from "../../screens/Managingcontractors/Contractors3";
+// import Reviewjobdetails1 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails1";
+// import Reviewjobdetails2 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails2";
+// import Reviewjobdetails3 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails3";
+// import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
+// import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
+// import EditDashboard from "../../screens/Dashboard/EditDashboard";
 
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
@@ -110,7 +127,7 @@ const BottomNav = (props) => {
       screenOptions={{
         tabBarStyle: {
           backgroundColor: _COLORS.Kodie_WhiteColor,
-          height: 65,
+          height: Platform.OS == "android" ? 65 : 80,
         },
       }}
     >
@@ -237,7 +254,8 @@ const BottomNav = (props) => {
       />
       <Tab.Screen
         name="UserType"
-        component={UserType}
+        // component={UserType}
+        component={Chats}
         options={{
           tabBarShowLabel: false,
           headerShown: false,
@@ -315,7 +333,7 @@ const BottomNav = (props) => {
 };
 
 const Drawer = createDrawerNavigator();
-const DrawerNavigstorLeftMenu = (props) => {
+const DrawerNavigatorLeftMenu = (props) => {
   return (
     <Drawer.Navigator
       initialRouteName="Dashboard"
@@ -397,8 +415,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"DrawerNavigstorLeftMenu"}
-          component={DrawerNavigstorLeftMenu}
+          name={"DrawerNavigatorLeftMenu"}
+          component={DrawerNavigatorLeftMenu}
           options={{ headerShown: false }}
         />
 
@@ -539,8 +557,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"Account"}
-          component={Account}
+          name={"SignUpSteps"}
+          component={SignUpSteps}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -549,8 +567,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"PropertyDetails"}
-          component={PropertyDetails}
+          name={"AddPropertyMainPage"}
+          component={AddPropertyMainPage}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -724,18 +742,22 @@ const AllStackRouts = (props) => {
           component={GeneralSettings}
           options={{ headerShown: false }}
         />
-
+        <Stack.Screen
+          name={"GeneralSetting"}
+          component={GeneralSetting}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name={"Chats"}
           component={Chats}
           options={{ headerShown: false }}
         />
 
-        {/* <Stack.Screen
+        <Stack.Screen
           name={"ScheduleMeeting"}
           component={ScheduleMeeting}
           options={{ headerShown: false }}
-        /> */}
+        />
 
         <Stack.Screen
           name={"JobDetails"}
@@ -791,18 +813,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"TwoStepVerification4"}
-          component={TwoStepVerification4}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={"TwoStepVerification5"}
-          component={TwoStepVerification5}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name={"TwoStepVerification6"}
-          component={TwoStepVerification6}
+          name={"TwoStepVerification"}
+          component={TwoStepVerification}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -860,12 +872,26 @@ const AllStackRouts = (props) => {
           component={EditDashboard}
           options={{ headerShown: false }}
         />
-        
-        {/* <Stack.Screen
-          name={"TomProperty"}
-          component={TomProperty}
+        <Stack.Screen
+          name={"Account"}
+          component={Account}
           options={{ headerShown: false }}
-        /> */}
+        />
+        <Stack.Screen
+          name={"ContractorDashboard"}
+          component={ContractorDashboard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"LinkedDevice"}
+          component={LinkedDevice}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"RantalOffer"}
+          component={RantalOffer}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

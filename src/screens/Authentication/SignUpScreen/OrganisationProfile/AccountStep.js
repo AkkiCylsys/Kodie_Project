@@ -20,6 +20,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
+import { logos } from "../../../../Themes/CommonVectors/Images";
 const data = [
   { label: "Delhi", value: "1" },
   { label: "Mumbai", value: "2" },
@@ -29,6 +30,7 @@ const data = [
 ];
 const AccountStep = (props) => {
   const refRBSheet = useRef();
+  const refRBSheet2 = useRef();
   const [activeTab, setActiveTab] = useState("Tab1");
   const [value, setValue] = useState(null);
   const [visible, setVisible] = useState(false);
@@ -46,7 +48,7 @@ const AccountStep = (props) => {
         <View style={AccountStepStyle.maincontainer}>
           <View style={AccountStepStyle.topheading}>
             <Image
-              source={IMAGES.kodie_icon}
+              source={logos.mainLogo}
               resizeMode="contain"
               style={AccountStepStyle.mainimg}
             />
@@ -266,7 +268,7 @@ const AccountStep = (props) => {
               <TouchableOpacity
                 style={AccountStepStyle.textContainer}
                 onPress={() => {
-                  refRBSheet.current.open();
+                  refRBSheet2.current.open();
                 }}
               >
                 <View style={AccountStepStyle.bindfile}>
@@ -332,6 +334,26 @@ const AccountStep = (props) => {
             >
               <UploadImageData
                 heading_Text={"Upload  documents"}
+                onPress={toggleView}
+              />
+            </RBSheet>
+
+            {/* -----  edit docoment rb sheet here */}
+            <RBSheet
+              ref={refRBSheet2}
+              height={200}
+              customStyles={{
+                wrapper: {
+                  backgroundColor: "transparent",
+                },
+                draggableIcon: {
+                  backgroundColor: _COLORS.Kodie_LightGrayColor,
+                },
+                container: AccountStepStyle.bottomModal_container,
+              }}
+            >
+              <UploadImageData
+                heading_Text={"Edit  documents"}
                 onPress={toggleView}
               />
             </RBSheet>

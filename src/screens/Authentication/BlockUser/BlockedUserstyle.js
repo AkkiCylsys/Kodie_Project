@@ -152,5 +152,8 @@ export const BlockedUserstyle = StyleSheet.create({
     },
     addnewView: {
         flexDirection: 'row', justifyContent: 'space-between', height: 55, paddingHorizontal: 10
+    },
+    btnview:{
+        marginHorizontal:10
     }
 });

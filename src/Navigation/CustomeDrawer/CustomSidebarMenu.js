@@ -22,7 +22,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "RentalOffers":
         setselectedId("RentalOffers");
-        props.navigation.navigate("BlockedUser");
+        props.navigation.navigate("RantalOffer");
         break;
       case "vacantProperties":
         setselectedId("vacantProperties");
@@ -30,7 +30,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Inspection":
         setselectedId("Inspection");
-        props.navigation.navigate("AboutYou");
+        props.navigation.navigate("NewInspection");
         break;
       case "Tetants":
         setselectedId("Tetants");
@@ -38,15 +38,15 @@ const CustomSidebarMenu = (props) => {
         break;
       case "MaintenanceJobs":
         setselectedId("MaintenanceJobs");
-        props.navigation.navigate("Account");
+        props.navigation.navigate("Reviewjobdetails1");
         break;
       case "Contractors":
         setselectedId("Contractors");
-        props.navigation.navigate("SignUp");
+        props.navigation.navigate("Managingcontractors");
         break;
       case "Notices":
         setselectedId("Notices");
-        props.navigation.navigate("NoticeList");
+        props.navigation.navigate("Notices");
         break;
       case "Documents":
         setselectedId("Documents");
@@ -54,11 +54,15 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Reports":
         setselectedId("Reports");
-        props.navigation.navigate("TenantSignupScreen");
+        props.navigation.navigate("Reports");
         break;
       case "Partners":
         setselectedId("Partners");
         props.navigation.navigate("Partners");
+        break;
+      case "LogOut":
+        setselectedId("LogOut");
+        props.navigation.navigate("LoginScreen");
         break;
 
       default:
@@ -298,6 +302,25 @@ const CustomSidebarMenu = (props) => {
           <Text style={DrawerStyle.SubHeading}>{"Partners"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
+        {/* <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "LogOut"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("LogOut")}
+        >
+          <Image
+            source={IMAGES.Logout}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Log Out"}</Text>
+        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );

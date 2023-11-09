@@ -3,6 +3,7 @@ import { View, Text, Image, FlatList } from "react-native";
 import { BottomModalDataStyle } from "./BottomModalDataStyle";
 import { IMAGES, _COLORS } from "../../../Themes";
 import { TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 const data = [
   {
     id: "1",
@@ -31,10 +32,17 @@ const data = [
   },
 ];
 const BottomModalData = (props) => {
+  const navigation = useNavigation(); // Hook to get navigation
   const BottomData = ({ item, index }) => {
     return (
       <>
-        <TouchableOpacity style={BottomModalDataStyle.container} onPress={props.onPress}>
+        <TouchableOpacity
+          style={BottomModalDataStyle.container}
+          onPress={() => {
+            if (item.id === "1") {
+              navigation.navigate("ViewPropertyDetails");
+            }
+          }}>
           <Image source={item.Img} style={BottomModalDataStyle.Icons} />
           <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
         </TouchableOpacity>

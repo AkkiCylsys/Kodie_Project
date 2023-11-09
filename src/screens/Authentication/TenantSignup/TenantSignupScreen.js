@@ -104,16 +104,16 @@ export default TenantSignup = (props) => {
             Text_Color={_COLORS.Kodie_WhiteColor}
           />
         </View>
-        <View style={TenantStyle.goBack_View}>
-          <TouchableOpacity style={TenantStyle.backIcon}>
+        <TouchableOpacity style={TenantStyle.goBack_View}>
+          <View style={TenantStyle.backIcon}>
             <Ionicons
               name="chevron-back"
               size={22}
               color={_COLORS.Kodie_MediumGrayColor}
             />
-          </TouchableOpacity>
+          </View>
           <Text style={TenantStyle.goBack_Text}>{"Go back"}</Text>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );

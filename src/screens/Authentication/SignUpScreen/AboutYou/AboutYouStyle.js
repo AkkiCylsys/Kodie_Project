@@ -10,7 +10,7 @@ export const AboutYouStyle = StyleSheet.create({
     marginHorizontal: 16,
   },
   heading_Text: {
-    marginTop: 20,
+    // marginTop: 20,
     color: _COLORS.Kodie_BlackColor,
     fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
@@ -27,7 +27,8 @@ export const AboutYouStyle = StyleSheet.create({
   logo: {
     width: 110,
     height: 110,
-    resizeMode: "cover",
+    // resizeMode: "cover",
+    
   },
   personal_Text: {
     marginTop: 24,

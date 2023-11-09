@@ -6,6 +6,7 @@ import { IMAGES, _COLORS } from "../../../Themes/index";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import { _goBack } from "../../../services/CommonServices";
+import { useNavigation } from '@react-navigation/native';
 const feedbackData = [
   {
     id: "1",
@@ -29,6 +30,7 @@ const feedbackData = [
   },
 ];
 const Help_FeedBack = (props) => {
+  const navigation = useNavigation();
   const HelpFeedback_render = ({ item, index }) => {
     return (
       <>
@@ -38,7 +40,28 @@ const Help_FeedBack = (props) => {
 
             <Text style={Help_FeedBackCss.profile_Heading}>{item.Heading}</Text>
           </View>
-          <TouchableOpacity style={Help_FeedBackCss.ArrowIcon}>
+          <TouchableOpacity
+            style={Help_FeedBackCss.ArrowIcon}
+            onPress={() => {
+              if (item.id === "1") {
+                //---- Navigate to OtherScreen when Contact Us is clicked
+                navigation.navigate("OtherScreen");
+              }
+              if (item.id === "2") {
+                //---- Navigate to OtherScreen when Contact Us is clicked
+                navigation.navigate("Contactus");
+              }
+
+              if (item.id === "3") {
+                //---- Navigate to OtherScreen when Contact Us is clicked
+                navigation.navigate("OtherScreen");
+              }
+              if (item.id === "4") {
+                //----- Navigate to OtherScreen when AppInfo is clicked
+                navigation.navigate("AppInfo");
+              }
+            }}
+          >
             <Entypo
               name="chevron-small-right"
               size={23}

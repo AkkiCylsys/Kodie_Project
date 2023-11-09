@@ -9,7 +9,6 @@ const CustomDropdown = (props) => {
   const [show, setShow] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [appliedOptions, setAppliedOptions] = useState([]);
-
   // -----all data is show in the dropdown menu
   const data = props.data || [
     "All",
@@ -43,7 +42,8 @@ const CustomDropdown = (props) => {
     setAppliedOptions(selectedOptions);
     setShow(false);
     if (props.onApply) {
-        props.onApply(selectedOptions); // -------Callback to parent component
+      // -------Callback to parent component
+        props.onApply(selectedOptions); 
       }
   };
   //  -------this is clearing data code here
@@ -52,9 +52,11 @@ const CustomDropdown = (props) => {
     console.warn('selected')
     setAppliedOptions([]);
         if (props.onClear) {
-      props.onClear(); //------ Callback to parent component
+      //------ Callback to parent component
+      props.onClear(); 
     }
   };
+
 
   return (
     <View>
@@ -68,8 +70,7 @@ const CustomDropdown = (props) => {
               {appliedOptions.map((option) => (
                 <Text
                   key={option}
-                  style={CustomDropdownStyle.selectedOptionText}
-                >
+                  style={CustomDropdownStyle.selectedOptionText}>
                   {option}
                 </Text>
               ))}
@@ -97,8 +98,7 @@ const CustomDropdown = (props) => {
               <View style={CustomDropdownStyle.bindselectmenu} key={option}>
                 <TouchableOpacity
                   onPress={() => toggleOption(option)}
-                  style={CustomDropdownStyle.checkboxbind}
-                >
+                  style={CustomDropdownStyle.checkboxbind}>
                   <MaterialCommunityIcons
                     name={
                       selectedOptions.includes(option)

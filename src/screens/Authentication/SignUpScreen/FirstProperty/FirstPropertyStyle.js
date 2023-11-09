@@ -43,10 +43,6 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 6,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
   },
   locationInput: {
     flex: 1,
@@ -57,6 +53,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginLeft: 15,
   },
   dropdown: {
+    flex:1,
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
@@ -79,14 +76,13 @@ export const FirstPropertyStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
   },
-  key_feature_Dropdownstyle: { flex: 0.9, height: 40 },
+  key_feature_Dropdownstyle: { flex:0.9, height: 40, },
   key_feature_mainView: {
     flex: 1,
     flexDirection: "row",
@@ -95,7 +91,7 @@ export const FirstPropertyStyle = StyleSheet.create({
   key_feature_subView: { flex: 1, flexDirection: "row" },
   key_feature_Text: {
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: "center",
     marginRight: 15,
@@ -122,26 +118,18 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 12,
     paddingVertical: 8,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-
-    elevation: 2,
   },
   textSelectedStyle: {
     marginRight: 5,
     fontSize: 14,
   },
-  addition_featureText:{
-    marginTop:10
+  addition_featureText: {
+    marginTop: 10,
   },
-  AutoList_text:{
-    color:_COLORS.Kodie_BlackColor,
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_SemiBold
+  AutoList_text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
   goBack_View: {
     flexDirection: "row",
@@ -155,11 +143,11 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginLeft: 5,
   },
   backIcon: {
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  btnView:{
-    marginTop:24
-  }
+  btnView: {
+    marginTop: 24,
+  },
 });

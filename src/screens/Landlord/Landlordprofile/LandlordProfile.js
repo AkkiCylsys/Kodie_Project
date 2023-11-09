@@ -13,7 +13,8 @@ export default LandlordProfile = (props) => {
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() => _goBack(props)}
+        // onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Profile"}
       />
       <ScrollView>
@@ -43,7 +44,7 @@ export default LandlordProfile = (props) => {
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("Help_FeedBack")}
+            onPress={() => props.navigation.navigate("EditProfile")}
             style={LandlordProfileStyle.contactIconView}
           >
             <Image
@@ -57,8 +58,9 @@ export default LandlordProfile = (props) => {
         <Text style={LandlordProfileStyle.AllcontactsText}>Settings</Text>
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Account");
-          }}>
+            props.navigation.navigate("AccountSetting");
+          }}
+        >
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
@@ -71,7 +73,8 @@ export default LandlordProfile = (props) => {
         <TouchableOpacity
           onPress={() => {
             props.navigation.navigate("ManageSubscription");
-          }}>
+          }}
+        >
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
@@ -83,8 +86,9 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Contactus");
-          }}>
+            props.navigation.navigate("PrivacySecurity");
+          }}
+        >
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
@@ -98,7 +102,8 @@ export default LandlordProfile = (props) => {
         <TouchableOpacity
           onPress={() => {
             props.navigation.navigate("Help_FeedBack");
-          }}>
+          }}
+        >
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
@@ -111,7 +116,8 @@ export default LandlordProfile = (props) => {
         <TouchableOpacity
           onPress={() => {
             props.navigation.navigate("SocialMedia");
-          }}>
+          }}
+        >
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
@@ -126,7 +132,8 @@ export default LandlordProfile = (props) => {
         <TouchableOpacity
           onPress={() => {
             props.navigation.navigate("Invitefriend");
-          }}>
+          }}
+        >
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
@@ -136,10 +143,11 @@ export default LandlordProfile = (props) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("PropertyExpenses");
-          }}>
+            props.navigation.navigate("GenerateReport");
+          }}
+        >
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
@@ -151,9 +159,10 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Dashboard");
-          }}>
-            <RowTab
+            props.navigation.navigate("LoginScreen");
+          }}
+        >
+          <RowTab
             IsDivider={false}
             isSecondRowText={true}
             LeftImage={IMAGES.Logout}

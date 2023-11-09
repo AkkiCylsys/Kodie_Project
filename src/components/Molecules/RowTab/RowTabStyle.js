@@ -35,18 +35,17 @@ export const RowTabStyle = StyleSheet.create({
 
     Helptext: {
         fontSize: 14,
-        marginLeft: 20,
+        marginLeft: 15,
         color: _COLORS.Kodie_BlackColor,
         fontFamily: FONTFAMILY.K_SemiBold
     },
     SecondRowtext: {
-        fontSize: 12,
-        marginLeft: 20,
+        fontSize: 11,
+        marginLeft: 15,
         color: _COLORS.Kodie_ExtraLightGrayColor,
-        fontFamily: FONTFAMILY.K_Medium
+        fontFamily: FONTFAMILY.K_Regular
     },
     TextViewMain:{
-        
         flexDirection:'column',
         justifyContent:'center',
         marginBottom:5

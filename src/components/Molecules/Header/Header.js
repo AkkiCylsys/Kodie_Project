@@ -7,6 +7,7 @@ import {
   IMAGES,
   _COLORS,
 } from "./../../../Themes/index";
+import { _goBack } from "../../../services/CommonServices";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const TopHeader = (props) => {

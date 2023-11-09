@@ -26,7 +26,7 @@ export const SignUpVerificationStyle = StyleSheet.create({
     marginTop: 24,
   },
   customBtn: {
-    marginTop: 25,
+    marginTop: 50,
   },
   goBack_View: {
     flexDirection: "row",
@@ -66,4 +66,26 @@ export const SignUpVerificationStyle = StyleSheet.create({
     alignSelf: "center",
   },
   otp_view: { marginTop: 24 },
+  error_text: { color: "red", marginLeft: 10,marginTop:5 },
+  getBindButtonView:{
+    flexDirection:'row',
+    justifyContent:'flex-end'
+  },
+  getButtonView: {
+    borderRadius: 6,
+    borderColor: _COLORS.Kodie_GrayColor,
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    alignItems:'center',
+    alignSelf: "center",
+    justifyContent: "center",
+    marginTop: 20,
+    width:80,
+    height:45,
+  },
+  getButton: {
+    fontSize: 14,
+    color: _COLORS.Kodie_WhiteColor,
+    alignSelf: "center",
+    textAlign: "center",
+  },
 });

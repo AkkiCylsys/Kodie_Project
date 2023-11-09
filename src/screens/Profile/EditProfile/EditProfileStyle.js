@@ -156,4 +156,52 @@ export const EditProfileStyle = StyleSheet.create({
   secondbuttonview: {
     marginTop: 10,
   },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
+  saveBackButton:{
+    elevation:2,
+    marginTop:40,
+    backgroundColor:_COLORS.Kodie_WhiteColor
+  },
+  secondview:{
+    marginHorizontal:10,
+  },
+  
+  textContainer: {
+    flexDirection: "column",
+    borderWidth:0.5,
+    marginHorizontal:5,
+    flex:1,
+    paddingHorizontal:10,
+    padding:10,
+    marginVertical:5,
+    borderRadius:10,
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between'
+  },
+  bindfile:{
+  flexDirection:'row',
+  alignItems:'center'
+  },
+  doticon:{
+    color:_COLORS.Kodie_GrayColor
+  },
+  pdfName: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal:5
+  },
+  pdfSize: {
+    fontSize: 12,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginHorizontal:5
+  },
 });

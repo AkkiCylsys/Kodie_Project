@@ -7,6 +7,7 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import { CustomButtonstyles } from "../../../components/Atoms/CustomButton/CustomButtonCss";
 import { _COLORS } from "../../../Themes";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { _goBack } from "../../../services/CommonServices";
 const Contactus = (props) => {
   return (
     <View style={{ backgroundColor: "#FFFFFF", height: "100%" }}>
@@ -45,6 +46,9 @@ const Contactus = (props) => {
           <CustomSingleButton
             _ButtonText={"Submit"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            onPress={() => {
+              props.navigation.navigate("AppInfo");
+            }}
           />
         </View>
       </View>

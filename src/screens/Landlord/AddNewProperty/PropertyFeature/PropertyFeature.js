@@ -39,13 +39,15 @@ const renderDataItem = (item) => {
 export default PropertyFeature = (props) => {
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState([]);
+  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButtonId, setSelectedButtonId] = useState(0);
+  const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
+  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
+  const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
+  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] = useState(0);
 
   return (
     <View style={PropertyFeatureStyle.mainContainer}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Add new property"}
-      />
       <View style={PropertyFeatureStyle.headingView}>
         <Text style={PropertyFeatureStyle.heading}>{"Property features"}</Text>
       </View>
@@ -205,13 +207,47 @@ export default PropertyFeature = (props) => {
                 </Text>
                 <RowButtons
                   LeftButtonText={"Furnished"}
-                  leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+                  leftButtonbackgroundColor={
+                    !selectedButtonFurnished
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedButtonFurnished
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedButtonFurnished
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedButtonFurnished(false);
+                    setSelectedButtonFurnishedId(1);
+                    // alert(selectedButtonId)
+                  }}
                   RightButtonText={"Unfurnished"}
-                  RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                  RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-                  RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+                  RightButtonbackgroundColor={
+                    selectedButtonFurnished
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedButtonFurnished
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedButtonFurnished
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedButtonFurnished(true);
+                    setSelectedButtonFurnishedId(2);
+                    // alert(selectedButtonId)
+                  }}
                 />
               </View>
               <View style={PropertyFeatureStyle.addition_featureView}>
@@ -220,13 +256,47 @@ export default PropertyFeature = (props) => {
                 </Text>
                 <RowButtons
                   LeftButtonText={"Yes"}
-                  leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+                  leftButtonbackgroundColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedButton(false);
+                    setSelectedButtonId(1);
+                    // alert(selectedButtonId)
+                  }}
                   RightButtonText={"No"}
-                  RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                  RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-                  RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+                  RightButtonbackgroundColor={
+                    selectedButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedButton(true);
+                    setSelectedButtonId(2);
+                    // alert(selectedButtonId)
+                  }}
                 />
               </View>
               <View style={PropertyFeatureStyle.addition_featureView}>
@@ -235,13 +305,47 @@ export default PropertyFeature = (props) => {
                 </Text>
                 <RowButtons
                   LeftButtonText={"Yes"}
-                  leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+                  leftButtonbackgroundColor={
+                    !selectedButtonDeposit
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedButtonDeposit
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedButtonDeposit
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedButtonDeposit(false);
+                    setSelectedButtonDepositId(1);
+                    // alert(selectedButtonId)
+                  }}
                   RightButtonText={"No"}
-                  RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                  RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-                  RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+                  RightButtonbackgroundColor={
+                    selectedButtonDeposit
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedButtonDeposit
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedButtonDeposit
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedButtonDeposit(true);
+                    setSelectedButtonDepositId(2);
+                    // alert(selectedButtonId)
+                  }}
                 />
               </View>
             </View>
@@ -280,13 +384,17 @@ export default PropertyFeature = (props) => {
                       <Text style={PropertyFeatureStyle.textSelectedStyle}>
                         {item.label}
                       </Text>
-                      <AntDesign color={_COLORS.Kodie_WhiteColor} name="close" size={17} />
+                      <AntDesign
+                        color={_COLORS.Kodie_WhiteColor}
+                        name="close"
+                        size={17}
+                      />
                     </View>
                   </TouchableOpacity>
                 )}
               />
             </View>
-            <View style={PropertyFeatureStyle.btnView}>
+            {/* <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton
                 _ButtonText={"Next"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
@@ -302,16 +410,18 @@ export default PropertyFeature = (props) => {
                 backgroundColor={_COLORS.Kodie_WhiteColor}
               />
             </View>
-            <View style={PropertyFeatureStyle.goBack_View}>
-              <TouchableOpacity style={PropertyFeatureStyle.backIcon}>
+            <TouchableOpacity style={PropertyFeatureStyle.goBack_View}
+            onPress={() => {
+              props.navigation.navigate("PropertyDetails");}}>
+              <View style={PropertyFeatureStyle.backIcon}>
                 <Ionicons
                   name="chevron-back"
                   size={22}
                   color={_COLORS.Kodie_MediumGrayColor}
                 />
-              </TouchableOpacity>
+              </View>
               <Text style={PropertyFeatureStyle.goBack_Text}>{"Go back"}</Text>
-            </View>
+            </TouchableOpacity> */}
           </View>
         </View>
       </ScrollView>

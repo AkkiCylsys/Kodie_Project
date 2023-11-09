@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -22,7 +22,9 @@ import { LineChart } from "react-native-chart-kit";
 import { Card } from "react-native-paper";
 import { logos } from "../../Themes/CommonVectors/Images";
 import CircleProgress from "../../components/Molecules/CircleProgress/CircleProgress";
-
+import SelectProperties from "../../components/Molecules/SelectProperties/SelectProperties";
+import SelectDate from "../../components/Molecules/SelectDate/SelectDate";
+import RBSheet from "react-native-raw-bottom-sheet";
 const IncomeData = [
   {
     id: "1",
@@ -72,9 +74,13 @@ const data = [
   { label: "Australia", value: "2" },
   { label: "America", value: "3" },
 ];
+
 export default Dashboard = (props) => {
   const [value, setValue] = useState(null);
   const navigation = useNavigation();
+  const refRBSheet = useRef();
+  const refRBSheet2 = useRef();
+
   const Income_render = ({ item, index }) => {
     return (
       <>
@@ -128,58 +134,56 @@ export default Dashboard = (props) => {
         MiddleText={"Kodie"}
         onPressLeftButton={() => props.navigation.openDrawer()}
       />
-      <ScrollView
-        style={DashboardStyle.container}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView showsVerticalScrollIndicator={false}>
         <DeshboardNotice />
+        <View style={DashboardStyle.container}>
+          <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text>
+          <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
+          <View
+            style={{
+              // flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <Dropdown
+              style={[DashboardStyle.dropdown, { flex: 1 }]}
+              placeholderStyle={DashboardStyle.placeholderStyle}
+              selectedTextStyle={DashboardStyle.selectedTextStyle}
+              inputSearchStyle={DashboardStyle.inputSearchStyle}
+              iconStyle={DashboardStyle.iconStyle}
+              data={data}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="All Properties"
+              searchPlaceholder="Search..."
+              value={value}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+            />
 
-        <Text style={DashboardStyle.Name_Text}>{"Hii Jason!"}</Text>
-        <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
-        <View
-          style={{
-            // flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
-          <Dropdown
-            style={[DashboardStyle.dropdown, { flex: 1 }]}
-            placeholderStyle={DashboardStyle.placeholderStyle}
-            selectedTextStyle={DashboardStyle.selectedTextStyle}
-            inputSearchStyle={DashboardStyle.inputSearchStyle}
-            iconStyle={DashboardStyle.iconStyle}
-            data={data}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="All Properties"
-            searchPlaceholder="Search..."
-            value={value}
-            onChange={(item) => {
-              setValue(item.value);
-            }}
-          />
-          <Dropdown
-            style={[DashboardStyle.dropdown, { flex: 1 }]}
-            placeholderStyle={DashboardStyle.placeholderStyle}
-            selectedTextStyle={DashboardStyle.selectedTextStyle}
-            inputSearchStyle={DashboardStyle.inputSearchStyle}
-            iconStyle={DashboardStyle.iconStyle}
-            data={data}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="Year to date"
-            searchPlaceholder="Search..."
-            value={value}
-            onChange={(item) => {
-              setValue(item.value);
-            }}
-          />
-          <Dropdown
+            <Dropdown
+              style={[DashboardStyle.dropdown, { flex: 1 }]}
+              placeholderStyle={DashboardStyle.placeholderStyle}
+              selectedTextStyle={DashboardStyle.selectedTextStyle}
+              inputSearchStyle={DashboardStyle.inputSearchStyle}
+              iconStyle={DashboardStyle.iconStyle}
+              data={data}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Year to date"
+              searchPlaceholder="Search..."
+              value={value}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+            />
+            {/* <Dropdown
             style={[DashboardStyle.dropdown, { flex: 1 }]}
             placeholderStyle={DashboardStyle.placeholderStyle}
             selectedTextStyle={DashboardStyle.selectedTextStyle}
@@ -196,160 +200,206 @@ export default Dashboard = (props) => {
             onChange={(item) => {
               setValue(item.value);
             }}
-          />
-        </View>
-        <Card style={DashboardStyle.card}>
-          <Card.Content>
-            <View style={DashboardStyle.headerView}>
-              <Text style={DashboardStyle.header}>Cash flow overview</Text>
-              <TouchableOpacity>
-                <Entypo
-                  name={"dots-three-horizontal"}
-                  size={20}
-                  color={_COLORS.Kodie_GrayColor}
-                  style={DashboardStyle.icon}
-                />
-              </TouchableOpacity>
-            </View>
-            <LineChart
-              data={{
-                labels: ["Jan", "Feb", "Mar", "Apr"],
-                datasets: [
-                  {
-                    data: [
-                      Math.random(),
-                      Math.random() * 100,
-                      Math.random() * 120,
-                      Math.random() * 140,
-                      Math.random() * 160,
-                    ],
-                  },
-                ],
-              }}
-              width={Dimensions.get("window").width - 56} // from react-native
-              height={160}
-              yAxisLabel={"$"}
-              chartConfig={{
-                backgroundColor: _COLORS.Kodie_WhiteColor,
-                backgroundGradientFrom: _COLORS.Kodie_WhiteColor,
-                backgroundGradientTo: _COLORS.Kodie_WhiteColor,
-                // decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 255) => `	rgb(0, 0, ${opacity})`,
-              }}
-              bezier
-              style={DashboardStyle.lineChartStl}
-            />
-            <View style={DashboardStyle.chartfooterView}>
-              <View style={DashboardStyle.headerView}>
-                <View style={DashboardStyle.incomeBox} />
-                <Text style={DashboardStyle.incomeText}>Total Income</Text>
-              </View>
-              <View style={DashboardStyle.headerView}>
-                <View style={DashboardStyle.expBox} />
-                <Text style={DashboardStyle.incomeText}>Total expenses</Text>
-              </View>
-            </View>
-          </Card.Content>
-        </Card>
-
-        <View>
-          <CircleProgress/>
-        </View>
-
-        
-        <FlatList
-          data={IncomeData}
-          scrollEnabled
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{}}
-          keyExtractor={(item) => item?.id}
-          renderItem={Income_render}
-        />
-        <View style={DashboardStyle.maintenance_statusView}>
-          <View style={DashboardStyle.maintenance_view}>
-            <Text style={DashboardStyle.maintenance_Text}>
-              {"Maintenance status"}
-            </Text>
-            <TouchableOpacity>
-              <Entypo
-                name="dots-three-horizontal"
-                size={20}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            </TouchableOpacity>
+          /> */}
           </View>
+          <Card style={DashboardStyle.card}>
+            <Card.Content>
+              <View style={DashboardStyle.headerView}>
+                <Text style={DashboardStyle.header}>Cash flow overview</Text>
+                <TouchableOpacity>
+                  <Entypo
+                    name={"dots-three-horizontal"}
+                    size={20}
+                    color={_COLORS.Kodie_GrayColor}
+                    style={DashboardStyle.icon}
+                  />
+                </TouchableOpacity>
+              </View>
+              <LineChart
+                data={{
+                  labels: ["Jan", "Feb", "Mar", "Apr"],
+                  datasets: [
+                    {
+                      data: [
+                        Math.random(),
+                        Math.random() * 100,
+                        Math.random() * 120,
+                        Math.random() * 140,
+                        Math.random() * 160,
+                      ],
+                    },
+                  ],
+                }}
+                width={Dimensions.get("window").width - 56} // from react-native
+                height={160}
+                yAxisLabel={"$"}
+                chartConfig={{
+                  backgroundColor: _COLORS.Kodie_WhiteColor,
+                  backgroundGradientFrom: _COLORS.Kodie_WhiteColor,
+                  backgroundGradientTo: _COLORS.Kodie_WhiteColor,
+                  // decimalPlaces: 2, // optional, defaults to 2dp
+                  color: (opacity = 255) => `	rgb(0, 0, ${opacity})`,
+                }}
+                bezier
+                style={DashboardStyle.lineChartStl}
+              />
+              <View style={DashboardStyle.chartfooterView}>
+                <View style={DashboardStyle.headerView}>
+                  <View style={DashboardStyle.incomeBox} />
+                  <Text style={DashboardStyle.incomeText}>Total Income</Text>
+                </View>
+                <View style={DashboardStyle.headerView}>
+                  <View style={DashboardStyle.expBox} />
+                  <Text style={DashboardStyle.incomeText}>Total expenses</Text>
+                </View>
+              </View>
+            </Card.Content>
+          </Card>
+
           <View>
-            <View style={DashboardStyle.maintenance_main_menu}>
-              <View style={DashboardStyle.maintenance_menu}>
-                <AntDesign
-                  name="infocirlce"
-                  size={18}
-                  color={_COLORS.Kodie_yellow}
-                />
-                <Text style={DashboardStyle.request_Text}>{"Requested"}</Text>
-              </View>
-              <View style={DashboardStyle.maintenance_menu}>
-                <AntDesign
-                  name="checkcircle"
-                  size={18}
-                  color={_COLORS.Kodie_GreenColor}
-                />
-                <Text style={DashboardStyle.request_Text}>{"Approved"}</Text>
-              </View>
-              <View style={DashboardStyle.maintenance_menu}>
-                <Entypo
-                  name="circle-with-cross"
-                  size={18}
-                  color={_COLORS.Kodie_redColor}
-                />
-                <Text style={DashboardStyle.request_Text}>{"Rejected"}</Text>
-              </View>
-            </View>
-            <View style={DashboardStyle.maintenance_sts_NOView}>
-              <Text style={DashboardStyle.maintenance_sts_NOText}>{"8"}</Text>
-              <Text style={DashboardStyle.maintenance_sts_NOText}>{"5"}</Text>
-              <Text style={DashboardStyle.maintenance_sts_NOText}>{"3"}</Text>
-            </View>
-            <CustomSingleButton
-              _ButtonText={"View all jobs"}
-              Text_Color={_COLORS.Kodie_BlackColor}
-              backgroundColor={_COLORS.Kodie_lightGreenColor}
-              height={45}
-            />
-          </View>
-        </View>
-        <View style={DashboardStyle.Noticemain_View}>
-          <View style={DashboardStyle.Notice_view}>
-            <Text style={DashboardStyle.maintenance_Text}>{"Notices"}</Text>
-            <TouchableOpacity>
-              <Entypo
-                name="dots-three-horizontal"
-                size={20}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            </TouchableOpacity>
+            <CircleProgress />
           </View>
 
           <FlatList
-            data={Notice}
+            data={IncomeData}
             scrollEnabled
+            horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
             keyExtractor={(item) => item?.id}
-            renderItem={NoticeData}
+            renderItem={Income_render}
           />
-          <View style={DashboardStyle.btnView}>
-            <CustomSingleButton
-              height={45}
-              _ButtonText={"View all notices"}
-              backgroundColor={_COLORS.Kodie_lightGreenColor}
-              Text_Color={_COLORS.Kodie_BlackColor}
-              borderColor={_COLORS.Kodie_GreenColor}
+          <View style={DashboardStyle.maintenance_statusView}>
+            <View style={DashboardStyle.maintenance_view}>
+              <Text style={DashboardStyle.maintenance_Text}>
+                {"Maintenance status"}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet2.current.open();
+                }}
+              >
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={20}
+                  color={_COLORS.Kodie_GrayColor}
+                />
+              </TouchableOpacity>
+            </View>
+            <View>
+              <View style={DashboardStyle.maintenance_main_menu}>
+                <View style={DashboardStyle.maintenance_menu}>
+                  <AntDesign
+                    name="infocirlce"
+                    size={18}
+                    color={_COLORS.Kodie_yellow}
+                  />
+                  <Text style={DashboardStyle.request_Text}>{"Requested"}</Text>
+                </View>
+                <View style={DashboardStyle.maintenance_menu}>
+                  <AntDesign
+                    name="checkcircle"
+                    size={18}
+                    color={_COLORS.Kodie_GreenColor}
+                  />
+                  <Text style={DashboardStyle.request_Text}>{"Approved"}</Text>
+                </View>
+                <View style={DashboardStyle.maintenance_menu}>
+                  <Entypo
+                    name="circle-with-cross"
+                    size={18}
+                    color={_COLORS.Kodie_redColor}
+                  />
+
+                  <Text style={DashboardStyle.request_Text}>{"Rejected"}</Text>
+                </View>
+              </View>
+              <View style={DashboardStyle.maintenance_sts_NOView}>
+                <Text style={DashboardStyle.maintenance_sts_NOText}>{"8"}</Text>
+                <Text style={DashboardStyle.maintenance_sts_NOText}>{"5"}</Text>
+                <Text style={DashboardStyle.maintenance_sts_NOText}>{"3"}</Text>
+              </View>
+              <CustomSingleButton
+                _ButtonText={"View all jobs"}
+                Text_Color={_COLORS.Kodie_BlackColor}
+                backgroundColor={_COLORS.Kodie_lightGreenColor}
+                height={45}
+              />
+            </View>
+          </View>
+          <View style={DashboardStyle.Noticemain_View}>
+            <View style={DashboardStyle.Notice_view}>
+              <Text style={DashboardStyle.maintenance_Text}>{"Notices"}</Text>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet.current.open();
+                }}
+              >
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={20}
+                  color={_COLORS.Kodie_GrayColor}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <FlatList
+              data={Notice}
+              scrollEnabled
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{}}
+              keyExtractor={(item) => item?.id}
+              renderItem={NoticeData}
             />
+            <View style={DashboardStyle.btnView}>
+              <CustomSingleButton
+                height={45}
+                _ButtonText={"View all notices"}
+                backgroundColor={_COLORS.Kodie_lightGreenColor}
+                Text_Color={_COLORS.Kodie_BlackColor}
+                borderColor={_COLORS.Kodie_GreenColor}
+              />
+            </View>
           </View>
         </View>
       </ScrollView>
+      {/* RBSheet define here */}
+      <RBSheet
+        ref={refRBSheet}
+        height={280}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: DashboardStyle.bottomModal_container,
+        }}
+      >
+        <SelectProperties />
+      </RBSheet>
+
+      {/* RBSheet 2 define here */}
+      <RBSheet
+        ref={refRBSheet2}
+        height={450}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: DashboardStyle.bottomModal_container,
+        }}
+      >
+        <SelectDate />
+      </RBSheet>
     </View>
   );
 };

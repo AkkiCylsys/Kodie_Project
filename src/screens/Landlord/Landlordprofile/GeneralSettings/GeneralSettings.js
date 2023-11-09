@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 // Screen n0: 197
 import React, { useState } from "react";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -68,16 +68,18 @@ const GeneralSettings = (props) => {
           </View>
         </View>
 
-        <View style={GeneralSettingsStyle.calenderview}>
+        <TouchableOpacity style={GeneralSettingsStyle.calenderview}
+         onPress={() => props.navigation.navigate("GeneralSetting")}>
           <GeneralSetting
             heading="Calendar settings"
             imageSource={IMAGES.Calendar}
             description="Configure your calendar "
             leftarrowimg={IMAGES.rightarrow}
           />
-        </View>
+        </TouchableOpacity>
 
-        <View style={GeneralSettingsStyle.origanisationview}>
+        <TouchableOpacity style={GeneralSettingsStyle.origanisationview}
+          onPress={() => props.navigation.navigate("AccountStep")}>
           <GeneralSetting
             heading="Organisation profile"
             imageSource={IMAGES.Group}
@@ -85,7 +87,7 @@ const GeneralSettings = (props) => {
             correspondence and also invoices  "
             leftarrowimg={IMAGES.rightarrow}
           />
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

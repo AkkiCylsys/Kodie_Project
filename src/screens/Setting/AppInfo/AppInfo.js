@@ -5,9 +5,10 @@ import React from "react";
 import { AppInfoStyle } from "./AppInfoStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS,logos } from "../../../Themes";
-
-const AppInfo = () => {
+import { _COLORS } from "../../../Themes";
+import { logos } from "../../../Themes/CommonVectors/Images";
+import { _goBack } from "../../../services/CommonServices";
+const AppInfo = (props) => {
   return (
     <>
       <TopHeader
@@ -39,6 +40,7 @@ const AppInfo = () => {
           <CustomSingleButton
             _ButtonText={"Licenses"}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
+        
           />
         </View>
       </View>
