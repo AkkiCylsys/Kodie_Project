@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 import axios from "axios";
 import { Config } from "../../../Config";
+import { loginApiActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
 export default Login = (props) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
@@ -222,8 +223,30 @@ export default Login = (props) => {
     } else if (password.trim() === "") {
       // setPasswordError("Password is required.");
     } else {
-      makeApiLogin();
-      // let response = await dispatch(fetchLoginSuccess(loginResponse));
+      // makeApiLogin();
+      // alert("click")
+      setIsLoading(true);
+      let data = {
+        email: email,
+        password: password,
+      };
+      setIsLoading(true);
+      let res = await dispatch(loginApiActionCreator(data));
+      alert(res.data.status);
+
+      console.log("res....", res);
+      if (res.data.status === true) {
+        alert("Login successful");
+        setIsLoading(false);
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        setEmail("");
+        setPassword("");
+      } else {
+        alert("Please check your email and password.");
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
+      }
     }
   };
 
@@ -295,6 +318,7 @@ export default Login = (props) => {
         if (response.data.status === true) {
           alert("The otp has been sent to your email.");
           if (isClick === 1) {
+            setIsTimeron(true);
             setIsClick(1);
             setVerificationcode("");
             setIsTimeron(true);
@@ -463,7 +487,10 @@ export default Login = (props) => {
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
-              onPress={() => props.navigation.navigate("ManageSubscription")}
+              onPress={() =>
+                // props.navigation.navigate("ManageSubscription")
+                props.navigation.navigate("DrawerNavigatorLeftMenu")
+              }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={"Login with Facebook"}

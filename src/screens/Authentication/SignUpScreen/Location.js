@@ -31,6 +31,7 @@ export default Location = (props) => {
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
           title: "Example App",
+
           message: "Example App access to your location ",
         }
       );
@@ -124,9 +125,7 @@ export default Location = (props) => {
         />
       </View>
       <View style={LocationStyle.searchPlc}>
-        <SearchPlaces
-        // onLocationSelect={handleLocationSelect}
-        />
+        <SearchPlaces />
       </View>
 
       <TouchableOpacity style={LocationStyle.shapeIcon}>

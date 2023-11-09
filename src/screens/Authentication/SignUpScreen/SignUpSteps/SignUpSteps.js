@@ -37,6 +37,7 @@ import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
+import { useScrollToTop } from "@react-navigation/native";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -88,6 +89,9 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   return iconConfig;
 };
 const SignUpSteps = (props) => {
+  const ref = React.useRef(null);
+
+  const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -139,6 +143,7 @@ const SignUpSteps = (props) => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
+  const [describeBtn, setDescribeBtn] = useState([]);
   const [data_add, setData_add] = useState([]);
   const fs = RNFetchBlob.fs;
 
@@ -279,8 +284,10 @@ const SignUpSteps = (props) => {
       );
     } else {
       setSelectedServices([...selectedServices, lookup_key]);
+      // alert([...selectedServices]);
     }
   };
+
   const handle_key_feature = (lookup_key) => {
     if (selectedkey_features.includes(lookup_key)) {
       setSelectedkey_features(
@@ -307,7 +314,7 @@ const SignUpSteps = (props) => {
       onPress={() => {
         toggleSelection(item.lookup_key);
         setKodieDescribeYourselfDataId(item.lookup_key);
-        // alert(item.lookup_key);
+        alert(item.lookup_key);
       }}
     />
   );
@@ -368,6 +375,7 @@ const SignUpSteps = (props) => {
     setMobileNumber(text);
   };
   const handleNextBtn = () => {
+    scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
     if (firstName.trim() === "") {
       setFirstNameError("First name is required.");
     } else if (lastName.trim() === "") {
@@ -377,9 +385,12 @@ const SignUpSteps = (props) => {
     } else {
       if (currentPage == 0) {
         setCurrentPage(currentPage + 1);
-      } else if (currentPage == 1) {
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
+      } else if (currentPage === 1) {
         setCurrentPage(currentPage + 1);
-      } else if (currentPage == 2) {
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
+      } else if (currentPage === 2) {
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
         console.log(
@@ -396,107 +407,8 @@ const SignUpSteps = (props) => {
     }
   };
 
-  // const handleSaveSignup = async () => {
-  //   const selectedServiceKeysString = selectedServices.join(",");
-  //   const kodieHelpValue = selectedLookupKeys.join(",");
-  //   const selectedKeyFeature = selectedkey_features.join(",");
-
-  //   const formData = new FormData();
-  //   formData.append("user", "46");
-  //   formData.append("first_name", firstName);
-  //   formData.append("last_name", lastName);
-  //   formData.append("phone_number", mobileNumber);
-  //   formData.append("physical_address", physicalAddress);
-  //   formData.append("organisation_name", organisation);
-  //   formData.append("referral_code", referral);
-  //   formData.append("describe_yourself", selectedServiceKeysString);
-  //   formData.append("kodie_help", kodieHelpValue);
-  //   formData.append("property_manage", selectManageProperty);
-  //   formData.append("location", propertyLocation);
-  //   formData.append("location_longitude", "102.002.001");
-  //   formData.append("location_latitude", "104.004.002");
-  //   formData.append("islocation", "1");
-  //   formData.append("property_description", propertyDesc);
-  //   formData.append("property_type", property_value);
-  //   formData.append("key_features", selectedKeyFeature);
-  //   formData.append("additional_features", additionalfeatureskeyvalue);
-  //   formData.append("auto_list", "1");
-  //   // formData.append("profile_photo",ImageName);
-
-  //   // if (ImageName?.path) {
-  //   //   formData.append("profile_photo", {
-  //   //     // uri: ImageName?.path || "",
-  //   //     type: ImageName?.mime || "image/jpeg",
-  //   //     // name: String(ImageName?.path.split("/").pop()),
-  //   //   });
-  //   // }
-
-  //   if (ImageName?.path) {
-  //     const imageUri = ImageName.path;
-  //     const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-  //     // const imageName = "text";
-  //     const imageType = ImageName.mime || "image/jpeg";
-  //     formData.append("profile_photo", {
-  //       uri: imageUri,
-  //       type: imageType,
-  //       name: imageName,
-  //       // uri: imageUri, // your file path string
-  //       // name: "my_photo.jpg",
-  //       // type: "image/jpeg",
-  //     });
-  //     console.log("imageName", imageName);
-  //   }
-
-  //   const url = Config.API_URL;
-  //   const saveAccountDetails = url + "user_save_signup_account_details";
-  //   console.log("Request URL:", saveAccountDetails);
-  //   setIsLoading(true);
-
-  //   try {
-  //     const response = await axios.post(saveAccountDetails, formData, {
-  //       headers: {
-  //         // Accept: "application/json",
-  //         "content-type": "multipart/form-data",
-  //         // // 'Accept': 'application/x-www-form-urlencoded',
-  //         // // 'Content-Type':'application/x-www-form-urlencoded',
-  //         // "Access-Control-Allow-Origin": "*",
-  //         // "Access-Control-Allow-Methods": "POST, GET, PUT, OPTIONS, DELETE",
-  //         // "Access-Control-Allow-Headers":
-  //         //   "Access-Control-Allow-Methods, Access-Control-Allow-Origin, Origin, Accept, Content-Type",
-  //       },
-  //     });
-
-  //     console.log("Save Account Details", response.data);
-
-  //     if (response.data.status === true) {
-  //       setIsLoading(false);
-  //       alert(response.data.message);
-  //       props.navigation.navigate("LoginScreen");
-  //       setCurrentPage(0);
-  //       setFirstName("");
-  //       setLastName("");
-  //       setMobileNumber("");
-  //       setPhysicalAddress("");
-  //       setOrganisation("");
-  //       setRefferral("");
-  //       setProperty_value("");
-  //       setbedroomValue("");
-  //       setGaragesValue("");
-  //       setBathRoomValue("");
-  //       setParkingValue("");
-  //     } else {
-  //       console.error("Save Account Details error:", response.data.error);
-  //       alert(response.data.error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Account_Details error:", error);
-  //     alert(error.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  const handleSaveSignup = async (imageUri) => {
+  const handleSaveSignup = async () => {
+    alert(selectedServices);
     const selectedServiceKeysString = selectedServices.join(",");
     const kodieHelpValue = selectedLookupKeys.join(",");
     const selectedKeyFeature = selectedkey_features.join(",");
@@ -583,6 +495,7 @@ const SignUpSteps = (props) => {
   };
 
   useEffect(() => {
+    scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
     handleProperty_Type();
     handle_manage_property();
     handle_bedRoom();
@@ -929,7 +842,7 @@ const SignUpSteps = (props) => {
       case 0:
         // return <Account />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={AccountStyle.headingView}>
               <Text style={AccountStyle.heading}>
                 {"Introduce yourself to Kodie"}
@@ -1032,7 +945,7 @@ const SignUpSteps = (props) => {
       case 1:
         // return <AboutYou />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={AboutYouStyle.Container}>
               <Text style={AboutYouStyle.heading_Text}>
                 {"Tell us more about you"}
@@ -1081,6 +994,17 @@ const SignUpSteps = (props) => {
                   />
                 </View>
               )}
+              {/* <View>
+                <Text style={AboutYouStyle.want_Heading}>
+                  {"How many properties do you own, manage or rent?"}
+                </Text>
+                <FlatList
+                  data={manage_property_Data}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.lookup_key.toString()}
+                  numColumns={2}
+                />
+              </View> */}
 
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
@@ -1121,7 +1045,7 @@ const SignUpSteps = (props) => {
       case 2:
         // return <FirstProperty />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={FirstPropertyStyle.headingView}>
               <Text style={FirstPropertyStyle.heading}>
                 {"Add your first property"}
