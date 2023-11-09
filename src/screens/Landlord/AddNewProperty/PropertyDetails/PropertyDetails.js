@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -17,6 +17,8 @@ import { _COLORS, FONTFAMILY } from "../../../../Themes";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import CustomDropdown from "../../../../components/Molecules/CustomDropdown/CustomDropdown";
+import { Config } from "../../../../Config";
+import axios from "axios";
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },
@@ -34,6 +36,42 @@ export default PropertyDetails = (props) => {
   const [location, setLocation] = useState("");
   const [value, setValue] = useState(null);
   const [propertyDesc, setPropertyDesc] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [property_Data, setProperty_Data] = useState([]);
+
+  useEffect(() => {
+    handleProperty_Type();
+  }, []);
+
+  const handleProperty_Type = () => {
+    const propertyData = {
+      P_PARENT_CODE: "PROP_TYPE",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("property_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("propertyData....", response.data.data);
+          setProperty_Data(response.data.data);
+        } else {
+          console.error("property_type_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_type error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
   return (
     <View style={PropertyDetailsStyle.mainContainer}>
       {/* <ScrollView> */}
@@ -84,7 +122,11 @@ export default PropertyDetails = (props) => {
         </View>
         <View style={PropertyDetailsStyle.inputContainer}>
           <Text style={PropertyDetailsStyle.property_Text}>Property type</Text>
-          <CustomDropdown btnview={true} placeholdertext={"Apartment"} />
+          <CustomDropdown
+            btnview={true}
+            placeholdertext={"Apartment"}
+            data={[property_Data]}
+          />
         </View>
         <View style={PropertyDetailsStyle.inputContainer}>
           <Text style={LABEL_STYLES._texinputLabel}>Property description</Text>
