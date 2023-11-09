@@ -334,14 +334,14 @@ export default CreateJobFirstScreen = (props) => {
             />
           </View>
         </View>
-      </ScrollView>
-      <View style={VIEW_STYLES._bottomButtonView}>
+        <View style={VIEW_STYLES._bottomButtonView}>
         <CustomSingleButton
           // onPress={() => props.navigation.navigate("CreateJobSecondScreen")}
           _ButtonText={"Next"}
           Text_Color={_COLORS.Kodie_WhiteColor}
         />
       </View>
+      </ScrollView>
     </View>
   );
 };

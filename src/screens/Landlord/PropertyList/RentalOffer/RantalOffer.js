@@ -154,6 +154,7 @@ const RantalOffer = (props) => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
+      
         <View style={RantalOfferCss.flatListContainer}>
           <View style={[RantalOfferCss.flat_MainView, { marginBottom: 10 }]}>
             <TouchableOpacity style={RantalOfferCss.bidsButton}>
