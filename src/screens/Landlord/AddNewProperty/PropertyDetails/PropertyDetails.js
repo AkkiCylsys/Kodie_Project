@@ -44,6 +44,7 @@ export default PropertyDetails = (props) => {
   // handle property details api start to here
   const handlePropertyDetails = async () => {
     property_details();
+    // handleProperty_Type_Data()
   };
 
   const property_details = () => {
@@ -57,7 +58,7 @@ export default PropertyDetails = (props) => {
         user_account_details_id: 82,
         islocation: 1,
         location: location,
-        property_type:property_value,
+        property_type:propertyTypeData,
         property_description: propertyDesc,
         autolist: 1,
       })
@@ -93,7 +94,7 @@ export default PropertyDetails = (props) => {
     axios
       .post(propertyType, propertyData)
       .then((response) => {
-        console.log("handleProperty_Type_Data", response.data);
+        console.log("handleProperty_Type_Data", response.data.data);
         if (response.data.status === true) {
           setIsLoading(false);
           console.log("handleProperty_Type_Data....", response.data.data);
@@ -179,15 +180,34 @@ export default PropertyDetails = (props) => {
             <Text style={PropertyDetailsStyle.property_Text}>
               Property type
             </Text>
-            <CustomSingleDropdown
+            {/* <CustomSingleDropdown
               btnview={true}
               placeholdertext={"Apartment"}
               data={propertyTypeData}
               value={property_value}
+              labelField="description"
+              valueField="lookup_key"
+              onChange={(item) => {
+                // setProperty_value(item.lookup_key);
+                alert(item);
+               
+              }}
+            /> */}
+              <Dropdown
+              style={PropertyDetailsStyle.dropdown}
+              placeholderStyle={PropertyDetailsStyle.placeholderStyle}
+              selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
+              inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
+              iconStyle={PropertyDetailsStyle.iconStyle}
+              data={propertyTypeData}
+              maxHeight={300}
+              labelField="description"
+              valueField="lookup_key"
+              placeholder="Apartment"
+              value={property_value}
               onChange={(item) => {
                 setProperty_value(item.lookup_key);
-                alert(item);
-                alert(`Selected lookup_key: ${item.lookup_key}`);
+                alert(item)
               }}
             />
            

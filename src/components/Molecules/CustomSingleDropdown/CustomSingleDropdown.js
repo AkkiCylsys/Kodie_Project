@@ -339,7 +339,7 @@ const CustomSingleDropdown = (props) => {
         <TouchableOpacity style={CustomSingleDropdownStyle.dropmenu} onPress={toggleshow}>
           {appliedOption ? (
             <Text style={CustomSingleDropdownStyle.selectedOptionText}>
-              {appliedOption.label}
+              {appliedOption}
             </Text>
           ) : (
             <Text style={CustomSingleDropdownStyle.placeholdertext}>
