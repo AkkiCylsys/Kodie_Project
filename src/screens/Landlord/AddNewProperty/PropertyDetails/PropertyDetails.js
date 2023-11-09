@@ -19,6 +19,8 @@ import CustomSingleButton from "../../../../components/Atoms/CustomButton/Custom
 import CustomDropdown from "../../../../components/Molecules/CustomDropdown/CustomDropdown";
 import { Config } from "../../../../Config";
 import axios from "axios";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import CustomSingleDropdown from "../../../../components/Molecules/CustomSingleDropdown/CustomSingleDropdown";
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },
@@ -36,42 +38,87 @@ export default PropertyDetails = (props) => {
   const [location, setLocation] = useState("");
   const [value, setValue] = useState(null);
   const [propertyDesc, setPropertyDesc] = useState("");
+  // add api state to here
   const [isLoading, setIsLoading] = useState(false);
-  const [property_Data, setProperty_Data] = useState([]);
+  const [propertyTypeData, setPropertyTypeData] = useState([]);
+  const [property_value, setProperty_value] = useState("");
+  // handle property details api start to here
+  // const property_details = () => {
+  //   const url = Config.API_URL;
+  //   const additionalApi = url + "add_property_details";
+  //   console.log("Request URL:", additionalApi);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(additionalApi, {
+  //       user: 35,
+  //       user_account_details_id: 82,
+  //       islocation: 1,
+  //       location: location,
+  //       property_type:property_value,
+  //       property_description: propertyDesc,
+  //       autolist: 1,
+  //     })
+  //     .then((response) => {
+  //       console.log("property_details", response);
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+  //         props.navigation.navigate("PropertyFeature");
+  //         console.log("property_details....", response.data);
+  //         console.log(location, propertyDesc, propertyTypeData, selectedOption);
+  //       } else {
+  //         console.error("property_details_error:", response.data.error);
+  //         alert(response.data.error);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("property_details error:", error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
 
-  useEffect(() => {
-    handleProperty_Type();
-  }, []);
+  // property Type API with LookupKey...
+  // const handleProperty_Type_Data = () => {
+  //   const propertyData = {
+  //     P_PARENT_CODE: "PROP_TYPE",
+  //     P_TYPE: "OPTION",
+  //   };
+  //   const url = Config.API_URL;
+  //   const propertyType = url + "lookup_details";
+  //   setIsLoading(true);
+  //   axios
+  //     .post(propertyType, propertyData)
+  //     .then((response) => {
+  //       console.log("handleProperty_Type_Data", response.data);
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+  //         console.log("handleProperty_Type_Data....", response.data.data);
+  //         setPropertyTypeData(
+  //           response.data.data.map((item) => item.description)
+  //         );
+  //         setProperty_value(response.data.data.map((item) => item.lookup_key));
+  //         console.log(response.data.data.map((item) => item.lookup_key));
+  //       } else {
+  //         console.error("handleProperty_Type_Data_error:", response.data.error);
+  //         alert(response.data.error);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("handleProperty_Type_Data error:", error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
 
-  const handleProperty_Type = () => {
-    const propertyData = {
-      P_PARENT_CODE: "PROP_TYPE",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
-    setIsLoading(true);
-    axios
-      .post(propertyType, propertyData)
-      .then((response) => {
-        console.log("property_type", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("propertyData....", response.data.data);
-          setProperty_Data(response.data.data);
-        } else {
-          console.error("property_type_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("property_type error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
+  // useEffect(() => {
+
+  //   property_details();
+  //   handleProperty_Type_Data();
+
+  // }, []);
+
   return (
     <View style={PropertyDetailsStyle.mainContainer}>
       {/* <ScrollView> */}
@@ -95,6 +142,29 @@ export default PropertyDetails = (props) => {
                 style={PropertyDetailsStyle.locationIcon}
               />
             </TouchableOpacity>
+          </View>
+
+          <View style={PropertyDetailsStyle.inputContainer}>
+            <Text style={PropertyDetailsStyle.property_Text}>
+              Property type
+            </Text>
+            <CustomSingleDropdown
+              btnview={true}
+              placeholdertext={"Apartment"}
+              data={propertyTypeData}
+              value={property_value}
+              onChange={(item) => {
+                setProperty_value(item.lookup_key);
+                alert(item);
+                alert(`Selected lookup_key: ${item.lookup_key}`);
+              }}
+            />
+          </View>
+
+          <View style={PropertyDetailsStyle.inputContainer}>
+            <Text style={LABEL_STYLES._texinputLabel}>
+              Property description
+            </Text>
             <TextInput
               style={PropertyDetailsStyle.locationInput}
               value={location}
@@ -162,6 +232,7 @@ export default PropertyDetails = (props) => {
               //   props.navigation.navigate("PropertyFeature");
               // }}
               onPress={props?.PropertyDetailsButton}
+              onPress={handlePropertyDetails}
             />
           </View>
           <View style={PropertyDetailsStyle.btnView}>
@@ -173,9 +244,15 @@ export default PropertyDetails = (props) => {
           </View>
           <TouchableOpacity
             style={PropertyDetailsStyle.goBack_View}
+<<<<<<< HEAD
             // onPress={() => {
             //   props.navigation.navigate("Properties");
             // }}
+=======
+            onPress={() => {
+              props.navigation.navigate("Properties");
+            }}
+>>>>>>> origin/Rahul_dev
           >
             <View style={PropertyDetailsStyle.backIcon}>
               <Ionicons
