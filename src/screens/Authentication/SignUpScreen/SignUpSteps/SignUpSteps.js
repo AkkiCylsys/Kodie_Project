@@ -506,6 +506,7 @@ const SignUpSteps = (props) => {
     handle_describe_yourself();
     additional_features();
   }, []);
+
   // property Type API with LookupKey...
   const handleProperty_Type = () => {
     const propertyData = {

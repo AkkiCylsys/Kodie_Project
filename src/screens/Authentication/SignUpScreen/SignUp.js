@@ -145,8 +145,12 @@ export default SignUp = (props) => {
       );
     } else if (password.trim() === "") {
       setPasswordError("Password is required");
-    } else if (!term || !privacy) {
+    } else if (!term && !privacy) {
       alert("Please accept both Terms & Conditions and Privacy Policy.");
+    } else if (!term) {
+      alert("Please click on Terms & Conditions.");
+    } else if (!privacy) {
+      alert("Please click on Privacy Policy.");
     } else {
       Signuphandle();
     }
@@ -184,6 +188,7 @@ export default SignUp = (props) => {
               onBlur={() => handleSignUpEmail(email)}
               placeholder="Enter Your Email Address"
               placeholderTextColor="#999"
+              maxLength={30}
             />
             {emailError ? (
               <Text style={SignUpStyles.error_text}>{emailError}</Text>

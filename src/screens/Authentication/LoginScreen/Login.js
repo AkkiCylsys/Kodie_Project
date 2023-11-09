@@ -425,6 +425,7 @@ export default Login = (props) => {
                 onBlur={() => handleEmailChange(email)}
                 placeholder="Your email address"
                 placeholderTextColor="#999"
+                maxLength={30}
               />
             </View>
             {emailError ? (
@@ -569,6 +570,7 @@ export default Login = (props) => {
                   onBlur={() => handleResetEmailChange(resetEmail)}
                   placeholder="Your email address"
                   placeholderTextColor="#999"
+                  maxLength={30}
                 />
               </View>
               {resetEmailError ? (
