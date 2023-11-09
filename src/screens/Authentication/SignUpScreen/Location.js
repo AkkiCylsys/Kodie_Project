@@ -12,8 +12,8 @@ import { LocationStyle } from "./LocationStyle";
 import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { _COLORS, FONTFAMILY, IMAGES } from "../../../Themes";
-import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
+import Geocoder from "react-native-geocoding";
+import Geolocation from "react-native-geolocation-service";
 
 export default Location = (props) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -80,10 +80,10 @@ export default Location = (props) => {
   const onRegionChange = (Region) => {
     //alert(JSON.stringify(Region.latitude))
     setlatitude(Region.latitude);
-    alert(latitude)
-    alert(longitude)
-    console.log("latitude..", latitude)
-    console.log("longitude..", longitude)
+    alert(latitude);
+    alert(longitude);
+    console.log("latitude..", latitude);
+    console.log("longitude..", longitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
   };
@@ -124,7 +124,9 @@ export default Location = (props) => {
         />
       </View>
       <View style={LocationStyle.searchPlc}>
-        <SearchPlaces />
+        <SearchPlaces
+        // onLocationSelect={handleLocationSelect}
+        />
       </View>
 
       <TouchableOpacity style={LocationStyle.shapeIcon}>

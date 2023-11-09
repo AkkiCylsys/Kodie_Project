@@ -10,6 +10,7 @@ const SearchPlaces = () => {
     <View style={SearchPlacesStyle.container}>
       <GooglePlacesAutocomplete
         placeholder="Search"
+        debounce={400}
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
           console.log("Selected Place Data:", data);

@@ -143,13 +143,13 @@ export default Details = (props) => {
           </View>
           <DividerIcon marginTop={8} />
         </View>
-        <View style={DetailsStyle.btnView}>
+        {/* <View style={DetailsStyle.btnView}>
           <CustomSingleButton
             _ButtonText={"Edit details"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={props.AddProperty}
           />
-        </View>
+        </View> */}
         {/* <TouchableOpacity
           style={DetailsStyle.goBack_View}
           onPress={() => {
