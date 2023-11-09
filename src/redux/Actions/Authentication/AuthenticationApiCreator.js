@@ -22,11 +22,10 @@ import { Config } from "../../../Config";
 
 const url = Config.API_URL;
 
-export const loginApiActionCreator = (data) => async (dispatch) => {
+export const loginApiActionCreator = (data) => async dispatch => {
   //alert(url)
   dispatch(fetchLoginData());
   try {
-    //const res = await axios.get(url + loginParameters)
     const res = await axios.post(url + "user_login", data, {
       headers: {
         "Content-Type": "application/json",
@@ -52,20 +51,3 @@ export const logoutActionCreator = () => async (dispatch) => {
   }
 };
 
-export const RegisterAsAgent = async (data) => {
-  // dispatch(fetchLoginData());
-  try {
-    const res = await axios.post(
-      url + "AgentRequest/AddEditAgentRequest",
-      data,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return res;
-  } catch (error) {
-    console.log(error);
-  }
-};

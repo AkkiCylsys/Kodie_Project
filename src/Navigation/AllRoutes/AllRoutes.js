@@ -383,17 +383,17 @@ const AllStackRouts = (props) => {
   return (
     <NavigationContainer
       ref={navigationRef}
-      onStateChange={async () => {
-        const previousRouteName = routeName;
-        const currentRouteName = navigationRef.getCurrentRoute().name;
-        // console.log('previousRouteName...............', previousRouteName);
-        // console.log('currentRouteName...............', currentRouteName);
-        setRouteName(currentRouteName);
-      }}
-      onReady={() => {
-        // isReadyRef.current = true;
-        setRouteName(navigationRef.getCurrentRoute().name);
-      }}
+      // onStateChange={async () => {
+      //   const previousRouteName = routeName;
+      //   const currentRouteName = navigationRef.getCurrentRoute().name;
+      //   // console.log('previousRouteName...............', previousRouteName);
+      //   // console.log('currentRouteName...............', currentRouteName);
+      //   setRouteName(currentRouteName);
+      // }}
+      // onReady={() => {
+      //   // isReadyRef.current = true;
+      //   setRouteName(navigationRef.getCurrentRoute().name);
+      // }}
     >
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
