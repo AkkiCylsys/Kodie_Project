@@ -38,16 +38,22 @@ export default PropertyDetails = (props) => {
   const [value, setValue] = useState(null);
   const [propertyDesc, setPropertyDesc] = useState("");
   // add api state to here
-  // const [property_value, setProperty_value] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [propertyTypeData , setPropertyTypeData] = useState([])
-  const [propertyIdKey , setPropertyIDKey] = useState("")
+  const [propertyTypeData, setPropertyTypeData] = useState([]);
+  const [property_value, setProperty_value] = useState([]);
+  const [selectedPropertyType, setSelectedPropertyType] = useState(null); // Store the selected property type
   // handle property details api start to here
   const handlePropertyDetails = async () => {
+    if (!selectedPropertyType) {
+      // Ensure a property type is selected
+      alert("Please select a property type.");
+      return;
+    }
     property_details();
   };
 
   const property_details = () => {
+ 
     const url = Config.API_URL;
     const additionalApi = url + "add_property_details";
     console.log("Request URL:", additionalApi);
@@ -58,17 +64,18 @@ export default PropertyDetails = (props) => {
         user_account_details_id: 82,
         islocation: 1,
         location: location,
-        property_type: 1,
+        // property_type: property_value,
+        property_type: selectedPropertyType,
         property_description: propertyDesc,
-        autolist:1
-      }) 
+        autolist: 1,
+      })
       .then((response) => {
         console.log("property_details", response);
         if (response.data.status === true) {
           setIsLoading(false);
           props.navigation.navigate("PropertyFeature");
           console.log("property_details....", response.data);
-          console.log(location,propertyDesc)
+          console.log(location, propertyDesc, propertyTypeData);
         } else {
           console.error("property_details_error:", response.data.error);
           alert(response.data.error);
@@ -81,43 +88,49 @@ export default PropertyDetails = (props) => {
         setIsLoading(false);
       });
   };
+  
 
-      // property Type API with LookupKey...
-    const handleProperty_Type_Data = () => {
-      const propertyData = {
-        P_PARENT_CODE: "PROP_TYPE",
-        P_TYPE: "OPTION",
-      };
-      const url = Config.API_URL;
-      const propertyType = url + "lookup_details";
-      setIsLoading(true);
-      axios
-        .post(propertyType, propertyData)
-        .then((response) => {
-          console.log("handleProperty_Type_Data", response.data);
-          if (response.data.status === true) {
-            setIsLoading(false);
-            console.log("handleProperty_Type_Data....", response.data.data);
-            // setPropertyTypeData(response.data.data);
-            setPropertyTypeData(response.data.data.map((item) => item.description));
-            // setPropertyIDKey(propertyTypeData.lookup_key)
-          } else {
-            console.error("handleProperty_Type_Data_error:", response.data.error);
-            alert(response.data.error);
-            setIsLoading(false);
-          }
-        })
-        .catch((error) => {
-          console.error("handleProperty_Type_Data error:", error);
-          alert(error);
-          setIsLoading(false);
-        });
+  // property Type API with LookupKey...
+  const handleProperty_Type_Data = () => {
+
+    const propertyData = {
+      P_PARENT_CODE: "PROP_TYPE",
+      P_TYPE: "OPTION",
     };
+    const url = Config.API_URL;
+    const propertyType = url + "lookup_details";
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("handleProperty_Type_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("handleProperty_Type_Data....", response.data.data);
+          setPropertyTypeData(
+            response.data.data.map((item) => item.description)
+          );
+          setProperty_value(response.data.data.map((item) => item.lookup_key));
+          setProperty_value("");
+        } else {
+          console.error("handleProperty_Type_Data_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("handleProperty_Type_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
 
-  useEffect (() =>{
-    property_details()
-    handleProperty_Type_Data()
-  },[])
+  useEffect(() => {
+    property_details();
+    handleProperty_Type_Data();
+  }, []);
+
+
 
   return (
     <View style={PropertyDetailsStyle.mainContainer}>
@@ -171,13 +184,19 @@ export default PropertyDetails = (props) => {
               }}
             />
           </View>
+
           <View style={PropertyDetailsStyle.inputContainer}>
             <Text style={PropertyDetailsStyle.property_Text}>
               Property type
             </Text>
-            <CustomDropdown btnview={true} placeholdertext={"Apartment"} />
-            {/* data={propertyTypeData} */}
+            <CustomDropdown
+              btnview={true}
+              placeholdertext={"Apartment"}
+              data={propertyTypeData}
+              onApply={(selectedOption) => setSelectedPropertyType(selectedOption)} // Capture the selected property type
+            />
           </View>
+
           <View style={PropertyDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>
               Property description
@@ -228,7 +247,6 @@ export default PropertyDetails = (props) => {
             onPress={() => {
               props.navigation.navigate("Properties");
             }}
-       
           >
             <View style={PropertyDetailsStyle.backIcon}>
               <Ionicons
@@ -246,36 +264,33 @@ export default PropertyDetails = (props) => {
   );
 };
 
-
-
-
-    // property Type API with LookupKey...
-    // const handleProperty_Type = () => {
-    //   const propertyData = {
-    //     P_PARENT_CODE: "PROP_TYPE",
-    //     P_TYPE: "OPTION",
-    //   };
-    //   const url = Config.API_URL;
-    //   const propertyType = url + "lookup_details";
-    //   console.log("Request URL:", propertyType);
-    //   setIsLoading(true);
-    //   axios
-    //     .post(propertyType, propertyData)
-    //     .then((response) => {
-    //       console.log("property_type", response.data);
-    //       if (response.data.status === true) {
-    //         setIsLoading(false);
-    //         console.log("propertyData....", response.data.data);
-    //         setProperty_Data(response.data.data);
-    //       } else {
-    //         console.error("property_type_error:", response.data.error);
-    //         alert(response.data.error);
-    //         setIsLoading(false);
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.error("property_type error:", error);
-    //       alert(error);
-    //       setIsLoading(false);
-    //     });
-    // };
+// property Type API with LookupKey...
+// const handleProperty_Type = () => {
+//   const propertyData = {
+//     P_PARENT_CODE: "PROP_TYPE",
+//     P_TYPE: "OPTION",
+//   };
+//   const url = Config.API_URL;
+//   const propertyType = url + "lookup_details";
+//   console.log("Request URL:", propertyType);
+//   setIsLoading(true);
+//   axios
+//     .post(propertyType, propertyData)
+//     .then((response) => {
+//       console.log("property_type", response.data);
+//       if (response.data.status === true) {
+//         setIsLoading(false);
+//         console.log("propertyData....", response.data.data);
+//         setProperty_Data(response.data.data);
+//       } else {
+//         console.error("property_type_error:", response.data.error);
+//         alert(response.data.error);
+//         setIsLoading(false);
+//       }
+//     })
+//     .catch((error) => {
+//       console.error("property_type error:", error);
+//       alert(error);
+//       setIsLoading(false);
+//     });
+// };
