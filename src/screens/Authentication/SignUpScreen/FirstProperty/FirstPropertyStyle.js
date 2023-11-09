@@ -90,7 +90,7 @@ export const FirstPropertyStyle = StyleSheet.create({
   key_feature_subView: { flex: 1, flexDirection: "row" },
   key_feature_Text: {
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: "center",
     marginRight: 15,

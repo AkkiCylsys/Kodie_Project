@@ -223,30 +223,30 @@ export default Login = (props) => {
     } else if (password.trim() === "") {
       setPasswordError("Password is required.");
     } else {
-      // makeApiLogin();
+      makeApiLogin();
       // alert("click")
-      setIsLoading(true);
-      let data = {
-        email: email,
-        password: password,
-      };
-      setIsLoading(true);
-      let res = await dispatch(loginApiActionCreator(data));
-      alert(res.data.status);
+      // setIsLoading(true);
+      // let data = {
+      //   email: email,
+      //   password: password,
+      // };
+      // setIsLoading(true);
+      // let res = await dispatch(loginApiActionCreator(data));
+      // alert(res.data.status);
 
-      console.log("res....", res);
-      if (res.data.status === true) {
-        alert("Login successful");
-        setIsLoading(false);
-        props.navigation.navigate("DrawerNavigatorLeftMenu");
-        setEmail("");
-        setPassword("");
-      } else {
-        alert("Please check your email and password.");
-        setPasswordError(
-          "Hmm, it seems like the credentials you entered are invalid. Please try again."
-        );
-      }
+      // console.log("res....", res);
+      // if (res.data.status === true) {
+      //   alert("Login successful");
+      //   setIsLoading(false);
+      //   props.navigation.navigate("DrawerNavigatorLeftMenu");
+      //   setEmail("");
+      //   setPassword("");
+      // } else {
+      //   alert("Please check your email and password.");
+      //   setPasswordError(
+      //     "Hmm, it seems like the credentials you entered are invalid. Please try again."
+      //   );
+      // }
     }
   };
 
