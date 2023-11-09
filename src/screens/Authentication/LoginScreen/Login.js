@@ -180,14 +180,14 @@ export default Login = (props) => {
   };
 
   //... inner reset password password variable define here
-  const handlePasswordChange = (text) => {
-    setPassword(text);
-    if (text.trim() === "") {
-      setPasswordError("Password is required.");
-    } else {
-      setPasswordError("");
-    }
-  };
+  // const handlePasswordChange = (text) => {
+  //   setPassword(text);
+  //   if (text.trim() === "") {
+  //     setPasswordError("Password is required.");
+  //   } else {
+  //     setPasswordError("");
+  //   }
+  // };
 
   //... inner reset password new password variable define here
   const handleNewPassword = (text) => {
@@ -220,7 +220,7 @@ export default Login = (props) => {
         "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else if (password.trim() === "") {
-      setPasswordError("Password is required.");
+      // setPasswordError("Password is required.");
     } else {
       makeApiLogin();
       // let response = await dispatch(fetchLoginSuccess(loginResponse));
@@ -297,6 +297,7 @@ export default Login = (props) => {
           if (isClick === 1) {
             setIsClick(1);
             setVerificationcode("");
+            setIsTimeron(true);
           } else {
             setIsClick(isClick + 1);
           }
@@ -417,10 +418,8 @@ export default Login = (props) => {
                   },
                 ]}
                 value={password}
-                onChangeText={handlePasswordChange}
-                onBlur={() => {
-                  handlePasswordChange(password);
-                }}
+                onChangeText={setPassword}
+                // onBlur={() => handlePasswordChange(password)}
                 placeholder="Enter password"
                 placeholderTextColor="#999"
                 secureTextEntry

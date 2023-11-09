@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -139,12 +139,71 @@ const property_List2 = [
     isinviteTenants: false,
   },
 ];
+const propertyList_Data = () => {
+  const propertyDataList = {
+    user: 8,
+  };
+  const url = Config.API_URL;
+  const propertyData_List = url + "get_All_Property_details";
+  console.log("Request URL :", propertyData_List);
+  setIsLoading(true);
+  axios
+    .post(propertyData_List, propertyDataList)
+    .then((response) => {
+      console.log("property_Data_list", response.data);
+      if (response.data.status === true) {
+        setIsLoading(false);
+        console.log("propertyDataList....", response.data.data);
+        setProperty_Data_List(response.data.data);
+      } else {
+        console.error("property_Data_list_error:", response.data.error);
+        alert(response.data.error);
+        setIsLoading(false);
+      }
+    })
+    .catch((error) => {
+      console.error("property_Data_list error:", error);
+      alert(error);
+      setIsLoading(false);
+    });
+};
 
 const PropertyList = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
+  const [Property_Data_List, setProperty_Data_List] = useState([]);
   const refRBSheet = useRef();
-
+  // useEffect(() => {
+  //   propertyList_Data();
+  // }, []);
+  // const propertyList_Data = () => {
+  //   const propertyDataList = {
+  //     user: 8,
+  //   };
+  //   const url = Config.API_URL;
+  //   const propertyData_List = url + "get_All_Property_details";
+  //   console.log("Request URL :", propertyData_List);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(propertyData_List, propertyDataList)
+  //     .then((response) => {
+  //       console.log("property_Data_list", response.data);
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+  //         console.log("propertyDataList....", response.data.data);
+  //         setProperty_Data_List(response.data.data);
+  //       } else {
+  //         console.error("property_Data_list_error:", response.data.error);
+  //         alert(response.data.error);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("property_Data_list error:", error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity style={PropertyListCSS.flatlistView}>
@@ -544,13 +603,13 @@ const PropertyList = (props) => {
               </View>
             </View>
             <DividerIcon />
-            <FlatList data={property_List1} renderItem={propertyData1_render}
-             />
+            <FlatList
+              //  data={Property_Data_List}
+              data={property_List1}
+              renderItem={propertyData1_render}
+            />
           </>
         )}
-         
-      
-
       </ScrollView>
     </View>
   );

@@ -191,14 +191,14 @@ const AddPropertyMainPage = (props) => {
                   handleNextBtn();
                 }}
               />
-              {currentPage === 1 || currentPage === 2 ? (
+              {currentPage == 1 || currentPage == 2 ? (
                 <>
                   <CustomSingleButton
                     _ButtonText={"Fill these details out later"}
                     Text_Color={_COLORS.Kodie_BlackColor}
                     backgroundColor={_COLORS.Kodie_WhiteColor}
                     onPress={() => {
-                      if (currentPage === 2) {
+                      if (currentPage == 2) {
                         // handleNextBtn();
                       } else {
                         setCurrentPage(currentPage + 1);
@@ -218,7 +218,7 @@ const AddPropertyMainPage = (props) => {
                   </TouchableOpacity>
                 </>
               ) : null}
-              {currentPage === 0 || currentPage === 3 ? (
+              {currentPage == 0 || currentPage == 3 ? (
                 <TouchableOpacity style={SignUpStepStyle.goBack_View}>
                   <View style={SignUpStepStyle.backIcon}>
                     <Ionicons
