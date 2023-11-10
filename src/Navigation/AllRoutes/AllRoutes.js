@@ -105,7 +105,7 @@ import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingan
 import EditDashboard from "../../screens/Dashboard/EditDashboard";
 import RantalOffer from "../../screens/Landlord/PropertyList/RentalOffer/RantalOffer";
 import AddPropertyMainPage from "../../screens/Landlord/AddNewProperty/AddPropertyMainPage";
-
+import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 // import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 // import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
 // import Contractors1 from "../../screens/Managingcontractors/Contractors1";
@@ -889,6 +889,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"RantalOffer"}
           component={RantalOffer}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SearchPlaces"}
+          component={SearchPlaces}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

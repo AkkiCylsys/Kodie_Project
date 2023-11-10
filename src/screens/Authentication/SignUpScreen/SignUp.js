@@ -22,6 +22,7 @@ import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveL
 import { Config } from "../../../Config";
 import { fetchRegistrationSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 import { useDispatch, useSelector } from "react-redux";
+import { signupApiActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -136,7 +137,7 @@ export default SignUp = (props) => {
   };
 
   //....... handle signup button validation here
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (email.trim() === "") {
       setEmailError("Email is required!");
     } else if (!validateSignUpEmail(email)) {
@@ -153,6 +154,46 @@ export default SignUp = (props) => {
       alert("Please click on Privacy Policy.");
     } else {
       Signuphandle();
+      // let data = {
+      //   email: email,
+      //   password: password,
+      //   is_term_condition: term,
+      //   is_privacy_policy: privacy,
+      // };
+      // setIsLoading(true);
+      // let res = await dispatch(signupApiActionCreator(data));
+      // console.log("res....", res);
+      // if (res.data.message === "User Signup Successful") {
+      //   alert(res.data.message);
+      //   setEmail("");
+      //   setPassword("");
+      //   setTerm(false);
+      //   setPrivacy(false);
+      //   setIsLoading(false);
+      //   // Redirect to SignUpVerification screen
+      //   props.navigation.navigate("SignUpVerification", {
+      //     email: email,
+      //     password: password,
+      //     is_term_condition: term,
+      //     is_privacy_policy: privacy,
+      //   });
+      // } else if (res.data.message === "User Already Exists But Not Verified") {
+      //   alert(res.data.message);
+      //   setEmail("");
+      //   setPassword("");
+      //   setTerm(false);
+      //   setPrivacy(false);
+      //   setIsLoading(false);
+      //   props.navigation.navigate("SignUpVerification", {
+      //     email: email,
+      //     password: password,
+      //     is_term_condition: term,
+      //     is_privacy_policy: privacy,
+      //   });
+      // } else {
+      //   setEmailError(res.data.message);
+      //   setIsLoading(false);
+      // }
     }
   };
 
