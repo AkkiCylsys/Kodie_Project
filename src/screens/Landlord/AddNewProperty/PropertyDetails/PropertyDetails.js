@@ -42,10 +42,38 @@ export default PropertyDetails = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [propertyTypeData, setPropertyTypeData] = useState([]);
   const [property_value, setProperty_value] = useState("");
+  const [selectedProperty, setSelectedProperty] = useState(null);
   // handle property details api start to here
   const handlePropertyDetails = async () => {
     property_details();
     // handleProperty_Type_Data()
+  };
+
+  // const handleApplySelection = (selectData) => {
+  //   setSelectedProperty(selectData);
+  //   alert(`Selected Lookup Key: ${selectData.lookup_key}`);
+  //   console.log(`Selected Lookup Key: ${selectData.lookup_key}`);
+  //   console.log(selectData)
+  // };
+  const handleApplySelection = (selectData) => {
+    setSelectedProperty(selectData);
+  
+    // Check if lookup_key is directly available in selectData
+    const lookupKey = selectData.lookup_key || 
+      (selectData.data && selectData.data.lookup_key);
+  
+    if (lookupKey !== undefined) {
+      alert(`Selected Lookup Key: ${lookupKey}`);
+      console.log(`Selected Lookup Key: ${lookupKey}`);
+    } else {
+      console.error("Lookup key not found in selectData:", selectData);
+    }
+  };
+  
+  
+
+  const handleClearSelection = () => {
+    setSelectedProperty(null);
   };
 
   const property_details = () => {
@@ -59,7 +87,7 @@ export default PropertyDetails = (props) => {
         user_account_details_id: 82,
         islocation: 1,
         location: location,
-        property_type:propertyTypeData,
+        property_type: propertyTypeData,
         property_description: propertyDesc,
         autolist: 1,
       })
@@ -69,7 +97,7 @@ export default PropertyDetails = (props) => {
           setIsLoading(false);
           props.navigation.navigate("PropertyFeature");
           console.log("property_details....", response.data);
-          console.log(location, propertyDesc, propertyTypeData, selectedOption);
+          console.log(location, propertyDesc, propertyTypeData, selectData);
         } else {
           console.error("property_details_error:", response.data.error);
           alert(response.data.error);
@@ -95,10 +123,10 @@ export default PropertyDetails = (props) => {
     axios
       .post(propertyType, propertyData)
       .then((response) => {
-        console.log("handleProperty_Type_Data", response.data.data);
+        console.log("handleProperty_Type_Data", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("handleProperty_Type_Data....", response.data.data);
+          console.log("handleProperty_Type_Data....", response.data);
           setPropertyTypeData(
             response.data.data.map((item) => item.description)
           );
@@ -118,10 +146,8 @@ export default PropertyDetails = (props) => {
   };
 
   useEffect(() => {
-
     property_details();
     handleProperty_Type_Data();
-
   }, []);
 
   return (
@@ -174,12 +200,23 @@ export default PropertyDetails = (props) => {
           />
         </View>
         <View style={PropertyDetailsStyle.inputContainer}>
-          <Text style={PropertyDetailsStyle.property_Text}>Property type</Text>
-          <CustomDropdown
+          <Text style={PropertyDetailsStyle.property_Text}>
+            Property type
+            {selectedProperty ? selectedProperty.description : "None"}
+          </Text>
+          {/* <CustomSingleDropdown
             btnview={true}
             placeholdertext={"Apartment"}
-            // data={[property_Data]}
+            data={propertyTypeData}
+          /> */}
+          <CustomSingleDropdown
+            btnview={true}
+            placeholdertext={"Apartment"}
+            data={propertyTypeData}
+            onApply={handleApplySelection}
+            onClear={handleClearSelection}
           />
+         
         </View>
         <View style={PropertyDetailsStyle.inputContainer}>
           <Text style={LABEL_STYLES._texinputLabel}>Property description</Text>
