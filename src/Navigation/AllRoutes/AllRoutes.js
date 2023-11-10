@@ -94,7 +94,7 @@ import PropertyListings from "../../screens/PropertyListings/PropertyListings";
 import VacantPropertiesList from "../../screens/VacantProperties/VacantPropertiesList";
 import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
-import Contractors1 from '../../screens/Managingcontractors/Contractors1';
+import Contractors1 from "../../screens/Managingcontractors/Contractors1";
 import Contractors2 from "../../screens/Managingcontractors/Contractors2";
 import Contractors3 from "../../screens/Managingcontractors/Contractors3";
 import Reviewjobdetails1 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails1";
