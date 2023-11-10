@@ -147,48 +147,7 @@ export default PropertyDetails = (props) => {
                 style={PropertyDetailsStyle.locationIcon}
               />
             </TouchableOpacity>
-          </View>
 
-          <View style={PropertyDetailsStyle.inputContainer}>
-            <Text style={PropertyDetailsStyle.property_Text}>
-              Property type
-            </Text>
-            {/* <CustomSingleDropdown
-              btnview={true}
-              placeholdertext={"Apartment"}
-              data={propertyTypeData}
-              value={property_value}
-              labelField="description"
-              valueField="lookup_key"
-              onChange={(item) => {
-                // setProperty_value(item.lookup_key);
-                alert(item);
-               
-              }}
-            /> */}
-              <Dropdown
-              style={PropertyDetailsStyle.dropdown}
-              placeholderStyle={PropertyDetailsStyle.placeholderStyle}
-              selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
-              inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
-              iconStyle={PropertyDetailsStyle.iconStyle}
-              data={propertyTypeData}
-              maxHeight={300}
-              labelField="description"
-              valueField="lookup_key"
-              placeholder="Apartment"
-              value={property_value}
-              onChange={(item) => {
-                setProperty_value(item.lookup_key);
-                alert(item)
-              }}
-            />
-          </View>
-
-          <View style={PropertyDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>
-              Property description
-            </Text>
             <TextInput
               style={PropertyDetailsStyle.locationInput}
               value={location}
@@ -268,9 +227,9 @@ export default PropertyDetails = (props) => {
           </View>
           <TouchableOpacity
             style={PropertyDetailsStyle.goBack_View}
-            onPress={() => {
-              props.navigation.navigate("Properties");
-            }}
+            // onPress={() => {
+            //   props.navigation.navigate("Properties");
+            // }}
           >
             <View style={PropertyDetailsStyle.backIcon}>
               <Ionicons
