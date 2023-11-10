@@ -31,16 +31,20 @@ export const loginApiActionCreator = (data) => async dispatch => {
         "Content-Type": "application/json",
       },
     });
+   // alert(JSON.stringify(res))
     if (res.data.status == true) {
       dispatch(fetchLoginSuccess(res.data));
       return res;
     } else {
+      //dispatch(fetchLoginError(res.data));
       return res;
     }
-    return res;
+    //return res;
   } catch (error) {
+
+    //alert(JSON.stringify(error?.response?.status))
     dispatch(fetchLoginError(error));
-    console.log(error);
+  return error?.response?.status;
   }
 };
 export const logoutActionCreator = () => async (dispatch) => {
