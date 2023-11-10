@@ -8,17 +8,19 @@ const Splash = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
 
   useEffect(() => {
-  //  alert(JSON.stringify(loginData))
+    // alert(JSON.stringify(loginData));
     setTimeout(() => {
-      if (loginData?.token == '' || loginData?.token == undefined) {
+      if (
+        loginData?.Login_details?.token == "" ||
+        loginData?.Login_details?.token == undefined
+      ) {
         props.navigation.navigate("LoginScreen");
-      }
-      else {
+      } else {
         props.navigation.navigate("DrawerNavigatorLeftMenu");
       }
     }, 3000);
     // setTimeout(() => {
-     
+
     // }, 3000);
   });
 
