@@ -7,8 +7,7 @@ import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
-import {ReviewjobdetailsStyle3} from '../ReviewJobDetails/ReviewjobdetailsStyle3'
-
+import { ReviewjobdetailsStyle3 } from "../ReviewJobDetails/ReviewjobdetailsStyle3";
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },
