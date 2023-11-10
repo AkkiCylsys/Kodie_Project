@@ -8,8 +8,18 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { _COLORS, IMAGES } from "../../../Themes/index";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import LandlordProfileData from "../../../components/Molecules/LandlordProfileData/LandlordProfileData";
-
+import  {logoutActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator'
+import {useDispatch, useSelector} from 'react-redux';
 export default LandlordProfile = (props) => {
+  const dispatch = useDispatch();
+
+
+  const LogOut = () => {
+    dispatch(logoutActionCreator())
+    //props.navigation.navigate('AuthNavigator');
+  };
+ 
+
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
@@ -157,11 +167,7 @@ export default LandlordProfile = (props) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate("LoginScreen");
-          }}
-        >
+        <TouchableOpacity onPress={LogOut}>
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
