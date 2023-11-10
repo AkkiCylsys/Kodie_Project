@@ -25,6 +25,7 @@ import CircleProgress from "../../components/Molecules/CircleProgress/CircleProg
 import SelectProperties from "../../components/Molecules/SelectProperties/SelectProperties";
 import SelectDate from "../../components/Molecules/SelectDate/SelectDate";
 import RBSheet from "react-native-raw-bottom-sheet";
+import { useDispatch, useSelector } from "react-redux";
 const IncomeData = [
   {
     id: "1",
@@ -80,6 +81,11 @@ export default Dashboard = (props) => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
+
+  const Login_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
+  console.log("Login_response.....", Login_response);
 
   const Income_render = ({ item, index }) => {
     return (
