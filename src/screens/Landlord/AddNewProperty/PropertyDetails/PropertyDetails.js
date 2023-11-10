@@ -195,7 +195,7 @@ export default PropertyDetails = (props) => {
           <CustomDropdown
             btnview={true}
             placeholdertext={"Apartment"}
-            data={[property_Data]}
+            // data={[property_Data]}
           />
         </View>
         <View style={PropertyDetailsStyle.inputContainer}>
