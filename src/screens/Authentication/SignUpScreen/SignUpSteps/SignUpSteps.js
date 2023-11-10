@@ -37,6 +37,7 @@ import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
+import { useScrollToTop } from "@react-navigation/native";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -88,6 +89,9 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   return iconConfig;
 };
 const SignUpSteps = (props) => {
+  const ref = React.useRef(null);
+
+  const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -139,6 +143,7 @@ const SignUpSteps = (props) => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
+  const [describeBtn, setDescribeBtn] = useState([]);
   const [data_add, setData_add] = useState([]);
   const fs = RNFetchBlob.fs;
 
@@ -274,13 +279,15 @@ const SignUpSteps = (props) => {
   const toggleSelection = (lookup_key) => {
     if (selectedServices.includes(lookup_key)) {
       setSelectedServices(
-        selectedServices.filter((item) => item !== lookup_key),
-        alert(selectedServices.filter((item) => item !== lookup_key))
+        selectedServices.filter((item) => item !== lookup_key)
+        // alert(selectedServices.filter((item) => item !== lookup_key))
       );
     } else {
       setSelectedServices([...selectedServices, lookup_key]);
+      // alert([...selectedServices]);
     }
   };
+
   const handle_key_feature = (lookup_key) => {
     if (selectedkey_features.includes(lookup_key)) {
       setSelectedkey_features(
@@ -307,7 +314,7 @@ const SignUpSteps = (props) => {
       onPress={() => {
         toggleSelection(item.lookup_key);
         setKodieDescribeYourselfDataId(item.lookup_key);
-        // alert(item.lookup_key);
+        alert(item.lookup_key);
       }}
     />
   );
@@ -368,6 +375,7 @@ const SignUpSteps = (props) => {
     setMobileNumber(text);
   };
   const handleNextBtn = () => {
+    scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
     if (firstName.trim() === "") {
       setFirstNameError("First name is required.");
     } else if (lastName.trim() === "") {
@@ -375,11 +383,14 @@ const SignUpSteps = (props) => {
     } else if (mobileNumber.trim() === "") {
       setMobileNumberError("Phone number is required.");
     } else {
-      if (currentPage === 0) {
+      if (currentPage == 0) {
         setCurrentPage(currentPage + 1);
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
       } else if (currentPage === 1) {
         setCurrentPage(currentPage + 1);
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
       } else if (currentPage === 2) {
+        scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
         console.log(
@@ -397,6 +408,7 @@ const SignUpSteps = (props) => {
   };
 
   const handleSaveSignup = async () => {
+    alert(selectedServices);
     const selectedServiceKeysString = selectedServices.join(",");
     const kodieHelpValue = selectedLookupKeys.join(",");
     const selectedKeyFeature = selectedkey_features.join(",");
@@ -422,15 +434,20 @@ const SignUpSteps = (props) => {
     formData.append("additional_features", additionalfeatureskeyvalue);
     formData.append("auto_list", selectedButtonId);
 
-    if (ImageName?.path) {
-      const imageUri = ImageName.path;
+    if (ImageName) {
+      const imageUri = ImageName;
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      const imageType = ImageName.mime || "image/jpeg";
-      console.log("imageType...", ImageName.mime);
+      // const imageType = ImageName.mime || "image/jpeg";
+
+      // if (ImageName?.path) {
+      //   const imageUri = ImageName.path;
+      //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      //   const imageType = ImageName.mime || "image/jpeg";
+      //   console.log("imageType...", ImageName.mime);
 
       formData.append("profile_photo", {
         uri: imageUri,
-        type: imageType,
+        // type: imageType,
         name: imageName,
       });
     }
@@ -478,6 +495,7 @@ const SignUpSteps = (props) => {
   };
 
   useEffect(() => {
+    scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
     handleProperty_Type();
     handle_manage_property();
     handle_bedRoom();
@@ -824,7 +842,7 @@ const SignUpSteps = (props) => {
       case 0:
         // return <Account />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={AccountStyle.headingView}>
               <Text style={AccountStyle.heading}>
                 {"Introduce yourself to Kodie"}
@@ -895,7 +913,7 @@ const SignUpSteps = (props) => {
                 </View>
               </View>
               <View style={AccountStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>
+                <Text style={[LABEL_STYLES._texinputLabel, { marginTop: 16 }]}>
                   Organisation name
                 </Text>
                 <TextInput
@@ -927,7 +945,7 @@ const SignUpSteps = (props) => {
       case 1:
         // return <AboutYou />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={AboutYouStyle.Container}>
               <Text style={AboutYouStyle.heading_Text}>
                 {"Tell us more about you"}
@@ -941,7 +959,7 @@ const SignUpSteps = (props) => {
               >
                 {ImageName ? (
                   <Image
-                    source={{ uri: ImageName.path }}
+                    source={{ uri: ImageName.path || ImageName }}
                     style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
                   />
                 ) : (
@@ -961,7 +979,7 @@ const SignUpSteps = (props) => {
                 renderItem={renderItemDescribeYourself}
                 keyExtractor={(item) => item.lookup_key.toString()}
                 numColumns={2}
-              />            
+              />
               {kodieDescribeYourselfId === 2 ||
               kodieDescribeYourselfId === 4 ? null : (
                 <View>
@@ -976,7 +994,6 @@ const SignUpSteps = (props) => {
                   />
                 </View>
               )}
-
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
               </Text>
@@ -1016,7 +1033,7 @@ const SignUpSteps = (props) => {
       case 2:
         // return <FirstProperty />;
         return (
-          <ScrollView>
+          <ScrollView ref={scrollViewRef}>
             <View style={FirstPropertyStyle.headingView}>
               <Text style={FirstPropertyStyle.heading}>
                 {"Add your first property"}
@@ -1103,6 +1120,7 @@ const SignUpSteps = (props) => {
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Key features</Text>
+
                 <View style={FirstPropertyStyle.key_feature_mainView}>
                   <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
@@ -1219,6 +1237,7 @@ const SignUpSteps = (props) => {
                     />
                   </View>
                 </View>
+
                 <View style={FirstPropertyStyle.key_feature_mainView}>
                   <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
@@ -1233,6 +1252,7 @@ const SignUpSteps = (props) => {
                     />
                   </View>
                 </View>
+
                 <View style={FirstPropertyStyle.inputContainer}>
                   <Text
                     style={[
@@ -1251,7 +1271,7 @@ const SignUpSteps = (props) => {
                     data={DATA}
                     labelField="label"
                     valueField="value"
-                    placeholder="Search"
+                    placeholder="Select additional features"
                     value={additionalfeatureskeyvalue}
                     search
                     searchPlaceholder="Search..."
@@ -1259,14 +1279,14 @@ const SignUpSteps = (props) => {
                       setAdditionalFeaturesKeyValue(item);
                       // alert(item);
                     }}
-                    renderRightIcon={() => (
-                      <AntDesign
-                        style={FirstPropertyStyle.icon}
-                        color={_COLORS.Kodie_BlackColor}
-                        name="search1"
-                        size={20}
-                      />
-                    )}
+                    // renderRightIcon={() => (
+                    //   <AntDesign
+                    //     style={FirstPropertyStyle.icon}
+                    //     color={_COLORS.Kodie_BlackColor}
+                    //     name="search1"
+                    //     size={20}
+                    //   />
+                    // )}
                     renderItem={renderDataItem}
                     renderSelectedItem={(item, unSelect) => (
                       <TouchableOpacity
@@ -1439,7 +1459,7 @@ const SignUpSteps = (props) => {
                       }
                     }}
                   />
-
+                  {/* 
                   <TouchableOpacity style={SignUpStepStyle.goBack_View}>
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
@@ -1449,11 +1469,14 @@ const SignUpSteps = (props) => {
                       />
                     </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </>
               ) : null}
-              {currentPage === 0 ? (
-                <TouchableOpacity style={SignUpStepStyle.goBack_View}>
+              {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
+                <TouchableOpacity
+                  style={SignUpStepStyle.goBack_View}
+                  onPress={goBack}
+                >
                   <View style={SignUpStepStyle.backIcon}>
                     <Ionicons
                       name="chevron-back"

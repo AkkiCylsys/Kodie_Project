@@ -92,21 +92,20 @@ import GenerateReport from "../../screens/Reports/GenerateReport/GenerateReport"
 import Partners from "../../screens/Partners/Partners";
 import PropertyListings from "../../screens/PropertyListings/PropertyListings";
 import VacantPropertiesList from "../../screens/VacantProperties/VacantPropertiesList";
+
 import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
 import Contractors1 from '../../screens/Managingcontractors/Contractors1';
-import Contractors2 from '../../screens/Managingcontractors/Contractors2';
-import Contractors3 from '../../screens/Managingcontractors/Contractors3';
-import Reviewjobdetails1 from '../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails1';
-import Reviewjobdetails2 from '../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails2';
-import Reviewjobdetails3 from '../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails3';
-import CompletedJobs from '../../screens/CreateJob/ReviewJobDetails/CompletedJobs';
-import Ratingandfeedback from '../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback'
-import EditDashboard from '../../screens/Dashboard/EditDashboard';
-import RantalOffer from '../../screens/Landlord/PropertyList/RentalOffer/RantalOffer'
-
-
-
+import Contractors2 from "../../screens/Managingcontractors/Contractors2";
+import Contractors3 from "../../screens/Managingcontractors/Contractors3";
+import Reviewjobdetails1 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails1";
+import Reviewjobdetails2 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails2";
+import Reviewjobdetails3 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails3";
+import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
+import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
+import EditDashboard from "../../screens/Dashboard/EditDashboard";
+import RantalOffer from "../../screens/Landlord/PropertyList/RentalOffer/RantalOffer";
+import AddPropertyMainPage from "../../screens/Landlord/AddNewProperty/AddPropertyMainPage";
 
 // import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 // import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
@@ -120,7 +119,6 @@ import RantalOffer from '../../screens/Landlord/PropertyList/RentalOffer/RantalO
 // import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
 // import EditDashboard from "../../screens/Dashboard/EditDashboard";
 
-
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -129,7 +127,7 @@ const BottomNav = (props) => {
       screenOptions={{
         tabBarStyle: {
           backgroundColor: _COLORS.Kodie_WhiteColor,
-          height: 65,
+          height: Platform.OS == "android" ? 65 : 80,
         },
       }}
     >
@@ -385,17 +383,17 @@ const AllStackRouts = (props) => {
   return (
     <NavigationContainer
       ref={navigationRef}
-      onStateChange={async () => {
-        const previousRouteName = routeName;
-        const currentRouteName = navigationRef.getCurrentRoute().name;
-        // console.log('previousRouteName...............', previousRouteName);
-        // console.log('currentRouteName...............', currentRouteName);
-        setRouteName(currentRouteName);
-      }}
-      onReady={() => {
-        // isReadyRef.current = true;
-        setRouteName(navigationRef.getCurrentRoute().name);
-      }}
+      // onStateChange={async () => {
+      //   const previousRouteName = routeName;
+      //   const currentRouteName = navigationRef.getCurrentRoute().name;
+      //   // console.log('previousRouteName...............', previousRouteName);
+      //   // console.log('currentRouteName...............', currentRouteName);
+      //   setRouteName(currentRouteName);
+      // }}
+      // onReady={() => {
+      //   // isReadyRef.current = true;
+      //   setRouteName(navigationRef.getCurrentRoute().name);
+      // }}
     >
       <Stack.Navigator
         screenOptions={{ headerShown: false }}
@@ -569,8 +567,8 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name={"PropertyDetails"}
-          component={PropertyDetails}
+          name={"AddPropertyMainPage"}
+          component={AddPropertyMainPage}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -808,7 +806,6 @@ const AllStackRouts = (props) => {
           component={PropertyListings}
           options={{ headerShown: false }}
         />
-
 
         <Stack.Screen
           name={"VacantPropertiesList"}

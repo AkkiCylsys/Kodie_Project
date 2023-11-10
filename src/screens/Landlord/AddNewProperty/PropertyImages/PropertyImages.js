@@ -22,10 +22,6 @@ export default PropertyImages = (props) => {
 
   return (
     <View style={PropertyImagesStyle.mainContainer}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Add new property"}
-      />
       <ScrollView>
         <View style={PropertyImagesStyle.headingView}>
           <Text style={PropertyImagesStyle.heading}>{"Property images"}</Text>
@@ -86,7 +82,7 @@ export default PropertyImages = (props) => {
               }
             </Text>
           </View>
-          <View style={PropertyImagesStyle.btnView}>
+          {/* <View style={PropertyImagesStyle.btnView}>
             <CustomSingleButton
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
@@ -105,9 +101,12 @@ export default PropertyImages = (props) => {
               }}
             />
           </View>
-          <TouchableOpacity style={PropertyImagesStyle.goBack_View}
-           onPress={() => {
-            props.navigation.navigate("PropertyFeature");}}>
+          <TouchableOpacity
+            style={PropertyImagesStyle.goBack_View}
+            onPress={() => {
+              props.navigation.navigate("PropertyFeature");
+            }}
+          >
             <View style={PropertyImagesStyle.backIcon}>
               <Ionicons
                 name="chevron-back"
@@ -116,7 +115,7 @@ export default PropertyImages = (props) => {
               />
             </View>
             <Text style={PropertyImagesStyle.goBack_Text}>{"Go back"}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <RBSheet
             ref={refRBSheet}
             closeOnDragDown={true}

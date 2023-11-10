@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -24,7 +24,8 @@ import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RBSheet from "react-native-raw-bottom-sheet";
 import BottomModalData from "../../../../components/Molecules/BottomModal/BottomModalData";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
-
+import { Config } from "../../../../Config";
+import axios from "axios";
 const HorizontalData = [
   "Occupied",
   "Vacant",
@@ -139,12 +140,43 @@ const property_List2 = [
     isinviteTenants: false,
   },
 ];
-
 const PropertyList = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
+  const [Property_Data_List, setProperty_Data_List] = useState([]);
+  const [isLoading,setIsLoading]=useState(false);
   const refRBSheet = useRef();
-
+  useEffect(() => {
+    propertyList_Data();
+  }, []);
+  const propertyList_Data = () => {
+    const propertyDataList = {
+      user: 3,
+    };
+    const url = Config.API_URL;
+    const propertyData_List = url + "get_All_Property_details";
+    console.log("Request URL :", propertyData_List);
+    setIsLoading(true);
+    axios
+      .post(propertyData_List, propertyDataList)
+      .then((response) => {
+        console.log("property_Data_list", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("propertyDataList....", response.data.data);
+          setProperty_Data_List(response.data.data);
+        } else {
+          console.error("property_Data_list_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_Data_list error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity style={PropertyListCSS.flatlistView}>
@@ -162,9 +194,9 @@ const PropertyList = (props) => {
           <View style={PropertyListCSS.flat_MainView}>
             <View style={PropertyListCSS.flexContainer}>
               <Text style={PropertyListCSS.apartmentText}>
-                {item.propertyName}
+                {item.property_type}
               </Text>
-              <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
+              <Text style={LABEL_STYLES.commontext}>{item.property_description}</Text>
               <View style={PropertyListCSS.flat_MainView}>
                 <MaterialCommunityIcons
                   name={"map-marker"}
@@ -176,7 +208,7 @@ const PropertyList = (props) => {
                 </Text>
               </View>
             </View>
-            <Image source={item.image} style={PropertyListCSS.imageStyle} />
+            <Image source={item.image_path} style={PropertyListCSS.imageStyle} />
             <View style={PropertyListCSS.flexContainer}>
               <View style={PropertyListCSS.noteStyle}>
                 <TouchableOpacity>
@@ -544,13 +576,13 @@ const PropertyList = (props) => {
               </View>
             </View>
             <DividerIcon />
-            <FlatList data={property_List1} renderItem={propertyData1_render}
-             />
+            <FlatList
+               data={Property_Data_List}
+              // data={property_List1}
+              renderItem={propertyData1_render}
+            />
           </>
         )}
-         
-      
-
       </ScrollView>
     </View>
   );

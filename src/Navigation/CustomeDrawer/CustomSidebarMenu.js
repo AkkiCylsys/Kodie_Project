@@ -60,6 +60,10 @@ const CustomSidebarMenu = (props) => {
         setselectedId("Partners");
         props.navigation.navigate("Partners");
         break;
+      case "LogOut":
+        setselectedId("LogOut");
+        props.navigation.navigate("LoginScreen");
+        break;
 
       default:
         setselectedId("Dashboard");
@@ -84,7 +88,6 @@ const CustomSidebarMenu = (props) => {
             },
           ]}
           onPress={() => check("PropertyLinking")}
-       
         >
           <Image
             source={IMAGES.PropertyListing}
@@ -299,6 +302,25 @@ const CustomSidebarMenu = (props) => {
           <Text style={DrawerStyle.SubHeading}>{"Partners"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
+        {/* <TouchableOpacity
+          style={[
+            DrawerStyle.rowFlex,
+            {
+              backgroundColor:
+                selectedId == "LogOut"
+                  ? _COLORS.Kodie_LiteWhiteColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          onPress={() => check("LogOut")}
+        >
+          <Image
+            source={IMAGES.Logout}
+            style={DrawerStyle.ImageStyle}
+            resizeMode={"center"}
+          />
+          <Text style={DrawerStyle.SubHeading}>{"Log Out"}</Text>
+        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );

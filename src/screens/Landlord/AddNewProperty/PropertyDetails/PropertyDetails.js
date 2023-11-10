@@ -16,6 +16,7 @@ import { LABEL_STYLES } from "../../../../Themes";
 import { _COLORS, FONTFAMILY } from "../../../../Themes";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
+import CustomDropdown from "../../../../components/Molecules/CustomDropdown/CustomDropdown";
 import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
@@ -117,7 +118,7 @@ export default PropertyDetails = (props) => {
   };
 
   useEffect(() => {
-   
+
     property_details();
     handleProperty_Type_Data();
 
@@ -125,55 +126,27 @@ export default PropertyDetails = (props) => {
 
   return (
     <View style={PropertyDetailsStyle.mainContainer}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Add new property"}
-      />
-      <ScrollView>
-        <View style={PropertyDetailsStyle.headingView}>
-          <Text style={PropertyDetailsStyle.heading}>{"Property details"}</Text>
-        </View>
+      {/* <ScrollView> */}
+      <View style={PropertyDetailsStyle.headingView}>
+        <Text style={PropertyDetailsStyle.heading}>{"Property details"}</Text>
+      </View>
 
-        <View style={PropertyDetailsStyle.card}>
-          <View style={PropertyDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
-            <View style={PropertyDetailsStyle.locationContainer}>
-              <TouchableOpacity
-                onPress={() => {
-                  props.navigation.navigate("Location");
-                }}
-              >
-                <Octicons
-                  name={"location"}
-                  size={20}
-                  color={_COLORS.Kodie_MediumGrayColor}
-                  style={PropertyDetailsStyle.locationIcon}
-                />
-              </TouchableOpacity>
-              <TextInput
-                style={PropertyDetailsStyle.locationInput}
-                value={location}
-                onChangeText={setLocation}
-                placeholder="Search location"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
-            </View>
-            <Dropdown
-              style={PropertyDetailsStyle.dropdown}
-              placeholderStyle={PropertyDetailsStyle.placeholderStyle}
-              selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
-              inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
-              iconStyle={PropertyDetailsStyle.iconStyle}
-              data={data}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Enter address manually"
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
+      <View style={PropertyDetailsStyle.card}>
+        <View style={PropertyDetailsStyle.inputContainer}>
+          <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
+          <View style={PropertyDetailsStyle.locationContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate("Location");
               }}
-            />
+            >
+              <Octicons
+                name={"location"}
+                size={20}
+                color={_COLORS.Kodie_MediumGrayColor}
+                style={PropertyDetailsStyle.locationIcon}
+              />
+            </TouchableOpacity>
           </View>
 
           <View style={PropertyDetailsStyle.inputContainer}>
@@ -210,7 +183,6 @@ export default PropertyDetails = (props) => {
                 alert(item)
               }}
             />
-           
           </View>
 
           <View style={PropertyDetailsStyle.inputContainer}>
@@ -218,33 +190,72 @@ export default PropertyDetails = (props) => {
               Property description
             </Text>
             <TextInput
-              style={PropertyDetailsStyle.input}
-              value={propertyDesc}
-              onChangeText={setPropertyDesc}
-              placeholder="Describe your property here..."
-              placeholderTextColor="#999"
-              multiline
-              numberOfLines={5}
-              textAlignVertical={"top"}
+              style={PropertyDetailsStyle.locationInput}
+              value={location}
+              onChangeText={setLocation}
+              placeholder="Search location"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
           </View>
-          <Text style={PropertyDetailsStyle.AutoList_text}>
-            {"Auto-list property on Kodie property marketplace "}
-          </Text>
-          <RowButtons
-            LeftButtonText={"Yes"}
-            leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-            LeftButtonborderColor={_COLORS.Kodie_GrayColor}
-            RightButtonText={"No"}
-            RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-            RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-            RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+          <Dropdown
+            style={PropertyDetailsStyle.dropdown}
+            placeholderStyle={PropertyDetailsStyle.placeholderStyle}
+            selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
+            inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
+            iconStyle={PropertyDetailsStyle.iconStyle}
+            data={data}
+            maxHeight={300}
+            labelField="label"
+            valueField="value"
+            placeholder="Enter address manually"
+            value={value}
+            onChange={(item) => {
+              setValue(item.value);
+            }}
           />
-          <View style={PropertyDetailsStyle.btnView}>
+        </View>
+        <View style={PropertyDetailsStyle.inputContainer}>
+          <Text style={PropertyDetailsStyle.property_Text}>Property type</Text>
+          <CustomDropdown
+            btnview={true}
+            placeholdertext={"Apartment"}
+            data={[property_Data]}
+          />
+        </View>
+        <View style={PropertyDetailsStyle.inputContainer}>
+          <Text style={LABEL_STYLES._texinputLabel}>Property description</Text>
+          <TextInput
+            style={PropertyDetailsStyle.input}
+            value={propertyDesc}
+            onChangeText={setPropertyDesc}
+            placeholder="Describe your property here..."
+            placeholderTextColor="#999"
+            multiline
+            numberOfLines={5}
+            textAlignVertical={"top"}
+          />
+        </View>
+        <Text style={PropertyDetailsStyle.AutoList_text}>
+          {"Auto-list property on Kodie property marketplace "}
+        </Text>
+        <RowButtons
+          LeftButtonText={"Yes"}
+          leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
+          LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+          LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+          RightButtonText={"No"}
+          RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+          RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
+          RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+        />
+        {/* <View style={PropertyDetailsStyle.btnView}>
             <CustomSingleButton
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
+              // onPress={() => {
+              //   props.navigation.navigate("PropertyFeature");
+              // }}
+              onPress={props?.PropertyDetailsButton}
               onPress={handlePropertyDetails}
             />
           </View>
@@ -269,10 +280,9 @@ export default PropertyDetails = (props) => {
               />
             </View>
             <Text style={PropertyDetailsStyle.goBack_Text}>{"Go back"}</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-      {isLoading ? <CommonLoader /> : null}
+          </TouchableOpacity> */}
+      </View>
+      {/* </ScrollView> */}
     </View>
   );
 };

@@ -43,10 +43,6 @@ export default PropertyReview = (props) => {
   };
   return (
     <View style={PropertyReviewStyle.mainContainer}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={"8502 Preston Rd. Inglewood..."}
-      />
       <ScrollView>
         <View style={PropertyReviewStyle.headingView}>
           <Text style={PropertyReviewStyle.heading}>

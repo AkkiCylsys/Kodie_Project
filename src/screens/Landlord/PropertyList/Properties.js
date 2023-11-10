@@ -16,7 +16,9 @@ const Properties = (props) => {
       case "Tab1":
         return (
           <PropertyList
-            propertyDetail={() => props.navigation.navigate("PropertyDetails")}
+            propertyDetail={() =>
+              props.navigation.navigate("AddPropertyMainPage")
+            }
           />
         );
       case "Tab2":
@@ -26,7 +28,11 @@ const Properties = (props) => {
           />
         );
       case "Tab3":
-        return <RantalOffer ViewApplication={()=> props.navigation.navigate("ViewApplication")}/>;
+        return (
+          <RantalOffer
+            ViewApplication={() => props.navigation.navigate("ViewApplication")}
+          />
+        );
 
       default:
         return <PropertyList />;
@@ -36,7 +42,6 @@ const Properties = (props) => {
   return (
     <View style={PropertiesCSS.Container}>
       <TopHeader
-
         // onPressLeftButton={() => _goBack(props)}
 
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
