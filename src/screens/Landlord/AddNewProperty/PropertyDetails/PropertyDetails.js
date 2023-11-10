@@ -142,29 +142,7 @@ export default PropertyDetails = (props) => {
                 style={PropertyDetailsStyle.locationIcon}
               />
             </TouchableOpacity>
-          </View>
 
-          <View style={PropertyDetailsStyle.inputContainer}>
-            <Text style={PropertyDetailsStyle.property_Text}>
-              Property type
-            </Text>
-            <CustomSingleDropdown
-              btnview={true}
-              placeholdertext={"Apartment"}
-              data={propertyTypeData}
-              value={property_value}
-              onChange={(item) => {
-                setProperty_value(item.lookup_key);
-                alert(item);
-                alert(`Selected lookup_key: ${item.lookup_key}`);
-              }}
-            />
-          </View>
-
-          <View style={PropertyDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES._texinputLabel}>
-              Property description
-            </Text>
             <TextInput
               style={PropertyDetailsStyle.locationInput}
               value={location}
@@ -195,7 +173,7 @@ export default PropertyDetails = (props) => {
           <CustomDropdown
             btnview={true}
             placeholdertext={"Apartment"}
-            data={[property_Data]}
+            // data={[property_Data]}
           />
         </View>
         <View style={PropertyDetailsStyle.inputContainer}>
@@ -244,15 +222,9 @@ export default PropertyDetails = (props) => {
           </View>
           <TouchableOpacity
             style={PropertyDetailsStyle.goBack_View}
-<<<<<<< HEAD
             // onPress={() => {
             //   props.navigation.navigate("Properties");
             // }}
-=======
-            onPress={() => {
-              props.navigation.navigate("Properties");
-            }}
->>>>>>> origin/Rahul_dev
           >
             <View style={PropertyDetailsStyle.backIcon}>
               <Ionicons
