@@ -94,10 +94,7 @@ const SignUpSteps = (props) => {
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("signup_response.....", signup_response);
-  const {longitude_Search} = props?.route?.params?.longitude_Search;
-  // // console.log("Latitude in SignUpSteps:", latitude_Search);
-  console.log("Longitude in SignUpSteps:", longitude_Search);
-  // console.log("Description in SignUpSteps:", description);
+
   const ref = React.useRef(null);
 
   const scrollViewRef = useRef();
