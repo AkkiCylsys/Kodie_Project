@@ -124,7 +124,10 @@ export default SignUp = (props) => {
             is_term_condition: term,
             is_privacy_policy: privacy,
           });
-        } else {
+        }else if( response.data.message === "User Already Exists And Verified"){
+          props.navigation.navigate('SignUpSteps')
+        }
+         else {
           setEmailError(response.data.message);
           setIsLoading(false);
         }

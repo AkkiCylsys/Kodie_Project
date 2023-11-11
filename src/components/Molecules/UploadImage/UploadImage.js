@@ -82,7 +82,7 @@ const UploadImageData = (props) => {
   };
   return (
     <View style={UploadImageStyle.mainContainer}>
-      <View style={UploadImageStyle.upload_View}>
+      {/* <View style={UploadImageStyle.upload_View}>
         <Text style={UploadImageStyle.uploadImgText}>
           {props.heading_Text || "Upload image"}
         </Text>
@@ -94,7 +94,7 @@ const UploadImageData = (props) => {
             style={UploadImageStyle.crossIconStyle}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <FlatList
         data={data}

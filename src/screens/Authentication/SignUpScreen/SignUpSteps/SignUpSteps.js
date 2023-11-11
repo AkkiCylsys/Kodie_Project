@@ -8,7 +8,8 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
-  TextInput,PermissionsAndroid,
+  TextInput,
+  PermissionsAndroid,
   Image,
   FlatList,
 } from "react-native";
@@ -39,11 +40,11 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import RNFetchBlob from "rn-fetch-blob";
 import { useDispatch, useSelector } from "react-redux";
 import { useScrollToTop } from "@react-navigation/native";
-import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces'
-import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap'
+import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
+import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStyles } from "../SignUpStyle";
-import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
+import Geocoder from "react-native-geocoding";
+import Geolocation from "react-native-geolocation-service";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -156,13 +157,13 @@ const SignUpSteps = (props) => {
   const [describeBtn, setDescribeBtn] = useState([]);
   const [data_add, setData_add] = useState([]);
   //
-  const [UserCurrentCity, setUserCurrentCity] = useState('');
-  const [UserZip_Code, setUserZip_Code] = useState('');
+  const [UserCurrentCity, setUserCurrentCity] = useState("");
+  const [UserZip_Code, setUserZip_Code] = useState("");
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
-  const [latitude, setlatitude] = useState('');
-  const [longitude, setlongitude] = useState('');
-  
+  const [latitude, setlatitude] = useState("");
+  const [longitude, setlongitude] = useState("");
+
   //
   const fs = RNFetchBlob.fs;
 
@@ -297,12 +298,12 @@ const SignUpSteps = (props) => {
   const ConfirmAddress = () => {
     setIsMap(false);
   };
-  const openMapandClose = text => {
+  const openMapandClose = (text) => {
     setIsMap(false);
-    setIsSearch(true)
+    setIsSearch(true);
   };
-  const onRegionChange = Region => {
-   // alert(JSON.stringify(Region))
+  const onRegionChange = (Region) => {
+    // alert(JSON.stringify(Region))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
@@ -312,17 +313,17 @@ const SignUpSteps = (props) => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'Example App',
-          message: 'Example App access to your location ',
-        },
+          title: "Example App",
+          message: "Example App access to your location ",
+        }
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
+        console.log("You can use the location");
         // alert("You can use the location");
         getAddressWithCordinates();
       } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
+        console.log("location permission denied");
+        alert("Location permission denied");
       }
     } catch (err) {
       console.warn(err);
@@ -330,15 +331,13 @@ const SignUpSteps = (props) => {
   };
 
   const getAddressWithCordinates = () => {
-
     Geolocation.watchPosition(
-      position => {
+      (position) => {
         setlatitude(position.coords.latitude);
         setlongitude(position.coords.longitude);
         getAddress(position.coords.latitude, position.coords.longitude);
-
       },
-      error => {
+      (error) => {
         alert(error.message.toString());
       },
       {
@@ -346,21 +345,21 @@ const SignUpSteps = (props) => {
         enableHighAccuracy: true,
         timeout: 20000,
         maximumAge: 0,
-      },
+      }
     );
   };
 
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
-      .then(json => {
+      .then((json) => {
         let MainFullAddress = json.results[0].formatted_address;
         var addressComponent2 = json.results[0].address_components[1];
         setUserCurrentCity(addressComponent2.long_name);
-        setUserZip_Code(json.results[1]?.address_components[6]?.long_name)
-        setPhysicalAddress(MainFullAddress)
+        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
+        setPhysicalAddress(MainFullAddress);
         //setAddress(MainFullAddress);
       })
-      .catch(error => console.warn(error));
+      .catch((error) => console.warn(error));
   };
   const toggleSelection = (lookup_key) => {
     if (selectedServices.includes(lookup_key)) {
@@ -400,7 +399,7 @@ const SignUpSteps = (props) => {
       onPress={() => {
         toggleSelection(item.lookup_key);
         setKodieDescribeYourselfDataId(item.lookup_key);
-       // alert(item.lookup_key);
+        // alert(item.lookup_key);
       }}
     />
   );
@@ -461,7 +460,6 @@ const SignUpSteps = (props) => {
     setMobileNumber(text);
   };
   const handleNextBtn = () => {
-
     if (firstName.trim() === "") {
       setFirstNameError("First name is required.");
     } else if (lastName.trim() === "") {
@@ -471,12 +469,9 @@ const SignUpSteps = (props) => {
     } else {
       if (currentPage == 0) {
         setCurrentPage(currentPage + 1);
-
       } else if (currentPage === 1) {
         setCurrentPage(currentPage + 1);
-       
       } else if (currentPage === 2) {
-       
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
         console.log(
@@ -494,7 +489,7 @@ const SignUpSteps = (props) => {
   };
 
   const handleSaveSignup = async () => {
-   // alert(selectedServices);
+    // alert(selectedServices);
     const selectedServiceKeysString = selectedServices.join(",");
     const kodieHelpValue = selectedLookupKeys.join(",");
     const selectedKeyFeature = selectedkey_features.join(",");
@@ -554,7 +549,7 @@ const SignUpSteps = (props) => {
 
       if (response.data.status === true) {
         setIsLoading(false);
-      //  alert(response.data.message);
+        //  alert(response.data.message);
         props.navigation.navigate("DrawerNavigatorLeftMenu");
         setCurrentPage(0);
         setFirstName("");
@@ -581,7 +576,6 @@ const SignUpSteps = (props) => {
   };
 
   useEffect(() => {
-
     handleProperty_Type();
     handle_manage_property();
     handle_bedRoom();
@@ -885,16 +879,16 @@ const SignUpSteps = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-          ? "#000000"
-          : "#808080";
+        ? "#000000"
+        : "#808080";
     const iconName =
       position === 0
         ? "Account"
         : position === 1
-          ? "About you"
-          : position === 2
-            ? "First Property"
-            : "circle";
+        ? "About you"
+        : position === 2
+        ? "First Property"
+        : "circle";
 
     return (
       <View style={SignUpStepStyle.labelContainer}>
@@ -980,12 +974,11 @@ const SignUpSteps = (props) => {
                 <View style={AccountStyle.locationContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                     // props.navigation.navigate("Location");
+                      // props.navigation.navigate("Location");
 
-                    //  Platform.OS == 'ios' ? CheckIOSMapPermission :
-                        checkpermissionlocation();
+                      //  Platform.OS == 'ios' ? CheckIOSMapPermission :
+                      checkpermissionlocation();
                       setIsMap(true);
-                 
                     }}
                   >
                     <Entypo
@@ -1061,6 +1054,7 @@ const SignUpSteps = (props) => {
                   />
                 )}
               </TouchableOpacity>
+              {ImageName && refRBSheet.current.close()}
               <Text style={AboutYouStyle.want_Heading}>
                 {
                   "How would you describe yourself? (you can select multiple options)"
@@ -1073,7 +1067,7 @@ const SignUpSteps = (props) => {
                 numColumns={2}
               />
               {kodieDescribeYourselfId === 2 ||
-                kodieDescribeYourselfId === 4 ? null : (
+              kodieDescribeYourselfId === 4 ? null : (
                 <View>
                   <Text style={AboutYouStyle.want_Heading}>
                     {"How many properties do you own, manage or rent?"}
@@ -1114,6 +1108,23 @@ const SignUpSteps = (props) => {
                   container: AboutYouStyle.bottomModal_container,
                 }}
               >
+                <View style={AboutYouStyle.upload_View}>
+                  <Text style={AboutYouStyle.uploadImgText}>
+                    {props.heading_Text || "Upload image"}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => {
+                      refRBSheet.current.close();
+                    }}
+                  >
+                    <Entypo
+                      name="cross"
+                      size={25}
+                      color={_COLORS.Kodie_BlackColor}
+                      style={AboutYouStyle.crossIconStyle}
+                    />
+                  </TouchableOpacity>
+                </View>
                 <UploadImageData
                   heading_Text={"Upload image"}
                   ImageName={handleImageNameChange}
@@ -1155,7 +1166,7 @@ const SignUpSteps = (props) => {
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
-                <Dropdown
+                {/* <Dropdown
                   style={FirstPropertyStyle.dropdown}
                   placeholderStyle={FirstPropertyStyle.placeholderStyle}
                   selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
@@ -1170,7 +1181,7 @@ const SignUpSteps = (props) => {
                   onChange={(item) => {
                     setValue(item.value);
                   }}
-                />
+                /> */}
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
@@ -1265,7 +1276,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional
+                        FirstPropertyStyle.additional,
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1288,7 +1299,7 @@ const SignUpSteps = (props) => {
                   </View>
                 </View>
                 <View style={FirstPropertyStyle.key_feature_mainView}>
-                <View style={FirstPropertyStyle.key_feature_subView}>
+                  <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Bathrooms"}
                     </Text>
@@ -1296,7 +1307,6 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
-                        
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1317,7 +1327,7 @@ const SignUpSteps = (props) => {
                       }}
                     />
                   </View>
-                <View style={FirstPropertyStyle.key_feature_subView}>
+                  <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Parkings"}
                     </Text>
@@ -1325,7 +1335,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional
+                        FirstPropertyStyle.additional,
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1527,94 +1537,111 @@ const SignUpSteps = (props) => {
             renderLabel={renderLabel}
           />
         </View> */}
-               {IsMap ? (
-          <View style={{ flex: 1, paddingHorizontal: 10, backgroundColor: 'transparent' }}>
-            <View style={{ flexDirection: 'row', width: '100%', paddingVertical: 5 }}>
+        {IsMap ? (
+          <View
+            style={{
+              flex: 1,
+              paddingHorizontal: 10,
+              backgroundColor: "transparent",
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                width: "100%",
+                paddingVertical: 5,
+              }}
+            >
               <TextInput
-                style={{ backgroundColor: 'white', borderColor: '#E5E4E2', borderWidth: 1, borderRadius: 8, width: '100%', height: 45, marginTop: 10 }}
+                style={{
+                  backgroundColor: "white",
+                  borderColor: "#E5E4E2",
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  width: "100%",
+                  height: 45,
+                  marginTop: 10,
+                }}
                 onFocus={() => openMapandClose()}
-                placeholder={'Search Place'}
-
+                placeholder={"Search Place"}
               />
             </View>
             <MapScreen
               style={{
-                height: '100%',
-                width:'100%',
+                height: "100%",
+                width: "100%",
                 borderRadius: 20,
                 borderWidth: 1,
                 //borderColor: .greenAppColor,
-                alignSelf: 'center',
+                alignSelf: "center",
                 marginBottom: 10,
-
               }}
               onRegionChange={onRegionChange}
               Maplat={latitude}
               Maplng={longitude}
             />
-            <TouchableOpacity style={SignUpStepStyle.BtnContainer} onPress={ConfirmAddress}>
+            <TouchableOpacity
+              style={SignUpStepStyle.BtnContainer}
+              onPress={ConfirmAddress}
+            >
               {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
-              <Image
-                    source={IMAGES?.Shape}
-                    style={{height:25,width:25}}
-                  />
+              <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
             </TouchableOpacity>
-
           </View>
-        ) : IsSearch ?
-          (<SearchPlaces
+        ) : IsSearch ? (
+          <SearchPlaces
             onPress={(data, details = null) => {
-              setlatitude(details.geometry.location.lat)
-              setlongitude(details.geometry.location.lng)
-              setIsSearch(false)
-              setIsMap(true)
-              setPhysicalAddress(details.formatted_address)
+              setlatitude(details.geometry.location.lat);
+              setlongitude(details.geometry.location.lng);
+              setIsSearch(false);
+              setIsMap(true);
+              setPhysicalAddress(details.formatted_address);
             }}
-          />)
-          : (
-        <ScrollView
-          contentContainerStyle={{ marginBottom: 50 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={SignUpStepStyle.stepIndicator}>
-            {renderPageContent()}
-          </View>
-
-          <View
-            style={{
-              marginHorizontal: 16,
-              backgroundColor: _COLORS.Kodie_WhiteColor,
-              marginBottom: 10,
-            }}
+          />
+        ) : (
+          <ScrollView
+            contentContainerStyle={{ marginBottom: 50 }}
+            showsVerticalScrollIndicator={false}
           >
+            <View style={SignUpStepStyle.stepIndicator}>
+              {renderPageContent()}
+            </View>
+
             <View
               style={{
-                justifyContent: "flex-end",
-                marginBottom: 30,
+                marginHorizontal: 16,
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+                marginBottom: 10,
               }}
             >
-              <CustomSingleButton
-                _ButtonText={currentPage == 2 ? "Save" : "Next"}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  handleNextBtn();
+              <View
+                style={{
+                  justifyContent: "flex-end",
+                  marginBottom: 30,
                 }}
-              />
-              {currentPage === 1 || currentPage === 2 ? (
-                <>
-                  <CustomSingleButton
-                    _ButtonText={"Fill these details out later"}
-                    Text_Color={_COLORS.Kodie_BlackColor}
-                    backgroundColor={_COLORS.Kodie_WhiteColor}
-                    onPress={() => {
-                      if (currentPage === 2) {
-                        handleNextBtn();
-                      } else {
-                        setCurrentPage(currentPage + 1);
-                      }
-                    }}
-                  />
-                  {/* 
+              >
+                <CustomSingleButton
+                  _ButtonText={currentPage == 2 ? "Save" : "Next"}
+                  Text_Color={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    handleNextBtn();
+                  }}
+                />
+                {currentPage === 1 || currentPage === 2 ? (
+                  <>
+                    <CustomSingleButton
+                      _ButtonText={"Fill these details out later"}
+                      Text_Color={_COLORS.Kodie_BlackColor}
+                      backgroundColor={_COLORS.Kodie_WhiteColor}
+                      onPress={() => {
+                        if (currentPage === 2) {
+                          handleNextBtn();
+                        } else {
+                          setCurrentPage(currentPage + 1);
+                        }
+                      }}
+                    />
+                    {/* 
                   <TouchableOpacity style={SignUpStepStyle.goBack_View}>
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
@@ -1625,27 +1652,27 @@ const SignUpSteps = (props) => {
                     </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
                   </TouchableOpacity> */}
-                </>
-              ) : null}
-              {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
-                <TouchableOpacity
-                  style={SignUpStepStyle.goBack_View}
-                  onPress={goBack}
-                >
-                  <View style={SignUpStepStyle.backIcon}>
-                    <Ionicons
-                      name="chevron-back"
-                      size={22}
-                      color={_COLORS.Kodie_MediumGrayColor}
-                    />
-                  </View>
-                  <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                </TouchableOpacity>
-              ) : null}
+                  </>
+                ) : null}
+                {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
+                  <TouchableOpacity
+                    style={SignUpStepStyle.goBack_View}
+                    onPress={goBack}
+                  >
+                    <View style={SignUpStepStyle.backIcon}>
+                      <Ionicons
+                        name="chevron-back"
+                        size={22}
+                        color={_COLORS.Kodie_MediumGrayColor}
+                      />
+                    </View>
+                    <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
+                  </TouchableOpacity>
+                ) : null}
+              </View>
             </View>
-          </View>
-        </ScrollView>
-           )}
+          </ScrollView>
+        )}
         {isLoading ? <CommonLoader /> : null}
       </View>
     </>
