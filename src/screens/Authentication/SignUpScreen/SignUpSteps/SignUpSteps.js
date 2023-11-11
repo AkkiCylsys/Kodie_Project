@@ -37,6 +37,7 @@ import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
+import { useDispatch, useSelector } from "react-redux";
 import { useScrollToTop } from "@react-navigation/native";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
@@ -89,6 +90,14 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   return iconConfig;
 };
 const SignUpSteps = (props) => {
+  // const signup_response = useSelector(
+  //   (state) => state?.authenticationReducer?.data
+  // );
+  // console.log("signup_response.....", signup_response);
+  const {longitude_Search} = props?.route?.params?.longitude_Search;
+  // // console.log("Latitude in SignUpSteps:", latitude_Search);
+  console.log("Longitude in SignUpSteps:", longitude_Search);
+  // console.log("Description in SignUpSteps:", description);
   const ref = React.useRef(null);
 
   const scrollViewRef = useRef();
@@ -659,6 +668,7 @@ const SignUpSteps = (props) => {
     handle_describe_yourself();
     additional_features();
   }, []);
+
   // property Type API with LookupKey...
   const handleProperty_Type = () => {
     const propertyData = {

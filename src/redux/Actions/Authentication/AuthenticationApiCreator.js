@@ -22,7 +22,7 @@ import { Config } from "../../../Config";
 
 const url = Config.API_URL;
 
-export const loginApiActionCreator = (data) => async dispatch => {
+export const loginApiActionCreator = (data) => async (dispatch) => {
   //alert(url)
   dispatch(fetchLoginData());
   try {
@@ -31,18 +31,44 @@ export const loginApiActionCreator = (data) => async dispatch => {
         "Content-Type": "application/json",
       },
     });
+   // alert(JSON.stringify(res))
     if (res.data.status == true) {
       dispatch(fetchLoginSuccess(res.data));
+      return res;
+    } else {
+      //dispatch(fetchLoginError(res.data));
+      return res;
+    }
+    //return res;
+  } catch (error) {
+
+    //alert(JSON.stringify(error?.response?.status))
+    dispatch(fetchLoginError(error));
+  return error?.response?.status;
+  }
+};
+export const signupApiActionCreator = (data) => async (dispatch) => {
+  //alert(url)
+  dispatch(fetchRegistrationData());
+  try {
+    const res = await axios.post(url + "user_signup", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (res.data.status == true) {
+      dispatch(fetchRegistrationSuccess(res.data));
       return res;
     } else {
       return res;
     }
     return res;
   } catch (error) {
-    dispatch(fetchLoginError(error));
+    dispatch(fetchRegistrationError(error));
     console.log(error);
   }
 };
+
 export const logoutActionCreator = () => async (dispatch) => {
   try {
     dispatch(fetchLogout());
@@ -50,4 +76,3 @@ export const logoutActionCreator = () => async (dispatch) => {
     console.log(error);
   }
 };
-
