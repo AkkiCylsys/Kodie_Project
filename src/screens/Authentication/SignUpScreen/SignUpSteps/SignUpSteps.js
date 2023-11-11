@@ -37,6 +37,7 @@ import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
+import { useDispatch, useSelector } from "react-redux";
 import { useScrollToTop } from "@react-navigation/native";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
@@ -89,6 +90,14 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   return iconConfig;
 };
 const SignUpSteps = (props) => {
+  // const signup_response = useSelector(
+  //   (state) => state?.authenticationReducer?.data
+  // );
+  // console.log("signup_response.....", signup_response);
+  const {longitude_Search} = props?.route?.params?.longitude_Search;
+  // // console.log("Latitude in SignUpSteps:", latitude_Search);
+  console.log("Longitude in SignUpSteps:", longitude_Search);
+  // console.log("Description in SignUpSteps:", description);
   const ref = React.useRef(null);
 
   const scrollViewRef = useRef();
@@ -659,6 +668,7 @@ const SignUpSteps = (props) => {
     handle_describe_yourself();
     additional_features();
   }, []);
+
   // property Type API with LookupKey...
   const handleProperty_Type = () => {
     const propertyData = {
@@ -1066,7 +1076,7 @@ const SignUpSteps = (props) => {
                 </View>
               </View>
               <View style={AccountStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>
+                <Text style={[LABEL_STYLES._texinputLabel, { marginTop: 16 }]}>
                   Organisation name
                 </Text>
                 <TextInput
@@ -1147,18 +1157,6 @@ const SignUpSteps = (props) => {
                   />
                 </View>
               )}
-              {/* <View>
-                <Text style={AboutYouStyle.want_Heading}>
-                  {"How many properties do you own, manage or rent?"}
-                </Text>
-                <FlatList
-                  data={manage_property_Data}
-                  renderItem={renderItem}
-                  keyExtractor={(item) => item.lookup_key.toString()}
-                  numColumns={2}
-                />
-              </View> */}
-
               <Text style={AboutYouStyle.want_Heading}>
                 {"What do you want to do first with Kodie"}
               </Text>
@@ -1420,6 +1418,7 @@ const SignUpSteps = (props) => {
                     />
                   </View>
                 </View>
+
                 <View style={FirstPropertyStyle.key_feature_mainView}>
                   <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
@@ -1434,6 +1433,7 @@ const SignUpSteps = (props) => {
                     />
                   </View>
                 </View>
+
                 <View style={FirstPropertyStyle.inputContainer}>
                   <Text
                     style={[
@@ -1452,7 +1452,7 @@ const SignUpSteps = (props) => {
                     data={DATA}
                     labelField="label"
                     valueField="value"
-                    placeholder="Search"
+                    placeholder="Select additional features"
                     value={additionalfeatureskeyvalue}
                     search
                     searchPlaceholder="Search..."
@@ -1460,14 +1460,14 @@ const SignUpSteps = (props) => {
                       setAdditionalFeaturesKeyValue(item);
                       // alert(item);
                     }}
-                    renderRightIcon={() => (
-                      <AntDesign
-                        style={FirstPropertyStyle.icon}
-                        color={_COLORS.Kodie_BlackColor}
-                        name="search1"
-                        size={20}
-                      />
-                    )}
+                    // renderRightIcon={() => (
+                    //   <AntDesign
+                    //     style={FirstPropertyStyle.icon}
+                    //     color={_COLORS.Kodie_BlackColor}
+                    //     name="search1"
+                    //     size={20}
+                    //   />
+                    // )}
                     renderItem={renderDataItem}
                     renderSelectedItem={(item, unSelect) => (
                       <TouchableOpacity
@@ -1640,7 +1640,7 @@ const SignUpSteps = (props) => {
                       }
                     }}
                   />
-
+                  {/* 
                   <TouchableOpacity style={SignUpStepStyle.goBack_View}>
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
@@ -1650,11 +1650,14 @@ const SignUpSteps = (props) => {
                       />
                     </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </>
               ) : null}
-              {currentPage === 0 ? (
-                <TouchableOpacity style={SignUpStepStyle.goBack_View}>
+              {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
+                <TouchableOpacity
+                  style={SignUpStepStyle.goBack_View}
+                  onPress={goBack}
+                >
                   <View style={SignUpStepStyle.backIcon}>
                     <Ionicons
                       name="chevron-back"

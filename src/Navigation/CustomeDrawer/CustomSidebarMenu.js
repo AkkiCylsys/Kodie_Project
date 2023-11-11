@@ -302,7 +302,7 @@ const CustomSidebarMenu = (props) => {
           <Text style={DrawerStyle.SubHeading}>{"Partners"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
             {
@@ -315,12 +315,12 @@ const CustomSidebarMenu = (props) => {
           onPress={() => check("LogOut")}
         >
           <Image
-            source={IMAGES.Partner}
+            source={IMAGES.Logout}
             style={DrawerStyle.ImageStyle}
             resizeMode={"center"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Log Out"}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );

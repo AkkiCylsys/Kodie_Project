@@ -8,17 +8,20 @@ const Splash = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   if (loginData?.data?.message?.iUserId == '' || loginData?.data?.message?.iUserId == undefined) {
-    //     props.navigation.navigate('AuthNavigator');
-    //   }
-    //   else {
-    //     props.navigation.navigate('DrawerStack');
-    //   }
-    // }, 3000);
+    // alert(JSON.stringify(loginData));
     setTimeout(() => {
-      props.navigation.navigate("LoginScreen");
+      if (
+        loginData?.Login_details?.token == "" ||
+        loginData?.Login_details?.token == undefined
+      ) {
+        props.navigation.navigate("LoginScreen");
+      } else {
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+      }
     }, 3000);
+    // setTimeout(() => {
+
+    // }, 3000);
   });
 
   return (

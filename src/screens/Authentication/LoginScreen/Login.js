@@ -181,14 +181,14 @@ export default Login = (props) => {
   };
 
   //... inner reset password password variable define here
-  // const handlePasswordChange = (text) => {
-  //   setPassword(text);
-  //   if (text.trim() === "") {
-  //     setPasswordError("Password is required.");
-  //   } else {
-  //     setPasswordError("");
-  //   }
-  // };
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    if (text.trim() === "") {
+      setPasswordError("Password is required.");
+    } else {
+      setPasswordError("");
+    }
+  };
 
   //... inner reset password new password variable define here
   const handleNewPassword = (text) => {
@@ -221,32 +221,41 @@ export default Login = (props) => {
         "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else if (password.trim() === "") {
-      // setPasswordError("Password is required.");
+      setPasswordError("Password is required.");
     } else {
-      makeApiLogin();
-      // alert("click")
-      // setIsLoading(true);
-      // let data = {
-      //   email: email,
-      //   password: password,
-      // };
-      // setIsLoading(true);
-      // let res = await dispatch(loginApiActionCreator(data));
-      // alert(res.data.status);
-
-      // console.log("res....", res);
-      // if (res.data.status === true) {
-      //   alert("Login successful");
-      //   setIsLoading(false);
-      //   props.navigation.navigate("DrawerNavigatorLeftMenu");
-      //   setEmail("");
-      //   setPassword("");
-      // } else {
-      //   alert("Please check your email and password.");
-      //   setPasswordError(
-      //     "Hmm, it seems like the credentials you entered are invalid. Please try again."
-      //   );
-      // }
+      // makeApiLogin();
+      //alert("click")
+      setIsLoading(true);
+      let data = {
+        email: email,
+        password: password,
+      };
+      setIsLoading(true);
+      let res = await dispatch(loginApiActionCreator(data));
+//alert(res)
+      setIsLoading(false);
+      if(res==401){
+        setIsLoading(false);
+        //alert("Please check your email and password.");
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
+      }
+      else{
+      if (res.data.status === true) {
+      //  alert("Login successful");
+        setIsLoading(false);
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        setEmail("");
+        setPassword("");
+      } else {
+        setIsLoading(false);
+        //alert("Please check your email and password.");
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
+      }
+    }
     }
   };
 
@@ -425,6 +434,7 @@ export default Login = (props) => {
                 onBlur={() => handleEmailChange(email)}
                 placeholder="Your email address"
                 placeholderTextColor="#999"
+                maxLength={30}
               />
             </View>
             {emailError ? (
@@ -443,7 +453,7 @@ export default Login = (props) => {
                 ]}
                 value={password}
                 onChangeText={setPassword}
-                // onBlur={() => handlePasswordChange(password)}
+                onBlur={() => handlePasswordChange(password)}
                 placeholder="Enter password"
                 placeholderTextColor="#999"
                 secureTextEntry
@@ -569,6 +579,7 @@ export default Login = (props) => {
                   onBlur={() => handleResetEmailChange(resetEmail)}
                   placeholder="Your email address"
                   placeholderTextColor="#999"
+                  maxLength={30}
                 />
               </View>
               {resetEmailError ? (

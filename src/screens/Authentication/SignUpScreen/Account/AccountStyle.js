@@ -97,7 +97,7 @@ export const AccountStyle = StyleSheet.create({
     fontSize: 16,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginBottom: 24,
+    marginVertical:16,
   },
   goBack_View: {
     flexDirection: "row",

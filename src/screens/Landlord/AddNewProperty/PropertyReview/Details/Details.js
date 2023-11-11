@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -10,10 +10,11 @@ import {
 import { DetailsStyle } from "./DetailsStyles";
 import { _goBack } from "../../../../../services/CommonServices";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import DividerIcon from "../../../../../components/Atoms/Devider/DividerIcon";
 import { _COLORS, BANNERS, LABEL_STYLES, IMAGES } from "../../../../../Themes";
-import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
+import { Config } from "../../../../../Config";
+import axios from "axios";
+import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 const Detail = [
   {
     id: "1",
@@ -56,7 +57,44 @@ const Detail = [
     name: "WiFi",
   },
 ];
+
 export default Details = (props) => {
+  const [getPropertyDetail, setGetPropertyDetail] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
+  const getPropertyDetails = () => {
+    const url = Config.API_URL;
+    const getPropertyDetailsurl = url + "get_All_Property_details";
+    console.log("Request URL:", getPropertyDetailsurl);
+    setIsLoading(true);
+    axios
+      .post(getPropertyDetailsurl, {
+        user: 2,
+      })
+      .then((response) => {
+        console.log("getPropertyDetails", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "getPropertyDetails....",
+            response.data?.property_details
+          );
+          setGetPropertyDetail(response?.data?.property_details);
+        } else {
+          console.error("getPropertyDetails_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("getPropertyDetails error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  useEffect(() => {
+    getPropertyDetails();
+  }, []);
+
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -167,6 +205,7 @@ export default Details = (props) => {
           <Text style={DetailsStyle.goBack_Text}>{"Go back"}</Text>
         </TouchableOpacity> */}
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
