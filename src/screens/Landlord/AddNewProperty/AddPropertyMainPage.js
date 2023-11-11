@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import StepIndicator from "react-native-step-indicator";
 import PropertyDetails from "./PropertyDetails/PropertyDetails";
@@ -35,7 +36,7 @@ import { AccountStyle } from "../../Authentication/SignUpScreen/Account/AccountS
 import { SliderBox } from "react-native-image-slider-box";
 import { PropertyImagesStyle } from "./PropertyImages/PropertyImagesStyle";
 import RBSheet from "react-native-raw-bottom-sheet";
-import UploadImageData from "../../../components/Molecules/UploadImage/UploadImage";
+import UploadMultipleImage from "../../../components/Molecules/UploadImage/UploadMultipleImage";
 import { Image } from "react-native";
 import { AboutYouStyle } from "../../Authentication/SignUpScreen/AboutYou/AboutYouStyle";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
@@ -140,13 +141,13 @@ const AddPropertyMainPage = (props) => {
   );
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [data_add, setData_add] = useState([]);
-  const [ImageName, setImageName] = useState("");
+  const [MultiImageName, setMultiImageName] = useState([]);
   const refRBSheet = useRef();
 
-  const handleImageNameChange = async (newImageName) => {
-    setImageName(newImageName);
-    console.log("................ImageNAme", newImageName);
-    console.log("................ImageNAme", newImageName.path);
+  const handleImageNameChange = (multipleImages) => {
+    setMultiImageName(multipleImages);
+    console.log("................ImageNAme", multipleImages);
+    console.log("................ImageNAme", multipleImages.path);
   };
   const handle_key_feature = (lookup_key) => {
     if (selectedkey_features.includes(lookup_key)) {
@@ -577,8 +578,8 @@ const AddPropertyMainPage = (props) => {
   const handleSaveSignup = async () => {
     const formData = new FormData();
     formData.append("user", property_Data_id);
-    if (ImageName) {
-      const imageUri = ImageName;
+    if (MultiImageName) {
+      const imageUri = MultiImageName;
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       // const imageType = ImageName.mime || "image/jpeg";
 
@@ -1229,10 +1230,10 @@ const AddPropertyMainPage = (props) => {
                 {"Upload images"}
               </Text>
               <View style={{ flex: 1 }}>
-                {ImageName ? (
+                {MultiImageName ? (
                   <TouchableOpacity
                     style={{
-                      flex: 1,
+                      // flex: 1,
                       justifyContent: "center",
                       alignItems: "center",
                       borderWidth: 2,
@@ -1245,8 +1246,8 @@ const AddPropertyMainPage = (props) => {
                       refRBSheet.current.open();
                     }}
                   >
-                    <Image
-                      source={{ uri: ImageName.path || ImageName }}
+                    {/* <Image
+                      source={{ uri: MultiImageName.path || MultiImageName }}
                       style={[
                         {
                           borderRadius: 80 / 2,
@@ -1255,6 +1256,41 @@ const AddPropertyMainPage = (props) => {
                           width: 80,
                         },
                       ]}
+                    /> */}
+                    <FlatList
+                      horizontal
+                      data={MultiImageName}
+                      // keyExtractor={(item) => item?.id}
+                      renderItem={({ item, index }) => {
+                        return (
+                          <View
+                            style={[
+                              {
+                                borderRadius: 80 / 2,
+                                // alignSelf: "center",
+                                height: 80,
+                                width: 80,
+                              },
+                            ]}
+                          >
+                            <Text>{item.filename}</Text>
+                            <Image
+                              source={{
+                                uri: item.path || item.sourceURL,
+                              }}
+                              style={[
+                                {
+                                  borderRadius: 80 / 2,
+                                  alignSelf: "center",
+                                  height: 80,
+                                  width: 80,
+                                },
+                              ]}
+                            />
+                            ;
+                          </View>
+                        );
+                      }}
                     />
                   </TouchableOpacity>
                 ) : (
@@ -1303,9 +1339,9 @@ const AddPropertyMainPage = (props) => {
                   container: PropertyImagesStyle.bottomModal_container,
                 }}
               >
-                <UploadImageData
+                <UploadMultipleImage
                   heading_Text={"Upload image"}
-                  ImageName={handleImageNameChange}
+                  multipleImages={handleImageNameChange}
                 />
               </RBSheet>
             </View>
