@@ -57,19 +57,34 @@ export default PropertyDetails = (props) => {
   // };
   const handleApplySelection = (selectData) => {
     setSelectedProperty(selectData);
-  
-    // Check if lookup_key is directly available in selectData
-    const lookupKey = selectData.lookup_key || 
-      (selectData.data && selectData.data.lookup_key);
-  
-    if (lookupKey !== undefined) {
-      alert(`Selected Lookup Key: ${lookupKey}`);
-      console.log(`Selected Lookup Key: ${lookupKey}`);
+
+    const selectedLookupKey = property_value.find(
+      (item) => item.description === selectData.description
+    )?.lookup_key;
+
+     if (selectedLookupKey !== undefined) {
+    alert(`Selected Lookup Key: ${selectedLookupKey}`);
+    console.log(`Selected Lookup Key: ${selectedLookupKey}`);
+  } else {
+    console.error("Lookup key not found for the selected property:", selectData);
+    console.log("selectData:", selectData);
+    console.log(property_value);
+  }
+  };
+  // -----------------------------
+  const handle_key_feature = (lookup_key) => {
+    if (property_value.includes(lookup_key)) {
+      setProperty_value(
+        property_value.filter((item) => item !== lookup_key)
+        
+      );
+      console.log("lookup_key:", lookup_key);
+        console.log(property_value);
     } else {
-      console.error("Lookup key not found in selectData:", selectData);
+      setProperty_value([...property_value, lookup_key]);
+      console.error("Lookup key not found for the selected property:", lookup_key);
     }
   };
-  
   
 
   const handleClearSelection = () => {
@@ -81,6 +96,12 @@ export default PropertyDetails = (props) => {
     const additionalApi = url + "add_property_details";
     console.log("Request URL:", additionalApi);
     setIsLoading(true);
+
+    // Find the selectedProperty in propertyTypeData
+  // const selectedPropertyData = propertyTypeData.find(
+  //   (item) => item.description === selectedProperty?.description
+  // );
+
     axios
       .post(additionalApi, {
         user: 35,
@@ -97,7 +118,7 @@ export default PropertyDetails = (props) => {
           setIsLoading(false);
           props.navigation.navigate("PropertyFeature");
           console.log("property_details....", response.data);
-          console.log(location, propertyDesc, propertyTypeData, selectData);
+          console.log(location, propertyDesc, propertyTypeData, selectedProperty);
         } else {
           console.error("property_details_error:", response.data.error);
           alert(response.data.error);
@@ -213,7 +234,7 @@ export default PropertyDetails = (props) => {
             btnview={true}
             placeholdertext={"Apartment"}
             data={propertyTypeData}
-            onApply={handleApplySelection}
+            onApply={handle_key_feature}
             onClear={handleClearSelection}
           />
          
