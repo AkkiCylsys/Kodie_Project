@@ -82,10 +82,11 @@ export default Dashboard = (props) => {
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
 
-  const Login_response = useSelector(
-    (state) => state?.authenticationReducer?.data
-  );
-  console.log("Login_response.....", Login_response);
+  // const Login_response = useSelector(
+  //   (state) => state?.authenticationReducer?.data
+  // );
+  // console.log("Login_response.....", Login_response);
+  const loginData = useSelector((state) => state.authenticationReducer.data);
 
   const Income_render = ({ item, index }) => {
     return (
@@ -134,7 +135,8 @@ export default Dashboard = (props) => {
       <TopHeader
         isMiddleImage={true}
         IsNotification={true}
-        RightUserProfile={IMAGES.Landlordprofile}
+        RightUserProfile={loginData?.profile_path ?loginData?.profile_path:IMAGES.Landlordprofile}
+       // RightUserProfile={IMAGES.Landlordprofile}
         MiddleImage={logos.MainLogoWhite}
         leftImage={"menu"}
         MiddleText={"Kodie"}
