@@ -163,8 +163,9 @@ const PropertyList = (props) => {
         console.log("property_Data_list", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("propertyDataList....", response.data.data);
-          setProperty_Data_List(response.data.data);
+          console.log("propertyDataList....", response.data);
+          setProperty_Data_List(response.data);
+          console.log(Property_Data_List,'rahul...')
         } else {
           console.error("property_Data_list_error:", response.data.error);
           alert(response.data.error);

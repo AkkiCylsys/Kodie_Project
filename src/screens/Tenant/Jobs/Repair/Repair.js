@@ -44,7 +44,7 @@ const property_List = [
     id: "2",
     name: "Plasterer to fix wall",
     location: "1729 Melbourne St Australia",
-    buttonName: "ongoing",
+    buttonName: "Ongoing",
     tanentname: "Tom",
     budget: "Budget",
     spend: "$200",

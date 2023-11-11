@@ -245,7 +245,7 @@ const BottomNav = (props) => {
                   },
                 ]}
               >
-                {"jobs"}
+                {"Jobs"}
               </Text>
             </View>
           ),

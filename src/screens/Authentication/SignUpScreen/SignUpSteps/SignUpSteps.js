@@ -145,6 +145,159 @@ const SignUpSteps = (props) => {
   );
   const [describeBtn, setDescribeBtn] = useState([]);
   const [data_add, setData_add] = useState([]);
+  // const [isOpen, setIsOpen] = useState({
+  //   bedrooms: false,
+  //   garages: false,
+  //   bathrooms: false,
+  //   parkings: false,
+  //   floorSize: false,
+  // });
+  // const handleDropdownOpen = (dropdownName) => {
+  //   setIsOpen({ ...isOpen, [dropdownName]: !isOpen[dropdownName] });
+  // };
+  // const keydata = [
+  //   {
+  //     key: 'bedrooms', label: 'Bedrooms', component: (
+  //       <Dropdown
+  //         style={[
+  //           FirstPropertyStyle.dropdown,
+  //           FirstPropertyStyle.key_feature_Dropdownstyle,
+  //         ]}
+  //         placeholderStyle={[
+  //           FirstPropertyStyle.placeholderStyle,
+  //           { color: _COLORS.Kodie_LightGrayColor },
+  //         ]}
+  //         selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+  //         inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+  //         iconStyle={FirstPropertyStyle.iconStyle}
+  //         data={bedRoomData}
+  //         maxHeight={300}
+  //         labelField="description"
+  //         valueField="lookup_key"
+  //         placeholder="3"
+  //         value={bedroomValue}
+  //         onChange={(item) => {
+  //           setbedroomValue(item.lookup_key);
+  //           handle_key_feature(item.lookup_key);
+  //         }}
+  //       />
+  //     )
+  //   },
+  //   {
+  //     key: 'garages', label: 'Garages', component: (
+  //       <Dropdown
+  //         style={[
+  //           FirstPropertyStyle.dropdown,
+  //           FirstPropertyStyle.key_feature_Dropdownstyle,
+  //           FirstPropertyStyle.additional
+  //         ]}
+  //         placeholderStyle={[
+  //           FirstPropertyStyle.placeholderStyle,
+  //           { color: _COLORS.Kodie_LightGrayColor },
+  //         ]}
+  //         selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+  //         inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+  //         iconStyle={FirstPropertyStyle.iconStyle}
+  //         data={garagesData}
+  //         maxHeight={300}
+  //         labelField="description"
+  //         valueField="lookup_key"
+  //         placeholder="1"
+  //         value={garagesValue}
+  //         onChange={(item) => {
+  //           setGaragesValue(item.lookup_key);
+  //           handle_key_feature(item.lookup_key);
+  //         }}
+  //       />
+  //     )
+  //   },
+  //   {
+  //     key: 'bathrooms', label: 'Bathrooms', component: (
+  //       <Dropdown
+  //         style={[
+  //           FirstPropertyStyle.dropdown,
+  //           FirstPropertyStyle.key_feature_Dropdownstyle,
+
+  //         ]}
+  //         placeholderStyle={[
+  //           FirstPropertyStyle.placeholderStyle,
+  //           { color: _COLORS.Kodie_LightGrayColor },
+  //         ]}
+  //         selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+  //         inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+  //         iconStyle={FirstPropertyStyle.iconStyle}
+  //         data={bathroomData}
+  //         maxHeight={300}
+  //         labelField="description"
+  //         valueField="lookup_key"
+  //         placeholder="3"
+  //         value={bathRoomValue}
+  //         onChange={(item) => {
+  //           setBathRoomValue(item.lookup_key);
+  //           handle_key_feature(item.lookup_key);
+  //         }}
+  //       />
+  //     )
+  //   },
+  //   {
+  //     key: 'parkings', label: 'Parkings', component: (
+  //       <Dropdown
+  //         style={[
+  //           FirstPropertyStyle.dropdown,
+  //           FirstPropertyStyle.key_feature_Dropdownstyle,
+  //           FirstPropertyStyle.additional
+  //         ]}
+  //         placeholderStyle={[
+  //           FirstPropertyStyle.placeholderStyle,
+  //           { color: _COLORS.Kodie_LightGrayColor },
+  //         ]}
+  //         selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+  //         inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+  //         iconStyle={FirstPropertyStyle.iconStyle}
+  //         data={parkingData}
+  //         maxHeight={300}
+  //         labelField="description"
+  //         valueField="lookup_key"
+  //         placeholder="1"
+  //         value={parkingValue}
+  //         onChange={(item) => {
+  //           setParkingValue(item.lookup_key);
+  //           handle_key_feature(item.lookup_key);
+  //         }}
+  //       />
+  //     )
+  //   },
+  //   {
+  //     key: 'floorSize', label: 'Floor size', component:
+  //       (
+  //         <TextInput
+  //           style={AccountStyle.flor_input}
+  //           value={florSize}
+  //           onChangeText={setFlorSize}
+  //           placeholder="102m2"
+  //           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+  //         />
+  //       )
+  //   },
+  // ];
+  // const renderkey = ({ item }) => (
+  //   <View style={FirstPropertyStyle.key_feature_mainView}>
+  //     <View style={FirstPropertyStyle.key_feature_subView}>
+  //       <Text style={FirstPropertyStyle.key_feature_Text}>
+  //         {item.label}
+  //       </Text>
+  //       <TouchableOpacity onPress={() => handleDropdownOpen(item.key)}>
+  //         {/* Your button to toggle dropdown */}
+  //       </TouchableOpacity>
+  //       {isOpen[item.key] && (
+  //         // Render the dropdown or text input based on the isOpen state
+  //         item.component
+  //       )}
+  //     </View>
+  //   </View>
+  // );
+
+
   const fs = RNFetchBlob.fs;
 
   const handleBoxPress = (lookupID) => {
@@ -798,16 +951,16 @@ const SignUpSteps = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Account"
         : position === 1
-        ? "About you"
-        : position === 2
-        ? "First Property"
-        : "circle";
+          ? "About you"
+          : position === 2
+            ? "First Property"
+            : "circle";
 
     return (
       <View style={SignUpStepStyle.labelContainer}>
@@ -981,7 +1134,7 @@ const SignUpSteps = (props) => {
                 numColumns={2}
               />
               {kodieDescribeYourselfId === 2 ||
-              kodieDescribeYourselfId === 4 ? null : (
+                kodieDescribeYourselfId === 4 ? null : (
                 <View>
                   <Text style={AboutYouStyle.want_Heading}>
                     {"How many properties do you own, manage or rent?"}
@@ -1132,6 +1285,22 @@ const SignUpSteps = (props) => {
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Key features</Text>
+                {/* <FlatList
+                  data={keydata}
+                  renderItem={renderkey}
+                  keyExtractor={(item) => item.key}
+                /> */}
+                {/* <FlatList
+                  data={keydata}
+                  numColumns={2}
+                  renderItem={({ item }) => (
+                    <View key={item.key}>
+                      <Text>{item.label}</Text>
+                      {item.component}
+                    </View>
+                  )}
+                  keyExtractor={(item) => item.key}
+                /> */}
                 <View style={FirstPropertyStyle.key_feature_mainView}>
                   <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
@@ -1169,6 +1338,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                        FirstPropertyStyle.additional
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1191,7 +1361,7 @@ const SignUpSteps = (props) => {
                   </View>
                 </View>
                 <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
+                <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Bathrooms"}
                     </Text>
@@ -1199,6 +1369,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                        
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1219,7 +1390,7 @@ const SignUpSteps = (props) => {
                       }}
                     />
                   </View>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
+                <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Parkings"}
                     </Text>
@@ -1227,6 +1398,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                        FirstPropertyStyle.additional
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
