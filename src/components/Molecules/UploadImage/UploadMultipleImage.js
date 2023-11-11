@@ -22,8 +22,8 @@ const data = [
   // },
 ];
 
-const UploadImageData = (props) => {
-  const [imageName, setImageName] = useState("");
+const UploadMultipleImage = (props) => {
+  const [multipleImage, setMultipleImage] = useState("");
   const [image, setImage] = useState({});
   const UploadImageContent = ({ item, index }) => {
     return (
@@ -37,15 +37,16 @@ const UploadImageData = (props) => {
                 height: 400,
                 cropping: true,
                 compressImageQuality: 0.5,
+                multiple: true,
               })
                 .then((image) => {
-                  // console.log('image....', image);
+                  console.log("image....", image);
                   setImage(image);
-                  setImageName(image?.path);
+                  setMultipleImage(image);
                   // props?.ImageName(image?.path)
-                  props?.ImageName(image);
+                  props?.multipleImage(image);
 
-                  console.log("ImagePath..", imageName);
+                  console.log("ImagePath..", multipleImage);
                 })
                 .catch((err) => {
                   console.log("err...", err);
@@ -58,14 +59,22 @@ const UploadImageData = (props) => {
                 height: 400,
                 cropping: true,
                 compressImageQuality: 0.5,
-                // multiple: true,
+                multiple: true,
               })
                 .then((image) => {
                   // console.log(image);
-                  setImage(image);
-                  setImageName(JSON.stringify(image?.path));
-                  props?.ImageName(image?.path);
-                  console.log("ImagePath..", imageName);
+                  // setImage(image);
+                  // setImageName(JSON.stringify(image?.path));
+                  // props?.ImageName(image?.path);
+                  // console.log("ImagePath..", imageName);
+
+                  // ...
+                  if (image.length > 0) {
+                    setImage(image);
+                    setMultipleImage(image);
+                    props.multipleImages(image);
+                    console.log("Navigating to view photos with", image);
+                  }
                 })
                 .catch((err) => {
                   console.log("err...", err);
@@ -81,10 +90,16 @@ const UploadImageData = (props) => {
       </>
     );
   };
-
+  const navigateToViewPhotos = (image) => {
+    // Implement your navigation logic here
+    setImage(image);
+    setMultipleImage(image?.path);
+    props?.multipleImage(image);
+    console.log("Navigating to view photos with", image);
+  };
   return (
     <View style={UploadImageStyle.mainContainer}>
-      {/* <View style={UploadImageStyle.upload_View}>
+      <View style={UploadImageStyle.upload_View}>
         <Text style={UploadImageStyle.uploadImgText}>
           {props.heading_Text || "Upload image"}
         </Text>
@@ -96,7 +111,7 @@ const UploadImageData = (props) => {
             style={UploadImageStyle.crossIconStyle}
           />
         </TouchableOpacity>
-      </View> */}
+      </View>
 
       <FlatList
         data={data}
@@ -110,4 +125,4 @@ const UploadImageData = (props) => {
   );
 };
 
-export default UploadImageData;
+export default UploadMultipleImage;
