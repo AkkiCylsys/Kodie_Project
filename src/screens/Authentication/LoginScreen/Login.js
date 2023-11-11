@@ -232,21 +232,30 @@ export default Login = (props) => {
       };
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
-      //alert(res.data.status);
-
-      console.log("res....", res);
+//alert(res)
+      setIsLoading(false);
+      if(res==401){
+        setIsLoading(false);
+        //alert("Please check your email and password.");
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
+      }
+      else{
       if (res.data.status === true) {
-        alert("Login successful");
+      //  alert("Login successful");
         setIsLoading(false);
         props.navigation.navigate("DrawerNavigatorLeftMenu");
         setEmail("");
         setPassword("");
       } else {
-        alert("Please check your email and password.");
+        setIsLoading(false);
+        //alert("Please check your email and password.");
         setPasswordError(
           "Hmm, it seems like the credentials you entered are invalid. Please try again."
         );
       }
+    }
     }
   };
 
@@ -425,6 +434,7 @@ export default Login = (props) => {
                 onBlur={() => handleEmailChange(email)}
                 placeholder="Your email address"
                 placeholderTextColor="#999"
+                maxLength={30}
               />
             </View>
             {emailError ? (
@@ -569,6 +579,7 @@ export default Login = (props) => {
                   onBlur={() => handleResetEmailChange(resetEmail)}
                   placeholder="Your email address"
                   placeholderTextColor="#999"
+                  maxLength={30}
                 />
               </View>
               {resetEmailError ? (
