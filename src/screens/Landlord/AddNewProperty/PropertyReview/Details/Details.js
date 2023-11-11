@@ -114,6 +114,7 @@ export default Details = (props) => {
           }
         </Text>
 
+
         <FlatList
           data={Detail}
           scrollEnabled
