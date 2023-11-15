@@ -1230,77 +1230,28 @@ const AddPropertyMainPage = (props) => {
                 {"Upload images"}
               </Text>
               <View style={{ flex: 1 }}>
-                {MultiImageName ? (
-                  <TouchableOpacity
-                    style={{
-                      // flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderWidth: 2,
-                      borderStyle: "dashed",
-                      borderColor: _COLORS.Kodie_LightWhiteColor,
-                      paddingVertical: 20,
-                      marginTop: 12,
-                    }}
-                    onPress={() => {
-                      refRBSheet.current.open();
-                    }}
-                  >
-                    {/* <Image
-                      source={{ uri: MultiImageName.path || MultiImageName }}
-                      style={[
-                        {
-                          borderRadius: 80 / 2,
-                          alignSelf: "center",
-                          height: 80,
-                          width: 80,
-                        },
-                      ]}
-                    /> */}
-                    <FlatList
-                      horizontal
-                      data={MultiImageName}
-                      // keyExtractor={(item) => item?.id}
-                      renderItem={({ item, index }) => {
-                        return (
-                          <View
-                            style={[
-                              {
-                                borderRadius: 80 / 2,
-                                // alignSelf: "center",
-                                height: 80,
-                                width: 80,
-                              },
-                            ]}
-                          >
-                            <Text>{item.filename}</Text>
-                            <Image
-                              source={{
-                                uri: item.path || item.sourceURL,
-                              }}
-                              style={[
-                                {
-                                  borderRadius: 80 / 2,
-                                  alignSelf: "center",
-                                  height: 80,
-                                  width: 80,
-                                },
-                              ]}
-                            />
-                            ;
-                          </View>
-                        );
-                      }}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <UploadImageBoxes
+              <UploadImageBoxes
                     Box_Text={"Add Photo"}
                     onPress={() => {
                       refRBSheet.current.open();
                     }}
                   />
-                )}
+             { MultiImageName.length > 0 && (
+                
+                    <FlatList
+                      horizontal
+                      data={MultiImageName}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={({ item }) => (
+                        <Image
+                          source={{ uri: item.path }}
+                          style={{ width: 100, height: 100, margin: 5 }}
+                        />
+                      )}
+                      />
+             )}
+                 
+            
                 <Text style={PropertyImagesStyle.formatted_property_text}>
                   {
                     "Images should be formatted .jpg or .png Size per image should not exceed 2 MB"
@@ -1341,7 +1292,7 @@ const AddPropertyMainPage = (props) => {
               >
                 <UploadMultipleImage
                   heading_Text={"Upload image"}
-                  multipleImages={handleImageNameChange}
+                  multipleImage={handleImageNameChange}
                 />
               </RBSheet>
             </View>

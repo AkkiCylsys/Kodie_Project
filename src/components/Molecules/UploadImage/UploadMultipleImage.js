@@ -23,7 +23,7 @@ const data = [
 ];
 
 const UploadMultipleImage = (props) => {
-  const [multipleImage, setMultipleImage] = useState("");
+  const [multipleImage, setMultipleImage] = useState([]);
   const [image, setImage] = useState({});
   const UploadImageContent = ({ item, index }) => {
     return (
@@ -72,7 +72,7 @@ const UploadMultipleImage = (props) => {
                   if (image.length > 0) {
                     setImage(image);
                     setMultipleImage(image);
-                    props.multipleImages(image);
+                    props.multipleImage(image);
                     console.log("Navigating to view photos with", image);
                   }
                 })
@@ -81,7 +81,8 @@ const UploadMultipleImage = (props) => {
                 });
             }
           }}
-        >
+          >
+          {console.log(typeof item.Img, item.Img)}
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
             <Image source={item.Img} style={UploadImageStyle.Icons} />
           </TouchableOpacity>
