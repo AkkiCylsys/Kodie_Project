@@ -14,6 +14,7 @@ const SearchPlaces = (props) => {
       <GooglePlacesAutocomplete
         placeholder="Search"
         debounce={400}
+        
         onPress={props.onPress}
         // onPress={(data, details) => {
         //   // 'details' is provided when fetchDetails = true

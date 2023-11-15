@@ -13,6 +13,8 @@ import {
   Image,
   FlatList,
 } from "react-native";
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -330,7 +332,36 @@ const SignUpSteps = (props) => {
     }
   };
 
+  const CheckIOSMapPermission = () => {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
+      .then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+
+            console.log('This feature is not available (on this device / in this context)');
+            break;
+          case RESULTS.DENIED:
+            console.log('The permission has not been requested / is denied but requestable');
+            break;
+          case RESULTS.LIMITED:
+            console.log('The permission is limited: some actions are possible');
+            break;
+          case RESULTS.GRANTED:
+            console.log('The permission is granted');
+            getAddressWithCordinates();
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            break;
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+  }
+
   const getAddressWithCordinates = () => {
+    
     Geolocation.watchPosition(
       (position) => {
         setlatitude(position.coords.latitude);
@@ -350,13 +381,16 @@ const SignUpSteps = (props) => {
   };
 
   const getAddress = (latitude, longitude) => {
+
     Geocoder.from(latitude, longitude)
       .then((json) => {
         let MainFullAddress = json.results[0].formatted_address;
         var addressComponent2 = json.results[0].address_components[1];
+       // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setPhysicalAddress(MainFullAddress);
+        
         //setAddress(MainFullAddress);
       })
       .catch((error) => console.warn(error));
@@ -585,6 +619,8 @@ const SignUpSteps = (props) => {
     handle_kodiehelp();
     handle_describe_yourself();
     additional_features();
+    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", { language: "en" });
+    CheckIOSMapPermission()
   }, []);
 
   // property Type API with LookupKey...
@@ -976,7 +1012,7 @@ const SignUpSteps = (props) => {
                     onPress={() => {
                       // props.navigation.navigate("Location");
 
-                      //  Platform.OS == 'ios' ? CheckIOSMapPermission :
+                        Platform.OS == 'ios' ? CheckIOSMapPermission :
                       checkpermissionlocation();
                       setIsMap(true);
                     }}
