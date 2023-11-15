@@ -41,6 +41,9 @@ import { Image } from "react-native";
 import { AboutYouStyle } from "../../Authentication/SignUpScreen/AboutYou/AboutYouStyle";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import { PropertyReviewStyle } from "./PropertyReview/PropertyReviewStyle";
+
+import ImagePicker from 'react-native-image-crop-picker';
+import Video from "react-native-video";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const data = [
   { label: "Bharat", value: "1" },
@@ -142,6 +145,21 @@ const AddPropertyMainPage = (props) => {
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [data_add, setData_add] = useState([]);
   const [MultiImageName, setMultiImageName] = useState([]);
+  const [selectedVideos, setSelectedVideos] = useState([]);
+
+  const openVideoPicker = () => {
+    ImagePicker.openPicker({
+      mediaType: 'video',
+      multiple: true,
+    })
+      .then(videos => {
+        setSelectedVideos([...selectedVideos, ...videos]);
+      })
+      .catch(error => {
+        console.error('Error selecting videos:', error);
+      });
+  };
+
   const refRBSheet = useRef();
 
   const handleImageNameChange = (multipleImages) => {
@@ -1230,77 +1248,28 @@ const AddPropertyMainPage = (props) => {
                 {"Upload images"}
               </Text>
               <View style={{ flex: 1 }}>
-                {MultiImageName ? (
-                  <TouchableOpacity
-                    style={{
-                      // flex: 1,
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderWidth: 2,
-                      borderStyle: "dashed",
-                      borderColor: _COLORS.Kodie_LightWhiteColor,
-                      paddingVertical: 20,
-                      marginTop: 12,
-                    }}
-                    onPress={() => {
-                      refRBSheet.current.open();
-                    }}
-                  >
-                    {/* <Image
-                      source={{ uri: MultiImageName.path || MultiImageName }}
-                      style={[
-                        {
-                          borderRadius: 80 / 2,
-                          alignSelf: "center",
-                          height: 80,
-                          width: 80,
-                        },
-                      ]}
-                    /> */}
-                    <FlatList
-                      horizontal
-                      data={MultiImageName}
-                      // keyExtractor={(item) => item?.id}
-                      renderItem={({ item, index }) => {
-                        return (
-                          <View
-                            style={[
-                              {
-                                borderRadius: 80 / 2,
-                                // alignSelf: "center",
-                                height: 80,
-                                width: 80,
-                              },
-                            ]}
-                          >
-                            <Text>{item.filename}</Text>
-                            <Image
-                              source={{
-                                uri: item.path || item.sourceURL,
-                              }}
-                              style={[
-                                {
-                                  borderRadius: 80 / 2,
-                                  alignSelf: "center",
-                                  height: 80,
-                                  width: 80,
-                                },
-                              ]}
-                            />
-                            ;
-                          </View>
-                        );
-                      }}
-                    />
-                  </TouchableOpacity>
-                ) : (
-                  <UploadImageBoxes
+              <UploadImageBoxes
                     Box_Text={"Add Photo"}
                     onPress={() => {
                       refRBSheet.current.open();
                     }}
                   />
-                )}
+             { MultiImageName.length > 0 && (
+                
+                    <FlatList
+                      horizontal
+                      data={MultiImageName}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={({ item }) => (
+                        <Image
+                          source={{ uri: item.path }}
+                          style={{ width: 100, height: 100, margin: 5 }}
+                        />
+                      )}
+                      />
+             )}
+                 
+            
                 <Text style={PropertyImagesStyle.formatted_property_text}>
                   {
                     "Images should be formatted .jpg or .png Size per image should not exceed 2 MB"
@@ -1312,11 +1281,33 @@ const AddPropertyMainPage = (props) => {
               </Text>
               <View style={{ flex: 1 }}>
                 <UploadImageBoxes
-                  Box_Text={"Add Photo"}
+                  Box_Text={"Add video"}
                   onPress={() => {
-                    refRBSheet.current.open();
+                    // refRBSheet.current.open();
+                    openVideoPicker();
                   }}
                 />
+                {selectedVideos.length > 0 && (
+        <View style={{marginTop:10}}>
+          {/* <Text>Selected Videos:</Text> */}
+          <FlatList
+          horizontal
+            data={selectedVideos}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <>
+              <Video
+              source={{ uri: item.path }}
+              style={{ width: 150, height: 150, borderRadius:5,marginLeft:10}}
+              controls={true}
+            />
+              {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
+           
+              </>
+            )}
+          />
+        </View>
+      )}
                 <Text style={PropertyImagesStyle.formatted_property_text}>
                   {
                     "Videos should be formatted .mp4, HEVC, MKV.Size per video should not exceed 100 MB"
@@ -1341,7 +1332,7 @@ const AddPropertyMainPage = (props) => {
               >
                 <UploadMultipleImage
                   heading_Text={"Upload image"}
-                  multipleImages={handleImageNameChange}
+                  multipleImage={handleImageNameChange}
                 />
               </RBSheet>
             </View>
