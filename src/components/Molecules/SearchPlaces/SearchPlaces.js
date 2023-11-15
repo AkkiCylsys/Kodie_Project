@@ -44,6 +44,7 @@ const SearchPlaces = (props) => {
           textInputContainer: {
             marginHorizontal: 16,
             borderWidth: 1,
+            borderColor: "#E5E4E2",
             borderRadius: 8,
             marginTop: 10,
           },

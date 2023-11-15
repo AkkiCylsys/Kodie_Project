@@ -1541,37 +1541,17 @@ const SignUpSteps = (props) => {
           <View
             style={{
               flex: 1,
-              paddingHorizontal: 10,
+             // paddingHorizontal: 10,
               backgroundColor: "transparent",
             }}
           >
-            <View
-              style={{
-                flexDirection: "row",
-                width: "100%",
-                paddingVertical: 5,
-              }}
-            >
-              <TextInput
-                style={{
-                  backgroundColor: "white",
-                  borderColor: "#E5E4E2",
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  width: "100%",
-                  height: 45,
-                  marginTop: 10,
-                }}
-                onFocus={() => openMapandClose()}
-                placeholder={"Search Place"}
-              />
-            </View>
+            
             <MapScreen
               style={{
                 height: "100%",
                 width: "100%",
-                borderRadius: 20,
-                borderWidth: 1,
+               // borderRadius: 20,
+               // borderWidth: 1,
                 //borderColor: .greenAppColor,
                 alignSelf: "center",
                 marginBottom: 10,
@@ -1580,6 +1560,33 @@ const SignUpSteps = (props) => {
               Maplat={latitude}
               Maplng={longitude}
             />
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                width: "90%",
+                borderWidth: 1,
+                borderRadius: 8,
+              backgroundColor:'white',
+              borderColor: "#E5E4E2",
+                marginTop:10,
+                position:'absolute'
+              }}
+            >
+              <TextInput
+                style={{
+                  backgroundColor: "white",
+              
+                  width: "90%",
+                  height: 45,
+                  alignSelf:'center'
+                  //marginTop: 10,
+                }}
+                onFocus={() => openMapandClose()}
+                placeholder={"Search Place"}
+              />
+            </View>
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}
