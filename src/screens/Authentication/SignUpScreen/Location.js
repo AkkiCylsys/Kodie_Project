@@ -117,7 +117,6 @@ export default Location = (props) => {
     });
     checkpermissionlocation();
   }, []);
-  
 
   const GOOGLE_PLACES_API_KEY = "AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw";
 
@@ -127,70 +126,72 @@ export default Location = (props) => {
         MiddleText={"Location"}
         onPressLeftButton={() => _goBack(props)}
       />
-      {showMap?(
-      <TouchableOpacity
-        style={{
-          backgroundColor: _COLORS.Kodie_WhiteColor,
-          flexDirection: "row",
-
-          // borderWidth: 1,
-        }}
-        onPress={toggleMapVisibility}
-      >
-        <AntDesign
-          name="search1"
-          size={20}
-          color={_COLORS.Kodie_ExtraminLiteGrayColor}
-          style={{
-            alignSelf: "center",
-            marginLeft: 10,
-          }}
-        />
-        <Text
-          style={{
-            paddingVertical: 10,
-            marginLeft: 10,
-            fontSize: 15,
-            fontFamily: FONTFAMILY.K_Regular,
-            color: _COLORS.Kodie_ExtraminLiteGrayColor,
-          }}
-        >
-          {"Search"}
-        </Text>
-      </TouchableOpacity>
-      ):null}
       {showMap ? (
-      <View style={LocationStyle.mapsty}>
-        <MapScreen
-          onRegionChange={onRegionChange}
-          Maplat={latitude}
-          Maplng={longitude}
-        />
-      </View>
-      ):(
+        <TouchableOpacity
+          style={{
+            backgroundColor: _COLORS.Kodie_WhiteColor,
+            flexDirection: "row",
+
+            // borderWidth: 1,
+          }}
+          onPress={toggleMapVisibility}
+        >
+          <AntDesign
+            name="search1"
+            size={20}
+            color={_COLORS.Kodie_ExtraminLiteGrayColor}
+            style={{
+              alignSelf: "center",
+              marginLeft: 10,
+            }}
+          />
+          <Text
+            style={{
+              paddingVertical: 10,
+              marginLeft: 10,
+              fontSize: 15,
+              fontFamily: FONTFAMILY.K_Regular,
+              color: _COLORS.Kodie_ExtraminLiteGrayColor,
+            }}
+          >
+            {"Search"}
+          </Text>
+        </TouchableOpacity>
+      ) : null}
+      {showMap ? (
+        <View style={LocationStyle.mapsty}>
+          <MapScreen
+            onRegionChange={onRegionChange}
+            Maplat={latitude}
+            Maplng={longitude}
+          />
+        </View>
+      ) : (
         <View style={LocationStyle.searchPlc}>
-        <SearchPlaces onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          console.log("Selected Place Data:", data);
-          if ((details, data)) {
-            // Access latitude and longitude from 'details'
-            const { lat, lng } = details.geometry.location;
-            console.log("Latitude:", lat);
-            console.log("Longitude:", lng);
-            console.log("description:", data?.description);
-            setLatitude_Search(lat);
-            setLongitude_Search(lng);
-            setDescription(data?.description);
-            props.navigation.navigate("SignUpSteps", {
-              latitude_Search: details.geometry.location.lat,
-              longitude_Search: details.geometry.location.lng,
-              description: data?.description,
-            });
-          }
-        }}/>
-      </View>
+          <SearchPlaces
+            onPress={(data, details = null) => {
+              // 'details' is provided when fetchDetails = true
+              console.log("Selected Place Data:", data);
+              if ((details, data)) {
+                // Access latitude and longitude from 'details'
+                const { lat, lng } = details.geometry.location;
+                console.log("Latitude:", lat);
+                console.log("Longitude:", lng);
+                console.log("description:", data?.description);
+                setLatitude_Search(lat);
+                setLongitude_Search(lng);
+                setDescription(data?.description);
+                props.navigation.navigate("SignUpSteps", {
+                  latitude_Search: details.geometry.location.lat,
+                  longitude_Search: details.geometry.location.lng,
+                  description: data?.description,
+                });
+              }
+            }}
+          />
+        </View>
       )}
-     
+
       {/* <TouchableOpacity style={LocationStyle.shapeIcon}>
         <Image source={IMAGES.Shape} style={LocationStyle.shapImg} />
       </TouchableOpacity> */}

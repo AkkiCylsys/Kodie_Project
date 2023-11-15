@@ -2,7 +2,7 @@
 //ScreenNo:12
 //ScreenNo:13
 //ScreenNo:14
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect } from "react";
 import {
   View,
   Text,
@@ -20,7 +20,7 @@ import { _goBack } from "../../../../services/CommonServices";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import { SignUpStepStyle } from "./SignUpStepsStyle";
 import { AccountStyle } from "../Account/AccountStyle";
-import { LABEL_STYLES, _COLORS, IMAGES } from "../../../../Themes";
+import { LABEL_STYLES, _COLORS, IMAGES, FONTFAMILY } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
 import { AboutYouStyle } from "../AboutYou/AboutYouStyle";
 import ServicesBox from "../../../../components/Molecules/ServicesBox/ServicesBox";
@@ -39,6 +39,13 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import RNFetchBlob from "rn-fetch-blob";
 import { useDispatch, useSelector } from "react-redux";
 import { useScrollToTop } from "@react-navigation/native";
+
+// ...
+import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
+import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
+import Geocoder from "react-native-geocoding";
+import Geolocation from "react-native-geolocation-service";
+import { LocationStyle } from "../LocationStyle";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -154,160 +161,105 @@ const SignUpSteps = (props) => {
   );
   const [describeBtn, setDescribeBtn] = useState([]);
   const [data_add, setData_add] = useState([]);
-  // const [isOpen, setIsOpen] = useState({
-  //   bedrooms: false,
-  //   garages: false,
-  //   bathrooms: false,
-  //   parkings: false,
-  //   floorSize: false,
-  // });
-  // const handleDropdownOpen = (dropdownName) => {
-  //   setIsOpen({ ...isOpen, [dropdownName]: !isOpen[dropdownName] });
-  // };
-  // const keydata = [
-  //   {
-  //     key: 'bedrooms', label: 'Bedrooms', component: (
-  //       <Dropdown
-  //         style={[
-  //           FirstPropertyStyle.dropdown,
-  //           FirstPropertyStyle.key_feature_Dropdownstyle,
-  //         ]}
-  //         placeholderStyle={[
-  //           FirstPropertyStyle.placeholderStyle,
-  //           { color: _COLORS.Kodie_LightGrayColor },
-  //         ]}
-  //         selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-  //         inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-  //         iconStyle={FirstPropertyStyle.iconStyle}
-  //         data={bedRoomData}
-  //         maxHeight={300}
-  //         labelField="description"
-  //         valueField="lookup_key"
-  //         placeholder="3"
-  //         value={bedroomValue}
-  //         onChange={(item) => {
-  //           setbedroomValue(item.lookup_key);
-  //           handle_key_feature(item.lookup_key);
-  //         }}
-  //       />
-  //     )
-  //   },
-  //   {
-  //     key: 'garages', label: 'Garages', component: (
-  //       <Dropdown
-  //         style={[
-  //           FirstPropertyStyle.dropdown,
-  //           FirstPropertyStyle.key_feature_Dropdownstyle,
-  //           FirstPropertyStyle.additional
-  //         ]}
-  //         placeholderStyle={[
-  //           FirstPropertyStyle.placeholderStyle,
-  //           { color: _COLORS.Kodie_LightGrayColor },
-  //         ]}
-  //         selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-  //         inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-  //         iconStyle={FirstPropertyStyle.iconStyle}
-  //         data={garagesData}
-  //         maxHeight={300}
-  //         labelField="description"
-  //         valueField="lookup_key"
-  //         placeholder="1"
-  //         value={garagesValue}
-  //         onChange={(item) => {
-  //           setGaragesValue(item.lookup_key);
-  //           handle_key_feature(item.lookup_key);
-  //         }}
-  //       />
-  //     )
-  //   },
-  //   {
-  //     key: 'bathrooms', label: 'Bathrooms', component: (
-  //       <Dropdown
-  //         style={[
-  //           FirstPropertyStyle.dropdown,
-  //           FirstPropertyStyle.key_feature_Dropdownstyle,
-
-  //         ]}
-  //         placeholderStyle={[
-  //           FirstPropertyStyle.placeholderStyle,
-  //           { color: _COLORS.Kodie_LightGrayColor },
-  //         ]}
-  //         selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-  //         inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-  //         iconStyle={FirstPropertyStyle.iconStyle}
-  //         data={bathroomData}
-  //         maxHeight={300}
-  //         labelField="description"
-  //         valueField="lookup_key"
-  //         placeholder="3"
-  //         value={bathRoomValue}
-  //         onChange={(item) => {
-  //           setBathRoomValue(item.lookup_key);
-  //           handle_key_feature(item.lookup_key);
-  //         }}
-  //       />
-  //     )
-  //   },
-  //   {
-  //     key: 'parkings', label: 'Parkings', component: (
-  //       <Dropdown
-  //         style={[
-  //           FirstPropertyStyle.dropdown,
-  //           FirstPropertyStyle.key_feature_Dropdownstyle,
-  //           FirstPropertyStyle.additional
-  //         ]}
-  //         placeholderStyle={[
-  //           FirstPropertyStyle.placeholderStyle,
-  //           { color: _COLORS.Kodie_LightGrayColor },
-  //         ]}
-  //         selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-  //         inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-  //         iconStyle={FirstPropertyStyle.iconStyle}
-  //         data={parkingData}
-  //         maxHeight={300}
-  //         labelField="description"
-  //         valueField="lookup_key"
-  //         placeholder="1"
-  //         value={parkingValue}
-  //         onChange={(item) => {
-  //           setParkingValue(item.lookup_key);
-  //           handle_key_feature(item.lookup_key);
-  //         }}
-  //       />
-  //     )
-  //   },
-  //   {
-  //     key: 'floorSize', label: 'Floor size', component:
-  //       (
-  //         <TextInput
-  //           style={AccountStyle.flor_input}
-  //           value={florSize}
-  //           onChangeText={setFlorSize}
-  //           placeholder="102m2"
-  //           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-  //         />
-  //       )
-  //   },
-  // ];
-  // const renderkey = ({ item }) => (
-  //   <View style={FirstPropertyStyle.key_feature_mainView}>
-  //     <View style={FirstPropertyStyle.key_feature_subView}>
-  //       <Text style={FirstPropertyStyle.key_feature_Text}>
-  //         {item.label}
-  //       </Text>
-  //       <TouchableOpacity onPress={() => handleDropdownOpen(item.key)}>
-  //         {/* Your button to toggle dropdown */}
-  //       </TouchableOpacity>
-  //       {isOpen[item.key] && (
-  //         // Render the dropdown or text input based on the isOpen state
-  //         item.component
-  //       )}
-  //     </View>
-  //   </View>
-  // );
-
-
+  // ......
+  const [latitude, setlatitude] = useState();
+  const [longitude, setlongitude] = useState();
+  const [latitude_Search, setLatitude_Search] = useState("");
+  const [longitude_Search, setLongitude_Search] = useState("");
+  const [description, setDescription] = useState("");
+  const [Address, setAddress] = useState("");
+  const [locationStatus, setLocationStatus] = useState("");
+  const [text, onChangeText] = useState("");
+  const [showMap, setShowMap] = useState(true);
+  const [islocation, setIslocation] = useState(true)
   const fs = RNFetchBlob.fs;
+
+  const toggleLocationvisible = () => {
+    setIslocation(!islocation)
+  }
+
+  const toggleMapVisibility = () => {
+    setShowMap(!showMap);
+  };
+  useLayoutEffect(() => {
+    checkpermissionlocation();
+  }, []);
+
+  const checkpermissionlocation = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Example App",
+
+          message: "Example App access to your location ",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+        // alert("You can use the location");
+        //getAddressWithCordinates();
+        getOneTimeLocation();
+      } else {
+        console.log("location permission denied");
+        alert("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  const getOneTimeLocation = () => {
+    setLocationStatus("Getting Location ...");
+    Geolocation.getCurrentPosition(
+      //Will give you the current location
+      (position) => {
+        // alert(JSON.stringify(position))
+        setLocationStatus("You are Here");
+
+        //getting the Longitude from the location json
+        const currentLongitude = JSON.stringify(position.coords.longitude);
+
+        //getting the Latitude from the location json
+        const currentLatitude = JSON.stringify(position.coords.latitude);
+
+        setlatitude(currentLatitude);
+        setlongitude(currentLongitude);
+
+        getAddress(currentLongitude, currentLatitude);
+      },
+      (error) => {
+        setLocationStatus(error.message);
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 30000,
+        maximumAge: 1000,
+      }
+    );
+  };
+
+  const onRegionChange = (Region) => {
+    //alert(JSON.stringify(Region.latitude))
+    setlatitude(Region.latitude);
+    // alert(latitude);
+    // alert(longitude);
+    console.log("latitude..", latitude);
+    console.log("longitude..", longitude);
+    setlongitude(Region.longitude);
+    getAddress(Region.latitude, Region.longitude);
+  };
+
+  const getAddress = (latitude, longitude) => {
+    // alert(longitude);
+    Geocoder.from(latitude, longitude)
+      .then((json) => {
+        // alert(JSON.stringify(json.results))
+        let MainFullAddress = json.results[0].formatted_address;
+        var addressComponent2 = json.results[0].address_components[1];
+      })
+      .catch((error) => console.warn(error));
+  };
+
 
   const handleBoxPress = (lookupID) => {
     setIsClick(lookupID);
@@ -359,6 +311,9 @@ const SignUpSteps = (props) => {
       </View>
     );
   };
+
+  // 
+
 
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
@@ -580,15 +535,16 @@ const SignUpSteps = (props) => {
     formData.append("first_name", firstName);
     formData.append("last_name", lastName);
     formData.append("phone_number", mobileNumber);
-    formData.append("physical_address", physicalAddress);
+    // formData.append("physical_address", physicalAddress);
+    formData.append("physical_address", description);
     formData.append("organisation_name", organisation);
     formData.append("referral_code", referral);
     formData.append("describe_yourself", selectedServiceKeysString);
     formData.append("kodie_help", kodieHelpValue);
     formData.append("property_manage", selectManageProperty);
     formData.append("location", propertyLocation);
-    formData.append("location_longitude", "102.002.001");
-    formData.append("location_latitude", "104.004.002");
+    formData.append("location_longitude", latitude_Search);
+    formData.append("location_latitude",longitude_Search);
     formData.append("islocation", "1");
     formData.append("property_description", propertyDesc);
     formData.append("property_type", property_value);
@@ -657,7 +613,7 @@ const SignUpSteps = (props) => {
   };
 
   useEffect(() => {
-    scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
+    // scrollViewRef.current.scrollTo({ y: 0, x: 0, animated: true });
     handleProperty_Type();
     handle_manage_property();
     handle_bedRoom();
@@ -667,6 +623,12 @@ const SignUpSteps = (props) => {
     handle_kodiehelp();
     handle_describe_yourself();
     additional_features();
+
+    // ....
+    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
+      language: "en",
+    });
+    checkpermissionlocation();
   }, []);
 
   // property Type API with LookupKey...
@@ -1056,7 +1018,8 @@ const SignUpSteps = (props) => {
                 <View style={AccountStyle.locationContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Location");
+                      // props.navigation.navigate("Location");
+                      toggleLocationvisible()
                     }}
                   >
                     <Entypo
@@ -1068,7 +1031,8 @@ const SignUpSteps = (props) => {
                   </TouchableOpacity>
                   <TextInput
                     style={AccountStyle.locationInput}
-                    value={physicalAddress}
+                    // value={physicalAddress}
+                    value={description}
                     onChangeText={setPhysicalAddress}
                     placeholder="Enter new location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -1208,7 +1172,8 @@ const SignUpSteps = (props) => {
                 <View style={FirstPropertyStyle.locationContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Location");
+                      // props.navigation.navigate("Location");
+                      toggleLocationvisible()
                     }}
                   >
                     <Octicons
@@ -1336,7 +1301,6 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1359,7 +1323,7 @@ const SignUpSteps = (props) => {
                   </View>
                 </View>
                 <View style={FirstPropertyStyle.key_feature_mainView}>
-                <View style={FirstPropertyStyle.key_feature_subView}>
+                  <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Bathrooms"}
                     </Text>
@@ -1367,7 +1331,6 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
-                        
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1388,7 +1351,7 @@ const SignUpSteps = (props) => {
                       }}
                     />
                   </View>
-                <View style={FirstPropertyStyle.key_feature_subView}>
+                  <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Parkings"}
                     </Text>
@@ -1396,7 +1359,6 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1581,66 +1543,150 @@ const SignUpSteps = (props) => {
   };
 
   return (
+
     <>
       <TopHeader
         MiddleText={"Set up your Kodie account"}
         onPressLeftButton={goBack}
       />
       <View style={SignUpStepStyle.container}>
-        <View style={SignUpStepStyle.stepIndicator}>
-          <StepIndicator
-            customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-            currentPosition={currentPage}
-            // onPress={onStepPress}
-            renderStepIndicator={renderStepIndicator}
-            labels={labels}
-            stepCount={3}
-            renderLabel={renderLabel}
-          />
-        </View>
-        <ScrollView
-          contentContainerStyle={{ marginBottom: 50 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <View style={SignUpStepStyle.stepIndicator}>
-            {renderPageContent()}
-          </View>
+        {!islocation ? (
+          <>
+            <View style={LocationStyle.mainContainer}>
+              {/* <TopHeader
+              MiddleText={"Location"}
+              onPressLeftButton={() => _goBack(props)}
+            /> */}
+              {showMap ? (
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: _COLORS.Kodie_WhiteColor,
+                    flexDirection: "row",
 
-          <View
-            style={{
-              marginHorizontal: 16,
-              backgroundColor: _COLORS.Kodie_WhiteColor,
-              marginBottom: 10,
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "flex-end",
-                marginBottom: 30,
-              }}
-            >
-              <CustomSingleButton
-                _ButtonText={currentPage == 2 ? "Save" : "Next"}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  handleNextBtn();
-                }}
-              />
-              {currentPage === 1 || currentPage === 2 ? (
-                <>
-                  <CustomSingleButton
-                    _ButtonText={"Fill these details out later"}
-                    Text_Color={_COLORS.Kodie_BlackColor}
-                    backgroundColor={_COLORS.Kodie_WhiteColor}
-                    onPress={() => {
-                      if (currentPage === 2) {
-                        handleNextBtn();
-                      } else {
-                        setCurrentPage(currentPage + 1);
-                      }
+                    // borderWidth: 1,
+                  }}
+                  onPress={toggleMapVisibility}
+                >
+                  <AntDesign
+                    name="search1"
+                    size={20}
+                    color={_COLORS.Kodie_ExtraminLiteGrayColor}
+                    style={{
+                      alignSelf: "center",
+                      marginLeft: 10,
                     }}
                   />
-                  {/* 
+                  <Text
+                    style={{
+                      paddingVertical: 10,
+                      marginLeft: 10,
+                      fontSize: 15,
+                      fontFamily: FONTFAMILY.K_Regular,
+                      color: _COLORS.Kodie_ExtraminLiteGrayColor,
+                    }}
+                  >
+                    {"Search"}
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+              {showMap ? (
+                <View style={LocationStyle.mapsty}>
+                  <MapScreen
+                    onRegionChange={onRegionChange}
+                    Maplat={latitude}
+                    Maplng={longitude}
+                  />
+                </View>
+              ) : (
+                <View style={LocationStyle.searchPlc}>
+                  <SearchPlaces onPress={(data, details = null) => {
+                    // 'details' is provided when fetchDetails = true
+                    console.log("Selected Place Data:", data);
+                    if ((details, data)) {
+                      // Access latitude and longitude from 'details'
+                      const { lat, lng } = details.geometry.location;
+                      console.log("Latitude:", lat);
+                      console.log("Longitude:", lng);
+                      console.log("description:", data?.description);
+                      setLatitude_Search(lat);
+                      setLongitude_Search(lng);
+                      
+                      setDescription(data?.description);
+                      setPropertyLocation(data?.description)
+                      toggleLocationvisible()
+                      // props.navigation.navigate("SignUpSteps", {
+                      //   latitude_Search: latitude_Search,
+                      //   longitude_Search: longitude_Search,
+                      //   description: data?.description,
+                      // });
+                    }
+                  }} />
+                </View>
+              )}
+
+              {/* <TouchableOpacity style={LocationStyle.shapeIcon}>
+              <Image source={IMAGES.Shape} style={LocationStyle.shapImg} />
+            </TouchableOpacity> */}
+            </View>
+          </>
+        ) :
+
+          <>
+
+            <View style={SignUpStepStyle.stepIndicator}>
+              <StepIndicator
+                customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+                currentPosition={currentPage}
+                // onPress={onStepPress}
+                renderStepIndicator={renderStepIndicator}
+                labels={labels}
+                stepCount={3}
+                renderLabel={renderLabel}
+              />
+            </View>
+            <ScrollView
+              contentContainerStyle={{ marginBottom: 50 }}
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={SignUpStepStyle.stepIndicator}>
+                {renderPageContent()}
+              </View>
+
+              <View
+                style={{
+                  marginHorizontal: 16,
+                  backgroundColor: _COLORS.Kodie_WhiteColor,
+                  marginBottom: 10,
+                }}
+              >
+                <View
+                  style={{
+                    justifyContent: "flex-end",
+                    marginBottom: 30,
+                  }}
+                >
+                  <CustomSingleButton
+                    _ButtonText={currentPage == 2 ? "Save" : "Next"}
+                    Text_Color={_COLORS.Kodie_WhiteColor}
+                    onPress={() => {
+                      handleNextBtn();
+                    }}
+                  />
+                  {currentPage === 1 || currentPage === 2 ? (
+                    <>
+                      <CustomSingleButton
+                        _ButtonText={"Fill these details out later"}
+                        Text_Color={_COLORS.Kodie_BlackColor}
+                        backgroundColor={_COLORS.Kodie_WhiteColor}
+                        onPress={() => {
+                          if (currentPage === 2) {
+                            handleNextBtn();
+                          } else {
+                            setCurrentPage(currentPage + 1);
+                          }
+                        }}
+                      />
+                      {/* 
                   <TouchableOpacity style={SignUpStepStyle.goBack_View}>
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
@@ -1651,28 +1697,30 @@ const SignUpSteps = (props) => {
                     </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
                   </TouchableOpacity> */}
-                </>
-              ) : null}
-              {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
-                <TouchableOpacity
-                  style={SignUpStepStyle.goBack_View}
-                  onPress={goBack}
-                >
-                  <View style={SignUpStepStyle.backIcon}>
-                    <Ionicons
-                      name="chevron-back"
-                      size={22}
-                      color={_COLORS.Kodie_MediumGrayColor}
-                    />
-                  </View>
-                  <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                </TouchableOpacity>
-              ) : null}
-            </View>
-          </View>
-        </ScrollView>
+                    </>
+                  ) : null}
+                  {currentPage === 0 || currentPage === 1 || currentPage === 2 ? (
+                    <TouchableOpacity
+                      style={SignUpStepStyle.goBack_View}
+                      onPress={goBack}
+                    >
+                      <View style={SignUpStepStyle.backIcon}>
+                        <Ionicons
+                          name="chevron-back"
+                          size={22}
+                          color={_COLORS.Kodie_MediumGrayColor}
+                        />
+                      </View>
+                      <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
+                    </TouchableOpacity>
+                  ) : null}
+                </View>
+              </View>
+            </ScrollView>
+          </>
+        }
         {isLoading ? <CommonLoader /> : null}
-      </View>
+      </View >
     </>
   );
 };
