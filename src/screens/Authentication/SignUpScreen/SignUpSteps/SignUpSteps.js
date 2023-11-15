@@ -99,10 +99,6 @@ const SignUpSteps = (props) => {
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("signup_response.....", signup_response);
-  //const {longitude_Search} = props?.route?.params?.longitude_Search;
-  // // console.log("Latitude in SignUpSteps:", latitude_Search);
- // console.log("Longitude in SignUpSteps:", longitude_Search);
-  // console.log("Description in SignUpSteps:", description);
   const ref = React.useRef(null);
 
   const scrollViewRef = useRef();
@@ -889,16 +885,16 @@ const SignUpSteps = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Account"
         : position === 1
-        ? "About you"
-        : position === 2
-        ? "First Property"
-        : "circle";
+          ? "About you"
+          : position === 2
+            ? "First Property"
+            : "circle";
 
     return (
       <View style={SignUpStepStyle.labelContainer}>
@@ -1077,7 +1073,7 @@ const SignUpSteps = (props) => {
                 numColumns={2}
               />
               {kodieDescribeYourselfId === 2 ||
-              kodieDescribeYourselfId === 4 ? null : (
+                kodieDescribeYourselfId === 4 ? null : (
                 <View>
                   <Text style={AboutYouStyle.want_Heading}>
                     {"How many properties do you own, manage or rent?"}
@@ -1216,7 +1212,22 @@ const SignUpSteps = (props) => {
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Key features</Text>
-
+                {/* <FlatList
+                  data={keydata}
+                  renderItem={renderkey}
+                  keyExtractor={(item) => item.key}
+                /> */}
+                {/* <FlatList
+                  data={keydata}
+                  numColumns={2}
+                  renderItem={({ item }) => (
+                    <View key={item.key}>
+                      <Text>{item.label}</Text>
+                      {item.component}
+                    </View>
+                  )}
+                  keyExtractor={(item) => item.key}
+                /> */}
                 <View style={FirstPropertyStyle.key_feature_mainView}>
                   <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
@@ -1254,6 +1265,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                        FirstPropertyStyle.additional
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1276,7 +1288,7 @@ const SignUpSteps = (props) => {
                   </View>
                 </View>
                 <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
+                <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Bathrooms"}
                     </Text>
@@ -1284,6 +1296,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                        
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1304,7 +1317,7 @@ const SignUpSteps = (props) => {
                       }}
                     />
                   </View>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
+                <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
                       {"Parkings"}
                     </Text>
@@ -1312,6 +1325,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                        FirstPropertyStyle.additional
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
