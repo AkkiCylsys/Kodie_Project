@@ -95,7 +95,8 @@ export const FirstPropertyStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: "center",
-    marginRight: 10
+    // marginRight: 10,
+    marginHorizontal:10
   },
   icon: {
     marginRight: 5,

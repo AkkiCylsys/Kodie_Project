@@ -431,7 +431,7 @@ const SignUpSteps = (props) => {
       onPress={() => {
         toggleSelection(item.lookup_key);
         setKodieDescribeYourselfDataId(item.lookup_key);
-        alert(item.lookup_key);
+        // alert(item.lookup_key);
       }}
     />
   );
@@ -544,7 +544,7 @@ const SignUpSteps = (props) => {
     formData.append("property_manage", selectManageProperty);
     formData.append("location", propertyLocation);
     formData.append("location_longitude", latitude_Search);
-    formData.append("location_latitude",longitude_Search);
+    formData.append("location_latitude", longitude_Search);
     formData.append("islocation", "1");
     formData.append("property_description", propertyDesc);
     formData.append("property_type", property_value);
@@ -909,6 +909,11 @@ const SignUpSteps = (props) => {
     setCurrentPage(position);
   };
 
+  //  Close rbSheet.....
+  const handleImageSelect = () => {
+    refRBSheet.current.close();
+  };
+
   //  go back button...............
   const goBack = () => {
     if (currentPage > 0) {
@@ -1096,6 +1101,8 @@ const SignUpSteps = (props) => {
                   />
                 )}
               </TouchableOpacity>
+              {/* {ImageName && handleImageSelect()} */}
+
               <Text style={AboutYouStyle.want_Heading}>
                 {
                   "How would you describe yourself? (you can select multiple options)"
@@ -1137,7 +1144,7 @@ const SignUpSteps = (props) => {
               <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown={true}
-                closeOnPressMask={true}
+                // closeOnPressMask={true}
                 height={200}
                 customStyles={{
                   wrapper: {
@@ -1148,7 +1155,24 @@ const SignUpSteps = (props) => {
                   },
                   container: AboutYouStyle.bottomModal_container,
                 }}
+
+
               >
+                <View style={AboutYouStyle.upload_View}>
+                  <Text style={AboutYouStyle.uploadImgText}>
+                    {props.heading_Text || "Upload image"}
+                  </Text>
+                  <TouchableOpacity onPress={() => {
+                    refRBSheet.current.close();
+                  }}>
+                    <Entypo
+                      name="cross"
+                      size={25}
+                      color={_COLORS.Kodie_BlackColor}
+                      style={AboutYouStyle.crossIconStyle}
+                    />
+                  </TouchableOpacity>
+                </View>
                 <UploadImageData
                   heading_Text={"Upload image"}
                   ImageName={handleImageNameChange}
@@ -1191,7 +1215,7 @@ const SignUpSteps = (props) => {
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
-                <Dropdown
+                {/* <Dropdown
                   style={FirstPropertyStyle.dropdown}
                   placeholderStyle={FirstPropertyStyle.placeholderStyle}
                   selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
@@ -1206,7 +1230,7 @@ const SignUpSteps = (props) => {
                   onChange={(item) => {
                     setValue(item.value);
                   }}
-                />
+                /> */}
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
@@ -1301,6 +1325,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                        FirstPropertyStyle.additional,
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1359,6 +1384,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                        FirstPropertyStyle.additional,
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
@@ -1610,7 +1636,7 @@ const SignUpSteps = (props) => {
                       console.log("description:", data?.description);
                       setLatitude_Search(lat);
                       setLongitude_Search(lng);
-                      
+
                       setDescription(data?.description);
                       setPropertyLocation(data?.description)
                       toggleLocationvisible()
