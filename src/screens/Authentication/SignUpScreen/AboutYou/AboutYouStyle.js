@@ -179,4 +179,16 @@ export const AboutYouStyle = StyleSheet.create({
     height: 32,
   },
   box_Text_Style: { color: _COLORS.Kodie_BlackColor },
+  upload_View: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  uploadImgText: {
+    marginHorizontal: 16,
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 20,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
+  crossIconStyle: { alignSelf: "center", marginRight: 10 },
 });

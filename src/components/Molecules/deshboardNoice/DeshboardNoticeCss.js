@@ -6,7 +6,7 @@ export const DeshBoardNoticeCss = StyleSheet.create({
     marginHorizontal: 5,
     alignSelf: "center",
     backgroundColor: _COLORS.Kodie_BlackColor,
-    borderRadius: 30,
+    borderRadius: 15,
   },
   crossview: { alignSelf: "flex-end", marginHorizontal: 5 },
   percentageText: {
@@ -53,14 +53,15 @@ export const DeshBoardNoticeCss = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
-    marginTop: 5,
+    marginTop: 8,
     alignItems: "center",
   },
   trialText: {
     color: _COLORS.Kodie_WhiteColor,
-    marginTop: 5,
+    // marginTop: 5,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
+    marginRight:8
   },
   upgradeView: {
     backgroundColor: _COLORS.Kodie_lightGreenColor,
@@ -71,7 +72,7 @@ export const DeshBoardNoticeCss = StyleSheet.create({
   },
   upgradeText: {
     color: _COLORS.Kodie_BlackColor,
-    marginTop: 5,
+    // marginTop: 5,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
     textAlign: "center",

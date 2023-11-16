@@ -35,14 +35,23 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<dict>
+		<key>AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw</key>
+		<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string></string>
 	<key>NSCameraUsageDescription</key>
-	<string></string>
+	<string>Kodie App requires access to your camera to allow you to take a photo to upload Image.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string></string>
 	<key>UIRequiredDeviceCapabilities</key>

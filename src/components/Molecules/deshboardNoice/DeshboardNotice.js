@@ -34,6 +34,7 @@ const DeshboardNotice = (props) => {
             height={8}
             color={_COLORS.Kodie_lightGreenColor}
             style={DeshBoardNoticeCss.progresBar}
+            borderColor="black"
           />
           <Text style={DeshBoardNoticeCss.profileText}>
             We are happy to have you on board. You have almost completed your
