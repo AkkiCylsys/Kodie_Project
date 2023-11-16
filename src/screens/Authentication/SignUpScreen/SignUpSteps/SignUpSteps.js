@@ -13,7 +13,7 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -337,31 +337,33 @@ const SignUpSteps = (props) => {
       .then((result) => {
         switch (result) {
           case RESULTS.UNAVAILABLE:
-
-            console.log('This feature is not available (on this device / in this context)');
+            console.log(
+              "This feature is not available (on this device / in this context)"
+            );
             break;
           case RESULTS.DENIED:
-            console.log('The permission has not been requested / is denied but requestable');
+            console.log(
+              "The permission has not been requested / is denied but requestable"
+            );
             break;
           case RESULTS.LIMITED:
-            console.log('The permission is limited: some actions are possible');
+            console.log("The permission is limited: some actions are possible");
             break;
           case RESULTS.GRANTED:
-            console.log('The permission is granted');
+            console.log("The permission is granted");
             getAddressWithCordinates();
             break;
           case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
+            console.log("The permission is denied and not requestable anymore");
             break;
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
       });
-  }
+  };
 
   const getAddressWithCordinates = () => {
-    
     Geolocation.watchPosition(
       (position) => {
         setlatitude(position.coords.latitude);
@@ -381,16 +383,15 @@ const SignUpSteps = (props) => {
   };
 
   const getAddress = (latitude, longitude) => {
-
     Geocoder.from(latitude, longitude)
       .then((json) => {
         let MainFullAddress = json.results[0].formatted_address;
         var addressComponent2 = json.results[0].address_components[1];
-       // alert(addressComponent2)
+        // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setPhysicalAddress(MainFullAddress);
-        
+
         //setAddress(MainFullAddress);
       })
       .catch((error) => console.warn(error));
@@ -619,8 +620,10 @@ const SignUpSteps = (props) => {
     handle_kodiehelp();
     handle_describe_yourself();
     additional_features();
-    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", { language: "en" });
-    CheckIOSMapPermission()
+    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
+      language: "en",
+    });
+    CheckIOSMapPermission();
   }, []);
 
   // property Type API with LookupKey...
@@ -1012,8 +1015,9 @@ const SignUpSteps = (props) => {
                     onPress={() => {
                       // props.navigation.navigate("Location");
 
-                        Platform.OS == 'ios' ? CheckIOSMapPermission :
-                      checkpermissionlocation();
+                      Platform.OS == "ios"
+                        ? CheckIOSMapPermission
+                        : checkpermissionlocation();
                       setIsMap(true);
                     }}
                   >
@@ -1090,7 +1094,7 @@ const SignUpSteps = (props) => {
                   />
                 )}
               </TouchableOpacity>
-              {ImageName ? refRBSheet.current.close():null}
+              {ImageName ? refRBSheet.current.close() : null}
               <Text style={AboutYouStyle.want_Heading}>
                 {
                   "How would you describe yourself? (you can select multiple options)"
@@ -1562,32 +1566,34 @@ const SignUpSteps = (props) => {
         onPressLeftButton={goBack}
       />
       <View style={SignUpStepStyle.container}>
-        {/* <View style={SignUpStepStyle.stepIndicator}>
-          <StepIndicator
-            customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-            currentPosition={currentPage}
-            // onPress={onStepPress}
-            renderStepIndicator={renderStepIndicator}
-            labels={labels}
-            stepCount={3}
-            renderLabel={renderLabel}
-          />
-        </View> */}
+        {IsMap || IsSearch ? null : (
+          <View style={SignUpStepStyle.stepIndicator}>
+            <StepIndicator
+              customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+              currentPosition={currentPage}
+              // onPress={onStepPress}
+              renderStepIndicator={renderStepIndicator}
+              labels={labels}
+              stepCount={3}
+              renderLabel={renderLabel}
+            />
+          </View>
+        )}
+
         {IsMap ? (
           <View
             style={{
               flex: 1,
-             // paddingHorizontal: 10,
+              // paddingHorizontal: 10,
               backgroundColor: "transparent",
             }}
           >
-            
             <MapScreen
               style={{
                 height: "100%",
                 width: "100%",
-               // borderRadius: 20,
-               // borderWidth: 1,
+                // borderRadius: 20,
+                // borderWidth: 1,
                 //borderColor: .greenAppColor,
                 alignSelf: "center",
                 marginBottom: 10,
@@ -1598,25 +1604,25 @@ const SignUpSteps = (props) => {
             />
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignSelf: 'center',
-                width: "90%",
+                flexDirection: "row",
+                justifyContent: "center",
+                alignSelf: "center",
+                width: "96%",
                 borderWidth: 1,
                 borderRadius: 8,
-              backgroundColor:'white',
-              borderColor: "#E5E4E2",
-                marginTop:10,
-                position:'absolute'
+                backgroundColor: "white",
+                borderColor: "#E5E4E2",
+                marginTop: 10,
+                position: "absolute",
               }}
             >
               <TextInput
                 style={{
-                  backgroundColor: "white",
-              
+                  backgroundColor: "transparent",
+
                   width: "90%",
                   height: 45,
-                  alignSelf:'center'
+                  alignSelf: "center",
                   //marginTop: 10,
                 }}
                 onFocus={() => openMapandClose()}
