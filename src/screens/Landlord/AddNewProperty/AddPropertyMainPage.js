@@ -1254,7 +1254,7 @@ const AddPropertyMainPage = (props) => {
                       refRBSheet.current.open();
                     }}
                   />
-             { MultiImageName.length > 0 && (
+             {MultiImageName.length > 0 && (
                 
                     <FlatList
                       horizontal
