@@ -12,7 +12,7 @@ const SearchBar = (props) => {
         style={[
           SearchBarStyle.container,
           {
-            height: props.height,
+            height: props.height ? props.height : 45,
             marginTop: props.marginTop ? props.marginTop : 20,
           },
         ]}
@@ -84,7 +84,6 @@ const SearchBar = (props) => {
 };
 SearchBar.defaultProps = {
   placeholder: "Search",
-//  RightImage: IMAGES.rightarrow,
-
+  //  RightImage: IMAGES.rightarrow,
 };
 export default SearchBar;
