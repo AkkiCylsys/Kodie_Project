@@ -146,9 +146,11 @@ const PropertyList = (props) => {
   const [expandedItems, setExpandedItems] = useState([]);
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [propertyDelId, setPropertyDelId] = useState()
   const refRBSheet = useRef();
   useEffect(() => {
     propertyList_Data();
+    propertyDelete();
   }, []);
   const propertyList_Data = () => {
     const propertyDataList = {
@@ -169,6 +171,7 @@ const PropertyList = (props) => {
             response.data?.property_details?.image_path
           );
           setProperty_Data_List(response?.data?.property_details);
+          console.log(Property_Data_List, "Rahul");
         } else {
           console.error("property_Data_list_error:", response.data.error);
           alert(response.data.error);
@@ -181,6 +184,39 @@ const PropertyList = (props) => {
         setIsLoading(false);
       });
   };
+
+  // delete api define here......
+  const propertyDelete = (property_id) => {
+    const formData = new FormData();
+    formData.append("property_id", propertyDelId);
+    console.log(propertyDelId,'new stATE')
+    const url = Config.API_URL;
+    const deleteProperty = url + "delete_property_by_id";
+    setIsLoading(true);
+    console.log("Delete Request URL:", deleteProperty);
+    axios
+      .post(deleteProperty, formData)
+      .then((response) => {
+        console.log("Delete Property Response:", response.data);
+        if (response.data.status === true) {
+          console.log("Property deleted successfully");
+
+          propertyList_Data(item.property_id);
+        } else {
+          console.error("Delete Property Error:", response.data.message);
+          alert(response.data.message);
+        }
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error("Delete Property Error:", error);
+        console.log(property_id, 'item id')
+        console.log(property_id, 'item id only')
+        alert("An error occurred while deleting the property");
+        setIsLoading(false);
+      });
+  };
+
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity style={PropertyListCSS.flatlistView}>
@@ -242,6 +278,9 @@ const PropertyList = (props) => {
                 <TouchableOpacity
                   onPress={() => {
                     refRBSheet.current.open();
+                    propertyDelete(item.property_id);
+                    alert(item.property_id)
+                    setPropertyDelId(item.property_id)
                   }}
                 >
                   <MaterialCommunityIcons
@@ -258,8 +297,8 @@ const PropertyList = (props) => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                      ? _COLORS.Kodie_mostLightGreenColor
-                      : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_mostLightGreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
               >
@@ -270,8 +309,8 @@ const PropertyList = (props) => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -282,8 +321,8 @@ const PropertyList = (props) => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_MediumGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
                 >
@@ -337,7 +376,7 @@ const PropertyList = (props) => {
             container: PropertyListCSS.bottomModal_container,
           }}
         >
-          <BottomModalData />
+          <BottomModalData onDelete={propertyDelete} />
         </RBSheet>
       </>
     );
@@ -392,8 +431,8 @@ const PropertyList = (props) => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                      ? _COLORS.Kodie_mostLightGreenColor
-                      : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_mostLightGreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
               >
@@ -404,8 +443,8 @@ const PropertyList = (props) => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -416,8 +455,8 @@ const PropertyList = (props) => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_MediumGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
                 >
