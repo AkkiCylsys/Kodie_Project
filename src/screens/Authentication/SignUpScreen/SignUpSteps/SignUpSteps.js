@@ -1090,7 +1090,7 @@ const SignUpSteps = (props) => {
                   />
                 )}
               </TouchableOpacity>
-              {ImageName && refRBSheet.current.close()}
+              {ImageName ? refRBSheet.current.close():null}
               <Text style={AboutYouStyle.want_Heading}>
                 {
                   "How would you describe yourself? (you can select multiple options)"
