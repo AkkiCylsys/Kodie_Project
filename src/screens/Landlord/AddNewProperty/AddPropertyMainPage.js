@@ -362,7 +362,7 @@ const AddPropertyMainPage = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           setProperty_Data_id(response.data?.property_id);
-          // setCurrentPage(currentPage + 1);
+          setCurrentPage(currentPage + 1);
           // props.navigation.navigate("PropertyFeature");
           console.log("property_details....", response.data);
           console.log(location, propertyDesc, propertyTypeData);
@@ -523,7 +523,7 @@ const AddPropertyMainPage = (props) => {
       setCurrentPage(currentPage + 1);
     } else if (currentPage == 1) {
       property_details();
-      setCurrentPage(currentPage + 1);
+      // setCurrentPage(currentPage + 1);
     } else if (currentPage == 2) {
       handleSaveSignup();
       setCurrentPage(currentPage + 1);
@@ -596,24 +596,55 @@ const AddPropertyMainPage = (props) => {
   const handleSaveSignup = async () => {
     const formData = new FormData();
     formData.append("user", property_Data_id);
-    if (MultiImageName) {
-      const imageUri = MultiImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      // const imageType = ImageName.mime || "image/jpeg";
+    // if (MultiImageName) {
+    //   const imageUri = MultiImageName;
+    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   // const imageType = ImageName.mime || "image/jpeg";
 
-      // if (ImageName?.path) {
-      //   const imageUri = ImageName.path;
-      //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      //   const imageType = ImageName.mime || "image/jpeg";
-      //   console.log("imageType...", ImageName.mime);
+    //   // if (ImageName?.path) {
+    //   //   const imageUri = ImageName.path;
+    //   //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   //   const imageType = ImageName.mime || "image/jpeg";
+    //   //   console.log("imageType...", ImageName.mime);
 
-      formData.append("images", {
-        uri: imageUri,
-        // type: imageType,
-        name: imageName,
+    //   formData.append("images", {
+    //     uri: imageUri,
+    //     // type: imageType,
+    //     name: imageName,
+    //   });
+    // }
+
+    // Append images
+    if (MultiImageName && MultiImageName.length > 0) {
+      MultiImageName.forEach((imageUri, index) => {
+        if (typeof imageUri === 'string') {
+          const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+          formData.append(`images[${index}]`, {
+            uri: imageUri,
+            name: imageName,
+            type: 'image/jpeg', // Set the appropriate image type
+          });
+        } else {
+          console.error(`Invalid image URI at index ${index}: ${imageUri}`);
+        }
       });
     }
 
+  // Append videos
+  if ( selectedVideos&& selectedVideos.length > 0) {
+    selectedVideos.forEach((videoUri, index) => {
+      if (typeof videoUri === 'string') {
+        const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+        formData.append(`media[${index}]`, {
+          uri: videoUri,
+          name: videoName,
+          type: 'video/mp4', // Set the appropriate video type
+        });
+      } else {
+        console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+      }
+    });
+  }
     const url = Config.API_URL;
     const saveAccountDetails = url + "add_property_images";
     console.log("Request URL:", saveAccountDetails);
