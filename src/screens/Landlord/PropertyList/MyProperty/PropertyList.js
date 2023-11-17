@@ -156,6 +156,7 @@ const PropertyList = (props) => {
     const propertyDataList = {
       user: 84,
     };
+    
     const url = Config.API_URL;
     const propertyData_List = url + "get_property_details_by_id";
     console.log("Request URL :", propertyData_List);
@@ -171,7 +172,7 @@ const PropertyList = (props) => {
             response.data?.property_details?.image_path
           );
           setProperty_Data_List(response?.data?.property_details);
-          console.log(Property_Data_List, "Rahul");
+          console.log(Property_Data_List, "Rahul...");
         } else {
           console.error("property_Data_list_error:", response.data.error);
           alert(response.data.error);
@@ -199,9 +200,9 @@ const PropertyList = (props) => {
       .then((response) => {
         console.log("Delete Property Response:", response.data);
         if (response.data.status === true) {
-          console.log("Property deleted successfully");
-
-          propertyList_Data(item.property_id);
+          console.log(response.data.message);
+          alert(response.data.message);
+          // propertyList_Data(item.property_id);
         } else {
           console.error("Delete Property Error:", response.data.message);
           alert(response.data.message);
@@ -210,8 +211,6 @@ const PropertyList = (props) => {
       })
       .catch((error) => {
         console.error("Delete Property Error:", error);
-        console.log(property_id, 'item id')
-        console.log(property_id, 'item id only')
         alert("An error occurred while deleting the property");
         setIsLoading(false);
       });

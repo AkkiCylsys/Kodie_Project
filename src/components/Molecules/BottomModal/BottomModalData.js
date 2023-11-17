@@ -38,11 +38,9 @@ const BottomModalData = (props) => {
   const handleDeleteProperty =  (property_id) => {
     console.log(property_id,'catch data')
     props.onDelete(property_id);
-    console.log('come data',property_id)
-    console.log('Raul data ', props.onDelete(property_id))
+    console.log('come data...........',property_id)
+    console.log('Raul data cath........... ', props.onDelete(property_id))
   };
-  // const propertyIdToDelete = item.property_id;
-  // props.onDelete(propertyIdToDelete);
 
   const BottomData = ({ item, index }) => {
     return (
