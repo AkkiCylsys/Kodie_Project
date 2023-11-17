@@ -35,11 +35,11 @@ const data = [
 const BottomModalData = (props) => {
   const navigation = useNavigation(); // Hook to get navigation
 
-  const handleDeleteProperty =  (property_id) => {
-    console.log(property_id,'catch data')
-    props.onDelete(property_id);
-    console.log('come data...........',property_id)
-    console.log('Raul data cath........... ', props.onDelete(property_id))
+  const handleDeleteProperty = (propertyDelId) => {
+    console.log(propertyDelId, "catch data");
+    props.onDelete(propertyDelId);
+    console.log("come data...........", propertyDelId);
+    console.log("Raul data cath........... ", props.onDelete(propertyDelId));
   };
 
   const BottomData = ({ item, index }) => {
@@ -53,8 +53,8 @@ const BottomModalData = (props) => {
             }
             if (item.id === "5") {
               // navigation.navigate("ViewPropertyDetails");
-              handleDeleteProperty()
-              console.log("Property ID:", item.property_id);
+              handleDeleteProperty();
+              // console.log("Property ID:", item.property_id);
             }
           }}
         >

@@ -44,11 +44,55 @@ import { PropertyReviewStyle } from "./PropertyReview/PropertyReviewStyle";
 
 import ImagePicker from "react-native-image-crop-picker";
 import Video from "react-native-video";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { DetailsStyle } from "./PropertyReview/Details/DetailsStyles";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },
   { label: "America", value: "3" },
+];
+const Detail = [
+  {
+    id: "1",
+    images: IMAGES.BedroomIcon,
+    name: "Bedrooms: 3",
+  },
+  {
+    id: "2",
+    images: IMAGES.Bathroom,
+    name: "Bathrooms: 2",
+  },
+  {
+    id: "3",
+    images: IMAGES.Parking,
+    name: "Garages: 1",
+  },
+  {
+    id: "4",
+    images: IMAGES.BedroomIcon,
+    name: "Parkings: 1",
+  },
+  {
+    id: "5",
+    images: IMAGES.BedroomIcon,
+    name: "Garden",
+  },
+  {
+    id: "6",
+    images: IMAGES.BedroomIcon,
+    name: "Pool",
+  },
+  {
+    id: "7",
+    images: IMAGES.BedroomIcon,
+    name: "Furnished",
+  },
+  {
+    id: "8",
+    images: IMAGES.BedroomIcon,
+    name: "WiFi",
+  },
 ];
 const DATA = [
   {
@@ -107,6 +151,8 @@ const images = [
   BANNERS.previewImage,
 ];
 const AddPropertyMainPage = (props) => {
+  const propertyid = props?.route?.params?.propertyid;
+  console.log("propertyid....", propertyid);
   const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState("");
   const [value, setValue] = useState(null);
@@ -117,9 +163,11 @@ const AddPropertyMainPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [propertyTypeData, setPropertyTypeData] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
-  const [property_Detail, setProperty_Details] = useState({});
+  const [property_Detail, setProperty_Details] = useState([]);
+  const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
   const [property_value, setProperty_value] = useState([]);
+  const [property_name, setPropertyName] = useState([]);
   const [selectedkey_features, setSelectedkey_features] = useState([]);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
@@ -146,7 +194,7 @@ const AddPropertyMainPage = (props) => {
   const [data_add, setData_add] = useState([]);
   const [MultiImageName, setMultiImageName] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState([]);
-
+  console.log("property_Detail", property_Detail);
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: "video",
@@ -196,13 +244,13 @@ const AddPropertyMainPage = (props) => {
           setBedRoomData(response.data.data);
         } else {
           console.error("bedRoom_data_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("bedRoom_data error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -227,13 +275,13 @@ const AddPropertyMainPage = (props) => {
           setGaragesData(response.data.data);
         } else {
           console.error("garages_Data_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("garages_Data error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -258,13 +306,13 @@ const AddPropertyMainPage = (props) => {
           setBathroomData(response.data.data);
         } else {
           console.error("bathroom_Data_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("bathroom_Data error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -286,13 +334,13 @@ const AddPropertyMainPage = (props) => {
           console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
         } else {
           console.error("additional_features_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("additional_features error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -324,13 +372,13 @@ const AddPropertyMainPage = (props) => {
           setParkingData(response.data.data);
         } else {
           console.error("parking_Data_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("parking_Data error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -361,25 +409,36 @@ const AddPropertyMainPage = (props) => {
         console.log("property_details", response?.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          setProperty_Data_id(response.data?.property_id);
+          setProperty_Data_id(response?.data?.property_id);
+
+          console.log(
+            "response?.data?.property_id",
+            response?.data?.property_id
+          );
 
           // setCurrentPage(currentPage + 1);
           // props.navigation.navigate("PropertyFeature");
           console.log("property_details....", response.data);
-          console.log(location, propertyDesc, propertyTypeData);
+          console.log(
+            location,
+            propertyDesc,
+            propertyTypeData,
+            selectedKeyFeature,
+            additionalfeatureskeyvalue
+          );
         } else {
           console.error("property_details_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("property_details error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
-  console.log(property_Data_id);
+  console.log("harshita", property_Data_id);
   // property Type API with LookupKey...
   const handleProperty_Type = () => {
     const propertyData = {
@@ -400,20 +459,21 @@ const AddPropertyMainPage = (props) => {
           setProperty_Data(response.data.data);
         } else {
           console.error("property_type_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("property_type error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
   const DetailsData = () => {
     const detailData = {
-      user: property_Data_id,
+      user: propertyid ? propertyid : property_Data_id,
     };
+    console.log("detailData", detailData);
     const url = Config.API_URL;
     const property_Detailss = url + "get_All_Property_details";
     console.log("Request URL:", property_Detailss);
@@ -426,6 +486,11 @@ const AddPropertyMainPage = (props) => {
           setIsLoading(false);
           console.log("propertyDetail....", response.data.property_details);
           setProperty_Details(response.data.property_details);
+          setLocation(response.data.property_details[0].location);
+          setProperty_value("hello");
+          setPropertyDesc(
+            response.data.property_details[0].property_description
+          );
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -434,7 +499,52 @@ const AddPropertyMainPage = (props) => {
       })
       .catch((error) => {
         console.error("property_type error:", error);
-        alert(error);
+        // alert(error);
+        setIsLoading(false);
+      });
+  };
+  const updatePropertyDetails = () => {
+    const selectedKeyFeature = selectedkey_features.join(",");
+    const updateData = {
+      user: 35,
+      user_account_details_id: 84,
+      location: location,
+      location_longitude: "102.201.123",
+      location_latitude: "104.402.210",
+      islocation: 1,
+      property_description: propertyDesc,
+      property_type: property_value,
+      key_features: selectedKeyFeature,
+      additional_features: "12",
+      additional_key_features: additionalfeatureskeyvalue,
+      autolist: selectedButtonId,
+      property_id: propertyid,
+    };
+    console.log("updateData", updateData);
+    const url = Config.API_URL;
+    const update_property_details = url + "update_property_details";
+    console.log("Request URL:", update_property_details);
+    setIsLoading(true);
+    axios
+      .put(update_property_details, updateData)
+      .then((response) => {
+        console.log("update_property_details", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "update_property_details....",
+            response.data.property_details
+          );
+          setupdateProperty_Details(response.data.property_details);
+        } else {
+          console.error("update_property_detailserror:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("update_property_details error:", error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -447,6 +557,7 @@ const AddPropertyMainPage = (props) => {
     handle_parking();
     additional_features();
     DetailsData();
+    setLocation(property_Detail?.location);
   }, []);
   const checkTabs = () => {
     switch (tabValue) {
@@ -523,7 +634,11 @@ const AddPropertyMainPage = (props) => {
     if (currentPage == 0) {
       setCurrentPage(currentPage + 1);
     } else if (currentPage == 1) {
-      property_details();
+      if (propertyid) {
+        updatePropertyDetails();
+      } else {
+        property_details();
+      }
       setCurrentPage(currentPage + 1);
     } else if (currentPage == 2) {
       handleSaveSignup();
@@ -591,52 +706,43 @@ const AddPropertyMainPage = (props) => {
       </View>
     );
   };
+  const Detail_rander = ({ item, index }) => {
+    return (
+      <>
+        <View style={DetailsStyle.DetailsView}>
+          <Image source={item.images} style={DetailsStyle.DetailsIcon} />
+          <Text style={DetailsStyle.details_text}>{item.name}</Text>
+        </View>
+      </>
+    );
+  };
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const handleSaveSignup = async () => {
     const formData = new FormData();
     formData.append("user", property_Data_id);
-    // if (MultiImageName) {
-    //   const imageUri = MultiImageName;
-    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-    //   // const imageType = ImageName.mime || "image/jpeg";
+    console.log("kljproperty_Data_id", property_Data_id);
+    const imagePaths = MultiImageName.map((image) => image.path);
 
-    //   // if (ImageName?.path) {
-    //   //   const imageUri = ImageName.path;
-    //   //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-    //   //   const imageType = ImageName.mime || "image/jpeg";
-    //   //   console.log("imageType...", ImageName.mime);
-
-    //   formData.append("images", {
-    //     uri: imageUri,
-    //     // type: imageType,
-    //     name: imageName,
-    //   });
-    // }
-
-    // Append images
-    if (MultiImageName && MultiImageName.length > 0) {
-      MultiImageName.forEach((imageUri, index) => {
-        if (typeof imageUri === "string") {
-          const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-          formData.append(`images[${index}]`, {
-            uri: imageUri,
-            name: imageName,
-            type: "image/jpeg", // Set the appropriate image type
-          });
-        } else {
-          console.error(`Invalid image URI at index ${index}: ${imageUri}`);
-        }
-      });
-    }
-
+    // Append all image paths to the same key 'images[]'
+    imagePaths.forEach((path, index) => {
+      formData.append(
+        "images[]",
+        {
+          uri: path,
+          name: `image_${index}.jpg`,
+          type: "image/jpeg",
+        },
+        path
+      );
+    });
     // Append videos
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoUri, index) => {
         if (typeof videoUri === "string") {
           const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append(`media[${index}]`, {
+          formData.append(`media[]`, {
             uri: videoUri,
             name: videoName,
             type: "video/mp4", // Set the appropriate video type
@@ -646,6 +752,7 @@ const AddPropertyMainPage = (props) => {
         }
       });
     }
+    console.log("formData", formData);
     const url = Config.API_URL;
     const saveAccountDetails = url + "add_property_images";
     console.log("Request URL:", saveAccountDetails);
@@ -655,6 +762,8 @@ const AddPropertyMainPage = (props) => {
       const response = await axios.post(saveAccountDetails, formData, {
         headers: {
           "content-type": "multipart/form-data",
+
+          // 'Content-Type': 'text/plain'
         },
       });
 
@@ -671,7 +780,7 @@ const AddPropertyMainPage = (props) => {
       }
     } catch (error) {
       console.error("Account_Details error:", error);
-      alert(error);
+      // alert(error);
     } finally {
       setIsLoading(false);
     }
@@ -754,9 +863,10 @@ const AddPropertyMainPage = (props) => {
                   labelField="description"
                   valueField="lookup_key"
                   placeholder="Apartment"
-                  value={property_value}
+                  value={property_value || "hello"}
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
+                    setPropertyName(item.description);
                     // alert(item.lookup_key)
                   }}
                 />
@@ -864,7 +974,14 @@ const AddPropertyMainPage = (props) => {
                         value={bedroomValue}
                         onChange={(item) => {
                           setbedroomValue(item.lookup_key);
-                          handle_key_feature(item.lookup_key);
+                          handle_key_feature(dataToSend);
+                          const dataToSend = { 29: item.lookup_key };
+
+                          // Send the data wherever you need it
+                          console.log(dataToSend);
+
+                          // If you want to show it as an alert
+                          alert(JSON.stringify(dataToSend));
                         }}
                       />
                     </View>
@@ -1307,7 +1424,8 @@ const AddPropertyMainPage = (props) => {
                   }
                 </Text>
               </View>
-              {MultiImageName.length > 0 && refRBSheet.current.close()}
+
+              {/* {MultiImageName.length == 0 ? refRBSheet.current.close() : null} */}
               <Text style={PropertyImagesStyle.upload_Heading_Text}>
                 {"Upload Video"}
               </Text>
@@ -1350,7 +1468,7 @@ const AddPropertyMainPage = (props) => {
                   }
                 </Text>
               </View>
-              {selectedVideos.length > 0 && refRBSheet.current.close()}
+              {/* {selectedVideos.length > 0 && refRBSheet.current.close()} */}
 
               <RBSheet
                 ref={refRBSheet}
@@ -1408,7 +1526,7 @@ const AddPropertyMainPage = (props) => {
               <View style={PropertyReviewStyle.subContainer}>
                 <View style={PropertyReviewStyle.apartment_View}>
                   <Text style={PropertyReviewStyle.apartment_text}>
-                    {property_Detail[0]?.property_type || "Apartment"}
+                    {property_Detail[0]?.property_type || property_value}
                   </Text>
                   <View style={PropertyReviewStyle.share_View}>
                     <TouchableOpacity>
@@ -1429,7 +1547,7 @@ const AddPropertyMainPage = (props) => {
                   </View>
                 </View>
                 <Text style={PropertyReviewStyle.melbourne_Text}>
-                  {property_Detail[0]?.location || "Melbourne"}
+                  {property_Detail[0]?.location || location || "Melbourne"}
                 </Text>
                 <View style={PropertyReviewStyle.share_View}>
                   <Entypo
@@ -1439,10 +1557,11 @@ const AddPropertyMainPage = (props) => {
                   />
                   <Text>
                     {property_Detail[0]?.location ||
+                      location ||
                       "8502 Preston Rd.Inglewood,Queensland,Australia,."}
                   </Text>
                 </View>
-                <View style={PropertyReviewStyle.Details_Tab}>
+                {/* <View style={PropertyReviewStyle.Details_Tab}>
                   <TouchableOpacity
                     onPress={() => {
                       setTabValue("Details");
@@ -1477,10 +1596,93 @@ const AddPropertyMainPage = (props) => {
                       {"Documents"}
                     </Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
               <DividerIcon borderBottomWidth={3} />
-              {checkTabs()}
+              <Text style={DetailsStyle.welcome_Text}>
+                {/* {
+                  "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
+                } */}
+                {property_Detail[0]?.property_description || propertyDesc}
+              </Text>
+
+              <FlatList
+                data={Detail}
+                scrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{}}
+                numColumns={2}
+                keyExtractor={(item) => item?.id}
+                renderItem={Detail_rander}
+              />
+
+              <DividerIcon
+                borderBottomWidth={1}
+                color={_COLORS.Kodie_GrayColor}
+              />
+              <View style={DetailsStyle.subContainer}>
+                <View style={DetailsStyle.propety_details_view}>
+                  <Text style={DetailsStyle.propery_det}>
+                    {"Property details"}
+                  </Text>
+
+                  <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                    <AntDesign
+                      name="down"
+                      size={15}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+              </View>
+              <View style={DetailsStyle.subContainer}>
+                <View style={DetailsStyle.propety_details_view}>
+                  <Text style={DetailsStyle.propery_det}>{"Rooms"}</Text>
+
+                  <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                    <AntDesign
+                      name="down"
+                      size={15}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+              </View>
+              <View style={DetailsStyle.subContainer}>
+                <View style={DetailsStyle.propety_details_view}>
+                  <Text style={DetailsStyle.propery_det}>
+                    {"External featuress"}
+                  </Text>
+
+                  <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                    <AntDesign
+                      name="down"
+                      size={15}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+              </View>
+              <View style={DetailsStyle.subContainer}>
+                <View style={DetailsStyle.propety_details_view}>
+                  <Text style={DetailsStyle.propery_det}>
+                    {"Points of interest"}
+                  </Text>
+
+                  <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                    <AntDesign
+                      name="down"
+                      size={15}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+              </View>
+              {/* {checkTabs()} */}
             </ScrollView>
           </View>
         );
@@ -1579,6 +1781,7 @@ const AddPropertyMainPage = (props) => {
           </View>
         </ScrollView>
       </View>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

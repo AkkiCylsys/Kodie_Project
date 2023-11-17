@@ -575,8 +575,17 @@ const SignUpSteps = (props) => {
 
     try {
       const response = await axios.post(saveAccountDetails, formData, {
+        // headers: {
+        //   // "content-type": "multipart/form-data",
+        //   // "Content-Type": "text/plain",
+        //   "Content-Type": "application/x-www-form-urlencoded",
+        // },
         headers: {
-          "content-type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
+          "cache-control": "no-cache",
+          processData: false,
+          contentType: false,
+          mimeType: "multipart/form-data",
         },
       });
 
@@ -1152,8 +1161,6 @@ const SignUpSteps = (props) => {
                   },
                   container: AboutYouStyle.bottomModal_container,
                 }}
-
-
               >
                 <View style={AboutYouStyle.upload_View}>
                   <Text style={AboutYouStyle.uploadImgText}>
