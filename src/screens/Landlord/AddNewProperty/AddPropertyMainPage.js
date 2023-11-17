@@ -771,7 +771,8 @@ const AddPropertyMainPage = (props) => {
 
       if (response.data.status === true) {
         setIsLoading(false);
-        alert(response.data.message);
+        MultiImageName ? refRBSheet.current.close() : null;
+        // alert(response.data.message);
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         // setCurrentPage(0);
       } else {
@@ -862,7 +863,7 @@ const AddPropertyMainPage = (props) => {
                   maxHeight={300}
                   labelField="description"
                   valueField="lookup_key"
-                  placeholder="Apartment"
+                  placeholder="Select property type"
                   value={property_value || "hello"}
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
@@ -974,14 +975,14 @@ const AddPropertyMainPage = (props) => {
                         value={bedroomValue}
                         onChange={(item) => {
                           setbedroomValue(item.lookup_key);
-                          handle_key_feature(dataToSend);
+                          handle_key_feature(item.lookup_key);
                           const dataToSend = { 29: item.lookup_key };
 
                           // Send the data wherever you need it
                           console.log(dataToSend);
 
                           // If you want to show it as an alert
-                          alert(JSON.stringify(dataToSend));
+                          // alert(JSON.stringify(dataToSend));
                         }}
                       />
                     </View>
@@ -1404,6 +1405,8 @@ const AddPropertyMainPage = (props) => {
                     refRBSheet.current.open();
                   }}
                 />
+                {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
+
                 {/* {MultiImageName.length > 0 && (
                   <FlatList
                     horizontal
@@ -1561,7 +1564,7 @@ const AddPropertyMainPage = (props) => {
                       "8502 Preston Rd.Inglewood,Queensland,Australia,."}
                   </Text>
                 </View>
-                {/* <View style={PropertyReviewStyle.Details_Tab}>
+                <View style={PropertyReviewStyle.Details_Tab}>
                   <TouchableOpacity
                     onPress={() => {
                       setTabValue("Details");
@@ -1571,7 +1574,7 @@ const AddPropertyMainPage = (props) => {
                       {"Details"}
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() => {
                       setTabValue("Leases");
                     }}
@@ -1595,8 +1598,8 @@ const AddPropertyMainPage = (props) => {
                     <Text style={PropertyReviewStyle.Tab_text}>
                       {"Documents"}
                     </Text>
-                  </TouchableOpacity>
-                </View> */}
+                  </TouchableOpacity> */}
+                </View>
               </View>
               <DividerIcon borderBottomWidth={3} />
               <Text style={DetailsStyle.welcome_Text}>

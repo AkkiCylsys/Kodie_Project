@@ -62,7 +62,7 @@ const Properties = (props) => {
             onEdit={(data) => {
               // Access propertyid in onEdit function
               const { propertyid } = data;
-              alert(propertyid);
+              // alert(propertyid);
               props.navigation.navigate("AddPropertyMainPage", {
                 propertyid: propertyid,
               });

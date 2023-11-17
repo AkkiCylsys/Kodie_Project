@@ -29,6 +29,7 @@ import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useCallback } from "react";
+import { useIsFocused } from "@react-navigation/native";
 const HorizontalData = [
   "Occupied",
   "Vacant",
@@ -144,6 +145,7 @@ const property_List2 = [
   },
 ];
 const PropertyList = (props) => {
+  const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
   const [Property_Data_List, setProperty_Data_List] = useState([]);
@@ -151,9 +153,11 @@ const PropertyList = (props) => {
   const [propertyDelId, setPropertyDelId] = useState();
   const refRBSheet = useRef();
   useEffect(() => {
-    propertyList_Data();
+    if (isvisible) {
+      propertyList_Data();
+    }
     // propertyDelete();
-  }, []);
+  }, [isvisible]);
   const propertyList_Data = () => {
     const propertyDataList = {
       user: 84,
@@ -299,7 +303,7 @@ const PropertyList = (props) => {
                   onPress={() => {
                     refRBSheet.current.open();
                     // propertyDelete(propertyDelId);
-                    alert(item.property_id);
+                    // alert(item.property_id);
                     setPropertyDelId(item.property_id);
                   }}
                 >
