@@ -267,7 +267,7 @@ const PropertyList = (props) => {
 
             <View style={PropertyListCSS.flexContainer}>
               <View style={PropertyListCSS.noteStyle}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={props?.onEdit}>
                   <Image
                     source={IMAGES.noteBook}
                     // source={IMAGES.noteBook}

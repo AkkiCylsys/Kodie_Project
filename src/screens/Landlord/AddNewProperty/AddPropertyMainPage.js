@@ -42,7 +42,7 @@ import { AboutYouStyle } from "../../Authentication/SignUpScreen/AboutYou/AboutY
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import { PropertyReviewStyle } from "./PropertyReview/PropertyReviewStyle";
 
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker from "react-native-image-crop-picker";
 import Video from "react-native-video";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const data = [
@@ -149,14 +149,14 @@ const AddPropertyMainPage = (props) => {
 
   const openVideoPicker = () => {
     ImagePicker.openPicker({
-      mediaType: 'video',
+      mediaType: "video",
       multiple: true,
     })
-      .then(videos => {
+      .then((videos) => {
         setSelectedVideos([...selectedVideos, ...videos]);
       })
-      .catch(error => {
-        console.error('Error selecting videos:', error);
+      .catch((error) => {
+        console.error("Error selecting videos:", error);
       });
   };
 
@@ -301,7 +301,7 @@ const AddPropertyMainPage = (props) => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
     } else if (currentPage === 0) {
-      props.navigation.navigate("SignUp");
+      props.navigation.navigate("Properties");
     }
   };
   // // key feature module Bathroom API....
@@ -362,6 +362,7 @@ const AddPropertyMainPage = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           setProperty_Data_id(response.data?.property_id);
+
           // setCurrentPage(currentPage + 1);
           // props.navigation.navigate("PropertyFeature");
           console.log("property_details....", response.data);
@@ -596,24 +597,55 @@ const AddPropertyMainPage = (props) => {
   const handleSaveSignup = async () => {
     const formData = new FormData();
     formData.append("user", property_Data_id);
-    if (MultiImageName) {
-      const imageUri = MultiImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      // const imageType = ImageName.mime || "image/jpeg";
+    // if (MultiImageName) {
+    //   const imageUri = MultiImageName;
+    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   // const imageType = ImageName.mime || "image/jpeg";
 
-      // if (ImageName?.path) {
-      //   const imageUri = ImageName.path;
-      //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      //   const imageType = ImageName.mime || "image/jpeg";
-      //   console.log("imageType...", ImageName.mime);
+    //   // if (ImageName?.path) {
+    //   //   const imageUri = ImageName.path;
+    //   //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   //   const imageType = ImageName.mime || "image/jpeg";
+    //   //   console.log("imageType...", ImageName.mime);
 
-      formData.append("images", {
-        uri: imageUri,
-        // type: imageType,
-        name: imageName,
+    //   formData.append("images", {
+    //     uri: imageUri,
+    //     // type: imageType,
+    //     name: imageName,
+    //   });
+    // }
+
+    // Append images
+    if (MultiImageName && MultiImageName.length > 0) {
+      MultiImageName.forEach((imageUri, index) => {
+        if (typeof imageUri === "string") {
+          const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+          formData.append(`images[${index}]`, {
+            uri: imageUri,
+            name: imageName,
+            type: "image/jpeg", // Set the appropriate image type
+          });
+        } else {
+          console.error(`Invalid image URI at index ${index}: ${imageUri}`);
+        }
       });
     }
 
+    // Append videos
+    if (selectedVideos && selectedVideos.length > 0) {
+      selectedVideos.forEach((videoUri, index) => {
+        if (typeof videoUri === "string") {
+          const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+          formData.append(`media[${index}]`, {
+            uri: videoUri,
+            name: videoName,
+            type: "video/mp4", // Set the appropriate video type
+          });
+        } else {
+          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+        }
+      });
+    }
     const url = Config.API_URL;
     const saveAccountDetails = url + "add_property_images";
     console.log("Request URL:", saveAccountDetails);
@@ -644,6 +676,7 @@ const AddPropertyMainPage = (props) => {
       setIsLoading(false);
     }
   };
+  const imagePaths = MultiImageName.map((image) => image.path);
   const renderPageContent = () => {
     switch (currentPage) {
       case 0:
@@ -681,7 +714,7 @@ const AddPropertyMainPage = (props) => {
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
-                <Dropdown
+                {/* <Dropdown
                   style={PropertyDetailsStyle.dropdown}
                   placeholderStyle={PropertyDetailsStyle.placeholderStyle}
                   selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
@@ -696,7 +729,7 @@ const AddPropertyMainPage = (props) => {
                   onChange={(item) => {
                     setValue(item.value);
                   }}
-                />
+                /> */}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
@@ -1223,7 +1256,7 @@ const AddPropertyMainPage = (props) => {
             <View style={PropertyImagesStyle.phototextView}>
               <View style={PropertyImagesStyle.slider_view}>
                 <SliderBox
-                  images={images}
+                  images={imagePaths}
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
                     console.warn(`image ${index} pressed`)
@@ -1248,34 +1281,33 @@ const AddPropertyMainPage = (props) => {
                 {"Upload images"}
               </Text>
               <View style={{ flex: 1 }}>
-              <UploadImageBoxes
-                    Box_Text={"Add Photo"}
-                    onPress={() => {
-                      refRBSheet.current.open();
-                    }}
-                  />
-             {MultiImageName.length > 0 && (
-                
-                    <FlatList
-                      horizontal
-                      data={MultiImageName}
-                      keyExtractor={(item, index) => index.toString()}
-                      renderItem={({ item }) => (
-                        <Image
-                          source={{ uri: item.path }}
-                          style={{ width: 100, height: 100, margin: 5 }}
-                        />
-                      )}
+                <UploadImageBoxes
+                  Box_Text={"Add Photo"}
+                  onPress={() => {
+                    refRBSheet.current.open();
+                  }}
+                />
+                {/* {MultiImageName.length > 0 && (
+                  <FlatList
+                    horizontal
+                    data={MultiImageName}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                      <Image
+                        source={{ uri: item.path }}
+                        style={{ width: 100, height: 100, margin: 5 }}
                       />
-             )}
-                 
-            
+                    )}
+                  />
+                )} */}
+
                 <Text style={PropertyImagesStyle.formatted_property_text}>
                   {
                     "Images should be formatted .jpg or .png Size per image should not exceed 2 MB"
                   }
                 </Text>
               </View>
+              {MultiImageName.length > 0 && refRBSheet.current.close()}
               <Text style={PropertyImagesStyle.upload_Heading_Text}>
                 {"Upload Video"}
               </Text>
@@ -1288,32 +1320,37 @@ const AddPropertyMainPage = (props) => {
                   }}
                 />
                 {selectedVideos.length > 0 && (
-        <View style={{marginTop:10}}>
-          {/* <Text>Selected Videos:</Text> */}
-          <FlatList
-          horizontal
-            data={selectedVideos}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <>
-              <Video
-              source={{ uri: item.path }}
-              style={{ width: 150, height: 150, borderRadius:5,marginLeft:10}}
-              controls={true}
-            />
-              {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
-           
-              </>
-            )}
-          />
-        </View>
-      )}
+                  <View style={{ marginTop: 10 }}>
+                    {/* <Text>Selected Videos:</Text> */}
+                    <FlatList
+                      horizontal
+                      data={selectedVideos}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={({ item }) => (
+                        <>
+                          <Video
+                            source={{ uri: item.path }}
+                            style={{
+                              width: 150,
+                              height: 150,
+                              borderRadius: 5,
+                              marginLeft: 10,
+                            }}
+                            controls={true}
+                          />
+                          {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
+                        </>
+                      )}
+                    />
+                  </View>
+                )}
                 <Text style={PropertyImagesStyle.formatted_property_text}>
                   {
                     "Videos should be formatted .mp4, HEVC, MKV.Size per video should not exceed 100 MB"
                   }
                 </Text>
               </View>
+              {selectedVideos.length > 0 && refRBSheet.current.close()}
 
               <RBSheet
                 ref={refRBSheet}
@@ -1350,7 +1387,7 @@ const AddPropertyMainPage = (props) => {
               </View>
               <View style={PropertyReviewStyle.slider_view}>
                 <SliderBox
-                  images={images}
+                  images={imagePaths}
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
                     console.warn(`image ${index} pressed`)
@@ -1511,7 +1548,10 @@ const AddPropertyMainPage = (props) => {
                     }}
                   />
 
-                  <TouchableOpacity style={SignUpStepStyle.goBack_View}>
+                  <TouchableOpacity
+                    style={SignUpStepStyle.goBack_View}
+                    onPress={() => goBack()}
+                  >
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
                         name="chevron-back"
