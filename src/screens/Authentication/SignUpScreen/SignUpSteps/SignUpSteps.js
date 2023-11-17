@@ -1184,7 +1184,38 @@ const SignUpSteps = (props) => {
             </View>
             <View style={FirstPropertyStyle.card}>
               <View style={FirstPropertyStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
+              <View style={AccountStyle.inputContainer}>
+                <Text style={LABEL_STYLES._texinputLabel}>
+                  Location
+                </Text>
+                <View style={AccountStyle.locationContainer}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      // props.navigation.navigate("Location");
+
+                      Platform.OS == "ios"
+                        ? CheckIOSMapPermission
+                        : checkpermissionlocation();
+                      setIsMap(true);
+                    }}
+                  >
+                    <Entypo
+                      name={"location-pin"}
+                      size={24}
+                      color={_COLORS.Kodie_MediumGrayColor}
+                      style={AccountStyle.locationIcon}
+                    />
+                  </TouchableOpacity>
+                  <TextInput
+                    style={AccountStyle.locationInput}
+                    value={physicalAddress}
+                    onChangeText={setPhysicalAddress}
+                    placeholder="Enter new location"
+                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  />
+                </View>
+              </View>
+                {/* <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
                 <View style={FirstPropertyStyle.locationContainer}>
                   <TouchableOpacity
                     onPress={() => {
@@ -1205,7 +1236,7 @@ const SignUpSteps = (props) => {
                     placeholder="Search location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
-                </View>
+                </View> */}
                 {/* <Dropdown
                   style={FirstPropertyStyle.dropdown}
                   placeholderStyle={FirstPropertyStyle.placeholderStyle}
