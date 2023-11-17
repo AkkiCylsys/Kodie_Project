@@ -14,6 +14,7 @@ const SearchPlaces = (props) => {
       <GooglePlacesAutocomplete
         placeholder="Search"
         debounce={400}
+        
         onPress={props.onPress}
         // onPress={(data, details) => {
         //   // 'details' is provided when fetchDetails = true
@@ -44,6 +45,7 @@ const SearchPlaces = (props) => {
           textInputContainer: {
             marginHorizontal: 16,
             borderWidth: 1,
+            borderColor: "#E5E4E2",
             borderRadius: 8,
             marginTop: 10,
           },
