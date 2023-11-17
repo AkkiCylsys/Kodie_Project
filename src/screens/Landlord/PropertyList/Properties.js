@@ -19,6 +19,7 @@ const Properties = (props) => {
             propertyDetail={() =>
               props.navigation.navigate("AddPropertyMainPage")
             }
+            onEdit={() => props.navigation.navigate("AddPropertyMainPage")}
           />
         );
       case "Tab2":
