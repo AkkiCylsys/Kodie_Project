@@ -641,11 +641,15 @@ const AddPropertyMainPage = (props) => {
       }
       setCurrentPage(currentPage + 1);
     } else if (currentPage == 2) {
-      handleSaveSignup();
+      if (propertyid) {
+        handleSaveUpdateImage();
+      } else {
+        handleSaveImage();
+      }
       setCurrentPage(currentPage + 1);
     } else if (currentPage == 3) {
       props.navigation.navigate("DrawerNavigatorLeftMenu");
-      // handleSaveSignup();
+      // handleSaveImage();
     } else {
       null;
     }
@@ -719,9 +723,76 @@ const AddPropertyMainPage = (props) => {
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const handleSaveSignup = async () => {
+  const handleSaveImage = async () => {
     const formData = new FormData();
     formData.append("user", property_Data_id);
+    console.log("kljproperty_Data_id", property_Data_id);
+    const imagePaths = MultiImageName.map((image) => image.path);
+
+    // Append all image paths to the same key 'images[]'
+    imagePaths.forEach((path, index) => {
+      formData.append(
+        "images[]",
+        {
+          uri: path,
+          name: `image_${index}.jpg`,
+          type: "image/jpeg",
+        },
+        path
+      );
+    });
+    // Append videos
+    if (selectedVideos && selectedVideos.length > 0) {
+      selectedVideos.forEach((videoUri, index) => {
+        if (typeof videoUri === "string") {
+          const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+          formData.append(`media[]`, {
+            uri: videoUri,
+            name: videoName,
+            type: "video/mp4", // Set the appropriate video type
+          });
+        } else {
+          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+        }
+      });
+    }
+    console.log("formData", formData);
+    const url = Config.API_URL;
+    const saveAccountDetails = url + "add_property_images";
+    console.log("Request URL:", saveAccountDetails);
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+
+          // 'Content-Type': 'text/plain'
+        },
+      });
+
+      console.log("Save Account Details", response.data);
+
+      if (response.data.status === true) {
+        setIsLoading(false);
+        MultiImageName ? refRBSheet.current.close() : null;
+        // alert(response.data.message);
+        // props.navigation.navigate("DrawerNavigatorLeftMenu");
+        // setCurrentPage(0);
+      } else {
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
+      console.error("Account_Details error:", error);
+      // alert(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleSaveUpdateImage = async () => {
+    const formData = new FormData();
+    formData.append("user", property_Data_id || propertyid);
     console.log("kljproperty_Data_id", property_Data_id);
     const imagePaths = MultiImageName.map((image) => image.path);
 
@@ -1374,7 +1445,11 @@ const AddPropertyMainPage = (props) => {
             <View style={PropertyImagesStyle.phototextView}>
               <View style={PropertyImagesStyle.slider_view}>
                 <SliderBox
-                  images={imagePaths}
+                  images={
+                    property_Detail[0]?.image_path
+                      ? property_Detail[0]?.image_path
+                      : imagePaths
+                  }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
                     console.warn(`image ${index} pressed`)
@@ -1508,7 +1583,11 @@ const AddPropertyMainPage = (props) => {
               </View>
               <View style={PropertyReviewStyle.slider_view}>
                 <SliderBox
-                  images={imagePaths}
+                  images={
+                    property_Detail[0]?.image_path
+                      ? property_Detail[0]?.image_path
+                      : imagePaths
+                  }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
                     console.warn(`image ${index} pressed`)
