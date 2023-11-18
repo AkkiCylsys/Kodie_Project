@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -24,7 +24,9 @@ import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RBSheet from "react-native-raw-bottom-sheet";
 import BottomModalData from "../../../../components/Molecules/BottomModal/BottomModalData";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
-
+import { Config } from "../../../../Config";
+import axios from "axios";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 const HorizontalData = [
   "Occupied",
   "Vacant",
@@ -139,12 +141,46 @@ const property_List2 = [
     isinviteTenants: false,
   },
 ];
-
 const PropertyList = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
+  const [Property_Data_List, setProperty_Data_List] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
-
+  useEffect(() => {
+    propertyList_Data();
+  }, []);
+  const propertyList_Data = () => {
+    const propertyDataList = {
+      user: 84,
+    };
+    const url = Config.API_URL;
+    const propertyData_List = url + "get_property_details_by_id";
+    console.log("Request URL :", propertyData_List);
+    setIsLoading(true);
+    axios
+      .post(propertyData_List, propertyDataList)
+      .then((response) => {
+        console.log("property_Data_list", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "propertyDataList....",
+            response.data?.property_details?.image_path
+          );
+          setProperty_Data_List(response?.data?.property_details);
+        } else {
+          console.error("property_Data_list_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_Data_list error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity style={PropertyListCSS.flatlistView}>
@@ -162,9 +198,9 @@ const PropertyList = (props) => {
           <View style={PropertyListCSS.flat_MainView}>
             <View style={PropertyListCSS.flexContainer}>
               <Text style={PropertyListCSS.apartmentText}>
-                {item.propertyName}
+                {item.property_type}
               </Text>
-              <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
+              <Text style={LABEL_STYLES.commontext}>{item.location}</Text>
               <View style={PropertyListCSS.flat_MainView}>
                 <MaterialCommunityIcons
                   name={"map-marker"}
@@ -176,12 +212,30 @@ const PropertyList = (props) => {
                 </Text>
               </View>
             </View>
-            <Image source={item.image} style={PropertyListCSS.imageStyle} />
+            {item?.image_path ? (
+              <Image
+                source={{ uri: item.image_path }}
+                style={PropertyListCSS.imageStyle}
+              />
+            ) : (
+              <View
+                style={[
+                  PropertyListCSS.imageStyle,
+                  { justifyContent: "center" },
+                ]}
+              >
+                <Text style={PropertyListCSS.Img_found}>
+                  {"Image not found"}
+                </Text>
+              </View>
+            )}
+
             <View style={PropertyListCSS.flexContainer}>
               <View style={PropertyListCSS.noteStyle}>
                 <TouchableOpacity>
                   <Image
                     source={IMAGES.noteBook}
+                    // source={IMAGES.noteBook}
                     style={PropertyListCSS.noteIcon}
                   />
                 </TouchableOpacity>
@@ -233,7 +287,8 @@ const PropertyList = (props) => {
                     },
                   ]}
                 >
-                  {item.buttonName}
+                  {/* {item.buttonName} */}
+                  {"+ Invite Tenant"}
                 </Text>
               </View>
             </View>
@@ -544,14 +599,15 @@ const PropertyList = (props) => {
               </View>
             </View>
             <DividerIcon />
-            <FlatList data={property_List1} renderItem={propertyData1_render}
-             />
+            <FlatList
+              data={Property_Data_List}
+              // data={property_List1}
+              renderItem={propertyData1_render}
+            />
           </>
         )}
-         
-      
-
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

@@ -4,11 +4,9 @@ export const HeaderStyle = StyleSheet.create({
   mainView: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: Platform.OS == "android" ? 55 : 90,
+    height: 55, // Adjust height for iOS
+    marginTop: Platform.OS === "ios" ? 38 : 0,
     width: "100%",
-    // borderBottomWidth:5,
-    // borderBottomColor:_COLORS.Kodie_lightGreenColor,
-    //paddingHorizontal:10
   },
   leftButtonView: { width: "25%", alignSelf: "center" },
   middleTextView: {

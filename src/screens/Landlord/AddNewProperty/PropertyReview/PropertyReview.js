@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { PropertyReviewStyle } from "./PropertyReviewStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -21,6 +21,41 @@ const images = [
 export default PropertyReview = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
   const [tabValue, setTabValue] = useState("");
+  const [getPropertyDetail, setGetPropertyDetail] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
+  const getPropertyDetails = () => {
+    const url = Config.API_URL;
+    const getPropertyDetailsurl = url + "get_All_Property_details";
+    console.log("Request URL:", getPropertyDetailsurl);
+    setIsLoading(true);
+    axios
+      .post(getPropertyDetailsurl, {
+        user: 2,
+      })
+      .then((response) => {
+        console.log("getPropertyDetails", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "getPropertyDetails....",
+            response.data?.property_details
+          );
+          setGetPropertyDetail(response?.data?.property_details);
+        } else {
+          console.error("getPropertyDetails_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("getPropertyDetails error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  useEffect(() => {
+    getPropertyDetails();
+  }, []);
   const checkTabs = () => {
     switch (tabValue) {
       case "Details":
@@ -43,10 +78,6 @@ export default PropertyReview = (props) => {
   };
   return (
     <View style={PropertyReviewStyle.mainContainer}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={"8502 Preston Rd. Inglewood..."}
-      />
       <ScrollView>
         <View style={PropertyReviewStyle.headingView}>
           <Text style={PropertyReviewStyle.heading}>

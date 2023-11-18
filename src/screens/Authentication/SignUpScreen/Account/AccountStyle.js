@@ -40,9 +40,10 @@ export const AccountStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    width:'23%',
-    marginLeft:10,
-    marginTop:8
+    width:'23.5%',
+    marginLeft:12,
+    marginTop:9,
+    textAlign:"center"
   },
   locationContainer: {
     flexDirection: "row",
@@ -96,7 +97,7 @@ export const AccountStyle = StyleSheet.create({
     fontSize: 16,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginBottom: 24,
+    marginVertical:16,
   },
   goBack_View: {
     flexDirection: "row",

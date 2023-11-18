@@ -53,6 +53,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginLeft: 15,
   },
   dropdown: {
+    flex:1,
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
@@ -81,8 +82,8 @@ export const FirstPropertyStyle = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  key_feature_Dropdownstyle: { flex: 0.9, height: 40 },
-
+  key_feature_Dropdownstyle: { flex: 1,height: 40, },
+  additional:{flex:0.8},
   key_feature_mainView: {
     flex: 1,
     flexDirection: "row",
@@ -91,10 +92,11 @@ export const FirstPropertyStyle = StyleSheet.create({
   key_feature_subView: { flex: 1, flexDirection: "row" },
   key_feature_Text: {
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: "center",
     marginRight: 15,
+    marginLeft:8
   },
   icon: {
     marginRight: 5,

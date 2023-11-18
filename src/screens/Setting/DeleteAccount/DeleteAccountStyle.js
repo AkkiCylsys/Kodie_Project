@@ -115,13 +115,15 @@ marginHorizontal:10,
   },
   inputemail: {
     height: 50,
-    margin: 12,
+    marginTop: 12,
     borderWidth: 0.3,
-    width: 330,
+    width: '90%',
     borderRadius: 6,
     color: _COLORS.Kodie_MediumGrayColor,
     paddingLeft: 18,
     marginTop: 4,
     fontFamily: FONTFAMILY.K_SemiBold,
+    marginHorizontal:15,
+    paddingHorizontal:10
   },
 });

@@ -64,6 +64,14 @@ export const PropertyListCSS = StyleSheet.create({
     width: 65,
     borderRadius: 10,
     alignSelf: "center",
+    borderWidth: 1,
+    borderColor: _COLORS?.Kodie_GrayColor,
+  },
+  Img_found: {
+    fontSize: 12,
+    color: _COLORS?.Kodie_BlackColor,
+    textAlign: "center",
+    alignSelf: "center",
   },
   buttonView: {
     flex: 0.7,

@@ -22,6 +22,7 @@ import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveL
 import { Config } from "../../../Config";
 import { fetchRegistrationSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 import { useDispatch, useSelector } from "react-redux";
+import { signupApiActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -92,7 +93,7 @@ export default SignUp = (props) => {
       .then((response) => {
         setSignupResponse(response.data);
         console.log("SignUp response", response.data);
-        if (response.data.status === true) {
+        if (response.data.message === "User Signup Successful") {
           alert(response.data.message);
           // Dispatch the action here if needed
           // dispatch(fetchRegistrationSuccess(response.data));
@@ -101,12 +102,32 @@ export default SignUp = (props) => {
           setTerm(false);
           setPrivacy(false);
           setIsLoading(false);
-
           // Redirect to SignUpVerification screen
           props.navigation.navigate("SignUpVerification", {
             email: email,
+            password: password,
+            is_term_condition: term,
+            is_privacy_policy: privacy,
           });
-        } else {
+        } else if (
+          response.data.message === "User Already Exists But Not Verified"
+        ) {
+          alert(response.data.message);
+          setEmail("");
+          setPassword("");
+          setTerm(false);
+          setPrivacy(false);
+          setIsLoading(false);
+          props.navigation.navigate("SignUpVerification", {
+            email: email,
+            password: password,
+            is_term_condition: term,
+            is_privacy_policy: privacy,
+          });
+        }else if( response.data.message === "User Already Exists And Verified"){
+          props.navigation.navigate('SignUpSteps')
+        }
+         else {
           setEmailError(response.data.message);
           setIsLoading(false);
         }
@@ -118,9 +139,8 @@ export default SignUp = (props) => {
       });
   };
 
-
   //....... handle signup button validation here
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (email.trim() === "") {
       setEmailError("Email is required!");
     } else if (!validateSignUpEmail(email)) {
@@ -129,10 +149,54 @@ export default SignUp = (props) => {
       );
     } else if (password.trim() === "") {
       setPasswordError("Password is required");
-    } else if (!term || !privacy) {
+    } else if (!term && !privacy) {
       alert("Please accept both Terms & Conditions and Privacy Policy.");
+    } else if (!term) {
+      alert("Please click on Terms & Conditions.");
+    } else if (!privacy) {
+      alert("Please click on Privacy Policy.");
     } else {
       Signuphandle();
+      // let data = {
+      //   email: email,
+      //   password: password,
+      //   is_term_condition: term,
+      //   is_privacy_policy: privacy,
+      // };
+      // setIsLoading(true);
+      // let res = await dispatch(signupApiActionCreator(data));
+      // console.log("res....", res);
+      // if (res.data.message === "User Signup Successful") {
+      //   alert(res.data.message);
+      //   setEmail("");
+      //   setPassword("");
+      //   setTerm(false);
+      //   setPrivacy(false);
+      //   setIsLoading(false);
+      //   // Redirect to SignUpVerification screen
+      //   props.navigation.navigate("SignUpVerification", {
+      //     email: email,
+      //     password: password,
+      //     is_term_condition: term,
+      //     is_privacy_policy: privacy,
+      //   });
+      // } else if (res.data.message === "User Already Exists But Not Verified") {
+      //   alert(res.data.message);
+      //   setEmail("");
+      //   setPassword("");
+      //   setTerm(false);
+      //   setPrivacy(false);
+      //   setIsLoading(false);
+      //   props.navigation.navigate("SignUpVerification", {
+      //     email: email,
+      //     password: password,
+      //     is_term_condition: term,
+      //     is_privacy_policy: privacy,
+      //   });
+      // } else {
+      //   setEmailError(res.data.message);
+      //   setIsLoading(false);
+      // }
     }
   };
 
@@ -168,6 +232,7 @@ export default SignUp = (props) => {
               onBlur={() => handleSignUpEmail(email)}
               placeholder="Enter Your Email Address"
               placeholderTextColor="#999"
+              maxLength={30}
             />
             {emailError ? (
               <Text style={SignUpStyles.error_text}>{emailError}</Text>
@@ -301,7 +366,7 @@ export default SignUp = (props) => {
             _LeftButtonText={"Already have an account?"}
             _RightButtonText={"Login"}
             onPress={() => {
-              props.navigation.navigate("SignUpVerification");
+              props.navigation.navigate("LoginScreen");
             }}
           />
         </View>

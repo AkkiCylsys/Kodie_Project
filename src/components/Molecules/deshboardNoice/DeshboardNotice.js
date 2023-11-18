@@ -14,27 +14,32 @@ const DeshboardNotice = (props) => {
   return (
     <>
       <View style={DeshBoardNoticeCss.MainView}>
-        <TouchableOpacity
-          onPress={props._closeButton}
-          style={DeshBoardNoticeCss.crossview}
-        >
-          <Entypo name="cross" size={20} color={_COLORS.Kodie_WhiteColor} />
-        </TouchableOpacity>
         <View style={DeshBoardNoticeCss.progressView}>
-          <Text style={DeshBoardNoticeCss.progressText}>
-            {(progress * 100).toFixed(0)}% complete, nice work!
-          </Text>
+          <View style={DeshBoardNoticeCss?.PercenView}>
+            <View style={DeshBoardNoticeCss?.percentageText}>
+              <Text style={DeshBoardNoticeCss.progressText}>
+                {(progress * 100).toFixed(0)}% complete, nice work!
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={props._closeButton}
+              style={[DeshBoardNoticeCss.crossview]}
+            >
+              <Entypo name="cross" size={15} color={_COLORS.Kodie_WhiteColor} />
+            </TouchableOpacity>
+          </View>
           <ProgressBar
             progress={0.4}
             width={300}
             height={8}
             color={_COLORS.Kodie_lightGreenColor}
             style={DeshBoardNoticeCss.progresBar}
+            borderColor="black"
           />
           <Text style={DeshBoardNoticeCss.profileText}>
             We are happy to have you on board. You have almost completed your
             profile set up.
-            <TouchableOpacity >
+            <TouchableOpacity>
               <Text style={DeshBoardNoticeCss.continueText}>
                 Tap to continue
               </Text>

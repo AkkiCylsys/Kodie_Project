@@ -9,7 +9,6 @@ const CustomDropdown = (props) => {
   const [show, setShow] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [appliedOptions, setAppliedOptions] = useState([]);
-
   // -----all data is show in the dropdown menu
   const data = props.data || [
     "All",
@@ -57,6 +56,7 @@ const CustomDropdown = (props) => {
       props.onClear(); 
     }
   };
+
 
   return (
     <View>
