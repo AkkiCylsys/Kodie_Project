@@ -152,4 +152,58 @@ export const FirstPropertyStyle = StyleSheet.create({
   btnView: {
     marginTop: 24,
   },
+  flor_input: {
+    height:40,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    width:'19.9%',
+    marginLeft:12,
+    marginTop:9,
+    textAlign:"center"
+  },
+  stepIndicator: {
+    marginTop:15
+  },
+  goBack_View: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginVertical: 12,
+  },
+  goBack_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginLeft: 5,
+  },
+  backIcon: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+  },
+  BtnContainer: {
+    backgroundColor:_COLORS.Kodie_lightGreenColor,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    paddingVertical: 3,
+    borderRadius: 10,
+  
+   // borderWidth: 1,
+    width: '30%',
+    height:50,
+    bottom: 0,
+    right:20,
+    marginBottom: 20,
+    position: 'absolute',
+    //borderColor: Colors.appColor,
+  },
 });
