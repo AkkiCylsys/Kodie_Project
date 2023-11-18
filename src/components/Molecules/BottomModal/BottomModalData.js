@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList } from "react-native";
 import { BottomModalDataStyle } from "./BottomModalDataStyle";
 import { IMAGES, _COLORS } from "../../../Themes";
 import { TouchableOpacity } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 const data = [
   {
     id: "1",
@@ -31,8 +31,17 @@ const data = [
     Img: IMAGES.Delete,
   },
 ];
+
 const BottomModalData = (props) => {
   const navigation = useNavigation(); // Hook to get navigation
+
+  const handleDeleteProperty = (propertyDelId) => {
+    console.log(propertyDelId, "catch data");
+    props.onDelete(propertyDelId);
+    console.log("come data...........", propertyDelId);
+    console.log("Raul data cath........... ", props.onDelete(propertyDelId));
+  };
+
   const BottomData = ({ item, index }) => {
     return (
       <>
@@ -42,7 +51,13 @@ const BottomModalData = (props) => {
             if (item.id === "1") {
               navigation.navigate("ViewPropertyDetails");
             }
-          }}>
+            if (item.id === "5") {
+              // navigation.navigate("ViewPropertyDetails");
+              handleDeleteProperty();
+              // console.log("Property ID:", item.property_id);
+            }
+          }}
+        >
           <Image source={item.Img} style={BottomModalDataStyle.Icons} />
           <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
         </TouchableOpacity>

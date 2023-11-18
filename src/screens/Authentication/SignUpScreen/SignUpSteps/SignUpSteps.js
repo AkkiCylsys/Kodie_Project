@@ -591,8 +591,17 @@ const SignUpSteps = (props) => {
 
     try {
       const response = await axios.post(saveAccountDetails, formData, {
+        // headers: {
+        //   // "content-type": "multipart/form-data",
+        //   // "Content-Type": "text/plain",
+        //   "Content-Type": "application/x-www-form-urlencoded",
+        // },
         headers: {
-          "content-type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
+          "cache-control": "no-cache",
+          processData: false,
+          contentType: false,
+          mimeType: "multipart/form-data",
         },
       });
 
@@ -919,6 +928,11 @@ const SignUpSteps = (props) => {
     setCurrentPage(position);
   };
 
+  //  Close rbSheet.....
+  const handleImageSelect = () => {
+    refRBSheet.current.close();
+  };
+
   //  go back button...............
   const goBack = () => {
     if (currentPage > 0) {
@@ -1151,7 +1165,7 @@ const SignUpSteps = (props) => {
               <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown={true}
-                closeOnPressMask={true}
+                // closeOnPressMask={true}
                 height={200}
                 customStyles={{
                   wrapper: {

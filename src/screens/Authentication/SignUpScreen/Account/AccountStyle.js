@@ -40,10 +40,10 @@ export const AccountStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    width: "19.9%",
-    marginLeft: 12,
-    marginTop: 9,
-    textAlign: "center",
+    width:'21%',
+    marginLeft:12,
+    marginTop:9,
+    textAlign:"center"
   },
   locationContainer: {
     flexDirection: "row",

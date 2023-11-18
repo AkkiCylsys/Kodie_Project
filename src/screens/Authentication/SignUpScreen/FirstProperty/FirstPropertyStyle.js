@@ -83,11 +83,11 @@ export const FirstPropertyStyle = StyleSheet.create({
     fontSize: 16,
   },
   key_feature_Dropdownstyle: { flex: 1,height: 40, },
-  additional:{flex:0.8},
+  additional:{flex:0.85},
   key_feature_mainView: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   key_feature_subView: { flex: 1, flexDirection: "row" },
   key_feature_Text: {
@@ -95,8 +95,8 @@ export const FirstPropertyStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: "center",
-    marginRight: 15,
-    marginLeft:8
+    // marginRight: 10,
+    marginHorizontal:10
   },
   icon: {
     marginRight: 5,
