@@ -11,9 +11,9 @@ import { _goBack } from "../../../services/CommonServices";
 import { LocationStyle } from "./LocationStyle";
 import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
-import { _COLORS, FONTFAMILY, IMAGES } from "../../../Themes";
-import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
+import { _COLORS,FONTFAMILY, IMAGES } from "../../../Themes";
+import Geocoder from "react-native-geocoding";
+import Geolocation from "react-native-geolocation-service";
 
 export default Location = (props) => {
   const [selectedLocation, setSelectedLocation] = useState(null);

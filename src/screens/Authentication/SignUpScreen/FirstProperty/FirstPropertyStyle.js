@@ -82,6 +82,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     fontSize: 16,
   },
   key_feature_Dropdownstyle: { flex: 0.9, height: 40 },
+
   key_feature_mainView: {
     flex: 1,
     flexDirection: "row",

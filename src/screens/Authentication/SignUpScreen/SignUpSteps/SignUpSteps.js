@@ -35,8 +35,8 @@ import { MultiSelect } from "react-native-element-dropdown";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import { Config } from "../../../../Config";
 import axios from "axios";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -1126,6 +1126,7 @@ const SignUpSteps = (props) => {
                       style={[
                         FirstPropertyStyle.dropdown,
                         FirstPropertyStyle.key_feature_Dropdownstyle,
+                     
                       ]}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
