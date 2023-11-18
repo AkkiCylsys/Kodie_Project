@@ -10,6 +10,7 @@ import SearchBar from "../../components/Molecules/SearchBar/SearchBar";
 import RBSheet from "react-native-raw-bottom-sheet";
 // import UploadImageData from "../../components/Molecules/UploadImage/UploadImage";
 import ChatPopup from "../../components/Molecules/Chats/ChatPop/ChatPopup";
+import { SwipeListView } from "react-native-swipe-list-view";
 const Chats = (props) => {
   const refRBSheet = useRef();
   const toggleView = () => {
@@ -23,6 +24,7 @@ const Chats = (props) => {
         MiddleText={"Chats"}
       />
       <ScrollView>
+      
         <View style={ChatsStyle.maincontainer}>
           <View style={ChatsStyle.searchview}>
             <SearchBar
@@ -37,6 +39,7 @@ const Chats = (props) => {
               refRBSheet.current.open();
             }}
           >
+            
             <Chat
               imagesource={IMAGES.userImage}
               heading="Tom’s property"
@@ -90,6 +93,7 @@ const Chats = (props) => {
         >
           <ChatPopup onPress={toggleView} />
         </RBSheet>
+      
       </ScrollView>
     </View>
   );

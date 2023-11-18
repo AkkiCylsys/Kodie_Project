@@ -1,4 +1,3 @@
-
 //ScreenNo:107
 //ScreenNo:108
 //ScreenNo:109
@@ -23,6 +22,10 @@ import SearchBar from "../../../../components/Molecules/SearchBar/SearchBar";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import Entypo from "react-native-vector-icons/Entypo";
+// import { SwipeListView } from "react-native-swipe-list-view";
+import Ionicons from "react-native-vector-icons/Ionicons";
+// import SwipeList from "../../../../components/Molecules/SwipeList/SwipeList";
+import { SwipeListView } from "react-native-swipe-list-view";
 const HorizontalData = ["Posted", "Ongoing", "Completed"];
 const property_List = [
   {
@@ -102,94 +105,233 @@ export default Repair = (props) => {
   };
 
   const propertyData_render = ({ item }) => {
+    console.log("Item data:............", item);
     return (
       <>
-        <View style={RepairCss.Container}>
-          <View style={RepairCss.flat_MainView}>
-            <View style={RepairCss.flexContainer}>
-              <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
-            </View>
-            <View style={RepairCss.RightContainer}>
-              <View
-                style={[
-                  RepairCss.buttonView,
-                  {
-                    backgroundColor: item.isPosted
-                      ? _COLORS.Kodie_mostLightBlueColor
-                      : item.isongoing
-                      ? _COLORS.Kodie_LightOrange
-                      : _COLORS.Kodie_mostLightGreenColor,
-                  },
-                ]}
-              >
-                <View
-                  style={[
-                    RepairCss.roundButton,
-                    {
-                      backgroundColor: item.isPosted
-                        ? _COLORS.Kodie_BlueColor
-                        : item.isongoing
-                        ? _COLORS.Kodie_DarkOrange
-                        : _COLORS.Kodie_GreenColor,
-                    },
-                  ]}
-                />
-                <Text
-                  style={[
-                    RepairCss.buttonText,
-                    {
-                      color: item.isPosted
-                        ? _COLORS.Kodie_BlueColor
-                        : item.isongoing
-                        ? _COLORS.Kodie_DarkOrange
-                        : _COLORS.Kodie_GreenColor,
-                    },
-                  ]}
-                >
-                  {item.buttonName}
-                </Text>
-              </View>
-            </View>
-            <Entypo
-              name={"dots-three-horizontal"}
-              size={20}
-              color={_COLORS.Kodie_GrayColor}
-              style={{ marginLeft: 15 }}
-            />
-          </View>
-          <Text style={LABEL_STYLES.commonMidtext}>{item.refno}</Text>
-          <View style={RepairCss.flat_MainView}>
-            <View style={RepairCss.flexContainer}>
-              <View style={RepairCss.propertyView}>
+        <SwipeListView
+          style={RepairCss.Container}
+          data={property_List}
+          renderItem={(rowdata, rowmap, index) => (
+            <View style={RepairCss.rowFront} key={index}>
+              <View style={RepairCss.flat_MainView} >
                 <View style={RepairCss.flexContainer}>
-                  <Text style={RepairCss.tom}>Tom</Text>
-                  <View style={RepairCss.locationView}>
-                    <MaterialCommunityIcons
-                      name={"map-marker"}
-                      size={12}
-                      color={_COLORS.Kodie_MediumGrayColor}
-                      style={{ alignSelf: "center" }}
+                  <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
+                </View>
+                <View style={RepairCss.RightContainer}>
+                  <View
+                    style={[
+                      RepairCss.buttonView,
+                      {
+                        backgroundColor: item.isPosted
+                          ? _COLORS.Kodie_mostLightBlueColor
+                          : item.isongoing
+                          ? _COLORS.Kodie_LightOrange
+                          : _COLORS.Kodie_mostLightGreenColor,
+                      },
+                    ]}
+                  >
+                    <View
+                      style={[
+                        RepairCss.roundButton,
+                        {
+                          backgroundColor: item.isPosted
+                            ? _COLORS.Kodie_BlueColor
+                            : item.isongoing
+                            ? _COLORS.Kodie_DarkOrange
+                            : _COLORS.Kodie_GreenColor,
+                        },
+                      ]}
                     />
-                    <Text style={RepairCss.locationText}>
-                      {"1729 Melbourne St Australia"}
+                    <Text
+                      style={[
+                        RepairCss.buttonText,
+                        {
+                          color: item.isPosted
+                            ? _COLORS.Kodie_BlueColor
+                            : item.isongoing
+                            ? _COLORS.Kodie_DarkOrange
+                            : _COLORS.Kodie_GreenColor,
+                        },
+                      ]}
+                    >
+                      {item.buttonName}
                     </Text>
                   </View>
                 </View>
+                <Entypo
+                  name={"dots-three-horizontal"}
+                  size={20}
+                  color={_COLORS.Kodie_GrayColor}
+                  style={{ marginLeft: 15 }}
+                />
               </View>
-            </View>
-            <View style={[RepairCss.BudgetView]}>
-              <View style={RepairCss.flexContainer}>
-                <Text style={RepairCss.bugetText}>{item.budget}</Text>
+              <Text style={LABEL_STYLES.commonMidtext}>{item.refno}</Text>
+              <View style={RepairCss.flat_MainView}>
+                <View style={RepairCss.flexContainer}>
+                  <View style={RepairCss.propertyView}>
+                    <View style={RepairCss.flexContainer}>
+                      <Text style={RepairCss.tom}>Tom</Text>
+                      <View style={RepairCss.locationView}>
+                        <MaterialCommunityIcons
+                          name={"map-marker"}
+                          size={12}
+                          color={_COLORS.Kodie_MediumGrayColor}
+                          style={{ alignSelf: "center" }}
+                        />
+                        <Text style={RepairCss.locationText}>
+                          {"1729 Melbourne St Australia"}
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                <View style={[RepairCss.BudgetView]}>
+                  <View style={RepairCss.flexContainer}>
+                    <Text style={RepairCss.bugetText}>{item.budget}</Text>
 
-                <Text style={RepairCss.spend}>{item.spend}</Text>
+                    <Text style={RepairCss.spend}>{item.spend}</Text>
+                  </View>
+                </View>
               </View>
+              <DividerIcon />
             </View>
-          </View>
-          <DividerIcon />
-        </View>
+          )}
+          renderHiddenItem={(data, index) => (
+            <View style={RepairCss.rowBack}>
+              <Text>Left</Text>
+              <TouchableOpacity
+                style={[
+                  RepairCss.backRightBtn,
+                  RepairCss.backRightBtnLeft,
+                ]}
+                onPress={() => closeRow(rowMap, data.item.key)}
+              >
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={25}
+                  color={_COLORS.Kodie_WhiteColor}
+                />
+                <Text style={RepairCss.backTextWhite}>More</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  RepairCss.backRightBtn,
+                  RepairCss.backRightBtnRight,
+                ]}
+                onPress={() => deleteRow(rowMap, data.item.key)}
+              >
+                <Ionicons
+                  name="archive-outline"
+                  size={25}
+                  color={_COLORS.Kodie_WhiteColor}
+                />
+                <Text style={RepairCss.backTextWhite}>Archive</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          leftOpenValue={75}
+          rightOpenValue={-150}
+          previewRowKey={"0"}
+          previewOpenValue={-40}
+          previewOpenDelay={3000}
+        />
       </>
     );
   };
+
+  // const propertyData_render = ({ item }) => {
+  //   console.log("Item data:............", item);
+  //   return (
+  //     <>
+  //       <SwipeList style={RepairCss.Container} data={property_List}>
+         
+  //           <View style={RepairCss.flat_MainView}>
+  //             <View style={RepairCss.flexContainer}>
+  //               <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
+  //             </View>
+  //             <View style={RepairCss.RightContainer}>
+  //               <View
+  //                 style={[
+  //                   RepairCss.buttonView,
+  //                   {
+  //                     backgroundColor: item.isPosted
+  //                       ? _COLORS.Kodie_mostLightBlueColor
+  //                       : item.isongoing
+  //                       ? _COLORS.Kodie_LightOrange
+  //                       : _COLORS.Kodie_mostLightGreenColor,
+  //                   },
+  //                 ]}
+  //               >
+  //                 <View
+  //                   style={[
+  //                     RepairCss.roundButton,
+  //                     {
+  //                       backgroundColor: item.isPosted
+  //                         ? _COLORS.Kodie_BlueColor
+  //                         : item.isongoing
+  //                         ? _COLORS.Kodie_DarkOrange
+  //                         : _COLORS.Kodie_GreenColor,
+  //                     },
+  //                   ]}
+  //                 />
+  //                 <Text
+  //                   style={[
+  //                     RepairCss.buttonText,
+  //                     {
+  //                       color: item.isPosted
+  //                         ? _COLORS.Kodie_BlueColor
+  //                         : item.isongoing
+  //                         ? _COLORS.Kodie_DarkOrange
+  //                         : _COLORS.Kodie_GreenColor,
+  //                     },
+  //                   ]}
+  //                 >
+  //                   {item.buttonName}
+  //                 </Text>
+  //               </View>
+  //             </View>
+  //             <Entypo
+  //               name={"dots-three-horizontal"}
+  //               size={20}
+  //               color={_COLORS.Kodie_GrayColor}
+  //               style={{ marginLeft: 15 }}
+  //             />
+  //           </View>
+  //           <Text style={LABEL_STYLES.commonMidtext}>{item.refno}</Text>
+  //           <View style={RepairCss.flat_MainView}>
+  //             <View style={RepairCss.flexContainer}>
+  //               <View style={RepairCss.propertyView}>
+  //                 <View style={RepairCss.flexContainer}>
+  //                   <Text style={RepairCss.tom}>Tom</Text>
+  //                   <View style={RepairCss.locationView}>
+  //                     <MaterialCommunityIcons
+  //                       name={"map-marker"}
+  //                       size={12}
+  //                       color={_COLORS.Kodie_MediumGrayColor}
+  //                       style={{ alignSelf: "center" }}
+  //                     />
+  //                     <Text style={RepairCss.locationText}>
+  //                       {"1729 Melbourne St Australia"}
+  //                     </Text>
+  //                   </View>
+  //                 </View>
+  //               </View>
+  //             </View>
+  //             <View style={[RepairCss.BudgetView]}>
+  //               <View style={RepairCss.flexContainer}>
+  //                 <Text style={RepairCss.bugetText}>{item.budget}</Text>
+
+  //                 <Text style={RepairCss.spend}>{item.spend}</Text>
+  //               </View>
+  //             </View>
+  //           </View>
+  //           <DividerIcon />
+       
+  //       </SwipeList>
+  //     </>
+  //   );
+  // };
+
   const propertyData_render1 = ({ item }) => {
     return (
       <>
@@ -356,7 +498,11 @@ export default Repair = (props) => {
         {activeScreen ? (
           <FlatList data={property_List1} renderItem={propertyData_render1} />
         ) : (
-          <FlatList data={property_List} renderItem={propertyData_render} />
+          <FlatList
+            data={property_List}
+            renderItem={propertyData_render}
+            keyExtractor={(item) => item.key}
+          />
         )}
       </ScrollView>
     </View>
