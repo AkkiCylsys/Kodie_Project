@@ -1764,7 +1764,7 @@ const AddPropertyMainPage = (props) => {
                   </View>
                 </View>
                 <Text style={PropertyReviewStyle.melbourne_Text}>
-                  {country || "Melbourne"}
+                  {property_Detail[0]?.location || "Melbourne"}
                 </Text>
                 <View style={PropertyReviewStyle.share_View}>
                   <Entypo
@@ -1913,7 +1913,7 @@ const AddPropertyMainPage = (props) => {
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={goBack}
-        MiddleText={ IsMap || IsSearch ? "Location":"Add new property"}
+        MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
       <View style={{ flex: 1 }}>
         {/* <View style={{ marginTop: 15 }}>
