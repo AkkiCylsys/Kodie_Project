@@ -976,7 +976,7 @@ export default FirstProperty = (props) => {
                     searchPlaceholder="Search..."
                     onChange={(item) => {
                       setAdditionalFeaturesKeyValue(item);
-                      alert(item);
+                      // alert(item);
                     }}
                     renderItem={renderDataItem}
                     renderSelectedItem={(item, unSelect) => (
@@ -992,6 +992,37 @@ export default FirstProperty = (props) => {
                       </TouchableOpacity>
                     )}
                   />
+                  {/* <MultiSelect
+                    style={FirstPropertyStyle.dropdown}
+                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
+                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+                    iconStyle={FirstPropertyStyle.iconStyle}
+                    data={DATA}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select additional features"
+                    value={additionalfeatureskeyvalue}
+                    search
+                    searchPlaceholder="Search..."
+                    onChange={(item) => {
+                      setAdditionalFeaturesKeyValue(item);
+                      // alert(item);
+                    }}
+                    renderItem={renderDataItem}
+                    renderSelectedItem={(item, unSelect) => (
+                      <TouchableOpacity
+                        onPress={() => unSelect && unSelect(item)}
+                      >
+                        <View style={FirstPropertyStyle.selectedStyle}>
+                          <Text style={FirstPropertyStyle.textSelectedStyle}>
+                            {item.label}
+                          </Text>
+                          <AntDesign color="black" name="close" size={17} />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  /> */}
                 </View>
               </View>
 

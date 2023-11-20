@@ -46,6 +46,11 @@ import ImagePicker from "react-native-image-crop-picker";
 import Video from "react-native-video";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { DetailsStyle } from "./PropertyReview/Details/DetailsStyles";
+// ..
+import Geocoder from "react-native-geocoding";
+import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
+import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
+import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const data = [
   { label: "Bharat", value: "1" },
@@ -194,7 +199,115 @@ const AddPropertyMainPage = (props) => {
   const [data_add, setData_add] = useState([]);
   const [MultiImageName, setMultiImageName] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState([]);
+  const [IsMap, setIsMap] = useState(false);
+  const [IsSearch, setIsSearch] = useState(false);
+  const [latitude, setlatitude] = useState("");
+  const [longitude, setlongitude] = useState("");
+  const [UserCurrentCity, setUserCurrentCity] = useState("");
+  const [UserZip_Code, setUserZip_Code] = useState("");
+
   console.log("property_Detail", property_Detail);
+
+  // ...
+  const ConfirmAddress = () => {
+    setIsMap(false);
+  };
+  const openMapandClose = (text) => {
+    setIsMap(false);
+    setIsSearch(true);
+  };
+  const onRegionChange = (Region) => {
+    // alert(JSON.stringify(Region))
+    setlatitude(Region.latitude);
+    setlongitude(Region.longitude);
+    getAddress(Region.latitude, Region.longitude);
+  };
+  const checkpermissionlocation = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Example App",
+          message: "Example App access to your location ",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+        // alert("You can use the location");
+        getAddressWithCordinates();
+      } else {
+        console.log("location permission denied");
+        alert("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const CheckIOSMapPermission = () => {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
+      .then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              "This feature is not available (on this device / in this context)"
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              "The permission has not been requested / is denied but requestable"
+            );
+            break;
+          case RESULTS.LIMITED:
+            console.log("The permission is limited: some actions are possible");
+            break;
+          case RESULTS.GRANTED:
+            console.log("The permission is granted");
+            getAddressWithCordinates();
+            break;
+          case RESULTS.BLOCKED:
+            console.log("The permission is denied and not requestable anymore");
+            break;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getAddressWithCordinates = () => {
+    Geolocation.watchPosition(
+      (position) => {
+        setlatitude(position.coords.latitude);
+        setlongitude(position.coords.longitude);
+        getAddress(position.coords.latitude, position.coords.longitude);
+      },
+      (error) => {
+        alert(error.message.toString());
+      },
+      {
+        showLocationDialog: true,
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+      }
+    );
+  };
+  const getAddress = (latitude, longitude) => {
+    Geocoder.from(latitude, longitude)
+      .then((json) => {
+        let MainFullAddress = json.results[0].formatted_address;
+        var addressComponent2 = json.results[0].address_components[1];
+        // alert(addressComponent2)
+        setUserCurrentCity(addressComponent2.long_name);
+        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
+        setLocation(MainFullAddress);
+        console.log("location....", location);
+        //setAddress(MainFullAddress);
+      })
+      .catch((error) => console.warn(error));
+  };
+
   const openVideoPicker = () => {
     ImagePicker.openPicker({
       mediaType: "video",
@@ -876,7 +989,11 @@ const AddPropertyMainPage = (props) => {
                 <View style={PropertyDetailsStyle.locationContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Location");
+                      // props.navigation.navigate("Location");
+                      Platform.OS == "ios"
+                        ? CheckIOSMapPermission
+                        : checkpermissionlocation();
+                      setIsMap(true);
                     }}
                   >
                     <Octicons
@@ -1781,7 +1898,7 @@ const AddPropertyMainPage = (props) => {
         MiddleText={"Add new property"}
       />
       <View style={{ flex: 1 }}>
-        <View style={{ marginTop: 15 }}>
+        {/* <View style={{ marginTop: 15 }}>
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={currentPage}
@@ -1791,51 +1908,149 @@ const AddPropertyMainPage = (props) => {
             stepCount={4}
             renderLabel={renderLabel}
           />
-        </View>
-        <ScrollView
-          contentContainerStyle={{ marginBottom: 190 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <View>{renderPageContent()}</View>
+        </View> */}
+        {IsMap || IsSearch ? null : (
+          <View style={DetailsStyle.stepIndicator}>
+            <StepIndicator
+              customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+              currentPosition={currentPage}
+              // onPress={onStepPress}
+              renderStepIndicator={renderStepIndicator}
+              labels={stepLabels}
+              stepCount={3}
+              renderLabel={renderLabel}
+            />
+          </View>
+        )}
+        {IsMap ? (
           <View
             style={{
-              marginHorizontal: 16,
-              backgroundColor: _COLORS.Kodie_WhiteColor,
-              marginBottom: 100,
+              flex: 1,
+              // paddingHorizontal: 10,
+              backgroundColor: "transparent",
             }}
           >
+            <MapScreen
+              style={{
+                height: "100%",
+                width: "100%",
+                // borderRadius: 20,
+                // borderWidth: 1,
+                //borderColor: .greenAppColor,
+                alignSelf: "center",
+                marginBottom: 10,
+              }}
+              onRegionChange={onRegionChange}
+              Maplat={latitude}
+              Maplng={longitude}
+            />
             <View
               style={{
-                justifyContent: "flex-end",
-                // marginBottom: 30,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignSelf: "center",
+                width: "96%",
+                borderWidth: 1,
+                borderRadius: 8,
+                backgroundColor: "white",
+                borderColor: "#E5E4E2",
+                marginTop: 10,
+                position: "absolute",
               }}
             >
-              <CustomSingleButton
-                _ButtonText={currentPage == 3 ? "Add property" : "Next"}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  handleNextBtn();
-                }}
-              />
-              {currentPage == 1 || currentPage == 2 ? (
-                <>
-                  <CustomSingleButton
-                    _ButtonText={"Fill these details out later"}
-                    Text_Color={_COLORS.Kodie_BlackColor}
-                    backgroundColor={_COLORS.Kodie_WhiteColor}
-                    onPress={() => {
-                      if (currentPage == 2) {
-                        // handleNextBtn();
-                      } else {
-                        setCurrentPage(currentPage + 1);
-                      }
-                    }}
-                  />
+              <TextInput
+                style={{
+                  backgroundColor: "transparent",
 
-                  <TouchableOpacity
-                    style={SignUpStepStyle.goBack_View}
-                    onPress={() => goBack()}
-                  >
+                  width: "90%",
+                  height: 45,
+                  alignSelf: "center",
+                  //marginTop: 10,
+                }}
+                onFocus={() => openMapandClose()}
+                placeholder={"Search Place"}
+              />
+            </View>
+            <TouchableOpacity
+              style={SignUpStepStyle.BtnContainer}
+              onPress={ConfirmAddress}
+            >
+              {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
+              <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+            </TouchableOpacity>
+          </View>
+        ) : IsSearch ? (
+          <SearchPlaces
+            onPress={(data, details = null) => {
+              setlatitude(details.geometry.location.lat);
+              setlongitude(details.geometry.location.lng);
+              setIsSearch(false);
+              setIsMap(true);
+              setLocation(details.formatted_address);
+              console.log("locationSearch....", location);
+              console.log("details.......", details);
+            }}
+          />
+        ) : (
+          <ScrollView
+            contentContainerStyle={{ marginBottom: 190 }}
+            showsVerticalScrollIndicator={false}
+          >
+            <View>{renderPageContent()}</View>
+            <View
+              style={{
+                marginHorizontal: 16,
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+                marginBottom: 100,
+              }}
+            >
+              <View
+                style={{
+                  justifyContent: "flex-end",
+                  // marginBottom: 30,
+                }}
+              >
+                <CustomSingleButton
+                  _ButtonText={currentPage == 3 ? "Add property" : "Next"}
+                  Text_Color={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    handleNextBtn();
+                  }}
+                />
+                {currentPage == 1 || currentPage == 2 ? (
+                  <>
+                    <CustomSingleButton
+                      _ButtonText={"Fill these details out later"}
+                      Text_Color={_COLORS.Kodie_BlackColor}
+                      backgroundColor={_COLORS.Kodie_WhiteColor}
+                      onPress={() => {
+                        if (currentPage == 2) {
+                          // handleNextBtn();
+                        } else {
+                          setCurrentPage(currentPage + 1);
+                        }
+                      }}
+                    />
+
+                    <TouchableOpacity
+                      style={SignUpStepStyle.goBack_View}
+                      onPress={() => goBack()}
+                    >
+                      <View style={SignUpStepStyle.backIcon}>
+                        <Ionicons
+                          name="chevron-back"
+                          size={22}
+                          color={_COLORS.Kodie_MediumGrayColor}
+                        />
+                      </View>
+                      <Text style={SignUpStepStyle.goBack_Text}>
+                        {"Go back"}
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                ) : null}
+                {currentPage == 0 || currentPage == 3 ? (
+                  <TouchableOpacity style={SignUpStepStyle.goBack_View}>
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
                         name="chevron-back"
@@ -1845,23 +2060,11 @@ const AddPropertyMainPage = (props) => {
                     </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
                   </TouchableOpacity>
-                </>
-              ) : null}
-              {currentPage == 0 || currentPage == 3 ? (
-                <TouchableOpacity style={SignUpStepStyle.goBack_View}>
-                  <View style={SignUpStepStyle.backIcon}>
-                    <Ionicons
-                      name="chevron-back"
-                      size={22}
-                      color={_COLORS.Kodie_MediumGrayColor}
-                    />
-                  </View>
-                  <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                </TouchableOpacity>
-              ) : null}
+                ) : null}
+              </View>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        )}
       </View>
       {isLoading ? <CommonLoader /> : null}
     </View>
