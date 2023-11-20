@@ -286,7 +286,7 @@ export default Account = (props) => {
           <TextInput
             style={AccountStyle.input}
             value={mobileNumber}
-            onChangeText={validateMobileNumber}
+            onBlur={validateMobileNumber}
             placeholder="Enter your phone number"
             placeholderTextColor="#999"
             keyboardType="phone-pad"

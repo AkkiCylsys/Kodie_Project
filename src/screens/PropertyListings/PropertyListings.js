@@ -62,7 +62,7 @@ const PropertyListings = (props) => {
     <View style={PropertyListingStyle.mainview}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Propery listings"}
+        MiddleText={"Property listings"}
       />
       <ScrollView>
         <View style={PropertyListingStyle.searchview}>
