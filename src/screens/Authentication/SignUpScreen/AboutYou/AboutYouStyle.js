@@ -191,4 +191,23 @@ export const AboutYouStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
   },
   crossIconStyle: { alignSelf: "center", marginRight: 10 },
+  stepIndicator: {
+    marginTop:15
+  },
+  goBack_View: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginVertical: 12,
+  },
+  goBack_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginLeft: 5,
+  },
+  backIcon: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+  },
 });

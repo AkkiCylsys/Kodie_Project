@@ -44,11 +44,60 @@ import { PropertyReviewStyle } from "./PropertyReview/PropertyReviewStyle";
 
 import ImagePicker from "react-native-image-crop-picker";
 import Video from "react-native-video";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { DetailsStyle } from "./PropertyReview/Details/DetailsStyles";
+// ..
+import Geocoder from "react-native-geocoding";
+import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
+import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
+import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },
   { label: "America", value: "3" },
+];
+const Detail = [
+  {
+    id: "1",
+    images: IMAGES.BedroomIcon,
+    name: "Bedrooms: 3",
+  },
+  {
+    id: "2",
+    images: IMAGES.Bathroom,
+    name: "Bathrooms: 2",
+  },
+  {
+    id: "3",
+    images: IMAGES.Parking,
+    name: "Garages: 1",
+  },
+  {
+    id: "4",
+    images: IMAGES.BedroomIcon,
+    name: "Parkings: 1",
+  },
+  {
+    id: "5",
+    images: IMAGES.BedroomIcon,
+    name: "Garden",
+  },
+  {
+    id: "6",
+    images: IMAGES.BedroomIcon,
+    name: "Pool",
+  },
+  {
+    id: "7",
+    images: IMAGES.BedroomIcon,
+    name: "Furnished",
+  },
+  {
+    id: "8",
+    images: IMAGES.BedroomIcon,
+    name: "WiFi",
+  },
 ];
 const DATA = [
   {
@@ -107,6 +156,8 @@ const images = [
   BANNERS.previewImage,
 ];
 const AddPropertyMainPage = (props) => {
+  const propertyid = props?.route?.params?.propertyid;
+  console.log("propertyid....", propertyid);
   const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState("");
   const [value, setValue] = useState(null);
@@ -117,9 +168,11 @@ const AddPropertyMainPage = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [propertyTypeData, setPropertyTypeData] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
-  const [property_Detail, setProperty_Details] = useState({});
+  const [property_Detail, setProperty_Details] = useState([]);
+  const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
   const [property_value, setProperty_value] = useState([]);
+  const [property_name, setPropertyName] = useState([]);
   const [selectedkey_features, setSelectedkey_features] = useState([]);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
@@ -146,6 +199,114 @@ const AddPropertyMainPage = (props) => {
   const [data_add, setData_add] = useState([]);
   const [MultiImageName, setMultiImageName] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState([]);
+  const [IsMap, setIsMap] = useState(false);
+  const [IsSearch, setIsSearch] = useState(false);
+  const [latitude, setlatitude] = useState("");
+  const [longitude, setlongitude] = useState("");
+  const [UserCurrentCity, setUserCurrentCity] = useState("");
+  const [UserZip_Code, setUserZip_Code] = useState("");
+
+  console.log("property_Detail", property_Detail);
+
+  // ...
+  const ConfirmAddress = () => {
+    setIsMap(false);
+  };
+  const openMapandClose = (text) => {
+    setIsMap(false);
+    setIsSearch(true);
+  };
+  const onRegionChange = (Region) => {
+    // alert(JSON.stringify(Region))
+    setlatitude(Region.latitude);
+    setlongitude(Region.longitude);
+    getAddress(Region.latitude, Region.longitude);
+  };
+  const checkpermissionlocation = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Example App",
+          message: "Example App access to your location ",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+        // alert("You can use the location");
+        getAddressWithCordinates();
+      } else {
+        console.log("location permission denied");
+        alert("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const CheckIOSMapPermission = () => {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
+      .then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              "This feature is not available (on this device / in this context)"
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              "The permission has not been requested / is denied but requestable"
+            );
+            break;
+          case RESULTS.LIMITED:
+            console.log("The permission is limited: some actions are possible");
+            break;
+          case RESULTS.GRANTED:
+            console.log("The permission is granted");
+            getAddressWithCordinates();
+            break;
+          case RESULTS.BLOCKED:
+            console.log("The permission is denied and not requestable anymore");
+            break;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getAddressWithCordinates = () => {
+    Geolocation.watchPosition(
+      (position) => {
+        setlatitude(position.coords.latitude);
+        setlongitude(position.coords.longitude);
+        getAddress(position.coords.latitude, position.coords.longitude);
+      },
+      (error) => {
+        alert(error.message.toString());
+      },
+      {
+        showLocationDialog: true,
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+      }
+    );
+  };
+  const getAddress = (latitude, longitude) => {
+    Geocoder.from(latitude, longitude)
+      .then((json) => {
+        let MainFullAddress = json.results[0].formatted_address;
+        var addressComponent2 = json.results[0].address_components[1];
+        // alert(addressComponent2)
+        setUserCurrentCity(addressComponent2.long_name);
+        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
+        setLocation(MainFullAddress);
+        console.log("location....", location);
+        //setAddress(MainFullAddress);
+      })
+      .catch((error) => console.warn(error));
+  };
 
   const openVideoPicker = () => {
     ImagePicker.openPicker({
@@ -196,13 +357,13 @@ const AddPropertyMainPage = (props) => {
           setBedRoomData(response.data.data);
         } else {
           console.error("bedRoom_data_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("bedRoom_data error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -227,13 +388,13 @@ const AddPropertyMainPage = (props) => {
           setGaragesData(response.data.data);
         } else {
           console.error("garages_Data_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("garages_Data error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -258,13 +419,13 @@ const AddPropertyMainPage = (props) => {
           setBathroomData(response.data.data);
         } else {
           console.error("bathroom_Data_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("bathroom_Data error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -286,13 +447,13 @@ const AddPropertyMainPage = (props) => {
           console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
         } else {
           console.error("additional_features_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("additional_features error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -324,13 +485,13 @@ const AddPropertyMainPage = (props) => {
           setParkingData(response.data.data);
         } else {
           console.error("parking_Data_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("parking_Data error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -361,25 +522,36 @@ const AddPropertyMainPage = (props) => {
         console.log("property_details", response?.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          setProperty_Data_id(response.data?.property_id);
+          setProperty_Data_id(response?.data?.property_id);
+
+          console.log(
+            "response?.data?.property_id",
+            response?.data?.property_id
+          );
 
           // setCurrentPage(currentPage + 1);
           // props.navigation.navigate("PropertyFeature");
           console.log("property_details....", response.data);
-          console.log(location, propertyDesc, propertyTypeData);
+          console.log(
+            location,
+            propertyDesc,
+            propertyTypeData,
+            selectedKeyFeature,
+            additionalfeatureskeyvalue
+          );
         } else {
           console.error("property_details_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("property_details error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
-  console.log(property_Data_id);
+  console.log("harshita", property_Data_id);
   // property Type API with LookupKey...
   const handleProperty_Type = () => {
     const propertyData = {
@@ -400,20 +572,21 @@ const AddPropertyMainPage = (props) => {
           setProperty_Data(response.data.data);
         } else {
           console.error("property_type_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("property_type error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
   const DetailsData = () => {
     const detailData = {
-      user: property_Data_id,
+      user: propertyid ? propertyid : property_Data_id,
     };
+    console.log("detailData", detailData);
     const url = Config.API_URL;
     const property_Detailss = url + "get_All_Property_details";
     console.log("Request URL:", property_Detailss);
@@ -426,6 +599,11 @@ const AddPropertyMainPage = (props) => {
           setIsLoading(false);
           console.log("propertyDetail....", response.data.property_details);
           setProperty_Details(response.data.property_details);
+          setLocation(response.data.property_details[0].location);
+          setProperty_value("hello");
+          setPropertyDesc(
+            response.data.property_details[0].property_description
+          );
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -434,7 +612,52 @@ const AddPropertyMainPage = (props) => {
       })
       .catch((error) => {
         console.error("property_type error:", error);
-        alert(error);
+        // alert(error);
+        setIsLoading(false);
+      });
+  };
+  const updatePropertyDetails = () => {
+    const selectedKeyFeature = selectedkey_features.join(",");
+    const updateData = {
+      user: 35,
+      user_account_details_id: 84,
+      location: location,
+      location_longitude: "102.201.123",
+      location_latitude: "104.402.210",
+      islocation: 1,
+      property_description: propertyDesc,
+      property_type: property_value,
+      key_features: selectedKeyFeature,
+      additional_features: "12",
+      additional_key_features: additionalfeatureskeyvalue,
+      autolist: selectedButtonId,
+      property_id: propertyid,
+    };
+    console.log("updateData", updateData);
+    const url = Config.API_URL;
+    const update_property_details = url + "update_property_details";
+    console.log("Request URL:", update_property_details);
+    setIsLoading(true);
+    axios
+      .put(update_property_details, updateData)
+      .then((response) => {
+        console.log("update_property_details", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "update_property_details....",
+            response.data.property_details
+          );
+          setupdateProperty_Details(response.data.property_details);
+        } else {
+          console.error("update_property_detailserror:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("update_property_details error:", error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -447,6 +670,7 @@ const AddPropertyMainPage = (props) => {
     handle_parking();
     additional_features();
     DetailsData();
+    setLocation(property_Detail?.location);
   }, []);
   const checkTabs = () => {
     switch (tabValue) {
@@ -523,14 +747,22 @@ const AddPropertyMainPage = (props) => {
     if (currentPage == 0) {
       setCurrentPage(currentPage + 1);
     } else if (currentPage == 1) {
-      property_details();
+      if (propertyid) {
+        updatePropertyDetails();
+      } else {
+        property_details();
+      }
       setCurrentPage(currentPage + 1);
     } else if (currentPage == 2) {
-      handleSaveSignup();
+      if (propertyid) {
+        handleSaveUpdateImage();
+      } else {
+        handleSaveImage();
+      }
       setCurrentPage(currentPage + 1);
     } else if (currentPage == 3) {
       props.navigation.navigate("DrawerNavigatorLeftMenu");
-      // handleSaveSignup();
+      // handleSaveImage();
     } else {
       null;
     }
@@ -591,52 +823,43 @@ const AddPropertyMainPage = (props) => {
       </View>
     );
   };
+  const Detail_rander = ({ item, index }) => {
+    return (
+      <>
+        <View style={DetailsStyle.DetailsView}>
+          <Image source={item.images} style={DetailsStyle.DetailsIcon} />
+          <Text style={DetailsStyle.details_text}>{item.name}</Text>
+        </View>
+      </>
+    );
+  };
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const handleSaveSignup = async () => {
+  const handleSaveImage = async () => {
     const formData = new FormData();
     formData.append("user", property_Data_id);
-    // if (MultiImageName) {
-    //   const imageUri = MultiImageName;
-    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-    //   // const imageType = ImageName.mime || "image/jpeg";
+    console.log("kljproperty_Data_id", property_Data_id);
+    const imagePaths = MultiImageName.map((image) => image.path);
 
-    //   // if (ImageName?.path) {
-    //   //   const imageUri = ImageName.path;
-    //   //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-    //   //   const imageType = ImageName.mime || "image/jpeg";
-    //   //   console.log("imageType...", ImageName.mime);
-
-    //   formData.append("images", {
-    //     uri: imageUri,
-    //     // type: imageType,
-    //     name: imageName,
-    //   });
-    // }
-
-    // Append images
-    if (MultiImageName && MultiImageName.length > 0) {
-      MultiImageName.forEach((imageUri, index) => {
-        if (typeof imageUri === "string") {
-          const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-          formData.append(`images[${index}]`, {
-            uri: imageUri,
-            name: imageName,
-            type: "image/jpeg", // Set the appropriate image type
-          });
-        } else {
-          console.error(`Invalid image URI at index ${index}: ${imageUri}`);
-        }
-      });
-    }
-
+    // Append all image paths to the same key 'images[]'
+    imagePaths.forEach((path, index) => {
+      formData.append(
+        "images[]",
+        {
+          uri: path,
+          name: `image_${index}.jpg`,
+          type: "image/jpeg",
+        },
+        path
+      );
+    });
     // Append videos
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoUri, index) => {
         if (typeof videoUri === "string") {
           const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append(`media[${index}]`, {
+          formData.append(`media[]`, {
             uri: videoUri,
             name: videoName,
             type: "video/mp4", // Set the appropriate video type
@@ -646,6 +869,7 @@ const AddPropertyMainPage = (props) => {
         }
       });
     }
+    console.log("formData", formData);
     const url = Config.API_URL;
     const saveAccountDetails = url + "add_property_images";
     console.log("Request URL:", saveAccountDetails);
@@ -655,6 +879,8 @@ const AddPropertyMainPage = (props) => {
       const response = await axios.post(saveAccountDetails, formData, {
         headers: {
           "content-type": "multipart/form-data",
+
+          // 'Content-Type': 'text/plain'
         },
       });
 
@@ -662,7 +888,8 @@ const AddPropertyMainPage = (props) => {
 
       if (response.data.status === true) {
         setIsLoading(false);
-        alert(response.data.message);
+        MultiImageName ? refRBSheet.current.close() : null;
+        // alert(response.data.message);
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         // setCurrentPage(0);
       } else {
@@ -671,7 +898,74 @@ const AddPropertyMainPage = (props) => {
       }
     } catch (error) {
       console.error("Account_Details error:", error);
-      alert(error);
+      // alert(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleSaveUpdateImage = async () => {
+    const formData = new FormData();
+    formData.append("user", property_Data_id || propertyid);
+    console.log("kljproperty_Data_id", property_Data_id);
+    const imagePaths = MultiImageName.map((image) => image.path);
+
+    // Append all image paths to the same key 'images[]'
+    imagePaths.forEach((path, index) => {
+      formData.append(
+        "images[]",
+        {
+          uri: path,
+          name: `image_${index}.jpg`,
+          type: "image/jpeg",
+        },
+        path
+      );
+    });
+    // Append videos
+    if (selectedVideos && selectedVideos.length > 0) {
+      selectedVideos.forEach((videoUri, index) => {
+        if (typeof videoUri === "string") {
+          const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+          formData.append(`media[]`, {
+            uri: videoUri,
+            name: videoName,
+            type: "video/mp4", // Set the appropriate video type
+          });
+        } else {
+          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+        }
+      });
+    }
+    console.log("formData", formData);
+    const url = Config.API_URL;
+    const saveAccountDetails = url + "add_property_images";
+    console.log("Request URL:", saveAccountDetails);
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+
+          // 'Content-Type': 'text/plain'
+        },
+      });
+
+      console.log("Save Account Details", response.data);
+
+      if (response.data.status === true) {
+        setIsLoading(false);
+        MultiImageName ? refRBSheet.current.close() : null;
+        // alert(response.data.message);
+        // props.navigation.navigate("DrawerNavigatorLeftMenu");
+        // setCurrentPage(0);
+      } else {
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
+      console.error("Account_Details error:", error);
+      // alert(error);
     } finally {
       setIsLoading(false);
     }
@@ -695,7 +989,11 @@ const AddPropertyMainPage = (props) => {
                 <View style={PropertyDetailsStyle.locationContainer}>
                   <TouchableOpacity
                     onPress={() => {
-                      props.navigation.navigate("Location");
+                      // props.navigation.navigate("Location");
+                      Platform.OS == "ios"
+                        ? CheckIOSMapPermission
+                        : checkpermissionlocation();
+                      setIsMap(true);
                     }}
                   >
                     <Octicons
@@ -753,10 +1051,11 @@ const AddPropertyMainPage = (props) => {
                   maxHeight={300}
                   labelField="description"
                   valueField="lookup_key"
-                  placeholder="Apartment"
-                  value={property_value}
+                  placeholder="Select property type"
+                  value={property_value || "hello"}
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
+                    setPropertyName(item.description);
                     // alert(item.lookup_key)
                   }}
                 />
@@ -865,6 +1164,13 @@ const AddPropertyMainPage = (props) => {
                         onChange={(item) => {
                           setbedroomValue(item.lookup_key);
                           handle_key_feature(item.lookup_key);
+                          const dataToSend = { 29: item.lookup_key };
+
+                          // Send the data wherever you need it
+                          console.log(dataToSend);
+
+                          // If you want to show it as an alert
+                          // alert(JSON.stringify(dataToSend));
                         }}
                       />
                     </View>
@@ -1256,7 +1562,11 @@ const AddPropertyMainPage = (props) => {
             <View style={PropertyImagesStyle.phototextView}>
               <View style={PropertyImagesStyle.slider_view}>
                 <SliderBox
-                  images={imagePaths}
+                  images={
+                    property_Detail[0]?.image_path
+                      ? property_Detail[0]?.image_path
+                      : imagePaths
+                  }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
                     console.warn(`image ${index} pressed`)
@@ -1287,6 +1597,8 @@ const AddPropertyMainPage = (props) => {
                     refRBSheet.current.open();
                   }}
                 />
+                {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
+
                 {/* {MultiImageName.length > 0 && (
                   <FlatList
                     horizontal
@@ -1307,7 +1619,8 @@ const AddPropertyMainPage = (props) => {
                   }
                 </Text>
               </View>
-              {MultiImageName.length > 0 && refRBSheet.current.close()}
+
+              {/* {MultiImageName.length == 0 ? refRBSheet.current.close() : null} */}
               <Text style={PropertyImagesStyle.upload_Heading_Text}>
                 {"Upload Video"}
               </Text>
@@ -1350,7 +1663,7 @@ const AddPropertyMainPage = (props) => {
                   }
                 </Text>
               </View>
-              {selectedVideos.length > 0 && refRBSheet.current.close()}
+              {/* {selectedVideos.length > 0 && refRBSheet.current.close()} */}
 
               <RBSheet
                 ref={refRBSheet}
@@ -1387,7 +1700,11 @@ const AddPropertyMainPage = (props) => {
               </View>
               <View style={PropertyReviewStyle.slider_view}>
                 <SliderBox
-                  images={imagePaths}
+                  images={
+                    property_Detail[0]?.image_path
+                      ? property_Detail[0]?.image_path
+                      : imagePaths
+                  }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
                     console.warn(`image ${index} pressed`)
@@ -1408,7 +1725,7 @@ const AddPropertyMainPage = (props) => {
               <View style={PropertyReviewStyle.subContainer}>
                 <View style={PropertyReviewStyle.apartment_View}>
                   <Text style={PropertyReviewStyle.apartment_text}>
-                    {property_Detail[0]?.property_type || "Apartment"}
+                    {property_Detail[0]?.property_type || property_value}
                   </Text>
                   <View style={PropertyReviewStyle.share_View}>
                     <TouchableOpacity>
@@ -1429,7 +1746,7 @@ const AddPropertyMainPage = (props) => {
                   </View>
                 </View>
                 <Text style={PropertyReviewStyle.melbourne_Text}>
-                  {property_Detail[0]?.location || "Melbourne"}
+                  {property_Detail[0]?.location || location || "Melbourne"}
                 </Text>
                 <View style={PropertyReviewStyle.share_View}>
                   <Entypo
@@ -1439,6 +1756,7 @@ const AddPropertyMainPage = (props) => {
                   />
                   <Text>
                     {property_Detail[0]?.location ||
+                      location ||
                       "8502 Preston Rd.Inglewood,Queensland,Australia,."}
                   </Text>
                 </View>
@@ -1452,7 +1770,7 @@ const AddPropertyMainPage = (props) => {
                       {"Details"}
                     </Text>
                   </TouchableOpacity>
-                  <TouchableOpacity
+                  {/* <TouchableOpacity
                     onPress={() => {
                       setTabValue("Leases");
                     }}
@@ -1476,11 +1794,94 @@ const AddPropertyMainPage = (props) => {
                     <Text style={PropertyReviewStyle.Tab_text}>
                       {"Documents"}
                     </Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </View>
               </View>
               <DividerIcon borderBottomWidth={3} />
-              {checkTabs()}
+              <Text style={DetailsStyle.welcome_Text}>
+                {/* {
+                  "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
+                } */}
+                {property_Detail[0]?.property_description || propertyDesc}
+              </Text>
+
+              <FlatList
+                data={Detail}
+                scrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{}}
+                numColumns={2}
+                keyExtractor={(item) => item?.id}
+                renderItem={Detail_rander}
+              />
+
+              <DividerIcon
+                borderBottomWidth={1}
+                color={_COLORS.Kodie_GrayColor}
+              />
+              <View style={DetailsStyle.subContainer}>
+                <View style={DetailsStyle.propety_details_view}>
+                  <Text style={DetailsStyle.propery_det}>
+                    {"Property details"}
+                  </Text>
+
+                  <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                    <AntDesign
+                      name="down"
+                      size={15}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+              </View>
+              <View style={DetailsStyle.subContainer}>
+                <View style={DetailsStyle.propety_details_view}>
+                  <Text style={DetailsStyle.propery_det}>{"Rooms"}</Text>
+
+                  <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                    <AntDesign
+                      name="down"
+                      size={15}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+              </View>
+              <View style={DetailsStyle.subContainer}>
+                <View style={DetailsStyle.propety_details_view}>
+                  <Text style={DetailsStyle.propery_det}>
+                    {"External featuress"}
+                  </Text>
+
+                  <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                    <AntDesign
+                      name="down"
+                      size={15}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+              </View>
+              <View style={DetailsStyle.subContainer}>
+                <View style={DetailsStyle.propety_details_view}>
+                  <Text style={DetailsStyle.propery_det}>
+                    {"Points of interest"}
+                  </Text>
+
+                  <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                    <AntDesign
+                      name="down"
+                      size={15}
+                      color={_COLORS.Kodie_GrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <DividerIcon marginTop={8} />
+              </View>
+              {/* {checkTabs()} */}
             </ScrollView>
           </View>
         );
@@ -1497,7 +1898,7 @@ const AddPropertyMainPage = (props) => {
         MiddleText={"Add new property"}
       />
       <View style={{ flex: 1 }}>
-        <View style={{ marginTop: 15 }}>
+        {/* <View style={{ marginTop: 15 }}>
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={currentPage}
@@ -1507,51 +1908,149 @@ const AddPropertyMainPage = (props) => {
             stepCount={4}
             renderLabel={renderLabel}
           />
-        </View>
-        <ScrollView
-          contentContainerStyle={{ marginBottom: 190 }}
-          showsVerticalScrollIndicator={false}
-        >
-          <View>{renderPageContent()}</View>
+        </View> */}
+        {IsMap || IsSearch ? null : (
+          <View style={DetailsStyle.stepIndicator}>
+            <StepIndicator
+              customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+              currentPosition={currentPage}
+              // onPress={onStepPress}
+              renderStepIndicator={renderStepIndicator}
+              labels={stepLabels}
+              stepCount={3}
+              renderLabel={renderLabel}
+            />
+          </View>
+        )}
+        {IsMap ? (
           <View
             style={{
-              marginHorizontal: 16,
-              backgroundColor: _COLORS.Kodie_WhiteColor,
-              marginBottom: 100,
+              flex: 1,
+              // paddingHorizontal: 10,
+              backgroundColor: "transparent",
             }}
           >
+            <MapScreen
+              style={{
+                height: "100%",
+                width: "100%",
+                // borderRadius: 20,
+                // borderWidth: 1,
+                //borderColor: .greenAppColor,
+                alignSelf: "center",
+                marginBottom: 10,
+              }}
+              onRegionChange={onRegionChange}
+              Maplat={latitude}
+              Maplng={longitude}
+            />
             <View
               style={{
-                justifyContent: "flex-end",
-                // marginBottom: 30,
+                flexDirection: "row",
+                justifyContent: "center",
+                alignSelf: "center",
+                width: "96%",
+                borderWidth: 1,
+                borderRadius: 8,
+                backgroundColor: "white",
+                borderColor: "#E5E4E2",
+                marginTop: 10,
+                position: "absolute",
               }}
             >
-              <CustomSingleButton
-                _ButtonText={currentPage == 3 ? "Add property" : "Next"}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  handleNextBtn();
-                }}
-              />
-              {currentPage == 1 || currentPage == 2 ? (
-                <>
-                  <CustomSingleButton
-                    _ButtonText={"Fill these details out later"}
-                    Text_Color={_COLORS.Kodie_BlackColor}
-                    backgroundColor={_COLORS.Kodie_WhiteColor}
-                    onPress={() => {
-                      if (currentPage == 2) {
-                        // handleNextBtn();
-                      } else {
-                        setCurrentPage(currentPage + 1);
-                      }
-                    }}
-                  />
+              <TextInput
+                style={{
+                  backgroundColor: "transparent",
 
-                  <TouchableOpacity
-                    style={SignUpStepStyle.goBack_View}
-                    onPress={() => goBack()}
-                  >
+                  width: "90%",
+                  height: 45,
+                  alignSelf: "center",
+                  //marginTop: 10,
+                }}
+                onFocus={() => openMapandClose()}
+                placeholder={"Search Place"}
+              />
+            </View>
+            <TouchableOpacity
+              style={SignUpStepStyle.BtnContainer}
+              onPress={ConfirmAddress}
+            >
+              {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
+              <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+            </TouchableOpacity>
+          </View>
+        ) : IsSearch ? (
+          <SearchPlaces
+            onPress={(data, details = null) => {
+              setlatitude(details.geometry.location.lat);
+              setlongitude(details.geometry.location.lng);
+              setIsSearch(false);
+              setIsMap(true);
+              setLocation(details.formatted_address);
+              console.log("locationSearch....", location);
+              console.log("details.......", details);
+            }}
+          />
+        ) : (
+          <ScrollView
+            contentContainerStyle={{ marginBottom: 190 }}
+            showsVerticalScrollIndicator={false}
+          >
+            <View>{renderPageContent()}</View>
+            <View
+              style={{
+                marginHorizontal: 16,
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+                marginBottom: 100,
+              }}
+            >
+              <View
+                style={{
+                  justifyContent: "flex-end",
+                  // marginBottom: 30,
+                }}
+              >
+                <CustomSingleButton
+                  _ButtonText={currentPage == 3 ? "Add property" : "Next"}
+                  Text_Color={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    handleNextBtn();
+                  }}
+                />
+                {currentPage == 1 || currentPage == 2 ? (
+                  <>
+                    <CustomSingleButton
+                      _ButtonText={"Fill these details out later"}
+                      Text_Color={_COLORS.Kodie_BlackColor}
+                      backgroundColor={_COLORS.Kodie_WhiteColor}
+                      onPress={() => {
+                        if (currentPage == 2) {
+                          // handleNextBtn();
+                        } else {
+                          setCurrentPage(currentPage + 1);
+                        }
+                      }}
+                    />
+
+                    <TouchableOpacity
+                      style={SignUpStepStyle.goBack_View}
+                      onPress={() => goBack()}
+                    >
+                      <View style={SignUpStepStyle.backIcon}>
+                        <Ionicons
+                          name="chevron-back"
+                          size={22}
+                          color={_COLORS.Kodie_MediumGrayColor}
+                        />
+                      </View>
+                      <Text style={SignUpStepStyle.goBack_Text}>
+                        {"Go back"}
+                      </Text>
+                    </TouchableOpacity>
+                  </>
+                ) : null}
+                {currentPage == 0 || currentPage == 3 ? (
+                  <TouchableOpacity style={SignUpStepStyle.goBack_View}>
                     <View style={SignUpStepStyle.backIcon}>
                       <Ionicons
                         name="chevron-back"
@@ -1561,24 +2060,13 @@ const AddPropertyMainPage = (props) => {
                     </View>
                     <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
                   </TouchableOpacity>
-                </>
-              ) : null}
-              {currentPage == 0 || currentPage == 3 ? (
-                <TouchableOpacity style={SignUpStepStyle.goBack_View}>
-                  <View style={SignUpStepStyle.backIcon}>
-                    <Ionicons
-                      name="chevron-back"
-                      size={22}
-                      color={_COLORS.Kodie_MediumGrayColor}
-                    />
-                  </View>
-                  <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
-                </TouchableOpacity>
-              ) : null}
+                ) : null}
+              </View>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        )}
       </View>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
