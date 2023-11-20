@@ -324,19 +324,19 @@ const AddPropertyMainPage = (props) => {
   const refRBSheet = useRef();
 
   const handleImageNameChange = (multipleImages) => {
-    const imageSizeLimit = 2 * 1024 * 1024; // 2 MB in bytes
+    // const imageSizeLimit = 2 * 1024 * 1024; // 2 MB in bytes
 
-    const imagesWithinSizeLimit = multipleImages.filter(
-      (image) => image.size <= imageSizeLimit
-    );
+    // const imagesWithinSizeLimit = multipleImages.filter(
+    //   (image) => image.size <= imageSizeLimit
+    // );
 
-    if (imagesWithinSizeLimit.length === multipleImages.length) {
-      setMultiImageName(multipleImages);
-      refRBSheet.current.close();
-    } else {
-      Alert.alert("Warning", "Image size should not exceed 2 MB.");
-    }
-    // setMultiImageName(multipleImages);
+    // if (imagesWithinSizeLimit.length === multipleImages.length) {
+    //   setMultiImageName(multipleImages);
+    //   refRBSheet.current.close();
+    // } else {
+    //   Alert.alert("Warning", "Image size should not exceed 2 MB.");
+    // }
+    setMultiImageName(multipleImages);
     console.log("................ImageNAme", multipleImages);
     console.log("................ImageNAme", multipleImages.path);
   };
