@@ -8,6 +8,7 @@ export const PropertyListingStyle = StyleSheet.create({
     },
   searchview: {
     marginVertical: 10,
+    height:48,
   },
   Container: {
     marginHorizontal: 16,
