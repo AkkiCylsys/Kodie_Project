@@ -324,7 +324,19 @@ const AddPropertyMainPage = (props) => {
   const refRBSheet = useRef();
 
   const handleImageNameChange = (multipleImages) => {
-    setMultiImageName(multipleImages);
+    const imageSizeLimit = 2 * 1024 * 1024; // 2 MB in bytes
+
+    const imagesWithinSizeLimit = multipleImages.filter(
+      (image) => image.size <= imageSizeLimit
+    );
+
+    if (imagesWithinSizeLimit.length === multipleImages.length) {
+      setMultiImageName(multipleImages);
+      refRBSheet.current.close();
+    } else {
+      Alert.alert("Warning", "Image size should not exceed 2 MB.");
+    }
+    // setMultiImageName(multipleImages);
     console.log("................ImageNAme", multipleImages);
     console.log("................ImageNAme", multipleImages.path);
   };
@@ -670,6 +682,9 @@ const AddPropertyMainPage = (props) => {
     handle_parking();
     additional_features();
     DetailsData();
+    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
+      language: "en",
+    });
     setLocation(property_Detail?.location);
   }, []);
   const checkTabs = () => {
@@ -730,7 +745,7 @@ const AddPropertyMainPage = (props) => {
     separatorStrokeWidth: 1,
     currentStepStrokeWidth: 2,
     separatorFinishedColor: _COLORS.Kodie_GrayColor,
-    separatorUnFinishedColor: _COLORS.Kodie_GrayColor,
+    separatorUnFinishedColor: _COLORS.Kodie_LightOrange,
     stepIndicatorFinishedColor: _COLORS.Kodie_GreenColor,
     stepIndicatorUnFinishedColor: _COLORS.Kodie_GrayColor,
     stepIndicatorCurrentColor: _COLORS.Kodie_WhiteColor,
@@ -771,12 +786,12 @@ const AddPropertyMainPage = (props) => {
     return (
       <View style={PropertyFeatureStyle.item}>
         <Text style={PropertyFeatureStyle.selectedTextStyle}>{item.label}</Text>
-        <AntDesign
+        {/* <AntDesign
           style={PropertyFeatureStyle.icon}
           color={_COLORS.Kodie_BlackColor}
           name="check"
           size={20}
-        />
+        /> */}
       </View>
     );
   };
@@ -797,7 +812,7 @@ const AddPropertyMainPage = (props) => {
         ? "Images"
         : position === 3
         ? "Review"
-        : "circle";
+        : "null";
 
     return (
       <View style={{}}>
@@ -970,8 +985,11 @@ const AddPropertyMainPage = (props) => {
       setIsLoading(false);
     }
   };
+
   const imagePaths = MultiImageName.map((image) => image.path);
   const renderPageContent = () => {
+    // const shortAddress = property_Detail[0]?.location;
+    // const [name, state, country] = property_Detail[0]?.location.split(", ");
     switch (currentPage) {
       case 0:
         // return <PropertyDetails />;
@@ -1746,7 +1764,7 @@ const AddPropertyMainPage = (props) => {
                   </View>
                 </View>
                 <Text style={PropertyReviewStyle.melbourne_Text}>
-                  {property_Detail[0]?.location || location || "Melbourne"}
+                  {country || "Melbourne"}
                 </Text>
                 <View style={PropertyReviewStyle.share_View}>
                   <Entypo
