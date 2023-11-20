@@ -14,7 +14,7 @@ import {
   FlatList,
 } from "react-native";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
-
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
