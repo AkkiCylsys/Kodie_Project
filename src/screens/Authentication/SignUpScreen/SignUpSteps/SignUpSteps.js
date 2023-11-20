@@ -38,7 +38,6 @@ import { MultiSelect } from "react-native-element-dropdown";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import { Config } from "../../../../Config";
 import axios from "axios";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
 import { useDispatch, useSelector } from "react-redux";
 import { useScrollToTop } from "@react-navigation/native";
@@ -1555,6 +1554,11 @@ const SignUpSteps = (props) => {
                     : _COLORS.Kodie_LightWhiteColor
                 }
                 onPressLeftButton={() => {
+
+                  setSelectedButton(false)
+                  setSelectedButtonId(1)
+                  alert(selectedButtonId)
+
                   setSelectedButton(false);
                   setSelectedButtonId(1);
                   // alert(selectedButtonId)
@@ -1576,6 +1580,11 @@ const SignUpSteps = (props) => {
                     : _COLORS.Kodie_LightWhiteColor
                 }
                 onPressRightButton={() => {
+
+                  setSelectedButton(true)
+                  setSelectedButtonId(0)
+                  alert(selectedButtonId)
+
                   setSelectedButton(true);
                   setSelectedButtonId(2);
                   // alert(selectedButtonId)
