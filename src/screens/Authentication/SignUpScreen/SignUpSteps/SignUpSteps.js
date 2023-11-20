@@ -70,9 +70,9 @@ const firstIndicatorSignUpStepStyle = {
 
 const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   const iconConfig = {
-    name: "stepbackward",
+    name: "feed",
     // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
-    color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+    color: stepStatus === "finished" ? "#ffffff" : "black",
     size: 20,
   };
 
@@ -114,6 +114,7 @@ const SignUpSteps = (props) => {
   const [firstNameError, setFirstNameError] = useState("");
   const [lastNameError, setLastNameError] = useState("");
   const [mobileNumberError, setMobileNumberError] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [selectManageProperty, setSelectManageProperty] = useState("");
@@ -165,6 +166,8 @@ const SignUpSteps = (props) => {
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
 
+  let email = props?.route?.params?.email;
+  console.log("email...", email);
   //
   const fs = RNFetchBlob.fs;
 
@@ -390,6 +393,7 @@ const SignUpSteps = (props) => {
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setPhysicalAddress(MainFullAddress);
+        console.log("physicalAddress....", physicalAddress);
 
         //setAddress(MainFullAddress);
       })
@@ -502,9 +506,19 @@ const SignUpSteps = (props) => {
       setMobileNumberError("Phone number is required.");
     } else {
       if (currentPage == 0) {
-        setCurrentPage(currentPage + 1);
+        // setCurrentPage(currentPage + 1);
+        props.navigation.navigate("AboutYou", {
+          firstName: firstName,
+          lastName: lastName,
+          mobileNumber: mobileNumber,
+          physicalAddress: physicalAddress,
+          organisation: organisation,
+          referral: referral,
+          email: email,
+        });
       } else if (currentPage === 1) {
-        setCurrentPage(currentPage + 1);
+        // setCurrentPage(currentPage + 1);
+        props.navigation.navigate("FirstProperty");
       } else if (currentPage === 2) {
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         handleSaveSignup();
@@ -540,8 +554,10 @@ const SignUpSteps = (props) => {
     formData.append("kodie_help", kodieHelpValue);
     formData.append("property_manage", selectManageProperty);
     formData.append("location", propertyLocation);
-    formData.append("location_longitude", "102.002.001");
-    formData.append("location_latitude", "104.004.002");
+    // formData.append("location_longitude", "102.002.001");
+    // formData.append("location_latitude", "104.004.002");
+    formData.append("location_longitude", longitude);
+    formData.append("location_latitude", latitude);
     formData.append("islocation", "1");
     formData.append("property_description", propertyDesc);
     formData.append("property_type", property_value);
@@ -574,8 +590,17 @@ const SignUpSteps = (props) => {
 
     try {
       const response = await axios.post(saveAccountDetails, formData, {
+        // headers: {
+        //   // "content-type": "multipart/form-data",
+        //   // "Content-Type": "text/plain",
+        //   "Content-Type": "application/x-www-form-urlencoded",
+        // },
         headers: {
-          "content-type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
+          "cache-control": "no-cache",
+          processData: false,
+          contentType: false,
+          mimeType: "multipart/form-data",
         },
       });
 
@@ -874,7 +899,6 @@ const SignUpSteps = (props) => {
     const url = Config.API_URL;
     const additionalApi = url + "key_features";
     console.log("Request URL:", additionalApi);
-    // const url = 'https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/key_features';
     setIsLoading(true);
     axios
       .get(additionalApi) // Change from .post to .get
@@ -901,6 +925,11 @@ const SignUpSteps = (props) => {
 
   const onStepPress = (position) => {
     setCurrentPage(position);
+  };
+
+  //  Close rbSheet.....
+  const handleImageSelect = () => {
+    refRBSheet.current.close();
   };
 
   //  go back button...............
@@ -1135,7 +1164,7 @@ const SignUpSteps = (props) => {
               <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown={true}
-                closeOnPressMask={true}
+                // closeOnPressMask={true}
                 height={200}
                 customStyles={{
                   wrapper: {
@@ -1237,21 +1266,21 @@ const SignUpSteps = (props) => {
                   />
                 </View> */}
                 {/* <Dropdown
-                  style={FirstPropertyStyle.dropdown}
-                  placeholderStyle={FirstPropertyStyle.placeholderStyle}
-                  selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                  inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                  iconStyle={FirstPropertyStyle.iconStyle}
-                  data={data}
-                  maxHeight={300}
-                  labelField="label"
-                  valueField="value"
-                  placeholder="Enter address manually"
-                  value={value}
-                  onChange={(item) => {
-                    setValue(item.value);
-                  }}
-                /> */}
+              style={FirstPropertyStyle.dropdown}
+              placeholderStyle={FirstPropertyStyle.placeholderStyle}
+              selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+              inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+              iconStyle={FirstPropertyStyle.iconStyle}
+              data={data}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder="Enter address manually"
+              value={value}
+              onChange={(item) => {
+                setValue(item.value);
+              }}
+            /> */}
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
@@ -1294,21 +1323,21 @@ const SignUpSteps = (props) => {
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Key features</Text>
                 {/* <FlatList
-                  data={keydata}
-                  renderItem={renderkey}
-                  keyExtractor={(item) => item.key}
-                /> */}
+              data={keydata}
+              renderItem={renderkey}
+              keyExtractor={(item) => item.key}
+            /> */}
                 {/* <FlatList
-                  data={keydata}
-                  numColumns={2}
-                  renderItem={({ item }) => (
-                    <View key={item.key}>
-                      <Text>{item.label}</Text>
-                      {item.component}
-                    </View>
-                  )}
-                  keyExtractor={(item) => item.key}
-                /> */}
+              data={keydata}
+              numColumns={2}
+              renderItem={({ item }) => (
+                <View key={item.key}>
+                  <Text>{item.label}</Text>
+                  {item.component}
+                </View>
+              )}
+              keyExtractor={(item) => item.key}
+            /> */}
                 <View style={FirstPropertyStyle.key_feature_mainView}>
                   <View style={FirstPropertyStyle.key_feature_subView}>
                     <Text style={FirstPropertyStyle.key_feature_Text}>
@@ -1492,44 +1521,44 @@ const SignUpSteps = (props) => {
                     )}
                   />
                   {/* <MultiSelect
-                    style={FirstPropertyStyle.dropdown}
-                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
-                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                    iconStyle={FirstPropertyStyle.iconStyle}
-                    data={additionalfeatureskey}
-                    labelField="PAF_ADDITIONAL_FEATURES_NAME"
-                    valueField="PAF_KEY"
-                    placeholder="Search"
-                    value={additionalfeatureskeyvalue}
-                    search
-                    searchPlaceholder="Search..."
-                    onChange={(item) => {
-                      setAdditionalFeaturesKeyValue(item);
-                      alert(item);
-                    }}
-                    renderRightIcon={() => (
-                      <AntDesign
-                        style={FirstPropertyStyle.icon}
-                        color={_COLORS.Kodie_BlackColor}
-                        name="search1"
-                        size={20}
-                      />
-                    )}
-                    renderItem={renderDataItem}
-                    renderSelectedItem={(item, unSelect) => (
-                      <TouchableOpacity
-                        onPress={() => unSelect && unSelect(item)}
-                      >
-                        <View style={FirstPropertyStyle.selectedStyle}>
-                          <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.label}
-                          </Text>
-                          <AntDesign color="black" name="close" size={17} />
-                        </View>
-                      </TouchableOpacity>
-                    )}
-                  /> */}
+                style={FirstPropertyStyle.dropdown}
+                placeholderStyle={FirstPropertyStyle.placeholderStyle}
+                selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+                inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+                iconStyle={FirstPropertyStyle.iconStyle}
+                data={additionalfeatureskey}
+                labelField="PAF_ADDITIONAL_FEATURES_NAME"
+                valueField="PAF_KEY"
+                placeholder="Search"
+                value={additionalfeatureskeyvalue}
+                search
+                searchPlaceholder="Search..."
+                onChange={(item) => {
+                  setAdditionalFeaturesKeyValue(item);
+                  alert(item);
+                }}
+                renderRightIcon={() => (
+                  <AntDesign
+                    style={FirstPropertyStyle.icon}
+                    color={_COLORS.Kodie_BlackColor}
+                    name="search1"
+                    size={20}
+                  />
+                )}
+                renderItem={renderDataItem}
+                renderSelectedItem={(item, unSelect) => (
+                  <TouchableOpacity
+                    onPress={() => unSelect && unSelect(item)}
+                  >
+                    <View style={FirstPropertyStyle.selectedStyle}>
+                      <Text style={FirstPropertyStyle.textSelectedStyle}>
+                        {item.label}
+                      </Text>
+                      <AntDesign color="black" name="close" size={17} />
+                    </View>
+                  </TouchableOpacity>
+                )}
+              /> */}
                 </View>
               </View>
 
@@ -1619,7 +1648,6 @@ const SignUpSteps = (props) => {
             />
           </View>
         )}
-
         {IsMap ? (
           <View
             style={{
@@ -1685,6 +1713,8 @@ const SignUpSteps = (props) => {
               setIsSearch(false);
               setIsMap(true);
               setPhysicalAddress(details.formatted_address);
+              console.log("physicalAddressSearch....", physicalAddress);
+              console.log("details.......", details);
             }}
           />
         ) : (
@@ -1714,6 +1744,7 @@ const SignUpSteps = (props) => {
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
                     handleNextBtn();
+                    // props.navigation.navigate("AboutYou");
                   }}
                 />
                 {currentPage === 1 || currentPage === 2 ? (

@@ -64,7 +64,9 @@ export default SignUpVerification = (props) => {
         if (response.data.status === true) {
           alert(response.data.message);
           setValue("");
-          props.navigation.navigate("SignUpSteps");
+          props.navigation.navigate("SignUpSteps", {
+            email: email,
+          });
           setIsLoading(false);
         } else {
           setValueError(response.data.message);

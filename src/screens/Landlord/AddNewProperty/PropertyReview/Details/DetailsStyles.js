@@ -105,4 +105,7 @@ export const DetailsStyle= StyleSheet.create({
         marginHorizontal: 16,
         marginVertical: 10,
       },
+      stepIndicator: {
+        marginTop:15
+      },
 })
