@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   PermissionsAndroid,
+  Platform,
 } from "react-native";
 import { FirstPropertyStyle } from "./FirstPropertyStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -436,7 +437,7 @@ export default FirstProperty = (props) => {
           setIsLoading(false);
           console.log("additional_features....", response.data);
           setAdditionalfeatureskey(response.data.PAF_KEY);
-          setData_add(response.data.PAF_KEY);
+          // setData_add(response.data.PAF_KEY);
           console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
         } else {
           console.error("additional_features_error:", response.data.error);
@@ -485,7 +486,7 @@ export default FirstProperty = (props) => {
     formData.append("property_description", propertyDesc);
     formData.append("property_type", property_value);
     formData.append("key_features", selectedKeyFeature);
-    formData.append("additional_features",additionalfeatureskeyvalue);
+    formData.append("additional_features", additionalfeatureskeyvalue);
     formData.append("auto_list", selectedButtonId);
 
     if (ImageName) {
@@ -639,7 +640,7 @@ export default FirstProperty = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <TopHeader
-        MiddleText={"Set up your Kodie account"}
+        MiddleText={ IsMap || IsSearch ? "Location" : "Set up your Kodie account"}
         onPressLeftButton={goBack}
       />
       <View style={FirstPropertyStyle.container}>
@@ -961,53 +962,22 @@ export default FirstProperty = (props) => {
                   >
                     Additional features
                   </Text>
-                  <MultiSelect
-                    style={FirstPropertyStyle.dropdown}
-                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
-                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                    iconStyle={FirstPropertyStyle.iconStyle}
-                    data={DATA}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select additional features"
-                    value={additionalfeatureskeyvalue}
-                    search
-                    searchPlaceholder="Search..."
-                    onChange={(item) => {
-                      setAdditionalFeaturesKeyValue(item);
-                      // alert(item);
-                    }}
-                    renderItem={renderDataItem}
-                    renderSelectedItem={(item, unSelect) => (
-                      <TouchableOpacity
-                        onPress={() => unSelect && unSelect(item)}
-                      >
-                        <View style={FirstPropertyStyle.selectedStyle}>
-                          <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.label}
-                          </Text>
-                          <AntDesign color="black" name="close" size={17} />
-                        </View>
-                      </TouchableOpacity>
-                    )}
-                  />
                   {/* <MultiSelect
                     style={FirstPropertyStyle.dropdown}
                     placeholderStyle={FirstPropertyStyle.placeholderStyle}
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}
-                    data={DATA}
-                    labelField="label"
-                    valueField="value"
+                    data={additionalfeatureskey}
+                    labelField="PAF_ADDITIONAL_FEATURES_NAME"
+                    valueField="PAF_KEY"
                     placeholder="Select additional features"
                     value={additionalfeatureskeyvalue}
                     search
                     searchPlaceholder="Search..."
                     onChange={(item) => {
                       setAdditionalFeaturesKeyValue(item);
-                      // alert(item);
+                      alert(item);
                     }}
                     renderItem={renderDataItem}
                     renderSelectedItem={(item, unSelect) => (
@@ -1023,6 +993,37 @@ export default FirstProperty = (props) => {
                       </TouchableOpacity>
                     )}
                   /> */}
+                  <MultiSelect
+                    style={FirstPropertyStyle.dropdown}
+                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
+                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+                    iconStyle={FirstPropertyStyle.iconStyle}
+                    data={DATA}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select additional features"
+                    value={additionalfeatureskeyvalue}
+                    search
+                    searchPlaceholder="Search..."
+                    onChange={(item) => {
+                      setAdditionalFeaturesKeyValue(item);
+                      alert(item);
+                    }}
+                    renderItem={renderDataItem}
+                    renderSelectedItem={(item, unSelect) => (
+                      <TouchableOpacity
+                        onPress={() => unSelect && unSelect(item)}
+                      >
+                        <View style={FirstPropertyStyle.selectedStyle}>
+                          <Text style={FirstPropertyStyle.textSelectedStyle}>
+                            {item.label}
+                          </Text>
+                          <AntDesign color="black" name="close" size={17} />
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  />
                 </View>
               </View>
 
@@ -1088,7 +1089,7 @@ export default FirstProperty = (props) => {
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  alert("Submit");
+                  handleSaveSignup();
                 }}
               />
             </View>

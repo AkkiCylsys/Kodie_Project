@@ -1591,7 +1591,9 @@ const SignUpSteps = (props) => {
   return (
     <>
       <TopHeader
-        MiddleText={"Set up your Kodie account"}
+        MiddleText={
+          IsMap || IsSearch ? "Location" : "Set up your Kodie account"
+        }
         onPressLeftButton={goBack}
       />
       <View style={SignUpStepStyle.container}>
