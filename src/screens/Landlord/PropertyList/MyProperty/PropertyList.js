@@ -241,9 +241,10 @@ const PropertyList = (props) => {
       </TouchableOpacity>
     );
   };
+  // const [name, state, country] = Property_Data_List[0]?.location.split(", ");
 
   const propertyData1_render = ({ item }) => {
-    const isExpanded = expandedItems.includes(item.id);
+    const isExpanded = expandedItems.includes(item.property_id);
     return (
       <>
         <View style={PropertyListCSS.flatListContainer}>
@@ -361,9 +362,13 @@ const PropertyList = (props) => {
             iconName={isExpanded ? "chevron-up" : "chevron-down"}
             onPress={() => {
               if (isExpanded) {
-                setExpandedItems(expandedItems.filter((id) => id !== item.id));
+                setExpandedItems(
+                  expandedItems.filter(
+                    (property_id) => property_id !== item.property_id
+                  )
+                );
               } else {
-                setExpandedItems([...expandedItems, item.id]);
+                setExpandedItems([...expandedItems, item.property_id]);
               }
             }}
           />
