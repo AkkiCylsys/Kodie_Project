@@ -46,6 +46,7 @@ import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStyles } from "../SignUpStyle";
 import Geocoder from "react-native-geocoding";
 import Geolocation from "react-native-geolocation-service";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -1026,7 +1027,8 @@ const SignUpSteps = (props) => {
                 <TextInput
                   style={AccountStyle.input}
                   value={mobileNumber}
-                  onChangeText={validateMobileNumber}
+                  onChangeText={setMobileNumber}
+                  onBlur={() => validateMobileNumber(mobileNumber)}
                   placeholder="Enter your phone number"
                   placeholderTextColor="#999"
                   keyboardType="phone-pad"
