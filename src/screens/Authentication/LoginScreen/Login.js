@@ -232,30 +232,29 @@ export default Login = (props) => {
       };
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
-//alert(res)
+      //alert(res)
       setIsLoading(false);
-      if(res==401){
+      if (res == 401) {
         setIsLoading(false);
         //alert("Please check your email and password.");
         setPasswordError(
           "Hmm, it seems like the credentials you entered are invalid. Please try again."
         );
-      }
-      else{
-      if (res.data.status === true) {
-      //  alert("Login successful");
-        setIsLoading(false);
-        props.navigation.navigate("DrawerNavigatorLeftMenu");
-        setEmail("");
-        setPassword("");
       } else {
-        setIsLoading(false);
-        //alert("Please check your email and password.");
-        setPasswordError(
-          "Hmm, it seems like the credentials you entered are invalid. Please try again."
-        );
+        if (res.data.status === true) {
+          //  alert("Login successful");
+          setIsLoading(false);
+          props.navigation.navigate("DrawerNavigatorLeftMenu");
+          setEmail("");
+          setPassword("");
+        } else {
+          setIsLoading(false);
+          //alert("Please check your email and password.");
+          setPasswordError(
+            "Hmm, it seems like the credentials you entered are invalid. Please try again."
+          );
+        }
       }
-    }
     }
   };
 
@@ -490,6 +489,7 @@ export default Login = (props) => {
               onPress={() => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
                 props.navigation.navigate("SignUpSteps");
+                // props.navigation.navigate("Account");
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}

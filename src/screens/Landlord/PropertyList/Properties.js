@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
@@ -8,9 +8,49 @@ import { _goBack } from "./../../../services/CommonServices/index";
 import { _COLORS } from "../../../Themes";
 import { PropertiesCSS } from "./PropertiesCss";
 import RantalOffer from "./RentalOffer/RantalOffer";
+import { Config } from "../../../Config";
+import axios from "axios";
 
 const Properties = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
+  const [Property_Data_List, setProperty_Data_List] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    propertyList_Data();
+  }, []);
+  const propertyList_Data = () => {
+    const propertyDataList = {
+      user: 84,
+    };
+
+    const url = Config.API_URL;
+    const propertyData_List = url + "get_property_details_by_id";
+    console.log("Request URL :", propertyData_List);
+    setIsLoading(true);
+    axios
+      .post(propertyData_List, propertyDataList)
+      .then((response) => {
+        console.log("property_Data_list", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "propertyDataList....",
+            response.data?.property_details?.image_path
+          );
+          setProperty_Data_List(response?.data?.property_details);
+          console.log(Property_Data_List, "Rahul...");
+        } else {
+          console.error("property_Data_list_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_Data_list error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -19,7 +59,14 @@ const Properties = (props) => {
             propertyDetail={() =>
               props.navigation.navigate("AddPropertyMainPage")
             }
-            onEdit={() => props.navigation.navigate("AddPropertyMainPage")}
+            onEdit={(data) => {
+              // Access propertyid in onEdit function
+              const { propertyid } = data;
+              // alert(propertyid);
+              props.navigation.navigate("AddPropertyMainPage", {
+                propertyid: propertyid,
+              });
+            }}
           />
         );
       case "Tab2":
