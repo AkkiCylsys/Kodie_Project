@@ -120,7 +120,10 @@ export const RepairCss = StyleSheet.create({
     marginBottom: 30,
   },
   filter: { marginTop: 15 },
-  // -------------------------------- swiperview list style
+  dividerIcon:{
+    marginTop:30
+  },
+  //  swiperview list style--------------------------------
   bindview: {
     height: 60,
   },
@@ -142,7 +145,7 @@ export const RepairCss = StyleSheet.create({
     borderBottomColor: "black",
     // borderBottomWidth: 1,
     justifyContent: "center",
-    // height: 50,
+    // height: 100,
   },
   backRightBtn: {
     alignItems: "center",

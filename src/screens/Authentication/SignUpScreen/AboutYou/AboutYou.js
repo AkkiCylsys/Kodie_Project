@@ -62,32 +62,16 @@ export default AboutYou = (props) => {
   const [selectedServices, setSelectedServices] = useState(
     initialSelectedServices
   );
-  // const [unSelectedServices, setUnSelectedServices] = useState(
-  //   initialSelectedServices
-  // );
-  const [unSelectedServices, setUnSelectedServices] = useState(
-    initialSelectedServices
-  );
+
   const toggleService = (serviceName) => {
     setSelectedServices((prevSelectedServices) => ({
       ...prevSelectedServices,
-      [serviceName]: !prevSelectedServices[serviceName],
-    }));
-
-    //  setUnSelectedServices((prevUnSelectedServices) => ({
-    //   ...prevUnSelectedServices,
-    //   [serviceName]: !prevUnSelectedServices[serviceName],
-    // }));
-    setUnSelectedServices((prevUnSelectedServices) => ({
-      ...prevUnSelectedServices,
       [serviceName]: !prevSelectedServices[serviceName],
     }));
   };
 
   const handleBoxPress = (boxNumber) => {
     // setIsClick(boxNumber);
-    // setIsClick(isClick === boxNumber ? null : boxNumber);
-    setIsClick(isClick === boxNumber ? null : boxNumber);
   };
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
@@ -215,79 +199,77 @@ export default AboutYou = (props) => {
             onPress={() => toggleService("Property Manager")}
           />
         </View>
-        {(Object.values(selectedServices).some(Boolean) || isClick !== null) && (
-          <View>
-            <Text style={AboutYouStyle.want_Heading}>
-              {" How many properties do you own, manage or rent?"}
-            </Text>
 
-            <View style={AboutYouStyle.servicesBoxView}>
-              <ServicesBox
-                Services_Name={"1 - 3 properties"}
-                BoxStyling={[
-                  AboutYouStyle.box_style,
-                  {
-                    backgroundColor:
-                      isClick === 1
-                        ? _COLORS.Kodie_lightGreenColor
-                        : _COLORS.Kodie_WhiteColor,
-                  },
-                ]}
-                textColor={[AboutYouStyle.box_Text_Style]}
-                onPress={() => handleBoxPress(1)}
-              />
+        <Text style={AboutYouStyle.want_Heading}>
+          {" How many properties do you own, manage or rent?"}
+        </Text>
 
-              <View style={AboutYouStyle.spaceView} />
-              <ServicesBox
-                Services_Name={"4 - 10 properties"}
-                BoxStyling={[
-                  AboutYouStyle.box_style,
-                  {
-                    backgroundColor:
-                      isClick === 2
-                        ? _COLORS.Kodie_lightGreenColor
-                        : _COLORS.Kodie_WhiteColor,
-                  },
-                ]}
-                textColor={[AboutYouStyle.box_Text_Style]}
-                onPress={() => handleBoxPress(2)}
-              />
-            </View>
+        <View style={AboutYouStyle.servicesBoxView}>
+          <ServicesBox
+            Services_Name={"1 - 3 properties"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor:
+                  isClick === 1
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => handleBoxPress(1)}
+          />
 
-            <View style={AboutYouStyle.servicesBoxView}>
-              <ServicesBox
-                Services_Name={"10 - 20 properties"}
-                BoxStyling={[
-                  AboutYouStyle.box_style,
-                  {
-                    backgroundColor:
-                      isClick === 3
-                        ? _COLORS.Kodie_lightGreenColor
-                        : _COLORS.Kodie_WhiteColor,
-                  },
-                ]}
-                textColor={[AboutYouStyle.box_Text_Style]}
-                onPress={() => handleBoxPress(3)}
-              />
+          <View style={AboutYouStyle.spaceView} />
+          <ServicesBox
+            Services_Name={"4 - 10 properties"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor:
+                  isClick === 2
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => handleBoxPress(2)}
+          />
+        </View>
 
-              <View style={AboutYouStyle.spaceView} />
-              <ServicesBox
-                Services_Name={"> 20 properties"}
-                BoxStyling={[
-                  AboutYouStyle.box_style,
-                  {
-                    backgroundColor:
-                      isClick === 4
-                        ? _COLORS.Kodie_lightGreenColor
-                        : _COLORS.Kodie_WhiteColor,
-                  },
-                ]}
-                textColor={[AboutYouStyle.box_Text_Style]}
-                onPress={() => handleBoxPress(4)}
-              />
-            </View>
-          </View>
-        )}
+        <View style={AboutYouStyle.servicesBoxView}>
+          <ServicesBox
+            Services_Name={"10 - 20 properties"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor:
+                  isClick === 3
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => handleBoxPress(3)}
+          />
+
+          <View style={AboutYouStyle.spaceView} />
+          <ServicesBox
+            Services_Name={"> 20 properties"}
+            BoxStyling={[
+              AboutYouStyle.box_style,
+              {
+                backgroundColor:
+                  isClick === 4
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor,
+              },
+            ]}
+            textColor={[AboutYouStyle.box_Text_Style]}
+            onPress={() => handleBoxPress(4)}
+          />
+        </View>
+
         <Text style={AboutYouStyle.want_Heading}>
           {"What do you want to do first with Kodie"}
         </Text>

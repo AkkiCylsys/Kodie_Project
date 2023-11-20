@@ -12,6 +12,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { _COLORS, LABEL_STYLES } from "../../../../Themes";
 import { RepairCss } from "./RepairCss";
@@ -111,8 +112,10 @@ export default Repair = (props) => {
         <SwipeListView
           style={RepairCss.Container}
           data={property_List}
+         
           renderItem={(rowdata, rowmap, index) => (
             <View style={RepairCss.rowFront} key={index}>
+              
               <View style={RepairCss.flat_MainView} >
                 <View style={RepairCss.flexContainer}>
                   <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
@@ -193,7 +196,7 @@ export default Repair = (props) => {
                   </View>
                 </View>
               </View>
-              <DividerIcon />
+              <DividerIcon style={RepairCss.dividerIcon}/>
             </View>
           )}
           renderHiddenItem={(data, index) => (
@@ -231,6 +234,7 @@ export default Repair = (props) => {
           )}
           leftOpenValue={75}
           rightOpenValue={-150}
+          // rightOpenValue={-Dimensions.get('window').width}
           previewRowKey={"0"}
           previewOpenValue={-40}
           previewOpenDelay={3000}
@@ -243,7 +247,7 @@ export default Repair = (props) => {
   //   console.log("Item data:............", item);
   //   return (
   //     <>
-  //       <SwipeList style={RepairCss.Container} data={property_List}>
+  //       <View style={RepairCss.Container} >
          
   //           <View style={RepairCss.flat_MainView}>
   //             <View style={RepairCss.flexContainer}>
@@ -327,7 +331,7 @@ export default Repair = (props) => {
   //           </View>
   //           <DividerIcon />
        
-  //       </SwipeList>
+  //       </View>
   //     </>
   //   );
   // };
