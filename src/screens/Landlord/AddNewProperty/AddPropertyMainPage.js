@@ -1447,7 +1447,7 @@ const AddPropertyMainPage = (props) => {
                       data={DATA}
                       labelField="label"
                       valueField="value"
-                      placeholder="Select additional features"
+                      placeholder="Add features such as pool,aircon,balcony etc."
                       value={additionalfeatureskeyvalue}
                       search
                       searchPlaceholder="Search..."
@@ -1895,7 +1895,7 @@ const AddPropertyMainPage = (props) => {
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={goBack}
-        MiddleText={"Add new property"}
+        MiddleText={ IsMap || IsSearch ? "Location":"Add new property"}
       />
       <View style={{ flex: 1 }}>
         {/* <View style={{ marginTop: 15 }}>
@@ -1917,7 +1917,7 @@ const AddPropertyMainPage = (props) => {
               // onPress={onStepPress}
               renderStepIndicator={renderStepIndicator}
               labels={stepLabels}
-              stepCount={3}
+              stepCount={4}
               renderLabel={renderLabel}
             />
           </View>
