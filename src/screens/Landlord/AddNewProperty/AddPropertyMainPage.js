@@ -582,6 +582,7 @@ const AddPropertyMainPage = (props) => {
           setIsLoading(false);
           console.log("propertyData....", response.data.data);
           setProperty_Data(response.data.data);
+          setProperty_value(property_Detail[0]?.property_type_id);
         } else {
           console.error("property_type_error:", response.data.error);
           // alert(response.data.error);
@@ -612,7 +613,7 @@ const AddPropertyMainPage = (props) => {
           console.log("propertyDetail....", response.data.property_details);
           setProperty_Details(response.data.property_details);
           setLocation(response.data.property_details[0].location);
-          setProperty_value("hello");
+          setProperty_value(response.data.property_details[0].property_type_id);
           setPropertyDesc(
             response.data.property_details[0].property_description
           );
@@ -919,6 +920,7 @@ const AddPropertyMainPage = (props) => {
     }
   };
   const handleSaveUpdateImage = async () => {
+    refRBSheet.current.close();
     const formData = new FormData();
     formData.append("user", property_Data_id || propertyid);
     console.log("kljproperty_Data_id", property_Data_id);
@@ -930,7 +932,7 @@ const AddPropertyMainPage = (props) => {
         "images[]",
         {
           uri: path,
-          name: `image_${index}.jpg`,
+          name: `image.jpg`,
           type: "image/jpeg",
         },
         path
@@ -970,7 +972,6 @@ const AddPropertyMainPage = (props) => {
 
       if (response.data.status === true) {
         setIsLoading(false);
-        MultiImageName ? refRBSheet.current.close() : null;
         // alert(response.data.message);
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         // setCurrentPage(0);
@@ -1070,7 +1071,11 @@ const AddPropertyMainPage = (props) => {
                   labelField="description"
                   valueField="lookup_key"
                   placeholder="Select property type"
-                  value={property_value || "hello"}
+                  value={
+                    property_Detail[0]?.property_type
+                      ? property_Detail[0]?.property_type
+                      : property_value
+                  }
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
                     setPropertyName(item.description);
@@ -1743,7 +1748,7 @@ const AddPropertyMainPage = (props) => {
               <View style={PropertyReviewStyle.subContainer}>
                 <View style={PropertyReviewStyle.apartment_View}>
                   <Text style={PropertyReviewStyle.apartment_text}>
-                    {property_Detail[0]?.property_type || property_value}
+                    {property_Detail[0]?.property_type}
                   </Text>
                   <View style={PropertyReviewStyle.share_View}>
                     <TouchableOpacity>
@@ -1764,7 +1769,7 @@ const AddPropertyMainPage = (props) => {
                   </View>
                 </View>
                 <Text style={PropertyReviewStyle.melbourne_Text}>
-                  {country || "Melbourne"}
+                  {property_Detail[0]?.location || "Melbourne"}
                 </Text>
                 <View style={PropertyReviewStyle.share_View}>
                   <Entypo
@@ -1913,7 +1918,7 @@ const AddPropertyMainPage = (props) => {
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={goBack}
-        MiddleText={ IsMap || IsSearch ? "Location":"Add new property"}
+        MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
       <View style={{ flex: 1 }}>
         {/* <View style={{ marginTop: 15 }}>
