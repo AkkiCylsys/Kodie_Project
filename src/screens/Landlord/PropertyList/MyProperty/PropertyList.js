@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import {
   _COLORS,
@@ -27,6 +28,8 @@ import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { useCallback } from "react";
+import { useIsFocused } from "@react-navigation/native";
 const HorizontalData = [
   "Occupied",
   "Vacant",
@@ -142,18 +145,24 @@ const property_List2 = [
   },
 ];
 const PropertyList = (props) => {
+  const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [propertyDelId, setPropertyDelId] = useState();
   const refRBSheet = useRef();
   useEffect(() => {
-    propertyList_Data();
-  }, []);
+    if (isvisible) {
+      propertyList_Data();
+    }
+    // propertyDelete();
+  }, [isvisible]);
   const propertyList_Data = () => {
     const propertyDataList = {
       user: 84,
     };
+
     const url = Config.API_URL;
     const propertyData_List = url + "get_property_details_by_id";
     console.log("Request URL :", propertyData_List);
@@ -169,6 +178,7 @@ const PropertyList = (props) => {
             response.data?.property_details?.image_path
           );
           setProperty_Data_List(response?.data?.property_details);
+          // console.log(Property_Data_List, "Rahul...");
         } else {
           console.error("property_Data_list_error:", response.data.error);
           alert(response.data.error);
@@ -181,6 +191,48 @@ const PropertyList = (props) => {
         setIsLoading(false);
       });
   };
+
+  const propertyDelete = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const propertyIdToDelete = propertyDelId; // Replace with the actual property ID
+      // const apiUrl = `https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id?property_id=${propertyIdToDelete}`;
+      const apiUrl = `https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id`;
+
+      console.log(propertyIdToDelete);
+      const response = await fetch(apiUrl, {
+        method: "DELETE",
+        headers: {
+          // Add any necessary headers here
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          // Add any authorization headers if required
+        },
+        body: JSON.stringify({ property_id: propertyIdToDelete }),
+      });
+      console.log("response...............", response);
+      if (response.ok) {
+        Alert.alert(
+          "Property Deleted",
+          "The property was deleted successfully."
+        );
+
+        propertyDelId ? refRBSheet.current.close() : null;
+        propertyList_Data();
+        setIsLoading(false);
+      } else {
+        console.error("Failed to delete property");
+        Alert.alert(
+          "Error",
+          "Failed to delete the property. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting property:", error);
+      Alert.alert("Error", "An error occurred. Please try again later.");
+    }
+  }, []);
+
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity style={PropertyListCSS.flatlistView}>
@@ -189,9 +241,10 @@ const PropertyList = (props) => {
       </TouchableOpacity>
     );
   };
+  // const [name, state, country] = Property_Data_List[0]?.location.split(", ");
 
   const propertyData1_render = ({ item }) => {
-    const isExpanded = expandedItems.includes(item.id);
+    const isExpanded = expandedItems.includes(item.property_id);
     return (
       <>
         <View style={PropertyListCSS.flatListContainer}>
@@ -214,7 +267,7 @@ const PropertyList = (props) => {
             </View>
             {item?.image_path ? (
               <Image
-                source={{ uri: item.image_path }}
+                source={{ uri: item.image_path[0] }}
                 style={PropertyListCSS.imageStyle}
               />
             ) : (
@@ -232,7 +285,15 @@ const PropertyList = (props) => {
 
             <View style={PropertyListCSS.flexContainer}>
               <View style={PropertyListCSS.noteStyle}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  // onPress={props?.onEdit(item?.property_id)}
+                  // onPress={props?.onEdit?.(item?.property_id)}
+                  onPress={() => {
+                    props?.onEdit?.({
+                      propertyid: item?.property_id,
+                    });
+                  }}
+                >
                   <Image
                     source={IMAGES.noteBook}
                     // source={IMAGES.noteBook}
@@ -242,6 +303,9 @@ const PropertyList = (props) => {
                 <TouchableOpacity
                   onPress={() => {
                     refRBSheet.current.open();
+                    // propertyDelete(propertyDelId);
+                    // alert(item.property_id);
+                    setPropertyDelId(item.property_id);
                   }}
                 >
                   <MaterialCommunityIcons
@@ -298,9 +362,13 @@ const PropertyList = (props) => {
             iconName={isExpanded ? "chevron-up" : "chevron-down"}
             onPress={() => {
               if (isExpanded) {
-                setExpandedItems(expandedItems.filter((id) => id !== item.id));
+                setExpandedItems(
+                  expandedItems.filter(
+                    (property_id) => property_id !== item.property_id
+                  )
+                );
               } else {
-                setExpandedItems([...expandedItems, item.id]);
+                setExpandedItems([...expandedItems, item.property_id]);
               }
             }}
           />
@@ -324,6 +392,7 @@ const PropertyList = (props) => {
         )}
         <DividerIcon />
         <RBSheet
+          height={400}
           ref={refRBSheet}
           closeOnDragDown={true}
           closeOnPressMask={false}
@@ -337,7 +406,7 @@ const PropertyList = (props) => {
             container: PropertyListCSS.bottomModal_container,
           }}
         >
-          <BottomModalData />
+          <BottomModalData onDelete={propertyDelete} />
         </RBSheet>
       </>
     );

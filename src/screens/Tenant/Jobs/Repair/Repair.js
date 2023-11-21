@@ -328,12 +328,12 @@ export default Repair = (props) => {
             Text_Color={_COLORS.Kodie_WhiteColor}
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
-            height={38}
+            height={40}
             marginTop={3}
           />
         </View>
         <DividerIcon borderBottomWidth={5} marginTop={8} />
-        <SearchBar frontSearchIcon height={45} marginTop={5} />
+        <SearchBar frontSearchIcon height={48} marginTop={5} />
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
             <TouchableOpacity style={RepairCss.AllView}>

@@ -7,7 +7,8 @@ export const ReportsStyle = StyleSheet.create({
         height:'100%'
     },
     searchview:{
-        marginVertical:10
+        marginVertical:10,
+        height:48
     },
     divider:{
         borderBottomWidth:7,

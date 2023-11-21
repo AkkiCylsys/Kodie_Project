@@ -64,7 +64,9 @@ export default SignUpVerification = (props) => {
         if (response.data.status === true) {
           alert(response.data.message);
           setValue("");
-          props.navigation.navigate("SignUpSteps");
+          props.navigation.navigate("SignUpSteps", {
+            email: email,
+          });
           setIsLoading(false);
         } else {
           setValueError(response.data.message);
@@ -179,7 +181,7 @@ export default SignUpVerification = (props) => {
   return (
     <View style={SignUpVerificationStyle.mainContainer}>
       <TopHeader
-        MiddleText={"Set up your Kodie account"}
+        MiddleText={"Verify your email"}
         onPressLeftButton={() => _goBack(props)}
       />
       <View style={SignUpVerificationStyle.container}>
