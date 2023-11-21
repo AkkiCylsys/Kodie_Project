@@ -160,7 +160,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    width: Platform.OS === "ios" ? "22.5%" : "23.5%",
+    width: Platform.OS === "ios" ? "22.5%" : "20.5%",
     marginLeft: 12,
     marginTop: 9,
     textAlign: "center",
