@@ -17,7 +17,8 @@ export const ChatsStyle = StyleSheet.create({
         marginVertical:15
     },
     searchview:{
-        marginVertical:10
+        marginVertical:10,
+        height:48
     },
     bottomModal_container: {
         borderWidth: 0.5,

@@ -181,7 +181,7 @@ export default SignUpVerification = (props) => {
   return (
     <View style={SignUpVerificationStyle.mainContainer}>
       <TopHeader
-        MiddleText={"Set up your Kodie account"}
+        MiddleText={"Verify your email"}
         onPressLeftButton={() => _goBack(props)}
       />
       <View style={SignUpVerificationStyle.container}>
