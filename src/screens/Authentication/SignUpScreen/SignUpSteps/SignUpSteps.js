@@ -45,6 +45,7 @@ import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPl
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStyles } from "../SignUpStyle";
 import Geocoder from "react-native-geocoding";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import Geolocation from "react-native-geolocation-service";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
