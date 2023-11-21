@@ -60,25 +60,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     color: stepStatus === "finished" ? "#ffffff" : "#ffffff",
     size: 20,
   };
-
-  switch (position) {
-    case 0: {
-      iconConfig.name = stepStatus === "finished" ? "check" : null;
-      break;
-    }
-    case 1: {
-      iconConfig.name = stepStatus === "finished" ? "check" : "check";
-      break;
-    }
-    case 2: {
-      iconConfig.name = stepStatus === "finished" ? "check" : "check";
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
+  iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
 };
 const DATA = [
@@ -134,13 +116,15 @@ const DATA = [
 const renderDataItem = (item) => {
   return (
     <View style={FirstPropertyStyle.item}>
-      <Text style={FirstPropertyStyle.selectedTextStyle}>{item.label}</Text>
-      <AntDesign
+      <Text style={FirstPropertyStyle.selectedTextStyle}>
+        {item.FeatureName}
+      </Text>
+      {/* <AntDesign
         style={FirstPropertyStyle.icon}
         color={_COLORS.Kodie_BlackColor}
         name="check"
         size={20}
-      />
+      /> */}
     </View>
   );
 };
@@ -170,7 +154,7 @@ export default FirstProperty = (props) => {
   console.log("email..", email);
 
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [propertyLocation, setPropertyLocation] = useState("");
@@ -640,8 +624,12 @@ export default FirstProperty = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <TopHeader
-        MiddleText={ IsMap || IsSearch ? "Location" : "Set up your Kodie account"}
-        onPressLeftButton={goBack}
+        MiddleText={
+          IsMap || IsSearch ? "Location" : "Set up your Kodie account"
+        }
+        onPressLeftButton={() => {
+          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+        }}
       />
       <View style={FirstPropertyStyle.container}>
         {/* {IsMap || IsSearch ? null : (
@@ -767,6 +755,9 @@ export default FirstProperty = (props) => {
                     style={FirstPropertyStyle.locationInput}
                     value={propertyLocation}
                     onChangeText={setPropertyLocation}
+                    onFocus={() => {
+                      setIsSearch(true);
+                    }}
                     placeholder="Search location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
@@ -962,53 +953,22 @@ export default FirstProperty = (props) => {
                   >
                     Additional features
                   </Text>
-                  {/* <MultiSelect
-                    style={FirstPropertyStyle.dropdown}
-                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
-                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                    iconStyle={FirstPropertyStyle.iconStyle}
-                    data={additionalfeatureskey}
-                    labelField="PAF_ADDITIONAL_FEATURES_NAME"
-                    valueField="PAF_KEY"
-                    placeholder="Select additional features"
-                    value={additionalfeatureskeyvalue}
-                    search
-                    searchPlaceholder="Search..."
-                    onChange={(item) => {
-                      setAdditionalFeaturesKeyValue(item);
-                      alert(item);
-                    }}
-                    renderItem={renderDataItem}
-                    renderSelectedItem={(item, unSelect) => (
-                      <TouchableOpacity
-                        onPress={() => unSelect && unSelect(item)}
-                      >
-                        <View style={FirstPropertyStyle.selectedStyle}>
-                          <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.label}
-                          </Text>
-                          <AntDesign color="black" name="close" size={17} />
-                        </View>
-                      </TouchableOpacity>
-                    )}
-                  /> */}
                   <MultiSelect
                     style={FirstPropertyStyle.dropdown}
                     placeholderStyle={FirstPropertyStyle.placeholderStyle}
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}
-                    data={DATA}
-                    labelField="label"
-                    valueField="value"
+                    data={additionalfeatureskey}
+                    labelField="FeatureName"
+                    valueField="key"
                     placeholder="Select additional features"
                     value={additionalfeatureskeyvalue}
                     search
                     searchPlaceholder="Search..."
                     onChange={(item) => {
                       setAdditionalFeaturesKeyValue(item);
-                      alert(item);
+                      // alert(item);
                     }}
                     renderItem={renderDataItem}
                     renderSelectedItem={(item, unSelect) => (
@@ -1017,7 +977,7 @@ export default FirstProperty = (props) => {
                       >
                         <View style={FirstPropertyStyle.selectedStyle}>
                           <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.label}
+                            {item.FeatureName}
                           </Text>
                           <AntDesign color="black" name="close" size={17} />
                         </View>

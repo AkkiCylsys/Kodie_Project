@@ -312,7 +312,7 @@ export default Login = (props) => {
   };
 
   //send_verification_code Api code here....
-  const send_verification_code = () => {
+  const send_verification_code = () => { 
     const url = Config.API_URL;
     const verification_code_url = url + "user_reset_password_email_verify";
     console.log("Request URL:", verification_code_url);

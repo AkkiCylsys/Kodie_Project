@@ -95,13 +95,6 @@ export default SignUp = (props) => {
         console.log("SignUp response", response.data);
         if (response.data.message === "User Signup Successful") {
           alert(response.data.message);
-          // Dispatch the action here if needed
-          // dispatch(fetchRegistrationSuccess(response.data));
-          setEmail("");
-          setPassword("");
-          setTerm(false);
-          setPrivacy(false);
-          setIsLoading(false);
           // Redirect to SignUpVerification screen
           props.navigation.navigate("SignUpVerification", {
             email: email,
@@ -109,6 +102,11 @@ export default SignUp = (props) => {
             is_term_condition: term,
             is_privacy_policy: privacy,
           });
+          setEmail("");
+          setPassword("");
+          setTerm(false);
+          setPrivacy(false);
+          setIsLoading(false);
         } else if (
           response.data.message === "User Already Exists But Not Verified"
         ) {
@@ -124,10 +122,11 @@ export default SignUp = (props) => {
             is_term_condition: term,
             is_privacy_policy: privacy,
           });
-        }else if( response.data.message === "User Already Exists And Verified"){
-          props.navigation.navigate('SignUpSteps')
-        }
-         else {
+        } else if (
+          response.data.message === "User Already Exists And Verified"
+        ) {
+          props.navigation.navigate("SignUpSteps");
+        } else {
           setEmailError(response.data.message);
           setIsLoading(false);
         }
