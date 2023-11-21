@@ -205,9 +205,59 @@ const AddPropertyMainPage = (props) => {
   const [longitude, setlongitude] = useState("");
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
+  // key_features count state code here------
+  const [CountBedroom, setCountBedroom] = useState(1);
+  // const [CountBedRoomData, setCountBedRoomData] = useState([]);
+  const [CountBathroom, setCountBathroom] = useState(1);
+  const [CountParking, setCountParking] = useState(1);
+  const [CountParkingStreet, setCountParkingStreet] = useState(1);
+
+  const AllCountsData = [
+    CountBedroom,
+    CountBathroom,
+    CountParking,
+    CountParkingStreet,
+  ];
+  // key_features count for Bedroom code here------
+  const increaseBedroomCount = () => {
+    setCountBedroom((prevCount) => prevCount + 1);
+  };
+  const decreaseBedroomCount = () => {
+    if (CountBedroom > 0) {
+      setCountBedroom((prevCount) => prevCount - 1);
+    }
+  };
+  // key_features count for Bathroom code here------
+  const increaseBathroomCount = () => {
+    setCountBathroom((prevCount) => prevCount + 1);
+  };
+  const decreaseBathroomCount = () => {
+    if (CountBathroom > 0) {
+      setCountBathroom((prevCount) => prevCount - 1);
+    }
+  };
+
+  // key_features count for Parking code here------
+  const increaseParkingCount = () => {
+    setCountParking((prevCount) => prevCount + 1);
+  };
+  const decreaseParkingCount = () => {
+    if (CountParking > 0) {
+      setCountParking((prevCount) => prevCount - 1);
+    }
+  };
+
+  // key_features count for Parking code here------
+  const increaseParkingStreetCount = () => {
+    setCountParkingStreet((prevCount) => prevCount + 1);
+  };
+  const decreaseParkingStreetCount = () => {
+    if (CountParkingStreet > 0) {
+      setCountParkingStreet((prevCount) => prevCount - 1);
+    }
+  };
 
   console.log("property_Detail", property_Detail);
-
   // ...
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -379,7 +429,6 @@ const AddPropertyMainPage = (props) => {
         setIsLoading(false);
       });
   };
-
   //  key feature module Garages API....
   const handle_Garages = () => {
     const garages_Data = {
@@ -509,8 +558,8 @@ const AddPropertyMainPage = (props) => {
   };
   // handle property details api start to here
   const property_details = () => {
-    const selectedKeyFeature = selectedkey_features.join(",");
-
+    // const selectedKeyFeature = selectedKeyFeature.join(",");
+    console.log(AllCountsData)
     const url = Config.API_URL;
     const additionalApi = url + "add_property_details";
     console.log("Request URL:", additionalApi);
@@ -525,7 +574,7 @@ const AddPropertyMainPage = (props) => {
         islocation: 1,
         property_description: propertyDesc,
         property_type: property_value,
-        key_features: selectedKeyFeature,
+        key_features: AllCountsData,
         additional_features: "12",
         additional_key_features: additionalfeatureskeyvalue,
         autolist: selectedButtonId,
@@ -681,6 +730,8 @@ const AddPropertyMainPage = (props) => {
     handle_Bathroom();
     handle_parking();
     additional_features();
+
+    property_details()
     DetailsData();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
@@ -771,6 +822,8 @@ const AddPropertyMainPage = (props) => {
     } else if (currentPage == 2) {
       if (propertyid) {
         handleSaveUpdateImage();
+        console.log('count data............',AllCountsData)
+        alert(AllCountsData)
       } else {
         handleSaveImage();
       }
@@ -1156,7 +1209,7 @@ const AddPropertyMainPage = (props) => {
               <View style={PropertyFeatureStyle.card}>
                 <View style={PropertyFeatureStyle.inputContainer}>
                   <Text style={LABEL_STYLES._texinputLabel}>Key features</Text>
-                  <View style={FirstPropertyStyle.key_feature_mainView}>
+                  {/* <View style={FirstPropertyStyle.key_feature_mainView}>
                     <View style={FirstPropertyStyle.key_feature_subView}>
                       <Text style={FirstPropertyStyle.key_feature_Text}>
                         {"Bedrooms"}
@@ -1220,8 +1273,8 @@ const AddPropertyMainPage = (props) => {
                         }}
                       />
                     </View>
-                  </View>
-                  <View style={FirstPropertyStyle.key_feature_mainView}>
+                  </View> */}
+                  {/* <View style={FirstPropertyStyle.key_feature_mainView}>
                     <View style={FirstPropertyStyle.key_feature_subView}>
                       <Text style={FirstPropertyStyle.key_feature_Text}>
                         {"Bathrooms"}
@@ -1278,20 +1331,177 @@ const AddPropertyMainPage = (props) => {
                         }}
                       />
                     </View>
+                  </View> */}
+
+                  {/* new code start here -----------*/}
+                  <View>
+                    <View style={FirstPropertyStyle.mainfeaturesview}>
+                      <View style={FirstPropertyStyle.key_feature_Text_view}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Bedrooms"}
+                        </Text>
+                      </View>
+
+                      <View style={FirstPropertyStyle.plus_minusview}>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                        >
+                          <AntDesign
+                            name="minus"
+                            size={20}
+                            onPress={decreaseBedroomCount}
+                          />
+                        </TouchableOpacity>
+                        <Text style={FirstPropertyStyle.countdata}>
+                          {CountBedroom}
+                        </Text>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                        >
+                          <AntDesign
+                            name="plus"
+                            size={20}
+                            onPress={() => {
+                              increaseBedroomCount();
+
+                            }}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    <View style={FirstPropertyStyle.mainfeaturesview}>
+                      <View style={FirstPropertyStyle.key_feature_Text_view}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Bathrooms"}
+                        </Text>
+                      </View>
+
+                      <View style={FirstPropertyStyle.plus_minusview}>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                        >
+                          <AntDesign
+                            name="minus"
+                            size={20}
+                            onPress={decreaseBathroomCount}
+                          />
+                        </TouchableOpacity>
+                        <Text style={FirstPropertyStyle.countdata}>
+                          {CountBathroom}
+                        </Text>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                        >
+                          <AntDesign
+                            name="plus"
+                            size={20}
+                            onPress={increaseBathroomCount}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    <View style={FirstPropertyStyle.mainfeaturesview}>
+                      <View style={FirstPropertyStyle.key_feature_Text_view}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Parking spaces"}
+                        </Text>
+                      </View>
+
+                      <View style={FirstPropertyStyle.plus_minusview}>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                        >
+                          <AntDesign
+                            name="minus"
+                            size={20}
+                            onPress={decreaseParkingCount}
+                          />
+                        </TouchableOpacity>
+                        <Text style={FirstPropertyStyle.countdata}>
+                          {CountParking}
+                        </Text>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                        >
+                          <AntDesign
+                            name="plus"
+                            size={20}
+                            onPress={increaseParkingCount}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+
+                    <View style={FirstPropertyStyle.mainfeaturesview}>
+                      <View style={FirstPropertyStyle.key_feature_Text_view}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"On-street parking"}
+                        </Text>
+                      </View>
+
+                      <View style={FirstPropertyStyle.plus_minusview}>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                        >
+                          <AntDesign
+                            name="minus"
+                            size={20}
+                            onPress={decreaseParkingStreetCount}
+                          />
+                        </TouchableOpacity>
+                        <Text style={FirstPropertyStyle.countdata}>
+                          {CountParkingStreet}
+                        </Text>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                        >
+                          <AntDesign
+                            name="plus"
+                            size={20}
+                            onPress={increaseParkingStreetCount}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
                   </View>
 
-                  <View style={FirstPropertyStyle.key_feature_mainView}>
-                    <View style={FirstPropertyStyle.key_feature_subView}>
-                      <Text style={FirstPropertyStyle.key_feature_Text}>
-                        {"Floor size"}
-                      </Text>
-                      <TextInput
-                        style={AccountStyle.flor_input}
-                        value={florSize}
-                        onChangeText={setFlorSize}
-                        placeholder="102m2"
-                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                      />
+                  <View>
+                    <View style={FirstPropertyStyle.key_feature_mainView}>
+                      <View style={FirstPropertyStyle.key_feature_subView}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Building floor size  (optional)"}
+                        </Text>
+                      </View>
+
+                      <View style={FirstPropertyStyle.floorsizeview}>
+                        <TextInput
+                          style={FirstPropertyStyle.flor_input_field}
+                          value={florSize}
+                          onChangeText={setFlorSize}
+                          placeholder="102m2"
+                          placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        />
+                      </View>
+                    </View>
+
+                    <View style={FirstPropertyStyle.key_feature_mainView}>
+                      <View style={FirstPropertyStyle.key_feature_subView}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Land area (optional)"}
+                        </Text>
+                      </View>
+
+                      <View style={FirstPropertyStyle.floorsizeview}>
+                        <TextInput
+                          style={FirstPropertyStyle.flor_input_field}
+                          value={florSize}
+                          onChangeText={setFlorSize}
+                          placeholder="102m2"
+                          placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        />
+                      </View>
                     </View>
                   </View>
 
