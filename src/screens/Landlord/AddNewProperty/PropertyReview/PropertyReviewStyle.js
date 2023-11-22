@@ -115,4 +115,8 @@ export const PropertyReviewStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
   },
+  activeTab: {
+    backgroundColor: "white",
+    borderBottomWidth: 1.5,
+  },
 });

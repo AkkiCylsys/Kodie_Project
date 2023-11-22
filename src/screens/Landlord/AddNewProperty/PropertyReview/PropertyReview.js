@@ -29,6 +29,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { DetailsStyle } from "./Details/DetailsStyles";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
+import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
+import { FONTFAMILY, fontFamily } from "../../../../Themes/FontStyle/FontStyle";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const Detail = [
@@ -103,6 +105,139 @@ export default PropertyReview = (props) => {
   useEffect(() => {
     DetailsData();
   }, []);
+
+  const checkTabs = () => {
+    switch (activeTab) {
+      case "Tab1":
+        return (
+          <>
+            <Text style={DetailsStyle.welcome_Text}>
+              {property_Detail[0]?.property_description}
+              Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
+              apartment boasts modern interior finishes and a spacious extended
+              balcony. As you enter, you...
+            </Text>
+            <FlatList
+              data={Detail}
+              scrollEnabled
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{}}
+              numColumns={2}
+              keyExtractor={(item) => item?.id}
+              renderItem={Detail_rander}
+            />
+            <DividerIcon
+              borderBottomWidth={1}
+              color={_COLORS.Kodie_GrayColor}
+            />
+
+            <View style={DetailsStyle.subContainer}>
+              <View style={DetailsStyle.propety_details_view}>
+                <Text style={DetailsStyle.propery_det}>
+                  {"Property details"}
+                </Text>
+
+                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                  <AntDesign
+                    name="down"
+                    size={15}
+                    color={_COLORS.Kodie_GrayColor}
+                  />
+                </TouchableOpacity>
+              </View>
+              <DividerIcon marginTop={8} />
+            </View>
+            <View style={DetailsStyle.subContainer}>
+              <View style={DetailsStyle.propety_details_view}>
+                <Text style={DetailsStyle.propery_det}>{"Rooms"}</Text>
+
+                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                  <AntDesign
+                    name="down"
+                    size={15}
+                    color={_COLORS.Kodie_GrayColor}
+                  />
+                </TouchableOpacity>
+              </View>
+              <DividerIcon marginTop={8} />
+            </View>
+            <View style={DetailsStyle.subContainer}>
+              <View style={DetailsStyle.propety_details_view}>
+                <Text style={DetailsStyle.propery_det}>
+                  {"External featuress"}
+                </Text>
+
+                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                  <AntDesign
+                    name="down"
+                    size={15}
+                    color={_COLORS.Kodie_GrayColor}
+                  />
+                </TouchableOpacity>
+              </View>
+              <DividerIcon marginTop={8} />
+            </View>
+            <View style={DetailsStyle.subContainer}>
+              <View style={DetailsStyle.propety_details_view}>
+                <Text style={DetailsStyle.propery_det}>
+                  {"Points of interest"}
+                </Text>
+
+                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
+                  <AntDesign
+                    name="down"
+                    size={15}
+                    color={_COLORS.Kodie_GrayColor}
+                  />
+                </TouchableOpacity>
+              </View>
+              <DividerIcon marginTop={8} />
+              <View style={PropertyReviewStyle.btnView}>
+                <CustomSingleButton
+                  _ButtonText={"Add property"}
+                  Text_Color={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    props?.navigation?.navigate("Properties");
+                  }}
+                />
+              </View>
+              <View style={PropertyReviewStyle.btnView}>
+                <CustomSingleButton
+                  _ButtonText={"Add property features later"}
+                  Text_Color={_COLORS.Kodie_BlackColor}
+                  backgroundColor={_COLORS.Kodie_WhiteColor}
+                />
+              </View>
+              <TouchableOpacity
+                style={PropertyReviewStyle.goBack_View}
+                onPress={() => {
+                  goBack();
+                }}
+              >
+                <View style={PropertyReviewStyle.backIcon}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={22}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                  />
+                </View>
+                <Text style={PropertyReviewStyle.goBack_Text}>{"Go back"}</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        );
+      case "Tab2":
+        return <Leases />;
+
+      case "Tab3":
+        return <Expenses />;
+      case "Tab4":
+        return <Documents />;
+
+      default:
+        return <Details />;
+    }
+  };
   const DetailsData = () => {
     const detailData = {
       user: property_id,
@@ -235,142 +370,6 @@ export default PropertyReview = (props) => {
   const goBack = () => {
     props.navigation.pop();
   };
-  const checkTabs = () => {
-    switch (tabValue) {
-      case "Details":
-        return (
-          // <Details
-          //   AddProperty={() => {
-          //     props.navigation.navigate("NewInspection");
-          //   }}
-          // />
-          <>
-            <Text style={DetailsStyle.welcome_Text}>
-              {/* {
-                  "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
-                } */}
-              {property_Detail[0]?.property_description}
-            </Text>
-
-            <FlatList
-              data={Detail}
-              scrollEnabled
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{}}
-              numColumns={2}
-              keyExtractor={(item) => item?.id}
-              renderItem={Detail_rander}
-            />
-            <DividerIcon
-              borderBottomWidth={1}
-              color={_COLORS.Kodie_GrayColor}
-            />
-
-            <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
-                <Text style={DetailsStyle.propery_det}>
-                  {"Property details"}
-                </Text>
-
-                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
-                  <AntDesign
-                    name="down"
-                    size={15}
-                    color={_COLORS.Kodie_GrayColor}
-                  />
-                </TouchableOpacity>
-              </View>
-              <DividerIcon marginTop={8} />
-            </View>
-            <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
-                <Text style={DetailsStyle.propery_det}>{"Rooms"}</Text>
-
-                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
-                  <AntDesign
-                    name="down"
-                    size={15}
-                    color={_COLORS.Kodie_GrayColor}
-                  />
-                </TouchableOpacity>
-              </View>
-              <DividerIcon marginTop={8} />
-            </View>
-            <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
-                <Text style={DetailsStyle.propery_det}>
-                  {"External featuress"}
-                </Text>
-
-                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
-                  <AntDesign
-                    name="down"
-                    size={15}
-                    color={_COLORS.Kodie_GrayColor}
-                  />
-                </TouchableOpacity>
-              </View>
-              <DividerIcon marginTop={8} />
-            </View>
-            <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
-                <Text style={DetailsStyle.propery_det}>
-                  {"Points of interest"}
-                </Text>
-
-                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
-                  <AntDesign
-                    name="down"
-                    size={15}
-                    color={_COLORS.Kodie_GrayColor}
-                  />
-                </TouchableOpacity>
-              </View>
-              <DividerIcon marginTop={8} />
-              <View style={PropertyReviewStyle.btnView}>
-                <CustomSingleButton
-                  _ButtonText={"Add property"}
-                  Text_Color={_COLORS.Kodie_WhiteColor}
-                  onPress={() => {
-                    props?.navigation?.navigate("Properties");
-                  }}
-                />
-              </View>
-              <View style={PropertyReviewStyle.btnView}>
-                <CustomSingleButton
-                  _ButtonText={"Add property features later"}
-                  Text_Color={_COLORS.Kodie_BlackColor}
-                  backgroundColor={_COLORS.Kodie_WhiteColor}
-                />
-              </View>
-              <TouchableOpacity
-                style={PropertyReviewStyle.goBack_View}
-                onPress={() => {
-                  goBack();
-                }}
-              >
-                <View style={PropertyReviewStyle.backIcon}>
-                  <Ionicons
-                    name="chevron-back"
-                    size={22}
-                    color={_COLORS.Kodie_MediumGrayColor}
-                  />
-                </View>
-                <Text style={PropertyReviewStyle.goBack_Text}>{"Go back"}</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        );
-      case "Leases":
-        return <Leases />;
-      case "Expenses":
-        return <Expenses />;
-      case "Documents":
-        return <Documents />;
-      default:
-        return <Details />;
-    }
-  };
   return (
     <View style={PropertyReviewStyle.mainContainer}>
       <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
@@ -456,43 +455,66 @@ export default PropertyReview = (props) => {
                 "8502 Preston Rd.Inglewood,Queensland,Australia,."}
             </Text>
           </View>
-          <View style={PropertyReviewStyle.Details_Tab}>
-            <TouchableOpacity
-              onPress={() => {
-                setTabValue("Details");
-              }}
-              style={{
-                borderBottomWidth: 1,
-                borderBottomColor: _COLORS.Kodie_BlackColor,
-              }}
-            >
-              <Text style={[PropertyReviewStyle.Tab_text]}>{"Details"}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setTabValue("Leases");
-              }}
-            >
-              <Text style={PropertyReviewStyle.Tab_text}>{"Leases"}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setTabValue("Expenses");
-              }}
-            >
-              <Text style={PropertyReviewStyle.Tab_text}>{"Expenses"}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                setTabValue("Documents");
-              }}
-            >
-              <Text style={PropertyReviewStyle.Tab_text}>{"Documents"}</Text>
-            </TouchableOpacity>
-          </View>
         </View>
-        <DividerIcon borderBottomWidth={3} />
 
+        <View
+          style={{
+            borderBottomWidth: 3,
+            borderColor: _COLORS.Kodie_GrayColor,
+            elevation: 1,
+          }}
+        >
+          <CustomTabNavigator
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            TAB3
+            TAB4
+            Tab1={"Details"}
+            Tab2={"Leases"}
+            Tab3={"Expenses"}
+            Tab4={"Documents"}
+            onPressTab1={() => setActiveTab("Tab1")}
+            onPressTab2={() => setActiveTab("Tab2")}
+            onPressTab3={() => setActiveTab("Tab3")}
+            onPressTab4={() => setActiveTab("Tab4")}
+            colorTab1={
+              activeTab === "Tab1"
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            colorTab2={
+              activeTab === "Tab2"
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            colorTab3={
+              activeTab === "Tab3"
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            colorTab4={
+              activeTab === "Tab4"
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            FONTFAMILY1={
+              activeTab === "Tab1" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY2={
+              activeTab === "Tab2" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY3={
+              activeTab === "Tab3" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY4={
+              activeTab === "Tab4" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            styleTab1={activeTab === "Tab1" && PropertyReviewStyle.activeTab}
+            styleTab2={activeTab === "Tab2" && PropertyReviewStyle.activeTab}
+            styleTab3={activeTab === "Tab3" && PropertyReviewStyle.activeTab}
+            styleTab4={activeTab === "Tab4" && PropertyReviewStyle.activeTab}
+          />
+        </View>
         {checkTabs()}
         {isLoading ? <CommonLoader /> : null}
       </ScrollView>
