@@ -111,7 +111,7 @@ export const PropertyReviewStyle = StyleSheet.create({
     marginTop: 10,
   },
   Tab_text: {
-    fontSize: 11,
+    fontSize: 13,
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
   },
