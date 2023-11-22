@@ -106,7 +106,6 @@ const PropertyList = (props) => {
       })
       .catch((error) => {
         console.error("property_Data_list error:", error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -143,14 +142,8 @@ const PropertyList = (props) => {
           "The property was deleted successfully."
         );
 
-        propertyList_Data("All");
+        propertyList_Data();
         setIsLoading(false);
-      } else {
-        console.error("Failed to delete property");
-        Alert.alert(
-          "Error",
-          "Failed to delete the property. Please try again."
-        );
       }
     } catch (error) {
       console.error("Error deleting property:", error);
@@ -221,7 +214,7 @@ const PropertyList = (props) => {
                 </Text>
               </View>
             </View>
-            {item?.image_path ? (
+            {item?.image_path[0] ? (
               <Image
                 source={{ uri: item.image_path[0] }}
                 style={PropertyListCSS.imageStyle}

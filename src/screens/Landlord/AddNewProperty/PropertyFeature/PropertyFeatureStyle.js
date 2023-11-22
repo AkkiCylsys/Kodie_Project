@@ -33,7 +33,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -58,7 +58,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
     borderRadius: 6,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
   },
   locationInput: {
@@ -139,7 +139,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 1.41,
 
     elevation: 2,
@@ -170,5 +170,60 @@ export const PropertyFeatureStyle = StyleSheet.create({
   },
   btnView: {
     marginTop: 24,
+  },
+  mainfeaturesview: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 12,
+  },
+  key_feature_mainView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  key_feature_subView: { flex: 1 },
+  floorsizeview: {
+    flex: 0.5,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+  },
+  flor_input_field: {
+    borderWidth: 0.5,
+    borderRadius: 6,
+    borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
+    color: "#333",
+    fontFamily: FONTFAMILY.K_Medium,
+    textAlign: "center",
+    width: 105,
+    height: 36,
+  },
+  key_feature_Text: {
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  key_feature_Text_view: {
+    flex: 1,
+  },
+  plus_minusview: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flex: 0.7,
+  },
+  menusIconView: {
+    borderWidth: 0.5,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  countdata: {
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_BlackColor,
   },
 });

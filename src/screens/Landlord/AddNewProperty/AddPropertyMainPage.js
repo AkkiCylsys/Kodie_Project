@@ -52,11 +52,7 @@ import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
-const data = [
-  { label: "Bharat", value: "1" },
-  { label: "Australia", value: "2" },
-  { label: "America", value: "3" },
-];
+
 const Detail = [
   {
     id: "1",

@@ -117,7 +117,7 @@ import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 // import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
 // import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
 // import EditDashboard from "../../screens/Dashboard/EditDashboard";
-
+// import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -594,6 +594,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ViewPropertyDetails"}
           component={ViewPropertyDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PropertyDetails"}
+          component={PropertyDetails}
           options={{ headerShown: false }}
         />
         <Stack.Screen
