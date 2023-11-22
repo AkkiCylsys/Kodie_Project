@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderColor:_COLORS.Kodie_BlackColor,
     shadowColor: "#000000",
     shadowOffset: { width: 0, height: -1 },
-    shadowOpacity: 0.16,
+    shadowOpacity:Platform.OS =='android'? 0.16:null,
     shadowRadius: 6
   }
 });

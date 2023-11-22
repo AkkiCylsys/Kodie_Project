@@ -7,7 +7,7 @@ export const PropertyImagesStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   headingView: {
-    marginHorizontal: 16,
+    marginHorizontal: 10,
     marginTop: 10,
   },
   heading: {
@@ -30,14 +30,14 @@ export const PropertyImagesStyle = StyleSheet.create({
   },
   phototextView: {
     flex: 1,
-    marginHorizontal: 16,
+    marginHorizontal: 10,
     marginBottom: 80,
   },
   upload_Heading_Text: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginTop:10
+    marginTop: 10,
   },
   formatted_property_text: {
     marginTop: 5,

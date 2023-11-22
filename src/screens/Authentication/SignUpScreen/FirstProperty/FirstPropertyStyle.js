@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../../Themes";
 export const FirstPropertyStyle = StyleSheet.create({
   mainContainer: {
@@ -20,7 +20,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -53,7 +53,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginLeft: 15,
   },
   dropdown: {
-    flex:1,
+    flex: 1,
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
@@ -63,7 +63,7 @@ export const FirstPropertyStyle = StyleSheet.create({
 
   placeholderStyle: {
     fontSize: 14,
-    color: _COLORS.Kodie_GreenColor,
+    color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
   },
@@ -82,21 +82,62 @@ export const FirstPropertyStyle = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  key_feature_Dropdownstyle: { flex: 1,height: 40, },
-  additional:{flex:0.85},
-  key_feature_mainView: {
-    flex: 1,
+  key_feature_Dropdownstyle: { flex: 1, height: 40 },
+  additional: { flex: 0.85 },
+  mainfeaturesview: {
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
+    marginVertical: 12,
   },
-  key_feature_subView: { flex: 1, flexDirection: "row" },
+  key_feature_mainView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+  key_feature_subView: { flex: 1 },
+  floorsizeview: {
+    flex: 0.5,
+    justifyContent: "flex-end",
+    flexDirection: "row",
+  },
+  flor_input_field: {
+    borderWidth: 0.5,
+    borderRadius: 6,
+    borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
+    color: "#333",
+    fontFamily: FONTFAMILY.K_Medium,
+    textAlign: "center",
+    width: 105,
+    height: 36,
+  },
   key_feature_Text: {
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
-    alignSelf: "center",
-    // marginRight: 10,
-    marginHorizontal:10
+  },
+  key_feature_Text_view: {
+    flex: 1,
+  },
+  plus_minusview: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flex: 0.7,
+  },
+  menusIconView: {
+    borderWidth: 0.5,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  countdata: {
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_BlackColor,
   },
   icon: {
     marginRight: 5,
@@ -153,20 +194,20 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginTop: 24,
   },
   flor_input: {
-    height:40,
+    height: 40,
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     color: "#333",
-    paddingLeft: 10,
+    // paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    width:'19.9%',
-    marginLeft:12,
-    marginTop:9,
-    textAlign:"center"
+    width: Platform.OS === "ios" ? "22.5%" : "20.5%",
+    marginLeft: 12,
+    marginTop: 9,
+    textAlign: "center",
   },
   stepIndicator: {
-    marginTop:15
+    marginTop: 15,
   },
   goBack_View: {
     flexDirection: "row",
@@ -189,21 +230,21 @@ export const FirstPropertyStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   BtnContainer: {
-    backgroundColor:_COLORS.Kodie_lightGreenColor,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'flex-end',
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
     paddingVertical: 3,
     borderRadius: 10,
-  
-   // borderWidth: 1,
-    width: '30%',
-    height:50,
+
+    // borderWidth: 1,
+    width: "30%",
+    height: 50,
     bottom: 0,
-    right:20,
+    right: 20,
     marginBottom: 20,
-    position: 'absolute',
+    position: "absolute",
     //borderColor: Colors.appColor,
   },
 });

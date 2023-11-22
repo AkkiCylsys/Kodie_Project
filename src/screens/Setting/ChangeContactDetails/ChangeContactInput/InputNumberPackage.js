@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
       width: 1,
       height: 5,
     },
-    shadowOpacity: 0.34,
+    shadowOpacity:Platform.OS =='android'? 0.34:null,
     shadowRadius: 6.27,
     elevation: 10,
   },

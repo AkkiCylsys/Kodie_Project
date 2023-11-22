@@ -47,7 +47,7 @@ const Properties = (props) => {
       })
       .catch((error) => {
         console.error("property_Data_list error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -56,14 +56,12 @@ const Properties = (props) => {
       case "Tab1":
         return (
           <PropertyList
-            propertyDetail={() =>
-              props.navigation.navigate("AddPropertyMainPage")
-            }
+            propertyDetail={() => props.navigation.navigate("PropertyDetails")}
             onEdit={(data) => {
               // Access propertyid in onEdit function
               const { propertyid } = data;
               // alert(propertyid);
-              props.navigation.navigate("AddPropertyMainPage", {
+              props.navigation.navigate("PropertyDetails", {
                 propertyid: propertyid,
               });
             }}

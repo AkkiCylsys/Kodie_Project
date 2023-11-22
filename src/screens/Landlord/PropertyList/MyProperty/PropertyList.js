@@ -31,99 +31,13 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import { useCallback } from "react";
 import { useIsFocused } from "@react-navigation/native";
 const HorizontalData = [
+  "All",
+  "Most recent",
   "Occupied",
   "Vacant",
   "Rent Pending",
   "Rent Received",
   "Archive",
-];
-
-const property_List1 = [
-  {
-    id: "1",
-    propertyName: "Apartment",
-    name: "Melbourne",
-    location: "8502 Preston Rd. Inglewood",
-    image: BANNERS.apartment,
-    buttonName: "Late payment",
-    tanentname: "Jason Stathom",
-    rent: "$850",
-    spend: "$830",
-    isRentPanding: true,
-    isRentReceived: false,
-    isinviteTenants: false,
-  },
-
-  {
-    id: "2",
-    propertyName: "House",
-    name: "Sydney",
-    location: "2118 Thornridge Cir. Syracuse",
-    image: BANNERS.house,
-    buttonName: "Rent Received",
-    tanentname: "Jason Stathom",
-    rent: "$850",
-    spend: "$830",
-    isRentPanding: false,
-    isRentReceived: true,
-    isinviteTenants: false,
-  },
-  {
-    id: "3",
-    propertyName: "Cottage",
-    name: "Brisbane",
-    location: "1729 Sickle St, QLD, 4010, Australia ",
-    image: BANNERS.cottage,
-    buttonName: "+ Invite Tenant",
-    tanentname: "Jason Stathom",
-    rent: "$850",
-    spend: "$830",
-    isRentPanding: false,
-    isRentReceived: false,
-    isinviteTenants: true,
-  },
-  {
-    id: "4",
-    propertyName: "Apartment",
-    name: "Melbourne",
-    location: "8502 Preston Rd. Inglewood",
-    image: BANNERS.apartment,
-    buttonName: "Rent Pending",
-    tanentname: "Jason Stathom",
-    rent: "$850",
-    spend: "$830",
-    isRentPanding: true,
-    isRentReceived: false,
-    isinviteTenants: false,
-  },
-  {
-    id: "5",
-    propertyName: "House",
-    name: "Sydney",
-    location: "2118 Thornridge Cir. Syracuse",
-    image: BANNERS.house,
-    buttonName: "Rent Received",
-    tanentname: "Jason Stathom",
-    rent: "$850",
-    spend: "$830",
-    isRentPanding: false,
-    isRentReceived: true,
-    isinviteTenants: false,
-  },
-  {
-    id: "6",
-    propertyName: "Cottage",
-    name: "Brisbane",
-    location: "1729 Sickle St, QLD, 4010, Australia ",
-    image: BANNERS.cottage,
-    buttonName: "+ Invite Tenant",
-    tanentname: "Jason Stathom",
-    rent: "$850",
-    spend: "$830",
-    isRentPanding: false,
-    isRentReceived: false,
-    isinviteTenants: true,
-  },
 ];
 const property_List2 = [
   {
@@ -149,22 +63,25 @@ const PropertyList = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
   const [Property_Data_List, setProperty_Data_List] = useState([]);
+  const [filterData, setFliterData] = useState("All");
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [propertyDelId, setPropertyDelId] = useState();
+  const [Address, setAddress] = useState();
   const refRBSheet = useRef();
   useEffect(() => {
     if (isvisible) {
-      propertyList_Data();
+      propertyList_Data("All");
     }
-    // propertyDelete();
   }, [isvisible]);
-  const propertyList_Data = () => {
+  const propertyList_Data = (filter) => {
     const propertyDataList = {
-      user: 84,
+      property_filter: filter,
+      user_account_id: 84,
     };
 
     const url = Config.API_URL;
-    const propertyData_List = url + "get_property_details_by_id";
+    const propertyData_List = url + "get_property_details_by_filter";
     console.log("Request URL :", propertyData_List);
     setIsLoading(true);
     axios
@@ -177,29 +94,39 @@ const PropertyList = (props) => {
             "propertyDataList....",
             response.data?.property_details?.image_path
           );
+
           setProperty_Data_List(response?.data?.property_details);
-          // console.log(Property_Data_List, "Rahul...");
+
+          // setProperty_Data_List(filter); // console.log(Property_Data_List, "Rahul...");
         } else {
           console.error("property_Data_list_error:", response.data.error);
-          alert(response.data.error);
+          // alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
         console.error("property_Data_list error:", error);
-        alert(error);
         setIsLoading(false);
       });
   };
 
-  const propertyDelete = useCallback(async () => {
+  const propertyDelete = async () => {
+    // setIsLoading(true);
+    // alert(propertyDelId);
+    setIsDeleteData_Clicked(true);
+  };
+  const FinalDeleteProperty = async () => {
+    // alert(propertyDelId);
     setIsLoading(true);
+    setIsDeleteData_Clicked(false);
+    refRBSheet.current.close();
+
     try {
-      const propertyIdToDelete = propertyDelId; // Replace with the actual property ID
+      let propertyIdToDelete = propertyDelId;
+      // Replace with the actual property ID
       // const apiUrl = `https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id?property_id=${propertyIdToDelete}`;
       const apiUrl = `https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id`;
 
-      console.log(propertyIdToDelete);
       const response = await fetch(apiUrl, {
         method: "DELETE",
         headers: {
@@ -208,42 +135,67 @@ const PropertyList = (props) => {
           "Content-Type": "application/json",
           // Add any authorization headers if required
         },
-        body: JSON.stringify({ property_id: propertyIdToDelete }),
+        body: JSON.stringify({ property_id: propertyDelId }),
       });
-      console.log("response...............", response);
+      console.log("response...............", response.data);
       if (response.ok) {
         Alert.alert(
           "Property Deleted",
           "The property was deleted successfully."
         );
 
-        propertyDelId ? refRBSheet.current.close() : null;
         propertyList_Data();
         setIsLoading(false);
-      } else {
-        console.error("Failed to delete property");
-        Alert.alert(
-          "Error",
-          "Failed to delete the property. Please try again."
-        );
       }
     } catch (error) {
       console.error("Error deleting property:", error);
       Alert.alert("Error", "An error occurred. Please try again later.");
     }
-  }, []);
+  };
+
+  const handleButtonClick = (filter) => {
+    propertyList_Data(filter);
+
+    setFliterData(filter);
+  };
 
   const horizontal_render = ({ item }) => {
+    const isSelected = item === filterData;
     return (
-      <TouchableOpacity style={PropertyListCSS.flatlistView}>
-        <View style={PropertyListCSS.round} />
-        <Text style={PropertyListCSS.item_style}>{item}</Text>
+      <TouchableOpacity
+        style={[
+          PropertyListCSS.flatlistView,
+          isSelected && { backgroundColor: "black" },
+        ]}
+        onPress={() => handleButtonClick(item)}
+      >
+        {isSelected ? null : (
+          <View
+            style={[
+              PropertyListCSS.round,
+              isSelected && { backgroundColor: "white" },
+            ]}
+          />
+        )}
+        <Text
+          style={[PropertyListCSS.item_style, isSelected && { color: "white" }]}
+        >
+          {item}
+        </Text>
+        {isSelected ? (
+          <MaterialCommunityIcons
+            name={"check"}
+            size={18}
+            color={_COLORS.Kodie_WhiteColor}
+          />
+        ) : null}
       </TouchableOpacity>
     );
   };
+  // const [name, state, country] = Property_Data_List[0]?.location.split(", ");
 
   const propertyData1_render = ({ item }) => {
-    const isExpanded = expandedItems.includes(item.id);
+    const isExpanded = expandedItems.includes(item.property_id);
     return (
       <>
         <View style={PropertyListCSS.flatListContainer}>
@@ -264,7 +216,7 @@ const PropertyList = (props) => {
                 </Text>
               </View>
             </View>
-            {item?.image_path ? (
+            {item?.image_path[0] ? (
               <Image
                 source={{ uri: item.image_path[0] }}
                 style={PropertyListCSS.imageStyle}
@@ -305,6 +257,8 @@ const PropertyList = (props) => {
                     // propertyDelete(propertyDelId);
                     alert(item.property_id);
                     setPropertyDelId(item.property_id);
+
+                    setAddress(item?.location);
                   }}
                 >
                   <MaterialCommunityIcons
@@ -361,9 +315,13 @@ const PropertyList = (props) => {
             iconName={isExpanded ? "chevron-up" : "chevron-down"}
             onPress={() => {
               if (isExpanded) {
-                setExpandedItems(expandedItems.filter((id) => id !== item.id));
+                setExpandedItems(
+                  expandedItems.filter(
+                    (property_id) => property_id !== item.property_id
+                  )
+                );
               } else {
-                setExpandedItems([...expandedItems, item.id]);
+                setExpandedItems([...expandedItems, item.property_id]);
               }
             }}
           />
@@ -387,7 +345,7 @@ const PropertyList = (props) => {
         )}
         <DividerIcon />
         <RBSheet
-          height={350}
+          height={isDeleteData_Clicked ? 200 : 400}
           ref={refRBSheet}
           closeOnDragDown={true}
           closeOnPressMask={false}
@@ -401,7 +359,12 @@ const PropertyList = (props) => {
             container: PropertyListCSS.bottomModal_container,
           }}
         >
-          <BottomModalData onDelete={propertyDelete} />
+          <BottomModalData
+            onDelete={propertyDelete}
+            isDeletePropertyClicked={isDeleteData_Clicked}
+            onDeleteData={FinalDeleteProperty}
+            Address={Address}
+          />
         </RBSheet>
       </>
     );
@@ -646,14 +609,14 @@ const PropertyList = (props) => {
           <>
             <View style={PropertyListCSS.Container}>
               <View style={PropertyListCSS.flat_MainView}>
-                <TouchableOpacity style={PropertyListCSS.AllView}>
+                {/* <TouchableOpacity style={PropertyListCSS.AllView}>
                   <Text style={PropertyListCSS.item_style}>ALL</Text>
                   <MaterialCommunityIcons
                     name={"check"}
                     size={18}
                     color={_COLORS.Kodie_WhiteColor}
                   />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 <FlatList
                   horizontal
                   showsHorizontalScrollIndicator={false}

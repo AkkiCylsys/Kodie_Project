@@ -54,25 +54,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     color: stepStatus === "finished" ? "#ffffff" : "#ffffff",
     size: 20,
   };
-
-  switch (position) {
-    case 0: {
-      iconConfig.name = stepStatus === "finished" ? "check" : "check";
-      break;
-    }
-    case 1: {
-      iconConfig.name = stepStatus === "finished" ? "check" : "check";
-      break;
-    }
-    case 2: {
-      iconConfig.name = stepStatus === "finished" ? "check" : null;
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
+  iconConfig.name = stepStatus === "finished" ? "check" : "check";
   return iconConfig;
 };
 const List = [
@@ -122,7 +104,7 @@ export default AboutYou = (props) => {
   console.log("email..", email);
 
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [selectManageProperty, setSelectManageProperty] = useState("");
@@ -228,28 +210,29 @@ export default AboutYou = (props) => {
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
+  // const toggleSelection = (lookup_key) => {
+  //   if (selectedServices.includes(lookup_key)) {
+  //     setSelectedServices(
+  //       selectedServices.filter((item) => item !== lookup_key)
+  //       // alert(selectedServices.filter((item) => item !== lookup_key))
+  //     );
+  //   } else {
+  //     setSelectedServices([...selectedServices, lookup_key]);
+  //     // alert([...selectedServices]);
+  //   }
+  // };
+
   const toggleSelection = (lookup_key) => {
     if (selectedServices.includes(lookup_key)) {
-      setSelectedServices(
-        selectedServices.filter((item) => item !== lookup_key)
-        // alert(selectedServices.filter((item) => item !== lookup_key))
+      // Item is already selected, remove it
+      setSelectedServices((prevSelected) =>
+        prevSelected.filter((item) => item !== lookup_key)
       );
     } else {
-      setSelectedServices([...selectedServices, lookup_key]);
-      // alert([...selectedServices]);
+      // Item is not selected, add it
+      setSelectedServices((prevSelected) => [...prevSelected, lookup_key]);
     }
   };
-
-  const handle_key_feature = (lookup_key) => {
-    if (selectedkey_features.includes(lookup_key)) {
-      setSelectedkey_features(
-        selectedkey_features.filter((item) => item !== lookup_key)
-      );
-    } else {
-      setSelectedkey_features([...selectedkey_features, lookup_key]);
-    }
-  };
-
   const renderItemDescribeYourself = ({ item }) => (
     <ServicesBox
       Services_Name={item?.description}

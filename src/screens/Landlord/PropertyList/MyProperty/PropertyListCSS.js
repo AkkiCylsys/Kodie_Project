@@ -74,7 +74,7 @@ export const PropertyListCSS = StyleSheet.create({
     alignSelf: "center",
   },
   buttonView: {
-    flex: 0.7,
+    // flex: 0.7,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

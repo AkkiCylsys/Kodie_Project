@@ -21,7 +21,7 @@ const VacantPropertiesList = (props) => {
             frontSearchIcon
             isFilterImage
             filterImage={IMAGES.filter}
-            height={40}
+            height={48}
           />
         </View>
         <DividerIcon style={VacantPropertiesListStyle.divider} />
