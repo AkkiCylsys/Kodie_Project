@@ -243,7 +243,7 @@ export default SignUp = (props) => {
             <Text
               style={[LABEL_STYLES._texinputLabel, SignUpStyles.cardHeight]}
             >
-              Password
+              Password*
             </Text>
             <View style={SignUpStyles.passwordContainer}>
               <TextInput
@@ -364,7 +364,7 @@ export default SignUp = (props) => {
           />
           <BottomTextsButton
             _LeftButtonText={"Already have an account?"}
-            _RightButtonText={"Login"}
+            _RightButtonText={"  Login"}
             onPress={() => {
               props.navigation.navigate("LoginScreen");
             }}
