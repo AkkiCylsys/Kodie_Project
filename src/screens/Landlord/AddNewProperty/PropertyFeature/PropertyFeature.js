@@ -65,6 +65,7 @@ export default PropertyFeature = (props) => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
+  console.log("key_features_id............", additionalfeatureskeyvalue);
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState([]);
   const [selectedButton, setSelectedButton] = useState(false);
@@ -678,8 +679,13 @@ export default PropertyFeature = (props) => {
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."
-                onChange={(item) => {
-                  setAdditionalFeaturesKeyValue(item);
+                onChange={(items) => {
+                  const selectedKeys = items.map((item) => item);
+                  const uniqueKeys = [...new Set(selectedKeys)];
+                  console.log("Unique Keys:", uniqueKeys);
+                  // Set the state with unique keys
+                  setAdditionalFeaturesKeyValue(uniqueKeys);
+                  // setAdditionalFeaturesKeyValue(item);
                   // alert(item);
                 }}
                 // renderRightIcon={() => (

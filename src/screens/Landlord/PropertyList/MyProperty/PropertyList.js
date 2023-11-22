@@ -110,21 +110,23 @@ const PropertyList = (props) => {
       });
   };
 
-  const propertyDelete = useCallback(async () => {
+  const propertyDelete = async () => {
     // setIsLoading(true);
+    // alert(propertyDelId);
     setIsDeleteData_Clicked(true);
-  }, []);
-  const FinalDeleteProperty = useCallback(async () => {
+  };
+  const FinalDeleteProperty = async () => {
+    // alert(propertyDelId);
     setIsLoading(true);
     setIsDeleteData_Clicked(false);
     refRBSheet.current.close();
 
     try {
-      const propertyIdToDelete = propertyDelId; // Replace with the actual property ID
+      let propertyIdToDelete = propertyDelId;
+      // Replace with the actual property ID
       // const apiUrl = `https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id?property_id=${propertyIdToDelete}`;
       const apiUrl = `https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id`;
 
-      console.log(propertyIdToDelete);
       const response = await fetch(apiUrl, {
         method: "DELETE",
         headers: {
@@ -133,9 +135,9 @@ const PropertyList = (props) => {
           "Content-Type": "application/json",
           // Add any authorization headers if required
         },
-        body: JSON.stringify({ property_id: propertyIdToDelete }),
+        body: JSON.stringify({ property_id: propertyDelId }),
       });
-      console.log("response...............", response);
+      console.log("response...............", response.data);
       if (response.ok) {
         Alert.alert(
           "Property Deleted",
@@ -149,7 +151,7 @@ const PropertyList = (props) => {
       console.error("Error deleting property:", error);
       Alert.alert("Error", "An error occurred. Please try again later.");
     }
-  }, []);
+  };
 
   const handleButtonClick = (filter) => {
     propertyList_Data(filter);
@@ -255,6 +257,7 @@ const PropertyList = (props) => {
                     // propertyDelete(propertyDelId);
                     // alert(item.property_id);
                     setPropertyDelId(item.property_id);
+
                     setAddress(item?.location);
                   }}
                 >
