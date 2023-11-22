@@ -88,6 +88,16 @@ const SignUpSteps = (props) => {
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
 
+  const addressParts = physicalAddress.split(", ");
+
+  const country = addressParts.pop();
+  const state = addressParts.pop();
+  const city = addressParts.join(", ");
+
+  // console.log("Country:", country);
+  // console.log("State:", state);
+  // console.log("City:", city);
+
   let email = props?.route?.params?.email;
   console.log("email...", email);
   const ConfirmAddress = () => {
@@ -417,9 +427,8 @@ const SignUpSteps = (props) => {
         MiddleText={
           IsMap || IsSearch ? "Location" : "Set up your Kodie account"
         }
-        
         onPressLeftButton={() => {
-          IsMap ?setIsMap(false):IsSearch ? setIsSearch(false) : goBack();
+          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}
       />
       <View style={SignUpStepStyle.container}>

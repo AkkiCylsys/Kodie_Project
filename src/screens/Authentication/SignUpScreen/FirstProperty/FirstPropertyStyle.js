@@ -82,62 +82,62 @@ export const FirstPropertyStyle = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  key_feature_Dropdownstyle: { flex: 1,height: 40, },
-  additional:{flex:0.85},
-  mainfeaturesview:{
-    flexDirection:'row',
-    justifyContent:'space-between',
-    marginVertical:12
+  key_feature_Dropdownstyle: { flex: 1, height: 40 },
+  additional: { flex: 0.85 },
+  mainfeaturesview: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 12,
   },
   key_feature_mainView: {
     flexDirection: "row",
-    justifyContent: 'space-between',
-    marginVertical:10
+    justifyContent: "space-between",
+    marginVertical: 10,
   },
-  key_feature_subView: { flex: 1,  },
-  floorsizeview:{
-    flex:0.5,
-    justifyContent:'flex-end',
-    flexDirection:'row'
+  key_feature_subView: { flex: 1 },
+  floorsizeview: {
+    flex: 0.5,
+    justifyContent: "flex-end",
+    flexDirection: "row",
   },
-  flor_input_field:{
+  flor_input_field: {
     borderWidth: 0.5,
     borderRadius: 6,
     borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
     color: "#333",
     fontFamily: FONTFAMILY.K_Medium,
-    textAlign:"center",
-    width:105,
-    height:36
+    textAlign: "center",
+    width: 105,
+    height: 36,
   },
   key_feature_Text: {
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
-  key_feature_Text_view:{
-    flex:1,
+  key_feature_Text_view: {
+    flex: 1,
   },
-  plus_minusview:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    flex:0.7,
+  plus_minusview: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flex: 0.7,
   },
-  menusIconView:{
-    borderWidth:0.5,
-    width:32,
-    height:32,
-    borderRadius:8,
-    borderColor:_COLORS.Kodie_ExtraLightGrayColor,
-    alignContent:'center',
-    alignItems:'center',
-    justifyContent:'center'
+  menusIconView: {
+    borderWidth: 0.5,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  countdata:{
-    fontSize:16,
-    fontFamily:FONTFAMILY.K_Regular,
-    color:_COLORS.Kodie_BlackColor,
+  countdata: {
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_BlackColor,
   },
   icon: {
     marginRight: 5,

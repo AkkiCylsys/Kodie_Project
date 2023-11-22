@@ -211,6 +211,8 @@ const AddPropertyMainPage = (props) => {
   const [CountBathroom, setCountBathroom] = useState(1);
   const [CountParking, setCountParking] = useState(1);
   const [CountParkingStreet, setCountParkingStreet] = useState(1);
+  const [buildingFlorSize, setBuildingFlorSize] = useState("");
+  const [landArea, setLandArea] = useState("");
 
   const AllCountsData = [
     CountBedroom,
@@ -559,7 +561,7 @@ const AddPropertyMainPage = (props) => {
   // handle property details api start to here
   const property_details = () => {
     // const selectedKeyFeature = selectedKeyFeature.join(",");
-    console.log(AllCountsData)
+    console.log(AllCountsData);
     const url = Config.API_URL;
     const additionalApi = url + "add_property_details";
     console.log("Request URL:", additionalApi);
@@ -732,7 +734,7 @@ const AddPropertyMainPage = (props) => {
     handle_parking();
     additional_features();
 
-    property_details()
+    property_details();
     DetailsData();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
@@ -823,8 +825,8 @@ const AddPropertyMainPage = (props) => {
     } else if (currentPage == 2) {
       if (propertyid) {
         handleSaveUpdateImage();
-        console.log('count data............',AllCountsData)
-        alert(AllCountsData)
+        console.log("count data............", AllCountsData);
+        alert(AllCountsData);
       } else {
         handleSaveImage();
       }
@@ -1368,7 +1370,6 @@ const AddPropertyMainPage = (props) => {
                             size={20}
                             onPress={() => {
                               increaseBedroomCount();
-
                             }}
                           />
                         </TouchableOpacity>
@@ -1483,8 +1484,8 @@ const AddPropertyMainPage = (props) => {
                       <View style={FirstPropertyStyle.floorsizeview}>
                         <TextInput
                           style={FirstPropertyStyle.flor_input_field}
-                          value={florSize}
-                          onChangeText={setFlorSize}
+                          value={buildingFlorSize}
+                          onChangeText={setBuildingFlorSize}
                           placeholder="102m2"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
@@ -1501,8 +1502,8 @@ const AddPropertyMainPage = (props) => {
                       <View style={FirstPropertyStyle.floorsizeview}>
                         <TextInput
                           style={FirstPropertyStyle.flor_input_field}
-                          value={florSize}
-                          onChangeText={setFlorSize}
+                          value={landArea}
+                          onChangeText={setLandArea}
                           placeholder="102m2"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
