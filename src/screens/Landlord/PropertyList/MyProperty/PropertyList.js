@@ -303,7 +303,7 @@ const PropertyList = (props) => {
                   onPress={() => {
                     refRBSheet.current.open();
                     // propertyDelete(propertyDelId);
-                    // alert(item.property_id);
+                    alert(item.property_id);
                     setPropertyDelId(item.property_id);
                   }}
                 >
@@ -387,7 +387,7 @@ const PropertyList = (props) => {
         )}
         <DividerIcon />
         <RBSheet
-          height={400}
+          height={350}
           ref={refRBSheet}
           closeOnDragDown={true}
           closeOnPressMask={false}

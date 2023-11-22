@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, Text, Image, FlatList } from "react-native";
 import { BottomModalDataStyle } from "./BottomModalDataStyle";
 import { IMAGES, _COLORS } from "../../../Themes";
 import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import DeleteData from "../DeleteData/DeleteData";
+import RBSheet from "react-native-raw-bottom-sheet";
 const data = [
   {
     id: "1",
@@ -33,15 +35,29 @@ const data = [
 ];
 
 const BottomModalData = (props) => {
-  const navigation = useNavigation(); // Hook to get navigation
+  const refRBSheet = useRef(); // RB Sheet useRef .............
+  const navigation = useNavigation(); // Hook to get navigation.............
+  // Define propertyDelete here
+  // const propertyDelete = (propertyIdToDelete) => {
+  //   props.onDelete(propertyIdToDelete);
+  //   console.log("accept delete...!",propertyIdToDelete);
+  //   alert(propertyIdToDelete,'id.....')
+  // };
+  // const handleDeleteProperty = (propertyIdToDelete) => {
+  //   console.log(propertyIdToDelete, "catch data");
+  //   props.onDelete(propertyIdToDelete);
+  //   console.log("Raul data cath........... ", props.onDelete(propertyIdToDelete));
+  //   console.log("Delete property successful....");
+  //   alert(propertyIdToDelete);
+  // };
 
   const handleDeleteProperty = (propertyDelId) => {
     console.log(propertyDelId, "catch data");
     props.onDelete(propertyDelId);
-    console.log("come data...........", propertyDelId);
     console.log("Raul data cath........... ", props.onDelete(propertyDelId));
+    console.log("Delete property successful....");
+    alert(propertyDelId);
   };
-
   const BottomData = ({ item, index }) => {
     return (
       <>
@@ -52,15 +68,39 @@ const BottomModalData = (props) => {
               navigation.navigate("ViewPropertyDetails");
             }
             if (item.id === "5") {
-              // navigation.navigate("ViewPropertyDetails");
-              handleDeleteProperty();
-              // console.log("Property ID:", item.property_id);
+              // alert(propertyIdToDelete,'id.....')
+              // refRBSheet.current.open();
+              // propertyDelete()
+              // propertyDelete()
+              handleDeleteProperty(propertyDelId)
             }
           }}
         >
           <Image source={item.Img} style={BottomModalDataStyle.Icons} />
           <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
+
+        {/* rbSheet code here */}
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          height={180}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "transparent",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: BottomModalDataStyle.bottomModal_container,
+          }}
+        >
+          {/* <DeleteData onDelete={propertyDelete}/> */}
+          {/* {typeof props.onDelete === "function" && (
+            <DeleteData onDelete={props.onDelete} />
+          )} */}
+        </RBSheet>
       </>
     );
   };
