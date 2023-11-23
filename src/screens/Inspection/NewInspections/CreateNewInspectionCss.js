@@ -76,7 +76,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     borderRadius: 6,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 2,
     marginBottom: 12,
   },

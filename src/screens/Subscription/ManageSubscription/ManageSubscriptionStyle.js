@@ -55,7 +55,7 @@ backgroundColor:_COLORS.Kodie_WhiteColor
     backgroundColor:_COLORS.Kodie_MediumGrayColor,
     shadowOffset: {width: -2, height: 2},  
     shadowColor: _COLORS.Kodie_MediumGrayColor,  
-    shadowOpacity: 0.5,  
+    shadowOpacity:Platform.OS =='android'? 0.5:null,
     shadowRadius: 3, 
     marginTop:10 ,
     elevation:5
@@ -102,7 +102,7 @@ SubscriptionDataView:{
   //backgroundColor:_COLORS.Kodie_MediumGrayColor,
   shadowOffset: {width: -2, height: 4},  
   shadowColor: _COLORS.Kodie_BlackColor,  
-  shadowOpacity: 0.7,  
+  shadowOpacity:Platform.OS =='android'? 0.7:null, 
   shadowRadius: 8,
   elevation: 20,  
 },

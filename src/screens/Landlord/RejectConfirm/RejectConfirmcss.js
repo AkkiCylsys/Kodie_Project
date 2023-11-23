@@ -24,7 +24,7 @@ export const RejectConfirmCss = StyleSheet.create({
       ios: {
         shadowColor: _COLORS.Kodie_GrayColor,
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.5,
+        shadowOpacity:Platform.OS =='android'? 0.5:null,
         shadowRadius: 4,
       },
       android: {
@@ -62,7 +62,7 @@ export const RejectConfirmCss = StyleSheet.create({
 
     shadowColor: _COLORS.Kodie_GrayColor,
     shadowOffset: { height: 5, width: 2 },
-    shadowOpacity: 1,
+    shadowOpacity:Platform.OS =='android'? 1:null,
     shadowRadius: 4,
     elevation: 7,
     backgroundColor: "white",

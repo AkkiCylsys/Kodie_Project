@@ -52,11 +52,7 @@ import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
-const data = [
-  { label: "Bharat", value: "1" },
-  { label: "Australia", value: "2" },
-  { label: "America", value: "3" },
-];
+
 const Detail = [
   {
     id: "1",
@@ -211,6 +207,8 @@ const AddPropertyMainPage = (props) => {
   const [CountBathroom, setCountBathroom] = useState(1);
   const [CountParking, setCountParking] = useState(1);
   const [CountParkingStreet, setCountParkingStreet] = useState(1);
+  const [buildingFlorSize, setBuildingFlorSize] = useState("");
+  const [landArea, setLandArea] = useState("");
 
   const AllCountsData = [
     CountBedroom,
@@ -374,19 +372,19 @@ const AddPropertyMainPage = (props) => {
   const refRBSheet = useRef();
 
   const handleImageNameChange = (multipleImages) => {
-    const imageSizeLimit = 2 * 1024 * 1024; // 2 MB in bytes
+    // const imageSizeLimit = 2 * 1024 * 1024; // 2 MB in bytes
 
-    const imagesWithinSizeLimit = multipleImages.filter(
-      (image) => image.size <= imageSizeLimit
-    );
+    // const imagesWithinSizeLimit = multipleImages.filter(
+    //   (image) => image.size <= imageSizeLimit
+    // );
 
-    if (imagesWithinSizeLimit.length === multipleImages.length) {
-      setMultiImageName(multipleImages);
-      refRBSheet.current.close();
-    } else {
-      Alert.alert("Warning", "Image size should not exceed 2 MB.");
-    }
-    // setMultiImageName(multipleImages);
+    // if (imagesWithinSizeLimit.length === multipleImages.length) {
+    //   setMultiImageName(multipleImages);
+    //   refRBSheet.current.close();
+    // } else {
+    //   Alert.alert("Warning", "Image size should not exceed 2 MB.");
+    // }
+    setMultiImageName(multipleImages);
     console.log("................ImageNAme", multipleImages);
     console.log("................ImageNAme", multipleImages.path);
   };
@@ -559,7 +557,7 @@ const AddPropertyMainPage = (props) => {
   // handle property details api start to here
   const property_details = () => {
     // const selectedKeyFeature = selectedKeyFeature.join(",");
-    console.log(AllCountsData)
+    console.log(AllCountsData);
     const url = Config.API_URL;
     const additionalApi = url + "add_property_details";
     console.log("Request URL:", additionalApi);
@@ -631,6 +629,7 @@ const AddPropertyMainPage = (props) => {
           setIsLoading(false);
           console.log("propertyData....", response.data.data);
           setProperty_Data(response.data.data);
+          setProperty_value(property_Detail[0]?.property_type_id);
         } else {
           console.error("property_type_error:", response.data.error);
           // alert(response.data.error);
@@ -661,7 +660,7 @@ const AddPropertyMainPage = (props) => {
           console.log("propertyDetail....", response.data.property_details);
           setProperty_Details(response.data.property_details);
           setLocation(response.data.property_details[0].location);
-          setProperty_value("hello");
+          setProperty_value(response.data.property_details[0].property_type_id);
           setPropertyDesc(
             response.data.property_details[0].property_description
           );
@@ -731,7 +730,7 @@ const AddPropertyMainPage = (props) => {
     handle_parking();
     additional_features();
 
-    property_details()
+    property_details();
     DetailsData();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
@@ -822,8 +821,8 @@ const AddPropertyMainPage = (props) => {
     } else if (currentPage == 2) {
       if (propertyid) {
         handleSaveUpdateImage();
-        console.log('count data............',AllCountsData)
-        alert(AllCountsData)
+        console.log("count data............", AllCountsData);
+        alert(AllCountsData);
       } else {
         handleSaveImage();
       }
@@ -972,6 +971,7 @@ const AddPropertyMainPage = (props) => {
     }
   };
   const handleSaveUpdateImage = async () => {
+    refRBSheet.current.close();
     const formData = new FormData();
     formData.append("user", property_Data_id || propertyid);
     console.log("kljproperty_Data_id", property_Data_id);
@@ -983,7 +983,7 @@ const AddPropertyMainPage = (props) => {
         "images[]",
         {
           uri: path,
-          name: `image_${index}.jpg`,
+          name: `image.jpg`,
           type: "image/jpeg",
         },
         path
@@ -1023,7 +1023,6 @@ const AddPropertyMainPage = (props) => {
 
       if (response.data.status === true) {
         setIsLoading(false);
-        MultiImageName ? refRBSheet.current.close() : null;
         // alert(response.data.message);
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         // setCurrentPage(0);
@@ -1123,7 +1122,11 @@ const AddPropertyMainPage = (props) => {
                   labelField="description"
                   valueField="lookup_key"
                   placeholder="Select property type"
-                  value={property_value || "hello"}
+                  value={
+                    property_Detail[0]?.property_type
+                      ? property_Detail[0]?.property_type
+                      : property_value
+                  }
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
                     setPropertyName(item.description);
@@ -1363,7 +1366,6 @@ const AddPropertyMainPage = (props) => {
                             size={20}
                             onPress={() => {
                               increaseBedroomCount();
-
                             }}
                           />
                         </TouchableOpacity>
@@ -1478,8 +1480,8 @@ const AddPropertyMainPage = (props) => {
                       <View style={FirstPropertyStyle.floorsizeview}>
                         <TextInput
                           style={FirstPropertyStyle.flor_input_field}
-                          value={florSize}
-                          onChangeText={setFlorSize}
+                          value={buildingFlorSize}
+                          onChangeText={setBuildingFlorSize}
                           placeholder="102m2"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
@@ -1496,8 +1498,8 @@ const AddPropertyMainPage = (props) => {
                       <View style={FirstPropertyStyle.floorsizeview}>
                         <TextInput
                           style={FirstPropertyStyle.flor_input_field}
-                          value={florSize}
-                          onChangeText={setFlorSize}
+                          value={landArea}
+                          onChangeText={setLandArea}
                           placeholder="102m2"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
@@ -1675,7 +1677,7 @@ const AddPropertyMainPage = (props) => {
                       data={DATA}
                       labelField="label"
                       valueField="value"
-                      placeholder="Select additional features"
+                      placeholder="Add features such as pool,aircon,balcony etc."
                       value={additionalfeatureskeyvalue}
                       search
                       searchPlaceholder="Search..."
@@ -1953,7 +1955,7 @@ const AddPropertyMainPage = (props) => {
               <View style={PropertyReviewStyle.subContainer}>
                 <View style={PropertyReviewStyle.apartment_View}>
                   <Text style={PropertyReviewStyle.apartment_text}>
-                    {property_Detail[0]?.property_type || property_value}
+                    {property_Detail[0]?.property_type}
                   </Text>
                   <View style={PropertyReviewStyle.share_View}>
                     <TouchableOpacity>
@@ -1974,7 +1976,7 @@ const AddPropertyMainPage = (props) => {
                   </View>
                 </View>
                 <Text style={PropertyReviewStyle.melbourne_Text}>
-                  {country || "Melbourne"}
+                  {property_Detail[0]?.location || "Melbourne"}
                 </Text>
                 <View style={PropertyReviewStyle.share_View}>
                   <Entypo
@@ -2123,7 +2125,7 @@ const AddPropertyMainPage = (props) => {
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={goBack}
-        MiddleText={"Add new property"}
+        MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
       <View style={{ flex: 1 }}>
         {/* <View style={{ marginTop: 15 }}>

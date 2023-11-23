@@ -4,18 +4,9 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { View, Text, Alert, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { _COLORS } from "../../../Themes";
-const data = [
-  {
-    name: "react-native",
-  },
-  {
-    name: "react",
-  },
-  {
-    name: "react-native",
-  },
-];
+import { _COLORS ,LABEL_STYLES} from "../../../Themes";
+import DividerIcon from "../../Atoms/Devider/DividerIcon";
+
 const SwipeList = ({ data }) => {
   return (
     <SwipeListView
@@ -23,6 +14,8 @@ const SwipeList = ({ data }) => {
       renderItem={(rowdata, rowmap, index) => (
         <View style={SwiperListStyle.rowFront} key={index}>
           <Text> {rowdata.item.name} </Text>
+          {/* -------------- */}
+
         </View>
       )}
       renderHiddenItem={(data, index) => (
