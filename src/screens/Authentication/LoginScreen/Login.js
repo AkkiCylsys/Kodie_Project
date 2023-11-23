@@ -233,6 +233,7 @@ export default Login = (props) => {
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
       //alert(res)
+      console.log("login_data...", res);
       setIsLoading(false);
       if (res == 401) {
         setIsLoading(false);
@@ -312,7 +313,7 @@ export default Login = (props) => {
   };
 
   //send_verification_code Api code here....
-  const send_verification_code = () => { 
+  const send_verification_code = () => {
     const url = Config.API_URL;
     const verification_code_url = url + "user_reset_password_email_verify";
     console.log("Request URL:", verification_code_url);
