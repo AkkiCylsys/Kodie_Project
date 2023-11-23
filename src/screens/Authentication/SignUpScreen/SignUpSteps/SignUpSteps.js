@@ -12,6 +12,7 @@ import {
   PermissionsAndroid,
   Image,
   FlatList,
+  // Platform
 } from "react-native";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import StepIndicator from "react-native-step-indicator";
@@ -264,7 +265,17 @@ const SignUpSteps = (props) => {
   //  go back button...............
   const goBack = () => {
     props.navigation.navigate("LoginScreen");
+    
   };
+  // const goBack = () => {
+  //   console.log("Detected Platform:", Platform.OS);
+  //   if (Platform.OS === 'ios' || Platform.OS === 'android'){
+  //     props.navigation.navigate("LoginScreen");
+  //   } else {
+  //     props.navigation.navigate("LoginScreen"); 
+  //   }
+  // };
+  
   const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage

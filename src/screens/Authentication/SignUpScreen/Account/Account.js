@@ -131,9 +131,11 @@ export default Account = (props) => {
       props.navigation.navigate("AboutYou");
       // alert("done")
     }
+
   };
   const goBack = () => {
     props.navigation.pop();
+    // props.navigation.navigate("SignUp");
   };
   useEffect(() => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {

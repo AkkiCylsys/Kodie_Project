@@ -8,6 +8,9 @@ import AddLeaseDetails from "./AddLeaseDetails/AddLeaseDetails";
 import LeaseSummary from "./LeaseSummary/LeaseSummary";
 export default Leases = (props) => {
   const refRBSheet = useRef();
+  const handleClose = () =>{
+    refRBSheet.current.close()
+  }
   return (
     <View style={LeasesStyle.mainContainer}>
       <ScrollView>
@@ -39,7 +42,7 @@ export default Leases = (props) => {
             container: LeasesStyle.bottomModal_container,
           }}
         >
-          <AddLeaseDetails />
+          <AddLeaseDetails onClose={handleClose} />
         </RBSheet>
       </ScrollView>
     </View>
