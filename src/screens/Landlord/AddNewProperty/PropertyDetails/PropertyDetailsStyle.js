@@ -53,6 +53,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     height: 48,
     paddingHorizontal: 10,
   },
+  error_text: { color: "red", marginLeft: 10 },
   locationIcon: {
     marginLeft: 15,
   },

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -25,6 +25,7 @@ import CircleProgress from "../../components/Molecules/CircleProgress/CircleProg
 import SelectProperties from "../../components/Molecules/SelectProperties/SelectProperties";
 import SelectDate from "../../components/Molecules/SelectDate/SelectDate";
 import RBSheet from "react-native-raw-bottom-sheet";
+import { BackHandler } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 const IncomeData = [
   {
@@ -87,12 +88,37 @@ export default Dashboard = (props) => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
+  // props.onPress(handleClosePopup);
+  // alert(handleClosePopup, "close");
+  // console.log(handleClosePopup, "close");
 
+  const CloseUp = () => {
+    refRBSheet.current.close();
+    refRBSheet2.current.close();
+  };
   // const Login_response = useSelector(
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector((state) => state.authenticationReducer.data);
+
+  //---click back button closing the app
+  useEffect(() => {
+    const handleBackPress = () => {
+      if (navigation.isFocused()) {
+        BackHandler.exitApp();
+        return true;
+      }
+      return false;
+    };
+
+    BackHandler.addEventListener("hardwareBackPress", handleBackPress);
+    return () => {
+      BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
+    };
+  }, [navigation]);
+
+  //---click back button closing the app
 
   const Income_render = ({ item, index }) => {
     return (
@@ -115,6 +141,7 @@ export default Dashboard = (props) => {
       </>
     );
   };
+
   const NoticeData = ({ item, index }) => {
     return (
       <>
@@ -401,7 +428,7 @@ export default Dashboard = (props) => {
           container: DashboardStyle.bottomModal_container,
         }}
       >
-        <SelectProperties />
+        <SelectProperties onClose={CloseUp} />
       </RBSheet>
 
       {/* RBSheet 2 define here */}
@@ -420,7 +447,7 @@ export default Dashboard = (props) => {
           container: DashboardStyle.bottomModal_container,
         }}
       >
-        <SelectDate />
+        <SelectDate onClose={CloseUp} />
       </RBSheet>
     </View>
   );

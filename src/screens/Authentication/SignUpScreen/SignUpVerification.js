@@ -173,9 +173,15 @@ export default SignUpVerification = (props) => {
   };
   //.......... Handle button define here
   const handleSubmit = () => {
+    const regex = /^[0-9]+$/;
     if (value.trim() === "") {
       setValueError("OTP is required.");
-    } else {
+    }else if( value.trim().length < 6 ){
+      setValueError("incomplete OTP. Please enter a valid OTP.");
+    } else if(!regex.test(value.trim())){
+      setValueError("Invalid OTP. Please enter only digits.");
+    } 
+    else {
       handle_Signup_verification();
     }
   };

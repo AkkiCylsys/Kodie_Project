@@ -43,7 +43,6 @@ export default PropertyDetails = (props) => {
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
   const [property_value, setProperty_value] = useState("");
@@ -55,6 +54,37 @@ export default PropertyDetails = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
+  // const [locationError, setlocationError] = useState("");
+  // const [propertytypeError, setpropertytypeError] = useState("");
+  // const validateFields = () => {
+  //   if (!location) {
+  //     // alert('Please enter a location.');
+  //     setlocationError("Please enter a location.");
+  //   } else if (!property_value) {
+  //     setpropertytypeError("Please select a property type.");
+  //   } else {
+  //     null;
+  //   }
+  // };
+
+  // const handleLocation = (selected) => {
+  //   setLocation(selected);
+  //   if (!selected) {
+  //     setlocationError("Please enter a location");
+  //   } else {
+  //     setlocationError("");
+  //   }
+  // };
+
+  // const handlePropertyValue = (selectedValue) => {
+  //   setProperty_value(selectedValue);
+  //   if (!selectedValue) {
+  //     setpropertytypeError("Please select a property type.");
+  //   } else {
+  //     setpropertytypeError("");
+  //   }
+  // };
+
   useEffect(() => {
     handleProperty_Type();
     DetailsData();
@@ -108,6 +138,7 @@ export default PropertyDetails = (props) => {
         setIsLoading(false);
       });
   };
+
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: "feed",
@@ -444,11 +475,17 @@ export default PropertyDetails = (props) => {
                     onChangeText={setLocation}
                     onFocus={() => {
                       setIsSearch(true);
+                      // setlocationError("");
                     }}
                     placeholder="Search location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
+                {/* {locationError ? (
+                  <Text style={PropertyDetailsStyle.error_text}>
+                    {locationError}
+                  </Text>
+                ) : null} */}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
@@ -477,8 +514,15 @@ export default PropertyDetails = (props) => {
                   }
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
+                    // handlePropertyValue()
+                    // setpropertytypeError(""); 
                   }}
                 />
+                {/* {propertytypeError ? (
+                  <Text style={PropertyDetailsStyle.error_text}>
+                    {propertytypeError}
+                  </Text>
+                ) : null} */}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
@@ -487,7 +531,7 @@ export default PropertyDetails = (props) => {
                 <TextInput
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
-                  onChangeText={setPropertyDesc}
+                  onBlur={setPropertyDesc}
                   placeholder="Describe your property here..."
                   placeholderTextColor="#999"
                   multiline
@@ -546,6 +590,9 @@ export default PropertyDetails = (props) => {
                   _ButtonText={"Next"}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
+                    // handleLocation(location);
+                    // handlePropertyValue(property_value);
+                    // if (handleLocation() ||handlePropertyValue()) {
                     props.navigation.navigate("PropertyFeature", {
                       location: location,
                       property_value: property_value,
@@ -555,6 +602,7 @@ export default PropertyDetails = (props) => {
                       longitude: longitude,
                       propertyid: propertyid,
                     });
+                    // }
                   }}
                 />
               </View>

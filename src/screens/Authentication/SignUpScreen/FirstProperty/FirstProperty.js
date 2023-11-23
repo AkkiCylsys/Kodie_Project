@@ -1199,6 +1199,7 @@ export default FirstProperty = (props) => {
                         onChangeText={setBuildingFlorSize}
                         placeholder="102m2"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        keyboardType='number-pad'
                       />
                     </View>
                   </View>
@@ -1217,6 +1218,8 @@ export default FirstProperty = (props) => {
                         onChangeText={setLandArea}
                         placeholder="102m2"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        keyboardType='number-pad'
+
                       />
                     </View>
                   </View>
@@ -1314,7 +1317,7 @@ export default FirstProperty = (props) => {
             </View>
             <View style={{ marginHorizontal: 16 }}>
               <CustomSingleButton
-                _ButtonText={"save"}
+                _ButtonText={"Save"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
                   handleSaveSignup();

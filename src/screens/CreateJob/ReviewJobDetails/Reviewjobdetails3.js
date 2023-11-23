@@ -1,13 +1,13 @@
 import { View, Text, Image, ScrollView } from "react-native";
 import React, { useState } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
-import {_goBack } from '../../../services/CommonServices/CommonMethods'
+import {_goBack } from '../../../services/CommonServices/CommonMethods';
 import { _COLORS,IMAGES } from "../../../Themes";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
-import ReviewjobdetailsStyle3 from '../ReviewJobDetails/ReviewjobdetailsStyle3'
+import ReviewjobdetailsStyle3 from '../ReviewJobDetails/ReviewjobdetailsStyle3';
 const data = [
   { label: "Bharat", value: "1" },
   { label: "Australia", value: "2" },

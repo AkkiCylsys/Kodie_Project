@@ -70,6 +70,11 @@ export default PropertyImages = (props) => {
       });
   };
 
+  //popup closeup code here
+  const CloseUp = () => {
+    refRBSheet.current.close();
+    console.log('close')
+  };
   const imagePaths = MultiImageName.map((image) => image.path);
   // setImagePaths(imagePath);
   // alert(imagePaths);
@@ -518,6 +523,7 @@ export default PropertyImages = (props) => {
               }}
             >
               <UploadMultipleImage
+              onClose={CloseUp}
                 heading_Text={"Upload image"}
                 multipleImage={handleImageNameChange}
               />

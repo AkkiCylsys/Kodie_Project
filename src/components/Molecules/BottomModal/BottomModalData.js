@@ -53,7 +53,6 @@ const BottomModalData = (props) => {
   const handleDeleteProperty = (propertyDelId) => {
     console.log(propertyDelId, "catch data");
     props.onDelete(propertyDelId);
-    console.log("come data...........", propertyDelId);
     console.log("Raul data cath........... ", props.onDelete(propertyDelId));
     // alert(propertyDelId);
   };
@@ -67,7 +66,6 @@ const BottomModalData = (props) => {
     );
     // alert(propertyDelId);
   };
-
   const BottomData = ({ item, index }) => {
     return (
       <>
