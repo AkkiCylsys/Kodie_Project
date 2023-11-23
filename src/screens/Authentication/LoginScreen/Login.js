@@ -11,6 +11,7 @@ import {
   ActivityIndicator,
   Platform,
   Button,
+
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
 import { LoginStyles } from "./LoginCss";
@@ -223,6 +224,7 @@ export default Login = (props) => {
     } else if (password.trim() === "") {
       setPasswordError("Password is required.");
     } else {
+     
       // makeApiLogin();
       //alert("click")
       setIsLoading(true);
@@ -407,6 +409,8 @@ export default Login = (props) => {
       });
   };
 
+  
+
   return (
     <View style={LoginStyles.container}>
       <ScrollView>
@@ -507,7 +511,7 @@ export default Login = (props) => {
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <BottomTextsButton
-              _LeftButtonText={"Don't have an account yet?"}
+              _LeftButtonText={"Don't have an account yet? "}
               _RightButtonText={"Sign up"}
               onPress={() => {
                 props.navigation.navigate("SignUp");
