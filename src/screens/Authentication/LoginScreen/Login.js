@@ -88,6 +88,13 @@ export default Login = (props) => {
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
+  const handleLogin = () => {
+    // Your login logic here
+    // ...
+
+    // Dismiss the keyboard
+    Keyboard.dismiss();
+  };
   const handleToggleResetPassword = () => {
     setShowResetPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -229,7 +236,6 @@ export default Login = (props) => {
     } else if (password.trim() === "") {
       setPasswordError("Password is required.");
     } else {
-     
       // makeApiLogin();
       //alert("click")
       setIsLoading(true);
@@ -321,7 +327,7 @@ export default Login = (props) => {
   };
 
   //send_verification_code Api code here....
-  const send_verification_code = () => { 
+  const send_verification_code = () => {
     const url = Config.API_URL;
     const verification_code_url = url + "user_reset_password_email_verify";
     console.log("Request URL:", verification_code_url);
@@ -415,8 +421,6 @@ export default Login = (props) => {
         setIsLoading(false);
       });
   };
-
-  
 
   return (
     <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -537,10 +541,10 @@ export default Login = (props) => {
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={false}
-        height={Platform.OS === "android" ? 450 : 600}
+        height={Platform.OS === "android" ? 550 : 800}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -826,12 +830,21 @@ export default Login = (props) => {
           {/* ------ Loder section start code  here ........... */}
           {isLoading && (
             <View style={LoginStyles.secondloder}>
-              <ActivityIndicator size={40} color={_COLORS.Kodie_BlackColor} />
+              <ActivityIndicator size={30} color={_COLORS.Kodie_BlackColor} />
             </View>
           )}
 
+
           {/* ------ Next button section start code  here ........... */}
-          <View style={{ marginBottom: 800 }}>
+          <View
+            style={[
+              {
+                flex: 1,
+                marginBottom: 800,
+                marginTop: isClick === 2 ? 70 : 190,
+              },
+            ]}
+          >
             <CustomSingleButton
               onPress={handleButtonPress}
               _ButtonText={buttonLabels[isClick]}

@@ -1138,7 +1138,7 @@ export default FirstProperty = (props) => {
                         onChangeText={setBuildingFlorSize}
                         placeholder="102m2"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                        keyboardType='number-pad'
+                        keyboardType="number-pad"
                       />
                     </View>
                   </View>
@@ -1157,8 +1157,7 @@ export default FirstProperty = (props) => {
                         onChangeText={setLandArea}
                         placeholder="102m2"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                        keyboardType='number-pad'
-
+                        keyboardType="number-pad"
                       />
                     </View>
                   </View>
@@ -1199,7 +1198,7 @@ export default FirstProperty = (props) => {
                           <Text style={FirstPropertyStyle.textSelectedStyle}>
                             {item.FeatureName}
                           </Text>
-                          <AntDesign color="black" name="close" size={17} />
+                          <AntDesign color="white" name="close" size={17} />
                         </View>
                       </TouchableOpacity>
                     )}
@@ -1207,9 +1206,18 @@ export default FirstProperty = (props) => {
                 </View>
               </View>
 
-              <Text style={FirstPropertyStyle.AutoList_text}>
-                {"Auto-list property on Kodie property marketplace "}
-              </Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={FirstPropertyStyle.AutoList_text}>
+                  {"Auto-list property on Kodie property marketplace "}
+                </Text>
+                <TouchableOpacity style={{alignSelf:"center",marginTop:5}}>
+                <AntDesign
+                  name="questioncircle"
+                  size={20}
+                  color="#8AFBA5"
+                />
+                </TouchableOpacity>
+              </View>
               <RowButtons
                 LeftButtonText={"Yes"}
                 leftButtonbackgroundColor={
