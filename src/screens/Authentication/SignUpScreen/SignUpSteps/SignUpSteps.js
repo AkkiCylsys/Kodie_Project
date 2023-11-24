@@ -279,17 +279,16 @@ const SignUpSteps = (props) => {
   //  go back button...............
   const goBack = () => {
     props.navigation.navigate("LoginScreen");
-    
   };
   // const goBack = () => {
   //   console.log("Detected Platform:", Platform.OS);
   //   if (Platform.OS === 'ios' || Platform.OS === 'android'){
   //     props.navigation.navigate("LoginScreen");
   //   } else {
-  //     props.navigation.navigate("LoginScreen"); 
+  //     props.navigation.navigate("LoginScreen");
   //   }
   // };
-  
+
   const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
@@ -372,7 +371,8 @@ const SignUpSteps = (props) => {
             <TextInput
               style={AccountStyle.input}
               value={mobileNumber}
-              onChangeText={validateMobileNumber}
+              onChangeText={setMobileNumber}
+              onBlur={() => validateMobileNumber(mobileNumber)}
               placeholder="Enter your phone number"
               placeholderTextColor="#999"
               keyboardType="phone-pad"
