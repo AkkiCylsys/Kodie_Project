@@ -54,6 +54,9 @@ export default PropertyDetails = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
+  const [city , setCity] = useState("");
+  const [state , setState] = useState('');
+  const [country , setCountry] = useState('')
   // const [locationError, setlocationError] = useState("");
   // const [propertytypeError, setpropertytypeError] = useState("");
   // const validateFields = () => {
@@ -432,9 +435,16 @@ export default PropertyDetails = (props) => {
               setlongitude(details.geometry.location.lng);
               setIsSearch(false);
               setIsMap(true);
+              const city = details.address_components[0].long_name;
+              const state = details.address_components[3].long_name;
+              const country = details.address_components[4].long_name;
               setLocation(details.formatted_address);
+              setCity(city);
+              setState(state);
+              setCountry(country);
               console.log("locationSearch....", location);
               console.log("details.......", details);
+              console.log(city,state,country,'location rahul..........');
             }}
           />
         ) : (
@@ -531,7 +541,7 @@ export default PropertyDetails = (props) => {
                 <TextInput
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
-                  onBlur={setPropertyDesc}
+                  onChangeText={setPropertyDesc}
                   placeholder="Describe your property here..."
                   placeholderTextColor="#999"
                   multiline
@@ -561,7 +571,7 @@ export default PropertyDetails = (props) => {
                 }
                 onPressLeftButton={() => {
                   setSelectedButton(false);
-                  setSelectedButtonId(1);
+                  setSelectedButtonId(0);
                   // alert(selectedButtonId)
                 }}
                 RightButtonText={"No"}
@@ -582,7 +592,7 @@ export default PropertyDetails = (props) => {
                 }
                 onPressRightButton={() => {
                   setSelectedButton(true);
-                  setSelectedButtonId(2);
+                  setSelectedButtonId(1);
                 }}
               />
               <View style={PropertyDetailsStyle.btnView}>
@@ -601,6 +611,9 @@ export default PropertyDetails = (props) => {
                       latitude: latitude,
                       longitude: longitude,
                       propertyid: propertyid,
+                      city:city,
+                      state:state,
+                      country:country
                     });
                     // }
                   }}
