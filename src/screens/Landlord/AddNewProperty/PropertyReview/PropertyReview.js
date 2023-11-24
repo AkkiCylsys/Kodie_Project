@@ -97,7 +97,9 @@ export default PropertyReview = (props) => {
       <>
         <View style={DetailsStyle.DetailsView}>
           <Image source={item.images} style={DetailsStyle.DetailsIcon} />
-          <Text style={DetailsStyle.details_text}>{item.name}</Text>
+          <Text style={DetailsStyle.details_text}>{`${Object.keys(item)[0]}: ${
+            Object.values(item)[0]
+          }`}</Text>
         </View>
       </>
     );
@@ -113,12 +115,12 @@ export default PropertyReview = (props) => {
           <>
             <Text style={DetailsStyle.welcome_Text}>
               {property_Detail[0]?.property_description}
-              Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
+              {/* Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
               apartment boasts modern interior finishes and a spacious extended
-              balcony. As you enter, you...
+              balcony. As you enter, you... */}
             </Text>
             <FlatList
-              data={Detail}
+              data={JSON.parse(property_Detail[0]?.key_features)}
               scrollEnabled
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{}}
@@ -442,7 +444,7 @@ export default PropertyReview = (props) => {
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
-            {property_Detail[0]?.location || "Melbourne"}
+            {property_Detail[0]?.State || ""}
           </Text>
           <View style={PropertyReviewStyle.share_View}>
             <Entypo
