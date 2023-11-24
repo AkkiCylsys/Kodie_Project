@@ -87,29 +87,6 @@ export default PropertyDetails = (props) => {
   //     setpropertytypeError("");
   //   }
   // };
-
-  const handle_next_btn = () => {
-    if (location == null || location == "") {
-      setlocationError("Please enter a location");
-    } else if (
-      property_value == null ||
-      property_value == "" ||
-      property_value
-    ) {
-      setpropertytypeError(true);
-    } else {
-      props.navigation.navigate("PropertyFeature", {
-        location: location,
-        property_value: property_value,
-        propertyDesc: propertyDesc,
-        selectedButtonId: selectedButtonId,
-        latitude: latitude,
-        longitude: longitude,
-        propertyid: propertyid,
-      });
-    }
-  };
-
   useEffect(() => {
     handleProperty_Type();
     DetailsData();
@@ -637,18 +614,8 @@ export default PropertyDetails = (props) => {
                       state:state,
                       country:country
                     });
-                    // }
-
-                    // props.navigation.navigate("PropertyFeature", {
-                    //   location: location,
-                    //   property_value: property_value,
-                    //   propertyDesc: propertyDesc,
-                    //   selectedButtonId: selectedButtonId,
-                    //   latitude: latitude,
-                    //   longitude: longitude,
-                    //   propertyid: propertyid,
-                    // });
-                    handle_next_btn();
+                   
+                    
                   }}
                 />
               </View>
