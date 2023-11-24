@@ -176,14 +176,17 @@ export default SignUpVerification = (props) => {
     const regex = /^[0-9]+$/;
     if (value.trim() === "") {
       setValueError("OTP is required.");
-    }else if( value.trim().length < 6 ){
+    } else if (value.trim().length < 6) {
       setValueError("incomplete OTP. Please enter a valid OTP.");
-    } else if(!regex.test(value.trim())){
+    } else if (!regex.test(value.trim())) {
       setValueError("Invalid OTP. Please enter only digits.");
-    } 
-    else {
+    } else {
       handle_Signup_verification();
     }
+  };
+  const handlePaste = (clipboard) => {
+    // Process the pasted value (clipboard) as needed
+    setValue(clipboard);
   };
 
   return (
@@ -209,6 +212,7 @@ export default SignUpVerification = (props) => {
             value={value}
             onChangeText={setValue}
             onBlur={() => handleverification_code(value)}
+            onPaste={(clipboard) => handlePaste(clipboard)}
             cellCount={CELL_COUNT}
             rootStyle={SignUpVerificationStyle.CodeField}
             keyboardType="number-pad"

@@ -515,7 +515,7 @@ export default PropertyDetails = (props) => {
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
                     // handlePropertyValue()
-                    // setpropertytypeError(""); 
+                    // setpropertytypeError("");
                   }}
                 />
                 {/* {propertytypeError ? (
@@ -531,7 +531,8 @@ export default PropertyDetails = (props) => {
                 <TextInput
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
-                  onBlur={setPropertyDesc}
+                  onChange={setPropertyDesc}
+                  // onBlur={setPropertyDesc}
                   placeholder="Describe your property here..."
                   placeholderTextColor="#999"
                   multiline

@@ -484,6 +484,7 @@ export default FirstProperty = (props) => {
         setIsLoading(false);
       });
   };
+  
   const additional_features = () => {
     const url = Config.API_URL;
     const additionalApi = url + "key_features";

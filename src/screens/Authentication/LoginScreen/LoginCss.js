@@ -8,6 +8,7 @@ export const LoginStyles = StyleSheet.create({
   logoContainer: {
     alignItems: "center",
     marginTop: 120,
+    
   },
   logo: {
     width: 210,
@@ -134,7 +135,7 @@ export const LoginStyles = StyleSheet.create({
   },
   secondloder: {
     flex: 1,
-    marginVertical: 25,
+    marginVertical:10,
     alignItems: "center",
   },
   error_text: { color: "red", marginLeft: 10 },

@@ -69,6 +69,7 @@ const SignUpSteps = (props) => {
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("signup_response.....", signup_response);
+
   const [isLoading, setIsLoading] = useState(false);
   const ref = React.useRef(null);
   const scrollViewRef = useRef();
@@ -279,17 +280,17 @@ const SignUpSteps = (props) => {
   //  go back button...............
   const goBack = () => {
     props.navigation.navigate("LoginScreen");
-    
+    // props.navigation.pop();
   };
   // const goBack = () => {
   //   console.log("Detected Platform:", Platform.OS);
   //   if (Platform.OS === 'ios' || Platform.OS === 'android'){
   //     props.navigation.navigate("LoginScreen");
   //   } else {
-  //     props.navigation.navigate("LoginScreen"); 
+  //     props.navigation.navigate("LoginScreen");
   //   }
   // };
-  
+
   const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage

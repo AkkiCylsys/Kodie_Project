@@ -14,7 +14,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
-
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
 import { LoginStyles } from "./LoginCss";
@@ -218,8 +217,6 @@ export default Login = (props) => {
 
   //... inner reset password submit button variable define here
   const handleSubmit = async () => {
-    Keyboard.dismiss();
-
     if (email.trim() === "") {
       setEmailError("Email is required!");
     } else if (!validateEmail(email)) {
@@ -229,9 +226,9 @@ export default Login = (props) => {
     } else if (password.trim() === "") {
       setPasswordError("Password is required.");
     } else {
-     
       // makeApiLogin();
       //alert("click")
+      Keyboard.dismiss();
       setIsLoading(true);
       let data = {
         email: email,
@@ -263,7 +260,6 @@ export default Login = (props) => {
           );
         }
       }
- 
     }
   };
 
@@ -416,10 +412,8 @@ export default Login = (props) => {
       });
   };
 
-  
-
   return (
-    <View  style={LoginStyles.container}>
+    <View style={LoginStyles.container}>
       <ScrollView>
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
@@ -646,7 +640,7 @@ export default Login = (props) => {
                       isPlaying
                       trailColor={_COLORS.Kodie_lightGreenColor}
                       duration={50}
-                      size={50}
+                      size={45}
                       colors={_COLORS.Kodie_lightGreenColor}
                       onComplete={() => {
                         setIsTimeron(false);
@@ -822,12 +816,19 @@ export default Login = (props) => {
           {/* ------ Loder section start code  here ........... */}
           {isLoading && (
             <View style={LoginStyles.secondloder}>
-              <ActivityIndicator size={40} color={_COLORS.Kodie_BlackColor} />
+              <ActivityIndicator size={30} color={_COLORS.Kodie_BlackColor} />
             </View>
           )}
 
           {/* ------ Next button section start code  here ........... */}
-          <View style={{ marginBottom: 800 }}>
+          <View
+            style={[
+              {
+                marginBottom: 800,
+                marginTop: isClick === 1 || isClick === 2 ||isClick===3 ? 65 : 100,
+              },
+            ]}
+          >
             <CustomSingleButton
               onPress={handleButtonPress}
               _ButtonText={buttonLabels[isClick]}

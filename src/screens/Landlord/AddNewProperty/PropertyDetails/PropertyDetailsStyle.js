@@ -52,6 +52,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
+    color:_COLORS.Kodie_BlackColor
   },
   error_text: { color: "red", marginLeft: 10 },
   locationIcon: {

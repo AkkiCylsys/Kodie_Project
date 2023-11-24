@@ -127,6 +127,12 @@ export default SignUp = (props) => {
           response.data.message === "User Already Exists And Verified"
         ) {
           props.navigation.navigate("SignUpSteps");
+          setIsLoading(false);
+          setEmail("");
+          setPassword("");
+          setTerm(false);
+          setPrivacy(false);
+          setIsLoading(false);
         } else {
           setEmailError(response.data.message);
           setIsLoading(false);
