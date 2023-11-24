@@ -87,6 +87,13 @@ export default Login = (props) => {
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
+  const handleLogin = () => {
+    // Your login logic here
+    // ...
+
+    // Dismiss the keyboard
+    Keyboard.dismiss();
+  };
   const handleToggleResetPassword = () => {
     setShowResetPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -261,6 +268,7 @@ export default Login = (props) => {
         }
       }
     }
+    // Keyboard.dismiss();
   };
 
   //...  verification variable define here
@@ -413,8 +421,9 @@ export default Login = (props) => {
   };
 
   return (
-    <View style={LoginStyles.container}>
-      <ScrollView>
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+     style={LoginStyles.container}>
+        <ScrollView keyboardShouldPersistTaps='handled'>
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
         </View>
@@ -527,10 +536,10 @@ export default Login = (props) => {
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={false}
-        height={Platform.OS === "android" ? 450 : 600}
+        height={Platform.OS === "android" ? 550 : 800}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -820,6 +829,7 @@ export default Login = (props) => {
             </View>
           )}
 
+
           {/* ------ Next button section start code  here ........... */}
           <View
             style={[
@@ -846,7 +856,7 @@ export default Login = (props) => {
           </View>
         </View>
       </RBSheet>
-      {isLoading ? <CommonLoader /> : null}
-    </View>
+      {isLoading ? <CommonLoader /> : null}  
+      </KeyboardAvoidingView>
   );
 };

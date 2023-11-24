@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  PermissionsAndroid,
   Platform,
 } from "react-native";
 import { FirstPropertyStyle } from "./FirstPropertyStyle";
@@ -64,7 +63,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   };
   iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
-};
+}
 const DATA = [
   {
     label: "Pool",
@@ -173,7 +172,7 @@ export default FirstProperty = (props) => {
   console.log("user_key..", user_key);
 
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [propertyLocation, setPropertyLocation] = useState("");
@@ -1200,7 +1199,7 @@ export default FirstProperty = (props) => {
                         onChangeText={setBuildingFlorSize}
                         placeholder="102m2"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                        keyboardType='number-pad'
+                        keyboardType="number-pad"
                       />
                     </View>
                   </View>
@@ -1219,8 +1218,7 @@ export default FirstProperty = (props) => {
                         onChangeText={setLandArea}
                         placeholder="102m2"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                        keyboardType='number-pad'
-
+                        keyboardType="number-pad"
                       />
                     </View>
                   </View>
@@ -1261,7 +1259,7 @@ export default FirstProperty = (props) => {
                           <Text style={FirstPropertyStyle.textSelectedStyle}>
                             {item.FeatureName}
                           </Text>
-                          <AntDesign color="black" name="close" size={17} />
+                          <AntDesign color="white" name="close" size={17} />
                         </View>
                       </TouchableOpacity>
                     )}
@@ -1269,9 +1267,18 @@ export default FirstProperty = (props) => {
                 </View>
               </View>
 
-              <Text style={FirstPropertyStyle.AutoList_text}>
-                {"Auto-list property on Kodie property marketplace "}
-              </Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={FirstPropertyStyle.AutoList_text}>
+                  {"Auto-list property on Kodie property marketplace "}
+                </Text>
+                <TouchableOpacity style={{alignSelf:"center",marginTop:5}}>
+                <AntDesign
+                  name="questioncircle"
+                  size={20}
+                  color="#8AFBA5"
+                />
+                </TouchableOpacity>
+              </View>
               <RowButtons
                 LeftButtonText={"Yes"}
                 leftButtonbackgroundColor={

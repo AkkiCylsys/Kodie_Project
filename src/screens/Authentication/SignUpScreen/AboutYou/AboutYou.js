@@ -54,7 +54,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     color: stepStatus === "finished" ? "#ffffff" : "#ffffff",
     size: 20,
   };
-  iconConfig.name = stepStatus === "finished" ? "check" : "check";
+  iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
 };
 const List = [
@@ -116,7 +116,7 @@ export default AboutYou = (props) => {
   console.log("user_key_a..", user_key);
 
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [selectManageProperty, setSelectManageProperty] = useState("");
@@ -526,7 +526,7 @@ export default AboutYou = (props) => {
           height={200}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
