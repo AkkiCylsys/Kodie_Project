@@ -68,16 +68,22 @@ const PropertyList = (props) => {
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [propertyDelId, setPropertyDelId] = useState();
   const [Address, setAddress] = useState();
+  const [page, setPage] = useState(1);
   const refRBSheet = useRef();
   useEffect(() => {
     if (isvisible) {
       propertyList_Data("All");
     }
-  }, [isvisible]);
+  }, [isvisible, page]);
+
   const propertyList_Data = (filter) => {
     const propertyDataList = {
       property_filter: filter,
       user_account_id: 84,
+      page_no: page,
+      limit: 10,
+      order_col: 1,
+      order_wise: "DESC",
     };
 
     const url = Config.API_URL;
@@ -94,8 +100,10 @@ const PropertyList = (props) => {
             "propertyDataList....",
             response.data?.property_details?.image_path
           );
-
-          setProperty_Data_List(response?.data?.property_details);
+          const newData = response.data.property_details;
+          setProperty_Data_List((prevData) =>
+            page > 1 ? [...prevData, ...newData] : newData
+          );
 
           // setProperty_Data_List(filter); // console.log(Property_Data_List, "Rahul...");
         } else {
@@ -109,7 +117,11 @@ const PropertyList = (props) => {
         setIsLoading(false);
       });
   };
-
+  const handleEndReached = () => {
+    if (!isLoading) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
   const propertyDelete = async () => {
     // setIsLoading(true);
     // alert(propertyDelId);
@@ -204,7 +216,7 @@ const PropertyList = (props) => {
               <Text style={PropertyListCSS.apartmentText}>
                 {item.property_type}
               </Text>
-              <Text style={LABEL_STYLES.commontext}>{item.location}</Text>
+              <Text style={LABEL_STYLES.commontext}>{item.State}</Text>
               <View style={PropertyListCSS.flat_MainView}>
                 <MaterialCommunityIcons
                   name={"map-marker"}
@@ -628,7 +640,8 @@ const PropertyList = (props) => {
             <DividerIcon />
             <FlatList
               data={Property_Data_List}
-              // data={property_List1}
+              onEndReached={handleEndReached}
+              onEndReachedThreshold={0.8}
               renderItem={propertyData1_render}
             />
           </>

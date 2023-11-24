@@ -373,7 +373,8 @@ const SignUpSteps = (props) => {
             <TextInput
               style={AccountStyle.input}
               value={mobileNumber}
-              onChangeText={validateMobileNumber}
+              onChangeText={setMobileNumber}
+              onBlur={() => validateMobileNumber(mobileNumber)}
               placeholder="Enter your phone number"
               placeholderTextColor="#999"
               keyboardType="phone-pad"
