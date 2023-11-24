@@ -175,7 +175,7 @@ export default SignUpVerification = (props) => {
     if (value.trim() === "") {
       setValueError("OTP is required.");
     }else if( value.trim().length < 6 ){
-      setValueError("incomplete OTP. Please enter a valid OTP.");
+      setValueError("Incomplete OTP. Please enter a valid OTP.");
     } else if(!regex.test(value.trim())){
       setValueError("Invalid OTP. Please enter only digits.");
     } 

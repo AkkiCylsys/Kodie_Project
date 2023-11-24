@@ -176,7 +176,7 @@ export const AboutYouStyle = StyleSheet.create({
   box_style: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_GrayColor,
-    height: 32,
+    height:44,
   },
   box_Text_Style: { color: _COLORS.Kodie_BlackColor },
   upload_View: {

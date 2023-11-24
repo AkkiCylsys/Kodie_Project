@@ -55,7 +55,7 @@ export default PropertyDetails = (props) => {
   const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
   const [locationError, setlocationError] = useState("");
-  const [propertytypeError, setpropertytypeError] = useState("");
+  const [propertytypeError, setpropertytypeError] = useState(false);
   // const validateFields = () => {
   //   if (!location) {
   //     // alert('Please enter a location.');
@@ -82,6 +82,28 @@ export default PropertyDetails = (props) => {
       setpropertytypeError("Please select a property type.");
     } else {
       setpropertytypeError("");
+    }
+  };
+
+  const handle_next_btn = () => {
+    if (location == null || location == "") {
+      setlocationError("Please enter a location");
+    } else if (
+      property_value == null ||
+      property_value == "" ||
+      property_value
+    ) {
+      setpropertytypeError(true);
+    } else {
+      props.navigation.navigate("PropertyFeature", {
+        location: location,
+        property_value: property_value,
+        propertyDesc: propertyDesc,
+        selectedButtonId: selectedButtonId,
+        latitude: latitude,
+        longitude: longitude,
+        propertyid: propertyid,
+      });
     }
   };
 
@@ -514,13 +536,14 @@ export default PropertyDetails = (props) => {
                   }
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
-                    handlePropertyValue()
-                    setpropertytypeError(""); 
+                    // handlePropertyValue();
+                    // setpropertytypeError("");
+                    setpropertytypeError(false);
                   }}
                 />
                 {propertytypeError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
-                    {propertytypeError}
+                    {"please select a property type"}
                   </Text>
                 ) : null}
               </View>
@@ -592,17 +615,17 @@ export default PropertyDetails = (props) => {
                   onPress={() => {
                     // handleLocation(location);
                     // handlePropertyValue(property_value);
-                    if (handleLocation() ||handlePropertyValue()) {
-                    props.navigation.navigate("PropertyFeature", {
-                      location: location,
-                      property_value: property_value,
-                      propertyDesc: propertyDesc,
-                      selectedButtonId: selectedButtonId,
-                      latitude: latitude,
-                      longitude: longitude,
-                      propertyid: propertyid,
-                    });
-                    }
+
+                    // props.navigation.navigate("PropertyFeature", {
+                    //   location: location,
+                    //   property_value: property_value,
+                    //   propertyDesc: propertyDesc,
+                    //   selectedButtonId: selectedButtonId,
+                    //   latitude: latitude,
+                    //   longitude: longitude,
+                    //   propertyid: propertyid,
+                    // });
+                    handle_next_btn();
                   }}
                 />
               </View>
