@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  PermissionsAndroid,
   Platform,
 } from "react-native";
 import { FirstPropertyStyle } from "./FirstPropertyStyle";
@@ -62,7 +61,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   };
   iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
-};
+}
 const DATA = [
   {
     label: "Pool",
@@ -154,7 +153,7 @@ export default FirstProperty = (props) => {
   console.log("email..", email);
 
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [propertyLocation, setPropertyLocation] = useState("");

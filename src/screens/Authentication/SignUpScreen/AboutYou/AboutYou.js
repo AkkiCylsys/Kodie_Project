@@ -54,7 +54,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     color: stepStatus === "finished" ? "#ffffff" : "#ffffff",
     size: 20,
   };
-  iconConfig.name = stepStatus === "finished" ? "check" : "check";
+  iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
 };
 const List = [
@@ -104,7 +104,7 @@ export default AboutYou = (props) => {
   console.log("email..", email);
 
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [selectManageProperty, setSelectManageProperty] = useState("");

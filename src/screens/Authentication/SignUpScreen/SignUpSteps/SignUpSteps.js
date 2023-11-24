@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  PermissionsAndroid,
+  // PermissionsAndroid,
   Image,
   FlatList,
   // Platform
@@ -72,7 +72,7 @@ const SignUpSteps = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const ref = React.useRef(null);
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -447,7 +447,7 @@ const SignUpSteps = (props) => {
           <View style={SignUpStepStyle.stepIndicator}>
             <StepIndicator
               customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-              currentPosition={1}
+              currentPosition={0}
               renderStepIndicator={renderStepIndicator}
               labels={labels}
               stepCount={3}

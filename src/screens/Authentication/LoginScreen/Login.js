@@ -218,7 +218,7 @@ export default Login = (props) => {
 
   //... inner reset password submit button variable define here
   const handleSubmit = async () => {
-    Keyboard.dismiss();
+    
 
     if (email.trim() === "") {
       setEmailError("Email is required!");
@@ -262,8 +262,9 @@ export default Login = (props) => {
           );
         }
       }
- 
+   
     }
+    // Keyboard.dismiss();
   };
 
   //...  verification variable define here
@@ -418,8 +419,12 @@ export default Login = (props) => {
   
 
   return (
-    <View  style={LoginStyles.container}>
-      <ScrollView>
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+     style={LoginStyles.container}>
+      
+      {/* <View onPress={Keyboard.dismiss()}> */}
+    
+        <ScrollView keyboardShouldPersistTaps='handled'>
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
         </View>
@@ -845,6 +850,9 @@ export default Login = (props) => {
         </View>
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+     
+      {/* </View> */}
+       
+      </KeyboardAvoidingView>
   );
 };
