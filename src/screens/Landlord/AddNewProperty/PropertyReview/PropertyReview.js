@@ -96,7 +96,12 @@ export default PropertyReview = (props) => {
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
-          <Image source={item.images} style={DetailsStyle.DetailsIcon} />
+          {/* {Object.keys == "Bedroom" ?  <Image source={item.images} style={DetailsStyle.DetailsIcon} /> : Object.keys == "Bathroom"
+
+          } */}
+
+          
+          {/* <Image source={item.images} style={DetailsStyle.DetailsIcon} /> */}
           <Text style={DetailsStyle.details_text}>{`${Object.keys(item)[0]}: ${
             Object.values(item)[0]
           }`}</Text>

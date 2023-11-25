@@ -48,21 +48,89 @@ export default SignUpVerification = (props) => {
   //.......... input box validation define here
 
   //.......... Api body define here
-  const Signup_verification_Data = {
-    email: email,
-    otp: value,
-  };
+  // const Signup_verification_Data = {
+  //   email: email,
+  //   otp: value,
+  // };
   // .......... Api method define here
+  // const handle_Signup_verification = () => {
+  //   const url = Config.API_URL;
+  //   const sign_verification_Api = url + "user_signup_verifyotp";
+  //   console.log("Request URL:", sign_verification_Api);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(sign_verification_Api, Signup_verification_Data)
+  //     .then((response) => {
+  //       console.log("sign_verification_Api responce", response.data);
+  //       if (response.data.status === true) {
+  //         alert(response.data.message);
+  //         setValue("");
+  //         props.navigation.navigate("SignUpSteps", {
+  //           email: email,
+  //           user_key: user_key,
+  //         });
+  //         setIsLoading(false);
+  //       } else {
+  //         setValueError(response.data.message);
+  //         setValue("");
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       alert(error);
+  //       console.error("signup Verification error:", error);
+  //       setIsLoading(false);
+  //     });
+  // };
+
+  // send_verification_code OTP  Api code here....
+  // const send_verification_code = () => {
+  //   const url = Config.API_URL;
+  //   const sennd_verification_code_url = url + "user_signup";
+  //   console.log("Request URL:", sennd_verification_code_url);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(sennd_verification_code_url, {
+  //       email: email,
+  //       password: password,
+  //       is_term_condition: is_term_condition,
+  //       is_privacy_policy: is_privacy_policy,
+  //       // otp: value,
+  //     })
+  //     .then((response) => {
+  //       console.log("API Response send otp:", response.data);
+  //       if (response.data.status === true) {
+  //         alert(response.data.message);
+  //         setVerificationCode("");
+  //       } else {
+  //         alert(response.data.message);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("API failed", error);
+  //       setIsLoading(false);
+  //       // alert(error);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
+
   const handle_Signup_verification = () => {
-    const url = Config.API_URL;
-    const sign_verification_Api = url + "user_signup_verifyotp";
+    const url = "https://e3.cylsys.com/api/v1/verifyotp";
+    const sign_verification_Api = url;
     console.log("Request URL:", sign_verification_Api);
+    const Signup_verification_Data = {
+      email: email,
+      otp: value,
+    };
     setIsLoading(true);
     axios
       .post(sign_verification_Api, Signup_verification_Data)
       .then((response) => {
         console.log("sign_verification_Api responce", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           alert(response.data.message);
           setValue("");
           props.navigation.navigate("SignUpSteps", {
@@ -82,84 +150,6 @@ export default SignUpVerification = (props) => {
         setIsLoading(false);
       });
   };
-
-  // send_verification_code OTP  Api code here....
-  const send_verification_code = () => {
-    const url = Config.API_URL;
-    const sennd_verification_code_url = url + "user_signup";
-    console.log("Request URL:", sennd_verification_code_url);
-    setIsLoading(true);
-    axios
-      .post(sennd_verification_code_url, {
-        email: email,
-        password: password,
-        is_term_condition: is_term_condition,
-        is_privacy_policy: is_privacy_policy,
-        // otp: value,
-      })
-      .then((response) => {
-        console.log("API Response send otp:", response.data);
-        if (response.data.status === true) {
-          alert(response.data.message);
-          setVerificationCode("");
-        } else {
-          alert(response.data.message);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("API failed", error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-  // const send_verification_code = () => {
-  //   const url = Config.API_URL;
-  //   const verification_code_url = url + "user_reset_password_email_verify";
-  //   console.log("Request URL:", verification_code_url);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(verification_code_url, {
-  //       email: email,
-  //       otp: value,
-  //     })
-  //     .then((response) => {
-  //       console.log("API Response send otp:", response.data);
-  //       if (response.data.status === true) {
-  //         setVerificationCode("");
-  //         // OTP sent successfully, now you can show the alert
-  //         Alert.alert(
-  //           "OTP Sent",
-  //           "The OTP has been sent to your email.",
-  //           [
-  //             {
-  //               text: "OK",
-  //               onPress: () => {
-  //                 setIsLoading(false);
-  //                 startTimer();
-  //               },
-  //             },
-  //           ],
-  //           { cancelable: false }
-  //         );
-  //       } else {
-  //         alert(response.data.message);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("API failed", error);
-  //       setIsLoading(false);
-  //       // alert(error);
-  //     });
-  // };
-
-  // const startTimer = () => {
-  //   setIsTimerActive(true); // Start the timer
-  // };
 
   const handleverification_code = (text) => {
     setValue(text);

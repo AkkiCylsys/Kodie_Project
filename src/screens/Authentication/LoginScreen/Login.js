@@ -835,7 +835,7 @@ export default Login = (props) => {
             style={[
               {
                 marginBottom: 800,
-                marginTop: isClick === 1 || isClick === 2 ||isClick===3 ? 65 : 100,
+                marginTop: isClick === 1 || isClick === 2 ||isClick===3 ? 150 : 220,
               },
             ]}
           >

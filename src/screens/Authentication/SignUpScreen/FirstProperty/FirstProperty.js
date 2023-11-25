@@ -63,7 +63,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   };
   iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
-}
+};
 const DATA = [
   {
     label: "Pool",
@@ -310,10 +310,10 @@ export default FirstProperty = (props) => {
 
   useEffect(() => {
     handleProperty_Type();
-    handle_bedRoom();
-    handle_Garages();
-    handle_Bathroom();
-    handle_parking();
+    // handle_bedRoom();
+    // handle_Garages();
+    // handle_Bathroom();
+    // handle_parking();
     additional_features();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
@@ -483,7 +483,7 @@ export default FirstProperty = (props) => {
         setIsLoading(false);
       });
   };
-  
+
   const additional_features = () => {
     const url = Config.API_URL;
     const additionalApi = url + "key_features";
@@ -515,9 +515,6 @@ export default FirstProperty = (props) => {
   const handleSaveSignup = async () => {
     // alert(selectedServices);
     setIsLoading(true);
-    // const selectedServiceKeysString = selectedServices.join(",");
-    // const kodieHelpValue = selectedLookupKeys.join(",");
-    const selectedKeyFeature = selectedkey_features.join(",");
     console.log("AllCountsData..", AllCountsData);
     console.log("propertyLocation..", propertyLocation);
     console.log("propertyDesc..", propertyDesc);
@@ -563,69 +560,163 @@ export default FirstProperty = (props) => {
 
     if (ImageName) {
       const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       formData.append("profile_photo", {
         uri: imageUri,
         // type: imageType,
-        name: imageName,
+        name: "abc",
       });
     }
-    // const url = Config.API_URL;
-    // const saveAccountDetails = url + "user_save_signup_account_details";
-    // console.log("Request URL:", saveAccountDetails);
-    // setIsLoading(true);
-    // try {
-    //   const response = await axios.post(saveAccountDetails, formData, {
-    //     headers: {
-    //       "content-type": "multipart/form-data",
-    //     },
-    //   });
-    //   console.log("Save Account Details", response.data);
+    const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+    const saveAccountDetails = url;
+    console.log("Request URL:", saveAccountDetails);
+    setIsLoading(true);
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+      console.log("Save Account Details", response.data);
 
-    //   if (response.data.status === true) {
-    //     setIsLoading(false);
-    //     alert(response.data.message);
-    //     props.navigation.navigate("DrawerNavigatorLeftMenu");
-    //     setCurrentPage(0);
-    //     setProperty_value("");
-    //     setbedroomValue("");
-    //     setGaragesValue("");
-    //     setBathRoomValue("");
-    //     setParkingValue("");
-    //     setAdditionalFeaturesKeyValue("");
-    //   } else {
-    //     setIsLoading(false);
-    //     console.error("Save Account Details error:", response.data.error);
-    //     alert(response.data.error);
-    //   }
-    // } catch (error) {
-    //   setIsLoading(false);
-    //   console.error("Account_Details error:", error);
-    //   alert(error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-
-    let res = await dispatch(signupAccountApiActionCreator(formData));
-    console.log("signupAccount_Details.....", res?.data);
-    if (res.data.status === true) {
+      if (response.data.success === true) {
+        setIsLoading(false);
+        alert(response.data.message);
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        setCurrentPage(0);
+        setProperty_value("");
+        setbedroomValue("");
+        setGaragesValue("");
+        setBathRoomValue("");
+        setParkingValue("");
+        setAdditionalFeaturesKeyValue("");
+      } else {
+        setIsLoading(false);
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
       setIsLoading(false);
-      alert(res.data.message);
-      props.navigation.navigate("DrawerNavigatorLeftMenu");
+      console.error("Account_Details error:", error);
+      alert(error);
+    } finally {
       setIsLoading(false);
-      setCurrentPage(0);
-      setProperty_value("");
-      setbedroomValue("");
-      setGaragesValue("");
-      setBathRoomValue("");
-      setParkingValue("");
-      setAdditionalFeaturesKeyValue("");
-    } else {
-      setIsLoading(false);
-      console.error("Save Account Details error:", res.data.error);
-      alert(res.data.error);
     }
+
+    // let res = await dispatch(signupAccountApiActionCreator(formData));
+    // console.log("signupAccount_Details.....", res?.data);
+    // if (res.data.status === true) {
+    //   setIsLoading(false);
+    //   alert(res.data.message);
+    //   props.navigation.navigate("DrawerNavigatorLeftMenu");
+    //   setIsLoading(false);
+    //   setCurrentPage(0);
+    //   setProperty_value("");
+    //   setbedroomValue("");
+    //   setGaragesValue("");
+    //   setBathRoomValue("");
+    //   setParkingValue("");
+    //   setAdditionalFeaturesKeyValue("");
+    // } else {
+    //   setIsLoading(false);
+    //   console.error("Save Account Details error:", res.data.error);
+    //   alert(res.data.error);
+    // }
   };
+
+  // const handleSaveSignup = async () => {
+  //   setIsLoading(true);
+  //   console.log("AllCountsData..", AllCountsData);
+  //   console.log("propertyLocation..", propertyLocation);
+  //   console.log("propertyDesc..", propertyDesc);
+  //   console.log("property_value..", property_value);
+  //   console.log("additionalfeatureskeyvalue..", additionalfeatureskeyvalue);
+  //   console.log("selectedButtonId..", selectedButtonId);
+  //   console.log("islocation..", 1);
+  //   console.log("buildingFlorSize..", buildingFlorSize);
+  //   console.log("landArea..", landArea);
+
+  //   const formData = new FormData();
+  //   // formData.append("user", 46);
+  //   formData.append("user", user_key);
+  //   formData.append("first_name", firstName);
+  //   formData.append("last_name", lastName);
+  //   formData.append("phone_number", mobileNumber);
+  //   formData.append("email", email);
+  //   formData.append("physical_address", physicalAddress);
+  //   formData.append("p_longitude", p_longitude);
+  //   formData.append("p_latitude", p_latitude);
+  //   formData.append("State", state);
+  //   formData.append("Country", country);
+  //   formData.append("City", city);
+  //   formData.append("organisation_name", organisation);
+  //   formData.append("referral_code", referral);
+  //   formData.append("describe_yourself", selectedServiceKeysString);
+  //   formData.append("kodie_help", kodieHelpValue);
+  //   formData.append("property_manage", selectManageProperty);
+  //   formData.append("location", propertyLocation);
+  //   formData.append("location_longitude", longitude);
+  //   formData.append("location_latitude", latitude);
+  //   formData.append("p_state", P_state);
+  //   formData.append("p_country", p_country);
+  //   formData.append("p_city", p_city);
+  //   formData.append("islocation", 1);
+  //   formData.append("property_description", propertyDesc);
+  //   formData.append("property_type", property_value);
+  //   formData.append("key_features", AllCountsData);
+  //   formData.append("land_area", landArea);
+  //   formData.append("floor_size", buildingFlorSize);
+  //   formData.append("additional_features", additionalfeatureskeyvalue);
+  //   formData.append("auto_list", selectedButtonId);
+  //   if (ImageName) {
+  //     const imageUri = ImageName;
+  //     // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+  //     formData.append("profile_photo", {
+  //       uri: imageUri,
+  //       name: "abc",
+  //     });
+  //   }
+
+  //   const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+  //   setIsLoading(true);
+
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: "POST",
+  //       body: formData,
+  //       headers: {
+  //         // Don't set content-type for FormData, it will be set automatically
+  //       },
+  //     });
+
+  //     const responseData = await response.json();
+
+  //     console.log("Save Account Details", responseData);
+
+  //     if (responseData.success === true) {
+  //       setIsLoading(false);
+  //       alert(responseData.message);
+  //       props.navigation.navigate("DrawerNavigatorLeftMenu");
+  //       setCurrentPage(0);
+  //       setProperty_value("");
+  //       setbedroomValue("");
+  //       setGaragesValue("");
+  //       setBathRoomValue("");
+  //       setParkingValue("");
+  //       setAdditionalFeaturesKeyValue("");
+  //     } else {
+  //       setIsLoading(false);
+  //       console.error("Save Account Details error:", responseData.error);
+  //       alert(responseData.error);
+  //     }
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     console.error("Account_Details error:", error);
+  //     alert(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const goBack = () => {
     props.navigation.pop();
@@ -1267,16 +1358,12 @@ export default FirstProperty = (props) => {
                 </View>
               </View>
 
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ flexDirection: "row", alignItems: "center",justifyContent:"space-between" }}>
                 <Text style={FirstPropertyStyle.AutoList_text}>
                   {"Auto-list property on Kodie property marketplace "}
                 </Text>
-                <TouchableOpacity style={{alignSelf:"center",marginTop:5}}>
-                <AntDesign
-                  name="questioncircle"
-                  size={20}
-                  color="#8AFBA5"
-                />
+                <TouchableOpacity style={{ alignSelf: "center", marginTop: 5 }}>
+                  <AntDesign name="questioncircle" size={20} color="#8AFBA5" />
                 </TouchableOpacity>
               </View>
               <RowButtons

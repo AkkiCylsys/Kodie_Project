@@ -123,6 +123,7 @@ export const LoginStyles = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
+    color:_COLORS.Kodie_BlackColor
   },
   eyeIcon: {
     padding: 10,
