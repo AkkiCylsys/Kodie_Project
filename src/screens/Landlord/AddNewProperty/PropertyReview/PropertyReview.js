@@ -93,20 +93,26 @@ export default PropertyReview = (props) => {
   const [Detail, setDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(4);
   const Detail_rander = ({ item, index }) => {
+    // const key = Object.keys(item)[0];
+    // const value = Object.values(item)[0];
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
           <Image source={item.images} style={DetailsStyle.DetailsIcon} />
           <Text style={DetailsStyle.details_text}>
             {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ""}
+            {/* {`${key}: ${value}`} */}
+          
           </Text>
         </View>
       </>
     );
   };
   useEffect(() => {
+ 
     DetailsData();
     keyfeatures();
+  
   }, []);
   const DetailsData = () => {
     const detailData = {
@@ -124,8 +130,8 @@ export default PropertyReview = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           setProperty_Details(response.data.property_details);
-
           console.log("propertyDetail....", response.data.property_details);
+          
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -139,13 +145,15 @@ export default PropertyReview = (props) => {
       });
   };
   const imagePaths = MultiImageName.map((image) => image.path);
+
   const keyfeatures = () => {
     if (property_Detail[0]?.key_features) {
-      const parsedData = JSON.parse(property_Detail[0].key_features);
+     const parsedData = JSON.parse(property_Detail[0].key_features.replace(/\\/g, ""));
       console.log("Parsed Data:", parsedData);
       setDetail(parsedData);
     }
   };
+  
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: "feed",
@@ -264,6 +272,7 @@ export default PropertyReview = (props) => {
               contentContainerStyle={{}}
               numColumns={2}
               keyExtractor={(item) => item?.id}
+              // keyExtractor={(item, index) => index.toString()}
               renderItem={Detail_rander}
             />
             <DividerIcon
