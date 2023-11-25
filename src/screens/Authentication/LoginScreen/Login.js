@@ -246,6 +246,7 @@ export default Login = (props) => {
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
       //alert(res)
+      console.log("login_data...", res);
       setIsLoading(false);
       if (res == 401) {
         setIsLoading(false);

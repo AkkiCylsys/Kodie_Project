@@ -86,8 +86,8 @@ const SignUpSteps = (props) => {
   const [UserZip_Code, setUserZip_Code] = useState("");
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
-  const [latitude, setlatitude] = useState("");
-  const [longitude, setlongitude] = useState("");
+  const [p_latitude, setP_latitude] = useState("");
+  const [p_longitude, setP_longitude] = useState("");
 
   const addressParts = physicalAddress.split(", ");
 
@@ -95,12 +95,14 @@ const SignUpSteps = (props) => {
   const state = addressParts.pop();
   const city = addressParts.join(", ");
 
-  // console.log("Country:", country);
-  // console.log("State:", state);
-  // console.log("City:", city);
+  console.log("Country:", country);
+  console.log("State:", state);
+  console.log("City:", city);
 
   let email = props?.route?.params?.email;
+  let user_key = props?.route?.params?.user_key;
   console.log("email...", email);
+  console.log("user_key...", user_key);
   const ConfirmAddress = () => {
     setIsMap(false);
   };
@@ -110,8 +112,10 @@ const SignUpSteps = (props) => {
   };
   const onRegionChange = (Region) => {
     // alert(JSON.stringify(Region))
-    setlatitude(Region.latitude);
-    setlongitude(Region.longitude);
+    setP_latitude(Region.latitude);
+    console.log("p_latitude...", p_latitude);
+    setP_longitude(Region.longitude);
+    console.log("p_longitude...", p_longitude);
     getAddress(Region.latitude, Region.longitude);
   };
   const checkpermissionlocation = async () => {
@@ -170,8 +174,12 @@ const SignUpSteps = (props) => {
   const getAddressWithCordinates = () => {
     Geolocation.watchPosition(
       (position) => {
-        setlatitude(position.coords.latitude);
-        setlongitude(position.coords.longitude);
+        setP_latitude(position.coords.latitude);
+        console.log("p_latitude...", p_latitude);
+
+        setP_longitude(position.coords.longitude);
+        console.log("p_longitude...", p_longitude);
+
         getAddress(position.coords.latitude, position.coords.longitude);
       },
       (error) => {
@@ -186,8 +194,8 @@ const SignUpSteps = (props) => {
     );
   };
 
-  const getAddress = (latitude, longitude) => {
-    Geocoder.from(latitude, longitude)
+  const getAddress = (p_latitude, p_longitude) => {
+    Geocoder.from(p_latitude, p_longitude)
       .then((json) => {
         let MainFullAddress = json.results[0].formatted_address;
         var addressComponent2 = json.results[0].address_components[1];
@@ -252,6 +260,12 @@ const SignUpSteps = (props) => {
         organisation: organisation,
         referral: referral,
         email: email,
+        country: country,
+        state: state,
+        city: city,
+        p_latitude: p_latitude,
+        p_longitude: p_longitude,
+        user_key: user_key,
       });
     }
   };
@@ -265,17 +279,16 @@ const SignUpSteps = (props) => {
   //  go back button...............
   const goBack = () => {
     props.navigation.navigate("LoginScreen");
-    
   };
   // const goBack = () => {
   //   console.log("Detected Platform:", Platform.OS);
   //   if (Platform.OS === 'ios' || Platform.OS === 'android'){
   //     props.navigation.navigate("LoginScreen");
   //   } else {
-  //     props.navigation.navigate("LoginScreen"); 
+  //     props.navigation.navigate("LoginScreen");
   //   }
   // };
-  
+
   const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
@@ -358,7 +371,8 @@ const SignUpSteps = (props) => {
             <TextInput
               style={AccountStyle.input}
               value={mobileNumber}
-              onChangeText={validateMobileNumber}
+              onChangeText={setMobileNumber}
+              onBlur={() => validateMobileNumber(mobileNumber)}
               placeholder="Enter your phone number"
               placeholderTextColor="#999"
               keyboardType="phone-pad"
@@ -474,8 +488,8 @@ const SignUpSteps = (props) => {
                 marginBottom: 10,
               }}
               onRegionChange={onRegionChange}
-              Maplat={latitude}
-              Maplng={longitude}
+              Maplat={p_latitude}
+              Maplng={p_longitude}
             />
             <View
               style={{
@@ -514,8 +528,10 @@ const SignUpSteps = (props) => {
         ) : IsSearch ? (
           <SearchPlaces
             onPress={(data, details = null) => {
-              setlatitude(details.geometry.location.lat);
-              setlongitude(details.geometry.location.lng);
+              setP_latitude(details.geometry.location.lat);
+              console.log("p_latitude...", p_latitude);
+              setP_longitude(details.geometry.location.lng);
+              console.log("p_longitude...", p_longitude);
               setIsSearch(false);
               setIsMap(true);
               setPhysicalAddress(details.formatted_address);

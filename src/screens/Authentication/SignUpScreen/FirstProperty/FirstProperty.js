@@ -31,6 +31,8 @@ import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import Geolocation from "react-native-geolocation-service";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { signupAccountApiActionCreator } from "../../../../redux/Actions/Authentication/AuthenticationApiCreator";
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -128,6 +130,11 @@ const renderDataItem = (item) => {
   );
 };
 export default FirstProperty = (props) => {
+  const signUp_account_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
+  console.log("signUp_account_response.....", signUp_account_response);
+
   let firstName = props?.route?.params?.firstName;
   let lastName = props?.route?.params?.lastName;
   let mobileNumber = props?.route?.params?.mobileNumber;
@@ -140,6 +147,12 @@ export default FirstProperty = (props) => {
   let kodieHelpValue = props?.route?.params?.kodieHelpValue;
   let ImageName = props?.route?.params?.ImageName;
   let email = props?.route?.params?.email;
+  let country = props?.route?.params?.country;
+  let state = props?.route?.params?.state;
+  let city = props?.route?.params?.city;
+  let p_latitude = props?.route?.params?.p_latitude;
+  let p_longitude = props?.route?.params?.p_longitude;
+  let user_key = props?.route?.params?.user_key;
   console.log("firstname..", firstName);
   console.log("lastName..", lastName);
   console.log("mobileNumber..", mobileNumber);
@@ -151,6 +164,12 @@ export default FirstProperty = (props) => {
   console.log("kodieHelpValue..", kodieHelpValue);
   console.log("ImageName..", ImageName);
   console.log("email..", email);
+  console.log("country..", country);
+  console.log("state..", state);
+  console.log("city..", city);
+  console.log("p_latitude..", p_latitude);
+  console.log("p_longitude..", p_longitude);
+  console.log("user_key..", user_key);
 
   const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(2);
@@ -186,20 +205,30 @@ export default FirstProperty = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
-  const [CountBedroom, setCountBedroom] = useState(1);
+  const [CountBedroom, setCountBedroom] = useState(0);
   // const [CountBedRoomData, setCountBedRoomData] = useState([]);
-  const [CountBathroom, setCountBathroom] = useState(1);
-  const [CountParking, setCountParking] = useState(1);
-  const [CountParkingStreet, setCountParkingStreet] = useState(1);
+  const [CountBathroom, setCountBathroom] = useState(0);
+  const [CountParking, setCountParking] = useState(0);
+  const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [buildingFlorSize, setBuildingFlorSize] = useState("");
   const [landArea, setLandArea] = useState("");
+  const dispatch = useDispatch();
+  const P_addressParts = propertyLocation.split(", ");
 
-  const AllCountsData = [
-    CountBedroom,
-    CountBathroom,
-    CountParking,
-    CountParkingStreet,
-  ];
+  const p_country = P_addressParts.pop();
+  const P_state = P_addressParts.pop();
+  const p_city = P_addressParts.join(", ");
+
+  console.log("p_country:", p_country);
+  console.log("P_state:", P_state);
+  console.log("p_city:", p_city);
+
+  const AllCountsData = {
+    Bedrooms: CountBedroom,
+    Bathrooms: CountBathroom,
+    Parking_spaces: CountParking,
+    On_Street_parking: CountParkingStreet,
+  };
   const increaseBedroomCount = () => {
     setCountBedroom((prevCount) => prevCount + 1);
   };
@@ -488,7 +517,7 @@ export default FirstProperty = (props) => {
     // const selectedServiceKeysString = selectedServices.join(",");
     // const kodieHelpValue = selectedLookupKeys.join(",");
     const selectedKeyFeature = selectedkey_features.join(",");
-    console.log("selectedKeyFeature..", AllCountsData);
+    console.log("AllCountsData..", AllCountsData);
     console.log("propertyLocation..", propertyLocation);
     console.log("propertyDesc..", propertyDesc);
     console.log("property_value..", property_value);
@@ -498,14 +527,19 @@ export default FirstProperty = (props) => {
     console.log("buildingFlorSize..", buildingFlorSize);
     console.log("landArea..", landArea);
 
-    //
     const formData = new FormData();
-    formData.append("user", 46);
+    // formData.append("user", 46);
+    formData.append("user", user_key);
     formData.append("first_name", firstName);
     formData.append("last_name", lastName);
     formData.append("phone_number", mobileNumber);
     formData.append("email", email);
     formData.append("physical_address", physicalAddress);
+    formData.append("p_longitude", p_longitude);
+    formData.append("p_latitude", p_latitude);
+    formData.append("State", state);
+    formData.append("Country", country);
+    formData.append("City", city);
     formData.append("organisation_name", organisation);
     formData.append("referral_code", referral);
     formData.append("describe_yourself", selectedServiceKeysString);
@@ -514,10 +548,15 @@ export default FirstProperty = (props) => {
     formData.append("location", propertyLocation);
     formData.append("location_longitude", longitude);
     formData.append("location_latitude", latitude);
+    formData.append("p_state", P_state);
+    formData.append("p_country", p_country);
+    formData.append("p_city", p_city);
     formData.append("islocation", 1);
     formData.append("property_description", propertyDesc);
     formData.append("property_type", property_value);
     formData.append("key_features", AllCountsData);
+    formData.append("land_area", landArea);
+    formData.append("floor_size", buildingFlorSize);
     formData.append("additional_features", additionalfeatureskeyvalue);
     formData.append("auto_list", selectedButtonId);
 
@@ -530,39 +569,60 @@ export default FirstProperty = (props) => {
         name: imageName,
       });
     }
-    const url = Config.API_URL;
-    const saveAccountDetails = url + "user_save_signup_account_details";
-    console.log("Request URL:", saveAccountDetails);
-    setIsLoading(true);
-    try {
-      const response = await axios.post(saveAccountDetails, formData, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      });
-      console.log("Save Account Details", response.data);
-      if (response.data.status === true) {
-        setIsLoading(false);
-        alert(response.data.message);
-        props.navigation.navigate("DrawerNavigatorLeftMenu");
-        setCurrentPage(0);
-        setProperty_value("");
-        setbedroomValue("");
-        setGaragesValue("");
-        setBathRoomValue("");
-        setParkingValue("");
-        setAdditionalFeaturesKeyValue("");
-      } else {
-        setIsLoading(false);
-        console.error("Save Account Details error:", response.data.error);
-        alert(response.data.error);
-      }
-    } catch (error) {
+    // const url = Config.API_URL;
+    // const saveAccountDetails = url + "user_save_signup_account_details";
+    // console.log("Request URL:", saveAccountDetails);
+    // setIsLoading(true);
+    // try {
+    //   const response = await axios.post(saveAccountDetails, formData, {
+    //     headers: {
+    //       "content-type": "multipart/form-data",
+    //     },
+    //   });
+    //   console.log("Save Account Details", response.data);
+
+    //   if (response.data.status === true) {
+    //     setIsLoading(false);
+    //     alert(response.data.message);
+    //     props.navigation.navigate("DrawerNavigatorLeftMenu");
+    //     setCurrentPage(0);
+    //     setProperty_value("");
+    //     setbedroomValue("");
+    //     setGaragesValue("");
+    //     setBathRoomValue("");
+    //     setParkingValue("");
+    //     setAdditionalFeaturesKeyValue("");
+    //   } else {
+    //     setIsLoading(false);
+    //     console.error("Save Account Details error:", response.data.error);
+    //     alert(response.data.error);
+    //   }
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   console.error("Account_Details error:", error);
+    //   alert(error);
+    // } finally {
+    //   setIsLoading(false);
+    // }
+
+    let res = await dispatch(signupAccountApiActionCreator(formData));
+    console.log("signupAccount_Details.....", res?.data);
+    if (res.data.status === true) {
       setIsLoading(false);
-      console.error("Account_Details error:", error);
-      alert(error);
-    } finally {
+      alert(res.data.message);
+      props.navigation.navigate("DrawerNavigatorLeftMenu");
       setIsLoading(false);
+      setCurrentPage(0);
+      setProperty_value("");
+      setbedroomValue("");
+      setGaragesValue("");
+      setBathRoomValue("");
+      setParkingValue("");
+      setAdditionalFeaturesKeyValue("");
+    } else {
+      setIsLoading(false);
+      console.error("Save Account Details error:", res.data.error);
+      alert(res.data.error);
     }
   };
 

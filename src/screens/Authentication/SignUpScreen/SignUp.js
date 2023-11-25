@@ -38,10 +38,10 @@ export default SignUp = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const signUp_response = useSelector(
-    (state) => state?.authenticationReducer?.data
-  );
-  console.log("signup_response.....", signUp_response);
+  // const signUp_response = useSelector(
+  //   (state) => state?.authenticationReducer?.data
+  // );
+  // console.log("signup_response.....", signUp_response);
 
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -104,6 +104,7 @@ export default SignUp = (props) => {
             password: password,
             is_term_condition: term,
             is_privacy_policy: privacy,
+            user_key: response.data.User_Key,
           });
           setEmail("");
           setPassword("");

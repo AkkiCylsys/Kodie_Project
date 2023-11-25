@@ -78,6 +78,12 @@ const data = [
 ];
 
 export default Dashboard = (props) => {
+  const signUp_account_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
+  console.log("signUp_account_response.....", signUp_account_response);
+  const singup_Data = signUp_account_response;
+
   const [value, setValue] = useState(null);
   const navigation = useNavigation();
   const refRBSheet = useRef();
@@ -166,6 +172,10 @@ export default Dashboard = (props) => {
           loginData?.profile_path
             ? loginData?.profile_path
             : IMAGES.Landlordprofile
+          // ||
+          //   signUp_account_response?.profile_photo_path
+          // ? singup_Data?.profile_photo_path
+          // : IMAGES.Landlordprofile
         }
         // RightUserProfile={IMAGES.Landlordprofile}
         MiddleImage={logos.MainLogoWhite}
@@ -437,7 +447,7 @@ export default Dashboard = (props) => {
           container: DashboardStyle.bottomModal_container,
         }}
       >
-        <SelectDate  onClose={CloseUp} />
+        <SelectDate onClose={CloseUp} />
       </RBSheet>
     </View>
   );
