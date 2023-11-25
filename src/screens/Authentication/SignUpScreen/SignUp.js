@@ -7,6 +7,9 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { BANNERS } from "../../../Themes/CommonVectors/Images";
 import { SignUpStyles } from "./SignUpStyle";
@@ -200,8 +203,8 @@ export default SignUp = (props) => {
   };
 
   return (
-    <View style={SignUpStyles.container}>
-      <ScrollView>
+    <KeyboardAvoidingView style={SignUpStyles.container} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <ScrollView keyboardShouldPersistTaps='handled'>
         <View style={SignUpStyles.logoContainer}>
           <Image source={BANNERS.BannerFirst} style={SignUpStyles.logo} />
         </View>
@@ -371,6 +374,6 @@ export default SignUp = (props) => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </KeyboardAvoidingView>
   );
 };

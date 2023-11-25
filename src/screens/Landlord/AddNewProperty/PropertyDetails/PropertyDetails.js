@@ -7,6 +7,9 @@ import {
   ScrollView,
   Image,
   Permission,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -57,47 +60,9 @@ export default PropertyDetails = (props) => {
   const [city , setCity] = useState("");
   const [state , setState] = useState('');
   const [country , setCountry] = useState('')
-  // const [locationError, setlocationError] = useState("");
-  // const [propertytypeError, setpropertytypeError] = useState("");
-  // const validateFields = () => {
-  //   if (!location) {
-  //     // alert('Please enter a location.');
-  //     setlocationError("Please enter a location.");
-  //   } else if (!property_value) {
-  //     setpropertytypeError("Please select a property type.");
-  //   } else {
-  //     null;
-  //   }
-  // };
-
-  // const handleLocation = (selected) => {
-  //   setLocation(selected);
-  //   if (!selected) {
-  //     setlocationError("Please enter a location");
-  //   } else {
-  //     setlocationError("");
-  //   }
-  // };
-
-  // const handlePropertyValue = (selectedValue) => {
-  //   setProperty_value(selectedValue);
-  //   if (!selectedValue) {
-  //     setpropertytypeError("Please select a property type.");
-  //   } else {
-  //     setpropertytypeError("");
-  //   }
-  // };
 
   const handle_next_btn = () => {
-    if (location == null || location == "") {
-      setlocationError("Please enter a location");
-    } else if (
-      property_value == null ||
-      property_value == "" ||
-      property_value
-    ) {
-      setpropertytypeError(true);
-    } else {
+   
       props.navigation.navigate("PropertyFeature", {
         location: location,
         property_value: property_value,
@@ -107,7 +72,7 @@ export default PropertyDetails = (props) => {
         longitude: longitude,
         propertyid: propertyid,
       });
-    }
+    
   };
 
   useEffect(() => {
@@ -381,7 +346,7 @@ export default PropertyDetails = (props) => {
         }}
         MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
-      <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         {IsMap || IsSearch ? null : (
           <View
             style={{
@@ -473,6 +438,7 @@ export default PropertyDetails = (props) => {
           <ScrollView
             contentContainerStyle={{ marginBottom: 190 }}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps='handled'
           >
             <View style={PropertyDetailsStyle.headingView}>
               <Text style={PropertyDetailsStyle.heading}>
@@ -674,7 +640,7 @@ export default PropertyDetails = (props) => {
             </View>
           </ScrollView>
         )}
-      </View>
+      </KeyboardAvoidingView>
       {isLoading ? <CommonLoader /> : null}
     </View>
   );

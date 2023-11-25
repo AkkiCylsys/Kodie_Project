@@ -8,6 +8,9 @@ import {
   TouchableOpacity,
   Image,
   PermissionsAndroid,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { AccountStyle } from "./AccountStyle";
 import { LABEL_STYLES } from "../../../../Themes";
@@ -245,8 +248,9 @@ export default Account = (props) => {
   };
 
   return (
-    <ScrollView ref={scrollViewRef}
+    <ScrollView  ref={scrollViewRef} 
     contentContainerStyle={{height:500}}
+   
     // style={{ height:700, marginTop: 20 }}
     >
       {/* <TopHeader
@@ -362,7 +366,7 @@ export default Account = (props) => {
           }}
         />
       </View> */}
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1 }} >
         {IsMap ? (
           <View
             style={{
@@ -432,7 +436,7 @@ export default Account = (props) => {
             }}
           />
         ) : (
-          <View style={{ flex: 1 }}>
+          <View  style={{ flex: 1 }}>
             <TopHeader
               MiddleText={"Set up your Kodie account"}
               onPressLeftButton={goBack}
@@ -442,7 +446,7 @@ export default Account = (props) => {
                 {"Introduce yourself to Kodie"}
               </Text>
             </View>
-            <View style={AccountStyle.card}>
+            <View style={AccountStyle.card} >
               <View style={AccountStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>
                 <TextInput
