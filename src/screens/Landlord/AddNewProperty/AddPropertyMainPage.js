@@ -292,6 +292,9 @@ const AddPropertyMainPage = (props) => {
     }
   };
 
+ 
+
+
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
       .then((result) => {
@@ -1911,6 +1914,7 @@ const AddPropertyMainPage = (props) => {
                 }}
               >
                 <UploadMultipleImage
+               
                   heading_Text={"Upload image"}
                   multipleImage={handleImageNameChange}
                 />

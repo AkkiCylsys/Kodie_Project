@@ -48,6 +48,10 @@ const proper_expens_data = [
 ];
 export default Expenses = () => {
   const refRBSheet = useRef();
+
+  const CloseUp = () =>{
+    refRBSheet.current.close();
+  }
   const property_expense_render = ({ item, index }) => {
     return (
       <View style={ExpensesStyle.mainContainer}>
@@ -133,7 +137,7 @@ export default Expenses = () => {
             container: ExpensesStyle.bottomModal_container,
           }}
         >
-          <AddExpensesDetails />
+          <AddExpensesDetails onClose={CloseUp} />
         </RBSheet>
       </ScrollView>
     </View>

@@ -40,6 +40,10 @@ export default AddExpensesDetails = (props) => {
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
+
+  const handlePopUp = () =>{
+    props.onClose()
+  }
   return (
     <View style={AddExpensesDetailsStyle.mainContainer}>
       <ScrollView>
@@ -47,12 +51,14 @@ export default AddExpensesDetails = (props) => {
           <Text style={AddExpensesDetailsStyle.heading_Text}>
             {"Add lease details"}
           </Text>
-          <AntDesign
-            name="close"
-            size={22}
-            color={_COLORS.Kodie_BlackColor}
-            style={{ alignSelf: "center" }}
-          />
+          <TouchableOpacity onPress={handlePopUp}>
+            <AntDesign
+              name="close"
+              size={22}
+              color={_COLORS.Kodie_BlackColor}
+              style={{ alignSelf: "center" }}
+            />
+          </TouchableOpacity>
         </View>
         <View style={AddExpensesDetailsStyle.card}>
           <View style={AddExpensesDetailsStyle.inputContainer}>

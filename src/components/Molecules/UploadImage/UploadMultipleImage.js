@@ -25,6 +25,12 @@ const data = [
 const UploadMultipleImage = (props) => {
   const [multipleImage, setMultipleImage] = useState([]);
   const [image, setImage] = useState({});
+
+  const handleClosePopup = () => {
+    props.onClose()
+  };
+
+
   const UploadImageContent = ({ item, index }) => {
     return (
       <>
@@ -81,7 +87,7 @@ const UploadMultipleImage = (props) => {
                 });
             }
           }}
-          >
+        >
           {console.log(typeof item.Img, item.Img)}
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
             <Image source={item.Img} style={UploadImageStyle.Icons} />
@@ -104,7 +110,7 @@ const UploadMultipleImage = (props) => {
         <Text style={UploadImageStyle.uploadImgText}>
           {props.heading_Text || "Upload image"}
         </Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleClosePopup}>
           <Entypo
             name="cross"
             size={25}

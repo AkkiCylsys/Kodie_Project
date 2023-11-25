@@ -31,7 +31,7 @@ export const loginApiActionCreator = (data) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     });
-   // alert(JSON.stringify(res))
+    // alert(JSON.stringify(res))
     if (res.data.status == true) {
       dispatch(fetchLoginSuccess(res.data));
       return res;
@@ -41,21 +41,25 @@ export const loginApiActionCreator = (data) => async (dispatch) => {
     }
     //return res;
   } catch (error) {
-
     //alert(JSON.stringify(error?.response?.status))
     dispatch(fetchLoginError(error));
-  return error?.response?.status;
+    return error?.response?.status;
   }
 };
-export const signupApiActionCreator = (data) => async (dispatch) => {
+export const signupAccountApiActionCreator = (data) => async (dispatch) => {
   //alert(url)
   dispatch(fetchRegistrationData());
   try {
-    const res = await axios.post(url + "user_signup", data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await axios.post(
+      url + "user_save_signup_account_details",
+      data,
+      {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
+    console.log("res....", res);
     if (res.data.status == true) {
       dispatch(fetchRegistrationSuccess(res.data));
       return res;

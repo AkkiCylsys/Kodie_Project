@@ -47,6 +47,7 @@ export const HeaderStyle = StyleSheet.create({
     marginLeft: 10,
     justifyContent: "center",
     alignSelf: "center",
+    borderColor: "red",
   },
   nullView: { width: "25%", flexDirection: "row", justifyContent: "center" },
   notificationButton: {

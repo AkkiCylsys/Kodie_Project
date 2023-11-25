@@ -255,7 +255,7 @@ const PropertyList = (props) => {
                   onPress={() => {
                     refRBSheet.current.open();
                     // propertyDelete(propertyDelId);
-                    // alert(item.property_id);
+                    alert(item.property_id);
                     setPropertyDelId(item.property_id);
 
                     setAddress(item?.location);

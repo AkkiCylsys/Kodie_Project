@@ -43,6 +43,7 @@ export default SignUpVerification = (props) => {
   let password = props?.route?.params?.password;
   let is_term_condition = props?.route?.params?.is_term_condition;
   let is_privacy_policy = props?.route?.params?.is_privacy_policy;
+  let user_key = props?.route?.params?.user_key;
   console.log("email..........", email);
   //.......... input box validation define here
 
@@ -66,6 +67,7 @@ export default SignUpVerification = (props) => {
           setValue("");
           props.navigation.navigate("SignUpSteps", {
             email: email,
+            user_key: user_key,
           });
           setIsLoading(false);
         } else {

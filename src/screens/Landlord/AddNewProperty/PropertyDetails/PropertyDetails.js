@@ -54,8 +54,8 @@ export default PropertyDetails = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
-  const [locationError, setlocationError] = useState("");
-  const [propertytypeError, setpropertytypeError] = useState(false);
+  // const [locationError, setlocationError] = useState("");
+  // const [propertytypeError, setpropertytypeError] = useState("");
   // const validateFields = () => {
   //   if (!location) {
   //     // alert('Please enter a location.');
@@ -67,23 +67,23 @@ export default PropertyDetails = (props) => {
   //   }
   // };
 
-  const handleLocation = (selected) => {
-    setLocation(selected);
-    if (!selected) {
-      setlocationError("Please enter a location");
-    } else {
-      setlocationError("");
-    }
-  };
+  // const handleLocation = (selected) => {
+  //   setLocation(selected);
+  //   if (!selected) {
+  //     setlocationError("Please enter a location");
+  //   } else {
+  //     setlocationError("");
+  //   }
+  // };
 
-  const handlePropertyValue = (selectedValue) => {
-    setProperty_value(selectedValue);
-    if (!selectedValue) {
-      setpropertytypeError("Please select a property type.");
-    } else {
-      setpropertytypeError("");
-    }
-  };
+  // const handlePropertyValue = (selectedValue) => {
+  //   setProperty_value(selectedValue);
+  //   if (!selectedValue) {
+  //     setpropertytypeError("Please select a property type.");
+  //   } else {
+  //     setpropertytypeError("");
+  //   }
+  // };
 
   const handle_next_btn = () => {
     if (location == null || location == "") {
@@ -494,20 +494,20 @@ export default PropertyDetails = (props) => {
                   <TextInput
                     style={PropertyDetailsStyle.locationInput}
                     value={location}
-                    onChangeText={handleLocation}
+                    onChangeText={setLocation}
                     onFocus={() => {
                       setIsSearch(true);
-                      setlocationError("");
+                      // setlocationError("");
                     }}
                     placeholder="Search location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
-                {locationError ? (
+                {/* {locationError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
                     {locationError}
                   </Text>
-                ) : null}
+                ) : null} */}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
@@ -536,16 +536,15 @@ export default PropertyDetails = (props) => {
                   }
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
-                    // handlePropertyValue();
-                    // setpropertytypeError("");
-                    setpropertytypeError(false);
+                    // handlePropertyValue()
+                    // setpropertytypeError(""); 
                   }}
                 />
-                {propertytypeError ? (
+                {/* {propertytypeError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
                     {"please select a property type"}
                   </Text>
-                ) : null}
+                ) : null} */}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
@@ -615,17 +614,17 @@ export default PropertyDetails = (props) => {
                   onPress={() => {
                     // handleLocation(location);
                     // handlePropertyValue(property_value);
-
-                    // props.navigation.navigate("PropertyFeature", {
-                    //   location: location,
-                    //   property_value: property_value,
-                    //   propertyDesc: propertyDesc,
-                    //   selectedButtonId: selectedButtonId,
-                    //   latitude: latitude,
-                    //   longitude: longitude,
-                    //   propertyid: propertyid,
-                    // });
-                    handle_next_btn();
+                    // if (handleLocation() ||handlePropertyValue()) {
+                    props.navigation.navigate("PropertyFeature", {
+                      location: location,
+                      property_value: property_value,
+                      propertyDesc: propertyDesc,
+                      selectedButtonId: selectedButtonId,
+                      latitude: latitude,
+                      longitude: longitude,
+                      propertyid: propertyid,
+                    });
+                    // }
                   }}
                 />
               </View>

@@ -12,6 +12,9 @@ import {
   Platform,
   Button,
   Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
 import { LoginStyles } from "./LoginCss";
@@ -222,6 +225,8 @@ export default Login = (props) => {
 
   //... inner reset password submit button variable define here
   const handleSubmit = async () => {
+    Keyboard.dismiss();
+
     if (email.trim() === "") {
       setEmailError("Email is required!");
     } else if (!validateEmail(email)) {
@@ -241,6 +246,7 @@ export default Login = (props) => {
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
       //alert(res)
+      console.log("login_data...", res);
       setIsLoading(false);
       if (res == 401) {
         setIsLoading(false);
@@ -263,6 +269,7 @@ export default Login = (props) => {
           );
         }
       }
+ 
     }
   };
 
@@ -416,7 +423,7 @@ export default Login = (props) => {
   };
 
   return (
-    <View style={LoginStyles.container}>
+    <View  style={LoginStyles.container}>
       <ScrollView>
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />

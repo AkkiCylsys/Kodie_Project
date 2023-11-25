@@ -28,7 +28,6 @@ export const AboutYouStyle = StyleSheet.create({
     width: 110,
     height: 110,
     // resizeMode: "cover",
-    
   },
   personal_Text: {
     marginTop: 24,
@@ -192,7 +191,7 @@ export const AboutYouStyle = StyleSheet.create({
   },
   crossIconStyle: { alignSelf: "center", marginRight: 10 },
   stepIndicator: {
-    marginTop:15
+    marginTop: 15,
   },
   goBack_View: {
     flexDirection: "row",
@@ -209,5 +208,11 @@ export const AboutYouStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
+  },
+  error_text: {
+    color: "red",
+    marginLeft: 10,
+    marginTop: 10,
+    alignSelf: "center",
   },
 });
