@@ -45,7 +45,7 @@ export default PropertyDetails = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
-  const [property_value, setProperty_value] = useState("");
+  const [property_value, setProperty_value] = useState(0);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -54,9 +54,9 @@ export default PropertyDetails = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
-  const [city , setCity] = useState("");
-  const [state , setState] = useState('');
-  const [country , setCountry] = useState('')
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
   // const [locationError, setlocationError] = useState("");
   // const [propertytypeError, setpropertytypeError] = useState("");
   // const validateFields = () => {
@@ -444,7 +444,7 @@ export default PropertyDetails = (props) => {
               setCountry(country);
               console.log("locationSearch....", location);
               console.log("details.......", details);
-              console.log(city,state,country,'location rahul..........');
+              console.log(city, state, country, "location rahul..........");
             }}
           />
         ) : (
@@ -525,7 +525,7 @@ export default PropertyDetails = (props) => {
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
                     // handlePropertyValue()
-                    // setpropertytypeError(""); 
+                    // setpropertytypeError("");
                   }}
                 />
                 {/* {propertytypeError ? (
@@ -611,9 +611,9 @@ export default PropertyDetails = (props) => {
                       latitude: latitude,
                       longitude: longitude,
                       propertyid: propertyid,
-                      city:city,
-                      state:state,
-                      country:country
+                      city: city,
+                      state: state,
+                      country: country,
                     });
                     // }
                   }}
