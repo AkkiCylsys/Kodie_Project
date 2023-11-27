@@ -153,7 +153,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    backgroundColor:_COLORS.Kodie_BlackColor,
+    backgroundColor: _COLORS.Kodie_BlackColor,
     shadowColor: "#000",
     marginTop: 8,
     marginRight: 12,
@@ -165,10 +165,21 @@ export const FirstPropertyStyle = StyleSheet.create({
   textSelectedStyle: {
     marginRight: 5,
     fontSize: 14,
-    color:"white"
+    color: "white",
   },
   addition_featureText: {
     marginTop: 10,
+  },
+  questionmark: {
+    alignSelf: "center",
+    marginTop: 5,
+    // color: "#E0F6E5",
+    // borderWidth:1,
+    borderRadius:15,
+    marginBottom:10,
+    marginHorizontal:5,
+    backgroundColor:'#E0F6E5'
+  
   },
   AutoList_text: {
     color: _COLORS.Kodie_BlackColor,

@@ -63,7 +63,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   };
   iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
-}
+};
 const DATA = [
   {
     label: "Pool",
@@ -280,7 +280,7 @@ export default FirstProperty = (props) => {
         : position === 1
         ? "About you"
         : position === 2
-        ? "First Property"
+        ? "First property"
         : "circle";
 
     return (
@@ -879,7 +879,7 @@ export default FirstProperty = (props) => {
                   style={FirstPropertyStyle.input}
                   value={propertyDesc}
                   onChangeText={setPropertyDesc}
-                  placeholder="Enter a description of your property"
+                  placeholder="Describe your property here..."
                   placeholderTextColor="#999"
                   multiline
                   numberOfLines={5}
@@ -1270,12 +1270,8 @@ export default FirstProperty = (props) => {
                 <Text style={FirstPropertyStyle.AutoList_text}>
                   {"Auto-list property on Kodie property marketplace "}
                 </Text>
-                <TouchableOpacity style={{alignSelf:"center",marginTop:5}}>
-                <AntDesign
-                  name="questioncircle"
-                  size={20}
-                  color="#8AFBA5"
-                />
+                <TouchableOpacity style={FirstPropertyStyle.questionmark}>
+                  <AntDesign name="question" size={20} color="#8AFBA5" />
                 </TouchableOpacity>
               </View>
               <RowButtons
