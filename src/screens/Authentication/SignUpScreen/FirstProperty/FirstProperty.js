@@ -310,10 +310,6 @@ export default FirstProperty = (props) => {
 
   useEffect(() => {
     handleProperty_Type();
-    // handle_bedRoom();
-    // handle_Garages();
-    // handle_Bathroom();
-    // handle_parking();
     additional_features();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
@@ -359,131 +355,6 @@ export default FirstProperty = (props) => {
         setIsLoading(false);
       });
   };
-
-  //  key feature module BedRoom API....
-  const handle_bedRoom = () => {
-    const bedRoom_Data = {
-      P_PARENT_CODE: "BEDROOM",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const bedroomApi = url + "lookup_details";
-    console.log("Request URL:", bedroomApi);
-    setIsLoading(true);
-    axios
-      .post(bedroomApi, bedRoom_Data)
-      .then((response) => {
-        console.log("bedRoom_data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("bedRoom_data....", response.data.data);
-          setBedRoomData(response.data.data);
-        } else {
-          console.error("bedRoom_data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("bedRoom_data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  //  key feature module Garages API....
-  const handle_Garages = () => {
-    const garages_Data = {
-      P_PARENT_CODE: "GARAGES",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const garagesApi = url + "lookup_details";
-    console.log("Request URL:", garagesApi);
-    setIsLoading(true);
-    axios
-      .post(garagesApi, garages_Data)
-      .then((response) => {
-        console.log("garages_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("garages_Data....", response.data.data);
-          setGaragesData(response.data.data);
-        } else {
-          console.error("garages_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("garages_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  // key feature module Bathroom API....
-  const handle_Bathroom = () => {
-    const Bathroom_Data = {
-      P_PARENT_CODE: "BATHROOM",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const bathrooApi = url + "lookup_details";
-    console.log("Request URL:", bathrooApi);
-    setIsLoading(true);
-    axios
-      .post(bathrooApi, Bathroom_Data)
-      .then((response) => {
-        console.log("bathroom_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("bathroom_Data....", response.data.data);
-          setBathroomData(response.data.data);
-        } else {
-          console.error("bathroom_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("bathroom_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  // // key feature module Bathroom API....
-  const handle_parking = () => {
-    const parking_Data = {
-      P_PARENT_CODE: "PARKING",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const parkingApi = url + "lookup_details";
-    console.log("Request URL:", parking_Data);
-    setIsLoading(true);
-    axios
-      .post(parkingApi, parking_Data)
-      .then((response) => {
-        console.log("parking_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("parking_Data....", response.data.data);
-          setParkingData(response.data.data);
-        } else {
-          console.error("parking_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("parking_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
   const additional_features = () => {
     const url = Config.API_URL;
     const additionalApi = url + "key_features";
@@ -1010,139 +881,6 @@ export default FirstProperty = (props) => {
                 Key features
               </Text>
               <View style={FirstPropertyStyle.inputContainer}>
-                {/* <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Bedrooms"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bedRoomData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="3"
-                      value={bedroomValue}
-                      onChange={(item) => {
-                        setbedroomValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
-                  </View>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Garages"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={garagesData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="1"
-                      value={garagesValue}
-                      onChange={(item) => {
-                        setGaragesValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
-                  </View>
-                </View>
-                <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Bathrooms"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bathroomData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="3"
-                      value={bathRoomValue}
-                      onChange={(item) => {
-                        setBathRoomValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
-                  </View>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Parkings"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={parkingData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="1"
-                      value={parkingValue}
-                      onChange={(item) => {
-                        setParkingValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
-                  </View>
-                </View>
-
-                <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Floor size"}
-                    </Text>
-                    <TextInput
-                      style={FirstPropertyStyle.flor_input}
-                      value={florSize}
-                      onChangeText={setFlorSize}
-                      placeholder="102m2"
-                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                    />
-                  </View>
-                </View> */}
                 <View>
                   <View style={FirstPropertyStyle.mainfeaturesview}>
                     <View style={FirstPropertyStyle.key_feature_Text_view}>
@@ -1358,7 +1096,13 @@ export default FirstProperty = (props) => {
                 </View>
               </View>
 
-              <View style={{ flexDirection: "row", alignItems: "center",justifyContent:"space-between" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Text style={FirstPropertyStyle.AutoList_text}>
                   {"Auto-list property on Kodie property marketplace "}
                 </Text>
