@@ -53,7 +53,7 @@ export default styles = StyleSheet.create({
     },
     shadowRadius: 8,
     shadowColor: 'rgba(151, 173, 192, 0.34)',
-    shadowOpacity: 1,
+    shadowOpacity:Platform.OS =='android'? 1:null,
   },
   btn_text: {
     fontWeight: '700',
