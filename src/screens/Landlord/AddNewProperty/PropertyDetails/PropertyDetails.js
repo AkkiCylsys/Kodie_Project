@@ -7,6 +7,9 @@ import {
   ScrollView,
   Image,
   Permission,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -54,9 +57,9 @@ export default PropertyDetails = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
-  const [city , setCity] = useState("");
-  const [state , setState] = useState('');
-  const [country , setCountry] = useState('')
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
   // const [locationError, setlocationError] = useState("");
   // const [propertytypeError, setpropertytypeError] = useState("");
   // const validateFields = () => {
@@ -70,23 +73,20 @@ export default PropertyDetails = (props) => {
   //   }
   // };
 
-  // const handleLocation = (selected) => {
-  //   setLocation(selected);
-  //   if (!selected) {
-  //     setlocationError("Please enter a location");
-  //   } else {
-  //     setlocationError("");
-  //   }
-  // };
+  const handle_next_btn = () => {
+   
+      props.navigation.navigate("PropertyFeature", {
+        location: location,
+        property_value: property_value,
+        propertyDesc: propertyDesc,
+        selectedButtonId: selectedButtonId,
+        latitude: latitude,
+        longitude: longitude,
+        propertyid: propertyid,
+      });
+    
+  };
 
-  // const handlePropertyValue = (selectedValue) => {
-  //   setProperty_value(selectedValue);
-  //   if (!selectedValue) {
-  //     setpropertytypeError("Please select a property type.");
-  //   } else {
-  //     setpropertytypeError("");
-  //   }
-  // };
   useEffect(() => {
     handleProperty_Type();
     DetailsData();
@@ -358,7 +358,7 @@ export default PropertyDetails = (props) => {
         }}
         MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
-      <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         {IsMap || IsSearch ? null : (
           <View
             style={{
@@ -443,13 +443,14 @@ export default PropertyDetails = (props) => {
               setCountry(country);
               console.log("locationSearch....", location);
               console.log("details.......", details);
-              console.log(city,state,country,'location rahul..........');
+              console.log(city, state, country, "location rahul..........");
             }}
           />
         ) : (
           <ScrollView
             contentContainerStyle={{ marginBottom: 190 }}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps='handled'
           >
             <View style={PropertyDetailsStyle.headingView}>
               <Text style={PropertyDetailsStyle.heading}>
@@ -610,9 +611,9 @@ export default PropertyDetails = (props) => {
                       latitude: latitude,
                       longitude: longitude,
                       propertyid: propertyid,
-                      city:city,
-                      state:state,
-                      country:country
+                      city: city,
+                      state: state,
+                      country: country,
                     });
                    
                     
@@ -640,7 +641,7 @@ export default PropertyDetails = (props) => {
             </View>
           </ScrollView>
         )}
-      </View>
+      </KeyboardAvoidingView>
       {isLoading ? <CommonLoader /> : null}
     </View>
   );

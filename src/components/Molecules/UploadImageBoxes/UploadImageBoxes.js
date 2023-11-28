@@ -27,7 +27,7 @@ const UploadImageBoxes = (props) => {
               {props.Box_Text}
             </Text>
           </View>
-          <TouchableOpacity
+          <View
             style={[UploadImageBoxesStyle.plusIcon, props.pluacircle]}
           >
             <AntDesign
@@ -35,7 +35,7 @@ const UploadImageBoxes = (props) => {
               size={props.size ? props.size : 25}
               color={_COLORS.Kodie_LightWhiteColor}
             />
-          </TouchableOpacity>
+          </View>
         </View>
       </TouchableOpacity>
     </View>
