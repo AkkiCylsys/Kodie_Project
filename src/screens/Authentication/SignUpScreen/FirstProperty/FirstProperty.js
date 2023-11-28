@@ -1271,7 +1271,7 @@ export default FirstProperty = (props) => {
                 <Text style={FirstPropertyStyle.AutoList_text}>
                   {"Auto-list property on Kodie property marketplace "}
                 </Text>
-                <TouchableOpacity style={{alignSelf:"center",marginTop:5}}>
+                <TouchableOpacity style={{alignSelf:"center",marginTop:5,flex:1,alignSelf:"flex-end"}}>
                 <AntDesign
                   name="questioncircle"
                   size={20}
