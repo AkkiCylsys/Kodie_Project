@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  PermissionsAndroid,
   Platform,
 } from "react-native";
 import { FirstPropertyStyle } from "./FirstPropertyStyle";
@@ -173,7 +172,7 @@ export default FirstProperty = (props) => {
   console.log("user_key..", user_key);
 
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [propertyLocation, setPropertyLocation] = useState("");
@@ -311,10 +310,6 @@ export default FirstProperty = (props) => {
 
   useEffect(() => {
     handleProperty_Type();
-    handle_bedRoom();
-    handle_Garages();
-    handle_Bathroom();
-    handle_parking();
     additional_features();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
@@ -360,130 +355,6 @@ export default FirstProperty = (props) => {
         setIsLoading(false);
       });
   };
-
-  //  key feature module BedRoom API....
-  const handle_bedRoom = () => {
-    const bedRoom_Data = {
-      P_PARENT_CODE: "BEDROOM",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const bedroomApi = url + "lookup_details";
-    console.log("Request URL:", bedroomApi);
-    setIsLoading(true);
-    axios
-      .post(bedroomApi, bedRoom_Data)
-      .then((response) => {
-        console.log("bedRoom_data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("bedRoom_data....", response.data.data);
-          setBedRoomData(response.data.data);
-        } else {
-          console.error("bedRoom_data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("bedRoom_data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  //  key feature module Garages API....
-  const handle_Garages = () => {
-    const garages_Data = {
-      P_PARENT_CODE: "GARAGES",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const garagesApi = url + "lookup_details";
-    console.log("Request URL:", garagesApi);
-    setIsLoading(true);
-    axios
-      .post(garagesApi, garages_Data)
-      .then((response) => {
-        console.log("garages_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("garages_Data....", response.data.data);
-          setGaragesData(response.data.data);
-        } else {
-          console.error("garages_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("garages_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  // key feature module Bathroom API....
-  const handle_Bathroom = () => {
-    const Bathroom_Data = {
-      P_PARENT_CODE: "BATHROOM",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const bathrooApi = url + "lookup_details";
-    console.log("Request URL:", bathrooApi);
-    setIsLoading(true);
-    axios
-      .post(bathrooApi, Bathroom_Data)
-      .then((response) => {
-        console.log("bathroom_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("bathroom_Data....", response.data.data);
-          setBathroomData(response.data.data);
-        } else {
-          console.error("bathroom_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("bathroom_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  // // key feature module Bathroom API....
-  const handle_parking = () => {
-    const parking_Data = {
-      P_PARENT_CODE: "PARKING",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const parkingApi = url + "lookup_details";
-    console.log("Request URL:", parking_Data);
-    setIsLoading(true);
-    axios
-      .post(parkingApi, parking_Data)
-      .then((response) => {
-        console.log("parking_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("parking_Data....", response.data.data);
-          setParkingData(response.data.data);
-        } else {
-          console.error("parking_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("parking_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
   const additional_features = () => {
     const url = Config.API_URL;
     const additionalApi = url + "key_features";
@@ -515,9 +386,6 @@ export default FirstProperty = (props) => {
   const handleSaveSignup = async () => {
     // alert(selectedServices);
     setIsLoading(true);
-    // const selectedServiceKeysString = selectedServices.join(",");
-    // const kodieHelpValue = selectedLookupKeys.join(",");
-    const selectedKeyFeature = selectedkey_features.join(",");
     console.log("AllCountsData..", AllCountsData);
     console.log("propertyLocation..", propertyLocation);
     console.log("propertyDesc..", propertyDesc);
@@ -563,69 +431,163 @@ export default FirstProperty = (props) => {
 
     if (ImageName) {
       const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       formData.append("profile_photo", {
         uri: imageUri,
         // type: imageType,
-        name: imageName,
+        name: "abc",
       });
     }
-    // const url = Config.API_URL;
-    // const saveAccountDetails = url + "user_save_signup_account_details";
-    // console.log("Request URL:", saveAccountDetails);
-    // setIsLoading(true);
-    // try {
-    //   const response = await axios.post(saveAccountDetails, formData, {
-    //     headers: {
-    //       "content-type": "multipart/form-data",
-    //     },
-    //   });
-    //   console.log("Save Account Details", response.data);
+    const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+    const saveAccountDetails = url;
+    console.log("Request URL:", saveAccountDetails);
+    setIsLoading(true);
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+      console.log("Save Account Details", response.data);
 
-    //   if (response.data.status === true) {
-    //     setIsLoading(false);
-    //     alert(response.data.message);
-    //     props.navigation.navigate("DrawerNavigatorLeftMenu");
-    //     setCurrentPage(0);
-    //     setProperty_value("");
-    //     setbedroomValue("");
-    //     setGaragesValue("");
-    //     setBathRoomValue("");
-    //     setParkingValue("");
-    //     setAdditionalFeaturesKeyValue("");
-    //   } else {
-    //     setIsLoading(false);
-    //     console.error("Save Account Details error:", response.data.error);
-    //     alert(response.data.error);
-    //   }
-    // } catch (error) {
-    //   setIsLoading(false);
-    //   console.error("Account_Details error:", error);
-    //   alert(error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-
-    let res = await dispatch(signupAccountApiActionCreator(formData));
-    console.log("signupAccount_Details.....", res?.data);
-    if (res.data.status === true) {
+      if (response.data.success === true) {
+        setIsLoading(false);
+        alert(response.data.message);
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        setCurrentPage(0);
+        setProperty_value("");
+        setbedroomValue("");
+        setGaragesValue("");
+        setBathRoomValue("");
+        setParkingValue("");
+        setAdditionalFeaturesKeyValue("");
+      } else {
+        setIsLoading(false);
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
       setIsLoading(false);
-      alert(res.data.message);
-      props.navigation.navigate("DrawerNavigatorLeftMenu");
+      console.error("Account_Details error:", error);
+      alert(error);
+    } finally {
       setIsLoading(false);
-      setCurrentPage(0);
-      setProperty_value("");
-      setbedroomValue("");
-      setGaragesValue("");
-      setBathRoomValue("");
-      setParkingValue("");
-      setAdditionalFeaturesKeyValue("");
-    } else {
-      setIsLoading(false);
-      console.error("Save Account Details error:", res.data.error);
-      alert(res.data.error);
     }
+
+    // let res = await dispatch(signupAccountApiActionCreator(formData));
+    // console.log("signupAccount_Details.....", res?.data);
+    // if (res.data.status === true) {
+    //   setIsLoading(false);
+    //   alert(res.data.message);
+    //   props.navigation.navigate("DrawerNavigatorLeftMenu");
+    //   setIsLoading(false);
+    //   setCurrentPage(0);
+    //   setProperty_value("");
+    //   setbedroomValue("");
+    //   setGaragesValue("");
+    //   setBathRoomValue("");
+    //   setParkingValue("");
+    //   setAdditionalFeaturesKeyValue("");
+    // } else {
+    //   setIsLoading(false);
+    //   console.error("Save Account Details error:", res.data.error);
+    //   alert(res.data.error);
+    // }
   };
+
+  // const handleSaveSignup = async () => {
+  //   setIsLoading(true);
+  //   console.log("AllCountsData..", AllCountsData);
+  //   console.log("propertyLocation..", propertyLocation);
+  //   console.log("propertyDesc..", propertyDesc);
+  //   console.log("property_value..", property_value);
+  //   console.log("additionalfeatureskeyvalue..", additionalfeatureskeyvalue);
+  //   console.log("selectedButtonId..", selectedButtonId);
+  //   console.log("islocation..", 1);
+  //   console.log("buildingFlorSize..", buildingFlorSize);
+  //   console.log("landArea..", landArea);
+
+  //   const formData = new FormData();
+  //   // formData.append("user", 46);
+  //   formData.append("user", user_key);
+  //   formData.append("first_name", firstName);
+  //   formData.append("last_name", lastName);
+  //   formData.append("phone_number", mobileNumber);
+  //   formData.append("email", email);
+  //   formData.append("physical_address", physicalAddress);
+  //   formData.append("p_longitude", p_longitude);
+  //   formData.append("p_latitude", p_latitude);
+  //   formData.append("State", state);
+  //   formData.append("Country", country);
+  //   formData.append("City", city);
+  //   formData.append("organisation_name", organisation);
+  //   formData.append("referral_code", referral);
+  //   formData.append("describe_yourself", selectedServiceKeysString);
+  //   formData.append("kodie_help", kodieHelpValue);
+  //   formData.append("property_manage", selectManageProperty);
+  //   formData.append("location", propertyLocation);
+  //   formData.append("location_longitude", longitude);
+  //   formData.append("location_latitude", latitude);
+  //   formData.append("p_state", P_state);
+  //   formData.append("p_country", p_country);
+  //   formData.append("p_city", p_city);
+  //   formData.append("islocation", 1);
+  //   formData.append("property_description", propertyDesc);
+  //   formData.append("property_type", property_value);
+  //   formData.append("key_features", AllCountsData);
+  //   formData.append("land_area", landArea);
+  //   formData.append("floor_size", buildingFlorSize);
+  //   formData.append("additional_features", additionalfeatureskeyvalue);
+  //   formData.append("auto_list", selectedButtonId);
+  //   if (ImageName) {
+  //     const imageUri = ImageName;
+  //     // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+  //     formData.append("profile_photo", {
+  //       uri: imageUri,
+  //       name: "abc",
+  //     });
+  //   }
+
+  //   const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+  //   setIsLoading(true);
+
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: "POST",
+  //       body: formData,
+  //       headers: {
+  //         // Don't set content-type for FormData, it will be set automatically
+  //       },
+  //     });
+
+  //     const responseData = await response.json();
+
+  //     console.log("Save Account Details", responseData);
+
+  //     if (responseData.success === true) {
+  //       setIsLoading(false);
+  //       alert(responseData.message);
+  //       props.navigation.navigate("DrawerNavigatorLeftMenu");
+  //       setCurrentPage(0);
+  //       setProperty_value("");
+  //       setbedroomValue("");
+  //       setGaragesValue("");
+  //       setBathRoomValue("");
+  //       setParkingValue("");
+  //       setAdditionalFeaturesKeyValue("");
+  //     } else {
+  //       setIsLoading(false);
+  //       console.error("Save Account Details error:", responseData.error);
+  //       alert(responseData.error);
+  //     }
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     console.error("Account_Details error:", error);
+  //     alert(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const goBack = () => {
     props.navigation.pop();
@@ -919,139 +881,6 @@ export default FirstProperty = (props) => {
                 Key features
               </Text>
               <View style={FirstPropertyStyle.inputContainer}>
-                {/* <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Bedrooms"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bedRoomData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="3"
-                      value={bedroomValue}
-                      onChange={(item) => {
-                        setbedroomValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
-                  </View>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Garages"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={garagesData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="1"
-                      value={garagesValue}
-                      onChange={(item) => {
-                        setGaragesValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
-                  </View>
-                </View>
-                <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Bathrooms"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bathroomData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="3"
-                      value={bathRoomValue}
-                      onChange={(item) => {
-                        setBathRoomValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
-                  </View>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Parkings"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={parkingData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="1"
-                      value={parkingValue}
-                      onChange={(item) => {
-                        setParkingValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
-                  </View>
-                </View>
-
-                <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Floor size"}
-                    </Text>
-                    <TextInput
-                      style={FirstPropertyStyle.flor_input}
-                      value={florSize}
-                      onChangeText={setFlorSize}
-                      placeholder="102m2"
-                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                    />
-                  </View>
-                </View> */}
                 <View>
                   <View style={FirstPropertyStyle.mainfeaturesview}>
                     <View style={FirstPropertyStyle.key_feature_Text_view}>
@@ -1199,7 +1028,7 @@ export default FirstProperty = (props) => {
                         onChangeText={setBuildingFlorSize}
                         placeholder="102m2"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                        keyboardType='number-pad'
+                        keyboardType="number-pad"
                       />
                     </View>
                   </View>
@@ -1218,8 +1047,7 @@ export default FirstProperty = (props) => {
                         onChangeText={setLandArea}
                         placeholder="102m2"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                        keyboardType='number-pad'
-
+                        keyboardType="number-pad"
                       />
                     </View>
                   </View>
@@ -1260,7 +1088,7 @@ export default FirstProperty = (props) => {
                           <Text style={FirstPropertyStyle.textSelectedStyle}>
                             {item.FeatureName}
                           </Text>
-                          <AntDesign color="black" name="close" size={17} />
+                          <AntDesign color="white" name="close" size={17} />
                         </View>
                       </TouchableOpacity>
                     )}
@@ -1268,9 +1096,20 @@ export default FirstProperty = (props) => {
                 </View>
               </View>
 
-              <Text style={FirstPropertyStyle.AutoList_text}>
-                {"Auto-list property on Kodie property marketplace "}
-              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={FirstPropertyStyle.AutoList_text}>
+                  {"Auto-list property on Kodie property marketplace "}
+                </Text>
+                <TouchableOpacity style={{ alignSelf: "center", marginTop: 5 }}>
+                  <AntDesign name="questioncircle" size={20} color="#8AFBA5" />
+                </TouchableOpacity>
+              </View>
               <RowButtons
                 LeftButtonText={"Yes"}
                 leftButtonbackgroundColor={
