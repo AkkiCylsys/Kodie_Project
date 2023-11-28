@@ -168,7 +168,7 @@ const PropertyList = (props) => {
         );
 
         propertyList_Data();
-        setIsLoading(false);
+        setIsLoading(false);eeeeee
       }
     } catch (error) {
       console.error("Error deleting property:", error);
