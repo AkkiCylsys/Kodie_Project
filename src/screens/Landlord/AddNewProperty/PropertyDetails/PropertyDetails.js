@@ -7,6 +7,9 @@ import {
   ScrollView,
   Image,
   Permission,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -45,7 +48,7 @@ export default PropertyDetails = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
-  const [property_value, setProperty_value] = useState("");
+  const [property_value, setProperty_value] = useState(0);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedProperty, setSelectedProperty] = useState(null);
@@ -54,6 +57,9 @@ export default PropertyDetails = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
   // const [locationError, setlocationError] = useState("");
   // const [propertytypeError, setpropertytypeError] = useState("");
   // const validateFields = () => {
@@ -67,34 +73,8 @@ export default PropertyDetails = (props) => {
   //   }
   // };
 
-  // const handleLocation = (selected) => {
-  //   setLocation(selected);
-  //   if (!selected) {
-  //     setlocationError("Please enter a location");
-  //   } else {
-  //     setlocationError("");
-  //   }
-  // };
-
-  // const handlePropertyValue = (selectedValue) => {
-  //   setProperty_value(selectedValue);
-  //   if (!selectedValue) {
-  //     setpropertytypeError("Please select a property type.");
-  //   } else {
-  //     setpropertytypeError("");
-  //   }
-  // };
-
   const handle_next_btn = () => {
-    if (location == null || location == "") {
-      setlocationError("Please enter a location");
-    } else if (
-      property_value == null ||
-      property_value == "" ||
-      property_value
-    ) {
-      setpropertytypeError(true);
-    } else {
+   
       props.navigation.navigate("PropertyFeature", {
         location: location,
         property_value: property_value,
@@ -104,7 +84,7 @@ export default PropertyDetails = (props) => {
         longitude: longitude,
         propertyid: propertyid,
       });
-    }
+    
   };
 
   useEffect(() => {
@@ -378,7 +358,7 @@ export default PropertyDetails = (props) => {
         }}
         MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
-      <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
         {IsMap || IsSearch ? null : (
           <View
             style={{
@@ -454,15 +434,23 @@ export default PropertyDetails = (props) => {
               setlongitude(details.geometry.location.lng);
               setIsSearch(false);
               setIsMap(true);
+              const city = details.address_components[0].long_name;
+              const state = details.address_components[3].long_name;
+              const country = details.address_components[4].long_name;
               setLocation(details.formatted_address);
+              setCity(city);
+              setState(state);
+              setCountry(country);
               console.log("locationSearch....", location);
               console.log("details.......", details);
+              console.log(city, state, country, "location rahul..........");
             }}
           />
         ) : (
           <ScrollView
             contentContainerStyle={{ marginBottom: 190 }}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps='handled'
           >
             <View style={PropertyDetailsStyle.headingView}>
               <Text style={PropertyDetailsStyle.heading}>
@@ -537,7 +525,7 @@ export default PropertyDetails = (props) => {
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
                     // handlePropertyValue()
-                    // setpropertytypeError(""); 
+                    // setpropertytypeError("");
                   }}
                 />
                 {/* {propertytypeError ? (
@@ -553,7 +541,7 @@ export default PropertyDetails = (props) => {
                 <TextInput
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
-                  onBlur={setPropertyDesc}
+                  onChangeText={setPropertyDesc}
                   placeholder="Describe your property here..."
                   placeholderTextColor="#999"
                   multiline
@@ -583,7 +571,7 @@ export default PropertyDetails = (props) => {
                 }
                 onPressLeftButton={() => {
                   setSelectedButton(false);
-                  setSelectedButtonId(1);
+                  setSelectedButtonId(0);
                   // alert(selectedButtonId)
                 }}
                 RightButtonText={"No"}
@@ -604,7 +592,7 @@ export default PropertyDetails = (props) => {
                 }
                 onPressRightButton={() => {
                   setSelectedButton(true);
-                  setSelectedButtonId(2);
+                  setSelectedButtonId(1);
                 }}
               />
               <View style={PropertyDetailsStyle.btnView}>
@@ -623,8 +611,22 @@ export default PropertyDetails = (props) => {
                       latitude: latitude,
                       longitude: longitude,
                       propertyid: propertyid,
+                      city: city,
+                      state: state,
+                      country: country,
                     });
                     // }
+
+                    // props.navigation.navigate("PropertyFeature", {
+                    //   location: location,
+                    //   property_value: property_value,
+                    //   propertyDesc: propertyDesc,
+                    //   selectedButtonId: selectedButtonId,
+                    //   latitude: latitude,
+                    //   longitude: longitude,
+                    //   propertyid: propertyid,
+                    // });
+                    handle_next_btn();
                   }}
                 />
               </View>
@@ -649,7 +651,7 @@ export default PropertyDetails = (props) => {
             </View>
           </ScrollView>
         )}
-      </View>
+      </KeyboardAvoidingView>
       {isLoading ? <CommonLoader /> : null}
     </View>
   );

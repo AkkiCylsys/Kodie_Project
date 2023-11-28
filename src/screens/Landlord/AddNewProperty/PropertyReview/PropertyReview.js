@@ -90,22 +90,202 @@ export default PropertyReview = (props) => {
   const [getPropertyDetail, setGetPropertyDetail] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
-
+  const [Detail, setDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(4);
+ 
   const Detail_rander = ({ item, index }) => {
+    // const key = Object.keys(item)[0];
+    // const value = Object.values(item)[0];
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
           <Image source={item.images} style={DetailsStyle.DetailsIcon} />
-          <Text style={DetailsStyle.details_text}>{item.name}</Text>
+          <Text style={DetailsStyle.details_text}>
+            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ""}
+            {/* {`${key}: ${value}`} */}
+          </Text>
         </View>
       </>
     );
   };
   useEffect(() => {
-    DetailsData();
-  }, []);
+    // DetailsData();
+    // keyfeatures();
 
+    // data will show immediately when i come this screen code define here...........
+    const fetchData = async () => {
+      try {
+        // Fetch property details
+        const detailData = { user: property_id };
+        const url = Config.API_URL;
+        const property_Detailss = url + "get_All_Property_details";
+
+        setIsLoading(true);
+        const response = await axios.post(property_Detailss, detailData);
+        setIsLoading(false);
+
+        if (response.data.status === true) {
+          setProperty_Details(response.data.property_details);
+          // Fetch and process key features..........
+          if (response.data.property_details[0]?.key_features) {
+            const parsedData = JSON.parse(
+              response.data.property_details[0].key_features.replace(/\\/g, "")
+            );
+            setDetail(parsedData);
+          }
+        } else {
+          console.error("propertyDetail_error:", response.data.error);
+          alert(response.data.error);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert(error);
+        setIsLoading(false);
+      }
+    };
+    fetchData()
+  }, [property_id]);
+  // const DetailsData = () => {
+  //   const detailData = {
+  //     user: property_id,
+  //   };
+  //   console.log("detailData", detailData);
+  //   const url = Config.API_URL;
+  //   const property_Detailss = url + "get_All_Property_details";
+  //   console.log("Request URL:", property_Detailss);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(property_Detailss, detailData)
+  //     .then((response) => {
+  //       console.log("propertyDetail", response.data);
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+  //         setProperty_Details(response.data.property_details);
+  //         console.log("propertyDetail....", response.data.property_details);
+  //       } else {
+  //         console.error("propertyDetail_error:", response.data.error);
+  //         alert(response.data.error);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("property_type error:", error);
+  //       // alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
+  const imagePaths = MultiImageName.map((image) => image.path);
+
+  const keyfeatures = () => {
+    if (property_Detail[0]?.key_features) {
+      const parsedData = JSON.parse(
+        property_Detail[0].key_features.replace(/\\/g, "")
+      );
+      console.log("Parsed Data:", parsedData);
+      setDetail(parsedData);
+    }
+  };
+
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+    const iconConfig = {
+      name: "feed",
+      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
+      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+      size: 20,
+    };
+
+    switch (position) {
+      case 0: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 1: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 2: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 3: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+    return iconConfig;
+  };
+  const firstIndicatorSignUpStepStyle = {
+    stepIndicatorSize: 40,
+    currentStepIndicatorSize: 20,
+    separatorStrokeWidth: 1,
+    currentStepStrokeWidth: 2,
+    separatorFinishedColor: _COLORS.Kodie_GrayColor,
+    separatorUnFinishedColor: _COLORS.Kodie_LightOrange,
+    stepIndicatorFinishedColor: _COLORS.Kodie_GreenColor,
+    stepIndicatorUnFinishedColor: _COLORS.Kodie_GrayColor,
+    stepIndicatorCurrentColor: _COLORS.Kodie_WhiteColor,
+    stepIndicatorLabelFontSize: 15,
+    currentStepIndicatorLabelFontSize: 15,
+    stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+    labelColor: _COLORS.Kodie_BlackColor,
+    labelSize: 14,
+    labelAlign: "center",
+  };
+  const renderStepIndicator = (params) => (
+    <MaterialIcons {...getStepIndicatorIconConfig(params)} />
+  );
+  const renderLabel = ({ position, stepStatus }) => {
+    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    const iconColor =
+      position === currentPage // Check if it's the current step
+        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+        : stepStatus === "finished"
+        ? "#000000"
+        : "#808080";
+    const iconName =
+      position === 0
+        ? "Details"
+        : position === 1
+        ? "Features"
+        : position === 2
+        ? "Images"
+        : position === 3
+        ? "Review"
+        : "null";
+
+    return (
+      <View style={{}}>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 1,
+            marginHorizontal: 10,
+            color: iconColor,
+            alignSelf: "center",
+          }}
+        >{`Step ${position + 1}`}</Text>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 5,
+            marginHorizontal: 10,
+            color: iconColor,
+          }}
+        >
+          {iconName}
+        </Text>
+      </View>
+    );
+  };
+  const goBack = () => {
+    props.navigation.pop();
+  };
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -113,17 +293,18 @@ export default PropertyReview = (props) => {
           <>
             <Text style={DetailsStyle.welcome_Text}>
               {property_Detail[0]?.property_description}
-              Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
+              {/* Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
               apartment boasts modern interior finishes and a spacious extended
-              balcony. As you enter, you...
+              balcony. As you enter, you... */}
             </Text>
             <FlatList
               data={Detail}
               scrollEnabled
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{}}
-              numColumns={2}
+              // numColumns={2}
               keyExtractor={(item) => item?.id}
+              // keyExtractor={(item, index) => index.toString()}
               renderItem={Detail_rander}
             />
             <DividerIcon
@@ -238,138 +419,7 @@ export default PropertyReview = (props) => {
         return <Details />;
     }
   };
-  const DetailsData = () => {
-    const detailData = {
-      user: property_id,
-    };
-    console.log("detailData", detailData);
-    const url = Config.API_URL;
-    const property_Detailss = url + "get_All_Property_details";
-    console.log("Request URL:", property_Detailss);
-    setIsLoading(true);
-    axios
-      .post(property_Detailss, detailData)
-      .then((response) => {
-        console.log("propertyDetail", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          setProperty_Details(response.data.property_details);
 
-          console.log("propertyDetail....", response.data.property_details);
-        } else {
-          console.error("propertyDetail_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("property_type error:", error);
-        // alert(error);
-        setIsLoading(false);
-      });
-  };
-  const imagePaths = MultiImageName.map((image) => image.path);
-
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
-    const iconConfig = {
-      name: "feed",
-      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
-      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
-      size: 20,
-    };
-
-    switch (position) {
-      case 0: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
-        break;
-      }
-      case 1: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
-        break;
-      }
-      case 2: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
-        break;
-      }
-      case 3: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
-        break;
-      }
-
-      default: {
-        break;
-      }
-    }
-    return iconConfig;
-  };
-  const firstIndicatorSignUpStepStyle = {
-    stepIndicatorSize: 40,
-    currentStepIndicatorSize: 20,
-    separatorStrokeWidth: 1,
-    currentStepStrokeWidth: 2,
-    separatorFinishedColor: _COLORS.Kodie_GrayColor,
-    separatorUnFinishedColor: _COLORS.Kodie_LightOrange,
-    stepIndicatorFinishedColor: _COLORS.Kodie_GreenColor,
-    stepIndicatorUnFinishedColor: _COLORS.Kodie_GrayColor,
-    stepIndicatorCurrentColor: _COLORS.Kodie_WhiteColor,
-    stepIndicatorLabelFontSize: 15,
-    currentStepIndicatorLabelFontSize: 15,
-    stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
-    stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
-    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
-    labelColor: _COLORS.Kodie_BlackColor,
-    labelSize: 14,
-    labelAlign: "center",
-  };
-  const renderStepIndicator = (params) => (
-    <MaterialIcons {...getStepIndicatorIconConfig(params)} />
-  );
-  const renderLabel = ({ position, stepStatus }) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
-    const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
-        : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
-    const iconName =
-      position === 0
-        ? "Details"
-        : position === 1
-        ? "Features"
-        : position === 2
-        ? "Images"
-        : position === 3
-        ? "Review"
-        : "null";
-
-    return (
-      <View style={{}}>
-        <Text
-          style={{
-            fontSize: 14,
-            marginTop: 1,
-            marginHorizontal: 10,
-            color: iconColor,
-            alignSelf: "center",
-          }}
-        >{`Step ${position + 1}`}</Text>
-        <Text
-          style={{
-            fontSize: 14,
-            marginTop: 5,
-            marginHorizontal: 10,
-            color: iconColor,
-          }}
-        >
-          {iconName}
-        </Text>
-      </View>
-    );
-  };
-  const goBack = () => {
-    props.navigation.pop();
-  };
   return (
     <View style={PropertyReviewStyle.mainContainer}>
       <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
@@ -442,7 +492,7 @@ export default PropertyReview = (props) => {
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
-            {property_Detail[0]?.location || "Melbourne"}
+            {property_Detail[0]?.State || ""}
           </Text>
           <View style={PropertyReviewStyle.share_View}>
             <Entypo

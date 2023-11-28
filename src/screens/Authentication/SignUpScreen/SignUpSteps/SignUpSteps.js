@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  PermissionsAndroid,
+  // PermissionsAndroid,
   Image,
   FlatList,
   // Platform
@@ -72,7 +72,7 @@ const SignUpSteps = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const ref = React.useRef(null);
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -279,17 +279,16 @@ const SignUpSteps = (props) => {
   //  go back button...............
   const goBack = () => {
     props.navigation.navigate("LoginScreen");
-    
   };
   // const goBack = () => {
   //   console.log("Detected Platform:", Platform.OS);
   //   if (Platform.OS === 'ios' || Platform.OS === 'android'){
   //     props.navigation.navigate("LoginScreen");
   //   } else {
-  //     props.navigation.navigate("LoginScreen"); 
+  //     props.navigation.navigate("LoginScreen");
   //   }
   // };
-  
+
   const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
@@ -372,7 +371,8 @@ const SignUpSteps = (props) => {
             <TextInput
               style={AccountStyle.input}
               value={mobileNumber}
-              onChangeText={validateMobileNumber}
+              onChangeText={setMobileNumber}
+              onBlur={() => validateMobileNumber(mobileNumber)}
               placeholder="Enter your phone number"
               placeholderTextColor="#999"
               keyboardType="phone-pad"
@@ -461,7 +461,7 @@ const SignUpSteps = (props) => {
           <View style={SignUpStepStyle.stepIndicator}>
             <StepIndicator
               customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-              currentPosition={1}
+              currentPosition={0}
               renderStepIndicator={renderStepIndicator}
               labels={labels}
               stepCount={3}

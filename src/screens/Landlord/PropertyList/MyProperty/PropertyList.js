@@ -68,17 +68,24 @@ const PropertyList = (props) => {
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [propertyDelId, setPropertyDelId] = useState();
   const [Address, setAddress] = useState();
+  const [page, setPage] = useState(1);
   const refRBSheet = useRef();
   useEffect(() => {
     if (isvisible) {
       propertyList_Data("All");
     }
-  }, [isvisible]);
+  }, [isvisible, page]);
+
   const propertyList_Data = (filter) => {
     const propertyDataList = {
       property_filter: filter,
       user_account_id: 84,
+      page_no: page,
+      limit: 10,
+      order_col: 1,
+      order_wise: "DESC",
     };
+    
 
     const url = Config.API_URL;
     const propertyData_List = url + "get_property_details_by_filter";
@@ -94,9 +101,21 @@ const PropertyList = (props) => {
             "propertyDataList....",
             response.data?.property_details?.image_path
           );
+          // filter is 'Most Recent'.................
+          if (filter === "Most Recent") {
+            const newData = response.data.property_details.slice(0, 5);
+            // setProperty_Data_List((prevData) =>
+            //   page > 1 ? [...prevData, ...newData] : newData
+            // );
+            setProperty_Data_List(newData)
+            console.log("New Data for Most Recent:...........", newData);
 
-          setProperty_Data_List(response?.data?.property_details);
-
+          } else {
+            const newData = response.data.property_details;
+            setProperty_Data_List((prevData) =>
+              page > 1 ? [...prevData, ...newData] : newData
+            );
+          }
           // setProperty_Data_List(filter); // console.log(Property_Data_List, "Rahul...");
         } else {
           console.error("property_Data_list_error:", response.data.error);
@@ -109,7 +128,11 @@ const PropertyList = (props) => {
         setIsLoading(false);
       });
   };
-
+  const handleEndReached = () => {
+    if (!isLoading) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
   const propertyDelete = async () => {
     // setIsLoading(true);
     // alert(propertyDelId);
@@ -145,7 +168,7 @@ const PropertyList = (props) => {
         );
 
         propertyList_Data();
-        setIsLoading(false);
+        setIsLoading(false);eeeeee
       }
     } catch (error) {
       console.error("Error deleting property:", error);
@@ -204,7 +227,7 @@ const PropertyList = (props) => {
               <Text style={PropertyListCSS.apartmentText}>
                 {item.property_type}
               </Text>
-              <Text style={LABEL_STYLES.commontext}>{item.location}</Text>
+              <Text style={LABEL_STYLES.commontext}>{item.State}</Text>
               <View style={PropertyListCSS.flat_MainView}>
                 <MaterialCommunityIcons
                   name={"map-marker"}
@@ -628,7 +651,8 @@ const PropertyList = (props) => {
             <DividerIcon />
             <FlatList
               data={Property_Data_List}
-              // data={property_List1}
+              onEndReached={handleEndReached}
+              onEndReachedThreshold={0.8}
               renderItem={propertyData1_render}
             />
           </>

@@ -50,6 +50,9 @@ export default PropertyFeature = (props) => {
   const latitude = props?.route?.params?.latitude;
   const longitude = props?.route?.params?.longitude;
   const propertyid = props?.route?.params?.propertyid;
+  const city = props?.route?.params?.city;
+  const state = props?.route?.params?.state;
+  const country = props?.route?.params?.country;
   console.log(
     "location......",
     location,
@@ -58,7 +61,10 @@ export default PropertyFeature = (props) => {
     propertyDesc,
     longitude,
     latitude,
-    propertyid
+    propertyid,
+    city,
+    state,
+    country
   );
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
 
@@ -70,9 +76,10 @@ export default PropertyFeature = (props) => {
   const [selected, setSelected] = useState([]);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
-  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
+  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(70);
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
-  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] = useState(0);
+  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
+    useState(67);
   const [CountBedroom, setCountBedroom] = useState(1);
   const [CountBathroom, setCountBathroom] = useState(1);
   const [CountParking, setCountParking] = useState(1);
@@ -80,7 +87,8 @@ export default PropertyFeature = (props) => {
   const [florSize, setFlorSize] = useState("");
   const [landArea, setLandArea] = useState("");
   const [property_Detail, setProperty_Details] = useState([]);
-
+  // const [furnished, setFurnished] = useState([]);
+  // const [preFriendly, setProperty_Details] = useState([]);
   useEffect(() => {
     additional_features();
     DetailsData();
@@ -119,11 +127,21 @@ export default PropertyFeature = (props) => {
       });
   };
   const AllCountsData = [
-    CountBedroom,
-    CountBathroom,
-    CountParking,
-    CountParkingStreet,
+    { Bedrooms: CountBedroom },
+    { Bathrooms: CountBathroom },
+    { ParkingSpace: CountParking },
+    { On_streetParking: CountParkingStreet },
   ];
+
+  // PRE fRIENDLY CODE HERE.........
+  // const PreFriedly = {
+  //   selectedButtonDepositId,
+  //   selectedButtonFurnishedId,
+  // };
+
+  const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
+  console.log(PreFriedly, "pre friedly............");
+  console.log(AllCountsData);
   const increaseBedroomCount = () => {
     setCountBedroom((prevCount) => prevCount + 1);
   };
@@ -278,10 +296,16 @@ export default PropertyFeature = (props) => {
         property_description: propertyDesc,
         property_type: property_value,
         key_features: AllCountsData,
-        additional_features: "12",
+        additional_features: PreFriedly,
         additional_key_features: additionalfeatureskeyvalue,
         autolist: selectedButtonId,
+        UPD_FLOOR_SIZE: florSize,
+        UPD_LAND_AREA: landArea,
+        p_city: city,
+        p_state: state,
+        p_country: country,
       })
+
       .then((response) => {
         console.log("property_details", response?.data);
         if (response.data.status === true) {
@@ -336,6 +360,7 @@ export default PropertyFeature = (props) => {
         setIsLoading(false);
       });
   };
+
   const updatePropertyDetails = () => {
     const updateData = {
       user: 35,
@@ -347,10 +372,15 @@ export default PropertyFeature = (props) => {
       property_description: propertyDesc,
       property_type: property_value,
       key_features: AllCountsData,
-      additional_features: "12",
+      additional_features: PreFriedly,
+      UPD_FLOOR_SIZE: florSize,
+      UPD_LAND_AREA: landArea,
       additional_key_features: additionalfeatureskeyvalue,
       autolist: selectedButtonId,
       property_id: propertyid,
+      p_city: city,
+      p_state: state,
+      p_country: country,
     };
     console.log("updateData", updateData);
     const url = Config.API_URL;
@@ -585,7 +615,7 @@ export default PropertyFeature = (props) => {
                   }
                   onPressLeftButton={() => {
                     setSelectedButtonFurnished(false);
-                    setSelectedButtonFurnishedId(1);
+                    setSelectedButtonFurnishedId(67);
                     // alert(selectedButtonId)
                   }}
                   RightButtonText={"Unfurnished"}
@@ -606,7 +636,7 @@ export default PropertyFeature = (props) => {
                   }
                   onPressRightButton={() => {
                     setSelectedButtonFurnished(true);
-                    setSelectedButtonFurnishedId(2);
+                    setSelectedButtonFurnishedId(68);
                     // alert(selectedButtonId)
                   }}
                 />
@@ -634,7 +664,7 @@ export default PropertyFeature = (props) => {
                   }
                   onPressLeftButton={() => {
                     setSelectedButtonDeposit(false);
-                    setSelectedButtonDepositId(1);
+                    setSelectedButtonDepositId(70);
                     // alert(selectedButtonId)
                   }}
                   RightButtonText={"No"}
@@ -655,7 +685,7 @@ export default PropertyFeature = (props) => {
                   }
                   onPressRightButton={() => {
                     setSelectedButtonDeposit(true);
-                    setSelectedButtonDepositId(2);
+                    setSelectedButtonDepositId(71);
                     // alert(selectedButtonId)
                   }}
                 />
