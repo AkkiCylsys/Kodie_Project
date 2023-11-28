@@ -35,7 +35,7 @@ const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 export default PropertyDetails = (props) => {
   const propertyid = props?.route?.params?.propertyid;
   console.log("propertyid....", propertyid);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
   const [IsMap, setIsMap] = useState(false);

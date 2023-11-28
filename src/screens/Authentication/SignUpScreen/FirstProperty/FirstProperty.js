@@ -33,6 +33,7 @@ import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPl
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useDispatch, useSelector } from "react-redux";
 import { signupAccountApiActionCreator } from "../../../../redux/Actions/Authentication/AuthenticationApiCreator";
+import mime from "mime";
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -153,6 +154,8 @@ export default FirstProperty = (props) => {
   let p_latitude = props?.route?.params?.p_latitude;
   let p_longitude = props?.route?.params?.p_longitude;
   let user_key = props?.route?.params?.user_key;
+  // let image_result = props?.route?.params?.image_result;
+
   console.log("firstname..", firstName);
   console.log("lastName..", lastName);
   console.log("mobileNumber..", mobileNumber);
@@ -162,7 +165,7 @@ export default FirstProperty = (props) => {
   console.log("selectManageProperty..", selectManageProperty);
   console.log("selectedServiceKeysString..", selectedServiceKeysString);
   console.log("kodieHelpValue..", kodieHelpValue);
-  console.log("ImageName..", ImageName);
+  console.log("ImageName_data..", ImageName);
   console.log("email..", email);
   console.log("country..", country);
   console.log("state..", state);
@@ -170,6 +173,7 @@ export default FirstProperty = (props) => {
   console.log("p_latitude..", p_latitude);
   console.log("p_longitude..", p_longitude);
   console.log("user_key..", user_key);
+  // console.log("image_result..", image_result);
 
   const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(2);
@@ -429,23 +433,43 @@ export default FirstProperty = (props) => {
     formData.append("additional_features", additionalfeatureskeyvalue);
     formData.append("auto_list", selectedButtonId);
 
-    if (ImageName) {
-      const imageUri = ImageName;
-      // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      formData.append("profile_photo", {
-        uri: imageUri,
-        // type: imageType,
-        name: "abc",
-      });
-    }
+    // if (ImageName) {
+    //   const imageUri = ImageName;
+    //   // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   formData.append("profile_photo", {
+    //     uri: imageUri,
+    //     // type: imageType
+    //     name: "abc",
+    //   });
+    // }
+
+    // formData.append("profile_photo", {
+    //   uri:ImageName[0].uri,
+
+    //   // uri:Platform.select({ ios: ImageName[0].uri.replace('file://', ''), android: ImageName[0].uri }),
+    //   // uri:"https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
+    //   type: ImageName[0].type,
+    //   name: ImageName[0].fileName,
+    // });
+
+    const newImageUri = "file:///" + ImageName[0].uri.split("file:/").join("");
+    formData.append("profile_photo", {
+      uri: newImageUri,
+      // type: mime.getType(newImageUri),
+      type:"image/jpg",
+      name: newImageUri.split("/").pop(),
+    });
+
     const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+    // const url = Config.API_URL;
+    // const saveAccountDetails = url + 'user_save_signup_account_details';
     const saveAccountDetails = url;
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
     try {
       const response = await axios.post(saveAccountDetails, formData, {
         headers: {
-          "content-type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       });
       console.log("Save Account Details", response.data);
@@ -508,7 +532,6 @@ export default FirstProperty = (props) => {
   //   console.log("landArea..", landArea);
 
   //   const formData = new FormData();
-  //   // formData.append("user", 46);
   //   formData.append("user", user_key);
   //   formData.append("first_name", firstName);
   //   formData.append("last_name", lastName);
@@ -539,14 +562,19 @@ export default FirstProperty = (props) => {
   //   formData.append("floor_size", buildingFlorSize);
   //   formData.append("additional_features", additionalfeatureskeyvalue);
   //   formData.append("auto_list", selectedButtonId);
-  //   if (ImageName) {
-  //     const imageUri = ImageName;
-  //     // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-  //     formData.append("profile_photo", {
-  //       uri: imageUri,
-  //       name: "abc",
-  //     });
-  //   }
+  //   // if (ImageName) {
+  //   //   const imageUri = ImageName;
+  //   //   // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+  //   //   formData.append("profile_photo", {
+  //   //     uri: imageUri,
+  //   //     name: "abc",
+  //   //   });
+  //   // }
+  //   //   formData.append("profile_photo", {
+  //   //   uri: ImageName[0].uri,
+  //   //   type: ImageName[0].type,
+  //   //   name: ImageName[0].fileName,
+  //   // });
 
   //   const url = "https://e3.cylsys.com/api/v1/signup_step_one";
   //   setIsLoading(true);
@@ -556,7 +584,7 @@ export default FirstProperty = (props) => {
   //       method: "POST",
   //       body: formData,
   //       headers: {
-  //         // Don't set content-type for FormData, it will be set automatically
+  //         "content-type": "multipart/form-data",
   //       },
   //     });
 

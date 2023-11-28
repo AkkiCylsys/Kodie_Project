@@ -91,7 +91,7 @@ export default PropertyReview = (props) => {
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
 
-  const [currentPage, setCurrentPage] = useState(4);
+  const [currentPage, setCurrentPage] = useState(3);
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -125,7 +125,7 @@ export default PropertyReview = (props) => {
               balcony. As you enter, you... */}
             </Text>
             <FlatList
-              data={JSON.parse(property_Detail[0]?.key_features)}
+              data={property_Detail[0]?.key_features}
               scrollEnabled
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{}}
