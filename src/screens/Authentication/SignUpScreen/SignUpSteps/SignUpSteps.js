@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  PermissionsAndroid,
+  // PermissionsAndroid,
   Image,
   FlatList,
   // Platform
@@ -69,10 +69,11 @@ const SignUpSteps = (props) => {
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("signup_response.....", signup_response);
+
   const [isLoading, setIsLoading] = useState(false);
   const ref = React.useRef(null);
   const scrollViewRef = useRef();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
@@ -279,6 +280,7 @@ const SignUpSteps = (props) => {
   //  go back button...............
   const goBack = () => {
     props.navigation.navigate("LoginScreen");
+    // props.navigation.pop();
   };
   // const goBack = () => {
   //   console.log("Detected Platform:", Platform.OS);
@@ -461,7 +463,7 @@ const SignUpSteps = (props) => {
           <View style={SignUpStepStyle.stepIndicator}>
             <StepIndicator
               customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-              currentPosition={1}
+              currentPosition={0}
               renderStepIndicator={renderStepIndicator}
               labels={labels}
               stepCount={3}

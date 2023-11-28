@@ -153,7 +153,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
-    backgroundColor: "white",
+    backgroundColor:_COLORS.Kodie_BlackColor,
     shadowColor: "#000",
     marginTop: 8,
     marginRight: 12,
@@ -165,6 +165,7 @@ export const FirstPropertyStyle = StyleSheet.create({
   textSelectedStyle: {
     marginRight: 5,
     fontSize: 14,
+    color:"white"
   },
   addition_featureText: {
     marginTop: 10,

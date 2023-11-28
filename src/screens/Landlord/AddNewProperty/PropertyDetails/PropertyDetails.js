@@ -87,7 +87,6 @@ export default PropertyDetails = (props) => {
   //     setpropertytypeError("");
   //   }
   // };
-
   useEffect(() => {
     handleProperty_Type();
     DetailsData();
@@ -530,7 +529,7 @@ export default PropertyDetails = (props) => {
                 />
                 {/* {propertytypeError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
-                    {propertytypeError}
+                    {"please select a property type"}
                   </Text>
                 ) : null} */}
               </View>
@@ -615,7 +614,8 @@ export default PropertyDetails = (props) => {
                       state: state,
                       country: country,
                     });
-                    // }
+                   
+                    
                   }}
                 />
               </View>
