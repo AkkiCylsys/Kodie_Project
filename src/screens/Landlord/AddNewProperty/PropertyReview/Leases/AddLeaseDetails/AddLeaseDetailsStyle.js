@@ -148,4 +148,13 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
+  itemView: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical:10,
+    marginHorizontal:10
+  },
+  textItem: {
+    marginLeft: 10,
+  },
 });

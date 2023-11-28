@@ -42,8 +42,8 @@ export const LeaseSummaryStyle = StyleSheet.create({
   due_View: {
     flexDirection: "row",
   },
-  sub_View:{ flexDirection: "row" },
-  freq_View:{ marginTop: 14 },
+  sub_View: { flexDirection: "row" },
+  freq_View: { marginTop: 14 },
   Due_Summary_main_View: {
     borderWidth: 1,
     paddingHorizontal: 10,

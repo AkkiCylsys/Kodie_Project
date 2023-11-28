@@ -90,7 +90,7 @@ export default PropertyReview = (props) => {
   const [getPropertyDetail, setGetPropertyDetail] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
-
+  const [Detail, setDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(3);
   const Detail_rander = ({ item, index }) => {
     // const key = Object.keys(item)[0];

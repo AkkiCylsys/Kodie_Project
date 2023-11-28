@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AddLeaseDetailsStyle } from "./AddLeaseDetailsStyle";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import { FONTFAMILY, _COLORS } from "../../../../../../Themes";
 import { LABEL_STYLES } from "../../../../../../Themes/CommonStyles/CommonStyles";
 import CalendarModal from "../../../../../../components/Molecules/CalenderModal/CalenderModal";
@@ -19,7 +20,6 @@ import axios from "axios";
 import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { Config } from "../../../../../../Config";
 import { useDispatch, useSelector } from "react-redux";
-
 const data = [
   "All",
   "2- Month",
@@ -100,6 +100,7 @@ export default AddLeaseDetails = (props) => {
     const add_Lease_url = url;
     console.log("Request URL:", add_Lease_url);
     setIsLoading(true);
+    console.log("selectedDate", selectedDate);
     const lease_Data = {
       user_key: loginData?.Login_details?.result,
       upd_key: 4,
@@ -124,17 +125,18 @@ export default AddLeaseDetails = (props) => {
       .post(add_Lease_url, lease_Data)
       .then((response) => {
         console.log("API Response add_lease:", response.data);
-        // if (response.data.status === true) {
-        //   alert(response.data.message);
-        // } else {
-        //   alert(response.data.message);
-        //   setIsLoading(false);
-        // }
+        if (response.data.success === true) {
+          alert(response.data.message);
+          handlePopUp();
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
       })
       .catch((error) => {
         console.error("API failed", error);
         setIsLoading(false);
-        // alert(error);
+        alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -291,6 +293,46 @@ export default AddLeaseDetails = (props) => {
         setIsLoading(false);
       });
   };
+  const lease_term_render = (item) => {
+    return (
+      <View style={AddLeaseDetailsStyle.itemView}>
+        {item.lookup_key === lease_term_value ? (
+          <Fontisto
+            color={_COLORS.Kodie_GreenColor}
+            name={"radio-btn-active"}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GreenColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={AddLeaseDetailsStyle.textItem}>{item.description}</Text>
+      </View>
+    );
+  };
+  const notification_render = (item) => {
+    return (
+      <View style={AddLeaseDetailsStyle.itemView}>
+        {item.lookup_key === notification_type_value ? (
+          <Fontisto
+            color={_COLORS.Kodie_GreenColor}
+            name={"radio-btn-active"}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GreenColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={AddLeaseDetailsStyle.textItem}>{item.description}</Text>
+      </View>
+    );
+  };
   return (
     <View style={AddLeaseDetailsStyle.mainContainer}>
       <ScrollView>
@@ -368,6 +410,7 @@ export default AddLeaseDetails = (props) => {
                 setlLease_term_value(item.lookup_key);
                 // alert(item.lookup_key);
               }}
+              renderItem={lease_term_render}
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -378,6 +421,8 @@ export default AddLeaseDetails = (props) => {
               onChangeText={setRentalAmount}
               placeholder="Enter the rental amount"
               placeholderTextColor="#999"
+              keyboardType="number-pad"
+              maxLength={5}
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -388,6 +433,7 @@ export default AddLeaseDetails = (props) => {
               onChangeText={setRentalBond}
               placeholder="Enter the rental bond amount"
               placeholderTextColor="#999"
+              keyboardType="number-pad"
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -434,7 +480,7 @@ export default AddLeaseDetails = (props) => {
               }
               onPressRightButton={() => {
                 setSelected_frequency_Button(true);
-                setSelected_frequency_Id(2);
+                setSelected_frequency_Id(0);
               }}
             />
           </View>
@@ -492,7 +538,7 @@ export default AddLeaseDetails = (props) => {
               }
               onPressRightButton={() => {
                 setSelected_payment_Button(true);
-                setSelected_payment_Id(2);
+                setSelected_payment_Id(0);
               }}
             />
           </View>
@@ -532,6 +578,7 @@ export default AddLeaseDetails = (props) => {
                   setNotification_type_value(item.lookup_key);
                   // alert(item.lookup_key);
                 }}
+                renderItem={notification_render}
               />
             </View>
           </View>
@@ -540,8 +587,8 @@ export default AddLeaseDetails = (props) => {
               switchOn={toggle_expiry}
               onPress={() => {
                 setToggle_expiry(!toggle_expiry);
-                setToggle_lease_expire(toggle_expiry ? 1 : 0);
-                alert(toggle_lease_expire);
+                setToggle_lease_expire(toggle_expiry ? 0 : 1);
+                // alert(toggle_lease_expire);
               }}
               circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
               circleColorOn={_COLORS.Kodie_GreenColor}
@@ -584,7 +631,7 @@ export default AddLeaseDetails = (props) => {
               switchOn={toggle_payment}
               onPress={() => {
                 setToggle_payment(!toggle_payment);
-                setToggle_rent_payment(toggle_payment ? 1 : 0);
+                setToggle_rent_payment(toggle_payment ? 0 : 1);
               }}
               circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
               circleColorOn={_COLORS.Kodie_GreenColor}
@@ -627,7 +674,7 @@ export default AddLeaseDetails = (props) => {
               switchOn={toggle_rental}
               onPress={() => {
                 setToggle_rental(!toggle_rental);
-                setToggle_late_rental(toggle_rental ? 1 : 0);
+                setToggle_late_rental(toggle_rental ? 0 : 1);
               }}
               circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
               circleColorOn={_COLORS.Kodie_GreenColor}
@@ -659,7 +706,7 @@ export default AddLeaseDetails = (props) => {
                 placeholder="2-days"
                 value={rental_reminder_value}
                 onChange={(item) => {
-                  setrental_reminder_value(item.value);
+                  setrental_reminder_value(item.lookup_key);
                 }}
               />
               <Text style={AddLeaseDetailsStyle.before}>{"After"}</Text>
@@ -679,6 +726,7 @@ export default AddLeaseDetails = (props) => {
               ]}
               onPress={() => {
                 handleOptionClick("cancel");
+                handlePopUp();
               }}
             >
               <Text
