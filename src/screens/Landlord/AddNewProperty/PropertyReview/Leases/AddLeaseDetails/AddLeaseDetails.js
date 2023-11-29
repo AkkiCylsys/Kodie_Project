@@ -120,7 +120,6 @@ export default AddLeaseDetails = (props) => {
       rent_payment_reminder: payment_reminder_value,
       late_rental_reminder: rental_reminder_value,
     };
-
     axios
       .post(add_Lease_url, lease_Data)
       .then((response) => {
@@ -295,22 +294,24 @@ export default AddLeaseDetails = (props) => {
   };
   const lease_term_render = (item) => {
     return (
-      <View style={AddLeaseDetailsStyle.itemView}>
-        {item.lookup_key === lease_term_value ? (
-          <Fontisto
-            color={_COLORS.Kodie_GreenColor}
-            name={"radio-btn-active"}
-            size={20}
-          />
-        ) : (
-          <Fontisto
-            color={_COLORS.Kodie_GreenColor}
-            name={"radio-btn-passive"}
-            size={20}
-          />
-        )}
-        <Text style={AddLeaseDetailsStyle.textItem}>{item.description}</Text>
-      </View>
+      <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
+        <View style={AddLeaseDetailsStyle.itemView}>
+          {item.lookup_key === lease_term_value ? (
+            <Fontisto
+              color={_COLORS.Kodie_GreenColor}
+              name={"radio-btn-active"}
+              size={20}
+            />
+          ) : (
+            <Fontisto
+              color={_COLORS.Kodie_GreenColor}
+              name={"radio-btn-passive"}
+              size={20}
+            />
+          )}
+          <Text style={AddLeaseDetailsStyle.textItem}>{item.description}</Text>
+        </View>
+      </ScrollView>
     );
   };
   const notification_render = (item) => {
@@ -391,7 +392,7 @@ export default AddLeaseDetails = (props) => {
             <Dropdown
               style={[
                 AddLeaseDetailsStyle.dropdown,
-                { flex: 1, borderRadius: 5, paddingVertical: 15 },
+                { flex: 1, borderRadius: 5, height: 45 },
               ]}
               placeholderStyle={[
                 AddLeaseDetailsStyle.placeholderStyle,

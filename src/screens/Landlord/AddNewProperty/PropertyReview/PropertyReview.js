@@ -142,7 +142,7 @@ export default PropertyReview = (props) => {
         setIsLoading(false);
       }
     };
-    fetchData()
+    fetchData();
   }, [property_id]);
   // const DetailsData = () => {
   //   const detailData = {
@@ -407,7 +407,7 @@ export default PropertyReview = (props) => {
           </>
         );
       case "Tab2":
-        return <Leases />;
+        return <Leases property_id={property_id} />;
 
       case "Tab3":
         return <Expenses />;

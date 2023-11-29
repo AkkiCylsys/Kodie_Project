@@ -7,6 +7,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import AddLeaseDetails from "./AddLeaseDetails/AddLeaseDetails";
 import LeaseSummary from "./LeaseSummary/LeaseSummary";
 export default Leases = (props) => {
+  // alert(JSON.stringify(props.property_id));
+  const property_id = props.property_id;
   const refRBSheet = useRef();
   const handleClose = () => {
     refRBSheet.current.close();
@@ -14,26 +16,6 @@ export default Leases = (props) => {
   return (
     <View style={LeasesStyle.mainContainer}>
       <ScrollView>
-        {/* {handleClose ? (
-          <>
-            <View style={LeasesStyle.add_Lease_view}>
-              <Text style={LeasesStyle.add_Lease_Text}>
-                {"Start by adding your lease "}
-              </Text>
-            </View>
-            <View style={LeasesStyle.btn_View}>
-              <CustomSingleButton
-                _ButtonText={"+ Add lease"}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  refRBSheet.current.open();
-                }}
-              />
-            </View>
-          </>
-        ) : (
-          <LeaseSummary />
-        )} */}
         <View style={LeasesStyle.add_Lease_view}>
           <Text style={LeasesStyle.add_Lease_Text}>
             {"Start by adding your lease "}
@@ -48,7 +30,7 @@ export default Leases = (props) => {
             }}
           />
         </View>
-        <LeaseSummary />
+        <LeaseSummary property_id={property_id} />
 
         <RBSheet
           ref={refRBSheet}
