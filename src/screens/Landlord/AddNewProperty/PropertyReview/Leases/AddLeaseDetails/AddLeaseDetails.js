@@ -33,6 +33,10 @@ export default AddLeaseDetails = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginData...", loginData);
   // alert(loginData?.Login_details?.result)
+
+  // alert(JSON.stringify(props.property_id));
+  const property_id = props.property_id;
+  console.log("property id in add lease Detail..", property_id);
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
@@ -103,7 +107,8 @@ export default AddLeaseDetails = (props) => {
     console.log("selectedDate", selectedDate);
     const lease_Data = {
       user_key: loginData?.Login_details?.result,
-      upd_key: 4,
+      // upd_key: 4,
+      upd_key: property_id,
       commencement_date: selectedDate,
       rental_lease_term: lease_term_value,
       rental_amount: rentalAmount,

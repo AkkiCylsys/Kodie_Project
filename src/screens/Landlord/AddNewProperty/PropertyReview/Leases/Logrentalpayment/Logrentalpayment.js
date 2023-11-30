@@ -23,6 +23,7 @@ const Logrentalpayment = (props) => {
   //   console.log("lease_keys...", props.lease_keys);
   //   alert(JSON.stringify(props.lease_keys));
   const lease_keys = props.lease_keys;
+  console.log("lease_keys in log rental payment...",lease_keys)
   const [isLoading, setIsLoading] = useState(false);
   const [totalAmount, setTotalAmount] = useState("");
   const [totalAmountError, setTotalAmountError] = useState("");

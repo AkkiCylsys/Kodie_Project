@@ -448,15 +448,15 @@ export default AboutYou = (props) => {
             refRBSheet.current.open();
           }}
         >
-          {/* {ImageName ? (
+          {ImageName ? (
             <Image
               source={{ uri: ImageName.path || ImageName }}
               style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
             />
           ) : (
             <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
-          )} */}
-          {ImageName ? (
+          )}
+          {/* {ImageName ? (
             <Image
               source={{
                 uri:ImageName[0]?.uri,
@@ -468,7 +468,7 @@ export default AboutYou = (props) => {
               source={IMAGES?.userIcons}
               style={[AboutYouStyle.logo]}
             />
-          )}
+          )} */}
         </TouchableOpacity>
         {ImageName ? null : (
           <Text style={AboutYouStyle.error_text}>{imageError}</Text>
@@ -544,17 +544,17 @@ export default AboutYou = (props) => {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={{ alignSelf: "center", backgroundColor: "green" }}
             onPress={openGallery}
           >
             <Text>{"open gallery"}</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
-          {/* <UploadImageData
+          <UploadImageData
             heading_Text={"Upload image"}
             ImageName={handleImageNameChange}
-          /> */}
+          />
         </RBSheet>
       </View>
       <View style={{ marginHorizontal: 16 }}>

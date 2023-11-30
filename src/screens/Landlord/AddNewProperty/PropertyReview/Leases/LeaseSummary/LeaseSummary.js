@@ -58,6 +58,7 @@ export default LeaseSummary = (props) => {
   console.log("loginData...", loginData);
   // alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
+  console.log("property_id in lease summary...", property_id);
   const [isLoading, setIsLoading] = useState(false);
   const [lease_summary_data, setLease_summary_data] = useState([]);
   const [rental_Receipt_data, setRental_Receipt_data] = useState([]);
@@ -72,10 +73,15 @@ export default LeaseSummary = (props) => {
 
   const handleClose = () => {
     refRBSheet2.current.close();
+    get_retal_receipt();
+    lease_summary();
   };
 
+  
+
   const lease_summary = () => {
-    const url = `https://e3.cylsys.com/api/v1/property_lease_details/getAll/19${loginData?.Login_details?.result}`;
+    const url = `https://e3.cylsys.com/api/v1/property_lease_details/getAll/${property_id}`;
+    // const url = "https://e3.cylsys.com/api/v1/property_lease_details/getAll/4";
     const lease_summary_url = url;
     console.log("Request URL:", lease_summary_url);
     setIsLoading(true);
@@ -102,7 +108,8 @@ export default LeaseSummary = (props) => {
       });
   };
   const get_retal_receipt = () => {
-    const url = ` https://e3.cylsys.com/api/v1/property_lease_details/get/paymentdetails/${loginData?.Login_details?.result}`;
+    const url = `https://e3.cylsys.com/api/v1/property_lease_details/get/paymentdetails/${property_id}`;
+    // const url = "https://e3.cylsys.com/api/v1/property_lease_details/get/paymentdetails/4";
     const retal_receip_url = url;
     console.log("Request URL:", retal_receip_url);
     setIsLoading(true);

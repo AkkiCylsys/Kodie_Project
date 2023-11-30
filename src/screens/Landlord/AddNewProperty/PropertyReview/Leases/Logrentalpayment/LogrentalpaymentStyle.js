@@ -78,10 +78,12 @@ export const LogrentalPaymentStyle = StyleSheet.create({
     fontSize: 16,
   },
   ButtonView: {
+    flex:1,
     flexDirection: "row",
     justifyContent: "flex-end",
     marginRight: 10,
     marginTop: 20,
+    marginBottom:150
   },
   closeText: {
     paddingHorizontal: 25,

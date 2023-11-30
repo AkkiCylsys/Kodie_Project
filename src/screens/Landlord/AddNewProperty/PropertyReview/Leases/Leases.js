@@ -30,7 +30,7 @@ export default Leases = (props) => {
             }}
           />
         </View>
-        <LeaseSummary property_id={property_id} />
+        <LeaseSummary property_id={property_id}  />
 
         <RBSheet
           ref={refRBSheet}
@@ -45,7 +45,7 @@ export default Leases = (props) => {
             container: LeasesStyle.bottomModal_container,
           }}
         >
-          <AddLeaseDetails onClose={handleClose} />
+          <AddLeaseDetails onClose={handleClose} property_id={property_id} />
         </RBSheet>
       </ScrollView>
     </View>
