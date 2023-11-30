@@ -6,6 +6,7 @@ import { _COLORS } from "../../../../../../../Themes";
 import Person from "./Person/Person";
 import Company from "./Company/Company";
 export default AddTenantDetails = (props) => {
+  const property_id = props.property_id;
   const handleClosePopup = () => {
     props.onClose();
   };
@@ -13,9 +14,9 @@ export default AddTenantDetails = (props) => {
   const checkTabs = () => {
     switch (tabValue) {
       case "Person":
-        return <Person />;
+        return <Person property_id={property_id}/>;
       case "Company":
-        return <Company />;
+        return <Company property_id={property_id}/>;
       default:
         return <Person />;
     }

@@ -15,6 +15,7 @@ import PropertyExpenses from "./PropertyExpenses/PropertyExpenses";
 import Entypo from "react-native-vector-icons/Entypo";
 import axios from "axios";
 import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import moment from "moment/moment";
 const proper_expens_data = [
   {
     id: "1",
@@ -53,43 +54,49 @@ const proper_expens_data = [
     payment_status: "paid",
   },
 ];
-export default Expenses = () => {
+export default Expenses = (props) => {
+    // alert(JSON.stringify(props.property_id));
+    const property_id = props.property_id;
+    console.log('property_id in Expenses..',property_id);
   const refRBSheet = useRef();
   const [Expenses_data, setExpenses_Data] = useState([]);
   const [Expenses_value, setExpenses_vata] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const CloseUp = () => {
     refRBSheet.current.close();
+    get_Expenses_Details();
   };
   // Fetch property expenses......
-  useEffect(() => {
-    const url =
-      "https://e3.cylsys.com/api/v1/property_expenses_details/getAll/5";
-    const get_Expenses_Details = () => {
-      const Expenses_Details_url = url;
-      console.log("Request URL:", Expenses_Details_url);
-      setIsLoading(true);
-      axios
-        .get(Expenses_Details_url)
-        .then((response) => {
-          console.log("API Response Expenses_Details_url:", response.data);
-          if (response.data.success === true) {
-            setExpenses_Data(response.data.data);
-            console.log("Expenses Details Data..", response.data.data);
-          } else {
-            alert(response.data.message);
-            setIsLoading(false);
-          }
-        })
-        .catch((error) => {
-          console.error("API failed", error);
-          setIsLoading(false);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
-    };
 
+  const get_Expenses_Details = () => {
+    const url = `https://e3.cylsys.com/api/v1/property_expenses_details/getAll/${property_id}`;
+    setIsLoading(true);
+    const Expenses_Details_url = url;
+    console.log("Request URL:", Expenses_Details_url);
+    // setIsLoading(true);
+    axios
+      .get(Expenses_Details_url)
+      .then((response) => {
+        console.log("API Response Expenses_Details_url:", response.data);
+        if (response.data.success === true) {
+          setExpenses_Data(response.data.data);
+          console.log("Expenses Details Data..", response.data.data);
+          setIsLoading(false);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
     get_Expenses_Details();
   }, []);
 
@@ -172,7 +179,7 @@ export default Expenses = () => {
               <View style={ExpensesStyle.paid_Date_View}>
                 <Text style={ExpensesStyle.date_paid}>{"Date paid:"}</Text>
                 <Text style={ExpensesStyle.Amount_Text}>
-                  {item.UPED_DUE_DATE.substring(0, 10)}
+                  {moment(item.UPED_DUE_DATE.substring(0, 10)).format('DD MMMM YYYY')}
                 </Text>
               </View>
               <TouchableOpacity
@@ -180,8 +187,8 @@ export default Expenses = () => {
                   ExpensesStyle.rent_received_view,
                   {
                     backgroundColor:
-                      item.UPED_PAID == 1
-                        ? '#E9F2E9'
+                      item.UPED_PAID == 0
+                        ? "#E9F2E9"
                         : _COLORS.Kodie_LightOrange,
                   },
                 ]}
@@ -190,22 +197,24 @@ export default Expenses = () => {
                   <Entypo
                     name="dot-single"
                     size={25}
-                    color={  item.UPED_PAID == 1
-                      ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_DarkOrange}
+                    color={
+                      item.UPED_PAID == 0
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_DarkOrange
+                    }
                   />
                   <Text
                     style={[
                       ExpensesStyle.rent_received_text,
                       {
                         color:
-                          item.UPED_PAID == 1
+                          item.UPED_PAID == 0
                             ? _COLORS.Kodie_GreenColor
                             : _COLORS.Kodie_DarkOrange,
                       },
                     ]}
                   >
-                    {item.UPED_PAID == 1 ? "Paid" : "Awaiting payment"}
+                    {item.UPED_PAID == 0 ? "Paid" : "Awaiting payment"}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -256,7 +265,7 @@ export default Expenses = () => {
             container: ExpensesStyle.bottomModal_container,
           }}
         >
-          <AddExpensesDetails onClose={CloseUp} />
+          <AddExpensesDetails onClose={CloseUp} property_id={property_id} />
         </RBSheet>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}

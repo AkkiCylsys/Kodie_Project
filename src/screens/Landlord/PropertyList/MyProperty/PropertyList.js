@@ -184,7 +184,7 @@ const PropertyList = (props) => {
 
   const horizontal_render = ({ item }) => {
     const isSelected = item === filterData;
-    console.log("isSelected.....",isSelected,filterData)
+    // console.log("isSelected.....",isSelected,filterData)
 
     return (
       <TouchableOpacity

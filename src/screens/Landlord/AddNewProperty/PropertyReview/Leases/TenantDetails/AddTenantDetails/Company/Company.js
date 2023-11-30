@@ -12,9 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import axios from "axios";
 
-export default Company = () => {
+export default Company = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-
+  const property_id = props.property_id;
   const [companyName, setCompanyName] = useState("");
   const [companyNameError, setCompanyNameError] = useState("");
   const [email, setEmail] = useState("");
@@ -91,7 +91,7 @@ export default Company = () => {
   };
   const CompanyDetailsData = {
     user_key: loginData.Login_details.result,
-    upd_key: 5,
+    upd_key: property_id,
     org_name: companyName,
     email: email,
     phone_number: PhoneNumber,

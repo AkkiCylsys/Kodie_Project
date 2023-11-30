@@ -342,7 +342,7 @@ export default LeaseSummary = (props) => {
           container: LeaseSummaryStyle.bottomModal_container,
         }}
       >
-        <InviteTenantModal  closeRBSheet={() => refRBSheet.current.close()}/>
+        <InviteTenantModal  closeRBSheet={() => refRBSheet.current.close()} property_id={property_id}/>
       </RBSheet>
       <RBSheet
         ref={refRBSheet2}

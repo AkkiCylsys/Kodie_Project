@@ -24,6 +24,9 @@ const data = [
   { label: "12-month", value: "3" },
 ];
 export default AddExpensesDetails = (props) => {
+  //  alert(JSON.stringify(props.property_id));
+   const property_id = props.property_id;
+   console.log('property_id in Add details..',property_id);
   const loginData = useSelector((state) => state.authenticationReducer.data);
   const [totalAmount, setTotalAmount] = useState("");
   const [totalAmountError, setTotalAmountError] = useState("");
@@ -42,7 +45,7 @@ export default AddExpensesDetails = (props) => {
   const [ExpenceCategoryValueError, setExpenceCategoryValueError] =
     useState("");
   const [ExpenceCategoryData, setExpenceCategoryData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState('Save');
   const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
   const [selectedButtonRepeating, setSelectedButtonRepeating] = useState(false);
   const [selectedButtonResponsible, setSelectedButtonResponsible] =
@@ -80,7 +83,7 @@ export default AddExpensesDetails = (props) => {
 
   // Validation for Total amount........
   const validateTotalamount = (text) => {
-    const mobileReg = /^\d{5}$/;
+    const mobileReg = /^\d{1,5}$/;
     if (text === "") {
       setTotalAmountError("Total amount is required");
     } else if (!mobileReg.test(text)) {
@@ -172,7 +175,7 @@ export default AddExpensesDetails = (props) => {
 
     const ExpenceData = {
       user_key: loginData.Login_details.result,
-      upd_key: 5,
+      upd_key: property_id,
       total_amount: totalAmount,
       total_amount_excl_tax: accountXcl,
       tax: tax,

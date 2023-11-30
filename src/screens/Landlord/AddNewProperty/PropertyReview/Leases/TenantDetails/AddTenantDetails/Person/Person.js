@@ -13,7 +13,7 @@ import { CommonLoader } from "../../../../../../../../components/Molecules/Activ
 import { useDispatch, useSelector } from "react-redux";
 export default Person = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  // console.log("logindata.....", loginData.Login_details.result);
+  const property_id = props.property_id;
   const [firstName, setFirstName] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [lastName, setLastName] = useState("");
@@ -93,7 +93,7 @@ export default Person = (props) => {
 
     const PersonDetailsData = {
       user_key: loginData.Login_details.result,
-      upd_key: 5,
+      upd_key: property_id,
       first_name: firstName,
       last_name: lastName,
       email: email,

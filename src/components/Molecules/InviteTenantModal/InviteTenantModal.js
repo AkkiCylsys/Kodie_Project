@@ -65,6 +65,7 @@ const data = [
 ];
 
 export default InviteTenantModal = (props) => {
+  const property_id = props.property_id;
   const navigation = useNavigation();
   const refRBSheet = useRef();
   
@@ -117,7 +118,7 @@ export default InviteTenantModal = (props) => {
           container: InviteTenantModalStyle.bottomModal_container,
         }}
       >
-        <AddTenantDetails onClose={CloseUp}/>
+        <AddTenantDetails onClose={CloseUp} property_id={property_id}/>
       </RBSheet>
     </View>
   );
