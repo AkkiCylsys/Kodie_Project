@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { CircleProgressStyle } from "./CircleProgressStyle";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { _COLORS, IMAGES } from "../../../Themes";
+import { _COLORS, IMAGES ,FONTFAMILY} from "../../../Themes";
 import { FloatingAction } from "react-native-floating-action";
 
 const actions = [
@@ -15,6 +15,10 @@ const actions = [
     position: 2,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textStyle: {
+      fontWeight: '600', 
+      // color:_COLORS.Kodie_WhiteColor
+    },
   },
   {
     text: "Edit dashboard",
@@ -23,6 +27,11 @@ const actions = [
     position: 1,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textStyle: {
+      fontWeight: '600', 
+      // color:_COLORS.Kodie_WhiteColor
+    
+    }
   },
   {
     text: "Invite prospective tenant",
@@ -31,6 +40,10 @@ const actions = [
     position: 3,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textStyle: {
+      fontWeight: '600', 
+      // color:_COLORS.Kodie_WhiteColor
+    }
   },
   {
     text: "Invite contractor",
@@ -39,6 +52,10 @@ const actions = [
     position: 4,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textStyle: {
+      fontWeight: '600', 
+      // color:_COLORS.Kodie_WhiteColor
+    },
   },
   {
     text: "Add notice / reminder",
@@ -48,6 +65,10 @@ const actions = [
     // color: '#37bc12',
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textStyle: {
+      fontWeight: '600', 
+      // color:_COLORS.Kodie_WhiteColor
+    },
   },
   {
     text: "Create new job",
@@ -56,10 +77,14 @@ const actions = [
     position: 6,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textStyle: {
+      fontWeight: '600',  
+      // color:_COLORS.Kodie_WhiteColor
+    },
   },
 ];
 
-const CircleProgress = () => {
+const CircleProgress = (props) => {
   return (
     <>
       <View style={CircleProgressStyle.maincontainerview}>
@@ -100,12 +125,13 @@ const CircleProgress = () => {
           <View style={styles.container}>
             <FloatingAction
                 actions={actions}
-                actionsPaddingTopBottom={10}
+                actionsPaddingTopBottom={5}
                 color={_COLORS.Kodie_GreenColor}
+                style={styles.floatingbtn}
                 onPressItem={(name) => {
                   Alert.alert("Icon pressed", `the icon ${name} was pressed`);
                 }}
-                // overlayColor="rgba(0, 0, 0, 0.5)"
+                overlayColor="rgba(0, 0, 0, 0.5)"
               />
           </View>
         </View>
@@ -119,5 +145,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_GrayColor,
   },
+
 });
 export default CircleProgress;

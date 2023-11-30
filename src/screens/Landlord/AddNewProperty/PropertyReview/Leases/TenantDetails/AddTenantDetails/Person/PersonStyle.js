@@ -55,4 +55,5 @@ export const PersonStyle = StyleSheet.create({
     fontSize:14,
     fontFamily:FONTFAMILY.K_SemiBold
   },
+  errorText: { color: "red", marginLeft: 10 },
 });

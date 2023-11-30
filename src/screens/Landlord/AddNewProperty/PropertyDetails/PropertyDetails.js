@@ -7,6 +7,9 @@ import {
   ScrollView,
   Image,
   Permission,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -35,7 +38,7 @@ const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 export default PropertyDetails = (props) => {
   const propertyid = props?.route?.params?.propertyid;
   console.log("propertyid....", propertyid);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
   const [IsMap, setIsMap] = useState(false);
@@ -70,23 +73,18 @@ export default PropertyDetails = (props) => {
   //   }
   // };
 
-  // const handleLocation = (selected) => {
-  //   setLocation(selected);
-  //   if (!selected) {
-  //     setlocationError("Please enter a location");
-  //   } else {
-  //     setlocationError("");
-  //   }
-  // };
+  const handle_next_btn = () => {
+    props.navigation.navigate("PropertyFeature", {
+      location: location,
+      property_value: property_value,
+      propertyDesc: propertyDesc,
+      selectedButtonId: selectedButtonId,
+      latitude: latitude,
+      longitude: longitude,
+      propertyid: propertyid,
+    });
+  };
 
-  // const handlePropertyValue = (selectedValue) => {
-  //   setProperty_value(selectedValue);
-  //   if (!selectedValue) {
-  //     setpropertytypeError("Please select a property type.");
-  //   } else {
-  //     setpropertytypeError("");
-  //   }
-  // };
   useEffect(() => {
     handleProperty_Type();
     DetailsData();
@@ -358,7 +356,10 @@ export default PropertyDetails = (props) => {
         }}
         MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
-      <View style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
         {IsMap || IsSearch ? null : (
           <View
             style={{
@@ -367,7 +368,7 @@ export default PropertyDetails = (props) => {
           >
             <StepIndicator
               customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-              currentPosition={currentPage}
+              currentPosition={0}
               // onPress={onStepPress}
               renderStepIndicator={renderStepIndicator}
               labels={stepLabels}
@@ -450,6 +451,7 @@ export default PropertyDetails = (props) => {
           <ScrollView
             contentContainerStyle={{ marginBottom: 190 }}
             showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
           >
             <View style={PropertyDetailsStyle.headingView}>
               <Text style={PropertyDetailsStyle.heading}>
@@ -614,8 +616,6 @@ export default PropertyDetails = (props) => {
                       state: state,
                       country: country,
                     });
-                   
-                    
                   }}
                 />
               </View>
@@ -640,7 +640,7 @@ export default PropertyDetails = (props) => {
             </View>
           </ScrollView>
         )}
-      </View>
+      </KeyboardAvoidingView>
       {isLoading ? <CommonLoader /> : null}
     </View>
   );
