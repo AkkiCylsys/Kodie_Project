@@ -70,6 +70,7 @@ export const SignUpStyles = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
+    fontFamily: FONTFAMILY.K_Medium,
     color:_COLORS.Kodie_BlackColor
   },
   eyeIcon: {

@@ -414,7 +414,7 @@ export default Account = (props) => {
                   //marginTop: 10,
                 }}
                 onFocus={() => openMapandClose()}
-                placeholder={"Search Place"}
+                placeholder={"Search Place "}
               />
             </View>
             <TouchableOpacity

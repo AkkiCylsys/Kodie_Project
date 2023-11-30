@@ -172,7 +172,7 @@ const PropertyList = (props) => {
       }
     } catch (error) {
       console.error("Error deleting property:", error);
-      Alert.alert("Error", "An error occurred. Please try again later.");
+     // Alert.alert("Error", "An error occurred. Please try again later.");
     }
   };
 
@@ -278,7 +278,7 @@ const PropertyList = (props) => {
                   onPress={() => {
                     refRBSheet.current.open();
                     // propertyDelete(propertyDelId);
-                    alert(item.property_id);
+                   // alert(item.property_id);
                     setPropertyDelId(item.property_id);
 
                     setAddress(item?.location);

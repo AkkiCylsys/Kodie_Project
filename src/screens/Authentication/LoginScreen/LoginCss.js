@@ -38,6 +38,7 @@ export const LoginStyles = StyleSheet.create({
     padding: 20,
     marginBottom: 60,
   },
+  
   inputContainer: {
     marginBottom: 10,
   },
@@ -76,7 +77,8 @@ export const LoginStyles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 10,
   },
-  ModalMainView: { flexDirection: "row", justifyContent: "space-between" },
+  ModalMainView: {height:40, flexDirection: "row", justifyContent: "space-between" },
+
   passchange: { alignSelf: "center", fontSize: 21, textAlign: "center" },
   checkicon: { alignSelf: "center", height: 120, width: 120, marginTop: 20 },
   varifycode: { flexDirection: "row", justifyContent: "space-between" },

@@ -35,8 +35,21 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Kodie requires Apple Music access to allows you quick and secure access.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Kodie requires Bluetooth access to allows you quick and secure access.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Kodie requires Bluetooth access to allows you quick and secure access.</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Kodie requires Calender access to allows you quick and secure access.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Kodie App requires access to your camera to allow you to take a photo to upload Image.</string>
+	<string>Kodie requires Camera access to allows you quick and secure access.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Kodie requires Contacts access to allows you quick and secure access.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Kodie requires FaceID access to allows you quick and secure access.</string>
+
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -48,10 +61,22 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
+
 	<key>NSMicrophoneUsageDescription</key>
-	<string></string>
+	<string>Kodie requires Microphone access to allows you quick and secure access.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Kodie requires Motion access to allows you quick and secure access.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Kodie requires PhotoLibrary Add access to allows you quick and secure access.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string></string>
+	<string>Kodie requires PhotoLibrary access to allows you quick and secure access.</string>
+	<key>NSRemindersUsageDescription</key>
+	<string>Kodie requires Reminders access to allows you quick and secure access.</string>
+	<key>NSSiriUsageDescription</key>
+	<string>Kodie requires  access to allows you quick and secure access.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Kodie requires SpeechRecognition access to allows you quick and secure access.</string>
+
 	<key>UIAppFonts</key>
 	<array>
 		<string>NunitoSans-Black.ttf</string>
