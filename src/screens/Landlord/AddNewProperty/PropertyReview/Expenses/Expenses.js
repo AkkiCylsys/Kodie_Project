@@ -1,5 +1,11 @@
-import React, { useRef } from "react";
-import { View, Text, ScrollView,FlatList,TouchableOpacity} from "react-native";
+import React, { useRef, useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { ExpensesStyle } from "./ExpensesStyle";
 import { _COLORS } from "../../../../../Themes";
 import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -7,7 +13,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import AddExpensesDetails from "./AddExpensesDetails/AddExpensesDetails";
 import PropertyExpenses from "./PropertyExpenses/PropertyExpenses";
 import Entypo from "react-native-vector-icons/Entypo";
-
+import axios from "axios";
+import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 const proper_expens_data = [
   {
     id: "1",
@@ -48,11 +55,90 @@ const proper_expens_data = [
 ];
 export default Expenses = () => {
   const refRBSheet = useRef();
-
-  const CloseUp = () =>{
+  const [Expenses_data, setExpenses_Data] = useState([]);
+  const [Expenses_value, setExpenses_vata] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const CloseUp = () => {
     refRBSheet.current.close();
-  }
+  };
+  // Fetch property expenses......
+  useEffect(() => {
+    const url =
+      "https://e3.cylsys.com/api/v1/property_expenses_details/getAll/5";
+    const get_Expenses_Details = () => {
+      const Expenses_Details_url = url;
+      console.log("Request URL:", Expenses_Details_url);
+      setIsLoading(true);
+      axios
+        .get(Expenses_Details_url)
+        .then((response) => {
+          console.log("API Response Expenses_Details_url:", response.data);
+          if (response.data.success === true) {
+            setExpenses_Data(response.data.data);
+            console.log("Expenses Details Data..", response.data.data);
+          } else {
+            alert(response.data.message);
+            setIsLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error("API failed", error);
+          setIsLoading(false);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    };
+
+    get_Expenses_Details();
+  }, []);
+
   const property_expense_render = ({ item, index }) => {
+    // Function to get expense category description based on lookup key
+    const getExpenseCategory = (lookupKey) => {
+      switch (lookupKey) {
+        case 269:
+          return "Accounting";
+        case 270:
+          return "Advertising";
+        case 271:
+          return "Agent fees";
+        case 272:
+          return "Bank fees";
+        case 273:
+          return "Cleaning";
+        case 274:
+          return "Electricity";
+        case 275:
+          return "Ground rents";
+        case 276:
+          return "Insurance";
+        case 277:
+          return "Internet";
+        case 278:
+          return "Late payment fees";
+        case 279:
+          return "Legal";
+        case 280:
+          return "Mortgage expenses";
+        case 281:
+          return "Other";
+        case 282:
+          return "Rates";
+        case 283:
+          return "Rent arrears";
+        case 284:
+          return "Repairs and maintenance";
+        case 285:
+          return "Property tax";
+        case 286:
+          return "Utilities";
+        case 287:
+          return "Water";
+        default:
+          return "";
+      }
+    };
     return (
       <View style={ExpensesStyle.mainContainer}>
         <View style={ExpensesStyle.subContainer}>
@@ -60,16 +146,24 @@ export default Expenses = () => {
             <View style={ExpensesStyle.account_view}>
               <View>
                 <Text style={ExpensesStyle.Accounting_Text}>
-                  {item.heading}
+                  {getExpenseCategory(item.UPED_EXPENSE_CATEGORY)}
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <Text style={ExpensesStyle.Paid_Text}>{"Paid by:"}</Text>
-                  <Text style={ExpensesStyle.Paid_Text}>{item.paidByUser}</Text>
+                  <Text style={ExpensesStyle.Paid_Text}>
+                    {item.UPED_RESPONSIBLE_PAYING == 266
+                      ? "Landlord"
+                      : "Tenant"}
+                  </Text>
                 </View>
               </View>
               <View>
-                <Text style={ExpensesStyle.Amount_Text}>{item.amount_status}</Text>
-                <Text style={ExpensesStyle.Accounting_Text}>{item.Amount}</Text>
+                <Text style={ExpensesStyle.Amount_Text}>
+                  {item.UPED_PAID == 0 ? "Amount due" : "Amount paid"}
+                </Text>
+                <Text style={ExpensesStyle.Accounting_Text}>
+                  ${item.UPED_TOTAL_AMOUNT}
+                </Text>
               </View>
             </View>
           </View>
@@ -77,17 +171,41 @@ export default Expenses = () => {
             <View style={ExpensesStyle.paidDate_subView}>
               <View style={ExpensesStyle.paid_Date_View}>
                 <Text style={ExpensesStyle.date_paid}>{"Date paid:"}</Text>
-                <Text style={ExpensesStyle.Amount_Text}>{item.Date}</Text>
+                <Text style={ExpensesStyle.Amount_Text}>
+                  {item.UPED_DUE_DATE.substring(0, 10)}
+                </Text>
               </View>
-              <TouchableOpacity style={ExpensesStyle.rent_received_view}>
+              <TouchableOpacity
+                style={[
+                  ExpensesStyle.rent_received_view,
+                  {
+                    backgroundColor:
+                      item.UPED_PAID == 1
+                        ? '#E9F2E9'
+                        : _COLORS.Kodie_LightOrange,
+                  },
+                ]}
+              >
                 <View style={{ flexDirection: "row" }}>
                   <Entypo
                     name="dot-single"
                     size={25}
-                    color={_COLORS.Kodie_DarkOrange}
+                    color={  item.UPED_PAID == 1
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_DarkOrange}
                   />
-                  <Text style={ExpensesStyle.rent_received_text}>
-                    {item.payment_status}
+                  <Text
+                    style={[
+                      ExpensesStyle.rent_received_text,
+                      {
+                        color:
+                          item.UPED_PAID == 1
+                            ? _COLORS.Kodie_GreenColor
+                            : _COLORS.Kodie_DarkOrange,
+                      },
+                    ]}
+                  >
+                    {item.UPED_PAID == 1 ? "Paid" : "Awaiting payment"}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -97,6 +215,7 @@ export default Expenses = () => {
       </View>
     );
   };
+
   return (
     <View style={ExpensesStyle.mainContainer}>
       <ScrollView>
@@ -108,7 +227,7 @@ export default Expenses = () => {
         <Text style={ExpensesStyle.heading_Text}>{"Property expenses"}</Text>
         {/* <PropertyExpenses /> */}
         <FlatList
-          data={proper_expens_data}
+          data={Expenses_data}
           scrollEnabled
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{}}
@@ -140,6 +259,7 @@ export default Expenses = () => {
           <AddExpensesDetails onClose={CloseUp} />
         </RBSheet>
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

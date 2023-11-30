@@ -31,4 +31,11 @@ export const InviteTenantModalStyle = StyleSheet.create({
   All_Data_View: {
     marginTop:15,
   },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
 });

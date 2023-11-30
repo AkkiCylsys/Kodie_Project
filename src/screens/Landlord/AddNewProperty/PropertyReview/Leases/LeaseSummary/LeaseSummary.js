@@ -118,7 +118,7 @@ export default LeaseSummary = (props) => {
           container: LeaseSummaryStyle.bottomModal_container,
         }}
       >
-        <InviteTenantModal />
+        <InviteTenantModal  closeRBSheet={() => refRBSheet.current.close()}/>
       </RBSheet>
     </View>
   );

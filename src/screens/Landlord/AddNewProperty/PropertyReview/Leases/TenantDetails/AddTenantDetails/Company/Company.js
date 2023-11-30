@@ -124,7 +124,7 @@ export default Company = () => {
           setNote("");
           setIsLoading(false);
         } else {
-          setEmailError('error email here.....',response.data.message);
+          setEmailError(response.data.message);
           console.error("CompanyDetail_error:", response.data.error);
           alert(response.data.error);
           setIsLoading(false);
@@ -132,7 +132,6 @@ export default Company = () => {
       })
       .catch((error) => {
         console.error("CompanyDetail error...:", error);
-        alert(error);
         setIsLoading(false);
       });
   };
@@ -144,8 +143,7 @@ export default Company = () => {
       setEmailError("Email is required.");
     } else {
       Companyhandle();
-      alert("done...");
-      console.log("Company all data get here", Companyhandle());
+     
     }
   };
   return (

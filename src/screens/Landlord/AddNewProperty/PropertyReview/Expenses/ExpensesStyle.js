@@ -44,7 +44,7 @@ export const ExpensesStyle = StyleSheet.create({
   },
   account_view: { flexDirection: "row", justifyContent: "space-between" },
   Account_main_View: {
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 10,
     paddingVertical: 10,
@@ -52,11 +52,13 @@ export const ExpensesStyle = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     backgroundColor: _COLORS.Kodie_LiteWhiteColor,
+    elevation:3
   },
   Accounting_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 16,
-    fontFamily: FONTFAMILY.K_Bold,
+    // fontFamily: FONTFAMILY.K_Bold,
+    fontFamily:FONTFAMILY.K_ExtraBold
   },
   Paid_Text: {
     fontSize: 10,
@@ -97,12 +99,13 @@ export const ExpensesStyle = StyleSheet.create({
     marginTop: 10,
   },
   datePaid_main_view:{
-    borderWidth: 1,
+    borderBottomWidth:0.3,
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 5,
     paddingVertical: 5,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     backgroundColor: _COLORS.Kodie_WhiteColor,
+    elevation:3
   }
 });

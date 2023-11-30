@@ -86,20 +86,20 @@ export default Person = (props) => {
     }
     setPhoneNumber(text);
   };
-  const PersonDetailsData = {
-    user_key: loginData.Login_details.result,
-    upd_key: 5,
-    first_name: firstName,
-    last_name: lastName,
-    email: email,
-    phone_number: PhoneNumber,
-    notes: note,
-  };
+
 
   // API bind person code here.....
   const Personhandle = () => {
-    // const url = Config.API_URL;
-    // const PersonUrl = url + "user_signup";
+
+    const PersonDetailsData = {
+      user_key: loginData.Login_details.result,
+      upd_key: 5,
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      phone_number: PhoneNumber,
+      notes: note,
+    };
     const PersonUrl =
       "https://e3.cylsys.com/api/v1/tanant_details/create/person";
     console.log("Request URL:", PersonUrl);
@@ -110,10 +110,9 @@ export default Person = (props) => {
       .then((response) => {
         setpersonResponse(response.data);
         console.log("Person Details_data response", response.data);
-        if (response.data.success == true) {
+        if (response.data.success == true || response.data.error == false) {
           alert(response.data.message);
           setIsLoading(false);
-          props.navigation.navigate("LeaseSummary");
           setFirstName("");
           setLastName("");
           setEmail("");
@@ -121,10 +120,9 @@ export default Person = (props) => {
           setPhoneNumber("");
           setNote("");
           setIsLoading(false);
-        } else  {
+        } else {
           setEmailError(response.data.message);
           console.error("personDetail_error:", response.data.error);
-          alert(response.data.error);
           setIsLoading(false);
         }
       })
@@ -134,7 +132,8 @@ export default Person = (props) => {
         setIsLoading(false);
       });
   };
-
+  // setEmailError(response.data.message);
+  // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
     if (firstName.trim() === "") {
       setFirstNameError("First name is required.");
@@ -144,8 +143,6 @@ export default Person = (props) => {
       setEmailError("Email is required.");
     } else {
       Personhandle();
-      alert("done...");
-      console.log("all data get here", Personhandle());
     }
   };
 
@@ -184,6 +181,7 @@ export default Person = (props) => {
               value={email}
               onChangeText={setEmail}
               onBlur={() => handlePersonEmail(email)}
+              // onChangeText={() => handlePersonEmail(email)}
               placeholder="Enter tenant’s email address"
               placeholderTextColor="#999"
             />
@@ -261,7 +259,7 @@ export default Person = (props) => {
               ]}
               onPress={() => {
                 handleSaveBtn();
-                handleOptionClick("Save");
+                // handleOptionClick("Save");
               }}
             >
               <Text
