@@ -7,10 +7,12 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import AddLeaseDetails from "./AddLeaseDetails/AddLeaseDetails";
 import LeaseSummary from "./LeaseSummary/LeaseSummary";
 export default Leases = (props) => {
+  // alert(JSON.stringify(props.property_id));
+  const property_id = props.property_id;
   const refRBSheet = useRef();
-  const handleClose = () =>{
-    refRBSheet.current.close()
-  }
+  const handleClose = () => {
+    refRBSheet.current.close();
+  };
   return (
     <View style={LeasesStyle.mainContainer}>
       <ScrollView>
@@ -28,7 +30,8 @@ export default Leases = (props) => {
             }}
           />
         </View>
-        <LeaseSummary />
+        <LeaseSummary property_id={property_id}  />
+
         <RBSheet
           ref={refRBSheet}
           height={510}
@@ -42,7 +45,7 @@ export default Leases = (props) => {
             container: LeasesStyle.bottomModal_container,
           }}
         >
-          <AddLeaseDetails onClose={handleClose} />
+          <AddLeaseDetails onClose={handleClose} property_id={property_id} />
         </RBSheet>
       </ScrollView>
     </View>

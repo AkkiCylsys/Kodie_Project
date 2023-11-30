@@ -615,18 +615,8 @@ export default PropertyDetails = (props) => {
                       state: state,
                       country: country,
                     });
-                    // }
-
-                    // props.navigation.navigate("PropertyFeature", {
-                    //   location: location,
-                    //   property_value: property_value,
-                    //   propertyDesc: propertyDesc,
-                    //   selectedButtonId: selectedButtonId,
-                    //   latitude: latitude,
-                    //   longitude: longitude,
-                    //   propertyid: propertyid,
-                    // });
-                    handle_next_btn();
+                   
+                    
                   }}
                 />
               </View>

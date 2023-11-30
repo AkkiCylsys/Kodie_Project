@@ -42,7 +42,7 @@ const renderDataItem = (item) => {
 export default PropertyFeature = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const location = props?.route?.params?.location;
   const property_value = props?.route?.params?.property_value;
   const propertyDesc = props?.route?.params?.propertyDesc;
@@ -80,10 +80,10 @@ export default PropertyFeature = (props) => {
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
     useState(67);
-  const [CountBedroom, setCountBedroom] = useState(1);
-  const [CountBathroom, setCountBathroom] = useState(1);
-  const [CountParking, setCountParking] = useState(1);
-  const [CountParkingStreet, setCountParkingStreet] = useState(1);
+  const [CountBedroom, setCountBedroom] = useState(0);
+  const [CountBathroom, setCountBathroom] = useState(0);
+  const [CountParking, setCountParking] = useState(0);
+  const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [florSize, setFlorSize] = useState("");
   const [landArea, setLandArea] = useState("");
   const [property_Detail, setProperty_Details] = useState([]);
@@ -448,6 +448,7 @@ export default PropertyFeature = (props) => {
                     <AntDesign
                       name="minus"
                       size={20}
+                      color={_COLORS.Kodie_BlackColor}
                       onPress={decreaseBedroomCount}
                     />
                   </TouchableOpacity>
@@ -458,6 +459,7 @@ export default PropertyFeature = (props) => {
                     <AntDesign
                       name="plus"
                       size={20}
+                      color={_COLORS.Kodie_BlackColor}
                       onPress={() => {
                         increaseBedroomCount();
                       }}
@@ -478,6 +480,7 @@ export default PropertyFeature = (props) => {
                     <AntDesign
                       name="minus"
                       size={20}
+                      color={_COLORS.Kodie_BlackColor}
                       onPress={decreaseBathroomCount}
                     />
                   </TouchableOpacity>
@@ -488,6 +491,7 @@ export default PropertyFeature = (props) => {
                     <AntDesign
                       name="plus"
                       size={20}
+                      color={_COLORS.Kodie_BlackColor}
                       onPress={increaseBathroomCount}
                     />
                   </TouchableOpacity>
@@ -506,6 +510,7 @@ export default PropertyFeature = (props) => {
                     <AntDesign
                       name="minus"
                       size={20}
+                      color={_COLORS.Kodie_BlackColor}
                       onPress={decreaseParkingCount}
                     />
                   </TouchableOpacity>
@@ -516,6 +521,7 @@ export default PropertyFeature = (props) => {
                     <AntDesign
                       name="plus"
                       size={20}
+                      color={_COLORS.Kodie_BlackColor}
                       onPress={increaseParkingCount}
                     />
                   </TouchableOpacity>
@@ -534,6 +540,7 @@ export default PropertyFeature = (props) => {
                     <AntDesign
                       name="minus"
                       size={20}
+                      color={_COLORS.Kodie_BlackColor}
                       onPress={decreaseParkingStreetCount}
                     />
                   </TouchableOpacity>
@@ -544,6 +551,7 @@ export default PropertyFeature = (props) => {
                     <AntDesign
                       name="plus"
                       size={20}
+                      color={_COLORS.Kodie_BlackColor}
                       onPress={increaseParkingStreetCount}
                     />
                   </TouchableOpacity>
@@ -565,6 +573,7 @@ export default PropertyFeature = (props) => {
                     value={florSize}
                     onChangeText={setFlorSize}
                     placeholder="102m2"
+                    keyboardType='number-pad'
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
@@ -583,6 +592,7 @@ export default PropertyFeature = (props) => {
                     value={landArea}
                     onChangeText={setLandArea}
                     placeholder="102m2"
+                    keyboardType='number-pad'
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>

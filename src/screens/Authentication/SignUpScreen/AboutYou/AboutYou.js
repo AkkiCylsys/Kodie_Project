@@ -25,7 +25,7 @@ import axios from "axios";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -57,36 +57,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
 };
-const List = [
-  {
-    id: "1",
-    list: "I have properties I would like to manage",
-  },
-  {
-    id: "2",
-    list: "I am looking for a property to rente",
-  },
-  {
-    id: "3",
-    list: "I would like to find contractors easily",
-  },
-  {
-    id: "4",
-    list: "I would like to offer my contracting services",
-  },
-  {
-    id: "5",
-    list: "I need a way to manage my rental documents",
-  },
-  {
-    id: "6",
-    list: "I would like to advertise my properties",
-  },
-  {
-    id: "7",
-    list: "I want to set notifications to remind me of key dates",
-  },
-];
+
 export default AboutYou = (props) => {
   let firstName = props?.route?.params?.firstName;
   let lastName = props?.route?.params?.lastName;
@@ -136,6 +107,8 @@ export default AboutYou = (props) => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [selectedkey_features, setSelectedkey_features] = useState([]);
   const [selectedLookupKeys, setSelectedLookupKeys] = useState([]); // State to store selected lookup keys
+
+  // const [imageResult, setImageResult] = useState("");
   const refRBSheet = useRef();
   // .....
   const handleBoxPress = (lookupID) => {
@@ -163,7 +136,7 @@ export default AboutYou = (props) => {
               setKodiehelplookupid(item.lookup_key);
             }}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flex: 1, flexDirection: "row" }}>
               <View
                 style={[
                   AboutYouStyle.checkbox_View,
@@ -183,6 +156,7 @@ export default AboutYou = (props) => {
                   />
                 ) : null}
               </View>
+
               <Text style={AboutYouStyle.want_List_text}>
                 {item.description}
               </Text>
@@ -222,17 +196,6 @@ export default AboutYou = (props) => {
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  // const toggleSelection = (lookup_key) => {
-  //   if (selectedServices.includes(lookup_key)) {
-  //     setSelectedServices(
-  //       selectedServices.filter((item) => item !== lookup_key)
-  //       // alert(selectedServices.filter((item) => item !== lookup_key))
-  //     );
-  //   } else {
-  //     setSelectedServices([...selectedServices, lookup_key]);
-  //     // alert([...selectedServices]);
-  //   }
-  // };
 
   const toggleSelection = (lookup_key) => {
     if (selectedServices.includes(lookup_key)) {
@@ -289,6 +252,7 @@ export default AboutYou = (props) => {
         p_latitude: p_latitude,
         p_longitude: p_longitude,
         user_key: user_key,
+        // image_result: result?.assets,
       });
     }
     // else if (ImageName) {
@@ -440,6 +404,22 @@ export default AboutYou = (props) => {
       </View>
     );
   };
+
+  const openGallery = async () => {
+    const options = {
+      title: "Select Image",
+      type: "library",
+      options: {
+        selectionLimit: 1,
+        mediaType: "photo",
+        includeBase64: false,
+      },
+    };
+    const result = await launchImageLibrary(options);
+    console.log("result...", result);
+    setImageName(result?.assets);
+    console.log("result_data...", result?.assets);
+  };
   return (
     <ScrollView>
       <TopHeader
@@ -476,6 +456,19 @@ export default AboutYou = (props) => {
           ) : (
             <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
           )}
+          {/* {ImageName ? (
+            <Image
+              source={{
+                uri:ImageName[0]?.uri,
+              }}
+              style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
+            />
+          ) : (
+            <Image
+              source={IMAGES?.userIcons}
+              style={[AboutYouStyle.logo]}
+            />
+          )} */}
         </TouchableOpacity>
         {ImageName ? null : (
           <Text style={AboutYouStyle.error_text}>{imageError}</Text>
@@ -550,6 +543,13 @@ export default AboutYou = (props) => {
               />
             </TouchableOpacity>
           </View>
+
+          {/* <TouchableOpacity
+            style={{ alignSelf: "center", backgroundColor: "green" }}
+            onPress={openGallery}
+          >
+            <Text>{"open gallery"}</Text>
+          </TouchableOpacity> */}
 
           <UploadImageData
             heading_Text={"Upload image"}

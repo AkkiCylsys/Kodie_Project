@@ -27,7 +27,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -42,14 +42,15 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
   },
   dropdown: {
+    flex: 1,
     borderWidth: 1,
-    height: 50,
+    height: 40,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 10,
     borderRadius: 8,
@@ -82,7 +83,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   },
   input: {
     height: 45,
-    borderRadius: 6,
+    borderRadius: 5,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     color: "#333",
@@ -143,8 +144,17 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   },
   text: {
     color: _COLORS.Kodie_WhiteColor,
-    alignSelf:"center",
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_SemiBold
+    alignSelf: "center",
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  itemView: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical:10,
+    marginHorizontal:10
+  },
+  textItem: {
+    marginLeft: 10,
   },
 });

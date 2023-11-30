@@ -12,7 +12,7 @@ export const LABEL_STYLES = StyleSheet.create({
     marginBottom: 12,
   },
   commontext: {
-    flex: 1,
+    // flex: 1,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,

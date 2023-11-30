@@ -1,18 +1,20 @@
 import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
-export const PropertyDetailsStyle = StyleSheet.create({
+import { _COLORS,FONTFAMILY } from "../../../../../../Themes";
+export const LogrentalPaymentStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
-  headingView: {
-    marginHorizontal: 16,
-    marginTop: 10,
-  },
-  heading: {
+  heading_Text: {
+    fontSize: 20,
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
+  },
+  heading_View: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+    marginHorizontal: 16,
   },
   card: {
     width: "100%",
@@ -26,38 +28,25 @@ export const PropertyDetailsStyle = StyleSheet.create({
     marginBottom: 20,
   },
   inputContainer: {
-    marginBottom: 15,
+    marginTop: 15,
   },
+  Tax_input_cont: { flex: 1, marginLeft: 8 },
   input: {
-    height: 100,
+    height: 45,
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
+    marginTop: 10,
   },
-  locationContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 6,
-    shadowColor: "#000",
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowOpacity: 0.2,
-    // shadowRadius: 2,
-  },
-  locationInput: {
+  tax_main_view: {
     flex: 1,
-    height: 48,
-    paddingHorizontal: 10,
-    color:_COLORS.Kodie_BlackColor
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  error_text: { color: "red", marginLeft: 10 },
-  locationIcon: {
-    marginLeft: 15,
-  },
+  datePickerView: { flexDirection: "row" },
   dropdown: {
     borderWidth: 1,
     height: 50,
@@ -81,34 +70,39 @@ export const PropertyDetailsStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
+    borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
   },
-  property_Text: {
-    fontSize: 16,
-    color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_SemiBold,
-  },
-  goBack_View: {
+  ButtonView: {
+    flex:1,
     flexDirection: "row",
-    alignSelf: "center",
-    marginVertical: 29,
+    justifyContent: "flex-end",
+    marginRight: 10,
+    marginTop: 20,
+    marginBottom:150
   },
-  goBack_Text: {
-    color: _COLORS.Kodie_BlackColor,
-    fontSize: 16,
+  closeText: {
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+    borderRadius: 4,
+    fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft: 5,
   },
-  backIcon: {
-    borderWidth: 1,
+  applyText: {
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  btnView: {
-    marginTop: 24,
+  text: {
+    color: _COLORS.Kodie_WhiteColor,
+    alignSelf:"center",
+    fontSize:14,
+    fontFamily:FONTFAMILY.K_SemiBold
   },
+  error_text: { color: "red", marginLeft: 10 },
 });

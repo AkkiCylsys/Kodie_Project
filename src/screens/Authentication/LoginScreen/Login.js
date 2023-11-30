@@ -14,7 +14,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
-
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
 import { LoginStyles } from "./LoginCss";
@@ -225,8 +224,6 @@ export default Login = (props) => {
 
   //... inner reset password submit button variable define here
   const handleSubmit = async () => {
-    
-
     if (email.trim() === "") {
       setEmailError("Email is required!");
     } else if (!validateEmail(email)) {
@@ -238,6 +235,7 @@ export default Login = (props) => {
     } else {
       // makeApiLogin();
       //alert("click")
+      Keyboard.dismiss();
       setIsLoading(true);
       let data = {
         email: email,
@@ -269,7 +267,6 @@ export default Login = (props) => {
           );
         }
       }
-   
     }
     // Keyboard.dismiss();
   };
@@ -426,9 +423,6 @@ export default Login = (props) => {
   return (
     <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
      style={LoginStyles.container}>
-      
-      {/* <View onPress={Keyboard.dismiss()}> */}
-    
         <ScrollView keyboardShouldPersistTaps='handled'>
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
@@ -656,7 +650,7 @@ export default Login = (props) => {
                       isPlaying
                       trailColor={_COLORS.Kodie_lightGreenColor}
                       duration={50}
-                      size={50}
+                      size={45}
                       colors={_COLORS.Kodie_lightGreenColor}
                       onComplete={() => {
                         setIsTimeron(false);
@@ -841,9 +835,8 @@ export default Login = (props) => {
           <View
             style={[
               {
-                flex: 1,
                 marginBottom: 800,
-                marginTop: isClick === 2 ? 70 : 190,
+                marginTop: isClick === 1 || isClick === 2 ||isClick===3 ? 150 : 220,
               },
             ]}
           >
@@ -864,10 +857,7 @@ export default Login = (props) => {
           </View>
         </View>
       </RBSheet>
-      {isLoading ? <CommonLoader /> : null}
-     
-      {/* </View> */}
-       
+      {isLoading ? <CommonLoader /> : null}  
       </KeyboardAvoidingView>
   );
 };

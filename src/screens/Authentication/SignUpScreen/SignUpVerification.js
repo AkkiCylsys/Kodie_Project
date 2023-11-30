@@ -48,40 +48,40 @@ export default SignUpVerification = (props) => {
   //.......... input box validation define here
 
   //.......... Api body define here
-  const Signup_verification_Data = {
-    email: email,
-    otp: value,
-  };
+  // const Signup_verification_Data = {
+  //   email: email,
+  //   otp: value,
+  // };
   // .......... Api method define here
-  const handle_Signup_verification = () => {
-    const url = Config.API_URL;
-    const sign_verification_Api = url + "user_signup_verifyotp";
-    console.log("Request URL:", sign_verification_Api);
-    setIsLoading(true);
-    axios
-      .post(sign_verification_Api, Signup_verification_Data)
-      .then((response) => {
-        console.log("sign_verification_Api responce", response.data);
-        if (response.data.status === true) {
-          alert(response.data.message);
-          setValue("");
-          props.navigation.navigate("SignUpSteps", {
-            email: email,
-            user_key: user_key,
-          });
-          setIsLoading(false);
-        } else {
-          setValueError(response.data.message);
-          setValue("");
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        alert(error);
-        console.error("signup Verification error:", error);
-        setIsLoading(false);
-      });
-  };
+  // const handle_Signup_verification = () => {
+  //   const url = Config.API_URL;
+  //   const sign_verification_Api = url + "user_signup_verifyotp";
+  //   console.log("Request URL:", sign_verification_Api);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(sign_verification_Api, Signup_verification_Data)
+  //     .then((response) => {
+  //       console.log("sign_verification_Api responce", response.data);
+  //       if (response.data.status === true) {
+  //         alert(response.data.message);
+  //         setValue("");
+  //         props.navigation.navigate("SignUpSteps", {
+  //           email: email,
+  //           user_key: user_key,
+  //         });
+  //         setIsLoading(false);
+  //       } else {
+  //         setValueError(response.data.message);
+  //         setValue("");
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       alert(error);
+  //       console.error("signup Verification error:", error);
+  //       setIsLoading(false);
+  //     });
+  // };
 
   // send_verification_code OTP  Api code here....
   const send_verification_code = () => {
@@ -116,50 +116,40 @@ export default SignUpVerification = (props) => {
         setIsLoading(false);
       });
   };
-  // const send_verification_code = () => {
-  //   const url = Config.API_URL;
-  //   const verification_code_url = url + "user_reset_password_email_verify";
-  //   console.log("Request URL:", verification_code_url);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(verification_code_url, {
-  //       email: email,
-  //       otp: value,
-  //     })
-  //     .then((response) => {
-  //       console.log("API Response send otp:", response.data);
-  //       if (response.data.status === true) {
-  //         setVerificationCode("");
-  //         // OTP sent successfully, now you can show the alert
-  //         Alert.alert(
-  //           "OTP Sent",
-  //           "The OTP has been sent to your email.",
-  //           [
-  //             {
-  //               text: "OK",
-  //               onPress: () => {
-  //                 setIsLoading(false);
-  //                 startTimer();
-  //               },
-  //             },
-  //           ],
-  //           { cancelable: false }
-  //         );
-  //       } else {
-  //         alert(response.data.message);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("API failed", error);
-  //       setIsLoading(false);
-  //       // alert(error);
-  //     });
-  // };
 
-  // const startTimer = () => {
-  //   setIsTimerActive(true); // Start the timer
-  // };
+  const handle_Signup_verification = () => {
+    const url = "https://e3.cylsys.com/api/v1/verifyotp";
+    const sign_verification_Api = url;
+    console.log("Request URL:", sign_verification_Api);
+    const Signup_verification_Data = {
+      email: email,
+      otp: value,
+    };
+    setIsLoading(true);
+    axios
+      .post(sign_verification_Api, Signup_verification_Data)
+      .then((response) => {
+        console.log("sign_verification_Api responce", response.data);
+        if (response.data.success === true) {
+          alert(response.data.message);
+          setValue("");
+          props.navigation.navigate("SignUpSteps", {
+            email: email,
+            user_key: user_key,
+          });
+          setIsLoading(false);
+        } else {
+          setValueError(response.data.message);
+          setValue("");
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        alert(error);
+        console.error("signup Verification error:", error);
+        setIsLoading(false);
+      });
+  };
 
   const handleverification_code = (text) => {
     setValue(text);
@@ -176,14 +166,17 @@ export default SignUpVerification = (props) => {
     const regex = /^[0-9]+$/;
     if (value.trim() === "") {
       setValueError("OTP is required.");
-    }else if( value.trim().length < 6 ){
-      setValueError("Incomplete OTP. Please enter a valid OTP.");
-    } else if(!regex.test(value.trim())){
+    } else if (value.trim().length < 6) {
+      setValueError("incomplete OTP. Please enter a valid OTP.");
+    } else if (!regex.test(value.trim())) {
       setValueError("Invalid OTP. Please enter only digits.");
-    } 
-    else {
+    } else {
       handle_Signup_verification();
     }
+  };
+  const handlePaste = (clipboard) => {
+    // Process the pasted value (clipboard) as needed
+    setValue(clipboard);
   };
 
   return (
@@ -209,6 +202,7 @@ export default SignUpVerification = (props) => {
             value={value}
             onChangeText={setValue}
             onBlur={() => handleverification_code(value)}
+            onPaste={(clipboard) => handlePaste(clipboard)}
             cellCount={CELL_COUNT}
             rootStyle={SignUpVerificationStyle.CodeField}
             keyboardType="number-pad"

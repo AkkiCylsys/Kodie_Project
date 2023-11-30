@@ -91,8 +91,7 @@ export default PropertyReview = (props) => {
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
-  const [currentPage, setCurrentPage] = useState(4);
- 
+  const [currentPage, setCurrentPage] = useState(3);
   const Detail_rander = ({ item, index }) => {
     // const key = Object.keys(item)[0];
     // const value = Object.values(item)[0];
@@ -143,7 +142,7 @@ export default PropertyReview = (props) => {
         setIsLoading(false);
       }
     };
-    fetchData()
+    fetchData();
   }, [property_id]);
   // const DetailsData = () => {
   //   const detailData = {
@@ -408,7 +407,7 @@ export default PropertyReview = (props) => {
           </>
         );
       case "Tab2":
-        return <Leases />;
+        return <Leases property_id={property_id} />;
 
       case "Tab3":
         return <Expenses />;
