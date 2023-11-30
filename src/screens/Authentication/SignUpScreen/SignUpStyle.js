@@ -108,6 +108,10 @@ export const SignUpStyles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
   },
+  already_account_login:{
+flex:1,
+alignSelf:'flex-start'
+  },
   terms_Condition: { color: _COLORS.Kodie_GreenColor },
   error_text: { color: "red", marginLeft: 10 },
 });

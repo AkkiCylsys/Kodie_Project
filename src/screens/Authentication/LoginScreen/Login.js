@@ -135,7 +135,7 @@ export default Login = (props) => {
   //... inner reset password varification_Code variable define here
   const handleverificationcodes = () => {
     if (verificationcode.trim() === "") {
-      setVerificationcodeError("verification code is required");
+      setVerificationcodeError("Verification code is required");
     } else {
       verify_Otp();
     }
@@ -548,7 +548,7 @@ export default Login = (props) => {
         }}
       >
         <View style={LoginStyles.ModalMainView}>
-          <Text style={LoginStyles.Modaltitle}>Reset Password</Text>
+          <Text style={LoginStyles.Modaltitle}>Reset password</Text>
           <TouchableOpacity
             onPress={() => {
               refRBSheet.current.close();
@@ -635,10 +635,11 @@ export default Login = (props) => {
                     value={verificationcode}
                     onChangeText={handleverificationCode}
                     onBlur={() => handleverificationCode(verificationcode)}
-                    placeholder="code"
-                    placeholderTextColor="#999"
+                    placeholder="Code"
+                    placeholderTextColor="#999"   
                     keyboardType="number-pad"
                     maxLength={6}
+                    
                   />
                 </View>
                 <View style={LoginStyles.codeMargin} />

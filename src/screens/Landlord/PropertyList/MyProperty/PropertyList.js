@@ -85,6 +85,7 @@ const PropertyList = (props) => {
       order_col: 1,
       order_wise: "DESC",
     };
+    
 
     const url = Config.API_URL;
     const propertyData_List = url + "get_property_details_by_filter";
@@ -100,11 +101,21 @@ const PropertyList = (props) => {
             "propertyDataList....",
             response.data?.property_details?.image_path
           );
-          const newData = response.data.property_details;
-          setProperty_Data_List((prevData) =>
-            page > 1 ? [...prevData, ...newData] : newData
-          );
+          // filter is 'Most Recent'.................
+          if (filter === "Most Recent") {
+            const newData = response.data.property_details.slice(0, 5);
+            // setProperty_Data_List((prevData) =>
+            //   page > 1 ? [...prevData, ...newData] : newData
+            // );
+            setProperty_Data_List(newData)
+            console.log("New Data for Most Recent:...........", newData);
 
+          } else {
+            const newData = response.data.property_details;
+            setProperty_Data_List((prevData) =>
+              page > 1 ? [...prevData, ...newData] : newData
+            );
+          }
           // setProperty_Data_List(filter); // console.log(Property_Data_List, "Rahul...");
         } else {
           console.error("property_Data_list_error:", response.data.error);
@@ -157,7 +168,7 @@ const PropertyList = (props) => {
         );
 
         propertyList_Data();
-        setIsLoading(false);
+        setIsLoading(false);eeeeee
       }
     } catch (error) {
       console.error("Error deleting property:", error);
