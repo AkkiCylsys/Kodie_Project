@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
-import { FONTFAMILY, _COLORS } from "../../../Themes/index";
-export const BottomModalDataStyle = StyleSheet.create({
+import { _COLORS,FONTFAMILY } from "../../../Themes/index";
+
+export const DeleteDataStyle = StyleSheet.create({
   mainContainer: { flex: 1 },
   container: {
     flexDirection: "row",
@@ -16,14 +17,7 @@ export const BottomModalDataStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
   },
-  Icons: { width: 40, height: 40, resizeMode: "cover" },
-  bottomModal_container: {
-    borderWidth: 0.5,
-    borderColor: _COLORS.Kodie_LightGrayColor,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    elevation: 10,
-  },
+  Icons: { width: 38, height: 38, resizeMode: "cover" },
   bottomModal_container: {
     borderWidth: 0.5,
     borderColor: _COLORS.Kodie_LightGrayColor,

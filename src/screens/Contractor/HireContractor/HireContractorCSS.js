@@ -67,7 +67,7 @@ export const HireContractorCSS = StyleSheet.create({
 
     shadowColor: _COLORS.Kodie_GrayColor,
     shadowOffset: { height: 5, width: 2 },
-    shadowOpacity: 1,
+    shadowOpacity:Platform.OS =='android'?1:null,
     shadowRadius: 4,
     elevation: 7,
     backgroundColor: "white",

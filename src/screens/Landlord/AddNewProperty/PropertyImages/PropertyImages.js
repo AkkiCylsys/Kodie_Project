@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { PropertyImagesStyle } from "./PropertyImagesStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -7,9 +7,17 @@ import { _COLORS, LABEL_STYLES, BANNERS } from "../../../../Themes";
 import { SliderBox } from "react-native-image-slider-box";
 import UploadImageBoxes from "../../../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
+import UploadMultipleImage from "../../../../components/Molecules/UploadImage/UploadMultipleImage";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
+import StepIndicator from "react-native-step-indicator";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { Config } from "../../../../Config";
+import axios from "axios";
+import ImagePicker from "react-native-image-crop-picker";
+
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const images = [
   BANNERS.Apartment,
@@ -19,89 +27,547 @@ const images = [
 ];
 export default PropertyImages = (props) => {
   const refRBSheet = useRef();
+  const property_id = props?.route?.params?.property_id;
+  console.log(".............property_id.", property_id);
+  const [isLoading, setIsLoading] = useState(false);
+  const [MultiImageName, setMultiImageName] = useState([]);
+  const [currentPage, setCurrentPage] = useState(3);
+  const [selectedVideos, setSelectedVideos] = useState([]);
+  const [property_Detail, setProperty_Details] = useState([]);
+  const [imagePath, setImagePaths] = useState([]);
+  useEffect(() => {
+    DetailsData();
+  }, []);
+  const DetailsData = () => {
+    const detailData = {
+      user: property_id,
+    };
+    console.log("detailData", detailData);
+    const url = Config.API_URL;
+    const property_Detailss = url + "get_All_Property_details";
+    console.log("Request URL:", property_Detailss);
+    setIsLoading(true);
+    axios
+      .post(property_Detailss, detailData)
+      .then((response) => {
+        console.log("propertyDetail", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          setProperty_Details(response.data.property_details);
+          setImagePaths(response.data.property_details[0]?.image_path);
+          // alert(JSON.stringify(response.data.property_details));
+          console.log("propertyDetail....", response.data.property_details);
+        } else {
+          console.error("propertyDetail_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_type error:", error);
+        // alert(error);
+        setIsLoading(false);
+      });
+  };
 
+  //popup closeup code here
+  const CloseUp = () => {
+    refRBSheet.current.close();
+    console.log('close')
+  };
+  const imagePaths = MultiImageName.map((image) => image.path);
+  // setImagePaths(imagePath);
+  // alert(imagePaths);
+  const openVideoPicker = () => {
+    ImagePicker.openPicker({
+      mediaType: "video",
+      multiple: true,
+    })
+      .then((videos) => {
+        setSelectedVideos([...selectedVideos, ...videos]);
+      })
+      .catch((error) => {
+        console.error("Error selecting videos:", error);
+      });
+  };
+  const handleSaveUpdateImage = async () => {
+    refRBSheet.current.close();
+    const formData = new FormData();
+    formData.append("user", property_id);
+    console.log("kljproperty_Data_id", property_id);
+    const imagePaths = MultiImageName.map((image) => image.path);
+
+    // Append all image paths to the same key 'images[]'
+    imagePaths.forEach((path, index) => {
+      formData.append(
+        "images[]",
+        {
+          uri: path,
+          name: `image.jpg`,
+          type: "image/jpeg",
+        },
+        path
+      );
+    });
+    // Append videos
+    if (selectedVideos && selectedVideos.length > 0) {
+      selectedVideos.forEach((videoUri, index) => {
+        if (typeof videoUri === "string") {
+          const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+          formData.append(`media[]`, {
+            uri: videoUri,
+            name: videoName,
+            type: "video/mp4", // Set the appropriate video type
+          });
+        } else {
+          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+        }
+      });
+    }
+    console.log("formData", formData);
+    const url = Config.API_URL;
+    const saveAccountDetails = url + "add_property_images";
+    console.log("Request URL:", saveAccountDetails);
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+
+          // 'Content-Type': 'text/plain'
+        },
+      });
+
+      console.log("Save Account Details", response.data);
+
+      if (response.data.status === true) {
+        setIsLoading(false);
+        props.navigation.navigate("PropertyReview", {
+          property_id: property_id,
+          MultiImageName: MultiImageName,
+          selectedVideos: selectedVideos,
+        });
+        // alert(response.data.message);
+        // props.navigation.navigate("DrawerNavigatorLeftMenu");
+        // setCurrentPage(0);
+      } else {
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
+      console.error("Account_Details error:", error);
+      // alert(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+    const iconConfig = {
+      name: "feed",
+      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
+      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+      size: 20,
+    };
+
+    switch (position) {
+      case 0: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 1: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 2: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 3: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+    return iconConfig;
+  };
+  const firstIndicatorSignUpStepStyle = {
+    stepIndicatorSize: 40,
+    currentStepIndicatorSize: 20,
+    separatorStrokeWidth: 1,
+    currentStepStrokeWidth: 2,
+    separatorFinishedColor: _COLORS.Kodie_GrayColor,
+    separatorUnFinishedColor: _COLORS.Kodie_LightOrange,
+    stepIndicatorFinishedColor: _COLORS.Kodie_GreenColor,
+    stepIndicatorUnFinishedColor: _COLORS.Kodie_GrayColor,
+    stepIndicatorCurrentColor: _COLORS.Kodie_WhiteColor,
+    stepIndicatorLabelFontSize: 15,
+    currentStepIndicatorLabelFontSize: 15,
+    stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+    labelColor: _COLORS.Kodie_BlackColor,
+    labelSize: 14,
+    labelAlign: "center",
+  };
+  const renderStepIndicator = (params) => (
+    <MaterialIcons {...getStepIndicatorIconConfig(params)} />
+  );
+  const renderLabel = ({ position, stepStatus }) => {
+    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    const iconColor =
+      position === currentPage // Check if it's the current step
+        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+        : stepStatus === "finished"
+        ? "#000000"
+        : "#808080";
+    const iconName =
+      position === 0
+        ? "Details"
+        : position === 1
+        ? "Features"
+        : position === 2
+        ? "Images"
+        : position === 3
+        ? "Review"
+        : "null";
+
+    return (
+      <View style={{}}>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 1,
+            marginHorizontal: 10,
+            color: iconColor,
+            alignSelf: "center",
+          }}
+        >{`Step ${position + 1}`}</Text>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 5,
+            marginHorizontal: 10,
+            color: iconColor,
+          }}
+        >
+          {iconName}
+        </Text>
+      </View>
+    );
+  };
+  const goBack = () => {
+    props.navigation.pop();
+  };
+  const handleImageNameChange = (multipleImages) => {
+    // const imageSizeLimit = 2 * 1024 * 1024; // 2 MB in bytes
+
+    // const imagesWithinSizeLimit = multipleImages.filter(
+    //   (image) => image.size <= imageSizeLimit
+    // );
+
+    // if (imagesWithinSizeLimit.length === multipleImages.length) {
+    //   setMultiImageName(multipleImages);
+    //   refRBSheet.current.close();
+    // } else {
+    //   Alert.alert("Warning", "Image size should not exceed 2 MB.");
+    // }
+    setMultiImageName(multipleImages);
+    console.log("................ImageNAme", multipleImages);
+    console.log("................ImageNAme", multipleImages.path);
+  };
+  const handleSaveImage = async () => {
+    const formData = new FormData();
+    formData.append("user", property_id);
+    console.log("kljproperty_Data_id", property_id);
+    const imagePaths = MultiImageName.map((image) => image.path);
+
+    // Append all image paths to the same key 'images[]'
+    imagePaths.forEach((path, index) => {
+      formData.append(
+        "images[]",
+        {
+          uri: path,
+          name: `image_${index}.jpg`,
+          type: "image/jpeg",
+        },
+        path
+      );
+    });
+    // Append videos
+    if (selectedVideos && selectedVideos.length > 0) {
+      selectedVideos.forEach((videoUri, index) => {
+        if (typeof videoUri === "string") {
+          const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+          formData.append(`media[]`, {
+            uri: videoUri,
+            name: videoName,
+            type: "video/mp4", // Set the appropriate video type
+          });
+        } else {
+          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+        }
+      });
+    }
+    console.log("formData", formData);
+    const url = Config.API_URL;
+    const saveAccountDetails = url + "add_property_images";
+    console.log("Request URL:", saveAccountDetails);
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      });
+
+      console.log("Save Account Details", response.data);
+
+      if (response.data.status === true) {
+        setIsLoading(false);
+        MultiImageName ? refRBSheet.current.close() : null;
+        // alert(response.data.message);
+        props.navigation.navigate("PropertyReview", {
+          property_id: property_id,
+          MultiImageName: MultiImageName,
+          selectedVideos: selectedVideos,
+        });
+        // setCurrentPage(0);
+      } else {
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
+      console.error("Account_Details error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <View style={PropertyImagesStyle.mainContainer}>
+      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
+      <View
+        style={{
+          marginTop: 15,
+        }}
+      >
+        <StepIndicator
+          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+          currentPosition={currentPage}
+          // onPress={onStepPress}
+          renderStepIndicator={renderStepIndicator}
+          labels={stepLabels}
+          stepCount={4}
+          renderLabel={renderLabel}
+        />
+      </View>
       <ScrollView>
-        <View style={PropertyImagesStyle.headingView}>
-          <Text style={PropertyImagesStyle.heading}>{"Property images"}</Text>
-        </View>
         <View style={PropertyImagesStyle.phototextView}>
-          <View style={PropertyImagesStyle.slider_view}>
-            <SliderBox
-              images={images}
-              sliderBoxHeight={200}
-              onCurrentImagePressed={(index) =>
-                console.warn(`image ${index} pressed`)
-              }
-              inactiveDotColor={_COLORS.Kodie_GrayColor}
-              dotColor={_COLORS.Kodie_GreenColor}
-              autoplay
-              circleLoop
-              resizeMethod={"resize"}
-              resizeMode={"cover"}
-              dotStyle={PropertyImagesStyle.dotStyle}
-              ImageComponentStyle={{
-                flex: 1,
-                resizeMode: "cover",
-                borderRadius: 15,
-                width: "90%",
-                // position: "relative",
-              }}
-            />
+          <View style={PropertyImagesStyle.headingView}>
+            <Text style={PropertyImagesStyle.heading}>{"Property images"}</Text>
           </View>
-          <Text style={PropertyImagesStyle.upload_Heading_Text}>
-            {"Upload images"}
-          </Text>
-          <View style={{ flex: 1 }}>
-            <UploadImageBoxes
-              Box_Text={"Add Photo"}
-              onPress={() => {
-                refRBSheet.current.open();
-              }}
-            />
-            <Text style={PropertyImagesStyle.formatted_property_text}>
-              {
-                "Images should be formatted .jpg or .png Size per image should not exceed 2 MB"
-              }
+          <View style={PropertyImagesStyle.phototextView}>
+            <View style={PropertyImagesStyle.slider_view}>
+              {/* {imagePath ? (
+                <SliderBox
+                  images={
+                    // property_Detail[0]?.image_path
+                    //   ? property_Detail[0]?.image_path
+                    //   :
+                    imagePath
+                  }
+                  sliderBoxHeight={200}
+                  onCurrentImagePressed={(index) =>
+                    console.warn(`image ${index} pressed`)
+                  }
+                  inactiveDotColor={_COLORS.Kodie_GrayColor}
+                  dotColor={_COLORS.Kodie_GreenColor}
+                  autoplay
+                  circleLoop
+                  resizeMethod={"resize"}
+                  resizeMode={"cover"}
+                  dotStyle={PropertyImagesStyle.dotStyle}
+                  ImageComponentStyle={{
+                    flex: 1,
+                    resizeMode: "cover",
+                    borderRadius: 15,
+                    width: "90%",
+                    // position: "relative",
+                  }}
+                />
+              ) : ( */}
+              <SliderBox
+                images={
+                  // property_Detail[0]?.image_path
+                  //   ? property_Detail[0]?.image_path
+                  //   :
+                  imagePaths
+                }
+                sliderBoxHeight={200}
+                onCurrentImagePressed={(index) =>
+                  console.warn(`image ${index} pressed`)
+                }
+                inactiveDotColor={_COLORS.Kodie_GrayColor}
+                dotColor={_COLORS.Kodie_GreenColor}
+                autoplay
+                circleLoop
+                resizeMethod={"resize"}
+                resizeMode={"cover"}
+                dotStyle={PropertyImagesStyle.dotStyle}
+                ImageComponentStyle={{
+                  flex: 1,
+                  resizeMode: "cover",
+                  borderRadius: 15,
+                  width: "90%",
+                  // position: "relative",
+                }}
+              />
+              {/* )} */}
+            </View>
+            <Text style={PropertyImagesStyle.upload_Heading_Text}>
+              {"Upload images"}
             </Text>
-          </View>
-          <Text style={PropertyImagesStyle.upload_Heading_Text}>
-            {"Upload Video"}
-          </Text>
-          <View style={{ flex: 1 }}>
-            <UploadImageBoxes
-              Box_Text={"Add Photo"}
-              onPress={() => {
-                refRBSheet.current.open();
-              }}
-            />
-            <Text style={PropertyImagesStyle.formatted_property_text}>
-              {
-                "Videos should be formatted .mp4, HEVC, MKV.Size per video should not exceed 100 MB"
-              }
+            <View style={{ flex: 1 }}>
+              <UploadImageBoxes
+                Box_Text={"Add Photo"}
+                onPress={() => {
+                  refRBSheet.current.open();
+                }}
+              />
+              {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
+
+              {/* {MultiImageName.length > 0 && (
+                  <FlatList
+                    horizontal
+                    data={MultiImageName}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                      <Image
+                        source={{ uri: item.path }}
+                        style={{ width: 100, height: 100, margin: 5 }}
+                      />
+                    )}
+                  />
+                )} */}
+
+              <Text style={PropertyImagesStyle.formatted_property_text}>
+                {
+                  "Images should be formatted .jpg or .png Size per image should not exceed 2 MB"
+                }
+              </Text>
+            </View>
+
+            {/* {MultiImageName.length == 0 ? refRBSheet.current.close() : null} */}
+            <Text style={PropertyImagesStyle.upload_Heading_Text}>
+              {"Upload Video"}
             </Text>
+            <View style={{ flex: 1 }}>
+              <UploadImageBoxes
+                Box_Text={"Add video"}
+                onPress={() => {
+                  // refRBSheet.current.open();
+                  openVideoPicker();
+                }}
+              />
+              {selectedVideos.length > 0 && (
+                <View style={{ marginTop: 10 }}>
+                  {/* <Text>Selected Videos:</Text> */}
+                  <FlatList
+                    horizontal
+                    data={selectedVideos}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                      <>
+                        <Video
+                          source={{ uri: item.path }}
+                          style={{
+                            width: 150,
+                            height: 150,
+                            borderRadius: 5,
+                            marginLeft: 10,
+                          }}
+                          controls={true}
+                        />
+                        {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
+                      </>
+                    )}
+                  />
+                </View>
+              )}
+              <Text style={PropertyImagesStyle.formatted_property_text}>
+                {
+                  "Videos should be formatted .mp4, HEVC, MKV.Size per video should not exceed 100 MB"
+                }
+              </Text>
+            </View>
+            {/* {selectedVideos.length > 0 && refRBSheet.current.close()} */}
+
+            <RBSheet
+              ref={refRBSheet}
+              closeOnDragDown={true}
+              closeOnPressMask={false}
+              height={180}
+              customStyles={{
+                wrapper: {
+                  backgroundColor: "transparent",
+                },
+                draggableIcon: {
+                  backgroundColor: _COLORS.Kodie_LightGrayColor,
+                },
+                container: PropertyImagesStyle.bottomModal_container,
+              }}
+            >
+              <UploadMultipleImage
+              onClose={CloseUp}
+                heading_Text={"Upload image"}
+                multipleImage={handleImageNameChange}
+              />
+            </RBSheet>
           </View>
 
-          <RBSheet
-            ref={refRBSheet}
-            closeOnDragDown={true}
-            closeOnPressMask={false}
-            height={180}
-            customStyles={{
-              wrapper: {
-                backgroundColor: "transparent",
-              },
-              draggableIcon: {
-                backgroundColor: _COLORS.Kodie_LightGrayColor,
-              },
-              container: PropertyImagesStyle.bottomModal_container,
+          <View style={PropertyImagesStyle.btnView}>
+            <CustomSingleButton
+              _ButtonText={"Next"}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              onPress={() => {
+                if (property_id) {
+                  handleSaveUpdateImage();
+                } else {
+                  handleSaveImage();
+                }
+              }}
+            />
+          </View>
+          <View style={PropertyImagesStyle.btnView}>
+            <CustomSingleButton
+              _ButtonText={"Add property features later"}
+              Text_Color={_COLORS.Kodie_BlackColor}
+              backgroundColor={_COLORS.Kodie_WhiteColor}
+            />
+          </View>
+          <TouchableOpacity
+            style={PropertyImagesStyle.goBack_View}
+            onPress={() => {
+              goBack();
             }}
           >
-            <UploadImageData heading_Text={"Upload more images"} />
-          </RBSheet>
+            <View style={PropertyImagesStyle.backIcon}>
+              <Ionicons
+                name="chevron-back"
+                size={22}
+                color={_COLORS.Kodie_MediumGrayColor}
+              />
+            </View>
+            <Text style={PropertyImagesStyle.goBack_Text}>{"Go back"}</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

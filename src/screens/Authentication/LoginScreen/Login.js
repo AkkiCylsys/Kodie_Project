@@ -11,6 +11,9 @@ import {
   ActivityIndicator,
   Platform,
   Button,
+  Keyboard,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
 } from "react-native";
 import { logos } from "../../../Themes/CommonVectors/Images";
 import { LoginStyles } from "./LoginCss";
@@ -83,6 +86,13 @@ export default Login = (props) => {
   );
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
+  };
+  const handleLogin = () => {
+    // Your login logic here
+    // ...
+
+    // Dismiss the keyboard
+    Keyboard.dismiss();
   };
   const handleToggleResetPassword = () => {
     setShowResetPassword((prevShowPassword) => !prevShowPassword);
@@ -225,6 +235,7 @@ export default Login = (props) => {
     } else {
       // makeApiLogin();
       //alert("click")
+      Keyboard.dismiss();
       setIsLoading(true);
       let data = {
         email: email,
@@ -233,6 +244,7 @@ export default Login = (props) => {
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
       //alert(res)
+      console.log("login_data...", res);
       setIsLoading(false);
       if (res == 401) {
         setIsLoading(false);
@@ -256,6 +268,7 @@ export default Login = (props) => {
         }
       }
     }
+    // Keyboard.dismiss();
   };
 
   //...  verification variable define here
@@ -408,8 +421,9 @@ export default Login = (props) => {
   };
 
   return (
-    <View style={LoginStyles.container}>
-      <ScrollView>
+    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+     style={LoginStyles.container}>
+        <ScrollView keyboardShouldPersistTaps='handled'>
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
         </View>
@@ -507,7 +521,7 @@ export default Login = (props) => {
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <BottomTextsButton
-              _LeftButtonText={"Don't have an account yet?"}
+              _LeftButtonText={"Don't have an account yet? "}
               _RightButtonText={"Sign up"}
               onPress={() => {
                 props.navigation.navigate("SignUp");
@@ -522,10 +536,10 @@ export default Login = (props) => {
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={false}
-        height={Platform.OS === "android" ? 450 : 600}
+        height={Platform.OS === "android" ? 550 : 800}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -635,7 +649,7 @@ export default Login = (props) => {
                       isPlaying
                       trailColor={_COLORS.Kodie_lightGreenColor}
                       duration={50}
-                      size={50}
+                      size={45}
                       colors={_COLORS.Kodie_lightGreenColor}
                       onComplete={() => {
                         setIsTimeron(false);
@@ -811,12 +825,20 @@ export default Login = (props) => {
           {/* ------ Loder section start code  here ........... */}
           {isLoading && (
             <View style={LoginStyles.secondloder}>
-              <ActivityIndicator size={40} color={_COLORS.Kodie_BlackColor} />
+              <ActivityIndicator size={30} color={_COLORS.Kodie_BlackColor} />
             </View>
           )}
 
+
           {/* ------ Next button section start code  here ........... */}
-          <View style={{ marginBottom: 800 }}>
+          <View
+            style={[
+              {
+                marginBottom: 800,
+                marginTop: isClick === 1 || isClick === 2 ||isClick===3 ? 150 : 220,
+              },
+            ]}
+          >
             <CustomSingleButton
               onPress={handleButtonPress}
               _ButtonText={buttonLabels[isClick]}
@@ -834,7 +856,7 @@ export default Login = (props) => {
           </View>
         </View>
       </RBSheet>
-      {isLoading ? <CommonLoader /> : null}
-    </View>
+      {isLoading ? <CommonLoader /> : null}  
+      </KeyboardAvoidingView>
   );
 };

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { FONTFAMILY, IMAGES, _COLORS } from "./../../../Themes/index";
 export const LoginStyles = StyleSheet.create({
   container: {
@@ -8,6 +8,7 @@ export const LoginStyles = StyleSheet.create({
   logoContainer: {
     alignItems: "center",
     marginTop: 120,
+    
   },
   logo: {
     width: 210,
@@ -32,7 +33,7 @@ export const LoginStyles = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 60,
@@ -122,6 +123,7 @@ export const LoginStyles = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
+    color:_COLORS.Kodie_BlackColor
   },
   eyeIcon: {
     padding: 10,
@@ -134,7 +136,7 @@ export const LoginStyles = StyleSheet.create({
   },
   secondloder: {
     flex: 1,
-    marginVertical: 25,
+    marginVertical:10,
     alignItems: "center",
   },
   error_text: { color: "red", marginLeft: 10 },

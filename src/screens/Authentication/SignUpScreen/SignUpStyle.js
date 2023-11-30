@@ -40,7 +40,7 @@ export const SignUpStyles = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -54,7 +54,7 @@ export const SignUpStyles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color:_COLORS.Kodie_BlackColor,
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
   },
@@ -70,6 +70,7 @@ export const SignUpStyles = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
+    color:_COLORS.Kodie_BlackColor
   },
   eyeIcon: {
     padding: 10,

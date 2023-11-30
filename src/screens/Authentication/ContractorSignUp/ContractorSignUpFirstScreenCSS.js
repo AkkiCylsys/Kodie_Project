@@ -15,7 +15,7 @@ export const ContractorSignUpStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -103,7 +103,7 @@ export const ContractorSignUpStyle = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 1.41,
 
     elevation: 2,

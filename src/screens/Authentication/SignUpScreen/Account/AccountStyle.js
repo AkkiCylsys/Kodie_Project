@@ -15,7 +15,7 @@ export const AccountStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -40,10 +40,10 @@ export const AccountStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    width:'23.5%',
-    marginLeft:12,
-    marginTop:9,
-    textAlign:"center"
+    width: "23.5%",
+    marginLeft: 12,
+    marginTop: 9,
+    textAlign: "center",
   },
   locationContainer: {
     flexDirection: "row",
@@ -60,6 +60,7 @@ export const AccountStyle = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
+    color: _COLORS.Kodie_BlackColor,
   },
   locationIcon: {
     marginLeft: 10,

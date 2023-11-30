@@ -60,7 +60,7 @@ export const DashboardStyle = StyleSheet.create({
     borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     marginHorizontal: 5,
@@ -104,7 +104,7 @@ export const DashboardStyle = StyleSheet.create({
     borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     paddingVertical: 18,
@@ -154,7 +154,7 @@ export const DashboardStyle = StyleSheet.create({
     borderRadius: 15,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     paddingVertical: 18,
@@ -203,7 +203,7 @@ export const DashboardStyle = StyleSheet.create({
     marginHorizontal: 15,
   },
   card: {
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderRadius: 16,
@@ -251,5 +251,4 @@ export const DashboardStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
-
 });

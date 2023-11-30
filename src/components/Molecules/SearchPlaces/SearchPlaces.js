@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { SearchPlacesStyle } from "./SearchPlacesStyle";
 import { _COLORS } from "../../../Themes";
-
+import TopHeader from "../Header/Header";
 const SearchPlaces = (props) => {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
@@ -11,10 +11,10 @@ const SearchPlaces = (props) => {
   const [selectedLocation, setSelectedLocation] = useState("");
   return (
     <View style={SearchPlacesStyle.container}>
+      {/* <TopHeader MiddleText={"Location"} /> */}
       <GooglePlacesAutocomplete
         placeholder="Search"
         debounce={400}
-        
         onPress={props.onPress}
         // onPress={(data, details) => {
         //   // 'details' is provided when fetchDetails = true

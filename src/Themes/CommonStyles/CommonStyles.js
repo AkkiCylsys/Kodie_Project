@@ -12,6 +12,7 @@ export const LABEL_STYLES = StyleSheet.create({
     marginBottom: 12,
   },
   commontext: {
+    flex: 1,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -298,7 +299,7 @@ const CommonViewStyles = StyleSheet.create({
   LineVertical: { borderWidth: 0.3, borderColor: colors?.lightGray },
   shadowView: {
     shadowColor: colors?.fullBlack,
-    shadowOpacity: 0.3,
+    shadowOpacity: Platform.OS == "android" ? 0.3 : null,
     borderRadius: 2,
     shadowOffset: {
       height: 0.5,
@@ -309,7 +310,7 @@ const CommonViewStyles = StyleSheet.create({
   cardView: {
     borderRadius: 5,
     shadowColor: colors?.orange,
-    shadowOpacity: 0.2,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     shadowOffset: {
       height: 0,

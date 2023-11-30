@@ -20,7 +20,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
+    shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -52,7 +52,9 @@ export const PropertyDetailsStyle = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
+    color:_COLORS.Kodie_BlackColor
   },
+  error_text: { color: "red", marginLeft: 10 },
   locationIcon: {
     marginLeft: 15,
   },

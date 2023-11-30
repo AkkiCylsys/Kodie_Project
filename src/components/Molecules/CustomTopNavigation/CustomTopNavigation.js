@@ -25,6 +25,9 @@ const CustomTabNavigator = (props) => {
               //   ? _COLORS.Kodie_BlackColor
               //   : _COLORS.Kodie_MediumGrayColor,
             },
+            {
+              fontFamily:props.FONTFAMILY1
+            }
           ]}
         >
           {props.Tab1}
@@ -41,6 +44,9 @@ const CustomTabNavigator = (props) => {
             {
               color: props.colorTab2,
             },
+            {
+              fontFamily:props.FONTFAMILY2
+            }
           ]}
         >
           {props.Tab2}
@@ -57,6 +63,9 @@ const CustomTabNavigator = (props) => {
               {
                 color: props.colorTab3,
               },
+              {
+                fontFamily:props.FONTFAMILY3
+              }
             ]}
           >
             {props.Tab3}
@@ -65,10 +74,7 @@ const CustomTabNavigator = (props) => {
       ) : null}
       {props.TAB4 ? (
         <TouchableOpacity
-          style={[
-            TopNavigationstyles.tabButton,
-            activeTab === "Tab4" && TopNavigationstyles.activeTab,
-          ]}
+          style={[TopNavigationstyles.tabButton, props.styleTab4]}
           onPress={props.onPressTab4}
         >
           <Text
@@ -77,6 +83,9 @@ const CustomTabNavigator = (props) => {
               {
                 color: props.colorTab4,
               },
+              {
+                fontFamily:props.FONTFAMILY4
+              }
             ]}
           >
             {props.Tab4}

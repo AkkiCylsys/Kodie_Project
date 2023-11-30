@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  PermissionsAndroid,
+  Platform,
 } from "react-native";
 import { FirstPropertyStyle } from "./FirstPropertyStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -31,6 +31,8 @@ import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import Geolocation from "react-native-geolocation-service";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { useDispatch, useSelector } from "react-redux";
+import { signupAccountApiActionCreator } from "../../../../redux/Actions/Authentication/AuthenticationApiCreator";
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -59,25 +61,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     color: stepStatus === "finished" ? "#ffffff" : "#ffffff",
     size: 20,
   };
-
-  switch (position) {
-    case 0: {
-      iconConfig.name = stepStatus === "finished" ? "check" : null;
-      break;
-    }
-    case 1: {
-      iconConfig.name = stepStatus === "finished" ? "check" : "check";
-      break;
-    }
-    case 2: {
-      iconConfig.name = stepStatus === "finished" ? "check" : "check";
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
+  iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
 };
 const DATA = [
@@ -133,17 +117,24 @@ const DATA = [
 const renderDataItem = (item) => {
   return (
     <View style={FirstPropertyStyle.item}>
-      <Text style={FirstPropertyStyle.selectedTextStyle}>{item.label}</Text>
-      <AntDesign
+      <Text style={FirstPropertyStyle.selectedTextStyle}>
+        {item.FeatureName}
+      </Text>
+      {/* <AntDesign
         style={FirstPropertyStyle.icon}
         color={_COLORS.Kodie_BlackColor}
         name="check"
         size={20}
-      />
+      /> */}
     </View>
   );
 };
 export default FirstProperty = (props) => {
+  const signUp_account_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
+  console.log("signUp_account_response.....", signUp_account_response);
+
   let firstName = props?.route?.params?.firstName;
   let lastName = props?.route?.params?.lastName;
   let mobileNumber = props?.route?.params?.mobileNumber;
@@ -156,6 +147,12 @@ export default FirstProperty = (props) => {
   let kodieHelpValue = props?.route?.params?.kodieHelpValue;
   let ImageName = props?.route?.params?.ImageName;
   let email = props?.route?.params?.email;
+  let country = props?.route?.params?.country;
+  let state = props?.route?.params?.state;
+  let city = props?.route?.params?.city;
+  let p_latitude = props?.route?.params?.p_latitude;
+  let p_longitude = props?.route?.params?.p_longitude;
+  let user_key = props?.route?.params?.user_key;
   console.log("firstname..", firstName);
   console.log("lastName..", lastName);
   console.log("mobileNumber..", mobileNumber);
@@ -167,6 +164,12 @@ export default FirstProperty = (props) => {
   console.log("kodieHelpValue..", kodieHelpValue);
   console.log("ImageName..", ImageName);
   console.log("email..", email);
+  console.log("country..", country);
+  console.log("state..", state);
+  console.log("city..", city);
+  console.log("p_latitude..", p_latitude);
+  console.log("p_longitude..", p_longitude);
+  console.log("user_key..", user_key);
 
   const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(2);
@@ -202,6 +205,63 @@ export default FirstProperty = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
+  const [CountBedroom, setCountBedroom] = useState(0);
+  // const [CountBedRoomData, setCountBedRoomData] = useState([]);
+  const [CountBathroom, setCountBathroom] = useState(0);
+  const [CountParking, setCountParking] = useState(0);
+  const [CountParkingStreet, setCountParkingStreet] = useState(0);
+  const [buildingFlorSize, setBuildingFlorSize] = useState("");
+  const [landArea, setLandArea] = useState("");
+  const dispatch = useDispatch();
+  const P_addressParts = propertyLocation.split(", ");
+
+  const p_country = P_addressParts.pop();
+  const P_state = P_addressParts.pop();
+  const p_city = P_addressParts.join(", ");
+
+  console.log("p_country:", p_country);
+  console.log("P_state:", P_state);
+  console.log("p_city:", p_city);
+
+  const AllCountsData = {
+    Bedrooms: CountBedroom,
+    Bathrooms: CountBathroom,
+    Parking_spaces: CountParking,
+    On_Street_parking: CountParkingStreet,
+  };
+  const increaseBedroomCount = () => {
+    setCountBedroom((prevCount) => prevCount + 1);
+  };
+  const decreaseBedroomCount = () => {
+    if (CountBedroom > 0) {
+      setCountBedroom((prevCount) => prevCount - 1);
+    }
+  };
+  // key_features count for Bathroom code here------
+  const increaseBathroomCount = () => {
+    setCountBathroom((prevCount) => prevCount + 1);
+  };
+  const decreaseBathroomCount = () => {
+    if (CountBathroom > 0) {
+      setCountBathroom((prevCount) => prevCount - 1);
+    }
+  };
+  const increaseParkingStreetCount = () => {
+    setCountParkingStreet((prevCount) => prevCount + 1);
+  };
+  const decreaseParkingStreetCount = () => {
+    if (CountParkingStreet > 0) {
+      setCountParkingStreet((prevCount) => prevCount - 1);
+    }
+  };
+  const increaseParkingCount = () => {
+    setCountParking((prevCount) => prevCount + 1);
+  };
+  const decreaseParkingCount = () => {
+    if (CountParking > 0) {
+      setCountParking((prevCount) => prevCount - 1);
+    }
+  };
 
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
@@ -250,10 +310,6 @@ export default FirstProperty = (props) => {
 
   useEffect(() => {
     handleProperty_Type();
-    handle_bedRoom();
-    handle_Garages();
-    handle_Bathroom();
-    handle_parking();
     additional_features();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
@@ -299,130 +355,6 @@ export default FirstProperty = (props) => {
         setIsLoading(false);
       });
   };
-
-  //  key feature module BedRoom API....
-  const handle_bedRoom = () => {
-    const bedRoom_Data = {
-      P_PARENT_CODE: "BEDROOM",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const bedroomApi = url + "lookup_details";
-    console.log("Request URL:", bedroomApi);
-    setIsLoading(true);
-    axios
-      .post(bedroomApi, bedRoom_Data)
-      .then((response) => {
-        console.log("bedRoom_data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("bedRoom_data....", response.data.data);
-          setBedRoomData(response.data.data);
-        } else {
-          console.error("bedRoom_data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("bedRoom_data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  //  key feature module Garages API....
-  const handle_Garages = () => {
-    const garages_Data = {
-      P_PARENT_CODE: "GARAGES",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const garagesApi = url + "lookup_details";
-    console.log("Request URL:", garagesApi);
-    setIsLoading(true);
-    axios
-      .post(garagesApi, garages_Data)
-      .then((response) => {
-        console.log("garages_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("garages_Data....", response.data.data);
-          setGaragesData(response.data.data);
-        } else {
-          console.error("garages_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("garages_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  // key feature module Bathroom API....
-  const handle_Bathroom = () => {
-    const Bathroom_Data = {
-      P_PARENT_CODE: "BATHROOM",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const bathrooApi = url + "lookup_details";
-    console.log("Request URL:", bathrooApi);
-    setIsLoading(true);
-    axios
-      .post(bathrooApi, Bathroom_Data)
-      .then((response) => {
-        console.log("bathroom_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("bathroom_Data....", response.data.data);
-          setBathroomData(response.data.data);
-        } else {
-          console.error("bathroom_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("bathroom_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
-  // // key feature module Bathroom API....
-  const handle_parking = () => {
-    const parking_Data = {
-      P_PARENT_CODE: "PARKING",
-      P_TYPE: "OPTION",
-    };
-    const url = Config.API_URL;
-    const parkingApi = url + "lookup_details";
-    console.log("Request URL:", parking_Data);
-    setIsLoading(true);
-    axios
-      .post(parkingApi, parking_Data)
-      .then((response) => {
-        console.log("parking_Data", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log("parking_Data....", response.data.data);
-          setParkingData(response.data.data);
-        } else {
-          console.error("parking_Data_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("parking_Data error:", error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
   const additional_features = () => {
     const url = Config.API_URL;
     const additionalApi = url + "key_features";
@@ -436,7 +368,7 @@ export default FirstProperty = (props) => {
           setIsLoading(false);
           console.log("additional_features....", response.data);
           setAdditionalfeatureskey(response.data.PAF_KEY);
-          setData_add(response.data.PAF_KEY);
+          // setData_add(response.data.PAF_KEY);
           console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
         } else {
           console.error("additional_features_error:", response.data.error);
@@ -454,25 +386,29 @@ export default FirstProperty = (props) => {
   const handleSaveSignup = async () => {
     // alert(selectedServices);
     setIsLoading(true);
-    // const selectedServiceKeysString = selectedServices.join(",");
-    // const kodieHelpValue = selectedLookupKeys.join(",");
-    const selectedKeyFeature = selectedkey_features.join(",");
-    console.log("selectedKeyFeature..", selectedKeyFeature);
+    console.log("AllCountsData..", AllCountsData);
     console.log("propertyLocation..", propertyLocation);
     console.log("propertyDesc..", propertyDesc);
     console.log("property_value..", property_value);
     console.log("additionalfeatureskeyvalue..", additionalfeatureskeyvalue);
     console.log("selectedButtonId..", selectedButtonId);
     console.log("islocation..", 1);
+    console.log("buildingFlorSize..", buildingFlorSize);
+    console.log("landArea..", landArea);
 
-    //
     const formData = new FormData();
-    formData.append("user", 46);
+    // formData.append("user", 46);
+    formData.append("user", user_key);
     formData.append("first_name", firstName);
     formData.append("last_name", lastName);
     formData.append("phone_number", mobileNumber);
     formData.append("email", email);
     formData.append("physical_address", physicalAddress);
+    formData.append("p_longitude", p_longitude);
+    formData.append("p_latitude", p_latitude);
+    formData.append("State", state);
+    formData.append("Country", country);
+    formData.append("City", city);
     formData.append("organisation_name", organisation);
     formData.append("referral_code", referral);
     formData.append("describe_yourself", selectedServiceKeysString);
@@ -481,24 +417,29 @@ export default FirstProperty = (props) => {
     formData.append("location", propertyLocation);
     formData.append("location_longitude", longitude);
     formData.append("location_latitude", latitude);
+    formData.append("p_state", P_state);
+    formData.append("p_country", p_country);
+    formData.append("p_city", p_city);
     formData.append("islocation", 1);
     formData.append("property_description", propertyDesc);
     formData.append("property_type", property_value);
-    formData.append("key_features", selectedKeyFeature);
-    formData.append("additional_features",additionalfeatureskeyvalue);
+    formData.append("key_features", AllCountsData);
+    formData.append("land_area", landArea);
+    formData.append("floor_size", buildingFlorSize);
+    formData.append("additional_features", additionalfeatureskeyvalue);
     formData.append("auto_list", selectedButtonId);
 
     if (ImageName) {
       const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       formData.append("profile_photo", {
         uri: imageUri,
         // type: imageType,
-        name: imageName,
+        name: "abc",
       });
     }
-    const url = Config.API_URL;
-    const saveAccountDetails = url + "user_save_signup_account_details";
+    const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+    const saveAccountDetails = url;
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
     try {
@@ -508,7 +449,8 @@ export default FirstProperty = (props) => {
         },
       });
       console.log("Save Account Details", response.data);
-      if (response.data.status === true) {
+
+      if (response.data.success === true) {
         setIsLoading(false);
         alert(response.data.message);
         props.navigation.navigate("DrawerNavigatorLeftMenu");
@@ -531,7 +473,121 @@ export default FirstProperty = (props) => {
     } finally {
       setIsLoading(false);
     }
+
+    // let res = await dispatch(signupAccountApiActionCreator(formData));
+    // console.log("signupAccount_Details.....", res?.data);
+    // if (res.data.status === true) {
+    //   setIsLoading(false);
+    //   alert(res.data.message);
+    //   props.navigation.navigate("DrawerNavigatorLeftMenu");
+    //   setIsLoading(false);
+    //   setCurrentPage(0);
+    //   setProperty_value("");
+    //   setbedroomValue("");
+    //   setGaragesValue("");
+    //   setBathRoomValue("");
+    //   setParkingValue("");
+    //   setAdditionalFeaturesKeyValue("");
+    // } else {
+    //   setIsLoading(false);
+    //   console.error("Save Account Details error:", res.data.error);
+    //   alert(res.data.error);
+    // }
   };
+
+  // const handleSaveSignup = async () => {
+  //   setIsLoading(true);
+  //   console.log("AllCountsData..", AllCountsData);
+  //   console.log("propertyLocation..", propertyLocation);
+  //   console.log("propertyDesc..", propertyDesc);
+  //   console.log("property_value..", property_value);
+  //   console.log("additionalfeatureskeyvalue..", additionalfeatureskeyvalue);
+  //   console.log("selectedButtonId..", selectedButtonId);
+  //   console.log("islocation..", 1);
+  //   console.log("buildingFlorSize..", buildingFlorSize);
+  //   console.log("landArea..", landArea);
+
+  //   const formData = new FormData();
+  //   // formData.append("user", 46);
+  //   formData.append("user", user_key);
+  //   formData.append("first_name", firstName);
+  //   formData.append("last_name", lastName);
+  //   formData.append("phone_number", mobileNumber);
+  //   formData.append("email", email);
+  //   formData.append("physical_address", physicalAddress);
+  //   formData.append("p_longitude", p_longitude);
+  //   formData.append("p_latitude", p_latitude);
+  //   formData.append("State", state);
+  //   formData.append("Country", country);
+  //   formData.append("City", city);
+  //   formData.append("organisation_name", organisation);
+  //   formData.append("referral_code", referral);
+  //   formData.append("describe_yourself", selectedServiceKeysString);
+  //   formData.append("kodie_help", kodieHelpValue);
+  //   formData.append("property_manage", selectManageProperty);
+  //   formData.append("location", propertyLocation);
+  //   formData.append("location_longitude", longitude);
+  //   formData.append("location_latitude", latitude);
+  //   formData.append("p_state", P_state);
+  //   formData.append("p_country", p_country);
+  //   formData.append("p_city", p_city);
+  //   formData.append("islocation", 1);
+  //   formData.append("property_description", propertyDesc);
+  //   formData.append("property_type", property_value);
+  //   formData.append("key_features", AllCountsData);
+  //   formData.append("land_area", landArea);
+  //   formData.append("floor_size", buildingFlorSize);
+  //   formData.append("additional_features", additionalfeatureskeyvalue);
+  //   formData.append("auto_list", selectedButtonId);
+  //   if (ImageName) {
+  //     const imageUri = ImageName;
+  //     // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+  //     formData.append("profile_photo", {
+  //       uri: imageUri,
+  //       name: "abc",
+  //     });
+  //   }
+
+  //   const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+  //   setIsLoading(true);
+
+  //   try {
+  //     const response = await fetch(url, {
+  //       method: "POST",
+  //       body: formData,
+  //       headers: {
+  //         // Don't set content-type for FormData, it will be set automatically
+  //       },
+  //     });
+
+  //     const responseData = await response.json();
+
+  //     console.log("Save Account Details", responseData);
+
+  //     if (responseData.success === true) {
+  //       setIsLoading(false);
+  //       alert(responseData.message);
+  //       props.navigation.navigate("DrawerNavigatorLeftMenu");
+  //       setCurrentPage(0);
+  //       setProperty_value("");
+  //       setbedroomValue("");
+  //       setGaragesValue("");
+  //       setBathRoomValue("");
+  //       setParkingValue("");
+  //       setAdditionalFeaturesKeyValue("");
+  //     } else {
+  //       setIsLoading(false);
+  //       console.error("Save Account Details error:", responseData.error);
+  //       alert(responseData.error);
+  //     }
+  //   } catch (error) {
+  //     setIsLoading(false);
+  //     console.error("Account_Details error:", error);
+  //     alert(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const goBack = () => {
     props.navigation.pop();
@@ -639,8 +695,12 @@ export default FirstProperty = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <TopHeader
-        MiddleText={"Set up your Kodie account"}
-        onPressLeftButton={goBack}
+        MiddleText={
+          IsMap || IsSearch ? "Location" : "Set up your Kodie account"
+        }
+        onPressLeftButton={() => {
+          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+        }}
       />
       <View style={FirstPropertyStyle.container}>
         {/* {IsMap || IsSearch ? null : (
@@ -766,6 +826,9 @@ export default FirstProperty = (props) => {
                     style={FirstPropertyStyle.locationInput}
                     value={propertyLocation}
                     onChangeText={setPropertyLocation}
+                    onFocus={() => {
+                      setIsSearch(true);
+                    }}
                     placeholder="Search location"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
@@ -818,137 +881,175 @@ export default FirstProperty = (props) => {
                 Key features
               </Text>
               <View style={FirstPropertyStyle.inputContainer}>
-                <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Bedrooms"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bedRoomData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="3"
-                      value={bedroomValue}
-                      onChange={(item) => {
-                        setbedroomValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
+                <View>
+                  <View style={FirstPropertyStyle.mainfeaturesview}>
+                    <View style={FirstPropertyStyle.key_feature_Text_view}>
+                      <Text style={FirstPropertyStyle.key_feature_Text}>
+                        {"Bedrooms"}
+                      </Text>
+                    </View>
+
+                    <View style={FirstPropertyStyle.plus_minusview}>
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.menusIconView}
+                      >
+                        <AntDesign
+                          name="minus"
+                          size={20}
+                          onPress={decreaseBedroomCount}
+                        />
+                      </TouchableOpacity>
+                      <Text style={FirstPropertyStyle.countdata}>
+                        {CountBedroom}
+                      </Text>
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.menusIconView}
+                      >
+                        <AntDesign
+                          name="plus"
+                          size={20}
+                          onPress={() => {
+                            increaseBedroomCount();
+                          }}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Garages"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={garagesData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="1"
-                      value={garagesValue}
-                      onChange={(item) => {
-                        setGaragesValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
+
+                  <View style={FirstPropertyStyle.mainfeaturesview}>
+                    <View style={FirstPropertyStyle.key_feature_Text_view}>
+                      <Text style={FirstPropertyStyle.key_feature_Text}>
+                        {"Bathrooms"}
+                      </Text>
+                    </View>
+
+                    <View style={FirstPropertyStyle.plus_minusview}>
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.menusIconView}
+                      >
+                        <AntDesign
+                          name="minus"
+                          size={20}
+                          onPress={decreaseBathroomCount}
+                        />
+                      </TouchableOpacity>
+                      <Text style={FirstPropertyStyle.countdata}>
+                        {CountBathroom}
+                      </Text>
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.menusIconView}
+                      >
+                        <AntDesign
+                          name="plus"
+                          size={20}
+                          onPress={increaseBathroomCount}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                </View>
-                <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Bathrooms"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={bathroomData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="3"
-                      value={bathRoomValue}
-                      onChange={(item) => {
-                        setBathRoomValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
+
+                  <View style={FirstPropertyStyle.mainfeaturesview}>
+                    <View style={FirstPropertyStyle.key_feature_Text_view}>
+                      <Text style={FirstPropertyStyle.key_feature_Text}>
+                        {"Parking spaces"}
+                      </Text>
+                    </View>
+
+                    <View style={FirstPropertyStyle.plus_minusview}>
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.menusIconView}
+                      >
+                        <AntDesign
+                          name="minus"
+                          size={20}
+                          onPress={decreaseParkingCount}
+                        />
+                      </TouchableOpacity>
+                      <Text style={FirstPropertyStyle.countdata}>
+                        {CountParking}
+                      </Text>
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.menusIconView}
+                      >
+                        <AntDesign
+                          name="plus"
+                          size={20}
+                          onPress={increaseParkingCount}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Parkings"}
-                    </Text>
-                    <Dropdown
-                      style={[
-                        FirstPropertyStyle.dropdown,
-                        FirstPropertyStyle.key_feature_Dropdownstyle,
-                        FirstPropertyStyle.additional,
-                      ]}
-                      placeholderStyle={[
-                        FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
-                      ]}
-                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                      iconStyle={FirstPropertyStyle.iconStyle}
-                      data={parkingData}
-                      maxHeight={300}
-                      labelField="description"
-                      valueField="lookup_key"
-                      placeholder="1"
-                      value={parkingValue}
-                      onChange={(item) => {
-                        setParkingValue(item.lookup_key);
-                        handle_key_feature(item.lookup_key);
-                      }}
-                    />
+
+                  <View style={FirstPropertyStyle.mainfeaturesview}>
+                    <View style={FirstPropertyStyle.key_feature_Text_view}>
+                      <Text style={FirstPropertyStyle.key_feature_Text}>
+                        {"On-street parking"}
+                      </Text>
+                    </View>
+
+                    <View style={FirstPropertyStyle.plus_minusview}>
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.menusIconView}
+                      >
+                        <AntDesign
+                          name="minus"
+                          size={20}
+                          onPress={decreaseParkingStreetCount}
+                        />
+                      </TouchableOpacity>
+                      <Text style={FirstPropertyStyle.countdata}>
+                        {CountParkingStreet}
+                      </Text>
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.menusIconView}
+                      >
+                        <AntDesign
+                          name="plus"
+                          size={20}
+                          onPress={increaseParkingStreetCount}
+                        />
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
 
-                <View style={FirstPropertyStyle.key_feature_mainView}>
-                  <View style={FirstPropertyStyle.key_feature_subView}>
-                    <Text style={FirstPropertyStyle.key_feature_Text}>
-                      {"Floor size"}
-                    </Text>
-                    <TextInput
-                      style={FirstPropertyStyle.flor_input}
-                      value={florSize}
-                      onChangeText={setFlorSize}
-                      placeholder="102m2"
-                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                    />
+                <View>
+                  <View style={FirstPropertyStyle.key_feature_mainView}>
+                    <View style={FirstPropertyStyle.key_feature_subView}>
+                      <Text style={FirstPropertyStyle.key_feature_Text}>
+                        {"Building floor size  (optional)"}
+                      </Text>
+                    </View>
+
+                    <View style={FirstPropertyStyle.floorsizeview}>
+                      <TextInput
+                        style={FirstPropertyStyle.flor_input_field}
+                        value={buildingFlorSize}
+                        onChangeText={setBuildingFlorSize}
+                        placeholder="102m2"
+                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        keyboardType="number-pad"
+                      />
+                    </View>
+                  </View>
+
+                  <View style={FirstPropertyStyle.key_feature_mainView}>
+                    <View style={FirstPropertyStyle.key_feature_subView}>
+                      <Text style={FirstPropertyStyle.key_feature_Text}>
+                        {"Land area (optional)"}
+                      </Text>
+                    </View>
+
+                    <View style={FirstPropertyStyle.floorsizeview}>
+                      <TextInput
+                        style={FirstPropertyStyle.flor_input_field}
+                        value={landArea}
+                        onChangeText={setLandArea}
+                        placeholder="102m2"
+                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        keyboardType="number-pad"
+                      />
+                    </View>
                   </View>
                 </View>
 
@@ -967,9 +1068,9 @@ export default FirstProperty = (props) => {
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}
-                    data={DATA}
-                    labelField="label"
-                    valueField="value"
+                    data={additionalfeatureskey}
+                    labelField="FeatureName"
+                    valueField="key"
                     placeholder="Select additional features"
                     value={additionalfeatureskeyvalue}
                     search
@@ -985,50 +1086,30 @@ export default FirstProperty = (props) => {
                       >
                         <View style={FirstPropertyStyle.selectedStyle}>
                           <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.label}
+                            {item.FeatureName}
                           </Text>
-                          <AntDesign color="black" name="close" size={17} />
+                          <AntDesign color="white" name="close" size={17} />
                         </View>
                       </TouchableOpacity>
                     )}
                   />
-                  {/* <MultiSelect
-                    style={FirstPropertyStyle.dropdown}
-                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
-                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                    iconStyle={FirstPropertyStyle.iconStyle}
-                    data={DATA}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Select additional features"
-                    value={additionalfeatureskeyvalue}
-                    search
-                    searchPlaceholder="Search..."
-                    onChange={(item) => {
-                      setAdditionalFeaturesKeyValue(item);
-                      // alert(item);
-                    }}
-                    renderItem={renderDataItem}
-                    renderSelectedItem={(item, unSelect) => (
-                      <TouchableOpacity
-                        onPress={() => unSelect && unSelect(item)}
-                      >
-                        <View style={FirstPropertyStyle.selectedStyle}>
-                          <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.label}
-                          </Text>
-                          <AntDesign color="black" name="close" size={17} />
-                        </View>
-                      </TouchableOpacity>
-                    )}
-                  /> */}
                 </View>
               </View>
 
-              <Text style={FirstPropertyStyle.AutoList_text}>
-                {"Auto-list property on Kodie property marketplace "}
-              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={FirstPropertyStyle.AutoList_text}>
+                  {"Auto-list property on Kodie property marketplace "}
+                </Text>
+                <TouchableOpacity style={{ alignSelf: "center", marginTop: 5 }}>
+                  <AntDesign name="questioncircle" size={20} color="#8AFBA5" />
+                </TouchableOpacity>
+              </View>
               <RowButtons
                 LeftButtonText={"Yes"}
                 leftButtonbackgroundColor={
@@ -1075,7 +1156,7 @@ export default FirstProperty = (props) => {
             </View>
             <View style={{ marginHorizontal: 16 }}>
               <CustomSingleButton
-                _ButtonText={"save"}
+                _ButtonText={"Save"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
                   handleSaveSignup();
@@ -1088,7 +1169,7 @@ export default FirstProperty = (props) => {
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  alert("Submit");
+                  handleSaveSignup();
                 }}
               />
             </View>

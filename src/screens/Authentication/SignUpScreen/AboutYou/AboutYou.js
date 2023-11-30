@@ -54,25 +54,7 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     color: stepStatus === "finished" ? "#ffffff" : "#ffffff",
     size: 20,
   };
-
-  switch (position) {
-    case 0: {
-      iconConfig.name = stepStatus === "finished" ? "check" : "check";
-      break;
-    }
-    case 1: {
-      iconConfig.name = stepStatus === "finished" ? "check" : "check";
-      break;
-    }
-    case 2: {
-      iconConfig.name = stepStatus === "finished" ? "check" : null;
-      break;
-    }
-
-    default: {
-      break;
-    }
-  }
+  iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
 };
 const List = [
@@ -113,6 +95,12 @@ export default AboutYou = (props) => {
   let organisation = props?.route?.params?.organisation;
   let referral = props?.route?.params?.referral;
   let email = props?.route?.params?.email;
+  let country = props?.route?.params?.country;
+  let state = props?.route?.params?.state;
+  let city = props?.route?.params?.city;
+  let p_latitude = props?.route?.params?.p_latitude;
+  let p_longitude = props?.route?.params?.p_longitude;
+  let user_key = props?.route?.params?.user_key;
   console.log("firstname..", firstName);
   console.log("lastName..", lastName);
   console.log("mobileNumber..", mobileNumber);
@@ -120,6 +108,12 @@ export default AboutYou = (props) => {
   console.log("organisation..", organisation);
   console.log("referral..", referral);
   console.log("email..", email);
+  console.log("country..", country);
+  console.log("state..", state);
+  console.log("city..", city);
+  console.log("p_latitude..", p_latitude);
+  console.log("p_longitude..", p_longitude);
+  console.log("user_key_a..", user_key);
 
   const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(1);
@@ -136,7 +130,7 @@ export default AboutYou = (props) => {
   const [manage_property_Data, setmanage_property_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [ImageName, setImageName] = useState("");
-  const [imagePath, setImagePath] = useState("");
+  const [imageError, setImageError] = useState(true);
 
   const [kodiehelplookupid, setKodiehelplookupid] = useState(0);
   const [selectedServices, setSelectedServices] = useState([]);
@@ -169,7 +163,7 @@ export default AboutYou = (props) => {
               setKodiehelplookupid(item.lookup_key);
             }}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flex:1,flexDirection: "row" }}>
               <View
                 style={[
                   AboutYouStyle.checkbox_View,
@@ -189,6 +183,7 @@ export default AboutYou = (props) => {
                   />
                 ) : null}
               </View>
+
               <Text style={AboutYouStyle.want_List_text}>
                 {item.description}
               </Text>
@@ -228,28 +223,29 @@ export default AboutYou = (props) => {
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
+  // const toggleSelection = (lookup_key) => {
+  //   if (selectedServices.includes(lookup_key)) {
+  //     setSelectedServices(
+  //       selectedServices.filter((item) => item !== lookup_key)
+  //       // alert(selectedServices.filter((item) => item !== lookup_key))
+  //     );
+  //   } else {
+  //     setSelectedServices([...selectedServices, lookup_key]);
+  //     // alert([...selectedServices]);
+  //   }
+  // };
+
   const toggleSelection = (lookup_key) => {
     if (selectedServices.includes(lookup_key)) {
-      setSelectedServices(
-        selectedServices.filter((item) => item !== lookup_key)
-        // alert(selectedServices.filter((item) => item !== lookup_key))
+      // Item is already selected, remove it
+      setSelectedServices((prevSelected) =>
+        prevSelected.filter((item) => item !== lookup_key)
       );
     } else {
-      setSelectedServices([...selectedServices, lookup_key]);
-      // alert([...selectedServices]);
+      // Item is not selected, add it
+      setSelectedServices((prevSelected) => [...prevSelected, lookup_key]);
     }
   };
-
-  const handle_key_feature = (lookup_key) => {
-    if (selectedkey_features.includes(lookup_key)) {
-      setSelectedkey_features(
-        selectedkey_features.filter((item) => item !== lookup_key)
-      );
-    } else {
-      setSelectedkey_features([...selectedkey_features, lookup_key]);
-    }
-  };
-
   const renderItemDescribeYourself = ({ item }) => (
     <ServicesBox
       Services_Name={item?.description}
@@ -270,22 +266,39 @@ export default AboutYou = (props) => {
       }}
     />
   );
-  const renderDataItem = (item) => {
-    return (
-      <View style={FirstPropertyStyle.item}>
-        <Text style={FirstPropertyStyle.selectedTextStyle}>{item.label}</Text>
-        <AntDesign
-          style={FirstPropertyStyle.icon}
-          color={_COLORS.Kodie_BlackColor}
-          name="check"
-          size={20}
-        />
-      </View>
-    );
-  };
   useEffect(() => {
     handle_manage_property(), handle_kodiehelp(), handle_describe_yourself();
   }, []);
+
+  const handle_profile_photo = () => {
+    if (ImageName) {
+      props.navigation.navigate("FirstProperty", {
+        firstName: firstName,
+        lastName: lastName,
+        mobileNumber: mobileNumber,
+        physicalAddress: physicalAddress,
+        organisation: organisation,
+        referral: referral,
+        selectManageProperty: selectManageProperty,
+        selectedServiceKeysString: selectedServiceKeysString,
+        kodieHelpValue: kodieHelpValue,
+        ImageName: ImageName,
+        email: email,
+        country: country,
+        state: state,
+        city: city,
+        p_latitude: p_latitude,
+        p_longitude: p_longitude,
+        user_key: user_key,
+      });
+    }
+    // else if (ImageName) {
+    //   setImageError("");
+    // }
+    else {
+      setImageError("Please select an image before proceeding.");
+    }
+  };
 
   const selectedServiceKeysString = selectedServices.join(",");
   const kodieHelpValue = selectedLookupKeys.join(",");
@@ -465,6 +478,10 @@ export default AboutYou = (props) => {
             <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
           )}
         </TouchableOpacity>
+        {ImageName ? null : (
+          <Text style={AboutYouStyle.error_text}>{imageError}</Text>
+        )}
+
         {ImageName ? refRBSheet.current.close() : null}
         <Text style={AboutYouStyle.want_Heading}>
           {"How would you describe yourself? (you can select multiple options)"}
@@ -509,7 +526,7 @@ export default AboutYou = (props) => {
           height={200}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -534,6 +551,7 @@ export default AboutYou = (props) => {
               />
             </TouchableOpacity>
           </View>
+
           <UploadImageData
             heading_Text={"Upload image"}
             ImageName={handleImageNameChange}
@@ -545,19 +563,26 @@ export default AboutYou = (props) => {
           _ButtonText={"Next"}
           Text_Color={_COLORS.Kodie_WhiteColor}
           onPress={() => {
-            props.navigation.navigate("FirstProperty", {
-              firstName: firstName,
-              lastName: lastName,
-              mobileNumber: mobileNumber,
-              physicalAddress: physicalAddress,
-              organisation: organisation,
-              referral: referral,
-              selectManageProperty: selectManageProperty,
-              selectedServiceKeysString: selectedServiceKeysString,
-              kodieHelpValue: kodieHelpValue,
-              ImageName: ImageName,
-              email: email,
-            });
+            // props.navigation.navigate("FirstProperty", {
+            //   firstName: firstName,
+            //   lastName: lastName,
+            //   mobileNumber: mobileNumber,
+            //   physicalAddress: physicalAddress,
+            //   organisation: organisation,
+            //   referral: referral,
+            //   selectManageProperty: selectManageProperty,
+            //   selectedServiceKeysString: selectedServiceKeysString,
+            //   kodieHelpValue: kodieHelpValue,
+            //   ImageName: ImageName,
+            //   email: email,
+            //   country: country,
+            //   state: state,
+            //   city: city,
+            //   p_latitude: p_latitude,
+            //   p_longitude: p_longitude,
+            //   user_key: user_key,
+            // });
+            handle_profile_photo();
           }}
         />
       </View>
@@ -567,7 +592,11 @@ export default AboutYou = (props) => {
           Text_Color={_COLORS.Kodie_BlackColor}
           backgroundColor={_COLORS.Kodie_WhiteColor}
           onPress={() => {
-            props.navigation.navigate("FirstProperty");
+            if (ImageName) {
+              props.navigation.navigate("FirstProperty");
+            } else {
+              setImageError("Please select an image before proceeding.");
+            }
           }}
         />
       </View>

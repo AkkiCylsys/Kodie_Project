@@ -62,6 +62,9 @@ export default AddLeaseDetails = (props) => {
   const handleClear = () => {
     console.log("Clear Action");
   };
+  const handlePopUp = () => {
+    props.onClose();
+  };
   return (
     <View style={AddLeaseDetailsStyle.mainContainer}>
       <ScrollView>
@@ -69,12 +72,15 @@ export default AddLeaseDetails = (props) => {
           <Text style={AddLeaseDetailsStyle.heading_Text}>
             {"Add lease details"}
           </Text>
-          <AntDesign
-            name="close"
-            size={22}
-            color={_COLORS.Kodie_BlackColor}
-            style={{ alignSelf: "center" }}
-          />
+
+          <TouchableOpacity onPress={handlePopUp}>
+            <AntDesign
+              name="close"
+              size={22}
+              color={_COLORS.Kodie_BlackColor}
+              style={{ alignSelf: "center" }}
+            />
+          </TouchableOpacity>
         </View>
         <View style={AddLeaseDetailsStyle.card}>
           <Text style={LABEL_STYLES.commontext}>{"Commencement date"}</Text>
@@ -104,7 +110,7 @@ export default AddLeaseDetails = (props) => {
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Rental lease term"}</Text>
 
-            <View >
+            <View>
               <CustomDropdown
                 data={data}
                 placeholdertext="6-month"

@@ -6,9 +6,8 @@ import { _COLORS } from "../../../Themes";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Divider } from "react-native-paper";
 
-const SelectProperties = () => {
-  const [isPopupVisible, setPopupVisible] = useState(false);
-  const [show , setShow ] = useState(false);
+const SelectProperties = (props) => {
+  const [show, setShow] = useState(false);
   const [inglewood, setInglewood] = useState(false);
   const [cir, setCir] = useState(false);
   const [qld, setQld] = useState(false);
@@ -30,22 +29,20 @@ const SelectProperties = () => {
     setQld(!qld);
   };
   const handleClosePopup = () => {
-    setPopupVisible(true);
+    props.onClose()
   };
 
   return (
     <View>
       <View style={SelectPropertiesStyle.headingview}>
-        <Text style={SelectPropertiesStyle.headingtext}>
-        Select properties
-        </Text>
+        <Text style={SelectPropertiesStyle.headingtext}>Select properties</Text>
         <TouchableOpacity onPress={handleClosePopup}>
           <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
         </TouchableOpacity>
       </View>
 
-        <View style={SelectPropertiesStyle.optionsmainview}>
-      <ScrollView>
+      <View style={SelectPropertiesStyle.optionsmainview}>
+        <ScrollView>
           <View style={SelectPropertiesStyle.optionsview}>
             <TouchableOpacity onPress={toggleAll}>
               <View style={SelectPropertiesStyle.optionsiconview}>
@@ -58,15 +55,17 @@ const SelectProperties = () => {
             </TouchableOpacity>
             <Text style={SelectPropertiesStyle.textoption}>All</Text>
           </View>
-          <Divider  style={SelectPropertiesStyle.Divider}/>
+          <Divider style={SelectPropertiesStyle.Divider} />
 
           <View style={SelectPropertiesStyle.optionsview}>
-          <TouchableOpacity onPress={toggleinglewood}>
+            <TouchableOpacity onPress={toggleinglewood}>
               <View style={SelectPropertiesStyle.optionsiconview}>
                 <MaterialCommunityIcons
                   size={25}
                   color={_COLORS.Kodie_GrayColor}
-                  name={inglewood ? "checkbox-marked" : "checkbox-blank-outline"}
+                  name={
+                    inglewood ? "checkbox-marked" : "checkbox-blank-outline"
+                  }
                 />
               </View>
             </TouchableOpacity>
@@ -76,7 +75,7 @@ const SelectProperties = () => {
           </View>
 
           <View style={SelectPropertiesStyle.optionsview}>
-          <TouchableOpacity onPress={togglecir}>
+            <TouchableOpacity onPress={togglecir}>
               <View style={SelectPropertiesStyle.optionsiconview}>
                 <MaterialCommunityIcons
                   size={25}
@@ -91,7 +90,7 @@ const SelectProperties = () => {
           </View>
 
           <View style={SelectPropertiesStyle.optionsview}>
-          <TouchableOpacity onPress={toggleqld}>
+            <TouchableOpacity onPress={toggleqld}>
               <View style={SelectPropertiesStyle.optionsiconview}>
                 <MaterialCommunityIcons
                   size={25}
@@ -104,8 +103,8 @@ const SelectProperties = () => {
               1729 Sickle St, QLD
             </Text>
           </View>
-      </ScrollView>
-        </View>
+        </ScrollView>
+      </View>
     </View>
   );
 };

@@ -21,7 +21,7 @@ const SelectDate = (props) => {
   const refRBSheet = useRef();
   const [selected, setSelected] = useState("");
   const [calender, setCalender] = useState(false);
-  const [close, setClose] = useState(false);
+
   const toggleyesterday = () => {
     setYesterday(!yesterday);
   };
@@ -53,7 +53,7 @@ const SelectDate = (props) => {
     setCalender(!calender);
   };
   const toggleclose = () => {
-    setClose(!close);
+    props.onClose()
   };
   const togglecustomrange = () => {
     updateRBSheetHeight(750); // Call the callback to update the RBSheet height

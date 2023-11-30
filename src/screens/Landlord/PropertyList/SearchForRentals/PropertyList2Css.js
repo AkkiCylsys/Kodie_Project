@@ -103,7 +103,7 @@ export const PropertyList2Css = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: 0.2,
+    shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 1.41,
 
     elevation: 2,

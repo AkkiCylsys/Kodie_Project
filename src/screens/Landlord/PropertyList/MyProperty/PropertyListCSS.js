@@ -15,7 +15,7 @@ export const PropertyListCSS = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_VeryLightGrayColor,
   },
-  flat_MainView: { flex: 1, flexDirection: "row", alignItems: "center" },
+  flat_MainView: { flex: 1, flexDirection: "row", marginTop: 5 },
   AllView: {
     flexDirection: "row",
     alignItems: "center",
@@ -74,7 +74,7 @@ export const PropertyListCSS = StyleSheet.create({
     alignSelf: "center",
   },
   buttonView: {
-    flex: 0.7,
+    // flex: 0.7,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
