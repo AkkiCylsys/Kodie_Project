@@ -39,27 +39,27 @@ export default AddLeaseDetails = (props) => {
   console.log("property id in add lease Detail..", property_id);
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [rentalAmount, setRentalAmount] = useState("");
-  const [rentalBond, setRentalBond] = useState("");
+  const [rentalAmount, setRentalAmount] = useState(null);
+  const [rentalBond, setRentalBond] = useState(null);
   const [paymentDueDay, setPaymentDueDay] = useState("");
   const [selectedOption, setSelectedOption] = useState("Save");
   const [selected_frequency_Button, setSelected_frequency_Button] =
     useState(false);
-  const [selected_frequency_Id, setSelected_frequency_Id] = useState(0);
+  const [selected_frequency_Id, setSelected_frequency_Id] = useState(1);
   const [selected_payment_Button, setSelected_payment_Button] = useState(false);
-  const [selected_payment_Id, setSelected_payment_Id] = useState(0);
+  const [selected_payment_Id, setSelected_payment_Id] = useState(1);
   const [notification_type_Data, setNotification_type_Data] = useState([]);
-  const [notification_type_value, setNotification_type_value] = useState([]);
+  const [notification_type_value, setNotification_type_value] = useState(null);
   const [expiry_reminder_Data, setExpiry_reminder_Data] = useState([]);
-  const [expiry_reminder_value, setExpiry_reminder_value] = useState([]);
+  const [expiry_reminder_value, setExpiry_reminder_value] = useState(null);
   const [payment_reminder_Data, setPayment_reminder_Data] = useState([]);
-  const [payment_reminder_value, setPayment_reminder_value] = useState([]);
+  const [payment_reminder_value, setPayment_reminder_value] = useState(null);
   const [rental_reminder_Data, setrental_reminder_Data] = useState([]);
-  const [rental_reminder_value, setrental_reminder_value] = useState([]);
+  const [rental_reminder_value, setrental_reminder_value] = useState(null);
   const [lease_term_Data, setLease_term_Data] = useState([]);
-  const [lease_term_value, setlLease_term_value] = useState([]);
+  const [lease_term_value, setlLease_term_value] = useState("");
 
   const [toggle_expiry, setToggle_expiry] = useState(false);
   const [toggle_lease_expire, setToggle_lease_expire] = useState(0);
@@ -75,6 +75,7 @@ export default AddLeaseDetails = (props) => {
     handle_payment_reminder();
     handle_rental_reminder();
     handle_lease_term();
+   
   }, []);
 
   const handleOptionClick = (option) => {
@@ -100,6 +101,7 @@ export default AddLeaseDetails = (props) => {
   };
 
   const handle_add_Lease = () => {
+    console.log("paymentDueDay....",paymentDueDay)
     const url = "https://e3.cylsys.com/api/v1/property_lease_details/create";
     const add_Lease_url = url;
     console.log("Request URL:", add_Lease_url);
@@ -627,6 +629,7 @@ export default AddLeaseDetails = (props) => {
                 value={expiry_reminder_value}
                 onChange={(item) => {
                   setExpiry_reminder_value(item.lookup_key);
+                  // alert(item.lookup_key)
                 }}
               />
               <Text style={AddLeaseDetailsStyle.before}>{"before"}</Text>

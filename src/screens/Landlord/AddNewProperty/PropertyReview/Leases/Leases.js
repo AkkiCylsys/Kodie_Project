@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { LeasesStyle } from "./LeasesStyle";
 import { _COLORS } from "../../../../../Themes";
@@ -12,6 +12,7 @@ export default Leases = (props) => {
   const refRBSheet = useRef();
   const handleClose = () => {
     refRBSheet.current.close();
+    <LeaseSummary property_id={property_id}/>
   };
   return (
     <View style={LeasesStyle.mainContainer}>
@@ -30,7 +31,7 @@ export default Leases = (props) => {
             }}
           />
         </View>
-        <LeaseSummary property_id={property_id}  />
+        <LeaseSummary property_id={property_id}/>
 
         <RBSheet
           ref={refRBSheet}

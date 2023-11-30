@@ -76,9 +76,6 @@ export default LeaseSummary = (props) => {
     get_retal_receipt();
     lease_summary();
   };
-
-  
-
   const lease_summary = () => {
     const url = `https://e3.cylsys.com/api/v1/property_lease_details/getAll/${property_id}`;
     // const url = "https://e3.cylsys.com/api/v1/property_lease_details/getAll/4";
@@ -151,8 +148,10 @@ export default LeaseSummary = (props) => {
                 >{`${item.due_day} days`}</Text>
               </View>
               <Text style={LeaseSummaryStyle.date_cld_Text}>
-                {moment(item?.UPLD_PAYMENT_DUE_DAY).format("dddd  ")}
-                {moment(item?.UPLD_PAYMENT_DUE_DAY).format("LL")}
+                {/* {moment(item?.UPLD_PAYMENT_DUE_DAY).format("dddd  ")} 
+                 {moment(item?.UPLD_PAYMENT_DUE_DAY).format("LL")} */}
+                {moment(item?.UPLD_PAYMENT_DUE_DAY).format("dddd D MMMM YYYY")}
+                {/* {item?.UPLD_PAYMENT_DUE_DAY} */}
               </Text>
             </View>
             <View style={LeaseSummaryStyle.due_View}>
