@@ -498,7 +498,7 @@ export default AddLeaseDetails = (props) => {
               style={AddLeaseDetailsStyle.input}
               value={paymentDueDay}
               onChangeText={setPaymentDueDay}
-              placeholder=""
+              placeholder="2023-12-30"
               placeholderTextColor="#999"
             />
           </View>
