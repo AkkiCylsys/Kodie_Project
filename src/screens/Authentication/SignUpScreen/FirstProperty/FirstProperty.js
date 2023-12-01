@@ -223,12 +223,12 @@ export default FirstProperty = (props) => {
   console.log("P_state:", P_state);
   console.log("p_city:", p_city);
 
-  const AllCountsData = {
-    Bedrooms: CountBedroom,
-    Bathrooms: CountBathroom,
-    Parking_spaces: CountParking,
-    On_Street_parking: CountParkingStreet,
-  };
+  const AllCountsData = [
+    { Bedrooms: CountBedroom },
+    { Bathrooms: CountBathroom },
+    { ParkingSpace: CountParking },
+    { On_streetParking: CountParkingStreet },
+  ];
   const increaseBedroomCount = () => {
     setCountBedroom((prevCount) => prevCount + 1);
   };
@@ -431,11 +431,11 @@ export default FirstProperty = (props) => {
 
     if (ImageName) {
       const imageUri = ImageName;
-      // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       formData.append("profile_photo", {
         uri: imageUri,
         // type: imageType,
-        name: "abc",
+        name: imageName,
       });
     }
     const url = "https://e3.cylsys.com/api/v1/signup_step_one";
@@ -1129,7 +1129,7 @@ export default FirstProperty = (props) => {
                 }
                 onPressLeftButton={() => {
                   setSelectedButton(false);
-                  setSelectedButtonId(1);
+                  setSelectedButtonId(0);
                   // alert(selectedButtonId)
                 }}
                 RightButtonText={"No"}
@@ -1150,7 +1150,7 @@ export default FirstProperty = (props) => {
                 }
                 onPressRightButton={() => {
                   setSelectedButton(true);
-                  setSelectedButtonId(2);
+                  setSelectedButtonId(1);
                 }}
               />
             </View>

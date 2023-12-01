@@ -30,6 +30,7 @@ import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useCallback } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 const HorizontalData = [
   "All",
   "Most recent",
@@ -59,6 +60,8 @@ const property_List2 = [
   },
 ];
 const PropertyList = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData", loginData?.Login_details?.result);
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -72,14 +75,14 @@ const PropertyList = (props) => {
   const refRBSheet = useRef();
   useEffect(() => {
     if (isvisible) {
-      propertyList_Data("All");
+      propertyList_Data();
     }
   }, [isvisible, page]);
 
   const propertyList_Data = (filter) => {
     const propertyDataList = {
-      property_filter: filter,
-      user_account_id: 84,
+      property_filter: "All",
+      user_account_id: loginData?.Login_details?.result,
       page_no: page,
       limit: 10,
       order_col: 1,

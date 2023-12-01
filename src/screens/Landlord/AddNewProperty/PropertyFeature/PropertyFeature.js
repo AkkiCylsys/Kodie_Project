@@ -21,6 +21,7 @@ import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Config } from "../../../../Config";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
@@ -71,6 +72,9 @@ export default PropertyFeature = (props) => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData", loginData?.Login_details?.result);
+
   console.log("key_features_id............", additionalfeatureskeyvalue);
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState([]);
@@ -288,7 +292,7 @@ export default PropertyFeature = (props) => {
     axios
       .post(additionalApi, {
         user: 35,
-        user_account_details_id: 84,
+        user_account_details_id: loginData?.Login_details?.result,
         location: location,
         location_longitude: longitude,
         location_latitude: latitude,
@@ -364,7 +368,7 @@ export default PropertyFeature = (props) => {
   const updatePropertyDetails = () => {
     const updateData = {
       user: 35,
-      user_account_details_id: 84,
+      user_account_details_id: loginData?.Login_details?.result,
       location: location,
       location_longitude: longitude,
       location_latitude: latitude,
@@ -573,7 +577,7 @@ export default PropertyFeature = (props) => {
                     value={florSize}
                     onChangeText={setFlorSize}
                     placeholder="102m2"
-                    keyboardType='number-pad'
+                    keyboardType="number-pad"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
@@ -592,7 +596,7 @@ export default PropertyFeature = (props) => {
                     value={landArea}
                     onChangeText={setLandArea}
                     placeholder="102m2"
-                    keyboardType='number-pad'
+                    keyboardType="number-pad"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
