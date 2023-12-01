@@ -8,6 +8,7 @@ export const LoginStyles = StyleSheet.create({
   logoContainer: {
     alignItems: "center",
     marginTop: 120,
+    
   },
   logo: {
     width: 210,
@@ -122,6 +123,7 @@ export const LoginStyles = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
+    color:_COLORS.Kodie_BlackColor
   },
   eyeIcon: {
     padding: 10,
@@ -134,7 +136,7 @@ export const LoginStyles = StyleSheet.create({
   },
   secondloder: {
     flex: 1,
-    marginVertical: 25,
+    marginVertical:10,
     alignItems: "center",
   },
   error_text: { color: "red", marginLeft: 10 },

@@ -85,7 +85,6 @@ const PropertyList = (props) => {
       order_col: 1,
       order_wise: "DESC",
     };
-    
 
     const url = Config.API_URL;
     const propertyData_List = url + "get_property_details_by_filter";
@@ -107,9 +106,8 @@ const PropertyList = (props) => {
             // setProperty_Data_List((prevData) =>
             //   page > 1 ? [...prevData, ...newData] : newData
             // );
-            setProperty_Data_List(newData)
+            setProperty_Data_List(newData);
             console.log("New Data for Most Recent:...........", newData);
-
           } else {
             const newData = response.data.property_details;
             setProperty_Data_List((prevData) =>
@@ -168,7 +166,7 @@ const PropertyList = (props) => {
         );
 
         propertyList_Data();
-        setIsLoading(false);eeeeee
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Error deleting property:", error);
@@ -278,7 +276,7 @@ const PropertyList = (props) => {
                   onPress={() => {
                     refRBSheet.current.open();
                     // propertyDelete(propertyDelId);
-                    alert(item.property_id);
+                    // alert(item.property_id);
                     setPropertyDelId(item.property_id);
 
                     setAddress(item?.location);

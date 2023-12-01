@@ -74,17 +74,15 @@ export default PropertyDetails = (props) => {
   // };
 
   const handle_next_btn = () => {
-   
-      props.navigation.navigate("PropertyFeature", {
-        location: location,
-        property_value: property_value,
-        propertyDesc: propertyDesc,
-        selectedButtonId: selectedButtonId,
-        latitude: latitude,
-        longitude: longitude,
-        propertyid: propertyid,
-      });
-    
+    props.navigation.navigate("PropertyFeature", {
+      location: location,
+      property_value: property_value,
+      propertyDesc: propertyDesc,
+      selectedButtonId: selectedButtonId,
+      latitude: latitude,
+      longitude: longitude,
+      propertyid: propertyid,
+    });
   };
 
   useEffect(() => {
@@ -358,7 +356,10 @@ export default PropertyDetails = (props) => {
         }}
         MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
         {IsMap || IsSearch ? null : (
           <View
             style={{
@@ -450,7 +451,7 @@ export default PropertyDetails = (props) => {
           <ScrollView
             contentContainerStyle={{ marginBottom: 190 }}
             showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps='handled'
+            keyboardShouldPersistTaps="handled"
           >
             <View style={PropertyDetailsStyle.headingView}>
               <Text style={PropertyDetailsStyle.heading}>
@@ -615,18 +616,6 @@ export default PropertyDetails = (props) => {
                       state: state,
                       country: country,
                     });
-                    // }
-
-                    // props.navigation.navigate("PropertyFeature", {
-                    //   location: location,
-                    //   property_value: property_value,
-                    //   propertyDesc: propertyDesc,
-                    //   selectedButtonId: selectedButtonId,
-                    //   latitude: latitude,
-                    //   longitude: longitude,
-                    //   propertyid: propertyid,
-                    // });
-                    handle_next_btn();
                   }}
                 />
               </View>

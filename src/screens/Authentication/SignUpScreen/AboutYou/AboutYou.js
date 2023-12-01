@@ -163,7 +163,7 @@ export default AboutYou = (props) => {
               setKodiehelplookupid(item.lookup_key);
             }}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flex:1,flexDirection: "row" }}>
               <View
                 style={[
                   AboutYouStyle.checkbox_View,
@@ -183,6 +183,7 @@ export default AboutYou = (props) => {
                   />
                 ) : null}
               </View>
+
               <Text style={AboutYouStyle.want_List_text}>
                 {item.description}
               </Text>

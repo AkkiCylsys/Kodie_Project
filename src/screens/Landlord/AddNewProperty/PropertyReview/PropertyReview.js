@@ -92,7 +92,7 @@ export default PropertyReview = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(4);
- 
+
   const Detail_rander = ({ item, index }) => {
     // const key = Object.keys(item)[0];
     // const value = Object.values(item)[0];
@@ -143,7 +143,7 @@ export default PropertyReview = (props) => {
         setIsLoading(false);
       }
     };
-    fetchData()
+    fetchData();
   }, [property_id]);
   // const DetailsData = () => {
   //   const detailData = {

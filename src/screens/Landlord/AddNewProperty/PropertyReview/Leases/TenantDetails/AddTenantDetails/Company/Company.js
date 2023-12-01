@@ -8,15 +8,145 @@ import {
 } from "react-native";
 import { CompanyStyle } from "./CompanyStyle";
 import { _COLORS, LABEL_STYLES } from "../../../../../../../../Themes";
+import { useDispatch, useSelector } from "react-redux";
+import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import axios from "axios";
+
 export default Company = () => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+
   const [companyName, setCompanyName] = useState("");
+  const [companyNameError, setCompanyNameError] = useState("");
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [PhoneNumber, setPhoneNumber] = useState("");
+  const [PhoneNumberError, setPhoneNumberError] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
+  const [mobileNumberError, setMobileNumberError] = useState("");
   const [note, setNote] = useState("");
   const [selectedOption, setSelectedOption] = useState(null);
+  const [companyResponse, setCompanyResponse] = useState("");
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+  };
+
+    //... Regex signup email validation
+    const validateCompanyEmail = (email) => {
+      const emailPattern =
+        /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+      return emailPattern.test(email);
+    };
+  // Validation for First Name....
+  const validateCompanyName = (text) => {
+    if (text === "") {
+      setCompanyNameError("Organisation name is required");
+    } else if (!/^[A-Za-z]+$/.test(text)) {
+      setCompanyNameError(
+        "Organisation name should contain only alphabetic characters"
+      );
+    } else {
+      setCompanyNameError("");
+    }
+    setCompanyName(text);
+  };
+
+  // Email validation define here....
+  const handleCompanyEmail = (text) => {
+    setEmail(text);
+    if (text.trim() === "") {
+      setEmailError("Email is required");
+    } else if (!validateCompanyEmail(text)) {
+      setEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else {
+      setEmailError("");
+    }
+  };
+
+  // Validation for Phone Number
+  const validatePhoneNumber = (text) => {
+    const mobileReg = /^\d{6}$/;
+    if (text === "") {
+      setPhoneNumberError("Phone number is required");
+    } else if (!mobileReg.test(text)) {
+      setPhoneNumberError("Invalid phone number format");
+    } else {
+      setPhoneNumberError("");
+    }
+    setPhoneNumber(text);
+  };
+  // Validation for Phone Number
+  const validateMobileNumber = (text) => {
+    const mobileReg = /^\d{10}$/;
+    if (text === "") {
+      setMobileNumberError("Phone number is required");
+    } else if (!mobileReg.test(text)) {
+      setMobileNumberError("Invalid phone number format");
+    } else {
+      setMobileNumberError("");
+    }
+    setMobileNumber(text);
+  };
+  const CompanyDetailsData = {
+    user_key: loginData.Login_details.result,
+    upd_key: 5,
+    org_name: companyName,
+    email: email,
+    phone_number: PhoneNumber,
+    mobile_number: mobileNumber,
+    notes: note,
+  };
+
+  // API bind person code here.....
+  const Companyhandle = () => {
+    // const url = Config.API_URL;
+    // const PersonUrl = url + "user_signup";
+    const CompanyUrl =
+      "https://e3.cylsys.com/api/v1/tanant_details/create/company";
+    console.log("Request URL:", CompanyUrl);
+    setIsLoading(true);
+
+    axios
+      .post(CompanyUrl, CompanyDetailsData)
+      .then((response) => {
+        setCompanyResponse(response.data);
+        console.log("Company Details_data response", response.data);
+        if (response.data.success === true) {
+          // props.navigation.navigate("LeaseSummary");
+          alert(response.data.message);
+          // setIsLoading(false);
+          setCompanyName("");
+          setEmail("");
+          setPhoneNumber("");
+          setMobileNumber("");
+          setNote("");
+          setIsLoading(false);
+        } else {
+          setEmailError('error email here.....',response.data.message);
+          console.error("CompanyDetail_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("CompanyDetail error...:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+
+  const handleSaveBtn = () => {
+    if (companyName.trim() === "") {
+      setCompanyNameError("Organisation name is required.");
+    } else if (email.trim() == "") {
+      setEmailError("Email is required.");
+    } else {
+      Companyhandle();
+      alert("done...");
+      console.log("Company all data get here", Companyhandle());
+    }
   };
   return (
     <View style={CompanyStyle.mainConatainer}>
@@ -27,10 +157,11 @@ export default Company = () => {
             <TextInput
               style={CompanyStyle.input}
               value={companyName}
-              onChangeText={setCompanyName}
+              onChangeText={validateCompanyName}
               placeholder="Enter company’s name"
               placeholderTextColor="#999"
             />
+            <Text style={CompanyStyle.errorText}>{companyNameError}</Text>
           </View>
           <View style={CompanyStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Email*"}</Text>
@@ -38,9 +169,11 @@ export default Company = () => {
               style={CompanyStyle.input}
               value={email}
               onChangeText={setEmail}
+              onBlur={() => handleCompanyEmail(email)}
               placeholder="Enter company’s email address"
               placeholderTextColor="#999"
             />
+            <Text style={CompanyStyle.errorText}>{emailError}</Text>
           </View>
           <View style={CompanyStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Phone number"}</Text>
@@ -48,9 +181,13 @@ export default Company = () => {
               style={CompanyStyle.input}
               value={PhoneNumber}
               onChangeText={setPhoneNumber}
+              onBlur={() => validatePhoneNumber(PhoneNumber)}
               placeholder="Enter company’s phone number"
               placeholderTextColor="#999"
+              keyboardType="phone-pad"
+              maxLength={6}
             />
+            <Text style={CompanyStyle.errorText}>{PhoneNumberError}</Text>
           </View>
           <View style={CompanyStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Mobile number"}</Text>
@@ -58,9 +195,13 @@ export default Company = () => {
               style={CompanyStyle.input}
               value={mobileNumber}
               onChangeText={setMobileNumber}
+              onBlur={() => validateMobileNumber(mobileNumber)}
               placeholder="Enter company’s mobile number"
               placeholderTextColor="#999"
+              keyboardType="phone-pad"
+              maxLength={10}
             />
+            <Text style={CompanyStyle.errorText}>{mobileNumberError}</Text>
           </View>
           <View style={CompanyStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
@@ -116,7 +257,8 @@ export default Company = () => {
                 },
               ]}
               onPress={() => {
-                handleOptionClick("Save");
+                handleSaveBtn();
+                // handleOptionClick("Save");
               }}
             >
               <Text
@@ -137,6 +279,7 @@ export default Company = () => {
           </View>
         </View>
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

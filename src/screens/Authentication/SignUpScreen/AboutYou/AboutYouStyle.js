@@ -102,6 +102,7 @@ export const AboutYouStyle = StyleSheet.create({
     marginLeft: 15,
   },
   want_List_View: {
+    flex: 1,
     flexDirection: "row",
     marginVertical: 6,
   },
@@ -116,7 +117,7 @@ export const AboutYouStyle = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
     alignSelf: "center",
-    marginLeft: 16,
+    marginLeft: 10,
   },
   checkbox_View: {
     height: 20,

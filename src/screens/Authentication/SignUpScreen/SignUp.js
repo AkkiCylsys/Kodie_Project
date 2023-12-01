@@ -79,24 +79,94 @@ export default SignUp = (props) => {
   };
 
   //.......... Api comign data define here
-  const SignUpData = {
-    email: email,
-    password: password,
-    is_term_condition: term,
-    is_privacy_policy: privacy,
-  };
+  // const SignUpData = {
+  //   email: email,
+  //   password: password,
+  //   is_term_condition: term,
+  //   is_privacy_policy: privacy,
+  // };
+  // const Signuphandle = () => {
+  //   const url = Config.API_URL;
+  //   const signupUrl = url + "user_signup";
+  //   console.log("Request URL:", signupUrl);
+  //   setIsLoading(true);
+
+  //   axios
+  //     .post(signupUrl, SignUpData)
+  //     .then((response) => {
+  //       setSignupResponse(response.data);
+  //       console.log("SignUp response", response.data);
+  //       if (response.data.message === "User Signup Successful") {
+  //         alert(response.data.message);
+  //         // Redirect to SignUpVerification screen
+  //         props.navigation.navigate("SignUpVerification", {
+  //           email: email,
+  //           password: password,
+  //           is_term_condition: term,
+  //           is_privacy_policy: privacy,
+  //           user_key: response.data.User_Key,
+  //         });
+  //         setEmail("");
+  //         setPassword("");
+  //         setTerm(false);
+  //         setPrivacy(false);
+  //         setIsLoading(false);
+  //       } else if (
+  //         response.data.message === "User Already Exists But Not Verified"
+  //       ) {
+  //         alert(response.data.message);
+  //         setEmail("");
+  //         setPassword("");
+  //         setTerm(false);
+  //         setPrivacy(false);
+  //         setIsLoading(false);
+  //         props.navigation.navigate("SignUpVerification", {
+  //           email: email,
+  //           password: password,
+  //           is_term_condition: term,
+  //           is_privacy_policy: privacy,
+  //         });
+  //       } else if (
+  //         response.data.message === "User Already Exists And Verified"
+  //       ) {
+  //         props.navigation.navigate("SignUpSteps");
+  //         setIsLoading(false);
+  //         setEmail("");
+  //         setPassword("");
+  //         setTerm(false);
+  //         setPrivacy(false);
+  //         setIsLoading(false);
+  //       } else {
+  //         setEmailError(response.data.message);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("Signup error:", error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
+
   const Signuphandle = () => {
-    const url = Config.API_URL;
-    const signupUrl = url + "user_signup";
+    const url = "https://e3.cylsys.com/api/v1/register";
+    const signupUrl = url;
     console.log("Request URL:", signupUrl);
     setIsLoading(true);
+
+    const SignUpData = {
+      email: email,
+      password: password,
+      is_term_condition: term,
+      is_privacy_policy: privacy,
+    };
 
     axios
       .post(signupUrl, SignUpData)
       .then((response) => {
         setSignupResponse(response.data);
         console.log("SignUp response", response.data);
-        if (response.data.message === "User Signup Successful") {
+        if (response.data.message === "The user has been successfully registered, and an OTP has been sent to the registered email.") {
           alert(response.data.message);
           // Redirect to SignUpVerification screen
           props.navigation.navigate("SignUpVerification", {
@@ -112,7 +182,7 @@ export default SignUp = (props) => {
           setPrivacy(false);
           setIsLoading(false);
         } else if (
-          response.data.message === "User Already Exists But Not Verified"
+          response.data.message === "User Exits But Not Verified Please Verify"
         ) {
           alert(response.data.message);
           setEmail("");
@@ -127,9 +197,15 @@ export default SignUp = (props) => {
             is_privacy_policy: privacy,
           });
         } else if (
-          response.data.message === "User Already Exists And Verified"
+          response.data.message === "User Exits and Verified"
         ) {
           props.navigation.navigate("SignUpSteps");
+          setIsLoading(false);
+          setEmail("");
+          setPassword("");
+          setTerm(false);
+          setPrivacy(false);
+          setIsLoading(false);
         } else {
           setEmailError(response.data.message);
           setIsLoading(false);
