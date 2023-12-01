@@ -15,6 +15,7 @@ import {
   // Platform
 } from "react-native";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -24,7 +25,7 @@ import { SignUpStepStyle } from "./SignUpStepsStyle";
 import { AccountStyle } from "../Account/AccountStyle";
 import { LABEL_STYLES, _COLORS, IMAGES } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+
 import { useDispatch, useSelector } from "react-redux";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";

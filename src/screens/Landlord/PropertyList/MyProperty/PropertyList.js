@@ -173,7 +173,7 @@ const PropertyList = (props) => {
       }
     } catch (error) {
       console.error("Error deleting property:", error);
-      Alert.alert("Error", "An error occurred. Please try again later.");
+      // Alert.alert("Error", "An error occurred. Please try again later.");
     }
   };
 
