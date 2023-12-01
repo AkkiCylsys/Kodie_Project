@@ -410,7 +410,7 @@ export default PropertyReview = (props) => {
         return <Leases property_id={property_id} />;
 
       case "Tab3":
-        return <Expenses />;
+        return <Expenses property_id={property_id} />;
       case "Tab4":
         return <Documents />;
 

@@ -41,6 +41,14 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
   },
+  addition_featureView: {
+    marginTop: 15,
+  },
+  Furnished_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 13,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
   tax_main_view: {
     flex: 1,
     flexDirection: "row",
@@ -102,4 +110,5 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     fontSize:14,
     fontFamily:FONTFAMILY.K_SemiBold
   },
+  errorText: { color: "red", marginLeft: 10 },
 });

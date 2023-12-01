@@ -367,7 +367,7 @@ export default PropertyDetails = (props) => {
           >
             <StepIndicator
               customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-              currentPosition={currentPage}
+              currentPosition={0}
               // onPress={onStepPress}
               renderStepIndicator={renderStepIndicator}
               labels={stepLabels}

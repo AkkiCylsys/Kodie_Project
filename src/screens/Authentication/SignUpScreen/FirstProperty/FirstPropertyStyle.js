@@ -107,6 +107,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     color: "#333",
     fontFamily: FONTFAMILY.K_Medium,
     textAlign: "center",
+    alignItems:"center",
     width: 105,
     height: 36,
   },

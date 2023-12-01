@@ -5,14 +5,18 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { _COLORS } from "../../../../../../../Themes";
 import Person from "./Person/Person";
 import Company from "./Company/Company";
-export default AddTenantDetails = () => {
+export default AddTenantDetails = (props) => {
+  const property_id = props.property_id;
+  const handleClosePopup = () => {
+    props.onClose();
+  };
   const [tabValue, setTabValue] = useState("Person");
   const checkTabs = () => {
     switch (tabValue) {
       case "Person":
-        return <Person />;
+        return <Person property_id={property_id}/>;
       case "Company":
-        return <Company />;
+        return <Company property_id={property_id}/>;
       default:
         return <Person />;
     }
@@ -24,12 +28,14 @@ export default AddTenantDetails = () => {
           <Text style={AddTenantDetailsStyle.heading_Text}>
             {"Add lease details"}
           </Text>
-          <AntDesign
-            name="close"
-            size={22}
-            color={_COLORS.Kodie_BlackColor}
-            style={{ alignSelf: "center" }}
-          />
+          <TouchableOpacity onPress={handleClosePopup}>
+            <AntDesign
+              name="close"
+              size={22}
+              color={_COLORS.Kodie_BlackColor}
+              style={{ alignSelf: "center" }}
+            />
+          </TouchableOpacity>
         </View>
         <View>
           <View style={AddTenantDetailsStyle.btn_main_view}>

@@ -13,12 +13,12 @@ export const PersonStyle = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 2,
-    padding: 20,
-    paddingTop:1,
-    marginBottom: 20,
+    paddingHorizontal: 20,
+    // paddingTop:1,
+    // marginBottom: 20,
   },
   inputContainer: {
-    marginTop: 15,
+    marginTop: 5,
   },
   input: {
     height: 45,
@@ -28,13 +28,13 @@ export const PersonStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 10,
+    marginTop: 5,
   },
   ButtonView: {
     flexDirection: "row",
     justifyContent: "flex-end",
     marginRight: 10,
-    marginTop: 20,
+    marginTop: 15,
   },
   closeText: {
     paddingHorizontal: 25,
@@ -55,4 +55,5 @@ export const PersonStyle = StyleSheet.create({
     fontSize:14,
     fontFamily:FONTFAMILY.K_SemiBold
   },
+  errorText: { color: "red", marginLeft: 10 },
 });
