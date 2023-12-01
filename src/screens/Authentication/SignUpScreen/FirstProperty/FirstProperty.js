@@ -446,57 +446,57 @@ export default FirstProperty = (props) => {
     const saveAccountDetails = url;
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
-    // try {
-    //   const response = await axios.post(saveAccountDetails, formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   });
-    //   console.log("Save Account Details", response.data);
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Save Account Details", response.data);
 
-    //   if (response.data.success === true) {
-    //     setIsLoading(false);
-    //     alert(response.data.message);
-    //     props.navigation.navigate("DrawerNavigatorLeftMenu");
-    //     setCurrentPage(0);
-    //     setProperty_value("");
-    //     setbedroomValue("");
-    //     setGaragesValue("");
-    //     setBathRoomValue("");
-    //     setParkingValue("");
-    //     setAdditionalFeaturesKeyValue("");
-    //   } else {
-    //     setIsLoading(false);
-    //     console.error("Save Account Details error:", response.data.error);
-    //     alert(response.data.error);
-    //   }
-    // } catch (error) {
-    //   setIsLoading(false);
-    //   console.error("Account_Details error:", error);
-    //   alert(error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-
-    let res = await dispatch(signupAccountApiActionCreator(formData));
-    console.log("signupAccount_Details.....", res?.data);
-    if (res.data.status === true) {
+      if (response.data.success === true) {
+        setIsLoading(false);
+        alert(response.data.message);
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        setCurrentPage(0);
+        setProperty_value("");
+        setbedroomValue("");
+        setGaragesValue("");
+        setBathRoomValue("");
+        setParkingValue("");
+        setAdditionalFeaturesKeyValue("");
+      } else {
+        setIsLoading(false);
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
       setIsLoading(false);
-      alert(res.data.message);
-      props.navigation.navigate("DrawerNavigatorLeftMenu");
+      console.error("Account_Details error:", error);
+      alert(error);
+    } finally {
       setIsLoading(false);
-      setCurrentPage(0);
-      setProperty_value("");
-      setbedroomValue("");
-      setGaragesValue("");
-      setBathRoomValue("");
-      setParkingValue("");
-      setAdditionalFeaturesKeyValue("");
-    } else {
-      setIsLoading(false);
-      console.error("Save Account Details error:", res.data.error);
-      alert(res.data.error);
     }
+
+    // let res = await dispatch(signupAccountApiActionCreator(formData));
+    // console.log("signupAccount_Details.....", res?.data);
+    // if (res.data.status === true) {
+    //   setIsLoading(false);
+    //   alert(res.data.message);
+    //   props.navigation.navigate("DrawerNavigatorLeftMenu");
+    //   setIsLoading(false);
+    //   setCurrentPage(0);
+    //   setProperty_value("");
+    //   setbedroomValue("");
+    //   setGaragesValue("");
+    //   setBathRoomValue("");
+    //   setParkingValue("");
+    //   setAdditionalFeaturesKeyValue("");
+    // } else {
+    //   setIsLoading(false);
+    //   console.error("Save Account Details error:", res.data.error);
+    //   alert(res.data.error);
+    // }
   };
 
   // const handleSaveSignup = async () => {
