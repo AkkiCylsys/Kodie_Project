@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../../../Themes";
-export const AddExpensesDetailsStyle = StyleSheet.create({
+import { _COLORS,FONTFAMILY } from "../../../../../../Themes";
+export const LogrentalPaymentStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -41,14 +41,6 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
   },
-  addition_featureView: {
-    marginTop: 15,
-  },
-  Furnished_Text: {
-    color: _COLORS.Kodie_BlackColor,
-    fontSize: 13,
-    fontFamily: FONTFAMILY.K_SemiBold,
-  },
   tax_main_view: {
     flex: 1,
     flexDirection: "row",
@@ -86,10 +78,12 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     fontSize: 16,
   },
   ButtonView: {
+    flex:1,
     flexDirection: "row",
     justifyContent: "flex-end",
     marginRight: 10,
     marginTop: 20,
+    marginBottom:150
   },
   closeText: {
     paddingHorizontal: 25,
@@ -110,5 +104,5 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     fontSize:14,
     fontFamily:FONTFAMILY.K_SemiBold
   },
-  errorText: { color: "red", marginLeft: 10 },
+  error_text: { color: "red", marginLeft: 10 },
 });

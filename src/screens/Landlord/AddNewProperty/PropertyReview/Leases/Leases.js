@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { LeasesStyle } from "./LeasesStyle";
 import { _COLORS } from "../../../../../Themes";
@@ -7,10 +7,21 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import AddLeaseDetails from "./AddLeaseDetails/AddLeaseDetails";
 import LeaseSummary from "./LeaseSummary/LeaseSummary";
 export default Leases = (props) => {
+  // alert(JSON.stringify(props.property_id));
+  const property_id = props.property_id;
   const refRBSheet = useRef();
-  const handleClose = () =>{
-    refRBSheet.current.close()
-  }
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isSheetOpen) {
+      console.log("RBSheet closed, rendering LeaseSummary");
+      <LeaseSummary property_id={property_id} />;
+    }
+  }, [isSheetOpen]);
+  const handleClose = () => {
+    refRBSheet.current.close();
+    setIsSheetOpen(false);
+  };
   return (
     <View style={LeasesStyle.mainContainer}>
       <ScrollView>
@@ -25,10 +36,12 @@ export default Leases = (props) => {
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={() => {
               refRBSheet.current.open();
+              setIsSheetOpen(true);
             }}
           />
         </View>
-        <LeaseSummary />
+        {/* <LeaseSummary property_id={property_id} /> */}
+        {isSheetOpen ? null : <LeaseSummary property_id={property_id} />}
         <RBSheet
           ref={refRBSheet}
           height={510}
@@ -42,7 +55,7 @@ export default Leases = (props) => {
             container: LeasesStyle.bottomModal_container,
           }}
         >
-          <AddLeaseDetails onClose={handleClose} />
+          <AddLeaseDetails onClose={handleClose} property_id={property_id} />
         </RBSheet>
       </ScrollView>
     </View>

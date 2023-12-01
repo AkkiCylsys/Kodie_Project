@@ -43,7 +43,7 @@ const renderDataItem = (item) => {
 export default PropertyFeature = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const location = props?.route?.params?.location;
   const property_value = props?.route?.params?.property_value;
   const propertyDesc = props?.route?.params?.propertyDesc;
@@ -84,10 +84,10 @@ export default PropertyFeature = (props) => {
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
     useState(67);
-  const [CountBedroom, setCountBedroom] = useState(1);
-  const [CountBathroom, setCountBathroom] = useState(1);
-  const [CountParking, setCountParking] = useState(1);
-  const [CountParkingStreet, setCountParkingStreet] = useState(1);
+  const [CountBedroom, setCountBedroom] = useState(0);
+  const [CountBathroom, setCountBathroom] = useState(0);
+  const [CountParking, setCountParking] = useState(0);
+  const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [florSize, setFlorSize] = useState("");
   const [landArea, setLandArea] = useState("");
   const [property_Detail, setProperty_Details] = useState([]);

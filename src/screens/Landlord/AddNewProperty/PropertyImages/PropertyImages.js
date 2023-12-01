@@ -31,7 +31,7 @@ export default PropertyImages = (props) => {
   console.log(".............property_id.", property_id);
   const [isLoading, setIsLoading] = useState(false);
   const [MultiImageName, setMultiImageName] = useState([]);
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(2);
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [imagePath, setImagePaths] = useState([]);
