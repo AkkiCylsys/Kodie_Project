@@ -23,7 +23,7 @@ const Logrentalpayment = (props) => {
   //   console.log("lease_keys...", props.lease_keys);
   //   alert(JSON.stringify(props.lease_keys));
   const lease_keys = props.lease_keys;
-  console.log("lease_keys in log rental payment...",lease_keys)
+  console.log("lease_keys in log rental payment...", lease_keys);
   const [isLoading, setIsLoading] = useState(false);
   const [totalAmount, setTotalAmount] = useState("");
   const [totalAmountError, setTotalAmountError] = useState("");
@@ -80,8 +80,6 @@ const Logrentalpayment = (props) => {
     } else {
       //   alert("done");
       handle_rental_payment();
-      setSelectedDateError("");
-      setSelectedpaymetPeriodError("");
     }
   };
 
@@ -93,12 +91,20 @@ const Logrentalpayment = (props) => {
       setTotalAmountError("");
     }
   };
-  const handlePaymentPeriod = (text) => {
+  const handlePaymentDate = (text) => {
     setSelectedDate(text);
     if (text.trim() === "") {
       setSelectedDateError("Payment date is required.");
     } else {
       setSelectedDateError("");
+    }
+  };
+  const handlePaymentPeriod = (text) => {
+    setSelectedpaymetPeriod(text);
+    if (text.trim() === "") {
+      setSelectedpaymetPeriodError("Payment period is required.");
+    } else {
+      setSelectedpaymetPeriodError("");
     }
   };
 
@@ -188,11 +194,11 @@ const Logrentalpayment = (props) => {
                     : _COLORS.Kodie_GrayColor,
                 }}
                 calenderIcon={toggleModal}
-                onDayPress={handleDayPress}
+                // onDayPress={handleDayPress}
+                onDayPress={(day) => handlePaymentDate(day.dateString)}
                 Visible={isModalVisible}
                 onRequestClose={toggleModal}
-                // onBlur={() => handlePaymentPeriod(selectedDate)}
-                // onChangeText={() => handlePaymentPeriod(selectedDate)}
+                onChangeText={() => handlePaymentDate(selectedDate)}
                 markedDates={{
                   [selectedDate]: {
                     selected: true,
@@ -225,7 +231,11 @@ const Logrentalpayment = (props) => {
                     : _COLORS.Kodie_GrayColor,
                 }}
                 calenderIcon={toggleModalpayment}
-                onDayPress={handlepaymentPeriodDate}
+                // onDayPress={handlepaymentPeriodDate}
+                onDayPress={(payment_period) =>
+                  handlePaymentPeriod(payment_period.dateString)
+                }
+                onChangeText={() => handlePaymentPeriod(selectedpaymetPeriod)}
                 Visible={isModalVisiblepayment}
                 onRequestClose={toggleModalpayment}
                 markedDates={{

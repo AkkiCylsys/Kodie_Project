@@ -31,12 +31,12 @@ export default Company = (props) => {
     setSelectedOption(option);
   };
 
-    //... Regex signup email validation
-    const validateCompanyEmail = (email) => {
-      const emailPattern =
-        /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-      return emailPattern.test(email);
-    };
+  //... Regex signup email validation
+  const validateCompanyEmail = (email) => {
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    return emailPattern.test(email);
+  };
   // Validation for First Name....
   const validateCompanyName = (text) => {
     if (text === "") {
@@ -143,7 +143,6 @@ export default Company = (props) => {
       setEmailError("Email is required.");
     } else {
       Companyhandle();
-     
     }
   };
   return (
