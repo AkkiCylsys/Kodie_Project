@@ -24,7 +24,7 @@ const Properties = (props) => {
   }, []);
   const propertyList_Data = () => {
     const propertyDataList = {
-      user: loginData?.Login_details?.result,
+      user: 84,
     };
 
     const url = Config.API_URL;
@@ -67,6 +67,7 @@ const Properties = (props) => {
               // alert(propertyid);
               props.navigation.navigate("PropertyDetails", {
                 propertyid: propertyid,
+                editMode: "editMode",
               });
             }}
           />

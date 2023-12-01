@@ -427,10 +427,13 @@ export default FirstProperty = (props) => {
     formData.append("islocation", 1);
     formData.append("property_description", propertyDesc);
     formData.append("property_type", property_value);
-    formData.append("key_features", AllCountsData);
+    formData.append("key_features", JSON.stringify(AllCountsData));
     formData.append("land_area", landArea);
     formData.append("floor_size", buildingFlorSize);
-    formData.append("additional_features", additionalfeatureskeyvalue);
+    formData.append(
+      "additional_features",
+      JSON.stringify(additionalfeatureskeyvalue)
+    );
     formData.append("auto_list", selectedButtonId);
 
     if (ImageName) {

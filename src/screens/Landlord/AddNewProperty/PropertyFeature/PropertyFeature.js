@@ -54,6 +54,7 @@ export default PropertyFeature = (props) => {
   const city = props?.route?.params?.city;
   const state = props?.route?.params?.state;
   const country = props?.route?.params?.country;
+  const editMode = props?.route?.params?.editMode;
   console.log(
     "location......",
     location,
@@ -65,7 +66,8 @@ export default PropertyFeature = (props) => {
     propertyid,
     city,
     state,
-    country
+    country,
+    editMode
   );
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
 
@@ -113,11 +115,14 @@ export default PropertyFeature = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           setProperty_Details(response.data.property_details);
-          setAdditionalFeaturesKeyValue(
+          // setAdditionalFeaturesKeyValue(
+          //   response.data.property_details[0]?.key_features_id
+          // );
+
+          console.log(
+            "propertyDetail....",
             response.data.property_details[0]?.key_features_id
           );
-
-          console.log("propertyDetail....", response.data.property_details);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -368,7 +373,7 @@ export default PropertyFeature = (props) => {
   const updatePropertyDetails = () => {
     const updateData = {
       user: 35,
-      user_account_details_id: loginData?.Login_details?.result,
+      user_account_details_id: 84,
       location: location,
       location_longitude: longitude,
       location_latitude: latitude,
@@ -400,6 +405,7 @@ export default PropertyFeature = (props) => {
           // alert("update_property_details....", propertyid);
           props.navigation.navigate("PropertyImages", {
             property_id: propertyid,
+            editMode: "editMode",
           });
           // setupdateProperty_Details(response.data.property_details);
         } else {
@@ -723,13 +729,13 @@ export default PropertyFeature = (props) => {
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."
-                onChange={(items) => {
-                  const selectedKeys = items.map((item) => item);
-                  const uniqueKeys = [...new Set(selectedKeys)];
-                  console.log("Unique Keys:", uniqueKeys);
+                onChange={(item) => {
+                  // const selectedKeys = items.map((item) => item);
+                  // const uniqueKeys = [...new Set(selectedKeys)];
+                  // console.log("Unique Keys:", uniqueKeys);
                   // Set the state with unique keys
-                  setAdditionalFeaturesKeyValue(uniqueKeys);
-                  // setAdditionalFeaturesKeyValue(item);
+                  // setAdditionalFeaturesKeyValue(uniqueKeys);
+                  setAdditionalFeaturesKeyValue(item);
                   // alert(item);
                 }}
                 // renderRightIcon={() => (
