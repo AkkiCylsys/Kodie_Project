@@ -35,6 +35,7 @@ export const CompanyStyle = StyleSheet.create({
     justifyContent: "flex-end",
     marginRight: 10,
     marginTop: 15,
+    marginBottom:450
   },
   closeText: {
     paddingHorizontal: 25,

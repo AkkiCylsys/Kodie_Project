@@ -5,6 +5,8 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform
 } from "react-native";
 import { PersonStyle } from "./PersonStyle";
 import { _COLORS, LABEL_STYLES } from "../../../../../../../../Themes";
@@ -23,7 +25,7 @@ export default Person = (props) => {
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [PhoneNumbeError, setPhoneNumberError] = useState("");
   const [note, setNote] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("Save");
   const [isLoading, setIsLoading] = useState(false);
   const [personResponse, setpersonResponse] = useState("");
   const handleOptionClick = (option) => {
@@ -147,7 +149,7 @@ export default Person = (props) => {
   };
 
   return (
-    <View style={PersonStyle.mainConatainer}>
+    <KeyboardAvoidingView style={PersonStyle.mainConatainer}   behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <ScrollView>
         <View style={PersonStyle.card}>
           <View style={PersonStyle.inputContainer}>
@@ -281,6 +283,6 @@ export default Person = (props) => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
