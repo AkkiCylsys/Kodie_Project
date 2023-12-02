@@ -81,4 +81,21 @@ export const DocumentDetailStyle = StyleSheet.create({
     right: 5,
     zIndex: 1,
   },
+  property_doc_text: {
+    fontSize: 18,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  upload_doc_text: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  upload_doc_sub: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_GrayColor,
+  },
 });

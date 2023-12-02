@@ -112,6 +112,7 @@ export const DocumentsStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 16,
+    marginTop:30
   },
   reacentDocText:{
     fontSize: 18,

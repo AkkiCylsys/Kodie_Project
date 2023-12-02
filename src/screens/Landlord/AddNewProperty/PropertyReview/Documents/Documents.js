@@ -82,6 +82,8 @@ const handleClear = () => {
   console.log("Clear Action");
 };
 export default Documents = (props) => {
+  const property_id = props.property_id;
+  // alert(props.property_id);
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
 
@@ -123,7 +125,7 @@ export default Documents = (props) => {
         // }}
         onPress={() => {
           console.log("item.id:", item.id);
-          props?.documentDetail(item.id);
+          props?.documentDetail(item.id, item.folderHeading,property_id);
         }}
       >
         <View style={DocumentsStyle.folder_icon}>
