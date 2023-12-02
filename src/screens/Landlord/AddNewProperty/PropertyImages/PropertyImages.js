@@ -100,15 +100,11 @@ export default PropertyImages = (props) => {
 
     // Append all image paths to the same key 'images[]'
     imagePaths.forEach((path, index) => {
-      formData.append(
-        "images[]",
-        {
-          uri: path,
-          name: `image.jpg`,
-          type: "image/jpeg",
-        },
-        path
-      );
+      formData.append("images[]", {
+        uri: path,
+        name: `image.jpg`,
+        type: "image/jpeg",
+      });
     });
     // Append videos
     if (selectedVideos && selectedVideos.length > 0) {
