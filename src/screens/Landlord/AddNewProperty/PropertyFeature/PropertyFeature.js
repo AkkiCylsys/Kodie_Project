@@ -705,7 +705,6 @@ export default PropertyFeature = (props) => {
               <Text style={PropertyFeatureStyle.Furnished_Text}>
                 {"Additional key features"}
               </Text>
-
               <MultiSelect
                 style={PropertyFeatureStyle.dropdown}
                 placeholderStyle={PropertyFeatureStyle.placeholderStyle}

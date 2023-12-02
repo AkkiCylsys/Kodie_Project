@@ -81,7 +81,7 @@ const PropertyList = (props) => {
       property_filter: filter,
       user_account_id: 84,
       page_no: page,
-      limit: 10,
+      limit: filter === "Most Recent" ? 5 : 10,
       order_col: 1,
       order_wise: "DESC",
     };
