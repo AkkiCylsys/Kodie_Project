@@ -25,18 +25,18 @@ export default Company = (props) => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [mobileNumberError, setMobileNumberError] = useState("");
   const [note, setNote] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("Save");
   const [companyResponse, setCompanyResponse] = useState("");
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
 
-    //... Regex signup email validation
-    const validateCompanyEmail = (email) => {
-      const emailPattern =
-        /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-      return emailPattern.test(email);
-    };
+  //... Regex signup email validation
+  const validateCompanyEmail = (email) => {
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    return emailPattern.test(email);
+  };
   // Validation for First Name....
   const validateCompanyName = (text) => {
     if (text === "") {
@@ -143,7 +143,6 @@ export default Company = (props) => {
       setEmailError("Email is required.");
     } else {
       Companyhandle();
-     
     }
   };
   return (

@@ -51,6 +51,7 @@ import Geocoder from "react-native-geocoding";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
+import { useSelector } from "react-redux";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const Detail = [
@@ -154,6 +155,9 @@ const images = [
 const AddPropertyMainPage = (props) => {
   const propertyid = props?.route?.params?.propertyid;
   console.log("propertyid....", propertyid);
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData", loginData?.Login_details?.result);
+
   const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState("");
   const [value, setValue] = useState(null);
@@ -291,9 +295,6 @@ const AddPropertyMainPage = (props) => {
       console.warn(err);
     }
   };
-
- 
-
 
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
@@ -568,7 +569,7 @@ const AddPropertyMainPage = (props) => {
     axios
       .post(additionalApi, {
         user: 35,
-        user_account_details_id: 84,
+        user_account_details_id: loginData?.Login_details?.result,
         location: location,
         location_longitude: "102.201.123",
         location_latitude: "104.402.210",
@@ -683,7 +684,7 @@ const AddPropertyMainPage = (props) => {
     const selectedKeyFeature = selectedkey_features.join(",");
     const updateData = {
       user: 35,
-      user_account_details_id: 84,
+      user_account_details_id: loginData?.Login_details?.result,
       location: location,
       location_longitude: "102.201.123",
       location_latitude: "104.402.210",
@@ -1914,7 +1915,6 @@ const AddPropertyMainPage = (props) => {
                 }}
               >
                 <UploadMultipleImage
-               
                   heading_Text={"Upload image"}
                   multipleImage={handleImageNameChange}
                 />

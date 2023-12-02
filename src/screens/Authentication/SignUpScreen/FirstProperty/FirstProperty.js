@@ -227,12 +227,12 @@ export default FirstProperty = (props) => {
   console.log("P_state:", P_state);
   console.log("p_city:", p_city);
 
-  const AllCountsData = {
-    Bedrooms: CountBedroom,
-    Bathrooms: CountBathroom,
-    Parking_spaces: CountParking,
-    On_Street_parking: CountParkingStreet,
-  };
+  const AllCountsData = [
+    { Bedrooms: CountBedroom },
+    { Bathrooms: CountBathroom },
+    { ParkingSpace: CountParking },
+    { On_streetParking: CountParkingStreet },
+  ];
   const increaseBedroomCount = () => {
     setCountBedroom((prevCount) => prevCount + 1);
   };
@@ -427,96 +427,79 @@ export default FirstProperty = (props) => {
     formData.append("islocation", 1);
     formData.append("property_description", propertyDesc);
     formData.append("property_type", property_value);
-    formData.append("key_features", AllCountsData);
+    formData.append("key_features", JSON.stringify(AllCountsData));
     formData.append("land_area", landArea);
     formData.append("floor_size", buildingFlorSize);
-    formData.append("additional_features", additionalfeatureskeyvalue);
+    formData.append(
+      "additional_features",
+      JSON.stringify(additionalfeatureskeyvalue)
+    );
     formData.append("auto_list", selectedButtonId);
 
-    // if (ImageName) {
-    //   const imageUri = ImageName;
-    //   // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-    //   formData.append("profile_photo", {
-    //     uri: imageUri,
-    //     // type: imageType
-    //     name: "abc",
-    //   });
-    // }
-
-    // formData.append("profile_photo", {
-    //   uri:ImageName[0].uri,
-
-    //   // uri:Platform.select({ ios: ImageName[0].uri.replace('file://', ''), android: ImageName[0].uri }),
-    //   // uri:"https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg",
-    //   type: ImageName[0].type,
-    //   name: ImageName[0].fileName,
-    // });
-
-    const newImageUri = "file:///" + ImageName[0].uri.split("file:/").join("");
-    formData.append("profile_photo", {
-      uri: newImageUri,
-      // type: mime.getType(newImageUri),
-      type: "image/jpg",
-      name: newImageUri.split("/").pop(),
-    });
-
-    // const url = "https://e3.cylsys.com/api/v1/signup_step_one";
-    const url = Config.API_URL;
-    const saveAccountDetails = url + "user_save_signup_account_details";
-    // const saveAccountDetails = url;
+    if (ImageName) {
+      const imageUri = ImageName;
+      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      formData.append("profile_photo", {
+        uri: imageUri,
+        // type: imageType,
+        name: imageName,
+      });
+    }
+    const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+    const saveAccountDetails = url;
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
-    // try {
-    //   const response = await axios.post(saveAccountDetails, formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   });
-    //   console.log("Save Account Details", response.data);
+    try {
+      const response = await axios.post(saveAccountDetails, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("Save Account Details", response.data);
 
-    //   if (response.data.success === true) {
-    //     setIsLoading(false);
-    //     alert(response.data.message);
-    //     props.navigation.navigate("DrawerNavigatorLeftMenu");
-    //     setCurrentPage(0);
-    //     setProperty_value("");
-    //     setbedroomValue("");
-    //     setGaragesValue("");
-    //     setBathRoomValue("");
-    //     setParkingValue("");
-    //     setAdditionalFeaturesKeyValue("");
-    //   } else {
-    //     setIsLoading(false);
-    //     console.error("Save Account Details error:", response.data.error);
-    //     alert(response.data.error);
-    //   }
-    // } catch (error) {
-    //   setIsLoading(false);
-    //   console.error("Account_Details error:", error);
-    //   alert(error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
-
-    let res = await dispatch(signupAccountApiActionCreator(formData));
-    console.log("signupAccount_Details.....", res?.data);
-    if (res.data.status === true) {
+      if (response.data.success === true) {
+        setIsLoading(false);
+        alert(response.data.message);
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        setCurrentPage(0);
+        setProperty_value("");
+        setbedroomValue("");
+        setGaragesValue("");
+        setBathRoomValue("");
+        setParkingValue("");
+        setAdditionalFeaturesKeyValue("");
+      } else {
+        setIsLoading(false);
+        console.error("Save Account Details error:", response.data.error);
+        alert(response.data.error);
+      }
+    } catch (error) {
       setIsLoading(false);
-      alert(res.data.message);
-      props.navigation.navigate("DrawerNavigatorLeftMenu");
+      console.error("Account_Details error:", error);
+      alert(error);
+    } finally {
       setIsLoading(false);
-      setCurrentPage(0);
-      setProperty_value("");
-      setbedroomValue("");
-      setGaragesValue("");
-      setBathRoomValue("");
-      setParkingValue("");
-      setAdditionalFeaturesKeyValue("");
-    } else {
-      setIsLoading(false);
-      console.error("Save Account Details error:", res.data.error);
-      alert(res.data.error);
     }
+
+    // let res = await dispatch(signupAccountApiActionCreator(formData));
+    // console.log("signupAccount_Details.....", res?.data);
+    // if (res.data.status === true) {
+    //   setIsLoading(false);
+    //   alert(res.data.message);
+    //   props.navigation.navigate("DrawerNavigatorLeftMenu");
+    //   setIsLoading(false);
+    //   setCurrentPage(0);
+    //   setProperty_value("");
+    //   setbedroomValue("");
+    //   setGaragesValue("");
+    //   setBathRoomValue("");
+    //   setParkingValue("");
+    //   setAdditionalFeaturesKeyValue("");
+    // } else {
+    //   setIsLoading(false);
+    //   console.error("Save Account Details error:", res.data.error);
+    //   alert(res.data.error);
+    // }
   };
 
   // const handleSaveSignup = async () => {
@@ -1157,7 +1140,7 @@ export default FirstProperty = (props) => {
                 }
                 onPressLeftButton={() => {
                   setSelectedButton(false);
-                  setSelectedButtonId(1);
+                  setSelectedButtonId(0);
                   // alert(selectedButtonId)
                 }}
                 RightButtonText={"No"}
@@ -1178,7 +1161,7 @@ export default FirstProperty = (props) => {
                 }
                 onPressRightButton={() => {
                   setSelectedButton(true);
-                  setSelectedButtonId(2);
+                  setSelectedButtonId(1);
                 }}
               />
             </View>

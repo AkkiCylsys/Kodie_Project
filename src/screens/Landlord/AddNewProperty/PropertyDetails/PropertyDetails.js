@@ -37,7 +37,9 @@ import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpStep
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 export default PropertyDetails = (props) => {
   const propertyid = props?.route?.params?.propertyid;
+  const editMode = props?.route?.params?.editMode;
   console.log("propertyid....", propertyid);
+  console.log("EditProperty....", editMode);
   const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
@@ -74,17 +76,15 @@ export default PropertyDetails = (props) => {
   // };
 
   const handle_next_btn = () => {
-   
-      props.navigation.navigate("PropertyFeature", {
-        location: location,
-        property_value: property_value,
-        propertyDesc: propertyDesc,
-        selectedButtonId: selectedButtonId,
-        latitude: latitude,
-        longitude: longitude,
-        propertyid: propertyid,
-      });
-    
+    props.navigation.navigate("PropertyFeature", {
+      location: location,
+      property_value: property_value,
+      propertyDesc: propertyDesc,
+      selectedButtonId: selectedButtonId,
+      latitude: latitude,
+      longitude: longitude,
+      propertyid: propertyid,
+    });
   };
 
   useEffect(() => {
@@ -358,7 +358,10 @@ export default PropertyDetails = (props) => {
         }}
         MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
       />
-      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
         {IsMap || IsSearch ? null : (
           <View
             style={{
@@ -450,7 +453,7 @@ export default PropertyDetails = (props) => {
           <ScrollView
             contentContainerStyle={{ marginBottom: 190 }}
             showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps='handled'
+            keyboardShouldPersistTaps="handled"
           >
             <View style={PropertyDetailsStyle.headingView}>
               <Text style={PropertyDetailsStyle.heading}>
@@ -614,9 +617,8 @@ export default PropertyDetails = (props) => {
                       city: city,
                       state: state,
                       country: country,
+                      editMode: editMode,
                     });
-                   
-                    
                   }}
                 />
               </View>

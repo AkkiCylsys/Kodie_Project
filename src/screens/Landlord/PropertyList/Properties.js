@@ -10,8 +10,12 @@ import { PropertiesCSS } from "./PropertiesCss";
 import RantalOffer from "./RentalOffer/RantalOffer";
 import { Config } from "../../../Config";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Properties = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData", loginData?.Login_details?.result);
+
   const [activeTab, setActiveTab] = useState("Tab1");
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,6 +67,7 @@ const Properties = (props) => {
               // alert(propertyid);
               props.navigation.navigate("PropertyDetails", {
                 propertyid: propertyid,
+                editMode: "editMode",
               });
             }}
           />
