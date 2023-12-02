@@ -76,7 +76,6 @@ export default PropertyImages = (props) => {
     refRBSheet.current.close();
     console.log("close");
   };
-  const imagePaths = MultiImageName.map((image) => image.path);
   // setImagePaths(imagePath);
   // alert(imagePaths);
   const openVideoPicker = () => {
@@ -84,12 +83,12 @@ export default PropertyImages = (props) => {
       mediaType: "video",
       multiple: true,
     })
-      .then((videos) => {
-        setSelectedVideos([...selectedVideos, ...videos]);
-      })
-      .catch((error) => {
-        console.error("Error selecting videos:", error);
-      });
+    .then((videos) => {
+      setSelectedVideos([...selectedVideos, ...videos]);
+    })
+    .catch((error) => {
+      console.error("Error selecting videos:", error);
+    });
   };
   const handleSaveUpdateImage = async () => {
     refRBSheet.current.close();
@@ -97,7 +96,7 @@ export default PropertyImages = (props) => {
     formData.append("user", property_id);
     console.log("kljproperty_Data_id", property_id);
     const imagePaths = MultiImageName.map((image) => image.path);
-
+    
     // Append all image paths to the same key 'images[]'
     imagePaths.forEach((path, index) => {
       formData.append("images[]", {
@@ -126,12 +125,12 @@ export default PropertyImages = (props) => {
     const saveAccountDetails = url + "add_property_images";
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
-
+    
     try {
       const response = await axios.post(saveAccountDetails, formData, {
         headers: {
           "content-type": "multipart/form-data",
-
+          
           // 'Content-Type': 'text/plain'
         },
       });
@@ -214,7 +213,7 @@ export default PropertyImages = (props) => {
   };
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
-  );
+    );
   const renderLabel = ({ position, stepStatus }) => {
     // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
@@ -233,7 +232,7 @@ export default PropertyImages = (props) => {
         : position === 3
         ? "Review"
         : "null";
-
+        
     return (
       <View style={{}}>
         <Text
@@ -252,7 +251,7 @@ export default PropertyImages = (props) => {
             marginHorizontal: 10,
             color: iconColor,
           }}
-        >
+          >
           {iconName}
         </Text>
       </View>
@@ -263,39 +262,48 @@ export default PropertyImages = (props) => {
   };
   const handleImageNameChange = (multipleImages) => {
     // const imageSizeLimit = 2 * 1024 * 1024; // 2 MB in bytes
-
+    
     // const imagesWithinSizeLimit = multipleImages.filter(
-    //   (image) => image.size <= imageSizeLimit
-    // );
-
-    // if (imagesWithinSizeLimit.length === multipleImages.length) {
-    //   setMultiImageName(multipleImages);
-    //   refRBSheet.current.close();
-    // } else {
-    //   Alert.alert("Warning", "Image size should not exceed 2 MB.");
-    // }
-    setMultiImageName(multipleImages);
-    console.log("................ImageNAme", multipleImages);
-    console.log("................ImageNAme", multipleImages.path);
-  };
-  const handleSaveImage = async () => {
-    const formData = new FormData();
-    formData.append("user", property_id);
-    console.log("kljproperty_Data_id", property_id);
-    const imagePaths = MultiImageName.map((image) => image.path);
-
-    // Append all image paths to the same key 'images[]'
-    imagePaths.forEach((path, index) => {
-      formData.append(
-        "images[]",
-        {
-          uri: path,
-          name: `image_${index}.jpg`,
-          type: "image/jpeg",
-        },
-        path
-      );
-    });
+      //   (image) => image.size <= imageSizeLimit
+      // );
+      
+      // if (imagesWithinSizeLimit.length === multipleImages.length) {
+        //   setMultiImageName(multipleImages);
+        //   refRBSheet.current.close();
+        // } else {
+          //   Alert.alert("Warning", "Image size should not exceed 2 MB.");
+          // }
+          setMultiImageName(multipleImages);
+          console.log("................ImageNAme", multipleImages);
+          console.log("................ImageNAme", multipleImages.path);
+        };
+        const imagePaths = MultiImageName.map((image) => image.path);
+        alert(imagePaths)
+        const handleSaveImage = async () => {
+          const formData = new FormData();
+          formData.append("user", property_id);
+          refRBSheet.current.close()
+          console.log("kljproperty_Data_id", property_id);
+          if (MultiImageName && Array.isArray(MultiImageName)) {
+            // Extract paths from each element in MultiImageName using map
+            const imagePaths = MultiImageName.map((image) => image.path);
+          
+            // Append all image paths to the same key 'images[]'
+            imagePaths.forEach((path, index) => {
+              formData.append(
+                "images[]",
+                {
+                  uri: path,
+                  name: `image_${index}.jpg`,
+                  type: "image/jpeg",
+                },
+              );
+            });
+          
+            console.log('Image paths:', imagePaths);
+          } else {
+            console.error('MultiImageName is not defined or not an array:', MultiImageName);
+          }
     // Append videos
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoUri, index) => {
@@ -328,7 +336,7 @@ export default PropertyImages = (props) => {
 
       if (response.data.status === true) {
         setIsLoading(false);
-        MultiImageName ? refRBSheet.current.close() : null;
+        // MultiImageName ? refRBSheet.current.close() : null;
         // alert(response.data.message);
         props.navigation.navigate("PropertyReview", {
           property_id: property_id,
@@ -401,9 +409,9 @@ export default PropertyImages = (props) => {
               ) : ( */}
               <SliderBox
                 images={
-                  // property_Detail[0]?.image_path
-                  //   ? property_Detail[0]?.image_path
-                  //   :
+                  property_Detail[0]?.image_path
+                    ? property_Detail[0]?.image_path
+                    :
                   imagePaths
                 }
                 sliderBoxHeight={200}
@@ -437,7 +445,7 @@ export default PropertyImages = (props) => {
                   refRBSheet.current.open();
                 }}
               />
-              {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
+              {/* {MultiImageName.length > 0 ? refRBSheet.current.close() : null} */}
 
               {/* {MultiImageName.length > 0 && (
                   <FlatList

@@ -453,29 +453,33 @@ export default PropertyFeature = (props) => {
                   </Text>
                 </View>
 
-                <View style={PropertyFeatureStyle.plus_minusview}>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={decreaseBedroomCount}
+                  >
                     <AntDesign
                       name="minus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={decreaseBedroomCount}
                     />
                   </TouchableOpacity>
                   <Text style={PropertyFeatureStyle.countdata}>
                     {CountBedroom}
                   </Text>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={() => {
+                      increaseBedroomCount();
+                    }}
+                  >
                     <AntDesign
                       name="plus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={() => {
-                        increaseBedroomCount();
-                      }}
                     />
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View style={PropertyFeatureStyle.mainfeaturesview}>
@@ -485,27 +489,31 @@ export default PropertyFeature = (props) => {
                   </Text>
                 </View>
 
-                <View style={PropertyFeatureStyle.plus_minusview}>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={decreaseBathroomCount}
+                  >
                     <AntDesign
                       name="minus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={decreaseBathroomCount}
                     />
                   </TouchableOpacity>
                   <Text style={PropertyFeatureStyle.countdata}>
                     {CountBathroom}
                   </Text>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={increaseBathroomCount}
+                  >
                     <AntDesign
                       name="plus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={increaseBathroomCount}
                     />
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View style={PropertyFeatureStyle.mainfeaturesview}>
@@ -515,27 +523,31 @@ export default PropertyFeature = (props) => {
                   </Text>
                 </View>
 
-                <View style={PropertyFeatureStyle.plus_minusview}>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={decreaseParkingCount}
+                  >
                     <AntDesign
                       name="minus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={decreaseParkingCount}
                     />
                   </TouchableOpacity>
                   <Text style={PropertyFeatureStyle.countdata}>
                     {CountParking}
                   </Text>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={increaseParkingCount}
+                  >
                     <AntDesign
                       name="plus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={increaseParkingCount}
                     />
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View style={PropertyFeatureStyle.mainfeaturesview}>
@@ -545,27 +557,31 @@ export default PropertyFeature = (props) => {
                   </Text>
                 </View>
 
-                <View style={PropertyFeatureStyle.plus_minusview}>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={decreaseParkingStreetCount}
+                  >
                     <AntDesign
                       name="minus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={decreaseParkingStreetCount}
                     />
                   </TouchableOpacity>
                   <Text style={PropertyFeatureStyle.countdata}>
                     {CountParkingStreet}
                   </Text>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={increaseParkingStreetCount}
+                  >
                     <AntDesign
                       name="plus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={increaseParkingStreetCount}
                     />
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
 

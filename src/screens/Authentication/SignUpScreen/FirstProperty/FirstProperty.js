@@ -900,31 +900,25 @@ export default FirstProperty = (props) => {
                       </Text>
                     </View>
 
-                    <View style={FirstPropertyStyle.plus_minusview}>
+                    <TouchableOpacity style={FirstPropertyStyle.plus_minusview}>
                       <TouchableOpacity
                         style={FirstPropertyStyle.menusIconView}
+                        onPress={decreaseBedroomCount}
                       >
-                        <AntDesign
-                          name="minus"
-                          size={20}
-                          onPress={decreaseBedroomCount}
-                        />
+                        <AntDesign name="minus" size={20} />
                       </TouchableOpacity>
                       <Text style={FirstPropertyStyle.countdata}>
                         {CountBedroom}
                       </Text>
                       <TouchableOpacity
                         style={FirstPropertyStyle.menusIconView}
+                        onPress={() => {
+                          increaseBedroomCount();
+                        }}
                       >
-                        <AntDesign
-                          name="plus"
-                          size={20}
-                          onPress={() => {
-                            increaseBedroomCount();
-                          }}
-                        />
+                        <AntDesign name="plus" size={20} />
                       </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
                   </View>
 
                   <View style={FirstPropertyStyle.mainfeaturesview}>
@@ -934,29 +928,23 @@ export default FirstProperty = (props) => {
                       </Text>
                     </View>
 
-                    <View style={FirstPropertyStyle.plus_minusview}>
+                    <TouchableOpacity style={FirstPropertyStyle.plus_minusview}>
                       <TouchableOpacity
                         style={FirstPropertyStyle.menusIconView}
+                        onPress={decreaseBathroomCount}
                       >
-                        <AntDesign
-                          name="minus"
-                          size={20}
-                          onPress={decreaseBathroomCount}
-                        />
+                        <AntDesign name="minus" size={20} />
                       </TouchableOpacity>
                       <Text style={FirstPropertyStyle.countdata}>
                         {CountBathroom}
                       </Text>
                       <TouchableOpacity
                         style={FirstPropertyStyle.menusIconView}
+                        onPress={increaseBathroomCount}
                       >
-                        <AntDesign
-                          name="plus"
-                          size={20}
-                          onPress={increaseBathroomCount}
-                        />
+                        <AntDesign name="plus" size={20} />
                       </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
                   </View>
 
                   <View style={FirstPropertyStyle.mainfeaturesview}>
@@ -966,29 +954,23 @@ export default FirstProperty = (props) => {
                       </Text>
                     </View>
 
-                    <View style={FirstPropertyStyle.plus_minusview}>
+                    <TouchableOpacity style={FirstPropertyStyle.plus_minusview}>
                       <TouchableOpacity
                         style={FirstPropertyStyle.menusIconView}
+                        onPress={decreaseParkingCount}
                       >
-                        <AntDesign
-                          name="minus"
-                          size={20}
-                          onPress={decreaseParkingCount}
-                        />
+                        <AntDesign name="minus" size={20} />
                       </TouchableOpacity>
                       <Text style={FirstPropertyStyle.countdata}>
                         {CountParking}
                       </Text>
                       <TouchableOpacity
                         style={FirstPropertyStyle.menusIconView}
+                        onPress={increaseParkingCount}
                       >
-                        <AntDesign
-                          name="plus"
-                          size={20}
-                          onPress={increaseParkingCount}
-                        />
+                        <AntDesign name="plus" size={20} />
                       </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
                   </View>
 
                   <View style={FirstPropertyStyle.mainfeaturesview}>
@@ -998,29 +980,23 @@ export default FirstProperty = (props) => {
                       </Text>
                     </View>
 
-                    <View style={FirstPropertyStyle.plus_minusview}>
+                    <TouchableOpacity style={FirstPropertyStyle.plus_minusview}>
                       <TouchableOpacity
                         style={FirstPropertyStyle.menusIconView}
+                        onPress={decreaseParkingStreetCount}
                       >
-                        <AntDesign
-                          name="minus"
-                          size={20}
-                          onPress={decreaseParkingStreetCount}
-                        />
+                        <AntDesign name="minus" size={20} />
                       </TouchableOpacity>
                       <Text style={FirstPropertyStyle.countdata}>
                         {CountParkingStreet}
                       </Text>
                       <TouchableOpacity
                         style={FirstPropertyStyle.menusIconView}
+                        onPress={increaseParkingStreetCount}
                       >
-                        <AntDesign
-                          name="plus"
-                          size={20}
-                          onPress={increaseParkingStreetCount}
-                        />
+                        <AntDesign name="plus" size={20} />
                       </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
                   </View>
                 </View>
 
