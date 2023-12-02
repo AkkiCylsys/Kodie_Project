@@ -75,7 +75,6 @@ export default AddLeaseDetails = (props) => {
     handle_payment_reminder();
     handle_rental_reminder();
     handle_lease_term();
-   
   }, []);
 
   const handleOptionClick = (option) => {
@@ -101,7 +100,7 @@ export default AddLeaseDetails = (props) => {
   };
 
   const handle_add_Lease = () => {
-    console.log("paymentDueDay....",paymentDueDay)
+    console.log("paymentDueDay....", paymentDueDay);
     const url = "https://e3.cylsys.com/api/v1/property_lease_details/create";
     const add_Lease_url = url;
     console.log("Request URL:", add_Lease_url);
