@@ -35,12 +35,14 @@
 //   );
 // };
 
-import React from "react";
+import React,{useRef} from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { InviteTenantModalStyle } from "./InviteTenantModalStyle";
 import { IMAGES } from "../../../Themes";
 import { useNavigation } from "@react-navigation/native";
-
+import { _COLORS } from "../../../Themes";
+import RBSheet from "react-native-raw-bottom-sheet";
+import AddTenantDetails from "../../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 const data = [
   {
     id: "1",
@@ -63,7 +65,13 @@ const data = [
 ];
 
 export default InviteTenantModal = (props) => {
+  const property_id = props.property_id;
   const navigation = useNavigation();
+  const refRBSheet = useRef();
+  
+  const CloseUp = () => {
+    refRBSheet.current.close();
+  };
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
       style={InviteTenantModalStyle.Main_View}
@@ -73,8 +81,7 @@ export default InviteTenantModal = (props) => {
           navigation.navigate("Invitefriend");
         }
         if (item.id === "3") {
-          //---- Navigate to OtherScreen when Contact Us is clicked
-          navigation.navigate("AddTenantDetails");
+          refRBSheet.current.open();
         }
       }}
     >
@@ -135,6 +142,23 @@ export default InviteTenantModal = (props) => {
           keyExtractor={(item) => item.key}
         />
       </View>
+
+      <RBSheet
+        ref={refRBSheet}
+        height={700}
+        closeOnDragDown={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: InviteTenantModalStyle.bottomModal_container,
+        }}
+      >
+        <AddTenantDetails onClose={CloseUp} property_id={property_id}/>
+      </RBSheet>
     </View>
   );
 };

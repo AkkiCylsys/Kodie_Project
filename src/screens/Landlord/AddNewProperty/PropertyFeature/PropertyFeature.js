@@ -21,6 +21,7 @@ import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Config } from "../../../../Config";
 import axios from "axios";
+import { useSelector } from "react-redux";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
@@ -42,7 +43,7 @@ const renderDataItem = (item) => {
 export default PropertyFeature = (props) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
   const location = props?.route?.params?.location;
   const property_value = props?.route?.params?.property_value;
   const propertyDesc = props?.route?.params?.propertyDesc;
@@ -53,6 +54,7 @@ export default PropertyFeature = (props) => {
   const city = props?.route?.params?.city;
   const state = props?.route?.params?.state;
   const country = props?.route?.params?.country;
+  const editMode = props?.route?.params?.editMode;
   console.log(
     "location......",
     location,
@@ -64,13 +66,17 @@ export default PropertyFeature = (props) => {
     propertyid,
     city,
     state,
-    country
+    country,
+    editMode
   );
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
 
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData", loginData?.Login_details?.result);
+
   console.log("key_features_id............", additionalfeatureskeyvalue);
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState([]);
@@ -80,10 +86,10 @@ export default PropertyFeature = (props) => {
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
     useState(67);
-  const [CountBedroom, setCountBedroom] = useState(1);
-  const [CountBathroom, setCountBathroom] = useState(1);
-  const [CountParking, setCountParking] = useState(1);
-  const [CountParkingStreet, setCountParkingStreet] = useState(1);
+  const [CountBedroom, setCountBedroom] = useState(0);
+  const [CountBathroom, setCountBathroom] = useState(0);
+  const [CountParking, setCountParking] = useState(0);
+  const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [florSize, setFlorSize] = useState("");
   const [landArea, setLandArea] = useState("");
   const [property_Detail, setProperty_Details] = useState([]);
@@ -109,11 +115,14 @@ export default PropertyFeature = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           setProperty_Details(response.data.property_details);
-          setAdditionalFeaturesKeyValue(
+          // setAdditionalFeaturesKeyValue(
+          //   response.data.property_details[0]?.key_features_id
+          // );
+
+          console.log(
+            "propertyDetail....",
             response.data.property_details[0]?.key_features_id
           );
-
-          console.log("propertyDetail....", response.data.property_details);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -288,7 +297,7 @@ export default PropertyFeature = (props) => {
     axios
       .post(additionalApi, {
         user: 35,
-        user_account_details_id: 84,
+        user_account_details_id: loginData?.Login_details?.result,
         location: location,
         location_longitude: longitude,
         location_latitude: latitude,
@@ -396,6 +405,7 @@ export default PropertyFeature = (props) => {
           // alert("update_property_details....", propertyid);
           props.navigation.navigate("PropertyImages", {
             property_id: propertyid,
+            editMode: "editMode",
           });
           // setupdateProperty_Details(response.data.property_details);
         } else {
@@ -573,7 +583,7 @@ export default PropertyFeature = (props) => {
                     value={florSize}
                     onChangeText={setFlorSize}
                     placeholder="102m2"
-                    keyboardType='number-pad'
+                    keyboardType="number-pad"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
@@ -592,7 +602,7 @@ export default PropertyFeature = (props) => {
                     value={landArea}
                     onChangeText={setLandArea}
                     placeholder="102m2"
-                    keyboardType='number-pad'
+                    keyboardType="number-pad"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
@@ -718,13 +728,13 @@ export default PropertyFeature = (props) => {
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."
-                onChange={(items) => {
-                  const selectedKeys = items.map((item) => item);
-                  const uniqueKeys = [...new Set(selectedKeys)];
-                  console.log("Unique Keys:", uniqueKeys);
+                onChange={(item) => {
+                  // const selectedKeys = items.map((item) => item);
+                  // const uniqueKeys = [...new Set(selectedKeys)];
+                  // console.log("Unique Keys:", uniqueKeys);
                   // Set the state with unique keys
-                  setAdditionalFeaturesKeyValue(uniqueKeys);
-                  // setAdditionalFeaturesKeyValue(item);
+                  // setAdditionalFeaturesKeyValue(uniqueKeys);
+                  setAdditionalFeaturesKeyValue(item);
                   // alert(item);
                 }}
                 // renderRightIcon={() => (

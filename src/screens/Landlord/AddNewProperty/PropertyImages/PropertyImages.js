@@ -28,10 +28,11 @@ const images = [
 export default PropertyImages = (props) => {
   const refRBSheet = useRef();
   const property_id = props?.route?.params?.property_id;
-  console.log(".............property_id.", property_id);
+  const editMode = props?.route?.params?.editMode;
+  console.log(".............property_id.", property_id, editMode);
   const [isLoading, setIsLoading] = useState(false);
   const [MultiImageName, setMultiImageName] = useState([]);
-  const [currentPage, setCurrentPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(2);
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [imagePath, setImagePaths] = useState([]);
@@ -73,7 +74,7 @@ export default PropertyImages = (props) => {
   //popup closeup code here
   const CloseUp = () => {
     refRBSheet.current.close();
-    console.log('close')
+    console.log("close");
   };
   const imagePaths = MultiImageName.map((image) => image.path);
   // setImagePaths(imagePath);
@@ -147,6 +148,7 @@ export default PropertyImages = (props) => {
           property_id: property_id,
           MultiImageName: MultiImageName,
           selectedVideos: selectedVideos,
+          editMode: "editMode",
         });
         // alert(response.data.message);
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
@@ -523,7 +525,7 @@ export default PropertyImages = (props) => {
               }}
             >
               <UploadMultipleImage
-              onClose={CloseUp}
+                onClose={CloseUp}
                 heading_Text={"Upload image"}
                 multipleImage={handleImageNameChange}
               />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AddLeaseDetailsStyle } from "./AddLeaseDetailsStyle";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import { FONTFAMILY, _COLORS } from "../../../../../../Themes";
 import { LABEL_STYLES } from "../../../../../../Themes/CommonStyles/CommonStyles";
 import CalendarModal from "../../../../../../components/Molecules/CalenderModal/CalenderModal";
@@ -15,6 +16,10 @@ import { Dropdown } from "react-native-element-dropdown";
 import RowButtons from "../../../../../../components/Molecules/RowButtons/RowButtons";
 import SwitchToggle from "react-native-switch-toggle";
 import CustomDropdown from "../../../../../../components/Molecules/CustomDropdown/CustomDropdown";
+import axios from "axios";
+import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { Config } from "../../../../../../Config";
+import { useDispatch, useSelector } from "react-redux";
 const data = [
   "All",
   "2- Month",
@@ -24,26 +29,55 @@ const data = [
   "10- Month",
   "1- Year",
 ];
-const notification_data = [
-  { label: "Notification", value: "1" },
-  { label: "Email", value: "2" },
-];
-const reminder_data = [
-  { label: "30-day", value: "1" },
-  { label: "2-day", value: "2" },
-  { label: "2-day", value: "3" },
-];
-
 export default AddLeaseDetails = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData...", loginData);
+  // alert(loginData?.Login_details?.result)
+
+  // alert(JSON.stringify(props.property_id));
+  const property_id = props.property_id;
+  console.log("property id in add lease Detail..", property_id);
+  const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState(null);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [rentalAmount, setRentalAmount] = useState("");
-  const [rentalBond, setRentalBond] = useState("");
+  const [rentalAmount, setRentalAmount] = useState(null);
+  const [rentalBond, setRentalBond] = useState(null);
   const [paymentDueDay, setPaymentDueDay] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [on, setOn] = useState(true);
-  <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
+  const [selectedOption, setSelectedOption] = useState("Save");
+  const [selected_frequency_Button, setSelected_frequency_Button] =
+    useState(false);
+  const [selected_frequency_Id, setSelected_frequency_Id] = useState(1);
+  const [selected_payment_Button, setSelected_payment_Button] = useState(false);
+  const [selected_payment_Id, setSelected_payment_Id] = useState(1);
+  const [notification_type_Data, setNotification_type_Data] = useState([]);
+  const [notification_type_value, setNotification_type_value] = useState(null);
+  const [expiry_reminder_Data, setExpiry_reminder_Data] = useState([]);
+  const [expiry_reminder_value, setExpiry_reminder_value] = useState(null);
+  const [payment_reminder_Data, setPayment_reminder_Data] = useState([]);
+  const [payment_reminder_value, setPayment_reminder_value] = useState(null);
+  const [rental_reminder_Data, setrental_reminder_Data] = useState([]);
+  const [rental_reminder_value, setrental_reminder_value] = useState(null);
+  const [lease_term_Data, setLease_term_Data] = useState([]);
+  const [lease_term_value, setlLease_term_value] = useState("");
+
+  const [toggle_expiry, setToggle_expiry] = useState(false);
+  const [toggle_lease_expire, setToggle_lease_expire] = useState(0);
+  const [toggle_payment, setToggle_payment] = useState(false);
+  const [toggle_rent_payment, setToggle_rent_payment] = useState(0);
+  const [toggle_rental, setToggle_rental] = useState(false);
+  const [toggle_late_rental, setToggle_late_rental] = useState(0);
+  // <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
+
+  useEffect(() => {
+    handle_notification_type();
+    handle_expiry_reminder();
+    handle_payment_reminder();
+    handle_rental_reminder();
+    handle_lease_term();
+   
+  }, []);
+
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
@@ -64,6 +98,248 @@ export default AddLeaseDetails = (props) => {
   };
   const handlePopUp = () => {
     props.onClose();
+  };
+
+  const handle_add_Lease = () => {
+    console.log("paymentDueDay....",paymentDueDay)
+    const url = "https://e3.cylsys.com/api/v1/property_lease_details/create";
+    const add_Lease_url = url;
+    console.log("Request URL:", add_Lease_url);
+    setIsLoading(true);
+    console.log("selectedDate", selectedDate);
+    const lease_Data = {
+      user_key: loginData?.Login_details?.result,
+      // upd_key: 4,
+      upd_key: property_id,
+      commencement_date: selectedDate,
+      rental_lease_term: lease_term_value,
+      rental_amount: rentalAmount,
+      rental_bond_amount: rentalBond,
+      rental_payment_frequency: selected_frequency_Id,
+      payment_due_day: paymentDueDay,
+      first_rental_payment: selected_payment_Id,
+      set_notification_type: notification_type_value,
+      is_active: 1,
+      lease_expire: toggle_lease_expire,
+      rent_payment: toggle_rent_payment,
+      late_rental: toggle_late_rental,
+      lease_expiry_reminder: expiry_reminder_value,
+      rent_payment_reminder: payment_reminder_value,
+      late_rental_reminder: rental_reminder_value,
+    };
+    axios
+      .post(add_Lease_url, lease_Data)
+      .then((response) => {
+        console.log("API Response add_lease:", response.data);
+        if (response.data.success === true) {
+          alert(response.data.message);
+          handlePopUp();
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const handle_notification_type = () => {
+    const url = Config.API_URL;
+    const notification_url = url + "lookup_details";
+    console.log("Request URL:", notification_url);
+    setIsLoading(true);
+    const notification_data = {
+      P_PARENT_CODE: "SNT",
+      P_TYPE: "OPTION",
+    };
+
+    axios
+      .post(notification_url, notification_data)
+      .then((response) => {
+        console.log("API Response notification_type:", response.data);
+        if (response.data.status === true) {
+          setNotification_type_Data(response.data.data);
+          // alert(JSON.stringify(response.data.data));
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const handle_expiry_reminder = () => {
+    const url = Config.API_URL;
+    const expiry_url = url + "lookup_details";
+    console.log("Request URL:", expiry_url);
+    setIsLoading(true);
+    const notification_data = {
+      P_PARENT_CODE: "LER",
+      P_TYPE: "OPTION",
+    };
+    axios
+      .post(expiry_url, notification_data)
+      .then((response) => {
+        console.log("API Response expiry reminder:", response.data);
+        if (response.data.status === true) {
+          setExpiry_reminder_Data(response.data.data);
+          // alert(JSON.stringify(response.data.data));
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const handle_payment_reminder = () => {
+    const url = Config.API_URL;
+    const payment_url = url + "lookup_details";
+    console.log("Request URL:", payment_url);
+    setIsLoading(true);
+    const notification_data = {
+      P_PARENT_CODE: "RPR",
+      P_TYPE: "OPTION",
+    };
+    axios
+      .post(payment_url, notification_data)
+      .then((response) => {
+        console.log("API Response payment reminder:", response.data);
+        if (response.data.status === true) {
+          setPayment_reminder_Data(response.data.data);
+          // alert(JSON.stringify(response.data.data));
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const handle_rental_reminder = () => {
+    const url = Config.API_URL;
+    const rental_url = url + "lookup_details";
+    console.log("Request URL:", rental_url);
+    setIsLoading(true);
+    const notification_data = {
+      P_PARENT_CODE: "LRR",
+      P_TYPE: "OPTION",
+    };
+    axios
+      .post(rental_url, notification_data)
+      .then((response) => {
+        console.log("API Response rental reminder:", response.data);
+        if (response.data.status === true) {
+          setrental_reminder_Data(response.data.data);
+          // alert(JSON.stringify(response.data.data));
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const handle_lease_term = () => {
+    const url = Config.API_URL;
+    const lease_term__url = url + "lookup_details";
+    console.log("Request URL:", lease_term__url);
+    setIsLoading(true);
+    const lease_term_data = {
+      P_PARENT_CODE: "RLT",
+      P_TYPE: "OPTION",
+    };
+    axios
+      .post(lease_term__url, lease_term_data)
+      .then((response) => {
+        console.log("API Response rental lease terms:", response.data);
+        if (response.data.status === true) {
+          setLease_term_Data(response.data.data);
+          // alert(JSON.stringify(response.data.data));
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const lease_term_render = (item) => {
+    return (
+      <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
+        <View style={AddLeaseDetailsStyle.itemView}>
+          {item.lookup_key === lease_term_value ? (
+            <Fontisto
+              color={_COLORS.Kodie_GreenColor}
+              name={"radio-btn-active"}
+              size={20}
+            />
+          ) : (
+            <Fontisto
+              color={_COLORS.Kodie_GreenColor}
+              name={"radio-btn-passive"}
+              size={20}
+            />
+          )}
+          <Text style={AddLeaseDetailsStyle.textItem}>{item.description}</Text>
+        </View>
+      </ScrollView>
+    );
+  };
+  const notification_render = (item) => {
+    return (
+      <View style={AddLeaseDetailsStyle.itemView}>
+        {item.lookup_key === notification_type_value ? (
+          <Fontisto
+            color={_COLORS.Kodie_GreenColor}
+            name={"radio-btn-active"}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GreenColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={AddLeaseDetailsStyle.textItem}>{item.description}</Text>
+      </View>
+    );
   };
   return (
     <View style={AddLeaseDetailsStyle.mainContainer}>
@@ -110,7 +386,7 @@ export default AddLeaseDetails = (props) => {
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Rental lease term"}</Text>
 
-            <View>
+            {/* <View>
               <CustomDropdown
                 data={data}
                 placeholdertext="6-month"
@@ -118,7 +394,32 @@ export default AddLeaseDetails = (props) => {
                 onClear={handleClear}
                 btnview={true}
               />
-            </View>
+            </View> */}
+            {/* ... */}
+            <Dropdown
+              style={[
+                AddLeaseDetailsStyle.dropdown,
+                { flex: 1, borderRadius: 5, height: 45 },
+              ]}
+              placeholderStyle={[
+                AddLeaseDetailsStyle.placeholderStyle,
+                { color: _COLORS.Kodie_LightGrayColor },
+              ]}
+              selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+              inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+              iconStyle={AddLeaseDetailsStyle.iconStyle}
+              data={lease_term_Data}
+              maxHeight={300}
+              labelField="description"
+              valueField="lookup_key"
+              placeholder="6-month"
+              value={lease_term_value}
+              onChange={(item) => {
+                setlLease_term_value(item.lookup_key);
+                // alert(item.lookup_key);
+              }}
+              renderItem={lease_term_render}
+            />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Rental amount"}</Text>
@@ -128,6 +429,8 @@ export default AddLeaseDetails = (props) => {
               onChangeText={setRentalAmount}
               placeholder="Enter the rental amount"
               placeholderTextColor="#999"
+              keyboardType="number-pad"
+              maxLength={5}
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -138,6 +441,7 @@ export default AddLeaseDetails = (props) => {
               onChangeText={setRentalBond}
               placeholder="Enter the rental bond amount"
               placeholderTextColor="#999"
+              keyboardType="number-pad"
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -146,13 +450,46 @@ export default AddLeaseDetails = (props) => {
             </Text>
             <RowButtons
               LeftButtonText={"Weekly"}
-              leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-              LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+              leftButtonbackgroundColor={
+                !selected_frequency_Button
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selected_frequency_Button
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selected_frequency_Button
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelected_frequency_Button(false);
+                setSelected_frequency_Id(1);
+                // alert(selectedButtonId)
+              }}
               RightButtonText={"Monthly"}
-              RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-              RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-              RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+              RightButtonbackgroundColor={
+                selected_frequency_Button
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selected_frequency_Button
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selected_frequency_Button
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelected_frequency_Button(true);
+                setSelected_frequency_Id(0);
+              }}
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -161,7 +498,7 @@ export default AddLeaseDetails = (props) => {
               style={AddLeaseDetailsStyle.input}
               value={paymentDueDay}
               onChangeText={setPaymentDueDay}
-              placeholder=""
+              placeholder="2023-12-30"
               placeholderTextColor="#999"
             />
           </View>
@@ -171,13 +508,46 @@ export default AddLeaseDetails = (props) => {
             </Text>
             <RowButtons
               LeftButtonText={"Yes"}
-              leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-              LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+              leftButtonbackgroundColor={
+                !selected_payment_Button
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selected_payment_Button
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selected_payment_Button
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelected_payment_Button(false);
+                setSelected_payment_Id(1);
+                // alert(selectedButtonId)
+              }}
               RightButtonText={"No"}
-              RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-              RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-              RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+              RightButtonbackgroundColor={
+                selected_payment_Button
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selected_payment_Button
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selected_payment_Button
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelected_payment_Button(true);
+                setSelected_payment_Id(0);
+              }}
             />
           </View>
 
@@ -206,22 +576,28 @@ export default AddLeaseDetails = (props) => {
                 selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
                 inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
                 iconStyle={AddLeaseDetailsStyle.iconStyle}
-                data={notification_data}
+                data={notification_type_Data}
                 maxHeight={300}
-                labelField="label"
-                valueField="value"
+                labelField="description"
+                valueField="lookup_key"
                 placeholder="Email"
-                value={value}
+                value={notification_type_value}
                 onChange={(item) => {
-                  setValue(item.value);
+                  setNotification_type_value(item.lookup_key);
+                  // alert(item.lookup_key);
                 }}
+                renderItem={notification_render}
               />
             </View>
           </View>
           <View style={AddLeaseDetailsStyle.reminder_m_view}>
             <SwitchToggle
-              switchOn={on}
-              onPress={() => setOn(!on)}
+              switchOn={toggle_expiry}
+              onPress={() => {
+                setToggle_expiry(!toggle_expiry);
+                setToggle_lease_expire(toggle_expiry ? 0 : 1);
+                // alert(toggle_lease_expire);
+              }}
               circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
               circleColorOn={_COLORS.Kodie_GreenColor}
               backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
@@ -245,14 +621,15 @@ export default AddLeaseDetails = (props) => {
                 selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
                 inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
                 iconStyle={AddLeaseDetailsStyle.iconStyle}
-                data={reminder_data}
+                data={expiry_reminder_Data}
                 maxHeight={300}
-                labelField="label"
-                valueField="value"
+                labelField="description"
+                valueField="lookup_key"
                 placeholder="30-days"
-                value={value}
+                value={expiry_reminder_value}
                 onChange={(item) => {
-                  setValue(item.value);
+                  setExpiry_reminder_value(item.lookup_key);
+                  // alert(item.lookup_key)
                 }}
               />
               <Text style={AddLeaseDetailsStyle.before}>{"before"}</Text>
@@ -260,8 +637,11 @@ export default AddLeaseDetails = (props) => {
           </View>
           <View style={AddLeaseDetailsStyle.reminder_m_view}>
             <SwitchToggle
-              switchOn={on}
-              onPress={() => setOn(!on)}
+              switchOn={toggle_payment}
+              onPress={() => {
+                setToggle_payment(!toggle_payment);
+                setToggle_rent_payment(toggle_payment ? 0 : 1);
+              }}
               circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
               circleColorOn={_COLORS.Kodie_GreenColor}
               backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
@@ -285,14 +665,14 @@ export default AddLeaseDetails = (props) => {
                 selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
                 inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
                 iconStyle={AddLeaseDetailsStyle.iconStyle}
-                data={reminder_data}
+                data={payment_reminder_Data}
                 maxHeight={300}
-                labelField="label"
-                valueField="value"
+                labelField="description"
+                valueField="lookup_key"
                 placeholder="2-days"
-                value={value}
+                value={payment_reminder_value}
                 onChange={(item) => {
-                  setValue(item.value);
+                  setPayment_reminder_value(item.lookup_key);
                 }}
               />
               <Text style={AddLeaseDetailsStyle.before}>{"before"}</Text>
@@ -300,8 +680,11 @@ export default AddLeaseDetails = (props) => {
           </View>
           <View style={AddLeaseDetailsStyle.reminder_m_view}>
             <SwitchToggle
-              switchOn={on}
-              onPress={() => setOn(!on)}
+              switchOn={toggle_rental}
+              onPress={() => {
+                setToggle_rental(!toggle_rental);
+                setToggle_late_rental(toggle_rental ? 0 : 1);
+              }}
               circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
               circleColorOn={_COLORS.Kodie_GreenColor}
               backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
@@ -325,14 +708,14 @@ export default AddLeaseDetails = (props) => {
                 selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
                 inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
                 iconStyle={AddLeaseDetailsStyle.iconStyle}
-                data={reminder_data}
+                data={rental_reminder_Data}
                 maxHeight={300}
-                labelField="label"
-                valueField="value"
+                labelField="description"
+                valueField="lookup_key"
                 placeholder="2-days"
-                value={value}
+                value={rental_reminder_value}
                 onChange={(item) => {
-                  setValue(item.value);
+                  setrental_reminder_value(item.lookup_key);
                 }}
               />
               <Text style={AddLeaseDetailsStyle.before}>{"After"}</Text>
@@ -352,6 +735,7 @@ export default AddLeaseDetails = (props) => {
               ]}
               onPress={() => {
                 handleOptionClick("cancel");
+                handlePopUp();
               }}
             >
               <Text
@@ -380,6 +764,7 @@ export default AddLeaseDetails = (props) => {
               ]}
               onPress={() => {
                 handleOptionClick("Save");
+                handle_add_Lease();
               }}
             >
               <Text
@@ -400,6 +785,7 @@ export default AddLeaseDetails = (props) => {
           </View>
         </View>
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

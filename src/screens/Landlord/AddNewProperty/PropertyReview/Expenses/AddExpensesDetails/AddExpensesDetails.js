@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,10 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import CalendarModal from "../../../../../../components/Molecules/CalenderModal/CalenderModal";
 import RowButtons from "../../../../../../components/Molecules/RowButtons/RowButtons";
 import { Dropdown } from "react-native-element-dropdown";
+import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { Config } from "../../../../../../Config";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 const data = [
   { label: "3-month", value: "1" },
@@ -20,15 +24,41 @@ const data = [
   { label: "12-month", value: "3" },
 ];
 export default AddExpensesDetails = (props) => {
+  //  alert(JSON.stringify(props.property_id));
+   const property_id = props.property_id;
+   console.log('property_id in Add details..',property_id);
+  const loginData = useSelector((state) => state.authenticationReducer.data);
   const [totalAmount, setTotalAmount] = useState("");
+  const [totalAmountError, setTotalAmountError] = useState("");
   const [accountXcl, setAccountXcl] = useState("");
   const [tax, setTax] = useState("");
   const [suplier, setSuplier] = useState("");
   const [expenseDes, setExpenseDes] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isPaidModalVisible, setPaidModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
-  const [value, setValue] = useState(null);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedDateError, setSelectedDateError] = useState("");
+  const [selectedPaidDate, setSelectedPaidDate] = useState("");
+  const [selectedPaidDateError, setSelectedPaidDateError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [ExpenceCategoryValue, setExpenceCategoryValue] = useState("");
+  const [ExpenceCategoryValueError, setExpenceCategoryValueError] =
+    useState("");
+  const [ExpenceCategoryData, setExpenceCategoryData] = useState([]);
+  const [selectedOption, setSelectedOption] = useState('Save');
+  const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
+  const [selectedButtonRepeating, setSelectedButtonRepeating] = useState(false);
+  const [selectedButtonResponsible, setSelectedButtonResponsible] =
+    useState(false);
+  const [selectedButtonResponsibleId, setSelectedButtonResponsibleId] =
+    useState(0);
+  const [selectedResponsibleData, setSelectedResponsibleData] = useState([]);
+  const [selectedButtonRepeatingError, setSelectedButtonRepeatingError] =
+    useState("");
+  const [selectedButtonRepeatingId, setSelectedButtonRepeatingId] = useState(0);
+  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
+  const [ExpenceResponse, setExpenceResponse] = useState([]);
+  const [notes, setNotes] = useState("");
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -37,19 +67,201 @@ export default AddExpensesDetails = (props) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const togglePaidModal = () => {
+    setPaidModalVisible(!isPaidModalVisible);
+  };
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
+  const handlePaidDatePress = (paidDate) => {
+    setSelectedPaidDate(paidDate.dateString);
+  };
 
-  const handlePopUp = () =>{
-    props.onClose()
-  }
+  const handlePopUp = () => {
+    props.onClose();
+  };
+
+  // Validation for Total amount........
+  const validateTotalamount = (text) => {
+    const mobileReg = /^\d{1,5}$/;
+    if (text === "") {
+      setTotalAmountError("Total amount is required");
+    } else if (!mobileReg.test(text)) {
+      setTotalAmountError("Invalid amount format");
+    } else {
+      setTotalAmountError("");
+    }
+    setTotalAmount(text);
+  };
+
+  const handleDropdownChange = (item) => {
+    if (item) {
+      setExpenceCategoryValue("");
+      setExpenceCategoryValueError("Please select an expense category."); 
+    } else {
+      setExpenceCategoryValueError(""); 
+    }
+  };
+  // API bind Expence Category Lookup key code here.....
+  const handleExpenceCategory = () => {
+    const propertyData = {
+      P_PARENT_CODE: "AEC",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("property_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("Expence Category....", response.data.data);
+          setExpenceCategoryData(response.data.data);
+          // setProperty_value(property_Detail[0]?.property_type_id);
+        } else {
+          console.error("Expence_Category_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Expence Category error:", error);
+        // alert(error);
+        setIsLoading(false);
+      });
+  };
+
+  // API bind Responsible Lookup key code here.....
+  const handleResponsible = () => {
+    const propertyData = {
+      P_PARENT_CODE: "RESPONSIBLE FOR PAYING",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.API_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("property_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("Responsible Category....", response.data.data);
+          setSelectedResponsibleData(response.data.data);
+        } else {
+          console.error("Responsible_Category_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Responsible Category error:", error);
+        setIsLoading(false);
+      });
+  };
+
+  // API bind Add Expense code here.....
+  const Expencehandle = () => {
+    console.log(
+      totalAmount,
+      accountXcl,
+      suplier,
+      expenseDes,
+      ExpenceCategoryValue,
+      notes
+    );
+
+    const ExpenceData = {
+      user_key: loginData.Login_details.result,
+      upd_key: property_id,
+      total_amount: totalAmount,
+      total_amount_excl_tax: accountXcl,
+      tax: tax,
+      due_date: selectedDate,
+      repeating_expense: selectedButtonRepeatingId,
+      responsible_paying: selectedButtonResponsibleId,
+      expense_category: ExpenceCategoryValue,
+      supplier: suplier,
+      expenses_description: expenseDes,
+      note: notes,
+      paid: selectedButtonDepositId,
+      start_date: selectedPaidDate,
+      is_active: 1,
+    };
+
+    const ExpenceUrl =
+      "https://e3.cylsys.com/api/v1/property_expenses_details/create";
+    console.log("Request URL:", ExpenceUrl);
+    setIsLoading(true);
+
+    axios
+      .post(ExpenceUrl, ExpenceData)
+      .then((response) => {
+        setExpenceResponse(response.data);
+        console.log("Expence Details_data response", response.data);
+        if (response.data.success === true) {
+          alert(response.data.message);
+          setTotalAmount("");
+          setAccountXcl("");
+          setTax("");
+          setSelectedDate("");
+          setSelectedButtonRepeatingId("");
+          setSelectedButtonResponsibleId("");
+          setExpenceCategoryValue("");
+          setSuplier("");
+          setNotes("");
+          setSelectedButtonDepositId("");
+          setSelectedPaidDate("");
+          setExpenseDes("");
+          setIsLoading(false);
+          handlePopUp();
+        } else {
+          setEmailError(response.data.message);
+          console.error("ExpenceDetail_error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("ExpenceDetail error...:", error);
+        setIsLoading(false);
+      });
+  };
+
+  const handleSaveBtn = () => {
+    if (totalAmount.trim() === "") {
+      setTotalAmountError("Total amount is required.");
+    } else if (selectedDate.trim() === "") {
+      setSelectedDateError("Due date is required.");
+    } else if (selectedPaidDate.trim() === "") {
+      setSelectedPaidDateError("Paid date is required.");
+    } else if (selectedButtonRepeatingId === "") {
+      setSelectedButtonRepeatingError("select Repating.");
+    } else if (!ExpenceCategoryValue) {
+      setExpenceCategoryValueError("select Responsible Category.");
+    } else {
+      Expencehandle();
+      setSelectedPaidDateError("");
+      setSelectedDateError("");
+      setSelectedButtonRepeatingError("");
+      setSelectedPaidDateError("");
+      setExpenceCategoryValueError("");
+    }
+  };
+
+  useEffect(() => {
+    handleExpenceCategory();
+    handleResponsible();
+    Expencehandle();
+  }, []);
   return (
     <View style={AddExpensesDetailsStyle.mainContainer}>
       <ScrollView>
         <View style={AddExpensesDetailsStyle.heading_View}>
           <Text style={AddExpensesDetailsStyle.heading_Text}>
-            {"Add lease details"}
+            {"Add expense details"}
           </Text>
           <TouchableOpacity onPress={handlePopUp}>
             <AntDesign
@@ -67,9 +279,15 @@ export default AddExpensesDetails = (props) => {
               style={AddExpensesDetailsStyle.input}
               value={totalAmount}
               onChangeText={setTotalAmount}
+              onBlur={() => validateTotalamount(totalAmount)}
               placeholder="Enter the total amount of the expense"
               placeholderTextColor="#999"
+              keyboardType="phone-pad"
+              maxLength={5}
             />
+            <Text style={AddExpensesDetailsStyle.errorText}>
+              {totalAmountError}
+            </Text>
           </View>
           <View style={AddExpensesDetailsStyle.tax_main_view}>
             <View style={[AddExpensesDetailsStyle.inputContainer, { flex: 1 }]}>
@@ -125,34 +343,119 @@ export default AddExpensesDetails = (props) => {
                 _ApplyButton={toggleModal}
               />
             </View>
+            <Text style={AddExpensesDetailsStyle.errorText}>
+              {selectedDateError}
+            </Text>
           </View>
-          <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Repeating expense?*"}</Text>
+
+          <View style={AddExpensesDetailsStyle.addition_featureView}>
+            <Text style={AddExpensesDetailsStyle.Furnished_Text}>
+              {"Repeating expense?"}
+            </Text>
             <RowButtons
               LeftButtonText={"Yes"}
-              leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-              LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+              leftButtonbackgroundColor={
+                !selectedButtonRepeating
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButtonRepeating
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButtonRepeating
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButtonRepeating(false);
+                setSelectedButtonRepeatingId(1);
+              }}
               RightButtonText={"No"}
-              RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-              RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-              RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+              RightButtonbackgroundColor={
+                selectedButtonRepeating
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButtonRepeating
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButtonRepeating
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedButtonRepeating(true);
+                setSelectedButtonRepeatingId(0);
+              }}
             />
+            <Text style={AddExpensesDetailsStyle.errorText}>
+              {selectedButtonRepeatingError}
+            </Text>
           </View>
-          <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>
+
+          <View style={AddExpensesDetailsStyle.addition_featureView}>
+            <Text style={AddExpensesDetailsStyle.Furnished_Text}>
               {"Who is responsible for paying for this?"}
             </Text>
             <RowButtons
-              LeftButtonText={"Tenant"}
-              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-              LeftButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-              LeftButtonborderColor={_COLORS.Kodie_GrayColor}
-              RightButtonText={"Landlord"}
-              RightButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-              RightButtonTextColor={_COLORS.Kodie_BlackColor}
-              RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+              LeftButtonText={
+                selectedResponsibleData[0]?.description || "Landlord"
+              }
+              leftButtonbackgroundColor={
+                !selectedButtonResponsible
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButtonResponsible
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButtonResponsible
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButtonResponsible(false);
+                setSelectedButtonResponsibleId(
+                  selectedResponsibleData[0]?.lookup_key
+                );
+              }}
+              RightButtonText={
+                selectedResponsibleData[1]?.description || "Tenant"
+              }
+              RightButtonbackgroundColor={
+                selectedButtonResponsible
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButtonResponsible
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButtonResponsible
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedButtonResponsible(true);
+                setSelectedButtonResponsibleId(
+                  selectedResponsibleData[1]?.lookup_key
+                );
+              }}
             />
+            <Text style={AddExpensesDetailsStyle.errorText}>
+              {selectedButtonRepeatingError}
+            </Text>
           </View>
           <View style={AddExpensesDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Expense category*"}</Text>
@@ -165,17 +468,22 @@ export default AddExpensesDetails = (props) => {
               selectedTextStyle={AddExpensesDetailsStyle.selectedTextStyle}
               inputSearchStyle={AddExpensesDetailsStyle.inputSearchStyle}
               iconStyle={AddExpensesDetailsStyle.iconStyle}
-              data={data}
+              data={ExpenceCategoryData}
               maxHeight={300}
-              labelField="label"
-              valueField="value"
+              labelField="description"
+              valueField="lookup_key"
               placeholder="6-month"
-              value={value}
+              value={ExpenceCategoryValue}
               onChange={(item) => {
-                setValue(item.value);
+                setExpenceCategoryValue(item.lookup_key);
+                handleDropdownChange();
               }}
             />
+            <Text style={AddExpensesDetailsStyle.errorText}>
+              {ExpenceCategoryValueError}
+            </Text>
           </View>
+
           <View style={AddExpensesDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Supplier"}</Text>
             <TextInput
@@ -196,12 +504,13 @@ export default AddExpensesDetails = (props) => {
               placeholderTextColor="#999"
             />
           </View>
+
           <View style={AddExpensesDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
             <TextInput
               style={[AddExpensesDetailsStyle.input, { height: 100 }]}
-              value={expenseDes}
-              onChangeText={setExpenseDes}
+              value={notes}
+              onChangeText={setNotes}
               placeholder="Enter any notes about your expense"
               placeholderTextColor="#999"
               multiline
@@ -209,44 +518,82 @@ export default AddExpensesDetails = (props) => {
               textAlignVertical={"top"}
             />
           </View>
-          <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Mark as paid?"}</Text>
+          <View style={AddExpensesDetailsStyle.addition_featureView}>
+            <Text style={AddExpensesDetailsStyle.Furnished_Text}>
+              {"Mark as paid?"}
+            </Text>
             <RowButtons
               LeftButtonText={"Yes"}
-              leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-              LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+              leftButtonbackgroundColor={
+                !selectedButtonDeposit
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButtonDeposit
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButtonDeposit
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButtonDeposit(false);
+                setSelectedButtonDepositId(0);
+              }}
               RightButtonText={"No"}
-              RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-              RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-              RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+              RightButtonbackgroundColor={
+                selectedButtonDeposit
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButtonDeposit
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButtonDeposit
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedButtonDeposit(true);
+                setSelectedButtonDepositId(1);
+              }}
             />
           </View>
+
           <View style={AddExpensesDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Paid date*"}</Text>
             <View style={AddExpensesDetailsStyle.datePickerView}>
               <CalendarModal
-                SelectDate={selectedDate ? selectedDate : "Start Date"}
+                SelectDate={selectedPaidDate ? selectedPaidDate : "Start Date"}
                 _textInputStyle={{
-                  color: selectedDate
+                  color: selectedPaidDate
                     ? _COLORS.Kodie_BlackColor
                     : _COLORS.Kodie_GrayColor,
                 }}
-                calenderIcon={toggleModal}
-                onDayPress={handleDayPress}
-                Visible={isModalVisible}
-                onRequestClose={toggleModal}
+                calenderIcon={togglePaidModal}
+                onDayPress={handlePaidDatePress}
+                Visible={isPaidModalVisible}
+                onRequestClose={togglePaidModal}
                 markedDates={{
-                  [selectedDate]: {
+                  [selectedPaidDate]: {
                     selected: true,
                     selectedColor: _COLORS.Kodie_lightGreenColor,
                     selectedTextColor: _COLORS.Kodie_BlackColor,
                   },
                 }}
-                _closeButton={toggleModal}
-                _ApplyButton={toggleModal}
+                _closeButton={togglePaidModal}
+                _ApplyButton={togglePaidModal}
               />
             </View>
+            <Text style={AddExpensesDetailsStyle.errorText}>
+              {selectedPaidDateError}
+            </Text>
           </View>
           <View style={AddExpensesDetailsStyle.ButtonView}>
             <TouchableOpacity
@@ -289,7 +636,7 @@ export default AddExpensesDetails = (props) => {
                 },
               ]}
               onPress={() => {
-                handleOptionClick("Save");
+                handleSaveBtn();
               }}
             >
               <Text
@@ -310,6 +657,7 @@ export default AddExpensesDetails = (props) => {
           </View>
         </View>
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

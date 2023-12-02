@@ -5,6 +5,8 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform
 } from "react-native";
 import { PersonStyle } from "./PersonStyle";
 import { _COLORS, LABEL_STYLES } from "../../../../../../../../Themes";
@@ -13,7 +15,7 @@ import { CommonLoader } from "../../../../../../../../components/Molecules/Activ
 import { useDispatch, useSelector } from "react-redux";
 export default Person = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  // console.log("logindata.....", loginData.Login_details.result);
+  const property_id = props.property_id;
   const [firstName, setFirstName] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
   const [lastName, setLastName] = useState("");
@@ -23,7 +25,7 @@ export default Person = (props) => {
   const [PhoneNumber, setPhoneNumber] = useState("");
   const [PhoneNumbeError, setPhoneNumberError] = useState("");
   const [note, setNote] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("Save");
   const [isLoading, setIsLoading] = useState(false);
   const [personResponse, setpersonResponse] = useState("");
   const handleOptionClick = (option) => {
@@ -86,20 +88,20 @@ export default Person = (props) => {
     }
     setPhoneNumber(text);
   };
-  const PersonDetailsData = {
-    user_key: loginData.Login_details.result,
-    upd_key: 5,
-    first_name: firstName,
-    last_name: lastName,
-    email: email,
-    phone_number: PhoneNumber,
-    notes: note,
-  };
+
 
   // API bind person code here.....
   const Personhandle = () => {
-    // const url = Config.API_URL;
-    // const PersonUrl = url + "user_signup";
+
+    const PersonDetailsData = {
+      user_key: loginData.Login_details.result,
+      upd_key: property_id,
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      phone_number: PhoneNumber,
+      notes: note,
+    };
     const PersonUrl =
       "https://e3.cylsys.com/api/v1/tanant_details/create/person";
     console.log("Request URL:", PersonUrl);
@@ -110,10 +112,9 @@ export default Person = (props) => {
       .then((response) => {
         setpersonResponse(response.data);
         console.log("Person Details_data response", response.data);
-        if (response.data.success == true) {
+        if (response.data.success == true || response.data.error == false) {
           alert(response.data.message);
           setIsLoading(false);
-          props.navigation.navigate("LeaseSummary");
           setFirstName("");
           setLastName("");
           setEmail("");
@@ -121,10 +122,9 @@ export default Person = (props) => {
           setPhoneNumber("");
           setNote("");
           setIsLoading(false);
-        } else  {
+        } else {
           setEmailError(response.data.message);
           console.error("personDetail_error:", response.data.error);
-          alert(response.data.error);
           setIsLoading(false);
         }
       })
@@ -134,7 +134,8 @@ export default Person = (props) => {
         setIsLoading(false);
       });
   };
-
+  // setEmailError(response.data.message);
+  // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
     if (firstName.trim() === "") {
       setFirstNameError("First name is required.");
@@ -144,13 +145,11 @@ export default Person = (props) => {
       setEmailError("Email is required.");
     } else {
       Personhandle();
-      alert("done...");
-      console.log("all data get here", Personhandle());
     }
   };
 
   return (
-    <View style={PersonStyle.mainConatainer}>
+    <KeyboardAvoidingView style={PersonStyle.mainConatainer}   behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <ScrollView>
         <View style={PersonStyle.card}>
           <View style={PersonStyle.inputContainer}>
@@ -184,6 +183,7 @@ export default Person = (props) => {
               value={email}
               onChangeText={setEmail}
               onBlur={() => handlePersonEmail(email)}
+              // onChangeText={() => handlePersonEmail(email)}
               placeholder="Enter tenant’s email address"
               placeholderTextColor="#999"
             />
@@ -261,7 +261,7 @@ export default Person = (props) => {
               ]}
               onPress={() => {
                 handleSaveBtn();
-                handleOptionClick("Save");
+                // handleOptionClick("Save");
               }}
             >
               <Text
@@ -283,6 +283,6 @@ export default Person = (props) => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </KeyboardAvoidingView>
   );
 };

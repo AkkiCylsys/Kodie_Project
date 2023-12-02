@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Image, TouchableOpacity,FlatList} from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { _COLORS, IMAGES } from "../../../../../../Themes";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { TenantDetailsStyle } from "./TenantDetailsStyle";
@@ -48,23 +48,29 @@ const tental_recipt_data = [
 ];
 export default TenantDetails = () => {
   const [rating, setRating] = useState(4);
-  const rental_recipt_render = ({item,index}) => {
+  const rental_recipt_render = ({ item, index }) => {
     return (
       <View>
         <View style={TenantDetailsStyle.Account_main_View}>
           <View style={TenantDetailsStyle.account_view}>
             <View>
-              <Text style={TenantDetailsStyle.Accounting_Text}>{item.heading}</Text>
+              <Text style={TenantDetailsStyle.Accounting_Text}>
+                {item.heading}
+              </Text>
               <View style={{ flexDirection: "row" }}>
                 <Text style={TenantDetailsStyle.Paid_Text}>{"Paid by:"}</Text>
-                <Text style={TenantDetailsStyle.Paid_Text}>{item.paidByUser}</Text>
+                <Text style={TenantDetailsStyle.Paid_Text}>
+                  {item.paidByUser}
+                </Text>
               </View>
             </View>
             <View>
               <Text style={TenantDetailsStyle.Amount_Text}>
                 {item.amount_status}
               </Text>
-              <Text style={TenantDetailsStyle.Accounting_Text}>{item.Amount}</Text>
+              <Text style={TenantDetailsStyle.Accounting_Text}>
+                {item.Amount}
+              </Text>
             </View>
           </View>
         </View>
@@ -154,7 +160,7 @@ export default TenantDetails = () => {
         RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
       />
       <DividerIcon />
-      <View>
+      {/* <View>
         <Text style={TenantDetailsStyle.heading_Text}>{"Rental receipts"}</Text>
         <FlatList
           data={tental_recipt_data}
@@ -164,7 +170,7 @@ export default TenantDetails = () => {
           keyExtractor={(item) => item?.id}
           renderItem={rental_recipt_render}
         />
-      </View>
+      </View> */}
     </View>
   );
 };

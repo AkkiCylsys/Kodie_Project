@@ -79,11 +79,13 @@ export default PropertyReview = (props) => {
   const property_id = props?.route?.params?.property_id;
   const MultiImageName = props?.route?.params?.MultiImageName;
   const selectedVideos = props?.route?.params?.selectedVideos;
+  const editMode = props?.route?.params?.editMode;
   console.log(
     ".............property_idreview",
     property_id,
     MultiImageName,
-    selectedVideos
+    selectedVideos,
+    editMode
   );
   const [activeTab, setActiveTab] = useState("Tab1");
   const [tabValue, setTabValue] = useState("");
@@ -91,8 +93,7 @@ export default PropertyReview = (props) => {
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
-  const [currentPage, setCurrentPage] = useState(4);
-
+  const [currentPage, setCurrentPage] = useState(3);
   const Detail_rander = ({ item, index }) => {
     // const key = Object.keys(item)[0];
     // const value = Object.values(item)[0];
@@ -375,7 +376,7 @@ export default PropertyReview = (props) => {
               <DividerIcon marginTop={8} />
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
-                  _ButtonText={"Add property"}
+                  _ButtonText={editMode ? "Edit property" : "Add property"}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
                     props?.navigation?.navigate("Properties");
@@ -408,10 +409,10 @@ export default PropertyReview = (props) => {
           </>
         );
       case "Tab2":
-        return <Leases />;
+        return <Leases property_id={property_id} />;
 
       case "Tab3":
-        return <Expenses />;
+        return <Expenses property_id={property_id} />;
       case "Tab4":
         return <Documents />;
 

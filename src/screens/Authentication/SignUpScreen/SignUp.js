@@ -58,7 +58,7 @@ export default SignUp = (props) => {
   const handleSignUpEmail = (text) => {
     setEmail(text);
     if (text.trim() === "") {
-      setEmailError("Email is required");
+      setEmailError("Email is required !");
     } else if (!validateSignUpEmail(text)) {
       setEmailError(
         "Hold on, this email appears to be invalid. Please enter a valid email address."
@@ -72,7 +72,7 @@ export default SignUp = (props) => {
   const handleSignUpPassword = (text) => {
     setPassword(text);
     if (text.trim() === "") {
-      setPasswordError("Password is required");
+      setPasswordError("Password is required !");
     } else {
       setPasswordError("");
     }
@@ -227,7 +227,7 @@ export default SignUp = (props) => {
         "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else if (password.trim() === "") {
-      setPasswordError("Password is required");
+      setPasswordError("Password is required !");
     } else if (!term && !privacy) {
       alert("Please accept both Terms & Conditions and Privacy Policy.");
     } else if (!term) {
@@ -334,6 +334,7 @@ export default SignUp = (props) => {
                 onChangeText={setPassword}
                 onBlur={() => handleSignUpPassword(password)}
                 placeholder="Password"
+                placeholderTextColor="#999"
                 secureTextEntry={!showPassword}
               />
               <TouchableOpacity onPress={handleTogglePassword}>

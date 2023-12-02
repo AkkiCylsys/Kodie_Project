@@ -30,6 +30,7 @@ import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useCallback } from "react";
 import { useIsFocused } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 const HorizontalData = [
   "All",
   "Most recent",
@@ -59,6 +60,8 @@ const property_List2 = [
   },
 ];
 const PropertyList = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData", loginData?.Login_details?.result);
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -72,40 +75,83 @@ const PropertyList = (props) => {
   const refRBSheet = useRef();
   useEffect(() => {
     if (isvisible) {
-      propertyList_Data("All");
+      propertyList_Data();
     }
   }, [isvisible, page]);
 
+  // const propertyList_Data = (filter) => {
+  //   const propertyDataList = {
+  //     property_filter: "All",
+  //     user_account_id: loginData?.Login_details?.result,
+  //     page_no: page,
+  //     limit: 10,
+  //     order_col: 1,
+  //     order_wise: "DESC",
+  //   };
+
+  //   const url = Config.API_URL;
+  //   const propertyData_List = url + "get_property_details_by_filter";
+  //   console.log("Request URL :", propertyData_List);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(propertyData_List, propertyDataList)
+  //     .then((response) => {
+  //       console.log("property_Data_list", response.data);
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+  //         console.log(
+  //           "propertyDataList....",
+  //           response.data?.property_details?.image_path
+  //         );
+  //         // filter is 'Most Recent'.................
+  //         if (filter === "Most Recent") {
+  //           const newData = response.data.property_details.slice(0, 5);
+  //           // setProperty_Data_List((prevData) =>
+  //           //   page > 1 ? [...prevData, ...newData] : newData
+  //           // );
+  //           setProperty_Data_List(newData);
+  //           console.log("New Data for Most Recent:...........", newData);
+  //         } else {
+  //           const newData = response.data.property_details;
+  //           setProperty_Data_List((prevData) =>
+  //             page > 1 ? [...prevData, ...newData] : newData
+  //           );
+  //         }
+  //         // setProperty_Data_List(filter); // console.log(Property_Data_List, "Rahul...");
+  //       } else {
+  //         console.error("property_Data_list_error:", response.data.error);
+  //         // alert(response.data.error);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("property_Data_list error:", error);
+  //       setIsLoading(false);
+  //     });
+  // };
   const propertyList_Data = (filter) => {
     const propertyDataList = {
-      property_filter: filter,
-      user_account_id: 84,
+      property_filter: filter || "All", // Use the provided filter or default to "All"
+      user_account_id: loginData?.Login_details?.result,
       page_no: page,
       limit: filter === "Most Recent" ? 5 : 10,
       order_col: 1,
       order_wise: "DESC",
     };
 
-    const url = Config.API_URL;
-    const propertyData_List = url + "get_property_details_by_filter";
-    console.log("Request URL :", propertyData_List);
+    const url =
+      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/get_property_details_by_filter";
+    console.log("Request URL :", url);
     setIsLoading(true);
     axios
-      .post(propertyData_List, propertyDataList)
+      .post(url, propertyDataList)
       .then((response) => {
         console.log("property_Data_list", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log(
-            "propertyDataList....",
-            response.data?.property_details?.image_path
-          );
-          // filter is 'Most Recent'.................
+
           if (filter === "Most Recent") {
             const newData = response.data.property_details.slice(0, 5);
-            // setProperty_Data_List((prevData) =>
-            //   page > 1 ? [...prevData, ...newData] : newData
-            // );
             setProperty_Data_List(newData);
             console.log("New Data for Most Recent:...........", newData);
           } else {
@@ -114,10 +160,8 @@ const PropertyList = (props) => {
               page > 1 ? [...prevData, ...newData] : newData
             );
           }
-          // setProperty_Data_List(filter); // console.log(Property_Data_List, "Rahul...");
         } else {
           console.error("property_Data_list_error:", response.data.error);
-          // alert(response.data.error);
           setIsLoading(false);
         }
       })
@@ -126,6 +170,7 @@ const PropertyList = (props) => {
         setIsLoading(false);
       });
   };
+
   const handleEndReached = () => {
     if (!isLoading) {
       setPage((prevPage) => prevPage + 1);
@@ -170,7 +215,7 @@ const PropertyList = (props) => {
       }
     } catch (error) {
       console.error("Error deleting property:", error);
-      Alert.alert("Error", "An error occurred. Please try again later.");
+      // Alert.alert("Error", "An error occurred. Please try again later.");
     }
   };
 
@@ -182,6 +227,8 @@ const PropertyList = (props) => {
 
   const horizontal_render = ({ item }) => {
     const isSelected = item === filterData;
+    // console.log("isSelected.....",isSelected,filterData)
+
     return (
       <TouchableOpacity
         style={[

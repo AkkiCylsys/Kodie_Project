@@ -536,7 +536,7 @@ export default Login = (props) => {
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={false}
-        height={Platform.OS === "android" ? 550 : 800}
+        height={Platform.OS === "android" ? 550 : 565}
         customStyles={{
           wrapper: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -636,6 +636,7 @@ export default Login = (props) => {
                     onChangeText={handleverificationCode}
                     onBlur={() => handleverificationCode(verificationcode)}
                     placeholder="Code"
+                    returnKeyType="done"
                     placeholderTextColor="#999"   
                     keyboardType="number-pad"
                     maxLength={6}
@@ -746,6 +747,7 @@ export default Login = (props) => {
                     onChangeText={handleNewPassword}
                     onBlur={() => handleNewPassword(newpassword)}
                     placeholder=" Enter New Password"
+                    placeholderTextColor="#999"
                     secureTextEntry={!showNewPassword}
                   />
                   <TouchableOpacity onPress={handleToggleNewPassword}>
@@ -783,6 +785,7 @@ export default Login = (props) => {
                     onChangeText={handleConfirmpassword}
                     onBlur={() => handleConfirmpassword(confirmPassword)}
                     placeholder=" Enter Confirm Password"
+                    placeholderTextColor="#999"
                     secureTextEntry={!showResetPassword}
                   />
                   <TouchableOpacity onPress={handleToggleResetPassword}>
@@ -851,8 +854,9 @@ export default Login = (props) => {
                     : "1%"
                   : Platform.OS === "android"
                   ? "20%"
-                  : "60%"
+                  : "0%"
               }
+              
             />
           </View>
         </View>

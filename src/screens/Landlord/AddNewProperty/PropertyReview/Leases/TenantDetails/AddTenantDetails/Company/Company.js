@@ -12,9 +12,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import axios from "axios";
 
-export default Company = () => {
+export default Company = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-
+  const property_id = props.property_id;
   const [companyName, setCompanyName] = useState("");
   const [companyNameError, setCompanyNameError] = useState("");
   const [email, setEmail] = useState("");
@@ -25,18 +25,18 @@ export default Company = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [mobileNumberError, setMobileNumberError] = useState("");
   const [note, setNote] = useState("");
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState("Save");
   const [companyResponse, setCompanyResponse] = useState("");
   const handleOptionClick = (option) => {
     setSelectedOption(option);
   };
 
-    //... Regex signup email validation
-    const validateCompanyEmail = (email) => {
-      const emailPattern =
-        /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
-      return emailPattern.test(email);
-    };
+  //... Regex signup email validation
+  const validateCompanyEmail = (email) => {
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    return emailPattern.test(email);
+  };
   // Validation for First Name....
   const validateCompanyName = (text) => {
     if (text === "") {
@@ -91,7 +91,7 @@ export default Company = () => {
   };
   const CompanyDetailsData = {
     user_key: loginData.Login_details.result,
-    upd_key: 5,
+    upd_key: property_id,
     org_name: companyName,
     email: email,
     phone_number: PhoneNumber,
@@ -124,7 +124,7 @@ export default Company = () => {
           setNote("");
           setIsLoading(false);
         } else {
-          setEmailError('error email here.....',response.data.message);
+          setEmailError(response.data.message);
           console.error("CompanyDetail_error:", response.data.error);
           alert(response.data.error);
           setIsLoading(false);
@@ -132,7 +132,6 @@ export default Company = () => {
       })
       .catch((error) => {
         console.error("CompanyDetail error...:", error);
-        alert(error);
         setIsLoading(false);
       });
   };
@@ -144,8 +143,6 @@ export default Company = () => {
       setEmailError("Email is required.");
     } else {
       Companyhandle();
-      alert("done...");
-      console.log("Company all data get here", Companyhandle());
     }
   };
   return (

@@ -37,7 +37,9 @@ import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpStep
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 export default PropertyDetails = (props) => {
   const propertyid = props?.route?.params?.propertyid;
+  const editMode = props?.route?.params?.editMode;
   console.log("propertyid....", propertyid);
+  console.log("EditProperty....", editMode);
   const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
@@ -615,6 +617,7 @@ export default PropertyDetails = (props) => {
                       city: city,
                       state: state,
                       country: country,
+                      editMode: editMode,
                     });
                   }}
                 />
