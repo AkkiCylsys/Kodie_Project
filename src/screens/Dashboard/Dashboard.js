@@ -27,6 +27,7 @@ import SelectDate from "../../components/Molecules/SelectDate/SelectDate";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { BackHandler } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import FloatingActionButton from "../../components/Molecules/FloatingActionButton/FloatingActionButton";
 const IncomeData = [
   {
     id: "1",
@@ -306,9 +307,12 @@ export default Dashboard = (props) => {
             </Card.Content>
           </Card>
 
+          {/* Ratio comopent call here... */}
           <View>
             <CircleProgress />
           </View>
+
+<View>
 
           <FlatList
             data={IncomeData}
@@ -318,7 +322,9 @@ export default Dashboard = (props) => {
             contentContainerStyle={{}}
             keyExtractor={(item) => item?.id}
             renderItem={Income_render}
-          />
+            />
+            </View>
+
           <View style={DashboardStyle.maintenance_statusView}>
             <View style={DashboardStyle.maintenance_view}>
               <Text style={DashboardStyle.maintenance_Text}>
@@ -416,6 +422,11 @@ export default Dashboard = (props) => {
         </View>
       </ScrollView>
       {/* RBSheet define here */}
+      
+          {/* Floating action button comopent call here... */}
+          <View style={DashboardStyle.floating_action_btn_view}>
+            <FloatingActionButton />
+          </View>
       <RBSheet
         ref={refRBSheet}
         height={280}

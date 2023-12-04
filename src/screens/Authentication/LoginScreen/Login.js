@@ -556,6 +556,22 @@ export default Login = (props) => {
           container: LoginStyles.bottomModal_container,
         }}
       >
+        {/* <View style={LoginStyles.ModalMainView}>
+          <Text style={LoginStyles.Modaltitle}>Reset password</Text>
+          <TouchableOpacity
+            onPress={() => {
+              refRBSheet.current.close();
+              setIsClick(0);
+              setResetEmail("");
+              setVerificationcode("");
+              setVerificationcodeError("");
+              setNewPassword("");
+              setPasswordError("");
+              setConfirmPassword("");
+              setConfirmPasswordError("");
+              setResetEmailError("");
+            }}
+          > */}
         <View style={LoginStyles.ModalMainView}>
           <Text style={LoginStyles.Modaltitle}>Reset password</Text>
           <TouchableOpacity
@@ -692,6 +708,7 @@ export default Login = (props) => {
             <ScrollView
               contentContainerStyle={{ marginBottom: 90 }}
               showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
             >
               {/* <View style={LoginStyles.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Email</Text>

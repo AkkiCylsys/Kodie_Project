@@ -109,6 +109,10 @@ export const DashboardStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
     paddingVertical: 18,
   },
+  floating_action_btn_view:{
+    flex:1,
+    marginLeft:375,
+  },
   maintenance_view: {
     flexDirection: "row",
     justifyContent: "space-between",
