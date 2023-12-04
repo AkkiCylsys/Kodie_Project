@@ -214,7 +214,7 @@ const EditProfile = () => {
             height={200}
             customStyles={{
               wrapper: {
-                backgroundColor: "transparent",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
               },
               draggableIcon: {
                 backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -261,7 +261,7 @@ const EditProfile = () => {
         height={200}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,

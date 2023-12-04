@@ -24,11 +24,4 @@ export const BottomModalDataStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
-  bottomModal_container: {
-    borderWidth: 0.5,
-    borderColor: _COLORS.Kodie_LightGrayColor,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    elevation: 10,
-  },
 });
