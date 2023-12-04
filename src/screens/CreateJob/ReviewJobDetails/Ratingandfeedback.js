@@ -17,6 +17,7 @@ import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 const Ratingandfeedback = (props) => {
   const [rating, setRating] = useState(4);
   const [propertyDesc, setPropertyDesc] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <View style={RatingandfeedbackStyle.Mainview}>
@@ -107,6 +108,7 @@ const Ratingandfeedback = (props) => {
                 <CustomSingleButton
                   _ButtonText={"Submit"}
                   Text_Color={_COLORS.Kodie_WhiteColor}
+                  disabled={isLoading ? true : false}
                 />
                 <TouchableOpacity>
                   <Text style={RatingandfeedbackStyle.SkipText}>

@@ -16,6 +16,7 @@ const Contractors3 = (props) => {
   const refRBSheet = useRef();
   const [activeScreen, setActiveScreen] = useState(false);
   const [activeTab, setActiveTab] = useState("Tab3");
+  const [isLoading, setIsLoading] = useState(false);
   const toggleView = () => {
     setVisible(!visible);
   };
@@ -89,6 +90,7 @@ const Contractors3 = (props) => {
               onPress={() => {
                 refRBSheet.current.open();
               }}
+              disabled={isLoading ? true : false}
             />
           </View>
           <View style={ContractorsStyle3.Line1} />
@@ -104,7 +106,7 @@ const Contractors3 = (props) => {
             CoverText3="read more"
           />
 
-          <DividerIcon/>
+          <DividerIcon />
           <ContractorsComponent
             name="Mesut Ozil"
             filedname="Plumber"
@@ -117,7 +119,7 @@ const Contractors3 = (props) => {
             CoverText3="read more"
           />
 
-          <DividerIcon/>
+          <DividerIcon />
           <ContractorsComponent
             name="Jack Black"
             filedname="Handyman"
@@ -129,7 +131,7 @@ const Contractors3 = (props) => {
             CoverText2="I am the best contractor in town, ready to go. Check my best works portfolio and..."
             CoverText3="read more"
           />
-          <DividerIcon/>
+          <DividerIcon />
         </View>
       </ScrollView>
       <RBSheet

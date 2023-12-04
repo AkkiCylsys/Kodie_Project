@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, FlatList, Image } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  Image,
+} from "react-native";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
 import { SliderBox } from "react-native-image-slider-box";
@@ -61,6 +68,7 @@ const Detail = [
 ];
 
 export default ViewPropertyDetails = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -79,7 +87,6 @@ export default ViewPropertyDetails = (props) => {
         MiddleText={"8502 Preston Rd. Inglewood..."}
       />
       <ScrollView>
-
         <View style={ViewDetailCss.slider_view}>
           <SliderBox
             images={images}
@@ -102,12 +109,12 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.apartment_View}>
-            <Text style={ViewDetailCss.apartment_text}>
-              {"Apartment"}
-            </Text>
+            <Text style={ViewDetailCss.apartment_text}>{"Apartment"}</Text>
             <View style={ViewDetailCss.share_View}>
               <TouchableOpacity style={ViewDetailCss.availableButtonview}>
-                <Text style={ViewDetailCss.availableButtonText}>AVAILABLE : NOW</Text>
+                <Text style={ViewDetailCss.availableButtonText}>
+                  AVAILABLE : NOW
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity>
                 <Entypo
@@ -134,10 +141,11 @@ export default ViewPropertyDetails = (props) => {
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-            <Text style={ViewDetailCss.LocationText}>{"8502 Preston Rd.Inglewood,Queensland,Australia,."}</Text>
+            <Text style={ViewDetailCss.LocationText}>
+              {"8502 Preston Rd.Inglewood,Queensland,Australia,."}
+            </Text>
           </View>
           <Text style={ViewDetailCss.apartment_text}>$850.00</Text>
-
         </View>
         <DividerIcon />
         <View style={ViewDetailCss.subContainer}>
@@ -146,11 +154,9 @@ export default ViewPropertyDetails = (props) => {
               "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
             }
           </Text>
-
         </View>
         <DividerIcon />
         <View style={ViewDetailCss.subContainer}>
-
           <FlatList
             data={Detail}
             scrollEnabled
@@ -163,12 +169,12 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <DividerIcon />
         <View style={ViewDetailCss.Container}>
-          <Text style={ViewDetailCss.inspections}>
-            {
-              "Inspections"
-            }
-          </Text>
-          <CustomSingleButton _ButtonText={'Request an inspection'} Text_Color={_COLORS.Kodie_WhiteColor} />
+          <Text style={ViewDetailCss.inspections}>{"Inspections"}</Text>
+          <CustomSingleButton
+            disabled={isLoading ? true : false}
+            _ButtonText={"Request an inspection"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+          />
         </View>
         <DividerIcon />
         <View style={ViewDetailCss.Container}>
@@ -201,7 +207,9 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
-            <Text style={ViewDetailCss.propery_det}>{"External featuress"}</Text>
+            <Text style={ViewDetailCss.propery_det}>
+              {"External featuress"}
+            </Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>
               <AntDesign
@@ -215,7 +223,9 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
-            <Text style={ViewDetailCss.propery_det}>{"Points of interest"}</Text>
+            <Text style={ViewDetailCss.propery_det}>
+              {"Points of interest"}
+            </Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>
               <AntDesign
@@ -229,12 +239,14 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <View style={ViewDetailCss.bottomButtonMainView}>
           <RowButtons
-            LeftButtonText={'Submit application'}
+            LeftButtonText={"Submit application"}
             LeftButtonTextColor={_COLORS.Kodie_BlackColor}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-            onPressLeftButton={() => props.navigation.navigate('SubmitApplication')}
-            RightButtonText={'Message owner'}
+            onPressLeftButton={() =>
+              props.navigation.navigate("SubmitApplication")
+            }
+            RightButtonText={"Message owner"}
             RightButtonborderColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView,TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Dropdown, MultiSelect } from "react-native-element-dropdown";
 
 import SearchBar from "../../../../components/Molecules/SearchBar/SearchBar";
 import { FONTFAMILY, _COLORS } from "../../../../Themes";
 import { PropertyList2Css } from "./PropertyList2Css";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
-import AntDesign from "react-native-vector-icons/AntDesign"
+import AntDesign from "react-native-vector-icons/AntDesign";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 const data = [
   { label: "Bharat", value: "1" },
@@ -30,11 +30,17 @@ const AdditionalKeyFeatures = [
 const PropertyList2 = (props) => {
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const renderDataItem = (item) => {
     return (
       <View style={PropertyList2Css.item}>
         <Text style={PropertyList2Css.selectedTextStyle}>{item.label}</Text>
-        <AntDesign style={PropertyList2Css.icon} color={_COLORS.Kodie_BlackColor} name="check" size={20}/>
+        <AntDesign
+          style={PropertyList2Css.icon}
+          color={_COLORS.Kodie_BlackColor}
+          name="check"
+          size={20}
+        />
       </View>
     );
   };
@@ -180,7 +186,9 @@ const PropertyList2 = (props) => {
             <View style={PropertyList2Css.spaceView} />
 
             <View style={PropertyList2Css.flexContainer}>
-              <Text style={PropertyList2Css.inputText}>On-street parking spaces:</Text>
+              <Text style={PropertyList2Css.inputText}>
+                On-street parking spaces:
+              </Text>
               <Dropdown
                 style={PropertyList2Css.dropdown}
                 placeholderStyle={PropertyList2Css.placeholderStyle}
@@ -214,9 +222,7 @@ const PropertyList2 = (props) => {
             RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
             RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
           />
-          <Text style={PropertyList2Css.inputText}>
-            {"Pet friendly?"}
-          </Text>
+          <Text style={PropertyList2Css.inputText}>{"Pet friendly?"}</Text>
           <RowButtons
             LeftButtonText={"Yes"}
             leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
@@ -240,54 +246,57 @@ const PropertyList2 = (props) => {
             RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
             RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
           />
-           <Text style={PropertyList2Css.inputText}>
+          <Text style={PropertyList2Css.inputText}>
             {"Additional key features"}
           </Text>
-           <MultiSelect
-                style={PropertyList2Css.dropdown}
-                placeholderStyle={PropertyList2Css.placeholderStyle}
-                selectedTextStyle={PropertyList2Css.selectedTextStyle}
-                inputSearchStyle={PropertyList2Css.inputSearchStyle}
-                iconStyle={PropertyList2Css.iconStyle}
-                data={AdditionalKeyFeatures}
-                labelField="label"
-                valueField="value"
-                placeholder="Search features "
-                value={selected}
-                search
-                searchPlaceholder="Search..."
-                onChange={(item) => {
-                  setSelected(item);
-                }}
-                renderLeftIcon={() => (
-                  <AntDesign
-                    style={PropertyList2Css.icon}
-                    color={_COLORS.Kodie_GrayColor}
-                    name="search1"
-                    size={20}
-                  />
-                )}
-                renderRightIcon={() => (
-                  <></>
-                )}
-                renderItem={renderDataItem}
-                renderSelectedItem={(item, unSelect) => (
-                  <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-                    <View style={PropertyList2Css.selectedStyle}>
-                      <Text style={PropertyList2Css.textSelectedStyle}>
-                        {item.label}
-                      </Text>
-                      <AntDesign color={_COLORS.Kodie_WhiteColor} name="close" size={15} />
-                    </View>
-                  </TouchableOpacity>
-                )}
+          <MultiSelect
+            style={PropertyList2Css.dropdown}
+            placeholderStyle={PropertyList2Css.placeholderStyle}
+            selectedTextStyle={PropertyList2Css.selectedTextStyle}
+            inputSearchStyle={PropertyList2Css.inputSearchStyle}
+            iconStyle={PropertyList2Css.iconStyle}
+            data={AdditionalKeyFeatures}
+            labelField="label"
+            valueField="value"
+            placeholder="Search features "
+            value={selected}
+            search
+            searchPlaceholder="Search..."
+            onChange={(item) => {
+              setSelected(item);
+            }}
+            renderLeftIcon={() => (
+              <AntDesign
+                style={PropertyList2Css.icon}
+                color={_COLORS.Kodie_GrayColor}
+                name="search1"
+                size={20}
               />
-              <CustomSingleButton
-              _ButtonText={"Search"}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              backgroundColor={_COLORS.Kodie_BlackColor}
-              onPress={props.SearchButton}
-            />
+            )}
+            renderRightIcon={() => <></>}
+            renderItem={renderDataItem}
+            renderSelectedItem={(item, unSelect) => (
+              <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                <View style={PropertyList2Css.selectedStyle}>
+                  <Text style={PropertyList2Css.textSelectedStyle}>
+                    {item.label}
+                  </Text>
+                  <AntDesign
+                    color={_COLORS.Kodie_WhiteColor}
+                    name="close"
+                    size={15}
+                  />
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+          <CustomSingleButton
+            _ButtonText={"Search"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            backgroundColor={_COLORS.Kodie_BlackColor}
+            onPress={props.SearchButton}
+            disabled={isLoading ? true : false}
+          />
         </View>
       </ScrollView>
     </>

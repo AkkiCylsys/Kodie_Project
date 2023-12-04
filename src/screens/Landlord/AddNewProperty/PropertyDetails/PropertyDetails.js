@@ -620,6 +620,7 @@ export default PropertyDetails = (props) => {
                       editMode: editMode,
                     });
                   }}
+                  disabled={isLoading ? true : false}
                 />
               </View>
 

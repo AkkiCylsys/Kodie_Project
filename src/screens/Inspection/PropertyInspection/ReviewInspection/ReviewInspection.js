@@ -1,4 +1,3 @@
-
 //ScreenNo:105
 //ScreenNo:106
 import React, { useState, useRef } from "react";
@@ -14,7 +13,7 @@ import CustomSingleButton from "../../../../components/Atoms/CustomButton/Custom
 const ReviewInspection = () => {
   const [contractor, setContractor] = useState("");
   const [email, setEmail] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
   return (
@@ -56,6 +55,7 @@ const ReviewInspection = () => {
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}
           height={40}
+          disabled={isLoading ? true : false}
         />
         <DividerIcon color={_COLORS.Kodie_WhiteColor} />
         <Text style={ReviewInspectionCss.inspections}>
@@ -96,6 +96,7 @@ const ReviewInspection = () => {
           onPress={() => {
             refRBSheet.current.open();
           }}
+          disabled={isLoading ? true : false}
         />
         <RBSheet
           ref={refRBSheet}

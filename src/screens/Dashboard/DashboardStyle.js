@@ -45,7 +45,7 @@ export const DashboardStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {

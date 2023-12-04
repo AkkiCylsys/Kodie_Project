@@ -19,6 +19,7 @@ const CustomSingleButton = (props) => {
           width: props.width ? props.width : "100%",
         },
       ]}
+      disabled={props?.disabled}
     >
       {props.isLeftImage ? (
         <Image source={props.leftImage} style={CustomButtonstyles.leftIcon} />

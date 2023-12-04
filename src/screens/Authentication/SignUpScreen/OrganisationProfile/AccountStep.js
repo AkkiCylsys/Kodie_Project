@@ -34,6 +34,7 @@ const AccountStep = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
   const [value, setValue] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toggleView = () => {
     setVisible(!visible);
   };
@@ -309,6 +310,7 @@ const AccountStep = (props) => {
 
           <View style={AccountStepStyle.buttonview}>
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               leftImage={IMAGES.uploadIcon}
               isLeftImage={true}
               borderColor={_COLORS.Kodie_TransparentColor}
@@ -360,6 +362,7 @@ const AccountStep = (props) => {
 
             <View style={AccountStepStyle.secondbuttonview}>
               <CustomSingleButton
+                disabled={isLoading ? true : false}
                 leftImage={IMAGES.uploadIcon}
                 isLeftImage={true}
                 Text_Color={_COLORS.Kodie_WhiteColor}

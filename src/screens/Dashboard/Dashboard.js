@@ -85,6 +85,7 @@ export default Dashboard = (props) => {
   const singup_Data = signUp_account_response;
 
   const [value, setValue] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
@@ -373,6 +374,7 @@ export default Dashboard = (props) => {
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_lightGreenColor}
                 height={45}
+                disabled={isLoading ? true : false}
               />
             </View>
           </View>
@@ -407,6 +409,7 @@ export default Dashboard = (props) => {
                 backgroundColor={_COLORS.Kodie_lightGreenColor}
                 Text_Color={_COLORS.Kodie_BlackColor}
                 borderColor={_COLORS.Kodie_GreenColor}
+                disabled={isLoading ? true : false}
               />
             </View>
           </View>

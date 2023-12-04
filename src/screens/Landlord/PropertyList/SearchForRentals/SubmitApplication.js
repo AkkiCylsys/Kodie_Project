@@ -1,4 +1,3 @@
-
 //ScreenNo:80
 //ScreenNo:81
 //ScreenNo:83
@@ -27,7 +26,7 @@ import BottomTrandingScreeningModal from "../../../../components/Molecules/Botto
 
 export default SubmitApplication = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const refRBSheet = useRef();
   const toggleModal = () => {
@@ -166,6 +165,7 @@ export default SubmitApplication = (props) => {
             onPress={() => {
               refRBSheet.current.open();
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
         <DividerIcon />
@@ -234,6 +234,7 @@ export default SubmitApplication = (props) => {
                 _ButtonText={"Continue"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 height={48}
+                disabled={isLoading ? true : false}
               />
               <CustomSingleButton
                 _ButtonText={"Return"}
@@ -241,6 +242,7 @@ export default SubmitApplication = (props) => {
                 height={48}
                 borderColor={_COLORS.Kodie_WhiteColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
+                disabled={isLoading ? true : false}
               />
             </View>
           </View>

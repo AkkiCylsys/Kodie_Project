@@ -55,9 +55,9 @@ const proper_expens_data = [
   },
 ];
 export default Expenses = (props) => {
-    // alert(JSON.stringify(props.property_id));
-    const property_id = props.property_id;
-    console.log('property_id in Expenses..',property_id);
+  // alert(JSON.stringify(props.property_id));
+  const property_id = props.property_id;
+  console.log("property_id in Expenses..", property_id);
   const refRBSheet = useRef();
   const [Expenses_data, setExpenses_Data] = useState([]);
   const [Expenses_value, setExpenses_vata] = useState("");
@@ -179,7 +179,9 @@ export default Expenses = (props) => {
               <View style={ExpensesStyle.paid_Date_View}>
                 <Text style={ExpensesStyle.date_paid}>{"Date paid:"}</Text>
                 <Text style={ExpensesStyle.Amount_Text}>
-                  {moment(item.UPED_DUE_DATE.substring(0, 10)).format('DD MMMM YYYY')}
+                  {moment(item.UPED_DUE_DATE.substring(0, 10)).format(
+                    "DD MMMM YYYY"
+                  )}
                 </Text>
               </View>
               <TouchableOpacity
@@ -250,6 +252,7 @@ export default Expenses = (props) => {
             onPress={() => {
               refRBSheet.current.open();
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
         <RBSheet

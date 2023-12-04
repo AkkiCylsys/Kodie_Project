@@ -26,6 +26,7 @@ const images = [
 
 export default RejectConfirm = (props) => {
   const [ischeck1, setIsCheck1] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <View style={RejectConfirmCss.mainContainer}>
@@ -91,6 +92,7 @@ export default RejectConfirm = (props) => {
             Text_Color={_COLORS.Kodie_BlackColor}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             height={40}
+            disabled={isLoading ? true : false}
           />
           <TouchableOpacity
             style={[RejectConfirmCss.rowView]}

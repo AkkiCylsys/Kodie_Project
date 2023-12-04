@@ -376,7 +376,10 @@ export default PropertyReview = (props) => {
               <DividerIcon marginTop={8} />
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
-                  _ButtonText={editMode ? "Edit property" : "Add property"}
+                  disabled={isLoading ? true : false}
+                  _ButtonText={
+                    editMode == undefined ? "Add property" : "Edit property"
+                  }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
                     props?.navigation?.navigate("Properties");
@@ -388,6 +391,7 @@ export default PropertyReview = (props) => {
                   _ButtonText={"Add property features later"}
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_WhiteColor}
+                  disabled={isLoading ? true : false}
                 />
               </View>
               <TouchableOpacity
@@ -416,7 +420,7 @@ export default PropertyReview = (props) => {
       case "Tab4":
         return (
           <Documents
-            documentDetail={(folderId, folderHeading,property_id) => {
+            documentDetail={(folderId, folderHeading, property_id) => {
               props.navigation.navigate("DocumentDetails", {
                 folderId: folderId,
                 folderHeading: folderHeading,
@@ -532,30 +536,48 @@ export default PropertyReview = (props) => {
             TAB3
             TAB4
             Tab1={"Details"}
-            Tab2={"Leases"}
-            Tab3={"Expenses"}
-            Tab4={"Documents"}
+            Tab2={editMode == undefined ? null : "Leases"}
+            Tab3={editMode == undefined ? null : "Expenses"}
+            Tab4={editMode == undefined ? null : "Documents"}
             onPressTab1={() => setActiveTab("Tab1")}
-            onPressTab2={() => setActiveTab("Tab2")}
-            onPressTab3={() => setActiveTab("Tab3")}
-            onPressTab4={() => setActiveTab("Tab4")}
+            onPressTab2={() => {
+              if (editMode == undefined) {
+                null;
+              } else {
+                setActiveTab("Tab2");
+              }
+            }}
+            onPressTab3={() => {
+              if (editMode == undefined) {
+                null;
+              } else {
+                setActiveTab("Tab3");
+              }
+            }}
+            onPressTab4={() => {
+              if (editMode == undefined) {
+                null;
+              } else {
+                setActiveTab("Tab4");
+              }
+            }}
             colorTab1={
               activeTab === "Tab1"
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab2={
-              activeTab === "Tab2"
+              activeTab === "Tab2" || editMode == undefined
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab3={
-              activeTab === "Tab3"
+              activeTab === "Tab3" || editMode == undefined
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab4={
-              activeTab === "Tab4"
+              activeTab === "Tab4" || editMode == undefined
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }

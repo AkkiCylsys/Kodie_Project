@@ -139,7 +139,7 @@ export default PropertyFeature = (props) => {
     { Bedrooms: CountBedroom },
     { Bathrooms: CountBathroom },
     { ParkingSpace: CountParking },
-    { On_streetParking: CountParkingStreet },
+    { OnStreetParking: CountParkingStreet },
   ];
 
   // PRE fRIENDLY CODE HERE.........
@@ -373,7 +373,7 @@ export default PropertyFeature = (props) => {
   const updatePropertyDetails = () => {
     const updateData = {
       user: 35,
-      user_account_details_id: 84,
+      user_account_details_id: loginData?.Login_details?.result,
       location: location,
       location_longitude: longitude,
       location_latitude: latitude,
@@ -405,7 +405,7 @@ export default PropertyFeature = (props) => {
           // alert("update_property_details....", propertyid);
           props.navigation.navigate("PropertyImages", {
             property_id: propertyid,
-            editMode: "editMode",
+            editMode: editMode,
           });
           // setupdateProperty_Details(response.data.property_details);
         } else {
@@ -785,6 +785,7 @@ export default PropertyFeature = (props) => {
                     property_details();
                   }
                 }}
+                disabled={isLoading ? true : false}
               />
             </View>
             <View style={PropertyFeatureStyle.btnView}>
@@ -792,6 +793,7 @@ export default PropertyFeature = (props) => {
                 _ButtonText={"Add property features later"}
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
+                disabled={isLoading ? true : false}
               />
             </View>
             <TouchableOpacity

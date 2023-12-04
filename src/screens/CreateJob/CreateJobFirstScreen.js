@@ -1,4 +1,3 @@
-
 //ScreenNo:143
 //ScreenNo:139
 //ScreenNo:121
@@ -61,6 +60,7 @@ export default CreateJobFirstScreen = (props) => {
   const [location, setLocation] = useState("");
   const [isClick, setIsClick] = useState(null);
   const [Check, setCheck] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBoxPress = (boxNumber) => {
     setIsClick(boxNumber);
@@ -335,12 +335,13 @@ export default CreateJobFirstScreen = (props) => {
           </View>
         </View>
         <View style={VIEW_STYLES._bottomButtonView}>
-        <CustomSingleButton
-          // onPress={() => props.navigation.navigate("CreateJobSecondScreen")}
-          _ButtonText={"Next"}
-          Text_Color={_COLORS.Kodie_WhiteColor}
-        />
-      </View>
+          <CustomSingleButton
+            disabled={isLoading ? true : false}
+            // onPress={() => props.navigation.navigate("CreateJobSecondScreen")}
+            _ButtonText={"Next"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+          />
+        </View>
       </ScrollView>
     </View>
   );

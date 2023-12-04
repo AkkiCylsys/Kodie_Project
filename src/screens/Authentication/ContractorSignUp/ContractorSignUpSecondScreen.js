@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Image } from "react-native";
 import StepText from "../../../components/Molecules/StepText/StepText";
 import { ContractorSignupSecondStyle } from "./ContractorSignUpSecondScreenCss";
@@ -14,6 +14,7 @@ import StatusBar from "./../../../components/Atoms/StatusBar/StatusBar";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _goBack } from "./../../../services/CommonServices/index";
 export default ContractorSignUpSecondScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={ContractorSignupSecondStyle.container}>
       <TopHeader onPressLeftButton={() => _goBack(props)} />
@@ -31,6 +32,7 @@ export default ContractorSignUpSecondScreen = (props) => {
           {"You can upload photo and video here"}
         </Text>
         <CustomSingleButton
+          disabled={isLoading ? true : false}
           leftImage={IMAGES.uploadIcon}
           isLeftImage={true}
           borderColor={_COLORS.Kodie_TransparentColor}
@@ -40,6 +42,7 @@ export default ContractorSignUpSecondScreen = (props) => {
       </View>
       <View style={VIEW_STYLES._bottomButtonView}>
         <CustomSingleButton
+          disabled={isLoading ? true : false}
           onPress={() =>
             props.navigation.navigate("ContractorSignUpThirdScreen")
           }

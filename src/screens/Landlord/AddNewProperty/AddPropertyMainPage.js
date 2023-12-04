@@ -2264,6 +2264,7 @@ const AddPropertyMainPage = (props) => {
                           setCurrentPage(currentPage + 1);
                         }
                       }}
+                      disabled={isLoading ? true : false}
                     />
 
                     <TouchableOpacity

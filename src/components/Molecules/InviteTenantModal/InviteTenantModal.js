@@ -35,7 +35,7 @@
 //   );
 // };
 
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { InviteTenantModalStyle } from "./InviteTenantModalStyle";
 import { IMAGES } from "../../../Themes";
@@ -68,7 +68,7 @@ export default InviteTenantModal = (props) => {
   const property_id = props.property_id;
   const navigation = useNavigation();
   const refRBSheet = useRef();
-  
+
   const CloseUp = () => {
     refRBSheet.current.close();
   };
@@ -146,7 +146,7 @@ export default InviteTenantModal = (props) => {
       <RBSheet
         ref={refRBSheet}
         height={700}
-        closeOnDragDown={true}
+        // closeOnDragDown={true}
         customStyles={{
           wrapper: {
             backgroundColor: "transparent",
@@ -157,7 +157,7 @@ export default InviteTenantModal = (props) => {
           container: InviteTenantModalStyle.bottomModal_container,
         }}
       >
-        <AddTenantDetails onClose={CloseUp} property_id={property_id}/>
+        <AddTenantDetails onClose={CloseUp} property_id={property_id} />
       </RBSheet>
     </View>
   );

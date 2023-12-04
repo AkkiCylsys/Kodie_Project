@@ -218,7 +218,7 @@ const PropertyListing = () => {
         {/* three dot click popup menu */}
         <RBSheet
           ref={refRBSheet1}
-          closeOnDragDown={true}
+          // closeOnDragDown={true}
           height={330}
           closeOnPressMask={false}
           customStyles={{
@@ -240,7 +240,7 @@ const PropertyListing = () => {
         {/* AddBiddingDetails popup */}
         <RBSheet
           ref={refRBSheet2}
-          closeOnDragDown={true}
+          // closeOnDragDown={true}
           height={760}
           closeOnPressMask={false}
           customStyles={{
@@ -259,7 +259,7 @@ const PropertyListing = () => {
         {/* invite tenent popup */}
         <RBSheet
           ref={refRBSheet3}
-          closeOnDragDown={true}
+          // closeOnDragDown={true}
           height={230}
           closeOnPressMask={false}
           customStyles={{

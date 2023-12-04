@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 import {
   _COLORS,
   LABEL_STYLES,
@@ -74,19 +74,18 @@ const PropertyList = (props) => {
   const [Address, setAddress] = useState();
   const [page, setPage] = useState(1);
   const refRBSheet = useRef();
- 
+
   useEffect(() => {
     if (isvisible) {
       propertyList_Data();
     }
-  }, [isvisible, page,isvisible,filterData]);
+  }, [isvisible, page, isvisible, filterData]);
 
-
-  
   const propertyList_Data = (filter) => {
     const propertyDataList = {
-      property_filter: filter || 'All',
-      user_account_id: loginData?.Login_details?.result || null,
+      property_filter: filter || "All",
+      user_account_id: loginData?.Login_details?.result,
+      // user_account_id: 84,
       page_no: page,
       limit: filter === "Most Recent" ? 5 : 10,
       order_col: 1,
@@ -441,7 +440,7 @@ const PropertyList = (props) => {
         )}
         <DividerIcon />
         <RBSheet
-          height={isDeleteData_Clicked ? 200 : 400}
+          height={isDeleteData_Clicked ? 200 : 330}
           ref={refRBSheet}
           closeOnDragDown={true}
           closeOnPressMask={false}
@@ -669,6 +668,7 @@ const PropertyList = (props) => {
             height={38}
             marginTop={3}
             onPress={props.propertyDetail}
+            disabled={isLoading ? true : false}
           />
         </View>
         <DividerIcon

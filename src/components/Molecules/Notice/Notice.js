@@ -49,7 +49,7 @@ const Notice = (props) => {
       <RBSheet
         ref={refRBSheet}
         height={220}
-        closeOnDragDown={true}
+        // closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{
           wrapper: {

@@ -8,6 +8,7 @@ import AddLeaseDetails from "./AddLeaseDetails/AddLeaseDetails";
 import LeaseSummary from "./LeaseSummary/LeaseSummary";
 export default Leases = (props) => {
   // alert(JSON.stringify(props.property_id));
+  const [isLoading, setIsLoading] = useState(false);
   const property_id = props.property_id;
   const refRBSheet = useRef();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -38,6 +39,7 @@ export default Leases = (props) => {
               refRBSheet.current.open();
               setIsSheetOpen(true);
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
         {/* <LeaseSummary property_id={property_id} /> */}

@@ -22,6 +22,7 @@ const TomProperty = (props) => {
   const [select, setSelect] = useState("");
   const [value, setValue] = useState(null);
   const [propertyDesc, setPropertyDesc] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -55,7 +56,6 @@ const TomProperty = (props) => {
       />
       <View style={TomPropertyStyle.Line} />
       <View style={TomPropertyStyle.Container}>
-        
         {checkTabs()}
         <View style={TomPropertyStyle.inputContainer}>
           <Text style={LABEL_STYLES._texinputLabel}>Event name</Text>
@@ -102,8 +102,10 @@ const TomProperty = (props) => {
         </View>
         <View style={TomPropertyStyle.Line1} />
         <View style={TomPropertyStyle.mainreapeatview}>
-            <Image source={require('../../../../assets/images/Common/Vector.png')}/>
-            <Text style={TomPropertyStyle.repeattext}>Repeat</Text>
+          <Image
+            source={require("../../../../assets/images/Common/Vector.png")}
+          />
+          <Text style={TomPropertyStyle.repeattext}>Repeat</Text>
           <View style={TomPropertyStyle.noticedropdownview}>
             <Dropdown
               style={[
@@ -144,6 +146,7 @@ const TomProperty = (props) => {
           <CustomSingleButton
             _ButtonText={"Schedule"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            disabled={isLoading ? true : false}
           />
         </View>
       </View>

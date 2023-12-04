@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Text, View, Image, ScrollView, TouchableOpacity } from "react-native";
 import { LinkedDeviceStyle } from "../../Authentication/LinkedDevice/LinkedDeviceStyle";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -9,6 +9,7 @@ import { _goBack } from "../../../services/CommonServices";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Entypo from "react-native-vector-icons/Entypo";
 const LinkedDevice = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
   return (
@@ -30,6 +31,7 @@ const LinkedDevice = (props) => {
             </View>
             <View style={LinkedDeviceStyle.Button}>
               <CustomSingleButton
+                disabled={isLoading ? true : false}
                 _ButtonText={"Link a device"}
                 Text_Color={_COLORS.Kodie_BlackColor}
                 text_Size={14}

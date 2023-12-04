@@ -1,11 +1,12 @@
 import { View, Text, Image, TextInput, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { DeleteAccountStyle } from "./DeleteAccountStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS, IMAGES } from "../../../Themes";
 import { _goBack } from "../../../services/CommonServices";
 const DeleteAccount = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <TopHeader
@@ -47,6 +48,7 @@ const DeleteAccount = (props) => {
 
         <View style={DeleteAccountStyle.buttonview}>
           <CustomSingleButton
+            disabled={isLoading ? true : false}
             _ButtonText={"Change number instead"}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             Text_Color={_COLORS.Kodie_BlackColor}
@@ -103,6 +105,7 @@ const DeleteAccount = (props) => {
             _ButtonText={"Delete account"}
             backgroundColor={_COLORS.Kodie_BlackColor}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            disabled={isLoading ? true : false}
           />
         </View>
       </ScrollView>

@@ -16,6 +16,7 @@ const Managingcontractors = (props) => {
   const refRBSheet = useRef();
   const [activeScreen, setActiveScreen] = useState(false);
   const [activeTab, setActiveTab] = useState("Tab1");
+  const [isLoading, setIsLoading] = useState(false);
   const toggleView = () => {
     setVisible(!visible);
   };
@@ -101,6 +102,7 @@ const Managingcontractors = (props) => {
               onPress={() => {
                 refRBSheet.current.open();
               }}
+              disabled={isLoading ? true : false}
             />
           </View>
           <View style={ManagingcontractorsStyle.Line1} />

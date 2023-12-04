@@ -148,7 +148,7 @@ export default Login = (props) => {
     } else if (confirmPassword.trim() === "") {
       setConfirmPasswordError("Please enter a confirmation password");
     } else if (newpassword !== confirmPassword) {
-      setConfirmPasswordError("Passwords do not match");
+      setConfirmPasswordError("Password do not match");
     } else {
       setConfirmPasswordError("");
       create_password();
@@ -216,7 +216,7 @@ export default Login = (props) => {
     if (text.trim() === "") {
       setConfirmPasswordError("Please enter a confirmation password.");
     } else if (newpassword !== text) {
-      setConfirmPasswordError("Passwords do not match.");
+      setConfirmPasswordError("Password do not match.");
     } else {
       setConfirmPasswordError(""); // Clear the error message
     }
@@ -276,7 +276,7 @@ export default Login = (props) => {
     const regex = /^[0-9]+$/;
     setVerificationcode(text);
     if (text.trim() === "") {
-      setVerificationcodeError("verification code is required.");
+      setVerificationcodeError("Verification code is required.");
     } else if (!regex.test(text)) {
       setVerificationcodeError("Verification code must contain only numbers.");
     } else {
@@ -376,9 +376,13 @@ export default Login = (props) => {
         if (response.data.status === true) {
           alert(response.data.message);
           setIsClick(isClick + 1);
+        } else if (verificationcode.length < 6) {
+          setVerificationcodeError(
+            "Verification code must be at least 6 digits."
+          );
         } else {
           setVerificationcodeError(
-            "The verification code you’ve entered is incorrect. Please try again."
+            "The Verification Code You’ve Entered is Incorrect. Please Try Again."
           );
         }
       })
@@ -421,9 +425,11 @@ export default Login = (props) => {
   };
 
   return (
-    <KeyboardAvoidingView  behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-     style={LoginStyles.container}>
-        <ScrollView keyboardShouldPersistTaps='handled'>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={LoginStyles.container}
+    >
+      <ScrollView keyboardShouldPersistTaps="handled">
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
         </View>
@@ -493,6 +499,7 @@ export default Login = (props) => {
             </TouchableOpacity>
 
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               onPress={handleSubmit}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
@@ -500,6 +507,7 @@ export default Login = (props) => {
             <View style={LoginStyles.loderview}></View>
             <DividerIcon DeviderText={"or"} />
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               onPress={() => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
                 props.navigation.navigate("SignUpSteps");
@@ -511,6 +519,7 @@ export default Login = (props) => {
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               onPress={() =>
                 // props.navigation.navigate("ManageSubscription")
                 props.navigation.navigate("DrawerNavigatorLeftMenu")
@@ -534,9 +543,9 @@ export default Login = (props) => {
       {/* ------ Rest password code start  here ........... */}
       <RBSheet
         ref={refRBSheet}
-        closeOnDragDown={true}
+        // closeOnDragDown={true}
         closeOnPressMask={false}
-        height={Platform.OS === "android" ? 550 : 565}
+        height={Platform.OS === "android" ? 550 : 480}
         customStyles={{
           wrapper: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -637,10 +646,9 @@ export default Login = (props) => {
                     onBlur={() => handleverificationCode(verificationcode)}
                     placeholder="Code"
                     returnKeyType="done"
-                    placeholderTextColor="#999"   
+                    placeholderTextColor="#999"
                     keyboardType="number-pad"
                     maxLength={6}
-                    
                   />
                 </View>
                 <View style={LoginStyles.codeMargin} />
@@ -833,35 +841,37 @@ export default Login = (props) => {
             </View>
           )}
 
-
           {/* ------ Next button section start code  here ........... */}
           <View
             style={[
               {
                 marginBottom: 800,
-                marginTop: isClick === 1 || isClick === 2 ||isClick===3 ? 150 : 220,
+                marginTop:
+                  isClick === 1 || isClick === 2 || isClick === 3 ? 120 : 200,
               },
             ]}
           >
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               onPress={handleButtonPress}
               _ButtonText={buttonLabels[isClick]}
               Text_Color={_COLORS.Kodie_WhiteColor}
-              marginTop={
-                isClick
-                  ? Platform.OS === "android"
-                    ? "1%"
-                    : "1%"
-                  : Platform.OS === "android"
-                  ? "20%"
-                  : "0%"
-              }
-              
+
+              // marginTop={"20%"}
+              // marginTop={
+              //   isClick
+              //     ? Platform.OS === "android"
+              //       ? "1%"
+              //       : 0
+              //     : Platform.OS === "android"
+              //     ? "18%"
+              //     : 0
+              // }
             />
           </View>
         </View>
       </RBSheet>
-      {isLoading ? <CommonLoader /> : null}  
-      </KeyboardAvoidingView>
+      {isLoading ? <CommonLoader /> : null}
+    </KeyboardAvoidingView>
   );
 };

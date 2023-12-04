@@ -30,7 +30,7 @@ const EditProfile = () => {
   const refRBSheet2 = useRef();
   const [visible, setVisible] = useState(false);
   const [photoid, setPhotoId] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const toggleView = () => {
     setVisible(!visible);
   };
@@ -182,6 +182,7 @@ const EditProfile = () => {
             onPress={() => {
               refRBSheet.current.open();
             }}
+            disabled={isLoading ? true : false}
           />
 
           {photoid && (
@@ -237,6 +238,7 @@ const EditProfile = () => {
               onPress={() => {
                 refRBSheet2.current.open();
               }}
+              disabled={isLoading ? true : false}
             />
           </View>
         </View>
@@ -250,6 +252,7 @@ const EditProfile = () => {
               borderColor={_COLORS.Kodie_TransparentColor}
               _ButtonText={"Save and back"}
               backgroundColor={_COLORS.Kodie_BlackColor}
+              disabled={isLoading ? true : false}
             />
           </View>
         </View>

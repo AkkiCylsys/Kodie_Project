@@ -42,6 +42,7 @@ const JobDetails = (props) => {
   const [value2, setValue2] = useState(null);
   const [value3, setValue3] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -258,6 +259,7 @@ const JobDetails = (props) => {
 
           <View style={JobDetailsStyle.buttonview}>
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               leftImage={IMAGES.uploadIcon}
               isLeftImage={true}
               borderColor={_COLORS.Kodie_TransparentColor}

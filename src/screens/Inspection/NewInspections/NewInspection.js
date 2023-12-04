@@ -1,4 +1,3 @@
-
 //ScreenNo:87
 import React from "react";
 import {
@@ -19,6 +18,7 @@ import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
+import { useState } from "react";
 
 const HorizontalData = ["Scheduled", "In Progress", "Complete"];
 
@@ -50,6 +50,7 @@ const inspection_data = [
 ];
 
 export default NewInspection = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity style={NewInspectionStyle.flatlistView}>
@@ -131,6 +132,7 @@ export default NewInspection = (props) => {
             onPress={() => {
               props.navigation.navigate("CreateNewInspection");
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
         <DividerIcon borderBottomWidth={4} color={_COLORS.Kodie_GrayColor} />

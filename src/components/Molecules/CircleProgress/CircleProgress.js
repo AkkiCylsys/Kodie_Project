@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { CircleProgressStyle } from "./CircleProgressStyle";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { _COLORS, IMAGES ,FONTFAMILY} from "../../../Themes";
+import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
 import { FloatingAction } from "react-native-floating-action";
 
 const actions = [
@@ -16,7 +16,7 @@ const actions = [
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
     textStyle: {
-      fontWeight: '600', 
+      fontWeight: "600",
       // color:_COLORS.Kodie_WhiteColor
     },
   },
@@ -28,10 +28,9 @@ const actions = [
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
     textStyle: {
-      fontWeight: '600', 
+      fontWeight: "600",
       // color:_COLORS.Kodie_WhiteColor
-    
-    }
+    },
   },
   {
     text: "Invite prospective tenant",
@@ -41,9 +40,9 @@ const actions = [
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
     textStyle: {
-      fontWeight: '600', 
+      fontWeight: "600",
       // color:_COLORS.Kodie_WhiteColor
-    }
+    },
   },
   {
     text: "Invite contractor",
@@ -53,7 +52,7 @@ const actions = [
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
     textStyle: {
-      fontWeight: '600', 
+      fontWeight: "600",
       // color:_COLORS.Kodie_WhiteColor
     },
   },
@@ -66,7 +65,7 @@ const actions = [
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
     textStyle: {
-      fontWeight: '600', 
+      fontWeight: "600",
       // color:_COLORS.Kodie_WhiteColor
     },
   },
@@ -78,7 +77,7 @@ const actions = [
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
     textStyle: {
-      fontWeight: '600',  
+      fontWeight: "600",
       // color:_COLORS.Kodie_WhiteColor
     },
   },
@@ -124,15 +123,15 @@ const CircleProgress = (props) => {
           {/* floating action button code start here */}
           <View style={styles.container}>
             <FloatingAction
-                actions={actions}
-                actionsPaddingTopBottom={5}
-                color={_COLORS.Kodie_GreenColor}
-                style={styles.floatingbtn}
-                onPressItem={(name) => {
-                  Alert.alert("Icon pressed", `the icon ${name} was pressed`);
-                }}
-                overlayColor="rgba(0, 0, 0, 0.5)"
-              />
+              actions={actions}
+              actionsPaddingTopBottom={5}
+              color={_COLORS.Kodie_GreenColor}
+              style={styles.floatingbtn}
+              onPressItem={(name) => {
+                Alert.alert("Icon pressed", `the icon ${name} was pressed`);
+              }}
+              overlayColor="rgba(0, 0, 0, 0.5)"
+            />
           </View>
         </View>
         {/* floating action button code end here */}
@@ -145,6 +144,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_GrayColor,
   },
-
 });
 export default CircleProgress;

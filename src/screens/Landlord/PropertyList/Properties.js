@@ -24,7 +24,7 @@ const Properties = (props) => {
   }, []);
   const propertyList_Data = () => {
     const propertyDataList = {
-      user: 84,
+      user: loginData?.Login_details?.result,
     };
 
     const url = Config.API_URL;

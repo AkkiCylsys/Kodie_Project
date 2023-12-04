@@ -95,7 +95,7 @@ const DocumentDetails = (props) => {
       if (response.data.success === true) {
         alert(response.data.message);
         // props.navigation.pop();
-        getuploadedDocuments()
+        getuploadedDocuments();
       } else {
         alert(response.data.message);
       }
@@ -233,6 +233,7 @@ const DocumentDetails = (props) => {
             onPress={() => {
               selectDoc();
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
         <View>
@@ -286,6 +287,7 @@ const DocumentDetails = (props) => {
             onPress={() => {
               uploadDocument();
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
       </ScrollView>
