@@ -41,12 +41,19 @@ export default ContractorSignUpFirstScreen = (props) => {
   const [bio, setBio] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [selected, setSelected] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(false);
   const renderDataItem = (item) => {
     return (
       <View style={ContractorSignUpStyle.item}>
-        <Text style={ContractorSignUpStyle.selectedTextStyle}>{item.label}</Text>
-        <AntDesign style={ContractorSignUpStyle.icon} color={_COLORS.Kodie_BlackColor} name="check" size={20}/>
+        <Text style={ContractorSignUpStyle.selectedTextStyle}>
+          {item.label}
+        </Text>
+        <AntDesign
+          style={ContractorSignUpStyle.icon}
+          color={_COLORS.Kodie_BlackColor}
+          name="check"
+          size={20}
+        />
       </View>
     );
   };
@@ -212,7 +219,12 @@ export default ContractorSignUpFirstScreen = (props) => {
               />
             </View>
             <View style={ContractorSignUpStyle.LastinputContainer}>
-              <Text style={[LABEL_STYLES._texinputLabel,ContractorSignUpStyle.cardHeight,]}>
+              <Text
+                style={[
+                  LABEL_STYLES._texinputLabel,
+                  ContractorSignUpStyle.cardHeight,
+                ]}
+              >
                 Bio
               </Text>
               <TextInput
@@ -234,6 +246,7 @@ export default ContractorSignUpFirstScreen = (props) => {
       </ScrollView>
       <View style={VIEW_STYLES._bottomButtonView}>
         <CustomSingleButton
+          disabled={isLoading ? true : false}
           onPress={() =>
             props.navigation.navigate("ContractorSignUpSecondScreen")
           }

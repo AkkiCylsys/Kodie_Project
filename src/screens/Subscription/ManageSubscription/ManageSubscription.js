@@ -1,5 +1,5 @@
 import { View, Text, Image, ScrollView } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { ManageSubscriptionStyle } from "./ManageSubscriptionStyle";
 import { IMAGES, FONTFAMILY, _COLORS } from "../../../Themes/index";
@@ -11,6 +11,7 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 //ScreenNo:209
 
 const ManageSubscription = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const RowsData = (props) => {
     return (
       <View
@@ -138,7 +139,12 @@ const ManageSubscription = (props) => {
               </View>
             </View>
 
-            <View style={[ManageSubscriptionStyle.SubscriptionDataView,ManageSubscriptionStyle.secondcard]}>
+            <View
+              style={[
+                ManageSubscriptionStyle.SubscriptionDataView,
+                ManageSubscriptionStyle.secondcard,
+              ]}
+            >
               <Text style={ManageSubscriptionStyle.Heading}>
                 {"Property Essential"}
               </Text>
@@ -231,6 +237,7 @@ const ManageSubscription = (props) => {
             onPress={() => props.navigation.navigate("BottomNav")}
             _ButtonText={"Subscribe for only $69 / month"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            disabled={isLoading ? true : false}
           />
         </ScrollView>
       </View>

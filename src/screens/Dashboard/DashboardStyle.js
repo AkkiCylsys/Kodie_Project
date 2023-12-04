@@ -45,7 +45,7 @@ export const DashboardStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -108,6 +108,10 @@ export const DashboardStyle = StyleSheet.create({
     shadowRadius: 2,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     paddingVertical: 18,
+  },
+  floating_action_btn_view:{
+    flex:1,
+    marginLeft:375,
   },
   maintenance_view: {
     flexDirection: "row",

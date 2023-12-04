@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { ChangeNotifyStyle } from "./ChangeNotifyStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { Divider } from "react-native-paper";
@@ -9,6 +9,7 @@ import { _COLORS } from "../../../../Themes";
 import { _goBack } from "../../../../services/CommonServices";
 //ScreenNo:207
 const ChangeContactNotify = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <TopHeader
@@ -43,7 +44,7 @@ const ChangeContactNotify = (props) => {
                 offColor="#D8D8D8"
                 size="small"
                 thumbOnStyle={{ backgroundColor: _COLORS.Kodie_GreenColor }}
-                thumbOffStyle={{ backgroundColor:_COLORS.Kodie_BlackColor }}
+                thumbOffStyle={{ backgroundColor: _COLORS.Kodie_BlackColor }}
                 onToggle={(isOn) => console.log("changed to : ", isOn)}
               />
             </View>
@@ -56,6 +57,7 @@ const ChangeContactNotify = (props) => {
           <CustomSingleButton
             _ButtonText={"Done"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            disabled={isLoading ? true : false}
           />
         </View>
       </View>

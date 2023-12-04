@@ -20,6 +20,7 @@ import RowTexts from "../../../components/Molecules/RowTexts/RowTexts";
 export default JobCompletion = (props) => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={JobCompletionCss.mainContainer}>
       <TopHeader
@@ -102,6 +103,7 @@ export default JobCompletion = (props) => {
         </View>
         <View style={JobCompletionCss.ButtonView}>
           <CustomSingleButton
+            disabled={isLoading ? true : false}
             onPress={() => props.navigation.navigate("RejectConfirm")}
             _ButtonText={"Submit"}
             Text_Color={_COLORS.Kodie_WhiteColor}

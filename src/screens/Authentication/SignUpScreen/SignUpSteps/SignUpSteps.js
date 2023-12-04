@@ -565,6 +565,7 @@ const SignUpSteps = (props) => {
                 }}
               >
                 <CustomSingleButton
+                  disabled={isLoading ? true : false}
                   _ButtonText={"Next"}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {

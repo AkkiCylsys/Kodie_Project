@@ -166,7 +166,10 @@ export default SignUp = (props) => {
       .then((response) => {
         setSignupResponse(response.data);
         console.log("SignUp response", response.data);
-        if (response.data.message === "The user has been successfully registered, and an OTP has been sent to the registered email.") {
+        if (
+          response.data.message ===
+          "The user has been successfully registered, and an OTP has been sent to the registered email."
+        ) {
           alert(response.data.message);
           // Redirect to SignUpVerification screen
           props.navigation.navigate("SignUpVerification", {
@@ -196,9 +199,7 @@ export default SignUp = (props) => {
             is_term_condition: term,
             is_privacy_policy: privacy,
           });
-        } else if (
-          response.data.message === "User Exits and Verified"
-        ) {
+        } else if (response.data.message === "User Exits and Verified") {
           props.navigation.navigate("SignUpSteps");
           setIsLoading(false);
           setEmail("");
@@ -423,6 +424,7 @@ export default SignUp = (props) => {
         {/*.............. signup button  here ..................*/}
         <View style={SignUpStyles.signBtnView}>
           <CustomSingleButton
+            disabled={isLoading ? true : false}
             _ButtonText={"Sign up now"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={handleSubmit}
@@ -438,8 +440,10 @@ export default SignUp = (props) => {
             isLeftImage={true}
             _ButtonText={"Sign up with Google"}
             backgroundColor={_COLORS.Kodie_WhiteColor}
+            disabled={isLoading ? true : false}
           />
           <CustomSingleButton
+            disabled={isLoading ? true : false}
             leftImage={IMAGES.FacebookIcon}
             isLeftImage={true}
             _ButtonText={"Sign up with Facebook"}

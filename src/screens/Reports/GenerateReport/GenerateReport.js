@@ -22,6 +22,7 @@ const GenerateReport = (props) => {
   const [value, setValue] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
   const toggleModal = () => {
@@ -153,6 +154,7 @@ const GenerateReport = (props) => {
             onPress={() => {
               refRBSheet.current.open();
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
 
@@ -161,7 +163,7 @@ const GenerateReport = (props) => {
           height={200}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -174,11 +176,10 @@ const GenerateReport = (props) => {
             imageSource={IMAGES.View_property}
             title="View report"
             secondimg={IMAGES.Save}
-            secondDesc='Save report to files'
+            secondDesc="Save report to files"
             thirdimg={IMAGES.Email}
-            thirdDesc='Share report to email'
+            thirdDesc="Share report to email"
           />
-
         </RBSheet>
       </ScrollView>
     </View>

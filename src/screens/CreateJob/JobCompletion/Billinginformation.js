@@ -20,6 +20,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { normalizeUnits } from "moment";
 const Billinginformation = (props) => {
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toggleView = () => {
     setShow(!show);
   };
@@ -197,6 +198,7 @@ const Billinginformation = (props) => {
               borderColor={_COLORS.Kodie_TransparentColor}
               _ButtonText={"Pay $173.25 now"}
               backgroundColor={_COLORS.Kodie_BlackColor}
+              disabled={isLoading ? true : false}
             />
 
             <TouchableOpacity style={BillinginformationStyle.goBack_View}>

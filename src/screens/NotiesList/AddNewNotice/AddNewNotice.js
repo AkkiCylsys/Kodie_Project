@@ -22,6 +22,7 @@ const AddNewNotice = () => {
   const [location, setLocation] = useState("");
   const [select, setSelect] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
@@ -102,7 +103,7 @@ const AddNewNotice = () => {
               onColor="#D8D8D8"
               offColor="#D8D8D8"
               size="small"
-              thumbOnStyle={{ backgroundColor: _COLORS.Kodie_GreenColor}}
+              thumbOnStyle={{ backgroundColor: _COLORS.Kodie_GreenColor }}
               thumbOffStyle={{ backgroundColor: _COLORS.Kodie_BlackColor }}
               onToggle={(isOn) => console.log("changed to : ", isOn)}
             />
@@ -218,11 +219,13 @@ const AddNewNotice = () => {
               _ButtonText={"Upload"}
               backgroundColor={_COLORS.Kodie_lightGreenColor}
               Text_Color={_COLORS.Kodie_BlackColor}
+              disabled={isLoading ? true : false}
             />
             <Divider style={AddNewNoticeStyle.dividerfourth} />
             <CustomSingleButton
               _ButtonText={"Add notice"}
               Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
             />
           </View>
         </View>

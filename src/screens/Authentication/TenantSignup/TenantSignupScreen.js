@@ -27,7 +27,7 @@ export default TenantSignup = (props) => {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleTogglePassword = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -99,6 +99,7 @@ export default TenantSignup = (props) => {
         </View>
         <View style={{ marginHorizontal: 16 }}>
           <CustomSingleButton
+            disabled={isLoading ? true : false}
             onPress={() => props.navigation.navigate("InviteTenant")}
             _ButtonText={"Next"}
             Text_Color={_COLORS.Kodie_WhiteColor}

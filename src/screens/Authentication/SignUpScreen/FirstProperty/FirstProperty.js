@@ -231,7 +231,7 @@ export default FirstProperty = (props) => {
     { Bedrooms: CountBedroom },
     { Bathrooms: CountBathroom },
     { ParkingSpace: CountParking },
-    { On_streetParking: CountParkingStreet },
+    { OnStreetParking: CountParkingStreet },
   ];
   const increaseBedroomCount = () => {
     setCountBedroom((prevCount) => prevCount + 1);
@@ -1143,6 +1143,7 @@ export default FirstProperty = (props) => {
             </View>
             <View style={{ marginHorizontal: 16 }}>
               <CustomSingleButton
+                disabled={isLoading ? true : false}
                 _ButtonText={"Save"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
@@ -1152,6 +1153,7 @@ export default FirstProperty = (props) => {
             </View>
             <View style={{ marginHorizontal: 16 }}>
               <CustomSingleButton
+                disabled={isLoading ? true : false}
                 _ButtonText={"Fill these details out later"}
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}

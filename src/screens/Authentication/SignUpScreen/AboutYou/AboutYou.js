@@ -513,7 +513,7 @@ export default AboutYou = (props) => {
 
         <RBSheet
           ref={refRBSheet}
-          closeOnDragDown={true}
+          // closeOnDragDown={true}
           closeOnPressMask={true}
           height={200}
           customStyles={{
@@ -559,6 +559,7 @@ export default AboutYou = (props) => {
       </View>
       <View style={{ marginHorizontal: 16 }}>
         <CustomSingleButton
+          disabled={isLoading ? true : false}
           _ButtonText={"Next"}
           Text_Color={_COLORS.Kodie_WhiteColor}
           onPress={() => {
@@ -587,6 +588,7 @@ export default AboutYou = (props) => {
       </View>
       <View style={{ marginHorizontal: 16 }}>
         <CustomSingleButton
+          disabled={isLoading ? true : false}
           _ButtonText={"Fill these details out later"}
           Text_Color={_COLORS.Kodie_BlackColor}
           backgroundColor={_COLORS.Kodie_WhiteColor}

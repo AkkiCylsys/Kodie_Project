@@ -10,6 +10,7 @@ import {
   _COLORS,
 } from "./../../../Themes/index";
 export default UserType = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={UserTypeStyles.container}>
       <ScrollView>
@@ -27,16 +28,19 @@ export default UserType = (props) => {
         <View style={UserTypeStyles.formContainer}>
           <View style={UserTypeStyles.card}>
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               _ButtonText={"I’m a Tenant"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               onPress={() => props.navigation.navigate("TenantSignupScreen")}
             />
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               _ButtonText={"I’m a Contractor"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               onPress={() => props.navigation.navigate("PropertyInspection")}
             />
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               _ButtonText={"I’m a Landlord"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               onPress={() => props.navigation.navigate("CreateJobFirstScreen")}
