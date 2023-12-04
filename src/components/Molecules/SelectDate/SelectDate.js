@@ -21,6 +21,7 @@ const SelectDate = (props) => {
   const refRBSheet = useRef();
   const [selected, setSelected] = useState("");
   const [calender, setCalender] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const toggleyesterday = () => {
     setYesterday(!yesterday);
@@ -53,28 +54,33 @@ const SelectDate = (props) => {
     setCalender(!calender);
   };
   const toggleclose = () => {
-    props.onClose()
+    props.onClose();
   };
   const togglecustomrange = () => {
-    updateRBSheetHeight(750); // Call the callback to update the RBSheet height
+    updateRBSheetHeight(750);
   };
+  // single click------//
+  const handleOptionToggle = (option) => {
+    setSelectedOption(option);
+  };
+
+  const handleCustomRangeToggle = () => {
+    setCalender(!calender);
+    setSelectedOption("Custom Range");
+  };
+  // single click------//
   return (
-    <View >
+    <View>
       <View style={SelectDateStyle.headingview}>
         <Text style={SelectDateStyle.headingtext}>Select date</Text>
         <TouchableOpacity onPress={toggleclose}>
-          <Entypo
-            name="cross"
-            size={24}
-            color={_COLORS.Kodie_BlackColor}
-       
-          />
+          <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
         </TouchableOpacity>
       </View>
 
       <ScrollView>
         <View style={SelectDateStyle.optionsmainview}>
-          <ScrollView>
+        {/* <ScrollView>
             <View style={SelectDateStyle.optionsview}>
               <View style={SelectDateStyle.bindview}>
                 <TouchableOpacity onPress={toggleyesterday}>
@@ -241,6 +247,76 @@ const SelectDate = (props) => {
                         color={_COLORS.Kodie_GrayColor}
                         name={
                           calender
+                            ? "checkbox-marked-circle"
+                            : "checkbox-blank-circle-outline"
+                        }
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </TouchableOpacity>
+                <Text style={SelectDateStyle.textoption}>Custom range</Text>
+              </View>
+            </View>
+
+            {calender && (
+              <View>
+                <Calendar
+                  onDayPress={(day) => {
+                    setSelected(day.dateString);
+                  }}
+                  markedDates={{
+                    [selected]: {
+                      selected: true,
+                      disableTouchEvent: true,
+                      selectedDotColor: "orange",
+                    },
+                  }}
+                />
+              </View>
+            )}
+          </ScrollView> */}
+          <ScrollView>
+            {[
+              "Today",
+              "Yesterday",
+              "Last 7 days",
+              "Last 30 days",
+              "This month",
+              "Last month",
+              "Last year",
+            ].map((option, index) => (
+              <View key={index} style={SelectDateStyle.optionsview}>
+                <View style={SelectDateStyle.bindview}>
+                  <TouchableOpacity onPress={() => handleOptionToggle(option)}>
+                    <View style={SelectDateStyle.optionsiconview}>
+                      <MaterialCommunityIcons
+                        size={25}
+                        color={_COLORS.Kodie_GrayColor}
+                        name={
+                          selectedOption === option
+                            ? "checkbox-marked-circle"
+                            : "checkbox-blank-circle-outline"
+                        }
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <Text style={SelectDateStyle.textoption}>{option}</Text>
+                </View>
+              </View>
+            ))}
+
+            <Divider style={SelectDateStyle.Divider} />
+
+            <View style={SelectDateStyle.optionsview}>
+              <View style={SelectDateStyle.bindview}>
+                <TouchableOpacity onPress={handleCustomRangeToggle}>
+                  <View style={SelectDateStyle.optionsiconview}>
+                    <TouchableOpacity onPress={handleCustomRangeToggle}>
+                      <MaterialCommunityIcons
+                        size={25}
+                        color={_COLORS.Kodie_GrayColor}
+                        name={
+                          selectedOption === "Custom Range"
                             ? "checkbox-marked-circle"
                             : "checkbox-blank-circle-outline"
                         }
