@@ -25,7 +25,7 @@ import axios from "axios";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+//import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
