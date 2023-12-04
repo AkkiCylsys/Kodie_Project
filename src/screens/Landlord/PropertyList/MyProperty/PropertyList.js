@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 import {
   _COLORS,
   LABEL_STYLES,
@@ -74,91 +74,91 @@ const PropertyList = (props) => {
   const [Address, setAddress] = useState();
   const [page, setPage] = useState(1);
   const refRBSheet = useRef();
- 
+
   useEffect(() => {
     if (isvisible) {
       propertyList_Data();
     }
-  }, [isvisible, page,isvisible,filterData]);
-
-
-  
-  const propertyList_Data = (filter) => {
-    const propertyDataList = {
-      property_filter: filter || 'All',
-      user_account_id: loginData?.Login_details?.result || null,
-      page_no: page,
-      limit: 10,
-      order_col: 1,
-      order_wise: "DESC",
-    };
-
-    const url =
-      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/get_property_details_by_filter";
-    console.log("Request URL :", url);
-    setIsLoading(true);
-    axios
-      .post(url, propertyDataList)
-      .then((response) => {
-        console.log("property_Data_list", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-
-          if (filter === "Recent") {
-            const newData = response.data.property_details.slice(0, 5);
-            setProperty_Data_List(newData);
-            console.log("New Data for Most Recent:...........", newData);
-          } else if (filter === "Occupied") {
-            const newData = response.data.property_details.slice(0);
-            setProperty_Data_List(newData);
-            console.log("New Data for Occupied:...........", newData);
-          } else if (filter === "Vacant") {
-            const newData = response.data.property_details.slice(0);
-            setProperty_Data_List(newData);
-            console.log("New Data for Vacant:...........", newData);
-          } else if (filter === "Rent Pending") {
-            const newData = response.data.property_details.slice(0);
-            setProperty_Data_List(newData);
-            console.log("New Data for Rent Pending:...........", newData);
-          } else if (filter === "Rent Received") {
-            const newData = response.data.property_details.slice(0);
-            setProperty_Data_List(newData);
-            console.log("New Data for Rent Received:...........", newData);
-          } else if (filter === "Archive") {
-            const newData = response.data.property_details.slice(0);
-            setProperty_Data_List(newData);
-            console.log("New Data for Archive:...........", newData);
-          } else {
-            let newData;
-
-            // Check if the filter is "All" or if there are at least 5 items for the filter
-            if (
-              filter === "All" ||
-              response.data.property_details.length >= 5
-            ) {
-              newData = response.data.property_details;
-            } else {
-              newData = [];
-            }
-
-            setProperty_Data_List((prevData) =>
-              page > 1 ? [...prevData, ...newData] : newData
-            );
-          }
-        } else {
-          console.error("property_Data_list_error:", response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("property_Data_list error:", error);
-        setIsLoading(false);
-      });
-  };
+  }, [isvisible, page, isvisible]);
 
   // const propertyList_Data = (filter) => {
   //   const propertyDataList = {
-  //     property_filter: filter || "All", // Use the provided filter or default to "All"
+  //     property_filter: filter || 'All',
+  //     user_account_id: loginData?.Login_details?.result,
+  //     page_no: page,
+  //     limit: 10,
+  //     order_col: 1,
+  //     order_wise: "DESC",
+  //   };
+
+  //   const url =
+  //     "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/get_property_details_by_filter";
+  //   console.log("Request URL :", url);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(url, propertyDataList)
+  //     .then((response) => {
+  //       console.log("property_Data_list", response.data);
+  //       console.log("Property_Data_List", Property_Data_List);
+
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+
+  //         if (filter === "Recent") {
+  //           const newData = response.data.property_details.slice(0, 5);
+  //           setProperty_Data_List(newData);
+  //           console.log("New Data for Most Recent:...........", newData);
+  //         } else if (filter === "Occupied") {
+  //           const newData = response.data.property_details.slice(0);
+  //           setProperty_Data_List(newData);
+  //           console.log("New Data for Occupied:...........", newData);
+  //         } else if (filter === "Vacant") {
+  //           const newData = response.data.property_details.slice(0);
+  //           setProperty_Data_List(newData);
+  //           console.log("New Data for Vacant:...........", newData);
+  //         } else if (filter === "Rent Pending") {
+  //           const newData = response.data.property_details.slice(0);
+  //           setProperty_Data_List(newData);
+  //           console.log("New Data for Rent Pending:...........", newData);
+  //         } else if (filter === "Rent Received") {
+  //           const newData = response.data.property_details.slice(0);
+  //           setProperty_Data_List(newData);
+  //           console.log("New Data for Rent Received:...........", newData);
+  //         } else if (filter === "Archive") {
+  //           const newData = response.data.property_details.slice(0);
+  //           setProperty_Data_List(newData);
+  //           console.log("New Data for Archive:...........", newData);
+  //         } else {
+  //           let newData;
+
+  //           // Check if the filter is "All" or if there are at least 5 items for the filter
+  //           if (
+  //             filter === "All" ||
+  //             response.data.property_details.length >= 5
+  //           ) {
+  //             newData = response.data.property_details;
+  //           } else {
+  //             newData = [];
+  //           }
+
+  //           setProperty_Data_List((prevData) =>
+  //             page > 1 ? [...prevData, ...newData] : newData
+  //           );
+  //         }
+  //       } else {
+  //         console.error("property_Data_list_error:", response.data.error);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("property_Data_list error:", error);
+  //       setIsLoading(false);
+  //     });
+  // };
+
+  // const propertyList_Data = (filter) => {
+  //   const propertyDataList = {
+  //     property_filter: filter || "All",
   //     user_account_id: loginData?.Login_details?.result,
   //     page_no: page,
   //     limit: 10,
@@ -177,15 +177,17 @@ const PropertyList = (props) => {
   //       if (response.data.status === true) {
   //         setIsLoading(false);
 
-  //         if (filter === "Most Recent") {
+  //         if (filter === "Recent") {
   //           const newData = response.data.property_details.slice(0, 5);
   //           setProperty_Data_List(newData);
   //           console.log("New Data for Most Recent:...........", newData);
   //         } else {
   //           const newData = response.data.property_details;
+
   //           setProperty_Data_List((prevData) =>
   //             page > 1 ? [...prevData, ...newData] : newData
   //           );
+
   //         }
   //       } else {
   //         console.error("property_Data_list_error:", response.data.error);
@@ -197,6 +199,53 @@ const PropertyList = (props) => {
   //       setIsLoading(false);
   //     });
   // };
+
+
+    // new bind to show the data.......
+  const propertyList_Data = (filter) => {
+    const propertyDataList = {
+      property_filter: filter || "All",
+      user_account_id: loginData?.Login_details?.result,
+      page_no: 1, // Reset page to 1 when changing the filter
+      limit: 10,
+      order_col: 1,
+      order_wise: "DESC",
+    };
+
+    const url =
+      "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/get_property_details_by_filter";
+    console.log("Request URL :", url);
+    setIsLoading(true);
+
+    axios
+      .post(url, propertyDataList)
+      .then((response) => {
+        console.log("property_Data_list", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+
+          if (filter === "Recent") {
+            const newData = response.data.property_details.slice(0, 5);
+            setProperty_Data_List(newData);
+            console.log("New Data for Most Recent:...........", newData);
+          } else if (filter === "Occupied") {
+            const newData = response.data.property_details.slice(0);
+            setProperty_Data_List(newData);
+            console.log("New Data for Occupied:...........", newData);
+          } else {
+            const newData = response.data.property_details;
+            setProperty_Data_List(newData);
+          }
+        } else {
+          console.error("property_Data_list_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_Data_list error:", error);
+        setIsLoading(false);
+      });
+  };
 
   const handleEndReached = () => {
     if (!isLoading) {
