@@ -98,4 +98,12 @@ export const DocumentDetailStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_GrayColor,
   },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
+
 });
