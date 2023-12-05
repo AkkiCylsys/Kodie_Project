@@ -1,4 +1,11 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions, Platform, PixelRatio } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+const scaleFactor = PixelRatio.get();
+
+// Use scaleFactor to adjust styles dynamically
+const adjustedWidth = width / scaleFactor;
+const adjustedHeight = height / scaleFactor;
 import { _COLORS, FONTFAMILY } from "../../Themes";
 export const DrawerStyle = StyleSheet.create({
   mainContainer: {
@@ -11,7 +18,7 @@ export const DrawerStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
   },
-  ImageStyle: { height: 40, width: 40, alignSelf: "center" },
+  ImageStyle: { height: "20%", width: "20%" },
   SubHeading: {
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Medium,

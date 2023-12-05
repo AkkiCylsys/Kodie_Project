@@ -95,10 +95,37 @@ export default PropertyFeature = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   // const [furnished, setFurnished] = useState([]);
   // const [preFriendly, setProperty_Details] = useState([]);
+  console.log(
+    "propertyDetail....",
+    property_Detail[0]?.additional_key_features_id
+  );
+
+  const keyFeaturesString = property_Detail[0]?.key_features;
+
   useEffect(() => {
     additional_features();
     DetailsData();
-  }, []);
+    try {
+      // Parsing the JSON string to an array of objects
+      const keyFeaturesArray = JSON.parse(keyFeaturesString);
+
+      // Iterating through the array to find the value associated with "Bedrooms"
+      for (const feature of keyFeaturesArray) {
+        if (feature.Bedrooms !== undefined) {
+          setCountBedroom(feature.Bedrooms);
+        } else if (feature.Bathrooms !== undefined) {
+          setCountBathroom(feature.Bathrooms);
+        } else if (feature.ParkingSpace !== undefined) {
+          setCountParking(feature.ParkingSpace);
+        } else if (feature.OnStreetParking !== undefined) {
+          setCountParkingStreet(feature.OnStreetParking);
+        }
+      }
+    } catch (error) {
+      console.error("Error parsing key_features:", error);
+    }
+  }, [keyFeaturesString]);
+  console.log("CountBedroom", CountBedroom, CountBathroom);
   const DetailsData = () => {
     const detailData = {
       user: propertyid,
@@ -115,14 +142,20 @@ export default PropertyFeature = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           setProperty_Details(response.data.property_details);
-          // setAdditionalFeaturesKeyValue(
-          //   response.data.property_details[0]?.key_features_id
-          // );
-
-          console.log(
-            "propertyDetail....",
-            response.data.property_details[0]?.key_features_id
+          const apiAdditionalFeaturesIds =
+            response?.data?.property_details[0]?.additional_features_id
+              .split(",")
+              .map(Number);
+          const furnishedFeatureId = apiAdditionalFeaturesIds.find(
+            (id) => id === selectedButtonFurnishedId
           );
+          console.log("Furnished Feature ID:", furnishedFeatureId);
+          setSelectedButtonFurnishedId(furnishedFeatureId);
+          setFlorSize(response?.data?.property_details[0]?.floor_size);
+          setAdditionalFeaturesKeyValue(
+            response?.data?.property_details[0]?.additional_key_features_id
+          );
+          setLandArea(response?.data?.property_details[0]?.land_area);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -141,12 +174,6 @@ export default PropertyFeature = (props) => {
     { ParkingSpace: CountParking },
     { OnStreetParking: CountParkingStreet },
   ];
-
-  // PRE fRIENDLY CODE HERE.........
-  // const PreFriedly = {
-  //   selectedButtonDepositId,
-  //   selectedButtonFurnishedId,
-  // };
 
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
   console.log(PreFriedly, "pre friedly............");
@@ -744,14 +771,20 @@ export default PropertyFeature = (props) => {
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."
-                onChange={(item) => {
-                  // const selectedKeys = items.map((item) => item);
-                  // const uniqueKeys = [...new Set(selectedKeys)];
-                  // console.log("Unique Keys:", uniqueKeys);
-                  // Set the state with unique keys
-                  // setAdditionalFeaturesKeyValue(uniqueKeys);
-                  setAdditionalFeaturesKeyValue(item);
-                  // alert(item);
+                onChange={(items) => {
+                  const selectedKeys = items.map((item) => item);
+                  const uniqueKeys = [...new Set(selectedKeys)];
+                  const cleanedArray = uniqueKeys.reduce((acc, item) => {
+                    if (!isNaN(item) && !acc.includes(Number(item))) {
+                      acc.push(Number(item));
+                    }
+                    return acc;
+                  }, []);
+
+                  console.log("Unique Keys:", uniqueKeys);
+                  setAdditionalFeaturesKeyValue(
+                    cleanedArray.filter((value) => value !== 0)
+                  );
                 }}
                 // renderRightIcon={() => (
                 //   <AntDesign

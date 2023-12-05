@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import { PropertyImagesStyle } from "./PropertyImagesStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
@@ -15,8 +21,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Config } from "../../../../Config";
 import axios from "axios";
 import ImagePicker from "react-native-image-crop-picker";
-
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import Video from "react-native-video";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const images = [

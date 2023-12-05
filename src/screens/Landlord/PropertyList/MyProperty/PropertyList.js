@@ -17,7 +17,6 @@ import {
   FONTFAMILY,
 } from "../../../../Themes";
 import { PropertyListCSS } from "./PropertyListCSS";
-import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices/index";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -26,10 +25,8 @@ import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RBSheet from "react-native-raw-bottom-sheet";
 import BottomModalData from "../../../../components/Molecules/BottomModal/BottomModalData";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
-import { Config } from "../../../../Config";
 import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { useCallback } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 const HorizontalData = [
@@ -72,6 +69,7 @@ const PropertyList = (props) => {
   const [Address, setAddress] = useState();
   const [page, setPage] = useState(1);
   const refRBSheet = useRef();
+  const refRBSheetDelete = useRef();
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [propertyData, setPropertyData] = useState([]);
 
@@ -98,8 +96,10 @@ const PropertyList = (props) => {
   };
 
   useEffect(() => {
-    getPropertyDetailsByFilter(selectedFilter);
-  }, [selectedFilter]);
+    if (isvisible) {
+      getPropertyDetailsByFilter(selectedFilter);
+    }
+  }, [selectedFilter, isvisible]);
 
   const handleEndReached = () => {
     if (!isLoading) {
@@ -108,13 +108,12 @@ const PropertyList = (props) => {
   };
   const propertyDelete = async () => {
     setIsDeleteData_Clicked(true);
-    refRBSheet.current.close();
   };
   const FinalDeleteProperty = async () => {
-    alert(propertyDelId);
+    // alert(propertyDelId);
     setIsLoading(true);
     setIsDeleteData_Clicked(false);
-    refRBSheet.current.close();
+    refRBSheetDelete.current.close();
     try {
       const response = await axios.delete(
         "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id",
@@ -133,7 +132,7 @@ const PropertyList = (props) => {
           "The property was deleted successfully."
         );
 
-        getPropertyDetailsByFilter();
+        getPropertyDetailsByFilter(selectedFilter);
         setIsLoading(false);
       }
     } catch (error) {
@@ -186,12 +185,12 @@ const PropertyList = (props) => {
       </TouchableOpacity>
     );
   };
-  const propertyData1_render = ({ item }) => {
+  const propertyData1_render = ({ item, index }) => {
     const isExpanded = expandedItems.includes(item.property_id);
 
     return (
       <>
-        <View style={PropertyListCSS.flatListContainer}>
+        <View key={index} style={PropertyListCSS.flatListContainer}>
           <View style={PropertyListCSS.flat_MainView}>
             <View style={PropertyListCSS.flexContainer}>
               <Text style={PropertyListCSS.apartmentText}>
@@ -243,7 +242,7 @@ const PropertyList = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    refRBSheet.current.open();
+                    refRBSheetDelete.current.open();
                     setPropertyDelId(item.property_id);
 
                     setAddress(item?.location);
@@ -333,7 +332,8 @@ const PropertyList = (props) => {
         <DividerIcon />
         <RBSheet
           height={isDeleteData_Clicked ? 200 : 330}
-          ref={refRBSheet}
+          ref={refRBSheetDelete}
+          closeOnDragDown={true}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {

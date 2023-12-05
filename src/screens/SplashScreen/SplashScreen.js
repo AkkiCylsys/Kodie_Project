@@ -35,6 +35,7 @@ const Splash = (props) => {
           <Image
             source={logos.MainLogoWhite}
             style={SplashStyles.mainSmallIcon}
+            resizeMode="contain"
           />
         </View>
         <View style={SplashStyles.bottomTextContainer}>
