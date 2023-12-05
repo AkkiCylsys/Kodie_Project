@@ -34,6 +34,9 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import { useDispatch, useSelector } from "react-redux";
 import { signupAccountApiActionCreator } from "../../../../redux/Actions/Authentication/AuthenticationApiCreator";
 import mime from "mime";
+import { useFocusEffect } from "@react-navigation/native";
+import { BackHandler } from "react-native";
+
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -216,6 +219,32 @@ export default FirstProperty = (props) => {
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [buildingFlorSize, setBuildingFlorSize] = useState("");
   const [landArea, setLandArea] = useState("");
+
+
+  //....location divice back..//
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [IsMap, IsSearch])
+  );
+  //....location divice back..//
+
+
+
   const dispatch = useDispatch();
   const P_addressParts = propertyLocation.split(", ");
 

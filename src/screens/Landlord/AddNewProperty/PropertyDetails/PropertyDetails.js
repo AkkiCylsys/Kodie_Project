@@ -33,6 +33,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
+import { useFocusEffect } from "@react-navigation/native";
+import { BackHandler } from "react-native";
 
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 export default PropertyDetails = (props) => {
@@ -75,6 +77,26 @@ export default PropertyDetails = (props) => {
   //   }
   // };
 
+  //....location divice back..//
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [IsMap, IsSearch])
+  );
+  //....location divice back..//
   const handle_next_btn = () => {
     props.navigation.navigate("PropertyFeature", {
       location: location,
@@ -201,18 +223,18 @@ export default PropertyDetails = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Details"
         : position === 1
-        ? "Features"
-        : position === 2
-        ? "Images"
-        : position === 3
-        ? "Review"
-        : "null";
+          ? "Features"
+          : position === 2
+            ? "Images"
+            : position === 3
+              ? "Review"
+              : "null";
 
     return (
       <View style={{}}>

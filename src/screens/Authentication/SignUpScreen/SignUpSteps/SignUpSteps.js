@@ -32,6 +32,8 @@ import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import Geocoder from "react-native-geocoding";
 import Geolocation from "react-native-geolocation-service";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useFocusEffect } from "@react-navigation/native";
+import { BackHandler } from "react-native";
 
 const labels = ["Step 1", "Step 2", "Step 3"];
 
@@ -90,6 +92,28 @@ const SignUpSteps = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [p_latitude, setP_latitude] = useState("");
   const [p_longitude, setP_longitude] = useState("");
+
+  //....location divice back..//
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [IsMap, IsSearch])
+  );
+  //....location divice back..//
 
   const addressParts = physicalAddress.split(", ");
 
