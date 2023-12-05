@@ -115,10 +115,30 @@ export default PropertyReview = (props) => {
     <View style={DetailsStyle.DetailsView}>
       {item === "Pool" ? (
         <Image source={IMAGES.Bathroom} style={DetailsStyle.DetailsIcon} />
-      ) : item === "Balconey" ? (
+      ) : item === "Garage" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ) : (
+      ) :item === "Balcony" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Outdoor Area" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Ensuit" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Dishwasher" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Study" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Built in Robes" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Air Conditioning" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Solar Panels" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Heating" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ):item === "Hight Energy Efficiency" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ): (
+       null
       )}
       <Text style={DetailsStyle.details_text}>{item}</Text>
     </View>

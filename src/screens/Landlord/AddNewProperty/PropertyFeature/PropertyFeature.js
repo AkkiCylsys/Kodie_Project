@@ -147,10 +147,16 @@ export default PropertyFeature = (props) => {
               .split(",")
               .map(Number);
           const furnishedFeatureId = apiAdditionalFeaturesIds.find(
-            (id) => id === selectedButtonFurnishedId
+            (id) => id == 68
           );
-          console.log("Furnished Feature ID:", furnishedFeatureId);
-          setSelectedButtonFurnishedId(furnishedFeatureId);
+          const yesFeatureId = apiAdditionalFeaturesIds.find(
+            (id) => id == 71
+          );
+          
+              
+          console.log("Furnished Feature ID:", apiAdditionalFeaturesIds , furnishedFeatureId);
+          setSelectedButtonFurnished(furnishedFeatureId);
+          setSelectedButtonDeposit(yesFeatureId)
           setFlorSize(response?.data?.property_details[0]?.floor_size);
           setAdditionalFeaturesKeyValue(
             response?.data?.property_details[0]?.additional_key_features_id
