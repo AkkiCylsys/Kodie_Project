@@ -93,7 +93,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.PropertyListing}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Property listings"}</Text>
         </TouchableOpacity>
@@ -113,7 +113,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.RentalOffers}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Rental offers"}</Text>
         </TouchableOpacity>
@@ -133,7 +133,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.vacantProperties}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Vacant properties"}</Text>
         </TouchableOpacity>
@@ -153,7 +153,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.Inspections}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Inspections"}</Text>
         </TouchableOpacity>
@@ -173,7 +173,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.Tenants}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Tenants"}</Text>
         </TouchableOpacity>
@@ -195,7 +195,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.Maintenancejobs}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Maintenance  jobs"}</Text>
         </TouchableOpacity>
@@ -215,7 +215,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.ContractorDrawer}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Contractors"}</Text>
         </TouchableOpacity>
@@ -236,7 +236,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.Noticesreminders}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Notices & reminders"}</Text>
         </TouchableOpacity>
@@ -257,7 +257,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.DocumentDrawer}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Documents"}</Text>
         </TouchableOpacity>
@@ -278,7 +278,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.Reports}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Reports"}</Text>
         </TouchableOpacity>
@@ -298,7 +298,7 @@ const CustomSidebarMenu = (props) => {
           <Image
             source={IMAGES.Partner}
             style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Partners"}</Text>
         </TouchableOpacity>
