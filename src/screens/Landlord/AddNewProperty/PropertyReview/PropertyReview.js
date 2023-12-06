@@ -117,29 +117,27 @@ export default PropertyReview = (props) => {
         <Image source={IMAGES.Bathroom} style={DetailsStyle.DetailsIcon} />
       ) : item === "Garage" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ) :item === "Balcony" ? (
+      ) : item === "Balcony" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Outdoor Area" ? (
+      ) : item === "Outdoor Area" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Ensuit" ? (
+      ) : item === "Ensuit" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Dishwasher" ? (
+      ) : item === "Dishwasher" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Study" ? (
+      ) : item === "Study" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Built in Robes" ? (
+      ) : item === "Built in Robes" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Air Conditioning" ? (
+      ) : item === "Air Conditioning" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Solar Panels" ? (
+      ) : item === "Solar Panels" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Heating" ? (
+      ) : item === "Heating" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ):item === "Hight Energy Efficiency" ? (
+      ) : item === "Hight Energy Efficiency" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ): (
-       null
-      )}
+      ) : null}
       <Text style={DetailsStyle.details_text}>{item}</Text>
     </View>
   );
@@ -185,35 +183,7 @@ export default PropertyReview = (props) => {
       console.error("Error parsing additional_key_features:", error);
     }
   }, [property_id, additionalKeyFeaturesString]);
-  // const DetailsData = () => {
-  //   const detailData = {
-  //     user: property_id,
-  //   };
-  //   console.log("detailData", detailData);
-  //   const url = Config.API_URL;
-  //   const property_Detailss = url + "get_All_Property_details";
-  //   console.log("Request URL:", property_Detailss);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(property_Detailss, detailData)
-  //     .then((response) => {
-  //       console.log("propertyDetail", response.data);
-  //       if (response.data.status === true) {
-  //         setIsLoading(false);
-  //         setProperty_Details(response.data.property_details);
-  //         console.log("propertyDetail....", response.data.property_details);
-  //       } else {
-  //         console.error("propertyDetail_error:", response.data.error);
-  //         alert(response.data.error);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("property_type error:", error);
-  //       // alert(error);
-  //       setIsLoading(false);
-  //     });
-  // };
+
   const imagePaths = MultiImageName.map((image) => image.path);
 
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {

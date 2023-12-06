@@ -117,8 +117,8 @@ export default PropertyFeature = (props) => {
           setCountBathroom(feature.Bathrooms);
         } else if (feature.ParkingSpace !== undefined) {
           setCountParking(feature.ParkingSpace);
-        } else if (feature.OnStreetParking !== undefined) {
-          setCountParkingStreet(feature.OnStreetParking);
+        } else if (feature.On - StreetParking !== undefined) {
+          setCountParkingStreet(feature.On - StreetParking);
         }
       }
     } catch (error) {
@@ -149,14 +149,15 @@ export default PropertyFeature = (props) => {
           const furnishedFeatureId = apiAdditionalFeaturesIds.find(
             (id) => id == 68
           );
-          const yesFeatureId = apiAdditionalFeaturesIds.find(
-            (id) => id == 71
+          const yesFeatureId = apiAdditionalFeaturesIds.find((id) => id == 71);
+
+          console.log(
+            "Furnished Feature ID:",
+            apiAdditionalFeaturesIds,
+            furnishedFeatureId
           );
-          
-              
-          console.log("Furnished Feature ID:", apiAdditionalFeaturesIds , furnishedFeatureId);
           setSelectedButtonFurnished(furnishedFeatureId);
-          setSelectedButtonDeposit(yesFeatureId)
+          setSelectedButtonDeposit(yesFeatureId);
           setFlorSize(response?.data?.property_details[0]?.floor_size);
           setAdditionalFeaturesKeyValue(
             response?.data?.property_details[0]?.additional_key_features_id
@@ -177,8 +178,8 @@ export default PropertyFeature = (props) => {
   const AllCountsData = [
     { Bedrooms: CountBedroom },
     { Bathrooms: CountBathroom },
-    { ParkingSpace: CountParking },
-    { OnStreetParking: CountParkingStreet },
+    { "Parking Space": CountParking },
+    { "On-StreetParking": CountParkingStreet },
   ];
 
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;

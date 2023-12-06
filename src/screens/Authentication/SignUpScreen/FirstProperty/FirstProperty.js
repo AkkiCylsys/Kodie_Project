@@ -250,8 +250,8 @@ export default FirstProperty = (props) => {
   const AllCountsData = [
     { Bedrooms: CountBedroom },
     { Bathrooms: CountBathroom },
-    { ParkingSpace: CountParking },
-    { OnStreetParking: CountParkingStreet },
+    { "Parking Space": CountParking },
+    { "On-StreetParking": CountParkingStreet },
   ];
   const increaseBedroomCount = () => {
     setCountBedroom((prevCount) => prevCount + 1);

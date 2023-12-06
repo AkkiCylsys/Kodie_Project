@@ -16,6 +16,8 @@ import {
   IMAGES,
   FONTFAMILY,
 } from "../../../../Themes";
+import Modal from "react-native-modal";
+
 import { PropertyListCSS } from "./PropertyListCSS";
 import { _goBack } from "../../../../services/CommonServices/index";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -69,10 +71,14 @@ const PropertyList = (props) => {
   const [Address, setAddress] = useState();
   const [page, setPage] = useState(1);
   const refRBSheet = useRef();
-  const refRBSheetDelete = useRef();
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [propertyData, setPropertyData] = useState([]);
-
+  const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
+    useState(false);
+  const handleCloseModal = () => {
+    setIsDeleteData_Clicked(false);
+    setIsDeleteBottomSheetVisible(false);
+  };
   const getPropertyDetailsByFilter = async (filter) => {
     setIsLoading(true);
     try {
@@ -110,10 +116,9 @@ const PropertyList = (props) => {
     setIsDeleteData_Clicked(true);
   };
   const FinalDeleteProperty = async () => {
-    // alert(propertyDelId);
     setIsLoading(true);
     setIsDeleteData_Clicked(false);
-    refRBSheetDelete.current.close();
+    setIsDeleteBottomSheetVisible(false);
     try {
       const response = await axios.delete(
         "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id",
@@ -242,9 +247,10 @@ const PropertyList = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    refRBSheetDelete.current.open();
+                    // refRBSheetDelete.current.open();
+                    setIsDeleteBottomSheetVisible(true);
                     setPropertyDelId(item.property_id);
-
+                    // alert(propertyDelId);
                     setAddress(item?.location);
                   }}
                 >
@@ -330,7 +336,7 @@ const PropertyList = (props) => {
           </View>
         )}
         <DividerIcon />
-        <RBSheet
+        {/* <RBSheet
           height={isDeleteData_Clicked ? 200 : 330}
           ref={refRBSheetDelete}
           closeOnDragDown={true}
@@ -344,6 +350,7 @@ const PropertyList = (props) => {
             },
             container: PropertyListCSS.bottomModal_container,
           }}
+          onClose={() => setIsDeleteBottomSheetVisible(false)}
         >
           <BottomModalData
             onDelete={propertyDelete}
@@ -351,7 +358,7 @@ const PropertyList = (props) => {
             onDeleteData={FinalDeleteProperty}
             Address={Address}
           />
-        </RBSheet>
+        </RBSheet> */}
       </>
     );
   };
@@ -623,6 +630,37 @@ const PropertyList = (props) => {
           </>
         )}
       </ScrollView>
+      <Modal
+        isVisible={isDeleteBottomSheetVisible}
+        onBackdropPress={() => setIsDeleteBottomSheetVisible(true)}
+        style={[
+          PropertyListCSS.bottomModal_container,
+          {
+            position: "absolute",
+            left: -20,
+            bottom: -30,
+            width: "100%",
+            height: isDeleteData_Clicked ? "30%" : "50%",
+            backgroundColor: "white",
+            borderRadius: 10,
+            paddingVertical: 8,
+          },
+        ]}
+      >
+        <BottomModalData
+          // onViewProperty={() =>
+          //   props?.navigation?.navigate("ViewPropertyDetails", {
+          //     propertyDelId: propertyDelId,
+          //   })
+          // }
+
+          onDelete={propertyDelete}
+          onCloseModal={handleCloseModal}
+          isDeletePropertyClicked={isDeleteData_Clicked}
+          onDeleteData={FinalDeleteProperty}
+          Address={Address}
+        />
+      </Modal>
       {isLoading ? <CommonLoader /> : null}
     </View>
   );

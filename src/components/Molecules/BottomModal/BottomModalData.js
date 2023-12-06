@@ -6,7 +6,7 @@ import { TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { PropertyListCSS } from "../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS";
-
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 const data = [
   {
     id: "1",
@@ -50,6 +50,9 @@ const data1 = [
 const BottomModalData = (props) => {
   const navigation = useNavigation(); // Hook to get navigation
   const refRBSheet = useRef();
+  const handleCloseModal = () => {
+    props.onCloseModal(); // Call this function when you want to close the modal without performing delete action
+  };
   const handleDeleteProperty = (propertyDelId) => {
     console.log(propertyDelId, "catch data");
     props.onDelete(propertyDelId);
@@ -112,6 +115,16 @@ const BottomModalData = (props) => {
   };
   return (
     <View style={BottomModalDataStyle.mainContainer}>
+      <TouchableOpacity
+        style={{
+          justifyContent: "flex-end",
+          alignSelf: "flex-end",
+          paddingHorizontal: 20,
+        }}
+        onPress={handleCloseModal}
+      >
+        <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} />
+      </TouchableOpacity>
       <FlatList
         data={props?.isDeletePropertyClicked ? data1 : data}
         scrollEnabled
