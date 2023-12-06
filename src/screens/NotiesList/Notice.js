@@ -26,7 +26,9 @@ const data = [
   },
 ];
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
+import { useState } from "react";
 export default Notice = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const NoticeData = ({ item, index }) => {
     return (
       <>
@@ -80,6 +82,7 @@ export default Notice = (props) => {
           backgroundColor={_COLORS.Kodie_lightGreenColor}
           Text_Color={_COLORS.Kodie_BlackColor}
           borderColor={_COLORS.Kodie_GreenColor}
+          disabled={isLoading ? true : false}
         />
       </View>
     </View>

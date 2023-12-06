@@ -43,6 +43,7 @@ const AddBiddingDetails = (props) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [on, setOn] = useState(true);
   const [Visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -300,7 +301,7 @@ const AddBiddingDetails = (props) => {
             </View>
           </View>
 
-         {/* Button section here */}
+          {/* Button section here */}
           <View style={AddBiddingDetailsCss.ButtonView}>
             <TouchableOpacity
               style={[
@@ -382,12 +383,12 @@ const AddBiddingDetails = (props) => {
                   />
                 </TouchableOpacity>
                 <Text style={AddBiddingDetailsCss.modalMainText}>
-                Bidding enabled
+                  Bidding enabled
                 </Text>
                 <Text style={AddBiddingDetailsCss.modalSubText}>
-                Congratulations! You have successfully enabled 
-                 property bidding feature. You will be
-                  notified once a  tenant places a bid .
+                  Congratulations! You have successfully enabled property
+                  bidding feature. You will be notified once a tenant places a
+                  bid .
                 </Text>
                 <Image
                   source={IMAGES.CheckIcon}
@@ -400,6 +401,7 @@ const AddBiddingDetails = (props) => {
                   height={48}
                 />
                 <CustomSingleButton
+                  disabled={isLoading ? true : false}
                   _ButtonText={"Return"}
                   Text_Color={_COLORS.Kodie_BlackColor}
                   height={48}

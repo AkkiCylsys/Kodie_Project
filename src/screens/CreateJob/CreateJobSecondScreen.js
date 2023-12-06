@@ -1,7 +1,6 @@
-
 //ScreenNo:126
 //ScreenNo:127
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import StepText from "../../components/Molecules/StepText/StepText";
 import { CreateJobSecondStyle } from "./CreateJobSecondScreenCss";
@@ -23,6 +22,7 @@ const images = [
 ];
 const CreateJobSecondScreen = (props) => {
   const refRBSheet = useRef();
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={CreateJobSecondStyle.container}>
       <TopHeader
@@ -131,6 +131,7 @@ const CreateJobSecondScreen = (props) => {
             <CustomSingleButton
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
               onPress={() => props.navigation.navigate("CreateJobTermsScreen")}
             />
           </View>
@@ -146,12 +147,12 @@ const CreateJobSecondScreen = (props) => {
           </TouchableOpacity>
           <RBSheet
             ref={refRBSheet}
-            closeOnDragDown={true}
+            // closeOnDragDown={true}
             closeOnPressMask={false}
             height={180}
             customStyles={{
               wrapper: {
-                backgroundColor: "transparent",
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
               },
               draggableIcon: {
                 backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -167,5 +168,4 @@ const CreateJobSecondScreen = (props) => {
   );
 };
 
-
-export default CreateJobSecondScreen
+export default CreateJobSecondScreen;

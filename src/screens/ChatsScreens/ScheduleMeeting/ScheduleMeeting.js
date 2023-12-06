@@ -24,6 +24,7 @@ const ScheduleMeeting = (props) => {
   const [select, setSelect] = useState("");
   const [value, setValue] = useState(null);
   const [ScheduleDesc, setScheduleDesc] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -72,9 +73,7 @@ const ScheduleMeeting = (props) => {
       <ScrollView>
         <View style={ScheduleMeetingStyle.container}>
           <View style={ScheduleMeetingStyle.inputContainer}>
-            <Text style={ScheduleMeetingStyle._texinputLabel}>
-            Event name
-            </Text>
+            <Text style={ScheduleMeetingStyle._texinputLabel}>Event name</Text>
             <TextInput
               style={ScheduleMeetingStyle.input}
               value={name}
@@ -139,7 +138,7 @@ const ScheduleMeeting = (props) => {
           {/* repeat never section */}
           <View style={ScheduleMeetingStyle.mainreapeatview}>
             <View style={ScheduleMeetingStyle.bindimagetextview}>
-            <Image source={IMAGES.RightLeftarrow} />
+              <Image source={IMAGES.RightLeftarrow} />
               <Text style={ScheduleMeetingStyle.repeattext}>Repeat</Text>
             </View>
             <View style={ScheduleMeetingStyle.noticedropdownview}>
@@ -187,6 +186,7 @@ const ScheduleMeeting = (props) => {
 
           <View>
             <CustomSingleButton
+              disabled={isLoading ? true : false}
               _ButtonText={"Schedule"}
               backgroundColor={_COLORS.Kodie_BlackColor}
               Text_Color={_COLORS.Kodie_WhiteColor}

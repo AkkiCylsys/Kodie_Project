@@ -218,12 +218,12 @@ const PropertyListing = () => {
         {/* three dot click popup menu */}
         <RBSheet
           ref={refRBSheet1}
-          closeOnDragDown={true}
+          // closeOnDragDown={true}
           height={330}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -240,12 +240,12 @@ const PropertyListing = () => {
         {/* AddBiddingDetails popup */}
         <RBSheet
           ref={refRBSheet2}
-          closeOnDragDown={true}
+          // closeOnDragDown={true}
           height={760}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -259,12 +259,12 @@ const PropertyListing = () => {
         {/* invite tenent popup */}
         <RBSheet
           ref={refRBSheet3}
-          closeOnDragDown={true}
+          // closeOnDragDown={true}
           height={230}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,

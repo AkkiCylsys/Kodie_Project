@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   FlatList,
@@ -46,6 +46,7 @@ const LandlordData = [
   },
 ];
 export default BlockedUser = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const UserList_renderItem = ({ item, index }) => {
     return (
       <>
@@ -137,6 +138,7 @@ export default BlockedUser = (props) => {
       </Text>
       <View style={BlockedUserstyle.btnview}>
         <CustomSingleButton
+          disabled={isLoading ? true : false}
           _ButtonText={"Save"}
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}

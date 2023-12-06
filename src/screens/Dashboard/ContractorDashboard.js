@@ -8,6 +8,7 @@ import CustomTabNavigator from "../../components/Molecules/CustomTopNavigation/C
 import { _goBack } from "../../services/CommonServices";
 const ContractorDashboard = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
+  const [isLoading, setIsLoading] = useState(false);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -72,6 +73,7 @@ const ContractorDashboard = (props) => {
               height={38}
               marginTop={3}
               onPress={props.propertyDetail}
+              disabled={isLoading ? true : false}
             />
           </View>
         </View>

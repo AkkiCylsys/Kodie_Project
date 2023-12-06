@@ -15,6 +15,7 @@ const data = [
 ];
 const Reviewjobdetails3 = (props) => {
   const [activeTab, setActiveTab] = useState("Tab4");
+  const [isLoading, setIsLoading] = useState(false);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab2":
@@ -153,6 +154,7 @@ const Reviewjobdetails3 = (props) => {
               borderColor={_COLORS.Kodie_TransparentColor}
               _ButtonText={"Upload"}
               backgroundColor={_COLORS.Kodie_lightGreenColor}
+              disabled={isLoading ? true : false}
             />
           </View>
         </ScrollView>

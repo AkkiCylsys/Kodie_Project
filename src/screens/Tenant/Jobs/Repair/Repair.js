@@ -95,6 +95,7 @@ const property_List1 = [
 
 export default Repair = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const horizontal_render = ({ item }) => {
     return (
@@ -112,11 +113,9 @@ export default Repair = (props) => {
         <SwipeListView
           style={RepairCss.Container}
           data={property_List}
-         
           renderItem={(rowdata, rowmap, index) => (
             <View style={RepairCss.rowFront} key={index}>
-              
-              <View style={RepairCss.flat_MainView} >
+              <View style={RepairCss.flat_MainView}>
                 <View style={RepairCss.flexContainer}>
                   <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
                 </View>
@@ -196,17 +195,14 @@ export default Repair = (props) => {
                   </View>
                 </View>
               </View>
-              <DividerIcon style={RepairCss.dividerIcon}/>
+              <DividerIcon style={RepairCss.dividerIcon} />
             </View>
           )}
           renderHiddenItem={(data, index) => (
             <View style={RepairCss.rowBack}>
               <Text>Left</Text>
               <TouchableOpacity
-                style={[
-                  RepairCss.backRightBtn,
-                  RepairCss.backRightBtnLeft,
-                ]}
+                style={[RepairCss.backRightBtn, RepairCss.backRightBtnLeft]}
                 onPress={() => closeRow(rowMap, data.item.key)}
               >
                 <Entypo
@@ -217,10 +213,7 @@ export default Repair = (props) => {
                 <Text style={RepairCss.backTextWhite}>More</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[
-                  RepairCss.backRightBtn,
-                  RepairCss.backRightBtnRight,
-                ]}
+                style={[RepairCss.backRightBtn, RepairCss.backRightBtnRight]}
                 onPress={() => deleteRow(rowMap, data.item.key)}
               >
                 <Ionicons
@@ -248,7 +241,7 @@ export default Repair = (props) => {
   //   return (
   //     <>
   //       <View style={RepairCss.Container} >
-         
+
   //           <View style={RepairCss.flat_MainView}>
   //             <View style={RepairCss.flexContainer}>
   //               <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
@@ -330,7 +323,7 @@ export default Repair = (props) => {
   //             </View>
   //           </View>
   //           <DividerIcon />
-       
+
   //       </View>
   //     </>
   //   );
@@ -471,6 +464,7 @@ export default Repair = (props) => {
             _ButtonText={
               activeScreen ? "+ Create new job request" : "+ Add job"
             }
+            disabled={isLoading ? true : false}
             Text_Color={_COLORS.Kodie_WhiteColor}
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}

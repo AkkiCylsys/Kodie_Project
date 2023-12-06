@@ -1,4 +1,3 @@
-
 //ScreenNo:123
 //ScreenNo:124
 //ScreenNo:125
@@ -28,7 +27,8 @@ export default CreateJobTermsScreen = (props) => {
   const [value, setValue] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
- 
+  const [isLoading, setIsLoading] = useState(false);
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -168,6 +168,7 @@ export default CreateJobTermsScreen = (props) => {
             <CustomSingleButton
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
               onPress={() => props.navigation.navigate("ConfirmJobCompletion")}
             />
           </View>

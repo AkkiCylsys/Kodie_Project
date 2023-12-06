@@ -17,6 +17,7 @@ const Contractors2 = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState("Tab2");
+  const [isLoading, setIsLoading] = useState(false);
   const toggleView = () => {
     setVisible(!visible);
   };
@@ -94,6 +95,7 @@ const Contractors2 = (props) => {
               onPress={() => {
                 refRBSheet.current.open();
               }}
+              disabled={isLoading ? true : false}
             />
           </View>
           <View style={Contractors2Style.Line1} />

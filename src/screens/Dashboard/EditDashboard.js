@@ -9,8 +9,10 @@ import { _COLORS, IMAGES } from "../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 import { EditDashboardStyle } from "./EditDashboardStyle";
+import { useState } from "react";
 
 const EditDashboard = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <View style={EditDashboardStyle.Mainview}>
@@ -324,6 +326,7 @@ const EditDashboard = (props) => {
               borderColor={_COLORS.Kodie_TransparentColor}
               _ButtonText={"Confirm"}
               backgroundColor={_COLORS.Kodie_BlackColor}
+              disabled={isLoading ? true : false}
             />
 
             <TouchableOpacity style={EditDashboardStyle.goBack_View}>

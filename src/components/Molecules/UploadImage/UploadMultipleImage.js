@@ -27,9 +27,8 @@ const UploadMultipleImage = (props) => {
   const [image, setImage] = useState({});
 
   const handleClosePopup = () => {
-    props.onClose()
+    props.onClose();
   };
-
 
   const UploadImageContent = ({ item, index }) => {
     return (
@@ -46,12 +45,13 @@ const UploadMultipleImage = (props) => {
                 multiple: true,
               })
                 .then((image) => {
-                  console.log("image....", image);
+                  // console.log("image....", image);
                   setImage(image);
-                  setMultipleImage(image);
-                  // props?.ImageName(image?.path)
-                  props?.multipleImage(image);
-
+                  // setMultipleImage(image);
+                  // // props?.ImageName(image?.path)
+                  // props?.multipleImage(image);
+                  setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
+                  props?.multipleImage(Array.isArray(image) ? image : [image]);
                   console.log("ImagePath..", multipleImage);
                 })
                 .catch((err) => {

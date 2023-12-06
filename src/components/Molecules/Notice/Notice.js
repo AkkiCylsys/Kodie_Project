@@ -49,11 +49,11 @@ const Notice = (props) => {
       <RBSheet
         ref={refRBSheet}
         height={220}
-        closeOnDragDown={true}
+        // closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,

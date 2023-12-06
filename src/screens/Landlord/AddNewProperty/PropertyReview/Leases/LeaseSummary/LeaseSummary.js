@@ -226,6 +226,7 @@ export default LeaseSummary = (props) => {
           Text_Color={_COLORS.Kodie_BlackColor}
           backgroundColor={_COLORS.Kodie_lightGreenColor}
           height={45}
+          disabled={isLoading ? true : false}
         />
       </View>
     );
@@ -324,6 +325,7 @@ export default LeaseSummary = (props) => {
             onPress={() => {
               refRBSheet.current.open();
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
       </View>
@@ -333,7 +335,7 @@ export default LeaseSummary = (props) => {
         closeOnDragDown={true}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -341,7 +343,10 @@ export default LeaseSummary = (props) => {
           container: LeaseSummaryStyle.bottomModal_container,
         }}
       >
-        <InviteTenantModal  closeRBSheet={() => refRBSheet.current.close()} property_id={property_id}/>
+        <InviteTenantModal
+          closeRBSheet={() => refRBSheet.current.close()}
+          property_id={property_id}
+        />
       </RBSheet>
       <RBSheet
         ref={refRBSheet2}
@@ -349,7 +354,7 @@ export default LeaseSummary = (props) => {
         closeOnDragDown={true}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,

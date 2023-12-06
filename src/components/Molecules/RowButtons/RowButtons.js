@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { View } from "react-native";
 import { RowButtonsStyle } from "./RowButtonsStyle";
 import { _COLORS } from "./../../../Themes/index";
 import CustomSingleButton from "./../../Atoms/CustomButton/CustomSingleButton";
 const RowButtons = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={RowButtonsStyle.mainView}>
       <View style={RowButtonsStyle.leftButtonView}>
         <CustomSingleButton
+          disabled={isLoading ? true : false}
           height={props.leftButtonHeight}
           onPress={props.onPressLeftButton}
           backgroundColor={props.leftButtonbackgroundColor}
@@ -18,6 +20,7 @@ const RowButtons = (props) => {
       </View>
       <View style={RowButtonsStyle.leftButtonView}>
         <CustomSingleButton
+          disabled={isLoading ? true : false}
           height={props.RightButtonHeight}
           onPress={props.onPressRightButton}
           backgroundColor={props.RightButtonbackgroundColor}

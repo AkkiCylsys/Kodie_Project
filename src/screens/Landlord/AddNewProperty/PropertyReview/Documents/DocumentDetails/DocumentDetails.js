@@ -335,6 +335,7 @@ const DocumentDetails = (props) => {
             onPress={() => {
               selectDoc();
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
         <View>
@@ -412,6 +413,7 @@ const DocumentDetails = (props) => {
             onPress={() => {
               uploadDocument();
             }}
+            disabled={isLoading ? true : false}
           />
         </View>
         <RBSheet

@@ -85,6 +85,7 @@ export default Documents = (props) => {
   const property_id = props.property_id;
   // alert(props.property_id);
   const [value, setValue] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
   const DocumentsData = ({ item, index }) => {
@@ -125,7 +126,7 @@ export default Documents = (props) => {
         // }}
         onPress={() => {
           console.log("item.id:", item.id);
-          props?.documentDetail(item.id, item.folderHeading,property_id);
+          props?.documentDetail(item.id, item.folderHeading, property_id);
         }}
       >
         <View style={DocumentsStyle.folder_icon}>
@@ -187,6 +188,7 @@ export default Documents = (props) => {
             onPress={() => {
               refRBSheet.current.open();
             }}
+                   disabled={isLoading ? true : false}
           /> */}
         </View>
         {/* <RBSheet
@@ -194,7 +196,7 @@ export default Documents = (props) => {
           height={200}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,

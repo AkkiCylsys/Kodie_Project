@@ -32,6 +32,8 @@ import Geolocation from "react-native-geolocation-service";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useDispatch, useSelector } from "react-redux";
+import { useFocusEffect } from "@react-navigation/native";
+import { BackHandler } from "react-native";
 import { signupAccountApiActionCreator } from "../../../../redux/Actions/Authentication/AuthenticationApiCreator";
 import mime from "mime";
 const labels = ["Step 1", "Step 2", "Step 3"];
@@ -222,6 +224,24 @@ export default FirstProperty = (props) => {
   const p_country = P_addressParts.pop();
   const P_state = P_addressParts.pop();
   const p_city = P_addressParts.join(", ");
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [IsMap, IsSearch])
+  );
 
   console.log("p_country:", p_country);
   console.log("P_state:", P_state);
@@ -231,7 +251,7 @@ export default FirstProperty = (props) => {
     { Bedrooms: CountBedroom },
     { Bathrooms: CountBathroom },
     { ParkingSpace: CountParking },
-    { On_streetParking: CountParkingStreet },
+    { OnStreetParking: CountParkingStreet },
   ];
   const increaseBedroomCount = () => {
     setCountBedroom((prevCount) => prevCount + 1);
@@ -320,15 +340,6 @@ export default FirstProperty = (props) => {
     });
     CheckIOSMapPermission();
   }, []);
-  const handle_key_feature = (lookup_key) => {
-    if (selectedkey_features.includes(lookup_key)) {
-      setSelectedkey_features(
-        selectedkey_features.filter((item) => item !== lookup_key)
-      );
-    } else {
-      setSelectedkey_features([...selectedkey_features, lookup_key]);
-    }
-  };
 
   const handleProperty_Type = () => {
     const propertyData = {
@@ -430,6 +441,8 @@ export default FirstProperty = (props) => {
     formData.append("key_features", JSON.stringify(AllCountsData));
     formData.append("land_area", landArea);
     formData.append("floor_size", buildingFlorSize);
+    formData.append("device_id", "14565Android");
+    formData.append("device_type", "Android");
     formData.append(
       "additional_features",
       JSON.stringify(additionalfeatureskeyvalue)
@@ -455,9 +468,10 @@ export default FirstProperty = (props) => {
           "Content-Type": "multipart/form-data",
         },
       });
+
       console.log("Save Account Details", response.data);
 
-      if (response.data.success === true) {
+      if (response.data.status === true) {
         setIsLoading(false);
         alert(response.data.message);
         props.navigation.navigate("DrawerNavigatorLeftMenu");
@@ -476,30 +490,10 @@ export default FirstProperty = (props) => {
     } catch (error) {
       setIsLoading(false);
       console.error("Account_Details error:", error);
-      alert(error);
+      alert("An error occurred. Please try again later.");
     } finally {
       setIsLoading(false);
     }
-
-    // let res = await dispatch(signupAccountApiActionCreator(formData));
-    // console.log("signupAccount_Details.....", res?.data);
-    // if (res.data.status === true) {
-    //   setIsLoading(false);
-    //   alert(res.data.message);
-    //   props.navigation.navigate("DrawerNavigatorLeftMenu");
-    //   setIsLoading(false);
-    //   setCurrentPage(0);
-    //   setProperty_value("");
-    //   setbedroomValue("");
-    //   setGaragesValue("");
-    //   setBathRoomValue("");
-    //   setParkingValue("");
-    //   setAdditionalFeaturesKeyValue("");
-    // } else {
-    //   setIsLoading(false);
-    //   console.error("Save Account Details error:", res.data.error);
-    //   alert(res.data.error);
-    // }
   };
 
   // const handleSaveSignup = async () => {
@@ -1143,6 +1137,7 @@ export default FirstProperty = (props) => {
             </View>
             <View style={{ marginHorizontal: 16 }}>
               <CustomSingleButton
+                disabled={isLoading ? true : false}
                 _ButtonText={"Save"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
@@ -1152,6 +1147,7 @@ export default FirstProperty = (props) => {
             </View>
             <View style={{ marginHorizontal: 16 }}>
               <CustomSingleButton
+                disabled={isLoading ? true : false}
                 _ButtonText={"Fill these details out later"}
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}

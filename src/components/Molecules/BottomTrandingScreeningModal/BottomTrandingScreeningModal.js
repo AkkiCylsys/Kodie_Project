@@ -6,6 +6,7 @@ import { IMAGES, LABEL_STYLES, _COLORS } from "../../../Themes";
 import CustomSingleButton from "../../Atoms/CustomButton/CustomSingleButton";
 import { BottomTrandingScreeningModalCss } from "./BottomTrandingScreeningModalCss";
 const BottomTrandingScreeningModal = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={BottomTrandingScreeningModalCss.MainContainer}>
       <View style={BottomTrandingScreeningModalCss.Container}>
@@ -135,6 +136,7 @@ const BottomTrandingScreeningModal = (props) => {
         </View>
       </View>
       <CustomSingleButton
+        disabled={isLoading ? true : false}
         _ButtonText={"Start check now"}
         Text_Color={_COLORS.Kodie_WhiteColor}
         backgroundColor={_COLORS.Kodie_BlackColor}
@@ -149,6 +151,7 @@ const BottomTrandingScreeningModal = (props) => {
         valid.
       </Text>
       <CustomSingleButton
+        disabled={isLoading ? true : false}
         leftImage={IMAGES.uploadIcon}
         isLeftImage={true}
         borderColor={_COLORS.Kodie_TransparentColor}

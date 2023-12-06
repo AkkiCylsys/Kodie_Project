@@ -11,7 +11,9 @@ import Entypo from "react-native-vector-icons/Entypo";
 import UploadImageBoxes from "../../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 import SwitchButton from "../../../components/Molecules/SwitchButton/SwitchButton";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
+import { useState } from "react";
 export default ConfirmJobCompletion = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={ConfirmJobCompletionStyle.mainContainer}>
       <TopHeader
@@ -121,6 +123,7 @@ export default ConfirmJobCompletion = (props) => {
           _ButtonText={"Confirm"}
           Text_Color={_COLORS.Kodie_WhiteColor}
           onPress={() => props.navigation.navigate("Billinginformation")}
+          disabled={isLoading ? true : false}
         />
       </View>
     </View>
