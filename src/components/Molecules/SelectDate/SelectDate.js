@@ -1,256 +1,106 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState, useRef } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from "react-native";
+import React, { useState, useRef, useEffect } from "react";
 import { SelectDateStyle } from "./SelectDateStyle";
 import Entypo from "react-native-vector-icons/Entypo";
 import { _COLORS } from "../../../Themes";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Divider } from "react-native-paper";
-import RBSheet from "react-native-raw-bottom-sheet";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 
 const SelectDate = (props) => {
-  const [isPopupVisible, setPopupVisible] = useState(false);
-  const [yesterday, setYesterday] = useState(false);
-  const [sevendays, setSevenDays] = useState(false);
-  const [thirtydays, setThirtyDays] = useState(false);
-  const [thismonth, setThisMonth] = useState(false);
-  const [Lastmonth, setLastMonth] = useState(false);
-  const [tastyear, setYear] = useState(false);
-  const [thisrange, setRange] = useState(false);
-  const [customerange, setCustomeRange] = useState(false);
-  const refRBSheet = useRef();
   const [selected, setSelected] = useState("");
   const [calender, setCalender] = useState(false);
+  const [optionStates, setOptionStates] = useState([]);
 
-  const toggleyesterday = () => {
-    setYesterday(!yesterday);
+  useEffect(() => {
+    setOptionStates(
+      OptionData.map((item) => ({ id: item.id, checked: false }))
+    );
+  }, []);
+
+  const toggleOption = (id) => {
+    setOptionStates((prevStates) =>
+      prevStates.map((state) =>
+        state.id === id
+          ? { ...state, checked: !state.checked }
+          : { ...state, checked: false }
+      )
+    );
+    setSelected((prevSelected) => (prevSelected === id ? "" : id));
+    setCalender(id === 8 && !calender);
   };
-  const togglesevendays = () => {
-    setSevenDays(!sevendays);
-  };
-  const togglethirtydays = () => {
-    setThirtyDays(!thirtydays);
-  };
-  const togglethismonth = () => {
-    setThisMonth(!thismonth);
-  };
-  const toggleLastmonth = () => {
-    setLastMonth(!Lastmonth);
-  };
-  const toggletastyear = () => {
-    setYear(!tastyear);
-  };
-  const togglethisrange = () => {
-    setRange(!thisrange);
-  };
-  const togglecustomerange = () => {
-    setCustomeRange(!customerange);
-  };
+
   const handleClosePopup = () => {
-    setPopupVisible(true);
+    setCalender(false);
+    props.onClose();
   };
-  const togglecalender = () => {
-    setCalender(!calender);
-  };
-  const toggleclose = () => {
-    props.onClose()
-  };
-  const togglecustomrange = () => {
-    updateRBSheetHeight(750); // Call the callback to update the RBSheet height
-  };
+
+  const OptionData = [
+    { id: 1, day: "Today", date: "17 FEB 2023" },
+    { id: 2, day: "Yesterday", date: "17 FEB 2023" },
+    { id: 3, day: "Last 7 days", date: "10 Jan-17 FEB 2023" },
+    { id: 4, day: "Last 30 days", date: "18 Jan-17 FEB 2023" },
+    { id: 5, day: "This month", date: "1 Jan-17 FEB 2023" },
+    { id: 6, day: "Last month", date: "1 Jan-30 Jan 2023" },
+    { id: 7, day: "Last year", date: "1 Jan-31 Dec 2023" },
+    { id: 8, day: "Custom range", date: "" },
+  ];
+
+  const renderdate = ({ item }) => (
+    <View style={SelectDateStyle.optionsview}>
+      <View style={SelectDateStyle.bindview}>
+        <TouchableOpacity onPress={() => toggleOption(item.id)}>
+          <View style={SelectDateStyle.optionsiconview}>
+            <MaterialIcons
+              size={25}
+              // color={
+              //   optionStates
+              //     ? _COLORS.Kodie_ExtraDarkGreen
+              //     : _COLORS.Kodie_GrayColor
+              // }
+              color={
+                optionStates.find((state) => state.id === item.id)?.checked
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor
+              }
+              name={
+                optionStates.find((state) => state.id === item.id)?.checked
+                  ? "radio-button-checked"
+                  : "radio-button-unchecked"
+              }
+            />
+          </View>
+        </TouchableOpacity>
+        <Text style={SelectDateStyle.textoption}>{item.day}</Text>
+      </View>
+      <View>
+        <Text style={SelectDateStyle.datetext}>{item.date}</Text>
+      </View>
+    </View>
+  );
+
   return (
-    <View >
+    <View>
       <View style={SelectDateStyle.headingview}>
         <Text style={SelectDateStyle.headingtext}>Select date</Text>
-        <TouchableOpacity onPress={toggleclose}>
-          <Entypo
-            name="cross"
-            size={24}
-            color={_COLORS.Kodie_BlackColor}
-       
-          />
+        <TouchableOpacity onPress={handleClosePopup}>
+          <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
         </TouchableOpacity>
       </View>
 
       <ScrollView>
         <View style={SelectDateStyle.optionsmainview}>
           <ScrollView>
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={toggleyesterday}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <MaterialCommunityIcons
-                      size={25}
-                      color={_COLORS.Kodie_GrayColor}
-                      name={
-                        yesterday
-                          ? "checkbox-marked-circle"
-                          : "checkbox-blank-circle-outline"
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>Today</Text>
-              </View>
-              <View>
-                <Text style={SelectDateStyle.datetext}>17 FEB 2023</Text>
-              </View>
-            </View>
-
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={togglesevendays}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <MaterialCommunityIcons
-                      size={25}
-                      color={_COLORS.Kodie_GrayColor}
-                      name={
-                        sevendays
-                          ? "checkbox-marked-circle"
-                          : "checkbox-blank-circle-outline"
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>Yesterday</Text>
-              </View>
-              <View>
-                <Text style={SelectDateStyle.datetext}>17 FEB 2023</Text>
-              </View>
-            </View>
-
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={togglethirtydays}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <MaterialCommunityIcons
-                      size={25}
-                      color={_COLORS.Kodie_GrayColor}
-                      name={
-                        thirtydays
-                          ? "checkbox-marked-circle"
-                          : "checkbox-blank-circle-outline"
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>Last 7 days</Text>
-              </View>
-              <View>
-                <Text style={SelectDateStyle.datetext}>10 Jan-17 FEB 2023</Text>
-              </View>
-            </View>
-
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={togglethismonth}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <MaterialCommunityIcons
-                      size={25}
-                      color={_COLORS.Kodie_GrayColor}
-                      name={
-                        thismonth
-                          ? "checkbox-marked-circle"
-                          : "checkbox-blank-circle-outline"
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>Last 30 days</Text>
-              </View>
-              <View>
-                <Text style={SelectDateStyle.datetext}>18 Jan-17 FEB 2023</Text>
-              </View>
-            </View>
-
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={toggleLastmonth}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <MaterialCommunityIcons
-                      size={25}
-                      color={_COLORS.Kodie_GrayColor}
-                      name={
-                        Lastmonth
-                          ? "checkbox-marked-circle"
-                          : "checkbox-blank-circle-outline"
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>This month</Text>
-              </View>
-              <View>
-                <Text style={SelectDateStyle.datetext}>1 Jan-17 FEB 2023</Text>
-              </View>
-            </View>
-
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={toggletastyear}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <MaterialCommunityIcons
-                      size={25}
-                      color={_COLORS.Kodie_GrayColor}
-                      name={
-                        tastyear
-                          ? "checkbox-marked-circle"
-                          : "checkbox-blank-circle-outline"
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>Last month</Text>
-              </View>
-              <View>
-                <Text style={SelectDateStyle.datetext}>1 Jan-30 Jan 2023</Text>
-              </View>
-            </View>
-
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={togglethisrange}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <MaterialCommunityIcons
-                      size={25}
-                      color={_COLORS.Kodie_GrayColor}
-                      name={
-                        thisrange
-                          ? "checkbox-marked-circle"
-                          : "checkbox-blank-circle-outline"
-                      }
-                    />
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>Last year</Text>
-              </View>
-              <View>
-                <Text style={SelectDateStyle.datetext}>1 Jan-31 Dec 2023</Text>
-              </View>
-            </View>
-
-            <Divider style={SelectDateStyle.Divider} />
-
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={togglecalender}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <TouchableOpacity onPress={togglecalender}>
-                      <MaterialCommunityIcons
-                        size={25}
-                        color={_COLORS.Kodie_GrayColor}
-                        name={
-                          calender
-                            ? "checkbox-marked-circle"
-                            : "checkbox-blank-circle-outline"
-                        }
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>Custom range</Text>
-              </View>
-            </View>
+            <FlatList
+              data={OptionData}
+              renderItem={renderdate}
+              keyExtractor={(item) => item.key}
+            />
 
             {calender && (
               <View>
