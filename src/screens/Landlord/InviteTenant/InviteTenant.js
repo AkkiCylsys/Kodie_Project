@@ -5,6 +5,7 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
 import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import { _COLORS, IMAGES } from "../../../Themes/index";
+import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import StarRating from "react-native-star-rating";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
@@ -13,8 +14,7 @@ const data = [
   {
     id: "1",
     name: "Jason S",
-    rating: "4.0",
-    view: "231",
+    name1: "Stathom",
     looking_For: "Home",
     location: "Sydney",
     budget: "$580 per week",
@@ -45,33 +45,46 @@ export default InviteTenant = (props) => {
     return (
       <>
         <View style={InviteTenantStyle.usermainView}>
-          <TouchableOpacity style={InviteTenantStyle.usericon}>
-            <Image source={IMAGES.userImage} />
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity style={InviteTenantStyle.usericon}>
+              <Image source={IMAGES.userImage} />
+            </TouchableOpacity>
+          </View>
           <View style={InviteTenantStyle.nameView}>
             <Text style={InviteTenantStyle.nameText}>{item.name}</Text>
-            <View style={InviteTenantStyle.staricon}>
-              <AntDesign
-                name="star"
-                size={15}
-                color={_COLORS.Kodie_GrayColor}
-                style={InviteTenantStyle.star}
-              />
-              <Text style={InviteTenantStyle.ratingText}>{item.rating}</Text>
-              <Text style={InviteTenantStyle.subrating}>({item.view})</Text>
-            </View>
+            <Text style={InviteTenantStyle.nameText}>{item.name1}</Text>
           </View>
 
           <View style={InviteTenantStyle.starStyle}>
-            <StarRating
-              disabled={false}
-              maxStars={5}
-              rating={rating}
-              fullStarColor={_COLORS.Kodie_lightGreenColor}
-              emptyStarColor={_COLORS.Kodie_LightGrayColor}
-              starSize={20}
-              selectedStar={(rating) => setRating(rating)}
-              starStyle={InviteTenantStyle.startRating}
+            <View style={InviteTenantStyle.bindstarview}>
+              <StarRating
+                disabled={false}
+                maxStars={1}
+                rating={rating}
+                fullStarColor={_COLORS.Kodie_lightGreenColor}
+                emptyStarColor={_COLORS.Kodie_LightGrayColor}
+                starSize={20}
+                selectedStar={(rating) => setRating(rating)}
+              />
+              <Text style={InviteTenantStyle.starratingStyle}>4.6 (231)</Text>
+            </View>
+            <View style={InviteTenantStyle.verifiedView}>
+              <Text style={InviteTenantStyle.verifiedtext}>Not verified</Text>
+            </View>
+          </View>
+          <View style={InviteTenantStyle.menuiconview}>
+            <AntDesign
+              name="hearto"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+              style={InviteTenantStyle.heartimg}
+            />
+
+            <Entypo
+              name="dots-three-horizontal"
+              size={20}
+              color={_COLORS.Kodie_GrayColor}
+              style={InviteTenantStyle.closeIcon}
             />
           </View>
         </View>
@@ -101,7 +114,7 @@ export default InviteTenant = (props) => {
             LeftButtonText="View Profile"
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-            RightButtonText="Invite Tenant"
+            RightButtonText="Add to property"
             RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             onPressRightButton={() => props.navigation.navigate("Language")}
@@ -115,7 +128,7 @@ export default InviteTenant = (props) => {
     <View style={InviteTenantStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Invite new tenant"}
+        MiddleText={"Tenant"}
       />
       <SearchBar
         filterImage={IMAGES.filter}
