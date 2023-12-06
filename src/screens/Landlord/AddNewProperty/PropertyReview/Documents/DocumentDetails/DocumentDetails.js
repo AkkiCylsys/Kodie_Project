@@ -32,6 +32,7 @@ const DocumentDetails = (props) => {
   const [selectFile, setSelectFile] = useState([]);
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState("");
+  const [filePath, setFilePath] = useState("");
   const file = selectFile[0];
   //   alert(folderId);
   // alert(folderHeading);
@@ -202,6 +203,7 @@ const DocumentDetails = (props) => {
   const GetuploadedDocumentrender = ({ item, index }) => {
     setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
+    setFilePath(item.PDUM_FILE_PATH);
     console.log("fileKey....", fileKey);
     return (
       <>
@@ -238,9 +240,8 @@ const DocumentDetails = (props) => {
     );
   };
 
-  // const REMOTE_PATH =
-  //   "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
-  const REMOTE_PATH = `http://e3.cylsys.com/upload/documents/${fileName}`;
+  // const REMOTE_PATH = `http://e3.cylsys.com/upload/documents/${fileName}`;
+  const REMOTE_PATH = filePath;
   const checkPermission = async () => {
     setIsLoading(true);
     if (Platform.OS === "ios") {
@@ -349,29 +350,6 @@ const DocumentDetails = (props) => {
               : "Property documents"}
           </Text>
         </View>
-        {/* {uploadDocData !== null || !selectFile ? (
-          <View>
-            <FlatList
-              data={uploadDocData}
-              scrollEnabled
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{}}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={GetuploadedDocumentrender}
-            />
-          </View>
-        ) : (
-          <>
-            <FlatList
-              data={selectFile}
-              scrollEnabled
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={{}}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={DocumentsData}
-            />
-          </>
-        )} */}
 
         <FlatList
           data={selectFile}
