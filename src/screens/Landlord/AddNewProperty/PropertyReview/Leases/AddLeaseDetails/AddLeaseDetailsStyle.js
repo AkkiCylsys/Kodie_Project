@@ -54,6 +54,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 10,
     borderRadius: 8,
+    color:_COLORS.Kodie_BlackColor
   },
 
   placeholderStyle: {
@@ -73,10 +74,13 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     height: 20,
     borderWidth: 1,
     marginRight: 16,
+    color:_COLORS.Kodie_BlackColor
+
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color:_COLORS.Kodie_BlackColor
   },
   inputContainer: {
     marginTop: 15,
@@ -151,10 +155,11 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   itemView: {
     flex: 1,
     flexDirection: "row",
-    paddingVertical:10,
-    marginHorizontal:10
+    paddingVertical: 10,
+    marginHorizontal: 10,
   },
   textItem: {
     marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
   },
 });

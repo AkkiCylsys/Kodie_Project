@@ -25,8 +25,8 @@ const data = [
 ];
 export default AddExpensesDetails = (props) => {
   //  alert(JSON.stringify(props.property_id));
-   const property_id = props.property_id;
-   console.log('property_id in Add details..',property_id);
+  const property_id = props.property_id;
+  console.log("property_id in Add details..", property_id);
   const loginData = useSelector((state) => state.authenticationReducer.data);
   const [totalAmount, setTotalAmount] = useState("");
   const [totalAmountError, setTotalAmountError] = useState("");
@@ -45,7 +45,7 @@ export default AddExpensesDetails = (props) => {
   const [ExpenceCategoryValueError, setExpenceCategoryValueError] =
     useState("");
   const [ExpenceCategoryData, setExpenceCategoryData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('Save');
+  const [selectedOption, setSelectedOption] = useState("Save");
   const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
   const [selectedButtonRepeating, setSelectedButtonRepeating] = useState(false);
   const [selectedButtonResponsible, setSelectedButtonResponsible] =
@@ -94,15 +94,36 @@ export default AddExpensesDetails = (props) => {
     setTotalAmount(text);
   };
 
+  // Validation for Due date........
+  const handleduedate = (text) => {
+    setSelectedDate(text);
+    if (text.trim() === "") {
+      setSelectedDateError("Due date is required.");
+    } else {
+      setSelectedDateError("");
+    }
+  };
+
+  // Validation for Paid date........
+  const handledpaiddate = (text) => {
+    setSelectedPaidDate(text);
+    if (text.trim() === "") {
+      setSelectedPaidDateError("Paid date is required.");
+    } else {
+      setSelectedPaidDateError("");
+    }
+  };
+
   const handleDropdownChange = (item) => {
     if (item) {
       setExpenceCategoryValue("");
-      setExpenceCategoryValueError("Please select an expense category."); 
+      setExpenceCategoryValueError("Please select an expense category.");
     } else {
-      setExpenceCategoryValueError(""); 
+      setExpenceCategoryValueError("");
     }
   };
-  // API bind Expence Category Lookup key code here.....
+
+  // API bind Expence Category Lookup key code here........
   const handleExpenceCategory = () => {
     const propertyData = {
       P_PARENT_CODE: "AEC",
@@ -235,17 +256,14 @@ export default AddExpensesDetails = (props) => {
       setTotalAmountError("Total amount is required.");
     } else if (selectedDate.trim() === "") {
       setSelectedDateError("Due date is required.");
-    } else if (selectedPaidDate.trim() === "") {
-      setSelectedPaidDateError("Paid date is required.");
-    } else if (selectedButtonRepeatingId === "") {
-      setSelectedButtonRepeatingError("select Repating.");
     } else if (!ExpenceCategoryValue) {
       setExpenceCategoryValueError("select Responsible Category.");
+    } else if (selectedPaidDate.trim() === "") {
+      setSelectedPaidDateError("Paid date is required.");
     } else {
       Expencehandle();
       setSelectedPaidDateError("");
       setSelectedDateError("");
-      setSelectedButtonRepeatingError("");
       setSelectedPaidDateError("");
       setExpenceCategoryValueError("");
     }
@@ -329,7 +347,9 @@ export default AddExpensesDetails = (props) => {
                     : _COLORS.Kodie_GrayColor,
                 }}
                 calenderIcon={toggleModal}
-                onDayPress={handleDayPress}
+                // onDayPress={handleDayPress}
+                onDayPress={(day) => handleduedate(day.dateString)}
+                onChangeText={() => handleduedate(selectedDate)}
                 Visible={isModalVisible}
                 onRequestClose={toggleModal}
                 markedDates={{
@@ -350,7 +370,7 @@ export default AddExpensesDetails = (props) => {
 
           <View style={AddExpensesDetailsStyle.addition_featureView}>
             <Text style={AddExpensesDetailsStyle.Furnished_Text}>
-              {"Repeating expense?"}
+              {"Repeating expense?*"}
             </Text>
             <RowButtons
               LeftButtonText={"Yes"}
@@ -577,7 +597,9 @@ export default AddExpensesDetails = (props) => {
                     : _COLORS.Kodie_GrayColor,
                 }}
                 calenderIcon={togglePaidModal}
-                onDayPress={handlePaidDatePress}
+                // onDayPress={handlePaidDatePress}
+                onDayPress={(paidDate) => handledpaiddate(paidDate.dateString)}
+                onChangeText={() => handledpaiddate(selectedPaidDate)}
                 Visible={isPaidModalVisible}
                 onRequestClose={togglePaidModal}
                 markedDates={{
