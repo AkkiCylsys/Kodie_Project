@@ -1,5 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import { PropertyImagesStyle } from "./PropertyImagesStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
@@ -15,8 +21,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Config } from "../../../../Config";
 import axios from "axios";
 import ImagePicker from "react-native-image-crop-picker";
-
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import Video from "react-native-video";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const images = [
@@ -76,7 +82,6 @@ export default PropertyImages = (props) => {
     refRBSheet.current.close();
     console.log("close");
   };
-  const imagePaths = MultiImageName.map((image) => image.path);
   // setImagePaths(imagePath);
   // alert(imagePaths);
   const openVideoPicker = () => {
@@ -144,7 +149,7 @@ export default PropertyImages = (props) => {
           property_id: property_id,
           MultiImageName: MultiImageName,
           selectedVideos: selectedVideos,
-          editMode: "editMode",
+          editMode: editMode,
         });
         // alert(response.data.message);
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
@@ -278,24 +283,33 @@ export default PropertyImages = (props) => {
     console.log("................ImageNAme", multipleImages);
     console.log("................ImageNAme", multipleImages.path);
   };
+  const imagePaths = MultiImageName.map((image) => image.path);
+  // alert(imagePaths);
   const handleSaveImage = async () => {
     const formData = new FormData();
     formData.append("user", property_id);
+    refRBSheet.current.close();
     console.log("kljproperty_Data_id", property_id);
-    const imagePaths = MultiImageName.map((image) => image.path);
+    if (MultiImageName && Array.isArray(MultiImageName)) {
+      // Extract paths from each element in MultiImageName using map
+      const imagePaths = MultiImageName.map((image) => image.path);
 
-    // Append all image paths to the same key 'images[]'
-    imagePaths.forEach((path, index) => {
-      formData.append(
-        "images[]",
-        {
+      // Append all image paths to the same key 'images[]'
+      imagePaths.forEach((path, index) => {
+        formData.append("images[]", {
           uri: path,
           name: `image_${index}.jpg`,
           type: "image/jpeg",
-        },
-        path
+        });
+      });
+
+      console.log("Image paths:", imagePaths);
+    } else {
+      console.error(
+        "MultiImageName is not defined or not an array:",
+        MultiImageName
       );
-    });
+    }
     // Append videos
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoUri, index) => {
@@ -512,7 +526,7 @@ export default PropertyImages = (props) => {
               height={180}
               customStyles={{
                 wrapper: {
-                  backgroundColor: "transparent",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
                 },
                 draggableIcon: {
                   backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -533,12 +547,13 @@ export default PropertyImages = (props) => {
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               onPress={() => {
-                if (property_id) {
+                if (property_id || "editMode") {
                   handleSaveUpdateImage();
                 } else {
                   handleSaveImage();
                 }
               }}
+              disabled={isLoading ? true : false}
             />
           </View>
           <View style={PropertyImagesStyle.btnView}>
@@ -546,6 +561,7 @@ export default PropertyImages = (props) => {
               _ButtonText={"Add property features later"}
               Text_Color={_COLORS.Kodie_BlackColor}
               backgroundColor={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
             />
           </View>
           <TouchableOpacity

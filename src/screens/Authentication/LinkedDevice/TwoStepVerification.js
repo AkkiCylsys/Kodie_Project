@@ -22,6 +22,7 @@ import {
 } from "react-native-confirmation-code-field";
 import RBSheet from "react-native-raw-bottom-sheet";
 const TwoStepVerification = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
   const [isClick, setIsClick] = useState(0);
   const CELL_COUNT = 6;
@@ -172,6 +173,7 @@ const TwoStepVerification = (props) => {
               )}
               <View style={TwoStepVerificationStyle.Button}>
                 <CustomSingleButton
+                  disabled={isLoading ? true : false}
                   _ButtonText={buttonLabels[isClick]}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   text_Size={14}
@@ -185,6 +187,7 @@ const TwoStepVerification = (props) => {
                 <>
                   <View style={TwoStepVerificationStyle.Button2}>
                     <CustomSingleButton
+                      disabled={isLoading ? true : false}
                       _ButtonText={"Skip"}
                       Text_Color={_COLORS.Kodie_BlackColor}
                       text_Size={16}

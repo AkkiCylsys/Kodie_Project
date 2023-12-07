@@ -114,7 +114,6 @@ export default Details = (props) => {
           }
         </Text>
 
-
         <FlatList
           data={Detail}
           scrollEnabled
@@ -187,6 +186,7 @@ export default Details = (props) => {
             _ButtonText={"Edit details"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={props.AddProperty}
+                   disabled={isLoading ? true : false}
           />
         </View> */}
         {/* <TouchableOpacity

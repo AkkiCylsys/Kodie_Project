@@ -1,6 +1,6 @@
 //ScreenNo:225
 import { View, Text, TextInput, Image } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { ContactusStyle } from "./ContactusStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -9,6 +9,7 @@ import { _COLORS } from "../../../Themes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { _goBack } from "../../../services/CommonServices";
 const Contactus = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={{ backgroundColor: "#FFFFFF", height: "100%" }}>
       <TopHeader
@@ -46,6 +47,7 @@ const Contactus = (props) => {
           <CustomSingleButton
             _ButtonText={"Submit"}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            disabled={isLoading ? true : false}
             onPress={() => {
               props.navigation.navigate("AppInfo");
             }}

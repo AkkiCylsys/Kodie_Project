@@ -16,6 +16,7 @@ const data = [
 ];
 const Reviewjobdetails = (props) => {
   const [activeTab, setActiveTab] = useState("Tab2");
+  const [isLoading, setIsLoading] = useState(false);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab2":
@@ -120,8 +121,11 @@ const Reviewjobdetails = (props) => {
           <View>
             <View>
               <View>
-                <Text style={ReviewjobdetailsStyle.file}>Invoice #13046.pdf</Text></View>
-                <Text style={ReviewjobdetailsStyle.file}>4,8 MB</Text>
+                <Text style={ReviewjobdetailsStyle.file}>
+                  Invoice #13046.pdf
+                </Text>
+              </View>
+              <Text style={ReviewjobdetailsStyle.file}>4,8 MB</Text>
             </View>
           </View>
           <Dropdown
@@ -146,6 +150,7 @@ const Reviewjobdetails = (props) => {
             borderColor={_COLORS.Kodie_TransparentColor}
             _ButtonText={"Upload"}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
+            disabled={isLoading ? true : false}
           />
         </View>
       </View>

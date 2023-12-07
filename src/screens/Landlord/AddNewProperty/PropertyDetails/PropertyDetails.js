@@ -33,7 +33,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
-
+import { useFocusEffect } from "@react-navigation/native";
+import { BackHandler } from "react-native";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 export default PropertyDetails = (props) => {
   const propertyid = props?.route?.params?.propertyid;
@@ -74,6 +75,24 @@ export default PropertyDetails = (props) => {
   //     null;
   //   }
   // };
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [IsMap, IsSearch])
+  );
 
   const handle_next_btn = () => {
     props.navigation.navigate("PropertyFeature", {
@@ -620,6 +639,7 @@ export default PropertyDetails = (props) => {
                       editMode: editMode,
                     });
                   }}
+                  disabled={isLoading ? true : false}
                 />
               </View>
 

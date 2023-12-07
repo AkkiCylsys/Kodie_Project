@@ -88,6 +88,7 @@ export default Dashboard = (props) => {
   const singup_Data = signUp_account_response;
   const [isOverlayVisible, setOverlayVisible] = useState(false);
   const [value, setValue] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();

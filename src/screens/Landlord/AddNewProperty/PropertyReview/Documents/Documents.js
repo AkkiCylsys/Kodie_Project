@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { DocumentsStyle } from "./DocumentsStyle";
-import { LABEL_STYLES } from "../../../../../Themes";
+import { FONTFAMILY, LABEL_STYLES } from "../../../../../Themes";
 import { _COLORS, IMAGES } from "../../../../../Themes";
 import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -16,7 +16,9 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
 import CustomDropdown from "../../../../../components/Molecules/CustomDropdown/CustomDropdown";
-
+import { colors } from "../../../../../Themes/CommonColors/CommonColor";
+import { fontFamily } from "../../../../../Themes/FontStyle/FontStyle";
+import Feather from "react-native-vector-icons/Feather";
 const Property_documents = [
   "All",
   "Pre+post inspection reports",
@@ -54,6 +56,23 @@ const data = [
     pdfSize: "2.2MB",
   },
 ];
+const folderData = [
+  {
+    id: "1",
+    folderHeading: "Property documents",
+    totalFile: "12 Files",
+  },
+  {
+    id: "2",
+    folderHeading: "Lease documents",
+    totalFile: "13 Files",
+  },
+  {
+    id: "3",
+    folderHeading: "Tenant documents",
+    totalFile: "15 Files",
+  },
+];
 
 // ----data come from dropdown and define these condition
 const handleApply = (selectedOptions) => {
@@ -62,8 +81,11 @@ const handleApply = (selectedOptions) => {
 const handleClear = () => {
   console.log("Clear Action");
 };
-export default Documents = () => {
+export default Documents = (props) => {
+  const property_id = props.property_id;
+  // alert(props.property_id);
   const [value, setValue] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
   const DocumentsData = ({ item, index }) => {
@@ -94,35 +116,61 @@ export default Documents = () => {
     );
   };
 
+  const folderRenderData = ({ item, index }) => {
+    return (
+      <TouchableOpacity
+        style={DocumentsStyle.folderView}
+        // onPress={() => {
+        //   props.navigation.navigate("DocumentDetails");
+        //   alert(item?.id)
+        // }}
+        onPress={() => {
+          console.log("item.id:", item.id);
+          props?.documentDetail(item.id, item.folderHeading, property_id);
+        }}
+      >
+        <View style={DocumentsStyle.folder_icon}>
+          <Feather name="folder" size={30} color={_COLORS.Kodie_GrayColor} />
+          <Entypo
+            name="dots-three-vertical"
+            size={30}
+            color={_COLORS.Kodie_GrayColor}
+          />
+        </View>
+        <View>
+          <Text style={DocumentsStyle.propertyDocText}>
+            {item?.folderHeading}
+          </Text>
+          <Text style={DocumentsStyle.files_text}>{"12 files"}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={DocumentsStyle.mainContainer}>
       <ScrollView>
-        <View style={DocumentsStyle.subContainer}>
-          <Text style={LABEL_STYLES.commontext}>{"Upload documents"}</Text>
-          <Text style={DocumentsStyle.doc_Head_text}>
-            {
-              "Documents should be formatted .pdf or .jpg or .png Size per file should not exceed 5 MB"
-            }
+        <View style={DocumentsStyle.recentDocView}>
+          <Text style={DocumentsStyle.reacentDocText}>{"Folders"}</Text>
+          <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
+        </View>
+
+        <FlatList
+          data={folderData}
+          scrollEnabled
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{}}
+          keyExtractor={(item) => item?.id}
+          renderItem={folderRenderData}
+        />
+        <View style={DocumentsStyle.recentDocView}>
+          <Text style={DocumentsStyle.reacentDocText}>
+            {"Recent documents"}
           </Text>
+          <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
         </View>
         <View style={DocumentsStyle.card}>
-          <View style={DocumentsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>
-              {"Select type of document"}
-            </Text>
-
-            <View>
-              <CustomDropdown
-                data={Property_documents}
-                placeholdertext="Property documents"
-                onApply={handleApply}
-                onClear={handleClear}
-                btnview={true}
-              />
-            </View>
-
-          </View>
-
           <FlatList
             data={data}
             scrollEnabled
@@ -131,49 +179,7 @@ export default Documents = () => {
             keyExtractor={(item) => item?.id}
             renderItem={DocumentsData}
           />
-
-          <View>
-            <CustomDropdown
-              data={Lease_documents}
-              placeholdertext="Lease documents"
-              onApply={handleApply}
-              onClear={handleClear}
-              btnview={true}
-            />
-          </View>
-
-          <View>
-            <CustomDropdown
-              data={Tenant_documents}
-              placeholdertext="Tenant documents"
-              onApply={handleApply}
-              onClear={handleClear}
-              btnview={true}
-            />
-          </View>
-
-          <View>
-            <Dropdown
-              style={DocumentsStyle.dropdown}
-              placeholderStyle={[
-                DocumentsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
-              ]}
-              selectedTextStyle={DocumentsStyle.selectedTextStyle}
-              inputSearchStyle={DocumentsStyle.inputSearchStyle}
-              iconStyle={DocumentsStyle.iconStyle}
-              data={Tenant_documents}
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Other documents"
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
-            />
-          </View>
-          <CustomSingleButton
+          {/* <CustomSingleButton
             leftImage={IMAGES.uploadIcon}
             isLeftImage={true}
             borderColor={_COLORS.Kodie_TransparentColor}
@@ -182,14 +188,15 @@ export default Documents = () => {
             onPress={() => {
               refRBSheet.current.open();
             }}
-          />
+                   disabled={isLoading ? true : false}
+          /> */}
         </View>
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet}
           height={200}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -198,7 +205,7 @@ export default Documents = () => {
           }}
         >
           <UploadImageData heading_Text={"Upload more documents"} />
-        </RBSheet>
+        </RBSheet> */}
       </ScrollView>
     </View>
   );

@@ -118,7 +118,77 @@ const SelectDate = (props) => {
                 />
               </View>
             )}
-          </ScrollView>
+          </ScrollView> 
+          {/* <ScrollView>
+            {[
+              "Today",
+              "Yesterday",
+              "Last 7 days",
+              "Last 30 days",
+              "This month",
+              "Last month",
+              "Last year",
+            ].map((option, index) => (
+              <View key={index} style={SelectDateStyle.optionsview}>
+                <View style={SelectDateStyle.bindview}>
+                  <TouchableOpacity onPress={() => handleOptionToggle(option)}>
+                    <View style={SelectDateStyle.optionsiconview}>
+                      <MaterialCommunityIcons
+                        size={25}
+                        color={_COLORS.Kodie_GrayColor}
+                        name={
+                          selectedOption === option
+                            ? "checkbox-marked-circle"
+                            : "checkbox-blank-circle-outline"
+                        }
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <Text style={SelectDateStyle.textoption}>{option}</Text>
+                </View>
+              </View>
+            ))}
+
+            <Divider style={SelectDateStyle.Divider} />
+
+            <View style={SelectDateStyle.optionsview}>
+              <View style={SelectDateStyle.bindview}>
+                <TouchableOpacity onPress={handleCustomRangeToggle}>
+                  <View style={SelectDateStyle.optionsiconview}>
+                    <TouchableOpacity onPress={handleCustomRangeToggle}>
+                      <MaterialCommunityIcons
+                        size={25}
+                        color={_COLORS.Kodie_GrayColor}
+                        name={
+                          selectedOption === "Custom Range"
+                            ? "checkbox-marked-circle"
+                            : "checkbox-blank-circle-outline"
+                        }
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </TouchableOpacity>
+                <Text style={SelectDateStyle.textoption}>Custom range</Text>
+              </View>
+            </View>
+
+            {calender && (
+              <View>
+                <Calendar
+                  onDayPress={(day) => {
+                    setSelected(day.dateString);
+                  }}
+                  markedDates={{
+                    [selected]: {
+                      selected: true,
+                      disableTouchEvent: true,
+                      selectedDotColor: "orange",
+                    },
+                  }}
+                />
+              </View>
+            )}
+          </ScrollView> */}
         </View>
       </ScrollView>
     </View>

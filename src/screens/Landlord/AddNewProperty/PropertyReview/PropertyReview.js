@@ -80,27 +80,29 @@ export default PropertyReview = (props) => {
   const MultiImageName = props?.route?.params?.MultiImageName;
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
-  console.log(
-    ".............property_idreview",
-    property_id,
-    MultiImageName,
-    selectedVideos,
-    editMode
-  );
   const [activeTab, setActiveTab] = useState("Tab1");
-  const [tabValue, setTabValue] = useState("");
-  const [getPropertyDetail, setGetPropertyDetail] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
   const [currentPage, setCurrentPage] = useState(3);
+  const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
+
   const Detail_rander = ({ item, index }) => {
-    // const key = Object.keys(item)[0];
-    // const value = Object.values(item)[0];
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
-          <Image source={item.images} style={DetailsStyle.DetailsIcon} />
+          {Object.keys(item)[0] == "Bedrooms" ? (
+            <Image
+              source={IMAGES.BedroomIcon}
+              style={DetailsStyle.DetailsIcon}
+            />
+          ) : Object.keys(item)[0] == "Bathrooms" ? (
+            <Image source={IMAGES.Bathroom} style={DetailsStyle.DetailsIcon} />
+          ) : Object.keys(item)[0] == "ParkingSpace" ? (
+            <Image source={IMAGES.Parking} style={DetailsStyle.DetailsIcon} />
+          ) : (
+            <Image source={IMAGES.Garden} style={DetailsStyle.DetailsIcon} />
+          )}
           <Text style={DetailsStyle.details_text}>
             {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ""}
             {/* {`${key}: ${value}`} */}
@@ -109,83 +111,80 @@ export default PropertyReview = (props) => {
       </>
     );
   };
-  useEffect(() => {
-    // DetailsData();
-    // keyfeatures();
+  const renderItem = ({ item }) => (
+    <View style={DetailsStyle.DetailsView}>
+      {item === "Pool" ? (
+        <Image source={IMAGES.Bathroom} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Garage" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Balcony" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Outdoor Area" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Ensuit" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Dishwasher" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Study" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Built in Robes" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Air Conditioning" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Solar Panels" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Heating" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : item === "Hight Energy Efficiency" ? (
+        <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
+      ) : null}
+      <Text style={DetailsStyle.details_text}>{item}</Text>
+    </View>
+  );
+  const fetchData = async () => {
+    try {
+      // Fetch property details
+      const detailData = { user: property_id };
+      const url = Config.API_URL;
+      const property_Detailss = url + "get_All_Property_details";
 
-    // data will show immediately when i come this screen code define here...........
-    const fetchData = async () => {
-      try {
-        // Fetch property details
-        const detailData = { user: property_id };
-        const url = Config.API_URL;
-        const property_Detailss = url + "get_All_Property_details";
+      setIsLoading(true);
+      const response = await axios.post(property_Detailss, detailData);
+      setIsLoading(false);
 
-        setIsLoading(true);
-        const response = await axios.post(property_Detailss, detailData);
-        setIsLoading(false);
-
-        if (response.data.status === true) {
-          setProperty_Details(response.data.property_details);
-          // Fetch and process key features..........
-          if (response.data.property_details[0]?.key_features) {
-            const parsedData = JSON.parse(
-              response.data.property_details[0].key_features.replace(/\\/g, "")
-            );
-            setDetail(parsedData);
-          }
-        } else {
-          console.error("propertyDetail_error:", response.data.error);
-          alert(response.data.error);
+      if (response.data.status === true) {
+        setProperty_Details(response.data.property_details);
+        // Fetch and process key features..........
+        if (response.data.property_details[0]?.key_features) {
+          const parsedData = JSON.parse(
+            response.data.property_details[0].key_features.replace(/\\/g, "")
+          );
+          setDetail(parsedData);
         }
-      } catch (error) {
-        console.error("Error:", error);
-        alert(error);
-        setIsLoading(false);
+      } else {
+        console.error("propertyDetail_error:", response.data.error);
+        alert(response.data.error);
       }
-    };
-    fetchData();
-  }, [property_id]);
-  // const DetailsData = () => {
-  //   const detailData = {
-  //     user: property_id,
-  //   };
-  //   console.log("detailData", detailData);
-  //   const url = Config.API_URL;
-  //   const property_Detailss = url + "get_All_Property_details";
-  //   console.log("Request URL:", property_Detailss);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(property_Detailss, detailData)
-  //     .then((response) => {
-  //       console.log("propertyDetail", response.data);
-  //       if (response.data.status === true) {
-  //         setIsLoading(false);
-  //         setProperty_Details(response.data.property_details);
-  //         console.log("propertyDetail....", response.data.property_details);
-  //       } else {
-  //         console.error("propertyDetail_error:", response.data.error);
-  //         alert(response.data.error);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("property_type error:", error);
-  //       // alert(error);
-  //       setIsLoading(false);
-  //     });
-  // };
-  const imagePaths = MultiImageName.map((image) => image.path);
-
-  const keyfeatures = () => {
-    if (property_Detail[0]?.key_features) {
-      const parsedData = JSON.parse(
-        property_Detail[0].key_features.replace(/\\/g, "")
-      );
-      console.log("Parsed Data:", parsedData);
-      setDetail(parsedData);
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error);
+      setIsLoading(false);
     }
   };
+  const additionalKeyFeaturesString =
+    property_Detail[0]?.additional_key_features;
+
+  useEffect(() => {
+    fetchData();
+    try {
+      const keyFeaturesArray = additionalKeyFeaturesString.split(",");
+      setAdditionalKeyFeatures(keyFeaturesArray);
+    } catch (error) {
+      console.error("Error parsing additional_key_features:", error);
+    }
+  }, [property_id, additionalKeyFeaturesString]);
+
+  const imagePaths = MultiImageName.map((image) => image.path);
 
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
@@ -298,16 +297,25 @@ export default PropertyReview = (props) => {
               apartment boasts modern interior finishes and a spacious extended
               balcony. As you enter, you... */}
             </Text>
-            <FlatList
-              data={Detail}
-              scrollEnabled
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{}}
-              // numColumns={2}
-              keyExtractor={(item) => item?.id}
-              // keyExtractor={(item, index) => index.toString()}
-              renderItem={Detail_rander}
-            />
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <FlatList
+                data={Detail}
+                scrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{}}
+                // numColumns={2}
+                keyExtractor={(item) => item?.id}
+                // keyExtractor={(item, index) => index.toString()}
+                renderItem={Detail_rander}
+              />
+              <FlatList
+                data={additionalKeyFeatures}
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </View>
             <DividerIcon
               borderBottomWidth={1}
               color={_COLORS.Kodie_GrayColor}
@@ -376,7 +384,10 @@ export default PropertyReview = (props) => {
               <DividerIcon marginTop={8} />
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
-                  _ButtonText={editMode ? "Edit property" : "Add property"}
+                  disabled={isLoading ? true : false}
+                  _ButtonText={
+                    editMode == undefined ? "Add property" : "Edit property"
+                  }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
                     props?.navigation?.navigate("Properties");
@@ -388,6 +399,7 @@ export default PropertyReview = (props) => {
                   _ButtonText={"Add property features later"}
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_WhiteColor}
+                  disabled={isLoading ? true : false}
                 />
               </View>
               <TouchableOpacity
@@ -414,7 +426,18 @@ export default PropertyReview = (props) => {
       case "Tab3":
         return <Expenses property_id={property_id} />;
       case "Tab4":
-        return <Documents />;
+        return (
+          <Documents
+            documentDetail={(folderId, folderHeading, property_id) => {
+              props.navigation.navigate("DocumentDetails", {
+                folderId: folderId,
+                folderHeading: folderHeading,
+                property_id: property_id,
+              });
+            }}
+            property_id={property_id}
+          />
+        );
 
       default:
         return <Details />;
@@ -521,30 +544,48 @@ export default PropertyReview = (props) => {
             TAB3
             TAB4
             Tab1={"Details"}
-            Tab2={"Leases"}
-            Tab3={"Expenses"}
-            Tab4={"Documents"}
+            Tab2={editMode == undefined ? null : "Leases"}
+            Tab3={editMode == undefined ? null : "Expenses"}
+            Tab4={editMode == undefined ? null : "Documents"}
             onPressTab1={() => setActiveTab("Tab1")}
-            onPressTab2={() => setActiveTab("Tab2")}
-            onPressTab3={() => setActiveTab("Tab3")}
-            onPressTab4={() => setActiveTab("Tab4")}
+            onPressTab2={() => {
+              if (editMode == undefined) {
+                null;
+              } else {
+                setActiveTab("Tab2");
+              }
+            }}
+            onPressTab3={() => {
+              if (editMode == undefined) {
+                null;
+              } else {
+                setActiveTab("Tab3");
+              }
+            }}
+            onPressTab4={() => {
+              if (editMode == undefined) {
+                null;
+              } else {
+                setActiveTab("Tab4");
+              }
+            }}
             colorTab1={
               activeTab === "Tab1"
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab2={
-              activeTab === "Tab2"
+              activeTab === "Tab2" || editMode == undefined
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab3={
-              activeTab === "Tab3"
+              activeTab === "Tab3" || editMode == undefined
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab4={
-              activeTab === "Tab4"
+              activeTab === "Tab4" || editMode == undefined
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }

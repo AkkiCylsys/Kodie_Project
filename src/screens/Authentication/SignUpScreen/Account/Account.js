@@ -134,7 +134,6 @@ export default Account = (props) => {
       props.navigation.navigate("AboutYou");
       // alert("done")
     }
-
   };
   const goBack = () => {
     props.navigation.pop();
@@ -248,10 +247,11 @@ export default Account = (props) => {
   };
 
   return (
-    <ScrollView  ref={scrollViewRef} 
-    contentContainerStyle={{height:500}}
-   
-    // style={{ height:700, marginTop: 20 }}
+    <ScrollView
+      ref={scrollViewRef}
+      contentContainerStyle={{ height: 500 }}
+
+      // style={{ height:700, marginTop: 20 }}
     >
       {/* <TopHeader
         MiddleText={"Set up your Kodie account"}
@@ -359,6 +359,7 @@ export default Account = (props) => {
       </View>
       <View style={{ marginHorizontal: 16, marginBottom: 20 }}>
         <CustomSingleButton
+               disabled={isLoading ? true : false}
           _ButtonText={"Next"}
           Text_Color={_COLORS.Kodie_WhiteColor}
           onPress={() => {
@@ -366,7 +367,7 @@ export default Account = (props) => {
           }}
         />
       </View> */}
-      <View style={{ flex: 1 }} >
+      <View style={{ flex: 1 }}>
         {IsMap ? (
           <View
             style={{
@@ -436,7 +437,7 @@ export default Account = (props) => {
             }}
           />
         ) : (
-          <View  style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
             <TopHeader
               MiddleText={"Set up your Kodie account"}
               onPressLeftButton={goBack}
@@ -446,7 +447,7 @@ export default Account = (props) => {
                 {"Introduce yourself to Kodie"}
               </Text>
             </View>
-            <View style={AccountStyle.card} >
+            <View style={AccountStyle.card}>
               <View style={AccountStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>
                 <TextInput
@@ -543,6 +544,7 @@ export default Account = (props) => {
             </View>
             <View style={{ marginHorizontal: 16, marginBottom: 20 }}>
               <CustomSingleButton
+                disabled={isLoading ? true : false}
                 _ButtonText={"Next"}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {

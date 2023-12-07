@@ -95,10 +95,37 @@ export default PropertyFeature = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   // const [furnished, setFurnished] = useState([]);
   // const [preFriendly, setProperty_Details] = useState([]);
+  console.log(
+    "propertyDetail....",
+    property_Detail[0]?.additional_key_features_id
+  );
+
+  const keyFeaturesString = property_Detail[0]?.key_features;
+
   useEffect(() => {
     additional_features();
     DetailsData();
-  }, []);
+    try {
+      // Parsing the JSON string to an array of objects
+      const keyFeaturesArray = JSON.parse(keyFeaturesString);
+
+      // Iterating through the array to find the value associated with "Bedrooms"
+      for (const feature of keyFeaturesArray) {
+        if (feature.Bedrooms !== undefined) {
+          setCountBedroom(feature.Bedrooms);
+        } else if (feature.Bathrooms !== undefined) {
+          setCountBathroom(feature.Bathrooms);
+        } else if (feature.ParkingSpace !== undefined) {
+          setCountParking(feature.ParkingSpace);
+        } else if (feature.On - StreetParking !== undefined) {
+          setCountParkingStreet(feature.On - StreetParking);
+        }
+      }
+    } catch (error) {
+      console.error("Error parsing key_features:", error);
+    }
+  }, [keyFeaturesString]);
+  console.log("CountBedroom", CountBedroom, CountBathroom);
   const DetailsData = () => {
     const detailData = {
       user: propertyid,
@@ -115,14 +142,27 @@ export default PropertyFeature = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           setProperty_Details(response.data.property_details);
-          // setAdditionalFeaturesKeyValue(
-          //   response.data.property_details[0]?.key_features_id
-          // );
+          const apiAdditionalFeaturesIds =
+            response?.data?.property_details[0]?.additional_features_id
+              .split(",")
+              .map(Number);
+          const furnishedFeatureId = apiAdditionalFeaturesIds.find(
+            (id) => id == 68
+          );
+          const yesFeatureId = apiAdditionalFeaturesIds.find((id) => id == 71);
 
           console.log(
-            "propertyDetail....",
-            response.data.property_details[0]?.key_features_id
+            "Furnished Feature ID:",
+            apiAdditionalFeaturesIds,
+            furnishedFeatureId
           );
+          setSelectedButtonFurnished(furnishedFeatureId);
+          setSelectedButtonDeposit(yesFeatureId);
+          setFlorSize(response?.data?.property_details[0]?.floor_size);
+          setAdditionalFeaturesKeyValue(
+            response?.data?.property_details[0]?.additional_key_features_id
+          );
+          setLandArea(response?.data?.property_details[0]?.land_area);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -138,15 +178,9 @@ export default PropertyFeature = (props) => {
   const AllCountsData = [
     { Bedrooms: CountBedroom },
     { Bathrooms: CountBathroom },
-    { ParkingSpace: CountParking },
-    { On_streetParking: CountParkingStreet },
+    { "Parking Space": CountParking },
+    { "On-StreetParking": CountParkingStreet },
   ];
-
-  // PRE fRIENDLY CODE HERE.........
-  // const PreFriedly = {
-  //   selectedButtonDepositId,
-  //   selectedButtonFurnishedId,
-  // };
 
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
   console.log(PreFriedly, "pre friedly............");
@@ -373,7 +407,7 @@ export default PropertyFeature = (props) => {
   const updatePropertyDetails = () => {
     const updateData = {
       user: 35,
-      user_account_details_id: 84,
+      user_account_details_id: loginData?.Login_details?.result,
       location: location,
       location_longitude: longitude,
       location_latitude: latitude,
@@ -405,7 +439,7 @@ export default PropertyFeature = (props) => {
           // alert("update_property_details....", propertyid);
           props.navigation.navigate("PropertyImages", {
             property_id: propertyid,
-            editMode: "editMode",
+            editMode: editMode,
           });
           // setupdateProperty_Details(response.data.property_details);
         } else {
@@ -453,29 +487,33 @@ export default PropertyFeature = (props) => {
                   </Text>
                 </View>
 
-                <View style={PropertyFeatureStyle.plus_minusview}>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={decreaseBedroomCount}
+                  >
                     <AntDesign
                       name="minus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={decreaseBedroomCount}
                     />
                   </TouchableOpacity>
                   <Text style={PropertyFeatureStyle.countdata}>
                     {CountBedroom}
                   </Text>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={() => {
+                      increaseBedroomCount();
+                    }}
+                  >
                     <AntDesign
                       name="plus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={() => {
-                        increaseBedroomCount();
-                      }}
                     />
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View style={PropertyFeatureStyle.mainfeaturesview}>
@@ -485,27 +523,31 @@ export default PropertyFeature = (props) => {
                   </Text>
                 </View>
 
-                <View style={PropertyFeatureStyle.plus_minusview}>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={decreaseBathroomCount}
+                  >
                     <AntDesign
                       name="minus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={decreaseBathroomCount}
                     />
                   </TouchableOpacity>
                   <Text style={PropertyFeatureStyle.countdata}>
                     {CountBathroom}
                   </Text>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={increaseBathroomCount}
+                  >
                     <AntDesign
                       name="plus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={increaseBathroomCount}
                     />
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View style={PropertyFeatureStyle.mainfeaturesview}>
@@ -515,27 +557,31 @@ export default PropertyFeature = (props) => {
                   </Text>
                 </View>
 
-                <View style={PropertyFeatureStyle.plus_minusview}>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={decreaseParkingCount}
+                  >
                     <AntDesign
                       name="minus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={decreaseParkingCount}
                     />
                   </TouchableOpacity>
                   <Text style={PropertyFeatureStyle.countdata}>
                     {CountParking}
                   </Text>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={increaseParkingCount}
+                  >
                     <AntDesign
                       name="plus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={increaseParkingCount}
                     />
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
 
               <View style={PropertyFeatureStyle.mainfeaturesview}>
@@ -545,27 +591,31 @@ export default PropertyFeature = (props) => {
                   </Text>
                 </View>
 
-                <View style={PropertyFeatureStyle.plus_minusview}>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={decreaseParkingStreetCount}
+                  >
                     <AntDesign
                       name="minus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={decreaseParkingStreetCount}
                     />
                   </TouchableOpacity>
                   <Text style={PropertyFeatureStyle.countdata}>
                     {CountParkingStreet}
                   </Text>
-                  <TouchableOpacity style={PropertyFeatureStyle.menusIconView}>
+                  <TouchableOpacity
+                    style={PropertyFeatureStyle.menusIconView}
+                    onPress={increaseParkingStreetCount}
+                  >
                     <AntDesign
                       name="plus"
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
-                      onPress={increaseParkingStreetCount}
                     />
                   </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -715,7 +765,6 @@ export default PropertyFeature = (props) => {
               <Text style={PropertyFeatureStyle.Furnished_Text}>
                 {"Additional key features"}
               </Text>
-
               <MultiSelect
                 style={PropertyFeatureStyle.dropdown}
                 placeholderStyle={PropertyFeatureStyle.placeholderStyle}
@@ -729,14 +778,20 @@ export default PropertyFeature = (props) => {
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."
-                onChange={(item) => {
-                  // const selectedKeys = items.map((item) => item);
-                  // const uniqueKeys = [...new Set(selectedKeys)];
-                  // console.log("Unique Keys:", uniqueKeys);
-                  // Set the state with unique keys
-                  // setAdditionalFeaturesKeyValue(uniqueKeys);
-                  setAdditionalFeaturesKeyValue(item);
-                  // alert(item);
+                onChange={(items) => {
+                  const selectedKeys = items.map((item) => item);
+                  const uniqueKeys = [...new Set(selectedKeys)];
+                  const cleanedArray = uniqueKeys.reduce((acc, item) => {
+                    if (!isNaN(item) && !acc.includes(Number(item))) {
+                      acc.push(Number(item));
+                    }
+                    return acc;
+                  }, []);
+
+                  console.log("Unique Keys:", uniqueKeys);
+                  setAdditionalFeaturesKeyValue(
+                    cleanedArray.filter((value) => value !== 0)
+                  );
                 }}
                 // renderRightIcon={() => (
                 //   <AntDesign
@@ -770,6 +825,7 @@ export default PropertyFeature = (props) => {
                     property_details();
                   }
                 }}
+                disabled={isLoading ? true : false}
               />
             </View>
             <View style={PropertyFeatureStyle.btnView}>
@@ -777,6 +833,7 @@ export default PropertyFeature = (props) => {
                 _ButtonText={"Add property features later"}
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
+                disabled={isLoading ? true : false}
               />
             </View>
             <TouchableOpacity

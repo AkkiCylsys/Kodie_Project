@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { CircleProgressStyle } from "./CircleProgressStyle";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { _COLORS, IMAGES ,FONTFAMILY} from "../../../Themes";
+import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
 
 const CircleProgress = (props) => {
   return (
@@ -50,6 +50,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_GrayColor,
   },
-
 });
 export default CircleProgress;

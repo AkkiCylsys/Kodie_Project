@@ -299,6 +299,7 @@ export default SignUpVerification = (props) => {
 
         <View style={SignUpVerificationStyle.customBtn}>
           <CustomSingleButton
+            disabled={isLoading ? true : false}
             _ButtonText={"Verify email"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={handleSubmit}

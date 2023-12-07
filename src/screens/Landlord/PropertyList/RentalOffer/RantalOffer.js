@@ -148,13 +148,13 @@ const offersForProperties = [
 const RantalOffer = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
   const propertyData2_render = ({ item }) => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
-      
         <View style={RantalOfferCss.flatListContainer}>
           <View style={[RantalOfferCss.flat_MainView, { marginBottom: 10 }]}>
             <TouchableOpacity style={RantalOfferCss.bidsButton}>
@@ -311,7 +311,7 @@ const RantalOffer = (props) => {
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: "transparent",
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -320,8 +320,7 @@ const RantalOffer = (props) => {
           }}
         >
           <BottomModalData
-            // onPress={() => props.navigation.navigate("ViewPropertyDetails")}
-     
+          // onPress={() => props.navigation.navigate("ViewPropertyDetails")}
           />
         </RBSheet>
       </>
@@ -405,6 +404,7 @@ const RantalOffer = (props) => {
             height={40}
             marginTop={1}
             onPress={props.ViewApplication}
+            disabled={isLoading ? true : false}
           />
         </View>
         <DividerIcon />

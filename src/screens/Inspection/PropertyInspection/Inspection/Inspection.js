@@ -1,4 +1,3 @@
-
 //ScreenNo:94
 //ScreenNo:95
 //ScreenNo:96
@@ -86,6 +85,7 @@ const Inspection = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(null);
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
   const navigateToScreen = (id) => {
@@ -186,6 +186,7 @@ const Inspection = () => {
             onPress={() => {
               refRBSheet1.current.open();
             }}
+            disabled={isLoading ? true : false}
           />
         ) : null}
         <FlatList
@@ -298,7 +299,7 @@ const Inspection = () => {
         height={200}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,

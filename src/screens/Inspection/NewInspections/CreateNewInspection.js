@@ -37,7 +37,7 @@ const select_property = [
   "2118 Thornridge Cir. Syracuse",
   "8502 Preston Rd. Inglewood",
   "1729 Sickle St, QLD",
-  "5 Aspen Villas"
+  "5 Aspen Villas",
 ];
 const Detail = [
   {
@@ -87,7 +87,7 @@ const CreateNewInspection = (props) => {
   const [selectedProperty, setSelectedProperty] = useState("");
   const [AddInspection, setAddInspection] = useState("");
   const [Notes, setNotes] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -278,6 +278,7 @@ const CreateNewInspection = (props) => {
           _ButtonText={"Schedule inspection"}
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}
+          disabled={isLoading ? true : false}
         />
       </ScrollView>
     </View>

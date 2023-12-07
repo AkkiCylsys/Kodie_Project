@@ -1,11 +1,11 @@
-import {
-  StyleSheet,
-  Dimensions,
-  View,
-  Image,
-  SafeAreaView,
-  Platform,
-} from "react-native";
+import { StyleSheet, Dimensions, Platform, PixelRatio } from "react-native";
+
+const { width, height } = Dimensions.get("window");
+const scaleFactor = PixelRatio.get();
+
+// Use scaleFactor to adjust styles dynamically
+const adjustedWidth = width / scaleFactor;
+const adjustedHeight = height / scaleFactor;
 import { _COLORS, FONTFAMILY } from "../../Themes";
 export const SplashStyles = StyleSheet.create({
   mainView: {
@@ -16,7 +16,7 @@ export const SplashStyles = StyleSheet.create({
     justifyContent: "center",
   },
   mainSmallIcon: {
-    height: Platform.OS == "android" ? 50 : 75,
+    height: Platform.OS == "android" ? 50 : "20%",
     marginTop: 250,
     width: "90%",
     resizeMode: "center",

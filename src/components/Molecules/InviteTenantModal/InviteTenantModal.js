@@ -35,7 +35,7 @@
 //   );
 // };
 
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
 import { InviteTenantModalStyle } from "./InviteTenantModalStyle";
 import { IMAGES } from "../../../Themes";
@@ -68,7 +68,7 @@ export default InviteTenantModal = (props) => {
   const property_id = props.property_id;
   const navigation = useNavigation();
   const refRBSheet = useRef();
-  
+
   const CloseUp = () => {
     refRBSheet.current.close();
   };
@@ -90,6 +90,45 @@ export default InviteTenantModal = (props) => {
     </TouchableOpacity>
   );
   return (
+    // <View style={InviteTenantModalStyle.mainContainer}>
+    //   <View style={InviteTenantModalStyle.subContainer}>
+    //     <Text style={InviteTenantModalStyle.Invite_tenant}>
+    //       {"Invite tenant"}
+    //     </Text>
+    //   </View>
+    //   <View style={InviteTenantModalStyle.All_Data_View}>
+    //     <TouchableOpacity
+    //       style={InviteTenantModalStyle.Main_View}
+    //       onPress={() => props.navigation.navigate("Invitefriend")}
+    //     >
+    //       <Image
+    //         source={IMAGES.InviteContact}
+    //         style={InviteTenantModalStyle.Icons}
+    //       />
+    //       <Text style={InviteTenantModalStyle.Invite_Data_Text}>
+    //         {"Invite tenant from contacts"}
+    //       </Text>
+    //     </TouchableOpacity>
+    //     <TouchableOpacity style={InviteTenantModalStyle.Main_View}>
+    //       <Image
+    //         source={IMAGES.InviteTenant}
+    //         style={InviteTenantModalStyle.Icons}
+    //       />
+    //       <Text style={InviteTenantModalStyle.Invite_Data_Text}>
+    //         {"Invite tenant from Kodie"}
+    //       </Text>
+    //     </TouchableOpacity>
+    //     <TouchableOpacity style={InviteTenantModalStyle.Main_View}>
+    //       <Image
+    //         source={IMAGES.AddManually}
+    //         style={InviteTenantModalStyle.Icons}
+    //       />
+    //       <Text style={InviteTenantModalStyle.Invite_Data_Text}>
+    //         {"Add tenant manually"}
+    //       </Text>
+    //     </TouchableOpacity>
+    //   </View>
+    // </View>
     <View style={InviteTenantModalStyle.mainContainer}>
       <View style={InviteTenantModalStyle.subContainer}>
         <Text style={InviteTenantModalStyle.Invite_tenant}>
@@ -107,10 +146,10 @@ export default InviteTenantModal = (props) => {
       <RBSheet
         ref={refRBSheet}
         height={700}
-        closeOnDragDown={true}
+        // closeOnDragDown={true}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -118,7 +157,7 @@ export default InviteTenantModal = (props) => {
           container: InviteTenantModalStyle.bottomModal_container,
         }}
       >
-        <AddTenantDetails onClose={CloseUp} property_id={property_id}/>
+        <AddTenantDetails onClose={CloseUp} property_id={property_id} />
       </RBSheet>
     </View>
   );

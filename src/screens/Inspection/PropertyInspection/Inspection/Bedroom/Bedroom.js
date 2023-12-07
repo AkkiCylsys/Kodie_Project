@@ -1,4 +1,3 @@
-
 //ScreenNo:98
 //ScreenNo:99
 //ScreenNo:100
@@ -109,7 +108,7 @@ const TableData = [
 const Bedroom = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
@@ -208,6 +207,7 @@ const Bedroom = (props) => {
               onPress={() => {
                 refRBSheet1.current.open();
               }}
+              disabled={isLoading ? true : false}
             />
           ) : null}
           <View style={BedroomCss.TableView}>
@@ -237,6 +237,7 @@ const Bedroom = (props) => {
             onPress={() => {
               props.navigation.navigate("AboutYou");
             }}
+            disabled={isLoading ? true : false}
           />
           <TouchableOpacity style={BedroomCss.goBack_View}>
             <View style={BedroomCss.backIcon}>
@@ -257,7 +258,7 @@ const Bedroom = (props) => {
         height={400}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -329,7 +330,7 @@ const Bedroom = (props) => {
         height={500}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -438,7 +439,7 @@ const Bedroom = (props) => {
         height={180}
         customStyles={{
           wrapper: {
-            backgroundColor: "transparent",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,

@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React,{useState} from "react";
+import React, { useState } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { GeneralSettingStyle } from "../Account/GeneralSettingStyle";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
@@ -13,6 +13,7 @@ const GeneralSetting = (props) => {
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
   const [Off, setOff] = useState(false);
   <SwitchToggle switchOff={Off} onPress={() => setOff(!Off)} />;
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <View style={GeneralSettingStyle.Mainview}>
@@ -49,31 +50,31 @@ const GeneralSetting = (props) => {
             <View style={GeneralSettingStyle.item1}>
               <Text style={GeneralSettingStyle.sundaytext}>Sunday</Text>
               <Text style={GeneralSettingStyle.Unvl}>Unavailable</Text>
-              
+
               <SwitchToggle
-              switchOff={Off}
-              onPress={() => setOff(!Off)}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={GeneralSettingStyle.toggle_con}
-              circleStyle={GeneralSettingStyle.toggle_circle}
-            />
+                switchOff={Off}
+                onPress={() => setOff(!Off)}
+                circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                circleColorOn={_COLORS.Kodie_GreenColor}
+                backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                containerStyle={GeneralSettingStyle.toggle_con}
+                circleStyle={GeneralSettingStyle.toggle_circle}
+              />
             </View>
             <DividerIcon style={GeneralSettingStyle.divider} />
             <View style={GeneralSettingStyle.component}>
               <Text style={GeneralSettingStyle.sundaytext}>Monday</Text>
               <SwitchToggle
-              switchOn={on}
-              onPress={() => setOn(!on)}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={GeneralSettingStyle.toggle_con}
-              circleStyle={GeneralSettingStyle.toggle_circle}
-            />
+                switchOn={on}
+                onPress={() => setOn(!on)}
+                circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                circleColorOn={_COLORS.Kodie_GreenColor}
+                backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                containerStyle={GeneralSettingStyle.toggle_con}
+                circleStyle={GeneralSettingStyle.toggle_circle}
+              />
             </View>
             <View style={GeneralSettingStyle.item1}>
               <View style={GeneralSettingStyle.binditem1view}>
@@ -103,15 +104,15 @@ const GeneralSetting = (props) => {
             <View style={GeneralSettingStyle.component}>
               <Text style={GeneralSettingStyle.sundaytext}>Tuesday</Text>
               <SwitchToggle
-              switchOn={on}
-              onPress={() => setOn(!on)}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={GeneralSettingStyle.toggle_con}
-              circleStyle={GeneralSettingStyle.toggle_circle}
-            />
+                switchOn={on}
+                onPress={() => setOn(!on)}
+                circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                circleColorOn={_COLORS.Kodie_GreenColor}
+                backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                containerStyle={GeneralSettingStyle.toggle_con}
+                circleStyle={GeneralSettingStyle.toggle_circle}
+              />
             </View>
             <View style={GeneralSettingStyle.item1}>
               <View style={GeneralSettingStyle.binditem1view}>
@@ -141,15 +142,15 @@ const GeneralSetting = (props) => {
             <View style={GeneralSettingStyle.component}>
               <Text style={GeneralSettingStyle.sundaytext}>Wednesday</Text>
               <SwitchToggle
-              switchOn={on}
-              onPress={() => setOn(!on)}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={GeneralSettingStyle.toggle_con}
-              circleStyle={GeneralSettingStyle.toggle_circle}
-            />
+                switchOn={on}
+                onPress={() => setOn(!on)}
+                circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                circleColorOn={_COLORS.Kodie_GreenColor}
+                backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                containerStyle={GeneralSettingStyle.toggle_con}
+                circleStyle={GeneralSettingStyle.toggle_circle}
+              />
             </View>
             <View style={GeneralSettingStyle.item1}>
               <View style={GeneralSettingStyle.binditem1view}>
@@ -179,15 +180,15 @@ const GeneralSetting = (props) => {
             <View style={GeneralSettingStyle.component}>
               <Text style={GeneralSettingStyle.sundaytext}>Thursday</Text>
               <SwitchToggle
-              switchOn={on}
-              onPress={() => setOn(!on)}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={GeneralSettingStyle.toggle_con}
-              circleStyle={GeneralSettingStyle.toggle_circle}
-            />
+                switchOn={on}
+                onPress={() => setOn(!on)}
+                circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                circleColorOn={_COLORS.Kodie_GreenColor}
+                backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                containerStyle={GeneralSettingStyle.toggle_con}
+                circleStyle={GeneralSettingStyle.toggle_circle}
+              />
             </View>
             <View style={GeneralSettingStyle.item1}>
               <View style={GeneralSettingStyle.binditem1view}>
@@ -217,15 +218,15 @@ const GeneralSetting = (props) => {
             <View style={GeneralSettingStyle.component}>
               <Text style={GeneralSettingStyle.sundaytext}>Friday</Text>
               <SwitchToggle
-              switchOn={on}
-              onPress={() => setOn(!on)}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={GeneralSettingStyle.toggle_con}
-              circleStyle={GeneralSettingStyle.toggle_circle}
-            />
+                switchOn={on}
+                onPress={() => setOn(!on)}
+                circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                circleColorOn={_COLORS.Kodie_GreenColor}
+                backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                containerStyle={GeneralSettingStyle.toggle_con}
+                circleStyle={GeneralSettingStyle.toggle_circle}
+              />
             </View>
             <View style={GeneralSettingStyle.item1}>
               <View style={GeneralSettingStyle.binditem1view}>
@@ -256,20 +257,21 @@ const GeneralSetting = (props) => {
               <Text style={GeneralSettingStyle.sundaytext}>Saturday</Text>
               <Text style={GeneralSettingStyle.Unvl}>Unavailable</Text>
               <SwitchToggle
-              switchOff={Off}
-              onPress={() => setOff(!Off)}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={GeneralSettingStyle.toggle_con}
-              circleStyle={GeneralSettingStyle.toggle_circle}
-            />
+                switchOff={Off}
+                onPress={() => setOff(!Off)}
+                circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                circleColorOn={_COLORS.Kodie_GreenColor}
+                backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                containerStyle={GeneralSettingStyle.toggle_con}
+                circleStyle={GeneralSettingStyle.toggle_circle}
+              />
             </View>
             <DividerIcon style={GeneralSettingStyle.divider} />
             <CustomSingleButton
               _ButtonText={"Save"}
               Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
             />
           </View>
         </ScrollView>

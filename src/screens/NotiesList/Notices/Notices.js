@@ -16,6 +16,7 @@ import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import Notice from "../../../components/Molecules/Notice/Notice";
+import { useState } from "react";
 const HorizontalData = ["General", "Inspection", "Rent", "Job"];
 const horizontal_render = ({ item }) => {
   return (
@@ -27,6 +28,7 @@ const horizontal_render = ({ item }) => {
 };
 
 const Notices = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={NoticesStyle.mainview}>
       <TopHeader
@@ -40,6 +42,7 @@ const Notices = (props) => {
             _ButtonText={"Add new notice"}
             backgroundColor={_COLORS.Kodie_BlackColor}
             Text_Color={_COLORS.Kodie_WhiteColor}
+            disabled={isLoading ? true : false}
           />
         </View>
 
@@ -91,7 +94,6 @@ const Notices = (props) => {
         </View>
 
         <View style={NoticesStyle.mainviewcomponent}>
-
           <View style={NoticesStyle.componentview}>
             <Notice
               day="3/10"

@@ -32,7 +32,8 @@ import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import Geocoder from "react-native-geocoding";
 import Geolocation from "react-native-geolocation-service";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
+import { useFocusEffect } from "@react-navigation/native";
+import { BackHandler } from "react-native";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -96,6 +97,24 @@ const SignUpSteps = (props) => {
   const country = addressParts.pop();
   const state = addressParts.pop();
   const city = addressParts.join(", ");
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [IsMap, IsSearch])
+  );
 
   console.log("Country:", country);
   console.log("State:", state);
@@ -565,6 +584,7 @@ const SignUpSteps = (props) => {
                 }}
               >
                 <CustomSingleButton
+                  disabled={isLoading ? true : false}
                   _ButtonText={"Next"}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {

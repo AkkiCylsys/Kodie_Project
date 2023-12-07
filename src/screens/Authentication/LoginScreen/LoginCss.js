@@ -8,7 +8,6 @@ export const LoginStyles = StyleSheet.create({
   logoContainer: {
     alignItems: "center",
     marginTop: 120,
-    
   },
   logo: {
     width: 210,
@@ -33,12 +32,12 @@ export const LoginStyles = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 60,
   },
-  
+
   inputContainer: {
     marginBottom: 10,
   },
@@ -77,7 +76,12 @@ export const LoginStyles = StyleSheet.create({
     marginHorizontal: 16,
     marginVertical: 10,
   },
-  ModalMainView: {height:40, flexDirection: "row", justifyContent: "space-between" },
+  ModalMainView: {
+    marginTop: 15,
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 
   passchange: { alignSelf: "center", fontSize: 21, textAlign: "center" },
   checkicon: { alignSelf: "center", height: 120, width: 120, marginTop: 20 },
@@ -88,7 +92,7 @@ export const LoginStyles = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     backgroundColor: _COLORS.Kodie_lightGreenColor,
     height: 48,
-    alignItems:'center',
+    alignItems: "center",
     alignSelf: "center",
     justifyContent: "center",
     marginTop: 20,
@@ -102,12 +106,12 @@ export const LoginStyles = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
   },
-  VerifyButtonView:{
+  VerifyButtonView: {
     flex: 0.4,
     alignSelf: "center",
     justifyContent: "center",
   },
-  verifyButton:{
+  verifyButton: {
     fontSize: 14,
     color: _COLORS.Kodie_WhiteColor,
     alignSelf: "center",
@@ -125,7 +129,7 @@ export const LoginStyles = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
-    color:_COLORS.Kodie_BlackColor
+    color: _COLORS.Kodie_BlackColor,
   },
   eyeIcon: {
     padding: 10,
@@ -138,7 +142,7 @@ export const LoginStyles = StyleSheet.create({
   },
   secondloder: {
     flex: 1,
-    marginVertical:10,
+    marginVertical: 10,
     alignItems: "center",
   },
   error_text: { color: "red", marginLeft: 10 },
