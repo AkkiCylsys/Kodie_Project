@@ -115,7 +115,7 @@ export default InviteTenant = (props) => {
     <View style={InviteTenantStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Invite Tenant"}
+        MiddleText={"Invite new tenant"}
       />
       <SearchBar
         filterImage={IMAGES.filter}

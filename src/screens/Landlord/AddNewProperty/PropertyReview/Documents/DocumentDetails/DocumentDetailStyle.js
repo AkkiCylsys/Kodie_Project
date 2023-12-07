@@ -61,6 +61,7 @@ export const DocumentDetailStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
+    width: 250,
   },
   pdfSize: {
     fontSize: 12,
@@ -77,7 +78,7 @@ export const DocumentDetailStyle = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "center",
     position: "absolute",
-    top: 25,
+    top: 20,
     right: 5,
     zIndex: 1,
   },
@@ -97,5 +98,12 @@ export const DocumentDetailStyle = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_GrayColor,
+  },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
   },
 });
