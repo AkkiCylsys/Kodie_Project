@@ -107,6 +107,7 @@ import RantalOffer from "../../screens/Landlord/PropertyList/RentalOffer/RantalO
 import AddPropertyMainPage from "../../screens/Landlord/AddNewProperty/AddPropertyMainPage";
 import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 import DocumentDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Documents/DocumentDetails/DocumentDetails";
+import ViewDocument from "../../screens/Landlord/AddNewProperty/PropertyReview/Documents/ViewDocuments/ViewDocument";
 // import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
 // import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
 // import Contractors1 from "../../screens/Managingcontractors/Contractors1";
@@ -905,6 +906,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"DocumentDetails"}
           component={DocumentDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ViewDocument"}
+          component={ViewDocument}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
