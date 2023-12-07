@@ -13,6 +13,7 @@ import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoade
 import moment from "moment/moment";
 import Logrentalpayment from "../Logrentalpayment/Logrentalpayment";
 import { useDispatch, useSelector } from "react-redux";
+import { Config } from "../../../../../../Config";
 
 const tental_recipt_data = [
   {
@@ -77,9 +78,9 @@ export default LeaseSummary = (props) => {
     lease_summary();
   };
   const lease_summary = () => {
-    const url = `https://e3.cylsys.com/api/v1/property_lease_details/getAll/${property_id}`;
-    // const url = "https://e3.cylsys.com/api/v1/property_lease_details/getAll/4";
-    const lease_summary_url = url;
+    const url = Config.BASE_URL;
+    const lease_summary_url =
+      url + `property_lease_details/getAll/${property_id}`;
     console.log("Request URL:", lease_summary_url);
     setIsLoading(true);
     axios
@@ -105,9 +106,9 @@ export default LeaseSummary = (props) => {
       });
   };
   const get_retal_receipt = () => {
-    const url = `https://e3.cylsys.com/api/v1/property_lease_details/get/paymentdetails/${property_id}`;
-    // const url = "https://e3.cylsys.com/api/v1/property_lease_details/get/paymentdetails/4";
-    const retal_receip_url = url;
+    const url = Config.BASE_URL;
+    const retal_receip_url =
+      url + `property_lease_details/get/paymentdetails/${property_id}`;
     console.log("Request URL:", retal_receip_url);
     setIsLoading(true);
     axios

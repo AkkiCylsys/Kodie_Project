@@ -31,6 +31,7 @@ import axios from "axios";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useIsFocused } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import { Config } from "../../../../Config";
 const HorizontalData = [
   "All",
   "Recent",
@@ -82,10 +83,10 @@ const PropertyList = (props) => {
   const getPropertyDetailsByFilter = async (filter) => {
     setIsLoading(true);
     try {
-      const apiUrl =
-        // "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/get_property_details_by_filter";
-        "https://e3.cylsys.com/api/v1/get_property_details_by_filter";
-      const response = await axios.post(apiUrl, {
+      const url = Config.BASE_URL;
+      const filter_apiUrl = url + "get_property_details_by_filter";
+      console.log("filter_apiUrl...", filter_apiUrl);
+      const response = await axios.post(filter_apiUrl, {
         property_filter: filter,
         user_account_id: loginData?.Login_details?.result,
         page_no: 1,

@@ -14,6 +14,7 @@ import CalendarModal from "../../../../../../components/Molecules/CalenderModal/
 import RowButtons from "../../../../../../components/Molecules/RowButtons/RowButtons";
 import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import axios from "axios";
+import { Config } from "../../../../../../Config";
 const data = [
   { label: "3-month", value: "1" },
   { label: "6-month", value: "2" },
@@ -109,10 +110,9 @@ const Logrentalpayment = (props) => {
   };
 
   const handle_rental_payment = () => {
-    const url =
-      "https://e3.cylsys.com/api/v1/property_lease_details/create/paymentlog";
-    const rental_payment_urrl = url;
-    console.log("Request URL:", rental_payment_urrl);
+    const url = Config.BASE_URL;
+    const rental_payment_url = url + "property_lease_details/create/paymentlog";
+    console.log("Request URL:", rental_payment_url);
     setIsLoading(true);
     const rental_payment_Data = {
       lease_key: lease_keys,
@@ -125,7 +125,7 @@ const Logrentalpayment = (props) => {
       note: notes,
     };
     axios
-      .post(rental_payment_urrl, rental_payment_Data)
+      .post(rental_payment_url, rental_payment_Data)
       .then((response) => {
         console.log("API Response add_lease:", response.data);
         if (response.data.success === true) {

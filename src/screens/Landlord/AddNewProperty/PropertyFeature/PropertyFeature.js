@@ -29,7 +29,7 @@ const renderDataItem = (item) => {
   return (
     <View style={PropertyFeatureStyle.item}>
       <Text style={PropertyFeatureStyle.selectedTextStyle}>
-        {item.FeatureName}
+        {item.features_name}
       </Text>
       {/* <AntDesign
         style={PropertyFeatureStyle.icon}
@@ -128,24 +128,22 @@ export default PropertyFeature = (props) => {
   console.log("CountBedroom", CountBedroom, CountBathroom);
   const DetailsData = () => {
     const detailData = {
-      user: propertyid,
+      property_id: propertyid,
     };
     console.log("detailData", detailData);
-    const url = Config.API_URL;
-    const property_Detailss = url + "get_All_Property_details";
+    const url = Config.BASE_URL;
+    const property_Detailss = url + "get_property_details";
     console.log("Request URL:", property_Detailss);
     setIsLoading(true);
     axios
       .post(property_Detailss, detailData)
       .then((response) => {
         console.log("propertyDetail", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details);
+          setProperty_Details(response.data.data);
           const apiAdditionalFeaturesIds =
-            response?.data?.property_details[0]?.additional_features_id
-              .split(",")
-              .map(Number);
+            response?.data?.data?.additional_features_id.split(",").map(Number);
           const furnishedFeatureId = apiAdditionalFeaturesIds.find(
             (id) => id == 68
           );
@@ -158,11 +156,11 @@ export default PropertyFeature = (props) => {
           );
           setSelectedButtonFurnished(furnishedFeatureId);
           setSelectedButtonDeposit(yesFeatureId);
-          setFlorSize(response?.data?.property_details[0]?.floor_size);
+          setFlorSize(response?.data?.data?.floor_size);
           setAdditionalFeaturesKeyValue(
-            response?.data?.property_details[0]?.additional_key_features_id
+            response?.data?.data?.additional_key_features_id
           );
-          setLandArea(response?.data?.property_details[0]?.land_area);
+          setLandArea(response?.data?.data?.land_area);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -324,7 +322,7 @@ export default PropertyFeature = (props) => {
     props.navigation.pop();
   };
   const property_details = () => {
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const additionalApi = url + "add_property_details";
     console.log("Request URL:", additionalApi);
     setIsLoading(true);
@@ -351,17 +349,17 @@ export default PropertyFeature = (props) => {
 
       .then((response) => {
         console.log("property_details", response?.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
 
           console.log(
-            "response?.data?.property_id",
-            response?.data?.property_id
+            "response?.data?.Property_id",
+            response?.data?.Property_id
           );
 
           // setCurrentPage(currentPage + 1);
           props.navigation.navigate("PropertyImages", {
-            property_id: response?.data?.property_id,
+            property_id: response?.data?.Property_id,
           });
           console.log("property_details....", response.data);
         } else {
@@ -377,8 +375,8 @@ export default PropertyFeature = (props) => {
       });
   };
   const additional_features = () => {
-    const url = Config.API_URL;
-    const additionalApi = url + "key_features";
+    const url = Config.BASE_URL;
+    const additionalApi = url + "get_key_features";
     console.log("Request URL:", additionalApi);
     setIsLoading(true);
     axios
@@ -388,9 +386,12 @@ export default PropertyFeature = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           console.log("additional_features....", response.data);
-          setAdditionalfeatureskey(response.data.PAF_KEY);
+          setAdditionalfeatureskey(response.data.key_features_details);
           // setData_add(response.data.PAF_KEY);
-          console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
+          console.log(
+            "AdditionalFeaturesKey....",
+            response.data.key_features_details
+          );
         } else {
           console.error("additional_features_error:", response.data.error);
           alert(response.data.error);
@@ -426,7 +427,7 @@ export default PropertyFeature = (props) => {
       p_country: country,
     };
     console.log("updateData", updateData);
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const update_property_details = url + "update_property_details";
     console.log("Request URL:", update_property_details);
     setIsLoading(true);
@@ -772,8 +773,8 @@ export default PropertyFeature = (props) => {
                 inputSearchStyle={PropertyFeatureStyle.inputSearchStyle}
                 iconStyle={PropertyFeatureStyle.iconStyle}
                 data={additionalfeatureskey}
-                labelField="FeatureName"
-                valueField="key"
+                labelField="features_name"
+                valueField="paf_key"
                 placeholder="Add features such as pool,aircon,balcony etc."
                 value={additionalfeatureskeyvalue}
                 search
@@ -806,7 +807,7 @@ export default PropertyFeature = (props) => {
                   <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
                     <View style={PropertyFeatureStyle.selectedStyle}>
                       <Text style={PropertyFeatureStyle.textSelectedStyle}>
-                        {item.FeatureName}
+                        {item.features_name}
                       </Text>
                       <AntDesign color="white" name="close" size={17} />
                     </View>
