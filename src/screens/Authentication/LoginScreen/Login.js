@@ -36,6 +36,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 import axios from "axios";
 import { Config } from "../../../Config";
+import CryptoJS from "crypto-js";
+
 import { loginApiActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
 export default Login = (props) => {
   const dispatch = useDispatch();
@@ -87,13 +89,7 @@ export default Login = (props) => {
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
-  const handleLogin = () => {
-    // Your login logic here
-    // ...
 
-    // Dismiss the keyboard
-    Keyboard.dismiss();
-  };
   const handleToggleResetPassword = () => {
     setShowResetPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -233,8 +229,6 @@ export default Login = (props) => {
     } else if (password.trim() === "") {
       setPasswordError("Password is required.");
     } else {
-      // makeApiLogin();
-      //alert("click")
       Keyboard.dismiss();
       setIsLoading(true);
       let data = {
@@ -284,50 +278,13 @@ export default Login = (props) => {
     }
   };
 
-  //  login Api ...
-  const makeApiLogin = () => {
-    const url = Config.API_URL;
-    const loginurl = url + "user_login";
-    console.log("Request URL:", loginurl);
-    setIsLoading(true);
-    axios
-      .post(loginurl, {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        console.log("API Response:", response.data);
-        setLoginResponse(response.data);
-
-        if (response.data.status === true) {
-          alert("Login successful");
-          // dispatch(fetchLoginSuccess(loginResponse));
-          props.navigation.navigate("DrawerNavigatorLeftMenu");
-          setEmail("");
-          setPassword("");
-        } else {
-          alert("Please check your email and password.");
-          setPasswordError(
-            "Hmm, it seems like the credentials you entered are invalid. Please try again."
-          );
-        }
-      })
-      .catch((error) => {
-        console.error("API failed", error);
-        setPasswordError(
-          "Hmm, it seems like the credentials you entered are invalid. Please try again."
-        );
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
   //send_verification_code Api code here....
   const send_verification_code = () => {
-    const url = Config.API_URL;
-    const verification_code_url = url + "user_reset_password_email_verify";
+    // const url = Config.API_URL;
+    // const verification_code_url = url + "user_reset_password_email_verify";
+
+    const url = "https://e3.cylsys.com/api/v1/SendOTP";
+    const verification_code_url = url;
     console.log("Request URL:", verification_code_url);
     setIsLoading(true);
     axios
@@ -336,8 +293,11 @@ export default Login = (props) => {
       })
       .then((response) => {
         console.log("API Response send otp:", response.data);
-        if (response.data.status === true) {
-          alert("The otp has been sent to your email.");
+        // if (response.data.status === true)
+        if (response.data.message === "OTP sent successfully") {
+          alert(
+            response.data.message || "The otp has been sent to your email."
+          );
           if (isClick === 1) {
             setIsTimeron(true);
             setIsClick(1);
@@ -362,8 +322,10 @@ export default Login = (props) => {
 
   //verify_otp Api code here.....
   const verify_Otp = () => {
-    const url = Config.API_URL;
-    const verify_Otp_url = url + "user_signup_verifyotp";
+    // const url = Config.API_URL;
+    // const verify_Otp_url = url + "user_signup_verifyotp";
+    const url = "https://e3.cylsys.com/api/v1/verifyotp";
+    const verify_Otp_url = url;
     console.log("Request URL:", verify_Otp_url);
     setIsLoading(true);
     axios
@@ -373,7 +335,7 @@ export default Login = (props) => {
       })
       .then((response) => {
         console.log("API Response verify otp:", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           alert(response.data.message);
           setIsClick(isClick + 1);
         } else if (verificationcode.length < 6) {
@@ -396,18 +358,24 @@ export default Login = (props) => {
 
   //------ create_password Api code here
   const create_password = () => {
-    const url = Config.API_URL;
-    const create_password_url = url + "user_reset_password";
+    // const url = Config.API_URL;
+    // const create_password_url = url + "user_reset_password";
+    const encryptedPassword = CryptoJS.SHA256(newpassword).toString(
+      CryptoJS.enc.Hex
+    );
+    console.log("encryptedPassword", encryptedPassword);
+    const url = "https://e3.cylsys.com/api/v1/forgetpassword";
+    const create_password_url = url;
     console.log("Request URL:", create_password_url);
     setIsLoading(true);
     axios
       .post(create_password_url, {
         email: resetEmail,
-        password: newpassword,
+        new_password: encryptedPassword,
       })
       .then((response) => {
         console.log("API Response create_password:", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           // If the API call is successful, increment isClick
           alert(response.data.message);
           setIsClick(isClick + 1);

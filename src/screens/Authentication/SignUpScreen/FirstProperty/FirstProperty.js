@@ -34,6 +34,7 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import { useDispatch, useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { signupAccountApiActionCreator } from "../../../../redux/Actions/Authentication/AuthenticationApiCreator";
 import mime from "mime";
 const labels = ["Step 1", "Step 2", "Step 3"];
@@ -67,68 +68,12 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
 };
-const DATA = [
-  {
-    label: "Pool",
-    value: 1,
-  },
-  {
-    label: "Garage",
-    value: 2,
-  },
-  {
-    label: "Balcony",
-    value: 3,
-  },
-  {
-    label: "Outdoor Area",
-    value: 4,
-  },
-  {
-    label: "Ensuit",
-    value: 5,
-  },
-  {
-    label: "Dishwasher",
-    value: 6,
-  },
-  {
-    label: "Study",
-    value: 7,
-  },
-  {
-    label: "Built in Robes",
-    value: 8,
-  },
-  {
-    label: "Air Conditioning",
-    value: 9,
-  },
-  {
-    label: "Solar Panels",
-    value: 10,
-  },
-  {
-    label: "Heating",
-    value: 11,
-  },
-  {
-    label: "Hight Energy Efficiency",
-    value: 12,
-  },
-];
 const renderDataItem = (item) => {
   return (
     <View style={FirstPropertyStyle.item}>
       <Text style={FirstPropertyStyle.selectedTextStyle}>
         {item.FeatureName}
       </Text>
-      {/* <AntDesign
-        style={FirstPropertyStyle.icon}
-        color={_COLORS.Kodie_BlackColor}
-        name="check"
-        size={20}
-      /> */}
     </View>
   );
 };
@@ -136,6 +81,11 @@ export default FirstProperty = (props) => {
   const signUp_account_response = useSelector(
     (state) => state?.authenticationReducer?.data
   );
+  const deviceId = DeviceInfo.getDeviceId();
+  const deviceType = DeviceInfo.getDeviceType();
+  console.log("Device ID:", deviceId);
+  console.log("Device type:", deviceType);
+
   console.log("signUp_account_response.....", signUp_account_response);
 
   let firstName = props?.route?.params?.firstName;
@@ -156,7 +106,6 @@ export default FirstProperty = (props) => {
   let p_latitude = props?.route?.params?.p_latitude;
   let p_longitude = props?.route?.params?.p_longitude;
   let user_key = props?.route?.params?.user_key;
-  // let image_result = props?.route?.params?.image_result;
 
   console.log("firstname..", firstName);
   console.log("lastName..", lastName);
@@ -175,36 +124,19 @@ export default FirstProperty = (props) => {
   console.log("p_latitude..", p_latitude);
   console.log("p_longitude..", p_longitude);
   console.log("user_key..", user_key);
-  // console.log("image_result..", image_result);
-
-  const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
-  const [isClick, setIsClick] = useState(null);
   const [propertyLocation, setPropertyLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
-  const [florSize, setFlorSize] = useState("");
-  const [selected, setSelected] = useState([]);
-  const [value, setValue] = useState(null);
-  const [bedroomValue, setbedroomValue] = useState([]);
-  const [garagesValue, setGaragesValue] = useState([]);
-  const [bathRoomValue, setBathRoomValue] = useState([]);
-  const [parkingValue, setParkingValue] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
-  const [bedRoomData, setBedRoomData] = useState([]);
-  const [garagesData, setGaragesData] = useState([]);
-  const [bathroomData, setBathroomData] = useState([]);
-  const [parkingData, setParkingData] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
-  const [selectedkey_features, setSelectedkey_features] = useState([]);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
-  const [data_add, setData_add] = useState([]);
-  //
+
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
   const [IsMap, setIsMap] = useState(false);
@@ -441,8 +373,8 @@ export default FirstProperty = (props) => {
     formData.append("key_features", JSON.stringify(AllCountsData));
     formData.append("land_area", landArea);
     formData.append("floor_size", buildingFlorSize);
-    formData.append("device_id", "14565Android");
-    formData.append("device_type", "Android");
+    formData.append("device_id", deviceId);
+    formData.append("device_type", deviceType);
     formData.append(
       "additional_features",
       JSON.stringify(additionalfeatureskeyvalue)
@@ -476,11 +408,6 @@ export default FirstProperty = (props) => {
         alert(response.data.message);
         props.navigation.navigate("DrawerNavigatorLeftMenu");
         setCurrentPage(0);
-        setProperty_value("");
-        setbedroomValue("");
-        setGaragesValue("");
-        setBathRoomValue("");
-        setParkingValue("");
         setAdditionalFeaturesKeyValue("");
       } else {
         setIsLoading(false);

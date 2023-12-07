@@ -21,6 +21,8 @@ target 'Kodie' do
 
   pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
   target 'KodieTests' do
     inherit! :complete
     # Pods for testing
