@@ -36,7 +36,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 import axios from "axios";
 import { Config } from "../../../Config";
-import CryptoJS from "crypto-js";
+// import CryptoJS from "crypto-js";
+import CryptoJS from "react-native-crypto-js";
 
 import { loginApiActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
 export default Login = (props) => {
@@ -356,40 +357,55 @@ export default Login = (props) => {
       });
   };
 
+  const SECRET_PASS = "XkhZG4fW2t2W";
+
+  const encryptPassword = async (password) => {
+    try {
+      const encryptedPassword = await CryptoJS.AES.encrypt(
+        password,
+        SECRET_PASS
+      ).toString();
+      console.log("Encrypted Password:", encryptedPassword);
+      return encryptedPassword;
+    } catch (error) {
+      console.error("Encryption Error:", error);
+      throw error;
+    }
+  };
+
   //------ create_password Api code here
-  const create_password = () => {
-    // const url = Config.API_URL;
-    // const create_password_url = url + "user_reset_password";
-    const encryptedPassword = CryptoJS.SHA256(newpassword).toString(
-      CryptoJS.enc.Hex
-    );
-    console.log("encryptedPassword", encryptedPassword);
-    const url = "https://e3.cylsys.com/api/v1/forgetpassword";
-    const create_password_url = url;
-    console.log("Request URL:", create_password_url);
-    setIsLoading(true);
-    axios
-      .post(create_password_url, {
+  const create_password = async () => {
+    try {
+      const encryptedPassword = await encryptPassword(newpassword);
+      console.log("encryptedPassword", encryptedPassword);
+
+      const url = "https://e3.cylsys.com/api/v1/forgetpassword";
+      const create_password_url = url;
+      console.log("Request URL:", create_password_url);
+
+      setIsLoading(true);
+
+      const response = await axios.post(create_password_url, {
         email: resetEmail,
         new_password: encryptedPassword,
-      })
-      .then((response) => {
-        console.log("API Response create_password:", response.data);
-        if (response.data.success === true) {
-          // If the API call is successful, increment isClick
-          alert(response.data.message);
-          setIsClick(isClick + 1);
-        } else {
-          alert("Password not created.");
-        }
-      })
-      .catch((error) => {
-        console.error("API failed", error);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
+
+      console.log("API Response create_password:", response.data);
+
+      if (response.data.success === true) {
+        // If the API call is successful, increment isClick
+        alert(response.data.message);
+        setIsClick(isClick + 1);
+      } else {
+        alert("Password not created.");
+      }
+    } catch (error) {
+      console.error("API failed", error);
+      // Handle errors appropriately
+      alert(error.message || "An error occurred during the API call");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
