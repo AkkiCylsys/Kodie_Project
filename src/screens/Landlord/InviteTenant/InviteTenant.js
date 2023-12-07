@@ -112,6 +112,7 @@ export default InviteTenant = (props) => {
             leftButtonHeight={50}
             RightButtonHeight={50}
             LeftButtonText="View Profile"
+            onPressLeftButton={()=>props.navigation.navigate("PreScreening")}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_BlackColor}
             RightButtonText="Add to property"
