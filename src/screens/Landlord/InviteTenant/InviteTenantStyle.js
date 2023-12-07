@@ -10,41 +10,46 @@ export const InviteTenantStyle = StyleSheet.create({
     width: 56,
     borderRadius: 56 / 2,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginHorizontal: 16,
     marginTop: 20,
+    // flex:1
   },
   usermainView: {
+    marginHorizontal: 16,
     flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   nameView: {
-    flex: 1,
-    justifyContent: "center",
-    marginTop: 20,
+    marginLeft: 10,
+    marginTop: 10,
+    marginRight: "15%",
+    // flex:1
   },
   nameText: {
     fontSize: 16,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
-  ratingText: {
-    fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Medium,
-    marginLeft: 5,
-  },
-  subrating: {
-    fontSize: 14,
-    color: _COLORS.Kodie_MediumGrayColor,
-    fontFamily: FONTFAMILY.K_Medium,
-    marginLeft: 5,
-  },
   starStyle: {
-    marginTop: 20,
-    marginHorizontal: 10,
+    // marginTop: 25,
+    // marginHorizontal: 10,
+    flex: 1,
+    paddingTop:6
+    // backgroundColor:'red',
+    // justifyContent:"center",
+    // alignItems:'flex-end'
   },
-  staricon: { flexDirection: "row", marginTop: 8 },
-  startRating: { paddingHorizontal: 1 },
-  star: { alignSelf: "center" },
+  bindstarview: {
+    flexDirection: "row",
+  },
+  verifiedView:{
+    paddingTop:5
+  },
+  starratingStyle: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginLeft: 10,
+  },
   desc_View: { flexDirection: "row", marginTop: 2 },
   desc_heading: {
     fontSize: 12,
@@ -57,7 +62,7 @@ export const InviteTenantStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
   },
   description: {
-    marginTop: 18,
+    marginTop: 5,
     marginHorizontal: 16,
   },
   RowBtnView: {
@@ -70,5 +75,15 @@ export const InviteTenantStyle = StyleSheet.create({
     fontSize: 12,
     textDecorationLine: "underline",
     textDecorationColor: _COLORS.Kodie_GreenColor,
+  },
+  menuiconview: {
+    flexDirection: "row",
+    // backgroundColor:'red',
+    flex:1,
+    marginBottom:8,
+    justifyContent:'flex-end',
+  },
+  heartimg: {
+    marginRight: 10,
   },
 });
