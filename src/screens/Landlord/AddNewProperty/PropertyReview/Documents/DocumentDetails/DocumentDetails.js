@@ -103,6 +103,8 @@ const DocumentDetails = (props) => {
     console.log("uri....", file.uri);
     console.log("name....", file.name);
     console.log("type....", file.type);
+    console.log("p_referral_key....", property_id);
+    console.log("p_module_name....", folderHeading);
     const url = Config.BASE_URL;
     const uploadDoc_url = url + "uploadDocument";
     console.log("Request URL:", uploadDoc_url);

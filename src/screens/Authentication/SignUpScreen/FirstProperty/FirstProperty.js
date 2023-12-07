@@ -72,7 +72,7 @@ const renderDataItem = (item) => {
   return (
     <View style={FirstPropertyStyle.item}>
       <Text style={FirstPropertyStyle.selectedTextStyle}>
-        {item.FeatureName}
+        {item.features_name}
       </Text>
     </View>
   );
@@ -278,7 +278,7 @@ export default FirstProperty = (props) => {
       P_PARENT_CODE: "PROP_TYPE",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const propertyType = url + "lookup_details";
     console.log("Request URL:", propertyType);
     setIsLoading(true);
@@ -288,8 +288,8 @@ export default FirstProperty = (props) => {
         console.log("property_type", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("propertyData....", response.data.data);
-          setProperty_Data(response.data.data);
+          console.log("propertyData....", response.data.lookup_details);
+          setProperty_Data(response.data.lookup_details);
         } else {
           console.error("property_type_error:", response.data.error);
           alert(response.data.error);
@@ -303,8 +303,8 @@ export default FirstProperty = (props) => {
       });
   };
   const additional_features = () => {
-    const url = Config.API_URL;
-    const additionalApi = url + "key_features";
+    const url = Config.BASE_URL;
+    const additionalApi = url + "get_key_features";
     console.log("Request URL:", additionalApi);
     setIsLoading(true);
     axios
@@ -314,9 +314,12 @@ export default FirstProperty = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           console.log("additional_features....", response.data);
-          setAdditionalfeatureskey(response.data.PAF_KEY);
-          // setData_add(response.data.PAF_KEY);
-          console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
+          setAdditionalfeatureskey(response.data.key_features_details);
+          // setData_add(response.data.key_features_details);
+          console.log(
+            "AdditionalFeaturesKey....",
+            response.data.key_features_details
+          );
         } else {
           console.error("additional_features_error:", response.data.error);
           alert(response.data.error);
@@ -794,7 +797,7 @@ export default FirstProperty = (props) => {
                   iconStyle={FirstPropertyStyle.iconStyle}
                   data={property_Data}
                   maxHeight={300}
-                  labelField="description"
+                  labelField="lookup_description"
                   valueField="lookup_key"
                   placeholder="Apartment"
                   value={property_value}
@@ -977,8 +980,8 @@ export default FirstProperty = (props) => {
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}
                     data={additionalfeatureskey}
-                    labelField="FeatureName"
-                    valueField="key"
+                    labelField="features_name"
+                    valueField="paf_key"
                     placeholder="Select additional features"
                     value={additionalfeatureskeyvalue}
                     search
@@ -994,7 +997,7 @@ export default FirstProperty = (props) => {
                       >
                         <View style={FirstPropertyStyle.selectedStyle}>
                           <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.FeatureName}
+                            {item.features_name}
                           </Text>
                           <AntDesign color="white" name="close" size={17} />
                         </View>

@@ -546,7 +546,7 @@ export default PropertyImages = (props) => {
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               onPress={() => {
-                if (property_id || "editMode") {
+                if (editMode) {
                   handleSaveUpdateImage();
                 } else {
                   handleSaveImage();
