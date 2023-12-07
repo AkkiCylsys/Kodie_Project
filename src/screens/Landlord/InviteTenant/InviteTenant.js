@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import { InviteTenantStyle } from "./InviteTenantStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -10,6 +10,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import StarRating from "react-native-star-rating";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+import TenantData from "../../../components/TenantScreen/TenantData";
+import RBSheet from "react-native-raw-bottom-sheet";
 const data = [
   {
     id: "1",
@@ -38,9 +40,13 @@ const data = [
     budget: "$580 per week",
   },
 ];
+
 export default InviteTenant = (props) => {
   const [rating, setRating] = useState(2);
-
+  const refRBSheet = useRef();
+  const CloseUp = () => {
+    refRBSheet.current.close();
+  };
   const tenantData = ({ item, index }) => {
     return (
       <>
@@ -73,39 +79,81 @@ export default InviteTenant = (props) => {
             </View>
           </View>
           <View style={InviteTenantStyle.menuiconview}>
+            <TouchableOpacity>
             <AntDesign
               name="hearto"
               size={25}
               color={_COLORS.Kodie_GrayColor}
               style={InviteTenantStyle.heartimg}
             />
-
+            </TouchableOpacity>
+            <TouchableOpacity  onPress={() => {
+                  refRBSheet.current.open();
+                }}>
             <Entypo
               name="dots-three-horizontal"
               size={20}
               color={_COLORS.Kodie_GrayColor}
               style={InviteTenantStyle.closeIcon}
             />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={InviteTenantStyle.description}>
-          <View style={InviteTenantStyle.desc_View}>
-            <Text style={InviteTenantStyle.desc_heading}>
-              {"Looking for : "}
-            </Text>
-            <Text style={InviteTenantStyle.desc_value}>{item.looking_For}</Text>
+        <View style={InviteTenantStyle.Maindescription}>
+          <View style={InviteTenantStyle.description}>
+            <View style={InviteTenantStyle.desc_View}>
+              <Text style={InviteTenantStyle.desc_heading}>
+                {"Looking for : "}
+              </Text>
+              <Text style={InviteTenantStyle.desc_value}>
+                {item.looking_For}
+              </Text>
+            </View>
+            <View style={InviteTenantStyle.desc_View}>
+              <Text style={InviteTenantStyle.desc_heading}>
+                {"Location : "}
+              </Text>
+              <Text style={InviteTenantStyle.desc_value}>{item.location}</Text>
+            </View>
+            <View style={InviteTenantStyle.desc_View}>
+              <Text style={InviteTenantStyle.desc_heading}>{"Budget : "}</Text>
+              <Text style={InviteTenantStyle.desc_value}>{item.budget}</Text>
+            </View>
+            <TouchableOpacity>
+              <Text style={InviteTenantStyle.readtext}>{"Read more"}</Text>
+            </TouchableOpacity>
           </View>
-          <View style={InviteTenantStyle.desc_View}>
-            <Text style={InviteTenantStyle.desc_heading}>{"Location : "}</Text>
-            <Text style={InviteTenantStyle.desc_value}>{item.location}</Text>
+          <View>
+            <View
+              style={[
+                InviteTenantStyle.buttonView,
+                {
+                  backgroundColor: item.isRentPanding
+                    ? _COLORS.Kodie_LightOrange
+                    : item.isRentReceived
+                    ? _COLORS.Kodie_LightOrange
+                    : _COLORS.Kodie_LightOrange,
+                },
+              ]}
+            >
+              <View style={{flexDirection:"row",alignItems:"center",}}>
+              <TouchableOpacity
+                  // onPress={() => {
+                  //   refRBSheet1.current.open();
+                  // }}
+                >
+                  <Entypo
+                    name={"dot-single"}
+                    size={25}
+                    color={_COLORS.Kodie_DarkOrange}
+                  />
+                </TouchableOpacity>
+              <Text style={InviteTenantStyle.textcolor}>Failed screening</Text>
+              </View>
+            </View>
+            <Text style={InviteTenantStyle.textscore}>Resident score:</Text>
+            <Text style={InviteTenantStyle.textno}>475</Text>
           </View>
-          <View style={InviteTenantStyle.desc_View}>
-            <Text style={InviteTenantStyle.desc_heading}>{"Budget : "}</Text>
-            <Text style={InviteTenantStyle.desc_value}>{item.budget}</Text>
-          </View>
-          <TouchableOpacity>
-            <Text style={InviteTenantStyle.readtext}>{"Read more"}</Text>
-          </TouchableOpacity>
         </View>
         <View style={InviteTenantStyle.RowBtnView}>
           <RowButtons
@@ -145,6 +193,24 @@ export default InviteTenant = (props) => {
         keyExtractor={(item) => item?.id}
         renderItem={tenantData}
       />
+
+      <RBSheet
+        ref={refRBSheet}
+        height={280}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: InviteTenantStyle.bottomModal_container,
+        }}
+      >
+        <TenantData onClose={CloseUp} />
+      </RBSheet>
     </View>
   );
 };
