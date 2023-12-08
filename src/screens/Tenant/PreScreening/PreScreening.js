@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { PreScreeningStyle } from "./PreScreeningStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
@@ -20,6 +20,11 @@ import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderM
 import { Dropdown } from "react-native-element-dropdown";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import { MultiSelect } from "react-native-element-dropdown";
+import { Config } from "../../../Config";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import axios from "axios";
+import { stringify } from "querystring";
+
 const data = [
   { label: "Electricals", value: "1" },
   { label: "Home cleaning", value: "2" },
@@ -39,7 +44,9 @@ const PetsData = [
 const renderDataItem = (item) => {
   return (
     <View style={PreScreeningStyle.item}>
-      <Text style={PreScreeningStyle.selectedTextStyle}>{item.label}</Text>
+      <Text style={PreScreeningStyle.selectedTextStyle}>
+        {item.lookup_description}
+      </Text>
       {/* <AntDesign
           style={PropertyFeatureStyle.icon}
           color={_COLORS.Kodie_BlackColor}
@@ -58,12 +65,16 @@ const PreScreening = (props) => {
   const [TenantRooms, setTenantRooms] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [value, setValue] = useState(null);
-  const [EmployeeValue, setEmployeeValue] = useState(null);
-  const [valueStying, setValueStying] = useState(null);
-  const [jobDetails, setJobDetails] = useState("");
+  const [RentalLeasevalue, setRentalLeaseValue] = useState(0);
+  const [RentalLeaseData, setRentalLeaseData] = useState([]);
+  const [EmployeeValue, setEmployeeValue] = useState(0);
+  const [EmployeeValueData, setEmployeeValueData] = useState(null);
+  const [valueStying, setValueStying] = useState(0);
+  const [valueStyingData, setValueStyingData] = useState([]);
+  const [jobDetails, setJobDetails] = useState(0);
+  const [roomnumberOfYear, setRoomNumberOfYear] = useState("");
   const [numberOfYear, setNumberOfYear] = useState("");
-  const [weeklyIncome, setWeeklyIncome] = useState("");
+  const [weeklyIncome, setWeeklyIncome] = useState(0);
   const [selected_Paying_Button, setSelected_Paying_Button] = useState(false);
   const [selected_Paying_Id, setSelected_Paying_Id] = useState(1);
   const [selected_Rental_Agreement, setSelected_Rental_Agreement] =
@@ -76,8 +87,10 @@ const PreScreening = (props) => {
   const [selected_Smoking_Id, setSelected_Smoking_Id] = useState(1);
   const [selected_Pets, setSelected_Pets] = useState(false);
   const [selected_Pets_Id, setSelected_Pets_Id] = useState(1);
-  const [pets, setPets] = useState(null);
+  const [pets, setPets] = useState([]);
+  const [petsData, setPetsData] = useState([]);
   const [Preferences, setPreferences] = useState(false);
+  const [preScreening, setPreScreening] = useState([]);
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
@@ -96,58 +109,228 @@ const PreScreening = (props) => {
   const togglePreferences = () => {
     setPreferences(!Preferences);
   };
-   
-  // Post APi bind here.......
-  // const PreScreening_create = () => {
-  //   const url = Config.API_URL;
-  //   const additionalApi = url + "add_property_details";
-  //   console.log("Request URL:", additionalApi);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(additionalApi, {
-  //       user: 35,
-  //       user_account_details_id: loginData?.Login_details?.result,
-  //       location: location,
-  //       location_longitude: longitude,
-  //       location_latitude: latitude,
-  //       islocation: 1,
-  //       property_description: propertyDesc,
-  //       property_type: property_value,
-  //       key_features: AllCountsData,
-  //       additional_features: PreFriedly,
-  //       additional_key_features: additionalfeatureskeyvalue,
-  //       autolist: selectedButtonId,
-  //       UPD_FLOOR_SIZE: florSize,
-  //       UPD_LAND_AREA: landArea,
-  //       p_city: city,
-  //       p_state: state,
-  //       p_country: country,
-  //     })
 
-  //     .then((response) => {
-  //       console.log("property_details", response?.data);
-  //       if (response.data.status === true) {
-  //         setIsLoading(false);
 
-  //         console.log(
-  //           "response?.data?.property_id",
-  //           response?.data?.property_id
-  //         );
+  // API bind Add PreScreening code here.....
+  const PreScreeninghandle = () => {
+    // const formattedPets = JSON.stringify(pets);
+    console.log(
+      selectedDate,
+      RentalLeasevalue,
+      valueStying,
+      jobDetails,
+      selected_Paying_Id,
+      EmployeeValue,
+      roomnumberOfYear,
+      weeklyIncome,
+      numberOfYear,
+      selected_Agreement_Id,
+      selected_Previous_Id,
+      selected_Smoking_Id,
+      selected_Pets_Id,
+      JSON.stringify(pets)
+    );
 
-  //         props.navigation.navigate("PropertyImages", {
-  //           property_id: response?.data?.property_id,
-  //         });
-  //         console.log("property_details....", response.data);
-  //       } else {
-  //         console.error("property_details_error:", response.data.error);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("property_details error:", error);
-  //       setIsLoading(false);
-  //     });
-  // };
+    const PreScreeningData =
+  //   {
+  //     uad_key: 4,
+  //     tpq_move_date: "2023-11-29",
+  //     tpq_lease_term: null,
+  //     tpq_staying_person: 2,
+  //     tpq_rental_budget: 1500,
+  //     tpq_paying_rent: 1,
+  //     tpq_employment_status: 1,
+  //     tpq_employment_year: "4 Year",
+  //     tpq_weekly_income: 500,
+  //     tpq_end_date: "2024-06-31",
+  //     tpq_broken_rental_agreement: 1,
+  //     tpq_previous_rental: 1,
+  //     tpq_smoking: 0,
+  //     tpq_any_pets: 1,
+  //     tpq_type_pets: "[1,2,3]",
+  //     tpq_is_active: 1,
+  //     tpq_created_by: "admin123"
+  // }
+     {
+      uad_key: 4,
+      tpq_move_date: selectedDate,
+      tpq_lease_term: RentalLeasevalue,
+      tpq_staying_person: valueStying,
+      tpq_rental_budget: jobDetails,
+      tpq_paying_rent: selected_Paying_Id,
+      tpq_employment_status: EmployeeValue,
+      tpq_employment_year: roomnumberOfYear,
+      tpq_weekly_income: weeklyIncome,
+      tpq_end_date: numberOfYear,
+      tpq_broken_rental_agreement: selected_Agreement_Id,
+      tpq_previous_rental: selected_Previous_Id,
+      tpq_smoking: selected_Smoking_Id,
+      tpq_any_pets: selected_Pets_Id,
+      tpq_type_pets:JSON.stringify(pets),
+      tpq_is_active: 1,
+      tpq_created_by: "admin123",
+    };
+    const url = Config.BASE_URL;
+    const PreScreeningUrl = url + "add_tenant_questionarie/create";
+    console.log("Request URL:", PreScreeningUrl);
+    setIsLoading(true);
+
+    axios
+      .post(PreScreeningUrl, PreScreeningData)
+      .then((response) => {
+        setPreScreening(response.data);
+        console.log("PreScreening_data response...", response.data);
+        if (response.data.success === true) {
+          alert(response.data.message);
+          setSelectedDate("");
+          setValueStying("");
+          setRoomNumberOfYear("");
+          setJobDetails("");
+          setEmployeeValue("");
+          setNumberOfYear("");
+          setWeeklyIncome("");
+          setPets("");
+          props.navigation.navigate("TenantList");
+          setIsLoading(false);
+        } else {
+          console.error("PreScreening_data_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("PreScreening_data error...:", error);
+        setIsLoading(false);
+      });
+  };
+
+  // API bind What rental lease term are you looking for Lookup key code here........
+  const handleLeaseTerm = () => {
+    const TenantData = {
+      P_PARENT_CODE: "RLT",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.BASE_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, TenantData)
+      .then((response) => {
+        console.log("Tenant_Data_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("Renal Lease....", response.data.lookup_details);
+          setRentalLeaseData(response.data.lookup_details);
+        } else {
+          console.error("Renal_Lease_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Renal_Lease error:", error);
+        setIsLoading(false);
+      });
+  };
+
+  // API bind How many people will be staying in the property? Lookup key code here........
+  const handleStyingProperty = () => {
+    const StyingPropertData = {
+      P_PARENT_CODE: "PST",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.BASE_URL;
+    const StyingPropertType = url + "lookup_details";
+    console.log("Request URL:", StyingPropertType);
+    setIsLoading(true);
+    axios
+      .post(StyingPropertType, StyingPropertData)
+      .then((response) => {
+        console.log("Stying_Propert_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("Renal Lease....", response.data.lookup_details);
+          setValueStyingData(response.data.lookup_details);
+        } else {
+          console.error("Stying_Propert_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Stying_Propert error:", error);
+        setIsLoading(false);
+      });
+  };
+
+  // API bind How would you describe your employment status Lookup key code here........
+  const handleDescribeStatus = () => {
+    const DescribeStatustData = {
+      P_PARENT_CODE: "ES",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.BASE_URL;
+    const DescribeStatustType = url + "lookup_details";
+    console.log("Request URL:", DescribeStatustType);
+    setIsLoading(true);
+    axios
+      .post(DescribeStatustType, DescribeStatustData)
+      .then((response) => {
+        console.log("Describe_Status_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("Describe_Status....", response.data.lookup_details);
+          setEmployeeValueData(response.data.lookup_details);
+        } else {
+          console.error("Describe_Status_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Describe_Status error:", error);
+        setIsLoading(false);
+      });
+  };
+
+  // API bind What type of pets do you have? Lookup key code here........
+  const handleTypesPets = () => {
+    const PetsTypeData = {
+      P_PARENT_CODE: "TP",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.BASE_URL;
+    const PetsDataType = url + "lookup_details";
+    console.log("Request URL:", PetsDataType);
+    setIsLoading(true);
+    axios
+      .post(PetsDataType, PetsTypeData)
+      .then((response) => {
+        console.log("Pets_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("Pets_type_....", response.data.lookup_details);
+          setPetsData(response.data.lookup_details);
+          console.log("pets daa...", response.data.lookup_details);
+        } else {
+          console.error("Pets_type_Status_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Pets_type_Status error:", error);
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    handleLeaseTerm();
+    handleStyingProperty();
+    handleDescribeStatus();
+    handleTypesPets();
+  }, []);
+
+  const handleStartNowBtn = () => {
+    PreScreeninghandle();
+  };
+
   return (
     <>
       <TopHeader
@@ -280,16 +463,16 @@ const PreScreening = (props) => {
                     selectedTextStyle={PreScreeningStyle.selectedTextStyle}
                     inputSearchStyle={PreScreeningStyle.inputSearchStyle}
                     iconStyle={PreScreeningStyle.iconStyle}
-                    data={data}
+                    data={RentalLeaseData}
                     search
                     maxHeight={300}
-                    labelField="label"
-                    valueField="value"
+                    labelField="lookup_description"
+                    valueField="lookup_key"
                     placeholder="Electricals"
                     searchPlaceholder="Search..."
-                    value={value}
+                    value={RentalLeasevalue}
                     onChange={(item) => {
-                      setValue(item.value);
+                      setRentalLeaseValue(item.lookup_key);
                     }}
                   />
                 </View>
@@ -304,16 +487,16 @@ const PreScreening = (props) => {
                     selectedTextStyle={PreScreeningStyle.selectedTextStyle}
                     inputSearchStyle={PreScreeningStyle.inputSearchStyle}
                     iconStyle={PreScreeningStyle.iconStyle}
-                    data={data}
+                    data={valueStyingData}
                     search
                     maxHeight={300}
-                    labelField="label"
-                    valueField="value"
-                    placeholder="Electricals"
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="3 people"
                     searchPlaceholder="Search..."
                     value={valueStying}
                     onChange={(item) => {
-                      setValueStying(item.valueStying);
+                      setValueStying(item.lookup_key);
                     }}
                   />
                 </View>
@@ -331,6 +514,7 @@ const PreScreening = (props) => {
                     multiline
                     numberOfLines={5}
                     textAlignVertical={"top"}
+                    keyboardType="phone-pad"
                   />
                 </View>
 
@@ -421,16 +605,16 @@ const PreScreening = (props) => {
                     selectedTextStyle={PreScreeningStyle.selectedTextStyle}
                     inputSearchStyle={PreScreeningStyle.inputSearchStyle}
                     iconStyle={PreScreeningStyle.iconStyle}
-                    data={data}
+                    data={EmployeeValueData}
                     search
                     maxHeight={300}
-                    labelField="label"
-                    valueField="value"
+                    labelField="lookup_description"
+                    valueField="lookup_key"
                     placeholder="Full-time employed"
                     searchPlaceholder="Search..."
                     value={EmployeeValue}
                     onChange={(item) => {
-                      setEmployeeValue(item.EmployeeValue);
+                      setEmployeeValue(item.lookup_key);
                     }}
                   />
                 </View>
@@ -441,13 +625,14 @@ const PreScreening = (props) => {
                   </Text>
                   <TextInput
                     style={[PreScreeningStyle.input, PreScreeningStyle.jobD_]}
-                    value={numberOfYear}
-                    onChangeText={setNumberOfYear}
+                    value={roomnumberOfYear}
+                    onChangeText={setRoomNumberOfYear}
                     placeholder="Enter number of years"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                     multiline
                     numberOfLines={5}
                     textAlignVertical={"top"}
+                    keyboardType="phone-pad"
                   />
                 </View>
 
@@ -469,6 +654,7 @@ const PreScreening = (props) => {
                     multiline
                     numberOfLines={5}
                     textAlignVertical={"top"}
+                    keyboardType="phone-pad"
                   />
                 </View>
                 <DividerIcon marginTop={5} />
@@ -510,6 +696,7 @@ const PreScreening = (props) => {
                     multiline
                     numberOfLines={5}
                     textAlignVertical={"top"}
+                    keyboardType="phone-pad"
                   />
                 </View>
 
@@ -764,9 +951,9 @@ const PreScreening = (props) => {
                     selectedTextStyle={PreScreeningStyle.selectedTextStyle}
                     inputSearchStyle={PreScreeningStyle.inputSearchStyle}
                     iconStyle={PreScreeningStyle.iconStyle}
-                    data={PetsData}
-                    labelField="label"
-                    valueField="value"
+                    data={petsData}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
                     placeholder="Search"
                     value={pets}
                     search
@@ -781,7 +968,7 @@ const PreScreening = (props) => {
                       >
                         <View style={PreScreeningStyle.selectedStyle}>
                           <Text style={PreScreeningStyle.textSelectedStyle}>
-                            {item.label}
+                            {item.lookup_description}
                           </Text>
                           <AntDesign color="white" name="close" size={17} />
                         </View>
@@ -802,6 +989,9 @@ const PreScreening = (props) => {
               _ButtonText={"Start Now"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
+              onPress={() => {
+                handleStartNowBtn();
+              }}
             />
           </View>
 
@@ -824,6 +1014,7 @@ const PreScreening = (props) => {
           <DividerIcon />
         </ScrollView>
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </>
   );
 };

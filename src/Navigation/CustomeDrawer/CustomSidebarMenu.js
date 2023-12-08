@@ -35,7 +35,7 @@ const CustomSidebarMenu = (props) => {
       case "Tetants":
         setselectedId("Tetants");
         // props.navigation.navigate("TwoStepVerification");
-        props.navigation.navigate("InviteTenant");
+        props.navigation.navigate("TenantList");
         break;
       case "MaintenanceJobs":
         setselectedId("MaintenanceJobs");

@@ -48,7 +48,7 @@ export const InviteTenantStyle = StyleSheet.create({
   starratingStyle: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Bold,
-    marginLeft: 10,
+    marginLeft: 5,
   },
   desc_View: { flexDirection: "row", marginTop: 2 },
   desc_heading: {
