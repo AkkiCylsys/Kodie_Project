@@ -110,7 +110,6 @@ const PreScreening = (props) => {
     setPreferences(!Preferences);
   };
 
-
   // API bind Add PreScreening code here.....
   const PreScreeninghandle = () => {
     // const formattedPets = JSON.stringify(pets);
@@ -131,27 +130,7 @@ const PreScreening = (props) => {
       JSON.stringify(pets)
     );
 
-    const PreScreeningData =
-  //   {
-  //     uad_key: 4,
-  //     tpq_move_date: "2023-11-29",
-  //     tpq_lease_term: null,
-  //     tpq_staying_person: 2,
-  //     tpq_rental_budget: 1500,
-  //     tpq_paying_rent: 1,
-  //     tpq_employment_status: 1,
-  //     tpq_employment_year: "4 Year",
-  //     tpq_weekly_income: 500,
-  //     tpq_end_date: "2024-06-31",
-  //     tpq_broken_rental_agreement: 1,
-  //     tpq_previous_rental: 1,
-  //     tpq_smoking: 0,
-  //     tpq_any_pets: 1,
-  //     tpq_type_pets: "[1,2,3]",
-  //     tpq_is_active: 1,
-  //     tpq_created_by: "admin123"
-  // }
-     {
+    const PreScreeningData = {
       uad_key: 4,
       tpq_move_date: selectedDate,
       tpq_lease_term: RentalLeasevalue,
@@ -166,7 +145,7 @@ const PreScreening = (props) => {
       tpq_previous_rental: selected_Previous_Id,
       tpq_smoking: selected_Smoking_Id,
       tpq_any_pets: selected_Pets_Id,
-      tpq_type_pets:JSON.stringify(pets),
+      tpq_type_pets: JSON.stringify(pets),
       tpq_is_active: 1,
       tpq_created_by: "admin123",
     };
