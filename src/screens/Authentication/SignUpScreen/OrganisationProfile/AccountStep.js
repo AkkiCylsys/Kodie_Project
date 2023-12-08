@@ -15,6 +15,8 @@ import { AccountStepStyle } from "./AccountStepStyle";
 import { Divider } from "react-native-paper";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -71,14 +73,12 @@ const AccountStep = (props) => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
               <View style={AccountStepStyle.inputimgeview}>
-                <Image
-                  style={AccountStepStyle.pencleimg}
-                  source={IMAGES.pencile}
-                />
-                <Image
-                  style={AccountStepStyle.buttomlineimg}
-                  source={IMAGES.HorizentalLine}
-                />
+                <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
               </View>
             </View>
           </View>
@@ -104,14 +104,12 @@ const AccountStep = (props) => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
               <View style={AccountStepStyle.inputimgeview}>
-                <Image
-                  style={AccountStepStyle.pencleimg}
-                  source={IMAGES.pencile}
-                />
-                <Image
-                  style={AccountStepStyle.buttomlineimg}
-                  source={IMAGES.HorizentalLine}
-                />
+              <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
               </View>
             </View>
           </View>
@@ -134,10 +132,16 @@ const AccountStep = (props) => {
               <View style={AccountStepStyle.bindphonenumberview}>
                 <Text style={AccountStepStyle.numbercode}>+</Text>
                 <Text style={AccountStepStyle.numbercode}>61</Text>
-                <Image
+                <Ionicons
+                    name="chevron-down-outline"
+                    size={20}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
+                  {/* <Image
                   style={AccountStepStyle.downarrowimg}
                   source={IMAGES.downarrow}
-                />
+                /> */}
                 <Image
                   style={AccountStepStyle.lineimg}
                   source={IMAGES.verticalLine}
@@ -150,14 +154,12 @@ const AccountStep = (props) => {
               </View>
 
               <View style={AccountStepStyle.inputimgeview}>
-                <Image
-                  style={AccountStepStyle.pencleimg}
-                  source={IMAGES.pencile}
-                />
-                <Image
-                  style={AccountStepStyle.buttomlineimg}
-                  source={IMAGES.HorizentalLine}
-                />
+              <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
               </View>
             </View>
           </View>
@@ -178,7 +180,12 @@ const AccountStep = (props) => {
               ]}
             >
               <View style={AccountStepStyle.locationbindfield}>
-                <Image source={IMAGES.Location} />
+              <Ionicons
+                    name="location-sharp"
+                    size={25}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                    resizeMode={"contain"}
+                  />
                 <TextInput
                   placeholder="Search new location"
                   style={AccountStepStyle.inputbox}
@@ -186,14 +193,12 @@ const AccountStep = (props) => {
                 />
               </View>
               <View style={AccountStepStyle.inputimgeview}>
-                <Image
-                  style={AccountStepStyle.pencleimg}
-                  source={IMAGES.pencile}
-                />
-                <Image
-                  style={AccountStepStyle.buttomlineimg}
-                  source={IMAGES.HorizentalLine}
-                />
+              <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
               </View>
             </View>
             <Dropdown
@@ -232,7 +237,13 @@ const AccountStep = (props) => {
               ]}
             >
               <View style={AccountStepStyle.locationbindfield}>
-                <Image source={IMAGES.Location} />
+                {/* <Image source={IMAGES.Location} /> */}
+                <Ionicons
+                    name="location-sharp"
+                    size={25}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                    resizeMode={"contain"}
+                  />
                 <TextInput
                   placeholder="Search new location"
                   style={AccountStepStyle.inputbox}
@@ -240,14 +251,12 @@ const AccountStep = (props) => {
                 />
               </View>
               <View style={AccountStepStyle.inputimgeview}>
-                <Image
-                  style={AccountStepStyle.pencleimg}
-                  source={IMAGES.pencile}
-                />
-                <Image
-                  style={AccountStepStyle.buttomlineimg}
-                  source={IMAGES.HorizentalLine}
-                />
+              <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
               </View>
             </View>
           </View>
@@ -311,7 +320,12 @@ const AccountStep = (props) => {
           <View style={AccountStepStyle.buttonview}>
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              leftImage={IMAGES.uploadIcon}
+              leftImage={<AntDesign
+                name="edit"
+                size={25}
+                color={_COLORS.Kodie_LightGrayColor}
+                resizeMode={"contain"}
+              />}
               isLeftImage={true}
               borderColor={_COLORS.Kodie_TransparentColor}
               _ButtonText={"Upload"}

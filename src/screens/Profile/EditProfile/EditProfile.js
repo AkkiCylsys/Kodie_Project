@@ -11,6 +11,10 @@ import { _COLORS, IMAGES } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import AntDesign from "react-native-vector-icons/AntDesign";
+
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -49,7 +53,11 @@ const EditProfile = () => {
               resizeMode="contain"
             />
             <View style={EditProfileStyle.editlogoview}>
-              <Image style={EditProfileStyle.editlogo} source={IMAGES.edit} />
+            <FontAwesome
+                    name="edit"
+                    color={_COLORS.Kodie_GreenColor}
+                    size={18}
+                  />
             </View>
           </View>
           <Text style={EditProfileStyle.edittext}>Edit profile photo</Text>
@@ -67,10 +75,12 @@ const EditProfile = () => {
                 placeholder="Jason Stathom"
                 placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               />
-              <Image
-                style={EditProfileStyle.Vectorimg}
-                source={IMAGES.pencile}
-              />
+              <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
             </View>
           </View>
 
@@ -82,10 +92,12 @@ const EditProfile = () => {
                 keyboardType="numeric"
                 placeholder="jason5@gmail.com"
               />
-              <Image
-                style={EditProfileStyle.Vectorimg}
-                source={IMAGES.pencile}
-              />
+              <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
             </View>
           </View>
 
@@ -96,9 +108,11 @@ const EditProfile = () => {
                 <View style={EditProfileStyle.bindnumberview}>
                   <Text style={EditProfileStyle.numbercode}>+61</Text>
 
-                  <Image
-                    style={EditProfileStyle.downarrowimg}
-                    source={IMAGES.downarrow}
+                  <Ionicons
+                    name="chevron-down-outline"
+                    size={20}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
                   />
                   <Image
                     style={EditProfileStyle.lineimg}
@@ -110,10 +124,12 @@ const EditProfile = () => {
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   />
                 </View>
-                <Image
-                  style={EditProfileStyle.Vectorimg}
-                  source={IMAGES.pencile}
-                />
+                <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
               </View>
             </View>
           </View>
@@ -123,19 +139,23 @@ const EditProfile = () => {
 
             <View style={EditProfileStyle.simpleinputphysical}>
               <View style={EditProfileStyle.physicalsecondview}>
-                <Image
-                  style={EditProfileStyle.locationimg}
-                  source={IMAGES.Location}
-                />
+              <Ionicons
+                    name="location-sharp"
+                    size={25}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                    resizeMode={"contain"}
+                  />
                 <TextInput
                   keyboardType="numeric"
                   placeholder="Search new location"
                 />
               </View>
-              <Image
-                style={EditProfileStyle.Vectorimg}
-                source={IMAGES.pencile}
-              />
+              <AntDesign
+                    name="edit"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
             </View>
           </View>
 

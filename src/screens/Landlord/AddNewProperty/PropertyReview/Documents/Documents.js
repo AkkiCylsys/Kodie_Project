@@ -19,6 +19,8 @@ import CustomDropdown from "../../../../../components/Molecules/CustomDropdown/C
 import { colors } from "../../../../../Themes/CommonColors/CommonColor";
 import { fontFamily } from "../../../../../Themes/FontStyle/FontStyle";
 import Feather from "react-native-vector-icons/Feather";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 const Property_documents = [
   "All",
   "Pre+post inspection reports",
@@ -93,7 +95,13 @@ export default Documents = (props) => {
       <>
         <View style={DocumentsStyle.container}>
           <View style={DocumentsStyle.pdfInfo}>
-            <Image source={IMAGES.document} style={DocumentsStyle.pdfIcon} />
+            {/* <Image source={IMAGES.document} style={DocumentsStyle.pdfIcon} /> */}
+            <FontAwesome
+                    name="file-pdf-o"
+                    size={35}
+                    color={_COLORS.Kodie_BlackColor}
+                    resizeMode={"contain"}
+                  />
             <View style={DocumentsStyle.textContainer}>
               <Text style={DocumentsStyle.pdfName}>{item.pdfName}</Text>
               <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text>
