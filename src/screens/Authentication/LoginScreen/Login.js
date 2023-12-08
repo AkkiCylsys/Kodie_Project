@@ -36,6 +36,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 import axios from "axios";
 import { Config } from "../../../Config";
+import DeviceInfo from "react-native-device-info";
 // import CryptoJS from "crypto-js";
 import CryptoJS from "react-native-crypto-js";
 
@@ -61,7 +62,10 @@ export default Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(true);
   const [loginResponse, setLoginResponse] = useState(true);
-
+  const deviceId = DeviceInfo.getDeviceId();
+  const deviceType = DeviceInfo.getDeviceType();
+  console.log("Device ID:", deviceId);
+  console.log("Device type:", deviceType);
   // const Login_response = useSelector(
   //   (state) => state?.authenticationReducer?.data
   // );
@@ -235,33 +239,31 @@ export default Login = (props) => {
       let data = {
         email: email,
         password: password,
+        device_id: deviceId,
+        device_os_type: deviceType,
       };
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
-      //alert(res)
-      console.log("login_data...", res);
+      // alert(JSON.stringify(res));
       setIsLoading(false);
-      if (res == 401) {
+      if (res === 401) {
         setIsLoading(false);
-        //alert("Please check your email and password.");
         setPasswordError(
           "Hmm, it seems like the credentials you entered are invalid. Please try again."
         );
+      } else if (res.data.success == "true") {
+        //  alert("Login successful");
+        setIsLoading(false);
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        setEmail("");
+        setPassword("");
       } else {
-        if (res.data.status === true) {
-          //  alert("Login successful");
-          setIsLoading(false);
-          props.navigation.navigate("DrawerNavigatorLeftMenu");
-          setEmail("");
-          setPassword("");
-        } else {
-          setIsLoading(false);
-          //alert("Please check your email and password.");
-          setPasswordError(
-            "Hmm, it seems like the credentials you entered are invalid. Please try again."
-          );
-        }
+        setIsLoading(false);
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
       }
+      // }
     }
     // Keyboard.dismiss();
   };
@@ -281,11 +283,11 @@ export default Login = (props) => {
 
   //send_verification_code Api code here....
   const send_verification_code = () => {
-    // const url = Config.API_URL;
+    const url = Config.BASE_URL;
     // const verification_code_url = url + "user_reset_password_email_verify";
 
-    const url = "https://e3.cylsys.com/api/v1/SendOTP";
-    const verification_code_url = url;
+    // const url = "https://e3.cylsys.com/api/v1/SendOTP";
+    const verification_code_url = url + "SendOTP";
     console.log("Request URL:", verification_code_url);
     setIsLoading(true);
     axios
@@ -323,10 +325,10 @@ export default Login = (props) => {
 
   //verify_otp Api code here.....
   const verify_Otp = () => {
-    // const url = Config.API_URL;
+    const url = Config.BASE_URL;
     // const verify_Otp_url = url + "user_signup_verifyotp";
-    const url = "https://e3.cylsys.com/api/v1/verifyotp";
-    const verify_Otp_url = url;
+    // const url = "https://e3.cylsys.com/api/v1/verifyotp";
+    const verify_Otp_url = url + "verifyotp";
     console.log("Request URL:", verify_Otp_url);
     setIsLoading(true);
     axios
@@ -350,7 +352,13 @@ export default Login = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        if (error.response && error.response.status === 404) {
+          alert("Incorrect OTP. Please try again.");
+        } else {
+          alert("An error occurred. Please try again later.");
+        }
+        console.error("signup Verification error:", error);
+        setIsLoading(false);
       })
       .finally(() => {
         setIsLoading(false);
@@ -378,9 +386,9 @@ export default Login = (props) => {
     try {
       const encryptedPassword = await encryptPassword(newpassword);
       console.log("encryptedPassword", encryptedPassword);
-
-      const url = "https://e3.cylsys.com/api/v1/forgetpassword";
-      const create_password_url = url;
+      const url = Config.BASE_URL;
+      // const url = "https://e3.cylsys.com/api/v1/forgetpassword";
+      const create_password_url = url + "forgetpassword";
       console.log("Request URL:", create_password_url);
 
       setIsLoading(true);
@@ -540,22 +548,6 @@ export default Login = (props) => {
           container: LoginStyles.bottomModal_container,
         }}
       >
-        {/* <View style={LoginStyles.ModalMainView}>
-          <Text style={LoginStyles.Modaltitle}>Reset password</Text>
-          <TouchableOpacity
-            onPress={() => {
-              refRBSheet.current.close();
-              setIsClick(0);
-              setResetEmail("");
-              setVerificationcode("");
-              setVerificationcodeError("");
-              setNewPassword("");
-              setPasswordError("");
-              setConfirmPassword("");
-              setConfirmPasswordError("");
-              setResetEmailError("");
-            }}
-          > */}
         <View style={LoginStyles.ModalMainView}>
           <Text style={LoginStyles.Modaltitle}>Reset password</Text>
           <TouchableOpacity
@@ -694,46 +686,6 @@ export default Login = (props) => {
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
             >
-              {/* <View style={LoginStyles.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
-                <TextInput
-                  style={[
-                    LoginStyles.input,
-                    { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
-                  ]}
-                  value={resetEmail}
-                  placeholder="Your email address"
-                  placeholderTextColor="#999"
-                />
-              </View>
-
-              <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
-                  <Text style={LABEL_STYLES._texinputLabel}>
-                    Verification code
-                  </Text>
-                  <TextInput
-                    style={[
-                      LoginStyles.input,
-                      { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
-                    ]}
-                    value={verificationcode}
-                    placeholder="code"
-                    placeholderTextColor="#999"
-                    editable={false}
-                  />
-                </View>
-
-                <View style={LoginStyles.codeMargin} />
-                <View style={LoginStyles.getButtonView}>
-                  <Text style={LoginStyles.getButton}>Get</Text>
-                </View>
-              </View>
-              {verificationcodeError ? (
-                <Text style={LoginStyles.error_text}>
-                  {verificationcodeError}
-                </Text>
-              ) : null} */}
               <View style={LoginStyles.inputContainer}>
                 <Text
                   style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}
@@ -857,17 +809,6 @@ export default Login = (props) => {
               onPress={handleButtonPress}
               _ButtonText={buttonLabels[isClick]}
               Text_Color={_COLORS.Kodie_WhiteColor}
-
-              // marginTop={"20%"}
-              // marginTop={
-              //   isClick
-              //     ? Platform.OS === "android"
-              //       ? "1%"
-              //       : 0
-              //     : Platform.OS === "android"
-              //     ? "18%"
-              //     : 0
-              // }
             />
           </View>
         </View>

@@ -75,7 +75,7 @@ export default PropertyFeature = (props) => {
     []
   );
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData?.Login_details?.result);
+  console.log("loginData", loginData?.Login_details?.user_id);
 
   console.log("key_features_id............", additionalfeatureskeyvalue);
   const [value, setValue] = useState(null);
@@ -328,8 +328,8 @@ export default PropertyFeature = (props) => {
     setIsLoading(true);
     axios
       .post(additionalApi, {
-        user: 35,
-        user_account_details_id: loginData?.Login_details?.result,
+        user: loginData?.Login_details?.user_id,
+        user_account_details_id: loginData?.Login_details?.user_account_id,
         location: location,
         location_longitude: longitude,
         location_latitude: latitude,
@@ -407,8 +407,8 @@ export default PropertyFeature = (props) => {
 
   const updatePropertyDetails = () => {
     const updateData = {
-      user: 35,
-      user_account_details_id: loginData?.Login_details?.result,
+      user: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
       location: location,
       location_longitude: longitude,
       location_latitude: latitude,

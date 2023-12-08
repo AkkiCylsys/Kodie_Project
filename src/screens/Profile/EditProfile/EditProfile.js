@@ -11,6 +11,7 @@ import { _COLORS, IMAGES } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
+import { _goBack } from "../../../services/CommonServices";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -24,7 +25,7 @@ const data = [
   { label: "Pune", value: "5" },
 ];
 
-const EditProfile = () => {
+const EditProfile = (props) => {
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();

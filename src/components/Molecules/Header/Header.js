@@ -9,7 +9,8 @@ import {
 } from "./../../../Themes/index";
 import { _goBack } from "../../../services/CommonServices";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
+const imageurl =
+  "http://e3.cylsys.com/upload/photo/AB71AAB8-C137-4561-A883-4417718442AE.jpg";
 const TopHeader = (props) => {
   return (
     <View
@@ -59,7 +60,12 @@ const TopHeader = (props) => {
               />
             ) : null}
           </TouchableOpacity>
-          <Image source={props.RightUserProfile} style={HeaderStyle.usericon} />
+
+          <Image
+            source={props?.RightUserProfile || IMAGES.Landlordprofile}
+            style={HeaderStyle.usericon}
+          />
+          {/* <Image source={props.RightUserProfile} style={HeaderStyle.usericon} /> */}
         </View>
       )}
     </View>

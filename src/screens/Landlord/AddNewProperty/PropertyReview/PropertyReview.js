@@ -121,7 +121,7 @@ export default PropertyReview = (props) => {
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
       ) : item === "Outdoor Area" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ) : item === "Ensuit" ? (
+      ) : item === "Ensuite" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
       ) : item === "Dishwasher" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
@@ -135,7 +135,7 @@ export default PropertyReview = (props) => {
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
       ) : item === "Heating" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
-      ) : item === "Hight Energy Efficiency" ? (
+      ) : item === "High Energy Efficiency" ? (
         <Image source={IMAGES.BedroomIcon} style={DetailsStyle.DetailsIcon} />
       ) : null}
       <Text style={DetailsStyle.details_text}>{item}</Text>

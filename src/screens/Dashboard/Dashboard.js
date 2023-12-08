@@ -103,7 +103,7 @@ export default Dashboard = (props) => {
   // );
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector((state) => state.authenticationReducer.data);
-
+  console.log("loginResponse.....", loginData);
   //---click back button closing the app
   useEffect(() => {
     const handleBackPress = () => {
@@ -170,16 +170,12 @@ export default Dashboard = (props) => {
       <TopHeader
         isMiddleImage={true}
         IsNotification={true}
-        RightUserProfile={
-          loginData?.profile_path
-            ? loginData?.profile_path
-            : IMAGES.Landlordprofile
-          // ||
-          //   signUp_account_response?.profile_photo_path
-          // ? singup_Data?.profile_photo_path
-          // : IMAGES.Landlordprofile
-        }
-        // RightUserProfile={IMAGES.Landlordprofile}
+        RightUserProfile={{
+          uri:
+            loginData?.Login_details?.profile_photo_path ||
+            signUp_account_response?.Login_details?.profile_photo_path,
+          // uri: "https://media.istockphoto.com/id/1454394017/photo/senior-man-nurse-or-holding-hands-in-support-trust-or-security-for-mental-health-depression.jpg?s=1024x1024&w=is&k=20&c=Co9ixsyQVNonHm7vz4fhpcUbCpH05IHH2ea787Pbwog=",
+        }}
         MiddleImage={logos.MainLogoWhite}
         leftImage={"menu"}
         MiddleText={"Kodie"}
@@ -188,7 +184,14 @@ export default Dashboard = (props) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <DeshboardNotice />
         <View style={DashboardStyle.container}>
-          <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text>
+          <Text style={DashboardStyle.Name_Text}>
+            {
+              // `Hi
+              //  ${loginData?.Account_details[0]?.UAD_FIRST_NAME}
+              // !`
+              "Hii Jason"
+            }
+          </Text>
           <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
           <View
             style={{
@@ -312,18 +315,17 @@ export default Dashboard = (props) => {
             <CircleProgress />
           </View>
 
-<View>
-
-          <FlatList
-            data={IncomeData}
-            scrollEnabled
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
-            renderItem={Income_render}
+          <View>
+            <FlatList
+              data={IncomeData}
+              scrollEnabled
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{}}
+              keyExtractor={(item) => item?.id}
+              renderItem={Income_render}
             />
-            </View>
+          </View>
 
           <View style={DashboardStyle.maintenance_statusView}>
             <View style={DashboardStyle.maintenance_view}>
@@ -422,11 +424,11 @@ export default Dashboard = (props) => {
         </View>
       </ScrollView>
       {/* RBSheet define here */}
-      
-          {/* Floating action button comopent call here... */}
-          <View style={DashboardStyle.floating_action_btn_view}>
-            <FloatingActionButton />
-          </View>
+
+      {/* Floating action button comopent call here... */}
+      <View style={DashboardStyle.floating_action_btn_view}>
+        <FloatingActionButton />
+      </View>
       <RBSheet
         ref={refRBSheet}
         height={280}

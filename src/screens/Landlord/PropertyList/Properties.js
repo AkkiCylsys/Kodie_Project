@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 
 const Properties = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData?.Login_details?.result);
+  console.log("loginData", loginData?.Login_details?.user_id);
 
   const [activeTab, setActiveTab] = useState("Tab1");
   const [Property_Data_List, setProperty_Data_List] = useState([]);

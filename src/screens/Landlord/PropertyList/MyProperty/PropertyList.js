@@ -62,7 +62,8 @@ const property_List2 = [
 ];
 const PropertyList = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData?.Login_details?.result);
+  console.log("loginData", loginData);
+
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -82,25 +83,22 @@ const PropertyList = (props) => {
   };
   const getPropertyDetailsByFilter = async (filter) => {
     setIsLoading(true);
+    // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
     try {
       const url = Config.BASE_URL;
       const filter_apiUrl = url + "get_property_details_by_filter";
       console.log("filter_apiUrl...", filter_apiUrl);
       const response = await axios.post(filter_apiUrl, {
         property_filter: filter,
-        user_account_id: loginData?.Login_details?.result,
+        user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
         limit: filter === "Recent" ? 5 : 10,
         order_col: 1,
         order_wise: "DESC",
       });
-      if (response?.data?.property_details) {
-        // Filter out items with null image_path
-        const filteredPropertyData = response.data.property_details.filter(
-          (item) => item.image_path && item.image_path.length > 0
-        );
-        setPropertyData(response?.data?.property_details);
-      }
+
+      setPropertyData(response?.data?.property_details);
+
       setIsLoading(false);
     } catch (error) {
       console.error("API Error:", error);
@@ -208,7 +206,9 @@ const PropertyList = (props) => {
               <Text style={PropertyListCSS.apartmentText}>
                 {item.property_type}
               </Text>
-              <Text style={LABEL_STYLES.commontext}>{item.State}</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {item.state ? item.state : item.city}
+              </Text>
               <View style={PropertyListCSS.flat_MainView}>
                 <MaterialCommunityIcons
                   name={"map-marker"}
@@ -222,7 +222,7 @@ const PropertyList = (props) => {
             </View>
             {item.image_path && item.image_path.length > 0 ? (
               <Image
-                source={{ uri: item.image_path[0] }}
+                source={{ uri: item?.image_path[0] }}
                 style={PropertyListCSS.imageStyle}
               />
             ) : (

@@ -32,7 +32,7 @@ const data = [
 export default AddLeaseDetails = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginData...", loginData);
-  // alert(loginData?.Login_details?.result)
+  // alert(loginData?.Login_details?.user_id)
 
   // alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
@@ -107,7 +107,7 @@ export default AddLeaseDetails = (props) => {
     setIsLoading(true);
     console.log("selectedDate", selectedDate);
     const lease_Data = {
-      user_key: loginData?.Login_details?.result,
+      user_key: loginData?.Login_details?.user_id,
       // upd_key: 4,
       upd_key: property_id,
       commencement_date: selectedDate,
@@ -315,7 +315,9 @@ export default AddLeaseDetails = (props) => {
               size={20}
             />
           )}
-          <Text style={AddLeaseDetailsStyle.textItem}>{item.lookup_description}</Text>
+          <Text style={AddLeaseDetailsStyle.textItem}>
+            {item.lookup_description}
+          </Text>
         </View>
       </ScrollView>
     );
@@ -336,7 +338,9 @@ export default AddLeaseDetails = (props) => {
             size={20}
           />
         )}
-        <Text style={AddLeaseDetailsStyle.textItem}>{item.lookup_description}</Text>
+        <Text style={AddLeaseDetailsStyle.textItem}>
+          {item.lookup_description}
+        </Text>
       </View>
     );
   };

@@ -393,37 +393,50 @@ export default FirstProperty = (props) => {
         name: imageName,
       });
     }
-    const url = "https://e3.cylsys.com/api/v1/signup_step_one";
-    const saveAccountDetails = url;
-    console.log("Request URL:", saveAccountDetails);
-    setIsLoading(true);
-    try {
-      const response = await axios.post(saveAccountDetails, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      console.log("Save Account Details", response.data);
-
-      if (response.data.status === true) {
-        setIsLoading(false);
-        alert(response.data.message);
-        props.navigation.navigate("DrawerNavigatorLeftMenu");
-        setCurrentPage(0);
-        setAdditionalFeaturesKeyValue("");
-      } else {
-        setIsLoading(false);
-        console.error("Save Account Details error:", response.data.error);
-        alert(response.data.error);
-      }
-    } catch (error) {
+    const res = await dispatch(signupAccountApiActionCreator(formData));
+    console.log("signupAccountApiActionCreator..", res.data);
+    if (response.data.status === true) {
       setIsLoading(false);
-      console.error("Account_Details error:", error);
-      alert("An error occurred. Please try again later.");
-    } finally {
+      // alert(response.data.message);
+      props.navigation.navigate("DrawerNavigatorLeftMenu");
+      setCurrentPage(0);
+      setAdditionalFeaturesKeyValue("");
+    } else {
       setIsLoading(false);
+      console.error("Save Account Details error:", response.data.error);
+      alert(response.data.error);
     }
+    // const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+    // const saveAccountDetails = url;
+    // console.log("Request URL:", saveAccountDetails);
+    // setIsLoading(true);
+    // try {
+    //   const response = await axios.post(saveAccountDetails, formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   });
+
+    //   console.log("Save Account Details", response.data);
+
+    //   if (response.data.status === true) {
+    //     setIsLoading(false);
+    //     alert(response.data.message);
+    //     props.navigation.navigate("DrawerNavigatorLeftMenu");
+    //     setCurrentPage(0);
+    //     setAdditionalFeaturesKeyValue("");
+    //   } else {
+    //     setIsLoading(false);
+    //     console.error("Save Account Details error:", response.data.error);
+    //     alert(response.data.error);
+    //   }
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   console.error("Account_Details error:", error);
+    //   alert("An error occurred. Please try again later.");
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   // const handleSaveSignup = async () => {

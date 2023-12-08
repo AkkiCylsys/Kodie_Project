@@ -109,7 +109,11 @@ export default SignUpVerification = (props) => {
         }
       })
       .catch((error) => {
-        alert(error);
+        if (error.response && error.response.status === 404) {
+          alert("Incorrect OTP. Please try again.");
+        } else {
+          alert("An error occurred. Please try again later.");
+        }
         console.error("signup Verification error:", error);
         setIsLoading(false);
       });
