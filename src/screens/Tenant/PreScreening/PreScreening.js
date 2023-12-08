@@ -96,7 +96,58 @@ const PreScreening = (props) => {
   const togglePreferences = () => {
     setPreferences(!Preferences);
   };
+   
+  // Post APi bind here.......
+  // const PreScreening_create = () => {
+  //   const url = Config.API_URL;
+  //   const additionalApi = url + "add_property_details";
+  //   console.log("Request URL:", additionalApi);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(additionalApi, {
+  //       user: 35,
+  //       user_account_details_id: loginData?.Login_details?.result,
+  //       location: location,
+  //       location_longitude: longitude,
+  //       location_latitude: latitude,
+  //       islocation: 1,
+  //       property_description: propertyDesc,
+  //       property_type: property_value,
+  //       key_features: AllCountsData,
+  //       additional_features: PreFriedly,
+  //       additional_key_features: additionalfeatureskeyvalue,
+  //       autolist: selectedButtonId,
+  //       UPD_FLOOR_SIZE: florSize,
+  //       UPD_LAND_AREA: landArea,
+  //       p_city: city,
+  //       p_state: state,
+  //       p_country: country,
+  //     })
 
+  //     .then((response) => {
+  //       console.log("property_details", response?.data);
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+
+  //         console.log(
+  //           "response?.data?.property_id",
+  //           response?.data?.property_id
+  //         );
+
+  //         props.navigation.navigate("PropertyImages", {
+  //           property_id: response?.data?.property_id,
+  //         });
+  //         console.log("property_details....", response.data);
+  //       } else {
+  //         console.error("property_details_error:", response.data.error);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("property_details error:", error);
+  //       setIsLoading(false);
+  //     });
+  // };
   return (
     <>
       <TopHeader
