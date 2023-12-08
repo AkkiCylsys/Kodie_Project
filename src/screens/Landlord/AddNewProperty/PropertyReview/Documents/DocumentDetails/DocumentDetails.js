@@ -133,12 +133,13 @@ const DocumentDetails = (props) => {
       }
     } catch (error) {
       console.error("API failed", error);
+      alert(error)
       // Handle network errors more gracefully
-      if (!error.response) {
-        alert("Network error. Please check your internet connection.");
-      } else {
-        alert(error.response.data.message);
-      }
+      // if (!error.response) {
+      //   alert("Network error. Please check your internet connection.");
+      // } else {
+      //   alert(error.response.data.message);
+      // }
     } finally {
       setIsLoading(false);
     }
