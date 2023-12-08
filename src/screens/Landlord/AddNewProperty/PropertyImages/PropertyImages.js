@@ -47,23 +47,23 @@ export default PropertyImages = (props) => {
   }, []);
   const DetailsData = () => {
     const detailData = {
-      user: property_id,
+      property_id: property_id,
     };
     console.log("detailData", detailData);
-    const url = Config.API_URL;
-    const property_Detailss = url + "get_All_Property_details";
+    const url = Config.BASE_URL;
+    const property_Detailss = url + "get_property_details";
     console.log("Request URL:", property_Detailss);
     setIsLoading(true);
     axios
       .post(property_Detailss, detailData)
       .then((response) => {
         console.log("propertyDetail", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details);
-          setImagePaths(response.data.property_details[0]?.image_path);
+          setProperty_Details(response.data.data);
+          setImagePaths(response.data.data?.image_path);
           // alert(JSON.stringify(response.data.property_details));
-          console.log("propertyDetail....", response.data.property_details);
+          console.log("propertyDetail....", response.data.data);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -99,7 +99,7 @@ export default PropertyImages = (props) => {
   const handleSaveUpdateImage = async () => {
     refRBSheet.current.close();
     const formData = new FormData();
-    formData.append("user", property_id);
+    formData.append("property_id", property_id);
     console.log("kljproperty_Data_id", property_id);
     const imagePaths = MultiImageName.map((image) => image.path);
 
@@ -116,7 +116,7 @@ export default PropertyImages = (props) => {
       selectedVideos.forEach((videoUri, index) => {
         if (typeof videoUri === "string") {
           const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append(`media[]`, {
+          formData.append(`videos[]`, {
             uri: videoUri,
             name: videoName,
             type: "video/mp4", // Set the appropriate video type
@@ -127,13 +127,12 @@ export default PropertyImages = (props) => {
       });
     }
     console.log("formData", formData);
-    const url = Config.API_URL;
-    const saveAccountDetails = url + "add_property_images";
+    const url = Config.BASE_URL;
+    const saveAccountDetails = url + "update_property_images_video_details";
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
-
     try {
-      const response = await axios.post(saveAccountDetails, formData, {
+      const response = await axios.put(saveAccountDetails, formData, {
         headers: {
           "content-type": "multipart/form-data",
 
@@ -287,7 +286,7 @@ export default PropertyImages = (props) => {
   // alert(imagePaths);
   const handleSaveImage = async () => {
     const formData = new FormData();
-    formData.append("user", property_id);
+    formData.append("property_id", property_id);
     refRBSheet.current.close();
     console.log("kljproperty_Data_id", property_id);
     if (MultiImageName && Array.isArray(MultiImageName)) {
@@ -315,7 +314,7 @@ export default PropertyImages = (props) => {
       selectedVideos.forEach((videoUri, index) => {
         if (typeof videoUri === "string") {
           const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append(`media[]`, {
+          formData.append(`videos[]`, {
             uri: videoUri,
             name: videoName,
             type: "video/mp4", // Set the appropriate video type
@@ -326,8 +325,8 @@ export default PropertyImages = (props) => {
       });
     }
     console.log("formData", formData);
-    const url = Config.API_URL;
-    const saveAccountDetails = url + "add_property_images";
+    const url = Config.BASE_URL;
+    const saveAccountDetails = url + "add_property_images_videos";
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
 
@@ -340,7 +339,7 @@ export default PropertyImages = (props) => {
 
       console.log("Save Account Details", response.data);
 
-      if (response.data.status === true) {
+      if (response.data.success === true) {
         setIsLoading(false);
         MultiImageName ? refRBSheet.current.close() : null;
         // alert(response.data.message);
@@ -547,7 +546,7 @@ export default PropertyImages = (props) => {
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               onPress={() => {
-                if (property_id || "editMode") {
+                if (editMode) {
                   handleSaveUpdateImage();
                 } else {
                   handleSaveImage();

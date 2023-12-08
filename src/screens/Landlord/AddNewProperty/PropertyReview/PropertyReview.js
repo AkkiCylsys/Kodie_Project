@@ -144,20 +144,21 @@ export default PropertyReview = (props) => {
   const fetchData = async () => {
     try {
       // Fetch property details
-      const detailData = { user: property_id };
-      const url = Config.API_URL;
-      const property_Detailss = url + "get_All_Property_details";
+      const detailData = { property_id: property_id };
+      const url = Config.BASE_URL;
+      const property_Detailss = url + "get_property_details";
 
+      console.log("url..", property_Detailss);
       setIsLoading(true);
       const response = await axios.post(property_Detailss, detailData);
       setIsLoading(false);
-
-      if (response.data.status === true) {
-        setProperty_Details(response.data.property_details);
+      console.log("response_get_property_details...", response.data);
+      if (response.data.success === true) {
+        setProperty_Details(response.data.data);
         // Fetch and process key features..........
-        if (response.data.property_details[0]?.key_features) {
+        if (response.data.data?.key_features) {
           const parsedData = JSON.parse(
-            response.data.property_details[0].key_features.replace(/\\/g, "")
+            response.data.data.key_features.replace(/\\/g, "")
           );
           setDetail(parsedData);
         }
@@ -171,8 +172,7 @@ export default PropertyReview = (props) => {
       setIsLoading(false);
     }
   };
-  const additionalKeyFeaturesString =
-    property_Detail[0]?.additional_key_features;
+  const additionalKeyFeaturesString = property_Detail?.additional_key_features;
 
   useEffect(() => {
     fetchData();
@@ -292,7 +292,7 @@ export default PropertyReview = (props) => {
         return (
           <>
             <Text style={DetailsStyle.welcome_Text}>
-              {property_Detail[0]?.property_description}
+              {property_Detail?.property_description}
               {/* Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
               apartment boasts modern interior finishes and a spacious extended
               balcony. As you enter, you... */}
@@ -471,8 +471,8 @@ export default PropertyReview = (props) => {
         <View style={PropertyReviewStyle.slider_view}>
           <SliderBox
             images={
-              property_Detail[0]?.image_path
-                ? property_Detail[0]?.image_path
+              property_Detail?.image_path
+                ? property_Detail?.image_path
                 : imagePaths
             }
             sliderBoxHeight={200}
@@ -495,7 +495,7 @@ export default PropertyReview = (props) => {
         <View style={PropertyReviewStyle.subContainer}>
           <View style={PropertyReviewStyle.apartment_View}>
             <Text style={PropertyReviewStyle.apartment_text}>
-              {property_Detail[0]?.property_type}
+              {property_Detail?.property_type}
             </Text>
             <View style={PropertyReviewStyle.share_View}>
               <TouchableOpacity>
@@ -516,7 +516,7 @@ export default PropertyReview = (props) => {
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
-            {property_Detail[0]?.State || ""}
+            {property_Detail?.State || ""}
           </Text>
           <View style={PropertyReviewStyle.share_View}>
             <Entypo
@@ -525,7 +525,7 @@ export default PropertyReview = (props) => {
               color={_COLORS.Kodie_GreenColor}
             />
             <Text>
-              {property_Detail[0]?.location ||
+              {property_Detail?.location ||
                 "8502 Preston Rd.Inglewood,Queensland,Australia,."}
             </Text>
           </View>
