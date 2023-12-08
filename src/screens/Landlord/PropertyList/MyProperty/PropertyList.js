@@ -32,6 +32,8 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import { useIsFocused } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { Config } from "../../../../Config";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+
 const HorizontalData = [
   "All",
   "Recent",
@@ -247,10 +249,16 @@ const PropertyList = (props) => {
                     });
                   }}
                 >
-                  <Image
+                  <SimpleLineIcons
+                    name="note"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
+                  {/* <Image
                     source={IMAGES.noteBook}
                     style={PropertyListCSS.noteIcon}
-                  />
+                  /> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {

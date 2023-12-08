@@ -18,6 +18,7 @@ import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useState } from "react";
 
 const HorizontalData = ["Scheduled", "In Progress", "Complete"];
@@ -82,10 +83,18 @@ export default NewInspection = (props) => {
               <Text style={NewInspectionStyle.location_text}>
                 {item.location}
               </Text>
-              <Image
+              {/* <Image
                 source={IMAGES.noteBook}
                 style={NewInspectionStyle.note_b_img_sty}
-              />
+              /> */}
+              <TouchableOpacity>
+              <SimpleLineIcons
+                    name="note"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
+                  </TouchableOpacity>
               <TouchableOpacity>
                 <Entypo
                   name="dots-three-horizontal"

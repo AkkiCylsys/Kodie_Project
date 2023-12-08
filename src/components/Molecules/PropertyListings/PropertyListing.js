@@ -8,6 +8,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { _COLORS, IMAGES, BANNERS } from "../../../Themes";
 import AddBiddingDetails from "../AddBiddingDetails/AddBiddingDetails";
 import InviteTenant from "../InviteTenant/InviteTenant";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+
 const property_List1 = [
   {
     id: "1",
@@ -121,9 +123,15 @@ const PropertyListing = () => {
             <View style={PropertyListingCss.flexContainer}>
               <View style={PropertyListingCss.noteStyle}>
                 <TouchableOpacity>
-                  <Image
+                  {/* <Image
                     source={IMAGES.noteBook}
                     style={PropertyListingCss.noteIcon}
+                  /> */}
+                  <SimpleLineIcons
+                    name="note"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
