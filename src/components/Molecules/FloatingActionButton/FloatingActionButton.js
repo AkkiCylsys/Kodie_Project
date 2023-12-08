@@ -10,6 +10,10 @@ const actions = [
     position: 2,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textBackground: "transparent",
+    textProps: {
+      style: {fontWeight: 'bold', color:_COLORS.Kodie_WhiteColor},
+    },
   },
   {
     text: 'Edit dashboard',
@@ -18,6 +22,10 @@ const actions = [
     position: 1,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textBackground: "transparent",
+    textProps: {
+      style: {fontWeight: 'bold',color:_COLORS.Kodie_WhiteColor},
+    },
   },
   {
     text: 'Invite prospective tenant',
@@ -26,6 +34,10 @@ const actions = [
     position: 3,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textBackground: "transparent",
+    textProps: {
+      style: {fontWeight: 'bold', color:_COLORS.Kodie_WhiteColor},
+    },
   },
   {
     text: 'Invite contractor',
@@ -34,6 +46,10 @@ const actions = [
     position: 4,
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textBackground: "transparent",
+    textProps: {
+      style: {fontWeight: 'bold', color:_COLORS.Kodie_WhiteColor},
+    },
   },
   {
     text: 'Add notice / reminder',
@@ -43,6 +59,10 @@ const actions = [
     // color: '#37bc12',
     color: _COLORS.Kodie_GreenColor,
     textElevation: 0,
+    textBackground: "transparent",
+    textProps: {
+      style: {fontWeight: 'bold', color:_COLORS.Kodie_WhiteColor},
+    },
   },
   {
     text: 'Create new job',
@@ -50,32 +70,40 @@ const actions = [
     name: 'Create_new_job',
     position: 6, 
     color: _COLORS.Kodie_GreenColor,
-    textElevation:0
+    textElevation:0,
+    textBackground: "transparent",
+    textProps: {
+      style: {fontWeight: 'bold', color:_COLORS.Kodie_WhiteColor,
+    },
+    },
   },
 ];
 
 const FloatingActionButton = () => {
+  
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
+    // <SafeAreaView style={styles.container}>
+    //   <View style={styles.container}>
         <FloatingAction
           actions={actions}
-          actionsPaddingTopBottom={10}
+          actionsPaddingTopBottom={6}
           color={_COLORS.Kodie_GreenColor}
           onPressItem={name => {
-            Alert.alert("Icon pressed", `the icon ${name} was pressed`);
+            Alert.alert("Options pressed", `${name} was pressed`);
           }}
-          overlayColor={_COLORS.Kodie_LightGrayColor}
+          // overlayColor={_COLORS.Kodie_LightGrayColor}
+          overlayColor="rgba(0, 0, 0, 0.5)"
         />
-      </View>
-    </SafeAreaView>
+    //   </View>
+    // </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: _COLORS.Kodie_GrayColor,
+    backgroundColor: _COLORS.Kodie_ExtraLiteWhiteColor,
+    zIndex:-5
   },
 });
 
