@@ -20,7 +20,7 @@ import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoade
 import axios from "axios";
 import RBSheet from "react-native-raw-bottom-sheet";
 import EditDocumentsModal from "../../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
-import RNFS from "react-native-fs";
+// import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
 import { Config } from "../../../../../../Config";
 const DocumentDetails = (props) => {

@@ -42,12 +42,14 @@ export const HeaderStyle = StyleSheet.create({
     alignSelf: "center",
   },
   usericon: {
-    height: 40,
-    width: 40,
+    height: 45,
+    width: 45,
+    borderRadius: 45 / 2,
     marginLeft: 10,
     justifyContent: "center",
     alignSelf: "center",
-    borderColor: "red",
+    // borderColor: "red",
+    // borderWidth: 5,
   },
   nullView: { width: "25%", flexDirection: "row", justifyContent: "center" },
   notificationButton: {

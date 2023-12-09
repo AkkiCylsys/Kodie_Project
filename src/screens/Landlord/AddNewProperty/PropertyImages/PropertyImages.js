@@ -105,7 +105,7 @@ export default PropertyImages = (props) => {
 
     // Append all image paths to the same key 'images[]'
     imagePaths.forEach((path, index) => {
-      formData.append("images[]", {
+      formData.append("images", {
         uri: path,
         name: `image.jpg`,
         type: "image/jpeg",
@@ -116,7 +116,7 @@ export default PropertyImages = (props) => {
       selectedVideos.forEach((videoUri, index) => {
         if (typeof videoUri === "string") {
           const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append(`videos[]`, {
+          formData.append(`videos`, {
             uri: videoUri,
             name: videoName,
             type: "video/mp4", // Set the appropriate video type
@@ -142,7 +142,7 @@ export default PropertyImages = (props) => {
 
       console.log("Save Account Details", response.data);
 
-      if (response.data.status === true) {
+      if (response.data.success === true) {
         setIsLoading(false);
         props.navigation.navigate("PropertyReview", {
           property_id: property_id,
@@ -150,9 +150,6 @@ export default PropertyImages = (props) => {
           selectedVideos: selectedVideos,
           editMode: editMode,
         });
-        // alert(response.data.message);
-        // props.navigation.navigate("DrawerNavigatorLeftMenu");
-        // setCurrentPage(0);
       } else {
         console.error("Save Account Details error:", response.data.error);
         alert(response.data.error);
@@ -286,54 +283,54 @@ export default PropertyImages = (props) => {
   // alert(imagePaths);
   const handleSaveImage = async () => {
     const formData = new FormData();
-    formData.append("property_id", property_id);
     refRBSheet.current.close();
-    console.log("kljproperty_Data_id", property_id);
+    formData.append("property_id", property_id);
+
     if (MultiImageName && Array.isArray(MultiImageName)) {
-      // Extract paths from each element in MultiImageName using map
       const imagePaths = MultiImageName.map((image) => image.path);
 
-      // Append all image paths to the same key 'images[]'
       imagePaths.forEach((path, index) => {
-        formData.append("images[]", {
+        formData.append("images", {
           uri: path,
           name: `image_${index}.jpg`,
           type: "image/jpeg",
         });
       });
-
-      console.log("Image paths:", imagePaths);
     } else {
       console.error(
         "MultiImageName is not defined or not an array:",
         MultiImageName
       );
+      return; // Stop execution if MultiImageName is not properly defined
     }
-    // Append videos
+
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoUri, index) => {
         if (typeof videoUri === "string") {
           const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append(`videos[]`, {
+          formData.append(`videos`, {
             uri: videoUri,
             name: videoName,
-            type: "video/mp4", // Set the appropriate video type
+            type: "video/mp4",
           });
         } else {
           console.error(`Invalid video URI at index ${index}: ${videoUri}`);
         }
       });
     }
+
     console.log("formData", formData);
-    const url = Config.BASE_URL;
-    const saveAccountDetails = url + "add_property_images_videos";
+
+    const saveAccountDetails =
+      "https://e3.cylsys.com/api/v1/add_property_images_videos";
     console.log("Request URL:", saveAccountDetails);
+
     setIsLoading(true);
 
     try {
       const response = await axios.post(saveAccountDetails, formData, {
         headers: {
-          "content-type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -342,23 +339,30 @@ export default PropertyImages = (props) => {
       if (response.data.success === true) {
         setIsLoading(false);
         MultiImageName ? refRBSheet.current.close() : null;
-        // alert(response.data.message);
         props.navigation.navigate("PropertyReview", {
           property_id: property_id,
           MultiImageName: MultiImageName,
           selectedVideos: selectedVideos,
         });
-        // setCurrentPage(0);
+        console.log("Save Account Details", response.data);
       } else {
-        console.error("Save Account Details error:", response.data.error);
-        alert(response.data.error);
+        console.log("Save Account Details error:", response.data.error);
+        alert("Error while saving account details");
       }
     } catch (error) {
-      console.error("Account_Details error:", error);
+      if (axios.isCancel(error)) {
+        console.log("Request canceled:", error.message);
+      } else {
+        console.log("saving account details", error.message);
+        alert(
+          error.message || "An error occurred while saving account details"
+        );
+      }
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <View style={PropertyImagesStyle.mainContainer}>
       <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />

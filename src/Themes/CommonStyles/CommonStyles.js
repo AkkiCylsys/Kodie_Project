@@ -20,7 +20,7 @@ export const LABEL_STYLES = StyleSheet.create({
   commonMidtext: {
     fontSize: 14,
     color: _COLORS.Kodie_MediumGrayColor,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontFamily: FONTFAMILY.K_Medium,
   },
 });
 export const VIEW_STYLES = StyleSheet.create({
