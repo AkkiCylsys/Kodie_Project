@@ -85,6 +85,8 @@ export default PropertyReview = (props) => {
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
+  const [additionalKeyFeaturesString, setAdditionalKeyFeaturesString] =
+    useState([]);
   const [currentPage, setCurrentPage] = useState(3);
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
 
@@ -297,14 +299,17 @@ export default PropertyReview = (props) => {
       setIsLoading(false);
       console.log("response_get_property_details...", response.data);
       if (response.data.success === true) {
-        setProperty_Details(response.data.data);
+        setProperty_Details(response.data.data[0]);
         // Fetch and process key features..........
-        if (response.data.data?.key_features) {
+        if (response.data.data[0].key_features) {
           const parsedData = JSON.parse(
-            response.data.data.key_features.replace(/\\/g, "")
+            response.data.data[0].key_features.replace(/\\/g, "")
           );
           setDetail(parsedData);
         }
+        const additionalKeyFeatures =
+          response.data.data[0].additional_key_features[0];
+        setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error("propertyDetail_error:", response.data.error);
         alert(response.data.error);
@@ -315,10 +320,10 @@ export default PropertyReview = (props) => {
       setIsLoading(false);
     }
   };
-  const additionalKeyFeaturesString = property_Detail?.additional_key_features;
 
   useEffect(() => {
     fetchData();
+
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(",");
       setAdditionalKeyFeatures(keyFeaturesArray);
@@ -614,8 +619,8 @@ export default PropertyReview = (props) => {
         <View style={PropertyReviewStyle.slider_view}>
           <SliderBox
             images={
-              property_Detail?.image_path
-                ? property_Detail?.image_path
+              property_Detail.image_path
+                ? property_Detail.image_path
                 : imagePaths
             }
             sliderBoxHeight={200}
@@ -659,7 +664,7 @@ export default PropertyReview = (props) => {
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
-            {property_Detail?.State || ""}
+            {property_Detail?.state || property_Detail?.city || ""}
           </Text>
           <View style={PropertyReviewStyle.share_View}>
             <Entypo
@@ -667,10 +672,7 @@ export default PropertyReview = (props) => {
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-            <Text>
-              {property_Detail?.location ||
-                "8502 Preston Rd.Inglewood,Queensland,Australia,."}
-            </Text>
+            <Text>{property_Detail?.location || ""}</Text>
           </View>
         </View>
 

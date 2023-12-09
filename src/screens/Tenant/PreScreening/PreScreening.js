@@ -24,6 +24,7 @@ import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import axios from "axios";
 import { stringify } from "querystring";
+import { useSelector } from "react-redux";
 
 const data = [
   { label: "Electricals", value: "1" },
@@ -58,6 +59,8 @@ const renderDataItem = (item) => {
 };
 
 const PreScreening = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData", loginData);
   const [rating, setRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [RentalDetails, setRentalDetails] = useState(false);
@@ -110,7 +113,6 @@ const PreScreening = (props) => {
     setPreferences(!Preferences);
   };
 
-
   // API bind Add PreScreening code here.....
   const PreScreeninghandle = () => {
     // const formattedPets = JSON.stringify(pets);
@@ -132,44 +134,44 @@ const PreScreening = (props) => {
     );
 
     const PreScreeningData =
-  //   {
-  //     uad_key: 4,
-  //     tpq_move_date: "2023-11-29",
-  //     tpq_lease_term: null,
-  //     tpq_staying_person: 2,
-  //     tpq_rental_budget: 1500,
-  //     tpq_paying_rent: 1,
-  //     tpq_employment_status: 1,
-  //     tpq_employment_year: "4 Year",
-  //     tpq_weekly_income: 500,
-  //     tpq_end_date: "2024-06-31",
-  //     tpq_broken_rental_agreement: 1,
-  //     tpq_previous_rental: 1,
-  //     tpq_smoking: 0,
-  //     tpq_any_pets: 1,
-  //     tpq_type_pets: "[1,2,3]",
-  //     tpq_is_active: 1,
-  //     tpq_created_by: "admin123"
-  // }
-     {
-      uad_key: 4,
-      tpq_move_date: selectedDate,
-      tpq_lease_term: RentalLeasevalue,
-      tpq_staying_person: valueStying,
-      tpq_rental_budget: jobDetails,
-      tpq_paying_rent: selected_Paying_Id,
-      tpq_employment_status: EmployeeValue,
-      tpq_employment_year: roomnumberOfYear,
-      tpq_weekly_income: weeklyIncome,
-      tpq_end_date: numberOfYear,
-      tpq_broken_rental_agreement: selected_Agreement_Id,
-      tpq_previous_rental: selected_Previous_Id,
-      tpq_smoking: selected_Smoking_Id,
-      tpq_any_pets: selected_Pets_Id,
-      tpq_type_pets:JSON.stringify(pets),
-      tpq_is_active: 1,
-      tpq_created_by: "admin123",
-    };
+      //   {
+      //     uad_key: 4,
+      //     tpq_move_date: "2023-11-29",
+      //     tpq_lease_term: null,
+      //     tpq_staying_person: 2,
+      //     tpq_rental_budget: 1500,
+      //     tpq_paying_rent: 1,
+      //     tpq_employment_status: 1,
+      //     tpq_employment_year: "4 Year",
+      //     tpq_weekly_income: 500,
+      //     tpq_end_date: "2024-06-31",
+      //     tpq_broken_rental_agreement: 1,
+      //     tpq_previous_rental: 1,
+      //     tpq_smoking: 0,
+      //     tpq_any_pets: 1,
+      //     tpq_type_pets: "[1,2,3]",
+      //     tpq_is_active: 1,
+      //     tpq_created_by: "admin123"
+      // }
+      {
+        uad_key: loginData?.Login_details?.user_account_id,
+        tpq_move_date: selectedDate,
+        tpq_lease_term: RentalLeasevalue,
+        tpq_staying_person: valueStying,
+        tpq_rental_budget: jobDetails,
+        tpq_paying_rent: selected_Paying_Id,
+        tpq_employment_status: EmployeeValue,
+        tpq_employment_year: roomnumberOfYear,
+        tpq_weekly_income: weeklyIncome,
+        tpq_end_date: numberOfYear,
+        tpq_broken_rental_agreement: selected_Agreement_Id,
+        tpq_previous_rental: selected_Previous_Id,
+        tpq_smoking: selected_Smoking_Id,
+        tpq_any_pets: selected_Pets_Id,
+        tpq_type_pets: JSON.stringify(pets),
+        tpq_is_active: 1,
+        tpq_created_by: "admin123",
+      };
     const url = Config.BASE_URL;
     const PreScreeningUrl = url + "add_tenant_questionarie/create";
     console.log("Request URL:", PreScreeningUrl);

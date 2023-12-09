@@ -95,7 +95,7 @@ const PropertyList = (props) => {
         user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
         limit: filter === "Recent" ? 5 : 10,
-        order_col: 1,
+        order_col: "1",
         order_wise: "DESC",
       });
 
@@ -103,7 +103,15 @@ const PropertyList = (props) => {
 
       setIsLoading(false);
     } catch (error) {
+      if (error.response && error.response.status === 500) {
+        alert("Please check internet connection.");
+        setIsLoading(false);
+      } else {
+        alert("An error occurred. Please try again later.");
+        setIsLoading(false);
+      }
       console.error("API Error:", error);
+      setIsLoading(false);
     }
   };
 
@@ -138,7 +146,7 @@ const PropertyList = (props) => {
       );
 
       console.log("API Response:", response.data);
-      if (response.data.status === true) {
+      if (response.data.success === true) {
         Alert.alert(
           "Property Deleted",
           "The property was deleted successfully."

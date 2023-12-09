@@ -395,7 +395,7 @@ export default FirstProperty = (props) => {
     }
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log("signupAccountApiActionCreator..", res.data);
-    if (response.data.status === true) {
+    if (res.data.status === true) {
       setIsLoading(false);
       // alert(response.data.message);
       props.navigation.navigate("DrawerNavigatorLeftMenu");
@@ -403,8 +403,8 @@ export default FirstProperty = (props) => {
       setAdditionalFeaturesKeyValue("");
     } else {
       setIsLoading(false);
-      console.error("Save Account Details error:", response.data.error);
-      alert(response.data.error);
+      console.error("Save Account Details error:", res.data.error);
+      alert(res.data.error);
     }
     // const url = "https://e3.cylsys.com/api/v1/signup_step_one";
     // const saveAccountDetails = url;

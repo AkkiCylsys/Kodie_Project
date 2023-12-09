@@ -16,7 +16,7 @@ export const PreScreeningStyle = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 16,
     marginVertical: 16,
-    alignItems:'center'
+    alignItems: "center",
   },
   heading: {
     color: _COLORS.Kodie_BlackColor,
@@ -37,7 +37,7 @@ export const PreScreeningStyle = StyleSheet.create({
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
-    marginLeft:'3%'
+    marginLeft: "3%",
   },
 
   ratingmainview: {
@@ -62,11 +62,11 @@ export const PreScreeningStyle = StyleSheet.create({
     color: _COLORS.Kodie_ExtraLiteGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
   },
-  verifystl:{
-    fontSize:12,
-    color:_COLORS.Kodie_GreenColor,
-    fontFamily:FONTFAMILY.K_ExtraBold,
-    marginLeft:5
+  verifystl: {
+    fontSize: 12,
+    color: _COLORS.Kodie_GreenColor,
+    fontFamily: FONTFAMILY.K_ExtraBold,
+    marginLeft: 5,
   },
   dotStyle: {
     width: 10,
@@ -85,18 +85,17 @@ export const PreScreeningStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  dividerstyle:{
-  },
+  dividerstyle: {},
   share_View: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
   },
-  propety_details_view_Heading:{
-    fontSize:18,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_Bold,
-    marginBottom:10
+  propety_details_view_Heading: {
+    fontSize: 18,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginBottom: 10,
   },
   share_sty: { marginRight: 10 },
   apartment_text: {
@@ -116,16 +115,16 @@ export const PreScreeningStyle = StyleSheet.create({
     alignSelf: "center",
     textAlign: "center",
   },
-  rentalleaseview:{
-    marginTop:15
+  rentalleaseview: {
+    marginTop: 15,
   },
   propery_det: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
   },
-  uplodbtn:{
-    marginVertical:10
+  uplodbtn: {
+    marginVertical: 10,
   },
   propety_details_view: {
     flexDirection: "row",
@@ -215,20 +214,20 @@ export const PreScreeningStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
   },
   jobDetailsView: {
     marginTop: 20,
   },
-  weeklyincomeview:{
-    marginVertical:10
+  weeklyincomeview: {
+    marginVertical: 10,
   },
-  tenentpeople:{
-    marginTop:15
+  tenentpeople: {
+    marginTop: 15,
   },
-  paymentbtnselectview:{
-    marginVertical:10
+  paymentbtnselectview: {
+    marginVertical: 10,
   },
   input: {
     height: 48,
@@ -248,8 +247,8 @@ export const PreScreeningStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_MediumGrayColor,
   },
-  longemployed:{
-    marginBottom:10
+  longemployed: {
+    marginBottom: 10,
   },
   DetailsView: {
     flex: 1,
@@ -260,8 +259,8 @@ export const PreScreeningStyle = StyleSheet.create({
   inputContainer: {
     marginTop: 15,
   },
-  rentalagrementview:{
-    marginTop:5,
+  rentalagrementview: {
+    marginTop: 5,
   },
   item: {
     padding: 17,
@@ -297,8 +296,8 @@ export const PreScreeningStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_WhiteColor,
   },
-  dividericonpreferance:{
-    marginVertical:10
+  dividericonpreferance: {
+    marginVertical: 10,
   },
   DetailsIcon: { height: 30, width: 30 },
   details_text: {

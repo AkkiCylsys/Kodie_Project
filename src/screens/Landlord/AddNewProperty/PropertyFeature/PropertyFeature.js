@@ -97,10 +97,10 @@ export default PropertyFeature = (props) => {
   // const [preFriendly, setProperty_Details] = useState([]);
   console.log(
     "propertyDetail....",
-    property_Detail[0]?.additional_key_features_id
+    property_Detail?.additional_key_features_id
   );
 
-  const keyFeaturesString = property_Detail[0]?.key_features;
+  const keyFeaturesString = property_Detail?.key_features;
 
   useEffect(() => {
     additional_features();
@@ -115,10 +115,10 @@ export default PropertyFeature = (props) => {
           setCountBedroom(feature.Bedrooms);
         } else if (feature.Bathrooms !== undefined) {
           setCountBathroom(feature.Bathrooms);
-        } else if (feature.ParkingSpace !== undefined) {
-          setCountParking(feature.ParkingSpace);
-        } else if (feature.On - StreetParking !== undefined) {
-          setCountParkingStreet(feature.On - StreetParking);
+        } else if (feature["Parking Space"] !== undefined) {
+          setCountParking(feature["Parking Space"]);
+        } else if (feature["On-StreetParking"] !== undefined) {
+          setCountParkingStreet(feature["On-StreetParking"]);
         }
       }
     } catch (error) {
@@ -141,9 +141,11 @@ export default PropertyFeature = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.data);
+          setProperty_Details(response.data.data[0]);
           const apiAdditionalFeaturesIds =
-            response?.data?.data?.additional_features_id.split(",").map(Number);
+            response?.data?.data[0]?.additional_features_id
+              .split(",")
+              .map(Number);
           const furnishedFeatureId = apiAdditionalFeaturesIds.find(
             (id) => id == 68
           );
@@ -156,11 +158,11 @@ export default PropertyFeature = (props) => {
           );
           setSelectedButtonFurnished(furnishedFeatureId);
           setSelectedButtonDeposit(yesFeatureId);
-          setFlorSize(response?.data?.data?.floor_size);
+          setFlorSize(response?.data?.data[0]?.floor_size);
           setAdditionalFeaturesKeyValue(
-            response?.data?.data?.additional_key_features_id
+            response?.data?.data[0]?.additional_key_features_id
           );
-          setLandArea(response?.data?.data?.land_area);
+          setLandArea(response?.data?.data[0]?.land_area);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -435,7 +437,7 @@ export default PropertyFeature = (props) => {
       .put(update_property_details, updateData)
       .then((response) => {
         console.log("update_property_details", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
           // alert("update_property_details....", propertyid);
           props.navigation.navigate("PropertyImages", {

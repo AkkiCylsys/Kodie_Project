@@ -142,7 +142,7 @@ export default PropertyImages = (props) => {
 
       console.log("Save Account Details", response.data);
 
-      if (response.data.status === true) {
+      if (response.data.success === true) {
         setIsLoading(false);
         props.navigation.navigate("PropertyReview", {
           property_id: property_id,
