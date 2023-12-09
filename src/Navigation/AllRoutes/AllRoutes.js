@@ -122,6 +122,8 @@ import ViewDocument from "../../screens/Landlord/AddNewProperty/PropertyReview/D
 // import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
 import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
 import TenantList from "../../screens/Tenant/TenantList";
+import CurrentTenant from "../../screens/Tenant/CurrentTenant/CurrentTenant";
+import PreviousTenant from "../../screens/Tenant/PreviousTenant/PreviousTenant";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -924,6 +926,18 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"TenantList"}
           component={TenantList}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"CurrentTenant"}
+          component={CurrentTenant}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"PreviousTenant"}
+          component={PreviousTenant}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -46,38 +46,69 @@ const data = [
 export default InviteTenant = (props) => {
   const [rating, setRating] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
-  const [inviteTenant , setInviteTenant] = useState([])
+  const [inviteTenant , setInviteTenant] = useState([]);
+  const [inviteTenantALl , setInviteTenantAll] = useState([]);
 
-  // Get APi bind here....
-  const get_Invite_Tenent_Details = () => {
-    const url = Config.BASE_URL;
-    const Invite_Tenant_url = url + `tanant_details/getAll/tanant`;
-    setIsLoading(true);
-    console.log("Request URL:", Invite_Tenant_url);
-    axios
-      .get(Invite_Tenant_url)
-      .then((response) => {
-        console.log("API Response InviteTenant_url:", response.data);
-        if (response.data.success === true) {
-          setInviteTenant(response.data.data);
-          console.log("Invite Tenant Data..", response.data.data);
+
+    // Get APi bind first user show bydefault showing here....
+    const get_Tenent_Details = () => {
+      const url = Config.BASE_URL;
+      const Invite_Tenant_url = url + `tanant_details/getAll/tanant`;
+      setIsLoading(true);
+      console.log("Request URL:", Invite_Tenant_url);
+      axios
+        .get(Invite_Tenant_url)
+        .then((response) => {
+          console.log("API Response InviteTenant_url:", response.data);
+          if (response.data.success === true) {
+            setInviteTenant(response.data.data);
+            console.log("Invite Tenant Data..", response.data.data);
+            // alert(response.data.data.UAD_KEY)
+            setIsLoading(false);
+          } else {
+            alert(response.data.message);
+            setIsLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error("API failed", error);
           setIsLoading(false);
-        } else {
-          alert(response.data.message);
+        })
+        .finally(() => {
           setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("API failed", error);
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+        });
+    };
+  // Get APi bind after fill user pre-screening then showing here....
+  // const get_Invite_Tenent_Details = () => {
+  //   const url = Config.BASE_URL;
+  //   const Invite_Tenant_url = url + `add_tenant_questionarie/getAll/4`;
+  //   setIsLoading(true);
+  //   console.log("Request URL:", Invite_Tenant_url);
+  //   axios
+  //     .get(Invite_Tenant_url)
+  //     .then((response) => {
+  //       console.log("API Response InviteTenant_url_get_All..:", response.data);
+  //       if (response.data.success === true) {
+  //         setInviteTenantAll(response.data.data);
+  //         console.log("Invite Tenant Data_All..", response.data.data);
+  //         setIsLoading(false);
+  //       } else {
+  //         alert(response.data.message);
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error("API failed", error);
+  //       setIsLoading(false);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
 
   useEffect(() => {
-    get_Invite_Tenent_Details();
+    get_Tenent_Details();
+    // get_Invite_Tenent_Details();
   }, []);
   const tenantData = ({ item, index }) => {
     return (
@@ -165,15 +196,18 @@ export default InviteTenant = (props) => {
   };
   return (
     <View style={InviteTenantStyle.mainContainer}>
-      <SearchBar
+     <SearchBar
         filterImage={IMAGES.filter}
         isFilterImage
         height={48}
         marginTop={20}
+        placeholder={'Search tenants'}
+        frontSearchIcon
       />
-      <DividerIcon />
+      <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />
       <FlatList
         data={inviteTenant}
+        // data={inviteTenantALl}
         scrollEnabled
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{}}
