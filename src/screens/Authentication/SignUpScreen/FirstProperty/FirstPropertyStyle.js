@@ -38,8 +38,9 @@ export const FirstPropertyStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
   },
   locationContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flex: 1,
+    // flexDirection: "row",
+    // alignItems: "center",
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 6,
@@ -50,7 +51,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     paddingHorizontal: 10,
   },
   locationIcon: {
-    marginLeft: 15,
+    alignSelf: "center",
   },
   dropdown: {
     flex: 1,
@@ -107,7 +108,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     color: "#333",
     fontFamily: FONTFAMILY.K_Medium,
     textAlign: "center",
-    alignItems:"center",
+    alignItems: "center",
     width: 105,
     height: 36,
   },
@@ -176,11 +177,10 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginTop: 5,
     // color: "#E0F6E5",
     // borderWidth:1,
-    borderRadius:15,
-    marginBottom:10,
-    marginHorizontal:5,
-    backgroundColor:'#E0F6E5'
-  
+    borderRadius: 15,
+    marginBottom: 10,
+    marginHorizontal: 5,
+    backgroundColor: "#E0F6E5",
   },
   AutoList_text: {
     color: _COLORS.Kodie_BlackColor,
@@ -259,5 +259,18 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginBottom: 20,
     position: "absolute",
     //borderColor: Colors.appColor,
+  },
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "#ccc",
+    marginLeft: 10,
+    width: 40,
+    justifyContent: "center",
+  },
+  locationConView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
