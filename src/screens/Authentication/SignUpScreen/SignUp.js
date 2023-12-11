@@ -152,8 +152,12 @@ export default SignUp = (props) => {
         setEmailError(response.data.message);
       }
     } catch (error) {
+      if (error.response || error.response.status === 400) {
+        alert("Failed to send OTP via email. Please try again later.");
+      } else {
+        alert("An error occurred. Please try again later.");
+      }
       console.error("Signup error:", error);
-      alert(error.message || "An error occurred during signup");
     } finally {
       setIsLoading(false);
     }
