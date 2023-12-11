@@ -5,6 +5,11 @@ export const CreateJobFirstStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
+  heading: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 24,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
   mainView: {
     marginHorizontal: 16,
   },
@@ -12,7 +17,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginTop: 24,
+    marginTop: 15,
   },
   formContainer: {
     marginHorizontal: 16,
@@ -50,7 +55,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     fontSize: 16,
   },
   jobDetailsView: {
-    marginTop: 24,
+    marginTop: 12,
   },
   input: {
     height: 48,
@@ -112,17 +117,17 @@ export const CreateJobFirstStyle = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 10,
   },
-  spaceView:{margin:8},
-  box_style:{
+  spaceView: { margin: 8 },
+  box_style: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_GrayColor,
   },
-  box_Text_Style:{ color: _COLORS.Kodie_MediumGrayColor },
+  box_Text_Style: { color: _COLORS.Kodie_MediumGrayColor },
   checkbox_View: {
-    height:18,
-    width:18,
-    borderWidth:1,
-    borderRadius:18/2,
+    height: 18,
+    width: 18,
+    borderWidth: 1,
+    borderRadius: 18 / 2,
     borderColor: _COLORS.Kodie_BlackColor,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_BlackColor,
@@ -138,13 +143,35 @@ export const CreateJobFirstStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_BlackColor,
     borderColor: _COLORS.Kodie_BlackColor,
   },
-  priority_Text:{ marginLeft: 22,color:_COLORS.Kodie_BlackColor,fontSize:16,alignSelf:"center",fontFamily:FONTFAMILY.K_Medium },
-  priority_container:{
+  priority_Text: {
+    marginLeft: 22,
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 16,
+    alignSelf: "center",
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  priority_container: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     marginLeft: "8%",
     marginTop: 10,
   },
-  priority_view:{ flexDirection: "row", justifyContent: "space-between" }
+  priority_view: { flexDirection: "row", justifyContent: "space-between" },
+  goBack_View: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginVertical: 29,
+  },
+  goBack_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginLeft: 5,
+  },
+  backIcon: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+  },
 });

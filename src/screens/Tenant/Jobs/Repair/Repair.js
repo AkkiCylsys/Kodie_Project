@@ -470,6 +470,9 @@ export default Repair = (props) => {
             backgroundColor={_COLORS.Kodie_BlackColor}
             height={40}
             marginTop={3}
+            onPress={
+              activeScreen ? props.onpress : alert("please add new scrren")
+            }
           />
         </View>
         <DividerIcon borderBottomWidth={5} marginTop={8} />
