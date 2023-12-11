@@ -168,6 +168,10 @@ export default Dashboard = (props) => {
       </>
     );
   };
+  const userProfileImageUri =
+    loginData?.Login_details?.profile_photo_path ||
+    signUp_account_response?.Login_details?.profile_photo_path;
+
   return (
     <>
       <View style={DashboardStyle.mainContainer}>
@@ -176,9 +180,9 @@ export default Dashboard = (props) => {
           IsNotification={true}
           RightUserProfile={{
             uri:
-              loginData?.Login_details?.profile_photo_path ||
-              signUp_account_response?.Login_details?.profile_photo_path,
-            // uri: "https://media.istockphoto.com/id/1454394017/photo/senior-man-nurse-or-holding-hands-in-support-trust-or-security-for-mental-health-depression.jpg?s=1024x1024&w=is&k=20&c=Co9ixsyQVNonHm7vz4fhpcUbCpH05IHH2ea787Pbwog=",
+              Platform.OS === "ios"
+                ? `file://${userProfileImageUri}`
+                : userProfileImageUri,
           }}
           MiddleImage={logos.MainLogoWhite}
           leftImage={"menu"}
