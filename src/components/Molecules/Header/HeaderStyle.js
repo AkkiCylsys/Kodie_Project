@@ -19,10 +19,10 @@ export const HeaderStyle = StyleSheet.create({
     borderRadius: 40 / 2,
     flexDirection: "row",
     justifyContent: "center",
-    backgroundColor: _COLORS.Kodie_BlackColor,
+    // backgroundColor: _COLORS.Kodie_BlackColor,
   },
   LabelText: {
-    color: _COLORS.Kodie_WhiteColor,
+    color: _COLORS.Kodie_BlackColor,
     fontSize: 16,
     alignSelf: "center",
     textAlign: "center",
@@ -49,7 +49,7 @@ export const HeaderStyle = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center",
     // borderColor: "red",
-    // borderWidth: 5,
+    borderWidth: 0.2,
   },
   nullView: { width: "25%", flexDirection: "row", justifyContent: "center" },
   notificationButton: {

@@ -184,10 +184,13 @@ export default Dashboard = (props) => {
                 ? `file://${userProfileImageUri}`
                 : userProfileImageUri,
           }}
-          MiddleImage={logos.MainLogoWhite}
+          MiddleImage={logos.mainLogo}
           leftImage={"menu"}
           MiddleText={"Kodie"}
+          Text_Color={_COLORS.Kodie_BlackColor}
           onPressLeftButton={() => props.navigation.openDrawer()}
+          statusBarColor="red"
+          statusBarStyle="dark-content"
         />
 
         <ScrollView showsVerticalScrollIndicator={false}>

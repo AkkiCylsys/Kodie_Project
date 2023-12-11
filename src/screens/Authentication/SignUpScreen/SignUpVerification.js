@@ -151,6 +151,7 @@ export default SignUpVerification = (props) => {
     <View style={SignUpVerificationStyle.mainContainer}>
       <TopHeader
         MiddleText={"Verify your email"}
+        Text_Color={_COLORS.Kodie_BlackColor}
         onPressLeftButton={() => _goBack(props)}
       />
       <View style={SignUpVerificationStyle.container}>

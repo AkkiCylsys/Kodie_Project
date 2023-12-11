@@ -26,6 +26,11 @@ export const DrawerStyle = StyleSheet.create({
     alignSelf: "center",
     marginHorizontal: 10,
   },
-  SubHeadingView: { flexDirection: "row", marginTop: 15, borderRadius: 8 },
-  rowFlex: { flexDirection: "row", borderRadius: 8 },
+  SubHeadingView: {
+    flexDirection: "row",
+    marginTop: 15,
+    borderRadius: 8,
+    paddingVertical: 8,
+  },
+  rowFlex: { flexDirection: "row", borderRadius: 8, paddingVertical: 8 },
 });
