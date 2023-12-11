@@ -480,8 +480,22 @@ export default PropertyDetails = (props) => {
             <View style={PropertyDetailsStyle.card}>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
-                <View style={PropertyDetailsStyle.locationContainer}>
+                <View style={PropertyDetailsStyle.locationConView}>
+                  <View style={PropertyDetailsStyle.locationContainer}>
+                    <TextInput
+                      style={PropertyDetailsStyle.locationInput}
+                      value={location}
+                      onChangeText={setLocation}
+                      onFocus={() => {
+                        setIsSearch(true);
+                        // setlocationError("");
+                      }}
+                      placeholder="Search location"
+                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                    />
+                  </View>
                   <TouchableOpacity
+                    style={PropertyDetailsStyle.locationIconView}
                     onPress={() => {
                       // props.navigation.navigate("Location");
                       Platform.OS == "ios"
@@ -493,22 +507,10 @@ export default PropertyDetails = (props) => {
                     <Octicons
                       name={"location"}
                       size={20}
-                      color={_COLORS.Kodie_MediumGrayColor}
+                      color={_COLORS.Kodie_GreenColor}
                       style={PropertyDetailsStyle.locationIcon}
                     />
                   </TouchableOpacity>
-
-                  <TextInput
-                    style={PropertyDetailsStyle.locationInput}
-                    value={location}
-                    onChangeText={setLocation}
-                    onFocus={() => {
-                      setIsSearch(true);
-                      // setlocationError("");
-                    }}
-                    placeholder="Search location"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  />
                 </View>
                 {/* {locationError ? (
                   <Text style={PropertyDetailsStyle.error_text}>

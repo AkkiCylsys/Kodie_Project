@@ -754,8 +754,21 @@ export default FirstProperty = (props) => {
             <View style={FirstPropertyStyle.card}>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
-                <View style={FirstPropertyStyle.locationContainer}>
+                <View style={FirstPropertyStyle.locationConView}>
+                  <View style={FirstPropertyStyle.locationContainer}>
+                    <TextInput
+                      style={FirstPropertyStyle.locationInput}
+                      value={propertyLocation}
+                      onChangeText={setPropertyLocation}
+                      onFocus={() => {
+                        setIsSearch(true);
+                      }}
+                      placeholder="Search location"
+                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                    />
+                  </View>
                   <TouchableOpacity
+                    style={FirstPropertyStyle.locationIconView}
                     onPress={() => {
                       Platform.OS == "ios"
                         ? CheckIOSMapPermission
@@ -765,21 +778,11 @@ export default FirstProperty = (props) => {
                   >
                     <Octicons
                       name={"location"}
-                      size={20}
-                      color={_COLORS.Kodie_MediumGrayColor}
+                      size={25}
+                      color={_COLORS.Kodie_GreenColor}
                       style={FirstPropertyStyle.locationIcon}
                     />
                   </TouchableOpacity>
-                  <TextInput
-                    style={FirstPropertyStyle.locationInput}
-                    value={propertyLocation}
-                    onChangeText={setPropertyLocation}
-                    onFocus={() => {
-                      setIsSearch(true);
-                    }}
-                    placeholder="Search location"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  />
                 </View>
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
