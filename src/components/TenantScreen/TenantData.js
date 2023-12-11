@@ -4,27 +4,50 @@ import { _COLORS,IMAGES } from "../../Themes";
 import { useNavigation } from "@react-navigation/native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Feather from "react-native-vector-icons/Feather";
 import { TenantDataStyle } from "./TenantDataStyle";
 const data = [
   {
     id: "1",
     Data: "Screen tenant",
-    Img: IMAGES.View_property,
+    // Img: IMAGES.View_property,
+    Icon:<MaterialCommunityIcons
+    name="home-account"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "2",
     Data: "Message tenant",
-    Img: IMAGES.Chat_Tenant,
+    // Img: IMAGES.Chat_Tenant,
+    Icon:<Feather
+    name="message-circle"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+  />
   },
   {
     id: "3",
     Data: "View profile",
-    Img: IMAGES.View_property,
+    // Img: IMAGES.View_property,
+    Icon:<MaterialIcons
+    name="preview"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "4",
     Data: "Add tenant to property",
-    Img: IMAGES.Chat_Tenant,
+    // Img: IMAGES.Chat_Tenant,
+    Icon:<MaterialCommunityIcons
+    name="home-plus-outline"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
 ];
 // const data1 = [
@@ -102,7 +125,8 @@ const TenantData = (props) => {
               }
             }}
           >
-            <Image source={item.Img} style={TenantDataStyle.Icons} />
+            {/* <Image source={item.Img} style={TenantDataStyle.Icons} /> */}
+            {item.Icon}
             <Text style={TenantDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}

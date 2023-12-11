@@ -5,6 +5,7 @@ import { _goBack } from "../../../services/CommonServices";
 import { LandlordProfileStyle } from "./LandlordProfileStyle";
 import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { _COLORS, IMAGES } from "../../../Themes/index";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import LandlordProfileData from "../../../components/Molecules/LandlordProfileData/LandlordProfileData";
@@ -57,11 +58,16 @@ export default LandlordProfile = (props) => {
             onPress={() => props.navigation.navigate("EditProfile")}
             style={LandlordProfileStyle.contactIconView}
           >
-            <Image
+            {/* <Image
               source={IMAGES.contactDetails}
               style={LandlordProfileStyle.contactIcon}
               resizeMode="contain"
-            />
+            /> */}
+            <MaterialCommunityIcons
+            name={"account-edit-outline"}
+            size={20}
+            color={_COLORS.Kodie_GreenColor}
+          />
           </TouchableOpacity>
         </View>
         <DividerIcon />
