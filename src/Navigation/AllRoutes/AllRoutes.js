@@ -123,6 +123,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
+import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
+import TenantList from "../../screens/Tenant/TenantList";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -954,6 +956,17 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ViewDocument"}
           component={ViewDocument}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PreScreening"}
+          component={PreScreening}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"TenantList"}
+          component={TenantList}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

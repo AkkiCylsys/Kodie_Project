@@ -156,7 +156,7 @@ const AddPropertyMainPage = (props) => {
   const propertyid = props?.route?.params?.propertyid;
   console.log("propertyid....", propertyid);
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData?.Login_details?.result);
+  console.log("loginData", loginData?.Login_details?.user_id);
 
   const [currentPage, setCurrentPage] = useState(0);
   const [location, setLocation] = useState("");
@@ -569,7 +569,7 @@ const AddPropertyMainPage = (props) => {
     axios
       .post(additionalApi, {
         user: 35,
-        user_account_details_id: loginData?.Login_details?.result,
+        user_account_details_id: loginData?.Login_details?.user_id,
         location: location,
         location_longitude: "102.201.123",
         location_latitude: "104.402.210",
@@ -684,7 +684,7 @@ const AddPropertyMainPage = (props) => {
     const selectedKeyFeature = selectedkey_features.join(",");
     const updateData = {
       user: 35,
-      user_account_details_id: loginData?.Login_details?.result,
+      user_account_details_id: loginData?.Login_details?.user_id,
       location: location,
       location_longitude: "102.201.123",
       location_latitude: "104.402.210",

@@ -11,6 +11,7 @@ import { _COLORS, IMAGES } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
+import { _goBack } from "../../../services/CommonServices";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -28,7 +29,7 @@ const data = [
   { label: "Pune", value: "5" },
 ];
 
-const EditProfile = () => {
+const EditProfile = (props) => {
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
@@ -53,11 +54,11 @@ const EditProfile = () => {
               resizeMode="contain"
             />
             <View style={EditProfileStyle.editlogoview}>
-            <FontAwesome
-                    name="edit"
-                    color={_COLORS.Kodie_GreenColor}
-                    size={18}
-                  />
+              <FontAwesome
+                name="edit"
+                color={_COLORS.Kodie_GreenColor}
+                size={18}
+              />
             </View>
           </View>
           <Text style={EditProfileStyle.edittext}>Edit profile photo</Text>
@@ -76,11 +77,11 @@ const EditProfile = () => {
                 placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               />
               <AntDesign
-                    name="edit"
-                    size={25}
-                    color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={"contain"}
-                  />
+                name="edit"
+                size={25}
+                color={_COLORS.Kodie_LightGrayColor}
+                resizeMode={"contain"}
+              />
             </View>
           </View>
 
@@ -93,11 +94,11 @@ const EditProfile = () => {
                 placeholder="jason5@gmail.com"
               />
               <AntDesign
-                    name="edit"
-                    size={25}
-                    color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={"contain"}
-                  />
+                name="edit"
+                size={25}
+                color={_COLORS.Kodie_LightGrayColor}
+                resizeMode={"contain"}
+              />
             </View>
           </View>
 
@@ -125,11 +126,11 @@ const EditProfile = () => {
                   />
                 </View>
                 <AntDesign
-                    name="edit"
-                    size={25}
-                    color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={"contain"}
-                  />
+                  name="edit"
+                  size={25}
+                  color={_COLORS.Kodie_LightGrayColor}
+                  resizeMode={"contain"}
+                />
               </View>
             </View>
           </View>
@@ -139,23 +140,23 @@ const EditProfile = () => {
 
             <View style={EditProfileStyle.simpleinputphysical}>
               <View style={EditProfileStyle.physicalsecondview}>
-              <Ionicons
-                    name="location-sharp"
-                    size={25}
-                    color={_COLORS.Kodie_MediumGrayColor}
-                    resizeMode={"contain"}
-                  />
+                <Ionicons
+                  name="location-sharp"
+                  size={25}
+                  color={_COLORS.Kodie_MediumGrayColor}
+                  resizeMode={"contain"}
+                />
                 <TextInput
                   keyboardType="numeric"
                   placeholder="Search new location"
                 />
               </View>
               <AntDesign
-                    name="edit"
-                    size={25}
-                    color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={"contain"}
-                  />
+                name="edit"
+                size={25}
+                color={_COLORS.Kodie_LightGrayColor}
+                resizeMode={"contain"}
+              />
             </View>
           </View>
 

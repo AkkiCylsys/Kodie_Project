@@ -20,8 +20,9 @@ import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoade
 import axios from "axios";
 import RBSheet from "react-native-raw-bottom-sheet";
 import EditDocumentsModal from "../../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
-import RNFS from "react-native-fs";
+// import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
+import { Config } from "../../../../../../Config";
 const DocumentDetails = (props) => {
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -76,11 +77,13 @@ const DocumentDetails = (props) => {
     const dataToSend = {
       fileId: fileKey,
     };
-    const url = "https://e3.cylsys.com/api/v1/deletedocument";
-    console.log("url...", url);
+    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
+    const url = Config.BASE_URL;
+    const delete_url = url + "deletedocument";
+    console.log("url...", delete_url);
     setIsLoading(true);
     axios
-      .patch(url, dataToSend)
+      .patch(delete_url, dataToSend)
       .then((res) => {
         console.log("res......", res);
         if (res?.data?.success === true) {
@@ -100,8 +103,10 @@ const DocumentDetails = (props) => {
     console.log("uri....", file.uri);
     console.log("name....", file.name);
     console.log("type....", file.type);
-    const url = "https://e3.cylsys.com/api/v1/uploadDocument";
-    const uploadDoc_url = url;
+    console.log("p_referral_key....", property_id);
+    console.log("p_module_name....", folderHeading);
+    const url = Config.BASE_URL;
+    const uploadDoc_url = url + "uploadDocument";
     console.log("Request URL:", uploadDoc_url);
     setIsLoading(true);
     try {
@@ -128,21 +133,21 @@ const DocumentDetails = (props) => {
       }
     } catch (error) {
       console.error("API failed", error);
+      alert(error)
       // Handle network errors more gracefully
-      if (!error.response) {
-        alert("Network error. Please check your internet connection.");
-      } else {
-        alert(error.response.data.message);
-      }
+      // if (!error.response) {
+      //   alert("Network error. Please check your internet connection.");
+      // } else {
+      //   alert(error.response.data.message);
+      // }
     } finally {
       setIsLoading(false);
     }
   };
 
   const getuploadedDocuments = () => {
-    const url = `https://e3.cylsys.com/api/v1/tanant_details/get/document/${property_id}`;
-    // const url = "https://e3.cylsys.com/api/v1/tanant_details/get/document/1";
-    const getDocument_url = url;
+    const url = Config.BASE_URL;
+    const getDocument_url = url + `tanant_details/get/document/${property_id}`;
     console.log("Request URL:", getDocument_url);
     setIsLoading(true);
     axios

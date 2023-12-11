@@ -38,8 +38,9 @@ export const PropertyDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
   },
   locationContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    // flexDirection: "row",
+    // alignItems: "center",
+    flex:1,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 6,
@@ -56,7 +57,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
   },
   error_text: { color: "red", marginLeft: 10 },
   locationIcon: {
-    marginLeft: 15,
+    alignSelf: "center",
   },
   dropdown: {
     borderWidth: 1,
@@ -110,5 +111,18 @@ export const PropertyDetailsStyle = StyleSheet.create({
   },
   btnView: {
     marginTop: 24,
+  },
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "#ccc",
+    marginLeft: 10,
+    width: 40,
+    justifyContent: "center",
+  },
+  locationConView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

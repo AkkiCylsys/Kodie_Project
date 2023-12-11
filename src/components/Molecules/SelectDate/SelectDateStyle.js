@@ -22,7 +22,7 @@ export const SelectDateStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent:'space-between',
     flex:1,
-    paddingVertical:7
+    paddingVertical:8
   },
   bindview:{
     flexDirection:'row',

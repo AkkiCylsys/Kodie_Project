@@ -129,7 +129,7 @@ export default AddExpensesDetails = (props) => {
       P_PARENT_CODE: "AEC",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const propertyType = url + "lookup_details";
     console.log("Request URL:", propertyType);
     setIsLoading(true);
@@ -139,8 +139,8 @@ export default AddExpensesDetails = (props) => {
         console.log("property_type", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("Expence Category....", response.data.data);
-          setExpenceCategoryData(response.data.data);
+          console.log("Expence Category....", response.data.lookup_details);
+          setExpenceCategoryData(response.data.lookup_details);
           // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
           console.error("Expence_Category_error:", response.data.error);
@@ -160,7 +160,7 @@ export default AddExpensesDetails = (props) => {
       P_PARENT_CODE: "RESPONSIBLE FOR PAYING",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const propertyType = url + "lookup_details";
     console.log("Request URL:", propertyType);
     setIsLoading(true);
@@ -170,8 +170,8 @@ export default AddExpensesDetails = (props) => {
         console.log("property_type", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("Responsible Category....", response.data.data);
-          setSelectedResponsibleData(response.data.data);
+          console.log("Responsible Category....", response.data.lookup_details);
+          setSelectedResponsibleData(response.data.lookup_details);
         } else {
           console.error("Responsible_Category_error:", response.data.error);
           setIsLoading(false);
@@ -211,9 +211,8 @@ export default AddExpensesDetails = (props) => {
       start_date: selectedPaidDate,
       is_active: 1,
     };
-
-    const ExpenceUrl =
-      "https://e3.cylsys.com/api/v1/property_expenses_details/create";
+    const url = Config.BASE_URL;
+    const ExpenceUrl = url + "property_expenses_details/create";
     console.log("Request URL:", ExpenceUrl);
     setIsLoading(true);
 
@@ -490,7 +489,7 @@ export default AddExpensesDetails = (props) => {
               iconStyle={AddExpensesDetailsStyle.iconStyle}
               data={ExpenceCategoryData}
               maxHeight={300}
-              labelField="description"
+              labelField="lookup_description"
               valueField="lookup_key"
               placeholder="6-month"
               value={ExpenceCategoryValue}

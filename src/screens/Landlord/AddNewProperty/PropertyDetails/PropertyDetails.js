@@ -109,7 +109,6 @@ export default PropertyDetails = (props) => {
   useEffect(() => {
     handleProperty_Type();
     DetailsData();
-
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
@@ -118,35 +117,33 @@ export default PropertyDetails = (props) => {
 
   const DetailsData = () => {
     const detailData = {
-      user: propertyid,
+      property_id: propertyid,
     };
     console.log("detailData", detailData);
-    const url = Config.API_URL;
-    const property_Detailss = url + "get_All_Property_details";
+    const url = Config.BASE_URL;
+    const property_Detailss = url + "get_property_details";
     console.log("Request URL:", property_Detailss);
     setIsLoading(true);
     axios
       .post(property_Detailss, detailData)
       .then((response) => {
         console.log("propertyDetail", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details);
-          setLocation(response.data.property_details[0]?.location);
+          setProperty_Details(response.data.data[0]);
+          setLocation(response.data.data[0]?.location);
           setProperty_value(
             // 24
-            parseInt(response.data.property_details[0]?.property_type_id)
+            parseInt(response.data.data[0]?.property_type_id)
             // response.data.property_details[0]?.property_type_id.replace(
             //   /\D/g,
             //   ""
             // )
           );
 
-          setPropertyDesc(
-            response.data.property_details[0]?.property_description
-          );
+          setPropertyDesc(response.data.data[0]?.property_description);
 
-          console.log("propertyDetail....", response.data.property_details);
+          console.log("propertyDetail....", response.data.data);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -340,7 +337,7 @@ export default PropertyDetails = (props) => {
       P_PARENT_CODE: "PROP_TYPE",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const propertyType = url + "lookup_details";
     console.log("Request URL:", propertyType);
     setIsLoading(true);
@@ -350,8 +347,8 @@ export default PropertyDetails = (props) => {
         console.log("property_type", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("propertyData....", response.data.data);
-          setProperty_Data(response.data.data);
+          console.log("propertyData....", response.data.lookup_details);
+          setProperty_Data(response.data.lookup_details);
           // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
           console.error("property_type_error:", response.data.error);
@@ -483,8 +480,22 @@ export default PropertyDetails = (props) => {
             <View style={PropertyDetailsStyle.card}>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
-                <View style={PropertyDetailsStyle.locationContainer}>
+                <View style={PropertyDetailsStyle.locationConView}>
+                  <View style={PropertyDetailsStyle.locationContainer}>
+                    <TextInput
+                      style={PropertyDetailsStyle.locationInput}
+                      value={location}
+                      onChangeText={setLocation}
+                      onFocus={() => {
+                        setIsSearch(true);
+                        // setlocationError("");
+                      }}
+                      placeholder="Search location"
+                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                    />
+                  </View>
                   <TouchableOpacity
+                    style={PropertyDetailsStyle.locationIconView}
                     onPress={() => {
                       // props.navigation.navigate("Location");
                       Platform.OS == "ios"
@@ -496,22 +507,10 @@ export default PropertyDetails = (props) => {
                     <Octicons
                       name={"location"}
                       size={20}
-                      color={_COLORS.Kodie_MediumGrayColor}
+                      color={_COLORS.Kodie_GreenColor}
                       style={PropertyDetailsStyle.locationIcon}
                     />
                   </TouchableOpacity>
-
-                  <TextInput
-                    style={PropertyDetailsStyle.locationInput}
-                    value={location}
-                    onChangeText={setLocation}
-                    onFocus={() => {
-                      setIsSearch(true);
-                      // setlocationError("");
-                    }}
-                    placeholder="Search location"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  />
                 </View>
                 {/* {locationError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
@@ -534,7 +533,7 @@ export default PropertyDetails = (props) => {
                   iconStyle={PropertyDetailsStyle.iconStyle}
                   data={property_Data}
                   maxHeight={300}
-                  labelField="description"
+                  labelField="lookup_description"
                   valueField="lookup_key"
                   placeholder="Select property type"
                   value={

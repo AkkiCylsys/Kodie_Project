@@ -110,8 +110,8 @@ export const DashboardStyle = StyleSheet.create({
     paddingVertical: 18,
   },
   floating_action_btn_view:{
-    flex:1,
-    marginLeft:375,
+    // flex:1,
+    marginLeft:373,
   },
   maintenance_view: {
     flexDirection: "row",

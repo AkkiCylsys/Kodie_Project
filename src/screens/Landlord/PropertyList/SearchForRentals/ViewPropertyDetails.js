@@ -134,48 +134,48 @@ export default ViewPropertyDetails = (props) => {
       <Text style={DetailsStyle.details_text}>{item}</Text>
     </View>
   );
-  const fetchData = async () => {
-    try {
-      // Fetch property details
-      const detailData = { user: propertyDelId };
-      const url = Config.API_URL;
-      const property_Detailss = url + "get_All_Property_details";
+  // const fetchData = async () => {
+  //   try {
+  //     // Fetch property details
+  //     const detailData = { user: propertyDelId };
+  //     const url = Config.API_URL;
+  //     const property_Detailss = url + "get_All_Property_details";
 
-      setIsLoading(true);
-      const response = await axios.post(property_Detailss, detailData);
-      setIsLoading(false);
+  //     setIsLoading(true);
+  //     const response = await axios.post(property_Detailss, detailData);
+  //     setIsLoading(false);
 
-      if (response.data.status === true) {
-        setProperty_Details(response.data.property_details);
-        // Fetch and process key features..........
-        if (response.data.property_details[0]?.key_features) {
-          const parsedData = JSON.parse(
-            response.data.property_details[0].key_features.replace(/\\/g, "")
-          );
-          setDetail(parsedData);
-        }
-      } else {
-        console.error("propertyDetail_error:", response.data.error);
-        alert(response.data.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert(error);
-      setIsLoading(false);
-    }
-  };
-  const additionalKeyFeaturesString =
-    property_Detail[0]?.additional_key_features;
+  //     if (response.data.status === true) {
+  //       setProperty_Details(response.data.property_details);
+  //       // Fetch and process key features..........
+  //       if (response.data.property_details[0]?.key_features) {
+  //         const parsedData = JSON.parse(
+  //           response.data.property_details[0].key_features.replace(/\\/g, "")
+  //         );
+  //         setDetail(parsedData);
+  //       }
+  //     } else {
+  //       console.error("propertyDetail_error:", response.data.error);
+  //       alert(response.data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     alert(error);
+  //     setIsLoading(false);
+  //   }
+  // };
+  // const additionalKeyFeaturesString =
+  //   property_Detail[0]?.additional_key_features;
 
-  useEffect(() => {
-    fetchData();
-    try {
-      const keyFeaturesArray = additionalKeyFeaturesString.split(",");
-      setAdditionalKeyFeatures(keyFeaturesArray);
-    } catch (error) {
-      console.error("Error parsing additional_key_features:", error);
-    }
-  }, [propertyDelId, additionalKeyFeaturesString]);
+  // useEffect(() => {
+  //   fetchData();
+  //   try {
+  //     const keyFeaturesArray = additionalKeyFeaturesString.split(",");
+  //     setAdditionalKeyFeatures(keyFeaturesArray);
+  //   } catch (error) {
+  //     console.error("Error parsing additional_key_features:", error);
+  //   }
+  // }, [propertyDelId, additionalKeyFeaturesString]);
 
   return (
     <View style={ViewDetailCss.mainContainer}>

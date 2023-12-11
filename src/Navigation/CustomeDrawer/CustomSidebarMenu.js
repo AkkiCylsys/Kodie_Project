@@ -41,7 +41,7 @@ const CustomSidebarMenu = (props) => {
       case "Tetants":
         setselectedId("Tetants");
         // props.navigation.navigate("TwoStepVerification");
-        props.navigation.navigate("InviteTenant");
+        props.navigation.navigate("TenantList");
         break;
       case "MaintenanceJobs":
         setselectedId("MaintenanceJobs");
@@ -101,11 +101,11 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <MaterialCommunityIcons 
-          name="calendar-text-outline" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <MaterialCommunityIcons
+            name="calendar-text-outline"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Property listings"}</Text>
         </TouchableOpacity>
@@ -127,11 +127,11 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <MaterialCommunityIcons 
-          name="calendar-arrow-left" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <MaterialCommunityIcons
+            name="calendar-arrow-left"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Rental offers"}</Text>
         </TouchableOpacity>
@@ -153,11 +153,11 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <Octicons 
-          name="shield-x" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <Octicons
+            name="shield-x"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Vacant properties"}</Text>
         </TouchableOpacity>
@@ -179,11 +179,11 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <MaterialCommunityIcons 
-          name="calendar-search" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <MaterialCommunityIcons
+            name="calendar-search"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Inspections"}</Text>
         </TouchableOpacity>
@@ -205,17 +205,19 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <MaterialCommunityIcons 
-          name="shield-account-outline" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <MaterialCommunityIcons
+            name="shield-account-outline"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Tenants"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
 
-        <Text style={DrawerStyle.HeaderText}>{"Jobs"}</Text>
+        <Text style={[DrawerStyle.HeaderText, { marginTop: 15 }]}>
+          {"Jobs"}
+        </Text>
         <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
@@ -233,11 +235,11 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <Feather 
-          name="list" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <Feather
+            name="list"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Maintenance  jobs"}</Text>
         </TouchableOpacity>
@@ -259,16 +261,18 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <MaterialIcons 
-          name="engineering" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <MaterialIcons
+            name="engineering"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Contractors"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
-        <Text style={DrawerStyle.HeaderText}>{"Other"}</Text>
+        <Text style={[DrawerStyle.HeaderText, { marginTop: 15 }]}>
+          {"Other"}
+        </Text>
         <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
@@ -286,11 +290,11 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <Ionicons 
-          name="mail-unread-outline" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <Ionicons
+            name="mail-unread-outline"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Notices & reminders"}</Text>
         </TouchableOpacity>
@@ -313,11 +317,11 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <MaterialCommunityIcons 
-          name="file-download-outline" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <MaterialCommunityIcons
+            name="file-download-outline"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Documents"}</Text>
         </TouchableOpacity>
@@ -335,10 +339,11 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Reports")}
         >
-          <MaterialIcons 
-          name="bar-chart" size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <MaterialIcons
+            name="bar-chart"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           {/* <Image
             source={IMAGES.Reports}
@@ -365,11 +370,11 @@ const CustomSidebarMenu = (props) => {
             style={DrawerStyle.ImageStyle}
             resizeMode={"contain"}
           /> */}
-          <MaterialCommunityIcons 
-          name="seal" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
+          <MaterialCommunityIcons
+            name="seal"
+            size={25}
+            color={_COLORS.Kodie_GreenColor}
+            resizeMode={"contain"}
           />
           <Text style={DrawerStyle.SubHeading}>{"Partners"}</Text>
         </TouchableOpacity>

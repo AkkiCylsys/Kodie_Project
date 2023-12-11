@@ -85,6 +85,8 @@ export default PropertyReview = (props) => {
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
+  const [additionalKeyFeaturesString, setAdditionalKeyFeaturesString] =
+    useState([]);
   const [currentPage, setCurrentPage] = useState(3);
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
 
@@ -92,52 +94,52 @@ export default PropertyReview = (props) => {
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
-          {Object.keys(item)[0] == "Bedrooms" ? 
-          // (<Image
-          //     source={IMAGES.BedroomIcon}
-          //     style={DetailsStyle.DetailsIcon}
-          //   />) 
-          
-          <MaterialCommunityIcons 
-          name="bed-double-outline" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
-          />
-          : Object.keys(item)[0] == "Bathrooms" ?
-          // (
-          //   <Image source={IMAGES.Bathroom} 
-          //   style={DetailsStyle.DetailsIcon} />
-          // ) 
-          <MaterialCommunityIcons 
-          name="shower-head" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
-          />
-          : Object.keys(item)[0] == "Parking Space" ? 
-          // (
-          //   <Image source={IMAGES.Parking} 
-          //   style={DetailsStyle.DetailsIcon} />
-          // ) 
-          <Ionicons 
-          name="car-outline" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
-          />
-          : 
-          // (
-          //   <Image source={IMAGES.Garden} 
-          //   style={DetailsStyle.DetailsIcon} />
-          // )
-          <Ionicons 
-          name="car-outline" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
-          resizeMode={"contain"}
-          />
-          }
+          {Object.keys(item)[0] == "Bedrooms" ? (
+            // (<Image
+            //     source={IMAGES.BedroomIcon}
+            //     style={DetailsStyle.DetailsIcon}
+            //   />)
+
+            <MaterialCommunityIcons
+              name="bed-double-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+            />
+          ) : Object.keys(item)[0] == "Bathrooms" ? (
+            // (
+            //   <Image source={IMAGES.Bathroom}
+            //   style={DetailsStyle.DetailsIcon} />
+            // )
+            <MaterialCommunityIcons
+              name="shower-head"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+            />
+          ) : Object.keys(item)[0] == "Parking Space" ? (
+            // (
+            //   <Image source={IMAGES.Parking}
+            //   style={DetailsStyle.DetailsIcon} />
+            // )
+            <Ionicons
+              name="car-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+            />
+          ) : (
+            // (
+            //   <Image source={IMAGES.Garden}
+            //   style={DetailsStyle.DetailsIcon} />
+            // )
+            <Ionicons
+              name="car-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+            />
+          )}
           <Text style={DetailsStyle.details_text}>
             {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ""}
             {/* {`${key}: ${value}`} */}
@@ -148,162 +150,166 @@ export default PropertyReview = (props) => {
   };
   const renderItem = ({ item }) => (
     <View style={DetailsStyle.DetailsView}>
-      {item === "Pool" ? 
-      // (
-      //   <Image source={IMAGES.Bathroom} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // ) 
-      <MaterialIcons 
-          name="pool" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+      {item === "Pool" ? (
+        // (
+        //   <Image source={IMAGES.Bathroom}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialIcons
+          name="pool"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-      : item === "Garage" ?
-      //  (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // )
-      <MaterialCommunityIcons 
-          name="garage" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Garage" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="garage"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-       : item === "Balcony" ?
-      //   (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // ) 
-      <MaterialCommunityIcons 
-          name="window-closed-variant" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Balcony" ? (
+        //   (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="window-closed-variant"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-      : item === "Outdoor Area" ? 
-      // (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // )
-      <MaterialCommunityIcons 
-          name="table-chair" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Outdoor Area" ? (
+        // (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="table-chair"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-       : item === "Ensuite" ?
-      //  (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // ) 
-      <MaterialCommunityIcons 
-          name="shower" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Ensuite" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="shower"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-      : item === "Dishwasher" ? 
-      // (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // )
-      <MaterialCommunityIcons 
-          name="dishwasher" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Dishwasher" ? (
+        // (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="dishwasher"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          /> 
-      : item === "Study" ?
-      //  (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // ) 
-      <MaterialCommunityIcons 
-          name="bookshelf" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Study" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="bookshelf"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          /> 
-      : item === "Built in Robes" ?
-      //  (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // ) 
-      <MaterialCommunityIcons 
-          name="fireplace" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Built in Robes" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="fireplace"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-      : item === "Air Conditioning" ?
-      //  (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // ) 
-      <MaterialCommunityIcons 
-          name="air-conditioner" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Air Conditioning" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="air-conditioner"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          /> 
-      : item === "Solar Panels" ? 
-      // (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // )
-      <MaterialCommunityIcons 
-          name="solar-panel" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Solar Panels" ? (
+        // (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="solar-panel"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-       : item === "Heating" ?
-      //   (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // ) 
-      <MaterialCommunityIcons 
-          name="fireplace" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "Heating" ? (
+        //   (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="fireplace"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-      : item === "High Energy Efficiency" ?
-      //  (
-      //   <Image source={IMAGES.BedroomIcon} 
-      //   style={DetailsStyle.DetailsIcon} />
-      // ) 
-      <SimpleLineIcons 
-          name="energy" 
-          size={25} 
-          color={_COLORS.Kodie_GreenColor} 
+        />
+      ) : item === "High Energy Efficiency" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <SimpleLineIcons
+          name="energy"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
-          />
-      : null}
+        />
+      ) : null}
       <Text style={DetailsStyle.details_text}>{item}</Text>
     </View>
   );
   const fetchData = async () => {
     try {
       // Fetch property details
-      const detailData = { user: property_id };
-      const url = Config.API_URL;
-      const property_Detailss = url + "get_All_Property_details";
+      const detailData = { property_id: property_id };
+      const url = Config.BASE_URL;
+      const property_Detailss = url + "get_property_details";
 
+      console.log("url..", property_Detailss);
       setIsLoading(true);
       const response = await axios.post(property_Detailss, detailData);
       setIsLoading(false);
-
-      if (response.data.status === true) {
-        setProperty_Details(response.data.property_details);
+      console.log("response_get_property_details...", response.data);
+      if (response.data.success === true) {
+        setProperty_Details(response.data.data[0]);
         // Fetch and process key features..........
-        if (response.data.property_details[0]?.key_features) {
+        if (response.data.data[0].key_features) {
           const parsedData = JSON.parse(
-            response.data.property_details[0].key_features.replace(/\\/g, "")
+            response.data.data[0].key_features.replace(/\\/g, "")
           );
           setDetail(parsedData);
         }
+        const additionalKeyFeatures =
+          response.data.data[0].additional_key_features[0];
+        setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error("propertyDetail_error:", response.data.error);
         alert(response.data.error);
@@ -314,11 +320,10 @@ export default PropertyReview = (props) => {
       setIsLoading(false);
     }
   };
-  const additionalKeyFeaturesString =
-    property_Detail[0]?.additional_key_features;
 
   useEffect(() => {
     fetchData();
+
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(",");
       setAdditionalKeyFeatures(keyFeaturesArray);
@@ -435,7 +440,7 @@ export default PropertyReview = (props) => {
         return (
           <>
             <Text style={DetailsStyle.welcome_Text}>
-              {property_Detail[0]?.property_description}
+              {property_Detail?.property_description}
               {/* Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
               apartment boasts modern interior finishes and a spacious extended
               balcony. As you enter, you... */}
@@ -614,8 +619,8 @@ export default PropertyReview = (props) => {
         <View style={PropertyReviewStyle.slider_view}>
           <SliderBox
             images={
-              property_Detail[0]?.image_path
-                ? property_Detail[0]?.image_path
+              property_Detail.image_path
+                ? property_Detail.image_path
                 : imagePaths
             }
             sliderBoxHeight={200}
@@ -638,7 +643,7 @@ export default PropertyReview = (props) => {
         <View style={PropertyReviewStyle.subContainer}>
           <View style={PropertyReviewStyle.apartment_View}>
             <Text style={PropertyReviewStyle.apartment_text}>
-              {property_Detail[0]?.property_type}
+              {property_Detail?.property_type}
             </Text>
             <View style={PropertyReviewStyle.share_View}>
               <TouchableOpacity>
@@ -659,7 +664,7 @@ export default PropertyReview = (props) => {
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
-            {property_Detail[0]?.State || ""}
+            {property_Detail?.state || property_Detail?.city || ""}
           </Text>
           <View style={PropertyReviewStyle.share_View}>
             <Entypo
@@ -667,10 +672,7 @@ export default PropertyReview = (props) => {
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-            <Text>
-              {property_Detail[0]?.location ||
-                "8502 Preston Rd.Inglewood,Queensland,Australia,."}
-            </Text>
+            <Text>{property_Detail?.location || ""}</Text>
           </View>
         </View>
 

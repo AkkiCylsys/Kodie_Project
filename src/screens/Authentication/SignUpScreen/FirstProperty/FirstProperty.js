@@ -34,6 +34,7 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import { useDispatch, useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { signupAccountApiActionCreator } from "../../../../redux/Actions/Authentication/AuthenticationApiCreator";
 import mime from "mime";
 const labels = ["Step 1", "Step 2", "Step 3"];
@@ -67,68 +68,12 @@ const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
   iconConfig.name = stepStatus === "finished" ? "check" : null;
   return iconConfig;
 };
-const DATA = [
-  {
-    label: "Pool",
-    value: 1,
-  },
-  {
-    label: "Garage",
-    value: 2,
-  },
-  {
-    label: "Balcony",
-    value: 3,
-  },
-  {
-    label: "Outdoor Area",
-    value: 4,
-  },
-  {
-    label: "Ensuit",
-    value: 5,
-  },
-  {
-    label: "Dishwasher",
-    value: 6,
-  },
-  {
-    label: "Study",
-    value: 7,
-  },
-  {
-    label: "Built in Robes",
-    value: 8,
-  },
-  {
-    label: "Air Conditioning",
-    value: 9,
-  },
-  {
-    label: "Solar Panels",
-    value: 10,
-  },
-  {
-    label: "Heating",
-    value: 11,
-  },
-  {
-    label: "Hight Energy Efficiency",
-    value: 12,
-  },
-];
 const renderDataItem = (item) => {
   return (
     <View style={FirstPropertyStyle.item}>
       <Text style={FirstPropertyStyle.selectedTextStyle}>
-        {item.FeatureName}
+        {item.features_name}
       </Text>
-      {/* <AntDesign
-        style={FirstPropertyStyle.icon}
-        color={_COLORS.Kodie_BlackColor}
-        name="check"
-        size={20}
-      /> */}
     </View>
   );
 };
@@ -136,6 +81,11 @@ export default FirstProperty = (props) => {
   const signUp_account_response = useSelector(
     (state) => state?.authenticationReducer?.data
   );
+  const deviceId = DeviceInfo.getDeviceId();
+  const deviceType = DeviceInfo.getDeviceType();
+  console.log("Device ID:", deviceId);
+  console.log("Device type:", deviceType);
+
   console.log("signUp_account_response.....", signUp_account_response);
 
   let firstName = props?.route?.params?.firstName;
@@ -156,7 +106,6 @@ export default FirstProperty = (props) => {
   let p_latitude = props?.route?.params?.p_latitude;
   let p_longitude = props?.route?.params?.p_longitude;
   let user_key = props?.route?.params?.user_key;
-  // let image_result = props?.route?.params?.image_result;
 
   console.log("firstname..", firstName);
   console.log("lastName..", lastName);
@@ -175,36 +124,19 @@ export default FirstProperty = (props) => {
   console.log("p_latitude..", p_latitude);
   console.log("p_longitude..", p_longitude);
   console.log("user_key..", user_key);
-  // console.log("image_result..", image_result);
-
-  const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
-  const [isClick, setIsClick] = useState(null);
   const [propertyLocation, setPropertyLocation] = useState("");
   const [propertyDesc, setPropertyDesc] = useState("");
-  const [florSize, setFlorSize] = useState("");
-  const [selected, setSelected] = useState([]);
-  const [value, setValue] = useState(null);
-  const [bedroomValue, setbedroomValue] = useState([]);
-  const [garagesValue, setGaragesValue] = useState([]);
-  const [bathRoomValue, setBathRoomValue] = useState([]);
-  const [parkingValue, setParkingValue] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
-  const [bedRoomData, setBedRoomData] = useState([]);
-  const [garagesData, setGaragesData] = useState([]);
-  const [bathroomData, setBathroomData] = useState([]);
-  const [parkingData, setParkingData] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
-  const [selectedkey_features, setSelectedkey_features] = useState([]);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
-  const [data_add, setData_add] = useState([]);
-  //
+
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
   const [IsMap, setIsMap] = useState(false);
@@ -346,7 +278,7 @@ export default FirstProperty = (props) => {
       P_PARENT_CODE: "PROP_TYPE",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const propertyType = url + "lookup_details";
     console.log("Request URL:", propertyType);
     setIsLoading(true);
@@ -356,8 +288,8 @@ export default FirstProperty = (props) => {
         console.log("property_type", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("propertyData....", response.data.data);
-          setProperty_Data(response.data.data);
+          console.log("propertyData....", response.data.lookup_details);
+          setProperty_Data(response.data.lookup_details);
         } else {
           console.error("property_type_error:", response.data.error);
           alert(response.data.error);
@@ -371,8 +303,8 @@ export default FirstProperty = (props) => {
       });
   };
   const additional_features = () => {
-    const url = Config.API_URL;
-    const additionalApi = url + "key_features";
+    const url = Config.BASE_URL;
+    const additionalApi = url + "get_key_features";
     console.log("Request URL:", additionalApi);
     setIsLoading(true);
     axios
@@ -382,9 +314,12 @@ export default FirstProperty = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           console.log("additional_features....", response.data);
-          setAdditionalfeatureskey(response.data.PAF_KEY);
-          // setData_add(response.data.PAF_KEY);
-          console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
+          setAdditionalfeatureskey(response.data.key_features_details);
+          // setData_add(response.data.key_features_details);
+          console.log(
+            "AdditionalFeaturesKey....",
+            response.data.key_features_details
+          );
         } else {
           console.error("additional_features_error:", response.data.error);
           alert(response.data.error);
@@ -441,8 +376,8 @@ export default FirstProperty = (props) => {
     formData.append("key_features", JSON.stringify(AllCountsData));
     formData.append("land_area", landArea);
     formData.append("floor_size", buildingFlorSize);
-    formData.append("device_id", "14565Android");
-    formData.append("device_type", "Android");
+    formData.append("device_id", deviceId);
+    formData.append("device_type", deviceType);
     formData.append(
       "additional_features",
       JSON.stringify(additionalfeatureskeyvalue)
@@ -458,42 +393,50 @@ export default FirstProperty = (props) => {
         name: imageName,
       });
     }
-    const url = "https://e3.cylsys.com/api/v1/signup_step_one";
-    const saveAccountDetails = url;
-    console.log("Request URL:", saveAccountDetails);
-    setIsLoading(true);
-    try {
-      const response = await axios.post(saveAccountDetails, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      console.log("Save Account Details", response.data);
-
-      if (response.data.status === true) {
-        setIsLoading(false);
-        alert(response.data.message);
-        props.navigation.navigate("DrawerNavigatorLeftMenu");
-        setCurrentPage(0);
-        setProperty_value("");
-        setbedroomValue("");
-        setGaragesValue("");
-        setBathRoomValue("");
-        setParkingValue("");
-        setAdditionalFeaturesKeyValue("");
-      } else {
-        setIsLoading(false);
-        console.error("Save Account Details error:", response.data.error);
-        alert(response.data.error);
-      }
-    } catch (error) {
+    const res = await dispatch(signupAccountApiActionCreator(formData));
+    console.log("signupAccountApiActionCreator..", res.data);
+    if (res.data.status === true) {
       setIsLoading(false);
-      console.error("Account_Details error:", error);
-      alert("An error occurred. Please try again later.");
-    } finally {
+      // alert(response.data.message);
+      props.navigation.navigate("DrawerNavigatorLeftMenu");
+      setCurrentPage(0);
+      setAdditionalFeaturesKeyValue("");
+    } else {
       setIsLoading(false);
+      console.error("Save Account Details error:", res.data.error);
+      alert(res.data.error);
     }
+    // const url = "https://e3.cylsys.com/api/v1/signup_step_one";
+    // const saveAccountDetails = url;
+    // console.log("Request URL:", saveAccountDetails);
+    // setIsLoading(true);
+    // try {
+    //   const response = await axios.post(saveAccountDetails, formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   });
+
+    //   console.log("Save Account Details", response.data);
+
+    //   if (response.data.status === true) {
+    //     setIsLoading(false);
+    //     alert(response.data.message);
+    //     props.navigation.navigate("DrawerNavigatorLeftMenu");
+    //     setCurrentPage(0);
+    //     setAdditionalFeaturesKeyValue("");
+    //   } else {
+    //     setIsLoading(false);
+    //     console.error("Save Account Details error:", response.data.error);
+    //     alert(response.data.error);
+    //   }
+    // } catch (error) {
+    //   setIsLoading(false);
+    //   console.error("Account_Details error:", error);
+    //   alert("An error occurred. Please try again later.");
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   // const handleSaveSignup = async () => {
@@ -811,8 +754,21 @@ export default FirstProperty = (props) => {
             <View style={FirstPropertyStyle.card}>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
-                <View style={FirstPropertyStyle.locationContainer}>
+                <View style={FirstPropertyStyle.locationConView}>
+                  <View style={FirstPropertyStyle.locationContainer}>
+                    <TextInput
+                      style={FirstPropertyStyle.locationInput}
+                      value={propertyLocation}
+                      onChangeText={setPropertyLocation}
+                      onFocus={() => {
+                        setIsSearch(true);
+                      }}
+                      placeholder="Search location"
+                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                    />
+                  </View>
                   <TouchableOpacity
+                    style={FirstPropertyStyle.locationIconView}
                     onPress={() => {
                       Platform.OS == "ios"
                         ? CheckIOSMapPermission
@@ -822,21 +778,11 @@ export default FirstProperty = (props) => {
                   >
                     <Octicons
                       name={"location"}
-                      size={20}
-                      color={_COLORS.Kodie_MediumGrayColor}
+                      size={25}
+                      color={_COLORS.Kodie_GreenColor}
                       style={FirstPropertyStyle.locationIcon}
                     />
                   </TouchableOpacity>
-                  <TextInput
-                    style={FirstPropertyStyle.locationInput}
-                    value={propertyLocation}
-                    onChangeText={setPropertyLocation}
-                    onFocus={() => {
-                      setIsSearch(true);
-                    }}
-                    placeholder="Search location"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  />
                 </View>
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
@@ -867,7 +813,7 @@ export default FirstProperty = (props) => {
                   iconStyle={FirstPropertyStyle.iconStyle}
                   data={property_Data}
                   maxHeight={300}
-                  labelField="description"
+                  labelField="lookup_description"
                   valueField="lookup_key"
                   placeholder="Apartment"
                   value={property_value}
@@ -1050,8 +996,8 @@ export default FirstProperty = (props) => {
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}
                     data={additionalfeatureskey}
-                    labelField="FeatureName"
-                    valueField="key"
+                    labelField="features_name"
+                    valueField="paf_key"
                     placeholder="Select additional features"
                     value={additionalfeatureskeyvalue}
                     search
@@ -1067,7 +1013,7 @@ export default FirstProperty = (props) => {
                       >
                         <View style={FirstPropertyStyle.selectedStyle}>
                           <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.FeatureName}
+                            {item.features_name}
                           </Text>
                           <AntDesign color="white" name="close" size={17} />
                         </View>
