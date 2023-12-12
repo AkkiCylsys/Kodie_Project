@@ -33,7 +33,7 @@ export default AddTenantDetails = (props) => {
               name="close"
               size={22}
               color={_COLORS.Kodie_BlackColor}
-              style={{ alignSelf: "center" }}
+              style={{ alignSelf: "center",marginTop:5}}
             />
           </TouchableOpacity>
         </View>
