@@ -117,7 +117,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     borderRadius: 5,
     borderColor: "#ccc",
     marginLeft: 5,
-    width: 40,
+    width: "15%",
     justifyContent: "center",
     height: 50,
   },

@@ -18,7 +18,7 @@ const TopHeader = (props) => {
   return (
     <>
       <StatusBar
-        backgroundColor={props.statusBarColor || "red"}
+        backgroundColor={props.statusBarColor || _COLORS.Kodie_WhiteColor}
         barStyle={props.statusBarStyle || "dark-content"}
       />
       <View
@@ -91,7 +91,7 @@ TopHeader.defaultProps = {
   leftImage: "chevron-left",
   MiddleText: "Set up your profile",
   statusBarColor: _COLORS.Kodie_BlackColor,
-  // backgroundColor: _COLORS.Kodie_BlackColor,
+  backgroundColor: _COLORS.Kodie_WhiteColor,
   Text_Color: _COLORS.Kodie_BlackColor,
 };
 

@@ -17,6 +17,7 @@ import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoade
 import { Config } from "../../../../../../Config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { color } from "react-native-reanimated";
 
 const data = [
   { label: "3-month", value: "1" },
@@ -195,7 +196,7 @@ export default AddExpensesDetails = (props) => {
     );
 
     const ExpenceData = {
-      user_key: loginData.Login_details.result,
+      user_key: loginData.Login_details.user_id,
       upd_key: property_id,
       total_amount: totalAmount,
       total_amount_excl_tax: accountXcl,
@@ -491,7 +492,7 @@ export default AddExpensesDetails = (props) => {
               maxHeight={300}
               labelField="lookup_description"
               valueField="lookup_key"
-              placeholder="6-month"
+              placeholder="Select expense category"
               value={ExpenceCategoryValue}
               onChange={(item) => {
                 setExpenceCategoryValue(item.lookup_key);
@@ -622,15 +623,10 @@ export default AddExpensesDetails = (props) => {
                 AddExpensesDetailsStyle.closeText,
                 AddExpensesDetailsStyle.applyText,
                 {
-                  backgroundColor:
-                    selectedOption == "cancel"
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_WhiteColor,
+                  backgroundColor: _COLORS.Kodie_WhiteColor,
                 },
               ]}
-              onPress={() => {
-                handleOptionClick("cancel");
-              }}
+              onPress={handlePopUp}
             >
               <Text
                 style={[
@@ -650,10 +646,7 @@ export default AddExpensesDetails = (props) => {
               style={[
                 AddExpensesDetailsStyle.applyText,
                 {
-                  backgroundColor:
-                    selectedOption == "Save"
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_WhiteColor,
+                  backgroundColor: _COLORS.Kodie_BlackColor,
                 },
               ]}
               onPress={() => {
@@ -664,11 +657,9 @@ export default AddExpensesDetails = (props) => {
                 style={[
                   LABEL_STYLES.commontext,
                   AddExpensesDetailsStyle.text,
+
                   {
-                    color:
-                      selectedOption == "Save"
-                        ? _COLORS.Kodie_WhiteColor
-                        : null,
+                    color: _COLORS.Kodie_WhiteColor,
                   },
                 ]}
               >

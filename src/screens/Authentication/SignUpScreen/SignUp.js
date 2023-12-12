@@ -149,7 +149,7 @@ export default SignUp = (props) => {
         setTerm(false);
         setPrivacy(false);
       } else {
-        setEmailError(response.data.message);
+        alert(response.data.message);
       }
     } catch (error) {
       if (error.response || error.response.status === 400) {

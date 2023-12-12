@@ -69,9 +69,9 @@ export const AccountStyle = StyleSheet.create({
   locationIconView: {
     borderWidth: 1,
     borderRadius: 5,
-    borderColor:"#ccc",
+    borderColor: "#ccc",
     marginLeft: 10,
-    width: 40,
+    width: "15%",
     justifyContent: "center",
   },
   locationIcon: {

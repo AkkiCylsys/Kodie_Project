@@ -250,140 +250,20 @@ export default Account = (props) => {
     <ScrollView
       ref={scrollViewRef}
       contentContainerStyle={{ height: 500 }}
-
-      // style={{ height:700, marginTop: 20 }}
+      style={{ backgroundColor: _COLORS.Kodie_WhiteColor }}
     >
-      {/* <TopHeader
-        MiddleText={"Set up your Kodie account"}
-        onPressLeftButton={goBack}
-      />
-      <View style={AccountStyle.headingView}>
-        <Text style={AccountStyle.heading}>
-          {"Introduce yourself to Kodie"}
-        </Text>
-      </View>
-      <View style={AccountStyle.card}>
-        <View style={AccountStyle.inputContainer}>
-          <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>
-          <TextInput
-            style={AccountStyle.input}
-            value={firstName}
-            onChangeText={validateFirstName}
-            placeholder="Enter your first name"
-            placeholderTextColor="#999"
-          />
-          <Text style={AccountStyle.errorText}>{firstNameError}</Text>
-        </View>
-        <View style={AccountStyle.inputContainer}>
-          <Text style={LABEL_STYLES._texinputLabel}>Last name*</Text>
-          <TextInput
-            style={AccountStyle.input}
-            value={lastName}
-            onChangeText={validateLastName}
-            placeholder="Enter your last name"
-            placeholderTextColor="#999"
-          />
-          <Text style={AccountStyle.errorText}>{lastNameError}</Text>
-        </View>
-        <View style={AccountStyle.inputContainer}>
-          <Text style={LABEL_STYLES._texinputLabel}>
-            Phone number* (mobile preferred)
-          </Text>
-          <TextInput
-            style={AccountStyle.input}
-            value={mobileNumber}
-            onBlur={validateMobileNumber}
-            placeholder="Enter your phone number"
-            placeholderTextColor="#999"
-            keyboardType="phone-pad"
-            maxLength={10}
-          />
-          <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
-        </View>
-        <View style={AccountStyle.inputContainer}>
-          <Text style={LABEL_STYLES._texinputLabel}>
-            Current physical address
-          </Text>
-          <View style={AccountStyle.locationContainer}>
-            <TouchableOpacity
-              onPress={() => {
-                Platform.OS == "ios"
-                  ? CheckIOSMapPermission
-                  : checkpermissionlocation();
-                setIsMap(true);
-              }}
-            >
-              <Entypo
-                name={"location-pin"}
-                size={24}
-                color={_COLORS.Kodie_MediumGrayColor}
-                style={AccountStyle.locationIcon}
-              />
-            </TouchableOpacity>
-            <TextInput
-              style={AccountStyle.locationInput}
-              value={physicalAddress}
-              onChangeText={setPhysicalAddress}
-              placeholder="Enter new location"
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-            />
-          </View>
-        </View>
-        <View style={AccountStyle.inputContainer}>
-          <Text style={[LABEL_STYLES._texinputLabel, { marginTop: 16 }]}>
-            Organisation name
-          </Text>
-          <TextInput
-            style={AccountStyle.input}
-            value={organisation}
-            onChangeText={setOrganisation}
-            placeholder="Enter the name of your company"
-            placeholderTextColor="#999"
-          />
-        </View>
-        <Text style={AccountStyle.org_desc}>
-          {
-            "Your organisation name will be used in emails and SMS correspondence from Kodie."
-          }
-        </Text>
-        <View style={AccountStyle.inputContainer}>
-          <Text style={LABEL_STYLES._texinputLabel}>Referral code</Text>
-          <TextInput
-            style={AccountStyle.input}
-            value={referral}
-            onChangeText={setRefferral}
-            placeholder="If you have a referral code, enter it here"
-            placeholderTextColor="#999"
-          />
-        </View>
-      </View>
-      <View style={{ marginHorizontal: 16, marginBottom: 20 }}>
-        <CustomSingleButton
-               disabled={isLoading ? true : false}
-          _ButtonText={"Next"}
-          Text_Color={_COLORS.Kodie_WhiteColor}
-          onPress={() => {
-            handleNextBtn();
-          }}
-        />
-      </View> */}
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
         {IsMap ? (
           <View
             style={{
               flex: 1,
-              // paddingHorizontal: 10,
               backgroundColor: "transparent",
             }}
           >
             <MapScreen
               style={{
-                // flex: 1,
                 height: "100%",
                 width: "100%",
-                // borderRadius: 20,
-                // borderWidth: 1,
-                //borderColor: .greenAppColor,
                 alignSelf: "center",
                 marginBottom: 10,
               }}
@@ -437,7 +317,7 @@ export default Account = (props) => {
             }}
           />
         ) : (
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
             <TopHeader
               MiddleText={"Set up your Kodie account"}
               onPressLeftButton={goBack}

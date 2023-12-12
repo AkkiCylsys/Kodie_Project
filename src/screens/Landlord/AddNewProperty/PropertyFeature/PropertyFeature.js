@@ -781,7 +781,6 @@ export default PropertyFeature = (props) => {
                 labelField="features_name"
                 valueField="paf_key"
                 placeholder="Add features such as pool,aircon,balcony etc."
-                placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."

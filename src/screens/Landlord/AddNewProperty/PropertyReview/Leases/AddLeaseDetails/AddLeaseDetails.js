@@ -346,21 +346,21 @@ export default AddLeaseDetails = (props) => {
   };
   return (
     <View style={AddLeaseDetailsStyle.mainContainer}>
-      <ScrollView>
-        <View style={AddLeaseDetailsStyle.heading_View}>
-          <Text style={AddLeaseDetailsStyle.heading_Text}>
-            {"Add lease details"}
-          </Text>
+      <View style={AddLeaseDetailsStyle.heading_View}>
+        <Text style={AddLeaseDetailsStyle.heading_Text}>
+          {"Add lease details"}
+        </Text>
 
-          <TouchableOpacity onPress={handlePopUp}>
-            <AntDesign
-              name="close"
-              size={22}
-              color={_COLORS.Kodie_BlackColor}
-              style={{ alignSelf: "center" }}
-            />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={handlePopUp}>
+          <AntDesign
+            name="close"
+            size={22}
+            color={_COLORS.Kodie_BlackColor}
+            style={{ alignSelf: "center" }}
+          />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
         <View style={AddLeaseDetailsStyle.card}>
           <Text style={LABEL_STYLES.commontext}>{"Commencement date"}</Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>

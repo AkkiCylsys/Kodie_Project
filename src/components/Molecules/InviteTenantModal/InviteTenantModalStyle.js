@@ -12,24 +12,25 @@ export const InviteTenantModalStyle = StyleSheet.create({
   Invite_tenant: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
-    fontFamily: FONTFAMILY.K_SemiBold,
+    fontFamily: FONTFAMILY.K_Bold,
   },
   content_View: { flexDirection: "row", marginTop: 10, marginHorizontal: 16 },
   Icons: { width: 40, height: 40, resizeMode: "cover" },
   Invite_Data_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
-    fontStyle: FONTFAMILY.K_SemiBold,
+    // fontStyle: "500",
+    fontWeight: "500",
     marginLeft: 10,
     alignSelf: "center",
   },
   Main_View: {
     flexDirection: "row",
-    marginHorizontal:16,
-    marginTop:10
+    marginHorizontal: 16,
+    marginTop: 10,
   },
   All_Data_View: {
-    marginTop:15,
+    marginTop: 15,
   },
   bottomModal_container: {
     borderWidth: 0.5,

@@ -84,7 +84,7 @@ export const LoginStyles = StyleSheet.create({
   },
 
   passchange: { alignSelf: "center", fontSize: 21, textAlign: "center" },
-  checkicon: { alignSelf: "center", height: 120, width: 120, marginTop: 20 },
+  checkicon: { alignSelf: "center", height: "30%", width: 120, marginTop: 20 },
   varifycode: { flexDirection: "row", justifyContent: "space-between" },
   getButtonView: {
     flex: 0.3,

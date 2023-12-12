@@ -125,6 +125,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 // import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
 import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
 import TenantList from "../../screens/Tenant/TenantList";
+import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -134,6 +135,9 @@ const BottomNav = (props) => {
         tabBarStyle: {
           backgroundColor: _COLORS.Kodie_WhiteColor,
           height: Platform.OS == "android" ? 65 : 80,
+          flexDirection: "row",
+          paddingHorizontal: 10,
+          width: "100%",
         },
       }}
     >
@@ -145,7 +149,13 @@ const BottomNav = (props) => {
           tabBarShowLabel: false,
           tabBarIconStyle: { flex: 1 },
           tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center" }}>
+            <View
+              style={{
+                alignItems: "center",
+                backgroundColor: "transparent",
+                width: "100%",
+              }}
+            >
               {/* <MacIcon
                 name={"clipboard-check-multiple"}
                 size={focused ? 30 : 25}
@@ -174,7 +184,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 12,
+                    fontSize: 11,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -196,7 +206,13 @@ const BottomNav = (props) => {
           headerShown: false,
           tabBarIconStyle: { flex: 1 },
           tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center" }}>
+            <View
+              style={{
+                alignItems: "center",
+                backgroundColor: "transparent",
+                width: "100%",
+              }}
+            >
               {/* <MacIcon
                 name={"clipboard-check-multiple"}
                 size={focused ? 30 : 25}
@@ -224,7 +240,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 12,
+                    fontSize: 11,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -246,7 +262,13 @@ const BottomNav = (props) => {
           headerShown: false,
           tabBarIconStyle: { flex: 1 },
           tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center" }}>
+            <View
+              style={{
+                alignItems: "center",
+                backgroundColor: "transparent",
+                width: "100%",
+              }}
+            >
               {/* <MacIcon
                 name={"clipboard-check-multiple"}
                 size={focused ? 30 : 25}
@@ -274,7 +296,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 12,
+                    fontSize: 11,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -295,9 +317,15 @@ const BottomNav = (props) => {
         options={{
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarIconStyle: { flex: 1 },
+          // tabBarIconStyle: { flex: 1 },
           tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center" }}>
+            <View
+              style={{
+                alignItems: "center",
+                backgroundColor: "transparent",
+                width: "100%",
+              }}
+            >
               {/* <MacIcon
                 name={"chat-processing-outline"}
                 size={focused ? 30 : 25}
@@ -314,7 +342,7 @@ const BottomNav = (props) => {
               /> */}
               <Ionicons
                 name="chatbubble-ellipses-outline"
-                size={30}
+                size={28}
                 resizeMode={"contain"}
                 color={
                   focused
@@ -325,7 +353,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 12,
+                    fontSize: 11,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -345,9 +373,15 @@ const BottomNav = (props) => {
         options={{
           tabBarShowLabel: false,
           headerShown: false,
-          tabBarIconStyle: { flex: 1 },
+          // tabBarIconStyle: { flex: 1 },
           tabBarIcon: ({ focused }) => (
-            <View style={{ alignItems: "center" }}>
+            <View
+              style={{
+                alignItems: "center",
+                backgroundColor: "transparent",
+                width: "100%",
+              }}
+            >
               <Ionicons
                 name={"settings-outline"}
                 size={28}
@@ -360,7 +394,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 12,
+                    fontSize: 11,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -368,7 +402,7 @@ const BottomNav = (props) => {
                   },
                 ]}
               >
-                {"Setting"}
+                {"Settings"}
               </Text>
             </View>
           ),

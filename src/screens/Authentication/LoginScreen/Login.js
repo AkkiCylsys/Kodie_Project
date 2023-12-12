@@ -366,6 +366,8 @@ export default Login = (props) => {
       .catch((error) => {
         if (error.response && error.response.status === 404) {
           alert("Incorrect OTP. Please try again.");
+        } else if (error.response && error.response.status === 401) {
+          alert(error.response.message || "User Unauthorized");
         } else {
           alert("An error occurred. Please try again later.");
         }
@@ -793,7 +795,7 @@ export default Login = (props) => {
                 <Image
                   source={IMAGES.CheckIcon}
                   style={LoginStyles.checkicon}
-                  resizeMode={"center"}
+                  resizeMode={"contain"}
                 />
               </View>
             </>

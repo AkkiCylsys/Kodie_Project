@@ -104,7 +104,7 @@ const PropertyList = (props) => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        alert("Please check internet connection.");
+        alert(error.response);
         setIsLoading(false);
       } else {
         alert("An error occurred. Please try again later.");
