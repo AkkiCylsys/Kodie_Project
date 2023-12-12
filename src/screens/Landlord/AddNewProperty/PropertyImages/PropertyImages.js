@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect,index } from "react";
 import {
   View,
   Text,
@@ -279,6 +279,13 @@ export default PropertyImages = (props) => {
     console.log("................ImageNAme", multipleImages);
     console.log("................ImageNAme", multipleImages.path);
   };
+  //.....remove video....////
+  const removeVideo = (indexToRemove) => {
+    const updatedVideos = [...selectedVideos];
+    updatedVideos.splice(indexToRemove, 1);
+    setSelectedVideos(updatedVideos);
+  };
+ 
   const imagePaths = MultiImageName.map((image) => image.path);
   // alert(imagePaths);
   const handleSaveImage = async () => {
@@ -508,6 +515,19 @@ export default PropertyImages = (props) => {
                           }}
                           controls={true}
                         />
+                        <TouchableOpacity
+                          style={{
+                            position: "absolute",
+                            // top: 2,
+                            right: 5,
+                            // backgroundColor: "rgba(255,255,255,0.7)",
+                            borderRadius: 15,
+                            padding: 3,
+                          }}
+                          onPress={() => removeVideo(index)}
+                        >
+                          <Text style={{ color: "black" }}>X</Text>
+                        </TouchableOpacity>
                         {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
                       </>
                     )}

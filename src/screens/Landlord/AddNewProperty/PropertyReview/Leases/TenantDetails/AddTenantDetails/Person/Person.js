@@ -226,13 +226,13 @@ export default Person = (props) => {
                 PersonStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "cancel"
+                    selectedOption == "Cancel"
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("cancel");
+                handleOptionClick("Cancel");
               }}
             >
               <Text
@@ -240,13 +240,13 @@ export default Person = (props) => {
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "cancel"
+                      selectedOption == "Cancel"
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
                 ]}
               >
-                {"cancel"}
+                {"Cancel"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

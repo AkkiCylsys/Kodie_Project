@@ -26,7 +26,7 @@ export default AddTenantDetails = (props) => {
       <View>
         <View style={AddTenantDetailsStyle.heading_View}>
           <Text style={AddTenantDetailsStyle.heading_Text}>
-            {"Add lease details"}
+            {"Add Tenant details"}
           </Text>
           <TouchableOpacity onPress={handleClosePopup}>
             <AntDesign
