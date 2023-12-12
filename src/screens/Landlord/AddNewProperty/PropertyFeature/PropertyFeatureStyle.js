@@ -78,22 +78,22 @@ export const PropertyFeatureStyle = StyleSheet.create({
   },
 
   placeholderStyle: {
-    fontSize: 10,
-    // color: _COLORS.Kodie_GreenColor,
-    fontFamily: FONTFAMILY.K_Medium,
+    fontSize: 12,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Regular,
     marginLeft: 8,
   },
   selectedTextStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Medium,
+    fontFamily: FONTFAMILY.K_Regular,
     marginLeft: 10,
   },
   iconStyle: {
     width: 20,
     height: 20,
     // borderWidth: 1,
-    marginRight: 16,
+    marginRight: 13,
   },
   inputSearchStyle: {
     height: 40,

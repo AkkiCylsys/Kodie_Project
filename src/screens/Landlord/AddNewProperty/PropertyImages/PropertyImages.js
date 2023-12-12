@@ -418,10 +418,9 @@ export default PropertyImages = (props) => {
               ) : ( */}
               <SliderBox
                 images={
-                  // property_Detail[0]?.image_path
-                  //   ? property_Detail[0]?.image_path
-                  //   :
-                  imagePaths
+                  property_Detail[0]?.image_path
+                    ? property_Detail[0]?.image_path
+                    : imagePaths
                 }
                 sliderBoxHeight={200}
                 onCurrentImagePressed={(index) =>

@@ -475,10 +475,13 @@ export default PropertyFeature = (props) => {
           renderLabel={renderLabel}
         />
       </View>
-      <View style={PropertyFeatureStyle.headingView}>
-        <Text style={PropertyFeatureStyle.heading}>{"Property features"}</Text>
-      </View>
+
       <ScrollView>
+        <View style={PropertyFeatureStyle.headingView}>
+          <Text style={PropertyFeatureStyle.heading}>
+            {"Property features"}
+          </Text>
+        </View>
         <View style={PropertyFeatureStyle.card}>
           <View style={PropertyFeatureStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>Key features</Text>
@@ -778,6 +781,7 @@ export default PropertyFeature = (props) => {
                 labelField="features_name"
                 valueField="paf_key"
                 placeholder="Add features such as pool,aircon,balcony etc."
+                placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."
@@ -796,14 +800,14 @@ export default PropertyFeature = (props) => {
                     cleanedArray.filter((value) => value !== 0)
                   );
                 }}
-                // renderRightIcon={() => (
-                //   <AntDesign
-                //     style={PropertyFeatureStyle.icon}
-                //     color={_COLORS.Kodie_BlackColor}
-                //     name="search1"
-                //     size={15}
-                //   />
-                // )}
+                renderLeftIcon={() => (
+                  <AntDesign
+                    style={PropertyFeatureStyle.icon}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                    name="search1"
+                    size={18}
+                  />
+                )}
                 renderItem={renderDataItem}
                 renderSelectedItem={(item, unSelect) => (
                   <TouchableOpacity onPress={() => unSelect && unSelect(item)}>

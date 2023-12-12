@@ -254,7 +254,14 @@ export default Login = (props) => {
       } else if (res.data.success == "true") {
         //  alert("Login successful");
         setIsLoading(false);
-        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        if (res.data.message == "Please Complete Signup Process") {
+          alert(
+            "Please Complete Signup Process First, Because Your Signup Process are Incomplete."
+          );
+        } else {
+          props.navigation.navigate("DrawerNavigatorLeftMenu");
+        }
+
         setEmail("");
         setPassword("");
       } else {
