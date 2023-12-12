@@ -48,6 +48,8 @@ const data1 = [
 ];
 
 const BottomModalData = (props) => {
+  const propertyId = props?.propertyId;
+  console.log('propertyId...',propertyId)
   const navigation = useNavigation(); // Hook to get navigation
   const refRBSheet = useRef();
   const handleCloseModal = () => {
@@ -96,7 +98,9 @@ const BottomModalData = (props) => {
             style={BottomModalDataStyle.container}
             onPress={() => {
               if (item.id === "1") {
-                navigation.navigate("ViewPropertyDetails");
+                navigation.navigate("ViewPropertyDetails",{
+                  propertyId:propertyId
+                });
               }
               if (item.id === "5") {
                 // navigation.navigate("ViewPropertyDetails");

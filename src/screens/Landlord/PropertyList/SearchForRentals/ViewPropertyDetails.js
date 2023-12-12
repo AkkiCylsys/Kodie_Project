@@ -23,6 +23,7 @@ import { ViewDetailCss } from "./ViewPropertyDetailsCss";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
+import { DetailsStyle } from "../../AddNewProperty/PropertyReview/Details/DetailsStyles";
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
@@ -73,13 +74,16 @@ const Detail = [
 ];
 
 export default ViewPropertyDetails = (props) => {
-  const propertyDelId = props?.route?.params?.propertyDelId;
-  console.log(propertyDelId);
+  // const propertyDelId = props?.route?.params?.propertyDelId;
+  const propertyid = props?.route?.params?.propertyId;
+  console.log(propertyid, "viewpropertydetails id....");
+  // console.log(propertyDelId);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
-
+  const [additionalKeyFeaturesString, setAdditionalKeyFeaturesString] =
+    useState([]);
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -134,26 +138,65 @@ export default ViewPropertyDetails = (props) => {
       <Text style={DetailsStyle.details_text}>{item}</Text>
     </View>
   );
+  // const fetchData = async () => {
+  //   try {
+  //     // Fetch property details
+  //     const detailData = { property_id: propertyid };
+  //     const url = Config.BASE_URL;
+  //     const property_Detailss = url + "get_property_details";
+
+  //     setIsLoading(true);
+  //     const response = await axios.post(property_Detailss, detailData);
+  //     setIsLoading(false);
+
+  //     if (response.data.status === true) {
+  //       setProperty_Details(response.data.data[0]);
+  //       console.log(response.data.data[0])
+  //       console.log(object);
+  //       // Fetch and process key features..........
+  //       if (response.data.data[0]?.key_features) {
+  //         const parsedData = JSON.parse(
+  //           response.data.data[0].key_features.replace(/\\/g, "")
+  //         );
+  //         setDetail(parsedData);
+  //       }
+  //       const additionalKeyFeatures =
+  //         response.data.data[0].additional_key_features[0];
+  //       setAdditionalKeyFeaturesString(additionalKeyFeatures);
+  //     } else {
+  //       console.error("propertyDetail_error:", response.data.error);
+  //       alert(response.data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     alert(error);
+  //     setIsLoading(false);
+  //   }
+  // };
   const fetchData = async () => {
     try {
       // Fetch property details
-      const detailData = { user: propertyDelId };
-      const url = Config.API_URL;
-      const property_Detailss = url + "get_All_Property_details";
-
+      const detailData = { property_id: propertyid };
+      const url = Config.BASE_URL;
+      const property_Detailss = url + "get_property_details";
+ 
+      console.log("url..", property_Detailss);
       setIsLoading(true);
       const response = await axios.post(property_Detailss, detailData);
       setIsLoading(false);
-
-      if (response.data.status === true) {
-        setProperty_Details(response.data.property_details);
+      console.log("response_get_property_details...", response.data);
+      if (response.data.success === true) {
+        setProperty_Details(response.data.data[0]);
         // Fetch and process key features..........
-        if (response.data.property_details[0]?.key_features) {
+        if (response.data.data[0].key_features) {
           const parsedData = JSON.parse(
-            response.data.property_details[0].key_features.replace(/\\/g, "")
+            response.data.data[0].key_features.replace(/\\/g, "")
           );
           setDetail(parsedData);
         }
+        const additionalKeyFeatures =
+          response.data.data[0].additional_key_features[0];
+        setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error("propertyDetail_error:", response.data.error);
         alert(response.data.error);
@@ -164,8 +207,9 @@ export default ViewPropertyDetails = (props) => {
       setIsLoading(false);
     }
   };
-  const additionalKeyFeaturesString =
-    property_Detail[0]?.additional_key_features;
+  // const additionalKeyFeaturesString =
+  //   property_Detail?.additional_key_features[0];
+
 
   useEffect(() => {
     fetchData();
@@ -175,18 +219,19 @@ export default ViewPropertyDetails = (props) => {
     } catch (error) {
       console.error("Error parsing additional_key_features:", error);
     }
-  }, [propertyDelId, additionalKeyFeaturesString]);
+  }, [propertyid, additionalKeyFeaturesString]);
 
   return (
     <View style={ViewDetailCss.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"8502 Preston Rd. Inglewood..."}
+        // MiddleText={"8502 Preston Rd. Inglewood..."}
+        MiddleText={property_Detail.location}
       />
       <ScrollView>
         <View style={ViewDetailCss.slider_view}>
           <SliderBox
-            images={images}
+            images={property_Detail.image_path}
             sliderBoxHeight={200}
             onCurrentImagePressed={(index) =>
               console.warn(`image ${index} pressed`)
@@ -206,7 +251,7 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.apartment_View}>
-            <Text style={ViewDetailCss.apartment_text}>{"Apartment"}</Text>
+            <Text style={ViewDetailCss.apartment_text}>{property_Detail.property_type}</Text>
             <View style={ViewDetailCss.share_View}>
               <TouchableOpacity style={ViewDetailCss.availableButtonview}>
                 <Text style={ViewDetailCss.availableButtonText}>
@@ -231,7 +276,7 @@ export default ViewPropertyDetails = (props) => {
               </TouchableOpacity>
             </View>
           </View>
-          <Text style={ViewDetailCss.melbourne_Text}>{"Melbourne"}</Text>
+          <Text style={ViewDetailCss.melbourne_Text}>{property_Detail.state}</Text>
           <View style={ViewDetailCss.locationView}>
             <Entypo
               name="location-pin"
@@ -239,7 +284,7 @@ export default ViewPropertyDetails = (props) => {
               color={_COLORS.Kodie_GreenColor}
             />
             <Text style={ViewDetailCss.LocationText}>
-              {"8502 Preston Rd.Inglewood,Queensland,Australia,."}
+              {property_Detail.location}
             </Text>
           </View>
           <Text style={ViewDetailCss.apartment_text}>$850.00</Text>
@@ -248,7 +293,7 @@ export default ViewPropertyDetails = (props) => {
         <View style={ViewDetailCss.subContainer}>
           <Text style={ViewDetailCss.welcome_Text}>
             {
-              "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
+              property_Detail.property_description
             }
           </Text>
         </View>
