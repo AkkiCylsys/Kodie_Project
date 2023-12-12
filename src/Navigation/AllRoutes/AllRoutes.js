@@ -126,6 +126,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
 import TenantList from "../../screens/Tenant/TenantList";
 import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
+import CurrentTenant from "../../screens/Tenant/CurrentTenant/CurrentTenant";
+import PreviousTenant from "../../screens/Tenant/PreviousTenant/PreviousTenant";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1001,6 +1003,18 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"TenantList"}
           component={TenantList}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"CurrentTenant"}
+          component={CurrentTenant}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name={"PreviousTenant"}
+          component={PreviousTenant}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
