@@ -192,7 +192,7 @@ export default LeaseSummary = (props) => {
                 {"Rent remaining due"}
               </Text>
               <Text
-                style={LeaseSummaryStyle.date_Text}
+                style={[LeaseSummaryStyle.date_Text,{alignSelf:"flex-end"}]}
               >{`$ ${item.UPLD_RENTAL_AMMOUNT}`}</Text>
             </View>
           </View>
