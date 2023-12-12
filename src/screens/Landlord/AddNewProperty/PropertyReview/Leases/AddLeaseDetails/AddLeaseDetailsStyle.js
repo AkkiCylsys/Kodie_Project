@@ -72,10 +72,9 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
-    color:_COLORS.Kodie_BlackColor
-
+    color:_COLORS.Kodie_BlackColor,
   },
   inputSearchStyle: {
     height: 40,
@@ -96,13 +95,14 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     marginTop: 10,
   },
   notification_view: { flexDirection: "row", justifyContent: "space-between" },
-  notification_text: { marginRight: 30, alignSelf: "center" },
+  notification_text: { flex:1, alignSelf: "center",marginRight:70 },
   toggle_con: {
     width: 48,
     height: 25,
     borderRadius: 20,
     padding: 5,
-    marginTop: 20,
+    marginTop: 15,
+    alignItems:"center"
   },
   toggle_circle: {
     width: 18,
@@ -110,18 +110,25 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 9,
   },
   exp_reminder_text: {
-    flex: 0.6,
-    marginLeft: 10,
+    flex: 1,
+    // marginLeft: 10,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Medium,
   },
-  reminder_m_view: { flex: 0.5, flexDirection: "row" },
-  reminder_dropdown: { flex: 0.9, flexDirection: "row" },
+  reminder_m_view: { flex: 1, flexDirection: "row"},
+  reminder_dropdown: { flex: 0.9, flexDirection: "row",},
   reminder_dropdown_sty: { flex: 1.8, borderRadius: 15 },
   before: {
     marginLeft: 10,
+    alignSelf: "center",
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 10,
+    fontFamily: FONTFAMILY.K_Regular,
+  },
+  after:{
+    marginLeft: 17,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
     fontSize: 10,

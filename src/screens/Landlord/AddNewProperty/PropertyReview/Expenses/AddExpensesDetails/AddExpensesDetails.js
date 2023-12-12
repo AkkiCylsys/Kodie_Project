@@ -257,7 +257,7 @@ export default AddExpensesDetails = (props) => {
     } else if (selectedDate.trim() === "") {
       setSelectedDateError("Due date is required.");
     } else if (!ExpenceCategoryValue) {
-      setExpenceCategoryValueError("select Responsible Category.");
+      setExpenceCategoryValueError("Select Responsible Category.");
     } else if (selectedPaidDate.trim() === "") {
       setSelectedPaidDateError("Paid date is required.");
     } else {
@@ -632,14 +632,11 @@ export default AddExpensesDetails = (props) => {
                 style={[
                   LABEL_STYLES.commontext,
                   {
-                    color:
-                      selectedOption == "cancel"
-                        ? _COLORS.Kodie_WhiteColor
-                        : null,
+                    color: _COLORS.Kodie_WhiteColor,
                   },
                 ]}
               >
-                {"cancel"}
+                {"Cancel"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

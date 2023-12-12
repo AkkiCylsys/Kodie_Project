@@ -46,7 +46,7 @@ export default Leases = (props) => {
         {isSheetOpen ? null : <LeaseSummary property_id={property_id} />}
         <RBSheet
           ref={refRBSheet}
-          height={480}
+          height={760}
           customStyles={{
             wrapper: {
               backgroundColor: "rgba(0, 0, 0, 0.5)",

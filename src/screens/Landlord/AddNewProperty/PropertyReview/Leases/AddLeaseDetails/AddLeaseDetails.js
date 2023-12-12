@@ -501,8 +501,8 @@ export default AddLeaseDetails = (props) => {
               style={AddLeaseDetailsStyle.input}
               value={paymentDueDay}
               onChangeText={setPaymentDueDay}
-              placeholder="2023-12-30"
-              placeholderTextColor="#999"
+              // placeholder="2023-12-30"
+              // placeholderTextColor="#999"
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -608,6 +608,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{margin:5}}/>
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Lease expiry reminder"}
             </Text>
@@ -628,7 +629,7 @@ export default AddLeaseDetails = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="30-days"
+                placeholder="30 days"
                 value={expiry_reminder_value}
                 onChange={(item) => {
                   setExpiry_reminder_value(item.lookup_key);
@@ -652,6 +653,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{margin:5}}/>
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Rent payment reminder"}
             </Text>
@@ -672,7 +674,7 @@ export default AddLeaseDetails = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="2-days"
+                placeholder="2 days"
                 value={payment_reminder_value}
                 onChange={(item) => {
                   setPayment_reminder_value(item.lookup_key);
@@ -695,6 +697,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{margin:5}}/>
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Late rental reminder"}
             </Text>
@@ -715,13 +718,13 @@ export default AddLeaseDetails = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="2-days"
+                placeholder="2 days"
                 value={rental_reminder_value}
                 onChange={(item) => {
                   setrental_reminder_value(item.lookup_key);
                 }}
               />
-              <Text style={AddLeaseDetailsStyle.before}>{"After"}</Text>
+              <Text style={AddLeaseDetailsStyle.after}>{"after"}</Text>
             </View>
           </View>
           <View style={AddLeaseDetailsStyle.ButtonView}>
@@ -731,13 +734,13 @@ export default AddLeaseDetails = (props) => {
                 AddLeaseDetailsStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "cancel"
+                    selectedOption == "Cancel"
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("cancel");
+                handleOptionClick("Cancel");
                 handlePopUp();
               }}
             >
@@ -746,13 +749,13 @@ export default AddLeaseDetails = (props) => {
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "cancel"
+                      selectedOption == "Cancel"
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
                 ]}
               >
-                {"cancel"}
+                {"Cancel"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
