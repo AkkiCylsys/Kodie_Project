@@ -14,6 +14,8 @@ import { InviteStyles } from "./InviteStyles";
 import SearchBar from "../../components/Molecules/SearchBar/SearchBar";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { _COLORS, IMAGES } from "../../Themes/index";
+import Entypo from "react-native-vector-icons/Entypo";
+
 const LandlordData = [
   {
     id: "1",
@@ -124,10 +126,15 @@ export default Invitefriend = (props) => {
             onPress={() => props.navigation.navigate("Help_FeedBack")}
             style={InviteStyles.contactIconView}
           >
-            <Image
+            {/* <Image
               source={IMAGES.Share}
               style={InviteStyles.contactIcon}
               resizeMode="contain"
+            /> */}
+            <Entypo
+              name="share"
+              size={20}
+              color={_COLORS.Kodie_GreenColor}
             />
           </TouchableOpacity>
           <View style={InviteStyles.shareTextView}>

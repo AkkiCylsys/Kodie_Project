@@ -7,43 +7,82 @@ import { useNavigation } from "@react-navigation/native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { PropertyListCSS } from "../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 const data = [
   {
     id: "1",
     Data: "View property details",
-    Img: IMAGES.View_property,
+    // Img: IMAGES.View_property,
+    Icon:<MaterialIcons
+    name="preview"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "2",
     Data: "Manage documents",
-    Img: IMAGES.Documents,
+    // Img: IMAGES.Documents,
+    Icon:<MaterialCommunityIcons
+    name="file-download-outline"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "3",
     Data: "Create notice / reminder",
-    Img: IMAGES.Reminder,
+    // Img: IMAGES.Reminder,
+    Icon:<Ionicons
+    name="mail-unread-outline"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "4",
     Data: "Chat to tenant",
-    Img: IMAGES.Chat_Tenant,
+    // Img: IMAGES.Chat_Tenant,
+    Icon:<Ionicons
+    name="chatbubbles-outline"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "5",
     Data: "Delete property",
-    Img: IMAGES.Delete,
+    // Img: IMAGES.Delete,
+    Icon:<MaterialIcons
+    name="delete-outline"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
 ];
 const data1 = [
   {
     id: "1",
     Data: "Delete property",
-    Img: IMAGES.View_property,
+    // Img: IMAGES.View_property,
+     Icon:<MaterialIcons
+    name="delete-outline"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "2",
     Data: "Archive instead",
-    Img: IMAGES.Documents,
+    // Img: IMAGES.Documents,
+    Icon:<Ionicons
+    name="file-tray-full-outline"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
 ];
 
@@ -87,7 +126,8 @@ const BottomModalData = (props) => {
                 }
               }}
             >
-              <Image source={item.Img} style={BottomModalDataStyle.Icons} />
+              {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
+              {item.Icon}
               <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
             </TouchableOpacity>
           </>
@@ -106,7 +146,8 @@ const BottomModalData = (props) => {
               }
             }}
           >
-            <Image source={item.Img} style={BottomModalDataStyle.Icons} />
+            {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
+            {item.Icon}
             <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}

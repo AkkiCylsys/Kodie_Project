@@ -119,6 +119,9 @@ import ViewDocument from "../../screens/Landlord/AddNewProperty/PropertyReview/D
 // import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
 // import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
 // import EditDashboard from "../../screens/Dashboard/EditDashboard";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
 import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
 import TenantList from "../../screens/Tenant/TenantList";
@@ -150,12 +153,22 @@ const BottomNav = (props) => {
                   focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
                 }
               /> */}
-              <Image
+              {/* <Image
                 source={focused ? IMAGES.greenDeshboard : IMAGES.dashboard}
                 style={{
                   height: 30,
                   width: 30,
                 }}
+              /> */}
+              <MaterialIcons
+                name="bar-chart"
+                size={30}
+                resizeMode={"contain"}
+                color={
+                  focused
+                    ? _COLORS.Kodie_GreenColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
               />
 
               <Text
@@ -191,12 +204,22 @@ const BottomNav = (props) => {
                   focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
                 }
               /> */}
-              <Image
+              {/* <Image
                 source={focused ? IMAGES.greenproperty : IMAGES.property}
                 style={{
                   height: 30,
                   width: 30,
                 }}
+              /> */}
+              <MaterialCommunityIcons
+                name="home-city-outline"
+                size={30}
+                resizeMode={"contain"}
+                color={
+                  focused
+                    ? _COLORS.Kodie_GreenColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
               />
               <Text
                 style={[
@@ -231,12 +254,22 @@ const BottomNav = (props) => {
                   focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
                 }
               /> */}
-              <Image
+              {/* <Image
                 source={focused ? IMAGES.greenRepair : IMAGES.repair}
                 style={{
                   height: 30,
                   width: 30,
                 }}
+              /> */}
+              <MaterialCommunityIcons
+                name="hammer-wrench"
+                size={30}
+                resizeMode={"contain"}
+                color={
+                  focused
+                    ? _COLORS.Kodie_GreenColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
               />
               <Text
                 style={[
@@ -272,12 +305,22 @@ const BottomNav = (props) => {
                   focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
                 }
               /> */}
-              <Image
+              {/* <Image
                 source={focused ? IMAGES.greenChat : IMAGES.chat}
                 style={{
                   height: 30,
                   width: 30,
                 }}
+              /> */}
+              <Ionicons
+                name="chatbubble-ellipses-outline"
+                size={30}
+                resizeMode={"contain"}
+                color={
+                  focused
+                    ? _COLORS.Kodie_GreenColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
               />
               <Text
                 style={[
