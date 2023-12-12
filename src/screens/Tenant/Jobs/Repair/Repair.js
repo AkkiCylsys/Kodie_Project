@@ -471,7 +471,7 @@ export default Repair = (props) => {
             height={40}
             marginTop={3}
             onPress={
-              activeScreen ? props.onpress : alert("please add new scrren")
+              activeScreen ? props.onpress :null
             }
           />
         </View>
