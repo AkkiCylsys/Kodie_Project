@@ -20,6 +20,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { Config } from "../../../Config";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const data = [
@@ -29,6 +31,17 @@ const data = [
   { label: "6 hours", value: "4" },
 ];
 export default CreateJobTermsScreen = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
+
+  const handlePriceRangeChange = (priceRange) => {
+    console.log("Price Range in Parent Component:", priceRange);
+    setPriceRanges(priceRange);
+    // Do something with the price range in the parent component
+  };
+  // const formattedPriceRanges = `$${priceRanges}`;
+  // alert(formattedPriceRanges);
+
   let selectJobType = props?.route?.params?.selectJobType;
   let servicesValue = props?.route?.params?.servicesValue;
   let aboutyourNeed = props?.route?.params?.aboutyourNeed;
@@ -48,11 +61,15 @@ export default CreateJobTermsScreen = (props) => {
   console.log("latitude.....", latitude);
   console.log("longitude.....", longitude);
 
+  const [priceRanges, setPriceRanges] = useState(0);
+  const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [currentTime, setCurrentTime] = useState("");
   const [value, setValue] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDateError, setSelectedDateError] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
   const [hourlyNeedData, setHourlyNeedData] = useState([]);
   const [hourlyNeedValue, setHourlyNeedValue] = useState([]);
@@ -173,12 +190,32 @@ export default CreateJobTermsScreen = (props) => {
     );
   };
 
+  const handleRequestDate = (text) => {
+    setSelectedDate(text);
+    if (text.trim() === "") {
+      setSelectedDateError("Request date is required.");
+    } else {
+      setSelectedDateError("");
+    }
+  };
+
+  const handleVerificationCreateJob = () => {
+    if (selectedDate.trim() === "") {
+      setSelectedDateError("Payment date is required.");
+    } else {
+      handleCreateJob();
+    }
+  };
+
   useEffect(() => {
     handleHourlyNeed();
     handleNeedServices();
     handleResponsible();
     handleBookingInsurance();
-  }, []);
+    setFormattedPriceRanges(`$${priceRanges}`);
+  }, [priceRanges]);
+  // alert(`Formatted Price Range: ${formattedPriceRanges}`);
+  console.log(`Formatted Price Range: ${formattedPriceRanges}`);
 
   // renderitems.....
   const NeedHour_render = (item) => {
@@ -350,7 +387,7 @@ export default CreateJobTermsScreen = (props) => {
     console.log("Request URL:", createJob_url);
     setIsLoading(true);
     const createJob_Data = {
-      user_account_details_id: 264,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
       type_of_job: selectJobType,
       job_service_you_looking: servicesValue,
       more_about_job: aboutyourNeed,
@@ -364,7 +401,7 @@ export default CreateJobTermsScreen = (props) => {
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_budget: "$200",
+      job_budget: formattedPriceRanges,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
     };
@@ -426,7 +463,9 @@ export default CreateJobTermsScreen = (props) => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModal}
-              onDayPress={handleDayPress}
+              // onDayPress={handleDayPress}
+              onDayPress={(day) => handleRequestDate(day.dateString)}
+              onChangeText={() => handleRequestDate(selectedDate)}
               Visible={isModalVisible}
               onRequestClose={toggleModal}
               markedDates={{
@@ -465,6 +504,11 @@ export default CreateJobTermsScreen = (props) => {
               />
             </View>
           </View>
+          {selectedDateError ? (
+            <Text style={CreateJobTermsStyle.error_text}>
+              {selectedDateError}
+            </Text>
+          ) : null}
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {"How many hours do you need?"}
           </Text>
@@ -514,7 +558,11 @@ export default CreateJobTermsScreen = (props) => {
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {"What is your budget for this job?"}
           </Text>
-          <RangeSlider from={1} to={2000} />
+          <RangeSlider
+            from={1}
+            to={2000}
+            onPriceRangeChange={handlePriceRangeChange}
+          />
           <View style={CreateJobTermsStyle.resp_View}>
             <Text style={LABEL_STYLES.commontext}>
               {"Who is responsible for paying for this?"}
@@ -637,7 +685,8 @@ export default CreateJobTermsScreen = (props) => {
               disabled={isLoading ? true : false}
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
-                handleCreateJob()
+                // handleCreateJob()
+                handleVerificationCreateJob()
               }
             />
           </View>

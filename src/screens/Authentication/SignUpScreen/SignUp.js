@@ -347,6 +347,9 @@ export default SignUp = (props) => {
             _ButtonText={"Sign up with Google"}
             backgroundColor={_COLORS.Kodie_WhiteColor}
             disabled={isLoading ? true : false}
+            onPress={() => {
+              // props.navigation.navigate("SignUpSteps");
+            }}
           />
           <CustomSingleButton
             disabled={isLoading ? true : false}
