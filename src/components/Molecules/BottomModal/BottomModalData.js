@@ -16,51 +16,61 @@ const data = [
     id: "1",
     Data: "View property details",
     // Img: IMAGES.View_property,
-    Icon:<MaterialIcons
-    name="preview"
-    size={25}
-    color={_COLORS.Kodie_GreenColor}
-    />
+    Icon: (
+      <MaterialIcons
+        name="preview"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "2",
     Data: "Manage documents",
     // Img: IMAGES.Documents,
-    Icon:<MaterialCommunityIcons
-    name="file-download-outline"
-    size={25}
-    color={_COLORS.Kodie_GreenColor}
-    />
+    Icon: (
+      <MaterialCommunityIcons
+        name="file-download-outline"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "3",
     Data: "Create notice / reminder",
     // Img: IMAGES.Reminder,
-    Icon:<Ionicons
-    name="mail-unread-outline"
-    size={25}
-    color={_COLORS.Kodie_GreenColor}
-    />
+    Icon: (
+      <Ionicons
+        name="mail-unread-outline"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "4",
     Data: "Chat to tenant",
     // Img: IMAGES.Chat_Tenant,
-    Icon:<Ionicons
-    name="chatbubbles-outline"
-    size={25}
-    color={_COLORS.Kodie_GreenColor}
-    />
+    Icon: (
+      <Ionicons
+        name="chatbubbles-outline"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "5",
     Data: "Delete property",
     // Img: IMAGES.Delete,
-    Icon:<MaterialIcons
-    name="delete-outline"
-    size={25}
-    color={_COLORS.Kodie_GreenColor}
-    />
+    Icon: (
+      <MaterialIcons
+        name="delete-outline"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
 ];
 const data1 = [
@@ -68,27 +78,31 @@ const data1 = [
     id: "1",
     Data: "Delete property",
     // Img: IMAGES.View_property,
-     Icon:<MaterialIcons
-    name="delete-outline"
-    size={25}
-    color={_COLORS.Kodie_GreenColor}
-    />
+    Icon: (
+      <MaterialIcons
+        name="delete-outline"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "2",
     Data: "Archive instead",
     // Img: IMAGES.Documents,
-    Icon:<Ionicons
-    name="file-tray-full-outline"
-    size={25}
-    color={_COLORS.Kodie_GreenColor}
-    />
+    Icon: (
+      <Ionicons
+        name="file-tray-full-outline"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
 ];
 
 const BottomModalData = (props) => {
   const propertyId = props?.propertyId;
-  console.log('propertyId...',propertyId)
+  console.log("propertyId...", propertyId);
   const navigation = useNavigation(); // Hook to get navigation
   const refRBSheet = useRef();
   const handleCloseModal = () => {
@@ -138,8 +152,8 @@ const BottomModalData = (props) => {
             style={BottomModalDataStyle.container}
             onPress={() => {
               if (item.id === "1") {
-                navigation.navigate("ViewPropertyDetails",{
-                  propertyId:propertyId
+                navigation.navigate("ViewPropertyDetails", {
+                  propertyId: propertyId,
                 });
               }
               if (item.id === "5") {

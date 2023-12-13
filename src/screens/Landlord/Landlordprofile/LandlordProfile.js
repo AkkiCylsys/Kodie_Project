@@ -28,6 +28,7 @@ export default LandlordProfile = (props) => {
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
+        isprofileImage
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Profile"}
         RightUserProfile={{

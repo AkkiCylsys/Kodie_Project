@@ -72,14 +72,16 @@ const TopHeader = (props) => {
               // />
               null}
             </TouchableOpacity>
+            {props.isprofileImage ? (
             <Image
               source={props?.RightUserProfile || IMAGES.Landlordprofile}
               style={HeaderStyle.usericon}
             />
+            ):null}
           </View>
         )}
       </View>
-      <DividerIcon marginTop={2} />
+      <DividerIcon marginTop={2} marginBottom={0} />
     </>
   );
 };
@@ -90,8 +92,8 @@ TopHeader.defaultProps = {
   isMiddleImage: false,
   leftImage: "chevron-left",
   MiddleText: "Set up your profile",
-  statusBarColor: _COLORS.Kodie_WhiteColor,
-  backgroundColor: _COLORS.Kodie_WhiteColor,
+  // statusBarColor: _COLORS.Kodie_BlackColor,
+  // backgroundColor: _COLORS.Kodie_BlackColor,
   Text_Color: _COLORS.Kodie_BlackColor,
 };
 

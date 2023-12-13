@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect,index } from "react";
+import React, { useState, useRef, useEffect, index } from "react";
 import {
   View,
   Text,
@@ -285,7 +285,7 @@ export default PropertyImages = (props) => {
     updatedVideos.splice(indexToRemove, 1);
     setSelectedVideos(updatedVideos);
   };
- 
+
   const imagePaths = MultiImageName.map((image) => image.path);
   // alert(imagePaths);
   const handleSaveImage = async () => {
@@ -425,9 +425,10 @@ export default PropertyImages = (props) => {
               ) : ( */}
               <SliderBox
                 images={
-                  property_Detail[0]?.image_path
-                    ? property_Detail[0]?.image_path
-                    : imagePaths
+                  // property_Detail[0]?.image_path
+                  //   ? property_Detail[0]?.image_path
+                  //   :
+                  imagePaths
                 }
                 sliderBoxHeight={200}
                 onCurrentImagePressed={(index) =>

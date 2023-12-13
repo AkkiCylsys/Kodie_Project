@@ -18,6 +18,7 @@ export const LandlordProfileStyle = StyleSheet.create({
   usericon: {
     height: 76,
     width: 76,
+    borderRadius:76/2,
     marginHorizontal: 16,
     justifyContent: "center",
     alignSelf: "center",

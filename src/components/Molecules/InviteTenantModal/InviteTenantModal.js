@@ -43,6 +43,7 @@ import { useNavigation } from "@react-navigation/native";
 import { _COLORS } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AddTenantDetails from "../../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 const data = [
   {
@@ -61,13 +62,25 @@ const data = [
     id: "2",
     key: "InviteKodie",
     title: "Invite tenant from Kodie",
-    image: IMAGES.InviteTenant,
+    Icon: (
+      <MaterialCommunityIcons
+        name={"account-search-outline"}
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "3",
     key: "AddManually",
     title: "Add tenant manually",
-    image: IMAGES.AddManually,
+    Icon: (
+      <MaterialCommunityIcons
+        name={"account-circle-outline"}
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
 ];
 

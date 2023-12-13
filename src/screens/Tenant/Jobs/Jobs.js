@@ -12,7 +12,13 @@ const Jobs = (props) => {
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
-        return <Repair />;
+        return (
+          <Repair
+            onpress={() => {
+              props.navigation.navigate("CreateJobFirstScreen");
+            }}
+          />
+        );
       case "Tab2":
         // return (
         //   <View >
@@ -32,19 +38,21 @@ const Jobs = (props) => {
         return <CreateJobFirstScreen />;
 
       default:
-        return <Repair />;
+        return (
+          <Repair onpress={props.navigation.navigate("CreateJobFirstScreen")} />
+        );
     }
   };
 
   return (
     <View style={JobsCss.Container}>
-
       {/* <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} /> */}
 
-      <TopHeader 
-      // onPressLeftButton={() => _goBack(props)} 
-      onPressLeftButton={() => props.navigation.navigate("Dashboard")}
-      MiddleText={"Jobs"} />
+      <TopHeader
+        // onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => props.navigation.navigate("Dashboard")}
+        MiddleText={"Jobs"}
+      />
       <CustomTabNavigator
         activeTab={activeTab}
         setActiveTab={setActiveTab}

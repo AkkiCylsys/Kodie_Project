@@ -5,6 +5,11 @@ export const CreateJobSecondStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
+  heading: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 24,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
   phototextView: {
     flex: 1,
     marginHorizontal: 16,

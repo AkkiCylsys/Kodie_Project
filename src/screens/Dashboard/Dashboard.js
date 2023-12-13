@@ -178,19 +178,17 @@ export default Dashboard = (props) => {
         <TopHeader
           isMiddleImage={true}
           IsNotification={true}
+          isprofileImage
           RightUserProfile={{
-            uri:
-              Platform.OS === "ios"
-                ? `file://${userProfileImageUri}`
-                : userProfileImageUri,
+            uri: userProfileImageUri,
           }}
           MiddleImage={logos.mainLogo}
           leftImage={"menu"}
           MiddleText={"Kodie"}
           Text_Color={_COLORS.Kodie_BlackColor}
           onPressLeftButton={() => props.navigation.openDrawer()}
-          statusBarColor="red"
-          statusBarStyle="dark-content"
+          // statusBarColor="red"
+          // statusBarStyle="dark-content"
         />
 
         <ScrollView showsVerticalScrollIndicator={false}>
