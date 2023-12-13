@@ -641,7 +641,7 @@ export default FirstProperty = (props) => {
       .catch((error) => console.warn(error));
   };
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
         MiddleText={
           IsMap || IsSearch ? "Location" : "Set up your Kodie account"

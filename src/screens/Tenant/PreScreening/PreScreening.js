@@ -192,7 +192,7 @@ const PreScreening = (props) => {
           setNumberOfYear("");
           setWeeklyIncome("");
           setPets("");
-          props.navigation.navigate("TenantList");
+          props.navigation.navigate("TenantList", {});
           setIsLoading(false);
         } else {
           console.error("PreScreening_data_error:", response.data.error);

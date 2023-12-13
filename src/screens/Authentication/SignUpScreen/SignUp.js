@@ -149,11 +149,13 @@ export default SignUp = (props) => {
         setTerm(false);
         setPrivacy(false);
       } else {
-        setEmailError(response.data.message);
+        alert(response.data.message);
       }
     } catch (error) {
       if (error.response || error.response.status === 400) {
         alert("Failed to send OTP via email. Please try again later.");
+      } else if (error.response || error.response.status === 401) {
+        alert("Your Password is Wrong.");
       } else {
         alert("An error occurred. Please try again later.");
       }

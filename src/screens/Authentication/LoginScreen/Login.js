@@ -254,7 +254,14 @@ export default Login = (props) => {
       } else if (res.data.success == "true") {
         //  alert("Login successful");
         setIsLoading(false);
-        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        if (res.data.message == "Please Complete Signup Process") {
+          alert(
+            "Please Complete Signup Process First, Because Your Signup Process are Incomplete."
+          );
+        } else {
+          props.navigation.navigate("DrawerNavigatorLeftMenu");
+        }
+
         setEmail("");
         setPassword("");
       } else {
@@ -359,6 +366,8 @@ export default Login = (props) => {
       .catch((error) => {
         if (error.response && error.response.status === 404) {
           alert("Incorrect OTP. Please try again.");
+        } else if (error.response && error.response.status === 401) {
+          alert(error.response.message || "User Unauthorized");
         } else {
           alert("An error occurred. Please try again later.");
         }
@@ -786,7 +795,7 @@ export default Login = (props) => {
                 <Image
                   source={IMAGES.CheckIcon}
                   style={LoginStyles.checkicon}
-                  resizeMode={"center"}
+                  resizeMode={"contain"}
                 />
               </View>
             </>

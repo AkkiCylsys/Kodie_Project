@@ -97,11 +97,11 @@ export default Documents = (props) => {
           <View style={DocumentsStyle.pdfInfo}>
             {/* <Image source={IMAGES.document} style={DocumentsStyle.pdfIcon} /> */}
             <FontAwesome
-                    name="file-pdf-o"
-                    size={35}
-                    color={_COLORS.Kodie_BlackColor}
-                    resizeMode={"contain"}
-                  />
+              name="file-pdf-o"
+              size={35}
+              color={_COLORS.Kodie_BlackColor}
+              resizeMode={"contain"}
+            />
             <View style={DocumentsStyle.textContainer}>
               <Text style={DocumentsStyle.pdfName}>{item.pdfName}</Text>
               <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text>
@@ -110,7 +110,7 @@ export default Documents = (props) => {
           <TouchableOpacity
             style={DocumentsStyle.crossIcon}
             onPress={() => {
-              refRBSheet.current.open();
+              // refRBSheet.current.open();
             }}
           >
             <Entypo

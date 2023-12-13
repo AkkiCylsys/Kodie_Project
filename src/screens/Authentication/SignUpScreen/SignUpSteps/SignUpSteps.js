@@ -472,7 +472,7 @@ const SignUpSteps = (props) => {
   };
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
         MiddleText={
           IsMap || IsSearch ? "Location" : "Set up your Kodie account"
@@ -614,7 +614,7 @@ const SignUpSteps = (props) => {
         )}
         {isLoading ? <CommonLoader /> : null}
       </View>
-    </>
+    </View>
   );
 };
 

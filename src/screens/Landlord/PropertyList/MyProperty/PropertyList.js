@@ -77,12 +77,16 @@ const PropertyList = (props) => {
   const refRBSheet = useRef();
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [propertyData, setPropertyData] = useState([]);
+  const [propId, setPropId] = useState(0);
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
     useState(false);
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
   };
+
+  // Extract property_id values
+
   const getPropertyDetailsByFilter = async (filter) => {
     setIsLoading(true);
     // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
@@ -104,7 +108,7 @@ const PropertyList = (props) => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        alert("Please check internet connection.");
+        alert(error.response);
         setIsLoading(false);
       } else {
         alert("An error occurred. Please try again later.");
@@ -207,7 +211,8 @@ const PropertyList = (props) => {
   };
   const propertyData1_render = ({ item, index }) => {
     const isExpanded = expandedItems.includes(item.property_id);
-
+    // const propertyIds = data.map(item => item.property_id);
+    setPropId(item.property_id)
     return (
       <>
         <View key={index} style={PropertyListCSS.flatListContainer}>
@@ -291,8 +296,8 @@ const PropertyList = (props) => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                      ? _COLORS.Kodie_mostLightGreenColor
-                      : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_mostLightGreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
               >
@@ -303,8 +308,8 @@ const PropertyList = (props) => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -315,8 +320,8 @@ const PropertyList = (props) => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_MediumGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
                 >
@@ -435,8 +440,8 @@ const PropertyList = (props) => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                      ? _COLORS.Kodie_mostLightGreenColor
-                      : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_mostLightGreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
               >
@@ -447,8 +452,8 @@ const PropertyList = (props) => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -459,8 +464,8 @@ const PropertyList = (props) => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_MediumGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
                 >
@@ -528,7 +533,7 @@ const PropertyList = (props) => {
             container: PropertyListCSS.bottomModal_container,
           }}
         >
-          <BottomModalData />
+          <BottomModalData propertyId={propId} />
         </RBSheet>
       </>
     );
@@ -676,7 +681,7 @@ const PropertyList = (props) => {
           //     propertyDelId: propertyDelId,
           //   })
           // }
-
+          propertyId={propId}
           onDelete={propertyDelete}
           onCloseModal={handleCloseModal}
           isDeletePropertyClicked={isDeleteData_Clicked}

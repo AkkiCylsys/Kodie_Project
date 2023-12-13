@@ -5,34 +5,24 @@ import { _COLORS } from '../../Themes';
 import { _goBack } from '../../services/CommonServices';
 import CustomTabNavigator from '../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import TopHeader from '../../components/Molecules/Header/Header';
+import CurrentTenant from './CurrentTenant/CurrentTenant';
+import InviteTenant from '../Landlord/InviteTenant/InviteTenant';
+import PreviousTenant from './PreviousTenant/PreviousTenant';
 const TenantList = (props) => {
     const [activeTab, setActiveTab] = useState("Tab1");
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
-        // return <Repair />;
-        return (
-            <View >
-              <Text></Text>
-  
-            </View>
-  
-          );
-      case "Tab2":
-        return (
-          <View >
-            <Text></Text>
+        return <CurrentTenant />;
 
-          </View>
-
-        );
-        // return <CreateJobFirstScreen />;
+        case "Tab2":
+        return <PreviousTenant />;
 
       case "Tab3":
         return <InviteTenant ViewButton ={()=>props.navigation.navigate("PreScreening")} />;
 
       default:
-        return <Repair />;
+        return <CurrentTenant />;
     }
   };
   return (

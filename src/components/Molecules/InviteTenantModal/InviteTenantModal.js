@@ -42,13 +42,20 @@ import { IMAGES } from "../../../Themes";
 import { useNavigation } from "@react-navigation/native";
 import { _COLORS } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import AddTenantDetails from "../../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 const data = [
   {
     id: "1",
     key: "InviteFriend",
     title: "Invite tenant from contacts",
-    image: IMAGES.InviteContact,
+    Icon: (
+      <Ionicons
+        name={"person-add-outline"}
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "2",
@@ -85,7 +92,8 @@ export default InviteTenantModal = (props) => {
         }
       }}
     >
-      <Image source={item.image} style={InviteTenantModalStyle.Icons} />
+      {/* <Image source={item.image} style={InviteTenantModalStyle.Icons} /> */}
+      {item.Icon}
       <Text style={InviteTenantModalStyle.Invite_Data_Text}>{item.title}</Text>
     </TouchableOpacity>
   );

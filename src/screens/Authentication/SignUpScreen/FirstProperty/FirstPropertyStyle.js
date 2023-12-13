@@ -264,8 +264,8 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: "#ccc",
-    marginLeft: 10,
-    width: 40,
+    marginLeft: 5,
+    width: "15%",
     justifyContent: "center",
   },
   locationConView: {

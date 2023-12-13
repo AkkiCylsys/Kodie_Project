@@ -22,7 +22,7 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -78,7 +78,7 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -106,9 +106,9 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
   },
   text: {
     color: _COLORS.Kodie_WhiteColor,
-    alignSelf:"center",
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_SemiBold
+    alignSelf: "center",
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
   errorText: { color: "red", marginLeft: 10 },
 });

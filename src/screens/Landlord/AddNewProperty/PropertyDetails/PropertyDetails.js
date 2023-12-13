@@ -506,7 +506,7 @@ export default PropertyDetails = (props) => {
                   >
                     <Octicons
                       name={"location"}
-                      size={20}
+                      size={22}
                       color={_COLORS.Kodie_GreenColor}
                       style={PropertyDetailsStyle.locationIcon}
                     />
