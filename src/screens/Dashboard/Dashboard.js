@@ -189,8 +189,8 @@ export default Dashboard = (props) => {
           MiddleText={"Kodie"}
           Text_Color={_COLORS.Kodie_BlackColor}
           onPressLeftButton={() => props.navigation.openDrawer()}
-          statusBarColor="red"
-          statusBarStyle="dark-content"
+          // statusBarColor="red"
+          // statusBarStyle="dark-content"
         />
 
         <ScrollView showsVerticalScrollIndicator={false}>

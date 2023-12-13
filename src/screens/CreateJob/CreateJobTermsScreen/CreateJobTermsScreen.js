@@ -15,6 +15,9 @@ import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
+import StepIndicator from "react-native-step-indicator";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const data = [
   { label: "3 hours", value: "1" },
   { label: "4 hours", value: "2" },
@@ -22,7 +25,7 @@ const data = [
   { label: "6 hours", value: "4" },
 ];
 export default CreateJobTermsScreen = (props) => {
-  const [currentDate, setCurrentDate] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const [currentTime, setCurrentTime] = useState("");
   const [value, setValue] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -35,11 +38,118 @@ export default CreateJobTermsScreen = (props) => {
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
   };
+
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+    const iconConfig = {
+      name: "feed",
+      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
+      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+      size: 20,
+    };
+
+    switch (position) {
+      case 0: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 1: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 2: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 3: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+    return iconConfig;
+  };
+  const firstIndicatorSignUpStepStyle = {
+    stepIndicatorSize: 40,
+    currentStepIndicatorSize: 20,
+    separatorStrokeWidth: 1,
+    currentStepStrokeWidth: 2,
+    separatorFinishedColor: _COLORS.Kodie_GrayColor,
+    separatorUnFinishedColor: _COLORS.Kodie_LightOrange,
+    stepIndicatorFinishedColor: _COLORS.Kodie_GreenColor,
+    stepIndicatorUnFinishedColor: _COLORS.Kodie_GrayColor,
+    stepIndicatorCurrentColor: _COLORS.Kodie_WhiteColor,
+    stepIndicatorLabelFontSize: 15,
+    currentStepIndicatorLabelFontSize: 15,
+    stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+    labelColor: _COLORS.Kodie_BlackColor,
+    labelSize: 14,
+    labelAlign: "center",
+  };
+  const renderStepIndicator = (params) => (
+    <MaterialIcons {...getStepIndicatorIconConfig(params)} />
+  );
+  const renderLabel = ({ position, stepStatus }) => {
+    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    const iconColor =
+      position === currentPage // Check if it's the current step
+        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+        : stepStatus === "finished"
+        ? "#000000"
+        : "#808080";
+    const iconName =
+      position === 0
+        ? "Details"
+        : position === 1
+        ? "Terms"
+        : position === 2
+        ? "Images"
+        : position === 3
+        ? "Review"
+        : "null";
+
+    return (
+      <View style={{}}>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 1,
+            marginHorizontal: 10,
+            color: iconColor,
+            alignSelf: "center",
+          }}
+        >{`Step ${position + 1}`}</Text>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 5,
+            marginHorizontal: 10,
+            color: iconColor,
+          }}
+        >
+          {iconName}
+        </Text>
+      </View>
+    );
+  };
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Create new job request"}
+      />
+      <StepIndicator
+        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+        currentPosition={1}
+        // onPress={onStepPress}
+        renderStepIndicator={renderStepIndicator}
+        labels={stepLabels}
+        stepCount={4}
+        renderLabel={renderLabel}
       />
       <ScrollView>
         <View style={CreateJobTermsStyle.container}>
@@ -169,7 +279,7 @@ export default CreateJobTermsScreen = (props) => {
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
-              onPress={() => props.navigation.navigate("ConfirmJobCompletion")}
+              onPress={() => props.navigation.navigate("CreateJobSecondScreen")}
             />
           </View>
           <TouchableOpacity style={CreateJobTermsStyle.goBack_View}>

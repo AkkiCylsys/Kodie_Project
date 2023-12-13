@@ -90,8 +90,8 @@ TopHeader.defaultProps = {
   isMiddleImage: false,
   leftImage: "chevron-left",
   MiddleText: "Set up your profile",
-  statusBarColor: _COLORS.Kodie_BlackColor,
-  backgroundColor: _COLORS.Kodie_WhiteColor,
+  // statusBarColor: _COLORS.Kodie_BlackColor,
+  // backgroundColor: _COLORS.Kodie_BlackColor,
   Text_Color: _COLORS.Kodie_BlackColor,
 };
 
