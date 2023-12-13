@@ -5,7 +5,9 @@ import { PrivacySecurityStyle } from "../../Authentication/PrivacyAndSecurity/Pr
 import TopHeader from "../../../components/Molecules/Header/Header";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import { _goBack } from "../../../services/CommonServices";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const PrivacySecurity = (props) => {
   return (
@@ -29,9 +31,14 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    <Image
+                    {/* <Image
                       source={IMAGES.Contact}
                       style={PrivacySecurityStyle.imgicon}
+                    /> */}
+                    <FontAwesome5
+                      name="user-plus"
+                      size={20}
+                      color={_COLORS.Kodie_GreenColor}
                     />
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>
@@ -56,9 +63,14 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    <Image
+                    {/* <Image
                       source={IMAGES.Contact}
                       style={PrivacySecurityStyle.imgicon}
+                    /> */}
+                    <MaterialIcons
+                      name="devices"
+                      size={25}
+                      color={_COLORS.Kodie_GreenColor}
                     />
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>
@@ -83,9 +95,14 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    <Image
+                    {/* <Image
                       source={IMAGES.Contact}
                       style={PrivacySecurityStyle.imgicon}
+                    /> */}
+                    <MaterialCommunityIcons
+                      name="check-decagram-outline"
+                      size={25}
+                      color={_COLORS.Kodie_GreenColor}
                     />
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>

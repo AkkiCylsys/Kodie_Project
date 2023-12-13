@@ -25,7 +25,8 @@ import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveL
 import { Config } from "../../../Config";
 import { fetchRegistrationSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 import { useDispatch, useSelector } from "react-redux";
-import CryptoJS from "crypto-js";
+// import CryptoJS from "crypto-js";
+import CryptoJS from "react-native-crypto-js";
 import { signupApiActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
 export default SignUp = (props) => {
   const [email, setEmail] = useState("");
@@ -72,150 +73,96 @@ export default SignUp = (props) => {
       setPasswordError("");
     }
   };
+  // .........encrypt password.at........
 
-  //.......... Api comign data define here
-  // const SignUpData = {
-  //   email: email,
-  //   password: password,
-  //   is_term_condition: term,
-  //   is_privacy_policy: privacy,
-  // };
-  // const Signuphandle = () => {
-  //   const url = Config.API_URL;
-  //   const signupUrl = url + "user_signup";
-  //   console.log("Request URL:", signupUrl);
-  //   setIsLoading(true);
+  const SECRET_PASS = "XkhZG4fW2t2W";
 
-  //   axios
-  //     .post(signupUrl, SignUpData)
-  //     .then((response) => {
-  //       setSignupResponse(response.data);
-  //       console.log("SignUp response", response.data);
-  //       if (response.data.message === "User Signup Successful") {
-  //         alert(response.data.message);
-  //         // Redirect to SignUpVerification screen
-  //         props.navigation.navigate("SignUpVerification", {
-  //           email: email,
-  //           password: password,
-  //           is_term_condition: term,
-  //           is_privacy_policy: privacy,
-  //           user_key: response.data.User_Key,
-  //         });
-  //         setEmail("");
-  //         setPassword("");
-  //         setTerm(false);
-  //         setPrivacy(false);
-  //         setIsLoading(false);
-  //       } else if (
-  //         response.data.message === "User Already Exists But Not Verified"
-  //       ) {
-  //         alert(response.data.message);
-  //         setEmail("");
-  //         setPassword("");
-  //         setTerm(false);
-  //         setPrivacy(false);
-  //         setIsLoading(false);
-  //         props.navigation.navigate("SignUpVerification", {
-  //           email: email,
-  //           password: password,
-  //           is_term_condition: term,
-  //           is_privacy_policy: privacy,
-  //         });
-  //       } else if (
-  //         response.data.message === "User Already Exists And Verified"
-  //       ) {
-  //         props.navigation.navigate("SignUpSteps");
-  //         setIsLoading(false);
-  //         setEmail("");
-  //         setPassword("");
-  //         setTerm(false);
-  //         setPrivacy(false);
-  //         setIsLoading(false);
-  //       } else {
-  //         setEmailError(response.data.message);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("Signup error:", error);
-  //       alert(error);
-  //       setIsLoading(false);
-  //     });
-  // };
+  const encryptPassword = async (password) => {
+    try {
+      const encryptedPassword = await CryptoJS.AES.encrypt(
+        password,
+        SECRET_PASS
+      ).toString();
+      console.log("Encrypted Password:", encryptedPassword);
+      return encryptedPassword;
+    } catch (error) {
+      console.error("Encryption Error:", error);
+      throw error;
+    }
+  };
 
-  const Signuphandle = () => {
+  const Signuphandle = async () => {
     const url = "https://e3.cylsys.com/api/v1/register";
     const signupUrl = url;
     console.log("Request URL:", signupUrl);
     setIsLoading(true);
 
-    // Encrypt the password
-    const encryptedPassword = CryptoJS.SHA256(password).toString(
-      CryptoJS.enc.Hex
-    );
-    console.log("encryptedPassword", encryptedPassword);
-    const SignUpData = {
-      email: email,
-      password: encryptedPassword,
-      is_term_condition: term,
-      is_privacy_policy: privacy,
-    };
+    try {
+      // Encrypt the password
+      const encryptedpass = await encryptPassword(password);
+      console.log("encryptedpass", encryptedpass);
 
-    axios
-      .post(signupUrl, SignUpData)
-      .then((response) => {
-        setSignupResponse(response.data);
-        console.log("SignUp response", response.data);
-        if (
-          response.data.message ===
-          "The user has been successfully registered, and an OTP has been sent to the registered email."
-        ) {
-          alert(response.data.message);
-          props.navigation.navigate("SignUpVerification", {
-            email: email,
-            password: encryptedPassword, // Send the encrypted password
-            is_term_condition: term,
-            is_privacy_policy: privacy,
-            user_key: response.data.User_Key,
-          });
-          setEmail("");
-          setPassword("");
-          setTerm(false);
-          setPrivacy(false);
-          setIsLoading(false);
-        } else if (
-          response.data.message === "User Exits But Not Verified Please Verify"
-        ) {
-          alert(response.data.message);
-          setEmail("");
-          setPassword("");
-          setTerm(false);
-          setPrivacy(false);
-          setIsLoading(false);
-          props.navigation.navigate("SignUpVerification", {
-            email: email,
-            password: encryptedPassword, // Send the encrypted password
-            is_term_condition: term,
-            is_privacy_policy: privacy,
-          });
-        } else if (response.data.message === "User Exits and Verified") {
-          props.navigation.navigate("SignUpSteps");
-          setIsLoading(false);
-          setEmail("");
-          setPassword("");
-          setTerm(false);
-          setPrivacy(false);
-          setIsLoading(false);
-        } else {
-          setEmailError(response.data.message);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("Signup error:", error);
-        alert(error);
+      const SignUpData = {
+        email: email,
+        password: encryptedpass,
+        is_term_condition: term,
+        is_privacy_policy: privacy,
+      };
+
+      const response = await axios.post(signupUrl, SignUpData);
+
+      setSignupResponse(response.data);
+      console.log("SignUp response", response.data);
+
+      if (
+        response.data.message ===
+        "The user has been successfully registered, and an OTP has been sent to the registered email."
+      ) {
+        alert(response.data.message);
+        props.navigation.navigate("SignUpVerification", {
+          email: email,
+          password: encryptedpass,
+          is_term_condition: term,
+          is_privacy_policy: privacy,
+          user_key: response.data.User_Key,
+        });
+      } else if (
+        response.data.message === "User Exits But Not Verified Please Verify"
+      ) {
+        alert(response.data.message);
+        setEmail("");
+        setPassword("");
+        setTerm(false);
+        setPrivacy(false);
         setIsLoading(false);
-      });
+        props.navigation.navigate("SignUpVerification", {
+          email: email,
+          password: encryptedpass,
+          is_term_condition: term,
+          is_privacy_policy: privacy,
+        });
+      } else if (response.data.message === "User Exits and Verified") {
+        props.navigation.navigate("SignUpSteps");
+        setIsLoading(false);
+        setEmail("");
+        setPassword("");
+        setTerm(false);
+        setPrivacy(false);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      if (error.response || error.response.status === 400) {
+        alert("Failed to send OTP via email. Please try again later.");
+      } else if (error.response || error.response.status === 401) {
+        alert("Your Password is Wrong.");
+      } else {
+        alert("An error occurred. Please try again later.");
+      }
+      console.error("Signup error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   //....... handle signup button validation here

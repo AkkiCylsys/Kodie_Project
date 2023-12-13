@@ -20,6 +20,7 @@ export const CreateJobTermsStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderRadius: 5,
     borderWidth: 1,
+    paddingVertical: 5,
     borderColor: _COLORS.Kodie_GrayColor,
     flexDirection: "row",
     justifyContent: "center",
@@ -33,7 +34,7 @@ export const CreateJobTermsStyle = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 10,
     flex: 1,
-    color: _COLORS.Kodie_LightGrayColor,
+    color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
   },
   spaceView: { margin: 5 },
@@ -60,7 +61,7 @@ export const CreateJobTermsStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -92,5 +93,15 @@ export const CreateJobTermsStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  nextBtn_view:{ marginTop: 50 }
+  nextBtn_view: { marginTop: 50 },
+  itemView: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
 });

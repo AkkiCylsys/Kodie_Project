@@ -32,6 +32,8 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import { useIsFocused } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { Config } from "../../../../Config";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+
 const HorizontalData = [
   "All",
   "Recent",
@@ -62,7 +64,8 @@ const property_List2 = [
 ];
 const PropertyList = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData?.Login_details?.result);
+  console.log("loginData", loginData);
+
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -86,28 +89,33 @@ const PropertyList = (props) => {
 
   const getPropertyDetailsByFilter = async (filter) => {
     setIsLoading(true);
+    // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
     try {
       const url = Config.BASE_URL;
       const filter_apiUrl = url + "get_property_details_by_filter";
       console.log("filter_apiUrl...", filter_apiUrl);
       const response = await axios.post(filter_apiUrl, {
         property_filter: filter,
-        user_account_id: loginData?.Login_details?.result,
+        user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
         limit: filter === "Recent" ? 5 : 10,
-        order_col: 1,
+        order_col: "1",
         order_wise: "DESC",
       });
-      if (response?.data?.property_details) {
-        // Filter out items with null image_path
-        const filteredPropertyData = response.data.property_details.filter(
-          (item) => item.image_path && item.image_path.length > 0
-        );
-        setPropertyData(response?.data?.property_details);
-      }
+
+      setPropertyData(response?.data?.property_details);
+
       setIsLoading(false);
     } catch (error) {
+      if (error.response && error.response.status === 500) {
+        alert(error.response.message);
+        setIsLoading(false);
+      } else {
+        alert("An error occurred. Please try again later.");
+        setIsLoading(false);
+      }
       console.error("API Error:", error);
+      setIsLoading(false);
     }
   };
 
@@ -142,7 +150,7 @@ const PropertyList = (props) => {
       );
 
       console.log("API Response:", response.data);
-      if (response.data.status === true) {
+      if (response.data.success === true) {
         Alert.alert(
           "Property Deleted",
           "The property was deleted successfully."
@@ -204,7 +212,7 @@ const PropertyList = (props) => {
   const propertyData1_render = ({ item, index }) => {
     const isExpanded = expandedItems.includes(item.property_id);
     // const propertyIds = data.map(item => item.property_id);
-    setPropId(item.property_id)
+    setPropId(item.property_id);
     return (
       <>
         <View key={index} style={PropertyListCSS.flatListContainer}>
@@ -213,7 +221,9 @@ const PropertyList = (props) => {
               <Text style={PropertyListCSS.apartmentText}>
                 {item.property_type}
               </Text>
-              <Text style={LABEL_STYLES.commontext}>{item.State}</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {item.state ? item.state : item.city}
+              </Text>
               <View style={PropertyListCSS.flat_MainView}>
                 <MaterialCommunityIcons
                   name={"map-marker"}
@@ -227,7 +237,7 @@ const PropertyList = (props) => {
             </View>
             {item.image_path && item.image_path.length > 0 ? (
               <Image
-                source={{ uri: item.image_path[0] }}
+                source={{ uri: item?.image_path[0] }}
                 style={PropertyListCSS.imageStyle}
               />
             ) : (
@@ -252,10 +262,16 @@ const PropertyList = (props) => {
                     });
                   }}
                 >
-                  <Image
+                  <SimpleLineIcons
+                    name="note"
+                    size={25}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
+                  {/* <Image
                     source={IMAGES.noteBook}
                     style={PropertyListCSS.noteIcon}
-                  />
+                  /> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
@@ -280,8 +296,8 @@ const PropertyList = (props) => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                        ? _COLORS.Kodie_mostLightGreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                      ? _COLORS.Kodie_mostLightGreenColor
+                      : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
               >
@@ -292,8 +308,8 @@ const PropertyList = (props) => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -304,8 +320,8 @@ const PropertyList = (props) => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_MediumGrayColor,
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
                 >
@@ -424,8 +440,8 @@ const PropertyList = (props) => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                        ? _COLORS.Kodie_mostLightGreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                      ? _COLORS.Kodie_mostLightGreenColor
+                      : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
               >
@@ -436,8 +452,8 @@ const PropertyList = (props) => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -448,8 +464,8 @@ const PropertyList = (props) => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_MediumGrayColor,
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
                 >

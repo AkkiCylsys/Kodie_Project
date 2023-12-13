@@ -32,7 +32,7 @@ const data = [
 export default AddLeaseDetails = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginData...", loginData);
-  // alert(loginData?.Login_details?.result)
+  // alert(loginData?.Login_details?.user_id)
 
   // alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
@@ -107,7 +107,7 @@ export default AddLeaseDetails = (props) => {
     setIsLoading(true);
     console.log("selectedDate", selectedDate);
     const lease_Data = {
-      user_key: loginData?.Login_details?.result,
+      user_key: loginData?.Login_details?.user_id,
       // upd_key: 4,
       upd_key: property_id,
       commencement_date: selectedDate,
@@ -315,7 +315,9 @@ export default AddLeaseDetails = (props) => {
               size={20}
             />
           )}
-          <Text style={AddLeaseDetailsStyle.textItem}>{item.lookup_description}</Text>
+          <Text style={AddLeaseDetailsStyle.textItem}>
+            {item.lookup_description}
+          </Text>
         </View>
       </ScrollView>
     );
@@ -336,27 +338,29 @@ export default AddLeaseDetails = (props) => {
             size={20}
           />
         )}
-        <Text style={AddLeaseDetailsStyle.textItem}>{item.lookup_description}</Text>
+        <Text style={AddLeaseDetailsStyle.textItem}>
+          {item.lookup_description}
+        </Text>
       </View>
     );
   };
   return (
     <View style={AddLeaseDetailsStyle.mainContainer}>
-      <ScrollView>
-        <View style={AddLeaseDetailsStyle.heading_View}>
-          <Text style={AddLeaseDetailsStyle.heading_Text}>
-            {"Add lease details"}
-          </Text>
+      <View style={AddLeaseDetailsStyle.heading_View}>
+        <Text style={AddLeaseDetailsStyle.heading_Text}>
+          {"Add lease details"}
+        </Text>
 
-          <TouchableOpacity onPress={handlePopUp}>
-            <AntDesign
-              name="close"
-              size={22}
-              color={_COLORS.Kodie_BlackColor}
-              style={{ alignSelf: "center" }}
-            />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={handlePopUp}>
+          <AntDesign
+            name="close"
+            size={22}
+            color={_COLORS.Kodie_BlackColor}
+            style={{ alignSelf: "center" }}
+          />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
         <View style={AddLeaseDetailsStyle.card}>
           <Text style={LABEL_STYLES.commontext}>{"Commencement date"}</Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
@@ -497,8 +501,8 @@ export default AddLeaseDetails = (props) => {
               style={AddLeaseDetailsStyle.input}
               value={paymentDueDay}
               onChangeText={setPaymentDueDay}
-              placeholder="2023-12-30"
-              placeholderTextColor="#999"
+              // placeholder="2023-12-30"
+              // placeholderTextColor="#999"
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -604,6 +608,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{margin:5}}/>
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Lease expiry reminder"}
             </Text>
@@ -624,7 +629,7 @@ export default AddLeaseDetails = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="30-days"
+                placeholder="30 days"
                 value={expiry_reminder_value}
                 onChange={(item) => {
                   setExpiry_reminder_value(item.lookup_key);
@@ -648,6 +653,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{margin:5}}/>
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Rent payment reminder"}
             </Text>
@@ -668,7 +674,7 @@ export default AddLeaseDetails = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="2-days"
+                placeholder="2 days"
                 value={payment_reminder_value}
                 onChange={(item) => {
                   setPayment_reminder_value(item.lookup_key);
@@ -691,6 +697,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{margin:5}}/>
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Late rental reminder"}
             </Text>
@@ -711,13 +718,13 @@ export default AddLeaseDetails = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="2-days"
+                placeholder="2 days"
                 value={rental_reminder_value}
                 onChange={(item) => {
                   setrental_reminder_value(item.lookup_key);
                 }}
               />
-              <Text style={AddLeaseDetailsStyle.before}>{"After"}</Text>
+              <Text style={AddLeaseDetailsStyle.after}>{"after"}</Text>
             </View>
           </View>
           <View style={AddLeaseDetailsStyle.ButtonView}>
@@ -727,13 +734,13 @@ export default AddLeaseDetails = (props) => {
                 AddLeaseDetailsStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "cancel"
+                    selectedOption == "Cancel"
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("cancel");
+                handleOptionClick("Cancel");
                 handlePopUp();
               }}
             >
@@ -742,13 +749,13 @@ export default AddLeaseDetails = (props) => {
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "cancel"
+                      selectedOption == "Cancel"
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
                 ]}
               >
-                {"cancel"}
+                {"Cancel"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

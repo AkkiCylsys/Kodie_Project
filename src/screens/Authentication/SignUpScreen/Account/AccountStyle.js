@@ -45,9 +45,13 @@ export const AccountStyle = StyleSheet.create({
     marginTop: 9,
     textAlign: "center",
   },
-  locationContainer: {
+  locationConView: {
+    flex: 1,
     flexDirection: "row",
-    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  locationContainer: {
+    flex: 1,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 6,
@@ -62,8 +66,16 @@ export const AccountStyle = StyleSheet.create({
     paddingHorizontal: 10,
     color: _COLORS.Kodie_BlackColor,
   },
-  locationIcon: {
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "#ccc",
     marginLeft: 10,
+    width: "15%",
+    justifyContent: "center",
+  },
+  locationIcon: {
+    alignSelf: "center",
   },
   dropdown: {
     borderWidth: 1,

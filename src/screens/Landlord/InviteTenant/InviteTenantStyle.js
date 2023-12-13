@@ -35,9 +35,6 @@ export const InviteTenantStyle = StyleSheet.create({
     // marginHorizontal: 10,
     flex: 1,
     paddingTop:6
-    // backgroundColor:'red',
-    // justifyContent:"center",
-    // alignItems:'flex-end'
   },
   bindstarview: {
     flexDirection: "row",
@@ -65,6 +62,12 @@ export const InviteTenantStyle = StyleSheet.create({
     marginTop: 5,
     marginHorizontal: 16,
   },
+  Maindescription:{
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"space-between",
+    marginRight:20
+  },
   RowBtnView: {
     marginHorizontal: 16,
     marginBottom: 10,
@@ -78,12 +81,42 @@ export const InviteTenantStyle = StyleSheet.create({
   },
   menuiconview: {
     flexDirection: "row",
-    // backgroundColor:'red',
     flex:1,
     marginBottom:8,
     justifyContent:'flex-end',
   },
   heartimg: {
     marginRight: 10,
+  },
+  buttonView: {
+    alignItems: "center",
+    borderRadius: 15,
+    paddingHorizontal: 1,
+    paddingVertical: 1,
+  },
+  textcolor:{
+    color:_COLORS.Kodie_DarkOrange,
+  },
+  textscore:{
+    color:_COLORS.Kodie_BlackColor,
+    marginLeft:30
+  },
+  textno:{
+    borderWidth:0.5,
+    borderRadius:8,
+    width:54,
+    height:25,
+    textAlign:"center",
+    justifyContent:"center",
+    alignItems:"center",
+    paddingTop:2.5,
+    marginLeft:70
+  },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
   },
 });

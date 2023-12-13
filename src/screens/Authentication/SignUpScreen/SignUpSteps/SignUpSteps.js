@@ -406,8 +406,21 @@ const SignUpSteps = (props) => {
             <Text style={LABEL_STYLES._texinputLabel}>
               Current physical address
             </Text>
-            <View style={AccountStyle.locationContainer}>
+            <View style={AccountStyle.locationConView}>
+              <View style={AccountStyle.locationContainer}>
+                <TextInput
+                  style={AccountStyle.locationInput}
+                  value={physicalAddress}
+                  onChangeText={setPhysicalAddress}
+                  onFocus={() => {
+                    setIsSearch(true);
+                  }}
+                  placeholder="Enter new location"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+              </View>
               <TouchableOpacity
+                style={AccountStyle.locationIconView}
                 onPress={() => {
                   // props.navigation.navigate("Location");
 
@@ -419,21 +432,11 @@ const SignUpSteps = (props) => {
               >
                 <Entypo
                   name={"location-pin"}
-                  size={24}
-                  color={_COLORS.Kodie_MediumGrayColor}
+                  size={28}
+                  color={_COLORS.Kodie_GreenColor}
                   style={AccountStyle.locationIcon}
                 />
               </TouchableOpacity>
-              <TextInput
-                style={AccountStyle.locationInput}
-                value={physicalAddress}
-                onChangeText={setPhysicalAddress}
-                onFocus={() => {
-                  setIsSearch(true);
-                }}
-                placeholder="Enter new location"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
             </View>
           </View>
           <View style={AccountStyle.inputContainer}>
@@ -469,7 +472,7 @@ const SignUpSteps = (props) => {
   };
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
         MiddleText={
           IsMap || IsSearch ? "Location" : "Set up your Kodie account"
@@ -611,7 +614,7 @@ const SignUpSteps = (props) => {
         )}
         {isLoading ? <CommonLoader /> : null}
       </View>
-    </>
+    </View>
   );
 };
 

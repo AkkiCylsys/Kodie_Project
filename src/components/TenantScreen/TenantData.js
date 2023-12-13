@@ -1,108 +1,69 @@
 import React, { useRef } from "react";
-import { View, Text, Image, FlatList } from "react-native";
-import { BottomModalDataStyle } from "./BottomModalDataStyle";
-import { IMAGES, _COLORS } from "../../../Themes";
-import { TouchableOpacity } from "react-native";
+import { View, Text, Image, FlatList,TouchableOpacity} from "react-native";
+import { _COLORS,IMAGES } from "../../Themes";
 import { useNavigation } from "@react-navigation/native";
 import RBSheet from "react-native-raw-bottom-sheet";
-import { PropertyListCSS } from "../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Feather from "react-native-vector-icons/Feather";
+import { TenantDataStyle } from "./TenantDataStyle";
 const data = [
   {
     id: "1",
-    Data: "View property details",
+    Data: "Screen tenant",
     // Img: IMAGES.View_property,
-    Icon: (
-      <MaterialIcons
-        name="preview"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
+    Icon:<MaterialCommunityIcons
+    name="home-account"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "2",
-    Data: "Manage documents",
-    // Img: IMAGES.Documents,
-    Icon: (
-      <MaterialCommunityIcons
-        name="file-download-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
+    Data: "Message tenant",
+    // Img: IMAGES.Chat_Tenant,
+    Icon:<Feather
+    name="message-circle"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+  />
   },
   {
     id: "3",
-    Data: "Create notice / reminder",
-    // Img: IMAGES.Reminder,
-    Icon: (
-      <Ionicons
-        name="mail-unread-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
+    Data: "View profile",
+    // Img: IMAGES.View_property,
+    Icon:<MaterialIcons
+    name="preview"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
   {
     id: "4",
-    Data: "Chat to tenant",
+    Data: "Add tenant to property",
     // Img: IMAGES.Chat_Tenant,
-    Icon: (
-      <Ionicons
-        name="chatbubbles-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: "5",
-    Data: "Delete property",
-    // Img: IMAGES.Delete,
-    Icon: (
-      <MaterialIcons
-        name="delete-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
+    Icon:<MaterialCommunityIcons
+    name="home-plus-outline"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+    />
   },
 ];
-const data1 = [
-  {
-    id: "1",
-    Data: "Delete property",
-    // Img: IMAGES.View_property,
-    Icon: (
-      <MaterialIcons
-        name="delete-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
-    id: "2",
-    Data: "Archive instead",
-    // Img: IMAGES.Documents,
-    Icon: (
-      <Ionicons
-        name="file-tray-full-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-];
+// const data1 = [
+//   {
+//     id: "1",
+//     Data: "Delete property",
+//     Img: IMAGES.View_property,
+//   },
+//   {
+//     id: "2",
+//     Data: "Archive instead",
+//     Img: IMAGES.Documents,
+//   },
+// ];
 
-const BottomModalData = (props) => {
-  const propertyId = props?.propertyId;
-  console.log("propertyId...", propertyId);
+const TenantData = (props) => {
   const navigation = useNavigation(); // Hook to get navigation
   const refRBSheet = useRef();
   const handleCloseModal = () => {
@@ -113,6 +74,9 @@ const BottomModalData = (props) => {
     props.onDelete(propertyDelId);
     console.log("Raul data cath........... ", props.onDelete(propertyDelId));
     // alert(propertyDelId);
+  };
+  const toggleclose = () => {
+    props.onClose();
   };
   const FinalDeleteProperty = (propertyDelId, Address) => {
     console.log(propertyDelId, Address, "catch data");
@@ -130,7 +94,7 @@ const BottomModalData = (props) => {
         {props?.isDeletePropertyClicked ? (
           <>
             <TouchableOpacity
-              style={BottomModalDataStyle.container}
+              style={TenantDataStyle.container}
               onPress={() => {
                 if (item.id === "1") {
                   FinalDeleteProperty();
@@ -142,19 +106,16 @@ const BottomModalData = (props) => {
                 }
               }}
             >
-              {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
-              {item.Icon}
-              <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
+              <Image source={item.Img} style={TenantDataStyle.Icons} />
+              <Text style={TenantDataStyle.text}>{item.Data}</Text>
             </TouchableOpacity>
           </>
         ) : (
           <TouchableOpacity
-            style={BottomModalDataStyle.container}
+            style={TenantDataStyle.container}
             onPress={() => {
               if (item.id === "1") {
-                navigation.navigate("ViewPropertyDetails", {
-                  propertyId: propertyId,
-                });
+                navigation.navigate("ViewPropertyDetails");
               }
               if (item.id === "5") {
                 // navigation.navigate("ViewPropertyDetails");
@@ -164,23 +125,23 @@ const BottomModalData = (props) => {
               }
             }}
           >
-            {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
+            {/* <Image source={item.Img} style={TenantDataStyle.Icons} /> */}
             {item.Icon}
-            <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
+            <Text style={TenantDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}
       </>
     );
   };
   return (
-    <View style={BottomModalDataStyle.mainContainer}>
+    <View style={TenantDataStyle.mainContainer}>
       <TouchableOpacity
         style={{
           justifyContent: "flex-end",
           alignSelf: "flex-end",
           paddingHorizontal: 20,
         }}
-        onPress={handleCloseModal}
+        onPress={toggleclose}
       >
         <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} />
       </TouchableOpacity>
@@ -196,7 +157,7 @@ const BottomModalData = (props) => {
             <>
               {props?.isDeletePropertyClicked ? (
                 <Text
-                  style={BottomModalDataStyle.text}
+                  style={TenantDataStyle.text}
                 >{`Delete property: ${props?.Address} ?`}</Text>
               ) : null}
             </>
@@ -206,4 +167,4 @@ const BottomModalData = (props) => {
     </View>
   );
 };
-export default BottomModalData;
+export default TenantData;

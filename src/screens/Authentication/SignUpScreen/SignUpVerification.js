@@ -109,7 +109,13 @@ export default SignUpVerification = (props) => {
         }
       })
       .catch((error) => {
-        alert(error);
+        if (error.response && error.response.status === 404) {
+          alert("Incorrect OTP. Please try again.");
+        } else if (error.response && error.response.status === 422) {
+          alert("Time up. Please try again.");
+        } else {
+          alert("An error occurred. Please try again later.");
+        }
         console.error("signup Verification error:", error);
         setIsLoading(false);
       });
@@ -147,6 +153,7 @@ export default SignUpVerification = (props) => {
     <View style={SignUpVerificationStyle.mainContainer}>
       <TopHeader
         MiddleText={"Verify your email"}
+        Text_Color={_COLORS.Kodie_BlackColor}
         onPressLeftButton={() => _goBack(props)}
       />
       <View style={SignUpVerificationStyle.container}>

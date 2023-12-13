@@ -20,7 +20,7 @@ import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoade
 import axios from "axios";
 import RBSheet from "react-native-raw-bottom-sheet";
 import EditDocumentsModal from "../../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
-import RNFS from "react-native-fs";
+// import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
 import { Config } from "../../../../../../Config";
 const DocumentDetails = (props) => {
@@ -133,12 +133,13 @@ const DocumentDetails = (props) => {
       }
     } catch (error) {
       console.error("API failed", error);
+      alert(error)
       // Handle network errors more gracefully
-      if (!error.response) {
-        alert("Network error. Please check your internet connection.");
-      } else {
-        alert(error.response.data.message);
-      }
+      // if (!error.response) {
+      //   alert("Network error. Please check your internet connection.");
+      // } else {
+      //   alert(error.response.data.message);
+      // }
     } finally {
       setIsLoading(false);
     }

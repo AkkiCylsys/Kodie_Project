@@ -24,10 +24,6 @@ export const EditProfileStyle = StyleSheet.create({
     marginHorizontal:80,
     marginTop:50
   },
-  editlogo: {
-    width: 15,
-    height: 13,
-  },
   edittext: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Bold,

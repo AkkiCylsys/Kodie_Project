@@ -7,7 +7,7 @@ import {
   Image,
   Dimensions,
   ScrollView,
-  Platform
+  Platform,
 } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { DashboardStyle } from "./DashboardStyle";
@@ -106,7 +106,7 @@ export default Dashboard = (props) => {
   // );
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector((state) => state.authenticationReducer.data);
-
+  console.log("loginResponse.....", loginData);
   //---click back button closing the app
   useEffect(() => {
     const handleBackPress = () => {
@@ -168,26 +168,29 @@ export default Dashboard = (props) => {
       </>
     );
   };
+  const userProfileImageUri =
+    loginData?.Login_details?.profile_photo_path ||
+    signUp_account_response?.Login_details?.profile_photo_path;
+
   return (
     <>
       <View style={DashboardStyle.mainContainer}>
         <TopHeader
           isMiddleImage={true}
           IsNotification={true}
-          RightUserProfile={
-            loginData?.profile_path
-              ? loginData?.profile_path
-              : IMAGES.Landlordprofile
-            // ||
-            //   signUp_account_response?.profile_photo_path
-            // ? singup_Data?.profile_photo_path
-            // : IMAGES.Landlordprofile
-          }
-          // RightUserProfile={IMAGES.Landlordprofile}
-          MiddleImage={logos.MainLogoWhite}
+          RightUserProfile={{
+            uri:
+              Platform.OS === "ios"
+                ? `file://${userProfileImageUri}`
+                : userProfileImageUri,
+          }}
+          MiddleImage={logos.mainLogo}
           leftImage={"menu"}
           MiddleText={"Kodie"}
+          Text_Color={_COLORS.Kodie_BlackColor}
           onPressLeftButton={() => props.navigation.openDrawer()}
+          // statusBarColor="red"
+          // statusBarStyle="dark-content"
         />
 
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -459,10 +462,7 @@ export default Dashboard = (props) => {
         </RBSheet>
       </View>
 
-      {/* Floating action button comopent call here... */}
-      {/* <View style={DashboardStyle.floating_action_btn_view}> */}
-        <FloatingActionButton />
-      {/* </View> */}
+      <FloatingActionButton />
     </>
   );
 };

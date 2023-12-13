@@ -20,7 +20,9 @@ import CustomSingleButton from "../../../../components/Atoms/CustomButton/Custom
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
-
+import StepIndicator from "react-native-step-indicator";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.previewImage,
   BANNERS.Apartment,
@@ -38,11 +40,110 @@ const Apartment_data = [
 ];
 const JobDetails = (props) => {
   const [activeTab, setActiveTab] = useState("Tab3");
+  const [currentPage, setCurrentPage] = useState(3);
   const [value, setValue] = useState(null);
   const [value2, setValue2] = useState(null);
   const [value3, setValue3] = useState(null);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+    const iconConfig = {
+      name: "feed",
+      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
+      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+      size: 20,
+    };
+
+    switch (position) {
+      case 0: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 1: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 2: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 3: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+    return iconConfig;
+  };
+  const firstIndicatorSignUpStepStyle = {
+    stepIndicatorSize: 40,
+    currentStepIndicatorSize: 20,
+    separatorStrokeWidth: 1,
+    currentStepStrokeWidth: 2,
+    separatorFinishedColor: _COLORS.Kodie_GrayColor,
+    separatorUnFinishedColor: _COLORS.Kodie_LightOrange,
+    stepIndicatorFinishedColor: _COLORS.Kodie_GreenColor,
+    stepIndicatorUnFinishedColor: _COLORS.Kodie_GrayColor,
+    stepIndicatorCurrentColor: _COLORS.Kodie_WhiteColor,
+    stepIndicatorLabelFontSize: 15,
+    currentStepIndicatorLabelFontSize: 15,
+    stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+    labelColor: _COLORS.Kodie_BlackColor,
+    labelSize: 14,
+    labelAlign: "center",
+  };
+  const renderStepIndicator = (params) => (
+    <MaterialIcons {...getStepIndicatorIconConfig(params)} />
+  );
+  const renderLabel = ({ position, stepStatus }) => {
+    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    const iconColor =
+      position === currentPage // Check if it's the current step
+        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+        : stepStatus === "finished"
+        ? "#000000"
+        : "#808080";
+    const iconName =
+      position === 0
+        ? "Details"
+        : position === 1
+        ? "Terms"
+        : position === 2
+        ? "Images"
+        : position === 3
+        ? "Review"
+        : "null";
+
+    return (
+      <View style={{}}>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 1,
+            marginHorizontal: 10,
+            color: iconColor,
+            alignSelf: "center",
+          }}
+        >{`Step ${position + 1}`}</Text>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 5,
+            marginHorizontal: 10,
+            color: iconColor,
+          }}
+        >
+          {iconName}
+        </Text>
+      </View>
+    );
+  };
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -61,7 +162,19 @@ const JobDetails = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Review job details"}
       />
+      <StepIndicator
+        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+        currentPosition={3}
+        // onPress={onStepPress}
+        renderStepIndicator={renderStepIndicator}
+        labels={stepLabels}
+        stepCount={4}
+        renderLabel={renderLabel}
+      />
       <ScrollView>
+        <Text style={JobDetailsStyle.heading}>
+          {"Review job details"}
+        </Text>
         <ImageBackground>
           <View style={JobDetailsStyle.slider_view}>
             <SliderBox

@@ -30,11 +30,11 @@ const Select = () => {
       <View style={SelectStyle.optionsmainview}>
         <View style={SelectStyle.optionsview}>
           <View style={SelectStyle.optionsiconview}>
-            {/* <MaterialCommunityIcons
+            <MaterialCommunityIcons
               size={18}
               color={_COLORS.Kodie_GreenColor}
               name="alarm-snooze"
-            /> */}
+            />
           </View>
           <Text style={SelectStyle.textoption}>
           View/edit notice

@@ -31,7 +31,7 @@ export const PropertyImagesStyle = StyleSheet.create({
   phototextView: {
     flex: 1,
     marginHorizontal: 10,
-    marginBottom: 80,
+    marginBottom: 15,
   },
   upload_Heading_Text: {
     fontSize: 14,
@@ -62,7 +62,7 @@ export const PropertyImagesStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
   btnView: {
-    marginTop: 24,
+    // marginTop: 2,
   },
   bottomModal_container: {
     borderWidth: 0.5,

@@ -20,19 +20,21 @@ import {
 // import { Config } from './../../../Config/index'
 import { Config } from "../../../Config";
 
-const url = Config.API_URL;
+const url = Config.BASE_URL;
 
 export const loginApiActionCreator = (data) => async (dispatch) => {
-  //alert(url)
+  // alert(JSON.stringify(data));
   dispatch(fetchLoginData());
   try {
-    const res = await axios.post(url + "user_login", data, {
+    const res = await axios.post(url + "login", data, {
       headers: {
         "Content-Type": "application/json",
       },
     });
-    // alert(JSON.stringify(res))
-    if (res.data.status == true) {
+    // alert(JSON.stringify(res));
+    // alert(res.);
+    // alert("resInredux....", res);
+    if (res.data.success == "true") {
       dispatch(fetchLoginSuccess(res.data));
       return res;
     } else {
@@ -41,7 +43,7 @@ export const loginApiActionCreator = (data) => async (dispatch) => {
     }
     //return res;
   } catch (error) {
-    //alert(JSON.stringify(error?.response?.status))
+    // alert(JSON.stringify(error?.response?.status));
     dispatch(fetchLoginError(error));
     return error?.response?.status;
   }
@@ -51,8 +53,8 @@ export const signupAccountApiActionCreator = (data) => async (dispatch) => {
   dispatch(fetchRegistrationData());
   try {
     const res = await axios.post(
-      url + "user_save_signup_account_details",
-      // "https://e3.cylsys.com/api/v1/signup_step_one",
+      // url + "user_save_signup_account_details",
+      url + "signup_step_one",
       data,
       {
         headers: {
@@ -60,9 +62,10 @@ export const signupAccountApiActionCreator = (data) => async (dispatch) => {
         },
       }
     );
-    console.log("res....", res);
+    console.log("res....", res.data);
     if (res.data.status == true) {
       dispatch(fetchRegistrationSuccess(res.data));
+      // alert(JSON.stringify(res.data));
       return res;
     } else {
       return res;

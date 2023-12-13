@@ -130,18 +130,18 @@ export default PropertyDetails = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.data);
-          setLocation(response.data.data?.location);
+          setProperty_Details(response.data.data[0]);
+          setLocation(response.data.data[0]?.location);
           setProperty_value(
             // 24
-            parseInt(response.data.data?.property_type_id)
+            parseInt(response.data.data[0]?.property_type_id)
             // response.data.property_details[0]?.property_type_id.replace(
             //   /\D/g,
             //   ""
             // )
           );
 
-          setPropertyDesc(response.data.data?.property_description);
+          setPropertyDesc(response.data.data[0]?.property_description);
 
           console.log("propertyDetail....", response.data.data);
         } else {
@@ -480,8 +480,22 @@ export default PropertyDetails = (props) => {
             <View style={PropertyDetailsStyle.card}>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
-                <View style={PropertyDetailsStyle.locationContainer}>
+                <View style={PropertyDetailsStyle.locationConView}>
+                  <View style={PropertyDetailsStyle.locationContainer}>
+                    <TextInput
+                      style={PropertyDetailsStyle.locationInput}
+                      value={location}
+                      onChangeText={setLocation}
+                      onFocus={() => {
+                        setIsSearch(true);
+                        // setlocationError("");
+                      }}
+                      placeholder="Search location"
+                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                    />
+                  </View>
                   <TouchableOpacity
+                    style={PropertyDetailsStyle.locationIconView}
                     onPress={() => {
                       // props.navigation.navigate("Location");
                       Platform.OS == "ios"
@@ -492,23 +506,11 @@ export default PropertyDetails = (props) => {
                   >
                     <Octicons
                       name={"location"}
-                      size={20}
-                      color={_COLORS.Kodie_MediumGrayColor}
+                      size={22}
+                      color={_COLORS.Kodie_GreenColor}
                       style={PropertyDetailsStyle.locationIcon}
                     />
                   </TouchableOpacity>
-
-                  <TextInput
-                    style={PropertyDetailsStyle.locationInput}
-                    value={location}
-                    onChangeText={setLocation}
-                    onFocus={() => {
-                      setIsSearch(true);
-                      // setlocationError("");
-                    }}
-                    placeholder="Search location"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  />
                 </View>
                 {/* {locationError ? (
                   <Text style={PropertyDetailsStyle.error_text}>

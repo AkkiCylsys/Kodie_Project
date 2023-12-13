@@ -20,7 +20,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -38,8 +38,9 @@ export const PropertyDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
   },
   locationContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    // flexDirection: "row",
+    // alignItems: "center",
+    flex: 1,
     borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 6,
@@ -52,11 +53,11 @@ export const PropertyDetailsStyle = StyleSheet.create({
     flex: 1,
     height: 48,
     paddingHorizontal: 10,
-    color:_COLORS.Kodie_BlackColor
+    color: _COLORS.Kodie_BlackColor,
   },
   error_text: { color: "red", marginLeft: 10 },
   locationIcon: {
-    marginLeft: 15,
+    alignSelf: "center",
   },
   dropdown: {
     borderWidth: 1,
@@ -110,5 +111,19 @@ export const PropertyDetailsStyle = StyleSheet.create({
   },
   btnView: {
     marginTop: 24,
+  },
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: "#ccc",
+    marginLeft: 5,
+    width: "15%",
+    justifyContent: "center",
+    height: 50,
+  },
+  locationConView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });

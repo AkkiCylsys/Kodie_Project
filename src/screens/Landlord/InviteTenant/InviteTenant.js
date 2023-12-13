@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import { InviteTenantStyle } from "./InviteTenantStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -10,6 +10,8 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import StarRating from "react-native-star-rating";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+import TenantData from "../../../components/TenantScreen/TenantData";
+import RBSheet from "react-native-raw-bottom-sheet";
 import axios from "axios";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { Config } from "../../../Config";
@@ -42,42 +44,40 @@ const data = [
   },
 ];
 
-
 export default InviteTenant = (props) => {
   const [rating, setRating] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
-  const [inviteTenant , setInviteTenant] = useState([]);
-  const [inviteTenantALl , setInviteTenantAll] = useState([]);
+  const [inviteTenant, setInviteTenant] = useState([]);
+  const [inviteTenantALl, setInviteTenantAll] = useState([]);
 
-
-    // Get APi bind first user show bydefault showing here....
-    const get_Tenent_Details = () => {
-      const url = Config.BASE_URL;
-      const Invite_Tenant_url = url + `tanant_details/getAll/tanant`;
-      setIsLoading(true);
-      console.log("Request URL:", Invite_Tenant_url);
-      axios
-        .get(Invite_Tenant_url)
-        .then((response) => {
-          console.log("API Response InviteTenant_url:", response.data);
-          if (response.data.success === true) {
-            setInviteTenant(response.data.data);
-            console.log("Invite Tenant Data..", response.data.data);
-            // alert(response.data.data.UAD_KEY)
-            setIsLoading(false);
-          } else {
-            alert(response.data.message);
-            setIsLoading(false);
-          }
-        })
-        .catch((error) => {
-          console.error("API failed", error);
+  // Get APi bind first user show bydefault showing here....
+  const get_Tenent_Details = () => {
+    const url = Config.BASE_URL;
+    const Invite_Tenant_url = url + `tanant_details/getAll/tanant`;
+    setIsLoading(true);
+    console.log("Request URL:", Invite_Tenant_url);
+    axios
+      .get(Invite_Tenant_url)
+      .then((response) => {
+        console.log("API Response InviteTenant_url:", response.data);
+        if (response.data.success === true) {
+          setInviteTenant(response.data.data);
+          console.log("Invite Tenant Data..", response.data.data);
+          // alert(response.data.data.UAD_KEY)
           setIsLoading(false);
-        })
-        .finally(() => {
+        } else {
+          alert(response.data.message);
           setIsLoading(false);
-        });
-    };
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   // Get APi bind after fill user pre-screening then showing here....
   // const get_Invite_Tenent_Details = () => {
   //   const url = Config.BASE_URL;
@@ -120,7 +120,9 @@ export default InviteTenant = (props) => {
             </TouchableOpacity>
           </View>
           <View style={InviteTenantStyle.nameView}>
-            <Text style={InviteTenantStyle.nameText}>{item.UAD_FIRST_NAME}</Text>
+            <Text style={InviteTenantStyle.nameText}>
+              {item.UAD_FIRST_NAME}
+            </Text>
             <Text style={InviteTenantStyle.nameText}>{item.UAD_LAST_NAME}</Text>
           </View>
 
@@ -142,39 +144,54 @@ export default InviteTenant = (props) => {
             </View>
           </View>
           <View style={InviteTenantStyle.menuiconview}>
-            <AntDesign
-              name="hearto"
-              size={25}
-              color={_COLORS.Kodie_GrayColor}
-              style={InviteTenantStyle.heartimg}
-            />
-
-            <Entypo
-              name="dots-three-horizontal"
-              size={20}
-              color={_COLORS.Kodie_GrayColor}
-              style={InviteTenantStyle.closeIcon}
-            />
+            <TouchableOpacity>
+              <AntDesign
+                name="hearto"
+                size={25}
+                color={_COLORS.Kodie_GrayColor}
+                style={InviteTenantStyle.heartimg}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                refRBSheet.current.open();
+              }}
+            >
+              <Entypo
+                name="dots-three-horizontal"
+                size={20}
+                color={_COLORS.Kodie_GrayColor}
+                style={InviteTenantStyle.closeIcon}
+              />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={InviteTenantStyle.description}>
-          <View style={InviteTenantStyle.desc_View}>
-            <Text style={InviteTenantStyle.desc_heading}>
-              {"Looking for : "}
-            </Text>
-            <Text style={InviteTenantStyle.desc_value}>{item.looking_For}</Text>
+        <View style={InviteTenantStyle.Maindescription}>
+          <View style={InviteTenantStyle.description}>
+            <View style={InviteTenantStyle.desc_View}>
+              <Text style={InviteTenantStyle.desc_heading}>
+                {"Looking for : "}
+              </Text>
+              <Text style={InviteTenantStyle.desc_value}>
+                {item.looking_For}
+              </Text>
+            </View>
+            <View style={InviteTenantStyle.desc_View}>
+              <Text style={InviteTenantStyle.desc_heading}>
+                {"Location : "}
+              </Text>
+              <Text style={InviteTenantStyle.desc_value}>
+                {item.UAD_CURR_PHYSICAL_ADD}
+              </Text>
+            </View>
+            <View style={InviteTenantStyle.desc_View}>
+              <Text style={InviteTenantStyle.desc_heading}>{"Budget : "}</Text>
+              <Text style={InviteTenantStyle.desc_value}>{item.budget}</Text>
+            </View>
+            <TouchableOpacity>
+              <Text style={InviteTenantStyle.readtext}>{"Read more"}</Text>
+            </TouchableOpacity>
           </View>
-          <View style={InviteTenantStyle.desc_View}>
-            <Text style={InviteTenantStyle.desc_heading}>{"Location : "}</Text>
-            <Text style={InviteTenantStyle.desc_value}>{item.UAD_CURR_PHYSICAL_ADD}</Text>
-          </View>
-          <View style={InviteTenantStyle.desc_View}>
-            <Text style={InviteTenantStyle.desc_heading}>{"Budget : "}</Text>
-            <Text style={InviteTenantStyle.desc_value}>{item.budget}</Text>
-          </View>
-          <TouchableOpacity>
-            <Text style={InviteTenantStyle.readtext}>{"Read more"}</Text>
-          </TouchableOpacity>
         </View>
         <View style={InviteTenantStyle.RowBtnView}>
           <RowButtons
@@ -196,12 +213,12 @@ export default InviteTenant = (props) => {
   };
   return (
     <View style={InviteTenantStyle.mainContainer}>
-     <SearchBar
+      <SearchBar
         filterImage={IMAGES.filter}
         isFilterImage
         height={48}
         marginTop={20}
-        placeholder={'Search tenants'}
+        placeholder={"Search tenants"}
         frontSearchIcon
       />
       <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />
@@ -214,7 +231,25 @@ export default InviteTenant = (props) => {
         keyExtractor={(item) => item?.id}
         renderItem={tenantData}
       />
-       {isLoading ? <CommonLoader /> : null}
+
+      <RBSheet
+        ref={refRBSheet}
+        height={280}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: InviteTenantStyle.bottomModal_container,
+        }}
+      >
+        <TenantData onClose={CloseUp} />
+      </RBSheet>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
