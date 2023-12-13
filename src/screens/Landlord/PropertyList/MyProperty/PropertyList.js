@@ -84,7 +84,9 @@ const PropertyList = (props) => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
   };
-
+  const CloseUp = () => {
+    setIsDeleteBottomSheetVisible(false);
+  };
   // Extract property_id values
 
   const getPropertyDetailsByFilter = async (filter) => {
@@ -281,6 +283,7 @@ const PropertyList = (props) => {
                     // alert(propertyDelId);
                     setAddress(item?.location);
                   }}
+                 
                 >
                   <MaterialCommunityIcons
                     name={"dots-horizontal"}
@@ -687,6 +690,7 @@ const PropertyList = (props) => {
           isDeletePropertyClicked={isDeleteData_Clicked}
           onDeleteData={FinalDeleteProperty}
           Address={Address}
+          onClose={CloseUp}
         />
       </Modal>
       {isLoading ? <CommonLoader /> : null}
