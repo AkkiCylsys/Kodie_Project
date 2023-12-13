@@ -47,7 +47,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
   },
   inputSearchStyle: {
@@ -207,7 +207,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: "#ccc",
     marginLeft: 10,
-    width: 40,
+    width: "15%",
     height: 48,
     justifyContent: "center",
   },
