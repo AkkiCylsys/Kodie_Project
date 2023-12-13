@@ -5,7 +5,7 @@ import { _COLORS } from '../../Themes';
 import { _goBack } from '../../services/CommonServices';
 import CustomTabNavigator from '../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import TopHeader from '../../components/Molecules/Header/Header';
-import CurrentTenant from './CurrentTenant/CurrentTenant';
+import CurrentTenant from "./CurrentTenant/CurrentTenant";
 import InviteTenant from '../Landlord/InviteTenant/InviteTenant';
 import PreviousTenant from './PreviousTenant/PreviousTenant';
 const TenantList = (props) => {
