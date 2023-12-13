@@ -520,13 +520,16 @@ export default PropertyImages = (props) => {
                             position: "absolute",
                             // top: 2,
                             right: 5,
-                            // backgroundColor: "rgba(255,255,255,0.7)",
-                            borderRadius: 15,
-                            padding: 3,
+                            backgroundColor: "rgba(255,255,255,0.7)",
+                            height:"15%",
+                            width:"15%",
+                            borderRadius: 8,
+                            // padding: 3,
+                            justifyContent:"center"
                           }}
                           onPress={() => removeVideo(index)}
                         >
-                          <Text style={{ color: "black" }}>X</Text>
+                          <Text style={{ color: "black",fontWeight:"bold",alignSelf:"center" }}>X</Text>
                         </TouchableOpacity>
                         {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
                       </>
