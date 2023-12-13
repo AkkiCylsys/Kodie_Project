@@ -178,11 +178,9 @@ export default Dashboard = (props) => {
         <TopHeader
           isMiddleImage={true}
           IsNotification={true}
+          isprofileImage
           RightUserProfile={{
-            uri:
-              Platform.OS === "ios"
-                ? `file://${userProfileImageUri}`
-                : userProfileImageUri,
+            uri: userProfileImageUri,
           }}
           MiddleImage={logos.mainLogo}
           leftImage={"menu"}

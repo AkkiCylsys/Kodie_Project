@@ -72,10 +72,12 @@ const TopHeader = (props) => {
               // />
               null}
             </TouchableOpacity>
+            {props.isprofileImage ? (
             <Image
               source={props?.RightUserProfile || IMAGES.Landlordprofile}
               style={HeaderStyle.usericon}
             />
+            ):null}
           </View>
         )}
       </View>
