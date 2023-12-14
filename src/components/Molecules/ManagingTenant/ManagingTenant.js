@@ -79,7 +79,10 @@ const ManagingTenant = (props) => {
           }}
         >
           {/* <Image source={item.Img} style={ManagingTenantStyle.Icons} /> */}
-          {item.Icon}
+          {/* {item.Icon} */}
+          <Text style={ManagingTenantStyle.IcontenantView}>
+            {item.Icon}
+            </Text>
           <Text style={ManagingTenantStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
       </>
