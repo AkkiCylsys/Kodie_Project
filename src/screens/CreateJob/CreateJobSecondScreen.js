@@ -28,6 +28,9 @@ import Video from "react-native-video";
 import ImagePicker from "react-native-image-crop-picker";
 import UploadLeftImage from "../../components/Molecules/UploadImage/UploadLeftImage";
 import UploadRightImage from "../../components/Molecules/UploadImage/UploadRightImage";
+import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
+import { useDispatch, useSelector } from "react-redux";
+
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.wallImage,
@@ -36,6 +39,13 @@ const images = [
   BANNERS.previewImage,
 ];
 const CreateJobSecondScreen = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
+  // alert(loginData?.Login_details?.user_account_id);
+
+  let job_id = props?.route?.params?.job_id;
+  console.log("job_id.....", job_id);
+
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
@@ -45,6 +55,7 @@ const CreateJobSecondScreen = (props) => {
   const [leftImage, setLeftImage] = useState([]);
   const [rightImage, setRightImage] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState([]);
+
   const CloseUp = () => {
     refRBSheet.current.close();
     console.log("close");
@@ -167,20 +178,12 @@ const CreateJobSecondScreen = (props) => {
     })
       .then((videos) => {
         setSelectedVideos([...selectedVideos, ...videos]);
+        console.log("videos....", videos);
       })
       .catch((error) => {
         console.error("Error selecting videos:", error);
       });
   };
-  // const handleImageNameChange = (multipleImages) => {
-  //   const updatedImages = [...multipleImages,multipleImages,...multipleImages];
-  //   console.log('updatedata',updatedImages)
-  //   setMultiImageName(updatedImages);
-  //   // setMultiImageName(multipleImages);
-  //   console.log("................ImageNAme", multipleImages);
-  //   // console.log("................ImageNAmepath", multipleImages.path);
-  // };
-
   const handlefrontImage = (multipleImages) => {
     setMultiImageName(multipleImages);
     console.log("................multiFrontImage", multipleImages);
@@ -206,84 +209,100 @@ const CreateJobSecondScreen = (props) => {
   const rightImagePaths = rightImage.map((item) => item.path);
   console.log("rightImagePaths....", rightImagePaths);
 
+  const allImagePaths = [
+    ...new Set([...imagePaths, ...leftImagePaths, ...rightImagePaths]),
+  ];
   // Api intrigation......
-  // const handleSaveImage = async () => {
-  //   const formData = new FormData();
-  //   refRBSheet.current.close();
-  //   formData.append("property_id", property_id);
+  const handleuploadJobFiles = async () => {
+    const formData = new FormData();
+    formData.append("JM_JOB_ID", job_id);
+    if (MultiImageName && Array.isArray(MultiImageName)) {
+      const imagePaths = MultiImageName.map((image) => image.path);
+      imagePaths.forEach((path, index) => {
+        formData.append("frontImage", {
+          uri: path,
+          name: `image_${index}.jpg`,
+          type: "image/jpeg",
+        });
+      });
+    } else {
+      console.error(
+        "MultiImageName is not defined or not an array:",
+        MultiImageName
+      );
+      return;
+    }
 
-  //   if (MultiImageName && Array.isArray(MultiImageName)) {
-  //     const imagePaths = MultiImageName.map((image) => image.path);
-  //     imagePaths.forEach((path, index) => {
-  //       formData.append("images", {
-  //         uri: path,
-  //         name: `image_${index}.jpg`,
-  //         type: "image/jpeg",
-  //       });
-  //     });
-  //   } else {
-  //     console.error(
-  //       "MultiImageName is not defined or not an array:",
-  //       MultiImageName
-  //     );
-  //     return;
-  //   }
-  //   if (selectedVideos && selectedVideos.length > 0) {
-  //     selectedVideos.forEach((videoUri, index) => {
-  //       if (typeof videoUri === "string") {
-  //         const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-  //         formData.append(`videos`, {
-  //           uri: videoUri,
-  //           name: videoName,
-  //           type: "video/mp4",
-  //         });
-  //       } else {
-  //         console.error(`Invalid video URI at index ${index}: ${videoUri}`);
-  //       }
-  //     });
-  //   }
-  //   console.log("formData", formData);
-  //   const saveAccountDetails =
-  //     "https://e3.cylsys.com/api/v1/add_property_images_videos";
-  //   console.log("Request URL:", saveAccountDetails);
+    if (leftImage && Array.isArray(leftImage)) {
+      const leftImagePaths = leftImage.map((image) => image.path);
+      leftImagePaths.forEach((path, index) => {
+        formData.append("leftImage", {
+          uri: path,
+          name: `left_image_${index}.jpg`,
+          type: "image/jpeg",
+        });
+      });
+    } else {
+      console.error("leftImage is not defined or not an array:", leftImage);
+      return;
+    }
 
-  //   setIsLoading(true);
+    if (rightImage && Array.isArray(rightImage)) {
+      const rightImagePaths = rightImage.map((image) => image.path);
+      rightImagePaths.forEach((path, index) => {
+        formData.append("rightImage", {
+          uri: path,
+          name: `right_image_${index}.jpg`,
+          type: "image/jpeg",
+        });
+      });
+    } else {
+      console.error("rightImage is not defined or not an array:", rightImage);
+      return;
+    }
 
-  //   try {
-  //     const response = await axios.post(saveAccountDetails, formData, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     });
-
-  //     console.log("Save Account Details", response.data);
-
-  //     if (response.data.success === true) {
-  //       setIsLoading(false);
-  //       MultiImageName ? refRBSheet.current.close() : null;
-  //       props.navigation.navigate("PropertyReview", {
-  //         property_id: property_id,
-  //         MultiImageName: MultiImageName,
-  //         selectedVideos: selectedVideos,
-  //       });
-  //       console.log("Save Account Details", response.data);
-  //     } else {
-  //       console.log("Save Account Details error:", response.data.error);
-  //       alert("Error while saving account details");
-  //     }
-  //   } catch (error) {
-  //     if (axios.isCancel(error)) {
-  //       console.log("Request canceled:", error.message);
-  //     } else {
-  //       console.log("saving account details", error.message);
-  //       alert(
-  //         error.message || "An error occurred while saving account details"
-  //       );
-  //     }
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+    if (selectedVideos && selectedVideos.length > 0) {
+      selectedVideos.forEach((videoUri, index) => {
+        if (typeof videoUri === "string") {
+          const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+          formData.append("video", {
+            uri: videoUri,
+            name: videoName,
+            type: "video/mp4",
+          });
+        } else {
+          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+        }
+      });
+    }
+    formData.append("createdBy", loginData?.Login_details?.user_account_id);
+    formData.append("updatedBy", loginData?.Login_details?.user_account_id);
+    console.log("formData", formData);
+    const uploadJobFiles = "https://e3.cylsys.com/api/v1/job/uploadJobFiles/65";
+    console.log("Request URL:", uploadJobFiles);
+    setIsLoading(true);
+    try {
+      const response = await axios.post(uploadJobFiles, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("uploadJobFilesData....", response.data);
+      if (response.data.success === true) {
+        setIsLoading(false);
+        alert(" successfully uploaded files");
+        console.log("SuploadJobFilesDatas", response.data);
+      } else {
+        console.log("uploadJobFilesData", response.data.error);
+        alert("Error while saving account details");
+      }
+    } catch (error) {
+      alert(error);
+      console.log("error...", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <View style={CreateJobSecondStyle.container}>
@@ -306,37 +325,30 @@ const CreateJobSecondScreen = (props) => {
             {"Images and videos of job"}
           </Text>
           <View style={CreateJobSecondStyle.slider_view}>
-            <SliderBox
-              // images={images}
-              // images={
-              //   imagePaths.length > 0
-              //     ? imagePaths
-              //     : leftImagePaths.length > 0
-              //     ? leftImagePaths
-              //     : rightImagePaths.length > 0
-              //     ? rightImagePaths
-              //     : null
-              // }
-              images={imagePaths}
-              sliderBoxHeight={200}
-              onCurrentImagePressed={(index) =>
-                console.warn(`image ${index} pressed`)
-              }
-              inactiveDotColor={_COLORS.Kodie_GrayColor}
-              dotColor={_COLORS.Kodie_GreenColor}
-              autoplay
-              circleLoop
-              resizeMethod={"resize"}
-              resizeMode={"cover"}
-              dotStyle={CreateJobSecondStyle.dotStyle}
-              ImageComponentStyle={{
-                flex: 1,
-                resizeMode: "cover",
-                borderRadius: 15,
-                width: "90%",
-                // position: "relative",
-              }}
-            />
+            {(imagePaths && imagePaths.length > 0) ||
+            (leftImagePaths && leftImagePaths.length > 0) ||
+            (rightImagePaths && rightImagePaths.length > 0) ? (
+              <SliderBox
+                images={allImagePaths}
+                sliderBoxHeight={200}
+                onCurrentImagePressed={(index) =>
+                  console.warn(`image ${index} pressed`)
+                }
+                inactiveDotColor={_COLORS.Kodie_GrayColor}
+                dotColor={_COLORS.Kodie_GreenColor}
+                autoplay
+                circleLoop
+                resizeMethod={"resize"}
+                resizeMode={"cover"}
+                dotStyle={CreateJobSecondStyle.dotStyle}
+                ImageComponentStyle={{
+                  flex: 1,
+                  resizeMode: "cover",
+                  borderRadius: 15,
+                  width: "90%",
+                }}
+              />
+            ) : null}
           </View>
 
           <View style={CreateJobSecondStyle.heading_View}>

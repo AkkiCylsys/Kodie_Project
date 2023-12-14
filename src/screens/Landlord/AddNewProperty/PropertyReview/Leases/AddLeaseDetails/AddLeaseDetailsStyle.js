@@ -45,41 +45,41 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 400,
   },
   dropdown: {
     flex: 1,
     borderWidth: 1,
-    height: 40,
+    height: 35,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 10,
     borderRadius: 8,
-    color:_COLORS.Kodie_BlackColor
+    color: _COLORS.Kodie_BlackColor,
   },
 
   placeholderStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_GreenColor,
     fontFamily: FONTFAMILY.K_Medium,
-    marginLeft: 10,
+    marginLeft: 5,
   },
   selectedTextStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
-    marginLeft: 10,
+    marginLeft: 5,
   },
   iconStyle: {
     width: 20,
     height: 20,
     // borderWidth: 1,
     marginRight: 16,
-    color:_COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_BlackColor,
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
-    color:_COLORS.Kodie_BlackColor
+    fontSize: 15,
+    color: _COLORS.Kodie_BlackColor,
   },
   inputContainer: {
     marginTop: 15,
@@ -95,40 +95,56 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     marginTop: 10,
   },
   notification_view: { flexDirection: "row", justifyContent: "space-between" },
-  notification_text: { flex:1, alignSelf: "center",marginRight:70 },
+  notification_text: {
+    // borderWidth:1,
+    flex: 1,
+    alignSelf: "center",
+    fontSize:13
+    // marginRight:70
+  },
   toggle_con: {
-    width: 48,
-    height: 25,
+    width: 35,
+    height: 18,
     borderRadius: 20,
     padding: 5,
-    marginTop: 15,
-    alignItems:"center"
+    marginTop: 18,
+    alignItems: "center",
   },
   toggle_circle: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
   exp_reminder_text: {
     flex: 1,
     // marginLeft: 10,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 14,
-    fontFamily: FONTFAMILY.K_Medium,
+    fontSize: 11.2,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
-  reminder_m_view: { flex: 1, flexDirection: "row"},
-  reminder_dropdown: { flex: 0.9, flexDirection: "row",},
-  reminder_dropdown_sty: { flex: 1.8, borderRadius: 15 },
+  reminder_m_view: {
+    flex: 0.9,
+    flexDirection: "row",
+  },
+  reminder_dropdown: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  reminder_dropdown_sty: {
+    flex: 1,
+    borderRadius: 8,
+  },
   before: {
-    marginLeft: 10,
+    // flex:1,
+    marginLeft: 5,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
     fontSize: 10,
     fontFamily: FONTFAMILY.K_Regular,
   },
-  after:{
-    marginLeft: 17,
+  after: {
+    marginLeft: 14,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
     fontSize: 10,

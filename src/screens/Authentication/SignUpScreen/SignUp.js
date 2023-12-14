@@ -104,7 +104,8 @@ export default SignUp = (props) => {
 
       const SignUpData = {
         email: email,
-        password: encryptedpass,
+        password: encryptedpass,       
+        // password: "1234",
         is_term_condition: term,
         is_privacy_policy: privacy,
       };
@@ -122,6 +123,7 @@ export default SignUp = (props) => {
         props.navigation.navigate("SignUpVerification", {
           email: email,
           password: encryptedpass,
+          // password: password,
           is_term_condition: term,
           is_privacy_policy: privacy,
           user_key: response.data.User_Key,
@@ -138,6 +140,7 @@ export default SignUp = (props) => {
         props.navigation.navigate("SignUpVerification", {
           email: email,
           password: encryptedpass,
+          // password: password,
           is_term_condition: term,
           is_privacy_policy: privacy,
         });
