@@ -12,7 +12,7 @@ const data = [
     id: "1",
     Data: "View / edit contractor details",
     // Img: IMAGES.View_property,
-    icon: (
+    Icon: (
       <MaterialIcons
         name="preview"
         size={30}
@@ -25,7 +25,7 @@ const data = [
     id: "2",
     Data: "Request new quote",
     // Img: IMAGES.gallery,
-    icon: (
+    Icon: (
       <MaterialCommunityIcons
         name="image-area"
         size={30}
@@ -38,7 +38,7 @@ const data = [
     id: "3",
     Data: "Create notice / reminder",
     // Img: IMAGES.Reminder,
-    icon: (
+    Icon: (
       <Ionicons
         name="mail-unread-outline"
         size={30}
@@ -51,7 +51,7 @@ const data = [
     id: "4",
     Data: "Remove contractor from preferred",
     // Img: IMAGES.Delete,
-    icon: (
+    Icon: (
       <MaterialCommunityIcons
         name="delete-outline"
         size={30}
@@ -72,7 +72,10 @@ const ContractorsImage = (props) => {
         >
           <TouchableOpacity style={ContractorsImageStyle.Bottomcontainer}>
             {/* <Image source={item.Img} style={ContractorsImageStyle.Icons} /> */}
-            {item.icon}
+            {/* {item.icon} */}
+            <Text style={ContractorsImageStyle.IconView}>
+            {item.Icon}
+            </Text>
           </TouchableOpacity>
           <Text style={ContractorsImageStyle.text}>{item.Data}</Text>
         </TouchableOpacity>

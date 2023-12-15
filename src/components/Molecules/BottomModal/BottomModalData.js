@@ -22,6 +22,7 @@ const data = [
         name="preview"
         size={25}
         color={_COLORS.Kodie_GreenColor}
+        style={{ alignSelf: "center" }}
       />
     ),
   },
@@ -166,7 +167,9 @@ const BottomModalData = (props) => {
             }}
           >
             {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
+            <Text style={BottomModalDataStyle.IconView}>
             {item.Icon}
+            </Text>
             <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}

@@ -81,7 +81,7 @@ const TopHeader = (props) => {
           </View>
         )}
       </View>
-      <DividerIcon marginTop={2} marginBottom={0} />
+      <DividerIcon marginTop={2} marginBottom={0}/>
     </>
   );
 };

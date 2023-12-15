@@ -6,6 +6,7 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { IMAGES, _COLORS } from "../../Themes";
 import DividerIcon from "../../components/Atoms/Devider/DividerIcon";
@@ -96,17 +97,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("PropertyLinking")}
         >
-          {/* <Image
-            source={IMAGES.PropertyListing}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <MaterialCommunityIcons
-            name="calendar-text-outline"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialCommunityIcons
+              name="calendar-text-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Property listings"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -122,17 +123,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("RentalOffers")}
         >
-          {/* <Image
-            source={IMAGES.RentalOffers}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <MaterialCommunityIcons
-            name="calendar-arrow-left"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialCommunityIcons
+              name="calendar-arrow-left"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Rental offers"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -148,17 +149,18 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("vacantProperties")}
         >
-          {/* <Image
-            source={IMAGES.vacantProperties}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <Octicons
-            name="shield-x"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <Octicons
+              name="shield-x"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
+          
           <Text style={DrawerStyle.SubHeading}>{"Vacant properties"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -174,17 +176,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Inspection")}
         >
-          {/* <Image
-            source={IMAGES.Inspections}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <MaterialCommunityIcons
-            name="calendar-search"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialCommunityIcons
+              name="calendar-search"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Inspections"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -200,17 +202,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Tetants")}
         >
-          {/* <Image
-            source={IMAGES.Tenants}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <MaterialCommunityIcons
-            name="shield-account-outline"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialCommunityIcons
+              name="shield-account-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Tenants"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -230,17 +232,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("MaintenanceJobs")}
         >
-          {/* <Image
-            source={IMAGES.Maintenancejobs}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <Feather
-            name="list"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <Feather
+              name="list"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Maintenance  jobs"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -256,17 +258,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Contractors")}
         >
-          {/* <Image
-            source={IMAGES.ContractorDrawer}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <MaterialIcons
-            name="engineering"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialIcons
+              name="engineering"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Contractors"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -285,17 +287,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Notices")}
         >
-          {/* <Image
-            source={IMAGES.Noticesreminders}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <Ionicons
-            name="mail-unread-outline"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <Ionicons
+              name="mail-unread-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+            </View>
           <Text style={DrawerStyle.SubHeading}>{"Notices & reminders"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -312,17 +314,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Documents")}
         >
-          {/* <Image
-            source={IMAGES.DocumentDrawer}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <MaterialCommunityIcons
-            name="file-download-outline"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialCommunityIcons
+              name="file-download-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Documents"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -339,17 +341,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Reports")}
         >
-          <MaterialIcons
-            name="bar-chart"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
-          {/* <Image
-            source={IMAGES.Reports}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
+           <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialIcons
+              name="bar-chart"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+            </View>
           <Text style={DrawerStyle.SubHeading}>{"Reports"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -365,17 +367,17 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Partners")}
         >
-          {/* <Image
-            source={IMAGES.Partner}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"contain"}
-          /> */}
-          <MaterialCommunityIcons
-            name="seal"
-            size={25}
-            color={_COLORS.Kodie_GreenColor}
-            resizeMode={"contain"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialCommunityIcons
+              name="seal"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Partners"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />

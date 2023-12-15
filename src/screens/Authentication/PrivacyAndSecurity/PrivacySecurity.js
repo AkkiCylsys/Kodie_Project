@@ -31,15 +31,15 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    {/* <Image
-                      source={IMAGES.Contact}
-                      style={PrivacySecurityStyle.imgicon}
-                    /> */}
-                    <FontAwesome5
-                      name="user-plus"
-                      size={20}
-                      color={_COLORS.Kodie_GreenColor}
-                    />
+                    <View style={PrivacySecurityStyle.IconView}>
+                      <FontAwesome5
+                        name="user-plus"
+                        size={25}
+                        color={_COLORS.Kodie_GreenColor}
+                        resizeMode={"contain"}
+                        style={{ alignSelf: "center" }}
+                      />
+                    </View>
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>
                     <Text style={PrivacySecurityStyle.textitem}>
@@ -63,15 +63,15 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    {/* <Image
-                      source={IMAGES.Contact}
-                      style={PrivacySecurityStyle.imgicon}
-                    /> */}
-                    <MaterialIcons
-                      name="devices"
-                      size={25}
-                      color={_COLORS.Kodie_GreenColor}
-                    />
+                    <View style={PrivacySecurityStyle.IconView}>
+                      <MaterialIcons
+                        name="devices"
+                        size={25}
+                        color={_COLORS.Kodie_GreenColor}
+                        resizeMode={"contain"}
+                        style={{ alignSelf: "center" }}
+                      />
+                    </View>
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>
                     <Text style={PrivacySecurityStyle.textitem}>
@@ -95,15 +95,15 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    {/* <Image
-                      source={IMAGES.Contact}
-                      style={PrivacySecurityStyle.imgicon}
-                    /> */}
-                    <MaterialCommunityIcons
-                      name="check-decagram-outline"
-                      size={25}
-                      color={_COLORS.Kodie_GreenColor}
-                    />
+                    <View style={PrivacySecurityStyle.IconView}>
+                      <MaterialCommunityIcons
+                        name="check-decagram-outline"
+                        size={25}
+                        color={_COLORS.Kodie_GreenColor}
+                        resizeMode={"contain"}
+                        style={{ alignSelf: "center" }}
+                      />
+                    </View>
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>
                     <Text style={PrivacySecurityStyle.textitem}>
