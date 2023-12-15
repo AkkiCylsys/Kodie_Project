@@ -13,7 +13,7 @@ import { JobDetailsStyle } from "./JobDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
 import { SliderBox } from "react-native-image-slider-box";
-import { BANNERS, _COLORS, IMAGES } from "../../../../Themes";
+import { BANNERS, _COLORS, IMAGES, FONTFAMILY } from "../../../../Themes";
 import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -22,6 +22,7 @@ import UploadImageData from "../../../../components/Molecules/UploadImage/Upload
 import Entypo from "react-native-vector-icons/Entypo";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.previewImage,
@@ -39,7 +40,10 @@ const Apartment_data = [
   { label: "Farm", value: "6" },
 ];
 const JobDetails = (props) => {
-  const [activeTab, setActiveTab] = useState("Tab3");
+  let job_id = props?.route?.params?.job_id;
+  console.log("job_id...", job_id);
+  // alert(job_id);
+  const [activeTab, setActiveTab] = useState("Tab1");
   const [currentPage, setCurrentPage] = useState(3);
   const [value, setValue] = useState(null);
   const [value2, setValue2] = useState(null);
@@ -147,9 +151,13 @@ const JobDetails = (props) => {
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
+        return <Reviewjobdetails1 job_id={job_id} />;
       case "Tab2":
+        return <Leases />;
       case "Tab3":
+        return <Leases />;
       case "Tab4":
+        return <Leases />;
     }
   };
   const refRBSheet = useRef();
@@ -172,9 +180,7 @@ const JobDetails = (props) => {
         renderLabel={renderLabel}
       />
       <ScrollView>
-        <Text style={JobDetailsStyle.heading}>
-          {"Review job details"}
-        </Text>
+        <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>
           <View style={JobDetailsStyle.slider_view}>
             <SliderBox
@@ -206,7 +212,13 @@ const JobDetails = (props) => {
           <Text style={JobDetailsStyle.electricaltext}>Electricals</Text>
         </View>
 
-        <View>
+        <View
+          style={{
+            borderBottomWidth: 3,
+            borderColor: _COLORS.Kodie_GrayColor,
+            elevation: 1,
+          }}
+        >
           <CustomTabNavigator
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -240,6 +252,18 @@ const JobDetails = (props) => {
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
+            FONTFAMILY1={
+              activeTab === "Tab1" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY2={
+              activeTab === "Tab2" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY3={
+              activeTab === "Tab3" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY4={
+              activeTab === "Tab4" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
             styleTab1={activeTab === "Tab1" && JobDetailsStyle.activeTab}
             styleTab2={activeTab === "Tab2" && JobDetailsStyle.activeTab}
             styleTab3={activeTab === "Tab3" && JobDetailsStyle.activeTab}
@@ -248,15 +272,15 @@ const JobDetails = (props) => {
         </View>
         {checkTabs()}
 
-        <View style={JobDetailsStyle.headingview}>
+        {/* <View style={JobDetailsStyle.headingview}>
           <Text style={JobDetailsStyle.uploadtext}>Upload documents</Text>
           <Text style={JobDetailsStyle.filenametext}>
             Documents should be formatted .pdf or .jpg or .png Size per file
             should not exceed 5 MB
           </Text>
-        </View>
+        </View> */}
 
-        <View style={JobDetailsStyle.dropdownmainview}>
+        {/* <View style={JobDetailsStyle.dropdownmainview}>
           <Text style={JobDetailsStyle.dropdownheading}>
             Select type of document
           </Text>
@@ -313,7 +337,6 @@ const JobDetails = (props) => {
                 }}
               >
                 <View style={JobDetailsStyle.bindfile}>
-                  {/* <MaterialCommunityIcons name="file" size={35} /> */}
                   <Image source={IMAGES.document} />
                   <View>
                     <Text style={JobDetailsStyle.pdfName}>
@@ -383,9 +406,9 @@ const JobDetails = (props) => {
               }}
             />
           </View>
-        </View>
+        </View> */}
 
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet}
           height={200}
           customStyles={{
@@ -402,7 +425,7 @@ const JobDetails = (props) => {
             heading_Text={"Upload  documents"}
             onPress={toggleView}
           />
-        </RBSheet>
+        </RBSheet> */}
       </ScrollView>
     </View>
   );
