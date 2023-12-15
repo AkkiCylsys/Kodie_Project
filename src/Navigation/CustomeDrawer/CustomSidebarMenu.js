@@ -157,7 +157,7 @@ const CustomSidebarMenu = (props) => {
               size={25}
               color={_COLORS.Kodie_GreenColor}
               resizeMode={"contain"}
-              style={{ alignSelf: "center" }}
+              style={{ alignSelf: "center",justifyContent:"center"}}
             />
           </View>
           

@@ -91,6 +91,7 @@ export default LandlordProfile = (props) => {
             name={"account-edit-outline"}
             size={20}
             color={_COLORS.Kodie_GreenColor}
+            style={{ alignSelf: "center",}}
           />
           </TouchableOpacity>
         </View>

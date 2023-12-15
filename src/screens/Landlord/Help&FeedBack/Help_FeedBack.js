@@ -21,6 +21,7 @@ const feedbackData = [
     name="questioncircleo"
     size={23}
     color={_COLORS.Kodie_GreenColor}
+    style={{ alignSelf: "center" }}
   />
   },
   {
@@ -31,16 +32,18 @@ const feedbackData = [
     name="perm-contact-cal"
     size={23}
     color={_COLORS.Kodie_GreenColor}
+    style={{ alignSelf: "center" }}
   />
   },
   {
     id: "3",
-    Heading: "Terms & PrivacyPolicy",
+    Heading: "Terms & Privacy Policy",
     // img: IMAGES.TermPrivacy,
     icon:<Fontisto
     name="file-1"
     size={25}
     color={_COLORS.Kodie_GreenColor}
+    style={{ alignSelf: "center" }}
   />
   },
   {
@@ -51,6 +54,7 @@ const feedbackData = [
     name="info"
     size={25}
     color={_COLORS.Kodie_GreenColor}
+    style={{ alignSelf: "center" }}
   />
   },
 ];
@@ -62,7 +66,9 @@ const Help_FeedBack = (props) => {
         <View style={Help_FeedBackCss.container}>
           <View style={Help_FeedBackCss.profileView}>
             {/* <Image source={item.img} style={Help_FeedBackCss.profileIcon} /> */}
-              {item.icon}
+            <Text style={Help_FeedBackCss.IconView}>
+            {item.icon}
+            </Text>
             <Text style={Help_FeedBackCss.profile_Heading}>{item.Heading}</Text>
           </View>
           <TouchableOpacity

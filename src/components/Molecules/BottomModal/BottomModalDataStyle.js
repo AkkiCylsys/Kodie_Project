@@ -27,11 +27,11 @@ export const BottomModalDataStyle = StyleSheet.create({
   IconView: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_LiteWhiteColor,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
     marginLeft: 5,
     width: 35,
     marginTop:10,
     height: 35,
-    justifyContent: "center",
+    padding:5,
   },
 });

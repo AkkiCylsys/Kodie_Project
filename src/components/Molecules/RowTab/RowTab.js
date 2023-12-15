@@ -23,10 +23,6 @@ export default RowTab = (props) => {
         </View>
 
         <View style={RowTabStyle.arrowiconview}>
-          {/* <Image
-                        source={props?.RightImage}
-                        style={RowTabStyle.rightarrowicon}
-                    /> */}
           <Entypo name={"chevron-small-right"} size={20} />
         </View>
       </View>

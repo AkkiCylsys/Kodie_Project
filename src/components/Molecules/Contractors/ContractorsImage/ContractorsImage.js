@@ -18,6 +18,7 @@ const data = [
         size={30}
         color={_COLORS.Kodie_GreenColor}
         resizeMode={"contain"}
+        style={{ alignSelf: "center" }}
       />
     ),
   },
@@ -31,6 +32,7 @@ const data = [
         size={30}
         color={_COLORS.Kodie_GreenColor}
         resizeMode={"contain"}
+        style={{ alignSelf: "center" }}
       />
     ),
   },
@@ -44,6 +46,7 @@ const data = [
         size={30}
         color={_COLORS.Kodie_GreenColor}
         resizeMode={"contain"}
+        style={{ alignSelf: "center" }}
       />
     ),
   },
@@ -57,6 +60,7 @@ const data = [
         size={30}
         color={_COLORS.Kodie_GreenColor}
         resizeMode={"contain"}
+        style={{ alignSelf: "center" }}
       />
     ),
   },

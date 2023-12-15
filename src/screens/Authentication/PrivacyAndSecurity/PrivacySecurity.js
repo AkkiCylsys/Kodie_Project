@@ -34,7 +34,7 @@ const PrivacySecurity = (props) => {
                     <View style={PrivacySecurityStyle.IconView}>
                       <FontAwesome5
                         name="user-plus"
-                        size={25}
+                        size={20}
                         color={_COLORS.Kodie_GreenColor}
                         resizeMode={"contain"}
                         style={{ alignSelf: "center" }}
