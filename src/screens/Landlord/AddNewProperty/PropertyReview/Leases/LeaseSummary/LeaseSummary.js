@@ -192,7 +192,7 @@ export default LeaseSummary = (props) => {
                 {"Rent remaining due"}
               </Text>
               <Text
-                style={[LeaseSummaryStyle.date_Text,{alignSelf:"flex-end"}]}
+                style={[LeaseSummaryStyle.date_Text, { alignSelf: "flex-end" }]}
               >{`$ ${item.UPLD_RENTAL_AMMOUNT}`}</Text>
             </View>
           </View>
@@ -286,37 +286,48 @@ export default LeaseSummary = (props) => {
   };
   return (
     <View style={LeaseSummaryStyle.mainContainer}>
-      <Text style={[LeaseSummaryStyle.heading_Text, { marginLeft: 16 }]}>
-        {"Lease summary"}
-      </Text>
-      <View style={{ flex: 1 }}>
-        <FlatList
-          data={lease_summary_data}
-          showsVerticalScrollIndicator={false}
-          // keyExtractor={(item,index) => item?.UPLD_LEASE_KEY.toString()}
-          keyExtractor={(item, index) => index}
-          renderItem={LeaseSummary_render}
-        />
-      </View>
+      {lease_summary_data.length > 0 ? (
+        <>
+          <Text style={[LeaseSummaryStyle.heading_Text, { marginLeft: 16 }]}>
+            {"Lease summary"}
+          </Text>
+          <View style={{ flex: 1 }}>
+            <FlatList
+              data={lease_summary_data}
+              showsVerticalScrollIndicator={false}
+              // keyExtractor={(item,index) => item?.UPLD_LEASE_KEY.toString()}
+              keyExtractor={(item, index) => index}
+              renderItem={LeaseSummary_render}
+            />
+          </View>
+        </>
+      ) : null}
+
       <DividerIcon />
       <View style={LeaseSummaryStyle.subContainer}>
-        <Text style={LeaseSummaryStyle.heading_Text}>{"Tenant details"}</Text>
+        {/* <Text style={LeaseSummaryStyle.heading_Text}>{"Tenant details"}</Text>
         <Text style={LeaseSummaryStyle.invite_tenant_Text}>
           {"Invite tenant to connect to this property"}
-        </Text>
+        </Text> */}
 
-        <TenantDetails />
+        {/* <TenantDetails /> */}
 
-        <Text style={LeaseSummaryStyle.heading_Text}>{"Rental receipts"}</Text>
-        <FlatList
-          data={rental_Receipt_data}
-          scrollEnabled
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{}}
-          // keyExtractor={(item,index) => item?.id}
-          keyExtractor={(item, index) => index}
-          renderItem={rental_recipt_render}
-        />
+        {rental_Receipt_data.length > 0 ? (
+          <>
+            <Text style={LeaseSummaryStyle.heading_Text}>
+              {"Rental receipts"}
+            </Text>
+            <FlatList
+              data={rental_Receipt_data}
+              scrollEnabled
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{}}
+              // keyExtractor={(item,index) => item?.id}
+              keyExtractor={(item, index) => index}
+              renderItem={rental_recipt_render}
+            />
+          </>
+        ) : null}
 
         <View style={LeaseSummaryStyle.btn_View}>
           <CustomSingleButton

@@ -4,7 +4,7 @@ export const LeasesStyle = StyleSheet.create({
     mainContainer:{
         flex:1,
         backgroundColor:_COLORS.Kodie_WhiteColor,
-        marginBottom:50
+        marginBottom:50,
     },
     add_Lease_view:{
         alignSelf:"center",

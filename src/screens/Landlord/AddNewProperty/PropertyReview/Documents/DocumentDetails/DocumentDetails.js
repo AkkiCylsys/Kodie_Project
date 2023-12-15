@@ -28,7 +28,7 @@ const DocumentDetails = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const folderId = props.route.params?.folderId;
-  const folderHeading = props.route.params?.folderHeading;
+  const moduleName = props.route.params?.moduleName;
   const property_id = props.route.params?.property_id;
   const [selectFile, setSelectFile] = useState([]);
   const [fileKey, setFileKey] = useState(0);
@@ -36,7 +36,7 @@ const DocumentDetails = (props) => {
   const [filePath, setFilePath] = useState("");
   const file = selectFile[0];
   //   alert(folderId);
-  // alert(folderHeading);
+  // alert(moduleName);
   // alert(property_id);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ const DocumentDetails = (props) => {
     console.log("name....", file.name);
     console.log("type....", file.type);
     console.log("p_referral_key....", property_id);
-    console.log("p_module_name....", folderHeading);
+    console.log("p_module_name....", moduleName);
     const url = Config.BASE_URL;
     const uploadDoc_url = url + "uploadDocument";
     console.log("Request URL:", uploadDoc_url);
@@ -117,8 +117,8 @@ const DocumentDetails = (props) => {
         type: file.type,
       });
       formData.append("p_referral_key", property_id);
-      formData.append("p_module_name", folderHeading);
-      formData.append("p_sub_module_name", "Property documents");
+      formData.append("p_module_name", moduleName);
+      // formData.append("p_sub_module_name", "Property documents");
 
       const response = await axios.post(uploadDoc_url, formData);
 
@@ -133,7 +133,7 @@ const DocumentDetails = (props) => {
       }
     } catch (error) {
       console.error("API failed", error);
-      alert(error)
+      alert(error);
       // Handle network errors more gracefully
       // if (!error.response) {
       //   alert("Network error. Please check your internet connection.");
@@ -364,18 +364,6 @@ const DocumentDetails = (props) => {
           keyExtractor={(item, index) => index}
           renderItem={DocumentsData}
         />
-
-        <View>
-          <FlatList
-            data={uploadDocData}
-            scrollEnabled
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{}}
-            keyExtractor={(item, index) => index}
-            renderItem={GetuploadedDocumentrender}
-          />
-        </View>
-
         <View>
           <Text style={DocumentDetailStyle.upload_doc_text}>
             {"Upload documents"}
@@ -385,6 +373,16 @@ const DocumentDetails = (props) => {
               "Documents should be formatted .pdf or .jpg or .png Size per file should not exceed 5 MB"
             }
           </Text>
+        </View>
+        <View>
+          <FlatList
+            data={uploadDocData}
+            scrollEnabled
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{}}
+            keyExtractor={(item, index) => index}
+            renderItem={GetuploadedDocumentrender}
+          />
         </View>
         <View style={{}}>
           <CustomSingleButton

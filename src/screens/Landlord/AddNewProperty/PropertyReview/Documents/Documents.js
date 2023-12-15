@@ -61,16 +61,19 @@ const data = [
 const folderData = [
   {
     id: "1",
+    moduleName: "Property",
     folderHeading: "Property documents",
     totalFile: "12 Files",
   },
   {
     id: "2",
+    moduleName: "Lease",
     folderHeading: "Lease documents",
     totalFile: "13 Files",
   },
   {
     id: "3",
+    moduleName: "Tenant",
     folderHeading: "Tenant documents",
     totalFile: "15 Files",
   },
@@ -134,7 +137,7 @@ export default Documents = (props) => {
         // }}
         onPress={() => {
           console.log("item.id:", item.id);
-          props?.documentDetail(item.id, item.folderHeading, property_id);
+          props?.documentDetail(item.id, item.moduleName, property_id);
         }}
       >
         <View style={DocumentsStyle.folder_icon}>
@@ -162,17 +165,18 @@ export default Documents = (props) => {
           <Text style={DocumentsStyle.reacentDocText}>{"Folders"}</Text>
           <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
         </View>
-
-        <FlatList
-          data={folderData}
-          scrollEnabled
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{}}
-          keyExtractor={(item) => item?.id}
-          renderItem={folderRenderData}
-        />
-        <View style={DocumentsStyle.recentDocView}>
+        <View style={{ marginBottom: 50 }}>
+          <FlatList
+            data={folderData}
+            scrollEnabled
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{}}
+            keyExtractor={(item) => item?.id}
+            renderItem={folderRenderData}
+          />
+        </View>
+        {/* <View style={DocumentsStyle.recentDocView}>
           <Text style={DocumentsStyle.reacentDocText}>
             {"Recent documents"}
           </Text>
@@ -187,18 +191,7 @@ export default Documents = (props) => {
             keyExtractor={(item) => item?.id}
             renderItem={DocumentsData}
           />
-          {/* <CustomSingleButton
-            leftImage={IMAGES.uploadIcon}
-            isLeftImage={true}
-            borderColor={_COLORS.Kodie_TransparentColor}
-            _ButtonText={"Upload"}
-            backgroundColor={_COLORS.Kodie_lightGreenColor}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-                   disabled={isLoading ? true : false}
-          /> */}
-        </View>
+        </View> */}
         {/* <RBSheet
           ref={refRBSheet}
           height={200}
