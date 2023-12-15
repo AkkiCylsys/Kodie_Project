@@ -305,12 +305,12 @@ export default LeaseSummary = (props) => {
 
       <DividerIcon />
       <View style={LeaseSummaryStyle.subContainer}>
-        <Text style={LeaseSummaryStyle.heading_Text}>{"Tenant details"}</Text>
+        {/* <Text style={LeaseSummaryStyle.heading_Text}>{"Tenant details"}</Text>
         <Text style={LeaseSummaryStyle.invite_tenant_Text}>
           {"Invite tenant to connect to this property"}
-        </Text>
+        </Text> */}
 
-        <TenantDetails />
+        {/* <TenantDetails /> */}
 
         {rental_Receipt_data.length > 0 ? (
           <>

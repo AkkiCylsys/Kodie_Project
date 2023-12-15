@@ -25,7 +25,7 @@ export const LogrentalPaymentStyle = StyleSheet.create({
     shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 400,
+    // marginBottom: 400,
   },
   inputContainer: {
     marginTop: 15,

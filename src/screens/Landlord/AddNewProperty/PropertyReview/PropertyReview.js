@@ -576,10 +576,10 @@ export default PropertyReview = (props) => {
       case "Tab4":
         return (
           <Documents
-            documentDetail={(folderId, folderHeading, property_id) => {
+            documentDetail={(folderId, moduleName, property_id) => {
               props.navigation.navigate("DocumentDetails", {
                 folderId: folderId,
-                folderHeading: folderHeading,
+                moduleName: moduleName,
                 property_id: property_id,
               });
             }}
