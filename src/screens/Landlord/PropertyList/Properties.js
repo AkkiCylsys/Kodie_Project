@@ -35,6 +35,13 @@ const Properties = (props) => {
                 editMode: "editMode",
               });
             }}
+            onPropertyView={(propView) => {
+              const { propertyid } = propView;
+              props.navigation.navigate("PropertyReview", {
+                propertyid: propertyid,
+                propertyView: "propertyView",
+              });
+            }}
           />
         );
       case "Tab2":

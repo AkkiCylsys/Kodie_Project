@@ -24,6 +24,7 @@ export const ServicesBoxStyle = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
+    textAlign: "center",
     alignSelf: "center",
     justifyContent: "center",
   },

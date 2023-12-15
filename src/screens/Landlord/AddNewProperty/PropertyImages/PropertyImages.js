@@ -372,7 +372,10 @@ export default PropertyImages = (props) => {
 
   return (
     <View style={PropertyImagesStyle.mainContainer}>
-      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
+      <TopHeader
+        onPressLeftButton={goBack}
+        MiddleText={editMode ? "Edit property" : "Add new property"}
+      />
       <View
         style={{
           marginTop: 15,
@@ -521,15 +524,23 @@ export default PropertyImages = (props) => {
                             // top: 2,
                             right: 5,
                             backgroundColor: "rgba(255,255,255,0.7)",
-                            height:"15%",
-                            width:"15%",
+                            height: "15%",
+                            width: "15%",
                             borderRadius: 8,
                             // padding: 3,
-                            justifyContent:"center"
+                            justifyContent: "center",
                           }}
                           onPress={() => removeVideo(index)}
                         >
-                          <Text style={{ color: "black",fontWeight:"bold",alignSelf:"center" }}>X</Text>
+                          <Text
+                            style={{
+                              color: "black",
+                              fontWeight: "bold",
+                              alignSelf: "center",
+                            }}
+                          >
+                            X
+                          </Text>
                         </TouchableOpacity>
                         {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
                       </>
@@ -584,7 +595,11 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.btnView}>
             <CustomSingleButton
-              _ButtonText={"Add property features later"}
+              _ButtonText={
+                editMode
+                  ? "Edit property features later"
+                  : "Add property features later"
+              }
               Text_Color={_COLORS.Kodie_BlackColor}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}

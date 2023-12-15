@@ -372,7 +372,13 @@ export default PropertyDetails = (props) => {
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}
-        MiddleText={IsMap || IsSearch ? "Location" : "Add new property"}
+        MiddleText={
+          IsMap || IsSearch
+            ? "Location"
+            : editMode
+            ? "Edit property"
+            : "Add new property"
+        }
       />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}

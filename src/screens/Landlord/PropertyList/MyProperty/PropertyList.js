@@ -216,7 +216,13 @@ const PropertyList = (props) => {
     // const propertyIds = data.map(item => item.property_id);
     setPropId(item.property_id);
     return (
-      <>
+      <TouchableOpacity
+        onPress={() => {
+          props?.onPropertyView?.({
+            propertyid: item?.property_id,
+          });
+        }}
+      >
         <View key={index} style={PropertyListCSS.flatListContainer}>
           <View style={PropertyListCSS.flat_MainView}>
             <View style={PropertyListCSS.flexContainer}>
@@ -283,7 +289,6 @@ const PropertyList = (props) => {
                     // alert(propertyDelId);
                     setAddress(item?.location);
                   }}
-                 
                 >
                   <MaterialCommunityIcons
                     name={"dots-horizontal"}
@@ -292,7 +297,7 @@ const PropertyList = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <View
+              <TouchableOpacity
                 style={[
                   PropertyListCSS.buttonView,
                   {
@@ -330,7 +335,7 @@ const PropertyList = (props) => {
                 >
                   {"+ Invite Tenant"}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <DividerIcon
@@ -390,7 +395,7 @@ const PropertyList = (props) => {
             Address={Address}
           />
         </RBSheet> */}
-      </>
+      </TouchableOpacity>
     );
   };
   const propertyData2_render = ({ item }) => {

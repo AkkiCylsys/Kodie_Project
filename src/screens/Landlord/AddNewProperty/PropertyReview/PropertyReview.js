@@ -78,9 +78,13 @@ const Detail = [
 ];
 export default PropertyReview = (props) => {
   const property_id = props?.route?.params?.property_id;
+
+  const propertyid = props?.route?.params?.propertyid;
+  const propertyView = props?.route?.params?.propertyView;
   const MultiImageName = props?.route?.params?.MultiImageName;
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
+  console.log(propertyView, propertyid);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
@@ -89,7 +93,7 @@ export default PropertyReview = (props) => {
     useState([]);
   const [currentPage, setCurrentPage] = useState(3);
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
-
+  const [numColumns, setNumColumns] = useState(2);
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -289,7 +293,9 @@ export default PropertyReview = (props) => {
   const fetchData = async () => {
     try {
       // Fetch property details
-      const detailData = { property_id: property_id };
+      const detailData = {
+        property_id: propertyView ? propertyid : property_id,
+      };
       const url = Config.BASE_URL;
       const property_Detailss = url + "get_property_details";
 
@@ -330,9 +336,14 @@ export default PropertyReview = (props) => {
     } catch (error) {
       console.error("Error parsing additional_key_features:", error);
     }
-  }, [property_id, additionalKeyFeaturesString]);
+    const timeout = setTimeout(() => {
+      setNumColumns(2); // Change to the desired number of columns
+    }, 2000); // Change this delay as needed
 
-  const imagePaths = MultiImageName.map((image) => image.path);
+    return () => clearTimeout(timeout);
+  }, [property_id, propertyid, additionalKeyFeaturesString]);
+
+  // const imagePaths = MultiImageName.map((image) => image.path);
 
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
@@ -445,31 +456,41 @@ export default PropertyReview = (props) => {
               apartment boasts modern interior finishes and a spacious extended
               balcony. As you enter, you... */}
             </Text>
-            <View
+            {/* <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <FlatList
-                data={Detail}
-                scrollEnabled
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{}}
-                // numColumns={2}
-                keyExtractor={(item) => item?.id}
-                // keyExtractor={(item, index) => index.toString()}
-                renderItem={Detail_rander}
-              />
-              <FlatList
-                data={additionalKeyFeatures}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-              />
-            </View>
+            > */}
+
+            <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+              {"Key features"}
+            </Text>
+            <FlatList
+              data={Detail}
+              scrollEnabled
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{}}
+              numColumns={numColumns}
+              keyExtractor={(item) => item?.id}
+              // keyExtractor={(item, index) => index.toString()}
+              renderItem={Detail_rander}
+            />
+            <DividerIcon />
+            <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+              {"Additional key features"}
+            </Text>
+
+            <FlatList
+              data={additionalKeyFeatures}
+              numColumns={numColumns}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+            />
+            {/* </View> */}
             <DividerIcon
               borderBottomWidth={1}
               color={_COLORS.Kodie_GrayColor}
             />
 
-            <View style={DetailsStyle.subContainer}>
+            {/* <View style={DetailsStyle.subContainer}>
               <View style={DetailsStyle.propety_details_view}>
                 <Text style={DetailsStyle.propery_det}>
                   {"Property details"}
@@ -514,9 +535,9 @@ export default PropertyReview = (props) => {
                 </TouchableOpacity>
               </View>
               <DividerIcon marginTop={8} />
-            </View>
+            </View> */}
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              {/* <View style={DetailsStyle.propety_details_view}>
                 <Text style={DetailsStyle.propery_det}>
                   {"Points of interest"}
                 </Text>
@@ -529,12 +550,16 @@ export default PropertyReview = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <DividerIcon marginTop={8} />
+              <DividerIcon marginTop={8} /> */}
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
                   _ButtonText={
-                    editMode == undefined ? "Add property" : "Edit property"
+                    editMode
+                      ? "Edit property"
+                      : propertyView
+                      ? "Edit details"
+                      : "Add property"
                   }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
@@ -542,29 +567,39 @@ export default PropertyReview = (props) => {
                   }}
                 />
               </View>
-              <View style={PropertyReviewStyle.btnView}>
-                <CustomSingleButton
-                  _ButtonText={"Add property features later"}
-                  Text_Color={_COLORS.Kodie_BlackColor}
-                  backgroundColor={_COLORS.Kodie_WhiteColor}
-                  disabled={isLoading ? true : false}
-                />
-              </View>
-              <TouchableOpacity
-                style={PropertyReviewStyle.goBack_View}
-                onPress={() => {
-                  goBack();
-                }}
-              >
-                <View style={PropertyReviewStyle.backIcon}>
-                  <Ionicons
-                    name="chevron-back"
-                    size={22}
-                    color={_COLORS.Kodie_MediumGrayColor}
-                  />
-                </View>
-                <Text style={PropertyReviewStyle.goBack_Text}>{"Go back"}</Text>
-              </TouchableOpacity>
+              {propertyView ? null : (
+                <>
+                  <View style={PropertyReviewStyle.btnView}>
+                    <CustomSingleButton
+                      _ButtonText={
+                        editMode
+                          ? "Edit property features later"
+                          : "Add property features later"
+                      }
+                      Text_Color={_COLORS.Kodie_BlackColor}
+                      backgroundColor={_COLORS.Kodie_WhiteColor}
+                      disabled={isLoading ? true : false}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={PropertyReviewStyle.goBack_View}
+                    onPress={() => {
+                      goBack();
+                    }}
+                  >
+                    <View style={PropertyReviewStyle.backIcon}>
+                      <Ionicons
+                        name="chevron-back"
+                        size={22}
+                        color={_COLORS.Kodie_MediumGrayColor}
+                      />
+                    </View>
+                    <Text style={PropertyReviewStyle.goBack_Text}>
+                      {"Go back"}
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
             </View>
           </>
         );
@@ -594,51 +629,64 @@ export default PropertyReview = (props) => {
 
   return (
     <View style={PropertyReviewStyle.mainContainer}>
-      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
-      <View
-        style={{
-          marginTop: 15,
-        }}
-      >
-        <StepIndicator
-          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-          currentPosition={currentPage}
-          // onPress={onStepPress}
-          renderStepIndicator={renderStepIndicator}
-          labels={stepLabels}
-          stepCount={4}
-          renderLabel={renderLabel}
-        />
-      </View>
-      <ScrollView>
-        <View style={PropertyReviewStyle.headingView}>
-          <Text style={PropertyReviewStyle.heading}>
-            {"Review property details"}
-          </Text>
-        </View>
-        <View style={PropertyReviewStyle.slider_view}>
-          <SliderBox
-            images={
-              property_Detail.image_path
-                ? property_Detail.image_path
-                : imagePaths
-            }
-            sliderBoxHeight={200}
-            onCurrentImagePressed={(index) =>
-              console.warn(`image ${index} pressed`)
-            }
-            inactiveDotColor={_COLORS.Kodie_GrayColor}
-            dotColor={_COLORS.Kodie_GreenColor}
-            autoplay
-            circleLoop
-            resizeMethod={"resize"}
-            resizeMode={"cover"}
-            dotStyle={PropertyReviewStyle.dotStyle}
-            ImageComponentStyle={{
-              flex: 1,
-              resizeMode: "cover",
-            }}
+      <TopHeader
+        isprofileImage
+        onPressLeftButton={goBack}
+        MiddleText={
+          editMode
+            ? "Edit property"
+            : propertyView
+            ? property_Detail?.location
+            : "Add new property"
+        }
+      />
+      {propertyView ? null : (
+        <View
+          style={{
+            marginTop: 15,
+          }}
+        >
+          <StepIndicator
+            customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+            currentPosition={currentPage}
+            // onPress={onStepPress}
+            renderStepIndicator={renderStepIndicator}
+            labels={stepLabels}
+            stepCount={4}
+            renderLabel={renderLabel}
           />
+        </View>
+      )}
+      <ScrollView contentContainerStyle={{}}>
+        {propertyView ? null : (
+          <View style={[PropertyReviewStyle.headingView]}>
+            <Text style={PropertyReviewStyle.heading}>
+              {"Review property details"}
+            </Text>
+          </View>
+        )}
+        <View style={PropertyReviewStyle.slider_view}>
+          {property_Detail.image_path &&
+          property_Detail.image_path.length != 0 ? (
+            <SliderBox
+              images={property_Detail.image_path}
+              sliderBoxHeight={200}
+              onCurrentImagePressed={(index) =>
+                console.warn(`image ${index} pressed`)
+              }
+              inactiveDotColor={_COLORS.Kodie_GrayColor}
+              dotColor={_COLORS.Kodie_GreenColor}
+              autoplay
+              circleLoop
+              resizeMethod={"resize"}
+              resizeMode={"cover"}
+              dotStyle={PropertyReviewStyle.dotStyle}
+              ImageComponentStyle={{
+                flex: 1,
+                resizeMode: "cover",
+              }}
+            />
+          ) : null}
         </View>
         <View style={PropertyReviewStyle.subContainer}>
           <View style={PropertyReviewStyle.apartment_View}>
@@ -689,29 +737,35 @@ export default PropertyReview = (props) => {
             TAB3
             TAB4
             Tab1={"Details"}
-            Tab2={editMode == undefined ? null : "Leases"}
-            Tab3={editMode == undefined ? null : "Expenses"}
-            Tab4={editMode == undefined ? null : "Documents"}
+            Tab2={editMode ? null : propertyView ? "Leases" : null}
+            Tab3={editMode ? null : propertyView ? "Expenses" : null}
+            Tab4={editMode ? null : propertyView ? "Documents" : null}
             onPressTab1={() => setActiveTab("Tab1")}
             onPressTab2={() => {
-              if (editMode == undefined) {
+              if (editMode) {
                 null;
-              } else {
+              } else if (propertyView) {
                 setActiveTab("Tab2");
+              } else {
+                null;
               }
             }}
             onPressTab3={() => {
-              if (editMode == undefined) {
+              if (editMode) {
                 null;
-              } else {
+              } else if (propertyView) {
                 setActiveTab("Tab3");
+              } else {
+                null;
               }
             }}
             onPressTab4={() => {
-              if (editMode == undefined) {
+              if (editMode) {
                 null;
-              } else {
+              } else if (propertyView) {
                 setActiveTab("Tab4");
+              } else {
+                null;
               }
             }}
             colorTab1={
@@ -720,17 +774,17 @@ export default PropertyReview = (props) => {
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab2={
-              activeTab === "Tab2" || editMode == undefined
+              activeTab === "Tab2"
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab3={
-              activeTab === "Tab3" || editMode == undefined
+              activeTab === "Tab3"
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab4={
-              activeTab === "Tab4" || editMode == undefined
+              activeTab === "Tab4"
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
