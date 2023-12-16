@@ -604,21 +604,21 @@ export default PropertyReview = (props) => {
           </>
         );
       case "Tab2":
-        return <Leases property_id={property_id} />;
+        return <Leases property_id={propertyid} />;
 
       case "Tab3":
-        return <Expenses property_id={property_id} />;
+        return <Expenses property_id={propertyid} />;
       case "Tab4":
         return (
           <Documents
-            documentDetail={(folderId, moduleName, property_id) => {
+            documentDetail={(folderId, moduleName, propertyid) => {
               props.navigation.navigate("DocumentDetails", {
                 folderId: folderId,
                 moduleName: moduleName,
-                property_id: property_id,
+                property_id: propertyid,
               });
             }}
-            property_id={property_id}
+            property_id={propertyid}
           />
         );
 
@@ -630,7 +630,7 @@ export default PropertyReview = (props) => {
   return (
     <View style={PropertyReviewStyle.mainContainer}>
       <TopHeader
-        isprofileImage
+        // isprofileImage
         onPressLeftButton={goBack}
         MiddleText={
           editMode

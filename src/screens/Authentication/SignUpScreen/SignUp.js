@@ -74,10 +74,11 @@ export default SignUp = (props) => {
     }
   };
   // .........encrypt password.at........
-  const encryptPassword = (password) => {
+  const secretKey = "XkhZG4fW2t2W";
+  const encryptPassword = (password, secretKey) => {
     return new Promise((resolve, reject) => {
       try {
-        const key = password;
+        const key = secretKey;
         const keyutf = CryptoJS.enc.Utf8.parse(key);
         const iv = CryptoJS.enc.Utf8.parse("XkhZG4fW2t2W");
         const enc = CryptoJS.AES.encrypt(password, keyutf, { iv: iv });
@@ -98,7 +99,7 @@ export default SignUp = (props) => {
 
     try {
       // Encrypt the password
-      const encStr = await encryptPassword(password);
+      const encStr = await encryptPassword(password, secretKey);
       console.log("encryptedpass", encStr);
 
       const SignUpData = {
@@ -135,9 +136,16 @@ export default SignUp = (props) => {
           password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
+          user_key: response.data.User_Key,
         });
       } else if (response.data.code === 2) {
-        props.navigation.navigate("SignUpSteps");
+        props.navigation.navigate("SignUpSteps", {
+          email: email,
+          password: encStr,
+          is_term_condition: term,
+          is_privacy_policy: privacy,
+          user_key: response.data.User_Key,
+        });
         setIsLoading(false);
         setEmail("");
         setPassword("");

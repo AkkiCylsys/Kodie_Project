@@ -30,23 +30,13 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 50,
   },
   inputContainer: {
     marginBottom: 15,
   },
   datePickerView: { flexDirection: "row" },
-  card: {
-    width: "100%",
-    backgroundColor: _COLORS.Kodie_TransparentColor,
-    borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
-    shadowRadius: 2,
-    padding: 20,
-    marginBottom: 400,
-  },
+
   dropdown: {
     flex: 1,
     borderWidth: 1,
@@ -99,7 +89,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     // borderWidth:1,
     flex: 1,
     alignSelf: "center",
-    fontSize:13
+    fontSize: 13,
     // marginRight:70
   },
   toggle_con: {

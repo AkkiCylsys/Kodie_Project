@@ -49,7 +49,7 @@ export default LandlordProfile = (props) => {
                   signUp_account_response?.Login_details?.profile_photo_path,
               }}
               style={LandlordProfileStyle.usericon}
-              resizeMode="contain"
+              resizeMode="center"
             />
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
@@ -88,10 +88,10 @@ export default LandlordProfile = (props) => {
               resizeMode="contain"
             /> */}
             <MaterialCommunityIcons
-            name={"account-edit-outline"}
-            size={20}
-            color={_COLORS.Kodie_GreenColor}
-          />
+              name={"account-edit-outline"}
+              size={20}
+              color={_COLORS.Kodie_GreenColor}
+            />
           </TouchableOpacity>
         </View>
         <DividerIcon />

@@ -398,13 +398,14 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-              {/* {imagePath ? (
+              {property_Detail.image_path &&
+              property_Detail.image_path.length != 0 ? (
                 <SliderBox
                   images={
-                    // property_Detail[0]?.image_path
-                    //   ? property_Detail[0]?.image_path
-                    //   :
-                    imagePath
+                    property_Detail?.image_path
+                    // //   ? property_Detail[0]?.image_path
+                    // //   :
+                    // imagePath
                   }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
@@ -425,34 +426,34 @@ export default PropertyImages = (props) => {
                     // position: "relative",
                   }}
                 />
-              ) : ( */}
-              <SliderBox
-                images={
-                  // property_Detail[0]?.image_path
-                  //   ? property_Detail[0]?.image_path
-                  //   :
-                  imagePaths
-                }
-                sliderBoxHeight={200}
-                onCurrentImagePressed={(index) =>
-                  console.warn(`image ${index} pressed`)
-                }
-                inactiveDotColor={_COLORS.Kodie_GrayColor}
-                dotColor={_COLORS.Kodie_GreenColor}
-                autoplay
-                circleLoop
-                resizeMethod={"resize"}
-                resizeMode={"cover"}
-                dotStyle={PropertyImagesStyle.dotStyle}
-                ImageComponentStyle={{
-                  flex: 1,
-                  resizeMode: "cover",
-                  borderRadius: 15,
-                  width: "90%",
-                  // position: "relative",
-                }}
-              />
-              {/* )} */}
+              ) : (
+                <SliderBox
+                  images={
+                    // property_Detail?.image_path
+                    //   ? property_Detail.image_path
+                    //   :
+                    imagePaths
+                  }
+                  sliderBoxHeight={200}
+                  onCurrentImagePressed={(index) =>
+                    console.warn(`image ${index} pressed`)
+                  }
+                  inactiveDotColor={_COLORS.Kodie_GrayColor}
+                  dotColor={_COLORS.Kodie_GreenColor}
+                  autoplay
+                  circleLoop
+                  resizeMethod={"resize"}
+                  resizeMode={"cover"}
+                  dotStyle={PropertyImagesStyle.dotStyle}
+                  ImageComponentStyle={{
+                    flex: 1,
+                    resizeMode: "cover",
+                    borderRadius: 15,
+                    width: "90%",
+                    // position: "relative",
+                  }}
+                />
+              )}
             </View>
             <Text style={PropertyImagesStyle.upload_Heading_Text}>
               {"Upload images"}

@@ -350,7 +350,7 @@ export default AboutYou = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           console.log("kodie_Data....", response.data.lookup_details);
-          setKodiehelpData(response.data.data);
+          setKodiehelpData(response.data.lookup_details);
         } else {
           console.error("kodie_Data_error:", response.data.lookup_details);
           alert(response.data.error);
