@@ -12,6 +12,9 @@ const Reviewjobdetails1 = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
 
+  const imagesFiles = jobDetailsData.image_file_path;
+  console.log("imagesFiles...", imagesFiles);
+
   // alert(props.job_id)
   useEffect(() => {
     getJobDetails();
@@ -22,8 +25,8 @@ const Reviewjobdetails1 = (props) => {
     console.log("Request URL:", jobDetails_url);
     setIsLoading(true);
     const jobDetailsData = {
-      jm_job_id: 1,
-      // jm_job_id: props.job_id,
+      // jm_job_id: 1,
+      jm_job_id: props.job_id,
     };
     axios
       .post(jobDetails_url, jobDetailsData)
@@ -32,6 +35,7 @@ const Reviewjobdetails1 = (props) => {
         if (response.data.success === true) {
           setJobDetailsData(response.data.data);
           console.log(("jobDetailsData....", response.data.data));
+          props?.imagesFilePath(response.data.data);
           // alert(JSON.stringify(response.data.data))
           // alert(response.data.message);
         } else {

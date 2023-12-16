@@ -59,19 +59,26 @@ const AddBiddingDetails = (props) => {
   const toggleview = () => {
     setVisible(!Visible);
   };
+
+  const handleclosepopUp = () => {
+    props.onclose();
+  };
+
   return (
     <View style={AddBiddingDetailsCss.mainContainer}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flex: 1, marginBottom: 50 }}>
         <View style={AddBiddingDetailsCss.heading_View}>
           <Text style={AddBiddingDetailsCss.heading_Text}>
             {"Add bidding details"}
           </Text>
-          <AntDesign
-            name="close"
-            size={22}
-            color={_COLORS.Kodie_BlackColor}
-            style={{ alignSelf: "center" }}
-          />
+          <TouchableOpacity onPress={handleclosepopUp}>
+            <AntDesign
+              name="close"
+              size={22}
+              color={_COLORS.Kodie_BlackColor}
+              style={{ alignSelf: "center" }}
+            />
+          </TouchableOpacity>
         </View>
         <View style={AddBiddingDetailsCss.card}>
           <Text style={LABEL_STYLES.commontext}>{"Commencement date"}</Text>
