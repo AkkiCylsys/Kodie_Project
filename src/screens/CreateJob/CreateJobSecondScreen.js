@@ -30,7 +30,8 @@ import UploadLeftImage from "../../components/Molecules/UploadImage/UploadLeftIm
 import UploadRightImage from "../../components/Molecules/UploadImage/UploadRightImage";
 import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Config } from "../../Config";
+import axios from "axios";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.wallImage,
@@ -275,14 +276,16 @@ const CreateJobSecondScreen = (props) => {
         }
       });
     }
-    formData.append("createdBy", loginData?.Login_details?.user_account_id);
-    formData.append("updatedBy", loginData?.Login_details?.user_account_id);
+    formData.append("uad_key", loginData?.Login_details?.user_account_id);
+    // formData.append("createdBy", loginData?.Login_details?.user_account_id);
+    // formData.append("updatedBy", loginData?.Login_details?.user_account_id);
     console.log("formData", formData);
-    const uploadJobFiles = "https://e3.cylsys.com/api/v1/job/uploadJobFiles/65";
-    console.log("Request URL:", uploadJobFiles);
+    const url = Config.BASE_URL;
+    const uploadFile_url = url + "job/uploadJobFiles";
+    console.log("Request URL:", uploadFile_url);
     setIsLoading(true);
     try {
-      const response = await axios.post(uploadJobFiles, formData, {
+      const response = await axios.post(uploadFile_url, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -291,6 +294,9 @@ const CreateJobSecondScreen = (props) => {
       if (response.data.success === true) {
         setIsLoading(false);
         alert(" successfully uploaded files");
+        props.navigation.navigate("JobDetails",{
+          job_id:job_id
+        });
         console.log("SuploadJobFilesDatas", response.data);
       } else {
         console.log("uploadJobFilesData", response.data.error);
@@ -484,7 +490,10 @@ const CreateJobSecondScreen = (props) => {
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
-              onPress={() => props.navigation.navigate("JobDetails")}
+              onPress={() => {
+                // props.navigation.navigate("JobDetails");
+                handleuploadJobFiles();
+              }}
             />
           </View>
           <TouchableOpacity style={CreateJobSecondStyle.goBack_View}>
@@ -563,6 +572,7 @@ const CreateJobSecondScreen = (props) => {
           </RBSheet>
         </View>
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
