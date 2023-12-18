@@ -113,13 +113,12 @@ export default SignUp = (props) => {
 
       setSignupResponse(response.data);
       console.log("SignUp response", response.data);
-
+      // alert(JSON.stringify(response.data));
       if (response.data.code === 3) {
-        alert(response.data.message);
+      alert(response.data.message);
         props.navigation.navigate("SignUpVerification", {
           email: email,
           password: encStr,
-
           is_term_condition: term,
           is_privacy_policy: privacy,
           user_key: response.data.User_Key,
@@ -139,18 +138,19 @@ export default SignUp = (props) => {
           user_key: response.data.User_Key,
         });
       } else if (response.data.code === 2) {
-        props.navigation.navigate("SignUpSteps", {
-          email: email,
-          password: encStr,
-          is_term_condition: term,
-          is_privacy_policy: privacy,
-          user_key: response.data.User_Key,
-        });
-        setIsLoading(false);
-        setEmail("");
-        setPassword("");
-        setTerm(false);
-        setPrivacy(false);
+        alert(response.data.message);
+        // props.navigation.navigate("SignUpSteps", {
+        //   email: email,
+        //   password: encStr,
+        //   is_term_condition: term,
+        //   is_privacy_policy: privacy,
+        //   user_key: response.data.User_Key,
+        // });
+        // setIsLoading(false);
+        // setEmail("");
+        // setPassword("");
+        // setTerm(false);
+        // setPrivacy(false);
       } else {
         alert(response.data.message);
       }

@@ -254,10 +254,9 @@ export default Login = (props) => {
       } else if (res.data.success == "true") {
         //  alert("Login successful");
         setIsLoading(false);
-        if (res.data.message == "Please Complete Signup Process") {
-          alert(
-            "Please Complete Signup Process First, Because Your Signup Process are Incomplete."
-          );
+        if (res.data.code == 6) {
+          alert(res.data.message);
+          props.navigation.navigate("SignUpSteps");
         } else {
           props.navigation.navigate("DrawerNavigatorLeftMenu");
         }

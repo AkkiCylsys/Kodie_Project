@@ -20,6 +20,9 @@ const Properties = (props) => {
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    <PropertyList />;
+  }, []);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":

@@ -41,6 +41,7 @@ const DocumentDetails = (props) => {
 
   useEffect(() => {
     getuploadedDocuments();
+    // getuploadedDocumentsbyModule();
   }, []);
   const closeModal = () => {
     refRBSheet.current.close();
@@ -172,7 +173,33 @@ const DocumentDetails = (props) => {
         setIsLoading(false);
       });
   };
-
+  const getUploadedDocumentsByModule = () => {
+    const url = Config.BASE_URL;
+    const getDocumentUrl = url + "tanant_details/get/documents";
+    console.log("Request URL:", getDocumentUrl);
+    setIsLoading(true);
+    const documentModuleData = {
+      Module_Name: "Tenant",
+    }; 
+    axios
+      .post(getDocumentUrl, documentModuleData)
+      .then((response) => {
+        console.log("API Response getDocumentsByModule:", response.data);
+        if (response.data.success === true) {
+          setUploadDocData(response.data.data);
+          console.log("uploadDocData..", response.data.data);
+        } else {
+          handleApiError(response.data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        handleApiError("An error occurred while fetching documents.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   const DocumentsData = ({ item, index }) => {
     return (
       <>

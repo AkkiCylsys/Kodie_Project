@@ -30,7 +30,8 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 50,
+    // marginBottom: 50,
+    marginBottom: 250,
   },
   inputContainer: {
     marginBottom: 15,

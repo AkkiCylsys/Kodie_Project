@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -20,7 +20,9 @@ import { colors } from "../../../../../Themes/CommonColors/CommonColor";
 import { fontFamily } from "../../../../../Themes/FontStyle/FontStyle";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
+import Ionicons from "react-native-vector-icons/Ionicons";
+import axios from "axios";
+import { Config } from "../../../../../Config";
 const Property_documents = [
   "All",
   "Pre+post inspection reports",
@@ -86,11 +88,16 @@ const handleApply = (selectedOptions) => {
 const handleClear = () => {
   console.log("Clear Action");
 };
+
 export default Documents = (props) => {
+  useEffect(() => {
+    getAllDocuments();
+  }, []);
   const property_id = props.property_id;
   // alert(props.property_id);
   const [value, setValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadDocData, setUploadDocData] = useState([]);
   const refRBSheet = useRef();
 
   const DocumentsData = ({ item, index }) => {
@@ -106,8 +113,9 @@ export default Documents = (props) => {
               resizeMode={"contain"}
             />
             <View style={DocumentsStyle.textContainer}>
-              <Text style={DocumentsStyle.pdfName}>{item.pdfName}</Text>
-              <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text>
+              <Text style={DocumentsStyle.pdfName}>{item.PDUM_FILE_NAME}</Text>
+              {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
+              <Text style={DocumentsStyle.pdfSize}> {"4.5 MB"}</Text>
             </View>
           </View>
           <TouchableOpacity
@@ -141,10 +149,14 @@ export default Documents = (props) => {
         }}
       >
         <View style={DocumentsStyle.folder_icon}>
-          <Feather name="folder" size={30} color={_COLORS.Kodie_GrayColor} />
+          <Ionicons
+            name="folder-outline"
+            size={30}
+            color={_COLORS.Kodie_GrayColor}
+          />
           <Entypo
             name="dots-three-vertical"
-            size={30}
+            size={25}
             color={_COLORS.Kodie_GrayColor}
           />
         </View>
@@ -158,6 +170,35 @@ export default Documents = (props) => {
     );
   };
 
+  // Api intrigation ......
+  const getAllDocuments = () => {
+    const url = Config.BASE_URL;
+    // const getDocument_url = url + `tanant_details/get/document/${property_id}`;
+    const getDocument_url = url + `tanant_details/get/document/${15}`;
+    console.log("Request URL:", getDocument_url);
+    setIsLoading(true);
+    axios
+      .get(getDocument_url)
+      .then((response) => {
+        console.log("API Response getDocuments:", response.data);
+        if (response.data.success === true) {
+          // alert(response.data.message);
+          setUploadDocData(response.data.data);
+          console.log("getAlluploadDocData..", response.data.data);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   return (
     <View style={DocumentsStyle.mainContainer}>
       <ScrollView>
@@ -176,7 +217,7 @@ export default Documents = (props) => {
             renderItem={folderRenderData}
           />
         </View>
-        {/* <View style={DocumentsStyle.recentDocView}>
+        <View style={DocumentsStyle.recentDocView}>
           <Text style={DocumentsStyle.reacentDocText}>
             {"Recent documents"}
           </Text>
@@ -184,14 +225,14 @@ export default Documents = (props) => {
         </View>
         <View style={DocumentsStyle.card}>
           <FlatList
-            data={data}
+            data={uploadDocData}
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
             keyExtractor={(item) => item?.id}
             renderItem={DocumentsData}
           />
-        </View> */}
+        </View>
         {/* <RBSheet
           ref={refRBSheet}
           height={200}

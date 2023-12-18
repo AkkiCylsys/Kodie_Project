@@ -341,7 +341,7 @@ export default Leases = (props) => {
 
         <RBSheet
           ref={refRBSheet}
-          height={760}
+          height={720}
           customStyles={{
             wrapper: {
               backgroundColor: "rgba(0, 0, 0, 0.5)",
