@@ -98,7 +98,7 @@ const Reviewjobdetails1 = (props) => {
           Text_Color={_COLORS.Kodie_WhiteColor}
           disabled={isLoading ? true : false}
           onPress={() =>
-            // props.navigation.navigate("CreateJobSecondScreen")
+            // props.navigation.navigate("Jobs")
             // handleCreateJob()
             alert("done")
           }
