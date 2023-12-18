@@ -42,25 +42,45 @@ import { IMAGES } from "../../../Themes";
 import { useNavigation } from "@react-navigation/native";
 import { _COLORS } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AddTenantDetails from "../../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 const data = [
   {
     id: "1",
     key: "InviteFriend",
     title: "Invite tenant from contacts",
-    image: IMAGES.InviteContact,
+    Icon: (
+      <Ionicons
+        name={"person-add-outline"}
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "2",
     key: "InviteKodie",
     title: "Invite tenant from Kodie",
-    image: IMAGES.InviteTenant,
+    Icon: (
+      <MaterialCommunityIcons
+        name={"account-search-outline"}
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
   {
     id: "3",
     key: "AddManually",
     title: "Add tenant manually",
-    image: IMAGES.AddManually,
+    Icon: (
+      <MaterialCommunityIcons
+        name={"account-circle-outline"}
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
   },
 ];
 
@@ -85,7 +105,21 @@ export default InviteTenantModal = (props) => {
         }
       }}
     >
-      <Image source={item.image} style={InviteTenantModalStyle.Icons} />
+      {/* <Image source={item.image} style={InviteTenantModalStyle.Icons} /> */}
+      <View
+        style={{
+          borderWidth: 1,
+          borderRadius: 8,
+          borderColor: _COLORS.Kodie_LightWhiteColor,
+          width: 35,
+          height: 35,
+          alignSelf: "center",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {item.Icon}
+      </View>
       <Text style={InviteTenantModalStyle.Invite_Data_Text}>{item.title}</Text>
     </TouchableOpacity>
   );

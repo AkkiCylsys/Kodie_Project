@@ -17,6 +17,7 @@ import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoade
 import { Config } from "../../../../../../Config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { color } from "react-native-reanimated";
 
 const data = [
   { label: "3-month", value: "1" },
@@ -129,7 +130,7 @@ export default AddExpensesDetails = (props) => {
       P_PARENT_CODE: "AEC",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const propertyType = url + "lookup_details";
     console.log("Request URL:", propertyType);
     setIsLoading(true);
@@ -139,8 +140,8 @@ export default AddExpensesDetails = (props) => {
         console.log("property_type", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("Expence Category....", response.data.data);
-          setExpenceCategoryData(response.data.data);
+          console.log("Expence Category....", response.data.lookup_details);
+          setExpenceCategoryData(response.data.lookup_details);
           // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
           console.error("Expence_Category_error:", response.data.error);
@@ -160,7 +161,7 @@ export default AddExpensesDetails = (props) => {
       P_PARENT_CODE: "RESPONSIBLE FOR PAYING",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const propertyType = url + "lookup_details";
     console.log("Request URL:", propertyType);
     setIsLoading(true);
@@ -170,8 +171,8 @@ export default AddExpensesDetails = (props) => {
         console.log("property_type", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("Responsible Category....", response.data.data);
-          setSelectedResponsibleData(response.data.data);
+          console.log("Responsible Category....", response.data.lookup_details);
+          setSelectedResponsibleData(response.data.lookup_details);
         } else {
           console.error("Responsible_Category_error:", response.data.error);
           setIsLoading(false);
@@ -195,7 +196,7 @@ export default AddExpensesDetails = (props) => {
     );
 
     const ExpenceData = {
-      user_key: loginData.Login_details.result,
+      user_key: loginData.Login_details.user_id,
       upd_key: property_id,
       total_amount: totalAmount,
       total_amount_excl_tax: accountXcl,
@@ -211,9 +212,8 @@ export default AddExpensesDetails = (props) => {
       start_date: selectedPaidDate,
       is_active: 1,
     };
-
-    const ExpenceUrl =
-      "https://e3.cylsys.com/api/v1/property_expenses_details/create";
+    const url = Config.BASE_URL;
+    const ExpenceUrl = url + "property_expenses_details/create";
     console.log("Request URL:", ExpenceUrl);
     setIsLoading(true);
 
@@ -257,7 +257,7 @@ export default AddExpensesDetails = (props) => {
     } else if (selectedDate.trim() === "") {
       setSelectedDateError("Due date is required.");
     } else if (!ExpenceCategoryValue) {
-      setExpenceCategoryValueError("select Responsible Category.");
+      setExpenceCategoryValueError("Select Responsible Category.");
     } else if (selectedPaidDate.trim() === "") {
       setSelectedPaidDateError("Paid date is required.");
     } else {
@@ -276,7 +276,6 @@ export default AddExpensesDetails = (props) => {
   }, []);
   return (
     <View style={AddExpensesDetailsStyle.mainContainer}>
-      <ScrollView>
         <View style={AddExpensesDetailsStyle.heading_View}>
           <Text style={AddExpensesDetailsStyle.heading_Text}>
             {"Add expense details"}
@@ -290,6 +289,7 @@ export default AddExpensesDetails = (props) => {
             />
           </TouchableOpacity>
         </View>
+      <ScrollView>
         <View style={AddExpensesDetailsStyle.card}>
           <View style={AddExpensesDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Total amount*"}</Text>
@@ -490,9 +490,9 @@ export default AddExpensesDetails = (props) => {
               iconStyle={AddExpensesDetailsStyle.iconStyle}
               data={ExpenceCategoryData}
               maxHeight={300}
-              labelField="description"
+              labelField="lookup_description"
               valueField="lookup_key"
-              placeholder="6-month"
+              placeholder="Select expense category"
               value={ExpenceCategoryValue}
               onChange={(item) => {
                 setExpenceCategoryValue(item.lookup_key);
@@ -624,13 +624,14 @@ export default AddExpensesDetails = (props) => {
                 AddExpensesDetailsStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "cancel"
+                    selectedOption == "Cancel"
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("cancel");
+                handlePopUp();
+                handleOptionClick("Cancel");
               }}
             >
               <Text
@@ -638,13 +639,13 @@ export default AddExpensesDetails = (props) => {
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "cancel"
+                      selectedOption == "Cancel"
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
                 ]}
               >
-                {"cancel"}
+                {"Cancel"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -659,12 +660,14 @@ export default AddExpensesDetails = (props) => {
               ]}
               onPress={() => {
                 handleSaveBtn();
+                handleOptionClick("Save");
               }}
             >
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   AddExpensesDetailsStyle.text,
+
                   {
                     color:
                       selectedOption == "Save"
@@ -673,7 +676,7 @@ export default AddExpensesDetails = (props) => {
                   },
                 ]}
               >
-                {" Save"}
+                {"Save"}
               </Text>
             </TouchableOpacity>
           </View>

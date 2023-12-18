@@ -1,5 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState, useRef, useEffect, index } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import { PropertyImagesStyle } from "./PropertyImagesStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
@@ -15,8 +21,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Config } from "../../../../Config";
 import axios from "axios";
 import ImagePicker from "react-native-image-crop-picker";
-
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import Video from "react-native-video";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const images = [
@@ -41,23 +47,23 @@ export default PropertyImages = (props) => {
   }, []);
   const DetailsData = () => {
     const detailData = {
-      user: property_id,
+      property_id: property_id,
     };
     console.log("detailData", detailData);
-    const url = Config.API_URL;
-    const property_Detailss = url + "get_All_Property_details";
+    const url = Config.BASE_URL;
+    const property_Detailss = url + "get_property_details";
     console.log("Request URL:", property_Detailss);
     setIsLoading(true);
     axios
       .post(property_Detailss, detailData)
       .then((response) => {
         console.log("propertyDetail", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details);
-          setImagePaths(response.data.property_details[0]?.image_path);
+          setProperty_Details(response.data.data);
+          setImagePaths(response.data.data?.image_path);
           // alert(JSON.stringify(response.data.property_details));
-          console.log("propertyDetail....", response.data.property_details);
+          console.log("propertyDetail....", response.data.data);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -93,13 +99,13 @@ export default PropertyImages = (props) => {
   const handleSaveUpdateImage = async () => {
     refRBSheet.current.close();
     const formData = new FormData();
-    formData.append("user", property_id);
+    formData.append("property_id", property_id);
     console.log("kljproperty_Data_id", property_id);
     const imagePaths = MultiImageName.map((image) => image.path);
 
     // Append all image paths to the same key 'images[]'
     imagePaths.forEach((path, index) => {
-      formData.append("images[]", {
+      formData.append("images", {
         uri: path,
         name: `image.jpg`,
         type: "image/jpeg",
@@ -110,7 +116,7 @@ export default PropertyImages = (props) => {
       selectedVideos.forEach((videoUri, index) => {
         if (typeof videoUri === "string") {
           const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append(`media[]`, {
+          formData.append(`videos`, {
             uri: videoUri,
             name: videoName,
             type: "video/mp4", // Set the appropriate video type
@@ -121,13 +127,12 @@ export default PropertyImages = (props) => {
       });
     }
     console.log("formData", formData);
-    const url = Config.API_URL;
-    const saveAccountDetails = url + "add_property_images";
+    const url = Config.BASE_URL;
+    const saveAccountDetails = url + "update_property_images_video_details";
     console.log("Request URL:", saveAccountDetails);
     setIsLoading(true);
-
     try {
-      const response = await axios.post(saveAccountDetails, formData, {
+      const response = await axios.put(saveAccountDetails, formData, {
         headers: {
           "content-type": "multipart/form-data",
 
@@ -137,7 +142,7 @@ export default PropertyImages = (props) => {
 
       console.log("Save Account Details", response.data);
 
-      if (response.data.status === true) {
+      if (response.data.success === true) {
         setIsLoading(false);
         props.navigation.navigate("PropertyReview", {
           property_id: property_id,
@@ -145,9 +150,6 @@ export default PropertyImages = (props) => {
           selectedVideos: selectedVideos,
           editMode: editMode,
         });
-        // alert(response.data.message);
-        // props.navigation.navigate("DrawerNavigatorLeftMenu");
-        // setCurrentPage(0);
       } else {
         console.error("Save Account Details error:", response.data.error);
         alert(response.data.error);
@@ -277,86 +279,103 @@ export default PropertyImages = (props) => {
     console.log("................ImageNAme", multipleImages);
     console.log("................ImageNAme", multipleImages.path);
   };
+  //.....remove video....////
+  const removeVideo = (indexToRemove) => {
+    const updatedVideos = [...selectedVideos];
+    updatedVideos.splice(indexToRemove, 1);
+    setSelectedVideos(updatedVideos);
+  };
+
   const imagePaths = MultiImageName.map((image) => image.path);
   // alert(imagePaths);
   const handleSaveImage = async () => {
     const formData = new FormData();
-    formData.append("user", property_id);
     refRBSheet.current.close();
-    console.log("kljproperty_Data_id", property_id);
+    formData.append("property_id", property_id);
+
     if (MultiImageName && Array.isArray(MultiImageName)) {
-      // Extract paths from each element in MultiImageName using map
       const imagePaths = MultiImageName.map((image) => image.path);
 
-      // Append all image paths to the same key 'images[]'
       imagePaths.forEach((path, index) => {
-        formData.append("images[]", {
+        formData.append("images", {
           uri: path,
           name: `image_${index}.jpg`,
           type: "image/jpeg",
         });
       });
-
-      console.log("Image paths:", imagePaths);
     } else {
       console.error(
         "MultiImageName is not defined or not an array:",
         MultiImageName
       );
+      return; // Stop execution if MultiImageName is not properly defined
     }
-    // Append videos
+
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoUri, index) => {
         if (typeof videoUri === "string") {
           const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append(`media[]`, {
+          formData.append(`videos`, {
             uri: videoUri,
             name: videoName,
-            type: "video/mp4", // Set the appropriate video type
+            type: "video/mp4",
           });
         } else {
           console.error(`Invalid video URI at index ${index}: ${videoUri}`);
         }
       });
     }
+
     console.log("formData", formData);
-    const url = Config.API_URL;
-    const saveAccountDetails = url + "add_property_images";
+
+    const saveAccountDetails =
+      "https://e3.cylsys.com/api/v1/add_property_images_videos";
     console.log("Request URL:", saveAccountDetails);
+
     setIsLoading(true);
 
     try {
       const response = await axios.post(saveAccountDetails, formData, {
         headers: {
-          "content-type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       });
 
       console.log("Save Account Details", response.data);
 
-      if (response.data.status === true) {
+      if (response.data.success === true) {
         setIsLoading(false);
         MultiImageName ? refRBSheet.current.close() : null;
-        // alert(response.data.message);
         props.navigation.navigate("PropertyReview", {
           property_id: property_id,
           MultiImageName: MultiImageName,
           selectedVideos: selectedVideos,
         });
-        // setCurrentPage(0);
+        console.log("Save Account Details", response.data);
       } else {
-        console.error("Save Account Details error:", response.data.error);
-        alert(response.data.error);
+        console.log("Save Account Details error:", response.data.error);
+        alert("Error while saving account details");
       }
     } catch (error) {
-      console.error("Account_Details error:", error);
+      if (axios.isCancel(error)) {
+        console.log("Request canceled:", error.message);
+      } else {
+        console.log("saving account details", error.message);
+        alert(
+          error.message || "An error occurred while saving account details"
+        );
+      }
     } finally {
       setIsLoading(false);
     }
   };
+
   return (
     <View style={PropertyImagesStyle.mainContainer}>
-      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
+      <TopHeader
+        onPressLeftButton={goBack}
+        MiddleText={editMode ? "Edit property" : "Add new property"}
+      />
       <View
         style={{
           marginTop: 15,
@@ -379,13 +398,14 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-              {/* {imagePath ? (
+              {property_Detail.image_path &&
+              property_Detail.image_path.length != 0 ? (
                 <SliderBox
                   images={
-                    // property_Detail[0]?.image_path
-                    //   ? property_Detail[0]?.image_path
-                    //   :
-                    imagePath
+                    property_Detail?.image_path
+                    // //   ? property_Detail[0]?.image_path
+                    // //   :
+                    // imagePath
                   }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
@@ -406,34 +426,34 @@ export default PropertyImages = (props) => {
                     // position: "relative",
                   }}
                 />
-              ) : ( */}
-              <SliderBox
-                images={
-                  // property_Detail[0]?.image_path
-                  //   ? property_Detail[0]?.image_path
-                  //   :
-                  imagePaths
-                }
-                sliderBoxHeight={200}
-                onCurrentImagePressed={(index) =>
-                  console.warn(`image ${index} pressed`)
-                }
-                inactiveDotColor={_COLORS.Kodie_GrayColor}
-                dotColor={_COLORS.Kodie_GreenColor}
-                autoplay
-                circleLoop
-                resizeMethod={"resize"}
-                resizeMode={"cover"}
-                dotStyle={PropertyImagesStyle.dotStyle}
-                ImageComponentStyle={{
-                  flex: 1,
-                  resizeMode: "cover",
-                  borderRadius: 15,
-                  width: "90%",
-                  // position: "relative",
-                }}
-              />
-              {/* )} */}
+              ) : (
+                <SliderBox
+                  images={
+                    // property_Detail?.image_path
+                    //   ? property_Detail.image_path
+                    //   :
+                    imagePaths
+                  }
+                  sliderBoxHeight={200}
+                  onCurrentImagePressed={(index) =>
+                    console.warn(`image ${index} pressed`)
+                  }
+                  inactiveDotColor={_COLORS.Kodie_GrayColor}
+                  dotColor={_COLORS.Kodie_GreenColor}
+                  autoplay
+                  circleLoop
+                  resizeMethod={"resize"}
+                  resizeMode={"cover"}
+                  dotStyle={PropertyImagesStyle.dotStyle}
+                  ImageComponentStyle={{
+                    flex: 1,
+                    resizeMode: "cover",
+                    borderRadius: 15,
+                    width: "90%",
+                    // position: "relative",
+                  }}
+                />
+              )}
             </View>
             <Text style={PropertyImagesStyle.upload_Heading_Text}>
               {"Upload images"}
@@ -499,6 +519,30 @@ export default PropertyImages = (props) => {
                           }}
                           controls={true}
                         />
+                        <TouchableOpacity
+                          style={{
+                            position: "absolute",
+                            // top: 2,
+                            right: 5,
+                            backgroundColor: "rgba(255,255,255,0.7)",
+                            height: "15%",
+                            width: "15%",
+                            borderRadius: 8,
+                            // padding: 3,
+                            justifyContent: "center",
+                          }}
+                          onPress={() => removeVideo(index)}
+                        >
+                          <Text
+                            style={{
+                              color: "black",
+                              fontWeight: "bold",
+                              alignSelf: "center",
+                            }}
+                          >
+                            X
+                          </Text>
+                        </TouchableOpacity>
                         {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
                       </>
                     )}
@@ -541,7 +585,7 @@ export default PropertyImages = (props) => {
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               onPress={() => {
-                if (property_id || "editMode") {
+                if (editMode) {
                   handleSaveUpdateImage();
                 } else {
                   handleSaveImage();
@@ -552,7 +596,11 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.btnView}>
             <CustomSingleButton
-              _ButtonText={"Add property features later"}
+              _ButtonText={
+                editMode
+                  ? "Edit property features later"
+                  : "Add property features later"
+              }
               Text_Color={_COLORS.Kodie_BlackColor}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}

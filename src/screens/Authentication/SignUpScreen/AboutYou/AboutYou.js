@@ -25,7 +25,7 @@ import axios from "axios";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-//import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -158,7 +158,7 @@ export default AboutYou = (props) => {
               </View>
 
               <Text style={AboutYouStyle.want_List_text}>
-                {item.description}
+                {item.lookup_description}
               </Text>
             </View>
           </TouchableOpacity>
@@ -175,7 +175,7 @@ export default AboutYou = (props) => {
 
   const renderItem = ({ item }) => (
     <ServicesBox
-      Services_Name={item?.description}
+      Services_Name={item?.lookup_description}
       BoxStyling={[
         AboutYouStyle.box_style,
         {
@@ -210,7 +210,7 @@ export default AboutYou = (props) => {
   };
   const renderItemDescribeYourself = ({ item }) => (
     <ServicesBox
-      Services_Name={item?.description}
+      Services_Name={item?.lookup_description}
       BoxStyling={[
         AboutYouStyle.box_style,
         {
@@ -273,7 +273,7 @@ export default AboutYou = (props) => {
       P_PARENT_CODE: "TEN_DESC",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const describeYourselfApi = url + "lookup_details";
     console.log("Request URL:", describeYourselfApi);
     setIsLoading(true);
@@ -283,8 +283,11 @@ export default AboutYou = (props) => {
         console.log("kodie_describeYouself_Data", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("kodie_describeYouself_Data....", response.data.data);
-          setKodieDescribeYourselfData(response.data.data);
+          console.log(
+            "kodie_describeYouself_Data....",
+            response.data.lookup_details
+          );
+          setKodieDescribeYourselfData(response.data.lookup_details);
         } else {
           console.error(
             "kodie_describeYouself_Data_error:",
@@ -306,7 +309,7 @@ export default AboutYou = (props) => {
       P_PARENT_CODE: "TEN_PROPERTY",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const propertyType = url + "lookup_details";
     console.log("Request URL:", propertyType);
     setIsLoading(true);
@@ -316,8 +319,8 @@ export default AboutYou = (props) => {
         console.log("maneg_property_type", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("maneg_property_type....", response.data.data);
-          setmanage_property_Data(response.data.data);
+          console.log("maneg_property_type....", response.data.lookup_details);
+          setmanage_property_Data(response.data.lookup_details);
         } else {
           console.error("property_type_error:", response.data.error);
           alert(response.data.error);
@@ -336,7 +339,7 @@ export default AboutYou = (props) => {
       P_PARENT_CODE: "KODIE_HELP",
       P_TYPE: "OPTION",
     };
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const kodiehelpApi = url + "lookup_details";
     console.log("Request URL:", kodiehelp_Data);
     setIsLoading(true);
@@ -346,10 +349,10 @@ export default AboutYou = (props) => {
         console.log("kodie_Data", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("kodie_Data....", response.data.data);
-          setKodiehelpData(response.data.data);
+          console.log("kodie_Data....", response.data.lookup_details);
+          setKodiehelpData(response.data.lookup_details);
         } else {
-          console.error("kodie_Data_error:", response.data.error);
+          console.error("kodie_Data_error:", response.data.lookup_details);
           alert(response.data.error);
           setIsLoading(false);
         }
@@ -456,19 +459,6 @@ export default AboutYou = (props) => {
           ) : (
             <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
           )}
-          {/* {ImageName ? (
-            <Image
-              source={{
-                uri:ImageName[0]?.uri,
-              }}
-              style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
-            />
-          ) : (
-            <Image
-              source={IMAGES?.userIcons}
-              style={[AboutYouStyle.logo]}
-            />
-          )} */}
         </TouchableOpacity>
         {ImageName ? null : (
           <Text style={AboutYouStyle.error_text}>{imageError}</Text>

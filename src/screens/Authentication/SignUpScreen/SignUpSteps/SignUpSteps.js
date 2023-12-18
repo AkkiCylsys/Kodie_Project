@@ -32,7 +32,8 @@ import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import Geocoder from "react-native-geocoding";
 import Geolocation from "react-native-geolocation-service";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
+import { useFocusEffect } from "@react-navigation/native";
+import { BackHandler } from "react-native";
 const labels = ["Step 1", "Step 2", "Step 3"];
 
 const firstIndicatorSignUpStepStyle = {
@@ -96,6 +97,24 @@ const SignUpSteps = (props) => {
   const country = addressParts.pop();
   const state = addressParts.pop();
   const city = addressParts.join(", ");
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [IsMap, IsSearch])
+  );
 
   console.log("Country:", country);
   console.log("State:", state);
@@ -387,8 +406,21 @@ const SignUpSteps = (props) => {
             <Text style={LABEL_STYLES._texinputLabel}>
               Current physical address
             </Text>
-            <View style={AccountStyle.locationContainer}>
+            <View style={AccountStyle.locationConView}>
+              <View style={AccountStyle.locationContainer}>
+                <TextInput
+                  style={AccountStyle.locationInput}
+                  value={physicalAddress}
+                  onChangeText={setPhysicalAddress}
+                  onFocus={() => {
+                    setIsSearch(true);
+                  }}
+                  placeholder="Enter new location"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+              </View>
               <TouchableOpacity
+                style={AccountStyle.locationIconView}
                 onPress={() => {
                   // props.navigation.navigate("Location");
 
@@ -400,21 +432,11 @@ const SignUpSteps = (props) => {
               >
                 <Entypo
                   name={"location-pin"}
-                  size={24}
-                  color={_COLORS.Kodie_MediumGrayColor}
+                  size={28}
+                  color={_COLORS.Kodie_GreenColor}
                   style={AccountStyle.locationIcon}
                 />
               </TouchableOpacity>
-              <TextInput
-                style={AccountStyle.locationInput}
-                value={physicalAddress}
-                onChangeText={setPhysicalAddress}
-                onFocus={() => {
-                  setIsSearch(true);
-                }}
-                placeholder="Enter new location"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
             </View>
           </View>
           <View style={AccountStyle.inputContainer}>
@@ -450,7 +472,7 @@ const SignUpSteps = (props) => {
   };
 
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
         MiddleText={
           IsMap || IsSearch ? "Location" : "Set up your Kodie account"
@@ -592,7 +614,7 @@ const SignUpSteps = (props) => {
         )}
         {isLoading ? <CommonLoader /> : null}
       </View>
-    </>
+    </View>
   );
 };
 

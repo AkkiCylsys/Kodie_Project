@@ -7,26 +7,51 @@ import TopHeader from "../../../components/Molecules/Header/Header";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import { _goBack } from "../../../services/CommonServices";
 import { useNavigation } from '@react-navigation/native';
+import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Fontisto from "react-native-vector-icons/Fontisto";
+import Feather from "react-native-vector-icons/Feather";
+
 const feedbackData = [
   {
     id: "1",
     Heading: "Halp Center",
-    img: IMAGES.helpCenter,
+    // img: IMAGES.helpCenter,
+    icon:<AntDesign
+    name="questioncircleo"
+    size={23}
+    color={_COLORS.Kodie_GreenColor}
+  />
   },
   {
     id: "2",
     Heading: "Contact Us",
-    img: IMAGES.contactus,
+    // img: IMAGES.contactus,
+    icon:<MaterialIcons
+    name="perm-contact-cal"
+    size={23}
+    color={_COLORS.Kodie_GreenColor}
+  />
   },
   {
     id: "3",
     Heading: "Terms & PrivacyPolicy",
-    img: IMAGES.TermPrivacy,
+    // img: IMAGES.TermPrivacy,
+    icon:<Fontisto
+    name="file-1"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+  />
   },
   {
     id: "4",
     Heading: "AppInfo",
-    img: IMAGES.AppInfo,
+    // img: IMAGES.AppInfo,
+    icon:<Feather
+    name="info"
+    size={25}
+    color={_COLORS.Kodie_GreenColor}
+  />
   },
 ];
 const Help_FeedBack = (props) => {
@@ -36,8 +61,8 @@ const Help_FeedBack = (props) => {
       <>
         <View style={Help_FeedBackCss.container}>
           <View style={Help_FeedBackCss.profileView}>
-            <Image source={item.img} style={Help_FeedBackCss.profileIcon} />
-
+            {/* <Image source={item.img} style={Help_FeedBackCss.profileIcon} /> */}
+              {item.icon}
             <Text style={Help_FeedBackCss.profile_Heading}>{item.Heading}</Text>
           </View>
           <TouchableOpacity

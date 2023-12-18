@@ -32,7 +32,7 @@ const data = [
 export default AddLeaseDetails = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginData...", loginData);
-  // alert(loginData?.Login_details?.result)
+  // alert(loginData?.Login_details?.user_id)
 
   // alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
@@ -101,13 +101,13 @@ export default AddLeaseDetails = (props) => {
 
   const handle_add_Lease = () => {
     console.log("paymentDueDay....", paymentDueDay);
-    const url = "https://e3.cylsys.com/api/v1/property_lease_details/create";
-    const add_Lease_url = url;
+    const url = Config.BASE_URL;
+    const add_Lease_url = url + "property_lease_details/create";
     console.log("Request URL:", add_Lease_url);
     setIsLoading(true);
     console.log("selectedDate", selectedDate);
     const lease_Data = {
-      user_key: loginData?.Login_details?.result,
+      user_key: loginData?.Login_details?.user_id,
       // upd_key: 4,
       upd_key: property_id,
       commencement_date: selectedDate,
@@ -148,7 +148,7 @@ export default AddLeaseDetails = (props) => {
       });
   };
   const handle_notification_type = () => {
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const notification_url = url + "lookup_details";
     console.log("Request URL:", notification_url);
     setIsLoading(true);
@@ -162,8 +162,8 @@ export default AddLeaseDetails = (props) => {
       .then((response) => {
         console.log("API Response notification_type:", response.data);
         if (response.data.status === true) {
-          setNotification_type_Data(response.data.data);
-          // alert(JSON.stringify(response.data.data));
+          setNotification_type_Data(response.data.lookup_details);
+          // alert(JSON.stringify(response.data.lookup_details));
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -179,7 +179,7 @@ export default AddLeaseDetails = (props) => {
       });
   };
   const handle_expiry_reminder = () => {
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const expiry_url = url + "lookup_details";
     console.log("Request URL:", expiry_url);
     setIsLoading(true);
@@ -192,8 +192,8 @@ export default AddLeaseDetails = (props) => {
       .then((response) => {
         console.log("API Response expiry reminder:", response.data);
         if (response.data.status === true) {
-          setExpiry_reminder_Data(response.data.data);
-          // alert(JSON.stringify(response.data.data));
+          setExpiry_reminder_Data(response.data.lookup_details);
+          // alert(JSON.stringify(response.data.lookup_details));
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -209,7 +209,7 @@ export default AddLeaseDetails = (props) => {
       });
   };
   const handle_payment_reminder = () => {
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const payment_url = url + "lookup_details";
     console.log("Request URL:", payment_url);
     setIsLoading(true);
@@ -222,8 +222,8 @@ export default AddLeaseDetails = (props) => {
       .then((response) => {
         console.log("API Response payment reminder:", response.data);
         if (response.data.status === true) {
-          setPayment_reminder_Data(response.data.data);
-          // alert(JSON.stringify(response.data.data));
+          setPayment_reminder_Data(response.data.lookup_details);
+          // alert(JSON.stringify(response.data.lookup_details));
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -239,7 +239,7 @@ export default AddLeaseDetails = (props) => {
       });
   };
   const handle_rental_reminder = () => {
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const rental_url = url + "lookup_details";
     console.log("Request URL:", rental_url);
     setIsLoading(true);
@@ -252,8 +252,8 @@ export default AddLeaseDetails = (props) => {
       .then((response) => {
         console.log("API Response rental reminder:", response.data);
         if (response.data.status === true) {
-          setrental_reminder_Data(response.data.data);
-          // alert(JSON.stringify(response.data.data));
+          setrental_reminder_Data(response.data.lookup_details);
+          // alert(JSON.stringify(response.data.lookup_details));
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -269,7 +269,7 @@ export default AddLeaseDetails = (props) => {
       });
   };
   const handle_lease_term = () => {
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const lease_term__url = url + "lookup_details";
     console.log("Request URL:", lease_term__url);
     setIsLoading(true);
@@ -282,8 +282,8 @@ export default AddLeaseDetails = (props) => {
       .then((response) => {
         console.log("API Response rental lease terms:", response.data);
         if (response.data.status === true) {
-          setLease_term_Data(response.data.data);
-          // alert(JSON.stringify(response.data.data));
+          setLease_term_Data(response.data.lookup_details);
+          // alert(JSON.stringify(response.data.lookup_details));
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -315,7 +315,9 @@ export default AddLeaseDetails = (props) => {
               size={20}
             />
           )}
-          <Text style={AddLeaseDetailsStyle.textItem}>{item.description}</Text>
+          <Text style={AddLeaseDetailsStyle.textItem}>
+            {item.lookup_description}
+          </Text>
         </View>
       </ScrollView>
     );
@@ -336,27 +338,29 @@ export default AddLeaseDetails = (props) => {
             size={20}
           />
         )}
-        <Text style={AddLeaseDetailsStyle.textItem}>{item.description}</Text>
+        <Text style={AddLeaseDetailsStyle.textItem}>
+          {item.lookup_description}
+        </Text>
       </View>
     );
   };
   return (
     <View style={AddLeaseDetailsStyle.mainContainer}>
-      <ScrollView>
-        <View style={AddLeaseDetailsStyle.heading_View}>
-          <Text style={AddLeaseDetailsStyle.heading_Text}>
-            {"Add lease details"}
-          </Text>
+      <View style={AddLeaseDetailsStyle.heading_View}>
+        <Text style={AddLeaseDetailsStyle.heading_Text}>
+          {"Add lease details"}
+        </Text>
 
-          <TouchableOpacity onPress={handlePopUp}>
-            <AntDesign
-              name="close"
-              size={22}
-              color={_COLORS.Kodie_BlackColor}
-              style={{ alignSelf: "center" }}
-            />
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={handlePopUp}>
+          <AntDesign
+            name="close"
+            size={22}
+            color={_COLORS.Kodie_BlackColor}
+            style={{ alignSelf: "center" }}
+          />
+        </TouchableOpacity>
+      </View>
+      <ScrollView>
         <View style={AddLeaseDetailsStyle.card}>
           <Text style={LABEL_STYLES.commontext}>{"Commencement date"}</Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
@@ -409,7 +413,7 @@ export default AddLeaseDetails = (props) => {
               iconStyle={AddLeaseDetailsStyle.iconStyle}
               data={lease_term_Data}
               maxHeight={300}
-              labelField="description"
+              labelField="lookup_description"
               valueField="lookup_key"
               placeholder="6-month"
               value={lease_term_value}
@@ -498,7 +502,7 @@ export default AddLeaseDetails = (props) => {
               value={paymentDueDay}
               onChangeText={setPaymentDueDay}
               placeholder="2023-12-30"
-              placeholderTextColor="#999"
+              // placeholderTextColor="#999"
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -566,7 +570,7 @@ export default AddLeaseDetails = (props) => {
               <Dropdown
                 style={[
                   AddLeaseDetailsStyle.dropdown,
-                  { flex: 1, borderRadius: 15 },
+                  { flex: 1, borderRadius: 8, marginLeft: 45 },
                 ]}
                 placeholderStyle={[
                   AddLeaseDetailsStyle.placeholderStyle,
@@ -577,7 +581,7 @@ export default AddLeaseDetails = (props) => {
                 iconStyle={AddLeaseDetailsStyle.iconStyle}
                 data={notification_type_Data}
                 maxHeight={300}
-                labelField="description"
+                labelField="lookup_description"
                 valueField="lookup_key"
                 placeholder="Email"
                 value={notification_type_value}
@@ -604,6 +608,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{ margin: 5 }} />
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Lease expiry reminder"}
             </Text>
@@ -622,9 +627,9 @@ export default AddLeaseDetails = (props) => {
                 iconStyle={AddLeaseDetailsStyle.iconStyle}
                 data={expiry_reminder_Data}
                 maxHeight={300}
-                labelField="description"
+                labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="30-days"
+                placeholder="30 days"
                 value={expiry_reminder_value}
                 onChange={(item) => {
                   setExpiry_reminder_value(item.lookup_key);
@@ -648,6 +653,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{ margin: 5 }} />
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Rent payment reminder"}
             </Text>
@@ -666,9 +672,9 @@ export default AddLeaseDetails = (props) => {
                 iconStyle={AddLeaseDetailsStyle.iconStyle}
                 data={payment_reminder_Data}
                 maxHeight={300}
-                labelField="description"
+                labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="2-days"
+                placeholder="2 days"
                 value={payment_reminder_value}
                 onChange={(item) => {
                   setPayment_reminder_value(item.lookup_key);
@@ -691,6 +697,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
+            <View style={{ margin: 5 }} />
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Late rental reminder"}
             </Text>
@@ -709,15 +716,15 @@ export default AddLeaseDetails = (props) => {
                 iconStyle={AddLeaseDetailsStyle.iconStyle}
                 data={rental_reminder_Data}
                 maxHeight={300}
-                labelField="description"
+                labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="2-days"
+                placeholder="2 days"
                 value={rental_reminder_value}
                 onChange={(item) => {
                   setrental_reminder_value(item.lookup_key);
                 }}
               />
-              <Text style={AddLeaseDetailsStyle.before}>{"After"}</Text>
+              <Text style={AddLeaseDetailsStyle.after}>{"after"}</Text>
             </View>
           </View>
           <View style={AddLeaseDetailsStyle.ButtonView}>
@@ -727,13 +734,13 @@ export default AddLeaseDetails = (props) => {
                 AddLeaseDetailsStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "cancel"
+                    selectedOption == "Cancel"
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("cancel");
+                handleOptionClick("Cancel");
                 handlePopUp();
               }}
             >
@@ -742,13 +749,13 @@ export default AddLeaseDetails = (props) => {
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "cancel"
+                      selectedOption == "Cancel"
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
                 ]}
               >
-                {"cancel"}
+                {"Cancel"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity

@@ -22,9 +22,10 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import { Config } from "../../../../Config";
 import axios from "axios";
-
 import StepIndicator from "react-native-step-indicator";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { DetailsStyle } from "./Details/DetailsStyles";
@@ -77,30 +78,72 @@ const Detail = [
 ];
 export default PropertyReview = (props) => {
   const property_id = props?.route?.params?.property_id;
+
+  const propertyid = props?.route?.params?.propertyid;
+  const propertyView = props?.route?.params?.propertyView;
   const MultiImageName = props?.route?.params?.MultiImageName;
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
-  console.log(
-    ".............property_idreview",
-    property_id,
-    MultiImageName,
-    selectedVideos,
-    editMode
-  );
+  console.log(propertyView, propertyid);
   const [activeTab, setActiveTab] = useState("Tab1");
-  const [tabValue, setTabValue] = useState("");
-  const [getPropertyDetail, setGetPropertyDetail] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
+  const [additionalKeyFeaturesString, setAdditionalKeyFeaturesString] =
+    useState([]);
   const [currentPage, setCurrentPage] = useState(3);
+  const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
+  const [numColumns, setNumColumns] = useState(2);
   const Detail_rander = ({ item, index }) => {
-    // const key = Object.keys(item)[0];
-    // const value = Object.values(item)[0];
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
-          <Image source={item.images} style={DetailsStyle.DetailsIcon} />
+          {Object.keys(item)[0] == "Bedrooms" ? (
+            // (<Image
+            //     source={IMAGES.BedroomIcon}
+            //     style={DetailsStyle.DetailsIcon}
+            //   />)
+
+            <MaterialCommunityIcons
+              name="bed-double-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+            />
+          ) : Object.keys(item)[0] == "Bathrooms" ? (
+            // (
+            //   <Image source={IMAGES.Bathroom}
+            //   style={DetailsStyle.DetailsIcon} />
+            // )
+            <MaterialCommunityIcons
+              name="shower-head"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+            />
+          ) : Object.keys(item)[0] == "Parking Space" ? (
+            // (
+            //   <Image source={IMAGES.Parking}
+            //   style={DetailsStyle.DetailsIcon} />
+            // )
+            <Ionicons
+              name="car-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+            />
+          ) : (
+            // (
+            //   <Image source={IMAGES.Garden}
+            //   style={DetailsStyle.DetailsIcon} />
+            // )
+            <Ionicons
+              name="car-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+            />
+          )}
           <Text style={DetailsStyle.details_text}>
             {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ""}
             {/* {`${key}: ${value}`} */}
@@ -109,83 +152,198 @@ export default PropertyReview = (props) => {
       </>
     );
   };
-  useEffect(() => {
-    // DetailsData();
-    // keyfeatures();
+  const renderItem = ({ item }) => (
+    <View style={DetailsStyle.DetailsView}>
+      {item === "Pool" ? (
+        // (
+        //   <Image source={IMAGES.Bathroom}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialIcons
+          name="pool"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Garage" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="garage"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Balcony" ? (
+        //   (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="window-closed-variant"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Outdoor Area" ? (
+        // (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="table-chair"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Ensuite" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="shower"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Dishwasher" ? (
+        // (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="dishwasher"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Study" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="bookshelf"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Built in Robes" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="fireplace"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Air Conditioning" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="air-conditioner"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Solar Panels" ? (
+        // (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="solar-panel"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "Heating" ? (
+        //   (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <MaterialCommunityIcons
+          name="fireplace"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : item === "High Energy Efficiency" ? (
+        //  (
+        //   <Image source={IMAGES.BedroomIcon}
+        //   style={DetailsStyle.DetailsIcon} />
+        // )
+        <SimpleLineIcons
+          name="energy"
+          size={25}
+          color={_COLORS.Kodie_GreenColor}
+          resizeMode={"contain"}
+        />
+      ) : null}
+      <Text style={DetailsStyle.details_text}>{item}</Text>
+    </View>
+  );
+  const fetchData = async () => {
+    try {
+      // Fetch property details
+      const detailData = {
+        property_id: propertyView ? propertyid : property_id,
+      };
+      const url = Config.BASE_URL;
+      const property_Detailss = url + "get_property_details";
 
-    // data will show immediately when i come this screen code define here...........
-    const fetchData = async () => {
-      try {
-        // Fetch property details
-        const detailData = { user: property_id };
-        const url = Config.API_URL;
-        const property_Detailss = url + "get_All_Property_details";
-
-        setIsLoading(true);
-        const response = await axios.post(property_Detailss, detailData);
-        setIsLoading(false);
-
-        if (response.data.status === true) {
-          setProperty_Details(response.data.property_details);
-          // Fetch and process key features..........
-          if (response.data.property_details[0]?.key_features) {
-            const parsedData = JSON.parse(
-              response.data.property_details[0].key_features.replace(/\\/g, "")
-            );
-            setDetail(parsedData);
-          }
-        } else {
-          console.error("propertyDetail_error:", response.data.error);
-          alert(response.data.error);
+      console.log("url..", property_Detailss);
+      setIsLoading(true);
+      const response = await axios.post(property_Detailss, detailData);
+      setIsLoading(false);
+      console.log("response_get_property_details...", response.data);
+      if (response.data.success === true) {
+        setProperty_Details(response.data.data[0]);
+        // Fetch and process key features..........
+        if (response.data.data[0].key_features) {
+          const parsedData = JSON.parse(
+            response.data.data[0].key_features.replace(/\\/g, "")
+          );
+          setDetail(parsedData);
         }
-      } catch (error) {
-        console.error("Error:", error);
-        alert(error);
-        setIsLoading(false);
+        const additionalKeyFeatures =
+          response.data.data[0].additional_key_features[0];
+        setAdditionalKeyFeaturesString(additionalKeyFeatures);
+      } else {
+        console.error("propertyDetail_error:", response.data.error);
+        alert(response.data.error);
       }
-    };
-    fetchData();
-  }, [property_id]);
-  // const DetailsData = () => {
-  //   const detailData = {
-  //     user: property_id,
-  //   };
-  //   console.log("detailData", detailData);
-  //   const url = Config.API_URL;
-  //   const property_Detailss = url + "get_All_Property_details";
-  //   console.log("Request URL:", property_Detailss);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(property_Detailss, detailData)
-  //     .then((response) => {
-  //       console.log("propertyDetail", response.data);
-  //       if (response.data.status === true) {
-  //         setIsLoading(false);
-  //         setProperty_Details(response.data.property_details);
-  //         console.log("propertyDetail....", response.data.property_details);
-  //       } else {
-  //         console.error("propertyDetail_error:", response.data.error);
-  //         alert(response.data.error);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("property_type error:", error);
-  //       // alert(error);
-  //       setIsLoading(false);
-  //     });
-  // };
-  const imagePaths = MultiImageName.map((image) => image.path);
-
-  const keyfeatures = () => {
-    if (property_Detail[0]?.key_features) {
-      const parsedData = JSON.parse(
-        property_Detail[0].key_features.replace(/\\/g, "")
-      );
-      console.log("Parsed Data:", parsedData);
-      setDetail(parsedData);
+    } catch (error) {
+      console.error("Error:", error);
+      alert(error);
+      setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+
+    try {
+      const keyFeaturesArray = additionalKeyFeaturesString.split(",");
+      setAdditionalKeyFeatures(keyFeaturesArray);
+    } catch (error) {
+      console.error("Error parsing additional_key_features:", error);
+    }
+    const timeout = setTimeout(() => {
+      setNumColumns(2); // Change to the desired number of columns
+    }, 2000); // Change this delay as needed
+
+    return () => clearTimeout(timeout);
+  }, [property_id, propertyid, additionalKeyFeaturesString]);
+
+  // const imagePaths = MultiImageName.map((image) => image.path);
 
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
@@ -293,27 +451,46 @@ export default PropertyReview = (props) => {
         return (
           <>
             <Text style={DetailsStyle.welcome_Text}>
-              {property_Detail[0]?.property_description}
+              {property_Detail?.property_description}
               {/* Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
               apartment boasts modern interior finishes and a spacious extended
               balcony. As you enter, you... */}
+            </Text>
+            {/* <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            > */}
+
+            <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+              {"Key features"}
             </Text>
             <FlatList
               data={Detail}
               scrollEnabled
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{}}
-              // numColumns={2}
+              numColumns={numColumns}
               keyExtractor={(item) => item?.id}
               // keyExtractor={(item, index) => index.toString()}
               renderItem={Detail_rander}
             />
+            <DividerIcon />
+            <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+              {"Additional key features"}
+            </Text>
+
+            <FlatList
+              data={additionalKeyFeatures}
+              numColumns={numColumns}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => index.toString()}
+            />
+            {/* </View> */}
             <DividerIcon
               borderBottomWidth={1}
               color={_COLORS.Kodie_GrayColor}
             />
 
-            <View style={DetailsStyle.subContainer}>
+            {/* <View style={DetailsStyle.subContainer}>
               <View style={DetailsStyle.propety_details_view}>
                 <Text style={DetailsStyle.propery_det}>
                   {"Property details"}
@@ -358,9 +535,9 @@ export default PropertyReview = (props) => {
                 </TouchableOpacity>
               </View>
               <DividerIcon marginTop={8} />
-            </View>
+            </View> */}
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              {/* <View style={DetailsStyle.propety_details_view}>
                 <Text style={DetailsStyle.propery_det}>
                   {"Points of interest"}
                 </Text>
@@ -373,12 +550,16 @@ export default PropertyReview = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <DividerIcon marginTop={8} />
+              <DividerIcon marginTop={8} /> */}
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
                   _ButtonText={
-                    editMode == undefined ? "Add property" : "Edit property"
+                    editMode
+                      ? "Edit property"
+                      : propertyView
+                      ? "Edit details"
+                      : "Add property"
                   }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
@@ -386,48 +567,58 @@ export default PropertyReview = (props) => {
                   }}
                 />
               </View>
-              <View style={PropertyReviewStyle.btnView}>
-                <CustomSingleButton
-                  _ButtonText={"Add property features later"}
-                  Text_Color={_COLORS.Kodie_BlackColor}
-                  backgroundColor={_COLORS.Kodie_WhiteColor}
-                  disabled={isLoading ? true : false}
-                />
-              </View>
-              <TouchableOpacity
-                style={PropertyReviewStyle.goBack_View}
-                onPress={() => {
-                  goBack();
-                }}
-              >
-                <View style={PropertyReviewStyle.backIcon}>
-                  <Ionicons
-                    name="chevron-back"
-                    size={22}
-                    color={_COLORS.Kodie_MediumGrayColor}
-                  />
-                </View>
-                <Text style={PropertyReviewStyle.goBack_Text}>{"Go back"}</Text>
-              </TouchableOpacity>
+              {propertyView ? null : (
+                <>
+                  <View style={PropertyReviewStyle.btnView}>
+                    <CustomSingleButton
+                      _ButtonText={
+                        editMode
+                          ? "Edit property features later"
+                          : "Add property features later"
+                      }
+                      Text_Color={_COLORS.Kodie_BlackColor}
+                      backgroundColor={_COLORS.Kodie_WhiteColor}
+                      disabled={isLoading ? true : false}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={PropertyReviewStyle.goBack_View}
+                    onPress={() => {
+                      goBack();
+                    }}
+                  >
+                    <View style={PropertyReviewStyle.backIcon}>
+                      <Ionicons
+                        name="chevron-back"
+                        size={22}
+                        color={_COLORS.Kodie_MediumGrayColor}
+                      />
+                    </View>
+                    <Text style={PropertyReviewStyle.goBack_Text}>
+                      {"Go back"}
+                    </Text>
+                  </TouchableOpacity>
+                </>
+              )}
             </View>
           </>
         );
       case "Tab2":
-        return <Leases property_id={property_id} />;
+        return <Leases property_id={propertyid} />;
 
       case "Tab3":
-        return <Expenses property_id={property_id} />;
+        return <Expenses property_id={propertyid} />;
       case "Tab4":
         return (
           <Documents
-            documentDetail={(folderId, folderHeading, property_id) => {
+            documentDetail={(folderId, moduleName, propertyid) => {
               props.navigation.navigate("DocumentDetails", {
                 folderId: folderId,
-                folderHeading: folderHeading,
-                property_id: property_id,
+                moduleName: moduleName,
+                property_id: propertyid,
               });
             }}
-            property_id={property_id}
+            property_id={propertyid}
           />
         );
 
@@ -438,56 +629,69 @@ export default PropertyReview = (props) => {
 
   return (
     <View style={PropertyReviewStyle.mainContainer}>
-      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
-      <View
-        style={{
-          marginTop: 15,
-        }}
-      >
-        <StepIndicator
-          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-          currentPosition={currentPage}
-          // onPress={onStepPress}
-          renderStepIndicator={renderStepIndicator}
-          labels={stepLabels}
-          stepCount={4}
-          renderLabel={renderLabel}
-        />
-      </View>
-      <ScrollView>
-        <View style={PropertyReviewStyle.headingView}>
-          <Text style={PropertyReviewStyle.heading}>
-            {"Review property details"}
-          </Text>
-        </View>
-        <View style={PropertyReviewStyle.slider_view}>
-          <SliderBox
-            images={
-              property_Detail[0]?.image_path
-                ? property_Detail[0]?.image_path
-                : imagePaths
-            }
-            sliderBoxHeight={200}
-            onCurrentImagePressed={(index) =>
-              console.warn(`image ${index} pressed`)
-            }
-            inactiveDotColor={_COLORS.Kodie_GrayColor}
-            dotColor={_COLORS.Kodie_GreenColor}
-            autoplay
-            circleLoop
-            resizeMethod={"resize"}
-            resizeMode={"cover"}
-            dotStyle={PropertyReviewStyle.dotStyle}
-            ImageComponentStyle={{
-              flex: 1,
-              resizeMode: "cover",
-            }}
+      <TopHeader
+        // isprofileImage
+        onPressLeftButton={goBack}
+        MiddleText={
+          editMode
+            ? "Edit property"
+            : propertyView
+            ? property_Detail?.location
+            : "Add new property"
+        }
+      />
+      {propertyView ? null : (
+        <View
+          style={{
+            marginTop: 15,
+          }}
+        >
+          <StepIndicator
+            customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+            currentPosition={currentPage}
+            // onPress={onStepPress}
+            renderStepIndicator={renderStepIndicator}
+            labels={stepLabels}
+            stepCount={4}
+            renderLabel={renderLabel}
           />
+        </View>
+      )}
+      <ScrollView contentContainerStyle={{}}>
+        {propertyView ? null : (
+          <View style={[PropertyReviewStyle.headingView]}>
+            <Text style={PropertyReviewStyle.heading}>
+              {"Review property details"}
+            </Text>
+          </View>
+        )}
+        <View style={PropertyReviewStyle.slider_view}>
+          {property_Detail.image_path &&
+          property_Detail.image_path.length != 0 ? (
+            <SliderBox
+              images={property_Detail.image_path}
+              sliderBoxHeight={200}
+              onCurrentImagePressed={(index) =>
+                console.warn(`image ${index} pressed`)
+              }
+              inactiveDotColor={_COLORS.Kodie_GrayColor}
+              dotColor={_COLORS.Kodie_GreenColor}
+              autoplay
+              circleLoop
+              resizeMethod={"resize"}
+              resizeMode={"cover"}
+              dotStyle={PropertyReviewStyle.dotStyle}
+              ImageComponentStyle={{
+                flex: 1,
+                resizeMode: "cover",
+              }}
+            />
+          ) : null}
         </View>
         <View style={PropertyReviewStyle.subContainer}>
           <View style={PropertyReviewStyle.apartment_View}>
             <Text style={PropertyReviewStyle.apartment_text}>
-              {property_Detail[0]?.property_type}
+              {property_Detail?.property_type}
             </Text>
             <View style={PropertyReviewStyle.share_View}>
               <TouchableOpacity>
@@ -508,7 +712,7 @@ export default PropertyReview = (props) => {
             </View>
           </View>
           <Text style={PropertyReviewStyle.melbourne_Text}>
-            {property_Detail[0]?.State || ""}
+            {property_Detail?.state || property_Detail?.city || ""}
           </Text>
           <View style={PropertyReviewStyle.share_View}>
             <Entypo
@@ -516,10 +720,7 @@ export default PropertyReview = (props) => {
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-            <Text>
-              {property_Detail[0]?.location ||
-                "8502 Preston Rd.Inglewood,Queensland,Australia,."}
-            </Text>
+            <Text>{property_Detail?.location || ""}</Text>
           </View>
         </View>
 
@@ -536,29 +737,35 @@ export default PropertyReview = (props) => {
             TAB3
             TAB4
             Tab1={"Details"}
-            Tab2={editMode == undefined ? null : "Leases"}
-            Tab3={editMode == undefined ? null : "Expenses"}
-            Tab4={editMode == undefined ? null : "Documents"}
+            Tab2={editMode ? null : propertyView ? "Leases" : null}
+            Tab3={editMode ? null : propertyView ? "Expenses" : null}
+            Tab4={editMode ? null : propertyView ? "Documents" : null}
             onPressTab1={() => setActiveTab("Tab1")}
             onPressTab2={() => {
-              if (editMode == undefined) {
+              if (editMode) {
                 null;
-              } else {
+              } else if (propertyView) {
                 setActiveTab("Tab2");
+              } else {
+                null;
               }
             }}
             onPressTab3={() => {
-              if (editMode == undefined) {
+              if (editMode) {
                 null;
-              } else {
+              } else if (propertyView) {
                 setActiveTab("Tab3");
+              } else {
+                null;
               }
             }}
             onPressTab4={() => {
-              if (editMode == undefined) {
+              if (editMode) {
                 null;
-              } else {
+              } else if (propertyView) {
                 setActiveTab("Tab4");
+              } else {
+                null;
               }
             }}
             colorTab1={
@@ -567,17 +774,17 @@ export default PropertyReview = (props) => {
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab2={
-              activeTab === "Tab2" || editMode == undefined
+              activeTab === "Tab2"
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab3={
-              activeTab === "Tab3" || editMode == undefined
+              activeTab === "Tab3"
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab4={
-              activeTab === "Tab4" || editMode == undefined
+              activeTab === "Tab4"
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }

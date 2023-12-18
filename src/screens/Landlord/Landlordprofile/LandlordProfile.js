@@ -5,42 +5,67 @@ import { _goBack } from "../../../services/CommonServices";
 import { LandlordProfileStyle } from "./LandlordProfileStyle";
 import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { _COLORS, IMAGES } from "../../../Themes/index";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import LandlordProfileData from "../../../components/Molecules/LandlordProfileData/LandlordProfileData";
-import  {logoutActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator'
-import {useDispatch, useSelector} from 'react-redux';
+import { logoutActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
+import { useDispatch, useSelector } from "react-redux";
 export default LandlordProfile = (props) => {
   const dispatch = useDispatch();
-
+  const signUp_account_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
+  console.log("signUp_account_response.....", signUp_account_response);
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
 
   const LogOut = () => {
-    dispatch(logoutActionCreator())
+    dispatch(logoutActionCreator());
     //props.navigation.navigate('AuthNavigator');
   };
- 
-
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
+        isprofileImage
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Profile"}
+        RightUserProfile={{
+          uri:
+            loginData?.Login_details?.profile_photo_path ||
+            signUp_account_response?.Login_details?.profile_photo_path,
+        }}
       />
       <ScrollView>
         <SearchBar frontSearchIcon={true} height={48} marginTop={20} />
         <View style={LandlordProfileStyle.profilemainView}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
             <Image
-              source={IMAGES.Landlordprofile}
+              // source={IMAGES.Landlordprofile}
+              source={{
+                uri:
+                  loginData?.Login_details?.profile_photo_path ||
+                  signUp_account_response?.Login_details?.profile_photo_path,
+              }}
               style={LandlordProfileStyle.usericon}
-              resizeMode="contain"
+              resizeMode="center"
             />
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
-            <Text style={LandlordProfileStyle.nameText}>{"Jason Stathom"}</Text>
+            <Text style={LandlordProfileStyle.nameText}>
+              {
+                // loginData?.Account_details[0]?.UAD_FIRST_NAME +
+                //   " " +
+                //   loginData?.Account_details[0]?.UAD_LAST_NAME
+                // ||
+                // signUp_account_response?.Account_details[0]?.UAD_FIRST_NAME +
+                //   " " +
+                //   signUp_account_response?.Account_details[0]?.UAD_LAST_NAME
+              }
+            </Text>
             <Text style={LandlordProfileStyle.emailText}>
-              {"Jason5@gmail.com"}
+              {loginData?.Login_details?.email}
             </Text>
             <View style={LandlordProfileStyle.staricon}>
               <AntDesign
@@ -57,10 +82,15 @@ export default LandlordProfile = (props) => {
             onPress={() => props.navigation.navigate("EditProfile")}
             style={LandlordProfileStyle.contactIconView}
           >
-            <Image
+            {/* <Image
               source={IMAGES.contactDetails}
               style={LandlordProfileStyle.contactIcon}
               resizeMode="contain"
+            /> */}
+            <MaterialCommunityIcons
+              name={"account-edit-outline"}
+              size={20}
+              color={_COLORS.Kodie_GreenColor}
             />
           </TouchableOpacity>
         </View>

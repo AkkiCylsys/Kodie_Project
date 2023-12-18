@@ -16,6 +16,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import axios from "axios";
 import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import moment from "moment/moment";
+import { Config } from "../../../../../Config";
 const proper_expens_data = [
   {
     id: "1",
@@ -69,9 +70,10 @@ export default Expenses = (props) => {
   // Fetch property expenses......
 
   const get_Expenses_Details = () => {
-    const url = `https://e3.cylsys.com/api/v1/property_expenses_details/getAll/${property_id}`;
+    const url = Config.BASE_URL;
+    const Expenses_Details_url =
+      url + `property_expenses_details/getAll/${property_id}`;
     setIsLoading(true);
-    const Expenses_Details_url = url;
     console.log("Request URL:", Expenses_Details_url);
     // setIsLoading(true);
     axios
@@ -257,7 +259,7 @@ export default Expenses = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={510}
+          height={760}
           customStyles={{
             wrapper: {
               backgroundColor: "rgba(0, 0, 0, 0.5)",

@@ -1,147 +1,120 @@
-import { View, Text, Image, ScrollView } from "react-native";
-import React, { useState } from "react";
-import TopHeader from "../../../components/Molecules/Header/Header";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
 import { _goBack } from "../../../services/CommonServices/CommonMethods";
 import { ReviewjobdetailsStyle1 } from "./ReviewjobdetailsStyle1";
 import { _COLORS } from "../../../Themes";
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
-
+import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
+import RowTexts from "../../../components/Molecules/RowTexts/RowTexts";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { Config } from "../../../Config";
+import axios from "axios";
 const Reviewjobdetails1 = (props) => {
-  const [activeTab, setActiveTab] = useState("Tab1");
-  const checkTabs = () => {
-    switch (activeTab) {
-      case "Tab2":
-    }
+  const [isLoading, setIsLoading] = useState(false);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+
+  const imagesFiles = jobDetailsData.image_file_path;
+  console.log("imagesFiles...", imagesFiles);
+
+  // alert(props.job_id)
+  useEffect(() => {
+    getJobDetails();
+  }, []);
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetailsData = {
+      // jm_job_id: 1,
+      jm_job_id: props.job_id,
+    };
+    axios
+      .post(jobDetails_url, jobDetailsData)
+      .then((response) => {
+        console.log("API Response JobDetails:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log(("jobDetailsData....", response.data.data));
+          props?.imagesFilePath(response.data.data);
+          // alert(JSON.stringify(response.data.data))
+          // alert(response.data.message);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
-  const [value, setValue] = useState(null);
+  // alert(JSON.stringify(jobDetailsData.first_name))
   return (
-    <>
-      <View style={ReviewjobdetailsStyle1.Mainview}>
-        <TopHeader
-          onPressLeftButton={() => _goBack(props)}
-          MiddleText={"Review job details"}
-        />
-        <ScrollView>
-          <Image
-            source={require("../../../assets/images/Banners/preview.png")}
-            style={ReviewjobdetailsStyle1.img}
-          />
-          <View style={ReviewjobdetailsStyle1.Container}>
-            <Text style={ReviewjobdetailsStyle1.TextFixing}>
-              Fixing & Maintenance
-            </Text>
-            <Text style={ReviewjobdetailsStyle1.ElectricalsText}>
-              Electricals
-            </Text>
-            <CustomTabNavigator
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              TAB3
-              TAB4
-              Tab1={"Details"}
-              Tab2={"Bids"}
-              Tab3={"Milestones"}
-              Tab4={"Documents"}
-              onPressTab1={() => setActiveTab("Tab1")}
-              onPressTab2={() => setActiveTab("Tab2")}
-              onPressTab3={() => setActiveTab("Tab3")}
-              onPressTab4={() => setActiveTab("Tab4")}
-              colorTab1={
-                activeTab === "Tab1"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              colorTab2={
-                activeTab === "Tab2"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              colorTab3={
-                activeTab === "Tab3"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              colorTab4={
-                activeTab === "Tab4"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              styleTab1={
-                activeTab === "Tab1" && ReviewjobdetailsStyle1.activeTab
-              }
-              styleTab2={
-                activeTab === "Tab2" && ReviewjobdetailsStyle1.activeTab
-              }
-              styleTab3={
-                activeTab === "Tab3" && ReviewjobdetailsStyle1.activeTab
-              }
-              styleTab4={
-                activeTab === "Tab4" && ReviewjobdetailsStyle1.activeTab
-              }
-            />
-            <DividerIcon style={ReviewjobdetailsStyle1.divider} />
-            <View>
-              <Text style={ReviewjobdetailsStyle1.textview}>
-                I need someone to help me fix plugs in my house that keep short
-                circuiting.
-              </Text>
-              <Text style={ReviewjobdetailsStyle1.textview1}>
-                Job request summary
-              </Text>
-            </View>
-            <View style={ReviewjobdetailsStyle1.Tableview}>
-              <View>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>Name</Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>Location</Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>
-                  Property type
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>
-                  Proposed date
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>
-                  Proposed time
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>
-                  Number of hours
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>How often</Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>
-                  Budget range
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>Payment</Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext}>
-                  Booking insurance
-                </Text>
-              </View>
-              <View>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>Tom Smith</Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>
-                  1729 Melbourne St Australia
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>
-                  Apartment / flat
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>
-                  Nov 11, 2022
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>
-                  10pm - 2am (4 hours)
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>3 hours</Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>One time</Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>
-                  $200 - $400
-                </Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>Tenant</Text>
-                <Text style={ReviewjobdetailsStyle1.Tabletext1}>Yes</Text>
-              </View>
-            </View>
-          </View>
-        </ScrollView>
+    <View style={{ flex: 1, marginHorizontal: 16 }}>
+      <View style={{ marginTop: 17 }}>
+        <Text style={ReviewjobdetailsStyle1.textview}>
+          I need someone to help me fix plugs in my house that keep short
+          circuiting.
+        </Text>
+        <Text style={ReviewjobdetailsStyle1.textview1}>
+          Job request summary
+        </Text>
       </View>
-    </>
+      <RowTexts leftText={"Name"} rightText={jobDetailsData.first_name} />
+      <RowTexts leftText={"Location"} rightText={jobDetailsData.job_location} />
+      <RowTexts
+        leftText={"Property type"}
+        rightText={jobDetailsData.property_type}
+      />
+      <RowTexts
+        leftText={"Proposed date"}
+        rightText={jobDetailsData.job_date}
+      />
+      <RowTexts
+        leftText={"Proposed time"}
+        rightText={jobDetailsData.job_time}
+      />
+      <RowTexts
+        leftText={"Number of hours"}
+        rightText={jobDetailsData.number_of_hours}
+      />
+      <RowTexts leftText={"How often"} rightText={jobDetailsData.how_often} />
+      <RowTexts
+        leftText={"Budget range"}
+        rightText={jobDetailsData.job_budget}
+      />
+      <RowTexts leftText={"Payment"} rightText={jobDetailsData.payment_by} />
+      <RowTexts
+        leftText={"Booking insurance"}
+        rightText={jobDetailsData.insurance}
+      />
+      <View style={ReviewjobdetailsStyle1.nextBtn_view}>
+        <CustomSingleButton
+          _ButtonText={"Next"}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+          disabled={isLoading ? true : false}
+          onPress={() =>
+            // props.navigation.navigate("Jobs")
+            // handleCreateJob()
+            alert("done")
+          }
+        />
+      </View>
+      <TouchableOpacity style={ReviewjobdetailsStyle1.goBack_View}>
+        <View style={ReviewjobdetailsStyle1.backIcon}>
+          <Ionicons
+            name="chevron-back"
+            size={22}
+            color={_COLORS.Kodie_MediumGrayColor}
+          />
+        </View>
+        <Text style={ReviewjobdetailsStyle1.goBack_Text}>{"Go back"}</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 

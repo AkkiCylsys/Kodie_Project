@@ -36,6 +36,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
 import axios from "axios";
 import { Config } from "../../../Config";
+import DeviceInfo from "react-native-device-info";
+// import CryptoJS from "crypto-js";
+import CryptoJS from "react-native-crypto-js";
+
 import { loginApiActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
 export default Login = (props) => {
   const dispatch = useDispatch();
@@ -58,7 +62,10 @@ export default Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTimeron, setIsTimeron] = useState(true);
   const [loginResponse, setLoginResponse] = useState(true);
-
+  const deviceId = DeviceInfo.getDeviceId();
+  const deviceType = DeviceInfo.getDeviceType();
+  console.log("Device ID:", deviceId);
+  console.log("Device type:", deviceType);
   // const Login_response = useSelector(
   //   (state) => state?.authenticationReducer?.data
   // );
@@ -87,13 +94,7 @@ export default Login = (props) => {
   const handleToggleNewPassword = () => {
     setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
-  const handleLogin = () => {
-    // Your login logic here
-    // ...
 
-    // Dismiss the keyboard
-    Keyboard.dismiss();
-  };
   const handleToggleResetPassword = () => {
     setShowResetPassword((prevShowPassword) => !prevShowPassword);
   };
@@ -233,40 +234,42 @@ export default Login = (props) => {
     } else if (password.trim() === "") {
       setPasswordError("Password is required.");
     } else {
-      // makeApiLogin();
-      //alert("click")
       Keyboard.dismiss();
       setIsLoading(true);
       let data = {
         email: email,
         password: password,
+        device_id: deviceId,
+        device_os_type: deviceType,
       };
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
-      //alert(res)
-      console.log("login_data...", res);
+      // alert(JSON.stringify(res));
       setIsLoading(false);
-      if (res == 401) {
+      if (res === 401) {
         setIsLoading(false);
-        //alert("Please check your email and password.");
         setPasswordError(
           "Hmm, it seems like the credentials you entered are invalid. Please try again."
         );
-      } else {
-        if (res.data.status === true) {
-          //  alert("Login successful");
-          setIsLoading(false);
-          props.navigation.navigate("DrawerNavigatorLeftMenu");
-          setEmail("");
-          setPassword("");
+      } else if (res.data.success == "true") {
+        //  alert("Login successful");
+        setIsLoading(false);
+        if (res.data.code == 6) {
+          alert(res.data.message);
+          props.navigation.navigate("SignUpSteps");
         } else {
-          setIsLoading(false);
-          //alert("Please check your email and password.");
-          setPasswordError(
-            "Hmm, it seems like the credentials you entered are invalid. Please try again."
-          );
+          props.navigation.navigate("DrawerNavigatorLeftMenu");
         }
+
+        setEmail("");
+        setPassword("");
+      } else {
+        setIsLoading(false);
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
       }
+      // }
     }
     // Keyboard.dismiss();
   };
@@ -284,50 +287,13 @@ export default Login = (props) => {
     }
   };
 
-  //  login Api ...
-  const makeApiLogin = () => {
-    const url = Config.API_URL;
-    const loginurl = url + "user_login";
-    console.log("Request URL:", loginurl);
-    setIsLoading(true);
-    axios
-      .post(loginurl, {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        console.log("API Response:", response.data);
-        setLoginResponse(response.data);
-
-        if (response.data.status === true) {
-          alert("Login successful");
-          // dispatch(fetchLoginSuccess(loginResponse));
-          props.navigation.navigate("DrawerNavigatorLeftMenu");
-          setEmail("");
-          setPassword("");
-        } else {
-          alert("Please check your email and password.");
-          setPasswordError(
-            "Hmm, it seems like the credentials you entered are invalid. Please try again."
-          );
-        }
-      })
-      .catch((error) => {
-        console.error("API failed", error);
-        setPasswordError(
-          "Hmm, it seems like the credentials you entered are invalid. Please try again."
-        );
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
   //send_verification_code Api code here....
   const send_verification_code = () => {
-    const url = Config.API_URL;
-    const verification_code_url = url + "user_reset_password_email_verify";
+    const url = Config.BASE_URL;
+    // const verification_code_url = url + "user_reset_password_email_verify";
+
+    // const url = "https://e3.cylsys.com/api/v1/SendOTP";
+    const verification_code_url = url + "SendOTP";
     console.log("Request URL:", verification_code_url);
     setIsLoading(true);
     axios
@@ -336,8 +302,11 @@ export default Login = (props) => {
       })
       .then((response) => {
         console.log("API Response send otp:", response.data);
-        if (response.data.status === true) {
-          alert("The otp has been sent to your email.");
+        // if (response.data.status === true)
+        if (response.data.message === "OTP sent successfully") {
+          alert(
+            response.data.message || "The otp has been sent to your email."
+          );
           if (isClick === 1) {
             setIsTimeron(true);
             setIsClick(1);
@@ -351,7 +320,12 @@ export default Login = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        if (error.response || error.response.status === 400) {
+          alert("Failed to send OTP via email. Please try again later.");
+        } else {
+          alert("An error occurred. Please try again later.");
+        }
+        console.error("sendotp error:", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -362,8 +336,10 @@ export default Login = (props) => {
 
   //verify_otp Api code here.....
   const verify_Otp = () => {
-    const url = Config.API_URL;
-    const verify_Otp_url = url + "user_signup_verifyotp";
+    const url = Config.BASE_URL;
+    // const verify_Otp_url = url + "user_signup_verifyotp";
+    // const url = "https://e3.cylsys.com/api/v1/verifyotp";
+    const verify_Otp_url = url + "verifyotp";
     console.log("Request URL:", verify_Otp_url);
     setIsLoading(true);
     axios
@@ -373,7 +349,7 @@ export default Login = (props) => {
       })
       .then((response) => {
         console.log("API Response verify otp:", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           alert(response.data.message);
           setIsClick(isClick + 1);
         } else if (verificationcode.length < 6) {
@@ -387,41 +363,79 @@ export default Login = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        if (error.response && error.response.status === 404) {
+          alert("Incorrect OTP. Please try again.");
+        } else if (error.response && error.response.status === 401) {
+          alert(error.response.message || "User Unauthorized");
+        } else {
+          alert("An error occurred. Please try again later.");
+        }
+        console.error("signup Verification error:", error);
+        setIsLoading(false);
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
 
+  const secretKey = "XkhZG4fW2t2W";
+  const encryptPassword = (password, secretKey) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const key = secretKey;
+        const keyutf = CryptoJS.enc.Utf8.parse(key);
+        const iv = CryptoJS.enc.Utf8.parse("XkhZG4fW2t2W");
+        const enc = CryptoJS.AES.encrypt(password, keyutf, { iv: iv });
+        const encStr = enc.toString();
+        console.log("Encrypted Password:", encStr);
+        resolve(encStr);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
   //------ create_password Api code here
-  const create_password = () => {
-    const url = Config.API_URL;
-    const create_password_url = url + "user_reset_password";
-    console.log("Request URL:", create_password_url);
-    setIsLoading(true);
-    axios
-      .post(create_password_url, {
+  const create_password = async () => {
+    try {
+      const encryptedPassword = await encryptPassword(newpassword, secretKey);
+      console.log("encryptedPassword", encryptedPassword);
+      const url = Config.BASE_URL;
+      // const url = "https://e3.cylsys.com/api/v1/forgetpassword";
+      const create_password_url = url + "forgetpassword";
+      console.log("Request URL:", create_password_url);
+
+      setIsLoading(true);
+
+      const response = await axios.post(create_password_url, {
         email: resetEmail,
-        password: newpassword,
-      })
-      .then((response) => {
-        console.log("API Response create_password:", response.data);
-        if (response.data.status === true) {
-          // If the API call is successful, increment isClick
+        password: encryptedPassword,
+      });
+
+      console.log("API Response create_password:", response.data);
+
+      if (response.data.success === true) {
+        if (
+          response.data.message ==
+          "Try again with a password you haven’t used before"
+        ) {
+          alert(response.data.message);
+        } else {
           alert(response.data.message);
           setIsClick(isClick + 1);
-        } else {
-          alert("Password not created.");
         }
-      })
-      .catch((error) => {
-        console.error("API failed", error);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      } else {
+        alert("Password not created.");
+      }
+    } catch (error) {
+      // if (error.response && error.response.status == 500) {
+      //   alert("Your password is old. Please enter new password.");
+      // }
+      console.error("API failed", error);
+      // Handle errors appropriately
+      alert(error.message || "An error occurred during the API call");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -556,22 +570,6 @@ export default Login = (props) => {
           container: LoginStyles.bottomModal_container,
         }}
       >
-        {/* <View style={LoginStyles.ModalMainView}>
-          <Text style={LoginStyles.Modaltitle}>Reset password</Text>
-          <TouchableOpacity
-            onPress={() => {
-              refRBSheet.current.close();
-              setIsClick(0);
-              setResetEmail("");
-              setVerificationcode("");
-              setVerificationcodeError("");
-              setNewPassword("");
-              setPasswordError("");
-              setConfirmPassword("");
-              setConfirmPasswordError("");
-              setResetEmailError("");
-            }}
-          > */}
         <View style={LoginStyles.ModalMainView}>
           <Text style={LoginStyles.Modaltitle}>Reset password</Text>
           <TouchableOpacity
@@ -710,46 +708,6 @@ export default Login = (props) => {
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
             >
-              {/* <View style={LoginStyles.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Email</Text>
-                <TextInput
-                  style={[
-                    LoginStyles.input,
-                    { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
-                  ]}
-                  value={resetEmail}
-                  placeholder="Your email address"
-                  placeholderTextColor="#999"
-                />
-              </View>
-
-              <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
-                  <Text style={LABEL_STYLES._texinputLabel}>
-                    Verification code
-                  </Text>
-                  <TextInput
-                    style={[
-                      LoginStyles.input,
-                      { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
-                    ]}
-                    value={verificationcode}
-                    placeholder="code"
-                    placeholderTextColor="#999"
-                    editable={false}
-                  />
-                </View>
-
-                <View style={LoginStyles.codeMargin} />
-                <View style={LoginStyles.getButtonView}>
-                  <Text style={LoginStyles.getButton}>Get</Text>
-                </View>
-              </View>
-              {verificationcodeError ? (
-                <Text style={LoginStyles.error_text}>
-                  {verificationcodeError}
-                </Text>
-              ) : null} */}
               <View style={LoginStyles.inputContainer}>
                 <Text
                   style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}
@@ -845,7 +803,7 @@ export default Login = (props) => {
                 <Image
                   source={IMAGES.CheckIcon}
                   style={LoginStyles.checkicon}
-                  resizeMode={"center"}
+                  resizeMode={"contain"}
                 />
               </View>
             </>
@@ -862,9 +820,9 @@ export default Login = (props) => {
           <View
             style={[
               {
-                marginBottom: 800,
+                marginBottom: 500,
                 marginTop:
-                  isClick === 1 || isClick === 2 || isClick === 3 ? 120 : 200,
+                  isClick === 1 || isClick === 2 || isClick === 3 ? 1 : 160,
               },
             ]}
           >
@@ -873,17 +831,6 @@ export default Login = (props) => {
               onPress={handleButtonPress}
               _ButtonText={buttonLabels[isClick]}
               Text_Color={_COLORS.Kodie_WhiteColor}
-
-              // marginTop={"20%"}
-              // marginTop={
-              //   isClick
-              //     ? Platform.OS === "android"
-              //       ? "1%"
-              //       : 0
-              //     : Platform.OS === "android"
-              //     ? "18%"
-              //     : 0
-              // }
             />
           </View>
         </View>

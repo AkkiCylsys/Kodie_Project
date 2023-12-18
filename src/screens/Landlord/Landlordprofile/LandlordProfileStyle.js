@@ -18,9 +18,10 @@ export const LandlordProfileStyle = StyleSheet.create({
   usericon: {
     height: 76,
     width: 76,
-    marginHorizontal: 16,
-    justifyContent: "center",
-    alignSelf: "center",
+    borderRadius: 76 / 2,
+    // marginHorizontal: 16,
+    // justifyContent: "center",
+    // alignSelf: "center",
   },
   profilemainView: {
     flexDirection: "row",
@@ -38,7 +39,7 @@ export const LandlordProfileStyle = StyleSheet.create({
   emailText: {
     marginTop: 5,
     fontSize: 10,
-    color: _COLORS.Kodie_LightGrayColor,
+    color: _COLORS?.Kodie_ExtraLiteGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
   },
   staricon: { flexDirection: "row", marginTop: 8 },
@@ -65,11 +66,11 @@ export const LandlordProfileStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightGrayColor,
     marginTop: 10,
   },
-contactIcon:{height:16,width:16},
-AllcontactsText: {
-  fontSize: 16,
-  paddingHorizontal: 16,
-  color: _COLORS.Kodie_BlackColor,
-  fontFamily: FONTFAMILY.K_SemiBold,
-},
+  contactIcon: { height: 16, width: 16 },
+  AllcontactsText: {
+    fontSize: 16,
+    paddingHorizontal: 16,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
 });

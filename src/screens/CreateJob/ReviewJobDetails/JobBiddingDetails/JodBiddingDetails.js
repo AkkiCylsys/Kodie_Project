@@ -1,0 +1,48 @@
+import React, { useState, useRef } from "react";
+import { View, Text } from "react-native";
+import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import { JobBiddingDetailsStyle } from "./JobBiddingDetailsStyle";
+import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
+import AddBiddingDetails from "../../../../components/Molecules/AddBiddingDetails/AddBiddingDetails";
+import RBSheet from "react-native-raw-bottom-sheet";
+export default JobBiddingDetails = () => {
+    const handleClose = () => {
+        refRBSheet.current.close();
+      };
+  const refRBSheet = useRef();
+  return (
+    <View>
+      <View>
+        <View style={JobBiddingDetailsStyle.add_Lease_view}>
+          <Text style={JobBiddingDetailsStyle.add_Lease_Text}>
+            {"Would you like to enable the job bidding feature and have contractors bid against one another to perform the job? You may get a better rate! "}
+          </Text>
+        </View>
+        <View style={JobBiddingDetailsStyle.btn_View}>
+          <CustomSingleButton
+            _ButtonText={"Enable bidding"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+          />
+        </View>
+      </View>
+      <RBSheet
+        ref={refRBSheet}
+        height={760}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: JobBiddingDetailsStyle.bottomModal_container,
+        }}
+      >
+        <AddBiddingDetails  onclose={handleClose}/>
+      </RBSheet>
+    </View>
+  );
+};

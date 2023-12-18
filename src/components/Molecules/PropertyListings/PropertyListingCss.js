@@ -44,7 +44,7 @@ export const PropertyListingCss = StyleSheet.create({
         alignSelf: "flex-end",
         marginBottom: 15,
       },
-      noteIcon: { height: 25, width: 25, marginRight: 8 },
+      // noteIcon: { height: 25, width: 25, marginRight: 8 },
       buttonView: {
         flex: 0.7,
         flexDirection: "row",

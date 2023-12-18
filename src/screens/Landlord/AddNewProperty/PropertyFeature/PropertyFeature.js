@@ -29,7 +29,7 @@ const renderDataItem = (item) => {
   return (
     <View style={PropertyFeatureStyle.item}>
       <Text style={PropertyFeatureStyle.selectedTextStyle}>
-        {item.FeatureName}
+        {item.features_name}
       </Text>
       {/* <AntDesign
         style={PropertyFeatureStyle.icon}
@@ -75,7 +75,7 @@ export default PropertyFeature = (props) => {
     []
   );
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData?.Login_details?.result);
+  console.log("loginData", loginData?.Login_details?.user_id);
 
   console.log("key_features_id............", additionalfeatureskeyvalue);
   const [value, setValue] = useState(null);
@@ -95,34 +95,75 @@ export default PropertyFeature = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   // const [furnished, setFurnished] = useState([]);
   // const [preFriendly, setProperty_Details] = useState([]);
+  console.log(
+    "propertyDetail....",
+    property_Detail?.additional_key_features_id
+  );
+
+  const keyFeaturesString = property_Detail?.key_features;
+
   useEffect(() => {
     additional_features();
     DetailsData();
-  }, []);
+    try {
+      // Parsing the JSON string to an array of objects
+      const keyFeaturesArray = JSON.parse(keyFeaturesString);
+
+      // Iterating through the array to find the value associated with "Bedrooms"
+      for (const feature of keyFeaturesArray) {
+        if (feature.Bedrooms !== undefined) {
+          setCountBedroom(feature.Bedrooms);
+        } else if (feature.Bathrooms !== undefined) {
+          setCountBathroom(feature.Bathrooms);
+        } else if (feature["Parking Space"] !== undefined) {
+          setCountParking(feature["Parking Space"]);
+        } else if (feature["On-StreetParking"] !== undefined) {
+          setCountParkingStreet(feature["On-StreetParking"]);
+        }
+      }
+    } catch (error) {
+      console.error("Error parsing key_features:", error);
+    }
+  }, [keyFeaturesString]);
+  console.log("CountBedroom", CountBedroom, CountBathroom);
   const DetailsData = () => {
     const detailData = {
-      user: propertyid,
+      property_id: propertyid,
     };
     console.log("detailData", detailData);
-    const url = Config.API_URL;
-    const property_Detailss = url + "get_All_Property_details";
+    const url = Config.BASE_URL;
+    const property_Detailss = url + "get_property_details";
     console.log("Request URL:", property_Detailss);
     setIsLoading(true);
     axios
       .post(property_Detailss, detailData)
       .then((response) => {
         console.log("propertyDetail", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details);
-          // setAdditionalFeaturesKeyValue(
-          //   response.data.property_details[0]?.key_features_id
-          // );
+          setProperty_Details(response.data.data[0]);
+
+          const apiAdditionalFeaturesIds =
+            response?.data?.data[0]?.additional_features_id
+              .split(",")
+              .map(Number);
+          const furnishedFeatureId = apiAdditionalFeaturesIds.find(
+            (id) => id == 68
+          );
+          const yesFeatureId = apiAdditionalFeaturesIds.find((id) => id == 71);
 
           console.log(
-            "propertyDetail....",
-            response.data.property_details[0]?.key_features_id
+            "Furnished Feature ID:",
+            apiAdditionalFeaturesIds,
+            furnishedFeatureId
           );
+          setSelectedButtonFurnished(furnishedFeatureId);
+          setSelectedButtonDeposit(yesFeatureId);
+          setFlorSize(response?.data?.data[0]?.floor_size);
+          setAdditionalFeaturesKeyValue(
+            response?.data?.data[0]?.additional_key_features_id
+          );
+          setLandArea(response?.data?.data[0]?.land_area);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -138,15 +179,9 @@ export default PropertyFeature = (props) => {
   const AllCountsData = [
     { Bedrooms: CountBedroom },
     { Bathrooms: CountBathroom },
-    { ParkingSpace: CountParking },
-    { OnStreetParking: CountParkingStreet },
+    { "Parking Space": CountParking },
+    { "On-StreetParking": CountParkingStreet },
   ];
-
-  // PRE fRIENDLY CODE HERE.........
-  // const PreFriedly = {
-  //   selectedButtonDepositId,
-  //   selectedButtonFurnishedId,
-  // };
 
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
   console.log(PreFriedly, "pre friedly............");
@@ -290,14 +325,14 @@ export default PropertyFeature = (props) => {
     props.navigation.pop();
   };
   const property_details = () => {
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const additionalApi = url + "add_property_details";
     console.log("Request URL:", additionalApi);
     setIsLoading(true);
     axios
       .post(additionalApi, {
-        user: 35,
-        user_account_details_id: loginData?.Login_details?.result,
+        user: loginData?.Login_details?.user_id,
+        user_account_details_id: loginData?.Login_details?.user_account_id,
         location: location,
         location_longitude: longitude,
         location_latitude: latitude,
@@ -317,17 +352,17 @@ export default PropertyFeature = (props) => {
 
       .then((response) => {
         console.log("property_details", response?.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
 
           console.log(
-            "response?.data?.property_id",
-            response?.data?.property_id
+            "response?.data?.Property_id",
+            response?.data?.Property_id
           );
 
           // setCurrentPage(currentPage + 1);
           props.navigation.navigate("PropertyImages", {
-            property_id: response?.data?.property_id,
+            property_id: response?.data?.Property_id,
           });
           console.log("property_details....", response.data);
         } else {
@@ -343,8 +378,8 @@ export default PropertyFeature = (props) => {
       });
   };
   const additional_features = () => {
-    const url = Config.API_URL;
-    const additionalApi = url + "key_features";
+    const url = Config.BASE_URL;
+    const additionalApi = url + "get_key_features";
     console.log("Request URL:", additionalApi);
     setIsLoading(true);
     axios
@@ -354,9 +389,12 @@ export default PropertyFeature = (props) => {
         if (response.data.status === true) {
           setIsLoading(false);
           console.log("additional_features....", response.data);
-          setAdditionalfeatureskey(response.data.PAF_KEY);
+          setAdditionalfeatureskey(response.data.key_features_details);
           // setData_add(response.data.PAF_KEY);
-          console.log("AdditionalFeaturesKey....", response.data.PAF_KEY);
+          console.log(
+            "AdditionalFeaturesKey....",
+            response.data.key_features_details
+          );
         } else {
           console.error("additional_features_error:", response.data.error);
           alert(response.data.error);
@@ -372,8 +410,8 @@ export default PropertyFeature = (props) => {
 
   const updatePropertyDetails = () => {
     const updateData = {
-      user: 35,
-      user_account_details_id: loginData?.Login_details?.result,
+      user: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
       location: location,
       location_longitude: longitude,
       location_latitude: latitude,
@@ -392,7 +430,7 @@ export default PropertyFeature = (props) => {
       p_country: country,
     };
     console.log("updateData", updateData);
-    const url = Config.API_URL;
+    const url = Config.BASE_URL;
     const update_property_details = url + "update_property_details";
     console.log("Request URL:", update_property_details);
     setIsLoading(true);
@@ -400,7 +438,7 @@ export default PropertyFeature = (props) => {
       .put(update_property_details, updateData)
       .then((response) => {
         console.log("update_property_details", response.data);
-        if (response.data.status === true) {
+        if (response.data.success === true) {
           setIsLoading(false);
           // alert("update_property_details....", propertyid);
           props.navigation.navigate("PropertyImages", {
@@ -422,7 +460,10 @@ export default PropertyFeature = (props) => {
   };
   return (
     <View style={PropertyFeatureStyle.mainContainer}>
-      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
+      <TopHeader
+        onPressLeftButton={goBack}
+        MiddleText={editMode ? "Edit property" : "Add new property"}
+      />
       <View
         style={{
           marginTop: 15,
@@ -438,10 +479,13 @@ export default PropertyFeature = (props) => {
           renderLabel={renderLabel}
         />
       </View>
-      <View style={PropertyFeatureStyle.headingView}>
-        <Text style={PropertyFeatureStyle.heading}>{"Property features"}</Text>
-      </View>
+
       <ScrollView>
+        <View style={PropertyFeatureStyle.headingView}>
+          <Text style={PropertyFeatureStyle.heading}>
+            {"Property features"}
+          </Text>
+        </View>
         <View style={PropertyFeatureStyle.card}>
           <View style={PropertyFeatureStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>Key features</Text>
@@ -738,35 +782,41 @@ export default PropertyFeature = (props) => {
                 inputSearchStyle={PropertyFeatureStyle.inputSearchStyle}
                 iconStyle={PropertyFeatureStyle.iconStyle}
                 data={additionalfeatureskey}
-                labelField="FeatureName"
-                valueField="key"
+                labelField="features_name"
+                valueField="paf_key"
                 placeholder="Add features such as pool,aircon,balcony etc."
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."
-                onChange={(item) => {
-                  // const selectedKeys = items.map((item) => item);
-                  // const uniqueKeys = [...new Set(selectedKeys)];
-                  // console.log("Unique Keys:", uniqueKeys);
-                  // Set the state with unique keys
-                  // setAdditionalFeaturesKeyValue(uniqueKeys);
-                  setAdditionalFeaturesKeyValue(item);
-                  // alert(item);
+                onChange={(items) => {
+                  const selectedKeys = items.map((item) => item);
+                  const uniqueKeys = [...new Set(selectedKeys)];
+                  const cleanedArray = uniqueKeys.reduce((acc, item) => {
+                    if (!isNaN(item) && !acc.includes(Number(item))) {
+                      acc.push(Number(item));
+                    }
+                    return acc;
+                  }, []);
+
+                  console.log("Unique Keys:", uniqueKeys);
+                  setAdditionalFeaturesKeyValue(
+                    cleanedArray.filter((value) => value !== 0)
+                  );
                 }}
-                // renderRightIcon={() => (
-                //   <AntDesign
-                //     style={PropertyFeatureStyle.icon}
-                //     color={_COLORS.Kodie_BlackColor}
-                //     name="search1"
-                //     size={15}
-                //   />
-                // )}
+                renderLeftIcon={() => (
+                  <AntDesign
+                    style={PropertyFeatureStyle.icon}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                    name="search1"
+                    size={18}
+                  />
+                )}
                 renderItem={renderDataItem}
                 renderSelectedItem={(item, unSelect) => (
                   <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
                     <View style={PropertyFeatureStyle.selectedStyle}>
                       <Text style={PropertyFeatureStyle.textSelectedStyle}>
-                        {item.FeatureName}
+                        {item.features_name}
                       </Text>
                       <AntDesign color="white" name="close" size={17} />
                     </View>
@@ -790,7 +840,11 @@ export default PropertyFeature = (props) => {
             </View>
             <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton
-                _ButtonText={"Add property features later"}
+                _ButtonText={
+                  editMode
+                    ? "Edit property features later"
+                    : "Add property features later"
+                }
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
                 disabled={isLoading ? true : false}

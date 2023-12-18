@@ -14,47 +14,15 @@ import { useSelector } from "react-redux";
 
 const Properties = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData?.Login_details?.result);
+  console.log("loginData", loginData?.Login_details?.user_id);
 
   const [activeTab, setActiveTab] = useState("Tab1");
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    propertyList_Data();
-  }, []);
-  const propertyList_Data = () => {
-    const propertyDataList = {
-      user: loginData?.Login_details?.result,
-    };
 
-    const url = Config.API_URL;
-    const propertyData_List = url + "get_property_details_by_id";
-    console.log("Request URL :", propertyData_List);
-    setIsLoading(true);
-    axios
-      .post(propertyData_List, propertyDataList)
-      .then((response) => {
-        console.log("property_Data_list", response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log(
-            "propertyDataList....",
-            response.data?.property_details?.image_path
-          );
-          setProperty_Data_List(response?.data?.property_details);
-          console.log(Property_Data_List, "Rahul...");
-        } else {
-          console.error("property_Data_list_error:", response.data.error);
-          alert(response.data.error);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("property_Data_list error:", error);
-        // alert(error);
-        setIsLoading(false);
-      });
-  };
+  useEffect(() => {
+    <PropertyList />;
+  }, []);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -68,6 +36,13 @@ const Properties = (props) => {
               props.navigation.navigate("PropertyDetails", {
                 propertyid: propertyid,
                 editMode: "editMode",
+              });
+            }}
+            onPropertyView={(propView) => {
+              const { propertyid } = propView;
+              props.navigation.navigate("PropertyReview", {
+                propertyid: propertyid,
+                propertyView: "propertyView",
               });
             }}
           />

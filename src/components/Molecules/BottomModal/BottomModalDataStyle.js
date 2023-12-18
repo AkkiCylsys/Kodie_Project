@@ -16,12 +16,22 @@ export const BottomModalDataStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
   },
-  Icons: { width: 40, height: 40, resizeMode: "cover" },
+  // Icons: { width: 40, height: 40, resizeMode: "cover" },
   bottomModal_container: {
     borderWidth: 0.5,
     borderColor: _COLORS.Kodie_LightGrayColor,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     elevation: 10,
+  },
+  IconView: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+    marginLeft: 5,
+    width: 35,
+    marginTop:10,
+    height: 35,
+    justifyContent: "center",
   },
 });

@@ -51,7 +51,10 @@ LocaleConfig.defaultLocale = "en";
 const CalendarModal = (props) => {
   return (
     <View style={CalenderCss.container}>
-      <View style={CalenderCss.calenderView}>
+      <TouchableOpacity
+        onPress={props.calenderIcon}
+        style={CalenderCss.calenderView}
+      >
         <Text style={[CalenderCss.textInputStyle, props._textInputStyle]}>
           {props.SelectDate}
         </Text>
@@ -63,7 +66,7 @@ const CalendarModal = (props) => {
             style={CalenderCss.calenderSty}
           />
         </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
 
       <Modal
         animationType="slide"
@@ -94,7 +97,14 @@ const CalendarModal = (props) => {
                 style={[CalenderCss.closeButton, CalenderCss.closeText]}
                 onPress={props._closeButton}
               >
-                <Text style={LABEL_STYLES.commontext}>cancel</Text>
+                <Text
+                  style={[
+                    LABEL_STYLES.commontext,
+                    { alignSelf: "center", textAlign: "center" },
+                  ]}
+                >
+                  Cancel
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[CalenderCss.closeButton, CalenderCss.applyText]}

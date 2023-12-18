@@ -2,10 +2,17 @@ import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY, IMAGES } from "../../../../Themes";
 
 export const JobDetailsStyle = StyleSheet.create({
-    container:{
-   backgroundColor:_COLORS.Kodie_WhiteColor,
-   height:'100%'
-    },
+  container: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    height: "100%",
+  },
+  heading: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 24,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal:16,
+    marginVertical:25
+  },
   slider_view: {
     flex: 1,
     justifyContent: "center",
@@ -31,39 +38,39 @@ export const JobDetailsStyle = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
   },
-  mainView:{
-    marginHorizontal:15,
+  mainView: {
+    marginHorizontal: 15,
   },
-  headingview:{
-    marginVertical:10,
-    marginHorizontal:15
+  headingview: {
+    marginVertical: 10,
+    marginHorizontal: 15,
   },
-  fixingtext:{
-    fontSize:18,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_Bold,
-    marginVertical:5
+  fixingtext: {
+    fontSize: 18,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginVertical: 5,
   },
-  electricaltext:{
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_Medium,
-    color:_COLORS.Kodie_MediumGrayColor
+  electricaltext: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Medium,
+    color: _COLORS.Kodie_MediumGrayColor,
   },
   activeTab: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderBottomWidth: 1,
   },
-  uploadtext:{
-    fontSize:14,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_Bold,
-    marginVertical:5
+  uploadtext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginVertical: 5,
   },
-  filenametext:{
-    fontSize:12,
-    color:_COLORS.Kodie_ExtraminLiteGrayColor,
-    lineHeight:15,
-    marginTop:3
+  filenametext: {
+    fontSize: 12,
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    lineHeight: 15,
+    marginTop: 3,
   },
   dropdown: {
     borderWidth: 1,
@@ -94,18 +101,18 @@ export const JobDetailsStyle = StyleSheet.create({
     borderWidth: 1,
     marginRight: 16,
   },
-  dropdownmainview:{
-    marginHorizontal:15,
-    marginVertical:15
+  dropdownmainview: {
+    marginHorizontal: 15,
+    marginVertical: 15,
   },
-  dropdownheading:{
-    fontSize:14,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_Bold,
-    marginBottom:10
+  dropdownheading: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginBottom: 10,
   },
-  buttonview:{
-    marginVertical:10
+  buttonview: {
+    marginVertical: 10,
   },
   bottomModal_container: {
     borderWidth: 0.5,
@@ -116,34 +123,33 @@ export const JobDetailsStyle = StyleSheet.create({
   },
   textContainer: {
     flexDirection: "column",
-    borderWidth:0.5,
-    flex:1,
-    paddingHorizontal:10,
-    padding:10,
-    marginVertical:5,
-    borderRadius:10,
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between'
+    borderWidth: 0.5,
+    flex: 1,
+    paddingHorizontal: 10,
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
-  bindfile:{
-    flexDirection:'row',
-    alignItems:'center'
-    },
-    pdfName: {
-        fontSize: 14,
-        color: _COLORS.Kodie_BlackColor,
-        fontFamily: FONTFAMILY.K_Bold,
-        marginHorizontal:5
-      },
-      doticon:{
-        color:_COLORS.Kodie_GrayColor
-      },
-      pdfName: {
-        fontSize: 14,
-        color: _COLORS.Kodie_BlackColor,
-        fontFamily: FONTFAMILY.K_Bold,
-        marginHorizontal:5
-      },
-
+  bindfile: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  pdfName: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal: 5,
+  },
+  doticon: {
+    color: _COLORS.Kodie_GrayColor,
+  },
+  pdfName: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal: 5,
+  },
 });

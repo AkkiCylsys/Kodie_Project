@@ -44,49 +44,13 @@ export default SignUpVerification = (props) => {
   let is_term_condition = props?.route?.params?.is_term_condition;
   let is_privacy_policy = props?.route?.params?.is_privacy_policy;
   let user_key = props?.route?.params?.user_key;
-  console.log("email..........", email);
-  //.......... input box validation define here
-
-  //.......... Api body define here
-  // const Signup_verification_Data = {
-  //   email: email,
-  //   otp: value,
-  // };
-  // .......... Api method define here
-  // const handle_Signup_verification = () => {
-  //   const url = Config.API_URL;
-  //   const sign_verification_Api = url + "user_signup_verifyotp";
-  //   console.log("Request URL:", sign_verification_Api);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(sign_verification_Api, Signup_verification_Data)
-  //     .then((response) => {
-  //       console.log("sign_verification_Api responce", response.data);
-  //       if (response.data.status === true) {
-  //         alert(response.data.message);
-  //         setValue("");
-  //         props.navigation.navigate("SignUpSteps", {
-  //           email: email,
-  //           user_key: user_key,
-  //         });
-  //         setIsLoading(false);
-  //       } else {
-  //         setValueError(response.data.message);
-  //         setValue("");
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       alert(error);
-  //       console.error("signup Verification error:", error);
-  //       setIsLoading(false);
-  //     });
-  // };
+  console.log("email..........", password);
 
   // send_verification_code OTP  Api code here....
   const send_verification_code = () => {
     const url = Config.API_URL;
-    const sennd_verification_code_url = url + "user_signup";
+    // const sennd_verification_code_url = url + "user_signup";
+    const sennd_verification_code_url = "https://e3.cylsys.com/api/v1/register";
     console.log("Request URL:", sennd_verification_code_url);
     setIsLoading(true);
     axios
@@ -145,7 +109,13 @@ export default SignUpVerification = (props) => {
         }
       })
       .catch((error) => {
-        alert(error);
+        if (error.response && error.response.status === 404) {
+          alert("Incorrect OTP. Please try again.");
+        } else if (error.response && error.response.status === 422) {
+          alert("Time up. Please try again.");
+        } else {
+          alert("An error occurred. Please try again later.");
+        }
         console.error("signup Verification error:", error);
         setIsLoading(false);
       });
@@ -183,6 +153,7 @@ export default SignUpVerification = (props) => {
     <View style={SignUpVerificationStyle.mainContainer}>
       <TopHeader
         MiddleText={"Verify your email"}
+        Text_Color={_COLORS.Kodie_BlackColor}
         onPressLeftButton={() => _goBack(props)}
       />
       <View style={SignUpVerificationStyle.container}>
@@ -232,36 +203,6 @@ export default SignUpVerification = (props) => {
 
         {/* resend otp or timer buton code here................ */}
         <View style={SignUpVerificationStyle.getBindButtonView}>
-          {/* <View style={SignUpVerificationStyle.getButtonView}>
-            {isTimerActive ? (
-              <CountdownCircleTimer
-                isPlaying
-                trailColor={_COLORS.Kodie_lightGreenColor}
-                duration={50}
-                size={45}
-                colors={_COLORS.Kodie_lightGreenColor}
-                onComplete={() => {
-                  setIsTimerActive(false);
-                }}
-              >
-                {({ remainingTime }) => (
-                  <Text style={{ color: _COLORS.Kodie_WhiteColor }}>
-                    {remainingTime} S
-                  </Text>
-                )}
-              </CountdownCircleTimer>
-            ) : (
-              <TouchableOpacity
-                onPress={() => {
-                  send_verification_code();
-                }}
-              >
-                <Text style={SignUpVerificationStyle.getButton}>
-                  {"Resend"}
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View> */}
           <View style={SignUpVerificationStyle.getButtonView}>
             {isLoading ? (
               <Text style={{ color: _COLORS.Kodie_WhiteColor }}>Resend</Text>

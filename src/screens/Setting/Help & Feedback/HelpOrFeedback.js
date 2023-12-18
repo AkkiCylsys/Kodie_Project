@@ -16,9 +16,9 @@ const HelpOrFeedback = (props) => {
           onPressLeftButton={() => _goBack(props)}
           MiddleText={"Help & Feedback"}
         />
-        <RowTab LeftImage={IMAGES.HelpCentre} TabTaxt="Help Centre" />
+        <RowTab LeftImage={IMAGES.HelpCentre} TabTaxt="Help Centre"/>
 
-          <RowTab LeftImage={IMAGES.ContactUs} TabTaxt="Contact Us" />
+          <RowTab LeftImage={IMAGES.ContactUs} TabTaxt="Contact Us"/>
 
         <RowTab
           LeftImage={IMAGES.TermsandPolicy}

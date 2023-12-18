@@ -26,14 +26,14 @@ export default AddTenantDetails = (props) => {
       <View>
         <View style={AddTenantDetailsStyle.heading_View}>
           <Text style={AddTenantDetailsStyle.heading_Text}>
-            {"Add lease details"}
+            {"Add Tenant details"}
           </Text>
           <TouchableOpacity onPress={handleClosePopup}>
             <AntDesign
               name="close"
               size={22}
               color={_COLORS.Kodie_BlackColor}
-              style={{ alignSelf: "center" }}
+              style={{ alignSelf: "center",marginTop:5}}
             />
           </TouchableOpacity>
         </View>

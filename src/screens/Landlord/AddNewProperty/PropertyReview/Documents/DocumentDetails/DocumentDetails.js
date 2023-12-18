@@ -6,8 +6,9 @@ import {
   Image,
   ScrollView,
   FlatList,
+  PermissionsAndroid,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { DocumentDetailStyle } from "./DocumentDetailStyle";
 import TopHeader from "../../../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../../../services/CommonServices";
@@ -17,16 +18,34 @@ import Entypo from "react-native-vector-icons/Entypo";
 import DocumentPicker from "react-native-document-picker";
 import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import axios from "axios";
+import RBSheet from "react-native-raw-bottom-sheet";
+import EditDocumentsModal from "../../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
+// import RNFS from "react-native-fs";
+import RNFetchBlob from "rn-fetch-blob";
+import { Config } from "../../../../../../Config";
 const DocumentDetails = (props) => {
+  const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const folderId = props.route.params?.folderId;
-  const folderHeading = props.route.params?.folderHeading;
+  const moduleName = props.route.params?.moduleName;
   const property_id = props.route.params?.property_id;
-  //   alert(folderId);
-  // alert(folderHeading);
-  // alert(property_id);
   const [selectFile, setSelectFile] = useState([]);
+  const [fileKey, setFileKey] = useState(0);
+  const [fileName, setFileName] = useState("");
+  const [filePath, setFilePath] = useState("");
+  const file = selectFile[0];
+  //   alert(folderId);
+  // alert(moduleName);
+  // alert(property_id);
+
+  useEffect(() => {
+    getuploadedDocuments();
+    // getuploadedDocumentsbyModule();
+  }, []);
+  const closeModal = () => {
+    refRBSheet.current.close();
+  };
   const selectDoc = async () => {
     try {
       const doc = await DocumentPicker.pick({
@@ -54,27 +73,41 @@ const DocumentDetails = (props) => {
       else console.log(err);
     }
   };
-
-  const handleDelete = (index) => {
-    const updatedFiles = [...selectFile];
-    updatedFiles.splice(index, 1);
-    setSelectFile(updatedFiles);
+  const deleteHandler = (fileKey) => {
+    console.log("filekeyIn_delete....", fileKey);
+    const dataToSend = {
+      fileId: fileKey,
+    };
+    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
+    const url = Config.BASE_URL;
+    const delete_url = url + "deletedocument";
+    console.log("url...", delete_url);
+    setIsLoading(true);
+    axios
+      .patch(delete_url, dataToSend)
+      .then((res) => {
+        console.log("res......", res);
+        if (res?.data?.success === true) {
+          alert(res?.data?.message);
+          closeModal();
+        }
+        getuploadedDocuments();
+      })
+      .catch((error) => {
+        console.error("Error deleting:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
-  // useEffect(() => {
-  //   console.log(selectFile);
-  // }, [selectFile]);
-  useEffect(() => {
-    getuploadedDocuments();
-  }, []);
-
-  const file = selectFile[0];
-
   const uploadDocument = async () => {
     console.log("uri....", file.uri);
     console.log("name....", file.name);
     console.log("type....", file.type);
-    const url = "https://e3.cylsys.com/api/v1/uploadDocument";
-    const uploadDoc_url = url;
+    console.log("p_referral_key....", property_id);
+    console.log("p_module_name....", moduleName);
+    const url = Config.BASE_URL;
+    const uploadDoc_url = url + "uploadDocument";
     console.log("Request URL:", uploadDoc_url);
     setIsLoading(true);
     try {
@@ -85,8 +118,8 @@ const DocumentDetails = (props) => {
         type: file.type,
       });
       formData.append("p_referral_key", property_id);
-      formData.append("p_module_name", folderHeading);
-      formData.append("p_sub_module_name", "Property documents");
+      formData.append("p_module_name", moduleName);
+      // formData.append("p_sub_module_name", "Property documents");
 
       const response = await axios.post(uploadDoc_url, formData);
 
@@ -101,20 +134,21 @@ const DocumentDetails = (props) => {
       }
     } catch (error) {
       console.error("API failed", error);
+      alert(error);
       // Handle network errors more gracefully
-      if (!error.response) {
-        alert("Network error. Please check your internet connection.");
-      } else {
-        alert(error.response.data.message);
-      }
+      // if (!error.response) {
+      //   alert("Network error. Please check your internet connection.");
+      // } else {
+      //   alert(error.response.data.message);
+      // }
     } finally {
       setIsLoading(false);
     }
   };
 
   const getuploadedDocuments = () => {
-    const url = `https://e3.cylsys.com/api/v1/tanant_details/get/document/${property_id}`;
-    const getDocument_url = url;
+    const url = Config.BASE_URL;
+    const getDocument_url = url + `tanant_details/get/document/${property_id}`;
     console.log("Request URL:", getDocument_url);
     setIsLoading(true);
     axios
@@ -139,7 +173,33 @@ const DocumentDetails = (props) => {
         setIsLoading(false);
       });
   };
-
+  const getUploadedDocumentsByModule = () => {
+    const url = Config.BASE_URL;
+    const getDocumentUrl = url + "tanant_details/get/documents";
+    console.log("Request URL:", getDocumentUrl);
+    setIsLoading(true);
+    const documentModuleData = {
+      Module_Name: "Tenant",
+    }; 
+    axios
+      .post(getDocumentUrl, documentModuleData)
+      .then((response) => {
+        console.log("API Response getDocumentsByModule:", response.data);
+        if (response.data.success === true) {
+          setUploadDocData(response.data.data);
+          console.log("uploadDocData..", response.data.data);
+        } else {
+          handleApiError(response.data.message);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        handleApiError("An error occurred while fetching documents.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   const DocumentsData = ({ item, index }) => {
     return (
       <>
@@ -158,7 +218,9 @@ const DocumentDetails = (props) => {
           </View>
           <TouchableOpacity
             style={DocumentDetailStyle.crossIcon}
-            onPress={() => {}}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
           >
             <Entypo
               name="dots-three-vertical"
@@ -171,6 +233,10 @@ const DocumentDetails = (props) => {
     );
   };
   const GetuploadedDocumentrender = ({ item, index }) => {
+    setFileKey(item.PDUM_FILE_KEY);
+    setFileName(item.PDUM_FILE_NAME);
+    setFilePath(item.PDUM_FILE_PATH);
+    console.log("fileKey....", fileKey);
     return (
       <>
         <View style={DocumentDetailStyle.container}>
@@ -191,7 +257,9 @@ const DocumentDetails = (props) => {
           </View>
           <TouchableOpacity
             style={DocumentDetailStyle.crossIcon}
-            onPress={() => {}}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
           >
             <Entypo
               name="dots-three-vertical"
@@ -202,6 +270,73 @@ const DocumentDetails = (props) => {
         </View>
       </>
     );
+  };
+
+  // const REMOTE_PATH = `http://e3.cylsys.com/upload/documents/${fileName}`;
+  const REMOTE_PATH = filePath;
+  const checkPermission = async () => {
+    setIsLoading(true);
+    if (Platform.OS === "ios") {
+      downloadImage();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: "Storage Permission Required",
+            message: "App needs access to your storage to download Photos",
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          // Once user grant the permission start downloading
+          console.log("Storage Permission Granted.");
+          downloadImage();
+        } else {
+          // If permission denied then show alert
+          alert("Storage Permission Not Granted");
+        }
+      } catch (err) {
+        // To handle permission related exception
+        console.warn(err);
+      }
+    }
+  };
+  const downloadImage = () => {
+    setIsLoading(true);
+    let date = new Date();
+    let image_URL = REMOTE_PATH;
+    let ext = getExtention(image_URL);
+    ext = "." + ext[0];
+    const { config, fs } = RNFetchBlob;
+    let PictureDir = fs.dirs.PictureDir;
+    let options = {
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        path:
+          PictureDir +
+          "/pdf_" +
+          Math.floor(date.getTime() + date.getSeconds() / 2) +
+          ext,
+        description: "pdf",
+      },
+    };
+    config(options)
+      .fetch("GET", image_URL)
+      .then((res) => {
+        // Showing alert after successful downloading
+        console.log("res -> ", JSON.stringify(res));
+        // alert("Image Downloaded Successfully.");
+        alert("File Downloaded Successfully.");
+        setIsLoading(false);
+        closeModal();
+      });
+  };
+
+  const getExtention = (fileName) => {
+    // To get the file extension
+    return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
 
   return (
@@ -247,6 +382,7 @@ const DocumentDetails = (props) => {
               : "Property documents"}
           </Text>
         </View>
+
         <FlatList
           data={selectFile}
           scrollEnabled
@@ -255,18 +391,6 @@ const DocumentDetails = (props) => {
           keyExtractor={(item, index) => index}
           renderItem={DocumentsData}
         />
-
-        <View>
-          <FlatList
-            data={uploadDocData}
-            scrollEnabled
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{}}
-            keyExtractor={(item, index) => index}
-            renderItem={GetuploadedDocumentrender}
-          />
-        </View>
-
         <View>
           <Text style={DocumentDetailStyle.upload_doc_text}>
             {"Upload documents"}
@@ -276,6 +400,16 @@ const DocumentDetails = (props) => {
               "Documents should be formatted .pdf or .jpg or .png Size per file should not exceed 5 MB"
             }
           </Text>
+        </View>
+        <View>
+          <FlatList
+            data={uploadDocData}
+            scrollEnabled
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{}}
+            keyExtractor={(item, index) => index}
+            renderItem={GetuploadedDocumentrender}
+          />
         </View>
         <View style={{}}>
           <CustomSingleButton
@@ -290,6 +424,30 @@ const DocumentDetails = (props) => {
             disabled={isLoading ? true : false}
           />
         </View>
+        <RBSheet
+          ref={refRBSheet}
+          height={220}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "transparent",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: DocumentDetailStyle.bottomModal_container,
+          }}
+        >
+          <EditDocumentsModal
+            closemodal={closeModal}
+            deleteHandler={deleteHandler}
+            // downloadFile={downloadFile}
+            downloadFile={checkPermission}
+            fileKey={fileKey}
+            onpress={() => {
+              props.navigation.navigate("ViewDocument");
+            }}
+          />
+        </RBSheet>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
     </View>

@@ -10,9 +10,7 @@ import {
   Text,
   ScrollView,
   FlatList,
-  Image,
   TouchableOpacity,
-  Dimensions,
 } from "react-native";
 import { _COLORS, LABEL_STYLES } from "../../../../Themes";
 import { RepairCss } from "./RepairCss";
@@ -23,58 +21,9 @@ import SearchBar from "../../../../components/Molecules/SearchBar/SearchBar";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import Entypo from "react-native-vector-icons/Entypo";
-// import { SwipeListView } from "react-native-swipe-list-view";
-import Ionicons from "react-native-vector-icons/Ionicons";
-// import SwipeList from "../../../../components/Molecules/SwipeList/SwipeList";
-import { SwipeListView } from "react-native-swipe-list-view";
+import ArchiveJob from "../../../../components/Molecules/Archive/ArchiveJob/ArchiveJob";
 const HorizontalData = ["Posted", "Ongoing", "Completed"];
-const property_List = [
-  {
-    id: "1",
-    name: "Door handle repairing Posted",
-    location: "1729 Melbourne St Australia",
-    buttonName: "Posted",
-    tanentname: "Tom",
-    budget: "Budget",
-    spend: "$200",
-    readText:
-      "My door handle is broken and need some simple repairmen for this and need some Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    isPosted: true,
-    isongoing: false,
-    isCompleted: false,
-    refno: "Ref #16694",
-  },
-  {
-    id: "2",
-    name: "Plasterer to fix wall",
-    location: "1729 Melbourne St Australia",
-    buttonName: "Ongoing",
-    tanentname: "Tom",
-    budget: "Budget",
-    spend: "$200",
-    readText:
-      "My door handle is broken and need some simple repairmen for this and need some Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    isPosted: false,
-    isongoing: true,
-    isCompleted: false,
-    refno: "Ref #16694",
-  },
-  {
-    id: "3",
-    name: "Epoxy garage repair",
-    location: "1729 Melbourne St Australia",
-    buttonName: "Completed",
-    tanentname: "Tom",
-    budget: "Budget",
-    spend: "$200",
-    readText:
-      "My door handle is broken and need some simple repairmen for this and need some Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    isPosted: false,
-    isongoing: false,
-    isCompleted: true,
-    refno: "Ref #16694",
-  },
-];
+
 const property_List1 = [
   {
     id: "1",
@@ -106,228 +55,8 @@ export default Repair = (props) => {
     );
   };
 
-  const propertyData_render = ({ item }) => {
-    console.log("Item data:............", item);
-    return (
-      <>
-        <SwipeListView
-          style={RepairCss.Container}
-          data={property_List}
-          renderItem={(rowdata, rowmap, index) => (
-            <View style={RepairCss.rowFront} key={index}>
-              <View style={RepairCss.flat_MainView}>
-                <View style={RepairCss.flexContainer}>
-                  <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
-                </View>
-                <View style={RepairCss.RightContainer}>
-                  <View
-                    style={[
-                      RepairCss.buttonView,
-                      {
-                        backgroundColor: item.isPosted
-                          ? _COLORS.Kodie_mostLightBlueColor
-                          : item.isongoing
-                          ? _COLORS.Kodie_LightOrange
-                          : _COLORS.Kodie_mostLightGreenColor,
-                      },
-                    ]}
-                  >
-                    <View
-                      style={[
-                        RepairCss.roundButton,
-                        {
-                          backgroundColor: item.isPosted
-                            ? _COLORS.Kodie_BlueColor
-                            : item.isongoing
-                            ? _COLORS.Kodie_DarkOrange
-                            : _COLORS.Kodie_GreenColor,
-                        },
-                      ]}
-                    />
-                    <Text
-                      style={[
-                        RepairCss.buttonText,
-                        {
-                          color: item.isPosted
-                            ? _COLORS.Kodie_BlueColor
-                            : item.isongoing
-                            ? _COLORS.Kodie_DarkOrange
-                            : _COLORS.Kodie_GreenColor,
-                        },
-                      ]}
-                    >
-                      {item.buttonName}
-                    </Text>
-                  </View>
-                </View>
-                <Entypo
-                  name={"dots-three-horizontal"}
-                  size={20}
-                  color={_COLORS.Kodie_GrayColor}
-                  style={{ marginLeft: 15 }}
-                />
-              </View>
-              <Text style={LABEL_STYLES.commonMidtext}>{item.refno}</Text>
-              <View style={RepairCss.flat_MainView}>
-                <View style={RepairCss.flexContainer}>
-                  <View style={RepairCss.propertyView}>
-                    <View style={RepairCss.flexContainer}>
-                      <Text style={RepairCss.tom}>Tom</Text>
-                      <View style={RepairCss.locationView}>
-                        <MaterialCommunityIcons
-                          name={"map-marker"}
-                          size={12}
-                          color={_COLORS.Kodie_MediumGrayColor}
-                          style={{ alignSelf: "center" }}
-                        />
-                        <Text style={RepairCss.locationText}>
-                          {"1729 Melbourne St Australia"}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                </View>
-                <View style={[RepairCss.BudgetView]}>
-                  <View style={RepairCss.flexContainer}>
-                    <Text style={RepairCss.bugetText}>{item.budget}</Text>
-
-                    <Text style={RepairCss.spend}>{item.spend}</Text>
-                  </View>
-                </View>
-              </View>
-              <DividerIcon style={RepairCss.dividerIcon} />
-            </View>
-          )}
-          renderHiddenItem={(data, index) => (
-            <View style={RepairCss.rowBack}>
-              <Text>Left</Text>
-              <TouchableOpacity
-                style={[RepairCss.backRightBtn, RepairCss.backRightBtnLeft]}
-                onPress={() => closeRow(rowMap, data.item.key)}
-              >
-                <Entypo
-                  name="dots-three-horizontal"
-                  size={25}
-                  color={_COLORS.Kodie_WhiteColor}
-                />
-                <Text style={RepairCss.backTextWhite}>More</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[RepairCss.backRightBtn, RepairCss.backRightBtnRight]}
-                onPress={() => deleteRow(rowMap, data.item.key)}
-              >
-                <Ionicons
-                  name="archive-outline"
-                  size={25}
-                  color={_COLORS.Kodie_WhiteColor}
-                />
-                <Text style={RepairCss.backTextWhite}>Archive</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-          leftOpenValue={75}
-          rightOpenValue={-150}
-          // rightOpenValue={-Dimensions.get('window').width}
-          previewRowKey={"0"}
-          previewOpenValue={-40}
-          previewOpenDelay={3000}
-        />
-      </>
-    );
-  };
-
-  // const propertyData_render = ({ item }) => {
-  //   console.log("Item data:............", item);
-  //   return (
-  //     <>
-  //       <View style={RepairCss.Container} >
-
-  //           <View style={RepairCss.flat_MainView}>
-  //             <View style={RepairCss.flexContainer}>
-  //               <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
-  //             </View>
-  //             <View style={RepairCss.RightContainer}>
-  //               <View
-  //                 style={[
-  //                   RepairCss.buttonView,
-  //                   {
-  //                     backgroundColor: item.isPosted
-  //                       ? _COLORS.Kodie_mostLightBlueColor
-  //                       : item.isongoing
-  //                       ? _COLORS.Kodie_LightOrange
-  //                       : _COLORS.Kodie_mostLightGreenColor,
-  //                   },
-  //                 ]}
-  //               >
-  //                 <View
-  //                   style={[
-  //                     RepairCss.roundButton,
-  //                     {
-  //                       backgroundColor: item.isPosted
-  //                         ? _COLORS.Kodie_BlueColor
-  //                         : item.isongoing
-  //                         ? _COLORS.Kodie_DarkOrange
-  //                         : _COLORS.Kodie_GreenColor,
-  //                     },
-  //                   ]}
-  //                 />
-  //                 <Text
-  //                   style={[
-  //                     RepairCss.buttonText,
-  //                     {
-  //                       color: item.isPosted
-  //                         ? _COLORS.Kodie_BlueColor
-  //                         : item.isongoing
-  //                         ? _COLORS.Kodie_DarkOrange
-  //                         : _COLORS.Kodie_GreenColor,
-  //                     },
-  //                   ]}
-  //                 >
-  //                   {item.buttonName}
-  //                 </Text>
-  //               </View>
-  //             </View>
-  //             <Entypo
-  //               name={"dots-three-horizontal"}
-  //               size={20}
-  //               color={_COLORS.Kodie_GrayColor}
-  //               style={{ marginLeft: 15 }}
-  //             />
-  //           </View>
-  //           <Text style={LABEL_STYLES.commonMidtext}>{item.refno}</Text>
-  //           <View style={RepairCss.flat_MainView}>
-  //             <View style={RepairCss.flexContainer}>
-  //               <View style={RepairCss.propertyView}>
-  //                 <View style={RepairCss.flexContainer}>
-  //                   <Text style={RepairCss.tom}>Tom</Text>
-  //                   <View style={RepairCss.locationView}>
-  //                     <MaterialCommunityIcons
-  //                       name={"map-marker"}
-  //                       size={12}
-  //                       color={_COLORS.Kodie_MediumGrayColor}
-  //                       style={{ alignSelf: "center" }}
-  //                     />
-  //                     <Text style={RepairCss.locationText}>
-  //                       {"1729 Melbourne St Australia"}
-  //                     </Text>
-  //                   </View>
-  //                 </View>
-  //               </View>
-  //             </View>
-  //             <View style={[RepairCss.BudgetView]}>
-  //               <View style={RepairCss.flexContainer}>
-  //                 <Text style={RepairCss.bugetText}>{item.budget}</Text>
-
-  //                 <Text style={RepairCss.spend}>{item.spend}</Text>
-  //               </View>
-  //             </View>
-  //           </View>
-  //           <DividerIcon />
-
-  //       </View>
-  //     </>
-  //   );
-  // };
+  // Archive component call here...................
+  <ArchiveJob />;
 
   const propertyData_render1 = ({ item }) => {
     return (
@@ -470,6 +199,9 @@ export default Repair = (props) => {
             backgroundColor={_COLORS.Kodie_BlackColor}
             height={40}
             marginTop={3}
+            onPress={
+              activeScreen ? props.onpress :null
+            }
           />
         </View>
         <DividerIcon borderBottomWidth={5} marginTop={8} />
@@ -496,11 +228,7 @@ export default Repair = (props) => {
         {activeScreen ? (
           <FlatList data={property_List1} renderItem={propertyData_render1} />
         ) : (
-          <FlatList
-            data={property_List}
-            renderItem={propertyData_render}
-            keyExtractor={(item) => item.key}
-          />
+          <ArchiveJob />
         )}
       </ScrollView>
     </View>

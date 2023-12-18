@@ -5,7 +5,9 @@ import { PrivacySecurityStyle } from "../../Authentication/PrivacyAndSecurity/Pr
 import TopHeader from "../../../components/Molecules/Header/Header";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import { _goBack } from "../../../services/CommonServices";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const PrivacySecurity = (props) => {
   return (
@@ -29,10 +31,15 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    <Image
-                      source={IMAGES.Contact}
-                      style={PrivacySecurityStyle.imgicon}
-                    />
+                    <View style={PrivacySecurityStyle.IconView}>
+                      <FontAwesome5
+                        name="user-plus"
+                        size={25}
+                        color={_COLORS.Kodie_GreenColor}
+                        resizeMode={"contain"}
+                        style={{ alignSelf: "center" }}
+                      />
+                    </View>
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>
                     <Text style={PrivacySecurityStyle.textitem}>
@@ -56,10 +63,15 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    <Image
-                      source={IMAGES.Contact}
-                      style={PrivacySecurityStyle.imgicon}
-                    />
+                    <View style={PrivacySecurityStyle.IconView}>
+                      <MaterialIcons
+                        name="devices"
+                        size={25}
+                        color={_COLORS.Kodie_GreenColor}
+                        resizeMode={"contain"}
+                        style={{ alignSelf: "center" }}
+                      />
+                    </View>
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>
                     <Text style={PrivacySecurityStyle.textitem}>
@@ -83,10 +95,15 @@ const PrivacySecurity = (props) => {
               <View style={PrivacySecurityStyle.bindview}>
                 <View style={PrivacySecurityStyle.checkimgview}>
                   <View>
-                    <Image
-                      source={IMAGES.Contact}
-                      style={PrivacySecurityStyle.imgicon}
-                    />
+                    <View style={PrivacySecurityStyle.IconView}>
+                      <MaterialCommunityIcons
+                        name="check-decagram-outline"
+                        size={25}
+                        color={_COLORS.Kodie_GreenColor}
+                        resizeMode={"contain"}
+                        style={{ alignSelf: "center" }}
+                      />
+                    </View>
                   </View>
                   <View style={PrivacySecurityStyle.innertextview}>
                     <Text style={PrivacySecurityStyle.textitem}>

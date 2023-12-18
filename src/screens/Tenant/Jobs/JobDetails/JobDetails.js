@@ -13,21 +13,24 @@ import { JobDetailsStyle } from "./JobDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
 import { SliderBox } from "react-native-image-slider-box";
-import { BANNERS, _COLORS, IMAGES } from "../../../../Themes";
+import { BANNERS, _COLORS, IMAGES, FONTFAMILY } from "../../../../Themes";
 import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
-
+import StepIndicator from "react-native-step-indicator";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
+import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
+const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.previewImage,
   BANNERS.Apartment,
   BANNERS.BannerSecond,
   BANNERS.BannerFirst,
 ];
-
 const Apartment_data = [
   { label: "House", value: "1" },
   { label: "Cottage", value: "2" },
@@ -37,18 +40,136 @@ const Apartment_data = [
   { label: "Farm", value: "6" },
 ];
 const JobDetails = (props) => {
-  const [activeTab, setActiveTab] = useState("Tab3");
+  let job_id = props?.route?.params?.job_id;
+  console.log("job_id...", job_id);
+  // alert(job_id);
+  const [activeTab, setActiveTab] = useState("Tab1");
+  const [currentPage, setCurrentPage] = useState(3);
   const [value, setValue] = useState(null);
   const [value2, setValue2] = useState(null);
   const [value3, setValue3] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleImageFilePath = async (imagesFilePath) => {
+    setImageFileData(imagesFilePath);
+    // console.log("imagesFilePath....sdfs.", imagesFilePath);
+    console.log("imagesFilePath....sdfs.", imagesFilePath);
+  };
+
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+    const iconConfig = {
+      name: "feed",
+      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
+      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+      size: 20,
+    };
+
+    switch (position) {
+      case 0: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 1: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 2: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+      case 3: {
+        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+    return iconConfig;
+  };
+  const firstIndicatorSignUpStepStyle = {
+    stepIndicatorSize: 40,
+    currentStepIndicatorSize: 20,
+    separatorStrokeWidth: 1,
+    currentStepStrokeWidth: 2,
+    separatorFinishedColor: _COLORS.Kodie_GrayColor,
+    separatorUnFinishedColor: _COLORS.Kodie_LightOrange,
+    stepIndicatorFinishedColor: _COLORS.Kodie_GreenColor,
+    stepIndicatorUnFinishedColor: _COLORS.Kodie_GrayColor,
+    stepIndicatorCurrentColor: _COLORS.Kodie_WhiteColor,
+    stepIndicatorLabelFontSize: 15,
+    currentStepIndicatorLabelFontSize: 15,
+    stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
+    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+    labelColor: _COLORS.Kodie_BlackColor,
+    labelSize: 14,
+    labelAlign: "center",
+  };
+  const renderStepIndicator = (params) => (
+    <MaterialIcons {...getStepIndicatorIconConfig(params)} />
+  );
+  const renderLabel = ({ position, stepStatus }) => {
+    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
+    const iconColor =
+      position === currentPage // Check if it's the current step
+        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+        : stepStatus === "finished"
+        ? "#000000"
+        : "#808080";
+    const iconName =
+      position === 0
+        ? "Details"
+        : position === 1
+        ? "Terms"
+        : position === 2
+        ? "Images"
+        : position === 3
+        ? "Review"
+        : "null";
+
+    return (
+      <View style={{}}>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 1,
+            marginHorizontal: 10,
+            color: iconColor,
+            alignSelf: "center",
+          }}
+        >{`Step ${position + 1}`}</Text>
+        <Text
+          style={{
+            fontSize: 14,
+            marginTop: 5,
+            marginHorizontal: 10,
+            color: iconColor,
+          }}
+        >
+          {iconName}
+        </Text>
+      </View>
+    );
+  };
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
+        return (
+          <Reviewjobdetails1
+            job_id={job_id}
+            imagesFilePath={handleImageFilePath}
+          />
+        );
       case "Tab2":
+        return <JodBiddingDetails />;
       case "Tab3":
+        return <Leases />;
       case "Tab4":
+        return <Leases />;
     }
   };
   const refRBSheet = useRef();
@@ -61,11 +182,23 @@ const JobDetails = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Review job details"}
       />
+      <StepIndicator
+        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+        currentPosition={3}
+        // onPress={onStepPress}
+        renderStepIndicator={renderStepIndicator}
+        labels={stepLabels}
+        stepCount={4}
+        renderLabel={renderLabel}
+      />
       <ScrollView>
+        <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>
           <View style={JobDetailsStyle.slider_view}>
             <SliderBox
               images={images}
+              // images={img}
+              // images={imageFileData?.image_file_path} 
               sliderBoxHeight={200}
               onCurrentImagePressed={(index) =>
                 console.warn(`image ${index} pressed`)
@@ -93,7 +226,13 @@ const JobDetails = (props) => {
           <Text style={JobDetailsStyle.electricaltext}>Electricals</Text>
         </View>
 
-        <View>
+        <View
+          style={{
+            borderBottomWidth: 3,
+            borderColor: _COLORS.Kodie_GrayColor,
+            elevation: 1,
+          }}
+        >
           <CustomTabNavigator
             activeTab={activeTab}
             setActiveTab={setActiveTab}
@@ -127,6 +266,18 @@ const JobDetails = (props) => {
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
+            FONTFAMILY1={
+              activeTab === "Tab1" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY2={
+              activeTab === "Tab2" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY3={
+              activeTab === "Tab3" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
+            FONTFAMILY4={
+              activeTab === "Tab4" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+            }
             styleTab1={activeTab === "Tab1" && JobDetailsStyle.activeTab}
             styleTab2={activeTab === "Tab2" && JobDetailsStyle.activeTab}
             styleTab3={activeTab === "Tab3" && JobDetailsStyle.activeTab}
@@ -135,15 +286,15 @@ const JobDetails = (props) => {
         </View>
         {checkTabs()}
 
-        <View style={JobDetailsStyle.headingview}>
+        {/* <View style={JobDetailsStyle.headingview}>
           <Text style={JobDetailsStyle.uploadtext}>Upload documents</Text>
           <Text style={JobDetailsStyle.filenametext}>
             Documents should be formatted .pdf or .jpg or .png Size per file
             should not exceed 5 MB
           </Text>
-        </View>
+        </View> */}
 
-        <View style={JobDetailsStyle.dropdownmainview}>
+        {/* <View style={JobDetailsStyle.dropdownmainview}>
           <Text style={JobDetailsStyle.dropdownheading}>
             Select type of document
           </Text>
@@ -200,7 +351,6 @@ const JobDetails = (props) => {
                 }}
               >
                 <View style={JobDetailsStyle.bindfile}>
-                  {/* <MaterialCommunityIcons name="file" size={35} /> */}
                   <Image source={IMAGES.document} />
                   <View>
                     <Text style={JobDetailsStyle.pdfName}>
@@ -270,9 +420,9 @@ const JobDetails = (props) => {
               }}
             />
           </View>
-        </View>
+        </View> */}
 
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet}
           height={200}
           customStyles={{
@@ -289,7 +439,7 @@ const JobDetails = (props) => {
             heading_Text={"Upload  documents"}
             onPress={toggleView}
           />
-        </RBSheet>
+        </RBSheet> */}
       </ScrollView>
     </View>
   );
