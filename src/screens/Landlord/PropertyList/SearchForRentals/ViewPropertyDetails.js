@@ -80,6 +80,7 @@ const Detail = [
 export default ViewPropertyDetails = (props) => {
   // const propertyDelId = props?.route?.params?.propertyDelId;
   const propertyid = props?.route?.params?.propertyId;
+
   console.log(propertyid, "viewpropertydetails id....");
   // console.log(propertyDelId);
   const [isLoading, setIsLoading] = useState(false);
@@ -322,7 +323,9 @@ export default ViewPropertyDetails = (props) => {
   const fetchData = async () => {
     try {
       // Fetch property details
-      const detailData = { property_id: propertyid };
+      const detailData = {
+        property_id: propertyid,
+      };
       const url = Config.BASE_URL;
       const property_Detailss = url + "get_property_details";
 

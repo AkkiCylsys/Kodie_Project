@@ -84,7 +84,9 @@ const PropertyList = (props) => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
   };
-
+  const CloseUp = () => {
+    setIsDeleteBottomSheetVisible(false);
+  };
   // Extract property_id values
 
   const getPropertyDetailsByFilter = async (filter) => {
@@ -214,7 +216,13 @@ const PropertyList = (props) => {
     // const propertyIds = data.map(item => item.property_id);
     setPropId(item.property_id);
     return (
-      <>
+      <TouchableOpacity
+        onPress={() => {
+          props?.onPropertyView?.({
+            propertyid: item?.property_id,
+          });
+        }}
+      >
         <View key={index} style={PropertyListCSS.flatListContainer}>
           <View style={PropertyListCSS.flat_MainView}>
             <View style={PropertyListCSS.flexContainer}>
@@ -289,7 +297,7 @@ const PropertyList = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <View
+              <TouchableOpacity
                 style={[
                   PropertyListCSS.buttonView,
                   {
@@ -327,7 +335,7 @@ const PropertyList = (props) => {
                 >
                   {"+ Invite Tenant"}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <DividerIcon
@@ -387,7 +395,7 @@ const PropertyList = (props) => {
             Address={Address}
           />
         </RBSheet> */}
-      </>
+      </TouchableOpacity>
     );
   };
   const propertyData2_render = ({ item }) => {
@@ -687,6 +695,7 @@ const PropertyList = (props) => {
           isDeletePropertyClicked={isDeleteData_Clicked}
           onDeleteData={FinalDeleteProperty}
           Address={Address}
+          onClose={CloseUp}
         />
       </Modal>
       {isLoading ? <CommonLoader /> : null}

@@ -372,7 +372,10 @@ export default PropertyImages = (props) => {
 
   return (
     <View style={PropertyImagesStyle.mainContainer}>
-      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
+      <TopHeader
+        onPressLeftButton={goBack}
+        MiddleText={editMode ? "Edit property" : "Add new property"}
+      />
       <View
         style={{
           marginTop: 15,
@@ -395,13 +398,14 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-              {/* {imagePath ? (
+              {property_Detail.image_path &&
+              property_Detail.image_path.length != 0 ? (
                 <SliderBox
                   images={
-                    // property_Detail[0]?.image_path
-                    //   ? property_Detail[0]?.image_path
-                    //   :
-                    imagePath
+                    property_Detail?.image_path
+                    // //   ? property_Detail[0]?.image_path
+                    // //   :
+                    // imagePath
                   }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
@@ -422,34 +426,34 @@ export default PropertyImages = (props) => {
                     // position: "relative",
                   }}
                 />
-              ) : ( */}
-              <SliderBox
-                images={
-                  // property_Detail[0]?.image_path
-                  //   ? property_Detail[0]?.image_path
-                  //   :
-                  imagePaths
-                }
-                sliderBoxHeight={200}
-                onCurrentImagePressed={(index) =>
-                  console.warn(`image ${index} pressed`)
-                }
-                inactiveDotColor={_COLORS.Kodie_GrayColor}
-                dotColor={_COLORS.Kodie_GreenColor}
-                autoplay
-                circleLoop
-                resizeMethod={"resize"}
-                resizeMode={"cover"}
-                dotStyle={PropertyImagesStyle.dotStyle}
-                ImageComponentStyle={{
-                  flex: 1,
-                  resizeMode: "cover",
-                  borderRadius: 15,
-                  width: "90%",
-                  // position: "relative",
-                }}
-              />
-              {/* )} */}
+              ) : (
+                <SliderBox
+                  images={
+                    // property_Detail?.image_path
+                    //   ? property_Detail.image_path
+                    //   :
+                    imagePaths
+                  }
+                  sliderBoxHeight={200}
+                  onCurrentImagePressed={(index) =>
+                    console.warn(`image ${index} pressed`)
+                  }
+                  inactiveDotColor={_COLORS.Kodie_GrayColor}
+                  dotColor={_COLORS.Kodie_GreenColor}
+                  autoplay
+                  circleLoop
+                  resizeMethod={"resize"}
+                  resizeMode={"cover"}
+                  dotStyle={PropertyImagesStyle.dotStyle}
+                  ImageComponentStyle={{
+                    flex: 1,
+                    resizeMode: "cover",
+                    borderRadius: 15,
+                    width: "90%",
+                    // position: "relative",
+                  }}
+                />
+              )}
             </View>
             <Text style={PropertyImagesStyle.upload_Heading_Text}>
               {"Upload images"}
@@ -520,13 +524,24 @@ export default PropertyImages = (props) => {
                             position: "absolute",
                             // top: 2,
                             right: 5,
-                            // backgroundColor: "rgba(255,255,255,0.7)",
-                            borderRadius: 15,
-                            padding: 3,
+                            backgroundColor: "rgba(255,255,255,0.7)",
+                            height: "15%",
+                            width: "15%",
+                            borderRadius: 8,
+                            // padding: 3,
+                            justifyContent: "center",
                           }}
                           onPress={() => removeVideo(index)}
                         >
-                          <Text style={{ color: "black" }}>X</Text>
+                          <Text
+                            style={{
+                              color: "black",
+                              fontWeight: "bold",
+                              alignSelf: "center",
+                            }}
+                          >
+                            X
+                          </Text>
                         </TouchableOpacity>
                         {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
                       </>
@@ -581,7 +596,11 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.btnView}>
             <CustomSingleButton
-              _ButtonText={"Add property features later"}
+              _ButtonText={
+                editMode
+                  ? "Edit property features later"
+                  : "Add property features later"
+              }
               Text_Color={_COLORS.Kodie_BlackColor}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}

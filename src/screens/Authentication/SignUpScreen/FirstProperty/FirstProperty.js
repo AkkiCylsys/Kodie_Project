@@ -383,13 +383,20 @@ export default FirstProperty = (props) => {
       JSON.stringify(additionalfeatureskeyvalue)
     );
     formData.append("auto_list", selectedButtonId);
+    // const imageUri = ImageName;
+    // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    // const photo = {
+    //   uri: imageUri,
+    //   type: "image/png",
+    //   name: imageName,
+    // };
+    // formData.append("profile_photo", photo);
 
     if (ImageName) {
       const imageUri = ImageName;
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       formData.append("profile_photo", {
         uri: imageUri,
-        // type: imageType,
         name: imageName,
       });
     }

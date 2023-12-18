@@ -49,7 +49,7 @@ export default InviteTenant = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [inviteTenant, setInviteTenant] = useState([]);
   const [inviteTenantALl, setInviteTenantAll] = useState([]);
-
+  const refRBSheet = useRef();
   // Get APi bind first user show bydefault showing here....
   const get_Tenent_Details = () => {
     const url = Config.BASE_URL;
@@ -77,6 +77,9 @@ export default InviteTenant = (props) => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+  const CloseUp = () => {
+    refRBSheet.current.close();
   };
   // Get APi bind after fill user pre-screening then showing here....
   // const get_Invite_Tenent_Details = () => {

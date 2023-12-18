@@ -25,6 +25,7 @@ export default Leases = (props) => {
   // alert(JSON.stringify(props.property_id));
   const [isLoading, setIsLoading] = useState(false);
   const property_id = props.property_id;
+
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
@@ -279,6 +280,7 @@ export default Leases = (props) => {
                   refRBSheet.current.open();
                   setIsSheetOpen(true);
                 }}
+                height={45}
                 disabled={isLoading ? true : false}
               />
             </View>
@@ -318,23 +320,23 @@ export default Leases = (props) => {
             />
           </View>
         ) : null}
-        <View style={{ marginHorizontal: 16 }}>
+        <View style={{ marginHorizontal: 16, marginTop: 16 }}>
           <Text style={LeaseSummaryStyle.heading_Text}>{"Tenant details"}</Text>
           <Text style={LeaseSummaryStyle.invite_tenant_Text}>
             {"Invite tenant to connect to this property"}
           </Text>
           {/* <TenantDetails /> */}
           <View style={LeaseSummaryStyle.btn_View}>
-          <CustomSingleButton
-            _ButtonText={"+ Add tenant"}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            height={45}
-            onPress={() => {
-              refRBSheet3.current.open();
-            }}
-            disabled={isLoading ? true : false}
-          />
-        </View>
+            <CustomSingleButton
+              _ButtonText={"+ Add tenant"}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              height={45}
+              onPress={() => {
+                refRBSheet3.current.open();
+              }}
+              disabled={isLoading ? true : false}
+            />
+          </View>
         </View>
 
         <RBSheet
@@ -369,24 +371,24 @@ export default Leases = (props) => {
           <Logrentalpayment onClose={handleLogClose} lease_keys={lease_key} />
         </RBSheet>
         <RBSheet
-        ref={refRBSheet3}
-        height={250}
-        closeOnDragDown={true}
-        customStyles={{
-          wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
-          container: LeaseSummaryStyle.bottomModal_container,
-        }}
-      >
-        <InviteTenantModal
-          closeRBSheet={() => refRBSheet.current.close()}
-          property_id={property_id}
-        />
-      </RBSheet>
+          ref={refRBSheet3}
+          height={250}
+          closeOnDragDown={true}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: LeaseSummaryStyle.bottomModal_container,
+          }}
+        >
+          <InviteTenantModal
+            closeRBSheet={() => refRBSheet.current.close()}
+            property_id={property_id}
+          />
+        </RBSheet>
       </ScrollView>
     </View>
   );

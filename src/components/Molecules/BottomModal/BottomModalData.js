@@ -9,6 +9,7 @@ import { PropertyListCSS } from "../../../screens/Landlord/PropertyList/MyProper
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const data = [
@@ -21,6 +22,7 @@ const data = [
         name="preview"
         size={25}
         color={_COLORS.Kodie_GreenColor}
+        style={{ alignSelf: "center" }}
       />
     ),
   },
@@ -106,7 +108,7 @@ const BottomModalData = (props) => {
   const navigation = useNavigation(); // Hook to get navigation
   const refRBSheet = useRef();
   const handleCloseModal = () => {
-    props.onCloseModal(); // Call this function when you want to close the modal without performing delete action
+    props.onClose(); // Call this function when you want to close the modal without performing delete action
   };
   const handleDeleteProperty = (propertyDelId) => {
     console.log(propertyDelId, "catch data");
@@ -165,7 +167,9 @@ const BottomModalData = (props) => {
             }}
           >
             {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
+            <Text style={BottomModalDataStyle.IconView}>
             {item.Icon}
+            </Text>
             <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}
@@ -180,9 +184,9 @@ const BottomModalData = (props) => {
           alignSelf: "flex-end",
           paddingHorizontal: 20,
         }}
-        onPress={handleCloseModal}
-      >
-        <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} />
+        onPress={handleCloseModal}>
+        <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+        {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
       </TouchableOpacity>
       <FlatList
         data={props?.isDeletePropertyClicked ? data1 : data}

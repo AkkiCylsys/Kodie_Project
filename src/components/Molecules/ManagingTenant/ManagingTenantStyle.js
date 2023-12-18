@@ -11,6 +11,16 @@ export const ManagingTenantStyle = StyleSheet.create({
     backgroundColor:_COLORS.Kodie_WhiteColor
     
   },
+  IcontenantView:{
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLiteWhiteColor,
+    marginLeft: 5,
+    width: 35,
+    marginTop:10,
+    height: 35,
+    justifyContent: "center",
+  },
   closeicon:{
     justifyContent: "flex-end",
     alignSelf: "flex-end",

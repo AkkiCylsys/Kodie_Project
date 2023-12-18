@@ -30,7 +30,16 @@ export const DrawerStyle = StyleSheet.create({
     flexDirection: "row",
     marginTop: 15,
     borderRadius: 8,
-    paddingVertical: 8,
+    paddingVertical: 4,
   },
-  rowFlex: { flexDirection: "row", borderRadius: 8, paddingVertical: 8 },
+  IconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
+    marginLeft: 5,
+    width: 35,
+    height: 35,
+    justifyContent: "center",
+  },
+  rowFlex: { flexDirection: "row", borderRadius: 8, paddingVertical: 4 },
 });

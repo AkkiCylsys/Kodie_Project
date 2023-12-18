@@ -31,4 +31,14 @@ export const ChatPopupStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LightGrayColor,
   },
+  IconView: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LiteWhiteColor,
+    marginLeft: 5,
+    width: 35,
+    marginTop:10,
+    height: 35,
+    justifyContent: "center",
+  },
 });

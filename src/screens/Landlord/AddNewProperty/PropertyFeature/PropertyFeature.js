@@ -142,6 +142,7 @@ export default PropertyFeature = (props) => {
         if (response.data.success === true) {
           setIsLoading(false);
           setProperty_Details(response.data.data[0]);
+
           const apiAdditionalFeaturesIds =
             response?.data?.data[0]?.additional_features_id
               .split(",")
@@ -459,7 +460,10 @@ export default PropertyFeature = (props) => {
   };
   return (
     <View style={PropertyFeatureStyle.mainContainer}>
-      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
+      <TopHeader
+        onPressLeftButton={goBack}
+        MiddleText={editMode ? "Edit property" : "Add new property"}
+      />
       <View
         style={{
           marginTop: 15,
@@ -836,7 +840,11 @@ export default PropertyFeature = (props) => {
             </View>
             <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton
-                _ButtonText={"Add property features later"}
+                _ButtonText={
+                  editMode
+                    ? "Edit property features later"
+                    : "Add property features later"
+                }
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
                 disabled={isLoading ? true : false}

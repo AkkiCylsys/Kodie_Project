@@ -43,14 +43,7 @@ const ServicesBox = (props) => {
                 color={props.iconColor}
               />
             )
-          ) : (
-            <AntDesign
-              name={props.Services_Icon}
-              size={24}
-              // color="black"
-              color={props.iconColor}
-            />
-          )}
+          ) : null}
 
           <Text style={[ServicesBoxStyle.text, props.textColor]}>
             {props.Services_Name}

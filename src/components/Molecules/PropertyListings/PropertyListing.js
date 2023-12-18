@@ -96,6 +96,9 @@ const PropertyListing = () => {
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
+  const CloseUp = () => {
+    refRBSheet1.current.close();
+  };
   const [expandedItems, setExpandedItems] = useState([]);
   const propertyData1_render = ({ item }) => {
     const isExpanded = expandedItems.includes(item.id);
@@ -243,6 +246,7 @@ const PropertyListing = () => {
             onPress={() => {
               refRBSheet2.current.open();
             }}
+            onClose={CloseUp}
           />
         </RBSheet>
         {/* AddBiddingDetails popup */}
