@@ -104,7 +104,7 @@ const PropertyList = (props) => {
         order_col: "1",
         order_wise: "DESC",
       });
-
+//alert(JSON.stringify(response))
       setPropertyData(response?.data?.property_details);
 
       setIsLoading(false);
