@@ -57,8 +57,7 @@ const Reviewjobdetails1 = (props) => {
     <View style={{ flex: 1, marginHorizontal: 16 }}>
       <View style={{ marginTop: 17 }}>
         <Text style={ReviewjobdetailsStyle1.textview}>
-          I need someone to help me fix plugs in my house that keep short
-          circuiting.
+         {jobDetailsData.job_description}
         </Text>
         <Text style={ReviewjobdetailsStyle1.textview1}>
           Job request summary
@@ -97,11 +96,7 @@ const Reviewjobdetails1 = (props) => {
           _ButtonText={"Next"}
           Text_Color={_COLORS.Kodie_WhiteColor}
           disabled={isLoading ? true : false}
-          onPress={() =>
-            // props.navigation.navigate("Jobs")
-            // handleCreateJob()
-            alert("done")
-          }
+          onPress={props.onPress}
         />
       </View>
       <TouchableOpacity style={ReviewjobdetailsStyle1.goBack_View}>
