@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  // PermissionsAndroid,
+   PermissionsAndroid,
   Image,
   FlatList,
   // Platform
