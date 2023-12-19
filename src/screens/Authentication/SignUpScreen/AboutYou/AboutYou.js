@@ -456,19 +456,6 @@ export default AboutYou = (props) => {
           ) : (
             <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
           )}
-          {/* {ImageName ? (
-            <Image
-              source={{
-                uri:ImageName[0]?.uri,
-              }}
-              style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
-            />
-          ) : (
-            <Image
-              source={IMAGES?.userIcons}
-              style={[AboutYouStyle.logo]}
-            />
-          )} */}
         </TouchableOpacity>
         {ImageName ? null : (
           <Text style={AboutYouStyle.error_text}>{imageError}</Text>

@@ -86,6 +86,7 @@ export default CreateJobFirstScreen = (props) => {
   const [jobTypeData, setJobTypeData] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
   const [selectJobType, setSelectJobType] = useState(166);
+  const [selectJobTypeid, setSelectJobTypeid] = useState("");
   const [servicesData, setServicesData] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
 
@@ -198,11 +199,11 @@ export default CreateJobFirstScreen = (props) => {
       })
       .catch((error) => console.warn(error));
   };
-
-  const handleBoxPress = (lookupID) => {
-    setIsClick(lookupID);
-    setSelectJobType(lookupID);
-    // alert(selectJobType)
+  const handleBoxPress = (lookup_key) => {
+    setIsClick(lookup_key);
+    setSelectJobTypeid(lookup_key);
+    // alert(selectJobTypeid);
+    // alert(isClick)
   };
   const priority_render = ({ item, index }) => {
     return (
@@ -480,7 +481,29 @@ export default CreateJobFirstScreen = (props) => {
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
+          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
+          Services_Icon={
+            item.lookup_key === 166
+              ? "cleaning-services"
+              : item.lookup_key === 167
+              ? "mower-bag"
+              : item.lookup_key === 168
+              ? "forklift"
+              : item.lookup_key === 169
+              ? "tools"
+              : "MaterialIcons"
+          }
+          iconLibrary={
+            item.lookup_key === 166
+              ? "MaterialIcons"
+              : item.lookup_key === 167
+              ? "MaterialCommunityIcons"
+              : item.lookup_key === 168
+              ? "MaterialCommunityIcons"
+              : item.lookup_key === 169
+              ? "Entypo"
+              : "MaterialIcons"
+          }
           BoxStyling={[
             CreateJobFirstStyle.box_style,
             {
@@ -502,7 +525,7 @@ export default CreateJobFirstScreen = (props) => {
           // onPress={() => setIsClick(!isClick)}
           onPress={() => {
             handleBoxPress(item.lookup_key);
-            // setSelectJobType(item.lookup_key);
+            setSelectJobType(item.lookup_key);
             // alert(item.lookup_key);
           }}
         />
@@ -661,7 +684,7 @@ export default CreateJobFirstScreen = (props) => {
       })
       .catch((error) => {
         console.error("Services error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -954,7 +977,7 @@ export default CreateJobFirstScreen = (props) => {
               disabled={isLoading ? true : false}
               onPress={() =>
                 props.navigation.navigate("CreateJobTermsScreen", {
-                  selectJobType: selectJobType,
+                  selectJobType: selectJobTypeid,
                   servicesValue: servicesValue,
                   aboutyourNeed: aboutyourNeed,
                   jobPriorityValue: jobPriorityValue,

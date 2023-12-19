@@ -389,7 +389,6 @@ export default FirstProperty = (props) => {
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
       formData.append("profile_photo", {
         uri: imageUri,
-        // type: imageType,
         name: imageName,
       });
     }

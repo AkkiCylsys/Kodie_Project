@@ -1,7 +1,13 @@
 //ScreenNo:126
 //ScreenNo:127
 import React, { useRef, useState } from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+} from "react-native";
 import StepText from "../../components/Molecules/StepText/StepText";
 import { CreateJobSecondStyle } from "./CreateJobSecondScreenCss";
 import { _COLORS, LABEL_STYLES, BANNERS } from "../../Themes/index";
@@ -13,9 +19,15 @@ import UploadImageBoxes from "../../components/Molecules/UploadImageBoxes/Upload
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../components/Molecules/UploadImage/UploadImage";
+import UploadMultipleImage from "../../components/Molecules/UploadImage/UploadMultipleImage";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Entypo from "react-native-vector-icons/Entypo";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import Video from "react-native-video";
+import ImagePicker from "react-native-image-crop-picker";
+import UploadLeftImage from "../../components/Molecules/UploadImage/UploadLeftImage";
+import UploadRightImage from "../../components/Molecules/UploadImage/UploadRightImage";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.wallImage,
@@ -25,9 +37,26 @@ const images = [
 ];
 const CreateJobSecondScreen = (props) => {
   const refRBSheet = useRef();
+  const refRBSheet1 = useRef();
+  const refRBSheet2 = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(2);
-
+  const [MultiImageName, setMultiImageName] = useState([]);
+  const [leftImage, setLeftImage] = useState([]);
+  const [rightImage, setRightImage] = useState([]);
+  const [selectedVideos, setSelectedVideos] = useState([]);
+  const CloseUp = () => {
+    refRBSheet.current.close();
+    console.log("close");
+  };
+  const CloseUp1 = () => {
+    refRBSheet1.current.close();
+    console.log("close");
+  };
+  const CloseUp2 = () => {
+    refRBSheet2.current.close();
+    console.log("close");
+  };
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: "feed",
@@ -125,6 +154,137 @@ const CreateJobSecondScreen = (props) => {
       </View>
     );
   };
+  const removeVideo = (indexToRemove) => {
+    const updatedVideos = [...selectedVideos];
+    updatedVideos.splice(indexToRemove, 1);
+    setSelectedVideos(updatedVideos);
+  };
+
+  const openVideoPicker = () => {
+    ImagePicker.openPicker({
+      mediaType: "video",
+      multiple: true,
+    })
+      .then((videos) => {
+        setSelectedVideos([...selectedVideos, ...videos]);
+      })
+      .catch((error) => {
+        console.error("Error selecting videos:", error);
+      });
+  };
+  // const handleImageNameChange = (multipleImages) => {
+  //   const updatedImages = [...multipleImages,multipleImages,...multipleImages];
+  //   console.log('updatedata',updatedImages)
+  //   setMultiImageName(updatedImages);
+  //   // setMultiImageName(multipleImages);
+  //   console.log("................ImageNAme", multipleImages);
+  //   // console.log("................ImageNAmepath", multipleImages.path);
+  // };
+
+  const handlefrontImage = (multipleImages) => {
+    setMultiImageName(multipleImages);
+    console.log("................multiFrontImage", multipleImages);
+    // console.log("................ImageNAmepath", multipleImages.path);
+  };
+  const handleleftImage = (leftImage) => {
+    setLeftImage(leftImage);
+    console.log("................leftImage", leftImage);
+    // console.log("................ImageNAmepath", multipleImages.path);
+  };
+  const handleRightImage = (rightImage) => {
+    setRightImage(rightImage);
+    console.log("................RightImage", rightImage);
+    // console.log("................ImageNAmepath", multipleImages.path);
+  };
+
+  const imagePaths = MultiImageName.map((item) => item.path);
+  console.log("imagePaths....", imagePaths);
+
+  const leftImagePaths = leftImage.map((item) => item.path);
+  console.log("leftImagePaths....", leftImagePaths);
+
+  const rightImagePaths = rightImage.map((item) => item.path);
+  console.log("rightImagePaths....", rightImagePaths);
+
+  // Api intrigation......
+  // const handleSaveImage = async () => {
+  //   const formData = new FormData();
+  //   refRBSheet.current.close();
+  //   formData.append("property_id", property_id);
+
+  //   if (MultiImageName && Array.isArray(MultiImageName)) {
+  //     const imagePaths = MultiImageName.map((image) => image.path);
+  //     imagePaths.forEach((path, index) => {
+  //       formData.append("images", {
+  //         uri: path,
+  //         name: `image_${index}.jpg`,
+  //         type: "image/jpeg",
+  //       });
+  //     });
+  //   } else {
+  //     console.error(
+  //       "MultiImageName is not defined or not an array:",
+  //       MultiImageName
+  //     );
+  //     return;
+  //   }
+  //   if (selectedVideos && selectedVideos.length > 0) {
+  //     selectedVideos.forEach((videoUri, index) => {
+  //       if (typeof videoUri === "string") {
+  //         const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+  //         formData.append(`videos`, {
+  //           uri: videoUri,
+  //           name: videoName,
+  //           type: "video/mp4",
+  //         });
+  //       } else {
+  //         console.error(`Invalid video URI at index ${index}: ${videoUri}`);
+  //       }
+  //     });
+  //   }
+  //   console.log("formData", formData);
+  //   const saveAccountDetails =
+  //     "https://e3.cylsys.com/api/v1/add_property_images_videos";
+  //   console.log("Request URL:", saveAccountDetails);
+
+  //   setIsLoading(true);
+
+  //   try {
+  //     const response = await axios.post(saveAccountDetails, formData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     });
+
+  //     console.log("Save Account Details", response.data);
+
+  //     if (response.data.success === true) {
+  //       setIsLoading(false);
+  //       MultiImageName ? refRBSheet.current.close() : null;
+  //       props.navigation.navigate("PropertyReview", {
+  //         property_id: property_id,
+  //         MultiImageName: MultiImageName,
+  //         selectedVideos: selectedVideos,
+  //       });
+  //       console.log("Save Account Details", response.data);
+  //     } else {
+  //       console.log("Save Account Details error:", response.data.error);
+  //       alert("Error while saving account details");
+  //     }
+  //   } catch (error) {
+  //     if (axios.isCancel(error)) {
+  //       console.log("Request canceled:", error.message);
+  //     } else {
+  //       console.log("saving account details", error.message);
+  //       alert(
+  //         error.message || "An error occurred while saving account details"
+  //       );
+  //     }
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   return (
     <View style={CreateJobSecondStyle.container}>
       <TopHeader
@@ -141,19 +301,23 @@ const CreateJobSecondScreen = (props) => {
         renderLabel={renderLabel}
       />
       <ScrollView>
-        {/* <StepText _StepNo={"2"} _StepText={"Images & videos of job required"} /> */}
         <View style={CreateJobSecondStyle.phototextView}>
           <Text style={CreateJobSecondStyle.heading}>
             {"Images and videos of job"}
           </Text>
-          {/* <Text style={LABEL_STYLES.commonMidtext}>
-            {
-              "Images should be formatted .jpg or .png Videos should be formatting .mp4 or .mov or .m4 Size per file should not exceed 5 MB"
-            }
-          </Text> */}
           <View style={CreateJobSecondStyle.slider_view}>
             <SliderBox
-              images={images}
+              // images={images}
+              // images={
+              //   imagePaths.length > 0
+              //     ? imagePaths
+              //     : leftImagePaths.length > 0
+              //     ? leftImagePaths
+              //     : rightImagePaths.length > 0
+              //     ? rightImagePaths
+              //     : null
+              // }
+              images={imagePaths}
               sliderBoxHeight={200}
               onCurrentImagePressed={(index) =>
                 console.warn(`image ${index} pressed`)
@@ -174,6 +338,7 @@ const CreateJobSecondScreen = (props) => {
               }}
             />
           </View>
+
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {"Upload clear images of the front profile"}
@@ -184,12 +349,16 @@ const CreateJobSecondScreen = (props) => {
               color={_COLORS.Kodie_GrayColor}
             />
           </View>
-          <UploadImageBoxes
-            Box_Text={"Add Photo"}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-          />
+          <View style={{ flex: 1 }}>
+            <UploadImageBoxes
+              Box_Text={"Add Photo"}
+              onPress={() => {
+                refRBSheet.current.open();
+              }}
+            />
+            {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
+          </View>
+
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {"Upload clear images of the left side profile"}
@@ -200,12 +369,15 @@ const CreateJobSecondScreen = (props) => {
               color={_COLORS.Kodie_GrayColor}
             />
           </View>
-          <UploadImageBoxes
-            Box_Text={"Add Photo"}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-          />
+          <View style={{ flex: 1 }}>
+            <UploadImageBoxes
+              Box_Text={"Add Photo"}
+              onPress={() => {
+                refRBSheet1.current.open();
+              }}
+            />
+            {leftImage.length > 0 ? refRBSheet1.current.close() : null}
+          </View>
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {"Upload clear images of the right side profile"}
@@ -216,13 +388,15 @@ const CreateJobSecondScreen = (props) => {
               color={_COLORS.Kodie_GrayColor}
             />
           </View>
-
-          <UploadImageBoxes
-            Box_Text={"Add Photo"}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-          />
+          <View style={{ flex: 1 }}>
+            <UploadImageBoxes
+              Box_Text={"Add Photo"}
+              onPress={() => {
+                refRBSheet2.current.open();
+              }}
+            />
+            {rightImage.length > 0 ? refRBSheet2.current.close() : null}
+          </View>
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {
@@ -238,9 +412,61 @@ const CreateJobSecondScreen = (props) => {
           <UploadImageBoxes
             Box_Text={"Add Video"}
             onPress={() => {
-              refRBSheet.current.open();
+              // refRBSheet.current.open();
+              openVideoPicker();
             }}
           />
+          {selectedVideos.length > 0 && (
+            <View style={{ marginTop: 10 }}>
+              {/* <Text>Selected Videos:</Text> */}
+              <FlatList
+                horizontal
+                data={selectedVideos}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => (
+                  <View>
+                    <Video
+                      source={{ uri: item.path }}
+                      style={{
+                        // flex:1,
+                        width: 310,
+                        // width: "100%",
+                        height: 150,
+                        borderRadius: 5,
+                        marginLeft: 10,
+                        // backgroundColor: "black",
+                        borderWidth: 1,
+                        borderColor: _COLORS.Kodie_GrayColor,
+                        marginTop: 10,
+                      }}
+                      controls={true}
+                    />
+                    <TouchableOpacity
+                      style={{
+                        position: "absolute",
+                        // top: 2,
+                        right: 5,
+                        // backgroundColor: "rgba(255,255,255,0.7)",
+                        borderRadius: 15,
+                        padding: 3,
+                      }}
+                      onPress={() => removeVideo(index)}
+                    >
+                      <Entypo
+                        name="cross"
+                        size={20}
+                        color={_COLORS.Kodie_BlackColor}
+                        style={{
+                          marginTop: 10,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
+                  </View>
+                )}
+              />
+            </View>
+          )}
           <View style={CreateJobSecondStyle.next_Btn}>
             <CustomSingleButton
               _ButtonText={"Next"}
@@ -274,7 +500,54 @@ const CreateJobSecondScreen = (props) => {
               container: CreateJobSecondStyle.bottomModal_container,
             }}
           >
-            <UploadImageData heading_Text={"Upload more images"} />
+            <UploadMultipleImage
+              onClose={CloseUp}
+              heading_Text={"Upload image"}
+              // multipleImage={handleImageNameChange}
+              multipleImage={handlefrontImage}
+            />
+          </RBSheet>
+          <RBSheet
+            ref={refRBSheet1}
+            // closeOnDragDown={true}
+            closeOnPressMask={false}
+            height={180}
+            customStyles={{
+              wrapper: {
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              },
+              draggableIcon: {
+                backgroundColor: _COLORS.Kodie_LightGrayColor,
+              },
+              container: CreateJobSecondStyle.bottomModal_container,
+            }}
+          >
+            <UploadLeftImage
+              onClose={CloseUp1}
+              heading_Text={"Upload image"}
+              leftImage={handleleftImage}
+            />
+          </RBSheet>
+          <RBSheet
+            ref={refRBSheet2}
+            // closeOnDragDown={true}
+            closeOnPressMask={false}
+            height={180}
+            customStyles={{
+              wrapper: {
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              },
+              draggableIcon: {
+                backgroundColor: _COLORS.Kodie_LightGrayColor,
+              },
+              container: CreateJobSecondStyle.bottomModal_container,
+            }}
+          >
+            <UploadRightImage
+              onClose={CloseUp2}
+              heading_Text={"Upload image"}
+              rightImage={handleRightImage}
+            />
           </RBSheet>
         </View>
       </ScrollView>

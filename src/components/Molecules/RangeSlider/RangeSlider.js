@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState,useEffect } from "react";
 import RangeSliderRN from "rn-range-slider";
 import { View, Text } from "react-native";
 import { RangeSliderStyle } from "./RangeSliderCss";
@@ -10,7 +10,7 @@ import RailSelected from "./RailSelected";
 import Thumb from "./Thumb";
 import { _COLORS } from "../../../Themes";
 
-const RangeSlider = ({ from, to }) => {
+const RangeSlider = ({ from, to,onPriceRangeChange }) => {
   // const RangeSlider = () => {
   const [low, setLow] = useState(from);
   const [high, setHigh] = useState(to);
@@ -29,6 +29,14 @@ const RangeSlider = ({ from, to }) => {
     [setLow, setHigh]
   );
 
+  useEffect(() => {
+    const priceRange = high - low;
+    onPriceRangeChange(priceRange);
+  }, [low, high, onPriceRangeChange]);
+
+  const priceRange = high - low;
+  console.log("priceRange...", priceRange);
+  // alert(priceRange);
   return (
     <>
       <View style={RangeSliderStyle.rangecomponetView}>
@@ -51,10 +59,10 @@ const RangeSlider = ({ from, to }) => {
       </View>
       <View style={RangeSliderStyle.rangeContainer}>
         <View>
-          <Text style={RangeSliderStyle.range}>{low}</Text>
+          <Text style={RangeSliderStyle.range}>${low}</Text>
         </View>
         <View>
-          <Text style={RangeSliderStyle.range}>{high}</Text>
+          <Text style={RangeSliderStyle.range}>${high}</Text>
         </View>
       </View>
     </>
