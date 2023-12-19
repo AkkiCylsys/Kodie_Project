@@ -244,24 +244,31 @@ export default Login = (props) => {
       };
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
-      // alert(JSON.stringify(res));
+      /// alert(JSON.stringify(res));
       setIsLoading(false);
       if (res === 401) {
         setIsLoading(false);
         setPasswordError(
           "Hmm, it seems like the credentials you entered are invalid. Please try again."
         );
-      } else if (res.data.success == "true") {
+      }
+      else if(res.LoginStatuscode==6){
+        props.navigation.navigate("SignUpSteps",{
+          email:email,
+          user_key:res.User_key
+        });
+      }
+      else if (res.data.success == "true") {
         //  alert("Login successful");
         setIsLoading(false);
-        if (res.data.message == "Please Complete Signup Process") {
-          alert(
-            "Please Complete Signup Process First, Because Your Signup Process are Incomplete."
-          );
-        } else {
-          props.navigation.navigate("DrawerNavigatorLeftMenu");
-        }
-
+        // if (res.data.code == 6) {
+        //   alert(res.data.message);
+        //   props.navigation.navigate("SignUpSteps");
+        // }
+        //  else {
+          
+        // }
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
         setEmail("");
         setPassword("");
       } else {

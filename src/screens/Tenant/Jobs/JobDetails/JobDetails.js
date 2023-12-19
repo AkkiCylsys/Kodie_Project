@@ -23,6 +23,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
+import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.previewImage,
@@ -30,7 +31,6 @@ const images = [
   BANNERS.BannerSecond,
   BANNERS.BannerFirst,
 ];
-
 const Apartment_data = [
   { label: "House", value: "1" },
   { label: "Cottage", value: "2" },
@@ -49,7 +49,14 @@ const JobDetails = (props) => {
   const [value2, setValue2] = useState(null);
   const [value3, setValue3] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleImageFilePath = async (imagesFilePath) => {
+    setImageFileData(imagesFilePath);
+    // console.log("imagesFilePath....sdfs.", imagesFilePath);
+    console.log("imagesFilePath....sdfs.", imagesFilePath);
+  };
 
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
@@ -151,9 +158,14 @@ const JobDetails = (props) => {
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
-        return <Reviewjobdetails1 job_id={job_id} />;
+        return (
+          <Reviewjobdetails1
+            job_id={job_id}
+            imagesFilePath={handleImageFilePath}
+          />
+        );
       case "Tab2":
-        return <Leases />;
+        return <JodBiddingDetails />;
       case "Tab3":
         return <Leases />;
       case "Tab4":
@@ -185,6 +197,8 @@ const JobDetails = (props) => {
           <View style={JobDetailsStyle.slider_view}>
             <SliderBox
               images={images}
+              // images={img}
+              // images={imageFileData?.image_file_path} 
               sliderBoxHeight={200}
               onCurrentImagePressed={(index) =>
                 console.warn(`image ${index} pressed`)

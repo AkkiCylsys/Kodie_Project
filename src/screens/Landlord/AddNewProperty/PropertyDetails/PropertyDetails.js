@@ -643,6 +643,9 @@ export default PropertyDetails = (props) => {
                       country: country,
                       editMode: editMode,
                     });
+                    setLocation("")
+                    setPropertyDesc("")
+                    setProperty_value("")
                   }}
                   disabled={isLoading ? true : false}
                 />

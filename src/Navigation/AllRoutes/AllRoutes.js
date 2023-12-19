@@ -128,6 +128,7 @@ import TenantList from "../../screens/Tenant/TenantList";
 import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import CurrentTenant from "../../screens/Tenant/CurrentTenant/CurrentTenant";
 import PreviousTenant from "../../screens/Tenant/PreviousTenant/PreviousTenant";
+import JodBiddingDetails from "../../screens/CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1015,6 +1016,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"PreviousTenant"}
           component={PreviousTenant}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"JodBiddingDetails"}
+          component={JodBiddingDetails}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -44,7 +44,7 @@ const TopHeader = (props) => {
           {props.isMiddleImage ? (
             <Image source={props.MiddleImage} style={HeaderStyle.MiddleIcon} />
           ) : (
-            <Text style={[HeaderStyle.LabelText, { color: props.Text_Color }]}>
+            <Text style={[HeaderStyle.LabelText, { color: props.Text_Color }]} numberOfLines={1}>
               {props.MiddleText}
             </Text>
           )}

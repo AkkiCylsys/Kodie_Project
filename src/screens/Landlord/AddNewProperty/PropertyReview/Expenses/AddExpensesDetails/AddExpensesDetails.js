@@ -276,7 +276,6 @@ export default AddExpensesDetails = (props) => {
   }, []);
   return (
     <View style={AddExpensesDetailsStyle.mainContainer}>
-      <ScrollView>
         <View style={AddExpensesDetailsStyle.heading_View}>
           <Text style={AddExpensesDetailsStyle.heading_Text}>
             {"Add expense details"}
@@ -290,6 +289,7 @@ export default AddExpensesDetails = (props) => {
             />
           </TouchableOpacity>
         </View>
+      <ScrollView>
         <View style={AddExpensesDetailsStyle.card}>
           <View style={AddExpensesDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Total amount*"}</Text>

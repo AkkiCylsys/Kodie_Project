@@ -262,21 +262,37 @@ const CreateJobSecondScreen = (props) => {
       return;
     }
 
+    // if (selectedVideos && selectedVideos.length > 0) {
+    //   selectedVideos.forEach((videoUri, index) => {
+    //     if (typeof videoUri === "string") {
+    //       const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
+    //       formData.append("video", {
+    //         uri: videoUri,
+    //         name: videoName,
+    //         type: "video/mp4",
+    //       });
+    //     } else {
+    //      console.error(`Invalid video URI at index ${index}: ${vi deoUri}`);
+    //     }
+    //   });
+    // }
     if (selectedVideos && selectedVideos.length > 0) {
-      selectedVideos.forEach((videoUri, index) => {
-        if (typeof videoUri === "string") {
-          const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-          formData.append("video", {
-            uri: videoUri,
-            name: videoName,
-            type: "video/mp4",
-          });
-        } else {
-          console.error(`Invalid video URI at index ${index}: ${videoUri}`);
-        }
+      selectedVideos.forEach((videoInfo, index) => {
+        const { path, mime } = videoInfo;
+        console.log("path..", path);
+        console.log("mime..", mime);
+        const videoName = path.substring(path.lastIndexOf("/") + 1);
+        formData.append("video", {
+          uri: path,
+          name: videoName,
+          type: mime,
+        });
       });
+    } else {
+      console.log("invalid video");
     }
-    formData.append("uad_key", loginData?.Login_details?.user_account_id);
+
+    formData.append("uad_key", loginData?.Login_details?.user_id);
     // formData.append("createdBy", loginData?.Login_details?.user_account_id);
     // formData.append("updatedBy", loginData?.Login_details?.user_account_id);
     console.log("formData", formData);
@@ -293,11 +309,11 @@ const CreateJobSecondScreen = (props) => {
       console.log("uploadJobFilesData....", response.data);
       if (response.data.success === true) {
         setIsLoading(false);
-        alert(" successfully uploaded files");
-        props.navigation.navigate("JobDetails",{
-          job_id:job_id
+        alert(response.data.message);
+        props.navigation.navigate("JobDetails", {
+          job_id: job_id,
         });
-        console.log("SuploadJobFilesDatas", response.data);
+        console.log("uploadJobFilesDatas", response.data);
       } else {
         console.log("uploadJobFilesData", response.data.error);
         alert("Error while saving account details");
