@@ -56,6 +56,9 @@ const JobDetails = (props) => {
     setImageFileData(imagesFilePath);
     // console.log("imagesFilePath....sdfs.", imagesFilePath);
     console.log("imagesFilePath....sdfs.", imagesFilePath);
+    console.log("images__imageFileData...", imageFileData);
+    // alert(JSON.stringify(imagesFilePath.length))
+    console.log("length", imagesFilePath.length);
   };
 
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
@@ -162,8 +165,8 @@ const JobDetails = (props) => {
           <Reviewjobdetails1
             job_id={job_id}
             imagesFilePath={handleImageFilePath}
-            onPress={()=>{
-              props.navigation.navigate("Jobs")
+            onPress={() => {
+              props.navigation.navigate("Jobs");
               // alert("hello")
             }}
           />
@@ -198,28 +201,30 @@ const JobDetails = (props) => {
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>
-          <View style={JobDetailsStyle.slider_view}>
-            <SliderBox
-              images={images}
-              // images={img}
-              // images={imageFileData?.image_file_path}
-              sliderBoxHeight={200}
-              onCurrentImagePressed={(index) =>
-                console.warn(`image ${index} pressed`)
-              }
-              inactiveDotColor={_COLORS.Kodie_GrayColor}
-              dotColor={_COLORS.Kodie_GreenColor}
-              autoplay
-              circleLoop
-              resizeMethod={"resize"}
-              resizeMode={"cover"}
-              dotStyle={JobDetailsStyle.dotStyle}
-              ImageComponentStyle={{
-                flex: 1,
-                resizeMode: "cover",
-              }}
-            />
-          </View>
+          {imageFileData.image_file_path &&
+          imageFileData.image_file_path != 0 ? (
+            <View style={JobDetailsStyle.slider_view}>
+              <SliderBox
+                images={imageFileData?.image_file_path}
+                // images={images}
+                sliderBoxHeight={200}
+                onCurrentImagePressed={(index) =>
+                  console.warn(`image ${index} pressed`)
+                }
+                inactiveDotColor={_COLORS.Kodie_GrayColor}
+                dotColor={_COLORS.Kodie_GreenColor}
+                autoplay
+                circleLoop
+                resizeMethod={"resize"}
+                resizeMode={"cover"}
+                dotStyle={JobDetailsStyle.dotStyle}
+                ImageComponentStyle={{
+                  flex: 1,
+                  resizeMode: "cover",
+                }}
+              />
+            </View>
+          ) : null}
           <View style={JobDetailsStyle.bidsview}>
             <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
           </View>

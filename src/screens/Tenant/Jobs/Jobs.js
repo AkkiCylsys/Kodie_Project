@@ -17,6 +17,11 @@ const Jobs = (props) => {
             onpress={() => {
               props.navigation.navigate("CreateJobFirstScreen");
             }}
+            // onPress={() => {
+            //   props.navigation.navigate("JobDetails",{
+
+            //   });
+            // }}
           />
         );
       case "Tab2":
