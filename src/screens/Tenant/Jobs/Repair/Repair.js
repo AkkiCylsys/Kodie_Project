@@ -4,7 +4,7 @@
 //ScreenNo:112
 //ScreenNo:113
 //ScreenNo:114
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -22,6 +22,10 @@ import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import Entypo from "react-native-vector-icons/Entypo";
 import ArchiveJob from "../../../../components/Molecules/Archive/ArchiveJob/ArchiveJob";
+import { Config } from "../../../../Config";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { ArchiveJobStyle } from "../../../../components/Molecules/Archive/ArchiveJob/ArchiveJobStyle";
 const HorizontalData = ["Posted", "Ongoing", "Completed"];
 
 const property_List1 = [
@@ -43,9 +47,17 @@ const property_List1 = [
 ];
 
 export default Repair = (props) => {
-  const [activeScreen, setActiveScreen] = useState(false);
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
+  console.log("loginresponse_jobdetails..", loginData?.Login_details?.user_id);
+  const user_id = loginData?.Login_details?.user_id;
   const [isLoading, setIsLoading] = useState(false);
+  const [activeScreen, setActiveScreen] = useState(true);
+  const [allJobData, setAllJobData] = useState([]);
 
+  useEffect(() => {
+    getAllJob();
+  }, []);
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity style={RepairCss.flatlistView}>
@@ -58,13 +70,35 @@ export default Repair = (props) => {
   // Archive component call here...................
   <ArchiveJob />;
 
+  // Api intrigation....
+  const getAllJob = () => {
+    const url = Config.BASE_URL;
+    const getAllJobUrl = url + `job/getAlljobs/${user_id}`;
+    console.log("Request URL:", getAllJobUrl);
+    setIsLoading(true);
+    axios
+      .get(getAllJobUrl)
+      .then((response) => {
+        console.log("API Response getAllJob..:", response.data);
+        setAllJobData(response.data.data);
+      })
+      .catch((error) => {
+        console.error("API failed_moduleName", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const propertyData_render1 = ({ item }) => {
     return (
-      <>
+      <View>
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
             <View style={RepairCss.flexContainer}>
-              <Text style={LABEL_STYLES.commontext}>{item.name}</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {item.service_looking}
+              </Text>
             </View>
             <View style={RepairCss.RightContainer}>
               <View
@@ -82,6 +116,7 @@ export default Repair = (props) => {
                 <View
                   style={[
                     RepairCss.roundButton,
+
                     {
                       backgroundColor: item.isPosted
                         ? _COLORS.Kodie_BlueColor
@@ -100,10 +135,11 @@ export default Repair = (props) => {
                         : item.isongoing
                         ? _COLORS.Kodie_DarkOrange
                         : _COLORS.Kodie_GreenColor,
+                      flex: 1,
                     },
                   ]}
                 >
-                  {item.buttonName}
+                  {"Awaiting"}
                 </Text>
               </View>
             </View>
@@ -114,12 +150,14 @@ export default Repair = (props) => {
               style={{ marginLeft: 15 }}
             />
           </View>
-          <Text style={LABEL_STYLES.commonMidtext}>{item.refno}</Text>
+          <Text style={LABEL_STYLES.commonMidtext}>{item.job_reference}</Text>
           <View style={RepairCss.flat_MainView}>
             <View style={RepairCss.flexContainer}>
               <View style={RepairCss.propertyView}>
                 <View style={RepairCss.flexContainer}>
-                  <Text style={RepairCss.tom}>Tom</Text>
+                  <Text
+                    style={RepairCss.tom}
+                  >{`${item.first_name} ${item.last_name}`}</Text>
                   <View style={RepairCss.locationView}>
                     <MaterialCommunityIcons
                       name={"map-marker"}
@@ -128,7 +166,7 @@ export default Repair = (props) => {
                       style={{ alignSelf: "center" }}
                     />
                     <Text style={RepairCss.locationText}>
-                      {"1729 Melbourne St Australia"}
+                      {item.job_location}
                     </Text>
                   </View>
                 </View>
@@ -136,18 +174,16 @@ export default Repair = (props) => {
             </View>
             <View style={[RepairCss.BudgetView]}>
               <View style={RepairCss.flexContainer}>
-                <Text style={RepairCss.bugetText}>{item.budget}</Text>
-
-                <Text style={RepairCss.spend}>{item.spend}</Text>
+                <Text style={RepairCss.bugetText}>{"Budget"}</Text>
+                <Text style={RepairCss.spend}>{item.job_budget}</Text>
               </View>
             </View>
           </View>
-          <DividerIcon />
         </View>
-      </>
+        <DividerIcon />
+      </View>
     );
   };
-
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
@@ -199,9 +235,7 @@ export default Repair = (props) => {
             backgroundColor={_COLORS.Kodie_BlackColor}
             height={40}
             marginTop={3}
-            onPress={
-              activeScreen ? props.onpress :null
-            }
+            onPress={activeScreen ? props.onpress : null}
           />
         </View>
         <DividerIcon borderBottomWidth={5} marginTop={8} />
@@ -226,7 +260,7 @@ export default Repair = (props) => {
         </View>
         <DividerIcon />
         {activeScreen ? (
-          <FlatList data={property_List1} renderItem={propertyData_render1} />
+          <FlatList data={allJobData} renderItem={propertyData_render1} />
         ) : (
           <ArchiveJob />
         )}
