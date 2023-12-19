@@ -16,7 +16,6 @@ const Splash = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
 
   useEffect(() => {
-    //alert(JSON.stringify(loginData?.Login_details))
     setTimeout(() => {
       if (
         loginData?.Login_details?.token == "" ||
