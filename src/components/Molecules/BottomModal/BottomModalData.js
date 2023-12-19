@@ -145,7 +145,10 @@ const BottomModalData = (props) => {
               }}
             >
               {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
-              {item.Icon}
+              {/* {item.Icon} */}
+              <Text style={BottomModalDataStyle.IconView}>
+            {item.Icon}
+            </Text>
               <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
             </TouchableOpacity>
           </>
