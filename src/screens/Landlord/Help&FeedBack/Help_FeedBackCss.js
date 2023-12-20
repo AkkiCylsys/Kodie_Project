@@ -55,6 +55,6 @@ export const Help_FeedBackCss = StyleSheet.create({
     width: 35,
     marginTop:10,
     height: 35,
-    padding:5,
+    padding:7,
   },
 });

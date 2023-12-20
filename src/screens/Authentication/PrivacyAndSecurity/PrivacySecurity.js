@@ -34,7 +34,7 @@ const PrivacySecurity = (props) => {
                     <View style={PrivacySecurityStyle.IconView}>
                       <FontAwesome5
                         name="user-plus"
-                        size={20}
+                        size={18}
                         color={_COLORS.Kodie_GreenColor}
                         resizeMode={"contain"}
                         style={{ alignSelf: "center" }}
@@ -66,7 +66,7 @@ const PrivacySecurity = (props) => {
                     <View style={PrivacySecurityStyle.IconView}>
                       <MaterialIcons
                         name="devices"
-                        size={25}
+                        size={20}
                         color={_COLORS.Kodie_GreenColor}
                         resizeMode={"contain"}
                         style={{ alignSelf: "center" }}
@@ -98,7 +98,7 @@ const PrivacySecurity = (props) => {
                     <View style={PrivacySecurityStyle.IconView}>
                       <MaterialCommunityIcons
                         name="check-decagram-outline"
-                        size={25}
+                        size={22}
                         color={_COLORS.Kodie_GreenColor}
                         resizeMode={"contain"}
                         style={{ alignSelf: "center" }}

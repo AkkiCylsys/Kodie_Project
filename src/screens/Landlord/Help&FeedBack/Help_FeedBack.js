@@ -19,7 +19,7 @@ const feedbackData = [
     // img: IMAGES.helpCenter,
     icon:<AntDesign
     name="questioncircleo"
-    size={23}
+    size={20}
     color={_COLORS.Kodie_GreenColor}
     style={{ alignSelf: "center" }}
   />
@@ -30,7 +30,7 @@ const feedbackData = [
     // img: IMAGES.contactus,
     icon:<MaterialIcons
     name="perm-contact-cal"
-    size={23}
+    size={22}
     color={_COLORS.Kodie_GreenColor}
     style={{ alignSelf: "center" }}
   />
@@ -41,7 +41,7 @@ const feedbackData = [
     // img: IMAGES.TermPrivacy,
     icon:<Fontisto
     name="file-1"
-    size={25}
+    size={20}
     color={_COLORS.Kodie_GreenColor}
     style={{ alignSelf: "center" }}
   />
@@ -52,7 +52,7 @@ const feedbackData = [
     // img: IMAGES.AppInfo,
     icon:<Feather
     name="info"
-    size={25}
+    size={20}
     color={_COLORS.Kodie_GreenColor}
     style={{ alignSelf: "center" }}
   />
