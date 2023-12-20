@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -20,7 +20,9 @@ import { colors } from "../../../../../Themes/CommonColors/CommonColor";
 import { fontFamily } from "../../../../../Themes/FontStyle/FontStyle";
 import Feather from "react-native-vector-icons/Feather";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-
+import Ionicons from "react-native-vector-icons/Ionicons";
+import axios from "axios";
+import { Config } from "../../../../../Config";
 const Property_documents = [
   "All",
   "Pre+post inspection reports",
@@ -61,16 +63,19 @@ const data = [
 const folderData = [
   {
     id: "1",
+    moduleName: "Property",
     folderHeading: "Property documents",
     totalFile: "12 Files",
   },
   {
     id: "2",
+    moduleName: "Lease",
     folderHeading: "Lease documents",
     totalFile: "13 Files",
   },
   {
     id: "3",
+    moduleName: "Tenant",
     folderHeading: "Tenant documents",
     totalFile: "15 Files",
   },
@@ -83,11 +88,16 @@ const handleApply = (selectedOptions) => {
 const handleClear = () => {
   console.log("Clear Action");
 };
+
 export default Documents = (props) => {
+  useEffect(() => {
+    getAllDocuments();
+  }, []);
   const property_id = props.property_id;
   // alert(props.property_id);
   const [value, setValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadDocData, setUploadDocData] = useState([]);
   const refRBSheet = useRef();
 
   const DocumentsData = ({ item, index }) => {
@@ -103,8 +113,9 @@ export default Documents = (props) => {
               resizeMode={"contain"}
             />
             <View style={DocumentsStyle.textContainer}>
-              <Text style={DocumentsStyle.pdfName}>{item.pdfName}</Text>
-              <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text>
+              <Text style={DocumentsStyle.pdfName}>{item.PDUM_FILE_NAME}</Text>
+              {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
+              <Text style={DocumentsStyle.pdfSize}> {"4.5 MB"}</Text>
             </View>
           </View>
           <TouchableOpacity
@@ -134,14 +145,18 @@ export default Documents = (props) => {
         // }}
         onPress={() => {
           console.log("item.id:", item.id);
-          props?.documentDetail(item.id, item.folderHeading, property_id);
+          props?.documentDetail(item.id, item.moduleName, property_id);
         }}
       >
         <View style={DocumentsStyle.folder_icon}>
-          <Feather name="folder" size={30} color={_COLORS.Kodie_GrayColor} />
+          <Ionicons
+            name="folder-outline"
+            size={30}
+            color={_COLORS.Kodie_GrayColor}
+          />
           <Entypo
             name="dots-three-vertical"
-            size={30}
+            size={25}
             color={_COLORS.Kodie_GrayColor}
           />
         </View>
@@ -155,6 +170,35 @@ export default Documents = (props) => {
     );
   };
 
+  // Api intrigation ......
+  const getAllDocuments = () => {
+    const url = Config.BASE_URL;
+    // const getDocument_url = url + `tanant_details/get/document/${property_id}`;
+    const getDocument_url = url + `tanant_details/get/document/${15}`;
+    console.log("Request URL:", getDocument_url);
+    setIsLoading(true);
+    axios
+      .get(getDocument_url)
+      .then((response) => {
+        console.log("API Response getDocuments:", response.data);
+        if (response.data.success === true) {
+          // alert(response.data.message);
+          setUploadDocData(response.data.data);
+          console.log("getAlluploadDocData..", response.data.data);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   return (
     <View style={DocumentsStyle.mainContainer}>
       <ScrollView>
@@ -162,16 +206,17 @@ export default Documents = (props) => {
           <Text style={DocumentsStyle.reacentDocText}>{"Folders"}</Text>
           <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
         </View>
-
-        <FlatList
-          data={folderData}
-          scrollEnabled
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{}}
-          keyExtractor={(item) => item?.id}
-          renderItem={folderRenderData}
-        />
+        <View style={{ marginBottom: 50 }}>
+          <FlatList
+            data={folderData}
+            scrollEnabled
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{}}
+            keyExtractor={(item) => item?.id}
+            renderItem={folderRenderData}
+          />
+        </View>
         <View style={DocumentsStyle.recentDocView}>
           <Text style={DocumentsStyle.reacentDocText}>
             {"Recent documents"}
@@ -180,24 +225,13 @@ export default Documents = (props) => {
         </View>
         <View style={DocumentsStyle.card}>
           <FlatList
-            data={data}
+            data={uploadDocData}
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
             keyExtractor={(item) => item?.id}
             renderItem={DocumentsData}
           />
-          {/* <CustomSingleButton
-            leftImage={IMAGES.uploadIcon}
-            isLeftImage={true}
-            borderColor={_COLORS.Kodie_TransparentColor}
-            _ButtonText={"Upload"}
-            backgroundColor={_COLORS.Kodie_lightGreenColor}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-                   disabled={isLoading ? true : false}
-          /> */}
         </View>
         {/* <RBSheet
           ref={refRBSheet}

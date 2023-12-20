@@ -30,7 +30,7 @@ export const DrawerStyle = StyleSheet.create({
     flexDirection: "row",
     marginTop: 15,
     borderRadius: 8,
-    paddingVertical: 8,
+    paddingVertical: 4,
   },
   IconView: {
     borderWidth: 1,
@@ -41,5 +41,5 @@ export const DrawerStyle = StyleSheet.create({
     height: 35,
     justifyContent: "center",
   },
-  rowFlex: { flexDirection: "row", borderRadius: 8, paddingVertical: 8 },
+  rowFlex: { flexDirection: "row", borderRadius: 8, paddingVertical: 4 },
 });

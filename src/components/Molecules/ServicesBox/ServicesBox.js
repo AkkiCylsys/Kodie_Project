@@ -5,6 +5,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { _COLORS } from "../../../Themes";
 const ServicesBox = (props) => {
   return (
     <>
@@ -24,20 +25,25 @@ const ServicesBox = (props) => {
               <MaterialIcons
                 name={props.Services_Icon}
                 size={24}
-                color="black"
+                // color="black"
+                color={props.iconColor}
               />
             ) : props.iconLibrary === "Entypo" ? (
-              <Entypo name={props.Services_Icon} size={24} color="black" />
+              <Entypo
+                name={props.Services_Icon}
+                size={24}
+                // color="black"
+                color={props.iconColor}
+              />
             ) : (
               <MaterialCommunityIcons
                 name={props.Services_Icon}
                 size={24}
-                color="black"
+                // color="black"
+                color={props.iconColor}
               />
             )
-          ) : (
-            <AntDesign name={props.Services_Icon} size={24} color="black" />
-          )}
+          ) : null}
 
           <Text style={[ServicesBoxStyle.text, props.textColor]}>
             {props.Services_Name}

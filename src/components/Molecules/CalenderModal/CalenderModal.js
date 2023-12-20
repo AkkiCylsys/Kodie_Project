@@ -97,7 +97,14 @@ const CalendarModal = (props) => {
                 style={[CalenderCss.closeButton, CalenderCss.closeText]}
                 onPress={props._closeButton}
               >
-                <Text style={LABEL_STYLES.commontext}>cancel</Text>
+                <Text
+                  style={[
+                    LABEL_STYLES.commontext,
+                    { alignSelf: "center", textAlign: "center" },
+                  ]}
+                >
+                  Cancel
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[CalenderCss.closeButton, CalenderCss.applyText]}

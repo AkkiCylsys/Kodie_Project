@@ -276,7 +276,6 @@ export default AddExpensesDetails = (props) => {
   }, []);
   return (
     <View style={AddExpensesDetailsStyle.mainContainer}>
-      <ScrollView>
         <View style={AddExpensesDetailsStyle.heading_View}>
           <Text style={AddExpensesDetailsStyle.heading_Text}>
             {"Add expense details"}
@@ -290,6 +289,7 @@ export default AddExpensesDetails = (props) => {
             />
           </TouchableOpacity>
         </View>
+      <ScrollView>
         <View style={AddExpensesDetailsStyle.card}>
           <View style={AddExpensesDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Total amount*"}</Text>
@@ -623,16 +623,25 @@ export default AddExpensesDetails = (props) => {
                 AddExpensesDetailsStyle.closeText,
                 AddExpensesDetailsStyle.applyText,
                 {
-                  backgroundColor: _COLORS.Kodie_WhiteColor,
+                  backgroundColor:
+                    selectedOption == "Cancel"
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_WhiteColor,
                 },
               ]}
-              onPress={handlePopUp}
+              onPress={() => {
+                handlePopUp();
+                handleOptionClick("Cancel");
+              }}
             >
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
-                    color: _COLORS.Kodie_WhiteColor,
+                    color:
+                      selectedOption == "Cancel"
+                        ? _COLORS.Kodie_WhiteColor
+                        : null,
                   },
                 ]}
               >
@@ -643,11 +652,15 @@ export default AddExpensesDetails = (props) => {
               style={[
                 AddExpensesDetailsStyle.applyText,
                 {
-                  backgroundColor: _COLORS.Kodie_BlackColor,
+                  backgroundColor:
+                    selectedOption == "Save"
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
                 handleSaveBtn();
+                handleOptionClick("Save");
               }}
             >
               <Text
@@ -656,11 +669,14 @@ export default AddExpensesDetails = (props) => {
                   AddExpensesDetailsStyle.text,
 
                   {
-                    color: _COLORS.Kodie_WhiteColor,
+                    color:
+                      selectedOption == "Save"
+                        ? _COLORS.Kodie_WhiteColor
+                        : null,
                   },
                 ]}
               >
-                {" Save"}
+                {"Save"}
               </Text>
             </TouchableOpacity>
           </View>

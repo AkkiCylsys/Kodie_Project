@@ -104,19 +104,20 @@ const PropertyList = (props) => {
         order_col: "1",
         order_wise: "DESC",
       });
-
+      //alert(JSON.stringify(response))
       setPropertyData(response?.data?.property_details);
 
       setIsLoading(false);
     } catch (error) {
-      if (error.response && error.response.status === 500) {
-        alert(error.response.message);
+      if (error.response && error.response.status == 500) {
+        alert(error.response.data.message);
         setIsLoading(false);
       } else {
         alert("An error occurred. Please try again later.");
+        alert(error.response.message);
         setIsLoading(false);
       }
-      console.error("API Error:", error);
+      // alert(error.response.message);
       setIsLoading(false);
     }
   };
@@ -216,7 +217,13 @@ const PropertyList = (props) => {
     // const propertyIds = data.map(item => item.property_id);
     setPropId(item.property_id);
     return (
-      <>
+      <TouchableOpacity
+        onPress={() => {
+          props?.onPropertyView?.({
+            propertyid: item?.property_id,
+          });
+        }}
+      >
         <View key={index} style={PropertyListCSS.flatListContainer}>
           <View style={PropertyListCSS.flat_MainView}>
             <View style={PropertyListCSS.flexContainer}>
@@ -283,7 +290,6 @@ const PropertyList = (props) => {
                     // alert(propertyDelId);
                     setAddress(item?.location);
                   }}
-                 
                 >
                   <MaterialCommunityIcons
                     name={"dots-horizontal"}
@@ -292,7 +298,7 @@ const PropertyList = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <View
+              <TouchableOpacity
                 style={[
                   PropertyListCSS.buttonView,
                   {
@@ -330,7 +336,7 @@ const PropertyList = (props) => {
                 >
                   {"+ Invite Tenant"}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <DividerIcon
@@ -390,7 +396,7 @@ const PropertyList = (props) => {
             Address={Address}
           />
         </RBSheet> */}
-      </>
+      </TouchableOpacity>
     );
   };
   const propertyData2_render = ({ item }) => {

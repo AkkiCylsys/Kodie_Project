@@ -74,21 +74,21 @@ export default SignUp = (props) => {
     }
   };
   // .........encrypt password.at........
-
-  const SECRET_PASS = "XkhZG4fW2t2W";
-
-  const encryptPassword = async (password) => {
-    try {
-      const encryptedPassword = await CryptoJS.AES.encrypt(
-        password,
-        SECRET_PASS
-      ).toString();
-      console.log("Encrypted Password:", encryptedPassword);
-      return encryptedPassword;
-    } catch (error) {
-      console.error("Encryption Error:", error);
-      throw error;
-    }
+  const secretKey = "XkhZG4fW2t2W";
+  const encryptPassword = (password, secretKey) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const key = secretKey;
+        const keyutf = CryptoJS.enc.Utf8.parse(key);
+        const iv = CryptoJS.enc.Utf8.parse("XkhZG4fW2t2W");
+        const enc = CryptoJS.AES.encrypt(password, keyutf, { iv: iv });
+        const encStr = enc.toString();
+        console.log("Encrypted Password:", encStr);
+        resolve(encStr);
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
 
   const Signuphandle = async () => {
@@ -99,12 +99,12 @@ export default SignUp = (props) => {
 
     try {
       // Encrypt the password
-      const encryptedpass = await encryptPassword(password);
-      console.log("encryptedpass", encryptedpass);
+      const encStr = await encryptPassword(password, secretKey);
+      console.log("encryptedpass", encStr);
 
       const SignUpData = {
         email: email,
-        password: encryptedpass,
+        password: encStr,
         is_term_condition: term,
         is_privacy_policy: privacy,
       };
@@ -113,22 +113,17 @@ export default SignUp = (props) => {
 
       setSignupResponse(response.data);
       console.log("SignUp response", response.data);
-
-      if (
-        response.data.message ===
-        "The user has been successfully registered, and an OTP has been sent to the registered email."
-      ) {
-        alert(response.data.message);
+      // alert(JSON.stringify(response.data));
+      if (response.data.code === 3) {
+      alert(response.data.message);
         props.navigation.navigate("SignUpVerification", {
           email: email,
-          password: encryptedpass,
+          password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
           user_key: response.data.User_Key,
         });
-      } else if (
-        response.data.message === "User Exits But Not Verified Please Verify"
-      ) {
+      } else if (response.data.code === 1) {
         alert(response.data.message);
         setEmail("");
         setPassword("");
@@ -137,17 +132,25 @@ export default SignUp = (props) => {
         setIsLoading(false);
         props.navigation.navigate("SignUpVerification", {
           email: email,
-          password: encryptedpass,
+          password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
+          user_key: response.data.User_Key,
         });
-      } else if (response.data.message === "User Exits and Verified") {
-        props.navigation.navigate("SignUpSteps");
-        setIsLoading(false);
-        setEmail("");
-        setPassword("");
-        setTerm(false);
-        setPrivacy(false);
+      } else if (response.data.code === 2) {
+        alert(response.data.message);
+        // props.navigation.navigate("SignUpSteps", {
+        //   email: email,
+        //   password: encStr,
+        //   is_term_condition: term,
+        //   is_privacy_policy: privacy,
+        //   user_key: response.data.User_Key,
+        // });
+        // setIsLoading(false);
+        // setEmail("");
+        // setPassword("");
+        // setTerm(false);
+        // setPrivacy(false);
       } else {
         alert(response.data.message);
       }

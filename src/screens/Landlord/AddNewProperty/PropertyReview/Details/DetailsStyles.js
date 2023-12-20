@@ -52,6 +52,7 @@ export const DetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     marginVertical: 10,
     alignSelf: "center",
+    marginHorizontal: 16,
   },
   propery_det: {
     fontSize: 12,

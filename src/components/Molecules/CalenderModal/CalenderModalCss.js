@@ -64,10 +64,11 @@ export const CalenderCss = StyleSheet.create({
   },
   closeText: {
     paddingHorizontal: 25,
-    paddingVertical: 15,
+    paddingVertical: 10,
     borderRadius: 4,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
+    alignSelf: "center",
   },
   applyText: {
     backgroundColor: _COLORS.Kodie_BlackColor,

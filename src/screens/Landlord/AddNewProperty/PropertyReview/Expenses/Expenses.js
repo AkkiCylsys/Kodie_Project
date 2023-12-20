@@ -259,7 +259,7 @@ export default Expenses = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={510}
+          height={760}
           customStyles={{
             wrapper: {
               backgroundColor: "rgba(0, 0, 0, 0.5)",

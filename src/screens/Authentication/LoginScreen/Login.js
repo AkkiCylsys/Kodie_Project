@@ -244,24 +244,31 @@ export default Login = (props) => {
       };
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
-      // alert(JSON.stringify(res));
+      /// alert(JSON.stringify(res));
       setIsLoading(false);
       if (res === 401) {
         setIsLoading(false);
         setPasswordError(
           "Hmm, it seems like the credentials you entered are invalid. Please try again."
         );
-      } else if (res.data.success == "true") {
+      }
+      else if(res.LoginStatuscode==6){
+        props.navigation.navigate("SignUpSteps",{
+          email:email,
+          user_key:res.User_key
+        });
+      }
+      else if (res.data.success == "true") {
         //  alert("Login successful");
         setIsLoading(false);
-        if (res.data.message == "Please Complete Signup Process") {
-          alert(
-            "Please Complete Signup Process First, Because Your Signup Process are Incomplete."
-          );
-        } else {
-          props.navigation.navigate("DrawerNavigatorLeftMenu");
-        }
-
+        // if (res.data.code == 6) {
+        //   alert(res.data.message);
+        //   props.navigation.navigate("SignUpSteps");
+        // }
+        //  else {
+          
+        // }
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
         setEmail("");
         setPassword("");
       } else {
@@ -379,26 +386,26 @@ export default Login = (props) => {
       });
   };
 
-  const SECRET_PASS = "XkhZG4fW2t2W";
-
-  const encryptPassword = async (password) => {
-    try {
-      const encryptedPassword = await CryptoJS.AES.encrypt(
-        password,
-        SECRET_PASS
-      ).toString();
-      console.log("Encrypted Password:", encryptedPassword);
-      return encryptedPassword;
-    } catch (error) {
-      console.error("Encryption Error:", error);
-      throw error;
-    }
+  const secretKey = "XkhZG4fW2t2W";
+  const encryptPassword = (password, secretKey) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const key = secretKey;
+        const keyutf = CryptoJS.enc.Utf8.parse(key);
+        const iv = CryptoJS.enc.Utf8.parse("XkhZG4fW2t2W");
+        const enc = CryptoJS.AES.encrypt(password, keyutf, { iv: iv });
+        const encStr = enc.toString();
+        console.log("Encrypted Password:", encStr);
+        resolve(encStr);
+      } catch (error) {
+        reject(error);
+      }
+    });
   };
-
   //------ create_password Api code here
   const create_password = async () => {
     try {
-      const encryptedPassword = await encryptPassword(newpassword);
+      const encryptedPassword = await encryptPassword(newpassword, secretKey);
       console.log("encryptedPassword", encryptedPassword);
       const url = Config.BASE_URL;
       // const url = "https://e3.cylsys.com/api/v1/forgetpassword";
@@ -409,19 +416,28 @@ export default Login = (props) => {
 
       const response = await axios.post(create_password_url, {
         email: resetEmail,
-        new_password: encryptedPassword,
+        password: encryptedPassword,
       });
 
       console.log("API Response create_password:", response.data);
 
       if (response.data.success === true) {
-        // If the API call is successful, increment isClick
-        alert(response.data.message);
-        setIsClick(isClick + 1);
+        if (
+          response.data.message ==
+          "Try again with a password you haven’t used before"
+        ) {
+          alert(response.data.message);
+        } else {
+          alert(response.data.message);
+          setIsClick(isClick + 1);
+        }
       } else {
         alert("Password not created.");
       }
     } catch (error) {
+      // if (error.response && error.response.status == 500) {
+      //   alert("Your password is old. Please enter new password.");
+      // }
       console.error("API failed", error);
       // Handle errors appropriately
       alert(error.message || "An error occurred during the API call");
@@ -812,9 +828,9 @@ export default Login = (props) => {
           <View
             style={[
               {
-                marginBottom: 800,
+                marginBottom: 500,
                 marginTop:
-                  isClick === 1 || isClick === 2 || isClick === 3 ? 120 : 200,
+                  isClick === 1 || isClick === 2 || isClick === 3 ? 1 : 160,
               },
             ]}
           >

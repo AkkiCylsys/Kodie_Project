@@ -106,7 +106,20 @@ export default InviteTenantModal = (props) => {
       }}
     >
       {/* <Image source={item.image} style={InviteTenantModalStyle.Icons} /> */}
-      {item.Icon}
+      <View
+        style={{
+          borderWidth: 1,
+          borderRadius: 8,
+          borderColor: _COLORS.Kodie_LightWhiteColor,
+          width: 35,
+          height: 35,
+          alignSelf: "center",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {item.Icon}
+      </View>
       <Text style={InviteTenantModalStyle.Invite_Data_Text}>{item.title}</Text>
     </TouchableOpacity>
   );

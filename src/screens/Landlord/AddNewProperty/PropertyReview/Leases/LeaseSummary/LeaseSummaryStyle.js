@@ -11,7 +11,7 @@ export const LeaseSummaryStyle = StyleSheet.create({
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
   },
-   heading_Text: {
+  heading_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
@@ -78,6 +78,8 @@ export const LeaseSummaryStyle = StyleSheet.create({
   },
   Lease_Term_main_View: {
     borderWidth: 1,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderColor: _COLORS.Kodie_GrayColor,
@@ -169,7 +171,7 @@ export const LeaseSummaryStyle = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 10,
   },
-  datePaid_main_view:{
+  datePaid_main_view: {
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 5,

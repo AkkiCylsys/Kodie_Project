@@ -73,6 +73,7 @@ export const RepairCss = StyleSheet.create({
   },
   BudgetView: { marginLeft: 20, flex: 1, flexDirection: "row", marginTop: 15 },
   buttonView: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -120,8 +121,8 @@ export const RepairCss = StyleSheet.create({
     marginBottom: 30,
   },
   filter: { marginTop: 15 },
-  dividerIcon:{
-    marginTop:30
+  dividerIcon: {
+    marginTop: 30,
   },
   //  swiperview list style--------------------------------
   bindview: {

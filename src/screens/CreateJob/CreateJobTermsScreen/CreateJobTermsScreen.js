@@ -387,7 +387,7 @@ export default CreateJobTermsScreen = (props) => {
     console.log("Request URL:", createJob_url);
     setIsLoading(true);
     const createJob_Data = {
-      user_account_details_id: loginData?.Login_details?.user_account_id,
+      user_account_details_id: loginData?.Login_details?.user_id,
       type_of_job: selectJobType,
       job_service_you_looking: servicesValue,
       more_about_job: aboutyourNeed,
@@ -408,10 +408,12 @@ export default CreateJobTermsScreen = (props) => {
     axios
       .post(createJob_url, createJob_Data)
       .then((response) => {
-        console.log("API Response add_lease:", response.data);
+        console.log("API Response jobCreate..:", response.data);
         if (response.data.success === true) {
           alert(response.data.message);
-          props.navigation.navigate("CreateJobSecondScreen");
+          props.navigation.navigate("CreateJobSecondScreen", {
+            job_id: response.data.job_id,
+          });
           setSelectedDate(""),
             setCurrentTime(""),
             setHourlyNeedValue(""),

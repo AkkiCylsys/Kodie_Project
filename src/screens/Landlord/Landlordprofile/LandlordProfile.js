@@ -11,6 +11,7 @@ import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import LandlordProfileData from "../../../components/Molecules/LandlordProfileData/LandlordProfileData";
 import { logoutActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
 import { useDispatch, useSelector } from "react-redux";
+import RowTab from "../../../components/Molecules/RowTab/RowTab";
 export default LandlordProfile = (props) => {
   const dispatch = useDispatch();
   const signUp_account_response = useSelector(
@@ -49,7 +50,7 @@ export default LandlordProfile = (props) => {
                   signUp_account_response?.Login_details?.profile_photo_path,
               }}
               style={LandlordProfileStyle.usericon}
-              resizeMode="contain"
+              resizeMode="center"
             />
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
@@ -88,11 +89,10 @@ export default LandlordProfile = (props) => {
               resizeMode="contain"
             /> */}
             <MaterialCommunityIcons
-            name={"account-edit-outline"}
-            size={20}
-            color={_COLORS.Kodie_GreenColor}
-            style={{ alignSelf: "center",}}
-          />
+              name={"account-edit-outline"}
+              size={20}
+              color={_COLORS.Kodie_GreenColor}
+            />
           </TouchableOpacity>
         </View>
         <DividerIcon />
@@ -103,7 +103,9 @@ export default LandlordProfile = (props) => {
           }}
         >
           <RowTab
+            LeftIconLibrary={"FontAwesome5"}
             IsDivider={false}
+            LeftIconName={"user-alt"}
             isSecondRowText={true}
             LeftImage={IMAGES.Accountsetting}
             TabTaxt="Account"
@@ -113,13 +115,15 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("ManageSubscription");
+            // props.navigation.navigate("ManageSubscription");
           }}
         >
           <RowTab
+            LeftIconLibrary={"MaterialIcons"}
             IsDivider={false}
             isSecondRowText={true}
-            LeftImage={IMAGES.ManageSubscription}
+            LeftIconName={"subscriptions"}
+            // LeftImage={IMAGES.ManageSubscription}
             TabTaxt="Manage Subscription"
             TabSubTaxt="Manage your subscription plans"
           />
@@ -131,11 +135,28 @@ export default LandlordProfile = (props) => {
           }}
         >
           <RowTab
+            LeftIconLibrary={"MaterialCommunityIcons"}
             IsDivider={false}
             isSecondRowText={true}
-            LeftImage={IMAGES.Privacy}
+            LeftIconName={"lock"}
+            // LeftImage={IMAGES.Privacy}
             TabTaxt="Privacy & Security"
             TabSubTaxt="View your privacy and security settings"
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            // props.navigation.navigate("ManageSubscription");
+          }}
+        >
+          <RowTab
+            LeftIconLibrary={"MaterialIcons"}
+            IsDivider={false}
+            isSecondRowText={true}
+            LeftIconName={"storage"}
+            // LeftImage={IMAGES.ManageSubscription}
+            TabTaxt="Storage & Data"
+            TabSubTaxt="Manage storage and data settings"
           />
         </TouchableOpacity>
         <Text style={LandlordProfileStyle.AllcontactsText}>Feedback</Text>
@@ -148,7 +169,9 @@ export default LandlordProfile = (props) => {
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            LeftImage={IMAGES.Accountsetting}
+            LeftIconName={"help-with-circle"}
+            LeftIconLibrary={"Entypo"}
+            // LeftImage={IMAGES.Accountsetting}
             TabTaxt="Help & Feedback"
             TabSubTaxt="Get help and leave feedback"
           />
@@ -162,7 +185,9 @@ export default LandlordProfile = (props) => {
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            LeftImage={IMAGES.Subscription}
+            // LeftImage={IMAGES.Subscription}
+            LeftIconName={"like1"}
+            LeftIconLibrary={"AntDesign"}
             TabTaxt="Follow us on social media"
             TabSubTaxt="Follow us for news, insights and more!"
           />
@@ -178,7 +203,9 @@ export default LandlordProfile = (props) => {
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            LeftImage={IMAGES.Subscription}
+            // LeftImage={IMAGES.Subscription}
+            LeftIconName={"user-plus"}
+            LeftIconLibrary={"FontAwesome5"}
             TabTaxt="Tell a Friend"
             TabSubTaxt="Tell your friends about Kodie"
           />
@@ -192,7 +219,9 @@ export default LandlordProfile = (props) => {
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            LeftImage={IMAGES.RateKodie}
+            // LeftImage={IMAGES.RateKodie}
+            LeftIconName={"rate-review"}
+            LeftIconLibrary={"MaterialIcons"}
             TabTaxt="Rate Kodie"
             TabSubTaxt="Rate your Kodie experience"
           />
@@ -202,7 +231,9 @@ export default LandlordProfile = (props) => {
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            LeftImage={IMAGES.Logout}
+            // LeftImage={IMAGES.Logout}
+            LeftIconName={"logout"}
+            LeftIconLibrary={"MaterialCommunityIcons"}
             TabTaxt="Logout"
             TabSubTaxt="Logout of your Kodie profile"
           />
