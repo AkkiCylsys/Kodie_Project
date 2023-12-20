@@ -50,7 +50,7 @@ export default Repair = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
   console.log("loginresponse_jobdetails..", loginData?.Login_details?.user_id);
-  const user_id = loginData?.Login_details?.user_id;
+  const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
   const [activeScreen, setActiveScreen] = useState(true);
   const [allJobData, setAllJobData] = useState([]);
@@ -73,7 +73,7 @@ export default Repair = (props) => {
   // Api intrigation....
   const getAllJob = () => {
     const url = Config.BASE_URL;
-    const getAllJobUrl = url + `job/getAlljobs/${user_id}`;
+    const getAllJobUrl = url + `job/getAlljobs/${account_id}`;
     console.log("Request URL:", getAllJobUrl);
     setIsLoading(true);
     axios
@@ -92,7 +92,9 @@ export default Repair = (props) => {
 
   const propertyData_render1 = ({ item }) => {
     return (
-      <View>
+      <TouchableOpacity
+      // onPress={props.onPress}
+      >
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
             <View style={RepairCss.flexContainer}>
@@ -181,7 +183,7 @@ export default Repair = (props) => {
           </View>
         </View>
         <DividerIcon />
-      </View>
+      </TouchableOpacity>
     );
   };
   return (

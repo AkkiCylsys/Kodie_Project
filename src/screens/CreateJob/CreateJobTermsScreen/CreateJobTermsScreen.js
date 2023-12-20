@@ -387,7 +387,7 @@ export default CreateJobTermsScreen = (props) => {
     console.log("Request URL:", createJob_url);
     setIsLoading(true);
     const createJob_Data = {
-      user_account_details_id: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
       type_of_job: selectJobType,
       job_service_you_looking: servicesValue,
       more_about_job: aboutyourNeed,

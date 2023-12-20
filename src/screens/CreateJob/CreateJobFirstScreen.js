@@ -96,7 +96,6 @@ export default CreateJobFirstScreen = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
-
   const goBack = () => {
     props.navigation.pop();
   };
@@ -813,7 +812,7 @@ export default CreateJobFirstScreen = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="Electricals"
+                placeholder="select item"
                 searchPlaceholder="Search..."
                 value={servicesValue}
                 onChange={(item) => {

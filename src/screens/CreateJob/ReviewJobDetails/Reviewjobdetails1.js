@@ -34,8 +34,7 @@ const Reviewjobdetails1 = (props) => {
         console.log("API Response JobDetails:", response.data);
         if (response.data.success === true) {
           setJobDetailsData(response.data.data);
-          console.log(("jobDetailsData....", response.data.data));
-          props?.imagesFilePath(response.data.data);
+          console.log("jobDetailsData....", response.data.data);
           // alert(JSON.stringify(response.data.data))
           // alert(response.data.message);
         } else {
@@ -52,12 +51,13 @@ const Reviewjobdetails1 = (props) => {
         setIsLoading(false);
       });
   };
+  props?.imagesFilePath(jobDetailsData);
   // alert(JSON.stringify(jobDetailsData.first_name))
   return (
     <View style={{ flex: 1, marginHorizontal: 16 }}>
       <View style={{ marginTop: 17 }}>
         <Text style={ReviewjobdetailsStyle1.textview}>
-         {jobDetailsData.job_description}
+          {jobDetailsData.job_description}
         </Text>
         <Text style={ReviewjobdetailsStyle1.textview1}>
           Job request summary
