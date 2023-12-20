@@ -60,11 +60,11 @@ export default PropertyImages = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.data);
-          setImagePaths(response.data.data[0]?.image_path);
+          setProperty_Details(response.data.property_details);
+          setImagePaths(response.data.property_details[0]?.image_path);
           //setNetworkImagePaths(response.data.data[0]?.image_path);
           // alert(JSON.stringify(response.data.property_details));
-          console.log("propertyDetail....", response.data.data);
+          console.log("propertyDetail....", response.data.property_details);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);

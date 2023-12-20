@@ -86,6 +86,7 @@ const PropertyList = (props) => {
   };
   const CloseUp = () => {
     setIsDeleteBottomSheetVisible(false);
+    setIsDeleteData_Clicked(false)
   };
   // Extract property_id values
 
@@ -542,7 +543,7 @@ const PropertyList = (props) => {
             container: PropertyListCSS.bottomModal_container,
           }}
         >
-          <BottomModalData propertyId={propId} />
+          <BottomModalData  propertyId={propId} />
         </RBSheet>
       </>
     );
@@ -600,7 +601,7 @@ const PropertyList = (props) => {
             Text_Color={_COLORS.Kodie_WhiteColor}
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
-            height={38}
+            height={40}
             marginTop={3}
             onPress={props.propertyDetail}
             disabled={isLoading ? true : false}

@@ -6,12 +6,13 @@ export const BottomModalDataStyle = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 10,
-    marginHorizontal:10,
-    backgroundColor:_COLORS.Kodie_WhiteColor
-    
+    marginHorizontal: 10,
+    backgroundColor: _COLORS.Kodie_WhiteColor
+
   },
   text: {
     fontSize: 14,
+    marginTop: 6,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
@@ -30,8 +31,9 @@ export const BottomModalDataStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LiteWhiteColor,
     marginLeft: 5,
     width: 35,
-    marginTop:10,
+    marginTop: 10,
     height: 35,
     justifyContent: "center",
+    alignItems: 'center'
   },
 });

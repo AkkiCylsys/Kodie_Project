@@ -130,18 +130,18 @@ export default PropertyDetails = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.data[0]);
-          setLocation(response.data.data[0]?.location);
+          setProperty_Details(response.data.property_details[0]);
+          setLocation(response.data.property_details[0]?.location);
           setProperty_value(
             // 24
-            parseInt(response.data.data[0]?.property_type_id)
+            parseInt(response.data.property_details[0]?.property_type_id)
             // response.data.property_details[0]?.property_type_id.replace(
             //   /\D/g,
             //   ""
             // )
           );
 
-          setPropertyDesc(response.data.data[0]?.property_description);
+          setPropertyDesc(response.data.property_details[0]?.property_description);
 
           console.log("propertyDetail....", response.data.data);
         } else {
@@ -626,7 +626,7 @@ export default PropertyDetails = (props) => {
                 <CustomSingleButton
                   _ButtonText={"Next"}
                   Text_Color={_COLORS.Kodie_WhiteColor}
-                  onPress={() => {
+                  onPress={() => { 
                     // handleLocation(location);
                     // handlePropertyValue(property_value);
                     // if (handleLocation() ||handlePropertyValue()) {
