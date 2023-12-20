@@ -66,7 +66,6 @@ const AddBiddingDetails = (props) => {
 
   return (
     <View style={AddBiddingDetailsCss.mainContainer}>
-      <ScrollView contentContainerStyle={{ flex: 1, marginBottom: 50 }}>
         <View style={AddBiddingDetailsCss.heading_View}>
           <Text style={AddBiddingDetailsCss.heading_Text}>
             {"Add bidding details"}
@@ -80,6 +79,7 @@ const AddBiddingDetails = (props) => {
             />
           </TouchableOpacity>
         </View>
+      <ScrollView>
         <View style={AddBiddingDetailsCss.card}>
           <Text style={LABEL_STYLES.commontext}>{"Commencement date"}</Text>
           <View style={AddBiddingDetailsCss.datePickerView}>
