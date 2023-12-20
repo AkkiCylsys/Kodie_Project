@@ -70,6 +70,8 @@ const data = [
   { label: "Fixing & maintenance", value: "5" },
 ];
 export default CreateJobFirstScreen = (props) => {
+  const JobId = props.route.params?.JobId;
+  // alert(JobId)
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
@@ -89,6 +91,7 @@ export default CreateJobFirstScreen = (props) => {
   const [selectJobTypeid, setSelectJobTypeid] = useState("");
   const [servicesData, setServicesData] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
 
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
@@ -96,6 +99,7 @@ export default CreateJobFirstScreen = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
+
   const goBack = () => {
     props.navigation.pop();
   };
@@ -338,6 +342,7 @@ export default CreateJobFirstScreen = (props) => {
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
+    getJobDetails();
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
@@ -692,6 +697,38 @@ export default CreateJobFirstScreen = (props) => {
         setIsLoading(false);
       });
   };
+  // EditMode ..................
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetailsData = {
+      jm_job_id: JobId,
+    };
+    axios
+      .post(jobDetails_url, jobDetailsData)
+      .then((response) => {
+        console.log("API Response JobDetails:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData....", response.data.data);
+          setAboutyourNeed(response.data.data.last_name);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const top4Items = servicesData.slice(0, 4);
   return (
     <View style={CreateJobFirstStyle.container}>

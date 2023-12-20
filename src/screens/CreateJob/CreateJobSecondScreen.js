@@ -304,7 +304,7 @@ const CreateJobSecondScreen = (props) => {
       console.log("invalid video");
     }
 
-    formData.append("uad_key", loginData?.Login_details?.user_account_id);
+    formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
     console.log("formData", formData);
     const url = Config.BASE_URL;
     const uploadFile_url = url + "job/uploadJobFiles";
