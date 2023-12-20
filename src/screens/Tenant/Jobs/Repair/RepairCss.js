@@ -169,4 +169,8 @@ export const RepairCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_WhiteColor,
   },
+  bottomModal_container: {
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
 });

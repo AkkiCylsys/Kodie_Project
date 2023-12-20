@@ -41,7 +41,12 @@ const Apartment_data = [
 ];
 const JobDetails = (props) => {
   let job_id = props?.route?.params?.job_id;
+  let JOB_ID = props?.route?.params?.JOB_ID;
+  let View_Job_Details = props?.route?.params?.View_Job_Details;
   console.log("job_id...", job_id);
+  console.log("JOB_ID_By_Navigation...", JOB_ID);
+  console.log("View_Job_Details...", View_Job_Details);
+  // alert(JSON.stringify(JOB_ID));
   // alert(job_id);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [currentPage, setCurrentPage] = useState(3);
@@ -164,6 +169,8 @@ const JobDetails = (props) => {
         return (
           <Reviewjobdetails1
             job_id={job_id}
+            JOB_ID={JOB_ID}
+            View_Job_Details={View_Job_Details}
             imagesFilePath={handleImageFilePath}
             onPress={() => {
               props.navigation.navigate("Jobs");
@@ -189,15 +196,18 @@ const JobDetails = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Review job details"}
       />
-      <StepIndicator
-        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-        currentPosition={3}
-        // onPress={onStepPress}
-        renderStepIndicator={renderStepIndicator}
-        labels={stepLabels}
-        stepCount={4}
-        renderLabel={renderLabel}
-      />
+      {View_Job_Details ? null : (
+        <StepIndicator
+          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+          currentPosition={3}
+          // onPress={onStepPress}
+          renderStepIndicator={renderStepIndicator}
+          labels={stepLabels}
+          stepCount={4}
+          renderLabel={renderLabel}
+        />
+      )}
+
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>
@@ -229,10 +239,13 @@ const JobDetails = (props) => {
             <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
           </View>
         </ImageBackground>
-
         <View style={JobDetailsStyle.headingview}>
-          <Text style={JobDetailsStyle.fixingtext}>Fixing & Maintenance</Text>
-          <Text style={JobDetailsStyle.electricaltext}>Electricals</Text>
+          <Text style={JobDetailsStyle.fixingtext}>
+            {imageFileData.job_type}
+          </Text>
+          <Text style={JobDetailsStyle.electricaltext}>
+            {imageFileData.service_looking}
+          </Text>
         </View>
 
         <View
@@ -248,13 +261,13 @@ const JobDetails = (props) => {
             TAB4
             TAB3
             Tab1={"Details"}
-            Tab2={"Bids"}
-            Tab3={"Milestones"}
-            Tab4={"Documents"}
+            Tab2={View_Job_Details ? "Bids" : null}
+            Tab3={View_Job_Details ? "Milestones" : null}
+            Tab4={View_Job_Details ? "Documents" : null}
             onPressTab1={() => setActiveTab("Tab1")}
-            onPressTab2={() => setActiveTab("Tab2")}
-            onPressTab3={() => setActiveTab("Tab3")}
-            onPressTab4={() => setActiveTab("Tab4")}
+            onPressTab2={() => (View_Job_Details ? setActiveTab("Tab2") : null)}
+            onPressTab3={() => (View_Job_Details ? setActiveTab("Tab3") : null)}
+            onPressTab4={() => (View_Job_Details ? setActiveTab("Tab4") : null)}
             colorTab1={
               activeTab === "Tab1"
                 ? _COLORS.Kodie_BlackColor
