@@ -41,7 +41,7 @@ export default PropertyImages = (props) => {
   const [currentPage, setCurrentPage] = useState(2);
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
-  const [imagePath, setImagePaths] = useState([]);
+  const [serverimagePath, setImagePaths] = useState([]);
   useEffect(() => {
     DetailsData();
   }, []);
@@ -61,7 +61,8 @@ export default PropertyImages = (props) => {
         if (response.data.success === true) {
           setIsLoading(false);
           setProperty_Details(response.data.data);
-          setImagePaths(response.data.data?.image_path);
+          setImagePaths(response.data.data[0]?.image_path);
+          //setNetworkImagePaths(response.data.data[0]?.image_path);
           // alert(JSON.stringify(response.data.property_details));
           console.log("propertyDetail....", response.data.data);
         } else {
@@ -398,10 +399,11 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-              {property_Detail.image_path &&
+              {/* {property_Detail.image_path &&
               property_Detail.image_path.length != 0 ? (
                 <SliderBox
                   images={
+                    
                     property_Detail?.image_path
                     // //   ? property_Detail[0]?.image_path
                     // //   :
@@ -426,13 +428,13 @@ export default PropertyImages = (props) => {
                     // position: "relative",
                   }}
                 />
-              ) : (
+              ) : ( */}
                 <SliderBox
                   images={
                     // property_Detail?.image_path
                     //   ? property_Detail.image_path
                     //   :
-                    imagePaths
+                    editMode?serverimagePath: imagePaths
                   }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
@@ -453,7 +455,7 @@ export default PropertyImages = (props) => {
                     // position: "relative",
                   }}
                 />
-              )}
+              {/* )} */}
             </View>
             <Text style={PropertyImagesStyle.upload_Heading_Text}>
               {"Upload images"}
