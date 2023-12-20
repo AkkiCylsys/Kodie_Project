@@ -162,6 +162,10 @@ const JobDetails = (props) => {
           <Reviewjobdetails1
             job_id={job_id}
             imagesFilePath={handleImageFilePath}
+            onPress={()=>{
+              props.navigation.navigate("Jobs")
+              // alert("hello")
+            }}
           />
         );
       case "Tab2":
@@ -198,7 +202,7 @@ const JobDetails = (props) => {
             <SliderBox
               images={images}
               // images={img}
-              // images={imageFileData?.image_file_path} 
+              // images={imageFileData?.image_file_path}
               sliderBoxHeight={200}
               onCurrentImagePressed={(index) =>
                 console.warn(`image ${index} pressed`)

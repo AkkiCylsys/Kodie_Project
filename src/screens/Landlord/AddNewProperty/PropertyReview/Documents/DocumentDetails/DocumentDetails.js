@@ -41,7 +41,7 @@ const DocumentDetails = (props) => {
 
   useEffect(() => {
     getuploadedDocuments();
-    // getuploadedDocumentsbyModule();
+    getUploadedDocumentsByModule();
   }, []);
   const closeModal = () => {
     refRBSheet.current.close();
@@ -64,7 +64,9 @@ const DocumentDetails = (props) => {
       //       DocumentPicker.types.docx,
       //     ],
       //   });
+      console.log("doc......", doc);
       setSelectFile(doc);
+      await uploadDocument(doc);
       console.log("Documents.....", doc);
       console.log("selectFile.....", selectFile);
     } catch (err) {
@@ -100,10 +102,11 @@ const DocumentDetails = (props) => {
         setIsLoading(false);
       });
   };
-  const uploadDocument = async () => {
-    console.log("uri....", file.uri);
-    console.log("name....", file.name);
-    console.log("type....", file.type);
+  const uploadDocument = async (doc) => {
+    // alert("upload");
+    console.log("uri....", doc[0].uri);
+    console.log("name....", doc[0].name);
+    console.log("type....", doc[0].type);
     console.log("p_referral_key....", property_id);
     console.log("p_module_name....", moduleName);
     const url = Config.BASE_URL;
@@ -113,9 +116,9 @@ const DocumentDetails = (props) => {
     try {
       const formData = new FormData();
       formData.append("documents", {
-        uri: file.uri,
-        name: file.name,
-        type: file.type,
+        uri: doc[0].uri,
+        name: doc[0].name,
+        type: doc[0].type,
       });
       formData.append("p_referral_key", property_id);
       formData.append("p_module_name", moduleName);
@@ -179,22 +182,15 @@ const DocumentDetails = (props) => {
     console.log("Request URL:", getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
-      Module_Name: "Tenant",
-    }; 
+      Module_Name: "Lease",
+    };
     axios
-      .post(getDocumentUrl, documentModuleData)
+      .get(getDocumentUrl, documentModuleData)
       .then((response) => {
         console.log("API Response getDocumentsByModule:", response.data);
-        if (response.data.success === true) {
-          setUploadDocData(response.data.data);
-          console.log("uploadDocData..", response.data.data);
-        } else {
-          handleApiError(response.data.message);
-        }
       })
       .catch((error) => {
-        console.error("API failed", error);
-        handleApiError("An error occurred while fetching documents.");
+        console.error("API failed_moduleName", error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -358,7 +354,7 @@ const DocumentDetails = (props) => {
           marginHorizontal: 16,
         }}
       >
-        <View style={{}}>
+        {/* <View style={{}}>
           <CustomSingleButton
             leftImage={IMAGES.uploadIcon}
             isLeftImage={true}
@@ -370,8 +366,8 @@ const DocumentDetails = (props) => {
             }}
             disabled={isLoading ? true : false}
           />
-        </View>
-        <View>
+        </View> */}
+        {/* <View>
           <Text style={DocumentDetailStyle.property_doc_text}>
             {folderId == 1
               ? "Property documents"
@@ -381,16 +377,16 @@ const DocumentDetails = (props) => {
               ? "Tenant documents"
               : "Property documents"}
           </Text>
-        </View>
+        </View> */}
 
-        <FlatList
+        {/* <FlatList
           data={selectFile}
           scrollEnabled
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{}}
           keyExtractor={(item, index) => index}
           renderItem={DocumentsData}
-        />
+        /> */}
         <View>
           <Text style={DocumentDetailStyle.upload_doc_text}>
             {"Upload documents"}
@@ -411,7 +407,7 @@ const DocumentDetails = (props) => {
             renderItem={GetuploadedDocumentrender}
           />
         </View>
-        <View style={{}}>
+        <View style={{ marginBottom: 30 }}>
           <CustomSingleButton
             leftImage={IMAGES.uploadIcon}
             isLeftImage={true}
@@ -419,7 +415,8 @@ const DocumentDetails = (props) => {
             _ButtonText={"Upload"}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             onPress={() => {
-              uploadDocument();
+              // uploadDocument();
+              selectDoc();
             }}
             disabled={isLoading ? true : false}
           />
