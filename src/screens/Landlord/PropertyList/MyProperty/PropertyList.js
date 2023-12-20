@@ -104,19 +104,20 @@ const PropertyList = (props) => {
         order_col: "1",
         order_wise: "DESC",
       });
-//alert(JSON.stringify(response))
+      //alert(JSON.stringify(response))
       setPropertyData(response?.data?.property_details);
 
       setIsLoading(false);
     } catch (error) {
-      if (error.response && error.response.status === 500) {
-        alert(error.response.message);
+      if (error.response && error.response.status == 500) {
+        alert(error.response.data.message);
         setIsLoading(false);
       } else {
         alert("An error occurred. Please try again later.");
+        alert(error.response.message);
         setIsLoading(false);
       }
-      console.error("API Error:", error);
+      // alert(error.response.message);
       setIsLoading(false);
     }
   };
