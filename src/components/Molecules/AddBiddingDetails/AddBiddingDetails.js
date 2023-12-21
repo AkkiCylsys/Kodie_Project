@@ -63,7 +63,7 @@ const AddBiddingDetails = (props) => {
   const [toggle_close, settoggle_close] = useState(false);
   const [toggle_Bid_Close, settoggle_Bid_Close] = useState(0);
   const [toggle_rental, setToggle_rental] = useState(false);
-  const [toggle_late_rental, setToggle_late_rental] = useState(0);
+  const [toggle_New_bid, settoggle_New_bid] = useState(0);
   const [selected_payment_Button, setselected_payment_Button] = useState(false);
   const [selected_payment_id, setselected_payment_id] = useState(0);
   const [BidData, setBidData] = useState([]);
@@ -103,6 +103,7 @@ const AddBiddingDetails = (props) => {
     const url = Config.BASE_URL;
     const add_Bid_url = url + "job/addBidding";
     console.log("Request URL:", add_Bid_url);
+
     setIsLoading(true);
     const Bid_Data = {
       UAD_USER_KEY: loginData?.Login_details?.user_account_id,
@@ -113,16 +114,19 @@ const AddBiddingDetails = (props) => {
       BIDDING_LIST_PRICE: rentalAmount,
       BIDDING_AUTO_ACCEPT: rentalBond,
       BIDDING_PAYMENT_TERMS: selected_payment_id,
-      payment_due_day: paymentDueDay,
       BIDDING_NOTIFICATION_TYPE: notification_type_value,
       BIDDING_OPEN_REMINDER: open_reminder_Value,
       BIDDING_CLOSE_REMINDER: Close_reminder_Value,
       BIDDING_NEW_BID: Newbid_Value,
+      BM_IS_BIDDING_OPEN: toggle_Bid_Open,
+      BM_IS_BIDDING_CLOSE: toggle_Bid_Close,
+      BM_IS_NEW_BID: toggle_New_bid,
       BIDDING_IS_WINNER: 0,
       IS_ACTIVE: true,
       CREATED_BY: 0,
       UPDATED_BY: 0,
     };
+    console.log("Bid_Data", Bid_Data);
     axios
       .post(add_Bid_url, Bid_Data)
       .then((response) => {
@@ -130,8 +134,8 @@ const AddBiddingDetails = (props) => {
         setBidData(response.data);
         if (response.data.success === true) {
           alert(response.data.message);
-          handlePopUp();
-          toggleview();
+          handleclosepopUp();
+          toggleview("Save");
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -588,7 +592,7 @@ const AddBiddingDetails = (props) => {
                 switchOn={toggle_rental}
                 onPress={() => {
                   setToggle_rental(!toggle_rental);
-                  setToggle_late_rental(toggle_rental ? 0 : 1);
+                  settoggle_New_bid(toggle_rental ? 0 : 1);
                 }}
                 circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
                 circleColorOn={_COLORS.Kodie_GreenColor}

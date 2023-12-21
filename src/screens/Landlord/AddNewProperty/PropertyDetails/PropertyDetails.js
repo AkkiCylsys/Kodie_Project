@@ -140,7 +140,9 @@ export default PropertyDetails = (props) => {
             //   ""
             // )
           );
-          // setSelectedButtonId(response.data.property_details[0]?.property_type_id)
+          setSelectedButton(
+            parseInt(response.data.property_details[0]?.auto_list)
+          );
           setPropertyDesc(
             response.data.property_details[0]?.property_description
           );
