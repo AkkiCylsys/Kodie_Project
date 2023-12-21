@@ -5,17 +5,21 @@ import { JobBiddingDetailsStyle } from "./JobBiddingDetailsStyle";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import AddBiddingDetails from "../../../../components/Molecules/AddBiddingDetails/AddBiddingDetails";
 import RBSheet from "react-native-raw-bottom-sheet";
-export default JobBiddingDetails = () => {
-    const handleClose = () => {
-        refRBSheet.current.close();
-      };
+export default JobBiddingDetails = (props) => {
+  const JOB_ID = props.JOB_ID;
+  console.log("............JOB_ID", JOB_ID);
+  const handleClose = () => {
+    refRBSheet.current.close();
+  };
   const refRBSheet = useRef();
   return (
     <View>
       <View>
         <View style={JobBiddingDetailsStyle.add_Lease_view}>
           <Text style={JobBiddingDetailsStyle.add_Lease_Text}>
-            {"Would you like to enable the job bidding feature and have contractors bid against one another to perform the job? You may get a better rate! "}
+            {
+              "Would you like to enable the job bidding feature and have contractors bid against one another to perform the job? You may get a better rate! "
+            }
           </Text>
         </View>
         <View style={JobBiddingDetailsStyle.btn_View}>
@@ -41,7 +45,7 @@ export default JobBiddingDetails = () => {
           container: JobBiddingDetailsStyle.bottomModal_container,
         }}
       >
-        <AddBiddingDetails  onclose={handleClose}/>
+        <AddBiddingDetails JOB_ID={JOB_ID} onclose={handleClose} />
       </RBSheet>
     </View>
   );

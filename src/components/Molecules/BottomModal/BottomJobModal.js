@@ -133,7 +133,9 @@ const BottomJobModal = (props) => {
               if (item.id === "1") {
                 navigation.navigate("CreateJobFirstScreen", {
                   JobId: JobId,
+                  editMode: "editMode",
                 });
+                handleCloseModal()
               }
               if (item.id === "4") {
                 handleDeleteProperty();

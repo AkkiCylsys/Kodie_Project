@@ -101,31 +101,23 @@ export default PropertyImages = (props) => {
     const formData = new FormData();
     formData.append("property_id", property_id);
     console.log("kljproperty_Data_id", property_id);
-    const imagePaths = MultiImageName.map((image) => image.path);
-    console.log(imagePaths);
-    // imagePaths.forEach((path, index) => {
-    //   // Get the corresponding image object
-    //   const imageObject = MultiImageName[index];
+    if (MultiImageName && Array.isArray(MultiImageName)) {
+      const imagePaths = MultiImageName.map((image) => image.path);
 
-    //   // Extract filename and path
-    //   const { filename, path: imagePath } = imageObject;
-    //   console.log("filename", filename);
-
-    //   // Append to formData
-    //   formData.append("images", {
-    //     uri: imagePath,
-    //     name: filename,
-    //     type: "image/jpeg",
-    //   });
-    // });
-    // Append all image paths to the same key 'images[]'
-    imagePaths.forEach((path, index) => {
-      formData.append("images", {
-        uri: path,
-        name: path,
-        type: "image/jpeg",
+      imagePaths.forEach((path, index) => {
+        formData.append("images", {
+          uri: path,
+          name: path,
+          type: "image/jpeg",
+        });
       });
-    });
+    } else {
+      console.error(
+        "MultiImageName is not defined or not an array:",
+        MultiImageName
+      );
+      return; // Stop execution if MultiImageName is not properly defined
+    }
     // Append videos
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoUri, index) => {
@@ -342,9 +334,8 @@ export default PropertyImages = (props) => {
     }
 
     console.log("formData", formData);
-
-    const saveAccountDetails =
-      "https://e3.cylsys.com/api/v1/add_property_images_videos";
+    const url = Config.BASE_URL;
+    const saveAccountDetails = url + "add_property_images_videos";
     console.log("Request URL:", saveAccountDetails);
 
     setIsLoading(true);
@@ -443,32 +434,32 @@ export default PropertyImages = (props) => {
                   }}
                 />
               ) : ( */}
-                <SliderBox
-                  images={
-                    // property_Detail?.image_path
-                    //   ? property_Detail.image_path
-                    //   :
-                    editMode?serverimagePath: imagePaths
-                  }
-                  sliderBoxHeight={200}
-                  onCurrentImagePressed={(index) =>
-                    console.warn(`image ${index} pressed`)
-                  }
-                  inactiveDotColor={_COLORS.Kodie_GrayColor}
-                  dotColor={_COLORS.Kodie_GreenColor}
-                  autoplay
-                  circleLoop
-                  resizeMethod={"resize"}
-                  resizeMode={"cover"}
-                  dotStyle={PropertyImagesStyle.dotStyle}
-                  ImageComponentStyle={{
-                    flex: 1,
-                    resizeMode: "cover",
-                    borderRadius: 15,
-                    width: "90%",
-                    // position: "relative",
-                  }}
-                />
+              <SliderBox
+                images={
+                  // property_Detail?.image_path
+                  //   ? property_Detail.image_path
+                  //   :
+                  editMode ? serverimagePath : imagePaths
+                }
+                sliderBoxHeight={200}
+                onCurrentImagePressed={(index) =>
+                  console.warn(`image ${index} pressed`)
+                }
+                inactiveDotColor={_COLORS.Kodie_GrayColor}
+                dotColor={_COLORS.Kodie_GreenColor}
+                autoplay
+                circleLoop
+                resizeMethod={"resize"}
+                resizeMode={"cover"}
+                dotStyle={PropertyImagesStyle.dotStyle}
+                ImageComponentStyle={{
+                  flex: 1,
+                  resizeMode: "cover",
+                  borderRadius: 15,
+                  width: "90%",
+                  // position: "relative",
+                }}
+              />
               {/* )} */}
             </View>
             <Text style={PropertyImagesStyle.upload_Heading_Text}>

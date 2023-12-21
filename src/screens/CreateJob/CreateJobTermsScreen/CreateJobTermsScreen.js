@@ -43,6 +43,7 @@ export default CreateJobTermsScreen = (props) => {
   // alert(formattedPriceRanges);
 
   let JobId = props?.route?.params?.JobId;
+  let editMode = props?.route?.params?.editMode;
   // alert(JobId)
   let selectJobType = props?.route?.params?.selectJobType;
   let servicesValue = props?.route?.params?.servicesValue;
@@ -459,10 +460,11 @@ export default CreateJobTermsScreen = (props) => {
           setCurrentTime(response.data.data.job_time);
           setHourlyNeedValue(parseInt(response.data.data.job_hourly_key));
           setneedServicesValue(parseInt(response.data.data.job_how_often_key));
-          setSelectedButtonResponsibleId(
+          setFormattedPriceRanges(response.data.data.job_budget)
+          setSelectedButtonResponsible(
             parseInt(response.data.data.job_payment_by_key)
           );
-          setSelectedButtoBookingInsuranceId(
+          setSelectedButtonBookingInsurance(
             parseInt(response.data.data.job_insurence_key)
           );
         } else {
@@ -474,6 +476,62 @@ export default CreateJobTermsScreen = (props) => {
         console.error("API failed", error);
         setIsLoading(false);
         // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const updateCreateJob = () => {
+    const url = Config.BASE_URL;
+    const update_createJob_url = url + `job/updateJob/${JobId}`;
+    // const update_createJob_url = url + "job/updateJob/1";
+    console.log("Request URL:", update_createJob_url);
+    setIsLoading(true);
+    const update_createJob_Data = {
+      type_of_job: selectJobType,
+      job_service_you_looking: servicesValue,
+      more_about_job: aboutyourNeed,
+      job_priority: jobPriorityValue,
+      property_type: property_value,
+      job_location: location,
+      location_latitude: latitude,
+      location_longitude: longitude,
+      job_rating: ratingThresholdValue,
+      job_date: selectedDate,
+      job_time: currentTime,
+      job_hourly: hourlyNeedValue,
+      job_often_need_service: needServicesValue,
+      job_budget: formattedPriceRanges,
+      job_payment_by: selectedButtonResponsibleId,
+      job_booking_insurance: selectedButtonBookingInsuranceId,
+    };
+    console.log("updatedBody.....", update_createJob_Data);
+    axios
+      .put(update_createJob_url, update_createJob_Data)
+      .then((response) => {
+        console.log("API Response updateCreateJob..:", response.data);
+        if (response.data.success === true) {
+          alert(response.data.message);
+          props.navigation.navigate("CreateJobSecondScreen", {
+            JobId: JobId,
+            editMode: editMode,
+          });
+          setSelectedDate(""),
+            setCurrentTime(""),
+            setHourlyNeedValue(""),
+            setneedServicesValue(""),
+            setSelectedButtonResponsibleId("");
+          setSelectedButtoBookingInsuranceId("");
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed updateCreateJob", error);
+        setIsLoading(false);
+        alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -732,7 +790,9 @@ export default CreateJobTermsScreen = (props) => {
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
                 // handleCreateJob()
-                handleValidatiomtionCreateJob()
+                {
+                  JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
+                }
               }
             />
           </View>

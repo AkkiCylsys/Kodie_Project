@@ -65,14 +65,14 @@ export default Repair = (props) => {
   const [activeScreen, setActiveScreen] = useState(true);
   const [allJobData, setAllJobData] = useState([]);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
-  const [JobId, setJobId] = useState();
+  const [JobId, setJobId] = useState(0);
   const [Job_Id, setJob_Id] = useState(0);
   const [Address, setAddress] = useState();
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
     useState(false);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [JobData, setJobData] = useState([]);
-  // alert(Job_Id)
+  // alert(Job_Id);
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -98,7 +98,6 @@ export default Repair = (props) => {
 
       setJobData(response?.data?.job_details);
       console.log("listJobdata", JobData);
-
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
@@ -413,7 +412,7 @@ export default Repair = (props) => {
         ]}
       >
         <BottomJobModal
-          JobId={Job_Id}
+          JobId={JobId}
           onDelete={jobDelete}
           onCloseModal={handleCloseModal}
           isDeletePropertyClicked={isDeleteData_Clicked}
