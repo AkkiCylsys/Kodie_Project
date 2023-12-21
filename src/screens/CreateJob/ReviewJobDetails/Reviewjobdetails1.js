@@ -16,10 +16,17 @@ const Reviewjobdetails1 = (props) => {
   console.log("View_Job_Details_sdfsdf.....", props.View_Job_Details);
   console.log("JOB_IDfsdfsdfs.....", props.JOB_ID);
   const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
+
   // alert(props.job_id)
+  // alert(props.update_JOB_ID)
   useEffect(() => {
-    getJobDetails();
+    if (props.editMode) {
+      getUpdateJobDetails();
+    } else {
+      getJobDetails();
+    }
   }, []);
+
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + "job/get";
@@ -53,6 +60,42 @@ const Reviewjobdetails1 = (props) => {
         setIsLoading(false);
       });
   };
+  // EditMode ........
+
+  const getUpdateJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id: props.update_JOB_ID,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then((response) => {
+        console.log("API Response JobDetails for updateImage:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData_term....", response.data.data);
+          setUpdateAllImage(response.data.data.image_file_path);
+          console.log(
+            "updateAllImage.....",
+            response.data.data.image_file_path
+          );
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   props?.imagesFilePath(jobDetailsData);
   // alert(JSON.stringify(jobDetailsData.first_name))
   return (
@@ -65,35 +108,38 @@ const Reviewjobdetails1 = (props) => {
           Job request summary
         </Text>
       </View>
-      <View style={{marginBottom:50}}>
-      <RowTexts leftText={"Name"} rightText={jobDetailsData.first_name} />
-      <RowTexts leftText={"Location"} rightText={jobDetailsData.job_location} />
-      <RowTexts
-        leftText={"Property type"}
-        rightText={jobDetailsData.property_type}
-      />
-      <RowTexts
-        leftText={"Proposed date"}
-        rightText={jobDetailsData.job_date}
-      />
-      <RowTexts
-        leftText={"Proposed time"}
-        rightText={jobDetailsData.job_time}
-      />
-      <RowTexts
-        leftText={"Number of hours"}
-        rightText={jobDetailsData.number_of_hours}
-      />
-      <RowTexts leftText={"How often"} rightText={jobDetailsData.how_often} />
-      <RowTexts
-        leftText={"Budget range"}
-        rightText={jobDetailsData.job_budget}
-      />
-      <RowTexts leftText={"Payment"} rightText={jobDetailsData.payment_by} />
-      <RowTexts
-        leftText={"Booking insurance"}
-        rightText={jobDetailsData.insurance}
-      />
+      <View style={{ marginBottom: 50 }}>
+        <RowTexts leftText={"Name"} rightText={jobDetailsData.first_name} />
+        <RowTexts
+          leftText={"Location"}
+          rightText={jobDetailsData.job_location}
+        />
+        <RowTexts
+          leftText={"Property type"}
+          rightText={jobDetailsData.property_type}
+        />
+        <RowTexts
+          leftText={"Proposed date"}
+          rightText={jobDetailsData.job_date}
+        />
+        <RowTexts
+          leftText={"Proposed time"}
+          rightText={jobDetailsData.job_time}
+        />
+        <RowTexts
+          leftText={"Number of hours"}
+          rightText={jobDetailsData.number_of_hours}
+        />
+        <RowTexts leftText={"How often"} rightText={jobDetailsData.how_often} />
+        <RowTexts
+          leftText={"Budget range"}
+          rightText={jobDetailsData.job_budget}
+        />
+        <RowTexts leftText={"Payment"} rightText={jobDetailsData.payment_by} />
+        <RowTexts
+          leftText={"Booking insurance"}
+          rightText={jobDetailsData.insurance}
+        />
       </View>
       {props.View_Job_Details ? null : (
         <>

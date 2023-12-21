@@ -43,6 +43,7 @@ export default CreateJobTermsScreen = (props) => {
   // alert(formattedPriceRanges);
 
   let JobId = props?.route?.params?.JobId;
+  let editMode = props?.route?.params?.editMode;
   // alert(JobId)
   let selectJobType = props?.route?.params?.selectJobType;
   let servicesValue = props?.route?.params?.servicesValue;
@@ -479,6 +480,65 @@ export default CreateJobTermsScreen = (props) => {
         setIsLoading(false);
       });
   };
+
+  const updateCreateJob = () => {
+    const url = Config.BASE_URL;
+    const update_createJob_url = url + `job/updateJob/${JobId}`;
+    // const update_createJob_url = url + "job/updateJob/1";
+    console.log("Request URL:", update_createJob_url);
+    setIsLoading(true);
+    const update_createJob_Data = {
+      uadId: loginData?.Login_details?.user_account_id,
+      type_of_job: selectJobType,
+      job_service_you_looking: servicesValue,
+      more_about_job: aboutyourNeed,
+      job_priority: jobPriorityValue,
+      property_type: property_value,
+      job_location: location,
+      location_latitude: latitude,
+      location_longitude: longitude,
+      job_rating: ratingThresholdValue,
+      job_date: selectedDate,
+      job_time: currentTime,
+      job_hourly: hourlyNeedValue,
+      job_often_need_service: needServicesValue,
+      job_budget: formattedPriceRanges,
+      job_payment_by: selectedButtonResponsibleId,
+      job_booking_insurance: selectedButtonBookingInsuranceId,
+      created_by: loginData?.Login_details?.user_account_id,
+      modified_by: loginData?.Login_details?.user_account_id,
+    };
+    console.log("updatedBody.....", update_createJob_Data);
+    axios
+      .put(update_createJob_url, update_createJob_Data)
+      .then((response) => {
+        console.log("API Response updateCreateJob..:", response.data);
+        if (response.data.success === true) {
+          alert(response.data.message);
+          props.navigation.navigate("CreateJobSecondScreen", {
+            JobId: JobId,
+            editMode: editMode,
+          });
+          setSelectedDate(""),
+            setCurrentTime(""),
+            setHourlyNeedValue(""),
+            setneedServicesValue(""),
+            setSelectedButtonResponsibleId("");
+          setSelectedButtoBookingInsuranceId("");
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed updateCreateJob", error);
+        setIsLoading(false);
+        alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
@@ -732,7 +792,9 @@ export default CreateJobTermsScreen = (props) => {
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
                 // handleCreateJob()
-                handleValidatiomtionCreateJob()
+                {
+                  JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
+                }
               }
             />
           </View>

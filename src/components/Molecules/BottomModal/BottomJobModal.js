@@ -133,6 +133,7 @@ const BottomJobModal = (props) => {
               if (item.id === "1") {
                 navigation.navigate("CreateJobFirstScreen", {
                   JobId: JobId,
+                  editMode: "editMode",
                 });
               }
               if (item.id === "4") {
