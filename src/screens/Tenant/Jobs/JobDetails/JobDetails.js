@@ -43,12 +43,16 @@ const Apartment_data = [
 const JobDetails = (props) => {
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
+  let update_JOB_ID = props?.route?.params?.JobId;
   let View_Job_Details = props?.route?.params?.View_Job_Details;
+  let editMode = props?.route?.params?.editMode;
   console.log("job_id...", job_id);
   console.log("JOB_ID_By_Navigation...", JOB_ID);
   console.log("View_Job_Details...", View_Job_Details);
   // alert(JSON.stringify(JOB_ID));
   // alert(job_id);
+  // alert(update_JOB_ID);
+  // alert(editMode);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [currentPage, setCurrentPage] = useState(3);
   const [value, setValue] = useState(null);
@@ -171,6 +175,8 @@ const JobDetails = (props) => {
           <Reviewjobdetails1
             job_id={job_id}
             JOB_ID={JOB_ID}
+            update_JOB_ID={update_JOB_ID}
+            editMode={editMode}
             View_Job_Details={View_Job_Details}
             imagesFilePath={handleImageFilePath}
             onPress={() => {

@@ -17,10 +17,17 @@ const Reviewjobdetails1 = (props) => {
   console.log("View_Job_Details_sdfsdf.....", props.View_Job_Details);
   console.log("JOB_IDfsdfsdfs.....", props.JOB_ID);
   const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
+
   // alert(props.job_id)
+  // alert(props.update_JOB_ID)
   useEffect(() => {
-    getJobDetails();
+    if (props.editMode) {
+      getUpdateJobDetails();
+    } else {
+      getJobDetails();
+    }
   }, []);
+
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + "job/get";
@@ -40,6 +47,42 @@ const Reviewjobdetails1 = (props) => {
           console.log("jobDetailsData....", response.data.data);
           // alert(JSON.stringify(response.data.data))
           // alert(response.data.message);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  // EditMode ........
+
+  const getUpdateJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id: props.update_JOB_ID,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then((response) => {
+        console.log("API Response JobDetails for updateImage:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData_term....", response.data.data);
+          setUpdateAllImage(response.data.data.image_file_path);
+          console.log(
+            "updateAllImage.....",
+            response.data.data.image_file_path
+          );
         } else {
           alert(response.data.message);
           setIsLoading(false);

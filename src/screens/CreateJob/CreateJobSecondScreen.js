@@ -1,6 +1,6 @@
 //ScreenNo:126
 //ScreenNo:127
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -48,7 +48,11 @@ const CreateJobSecondScreen = (props) => {
 
   const handleValidate = () => {
     if (MultiImageName.length > 0) {
-      handleuploadJobFiles();
+      if (editMode) {
+        handleUpdateJobFiles();
+      } else {
+        handleuploadJobFiles();
+      }
     } else {
       setMultiImageNameError("Please select Front image before proceeding");
       console.log("err...", MultiImageNameError);
@@ -56,8 +60,10 @@ const CreateJobSecondScreen = (props) => {
   };
 
   let job_id = props?.route?.params?.job_id;
+  let editMode = props?.route?.params?.editMode;
+  let JobId = props?.route?.params?.JobId;
   console.log("job_id.....", job_id);
-
+  // alert(editMode);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
@@ -68,7 +74,12 @@ const CreateJobSecondScreen = (props) => {
   const [leftImage, setLeftImage] = useState([]);
   const [rightImage, setRightImage] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState([]);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+  const [updateAllImage, setUpdateAllImage] = useState([]);
 
+  useEffect(() => {
+    getJobDetails();
+  }, []);
   const CloseUp = () => {
     refRBSheet.current.close();
     console.log("close");
@@ -273,21 +284,6 @@ const CreateJobSecondScreen = (props) => {
       console.error("rightImage is not defined or not an array:", rightImage);
       return;
     }
-
-    // if (selectedVideos && selectedVideos.length > 0) {
-    //   selectedVideos.forEach((videoUri, index) => {
-    //     if (typeof videoUri === "string") {
-    //       const videoName = videoUri.substring(videoUri.lastIndexOf("/") + 1);
-    //       formData.append("video", {
-    //         uri: videoUri,
-    //         name: videoName,
-    //         type: "video/mp4",
-    //       });
-    //     } else {
-    //      console.error(`Invalid video URI at index ${index}: ${vi deoUri}`);
-    //     }
-    //   });
-    // }
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoInfo, index) => {
         const { path, mime } = videoInfo;
@@ -336,6 +332,138 @@ const CreateJobSecondScreen = (props) => {
     }
   };
 
+  // EditMode api.............
+
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id: JobId,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then((response) => {
+        console.log("API Response JobDetails for updateImage:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData_term....", response.data.data);
+          setUpdateAllImage(response.data.data.image_file_path);
+          console.log(
+            "updateAllImage.....",
+            response.data.data.image_file_path
+          );
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const handleUpdateJobFiles = async () => {
+    const formData = new FormData();
+    if (MultiImageName && Array.isArray(MultiImageName)) {
+      const imagePaths = MultiImageName.map((image) => image.path);
+      imagePaths.forEach((path, index) => {
+        formData.append("frontImage", {
+          uri: path,
+          name: `image_${index}.jpg`,
+          type: "image/jpeg",
+        });
+      });
+    } else {
+      console.error(
+        "MultiImageName is not defined or not an array:",
+        MultiImageName
+      );
+      return;
+    }
+
+    if (leftImage && Array.isArray(leftImage)) {
+      const leftImagePaths = leftImage.map((image) => image.path);
+      leftImagePaths.forEach((path, index) => {
+        formData.append("leftImage", {
+          uri: path,
+          name: `left_image_${index}.jpg`,
+          type: "image/jpeg",
+        });
+      });
+    } else {
+      console.error("leftImage is not defined or not an array:", leftImage);
+      return;
+    }
+
+    if (rightImage && Array.isArray(rightImage)) {
+      const rightImagePaths = rightImage.map((image) => image.path);
+      rightImagePaths.forEach((path, index) => {
+        formData.append("rightImage", {
+          uri: path,
+          name: `right_image_${index}.jpg`,
+          type: "image/jpeg",
+        });
+      });
+    } else {
+      console.error("rightImage is not defined or not an array:", rightImage);
+      return;
+    }
+    if (selectedVideos && selectedVideos.length > 0) {
+      selectedVideos.forEach((videoInfo, index) => {
+        const { path, mime } = videoInfo;
+        console.log("path..", path);
+        console.log("mime..", mime);
+        const videoName = path.substring(path.lastIndexOf("/") + 1);
+        formData.append("video", {
+          uri: path,
+          name: videoName,
+          type: mime,
+        });
+      });
+    } else {
+      console.log("invalid video");
+    }
+
+    formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
+    console.log("formData", formData);
+    const url = Config.BASE_URL;
+    const update_uploadFile_url = url + `job/updatejobimages/${JobId}`;
+    console.log("Request URL:", update_uploadFile_url);
+    setIsLoading(true);
+    try {
+      const response = await axios.put(update_uploadFile_url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("update_uploadJobFilesData....", response.data);
+      if (response.data.success === true) {
+        setIsLoading(false);
+        alert(response.data.message);
+        props.navigation.navigate("JobDetails", {
+          JobId: JobId,
+          editMode: editMode,
+        });
+        console.log("update_uploadJobFilesDatas", response.data);
+      } else {
+        console.log("update_uploadJobFilesData", response.data.error);
+        alert("Error while saving account details");
+      }
+    } catch (error) {
+      alert(error);
+      console.log("update_error...", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={CreateJobSecondStyle.container}>
       <TopHeader
@@ -356,13 +484,13 @@ const CreateJobSecondScreen = (props) => {
           <Text style={CreateJobSecondStyle.heading}>
             {"Images and videos of job"}
           </Text>
-
           <View style={CreateJobSecondStyle.slider_view}>
             {(imagePaths && imagePaths.length > 0) ||
             (leftImagePaths && leftImagePaths.length > 0) ||
-            (rightImagePaths && rightImagePaths.length > 0) ? (
+            (rightImagePaths && rightImagePaths.length > 0) ||
+            (updateAllImage && updateAllImage != 0) ? (
               <SliderBox
-                images={allImagePaths}
+                images={editMode ? updateAllImage : allImagePaths}
                 sliderBoxHeight={200}
                 onCurrentImagePressed={(index) =>
                   console.warn(`image ${index} pressed`)
@@ -383,6 +511,7 @@ const CreateJobSecondScreen = (props) => {
               />
             ) : null}
           </View>
+
           {MultiImageName.length > 0 ? null : (
             <Text style={CreateJobSecondStyle.error_text}>
               {MultiImageNameError}
