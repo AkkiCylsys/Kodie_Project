@@ -140,8 +140,10 @@ export default PropertyDetails = (props) => {
             //   ""
             // )
           );
-
-          setPropertyDesc(response.data.property_details[0]?.property_description);
+          // setSelectedButtonId(response.data.property_details[0]?.property_type_id)
+          setPropertyDesc(
+            response.data.property_details[0]?.property_description
+          );
 
           console.log("propertyDetail....", response.data.property_details);
         } else {
@@ -626,7 +628,7 @@ export default PropertyDetails = (props) => {
                 <CustomSingleButton
                   _ButtonText={"Next"}
                   Text_Color={_COLORS.Kodie_WhiteColor}
-                  onPress={() => { 
+                  onPress={() => {
                     // handleLocation(location);
                     // handlePropertyValue(property_value);
                     // if (handleLocation() ||handlePropertyValue()) {
