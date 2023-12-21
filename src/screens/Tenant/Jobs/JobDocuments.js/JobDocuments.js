@@ -24,13 +24,13 @@ const folderData = [
   },
   {
     id: "2",
-    moduleName: "Invoice",
+    moduleName: "Job_Invoice",
     folderHeading: "Invoice & proof of payment",
     totalFile: "13 Files",
   },
   {
     id: "3",
-    moduleName: "Completed",
+    moduleName: "Job_Completed",
     folderHeading: "Proof of work completed",
     totalFile: "15 Files",
   },
