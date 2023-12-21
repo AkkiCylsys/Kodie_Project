@@ -460,10 +460,11 @@ export default CreateJobTermsScreen = (props) => {
           setCurrentTime(response.data.data.job_time);
           setHourlyNeedValue(parseInt(response.data.data.job_hourly_key));
           setneedServicesValue(parseInt(response.data.data.job_how_often_key));
-          setSelectedButtonResponsibleId(
+          setFormattedPriceRanges(response.data.data.job_budget)
+          setSelectedButtonResponsible(
             parseInt(response.data.data.job_payment_by_key)
           );
-          setSelectedButtoBookingInsuranceId(
+          setSelectedButtonBookingInsurance(
             parseInt(response.data.data.job_insurence_key)
           );
         } else {
@@ -488,7 +489,6 @@ export default CreateJobTermsScreen = (props) => {
     console.log("Request URL:", update_createJob_url);
     setIsLoading(true);
     const update_createJob_Data = {
-      uadId: loginData?.Login_details?.user_account_id,
       type_of_job: selectJobType,
       job_service_you_looking: servicesValue,
       more_about_job: aboutyourNeed,
@@ -505,8 +505,6 @@ export default CreateJobTermsScreen = (props) => {
       job_budget: formattedPriceRanges,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
-      created_by: loginData?.Login_details?.user_account_id,
-      modified_by: loginData?.Login_details?.user_account_id,
     };
     console.log("updatedBody.....", update_createJob_Data);
     axios

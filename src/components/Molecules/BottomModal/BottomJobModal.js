@@ -135,6 +135,7 @@ const BottomJobModal = (props) => {
                   JobId: JobId,
                   editMode: "editMode",
                 });
+                handleCloseModal()
               }
               if (item.id === "4") {
                 handleDeleteProperty();

@@ -45,14 +45,11 @@ const CreateJobSecondScreen = (props) => {
   // alert(loginData?.Login_details?.user_account_id);
 
   // validation...
-
   const handleValidate = () => {
-    if (MultiImageName.length > 0) {
-      if (editMode) {
-        handleUpdateJobFiles();
-      } else {
-        handleuploadJobFiles();
-      }
+    if (editMode) {
+      handleUpdateJobFiles();
+    } else if (MultiImageName.length > 0) {
+      handleuploadJobFiles();
     } else {
       setMultiImageNameError("Please select Front image before proceeding");
       console.log("err...", MultiImageNameError);

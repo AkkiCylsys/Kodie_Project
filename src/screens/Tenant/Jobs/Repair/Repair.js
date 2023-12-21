@@ -216,7 +216,6 @@ export default Repair = (props) => {
 
   const propertyData_render1 = ({ item }) => {
     setJob_Id(item?.job_id);
-    console.log("hsdfkjhdskfhskh...", item?.job_id);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -277,9 +276,6 @@ export default Repair = (props) => {
               onPress={() => {
                 setIsDeleteBottomSheetVisible(true);
                 setJobId(item.job_id);
-                console.log("JobId......", JobId);
-
-                console.log("stact....", item.job_id);
                 setAddress(item?.job_location);
               }}
             >

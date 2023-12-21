@@ -716,8 +716,9 @@ export default CreateJobFirstScreen = (props) => {
         if (response.data.success === true) {
           setJobDetailsData(response.data.data);
           console.log("jobDetailsData....", response.data.data);
-          setSelectJobTypeid(response.data.data.job_type_key);
+          // setSelectJobTypeid(response.data.data.job_type_key);
           // alert(response.data.data.job_type_key);
+          setIsClick(parseInt(response.data.data.job_type_key))
           setAboutyourNeed(response.data.data.job_description);
           setservicesValue(
             parseInt(response.data.data?.job_service_you_looking_key)
@@ -726,8 +727,8 @@ export default CreateJobFirstScreen = (props) => {
           setProperty_value(parseInt(response.data.data?.property_type_key));
           setLocation(response.data.data?.job_location);
           setRatingThresholdValue(parseInt(response.data.data?.job_rating_key));
-          setlatitude(response.data.data?.location_latitude)
-          setlongitude(response.data.data?.location_longitude)
+          setlatitude(response.data.data?.location_latitude);
+          setlongitude(response.data.data?.location_longitude);
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -1042,7 +1043,7 @@ export default CreateJobFirstScreen = (props) => {
                   latitude: latitude,
                   longitude: longitude,
                   JobId: JobId,
-                  editMode:editMode
+                  editMode: editMode,
                 })
               }
               _ButtonText={"Next"}
