@@ -121,6 +121,7 @@ import ViewDocument from "../../screens/Landlord/AddNewProperty/PropertyReview/D
 // import EditDashboard from "../../screens/Dashboard/EditDashboard";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import BiddingDetails from "../../screens/Tenant/Jobs/JobDetails/BiddingDetails/Biddingdetails";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
 import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
@@ -1021,6 +1022,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"JodBiddingDetails"}
           component={JodBiddingDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"BiddingDetails"}
+          component={BiddingDetails}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

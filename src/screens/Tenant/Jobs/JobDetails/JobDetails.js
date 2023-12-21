@@ -21,6 +21,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
 import StepIndicator from "react-native-step-indicator";
+import BiddingDetails from "./BiddingDetails/Biddingdetails";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
 import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
@@ -181,7 +182,7 @@ const JobDetails = (props) => {
       case "Tab2":
         return <JodBiddingDetails />;
       case "Tab3":
-        return <Leases />;
+        return <BiddingDetails />;
       case "Tab4":
         return <Leases />;
     }
