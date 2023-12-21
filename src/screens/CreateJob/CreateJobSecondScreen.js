@@ -44,6 +44,17 @@ const CreateJobSecondScreen = (props) => {
   console.log("loginResponse.....", loginData);
   // alert(loginData?.Login_details?.user_account_id);
 
+  // validation...
+
+  const handleValidate = () => {
+    if (MultiImageName.length > 0) {
+      handleuploadJobFiles();
+    } else {
+      setMultiImageNameError("Please select Front image before proceeding");
+      console.log("err...", MultiImageNameError);
+    }
+  };
+
   let job_id = props?.route?.params?.job_id;
   console.log("job_id.....", job_id);
 
@@ -53,6 +64,7 @@ const CreateJobSecondScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(2);
   const [MultiImageName, setMultiImageName] = useState([]);
+  const [MultiImageNameError, setMultiImageNameError] = useState(true);
   const [leftImage, setLeftImage] = useState([]);
   const [rightImage, setRightImage] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState([]);
@@ -292,9 +304,7 @@ const CreateJobSecondScreen = (props) => {
       console.log("invalid video");
     }
 
-    formData.append("uad_key", loginData?.Login_details?.user_id);
-    // formData.append("createdBy", loginData?.Login_details?.user_account_id);
-    // formData.append("updatedBy", loginData?.Login_details?.user_account_id);
+    formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
     console.log("formData", formData);
     const url = Config.BASE_URL;
     const uploadFile_url = url + "job/uploadJobFiles";
@@ -346,6 +356,7 @@ const CreateJobSecondScreen = (props) => {
           <Text style={CreateJobSecondStyle.heading}>
             {"Images and videos of job"}
           </Text>
+
           <View style={CreateJobSecondStyle.slider_view}>
             {(imagePaths && imagePaths.length > 0) ||
             (leftImagePaths && leftImagePaths.length > 0) ||
@@ -372,7 +383,11 @@ const CreateJobSecondScreen = (props) => {
               />
             ) : null}
           </View>
-
+          {MultiImageName.length > 0 ? null : (
+            <Text style={CreateJobSecondStyle.error_text}>
+              {MultiImageNameError}
+            </Text>
+          )}
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {"Upload clear images of the front profile"}
@@ -383,6 +398,7 @@ const CreateJobSecondScreen = (props) => {
               color={_COLORS.Kodie_GrayColor}
             />
           </View>
+
           <View style={{ flex: 1 }}>
             <UploadImageBoxes
               Box_Text={"Add Photo"}
@@ -508,7 +524,8 @@ const CreateJobSecondScreen = (props) => {
               disabled={isLoading ? true : false}
               onPress={() => {
                 // props.navigation.navigate("JobDetails");
-                handleuploadJobFiles();
+                // handleuploadJobFiles();
+                handleValidate();
               }}
             />
           </View>

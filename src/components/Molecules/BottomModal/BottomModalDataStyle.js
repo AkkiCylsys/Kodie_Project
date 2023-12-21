@@ -5,7 +5,7 @@ export const BottomModalDataStyle = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    // padding: 10,
     marginHorizontal:10,
     backgroundColor:_COLORS.Kodie_WhiteColor
     
@@ -32,6 +32,7 @@ export const BottomModalDataStyle = StyleSheet.create({
     width: 35,
     marginTop:10,
     height: 35,
-    justifyContent: "center",
+   textAlign:'center',
+    
   },
 });

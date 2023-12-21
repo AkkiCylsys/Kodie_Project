@@ -17,6 +17,13 @@ const Jobs = (props) => {
             onpress={() => {
               props.navigation.navigate("CreateJobFirstScreen");
             }}
+            create_job_id={(job_id) => {
+              // const { newJob_Id } = job_id;
+              props.navigation.navigate("JobDetails", {
+                JOB_ID: job_id,
+                View_Job_Details: "View_Job_Details",
+              });
+            }}
           />
         );
       case "Tab2":

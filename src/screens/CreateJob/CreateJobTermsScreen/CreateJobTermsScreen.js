@@ -42,6 +42,8 @@ export default CreateJobTermsScreen = (props) => {
   // const formattedPriceRanges = `$${priceRanges}`;
   // alert(formattedPriceRanges);
 
+  let JobId = props?.route?.params?.JobId;
+  // alert(JobId)
   let selectJobType = props?.route?.params?.selectJobType;
   let servicesValue = props?.route?.params?.servicesValue;
   let aboutyourNeed = props?.route?.params?.aboutyourNeed;
@@ -85,6 +87,8 @@ export default CreateJobTermsScreen = (props) => {
     useState(false);
   const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
     useState(262);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -199,7 +203,7 @@ export default CreateJobTermsScreen = (props) => {
     }
   };
 
-  const handleVerificationCreateJob = () => {
+  const handleValidatiomtionCreateJob = () => {
     if (selectedDate.trim() === "") {
       setSelectedDateError("Payment date is required.");
     } else {
@@ -213,6 +217,7 @@ export default CreateJobTermsScreen = (props) => {
     handleResponsible();
     handleBookingInsurance();
     setFormattedPriceRanges(`$${priceRanges}`);
+    getJobDetails();
   }, [priceRanges]);
   // alert(`Formatted Price Range: ${formattedPriceRanges}`);
   console.log(`Formatted Price Range: ${formattedPriceRanges}`);
@@ -387,7 +392,7 @@ export default CreateJobTermsScreen = (props) => {
     console.log("Request URL:", createJob_url);
     setIsLoading(true);
     const createJob_Data = {
-      user_account_details_id: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
       type_of_job: selectJobType,
       job_service_you_looking: servicesValue,
       more_about_job: aboutyourNeed,
@@ -434,7 +439,46 @@ export default CreateJobTermsScreen = (props) => {
         setIsLoading(false);
       });
   };
-
+  // EditMode Api.........
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id: JobId,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then((response) => {
+        console.log("API Response JobDetails:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData_term....", response.data.data);
+          setSelectedDate(response.data.data.job_date.substring(0, 10));
+          setCurrentTime(response.data.data.job_time);
+          setHourlyNeedValue(parseInt(response.data.data.job_hourly_key));
+          setneedServicesValue(parseInt(response.data.data.job_how_often_key));
+          setSelectedButtonResponsibleId(
+            parseInt(response.data.data.job_payment_by_key)
+          );
+          setSelectedButtoBookingInsuranceId(
+            parseInt(response.data.data.job_insurence_key)
+          );
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
@@ -688,7 +732,7 @@ export default CreateJobTermsScreen = (props) => {
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
                 // handleCreateJob()
-                handleVerificationCreateJob()
+                handleValidatiomtionCreateJob()
               }
             />
           </View>
