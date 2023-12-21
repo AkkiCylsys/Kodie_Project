@@ -5,10 +5,10 @@ export const BottomModalDataStyle = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
-    marginHorizontal: 10,
-    backgroundColor: _COLORS.Kodie_WhiteColor
-
+    // padding: 10,
+    marginHorizontal:10,
+    backgroundColor:_COLORS.Kodie_WhiteColor
+    
   },
   text: {
     fontSize: 14,
@@ -28,7 +28,7 @@ export const BottomModalDataStyle = StyleSheet.create({
   IconView: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_LiteWhiteColor,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
     marginLeft: 5,
     width: 35,
     marginTop: 10,

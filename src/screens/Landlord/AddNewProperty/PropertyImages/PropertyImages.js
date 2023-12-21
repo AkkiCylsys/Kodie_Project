@@ -60,9 +60,8 @@ export default PropertyImages = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details);
+          setProperty_Details(response.data.property_details[0]);
           setImagePaths(response.data.property_details[0]?.image_path);
-          //setNetworkImagePaths(response.data.data[0]?.image_path);
           // alert(JSON.stringify(response.data.property_details));
           console.log("propertyDetail....", response.data.property_details);
         } else {
@@ -103,12 +102,27 @@ export default PropertyImages = (props) => {
     formData.append("property_id", property_id);
     console.log("kljproperty_Data_id", property_id);
     const imagePaths = MultiImageName.map((image) => image.path);
+    console.log(imagePaths);
+    // imagePaths.forEach((path, index) => {
+    //   // Get the corresponding image object
+    //   const imageObject = MultiImageName[index];
 
+    //   // Extract filename and path
+    //   const { filename, path: imagePath } = imageObject;
+    //   console.log("filename", filename);
+
+    //   // Append to formData
+    //   formData.append("images", {
+    //     uri: imagePath,
+    //     name: filename,
+    //     type: "image/jpeg",
+    //   });
+    // });
     // Append all image paths to the same key 'images[]'
     imagePaths.forEach((path, index) => {
       formData.append("images", {
         uri: path,
-        name: `image.jpg`,
+        name: path,
         type: "image/jpeg",
       });
     });
@@ -300,7 +314,7 @@ export default PropertyImages = (props) => {
       imagePaths.forEach((path, index) => {
         formData.append("images", {
           uri: path,
-          name: `image_${index}.jpg`,
+          name: path,
           type: "image/jpeg",
         });
       });

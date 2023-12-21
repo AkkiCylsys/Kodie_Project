@@ -11,10 +11,11 @@ import axios from "axios";
 const Reviewjobdetails1 = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
-
   const imagesFiles = jobDetailsData.image_file_path;
   console.log("imagesFiles...", imagesFiles);
-
+  console.log("View_Job_Details_sdfsdf.....", props.View_Job_Details);
+  console.log("JOB_IDfsdfsdfs.....", props.JOB_ID);
+  const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
   // alert(props.job_id)
   useEffect(() => {
     getJobDetails();
@@ -26,7 +27,8 @@ const Reviewjobdetails1 = (props) => {
     setIsLoading(true);
     const jobDetailsData = {
       // jm_job_id: 1,
-      jm_job_id: props.job_id,
+      // jm_job_id: props.job_id,
+      jm_job_id: F_job_id,
     };
     axios
       .post(jobDetails_url, jobDetailsData)
@@ -34,8 +36,7 @@ const Reviewjobdetails1 = (props) => {
         console.log("API Response JobDetails:", response.data);
         if (response.data.success === true) {
           setJobDetailsData(response.data.data);
-          console.log(("jobDetailsData....", response.data.data));
-          props?.imagesFilePath(response.data.data);
+          console.log("jobDetailsData....", response.data.data);
           // alert(JSON.stringify(response.data.data))
           // alert(response.data.message);
         } else {
@@ -52,17 +53,19 @@ const Reviewjobdetails1 = (props) => {
         setIsLoading(false);
       });
   };
+  props?.imagesFilePath(jobDetailsData);
   // alert(JSON.stringify(jobDetailsData.first_name))
   return (
     <View style={{ flex: 1, marginHorizontal: 16 }}>
       <View style={{ marginTop: 17 }}>
         <Text style={ReviewjobdetailsStyle1.textview}>
-         {jobDetailsData.job_description}
+          {jobDetailsData.job_description}
         </Text>
         <Text style={ReviewjobdetailsStyle1.textview1}>
           Job request summary
         </Text>
       </View>
+      <View style={{marginBottom:50}}>
       <RowTexts leftText={"Name"} rightText={jobDetailsData.first_name} />
       <RowTexts leftText={"Location"} rightText={jobDetailsData.job_location} />
       <RowTexts
@@ -91,24 +94,29 @@ const Reviewjobdetails1 = (props) => {
         leftText={"Booking insurance"}
         rightText={jobDetailsData.insurance}
       />
-      <View style={ReviewjobdetailsStyle1.nextBtn_view}>
-        <CustomSingleButton
-          _ButtonText={"Next"}
-          Text_Color={_COLORS.Kodie_WhiteColor}
-          disabled={isLoading ? true : false}
-          onPress={props.onPress}
-        />
       </View>
-      <TouchableOpacity style={ReviewjobdetailsStyle1.goBack_View}>
-        <View style={ReviewjobdetailsStyle1.backIcon}>
-          <Ionicons
-            name="chevron-back"
-            size={22}
-            color={_COLORS.Kodie_MediumGrayColor}
-          />
-        </View>
-        <Text style={ReviewjobdetailsStyle1.goBack_Text}>{"Go back"}</Text>
-      </TouchableOpacity>
+      {props.View_Job_Details ? null : (
+        <>
+          <View style={ReviewjobdetailsStyle1.nextBtn_view}>
+            <CustomSingleButton
+              _ButtonText={"Next"}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
+              onPress={props.onPress}
+            />
+          </View>
+          <TouchableOpacity style={ReviewjobdetailsStyle1.goBack_View}>
+            <View style={ReviewjobdetailsStyle1.backIcon}>
+              <Ionicons
+                name="chevron-back"
+                size={22}
+                color={_COLORS.Kodie_MediumGrayColor}
+              />
+            </View>
+            <Text style={ReviewjobdetailsStyle1.goBack_Text}>{"Go back"}</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 };

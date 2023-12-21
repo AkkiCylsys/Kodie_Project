@@ -11,6 +11,7 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { _COLORS, LABEL_STYLES } from "../../../../Themes";
 import { RepairCss } from "./RepairCss";
@@ -25,8 +26,14 @@ import ArchiveJob from "../../../../components/Molecules/Archive/ArchiveJob/Arch
 import { Config } from "../../../../Config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 import { ArchiveJobStyle } from "../../../../components/Molecules/Archive/ArchiveJob/ArchiveJobStyle";
-const HorizontalData = ["Posted", "Ongoing", "Completed"];
+import BottomModalData from "../../../../components/Molecules/BottomModal/BottomModalData";
+import BottomJobModal from "../../../../components/Molecules/BottomModal/BottomJobModal";
+import Modal from "react-native-modal";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+
+const HorizontalData = ["All", "Recent", "Posted", "Ongoing", "Completed"];
 
 const property_List1 = [
   {
@@ -45,24 +52,142 @@ const property_List1 = [
     refno: "Ref #16694",
   },
 ];
-
 export default Repair = (props) => {
+  const isvisible = useIsFocused();
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
-  console.log("loginresponse_jobdetails..", loginData?.Login_details?.user_id);
-  const user_id = loginData?.Login_details?.user_id;
+  console.log(
+    "loginresponse_jobdetails..",
+    loginData?.Login_details?.user_account_id
+  );
+  const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
   const [activeScreen, setActiveScreen] = useState(true);
   const [allJobData, setAllJobData] = useState([]);
+  const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
+  const [JobId, setJobId] = useState();
+  const [Job_Id, setJob_Id] = useState(0);
+  const [Address, setAddress] = useState();
+  const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
+    useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [JobData, setJobData] = useState([]);
+  // alert(Job_Id)
+  const handleCloseModal = () => {
+    setIsDeleteData_Clicked(false);
+    setIsDeleteBottomSheetVisible(false);
+  };
+  const CloseUp = () => {
+    setIsDeleteBottomSheetVisible(false);
+  };
+  const getJobDetailsByFilter = async (filter) => {
+    setIsLoading(true);
+    // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
+    try {
+      const url = Config.BASE_URL;
+      const filter_apiUrl = url + "job/getJobbyFilter";
+      console.log("filter_apiUrl...", filter_apiUrl);
+      const response = await axios.post(filter_apiUrl, {
+        job_filter: filter,
+        user_account_id: account_id,
+        page_no: 1,
+        limit: filter == "Recent" ? 5 : 10,
+        order_col: "2",
+        order_wise: "DESC",
+      });
+
+      setJobData(response?.data?.job_details);
+      console.log("listJobdata", JobData);
+
+      setIsLoading(false);
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        alert(error.response.message);
+        setIsLoading(false);
+      } else {
+        alert("An error occurred. Please try again later.");
+        setIsLoading(false);
+      }
+      console.error("API Error:", error);
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    getAllJob();
-  }, []);
+    if (isvisible) {
+      getJobDetailsByFilter(selectedFilter);
+    }
+  }, [selectedFilter, isvisible]);
+  const jobDelete = async () => {
+    setIsDeleteData_Clicked(true);
+  };
+  const FinalDeleteProperty = async () => {
+    setIsLoading(true);
+    setIsDeleteData_Clicked(false);
+    setIsDeleteBottomSheetVisible(false);
+    const url = Config.BASE_URL;
+    const jobdelete = url + `job/deletejob/${JobId}`;
+    console.log("jobdelete", jobdelete);
+    try {
+      const response = await axios.delete(jobdelete);
+
+      console.log("API Response:", response.data);
+      if (response.data.success === true) {
+        Alert.alert("Job Deleted", response.data.message);
+
+        getJobDetailsByFilter(selectedFilter);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      setIsLoading(false);
+    }
+  };
+  // useEffect(() => {
+  //   getAllJob();
+  // }, []);
   const horizontal_render = ({ item }) => {
     return (
-      <TouchableOpacity style={RepairCss.flatlistView}>
-        <View style={RepairCss.round} />
-        <Text style={RepairCss.item_style}>{item}</Text>
+      <TouchableOpacity
+        style={[
+          RepairCss.flatlistView,
+          {
+            backgroundColor:
+              selectedFilter === item
+                ? _COLORS?.Kodie_BlackColor
+                : _COLORS?.Kodie_WhiteColor,
+          },
+        ]}
+        onPress={() => setSelectedFilter(item)}
+      >
+        {selectedFilter === item ? null : (
+          <View
+            style={[
+              RepairCss.round,
+              {
+                backgroundColor:
+                  selectedFilter === item
+                    ? _COLORS?.Kodie_WhiteColor
+                    : _COLORS?.Kodie_BlackColor,
+              },
+            ]}
+          />
+        )}
+        <Text
+          style={[
+            RepairCss.item_style,
+            { color: selectedFilter === item ? "white" : "black" },
+          ]}
+        >
+          {item}
+        </Text>
+        {selectedFilter === item ? (
+          <MaterialCommunityIcons
+            name={"check"}
+            size={18}
+            color={_COLORS.Kodie_WhiteColor}
+          />
+        ) : null}
       </TouchableOpacity>
     );
   };
@@ -71,28 +196,33 @@ export default Repair = (props) => {
   <ArchiveJob />;
 
   // Api intrigation....
-  const getAllJob = () => {
-    const url = Config.BASE_URL;
-    const getAllJobUrl = url + `job/getAlljobs/${user_id}`;
-    console.log("Request URL:", getAllJobUrl);
-    setIsLoading(true);
-    axios
-      .get(getAllJobUrl)
-      .then((response) => {
-        console.log("API Response getAllJob..:", response.data);
-        setAllJobData(response.data.data);
-      })
-      .catch((error) => {
-        console.error("API failed_moduleName", error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+  // const getAllJob = () => {
+  //   const url = Config.BASE_URL;
+  //   const getAllJobUrl = url + `job/getAlljobs/${account_id}`;
+  //   console.log("Request URL:", getAllJobUrl);
+  //   setIsLoading(true);
+  //   axios
+  //     .get(getAllJobUrl)
+  //     .then((response) => {
+  //       console.log("API Response getAllJob..:", response.data);
+  //       setAllJobData(response.data.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("API failed_moduleName", error);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
 
   const propertyData_render1 = ({ item }) => {
+    setJob_Id(item?.job_id);
     return (
-      <View>
+      <TouchableOpacity
+        onPress={() => {
+          props.create_job_id?.(item.job_id);
+        }}
+      >
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
             <View style={RepairCss.flexContainer}>
@@ -143,12 +273,20 @@ export default Repair = (props) => {
                 </Text>
               </View>
             </View>
-            <Entypo
-              name={"dots-three-horizontal"}
-              size={20}
-              color={_COLORS.Kodie_GrayColor}
-              style={{ marginLeft: 15 }}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                setIsDeleteBottomSheetVisible(true);
+                setJobId(item.job_id);
+                setAddress(item?.job_location);
+              }}
+            >
+              <Entypo
+                name={"dots-three-horizontal"}
+                size={20}
+                color={_COLORS.Kodie_GrayColor}
+                style={{ marginLeft: 15 }}
+              />
+            </TouchableOpacity>
           </View>
           <Text style={LABEL_STYLES.commonMidtext}>{item.job_reference}</Text>
           <View style={RepairCss.flat_MainView}>
@@ -181,7 +319,7 @@ export default Repair = (props) => {
           </View>
         </View>
         <DividerIcon />
-      </View>
+      </TouchableOpacity>
     );
   };
   return (
@@ -242,14 +380,6 @@ export default Repair = (props) => {
         <SearchBar frontSearchIcon height={48} marginTop={5} />
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
-            <TouchableOpacity style={RepairCss.AllView}>
-              <Text style={RepairCss.item_style}>ALL</Text>
-              <MaterialCommunityIcons
-                name={"check"}
-                size={18}
-                color={_COLORS.Kodie_WhiteColor}
-              />
-            </TouchableOpacity>
             <FlatList
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -260,11 +390,39 @@ export default Repair = (props) => {
         </View>
         <DividerIcon />
         {activeScreen ? (
-          <FlatList data={allJobData} renderItem={propertyData_render1} />
+          <FlatList data={JobData} renderItem={propertyData_render1} />
         ) : (
           <ArchiveJob />
         )}
       </ScrollView>
+      <Modal
+        isVisible={isDeleteBottomSheetVisible}
+        onBackdropPress={() => setIsDeleteBottomSheetVisible(true)}
+        style={[
+          RepairCss.bottomModal_container,
+          {
+            position: "absolute",
+            left: -20,
+            bottom: -30,
+            width: "100%",
+            height: isDeleteData_Clicked ? "30%" : "45%",
+            backgroundColor: "white",
+            borderRadius: 10,
+            paddingVertical: 8,
+          },
+        ]}
+      >
+        <BottomJobModal
+          JobId={Job_Id}
+          onDelete={jobDelete}
+          onCloseModal={handleCloseModal}
+          isDeletePropertyClicked={isDeleteData_Clicked}
+          onDeleteData={FinalDeleteProperty}
+          Address={Address}
+          onClose={CloseUp}
+        />
+      </Modal>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

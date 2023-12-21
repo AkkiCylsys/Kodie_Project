@@ -48,8 +48,7 @@ const ChatPopup = (props) => {
             <Text style={ChatPopupStyle.IconView}>
             {item.icon}
             </Text>
-          </TouchableOpacity>
-  
+          </TouchableOpacity> 
           <Text style={ChatPopupStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
       </>

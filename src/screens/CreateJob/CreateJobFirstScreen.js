@@ -41,6 +41,7 @@ import Geolocation from "react-native-geolocation-service";
 import MapScreen from "../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
+import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
 
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
@@ -70,6 +71,8 @@ const data = [
   { label: "Fixing & maintenance", value: "5" },
 ];
 export default CreateJobFirstScreen = (props) => {
+  const JobId = props.route.params?.JobId;
+  // alert(JobId)
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
@@ -89,6 +92,7 @@ export default CreateJobFirstScreen = (props) => {
   const [selectJobTypeid, setSelectJobTypeid] = useState("");
   const [servicesData, setServicesData] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
 
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
@@ -339,6 +343,7 @@ export default CreateJobFirstScreen = (props) => {
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
+    getJobDetails();
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
@@ -693,6 +698,49 @@ export default CreateJobFirstScreen = (props) => {
         setIsLoading(false);
       });
   };
+  // EditMode ..................
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id: JobId,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then((response) => {
+        console.log("API Response JobDetails:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData....", response.data.data);
+          setSelectJobTypeid(response.data.data.job_type_key);
+          // alert(response.data.data.job_type_key);
+          setAboutyourNeed(response.data.data.job_description);
+          setservicesValue(
+            parseInt(response.data.data?.job_service_you_looking_key)
+          );
+          setJobPriorityValue(parseInt(response.data.data?.job_priority_key));
+          setProperty_value(parseInt(response.data.data?.property_type_key));
+          setLocation(response.data.data?.job_location);
+          setRatingThresholdValue(parseInt(response.data.data?.job_rating_key));
+          setlatitude(response.data.data?.location_latitude)
+          setlongitude(response.data.data?.location_longitude)
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const top4Items = servicesData.slice(0, 4);
   return (
     <View style={CreateJobFirstStyle.container}>
@@ -813,7 +861,7 @@ export default CreateJobFirstScreen = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="Electricals"
+                placeholder="select item"
                 searchPlaceholder="Search..."
                 value={servicesValue}
                 onChange={(item) => {
@@ -991,6 +1039,7 @@ export default CreateJobFirstScreen = (props) => {
                   ratingThresholdValue: ratingThresholdValue,
                   latitude: latitude,
                   longitude: longitude,
+                  JobId: JobId,
                 })
               }
               _ButtonText={"Next"}
@@ -1014,6 +1063,7 @@ export default CreateJobFirstScreen = (props) => {
           </View>
         </ScrollView>
       )}
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

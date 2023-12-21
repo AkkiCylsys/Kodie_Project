@@ -90,7 +90,7 @@ export default Company = (props) => {
     setMobileNumber(text);
   };
   const CompanyDetailsData = {
-    user_key: loginData.Login_details.result,
+    user_key: loginData.Login_details.user_id,
     upd_key: property_id,
     org_name: companyName,
     email: email,
