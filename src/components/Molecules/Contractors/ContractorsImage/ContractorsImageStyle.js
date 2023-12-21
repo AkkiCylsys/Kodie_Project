@@ -18,7 +18,9 @@ export const ContractorsImageStyle = StyleSheet.create({
     width: 35,
     marginTop:10,
     height: 35,
-    justifyContent: "center",
+    padding:2
+    // alignItems:"center",
+    // justifyContent: "center",
   },
   Icons: { width: 40, height: 40, resizeMode: "cover" },
   upload_View:{ flexDirection: "row", justifyContent: "space-between",marginTop:10 },

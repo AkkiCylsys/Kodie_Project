@@ -47,4 +47,14 @@ export const Help_FeedBackCss = StyleSheet.create({
     alignSelf: "center",
   },
   flatlistContainer: { marginTop: 20 },
+  IconView: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
+    marginLeft: 5,
+    width: 35,
+    marginTop:10,
+    height: 35,
+    padding:7,
+  },
 });
