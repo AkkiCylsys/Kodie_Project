@@ -109,6 +109,7 @@ const BottomModalData = (props) => {
   const refRBSheet = useRef();
   const handleCloseModal = () => {
     props.onClose(); // Call this function when you want to close the modal without performing delete action
+   //alert('hi')
   };
   const handleDeleteProperty = (propertyDelId) => {
     console.log(propertyDelId, "catch data");
@@ -145,10 +146,10 @@ const BottomModalData = (props) => {
               }}
             >
               {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
-              {/* {item.Icon} */}
-              <Text style={BottomModalDataStyle.IconView}>
+              {/* //{item.Icon} */}
+              <View style={BottomModalDataStyle.IconView}>
             {item.Icon}
-            </Text>
+            </View>
               <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
             </TouchableOpacity>
           </>
@@ -170,9 +171,9 @@ const BottomModalData = (props) => {
             }}
           >
             {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
-            <Text style={BottomModalDataStyle.IconView}>
+            <View style={BottomModalDataStyle.IconView}>
             {item.Icon}
-            </Text>
+            </View>
             <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}

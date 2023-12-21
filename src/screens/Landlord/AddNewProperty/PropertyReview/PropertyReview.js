@@ -626,7 +626,7 @@ export default PropertyReview = (props) => {
         return <Details />;
     }
   };
-
+//alert(JSON.stringify(property_Detail))
   return (
     <View style={PropertyReviewStyle.mainContainer}>
       <TopHeader
