@@ -179,7 +179,7 @@ const JobDetails = (props) => {
           />
         );
       case "Tab2":
-        return <JodBiddingDetails />;
+        return <JodBiddingDetails JOB_ID={JOB_ID} />;
       case "Tab3":
         return <Leases />;
       case "Tab4":

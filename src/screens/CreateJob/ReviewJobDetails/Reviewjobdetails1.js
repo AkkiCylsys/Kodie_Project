@@ -8,6 +8,7 @@ import RowTexts from "../../../components/Molecules/RowTexts/RowTexts";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Config } from "../../../Config";
 import axios from "axios";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 const Reviewjobdetails1 = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
@@ -65,35 +66,38 @@ const Reviewjobdetails1 = (props) => {
           Job request summary
         </Text>
       </View>
-      <View style={{marginBottom:50}}>
-      <RowTexts leftText={"Name"} rightText={jobDetailsData.first_name} />
-      <RowTexts leftText={"Location"} rightText={jobDetailsData.job_location} />
-      <RowTexts
-        leftText={"Property type"}
-        rightText={jobDetailsData.property_type}
-      />
-      <RowTexts
-        leftText={"Proposed date"}
-        rightText={jobDetailsData.job_date}
-      />
-      <RowTexts
-        leftText={"Proposed time"}
-        rightText={jobDetailsData.job_time}
-      />
-      <RowTexts
-        leftText={"Number of hours"}
-        rightText={jobDetailsData.number_of_hours}
-      />
-      <RowTexts leftText={"How often"} rightText={jobDetailsData.how_often} />
-      <RowTexts
-        leftText={"Budget range"}
-        rightText={jobDetailsData.job_budget}
-      />
-      <RowTexts leftText={"Payment"} rightText={jobDetailsData.payment_by} />
-      <RowTexts
-        leftText={"Booking insurance"}
-        rightText={jobDetailsData.insurance}
-      />
+      <View style={{ marginBottom: 50 }}>
+        <RowTexts leftText={"Name"} rightText={jobDetailsData.first_name} />
+        <RowTexts
+          leftText={"Location"}
+          rightText={jobDetailsData.job_location}
+        />
+        <RowTexts
+          leftText={"Property type"}
+          rightText={jobDetailsData.property_type}
+        />
+        <RowTexts
+          leftText={"Proposed date"}
+          rightText={jobDetailsData.job_date}
+        />
+        <RowTexts
+          leftText={"Proposed time"}
+          rightText={jobDetailsData.job_time}
+        />
+        <RowTexts
+          leftText={"Number of hours"}
+          rightText={jobDetailsData.number_of_hours}
+        />
+        <RowTexts leftText={"How often"} rightText={jobDetailsData.how_often} />
+        <RowTexts
+          leftText={"Budget range"}
+          rightText={jobDetailsData.job_budget}
+        />
+        <RowTexts leftText={"Payment"} rightText={jobDetailsData.payment_by} />
+        <RowTexts
+          leftText={"Booking insurance"}
+          rightText={jobDetailsData.insurance}
+        />
       </View>
       {props.View_Job_Details ? null : (
         <>
@@ -117,6 +121,7 @@ const Reviewjobdetails1 = (props) => {
           </TouchableOpacity>
         </>
       )}
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
