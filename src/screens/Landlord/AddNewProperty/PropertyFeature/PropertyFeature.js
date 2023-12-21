@@ -141,10 +141,10 @@ export default PropertyFeature = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.data[0]);
+          setProperty_Details(response.data.property_details[0]);
 
           const apiAdditionalFeaturesIds =
-            response?.data?.data[0]?.additional_features_id
+            response?.data?.property_details[0]?.additional_features_id
               .split(",")
               .map(Number);
           const furnishedFeatureId = apiAdditionalFeaturesIds.find(
@@ -159,11 +159,11 @@ export default PropertyFeature = (props) => {
           );
           setSelectedButtonFurnished(furnishedFeatureId);
           setSelectedButtonDeposit(yesFeatureId);
-          setFlorSize(response?.data?.data[0]?.floor_size);
+          setFlorSize(response?.data?.property_details[0]?.floor_size);
           setAdditionalFeaturesKeyValue(
-            response?.data?.data[0]?.additional_key_features_id
+            response?.data?.property_details[0]?.additional_key_features_id
           );
-          setLandArea(response?.data?.data[0]?.land_area);
+          setLandArea(response?.data?.property_details[0]?.land_area);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);

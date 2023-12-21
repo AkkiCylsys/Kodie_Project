@@ -511,6 +511,11 @@ export default CreateJobFirstScreen = (props) => {
               ? "Entypo"
               : "MaterialIcons"
           }
+          iconColor={
+            isClick === item.lookup_key
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_GrayColor
+          }
           BoxStyling={[
             CreateJobFirstStyle.box_style,
             {

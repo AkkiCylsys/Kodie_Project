@@ -8,6 +8,7 @@ import RowTexts from "../../../components/Molecules/RowTexts/RowTexts";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Config } from "../../../Config";
 import axios from "axios";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 const Reviewjobdetails1 = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
@@ -163,6 +164,7 @@ const Reviewjobdetails1 = (props) => {
           </TouchableOpacity>
         </>
       )}
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

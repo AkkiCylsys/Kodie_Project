@@ -21,12 +21,8 @@ const GenerateReportCommon = (props) => {
           <Entypo name="cross" color={_COLORS.Kodie_BlackColor} size={30} />
         </View>
 
-        <View style={GeneralReportCommonStyle.optionsmenu}>
+        <TouchableOpacity style={GeneralReportCommonStyle.optionsmenu}>
           <View>
-            {/* <Image
-              source={props.imageSource}
-              style={GeneralReportCommonStyle.image}
-            /> */}
              <MaterialIcons
                 name="preview"
                 size={20}
@@ -36,15 +32,11 @@ const GenerateReportCommon = (props) => {
           <View>
             <Text  style={GeneralReportCommonStyle.title}>{props.title}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
 
-        <View style={GeneralReportCommonStyle.optionsmenu}>
+        <TouchableOpacity style={GeneralReportCommonStyle.optionsmenu}>
           <View>
-            {/* <Image
-              source={props.secondimg}
-              style={GeneralReportCommonStyle.image}
-            /> */}
             <MaterialCommunityIcons
                 name="file-download-outline"
                 size={20}
@@ -54,17 +46,13 @@ const GenerateReportCommon = (props) => {
           <View>
             <Text  style={GeneralReportCommonStyle.title}>{props.secondDesc}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
         <TouchableOpacity style={GeneralReportCommonStyle.optionsmenu}    
             onPress={() => {
               refRBSheet.current.open();
             }}>
           <View>
-            {/* <Image
-              source={props.thirdimg}
-              style={GeneralReportCommonStyle.image}
-            /> */}
             <MaterialCommunityIcons
                 name="email-send-outline"
                 size={20}

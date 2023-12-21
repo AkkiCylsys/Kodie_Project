@@ -12,6 +12,7 @@ export const BottomModalDataStyle = StyleSheet.create({
   },
   text: {
     fontSize: 14,
+    marginTop: 6,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
@@ -27,12 +28,12 @@ export const BottomModalDataStyle = StyleSheet.create({
   IconView: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_LiteWhiteColor,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
     marginLeft: 5,
     width: 35,
-    marginTop:10,
+    marginTop: 10,
     height: 35,
-   textAlign:'center',
-    
+    justifyContent: "center",
+    alignItems: 'center'
   },
 });

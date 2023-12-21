@@ -108,27 +108,16 @@ import AddPropertyMainPage from "../../screens/Landlord/AddNewProperty/AddProper
 import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 import DocumentDetails from "../../screens/Landlord/AddNewProperty/PropertyReview/Documents/DocumentDetails/DocumentDetails";
 import ViewDocument from "../../screens/Landlord/AddNewProperty/PropertyReview/Documents/ViewDocuments/ViewDocument";
-// import PrivacySecurity from "../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity";
-// import Managingcontractors from "../../screens/Managingcontractors/Managingcontractors";
-// import Contractors1 from "../../screens/Managingcontractors/Contractors1";
-// import Contractors2 from "../../screens/Managingcontractors/Contractors2";
-// import Contractors3 from "../../screens/Managingcontractors/Contractors3";
-// import Reviewjobdetails1 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails1";
-// import Reviewjobdetails2 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails2";
-// import Reviewjobdetails3 from "../../screens/CreateJob/ReviewJobDetails/Reviewjobdetails3";
-// import CompletedJobs from "../../screens/CreateJob/ReviewJobDetails/CompletedJobs";
-// import Ratingandfeedback from "../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback";
-// import EditDashboard from "../../screens/Dashboard/EditDashboard";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-// import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
 import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
 import TenantList from "../../screens/Tenant/TenantList";
 import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import CurrentTenant from "../../screens/Tenant/CurrentTenant/CurrentTenant";
 import PreviousTenant from "../../screens/Tenant/PreviousTenant/PreviousTenant";
 import JodBiddingDetails from "../../screens/CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
+import JobDocumentDetails from "../../screens/Tenant/Jobs/JobDocuments.js/JobDocumentDetails";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -988,6 +977,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"DocumentDetails"}
           component={DocumentDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"JobDocumentDetails"}
+          component={JobDocumentDetails}
           options={{ headerShown: false }}
         />
         <Stack.Screen

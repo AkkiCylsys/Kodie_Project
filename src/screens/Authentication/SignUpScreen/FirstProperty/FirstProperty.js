@@ -136,7 +136,6 @@ export default FirstProperty = (props) => {
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     []
   );
-
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
   const [IsMap, setIsMap] = useState(false);
@@ -144,7 +143,6 @@ export default FirstProperty = (props) => {
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
   const [CountBedroom, setCountBedroom] = useState(0);
-  // const [CountBedRoomData, setCountBedRoomData] = useState([]);
   const [CountBathroom, setCountBathroom] = useState(0);
   const [CountParking, setCountParking] = useState(0);
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
@@ -152,10 +150,10 @@ export default FirstProperty = (props) => {
   const [landArea, setLandArea] = useState("");
   const dispatch = useDispatch();
   const P_addressParts = propertyLocation.split(", ");
-
-  const p_country = P_addressParts.pop();
-  const P_state = P_addressParts.pop();
-  const p_city = P_addressParts.join(", ");
+  console.log("P_addressParts", P_addressParts);
+  const p_city = P_addressParts[P_addressParts.length - 2]?.trim() ?? "";
+  const P_state = P_addressParts[2]?.trim() ?? "";
+  const p_country = P_addressParts[P_addressParts.length - 1]?.trim() ?? "";
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -193,7 +191,6 @@ export default FirstProperty = (props) => {
       setCountBedroom((prevCount) => prevCount - 1);
     }
   };
-  // key_features count for Bathroom code here------
   const increaseBathroomCount = () => {
     setCountBathroom((prevCount) => prevCount + 1);
   };
@@ -218,15 +215,13 @@ export default FirstProperty = (props) => {
       setCountParking((prevCount) => prevCount - 1);
     }
   };
-
   const renderStepIndicator = (params) => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderLabel = ({ position, stepStatus }) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === "finished"
         ? "#000000"
         : "#808080";
@@ -263,7 +258,6 @@ export default FirstProperty = (props) => {
       </View>
     );
   };
-
   useEffect(() => {
     handleProperty_Type();
     additional_features();
@@ -272,7 +266,6 @@ export default FirstProperty = (props) => {
     });
     CheckIOSMapPermission();
   }, []);
-
   const handleProperty_Type = () => {
     const propertyData = {
       P_PARENT_CODE: "PROP_TYPE",
@@ -308,14 +301,13 @@ export default FirstProperty = (props) => {
     console.log("Request URL:", additionalApi);
     setIsLoading(true);
     axios
-      .get(additionalApi) // Change from .post to .get
+      .get(additionalApi)
       .then((response) => {
         console.log("additional_Data", response.data);
         if (response.data.status === true) {
           setIsLoading(false);
           console.log("additional_features....", response.data);
           setAdditionalfeatureskey(response.data.key_features_details);
-          // setData_add(response.data.key_features_details);
           console.log(
             "AdditionalFeaturesKey....",
             response.data.key_features_details
@@ -332,22 +324,9 @@ export default FirstProperty = (props) => {
         setIsLoading(false);
       });
   };
-  // final Save Api ...
   const handleSaveSignup = async () => {
-    // alert(selectedServices);
     setIsLoading(true);
-    console.log("AllCountsData..", AllCountsData);
-    console.log("propertyLocation..", propertyLocation);
-    console.log("propertyDesc..", propertyDesc);
-    console.log("property_value..", property_value);
-    console.log("additionalfeatureskeyvalue..", additionalfeatureskeyvalue);
-    console.log("selectedButtonId..", selectedButtonId);
-    console.log("islocation..", 1);
-    console.log("buildingFlorSize..", buildingFlorSize);
-    console.log("landArea..", landArea);
-
     const formData = new FormData();
-    // formData.append("user", 46);
     formData.append("user", user_key);
     formData.append("first_name", firstName);
     formData.append("last_name", lastName);
@@ -383,14 +362,6 @@ export default FirstProperty = (props) => {
       JSON.stringify(additionalfeatureskeyvalue)
     );
     formData.append("auto_list", selectedButtonId);
-    // const imageUri = ImageName;
-    // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-    // const photo = {
-    //   uri: imageUri,
-    //   type: "image/png",
-    //   name: imageName,
-    // };
-    // formData.append("profile_photo", photo);
 
     if (ImageName) {
       const imageUri = ImageName;
@@ -404,7 +375,6 @@ export default FirstProperty = (props) => {
     console.log("signupAccountApiActionCreator..", res.data);
     if (res.data.status === true) {
       setIsLoading(false);
-      // alert(response.data.message);
       props.navigation.navigate("DrawerNavigatorLeftMenu");
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue("");
@@ -413,142 +383,66 @@ export default FirstProperty = (props) => {
       console.error("Save Account Details error:", res.data.error);
       alert(res.data.error);
     }
-    // const url = "https://e3.cylsys.com/api/v1/signup_step_one";
-    // const saveAccountDetails = url;
-    // console.log("Request URL:", saveAccountDetails);
-    // setIsLoading(true);
-    // try {
-    //   const response = await axios.post(saveAccountDetails, formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   });
-
-    //   console.log("Save Account Details", response.data);
-
-    //   if (response.data.status === true) {
-    //     setIsLoading(false);
-    //     alert(response.data.message);
-    //     props.navigation.navigate("DrawerNavigatorLeftMenu");
-    //     setCurrentPage(0);
-    //     setAdditionalFeaturesKeyValue("");
-    //   } else {
-    //     setIsLoading(false);
-    //     console.error("Save Account Details error:", response.data.error);
-    //     alert(response.data.error);
-    //   }
-    // } catch (error) {
-    //   setIsLoading(false);
-    //   console.error("Account_Details error:", error);
-    //   alert("An error occurred. Please try again later.");
-    // } finally {
-    //   setIsLoading(false);
-    // }
   };
-
-  // const handleSaveSignup = async () => {
-  //   setIsLoading(true);
-  //   console.log("AllCountsData..", AllCountsData);
-  //   console.log("propertyLocation..", propertyLocation);
-  //   console.log("propertyDesc..", propertyDesc);
-  //   console.log("property_value..", property_value);
-  //   console.log("additionalfeatureskeyvalue..", additionalfeatureskeyvalue);
-  //   console.log("selectedButtonId..", selectedButtonId);
-  //   console.log("islocation..", 1);
-  //   console.log("buildingFlorSize..", buildingFlorSize);
-  //   console.log("landArea..", landArea);
-
-  //   const formData = new FormData();
-  //   formData.append("user", user_key);
-  //   formData.append("first_name", firstName);
-  //   formData.append("last_name", lastName);
-  //   formData.append("phone_number", mobileNumber);
-  //   formData.append("email", email);
-  //   formData.append("physical_address", physicalAddress);
-  //   formData.append("p_longitude", p_longitude);
-  //   formData.append("p_latitude", p_latitude);
-  //   formData.append("State", state);
-  //   formData.append("Country", country);
-  //   formData.append("City", city);
-  //   formData.append("organisation_name", organisation);
-  //   formData.append("referral_code", referral);
-  //   formData.append("describe_yourself", selectedServiceKeysString);
-  //   formData.append("kodie_help", kodieHelpValue);
-  //   formData.append("property_manage", selectManageProperty);
-  //   formData.append("location", propertyLocation);
-  //   formData.append("location_longitude", longitude);
-  //   formData.append("location_latitude", latitude);
-  //   formData.append("p_state", P_state);
-  //   formData.append("p_country", p_country);
-  //   formData.append("p_city", p_city);
-  //   formData.append("islocation", 1);
-  //   formData.append("property_description", propertyDesc);
-  //   formData.append("property_type", property_value);
-  //   formData.append("key_features", AllCountsData);
-  //   formData.append("land_area", landArea);
-  //   formData.append("floor_size", buildingFlorSize);
-  //   formData.append("additional_features", additionalfeatureskeyvalue);
-  //   formData.append("auto_list", selectedButtonId);
-  //   // if (ImageName) {
-  //   //   const imageUri = ImageName;
-  //   //   // const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-  //   //   formData.append("profile_photo", {
-  //   //     uri: imageUri,
-  //   //     name: "abc",
-  //   //   });
-  //   // }
-  //   //   formData.append("profile_photo", {
-  //   //   uri: ImageName[0].uri,
-  //   //   type: ImageName[0].type,
-  //   //   name: ImageName[0].fileName,
-  //   // });
-
-  //   const url = "https://e3.cylsys.com/api/v1/signup_step_one";
-  //   setIsLoading(true);
-
-  //   try {
-  //     const response = await fetch(url, {
-  //       method: "POST",
-  //       body: formData,
-  //       headers: {
-  //         "content-type": "multipart/form-data",
-  //       },
-  //     });
-
-  //     const responseData = await response.json();
-
-  //     console.log("Save Account Details", responseData);
-
-  //     if (responseData.success === true) {
-  //       setIsLoading(false);
-  //       alert(responseData.message);
-  //       props.navigation.navigate("DrawerNavigatorLeftMenu");
-  //       setCurrentPage(0);
-  //       setProperty_value("");
-  //       setbedroomValue("");
-  //       setGaragesValue("");
-  //       setBathRoomValue("");
-  //       setParkingValue("");
-  //       setAdditionalFeaturesKeyValue("");
-  //     } else {
-  //       setIsLoading(false);
-  //       console.error("Save Account Details error:", responseData.error);
-  //       alert(responseData.error);
-  //     }
-  //   } catch (error) {
-  //     setIsLoading(false);
-  //     console.error("Account_Details error:", error);
-  //     alert(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
+  const handleSaveSignupfill = async () => {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append("user", user_key);
+    formData.append("first_name", firstName);
+    formData.append("last_name", lastName);
+    formData.append("phone_number", mobileNumber);
+    formData.append("email", email);
+    formData.append("physical_address", physicalAddress);
+    formData.append("p_longitude", p_longitude);
+    formData.append("p_latitude", p_latitude);
+    formData.append("State", state);
+    formData.append("Country", country);
+    formData.append("City", city);
+    formData.append("organisation_name", organisation);
+    formData.append("referral_code", referral);
+    formData.append("describe_yourself", selectedServiceKeysString);
+    formData.append("kodie_help", kodieHelpValue);
+    formData.append("property_manage", selectManageProperty);
+    formData.append("location", null);
+    formData.append("location_longitude", longitude);
+    formData.append("location_latitude", latitude);
+    formData.append("p_state", P_state);
+    formData.append("p_country", p_country);
+    formData.append("p_city", p_city);
+    formData.append("islocation", 1);
+    formData.append("property_description", propertyDesc);
+    formData.append("property_type", property_value);
+    formData.append("key_features", "[]");
+    formData.append("land_area", landArea);
+    formData.append("floor_size", buildingFlorSize);
+    formData.append("device_id", deviceId);
+    formData.append("device_type", deviceType);
+    formData.append("additional_features", "[]");
+    formData.append("auto_list", 0);
+    if (ImageName) {
+      const imageUri = ImageName;
+      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      formData.append("profile_photo", {
+        uri: imageUri,
+        name: imageName,
+      });
+    }
+    const res = await dispatch(signupAccountApiActionCreator(formData));
+    console.log("signupAccountApiActionCreator..", res.data);
+    if (res.data.status === true) {
+      setIsLoading(false);
+      props.navigation.navigate("DrawerNavigatorLeftMenu");
+      setCurrentPage(0);
+      setAdditionalFeaturesKeyValue("");
+    } else {
+      setIsLoading(false);
+      console.error("Save Account Details error:", res.data.error);
+      alert(res.data.error);
+    }
+  };
   const goBack = () => {
     props.navigation.pop();
   };
-
-  // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
   };
@@ -557,7 +451,6 @@ export default FirstProperty = (props) => {
     setIsSearch(true);
   };
   const onRegionChange = (Region) => {
-    // alert(JSON.stringify(Region))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
@@ -573,7 +466,6 @@ export default FirstProperty = (props) => {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
-        // alert("You can use the location");
         getAddressWithCordinates();
       } else {
         console.log("location permission denied");
@@ -583,7 +475,6 @@ export default FirstProperty = (props) => {
       console.warn(err);
     }
   };
-
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
       .then((result) => {
@@ -614,7 +505,6 @@ export default FirstProperty = (props) => {
         console.log(error);
       });
   };
-
   const getAddressWithCordinates = () => {
     Geolocation.watchPosition(
       (position) => {
@@ -638,12 +528,9 @@ export default FirstProperty = (props) => {
       .then((json) => {
         let MainFullAddress = json.results[0].formatted_address;
         var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setPropertyLocation(MainFullAddress);
-
-        //setAddress(MainFullAddress);
       })
       .catch((error) => console.warn(error));
   };
@@ -658,24 +545,10 @@ export default FirstProperty = (props) => {
         }}
       />
       <View style={FirstPropertyStyle.container}>
-        {/* {IsMap || IsSearch ? null : (
-          <View style={FirstPropertyStyle.stepIndicator}>
-            <StepIndicator
-              customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-              currentPosition={currentPage}
-              // onPress={onStepPress}
-              renderStepIndicator={renderStepIndicator}
-              labels={labels}
-              stepCount={3}
-              renderLabel={renderLabel}
-            />
-          </View>
-        )} */}
         {IsMap ? (
           <View
             style={{
               flex: 1,
-              // paddingHorizontal: 10,
               backgroundColor: "transparent",
             }}
           >
@@ -683,9 +556,6 @@ export default FirstProperty = (props) => {
               style={{
                 height: "100%",
                 width: "100%",
-                // borderRadius: 20,
-                // borderWidth: 1,
-                //borderColor: .greenAppColor,
                 alignSelf: "center",
                 marginBottom: 10,
               }}
@@ -714,7 +584,6 @@ export default FirstProperty = (props) => {
                   width: "90%",
                   height: 45,
                   alignSelf: "center",
-                  //marginTop: 10,
                 }}
                 onFocus={() => openMapandClose()}
                 placeholder={"Search Place"}
@@ -724,7 +593,6 @@ export default FirstProperty = (props) => {
               style={FirstPropertyStyle.BtnContainer}
               onPress={ConfirmAddress}
             >
-              {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
               <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
             </TouchableOpacity>
           </View>
@@ -737,7 +605,6 @@ export default FirstProperty = (props) => {
               setIsSearch(false);
               setIsMap(true);
               setPropertyLocation(details.formatted_address);
-              // alert(propertyLocation);
             }}
           />
         ) : (
@@ -746,7 +613,6 @@ export default FirstProperty = (props) => {
               <StepIndicator
                 customSignUpStepStyle={firstIndicatorSignUpStepStyle}
                 currentPosition={currentPage}
-                // onPress={onStepPress}
                 renderStepIndicator={renderStepIndicator}
                 labels={labels}
                 stepCount={3}
@@ -826,7 +692,6 @@ export default FirstProperty = (props) => {
                   value={property_value}
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
-                    // alert(item.lookup_key)
                   }}
                 />
               </View>
@@ -1064,7 +929,6 @@ export default FirstProperty = (props) => {
                 onPressLeftButton={() => {
                   setSelectedButton(false);
                   setSelectedButtonId(0);
-                  // alert(selectedButtonId)
                 }}
                 RightButtonText={"No"}
                 RightButtonbackgroundColor={
@@ -1105,7 +969,7 @@ export default FirstProperty = (props) => {
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  handleSaveSignup();
+                  handleSaveSignupfill();
                 }}
               />
             </View>

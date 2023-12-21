@@ -305,16 +305,16 @@ export default PropertyReview = (props) => {
       setIsLoading(false);
       console.log("response_get_property_details...", response.data);
       if (response.data.success === true) {
-        setProperty_Details(response.data.data[0]);
+        setProperty_Details(response.data.property_details[0]);
         // Fetch and process key features..........
-        if (response.data.data[0].key_features) {
+        if (response.data.property_details[0].key_features) {
           const parsedData = JSON.parse(
-            response.data.data[0].key_features.replace(/\\/g, "")
+            response.data.property_details[0].key_features.replace(/\\/g, "")
           );
           setDetail(parsedData);
         }
         const additionalKeyFeatures =
-          response.data.data[0].additional_key_features[0];
+          response.data.property_details[0].additional_key_features[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error("propertyDetail_error:", response.data.error);
@@ -626,7 +626,7 @@ export default PropertyReview = (props) => {
         return <Details />;
     }
   };
-
+//alert(JSON.stringify(property_Detail))
   return (
     <View style={PropertyReviewStyle.mainContainer}>
       <TopHeader

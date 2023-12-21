@@ -24,6 +24,7 @@ import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
 import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
+import JobDocuments from "../JobDocuments.js/JobDocuments";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.previewImage,
@@ -185,11 +186,22 @@ const JobDetails = (props) => {
           />
         );
       case "Tab2":
-        return <JodBiddingDetails />;
+        return <JodBiddingDetails JOB_ID={JOB_ID} />;
       case "Tab3":
         return <Leases />;
       case "Tab4":
-        return <Leases />;
+        return (
+          <JobDocuments
+            JobDocumentDetails={(folderId, moduleName, propertyid) => {
+              props.navigation.navigate("JobDocumentDetails", {
+                folderId: folderId,
+                moduleName: moduleName,
+                JOB_ID: JOB_ID,
+              });
+            }}
+            JOB_ID={JOB_ID}
+          />
+        );
     }
   };
   const refRBSheet = useRef();

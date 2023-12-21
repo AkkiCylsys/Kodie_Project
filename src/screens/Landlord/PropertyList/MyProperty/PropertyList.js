@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { useFocusEffect } from "@react-navigation/native";
 import {
   _COLORS,
@@ -86,6 +87,7 @@ const PropertyList = (props) => {
   };
   const CloseUp = () => {
     setIsDeleteBottomSheetVisible(false);
+    setIsDeleteData_Clicked(false)
   };
   // Extract property_id values
 
@@ -104,19 +106,20 @@ const PropertyList = (props) => {
         order_col: "1",
         order_wise: "DESC",
       });
-//alert(JSON.stringify(response))
+      //alert(JSON.stringify(response))
       setPropertyData(response?.data?.property_details);
 
       setIsLoading(false);
     } catch (error) {
-      if (error.response && error.response.status === 500) {
-        alert(error.response.message);
+      if (error.response && error.response.status == 500) {
+        alert(error.response.data.message);
         setIsLoading(false);
       } else {
         alert("An error occurred. Please try again later.");
+        alert(error.response.message);
         setIsLoading(false);
       }
-      console.error("API Error:", error);
+      // alert(error.response.message);
       setIsLoading(false);
     }
   };
@@ -541,7 +544,7 @@ const PropertyList = (props) => {
             container: PropertyListCSS.bottomModal_container,
           }}
         >
-          <BottomModalData propertyId={propId} />
+          <BottomModalData  propertyId={propId} />
         </RBSheet>
       </>
     );
@@ -599,7 +602,7 @@ const PropertyList = (props) => {
             Text_Color={_COLORS.Kodie_WhiteColor}
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
-            height={38}
+            height={40}
             marginTop={3}
             onPress={props.propertyDetail}
             disabled={isLoading ? true : false}
@@ -663,6 +666,7 @@ const PropertyList = (props) => {
               renderItem={propertyData1_render}
               keyExtractor={(item) => item.propertyId}
             />
+            
           </>
         )}
       </ScrollView>

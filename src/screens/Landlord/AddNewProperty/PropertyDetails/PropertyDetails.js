@@ -130,20 +130,24 @@ export default PropertyDetails = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.data[0]);
-          setLocation(response.data.data[0]?.location);
+          setProperty_Details(response.data.property_details[0]);
+          setLocation(response.data.property_details[0]?.location);
           setProperty_value(
             // 24
-            parseInt(response.data.data[0]?.property_type_id)
+            parseInt(response.data.property_details[0]?.property_type_id)
             // response.data.property_details[0]?.property_type_id.replace(
             //   /\D/g,
             //   ""
             // )
           );
+          setSelectedButton(
+            parseInt(response.data.property_details[0]?.auto_list)
+          );
+          setPropertyDesc(
+            response.data.property_details[0]?.property_description
+          );
 
-          setPropertyDesc(response.data.data[0]?.property_description);
-
-          console.log("propertyDetail....", response.data.data);
+          console.log("propertyDetail....", response.data.property_details);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
