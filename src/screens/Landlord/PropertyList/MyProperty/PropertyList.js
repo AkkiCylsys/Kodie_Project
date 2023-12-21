@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { useFocusEffect } from "@react-navigation/native";
 import {
   _COLORS,
@@ -665,6 +666,7 @@ const PropertyList = (props) => {
               renderItem={propertyData1_render}
               keyExtractor={(item) => item.propertyId}
             />
+            
           </>
         )}
       </ScrollView>
