@@ -22,24 +22,23 @@ export default JobBiddingDetails = (props) => {
   const refRBSheet = useRef();
   return (
     <View>
-      <View>
-        <View style={JobBiddingDetailsStyle.add_Lease_view}>
-          <Text style={JobBiddingDetailsStyle.add_Lease_Text}>
-            {
-              "Would you like to enable the job bidding feature and have contractors bid against one another to perform the job? You may get a better rate! "
-            }
-          </Text>
-        </View>
-        <View style={JobBiddingDetailsStyle.btn_View}>
-          <CustomSingleButton
-            _ButtonText={"Enable bidding"}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-          />
-        </View>
+      <View style={JobBiddingDetailsStyle.add_Lease_view}>
+        <Text style={JobBiddingDetailsStyle.add_Lease_Text}>
+          {
+            "Would you like to enable the job bidding feature and have contractors bid against one another to perform the job? You may get a better rate! "
+          }
+        </Text>
       </View>
+      <View style={JobBiddingDetailsStyle.btn_View}>
+        <CustomSingleButton
+          _ButtonText={"Enable bidding"}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+          onPress={() => {
+            refRBSheet.current.open();
+          }}
+        />
+      </View>
+
       <RBSheet
         ref={refRBSheet}
         height={760}
