@@ -154,18 +154,18 @@ export const AddBiddingDetailsCss = StyleSheet.create({
   ModalMainView: {
     flex: 1,
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   ModalView: {
     backgroundColor: "white",
-    width: "100%",
-    height: "70%",
+    // width: "100%",
+    // height: "70%",
     borderRadius: 20,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
     elevation: 10,
   },
-  modalContainer: { flex: 1, marginHorizontal: 16 },
+  modalContainer: { marginHorizontal: 16, marginVertical: 16 },
   modalCloseIcon: {
     justifyContent: "flex-end",
     alignSelf: "flex-end",
@@ -185,8 +185,14 @@ export const AddBiddingDetailsCss = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     textAlign: "center",
     alignSelf: "center",
+    marginTop: 19,
   },
-  checkStl: { height: 120, width: 120, alignSelf: "center" },
+  checkStl: {
+    height: 120,
+    width: 120,
+    alignSelf: "center",
+    marginVertical: 50,
+  },
   itemView: {
     flex: 1,
     flexDirection: "row",

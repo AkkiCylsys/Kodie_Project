@@ -46,18 +46,8 @@ const JobDetails = (props) => {
   let update_JOB_ID = props?.route?.params?.JobId;
   let View_Job_Details = props?.route?.params?.View_Job_Details;
   let editMode = props?.route?.params?.editMode;
-  console.log("job_id...", job_id);
-  console.log("JOB_ID_By_Navigation...", JOB_ID);
-  console.log("View_Job_Details...", View_Job_Details);
-  // alert(JSON.stringify(JOB_ID));
-  // alert(job_id);
-  // alert(update_JOB_ID);
-  // alert(editMode);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [currentPage, setCurrentPage] = useState(3);
-  const [value, setValue] = useState(null);
-  const [value2, setValue2] = useState(null);
-  const [value3, setValue3] = useState(null);
   const [visible, setVisible] = useState(false);
   const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

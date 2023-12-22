@@ -6,6 +6,14 @@ import CustomSingleButton from "../../../../components/Atoms/CustomButton/Custom
 import AddBiddingDetails from "../../../../components/Molecules/AddBiddingDetails/AddBiddingDetails";
 import RBSheet from "react-native-raw-bottom-sheet";
 export default JobBiddingDetails = (props) => {
+  const [Biddatadetail, setBiddatadetail] = useState(null);
+
+  const handleDataFromChild = (BidData) => {
+    // Handle the data received from the child
+    console.log("Data from child:", BidData);
+    setBiddatadetail(BidData);
+    handleClose();
+  };
   const JOB_ID = props.JOB_ID;
   console.log("............JOB_ID", JOB_ID);
   const handleClose = () => {
@@ -45,7 +53,11 @@ export default JobBiddingDetails = (props) => {
           container: JobBiddingDetailsStyle.bottomModal_container,
         }}
       >
-        <AddBiddingDetails JOB_ID={JOB_ID} onclose={handleClose} />
+        <AddBiddingDetails
+          JOB_ID={JOB_ID}
+          onclose={handleClose}
+          continueOnPress={handleDataFromChild}
+        />
       </RBSheet>
     </View>
   );
