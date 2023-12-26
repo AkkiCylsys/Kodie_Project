@@ -4,6 +4,8 @@ const initialState = {
   loading: false,
   data: [],
   error: '',
+  // this is login line below
+  // token: null,
 };
 
 const authenticationReducer = (state = initialState, action) => {
@@ -20,6 +22,8 @@ const authenticationReducer = (state = initialState, action) => {
         ...state,
         data: action.payload,
         loading: false,
+        //-------- Set the token when login is successful
+        // token: action.token,
       };
     case AUTHENTICATION_ACTION_TYPES.API_LOGIN_ERROR:
       return {

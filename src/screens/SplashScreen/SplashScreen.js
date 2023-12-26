@@ -1,35 +1,63 @@
-import React, { useEffect } from 'react';
-import { Image, SafeAreaView } from 'react-native';
+import React, { useEffect } from "react";
+import {
+  Text,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  View,
+  StatusBar,
+} from "react-native";
+// Screen no:1
+import { logos } from "../../Themes/CommonVectors/Images";
+import { SplashStyles } from "../../screens/SplashScreen/SplashScreenCss";
+import { useSelector } from "react-redux";
 
-import { logos } from '../../Themes/CommonVectors/Images';
-import { SplashStyles } from "../../screens/SplashScreen/SplashScreenCss"
-import { useSelector } from 'react-redux';
-const Splash = props => {
+const Splash = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
 
   useEffect(() => {
-    // setTimeout(() => {
-    //   if (loginData?.data?.message?.iUserId == '' || loginData?.data?.message?.iUserId == undefined) {
-    //     props.navigation.navigate('AuthNavigator');
-    //   }
-    //   else {
-    //     props.navigation.navigate('DrawerStack');
-    //   }
-    // }, 3000);
     setTimeout(() => {
-      props.navigation.navigate('LoginScreen');
-
+      if (
+        loginData?.Login_details?.token == "" ||
+        loginData?.Login_details?.token == undefined
+      ) {
+        props.navigation.navigate("LoginScreen");
+      } else {
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+      }
     }, 3000);
-
-  });
+  }, [loginData, props.navigation]);
 
   return (
-    <SafeAreaView style={SplashStyles.mainView}>
-      <Image
-        source={logos.mainLogo}
-        style={SplashStyles.mainIcon}
+    <>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor="transparent"
+        translucent={true}
       />
-    </SafeAreaView>
+      <View style={{ flex: 1 }}>
+        <ImageBackground
+          source={logos.KodieSplash}
+          resizeMode="cover"
+          style={SplashStyles.mainIcon}
+        >
+          <View style={SplashStyles.logoContainer}>
+            <Image
+              source={logos.MainLogoWhite}
+              style={SplashStyles.mainSmallIcon}
+              resizeMode="contain"
+            />
+          </View>
+          <View style={SplashStyles.bottomTextContainer}>
+            <Text style={SplashStyles.text}>Welcome to Kodie!</Text>
+            <Text style={SplashStyles.subtext}>
+              Foster strong relationships with transparent, simple, hassle-free
+              property management.
+            </Text>
+          </View>
+        </ImageBackground>
+      </View>
+    </>
   );
 };
 

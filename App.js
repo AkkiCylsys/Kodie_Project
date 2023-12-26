@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from 'react';
-import type { Node } from 'react';
+import React, {useEffect} from 'react';
+import type {Node} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,9 +16,9 @@ import {
   Text,
   useColorScheme,
   View,
-  LogBox
+  LogBox,
 } from 'react-native';
-import { isConnected } from './src/errorPages/NoInternet/CheckInternet';
+import {isConnected} from './src/errorPages/NoInternet/CheckInternet';
 import {
   Colors,
   DebugInstructions,
@@ -26,12 +26,12 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import Routes from "./src/Navigation/AllRoutes/AllRoutes";
-import { Provider } from 'react-redux';
+import Routes from './src/Navigation/AllRoutes/AllRoutes';
+import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-import store,{persistor} from './src/redux/Store/index';
+import store, {persistor} from './src/redux/Store/index';
 
-const Section = ({ children, title }): Node => {
+const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -57,29 +57,25 @@ const Section = ({ children, title }): Node => {
   );
 };
 
-
-const App = () =>{
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
     //SplashScreen.hide()
-    LogBox.ignoreAllLogs(true)
+    LogBox.ignoreAllLogs(true);
     isConnected()
       .then(() => console.log('has internet connection'))
       // .then(() => console.log(userInfoJiMunim))
       .catch(() => console.log('has No internet connection'));
-
   }, []);
 
   return (
-
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <Routes />
       </PersistGate>
     </Provider>
-
   );
 };
 
