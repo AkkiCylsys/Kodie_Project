@@ -78,6 +78,7 @@ export default Repair = (props) => {
     setIsDeleteBottomSheetVisible(false);
   };
   const CloseUp = () => {
+    setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
   };
   const getJobDetailsByFilter = async (filter) => {
@@ -404,7 +405,7 @@ export default Repair = (props) => {
             left: -20,
             bottom: -30,
             width: "100%",
-            height: isDeleteData_Clicked ? "30%" : "45%",
+            height: isDeleteData_Clicked ? "40%" : "45%",
             backgroundColor: "white",
             borderRadius: 10,
             paddingVertical: 8,

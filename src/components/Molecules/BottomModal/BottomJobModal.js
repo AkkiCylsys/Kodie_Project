@@ -122,7 +122,7 @@ const BottomJobModal = (props) => {
                 }
               }}
             >
-              <Text style={BottomModalDataStyle.IconView}>{item.Icon}</Text>
+              <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
               <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
             </TouchableOpacity>
           </>
@@ -135,14 +135,14 @@ const BottomJobModal = (props) => {
                   JobId: JobId,
                   editMode: "editMode",
                 });
-                handleCloseModal()
+                handleCloseModal();
               }
               if (item.id === "4") {
                 handleDeleteProperty();
               }
             }}
           >
-            <Text style={BottomModalDataStyle.IconView}>{item.Icon}</Text>
+            <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
             <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}
