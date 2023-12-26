@@ -73,8 +73,10 @@ const data = [
 export default CreateJobFirstScreen = (props) => {
   const JobId = props.route.params?.JobId;
   const editMode = props.route.params?.editMode;
+  const myJob = props.route.params?.myJob;
   // alert(JobId)
   // alert(editMode)
+  console.log("myJob.......", myJob);
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
@@ -1044,6 +1046,7 @@ export default CreateJobFirstScreen = (props) => {
                   longitude: longitude,
                   JobId: JobId,
                   editMode: editMode,
+                  myJob: myJob,
                 })
               }
               _ButtonText={"Next"}

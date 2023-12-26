@@ -65,7 +65,10 @@ export default Repair = (props) => {
 
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
-  const [activeScreen, setActiveScreen] = useState(true);
+  const [activeScreen, setActiveScreen] = useState(
+    myJob_Type === 0 ? false : true
+  );
+
   const [allJobData, setAllJobData] = useState([]);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [JobId, setJobId] = useState(0);
@@ -75,7 +78,11 @@ export default Repair = (props) => {
     useState(false);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [JobData, setJobData] = useState([]);
+  const [servicingJobData, setServicingJobData] = useState([]);
   // alert(Job_Id);
+
+  const myJob_Type = props.myJob_Type;
+  console.log("myJob_Type in repair..", myJob_Type);
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -96,7 +103,7 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "2",
+        order_col: "6",
         order_wise: "DESC",
       });
 
@@ -115,11 +122,44 @@ export default Repair = (props) => {
       setIsLoading(false);
     }
   };
+  const getJobDetails_Filter_Service = async (filter) => {
+    setIsLoading(true);
+    try {
+      const url = Config.BASE_URL;
+      const Filter_Service_url = url + "job/getJobbyFilter_Service";
+      console.log("Filter_Service_url...", Filter_Service_url);
+      const response = await axios.post(Filter_Service_url, {
+        job_filter: filter,
+        user_account_id: account_id,
+        page_no: 1,
+        limit: filter == "Recent" ? 5 : 10,
+        order_col: "6",
+        order_wise: "DESC",
+      });
+      setServicingJobData(response?.data?.job_details);
+      console.log(
+        "listJobdata for servicing.....",
+        response?.data?.job_details
+      );
+      setIsLoading(false);
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        alert(error.response.message);
+        setIsLoading(false);
+      } else {
+        alert("An error occurred. Please try again later.");
+        setIsLoading(false);
+      }
+      console.error("API Error:", error);
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (isvisible) {
       getJobDetailsByFilter(selectedFilter);
     }
+    getJobDetails_Filter_Service(selectedFilter);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
@@ -329,69 +369,69 @@ export default Repair = (props) => {
     <View style={RepairCss.mainContainer}>
       <ScrollView>
         {/* {user_role_id === "4" ? ( */}
-          <>
-            <View style={RepairCss.Container}>
-              <RowButtons
-                LeftButtonText={"Jobs I am servicing"}
-                leftButtonHeight={40}
-                leftButtonbackgroundColor={
-                  activeScreen
-                    ? _COLORS.Kodie_WhiteColor
-                    : _COLORS.Kodie_lightGreenColor
-                }
-                LeftButtonborderColor={
-                  activeScreen
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_lightGreenColor
-                }
-                RightButtonText={"Jobs I have requested"}
-                RightButtonbackgroundColor={
-                  activeScreen
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                RightButtonborderColor={
-                  activeScreen
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_GrayColor
-                }
-                LeftButtonTextColor={
-                  activeScreen
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_BlackColor
-                }
-                RightButtonTextColor={
-                  activeScreen
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_GrayColor
-                }
-                RightButtonHeight={40}
-                onPressLeftButton={() => setActiveScreen(false)}
-                onPressRightButton={() => setActiveScreen(true)}
-              />
-            </View>
-            <DividerIcon borderBottomWidth={5} marginTop={8} />
-          </>
+        <>
+          <View style={RepairCss.Container}>
+            <RowButtons
+              LeftButtonText={"Jobs I am servicing"}
+              leftButtonHeight={40}
+              leftButtonbackgroundColor={
+                activeScreen
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_lightGreenColor
+              }
+              LeftButtonborderColor={
+                activeScreen
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_lightGreenColor
+              }
+              RightButtonText={"Jobs I have requested"}
+              RightButtonbackgroundColor={
+                activeScreen
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonborderColor={
+                activeScreen
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_GrayColor
+              }
+              LeftButtonTextColor={
+                activeScreen
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonTextColor={
+                activeScreen
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor
+              }
+              RightButtonHeight={40}
+              onPressLeftButton={() => setActiveScreen(false)}
+              onPressRightButton={() => setActiveScreen(true)}
+            />
+          </View>
+          <DividerIcon borderBottomWidth={5} marginTop={8} />
+        </>
         {/* ) : null} */}
 
         {/* {user_role_id === "4" ? ( */}
-          <>
-            <View style={RepairCss.Container}>
-              <CustomSingleButton
-                _ButtonText={
-                  activeScreen ? "+ Create new job request" : "+ Add job"
-                }
-                disabled={isLoading ? true : false}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                text_Size={14}
-                backgroundColor={_COLORS.Kodie_BlackColor}
-                height={40}
-                marginTop={3}
-                onPress={activeScreen ? props.onpress : props.onpress}
-              />
-            </View>
-            <DividerIcon borderBottomWidth={5} marginTop={8} />
-          </>
+        <>
+          <View style={RepairCss.Container}>
+            <CustomSingleButton
+              _ButtonText={
+                activeScreen ? "+ Create new job request" : "+ Add job"
+              }
+              disabled={isLoading ? true : false}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              text_Size={14}
+              backgroundColor={_COLORS.Kodie_BlackColor}
+              height={40}
+              marginTop={3}
+              onPress={activeScreen ? props.onpress : props.servicing_press}
+            />
+          </View>
+          <DividerIcon borderBottomWidth={5} marginTop={8} />
+        </>
         {/* ) : null} */}
 
         <SearchBar frontSearchIcon height={48} marginTop={5} />
@@ -409,7 +449,8 @@ export default Repair = (props) => {
         {activeScreen ? (
           <FlatList data={JobData} renderItem={propertyData_render1} />
         ) : (
-          <ArchiveJob />
+          // <ArchiveJob />
+          <FlatList data={servicingJobData} renderItem={propertyData_render1} />
         )}
       </ScrollView>
       <Modal

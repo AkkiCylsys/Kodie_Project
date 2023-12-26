@@ -54,6 +54,7 @@ export default CreateJobTermsScreen = (props) => {
   let ratingThresholdValue = props?.route?.params?.ratingThresholdValue;
   let latitude = props?.route?.params?.latitude;
   let longitude = props?.route?.params?.longitude;
+  let myJob = props?.route?.params?.myJob;
   console.log("selectJobType.....", selectJobType);
   console.log("servicesValue.....", servicesValue);
   console.log("aboutyourNeed.....", aboutyourNeed);
@@ -63,6 +64,7 @@ export default CreateJobTermsScreen = (props) => {
   console.log("ratingThresholdValue.....", ratingThresholdValue);
   console.log("latitude.....", latitude);
   console.log("longitude.....", longitude);
+  console.log("myJob.....", myJob);
 
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
@@ -410,6 +412,7 @@ export default CreateJobTermsScreen = (props) => {
       job_budget: formattedPriceRanges,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
+      job_sub_type: myJob == "requested" ? 1 : 0,
     };
     axios
       .post(createJob_url, createJob_Data)
@@ -460,7 +463,7 @@ export default CreateJobTermsScreen = (props) => {
           setCurrentTime(response.data.data.job_time);
           setHourlyNeedValue(parseInt(response.data.data.job_hourly_key));
           setneedServicesValue(parseInt(response.data.data.job_how_often_key));
-          setFormattedPriceRanges(response.data.data.job_budget)
+          setFormattedPriceRanges(response.data.data.job_budget);
           setSelectedButtonResponsible(
             parseInt(response.data.data.job_payment_by_key)
           );
