@@ -60,6 +60,9 @@ export default Repair = (props) => {
     "loginresponse_jobdetails..",
     loginData?.Login_details?.user_account_id
   );
+  const user_role_id = loginData?.Account_details[0]?.user_role_id;
+  // alert(user_role_id);
+
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
   const [activeScreen, setActiveScreen] = useState(true);
@@ -325,58 +328,72 @@ export default Repair = (props) => {
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
-        <View style={RepairCss.Container}>
-          <RowButtons
-            LeftButtonText={"Jobs I am servicing"}
-            leftButtonHeight={40}
-            leftButtonbackgroundColor={
-              activeScreen
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_lightGreenColor
-            }
-            LeftButtonborderColor={
-              activeScreen
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_lightGreenColor
-            }
-            RightButtonText={"Jobs I have requested"}
-            RightButtonbackgroundColor={
-              activeScreen
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonborderColor={
-              activeScreen
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_GrayColor
-            }
-            LeftButtonTextColor={
-              activeScreen ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_BlackColor
-            }
-            RightButtonTextColor={
-              activeScreen ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
-            }
-            RightButtonHeight={40}
-            onPressLeftButton={() => setActiveScreen(false)}
-            onPressRightButton={() => setActiveScreen(true)}
-          />
-        </View>
-        <DividerIcon borderBottomWidth={5} marginTop={8} />
-        <View style={RepairCss.Container}>
-          <CustomSingleButton
-            _ButtonText={
-              activeScreen ? "+ Create new job request" : "+ Add job"
-            }
-            disabled={isLoading ? true : false}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            text_Size={14}
-            backgroundColor={_COLORS.Kodie_BlackColor}
-            height={40}
-            marginTop={3}
-            onPress={activeScreen ? props.onpress : null}
-          />
-        </View>
-        <DividerIcon borderBottomWidth={5} marginTop={8} />
+        {/* {user_role_id === "4" ? ( */}
+          <>
+            <View style={RepairCss.Container}>
+              <RowButtons
+                LeftButtonText={"Jobs I am servicing"}
+                leftButtonHeight={40}
+                leftButtonbackgroundColor={
+                  activeScreen
+                    ? _COLORS.Kodie_WhiteColor
+                    : _COLORS.Kodie_lightGreenColor
+                }
+                LeftButtonborderColor={
+                  activeScreen
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_lightGreenColor
+                }
+                RightButtonText={"Jobs I have requested"}
+                RightButtonbackgroundColor={
+                  activeScreen
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonborderColor={
+                  activeScreen
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_GrayColor
+                }
+                LeftButtonTextColor={
+                  activeScreen
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_BlackColor
+                }
+                RightButtonTextColor={
+                  activeScreen
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_GrayColor
+                }
+                RightButtonHeight={40}
+                onPressLeftButton={() => setActiveScreen(false)}
+                onPressRightButton={() => setActiveScreen(true)}
+              />
+            </View>
+            <DividerIcon borderBottomWidth={5} marginTop={8} />
+          </>
+        {/* ) : null} */}
+
+        {/* {user_role_id === "4" ? ( */}
+          <>
+            <View style={RepairCss.Container}>
+              <CustomSingleButton
+                _ButtonText={
+                  activeScreen ? "+ Create new job request" : "+ Add job"
+                }
+                disabled={isLoading ? true : false}
+                Text_Color={_COLORS.Kodie_WhiteColor}
+                text_Size={14}
+                backgroundColor={_COLORS.Kodie_BlackColor}
+                height={40}
+                marginTop={3}
+                onPress={activeScreen ? props.onpress : props.onpress}
+              />
+            </View>
+            <DividerIcon borderBottomWidth={5} marginTop={8} />
+          </>
+        {/* ) : null} */}
+
         <SearchBar frontSearchIcon height={48} marginTop={5} />
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
