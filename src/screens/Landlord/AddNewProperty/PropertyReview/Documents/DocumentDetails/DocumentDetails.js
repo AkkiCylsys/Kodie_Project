@@ -38,6 +38,7 @@ const DocumentDetails = (props) => {
   //   alert(folderId);
   // alert(moduleName);
   // alert(property_id);
+  console.log("property_id..", property_id);
 
   useEffect(() => {
     getuploadedDocuments();
@@ -183,9 +184,10 @@ const DocumentDetails = (props) => {
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: "Lease",
+      fileReferenceKey: "1170",
     };
     axios
-      .get(getDocumentUrl, documentModuleData)
+      .get(getDocumentUrl,documentModuleData)
       .then((response) => {
         console.log("API Response getDocumentsByModule:", response.data);
       })
@@ -196,6 +198,7 @@ const DocumentDetails = (props) => {
         setIsLoading(false);
       });
   };
+
   const DocumentsData = ({ item, index }) => {
     return (
       <>

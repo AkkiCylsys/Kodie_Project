@@ -328,7 +328,7 @@ export default Repair = (props) => {
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
-        {user_role_id === "4" ? (
+        {/* {user_role_id === "4" ? ( */}
           <>
             <View style={RepairCss.Container}>
               <RowButtons
@@ -372,9 +372,9 @@ export default Repair = (props) => {
             </View>
             <DividerIcon borderBottomWidth={5} marginTop={8} />
           </>
-        ) : null}
+        {/* ) : null} */}
 
-        {user_role_id === "4" ? (
+        {/* {user_role_id === "4" ? ( */}
           <>
             <View style={RepairCss.Container}>
               <CustomSingleButton
@@ -392,7 +392,7 @@ export default Repair = (props) => {
             </View>
             <DividerIcon borderBottomWidth={5} marginTop={8} />
           </>
-        ) : null}
+        {/* ) : null} */}
 
         <SearchBar frontSearchIcon height={48} marginTop={5} />
         <View style={RepairCss.Container}>

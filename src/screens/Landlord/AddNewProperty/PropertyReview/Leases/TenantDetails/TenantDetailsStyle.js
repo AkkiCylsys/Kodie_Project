@@ -14,18 +14,30 @@ export const TenantDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
   },
   userName: {
+    flex: 0.5,
     fontSize: 16,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
-  name_view:{ marginLeft: 10 },
-  details_main_view:{flex:1,flexDirection: "row", justifyContent: "space-between" },
-  user_subView:{ flexDirection: "row", marginTop: 10 },
-  check_view:{ flexDirection: "row", marginTop: 10 },
-  startRating: { paddingHorizontal: 1 },
+  name_view: { marginLeft: 10 },
+  details_main_view: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  user_subView: { flex: 1, flexDirection: "row", marginTop: 10 },
+  check_view: { flexDirection: "row", marginTop: 10 },
+  startRating: {
+    paddingHorizontal: 1,
+    alignSelf: "center",
+    alignItems: "center",
+  },
   starStyle: {
-    marginTop: 20,
-    marginLeft: 60,
+    flex: 1,
+    marginTop: 13,
+    // marginLeft: 60,
+    alignSelf: "center",
+    alignItems: "center",
   },
 
   rent_received_text: {
@@ -60,7 +72,7 @@ export const TenantDetailsStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 15,
   },
-  
+
   Account_main_View: {
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
@@ -114,7 +126,7 @@ export const TenantDetailsStyle = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 10,
   },
-  datePaid_main_view:{
+  datePaid_main_view: {
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 5,

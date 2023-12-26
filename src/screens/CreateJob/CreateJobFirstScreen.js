@@ -718,7 +718,7 @@ export default CreateJobFirstScreen = (props) => {
           console.log("jobDetailsData....", response.data.data);
           // setSelectJobTypeid(response.data.data.job_type_key);
           // alert(response.data.data.job_type_key);
-          setIsClick(parseInt(response.data.data.job_type_key))
+          setIsClick(parseInt(response.data.data.job_type_key));
           setAboutyourNeed(response.data.data.job_description);
           setservicesValue(
             parseInt(response.data.data?.job_service_you_looking_key)
