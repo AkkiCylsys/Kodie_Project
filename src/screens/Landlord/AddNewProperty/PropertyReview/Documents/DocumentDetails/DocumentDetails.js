@@ -8,6 +8,7 @@ import {
   FlatList,
   PermissionsAndroid,
 } from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import React, { useState, useEffect, useRef } from "react";
 import { DocumentDetailStyle } from "./DocumentDetailStyle";
 import TopHeader from "../../../../../../components/Molecules/Header/Header";
@@ -237,9 +238,15 @@ const DocumentDetails = (props) => {
       <>
         <View style={DocumentDetailStyle.container}>
           <View style={DocumentDetailStyle.pdfInfo}>
-            <Image
+            {/* <Image
               source={IMAGES.document}
               style={DocumentDetailStyle.pdfIcon}
+            /> */}
+              <FontAwesome
+              name="file-pdf-o"
+              size={45}
+              color={_COLORS.Kodie_BlackColor}
+              resizeMode={"contain"}
             />
             <View style={DocumentDetailStyle.textContainer}>
               <Text style={DocumentDetailStyle.pdfName}>
@@ -421,7 +428,7 @@ const DocumentDetails = (props) => {
             disabled={isLoading ? true : false}
           />
         </View>
-        <RBSheet
+        <RBSheet 
           ref={refRBSheet}
           height={220}
           customStyles={{
@@ -441,7 +448,7 @@ const DocumentDetails = (props) => {
             downloadFile={checkPermission}
             fileKey={fileKey}
             onpress={() => {
-              props.navigation.navigate("ViewDocument");
+              props.navigation.navigate("ViewDocument",{PDFfileFullPathView:"https://e3.cylsys.com/upload/documents/Photo.pdf"});
             }}
           />
         </RBSheet>

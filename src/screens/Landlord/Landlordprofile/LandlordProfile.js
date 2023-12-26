@@ -25,6 +25,7 @@ export default LandlordProfile = (props) => {
     dispatch(logoutActionCreator());
     //props.navigation.navigate('AuthNavigator');
   };
+  //alert(JSON.stringify(loginData?.Account_details[0]))
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
@@ -56,8 +57,8 @@ export default LandlordProfile = (props) => {
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
               {
-                // loginData?.Account_details[0]?.UAD_FIRST_NAME +
-                //   " " +
+                // loginData?.Account_details[0]?.UAD_FIRST_NAME||''
+                //   " " +  n
                 //   loginData?.Account_details[0]?.UAD_LAST_NAME
                 // ||
                 // signUp_account_response?.Account_details[0]?.UAD_FIRST_NAME +

@@ -36,6 +36,7 @@ export default EditDocumentsModal = (props) => {
       onPress={() => {
         if (item.id === "1") {
           props.onpress();
+        // alert('hi')
         }
         if (item.id === "2") {
           deleteHandler(fileKey);

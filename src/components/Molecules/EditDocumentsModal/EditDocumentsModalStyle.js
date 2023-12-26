@@ -20,7 +20,7 @@ export const EditDocumentsModalStyle = StyleSheet.create({
   Invite_Data_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
-    fontStyle: FONTFAMILY.K_SemiBold,
+    fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
     alignSelf: "center",
   },
