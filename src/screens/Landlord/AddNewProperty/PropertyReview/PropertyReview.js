@@ -565,7 +565,14 @@ export default PropertyReview = props => {
                   }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    props?.navigation?.navigate('Properties');
+                    if (propertyView) {
+                      props?.navigation?.navigate('PropertyDetails', {
+                        propertyid: propertyid,
+                        editMode: 'editMode',
+                      });
+                    } else {
+                      props?.navigation?.navigate('Properties');
+                    }
                   }}
                 />
               </View>
