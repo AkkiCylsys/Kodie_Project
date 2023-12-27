@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 export const PropertyDetailsStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -9,18 +9,29 @@ export const PropertyDetailsStyle = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 10,
   },
+  AutoList_text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  questionmark: {
+    alignSelf: 'center',
+    borderRadius: 15,
+    marginHorizontal: 5,
+    backgroundColor: '#E0F6E5',
+  },
   heading: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
   },
   card: {
-    width: "100%",
+    width: '100%',
     backgroundColor: _COLORS.Kodie_TransparentColor,
     borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -33,7 +44,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
   },
@@ -41,10 +52,10 @@ export const PropertyDetailsStyle = StyleSheet.create({
     // flexDirection: "row",
     // alignItems: "center",
     flex: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 6,
-    shadowColor: "#000",
+    shadowColor: '#000',
     // shadowOffset: { width: 0, height: 2 },
     // shadowOpacity: 0.2,
     // shadowRadius: 2,
@@ -55,9 +66,9 @@ export const PropertyDetailsStyle = StyleSheet.create({
     paddingHorizontal: 10,
     color: _COLORS.Kodie_BlackColor,
   },
-  error_text: { color: "red", marginLeft: 10 },
+  error_text: {color: 'red', marginLeft: 10},
   locationIcon: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   dropdown: {
     borderWidth: 1,
@@ -94,8 +105,8 @@ export const PropertyDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
   },
   goBack_Text: {
@@ -115,15 +126,15 @@ export const PropertyDetailsStyle = StyleSheet.create({
   locationIconView: {
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     marginLeft: 5,
-    width: "15%",
-    justifyContent: "center",
+    width: '15%',
+    justifyContent: 'center',
     height: 50,
   },
   locationConView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
