@@ -1033,7 +1033,7 @@ export default CreateJobFirstScreen = (props) => {
             </View>
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={() =>
+              onPress={() => {
                 props.navigation.navigate("CreateJobTermsScreen", {
                   selectJobType: selectJobTypeid,
                   servicesValue: servicesValue,
@@ -1047,8 +1047,16 @@ export default CreateJobFirstScreen = (props) => {
                   JobId: JobId,
                   editMode: editMode,
                   myJob: myJob,
-                })
-              }
+                });
+                setIsClick("");
+                setSelectJobType("");
+                setservicesValue("");
+                setAboutyourNeed("");
+                setJobPriorityValue("");
+                setJobPriorityValue("");
+                setLocation("");
+                setRatingThresholdValue("");
+              }}
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />

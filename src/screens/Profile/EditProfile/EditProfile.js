@@ -1,5 +1,5 @@
 import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { EditProfileStyle } from "./EditProfileStyle";
 import { Divider } from "react-native-paper";
@@ -7,15 +7,24 @@ import { Dropdown } from "react-native-element-dropdown";
 import { CreateJobFirstStyle } from "../../CreateJob/CreateJobFirstScreenCss";
 import { ScrollView } from "react-native-gesture-handler";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS, IMAGES } from "../../../Themes";
+import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
-import UploadImageData from "../../../components/Molecules/UploadImage/UploadImage";
 import Entypo from "react-native-vector-icons/Entypo";
 import { _goBack } from "../../../services/CommonServices";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import AntDesign from "react-native-vector-icons/AntDesign";
-
+import Octicons from "react-native-vector-icons/Octicons";
+import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
+import UploadImageData from "../../../components/Molecules/UploadImage/UploadImage";
+import Geocoder from "react-native-geocoding";
+import Geolocation from "react-native-geolocation-service";
+import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
+import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
+import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
+import { useDispatch, useSelector } from "react-redux";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { Config } from "../../../Config";
+import axios from "axios";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -30,258 +39,500 @@ const data = [
 ];
 
 const EditProfile = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
+  const [fullName, setFullName] = useState(
+    loginData?.Account_details[0]?.UAD_FIRST_NAME
+  );
+  const [lastName, setLastName] = useState(
+    loginData?.Account_details[0]?.UAD_LAST_NAME
+  );
+  const [email, setEmail] = useState(loginData?.Login_details?.email);
+  const [phoneNumber, setPhoneNumber] = useState(
+    String(loginData?.Account_details[0]?.UAD_PHONE_NO)
+  );
+  const [location, setLocation] = useState(
+    loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD
+  );
+  const [activeTab, setActiveTab] = useState("Tab1");
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
-  const refRBSheet2 = useRef();
   const [visible, setVisible] = useState(false);
   const [photoid, setPhotoId] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [UserCurrentCity, setUserCurrentCity] = useState("");
+  const [UserZip_Code, setUserZip_Code] = useState("");
+  const [IsMap, setIsMap] = useState(false);
+  const [IsSearch, setIsSearch] = useState(false);
+  const [latitude, setlatitude] = useState("");
+  const [longitude, setlongitude] = useState("");
+  const [ImageName, setImageName] = useState("");
+
+  const handleImageNameChange = async (newImageName) => {
+    setImageName(newImageName);
+    console.log("................ImageNAme", newImageName);
+    console.log("................ImageNAmeDeependra", newImageName.path);
+  };
+  useEffect(() => {
+    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
+      language: "en",
+    });
+    CheckIOSMapPermission();
+    // setFullName(loginData?.Account_details[0]?.UAD_FIRST_NAME);
+    // setEmail(loginData?.Login_details?.email);
+    // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
+    // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
+  }, []);
+  const goBack = () => {
+    props.navigation.pop();
+  };
+  const ConfirmAddress = () => {
+    setIsMap(false);
+  };
+  const openMapandClose = (text) => {
+    setIsMap(false);
+    setIsSearch(true);
+  };
+  const onRegionChange = (Region) => {
+    // alert(JSON.stringify(Region))
+    setlatitude(Region.latitude);
+    setlongitude(Region.longitude);
+    getAddress(Region.latitude, Region.longitude);
+  };
+  const checkpermissionlocation = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Example App",
+          message: "Example App access to your location ",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+        // alert("You can use the location");
+        getAddressWithCordinates();
+      } else {
+        console.log("location permission denied");
+        alert("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const CheckIOSMapPermission = () => {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
+      .then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              "This feature is not available (on this device / in this context)"
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              "The permission has not been requested / is denied but requestable"
+            );
+            break;
+          case RESULTS.LIMITED:
+            console.log("The permission is limited: some actions are possible");
+            break;
+          case RESULTS.GRANTED:
+            console.log("The permission is granted");
+            getAddressWithCordinates();
+            break;
+          case RESULTS.BLOCKED:
+            console.log("The permission is denied and not requestable anymore");
+            break;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getAddressWithCordinates = () => {
+    Geolocation.watchPosition(
+      (position) => {
+        setlatitude(position.coords.latitude);
+        setlongitude(position.coords.longitude);
+        getAddress(position.coords.latitude, position.coords.longitude);
+      },
+      (error) => {
+        alert(error.message.toString());
+      },
+      {
+        showLocationDialog: true,
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+      }
+    );
+  };
+  const getAddress = (latitude, longitude) => {
+    Geocoder.from(latitude, longitude)
+      .then((json) => {
+        let MainFullAddress = json.results[0].formatted_address;
+        var addressComponent2 = json.results[0].address_components[1];
+        // alert(addressComponent2)
+        setUserCurrentCity(addressComponent2.long_name);
+        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
+        setLocation(MainFullAddress);
+
+        //setAddress(MainFullAddress);
+      })
+      .catch((error) => console.warn(error));
+  };
+
   const toggleView = () => {
     setVisible(!visible);
   };
-  return (
-    <>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Edit profile"}
-      />
-      <ScrollView>
-        <View style={EditProfileStyle.profilviewmain}>
-          <View style={EditProfile.profileviewimg}>
-            <Image
-              style={EditProfileStyle.profilelogo}
-              source={IMAGES.Landlordprofile}
-              resizeMode="contain"
-            />
-            <View style={EditProfileStyle.editlogoview}>
-              <FontAwesome
-                name="edit"
-                color={_COLORS.Kodie_GreenColor}
-                size={18}
-              />
-            </View>
-          </View>
-          <Text style={EditProfileStyle.edittext}>Edit profile photo</Text>
-        </View>
 
-        <Divider style={EditProfileStyle.firstdivider} />
+  // Api intrrigation......
+  const Updateprofile = async () => {
+    const formData = new FormData();
+    if (ImageName && typeof ImageName === "string") {
+      const imageUri = ImageName;
+      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      formData.append("profile_photo", {
+        uri: imageUri,
+        name: imageName,
+      });
+    }
+    formData.append("uad_key", loginData?.Login_details?.user_account_id);
+    formData.append("first_name", fullName);
+    formData.append("last_name", lastName);
+    formData.append("phone_number", phoneNumber);
+    formData.append("physical_address", location);
+    formData.append("longitude", longitude);
+    formData.append("latitude", latitude);
+    console.log("formData", formData);
+    const url = Config.BASE_URL;
+    const updateProfile_url = url + "profile/updateProfile";
+    console.log("Request URL:", updateProfile_url);
+    setIsLoading(true);
+    try {
+      const response = await axios.post(updateProfile_url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("updateprofile....", response.data);
+      if (response.data.success === true) {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      alert(error);
+      console.log("update_error...", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-        <View style={EditProfileStyle.inputmainview}>
-          <View style={EditProfileStyle.firstview}>
-            <Text style={EditProfileStyle.oldnumbertext}>Full name</Text>
-
-            <View style={EditProfileStyle.simpleinputview}>
-              <TextInput
-                keyboardType="numeric"
-                placeholder="Jason Stathom"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
-              <AntDesign
-                name="edit"
-                size={25}
-                color={_COLORS.Kodie_LightGrayColor}
-                resizeMode={"contain"}
-              />
-            </View>
-          </View>
-
-          <View style={EditProfileStyle.firstview}>
-            <Text style={EditProfileStyle.oldnumbertext}>Email address</Text>
-
-            <View style={EditProfileStyle.simpleinputview}>
-              <TextInput
-                keyboardType="numeric"
-                placeholder="jason5@gmail.com"
-              />
-              <AntDesign
-                name="edit"
-                size={25}
-                color={_COLORS.Kodie_LightGrayColor}
-                resizeMode={"contain"}
-              />
-            </View>
-          </View>
-
-          <View style={EditProfileStyle.firstview}>
-            <Text style={EditProfileStyle.oldnumbertext}>Phone number</Text>
-            <View style={EditProfileStyle.phoneinputbindview}>
-              <View style={EditProfileStyle.phoneinput}>
-                <View style={EditProfileStyle.bindnumberview}>
-                  <Text style={EditProfileStyle.numbercode}>+61</Text>
-
-                  <Ionicons
-                    name="chevron-down-outline"
-                    size={20}
-                    color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={"contain"}
-                  />
-                  <Image
-                    style={EditProfileStyle.lineimg}
-                    source={IMAGES.verticalLine}
-                  />
-                  <TextInput
-                    keyboardType="numeric"
-                    placeholder="1234567890"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  />
-                </View>
-                <AntDesign
-                  name="edit"
-                  size={25}
-                  color={_COLORS.Kodie_LightGrayColor}
-                  resizeMode={"contain"}
-                />
-              </View>
-            </View>
-          </View>
-
-          <View style={EditProfileStyle.firstview}>
-            <Text style={EditProfileStyle.oldnumbertext}>Physical address</Text>
-
-            <View style={EditProfileStyle.simpleinputphysical}>
-              <View style={EditProfileStyle.physicalsecondview}>
-                <Ionicons
-                  name="location-sharp"
-                  size={25}
-                  color={_COLORS.Kodie_MediumGrayColor}
-                  resizeMode={"contain"}
-                />
-                <TextInput
-                  keyboardType="numeric"
-                  placeholder="Search new location"
-                />
-              </View>
-              <AntDesign
-                name="edit"
-                size={25}
-                color={_COLORS.Kodie_LightGrayColor}
-                resizeMode={"contain"}
-              />
-            </View>
-          </View>
-
-          <View style={EditProfileStyle.dropdownview}>
-            <Dropdown
-              style={CreateJobFirstStyle.dropdown}
-              placeholderStyle={CreateJobFirstStyle.placeholderStyle}
-              selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
-              inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
-              iconStyle={CreateJobFirstStyle.iconStyle}
-              data={data}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder="Enter address manually"
-              searchPlaceholder="Search..."
-              value={value}
-              onChange={(item) => {
-                setValue(item.value);
-              }}
-            />
-          </View>
-        </View>
-
-        <View style={EditProfileStyle.uploadview}>
-          <Text style={EditProfileStyle.uploadtext}>
-            Upload your ID{" "}
-            <Text style={EditProfileStyle.optionaltext}>(optional) </Text>{" "}
-          </Text>
-          <Text style={EditProfileStyle.leasttext}>
-            Upload images of your ID. At least one ID must have your photo on
-            it.{" "}
-          </Text>
-        </View>
-
-        <View style={EditProfileStyle.buttonview}>
-          <CustomSingleButton
-            leftImage={IMAGES.uploadIcon}
-            isLeftImage={true}
-            borderColor={_COLORS.Kodie_TransparentColor}
-            _ButtonText={"Add photo ID"}
-            backgroundColor={_COLORS.Kodie_lightGreenColor}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-            disabled={isLoading ? true : false}
-          />
-
-          {photoid && (
-            <View style={EditProfileStyle.textContainer}>
-              <View style={EditProfileStyle.bindfile}>
-                <Image source={IMAGES.document} />
-                <View>
-                  <Text style={EditProfileStyle.pdfName}>
-                    {"Company document.pdf"}
-                  </Text>
-                  <Text style={EditProfileStyle.pdfSize}>{"4.8 MB"}</Text>
-                </View>
-              </View>
-              <TouchableOpacity
-                onPress={() => {
-                  refRBSheet2.current.open();
+  const checkTabs = () => {
+    switch (activeTab) {
+      case "Tab1":
+        return (
+          <View style={EditProfileStyle.mainContainer}>
+            {IsMap || IsSearch ? null : (
+              <ScrollView
+                contentContainerStyle={{
+                  height: 800,
                 }}
               >
-                <Entypo
-                  name="dots-three-vertical"
-                  size={20}
-                  style={EditProfileStyle.doticon}
-                />
-              </TouchableOpacity>
-            </View>
-          )}
-          {/*----------- first RBSheet of uploadImageData ---------*/}
-          <RBSheet
-            ref={refRBSheet}
-            height={200}
-            customStyles={{
-              wrapper: {
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-              },
-              draggableIcon: {
-                backgroundColor: _COLORS.Kodie_LightGrayColor,
-              },
-              container: EditProfileStyle.bottomModal_container,
+                <View style={EditProfileStyle.inputmainview}>
+                  <View style={EditProfileStyle.firstview}>
+                    <Text style={EditProfileStyle.oldnumbertext}>
+                      Full name
+                    </Text>
+                    <View style={EditProfileStyle.simpleinputview}>
+                      <TextInput
+                        value={fullName}
+                        onChangeText={setFullName}
+                        keyboardType="numeric"
+                        placeholder="Jason Stathom"
+                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                      />
+                    </View>
+                  </View>
+                  <View style={EditProfileStyle.firstview}>
+                    <Text style={EditProfileStyle.oldnumbertext}>
+                      Last name
+                    </Text>
+                    <View style={EditProfileStyle.simpleinputview}>
+                      <TextInput
+                        value={lastName}
+                        onChangeText={setLastName}
+                        keyboardType="numeric"
+                        placeholder="Jason Stathom"
+                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                      />
+                    </View>
+                  </View>
+                  <View style={EditProfileStyle.firstview}>
+                    <Text style={EditProfileStyle.oldnumbertext}>
+                      Email address
+                    </Text>
+                    <View style={EditProfileStyle.simpleinputview}>
+                      <TextInput
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="numeric"
+                        placeholder="jason5@gmail.com"
+                        editable={false}
+                      />
+                    </View>
+                  </View>
+                  <View style={EditProfileStyle.firstview}>
+                    <Text style={EditProfileStyle.oldnumbertext}>
+                      Phone number
+                    </Text>
+                    <View style={EditProfileStyle.phoneinputbindview}>
+                      <View style={EditProfileStyle.phoneinput}>
+                        <View style={EditProfileStyle.bindnumberview}>
+                          <Text style={EditProfileStyle.numbercode}>+61</Text>
+                          <Ionicons
+                            name="chevron-down-outline"
+                            size={20}
+                            color={_COLORS.Kodie_LightGrayColor}
+                            resizeMode={"contain"}
+                          />
+                          <Image
+                            style={EditProfileStyle.lineimg}
+                            source={IMAGES.verticalLine}
+                          />
+                          <TextInput
+                            value={phoneNumber}
+                            onChangeText={setPhoneNumber}
+                            keyboardType="numeric"
+                            placeholder="1234567890"
+                            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                  <View style={EditProfileStyle.firstview}>
+                    <Text style={EditProfileStyle.oldnumbertext}>
+                      Physical address
+                    </Text>
+
+                    <View style={EditProfileStyle.locationContainer}>
+                      <TextInput
+                        style={EditProfileStyle.locationInput}
+                        value={location}
+                        onChangeText={setLocation}
+                        onFocus={() => {
+                          setIsSearch(true);
+                        }}
+                        // editable={false}
+                        placeholder="Enter new location"
+                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                      />
+                      <TouchableOpacity
+                        style={EditProfileStyle.locationIconView}
+                        onPress={() => {
+                          Platform.OS == "ios"
+                            ? CheckIOSMapPermission
+                            : checkpermissionlocation();
+                          setIsMap(true);
+                        }}
+                      >
+                        <Octicons
+                          name={"location"}
+                          size={22}
+                          color={_COLORS.Kodie_GreenColor}
+                          style={EditProfileStyle.locationIcon}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+                <View style={EditProfileStyle.saveBackButton}>
+                  <View style={EditProfileStyle.secondview}>
+                    <CustomSingleButton
+                      leftImage={IMAGES.uploadIcon}
+                      isLeftImage={true}
+                      Text_Color={_COLORS.Kodie_WhiteColor}
+                      borderColor={_COLORS.Kodie_TransparentColor}
+                      _ButtonText={"Save and back"}
+                      backgroundColor={_COLORS.Kodie_BlackColor}
+                      disabled={isLoading ? true : false}
+                      onPress={() => {
+                        Updateprofile();
+                      }}
+                    />
+                  </View>
+                </View>
+              </ScrollView>
+            )}
+          </View>
+        );
+      case "Tab2":
+        return (
+          <View>
+            <Text>{"Personal Documents"}</Text>
+          </View>
+        );
+    }
+  };
+  return (
+    <View
+      style={{
+        backgroundColor: _COLORS.Kodie_WhiteColor,
+      }}
+    >
+      <TopHeader
+        onPressLeftButton={() => {
+          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+        }}
+        MiddleText={"Edit profile"}
+      />
+      {IsMap ? (
+        <View
+          style={{
+            // flex:1,
+            backgroundColor: "transparent",
+          }}
+        >
+          <MapScreen
+            style={{
+              // flex:0.5,
+              height: "85%",
+              width: "100%",
+              alignSelf: "center",
+              marginBottom: 10,
+            }}
+            onRegionChange={onRegionChange}
+            Maplat={latitude}
+            Maplng={longitude}
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignSelf: "center",
+              width: "96%",
+              borderWidth: 1,
+              borderRadius: 8,
+              backgroundColor: "white",
+              borderColor: "#E5E4E2",
+              marginTop: 10,
+              position: "absolute",
             }}
           >
-            <UploadImageData
-              heading_Text={"Upload  documents"}
-              onPress={toggleView}
-            />
-          </RBSheet>
-          <View style={EditProfileStyle.secondbuttonview}>
-            <CustomSingleButton
-              leftImage={IMAGES.uploadIcon}
-              isLeftImage={true}
-              borderColor={_COLORS.Kodie_TransparentColor}
-              _ButtonText={"Add second ID"}
-              backgroundColor={_COLORS.Kodie_lightGreenColor}
-              onPress={() => {
-                refRBSheet2.current.open();
+            <TextInput
+              style={{
+                backgroundColor: "transparent",
+                width: "90%",
+                height: 45,
+                alignSelf: "center",
               }}
-              disabled={isLoading ? true : false}
+              onFocus={() => openMapandClose()}
+              placeholder={"Search Place"}
             />
           </View>
+          <TouchableOpacity
+            style={EditProfileStyle.BtnContainer}
+            onPress={ConfirmAddress}
+          >
+            <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+          </TouchableOpacity>
         </View>
+      ) : IsSearch ? (
+        <SearchPlaces
+          onPress={(data, details = null) => {
+            console.log("LocationData....", details);
+            setlatitude(details.geometry.location.lat);
+            setlongitude(details.geometry.location.lng);
+            setIsSearch(false);
+            setIsMap(true);
+            setLocation(details.formatted_address);
+          }}
+        />
+      ) : (
+        <ScrollView>
+          <>
+            <View style={[EditProfileStyle.profilviewmain, { flex: 1 }]}>
+              <TouchableOpacity
+                style={{}}
+                onPress={() => {
+                  refRBSheet.current.open();
+                }}
+              >
+                {ImageName ? (
+                  <Image
+                    source={{ uri: ImageName.path || ImageName }}
+                    style={[EditProfileStyle.logo, { borderRadius: 110 / 2 }]}
+                  />
+                ) : (
+                  <Image
+                    style={EditProfileStyle.profilelogo}
+                    source={{
+                      uri: loginData?.Login_details?.profile_photo_path,
+                    }}
+                    resizeMode="cover"
+                  />
+                )}
+                {ImageName ? refRBSheet.current.close() : null}
+                <View style={EditProfileStyle.editlogoview}>
+                  <FontAwesome
+                    name="edit"
+                    color={_COLORS.Kodie_GreenColor}
+                    size={18}
+                  />
+                </View>
+              </TouchableOpacity>
+              <Text style={EditProfileStyle.edittext}>Edit profile photo</Text>
+            </View>
+            <Divider style={EditProfileStyle.firstdivider} />
+            <View
+              style={{
+                borderBottomWidth: 3,
+                borderColor: _COLORS.Kodie_GrayColor,
+                elevation: 1,
+              }}
+            >
+              <CustomTabNavigator
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                Tab1={"Personal Details"}
+                Tab2={"Personal Documents"}
+                onPressTab1={() => setActiveTab("Tab1")}
+                onPressTab2={() => setActiveTab("Tab2")}
+                colorTab1={
+                  activeTab === "Tab1"
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                colorTab2={
+                  activeTab === "Tab2"
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                FONTFAMILY1={
+                  activeTab === "Tab1"
+                    ? FONTFAMILY.K_Bold
+                    : FONTFAMILY.K_SemiBold
+                }
+                FONTFAMILY2={
+                  activeTab === "Tab2"
+                    ? FONTFAMILY.K_Bold
+                    : FONTFAMILY.K_SemiBold
+                }
+                styleTab1={activeTab === "Tab1" && EditProfileStyle.activeTab}
+                styleTab2={activeTab === "Tab2" && EditProfileStyle.activeTab}
+              />
+            </View>
+          </>
 
-        <View style={EditProfileStyle.saveBackButton}>
-          <View style={EditProfileStyle.secondview}>
-            <CustomSingleButton
-              leftImage={IMAGES.uploadIcon}
-              isLeftImage={true}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              borderColor={_COLORS.Kodie_TransparentColor}
-              _ButtonText={"Save and back"}
-              backgroundColor={_COLORS.Kodie_BlackColor}
-              disabled={isLoading ? true : false}
-            />
-          </View>
-        </View>
-      </ScrollView>
-
+          {checkTabs()}
+        </ScrollView>
+      )}
       {/*----------- first RBSheet of Edit docoment ---------*/}
       <RBSheet
-        ref={refRBSheet2}
+        ref={refRBSheet}
         height={200}
         customStyles={{
           wrapper: {
@@ -293,12 +544,30 @@ const EditProfile = (props) => {
           container: EditProfileStyle.bottomModal_container,
         }}
       >
+        <View style={EditProfileStyle.upload_View}>
+          <Text style={EditProfileStyle.uploadImgText}>
+            {props.heading_Text || "Upload image"}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              refRBSheet.current.close();
+            }}
+          >
+            <Entypo
+              name="cross"
+              size={25}
+              color={_COLORS.Kodie_BlackColor}
+              style={EditProfileStyle.crossIconStyle}
+            />
+          </TouchableOpacity>
+        </View>
         <UploadImageData
-          heading_Text={"Edit  documents"}
-          onPress={toggleView}
+          heading_Text={"Upload image"}
+          ImageName={handleImageNameChange}
         />
       </RBSheet>
-    </>
+      {isLoading ? <CommonLoader /> : null}
+    </View>
   );
 };
 

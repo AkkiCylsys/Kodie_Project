@@ -65,9 +65,7 @@ export default Repair = (props) => {
 
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
-  const [activeScreen, setActiveScreen] = useState(
-    myJob_Type === 0 ? false : true
-  );
+  const [activeScreen, setActiveScreen] = useState(false);
 
   const [allJobData, setAllJobData] = useState([]);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
@@ -160,6 +158,7 @@ export default Repair = (props) => {
       getJobDetailsByFilter(selectedFilter);
     }
     getJobDetails_Filter_Service(selectedFilter);
+    setActiveScreen(myJob_Type === 0 ? false : true);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
