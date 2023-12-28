@@ -3,7 +3,7 @@ import { IMAGES, _COLORS, FONTFAMILY } from "./../../../Themes/index";
 
 export const EditProfileStyle = StyleSheet.create({
   mainContainer: {
-    // flex: 1,
+    flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   profilviewmain: {
@@ -14,9 +14,9 @@ export const EditProfileStyle = StyleSheet.create({
   profilelogo: {
     width: 100,
     height: 100,
-    borderRadius:50,
-    borderWidth:1,
-    borderColor:_COLORS.Kodie_ExtraLiteGrayColor
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_ExtraLiteGrayColor,
   },
 
   editlogoview: {

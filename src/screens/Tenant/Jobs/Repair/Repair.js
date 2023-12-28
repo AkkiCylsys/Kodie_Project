@@ -71,6 +71,7 @@ export default Repair = (props) => {
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [JobId, setJobId] = useState(0);
   const [Job_Id, setJob_Id] = useState(0);
+  const [job_sub_type, setJob_sub_type] = useState(0);
   const [Address, setAddress] = useState();
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
     useState(false);
@@ -106,7 +107,9 @@ export default Repair = (props) => {
       });
 
       setJobData(response?.data?.job_details);
-      console.log("listJobdata", JobData);
+      console.log("listJobdata", response?.data?.job_details);
+      setJob_sub_type(response?.data?.job_details.job_sub_type);
+      console.log("Job_sub_type....", response?.data?.job_details.job_sub_type);
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
@@ -116,7 +119,7 @@ export default Repair = (props) => {
         alert("An error occurred. Please try again later.");
         setIsLoading(false);
       }
-      console.error("API Error:", error);
+      console.error("API Error JobDetailsByFilter:", error);
       setIsLoading(false);
     }
   };
@@ -148,7 +151,7 @@ export default Repair = (props) => {
         alert("An error occurred. Please try again later.");
         setIsLoading(false);
       }
-      console.error("API Error:", error);
+      console.error("API Error JobDetails_Filter_Service:", error);
       setIsLoading(false);
     }
   };

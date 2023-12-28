@@ -234,13 +234,50 @@ const EditProfile = (props) => {
     switch (activeTab) {
       case "Tab1":
         return (
-          <View style={EditProfileStyle.mainContainer}>
+          <ScrollView
+            style={EditProfileStyle.mainContainer}
+            contentContainerStyle={{ marginBottom: 200 }}
+          >
             {IsMap || IsSearch ? null : (
-              <ScrollView
-                contentContainerStyle={{
-                  height: 800,
-                }}
-              >
+              <>
+                <View style={[EditProfileStyle.profilviewmain, { flex: 1 }]}>
+                  <TouchableOpacity
+                    style={{}}
+                    onPress={() => {
+                      refRBSheet.current.open();
+                    }}
+                  >
+                    {ImageName ? (
+                      <Image
+                        source={{ uri: ImageName.path || ImageName }}
+                        style={[
+                          EditProfileStyle.logo,
+                          { borderRadius: 110 / 2 },
+                        ]}
+                      />
+                    ) : (
+                      <Image
+                        style={EditProfileStyle.profilelogo}
+                        source={{
+                          uri: loginData?.Login_details?.profile_photo_path,
+                        }}
+                        resizeMode="cover"
+                      />
+                    )}
+                    {ImageName ? refRBSheet.current.close() : null}
+                    <View style={EditProfileStyle.editlogoview}>
+                      <FontAwesome
+                        name="edit"
+                        color={_COLORS.Kodie_GreenColor}
+                        size={18}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  <Text style={EditProfileStyle.edittext}>
+                    Edit profile photo
+                  </Text>
+                </View>
+                <Divider style={EditProfileStyle.firstdivider} />
                 <View style={EditProfileStyle.inputmainview}>
                   <View style={EditProfileStyle.firstview}>
                     <Text style={EditProfileStyle.oldnumbertext}>
@@ -365,11 +402,17 @@ const EditProfile = (props) => {
                     />
                   </View>
                 </View>
-              </ScrollView>
+              </>
             )}
-          </View>
+          </ScrollView>
         );
       case "Tab2":
+        return (
+          <View>
+            <Text>{"Company Details"}</Text>
+          </View>
+        );
+      case "Tab3":
         return (
           <View>
             <Text>{"Personal Documents"}</Text>
@@ -381,6 +424,7 @@ const EditProfile = (props) => {
     <View
       style={{
         backgroundColor: _COLORS.Kodie_WhiteColor,
+        flex: 1,
       }}
     >
       <TopHeader
@@ -392,7 +436,7 @@ const EditProfile = (props) => {
       {IsMap ? (
         <View
           style={{
-            // flex:1,
+            // flex:0.5,
             backgroundColor: "transparent",
           }}
         >
@@ -452,83 +496,55 @@ const EditProfile = (props) => {
           }}
         />
       ) : (
-        <ScrollView>
-          <>
-            <View style={[EditProfileStyle.profilviewmain, { flex: 1 }]}>
-              <TouchableOpacity
-                style={{}}
-                onPress={() => {
-                  refRBSheet.current.open();
-                }}
-              >
-                {ImageName ? (
-                  <Image
-                    source={{ uri: ImageName.path || ImageName }}
-                    style={[EditProfileStyle.logo, { borderRadius: 110 / 2 }]}
-                  />
-                ) : (
-                  <Image
-                    style={EditProfileStyle.profilelogo}
-                    source={{
-                      uri: loginData?.Login_details?.profile_photo_path,
-                    }}
-                    resizeMode="cover"
-                  />
-                )}
-                {ImageName ? refRBSheet.current.close() : null}
-                <View style={EditProfileStyle.editlogoview}>
-                  <FontAwesome
-                    name="edit"
-                    color={_COLORS.Kodie_GreenColor}
-                    size={18}
-                  />
-                </View>
-              </TouchableOpacity>
-              <Text style={EditProfileStyle.edittext}>Edit profile photo</Text>
-            </View>
-            <Divider style={EditProfileStyle.firstdivider} />
-            <View
-              style={{
-                borderBottomWidth: 3,
-                borderColor: _COLORS.Kodie_GrayColor,
-                elevation: 1,
-              }}
-            >
-              <CustomTabNavigator
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                Tab1={"Personal Details"}
-                Tab2={"Personal Documents"}
-                onPressTab1={() => setActiveTab("Tab1")}
-                onPressTab2={() => setActiveTab("Tab2")}
-                colorTab1={
-                  activeTab === "Tab1"
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                colorTab2={
-                  activeTab === "Tab2"
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                FONTFAMILY1={
-                  activeTab === "Tab1"
-                    ? FONTFAMILY.K_Bold
-                    : FONTFAMILY.K_SemiBold
-                }
-                FONTFAMILY2={
-                  activeTab === "Tab2"
-                    ? FONTFAMILY.K_Bold
-                    : FONTFAMILY.K_SemiBold
-                }
-                styleTab1={activeTab === "Tab1" && EditProfileStyle.activeTab}
-                styleTab2={activeTab === "Tab2" && EditProfileStyle.activeTab}
-              />
-            </View>
-          </>
-
-          {checkTabs()}
-        </ScrollView>
+        <>
+          <View
+            style={{
+              borderBottomWidth: 3,
+              borderColor: _COLORS.Kodie_GrayColor,
+              elevation: 1,
+            }}
+          >
+            <CustomTabNavigator
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              TAB3
+              Tab1={"Personal Details"}
+              Tab2={"Company Details"}
+              Tab3={"Personal Documents"}
+              onPressTab1={() => setActiveTab("Tab1")}
+              onPressTab2={() => setActiveTab("Tab2")}
+              onPressTab3={() => setActiveTab("Tab3")}
+              colorTab1={
+                activeTab === "Tab1"
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              colorTab2={
+                activeTab === "Tab2"
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              colorTab3={
+                activeTab === "Tab3"
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              FONTFAMILY1={
+                activeTab === "Tab1" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+              }
+              FONTFAMILY2={
+                activeTab === "Tab2" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+              }
+              FONTFAMILY3={
+                activeTab === "Tab3" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+              }
+              styleTab1={activeTab === "Tab1" && EditProfileStyle.activeTab}
+              styleTab2={activeTab === "Tab2" && EditProfileStyle.activeTab}
+              styleTab3={activeTab === "Tab3" && EditProfileStyle.activeTab}
+            />
+          </View>
+          <ScrollView>{checkTabs()}</ScrollView>
+        </>
       )}
       {/*----------- first RBSheet of Edit docoment ---------*/}
       <RBSheet

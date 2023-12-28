@@ -544,7 +544,7 @@ export default CreateJobTermsScreen = (props) => {
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Create new job request"}
+        MiddleText={editMode?"Edit job":"Create new job request"}
       />
       <StepIndicator
         customSignUpStepStyle={firstIndicatorSignUpStepStyle}

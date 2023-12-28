@@ -77,6 +77,7 @@ export default CreateJobFirstScreen = (props) => {
   // alert(JobId)
   // alert(editMode)
   console.log("myJob.......", myJob);
+  console.log("editMode.......", editMode);
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
@@ -753,7 +754,13 @@ export default CreateJobFirstScreen = (props) => {
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}
-        MiddleText={IsMap || IsSearch ? "Location" : "Create new job request"}
+        MiddleText={
+          IsMap || IsSearch
+            ? "Location"
+            : editMode
+            ? "Edit job"
+            : "Create new job request"
+        }
       />
       {IsMap || IsSearch ? null : (
         <View style={{}}>
@@ -866,7 +873,7 @@ export default CreateJobFirstScreen = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="select item"
+                placeholder="Select item"
                 searchPlaceholder="Search..."
                 value={servicesValue}
                 onChange={(item) => {
