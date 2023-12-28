@@ -644,7 +644,9 @@ export default PropertyReview = (props) => {
     <View style={PropertyReviewStyle.mainContainer}>
       <TopHeader
         // isprofileImage
-        onPressLeftButton={goBack}
+        onPressLeftButton={
+          propertyView ? () => props.navigation.navigate("Properties") : goBack
+        }
         MiddleText={
           editMode
             ? "Edit property"

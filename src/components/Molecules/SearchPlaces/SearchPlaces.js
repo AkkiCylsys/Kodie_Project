@@ -16,6 +16,12 @@ const SearchPlaces = (props) => {
         placeholder="Enter Location"
         debounce={400}
         onPress={props.onPress}
+        textInputProps={{
+          // Super hacky..
+          ref: (textInput) => {
+            setTimeout(() => textInput && textInput.focus(), 100);
+          },
+        }}
         // onPress={(data, details) => {
         //   // 'details' is provided when fetchDetails = true
         //   console.log("Selected Place Data:", data);
@@ -40,11 +46,11 @@ const SearchPlaces = (props) => {
           language: "en",
         }}
         fetchDetails={true} // Enable fetching place details
-        minLength={2}
+        // minLength={2}
         styles={{
           textInputContainer: {
             marginHorizontal: 16,
-            borderWidth: Platform.OS=='ios'?0: 1,
+            borderWidth: Platform.OS == "ios" ? 0 : 1,
             borderColor: "#E5E4E2",
             borderRadius: 8,
             marginTop: 10,
