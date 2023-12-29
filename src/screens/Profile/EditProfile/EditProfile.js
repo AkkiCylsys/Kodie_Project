@@ -7,7 +7,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { CreateJobFirstStyle } from "../../CreateJob/CreateJobFirstScreenCss";
 import { ScrollView } from "react-native-gesture-handler";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
+import { _COLORS, IMAGES, FONTFAMILY, LABEL_STYLES } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Entypo from "react-native-vector-icons/Entypo";
 import { _goBack } from "../../../services/CommonServices";
@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { Config } from "../../../Config";
 import axios from "axios";
+import CompanyDetails from "../../Landlord/Landlordprofile/CompanyDetails/CompanyDetails";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -54,6 +55,7 @@ const EditProfile = (props) => {
   const [location, setLocation] = useState(
     loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD
   );
+  const [about, setAbout] = useState("");
   const [activeTab, setActiveTab] = useState("Tab1");
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
@@ -230,6 +232,10 @@ const EditProfile = (props) => {
     }
   };
 
+  const openMap = () => {
+    Platform.OS == "ios" ? CheckIOSMapPermission : checkpermissionlocation();
+    setIsMap(true);
+  };
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -350,6 +356,19 @@ const EditProfile = (props) => {
                       </View>
                     </View>
                   </View>
+                  <View style={EditProfileStyle.inputContainer}>
+                    <Text style={LABEL_STYLES.commontext}>{"About"}</Text>
+                    <TextInput
+                      style={[EditProfileStyle.input, { height: 119 }]}
+                      value={about}
+                      onChangeText={setAbout}
+                      placeholder="Tell us a bit more about yourself"
+                      placeholderTextColor="#999"
+                      multiline
+                      numberOfLines={5}
+                      textAlignVertical={"top"}
+                    />
+                  </View>
                   <View style={EditProfileStyle.firstview}>
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Physical address
@@ -408,9 +427,81 @@ const EditProfile = (props) => {
         );
       case "Tab2":
         return (
-          <View>
-            <Text>{"Company Details"}</Text>
-          </View>
+          <>
+            {IsMap ? (
+              <View
+                style={{
+                  flex: 1,
+                  // paddingHorizontal: 10,
+                  backgroundColor: "transparent",
+                }}
+              >
+                <MapScreen
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    // borderRadius: 20,
+                    // borderWidth: 1,
+                    //borderColor: .greenAppColor,
+                    alignSelf: "center",
+                    marginBottom: 10,
+                  }}
+                  onRegionChange={onRegionChange}
+                  Maplat={latitude}
+                  Maplng={longitude}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignSelf: "center",
+                    width: "96%",
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    backgroundColor: "white",
+                    borderColor: "#E5E4E2",
+                    marginTop: 10,
+                    position: "absolute",
+                  }}
+                >
+                  <TextInput
+                    style={{
+                      backgroundColor: "transparent",
+
+                      width: "90%",
+                      height: 45,
+                      alignSelf: "center",
+                      //marginTop: 10,
+                    }}
+                    onFocus={() => openMapandClose()}
+                    placeholder={"Search Place"}
+                  />
+                </View>
+                <TouchableOpacity
+                  style={CompanyDetailsStyle.BtnContainer}
+                  onPress={ConfirmAddress}
+                >
+                  <Image
+                    source={IMAGES?.Shape}
+                    style={{ height: 25, width: 25 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : IsSearch ? (
+              <SearchPlaces
+                onPress={(data, details = null) => {
+                  console.log("LocationData....", details);
+                  setlatitude(details.geometry.location.lat);
+                  setlongitude(details.geometry.location.lng);
+                  setIsSearch(false);
+                  setIsMap(true);
+                  setLocation(details.formatted_address);
+                }}
+              />
+            ) : (
+              <CompanyDetails openMap={openMap} />
+            )}
+          </>
         );
       case "Tab3":
         return (

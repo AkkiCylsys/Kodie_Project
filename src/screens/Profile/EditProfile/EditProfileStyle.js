@@ -270,4 +270,18 @@ export const EditProfileStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
   },
   crossIconStyle: { alignSelf: "center", marginRight: 10 },
+  inputContainer: {
+    marginTop: 15,
+    marginHorizontal:16
+  },
+  input: {
+    height: 45,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginTop: 10,
+  },
 });

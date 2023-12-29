@@ -45,31 +45,6 @@ import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoad
 
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
-const populorServicesData = [
-  {
-    id: 1,
-    name: "Electrical",
-  },
-  {
-    id: 2,
-    name: "Handyman",
-  },
-  {
-    id: 3,
-    name: "Painter",
-  },
-  {
-    id: 4,
-    name: "Plumber",
-  },
-];
-const data = [
-  { label: "Electricals", value: "1" },
-  { label: "Home cleaning", value: "2" },
-  { label: "Outdoor cleaning", value: "3" },
-  { label: "Heavy lifting", value: "4" },
-  { label: "Fixing & maintenance", value: "5" },
-];
 export default CreateJobFirstScreen = (props) => {
   const JobId = props.route.params?.JobId;
   const editMode = props.route.params?.editMode;

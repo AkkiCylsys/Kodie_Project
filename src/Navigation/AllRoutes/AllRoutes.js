@@ -118,6 +118,7 @@ import CurrentTenant from "../../screens/Tenant/CurrentTenant/CurrentTenant";
 import PreviousTenant from "../../screens/Tenant/PreviousTenant/PreviousTenant";
 import JodBiddingDetails from "../../screens/CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 import JobDocumentDetails from "../../screens/Tenant/Jobs/JobDocuments.js/JobDocumentDetails";
+import CompanyDetails from "../../screens/Landlord/Landlordprofile/CompanyDetails/CompanyDetails";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1015,6 +1016,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"JodBiddingDetails"}
           component={JodBiddingDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CompanyDetails"}
+          component={CompanyDetails}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
