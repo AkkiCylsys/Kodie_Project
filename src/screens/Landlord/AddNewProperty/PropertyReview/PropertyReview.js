@@ -680,7 +680,12 @@ export default PropertyReview = (props) => {
             </Text>
           </View>
         )}
-        <View style={PropertyReviewStyle.slider_view}>
+        <View
+          style={[
+            PropertyReviewStyle.slider_view,
+            { marginBottom: "5%", marginTop: propertyView ? 0 : "5%" },
+          ]}
+        >
           {property_Detail.image_path &&
           property_Detail.image_path.length != 0 ? (
             <SliderBox

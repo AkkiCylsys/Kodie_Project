@@ -314,7 +314,7 @@ const PropertyList = (props) => {
                   },
                 ]}
               >
-                <View
+                {/* <View
                   style={[
                     PropertyListCSS.roundButton,
                     {
@@ -325,7 +325,7 @@ const PropertyList = (props) => {
                         : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
-                />
+                /> */}
                 <Text
                   style={[
                     PropertyListCSS.buttonText,

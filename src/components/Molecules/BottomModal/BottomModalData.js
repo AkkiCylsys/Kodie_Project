@@ -78,7 +78,7 @@ const data = [
 const data1 = [
   {
     id: "1",
-    Data: "Confrom Delete property",
+    Data: "Confirm delete property",
     // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons

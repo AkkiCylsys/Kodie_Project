@@ -115,7 +115,7 @@ export default SignUp = (props) => {
       console.log("SignUp response", response.data);
       // alert(JSON.stringify(response.data));
       if (response.data.code === 3) {
-      alert(response.data.message);
+        alert(response.data.message);
         props.navigation.navigate("SignUpVerification", {
           email: email,
           password: encStr,
@@ -179,11 +179,13 @@ export default SignUp = (props) => {
     } else if (password.trim() === "") {
       setPasswordError("Password is required !");
     } else if (!term && !privacy) {
-      alert("Please accept both Terms & Conditions and Privacy Policy.");
+      alert(
+        "Please read and accept both Terms & Conditions and Privacy Policy."
+      );
     } else if (!term) {
-      alert("Please click on Terms & Conditions.");
+      alert("Please read and accept Terms & Conditions.");
     } else if (!privacy) {
-      alert("Please click on Privacy Policy.");
+      alert("Please read and accept our Privacy Policy.");
     } else {
       Signuphandle();
     }
@@ -222,9 +224,10 @@ export default SignUp = (props) => {
               value={email}
               onChangeText={setEmail}
               onBlur={() => handleSignUpEmail(email)}
-              placeholder="Enter Your Email Address"
+              placeholder="Enter your email address"
               placeholderTextColor="#999"
               maxLength={30}
+              autoCapitalize={"none"}
             />
             {emailError ? (
               <Text style={SignUpStyles.error_text}>{emailError}</Text>
@@ -249,7 +252,7 @@ export default SignUp = (props) => {
               />
               <TouchableOpacity onPress={handleTogglePassword}>
                 <MaterialCommunityIcons
-                  name={showPassword ? "eye-off-outline" : "eye-outline"}
+                  name={showPassword ? "eye-outline" : "eye-off-outline"}
                   size={20}
                   color={_COLORS.Kodie_BlackColor}
                   style={SignUpStyles.eyeIcon}

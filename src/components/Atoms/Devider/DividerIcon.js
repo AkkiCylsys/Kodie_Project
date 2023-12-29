@@ -21,7 +21,9 @@ const DividerIcon = (props) => {
           }}
         />
         {props.DeviderText && (
-          <View style={Dividerstyles.textView}>
+          <View
+            style={[Dividerstyles.textView, { marginTop: props.marginTop }]}
+          >
             <Text style={Dividerstyles.Divider_Text}>{props.DeviderText}</Text>
           </View>
         )}

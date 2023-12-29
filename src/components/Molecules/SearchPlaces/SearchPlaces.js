@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, Platform } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { SearchPlacesStyle } from "./SearchPlacesStyle";
@@ -9,6 +9,11 @@ const SearchPlaces = (props) => {
   const [longitude, setLongitude] = useState("");
   const [description, setDescription] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
+  const textInputRef = useRef(null);
+  useEffect(() => {
+    // Focus on the text input when the component mounts
+    textInputRef.current?.focus();
+  }, []);
   return (
     <View style={SearchPlacesStyle.container}>
       {/* <TopHeader MiddleText={"Location"} /> */}
@@ -16,12 +21,6 @@ const SearchPlaces = (props) => {
         placeholder="Enter Location"
         debounce={400}
         onPress={props.onPress}
-        textInputProps={{
-          // Super hacky..
-          ref: (textInput) => {
-            setTimeout(() => textInput && textInput.focus(), 100);
-          },
-        }}
         // onPress={(data, details) => {
         //   // 'details' is provided when fetchDetails = true
         //   console.log("Selected Place Data:", data);
@@ -41,6 +40,16 @@ const SearchPlaces = (props) => {
         //     });
         //   }
         // }}
+
+        // textInputProps={{
+        //   // Super hacky..
+        //   ref: (textInput) => {
+        //     setTimeout(() => textInput && textInput.focus(), 100);
+        //   },
+        // }}
+        textInputProps={{
+          ref: textInputRef,
+        }}
         query={{
           key: "AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw",
           language: "en",

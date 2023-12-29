@@ -376,7 +376,13 @@ export default PropertyDetails = (props) => {
     <View style={PropertyDetailsStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => {
-          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+          if (IsMap) {
+            setIsMap(false);
+          } else if (IsSearch) {
+            setIsSearch(false);
+          } else {
+            goBack();
+          }
         }}
         MiddleText={
           IsMap || IsSearch

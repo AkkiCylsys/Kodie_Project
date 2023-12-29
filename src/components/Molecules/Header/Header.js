@@ -44,7 +44,10 @@ const TopHeader = (props) => {
           {props.isMiddleImage ? (
             <Image source={props.MiddleImage} style={HeaderStyle.MiddleIcon} />
           ) : (
-            <Text style={[HeaderStyle.LabelText, { color: props.Text_Color }]} numberOfLines={1}>
+            <Text
+              style={[HeaderStyle.LabelText, { color: props.Text_Color }]}
+              numberOfLines={1}
+            >
               {props.MiddleText}
             </Text>
           )}
@@ -81,7 +84,7 @@ const TopHeader = (props) => {
           </View>
         )}
       </View>
-      <DividerIcon marginTop={2} marginBottom={0}/>
+      <DividerIcon marginTop={2} marginBottom={-0.1} />
     </>
   );
 };
