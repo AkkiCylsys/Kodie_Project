@@ -22,6 +22,8 @@ import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
 import Entypo from "react-native-vector-icons/Entypo";
 import ArchiveJob from "../../../../components/Molecules/Archive/ArchiveJob/ArchiveJob";
+// import ArchiveProperties from "../../../../components/Molecules/Archive/ArchiveProperties/ArchiveProperties";
+import JobRequestArchive from "../../../../components/Molecules/Archive/JobRequest/JobRequestArchive";
 const HorizontalData = ["Posted", "Ongoing", "Completed"];
 
 const property_List1 = [
@@ -56,7 +58,8 @@ export default Repair = (props) => {
   };
 
   // Archive component call here...................
-  <ArchiveJob />;
+  // <ArchiveJob />;
+  <JobRequestArchive />;
 
   const propertyData_render1 = ({ item }) => {
     return (
@@ -199,9 +202,7 @@ export default Repair = (props) => {
             backgroundColor={_COLORS.Kodie_BlackColor}
             height={40}
             marginTop={3}
-            onPress={
-              activeScreen ? props.onpress :null
-            }
+            onPress={activeScreen ? props.onpress : null}
           />
         </View>
         <DividerIcon borderBottomWidth={5} marginTop={8} />
@@ -226,9 +227,11 @@ export default Repair = (props) => {
         </View>
         <DividerIcon />
         {activeScreen ? (
-          <FlatList data={property_List1} renderItem={propertyData_render1} />
+          // <FlatList data={property_List1} renderItem={propertyData_render1} />
+          <JobRequestArchive />
         ) : (
           <ArchiveJob />
+          // <ArchiveProperties />
         )}
       </ScrollView>
     </View>
