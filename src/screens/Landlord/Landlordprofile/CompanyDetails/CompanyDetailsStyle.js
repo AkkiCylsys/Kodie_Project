@@ -67,7 +67,9 @@ export const CompanyDetailsStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_GrayColor,
-    margin: 10,
+    // margin: 10,
+    marginVertical: 8,
+    marginHorizontal: 5,
   },
   box_Text_Style: { color: _COLORS.Kodie_MediumGrayColor },
   //   Dropdown Style..
@@ -106,7 +108,6 @@ export const CompanyDetailsStyle = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: 15,
-
   },
   locationInput: {
     flex: 1,
@@ -186,4 +187,35 @@ export const CompanyDetailsStyle = StyleSheet.create({
     height: 110,
     // resizeMode: "cover",
   },
+  phoneinputbindview: {
+    width: "98%",
+  },
+  bindnumberview: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  phoneinput: {
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    marginTop: 1,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    marginTop: 10,
+  },
+  numbercode: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 13,
+    fontWeight: "400",
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  lineimg: {
+    height: 21,
+    width: 45,
+  },
+  error_text: { color: "red", marginLeft: 10,marginTop:5 },
 });

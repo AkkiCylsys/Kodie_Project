@@ -13,6 +13,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Octicons from "react-native-vector-icons/Octicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Entypo from "react-native-vector-icons/Entypo";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { IMAGES } from "../../../../Themes";
 import { Divider } from "react-native-paper";
 import { _COLORS, LABEL_STYLES } from "../../../../Themes";
@@ -30,6 +31,7 @@ import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
+import { useDispatch, useSelector } from "react-redux";
 const data = [
   { label: "Item 1", value: "1" },
   { label: "Item 2", value: "2" },
@@ -38,10 +40,13 @@ const data = [
 ];
 export default CompanyDetails = (props) => {
   const refRBSheet = useRef();
-
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [companyName, setCompanyName] = useState("");
   const [companyEmail, setCompanyEmail] = useState("");
+  const [companyEmailError, setCompanyEmailError] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [companyDescription, setCompanyDescription] = useState("");
   const [companyGSTNumber, setCompanyGSTNumber] = useState("");
   const [jobTypeData, setJobTypeData] = useState([]);
@@ -77,6 +82,38 @@ export default CompanyDetails = (props) => {
       handleServices(selectJobType);
     }
   }, [selectJobType]);
+
+  // Validation....
+  const validateCompanyEmail = (companyEmail) => {
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    return emailPattern.test(companyEmail);
+  };
+  const handlecompanyEmail = (text) => {
+    setCompanyEmail(text);
+    if (text.trim() === "") {
+      setCompanyEmailError("Company Email is required !");
+    } else if (!validateCompanyEmail(text)) {
+      setCompanyEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else {
+      setCompanyEmailError("");
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (companyEmail.trim() === "") {
+      setCompanyEmailError("Company Email is required!");
+    } else if (!validateCompanyEmail(companyEmail)) {
+      setCompanyEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else {
+      addUserCompanyData();
+    }
+  };
+
   //   map....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -183,7 +220,7 @@ export default CompanyDetails = (props) => {
   const handleBoxPress = (lookup_key) => {
     setIsClick(lookup_key);
     setSelectJobTypeid(lookup_key);
-    // alert(selectJobTypeid);
+    alert(selectJobTypeid);
     // alert(isClick)
   };
   //   renderItem....
@@ -373,6 +410,51 @@ export default CompanyDetails = (props) => {
         setIsLoading(false);
       });
   };
+
+  const addUserCompanyData = async () => {
+    console.log("Formadata.....", formData);
+    const formData = new FormData();
+    if (ImageName && typeof ImageName === "string") {
+      const imageUri = ImageName;
+      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      formData.append("UCDM_COMPANY_LOGO", {
+        uri: imageUri,
+        name: imageName,
+      });
+    }
+    formData.append("uad_key", loginData?.Login_details?.user_account_id);
+    formData.append("UCDM_COMPANY_NAME", companyName);
+    formData.append("UCDM_COMPANY_EMAIL", companyEmail);
+    formData.append("UCDM_COMPANY_CONTACT_NUMBER", phoneNumber);
+    formData.append("UCDM_COMPANY_DESCRIPTION", companyDescription);
+    formData.append("UCDM_SERVICE_YOU_OFFERING", selectJobTypeid);
+    formData.append("UCDM_SERVICE_YOU_PERFORM", servicesValue);
+    formData.append("UCDM_COMPANY_ADDRESS", "Gadarwara");
+    formData.append("UCDM_COMPANY_LONGITUDE", 25.265256);
+    formData.append("UCDM_COMPANY_LATITUDE", 123.52221);
+    formData.append("UCDM_COMPANY_GST_VAT_NUMBER", companyGSTNumber);
+    console.log("formData", formData);
+    const url = Config.BASE_URL;
+    const addUserCompanyData_url = url + "profile/addusercompanydata";
+    console.log("Request URL:", addUserCompanyData_url);
+    setIsLoading(true);
+    try {
+      const response = await axios.post(addUserCompanyData_url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("addUserCompanyData.....", response.data);
+      if (response.data.success === true) {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      alert(error);
+      console.log("update_error addUserCompanyData...", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       <View style={CompanyDetailsStyle.mainContaier}>
@@ -426,10 +508,47 @@ export default CompanyDetails = (props) => {
               style={CompanyDetailsStyle.input}
               value={companyEmail}
               onChangeText={setCompanyEmail}
+              onBlur={() => handlecompanyEmail(companyEmail)}
               placeholder="Enter company email address"
               placeholderTextColor="#999"
             />
           </View>
+          {companyEmailError ? (
+            <Text style={CompanyDetailsStyle.error_text}>
+              {companyEmailError}
+            </Text>
+          ) : null}
+          <View style={CompanyDetailsStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>
+              {"Company phone number"}
+            </Text>
+            <View style={CompanyDetailsStyle.phoneinputbindview}>
+              <View style={CompanyDetailsStyle.phoneinput}>
+                <View style={CompanyDetailsStyle.bindnumberview}>
+                  <Text style={CompanyDetailsStyle.numbercode}>+61</Text>
+                  <Ionicons
+                    name="chevron-down-outline"
+                    size={20}
+                    color={_COLORS.Kodie_LightGrayColor}
+                    resizeMode={"contain"}
+                  />
+                  <Image
+                    style={CompanyDetailsStyle.lineimg}
+                    source={IMAGES.verticalLine}
+                  />
+                  <TextInput
+                    value={phoneNumber}
+                    onChangeText={setPhoneNumber}
+                    keyboardType="numeric"
+                    placeholder="1234567890"
+                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                    maxLength={10}
+                  />
+                </View>
+              </View>
+            </View>
+          </View>
+
           <View style={CompanyDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Company description"}</Text>
             <TextInput
@@ -537,7 +656,7 @@ export default CompanyDetails = (props) => {
               backgroundColor={_COLORS.Kodie_BlackColor}
               disabled={isLoading ? true : false}
               onPress={() => {
-                alert("Done");
+                handleSubmit();
               }}
             />
           </View>
