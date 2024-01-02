@@ -6,6 +6,7 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { LeasesStyle } from "./LeasesStyle";
 import { IMAGES, _COLORS } from "../../../../../Themes";
@@ -17,31 +18,40 @@ import { LeaseSummaryStyle } from "./LeaseSummary/LeaseSummaryStyle";
 import { Config } from "../../../../../Config";
 import axios from "axios";
 import Entypo from "react-native-vector-icons/Entypo";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import moment from "moment/moment";
 import Logrentalpayment from "./Logrentalpayment/Logrentalpayment";
 import TenantDetails from "./TenantDetails/TenantDetails";
 import InviteTenantModal from "../../../../../components/Molecules/InviteTenantModal/InviteTenantModal";
+import { TenantDetailsStyle } from "./TenantDetails/TenantDetailsStyle";
+import StarRating from "react-native-star-rating";
+import RowButtons from "../../../../../components/Molecules/RowButtons/RowButtons";
+import DividerIcon from "../../../../../components/Atoms/Devider/DividerIcon";
 export default Leases = (props) => {
   // alert(JSON.stringify(props.property_id));
   const [isLoading, setIsLoading] = useState(false);
   const property_id = props.property_id;
-
+  console.log("property_id.._lease.....", property_id);
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [islogSheetOpen, setIslogSheetOpen] = useState(false);
+  const [isTenantsSheetOpen, setIsTenantsSheetOpen] = useState(false);
   const [lease_summary_data, setLease_summary_data] = useState([]);
   const [lease_key, setLease_key] = useState("");
   const [rental_Receipt_data, setRental_Receipt_data] = useState([]);
+  const [manuallyTenantDetails, setManuallyTenantDetails] = useState([]);
+  const [rating, setRating] = useState(4);
 
   useEffect(() => {
-    if (!isSheetOpen || !islogSheetOpen) {
+    if (!isSheetOpen || !islogSheetOpen || isTenantsSheetOpen) {
       console.log("RBSheet closed, rendering LeaseSummary");
       lease_summary();
       get_retal_receipt();
+      get_manually_tenantsDetails();
     }
-  }, [isSheetOpen, islogSheetOpen]);
+  }, [isSheetOpen, islogSheetOpen, isTenantsSheetOpen]);
 
   // useEffect(() => {
   //   lease_summary();
@@ -53,6 +63,10 @@ export default Leases = (props) => {
   const handleLogClose = () => {
     refRBSheet2.current.close();
     setIslogSheetOpen(false);
+  };
+  const handleTenantClose = () => {
+    refRBSheet3.current.close();
+    setIsTenantsSheetOpen(false);
   };
   // Api intrigation.....
   const lease_summary = () => {
@@ -104,6 +118,34 @@ export default Leases = (props) => {
       })
       .catch((error) => {
         console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const get_manually_tenantsDetails = () => {
+    const url = Config.BASE_URL;
+    const manually_tenantsDetails_url =
+      url + `tanant_details/get/tenantmanually/${property_id}`;
+    console.log("Request URL:", manually_tenantsDetails_url);
+    setIsLoading(true);
+    axios
+      .get(manually_tenantsDetails_url)
+      .then((response) => {
+        console.log("API Response manually_tenantsDetails_url:", response.data);
+        if (response.data.success === true) {
+          setManuallyTenantDetails(response.data.data);
+          console.log("manually_tenantsDetails_url Data..", response.data.data);
+          // alert(JSON.stringify(response.data.data));
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed manually_tenantsDetails_url", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -262,6 +304,95 @@ export default Leases = (props) => {
       </View>
     );
   };
+
+  const tenantDetails = ({ item, index }) => {
+    return (
+      <View style={{ flex: 1 }}>
+        <View style={TenantDetailsStyle.details_main_view}>
+          <View style={TenantDetailsStyle.user_subView}>
+            <Image source={IMAGES.userImage} />
+            <View style={TenantDetailsStyle.name_view}>
+              <View style={{ flex: 0.9 }}>
+                <Text style={TenantDetailsStyle.userName}>
+                  {`${item.ATD_FIRST_NAME}  ${item.ATD_LAST_NAME}`}
+                </Text>
+              </View>
+              <View style={TenantDetailsStyle.check_view}>
+                <AntDesign
+                  name="checkcircle"
+                  size={25}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+                <Text style={TenantDetailsStyle.verify_text}>{"Verified"}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={{ flex: 1, marginRight: 10 }}>
+            <View
+              style={[
+                TenantDetailsStyle.starStyle,
+                {
+                  alignSelf: "flex-end",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-end",
+                },
+              ]}
+            >
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={rating}
+                fullStarColor={_COLORS.Kodie_lightGreenColor}
+                emptyStarColor={_COLORS.Kodie_LightGrayColor}
+                starSize={18}
+                selectedStar={(rating) => setRating(rating)}
+                starStyle={TenantDetailsStyle.startRating}
+              />
+            </View>
+            <TouchableOpacity
+              style={[TenantDetailsStyle.rent_received_view, { marginTop: 5 }]}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Entypo
+                  name="dot-single"
+                  size={25}
+                  color={_COLORS.Kodie_GreenColor}
+                  style={{ alignSelf: "center" }}
+                />
+                <Text
+                  style={[
+                    TenantDetailsStyle.rent_received_text,
+                    { fontSize: Platform.OS === "ios" ? 11 : 8 },
+                  ]}
+                >
+                  {"Screening completed"}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+          <Text style={TenantDetailsStyle.resident_score_text}>
+            {"Resident score:"}
+          </Text>
+          <View style={TenantDetailsStyle.score_view}>
+            <Text style={TenantDetailsStyle.scoreNo}>{"721"}</Text>
+          </View>
+        </View>
+        <RowButtons
+          LeftButtonText={"View profile"}
+          leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+          LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+          LeftButtonborderColor={_COLORS.Kodie_GrayColor}
+          RightButtonText={"Message tenant"}
+          RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+          RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+          RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+        />
+        <DividerIcon />
+      </View>
+    );
+  };
   return (
     <View style={LeasesStyle.mainContainer}>
       <ScrollView>
@@ -300,10 +431,44 @@ export default Leases = (props) => {
                 keyExtractor={(item, index) => index}
                 renderItem={LeaseSummary_render}
               />
+              <View style={{ marginHorizontal: 16, marginTop: 16 }}>
+                <Text style={LeaseSummaryStyle.heading_Text}>
+                  {"Tenant details"}
+                </Text>
+                {!manuallyTenantDetails.length > 0 ? (
+                  <Text style={LeaseSummaryStyle.invite_tenant_Text}>
+                    {"Invite tenant to connect to this property"}
+                  </Text>
+                ) : null}
+                {manuallyTenantDetails.length > 0 ? (
+                  <FlatList
+                    data={manuallyTenantDetails}
+                    scrollEnabled
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{}}
+                    // keyExtractor={(item,index) => item?.id}
+                    keyExtractor={(item, index) => index}
+                    renderItem={tenantDetails}
+                  />
+                ) : null}
+                {manuallyTenantDetails.length > 0 ? null : (
+                  <View style={LeaseSummaryStyle.btn_View}>
+                    <CustomSingleButton
+                      _ButtonText={"+ Add tenant"}
+                      Text_Color={_COLORS.Kodie_WhiteColor}
+                      height={45}
+                      onPress={() => {
+                        refRBSheet3.current.open();
+                        setIsTenantsSheetOpen(true);
+                      }}
+                      disabled={isLoading ? true : false}
+                    />
+                  </View>
+                )}
+              </View>
             </View>
           </>
         ) : null}
-
         {rental_Receipt_data.length > 0 ? (
           <View style={{ marginHorizontal: 16 }}>
             <Text style={LeaseSummaryStyle.heading_Text}>
@@ -320,24 +485,6 @@ export default Leases = (props) => {
             />
           </View>
         ) : null}
-        <View style={{ marginHorizontal: 16, marginTop: 16 }}>
-          <Text style={LeaseSummaryStyle.heading_Text}>{"Tenant details"}</Text>
-          <Text style={LeaseSummaryStyle.invite_tenant_Text}>
-            {"Invite tenant to connect to this property"}
-          </Text>
-          {/* <TenantDetails /> */}
-          <View style={LeaseSummaryStyle.btn_View}>
-            <CustomSingleButton
-              _ButtonText={"+ Add tenant"}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              height={45}
-              onPress={() => {
-                refRBSheet3.current.open();
-              }}
-              disabled={isLoading ? true : false}
-            />
-          </View>
-        </View>
 
         <RBSheet
           ref={refRBSheet}
@@ -386,6 +533,7 @@ export default Leases = (props) => {
         >
           <InviteTenantModal
             closeRBSheet={() => refRBSheet.current.close()}
+            onClose={handleTenantClose}
             property_id={property_id}
           />
         </RBSheet>

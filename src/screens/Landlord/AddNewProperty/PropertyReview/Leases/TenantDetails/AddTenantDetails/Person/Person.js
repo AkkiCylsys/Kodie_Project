@@ -14,6 +14,9 @@ import axios from "axios";
 import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useDispatch, useSelector } from "react-redux";
 export default Person = (props) => {
+  const handleClosePopup = () => {
+    props.onClose();
+  };
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginData.....", loginData);
   const property_id = props.property_id;
@@ -121,6 +124,7 @@ export default Person = (props) => {
           setPhoneNumber("");
           setNote("");
           setIsLoading(false);
+          handleClosePopup();
         } else {
           setEmailError(response.data.message);
           console.error("personDetail_error:", response.data.error);

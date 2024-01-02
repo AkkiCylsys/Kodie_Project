@@ -85,6 +85,7 @@ export default PropertyReview = (props) => {
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
   console.log(propertyView, propertyid);
+  console.log("propertyView.....",propertyView);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
@@ -137,8 +138,8 @@ export default PropertyReview = (props) => {
             //   <Image source={IMAGES.Garden}
             //   style={DetailsStyle.DetailsIcon} />
             // )
-            <Ionicons
-              name="car-outline"
+            <MaterialCommunityIcons
+              name="garage"
               size={25}
               color={_COLORS.Kodie_GreenColor}
               resizeMode={"contain"}
@@ -305,16 +306,16 @@ export default PropertyReview = (props) => {
       setIsLoading(false);
       console.log("response_get_property_details...", response.data);
       if (response.data.success === true) {
-        setProperty_Details(response.data.data[0]);
+        setProperty_Details(response.data.property_details[0]);
         // Fetch and process key features..........
-        if (response.data.data[0].key_features) {
+        if (response.data.property_details[0].key_features) {
           const parsedData = JSON.parse(
-            response.data.data[0].key_features.replace(/\\/g, "")
+            response.data.property_details[0].key_features.replace(/\\/g, "")
           );
           setDetail(parsedData);
         }
         const additionalKeyFeatures =
-          response.data.data[0].additional_key_features[0];
+          response.data.property_details[0].additional_key_features[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error("propertyDetail_error:", response.data.error);
@@ -474,9 +475,13 @@ export default PropertyReview = (props) => {
               renderItem={Detail_rander}
             />
             <DividerIcon />
-            <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
-              {"Additional key features"}
-            </Text>
+            {property_Detail?.additional_key_features_id === "[]" ? null : (
+              <Text
+                style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}
+              >
+                {"Additional key features"}
+              </Text>
+            )}
 
             <FlatList
               data={additionalKeyFeatures}
@@ -485,10 +490,12 @@ export default PropertyReview = (props) => {
               keyExtractor={(item, index) => index.toString()}
             />
             {/* </View> */}
-            <DividerIcon
-              borderBottomWidth={1}
-              color={_COLORS.Kodie_GrayColor}
-            />
+            {property_Detail?.additional_key_features_id === "[]" ? null : (
+              <DividerIcon
+                borderBottomWidth={1}
+                color={_COLORS.Kodie_GrayColor}
+              />
+            )}
 
             {/* <View style={DetailsStyle.subContainer}>
               <View style={DetailsStyle.propety_details_view}>
@@ -556,14 +563,21 @@ export default PropertyReview = (props) => {
                   disabled={isLoading ? true : false}
                   _ButtonText={
                     editMode
-                      ? "Edit property"
+                      ? "Save property"
                       : propertyView
                       ? "Edit details"
                       : "Add property"
                   }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    props?.navigation?.navigate("Properties");
+                    if (propertyView) {
+                      props?.navigation?.navigate("PropertyDetails", {
+                        propertyid: propertyid,
+                        editMode: "editMode",
+                      });
+                    } else {
+                      props?.navigation?.navigate("Properties");
+                    }
                   }}
                 />
               </View>
@@ -626,12 +640,14 @@ export default PropertyReview = (props) => {
         return <Details />;
     }
   };
-
+  //alert(JSON.stringify(property_Detail))
   return (
     <View style={PropertyReviewStyle.mainContainer}>
       <TopHeader
         // isprofileImage
-        onPressLeftButton={goBack}
+        onPressLeftButton={
+          propertyView ? () => props.navigation.navigate("Properties") : goBack
+        }
         MiddleText={
           editMode
             ? "Edit property"
@@ -665,7 +681,12 @@ export default PropertyReview = (props) => {
             </Text>
           </View>
         )}
-        <View style={PropertyReviewStyle.slider_view}>
+        <View
+          style={[
+            PropertyReviewStyle.slider_view,
+            { marginBottom: "5%", marginTop: propertyView ? 0 : "5%" },
+          ]}
+        >
           {property_Detail.image_path &&
           property_Detail.image_path.length != 0 ? (
             <SliderBox
@@ -720,7 +741,9 @@ export default PropertyReview = (props) => {
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-            <Text>{property_Detail?.location || ""}</Text>
+            <Text style={{ flex: 1, color: _COLORS.Kodie_MediumGrayColor }}>
+              {property_Detail?.location || ""}
+            </Text>
           </View>
         </View>
 

@@ -23,7 +23,7 @@ export default LandlordProfile = (props) => {
 
   const LogOut = () => {
     dispatch(logoutActionCreator());
-    //props.navigation.navigate('AuthNavigator');
+    props.navigation.navigate("DrawerNavigatorLeftMenu");
   };
   return (
     <View style={LandlordProfileStyle.mainContainer}>
@@ -50,7 +50,7 @@ export default LandlordProfile = (props) => {
                   signUp_account_response?.Login_details?.profile_photo_path,
               }}
               style={LandlordProfileStyle.usericon}
-              resizeMode="center"
+              resizeMode="cover"
             />
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>

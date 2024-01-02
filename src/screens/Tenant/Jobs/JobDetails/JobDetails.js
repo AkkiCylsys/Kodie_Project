@@ -25,7 +25,7 @@ import BiddingDetails from "./BiddingDetails/Biddingdetails";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
 import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
-import AddJobDetails from "../AddJobDetails";
+import JobDocuments from "../JobDocuments.js/JobDocuments";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const images = [
   BANNERS.previewImage,
@@ -44,20 +44,20 @@ const Apartment_data = [
 const JobDetails = (props) => {
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
+  let update_JOB_ID = props?.route?.params?.JobId;
   let View_Job_Details = props?.route?.params?.View_Job_Details;
-  console.log("job_id...", job_id);
-  console.log("JOB_ID_By_Navigation...", JOB_ID);
-  console.log("View_Job_Details...", View_Job_Details);
-  // alert(JSON.stringify(JOB_ID));
-  // alert(job_id);
+  let editMode = props?.route?.params?.editMode;
   const [activeTab, setActiveTab] = useState("Tab1");
   const [currentPage, setCurrentPage] = useState(3);
-  const [value, setValue] = useState(null);
-  const [value2, setValue2] = useState(null);
-  const [value3, setValue3] = useState(null);
   const [visible, setVisible] = useState(false);
   const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [myJobType, setMyJobType] = useState(0);
+
+  const handleJobDetailsSuccess = (jobTypeMy) => {
+    console.log("jobTypeMy in JobDetails component:", jobTypeMy);
+    setMyJobType(jobTypeMy);
+  };
 
   const handleImageFilePath = async (imagesFilePath) => {
     setImageFileData(imagesFilePath);
@@ -172,20 +172,36 @@ const JobDetails = (props) => {
           <Reviewjobdetails1
             job_id={job_id}
             JOB_ID={JOB_ID}
+            update_JOB_ID={update_JOB_ID}
+            editMode={editMode}
             View_Job_Details={View_Job_Details}
             imagesFilePath={handleImageFilePath}
             onPress={() => {
-              props.navigation.navigate("Jobs");
+              props.navigation.navigate("Jobs", {
+                myJob_Type: myJobType,
+              });
               // alert("hello")
             }}
+            onJobDetailsSuccess={handleJobDetailsSuccess}
           />
         );
       case "Tab2":
-        return <JodBiddingDetails />;
+        return <JodBiddingDetails JOB_ID={JOB_ID} />;
       case "Tab3":
         return <AddJobDetails />;
       case "Tab4":
-        return <Leases />;
+        return (
+          <JobDocuments
+            JobDocumentDetails={(folderId, moduleName, propertyid) => {
+              props.navigation.navigate("JobDocumentDetails", {
+                folderId: folderId,
+                moduleName: moduleName,
+                JOB_ID: JOB_ID,
+              });
+            }}
+            JOB_ID={JOB_ID}
+          />
+        );
     }
   };
   const refRBSheet = useRef();

@@ -1,5 +1,5 @@
 import {
-  DocumentDetailStyleheet,
+  JobDocumentDetailStyleheet,
   Text,
   View,
   TouchableOpacity,
@@ -9,27 +9,27 @@ import {
   PermissionsAndroid,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
-import { DocumentDetailStyle } from "./DocumentDetailStyle";
-import TopHeader from "../../../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../../../services/CommonServices";
-import CustomSingleButton from "../../../../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS, FONTFAMILY, IMAGES } from "../../../../../../Themes";
+import { JobDocumentDetailStyle } from "./JobDocumentDetailStyle";
+import TopHeader from "../../../../components/Molecules/Header/Header";
+import { _goBack } from "../../../../services/CommonServices";
+import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
+import { _COLORS, IMAGES } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
 import DocumentPicker from "react-native-document-picker";
-import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import axios from "axios";
 import RBSheet from "react-native-raw-bottom-sheet";
-import EditDocumentsModal from "../../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
+import EditDocumentsModal from "../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
 // import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
-import { Config } from "../../../../../../Config";
-const DocumentDetails = (props) => {
+import { Config } from "../../../../Config";
+const JobDocumentDetails = (props) => {
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const folderId = props.route.params?.folderId;
   const moduleName = props.route.params?.moduleName;
-  const property_id = props.route.params?.property_id;
+  const JOB_ID = props.route.params?.JOB_ID;
   const [selectFile, setSelectFile] = useState([]);
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState("");
@@ -37,8 +37,7 @@ const DocumentDetails = (props) => {
   const file = selectFile[0];
   //   alert(folderId);
   // alert(moduleName);
-  // alert(property_id);
-  console.log("property_id..", property_id);
+  // alert(JOB_ID);
 
   useEffect(() => {
     getuploadedDocuments();
@@ -108,7 +107,7 @@ const DocumentDetails = (props) => {
     console.log("uri....", doc[0].uri);
     console.log("name....", doc[0].name);
     console.log("type....", doc[0].type);
-    console.log("p_referral_key....", property_id);
+    console.log("p_referral_key....", JOB_ID);
     console.log("p_module_name....", moduleName);
     const url = Config.BASE_URL;
     const uploadDoc_url = url + "uploadDocument";
@@ -121,7 +120,7 @@ const DocumentDetails = (props) => {
         name: doc[0].name,
         type: doc[0].type,
       });
-      formData.append("p_referral_key", property_id);
+      formData.append("p_referral_key", JOB_ID);
       formData.append("p_module_name", moduleName);
       // formData.append("p_sub_module_name", "Property documents");
 
@@ -152,7 +151,7 @@ const DocumentDetails = (props) => {
 
   const getuploadedDocuments = () => {
     const url = Config.BASE_URL;
-    const getDocument_url = url + `tanant_details/get/document/${property_id}`;
+    const getDocument_url = url + `tanant_details/get/document/${JOB_ID}`;
     console.log("Request URL:", getDocument_url);
     setIsLoading(true);
     axios
@@ -184,10 +183,9 @@ const DocumentDetails = (props) => {
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: "Lease",
-      fileReferenceKey: "1170",
     };
     axios
-      .get(getDocumentUrl,documentModuleData)
+      .get(getDocumentUrl, documentModuleData)
       .then((response) => {
         console.log("API Response getDocumentsByModule:", response.data);
       })
@@ -198,25 +196,24 @@ const DocumentDetails = (props) => {
         setIsLoading(false);
       });
   };
-
   const DocumentsData = ({ item, index }) => {
     return (
       <>
-        <View style={DocumentDetailStyle.container}>
-          <View style={DocumentDetailStyle.pdfInfo}>
+        <View style={JobDocumentDetailStyle.container}>
+          <View style={JobDocumentDetailStyle.pdfInfo}>
             <Image
               source={IMAGES.document}
-              style={DocumentDetailStyle.pdfIcon}
+              style={JobDocumentDetailStyle.pdfIcon}
             />
-            <View style={DocumentDetailStyle.textContainer}>
-              <Text style={DocumentDetailStyle.pdfName}>{item.name}</Text>
-              <Text style={DocumentDetailStyle.pdfSize}>
+            <View style={JobDocumentDetailStyle.textContainer}>
+              <Text style={JobDocumentDetailStyle.pdfName}>{item.name}</Text>
+              <Text style={JobDocumentDetailStyle.pdfSize}>
                 {(item.size / (1024 * 1024)).toFixed(2)} MB
               </Text>
             </View>
           </View>
           <TouchableOpacity
-            style={DocumentDetailStyle.crossIcon}
+            style={JobDocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
             }}
@@ -238,24 +235,24 @@ const DocumentDetails = (props) => {
     console.log("fileKey....", fileKey);
     return (
       <>
-        <View style={DocumentDetailStyle.container}>
-          <View style={DocumentDetailStyle.pdfInfo}>
+        <View style={JobDocumentDetailStyle.container}>
+          <View style={JobDocumentDetailStyle.pdfInfo}>
             <Image
               source={IMAGES.document}
-              style={DocumentDetailStyle.pdfIcon}
+              style={JobDocumentDetailStyle.pdfIcon}
             />
-            <View style={DocumentDetailStyle.textContainer}>
-              <Text style={DocumentDetailStyle.pdfName}>
+            <View style={JobDocumentDetailStyle.textContainer}>
+              <Text style={JobDocumentDetailStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              <Text style={DocumentDetailStyle.pdfSize}>
+              <Text style={JobDocumentDetailStyle.pdfSize}>
                 {/* {(item.size / (1024 * 1024)).toFixed(2)} MB */}
                 {"4.5 MB"}
               </Text>
             </View>
           </View>
           <TouchableOpacity
-            style={DocumentDetailStyle.crossIcon}
+            style={JobDocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
             }}
@@ -339,16 +336,16 @@ const DocumentDetails = (props) => {
   };
 
   return (
-    <View style={DocumentDetailStyle.mainContainer}>
+    <View style={JobDocumentDetailStyle.mainContainer}>
       <TopHeader
         MiddleText={
           folderId == 1
-            ? "Property documents"
+            ? "Job proposal"
             : folderId == 2
-            ? "Lease documents"
+            ? "Invoice & proof of payment"
             : folderId == 3
-            ? "Tenant documents"
-            : "Property documents"
+            ? "Proof of work completed"
+            : "Job proposal"
         }
         onPressLeftButton={() => _goBack(props)}
       />
@@ -358,43 +355,43 @@ const DocumentDetails = (props) => {
         }}
       >
         {/* <View style={{}}>
-          <CustomSingleButton
-            leftImage={IMAGES.uploadIcon}
-            isLeftImage={true}
-            borderColor={_COLORS.Kodie_TransparentColor}
-            _ButtonText={"Select Documents"}
-            backgroundColor={_COLORS.Kodie_lightGreenColor}
-            onPress={() => {
-              selectDoc();
-            }}
-            disabled={isLoading ? true : false}
-          />
-        </View> */}
+         <CustomSingleButton
+           leftImage={IMAGES.uploadIcon}
+           isLeftImage={true}
+           borderColor={_COLORS.Kodie_TransparentColor}
+           _ButtonText={"Select Documents"}
+           backgroundColor={_COLORS.Kodie_lightGreenColor}
+           onPress={() => {
+             selectDoc();
+           }}
+           disabled={isLoading ? true : false}
+         />
+       </View> */}
         {/* <View>
-          <Text style={DocumentDetailStyle.property_doc_text}>
-            {folderId == 1
-              ? "Property documents"
-              : folderId == 2
-              ? "Lease documents"
-              : folderId == 3
-              ? "Tenant documents"
-              : "Property documents"}
-          </Text>
-        </View> */}
+         <Text style={JobDocumentDetailStyle.property_doc_text}>
+           {folderId == 1
+             ? "Property documents"
+             : folderId == 2
+             ? "Lease documents"
+             : folderId == 3
+             ? "Tenant documents"
+             : "Property documents"}
+         </Text>
+       </View> */}
 
         {/* <FlatList
-          data={selectFile}
-          scrollEnabled
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{}}
-          keyExtractor={(item, index) => index}
-          renderItem={DocumentsData}
-        /> */}
+         data={selectFile}
+         scrollEnabled
+         showsHorizontalScrollIndicator={false}
+         contentContainerStyle={{}}
+         keyExtractor={(item, index) => index}
+         renderItem={DocumentsData}
+       /> */}
         <View>
-          <Text style={DocumentDetailStyle.upload_doc_text}>
+          <Text style={JobDocumentDetailStyle.upload_doc_text}>
             {"Upload documents"}
           </Text>
-          <Text style={DocumentDetailStyle.upload_doc_sub}>
+          <Text style={JobDocumentDetailStyle.upload_doc_sub}>
             {
               "Documents should be formatted .pdf or .jpg or .png Size per file should not exceed 5 MB"
             }
@@ -434,7 +431,7 @@ const DocumentDetails = (props) => {
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
-            container: DocumentDetailStyle.bottomModal_container,
+            container: JobDocumentDetailStyle.bottomModal_container,
           }}
         >
           <EditDocumentsModal
@@ -454,4 +451,4 @@ const DocumentDetails = (props) => {
   );
 };
 
-export default DocumentDetails;
+export default JobDocumentDetails;

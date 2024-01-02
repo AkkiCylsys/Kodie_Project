@@ -117,8 +117,8 @@ export default PropertyFeature = (props) => {
           setCountBathroom(feature.Bathrooms);
         } else if (feature["Parking Space"] !== undefined) {
           setCountParking(feature["Parking Space"]);
-        } else if (feature["On-StreetParking"] !== undefined) {
-          setCountParkingStreet(feature["On-StreetParking"]);
+        } else if (feature["Garages"] !== undefined) {
+          setCountParkingStreet(feature["Garages"]);
         }
       }
     } catch (error) {
@@ -141,10 +141,10 @@ export default PropertyFeature = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.data[0]);
+          setProperty_Details(response.data.property_details[0]);
 
           const apiAdditionalFeaturesIds =
-            response?.data?.data[0]?.additional_features_id
+            response?.data?.property_details[0]?.additional_features_id
               .split(",")
               .map(Number);
           const furnishedFeatureId = apiAdditionalFeaturesIds.find(
@@ -159,11 +159,11 @@ export default PropertyFeature = (props) => {
           );
           setSelectedButtonFurnished(furnishedFeatureId);
           setSelectedButtonDeposit(yesFeatureId);
-          setFlorSize(response?.data?.data[0]?.floor_size);
+          setFlorSize(response?.data?.property_details[0]?.floor_size);
           setAdditionalFeaturesKeyValue(
-            response?.data?.data[0]?.additional_key_features_id
+            response?.data?.property_details[0]?.additional_key_features_id
           );
-          setLandArea(response?.data?.data[0]?.land_area);
+          setLandArea(response?.data?.property_details[0]?.land_area);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -180,7 +180,7 @@ export default PropertyFeature = (props) => {
     { Bedrooms: CountBedroom },
     { Bathrooms: CountBathroom },
     { "Parking Space": CountParking },
-    { "On-StreetParking": CountParkingStreet },
+    { Garages: CountParkingStreet },
   ];
 
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
@@ -597,7 +597,7 @@ export default PropertyFeature = (props) => {
               <View style={PropertyFeatureStyle.mainfeaturesview}>
                 <View style={PropertyFeatureStyle.key_feature_Text_view}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {"On-street parking"}
+                    {"Garages"}
                   </Text>
                 </View>
 
@@ -674,7 +674,7 @@ export default PropertyFeature = (props) => {
               </Text>
               <View style={PropertyFeatureStyle.addition_featureView}>
                 <Text style={PropertyFeatureStyle.Furnished_Text}>
-                  {"Furnished or unfurnished?"}
+                  {"Furnished or unfurnished ?"}
                 </Text>
                 <RowButtons
                   LeftButtonText={"Furnished"}
@@ -723,7 +723,7 @@ export default PropertyFeature = (props) => {
               </View>
               <View style={PropertyFeatureStyle.addition_featureView}>
                 <Text style={PropertyFeatureStyle.Furnished_Text}>
-                  {"Pet friendly?"}
+                  {"Pet friendly ?"}
                 </Text>
                 <RowButtons
                   LeftButtonText={"Yes"}
@@ -784,7 +784,7 @@ export default PropertyFeature = (props) => {
                 data={additionalfeatureskey}
                 labelField="features_name"
                 valueField="paf_key"
-                placeholder="Add features such as pool,aircon,balcony etc."
+                placeholder="Add features such as pool, aircon, balcony etc."
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."

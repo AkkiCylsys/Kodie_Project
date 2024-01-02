@@ -42,6 +42,9 @@ export default CreateJobTermsScreen = (props) => {
   // const formattedPriceRanges = `$${priceRanges}`;
   // alert(formattedPriceRanges);
 
+  let JobId = props?.route?.params?.JobId;
+  let editMode = props?.route?.params?.editMode;
+  // alert(JobId)
   let selectJobType = props?.route?.params?.selectJobType;
   let servicesValue = props?.route?.params?.servicesValue;
   let aboutyourNeed = props?.route?.params?.aboutyourNeed;
@@ -51,6 +54,7 @@ export default CreateJobTermsScreen = (props) => {
   let ratingThresholdValue = props?.route?.params?.ratingThresholdValue;
   let latitude = props?.route?.params?.latitude;
   let longitude = props?.route?.params?.longitude;
+  let myJob = props?.route?.params?.myJob;
   console.log("selectJobType.....", selectJobType);
   console.log("servicesValue.....", servicesValue);
   console.log("aboutyourNeed.....", aboutyourNeed);
@@ -60,6 +64,7 @@ export default CreateJobTermsScreen = (props) => {
   console.log("ratingThresholdValue.....", ratingThresholdValue);
   console.log("latitude.....", latitude);
   console.log("longitude.....", longitude);
+  console.log("myJob.....", myJob);
 
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
@@ -85,6 +90,8 @@ export default CreateJobTermsScreen = (props) => {
     useState(false);
   const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
     useState(262);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -199,7 +206,7 @@ export default CreateJobTermsScreen = (props) => {
     }
   };
 
-  const handleVerificationCreateJob = () => {
+  const handleValidatiomtionCreateJob = () => {
     if (selectedDate.trim() === "") {
       setSelectedDateError("Payment date is required.");
     } else {
@@ -213,6 +220,7 @@ export default CreateJobTermsScreen = (props) => {
     handleResponsible();
     handleBookingInsurance();
     setFormattedPriceRanges(`$${priceRanges}`);
+    getJobDetails();
   }, [priceRanges]);
   // alert(`Formatted Price Range: ${formattedPriceRanges}`);
   console.log(`Formatted Price Range: ${formattedPriceRanges}`);
@@ -404,6 +412,7 @@ export default CreateJobTermsScreen = (props) => {
       job_budget: formattedPriceRanges,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
+      job_sub_type: myJob == "requested" ? 1 : 0,
     };
     axios
       .post(createJob_url, createJob_Data)
@@ -434,12 +443,108 @@ export default CreateJobTermsScreen = (props) => {
         setIsLoading(false);
       });
   };
+  // EditMode Api.........
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id: JobId,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then((response) => {
+        console.log("API Response JobDetails:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData_term....", response.data.data);
+          setSelectedDate(response.data.data.job_date.substring(0, 10));
+          setCurrentTime(response.data.data.job_time);
+          setHourlyNeedValue(parseInt(response.data.data.job_hourly_key));
+          setneedServicesValue(parseInt(response.data.data.job_how_often_key));
+          setFormattedPriceRanges(response.data.data.job_budget);
+          setSelectedButtonResponsible(
+            parseInt(response.data.data.job_payment_by_key)
+          );
+          setSelectedButtonBookingInsurance(
+            parseInt(response.data.data.job_insurence_key)
+          );
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
+  const updateCreateJob = () => {
+    const url = Config.BASE_URL;
+    const update_createJob_url = url + `job/updateJob/${JobId}`;
+    // const update_createJob_url = url + "job/updateJob/1";
+    console.log("Request URL:", update_createJob_url);
+    setIsLoading(true);
+    const update_createJob_Data = {
+      type_of_job: selectJobType,
+      job_service_you_looking: servicesValue,
+      more_about_job: aboutyourNeed,
+      job_priority: jobPriorityValue,
+      property_type: property_value,
+      job_location: location,
+      location_latitude: latitude,
+      location_longitude: longitude,
+      job_rating: ratingThresholdValue,
+      job_date: selectedDate,
+      job_time: currentTime,
+      job_hourly: hourlyNeedValue,
+      job_often_need_service: needServicesValue,
+      job_budget: formattedPriceRanges,
+      job_payment_by: selectedButtonResponsibleId,
+      job_booking_insurance: selectedButtonBookingInsuranceId,
+    };
+    console.log("updatedBody.....", update_createJob_Data);
+    axios
+      .put(update_createJob_url, update_createJob_Data)
+      .then((response) => {
+        console.log("API Response updateCreateJob..:", response.data);
+        if (response.data.success === true) {
+          alert(response.data.message);
+          props.navigation.navigate("CreateJobSecondScreen", {
+            JobId: JobId,
+            editMode: editMode,
+          });
+          setSelectedDate(""),
+            setCurrentTime(""),
+            setHourlyNeedValue(""),
+            setneedServicesValue(""),
+            setSelectedButtonResponsibleId("");
+          setSelectedButtoBookingInsuranceId("");
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed updateCreateJob", error);
+        setIsLoading(false);
+        alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Create new job request"}
+        MiddleText={editMode ? "Edit job" : "Create new job request"}
       />
       <StepIndicator
         customSignUpStepStyle={firstIndicatorSignUpStepStyle}
@@ -688,7 +793,9 @@ export default CreateJobTermsScreen = (props) => {
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
                 // handleCreateJob()
-                handleVerificationCreateJob()
+                {
+                  JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
+                }
               }
             />
           </View>

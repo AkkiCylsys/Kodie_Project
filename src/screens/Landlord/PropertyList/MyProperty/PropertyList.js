@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { useFocusEffect } from "@react-navigation/native";
 import {
   _COLORS,
@@ -86,6 +87,7 @@ const PropertyList = (props) => {
   };
   const CloseUp = () => {
     setIsDeleteBottomSheetVisible(false);
+    setIsDeleteData_Clicked(false);
   };
   // Extract property_id values
 
@@ -110,11 +112,11 @@ const PropertyList = (props) => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status == 500) {
-        alert(error.response.data.message);
+        // alert(error.response.data.message);
         setIsLoading(false);
       } else {
         alert("An error occurred. Please try again later.");
-        alert(error.response.message);
+        // alert(error.response.message);
         setIsLoading(false);
       }
       // alert(error.response.message);
@@ -282,7 +284,9 @@ const PropertyList = (props) => {
                     style={PropertyListCSS.noteIcon}
                   /> */}
                 </TouchableOpacity>
+                <View style={{ margin: 3 }} />
                 <TouchableOpacity
+                  style={{}}
                   onPress={() => {
                     // refRBSheetDelete.current.open();
                     setIsDeleteBottomSheetVisible(true);
@@ -310,7 +314,7 @@ const PropertyList = (props) => {
                   },
                 ]}
               >
-                <View
+                {/* <View
                   style={[
                     PropertyListCSS.roundButton,
                     {
@@ -321,7 +325,7 @@ const PropertyList = (props) => {
                         : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
-                />
+                /> */}
                 <Text
                   style={[
                     PropertyListCSS.buttonText,
@@ -600,7 +604,7 @@ const PropertyList = (props) => {
             Text_Color={_COLORS.Kodie_WhiteColor}
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
-            height={38}
+            height={40}
             marginTop={3}
             onPress={props.propertyDetail}
             disabled={isLoading ? true : false}

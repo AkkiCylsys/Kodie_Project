@@ -251,14 +251,12 @@ export default Login = (props) => {
         setPasswordError(
           "Hmm, it seems like the credentials you entered are invalid. Please try again."
         );
-      }
-      else if(res.LoginStatuscode==6){
-        props.navigation.navigate("SignUpSteps",{
-          email:email,
-          user_key:res.User_key
+      } else if (res.LoginStatuscode == 6) {
+        props.navigation.navigate("SignUpSteps", {
+          email: email,
+          user_key: res.User_key,
         });
-      }
-      else if (res.data.success == "true") {
+      } else if (res.data.success == "true") {
         //  alert("Login successful");
         setIsLoading(false);
         // if (res.data.code == 6) {
@@ -266,7 +264,7 @@ export default Login = (props) => {
         //   props.navigation.navigate("SignUpSteps");
         // }
         //  else {
-          
+
         // }
         props.navigation.navigate("DrawerNavigatorLeftMenu");
         setEmail("");
@@ -476,6 +474,7 @@ export default Login = (props) => {
                 placeholder="Your email address"
                 placeholderTextColor="#999"
                 maxLength={30}
+                autoCapitalize={"none"}
               />
             </View>
             {emailError ? (
@@ -525,9 +524,13 @@ export default Login = (props) => {
               onPress={handleSubmit}
               _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
+              marginTop={20}
             />
-            <View style={LoginStyles.loderview}></View>
-            <DividerIcon DeviderText={"or"} />
+            {/* <View style={LoginStyles.loderview}></View> */}
+            <DividerIcon
+              DeviderText={"or"}
+              style={{ marginTop: 32, marginBottom: 30 }}
+            />
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() => {
@@ -565,7 +568,7 @@ export default Login = (props) => {
       {/* ------ Rest password code start  here ........... */}
       <RBSheet
         ref={refRBSheet}
-        // closeOnDragDown={true}
+        closeOnDragDown={true}
         closeOnPressMask={false}
         height={Platform.OS === "android" ? 550 : 480}
         customStyles={{
@@ -625,6 +628,7 @@ export default Login = (props) => {
                   placeholder="Your email address"
                   placeholderTextColor="#999"
                   maxLength={30}
+                  autoCapitalize={"none"}
                 />
               </View>
               {resetEmailError ? (
@@ -743,7 +747,7 @@ export default Login = (props) => {
                   />
                   <TouchableOpacity onPress={handleToggleNewPassword}>
                     <MaterialCommunityIcons
-                      name={showNewPassword ? "eye-off-outline" : "eye-outline"}
+                      name={showNewPassword ? "eye-outline" : "eye-off-outline"}
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
                       style={LoginStyles.eyeIcon}
@@ -782,7 +786,7 @@ export default Login = (props) => {
                   <TouchableOpacity onPress={handleToggleResetPassword}>
                     <MaterialCommunityIcons
                       name={
-                        showResetPassword ? "eye-off-outline" : "eye-outline"
+                        showResetPassword ? "eye-outline" : "eye-off-outline"
                       }
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
