@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
-import { _COLORS, IMAGES } from "../../../../Themes";
-import { ContractorsImageStyle } from "./ContractorsImageStyle";
+import { _COLORS } from "../../../Themes";
+import { AddContractorModalStyle } from "./AddContractorModalStyle";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -10,7 +10,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 const data = [
   {
     id: "1",
-    Data: "View / edit contractor details",
+    Data: "Invite contractor from contacts",
     // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons
@@ -24,7 +24,7 @@ const data = [
   },
   {
     id: "2",
-    Data: "Request new quote",
+    Data: "Invite contractor from Kodie",
     // Img: IMAGES.gallery,
     Icon: (
       <MaterialCommunityIcons
@@ -38,7 +38,7 @@ const data = [
   },
   {
     id: "3",
-    Data: "Create notice / reminder",
+    Data: "Add contractor manually",
     // Img: IMAGES.Reminder,
     Icon: (
       <Ionicons
@@ -50,43 +50,31 @@ const data = [
       />
     ),
   },
-  {
-    id: "4",
-    Data: "Remove contractor from preferred",
-    // Img: IMAGES.Delete,
-    Icon: (
-      <MaterialCommunityIcons
-        name="delete-outline"
-        size={30}
-        color={_COLORS.Kodie_GreenColor}
-        resizeMode={"contain"}
-        style={{ alignSelf: "center" }}
-      />
-    ),
-  },
 ];
 
-const ContractorsImage = (props) => {
+const AddContractorModal = (props) => {
   const ContractorsImageContent = ({ item, index }) => {
     return (
       <>
         <TouchableOpacity
-          style={ContractorsImageStyle.content_View}
+          style={AddContractorModalStyle.content_View}
           onPress={props?.onPress}
         >
-          <TouchableOpacity style={ContractorsImageStyle.Bottomcontainer}>
-            {/* <Image source={item.Img} style={ContractorsImageStyle.Icons} /> */}
+          <TouchableOpacity style={AddContractorModalStyle.Bottomcontainer}>
+            {/* <Image source={item.Img} style={AddContractorModalStyle.Icons} /> */}
             {/* {item.icon} */}
-            <Text style={ContractorsImageStyle.IconView}>{item.Icon}</Text>
+            <Text style={AddContractorModalStyle.IconView}>{item.Icon}</Text>
           </TouchableOpacity>
-          <Text style={ContractorsImageStyle.text}>{item.Data}</Text>
+          <Text style={AddContractorModalStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
       </>
     );
   };
   return (
-    <View style={ContractorsImageStyle.mainContainer}>
-      <View style={ContractorsImageStyle.upload_View}></View>
+    <View style={AddContractorModalStyle.mainContainer}>
+      <View style={AddContractorModalStyle.upload_View}>
+        <Text style={AddContractorModalStyle.text}>{"Invite Contractor"}</Text>
+      </View>
 
       <FlatList
         data={data}
@@ -100,4 +88,4 @@ const ContractorsImage = (props) => {
   );
 };
 
-export default ContractorsImage;
+export default AddContractorModal;

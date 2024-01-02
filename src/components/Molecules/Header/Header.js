@@ -10,11 +10,17 @@ import {
 import { _goBack } from "../../../services/CommonServices";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import DividerIcon from "../../Atoms/Devider/DividerIcon";
+import { useSelector } from "react-redux";
 
 const imageurl =
   "http://e3.cylsys.com/upload/photo/AB71AAB8-C137-4561-A883-4417718442AE.jpg";
 
 const TopHeader = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData", loginData.Login_details.profile_photo_path);
+  const userProfileImageUri =
+    loginData?.Login_details?.profile_photo_path ||
+    signUp_account_response?.Login_details?.profile_photo_path;
   return (
     <>
       <StatusBar
@@ -77,7 +83,9 @@ const TopHeader = (props) => {
             </TouchableOpacity>
             {props.isprofileImage ? (
               <Image
-                source={props?.RightUserProfile || IMAGES.Landlordprofile}
+                source={{
+                  uri: userProfileImageUri,
+                }}
                 style={HeaderStyle.usericon}
               />
             ) : null}
