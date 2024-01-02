@@ -6,6 +6,35 @@ export const EditProfileStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
+  ProfileView: {
+    width: 140,
+    height: 140,
+    borderRadius: 140 / 2,
+    backgroundColor: "#F5F5F5",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 20,
+    marginHorizontal: 16,
+    alignItems: "center",
+  },
+  usericon: {
+    height: 76,
+    width: 76,
+    borderRadius: 76 / 2,
+  },
+  editlogoview: {
+    position: "absolute",
+    top: 100,
+    right: 10,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 12,
+    padding: 5,
+    width: 35,
+    height: 35,
+    // borderWidth:1,
+    borderRadius: 35 / 2,
+    alignSelf: "center",
+  },
   profilviewmain: {
     alignItems: "center",
     marginTop: 10,
@@ -17,19 +46,6 @@ export const EditProfileStyle = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_ExtraLiteGrayColor,
-  },
-
-  editlogoview: {
-    backgroundColor: "#F5F5F5",
-    zIndex: 1,
-    borderRadius: 20,
-    width: 29,
-    height: 29,
-    alignItems: "center",
-    paddingTop: 8,
-    position: "absolute",
-    marginHorizontal: 80,
-    marginTop: 50,
   },
   edittext: {
     fontSize: 12,
@@ -272,7 +288,7 @@ export const EditProfileStyle = StyleSheet.create({
   crossIconStyle: { alignSelf: "center", marginRight: 10 },
   inputContainer: {
     marginTop: 15,
-    marginHorizontal:16
+    marginHorizontal: 16,
   },
   input: {
     height: 45,

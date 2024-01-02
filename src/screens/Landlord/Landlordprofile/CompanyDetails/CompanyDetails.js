@@ -39,6 +39,8 @@ const data = [
   { label: "Item 4", value: "4" },
 ];
 export default CompanyDetails = (props) => {
+  maplocation = props.maplocation;
+  // isSearch = props.isSearch;
   const refRBSheet = useRef();
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
@@ -46,19 +48,19 @@ export default CompanyDetails = (props) => {
   const [companyName, setCompanyName] = useState("");
   const [companyEmail, setCompanyEmail] = useState("");
   const [companyEmailError, setCompanyEmailError] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(0);
   const [companyDescription, setCompanyDescription] = useState("");
   const [companyGSTNumber, setCompanyGSTNumber] = useState("");
   const [jobTypeData, setJobTypeData] = useState([]);
   const [selectJobType, setSelectJobType] = useState(166);
-  const [selectJobTypeid, setSelectJobTypeid] = useState("");
-  const [isClick, setIsClick] = useState(null);
+  const [selectJobTypeid, setSelectJobTypeid] = useState(166);
+  const [isClick, setIsClick] = useState(166);
   const [value, setValue] = useState(null);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(maplocation);
   const [serviceYouPerformData, setServiceYouPerformData] = useState([]);
   const [serviceYouPerformValue, setServiceYouPerformValue] = useState("");
   const [servicesData, setServicesData] = useState([]);
-  const [servicesValue, setservicesValue] = useState("");
+  const [servicesValue, setservicesValue] = useState(0);
   const [ImageName, setImageName] = useState("");
 
   const [UserCurrentCity, setUserCurrentCity] = useState("");
@@ -220,7 +222,7 @@ export default CompanyDetails = (props) => {
   const handleBoxPress = (lookup_key) => {
     setIsClick(lookup_key);
     setSelectJobTypeid(lookup_key);
-    alert(selectJobTypeid);
+    // alert(selectJobTypeid);
     // alert(isClick)
   };
   //   renderItem....
@@ -460,7 +462,7 @@ export default CompanyDetails = (props) => {
       <View style={CompanyDetailsStyle.mainContaier}>
         <View style={[CompanyDetailsStyle.profilviewmain, { flex: 1 }]}>
           <TouchableOpacity
-            style={{}}
+            style={CompanyDetailsStyle.ProfileView}
             onPress={() => {
               refRBSheet.current.open();
             }}
@@ -483,6 +485,11 @@ export default CompanyDetails = (props) => {
                 name="edit"
                 color={_COLORS.Kodie_GreenColor}
                 size={18}
+                style={{
+                  alignSelf: "center",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               />
             </View>
           </TouchableOpacity>
@@ -609,7 +616,7 @@ export default CompanyDetails = (props) => {
                 value={location}
                 onChangeText={setLocation}
                 onFocus={() => {
-                  setIsSearch(true);
+                  // isSearch;
                 }}
                 // editable={false}
                 placeholder="Enter new location"

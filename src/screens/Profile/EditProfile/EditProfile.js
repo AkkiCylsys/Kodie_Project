@@ -26,6 +26,7 @@ import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveL
 import { Config } from "../../../Config";
 import axios from "axios";
 import CompanyDetails from "../../Landlord/Landlordprofile/CompanyDetails/CompanyDetails";
+import ProfileDocuments from "../ProfileDocuments/ProfileDocuments";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -206,6 +207,7 @@ const EditProfile = (props) => {
     formData.append("first_name", fullName);
     formData.append("last_name", lastName);
     formData.append("phone_number", phoneNumber);
+    formData.append("about", about);
     formData.append("physical_address", location);
     formData.append("longitude", longitude);
     formData.append("latitude", latitude);
@@ -215,7 +217,7 @@ const EditProfile = (props) => {
     console.log("Request URL:", updateProfile_url);
     setIsLoading(true);
     try {
-      const response = await axios.post(updateProfile_url, formData, {
+      const response = await axios.put(updateProfile_url, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -248,7 +250,7 @@ const EditProfile = (props) => {
               <>
                 <View style={[EditProfileStyle.profilviewmain, { flex: 1 }]}>
                   <TouchableOpacity
-                    style={{}}
+                    style={EditProfileStyle.ProfileView}
                     onPress={() => {
                       refRBSheet.current.open();
                     }}
@@ -270,12 +272,15 @@ const EditProfile = (props) => {
                         resizeMode="cover"
                       />
                     )}
+
+
                     {ImageName ? refRBSheet.current.close() : null}
                     <View style={EditProfileStyle.editlogoview}>
                       <FontAwesome
                         name="edit"
                         color={_COLORS.Kodie_GreenColor}
                         size={18}
+                        style={{alignSelf:"center"}}
                       />
                     </View>
                   </TouchableOpacity>
@@ -283,6 +288,7 @@ const EditProfile = (props) => {
                     Edit profile photo
                   </Text>
                 </View>
+
                 <Divider style={EditProfileStyle.firstdivider} />
                 <View style={EditProfileStyle.inputmainview}>
                   <View style={EditProfileStyle.firstview}>
@@ -499,16 +505,16 @@ const EditProfile = (props) => {
                 }}
               />
             ) : (
-              <CompanyDetails openMap={openMap} />
+              <CompanyDetails
+                openMap={openMap}
+                maplocation={location}
+                // isSearch={setIsSearch(true)}
+              />
             )}
           </>
         );
       case "Tab3":
-        return (
-          <View>
-            <Text>{"Personal Documents"}</Text>
-          </View>
-        );
+        return <ProfileDocuments />;
     }
   };
   return (
@@ -601,7 +607,7 @@ const EditProfile = (props) => {
               TAB3
               Tab1={"Personal Details"}
               Tab2={"Company Details"}
-              Tab3={"Personal Documents"}
+              Tab3={"Documents"}
               onPressTab1={() => setActiveTab("Tab1")}
               onPressTab2={() => setActiveTab("Tab2")}
               onPressTab3={() => setActiveTab("Tab3")}
