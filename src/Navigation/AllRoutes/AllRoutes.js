@@ -125,6 +125,7 @@ import BiddingDetails from "../../screens/Tenant/Jobs/JobDetails/BiddingDetails/
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 // import PropertyDetails from "../../screens/Landlord/AddNewProperty/PropertyDetails/PropertyDetails";
 import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
+import AddJobDetails from "../../screens/Tenant/Jobs/AddJobDetails";
 import TenantList from "../../screens/Tenant/TenantList";
 import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import CurrentTenant from "../../screens/Tenant/CurrentTenant/CurrentTenant";
@@ -1027,6 +1028,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"BiddingDetails"}
           component={BiddingDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"AddJobDetails"}
+          component={AddJobDetails}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
