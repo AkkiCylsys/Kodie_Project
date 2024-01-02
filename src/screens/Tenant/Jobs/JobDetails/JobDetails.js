@@ -52,6 +52,12 @@ const JobDetails = (props) => {
   const [visible, setVisible] = useState(false);
   const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [myJobType, setMyJobType] = useState(0);
+
+  const handleJobDetailsSuccess = (jobTypeMy) => {
+    console.log("jobTypeMy in JobDetails component:", jobTypeMy);
+    setMyJobType(jobTypeMy);
+  };
 
   const handleImageFilePath = async (imagesFilePath) => {
     setImageFileData(imagesFilePath);
@@ -171,9 +177,12 @@ const JobDetails = (props) => {
             View_Job_Details={View_Job_Details}
             imagesFilePath={handleImageFilePath}
             onPress={() => {
-              props.navigation.navigate("Jobs");
+              props.navigation.navigate("Jobs", {
+                myJob_Type: myJobType,
+              });
               // alert("hello")
             }}
+            onJobDetailsSuccess={handleJobDetailsSuccess}
           />
         );
       case "Tab2":

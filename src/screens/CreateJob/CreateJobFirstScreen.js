@@ -45,36 +45,14 @@ import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoad
 
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
-const populorServicesData = [
-  {
-    id: 1,
-    name: "Electrical",
-  },
-  {
-    id: 2,
-    name: "Handyman",
-  },
-  {
-    id: 3,
-    name: "Painter",
-  },
-  {
-    id: 4,
-    name: "Plumber",
-  },
-];
-const data = [
-  { label: "Electricals", value: "1" },
-  { label: "Home cleaning", value: "2" },
-  { label: "Outdoor cleaning", value: "3" },
-  { label: "Heavy lifting", value: "4" },
-  { label: "Fixing & maintenance", value: "5" },
-];
 export default CreateJobFirstScreen = (props) => {
   const JobId = props.route.params?.JobId;
   const editMode = props.route.params?.editMode;
+  const myJob = props.route.params?.myJob;
   // alert(JobId)
   // alert(editMode)
+  console.log("myJob.......", myJob);
+  console.log("editMode.......", editMode);
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
@@ -751,7 +729,13 @@ export default CreateJobFirstScreen = (props) => {
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}
-        MiddleText={IsMap || IsSearch ? "Location" : "Create new job request"}
+        MiddleText={
+          IsMap || IsSearch
+            ? "Location"
+            : editMode
+            ? "Edit job"
+            : "Create new job request"
+        }
       />
       {IsMap || IsSearch ? null : (
         <View style={{}}>
@@ -864,7 +848,7 @@ export default CreateJobFirstScreen = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="select item"
+                placeholder="Select item"
                 searchPlaceholder="Search..."
                 value={servicesValue}
                 onChange={(item) => {
@@ -1031,7 +1015,7 @@ export default CreateJobFirstScreen = (props) => {
             </View>
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={() =>
+              onPress={() => {
                 props.navigation.navigate("CreateJobTermsScreen", {
                   selectJobType: selectJobTypeid,
                   servicesValue: servicesValue,
@@ -1044,8 +1028,17 @@ export default CreateJobFirstScreen = (props) => {
                   longitude: longitude,
                   JobId: JobId,
                   editMode: editMode,
-                })
-              }
+                  myJob: myJob,
+                });
+                setIsClick("");
+                setSelectJobType("");
+                setservicesValue("");
+                setAboutyourNeed("");
+                setJobPriorityValue("");
+                setJobPriorityValue("");
+                setLocation("");
+                setRatingThresholdValue("");
+              }}
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />

@@ -47,6 +47,8 @@ const Reviewjobdetails1 = (props) => {
           console.log("jobDetailsData....", response.data.data);
           // alert(JSON.stringify(response.data.data))
           // alert(response.data.message);
+          // console.log("myJobType..", myJobType);
+          props.onJobDetailsSuccess(response.data.data.job_type_my);
         } else {
           alert(response.data.message);
           setIsLoading(false);

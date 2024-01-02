@@ -465,7 +465,7 @@ const CreateJobSecondScreen = (props) => {
     <View style={CreateJobSecondStyle.container}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Create job"}
+        MiddleText={editMode?"Edit job":"Create new job request"}
       />
       <StepIndicator
         customSignUpStepStyle={firstIndicatorSignUpStepStyle}

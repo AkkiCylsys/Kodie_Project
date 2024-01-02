@@ -9,13 +9,23 @@ import Repair from "./Repair/Repair";
 
 const Jobs = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
+  let myJob_Type = props?.route?.params?.myJob_Type;
+  console.log("myJob in Job section....", myJob_Type);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
         return (
           <Repair
             onpress={() => {
-              props.navigation.navigate("CreateJobFirstScreen");
+              props.navigation.navigate("CreateJobFirstScreen", {
+                myJob: "requested",
+              });
+            }}
+            myJob_Type={myJob_Type}
+            servicing_press={() => {
+              props.navigation.navigate("CreateJobFirstScreen", {
+                myJob: "Servicing",
+              });
             }}
             create_job_id={(job_id) => {
               // const { newJob_Id } = job_id;
