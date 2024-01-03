@@ -15,7 +15,7 @@ export default AddContractorDetail = (props) => {
   const checkTabs = () => {
     switch (tabValue) {
       case "Person":
-        return <PersonContractor />;
+        return <PersonContractor onClose={handleClosePopup} />;
       case "Company":
         return <CompanyContractor />;
       default:
@@ -29,7 +29,7 @@ export default AddContractorDetail = (props) => {
           <Text style={AddContractorstyle.heading_Text}>
             {"Add contractor details"}
           </Text>
-          <TouchableOpacity onPress={handleClosePopup}>
+          <TouchableOpacity onPress={props.onCloseperson}>
             <AntDesign
               name="close"
               size={22}
@@ -39,63 +39,65 @@ export default AddContractorDetail = (props) => {
           </TouchableOpacity>
         </View>
         <View>
-          <View style={AddContractorstyle.btn_main_view}>
-            <TouchableOpacity
-              style={[
-                AddContractorstyle.person_view,
-                {
-                  backgroundColor:
-                    tabValue === "Person"
-                      ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              onPress={() => {
-                setTabValue("Person");
-              }}
-            >
-              <Text
+          <View style={{ flexDirection: "row" }}>
+            <View style={AddContractorstyle.btn_main_view}>
+              <TouchableOpacity
                 style={[
-                  AddContractorstyle.person_text,
+                  AddContractorstyle.person_view,
                   {
-                    color:
+                    backgroundColor:
                       tabValue === "Person"
-                        ? _COLORS.Kodie_WhiteColor
-                        : _COLORS.Kodie_BlackColor,
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_WhiteColor,
                   },
                 ]}
+                onPress={() => {
+                  setTabValue("Person");
+                }}
               >
-                {"Person"}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                AddContractorstyle.person_view,
-                {
-                  backgroundColor:
-                    tabValue === "Company"
-                      ? _COLORS.Kodie_GreenColor
-                      : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              onPress={() => {
-                setTabValue("Company");
-              }}
-            >
-              <Text
+                <Text
+                  style={[
+                    AddContractorstyle.person_text,
+                    {
+                      color:
+                        tabValue === "Person"
+                          ? _COLORS.Kodie_WhiteColor
+                          : _COLORS.Kodie_BlackColor,
+                    },
+                  ]}
+                >
+                  {"Person"}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
                 style={[
-                  AddContractorstyle.company_text,
+                  AddContractorstyle.person_view,
                   {
-                    color:
+                    backgroundColor:
                       tabValue === "Company"
-                        ? _COLORS.Kodie_WhiteColor
-                        : _COLORS.Kodie_BlackColor,
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_WhiteColor,
                   },
                 ]}
+                onPress={() => {
+                  setTabValue("Company");
+                }}
               >
-                {"Company"}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[
+                    AddContractorstyle.company_text,
+                    {
+                      color:
+                        tabValue === "Company"
+                          ? _COLORS.Kodie_WhiteColor
+                          : _COLORS.Kodie_BlackColor,
+                    },
+                  ]}
+                >
+                  {"Company"}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>

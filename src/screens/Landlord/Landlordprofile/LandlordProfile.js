@@ -19,7 +19,10 @@ export default LandlordProfile = (props) => {
   );
   console.log("signUp_account_response.....", signUp_account_response);
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginResponse.....", loginData);
+  console.log(
+    "loginResponse.....",
+    loginData?.Login_details?.profile_photo_path
+  );
 
   const LogOut = () => {
     dispatch(logoutActionCreator());
@@ -32,11 +35,11 @@ export default LandlordProfile = (props) => {
         isprofileImage
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Profile"}
-        RightUserProfile={{
-          uri:
-            loginData?.Login_details?.profile_photo_path ||
-            signUp_account_response?.Login_details?.profile_photo_path,
-        }}
+        // RightUserProfile={{
+        //   uri:
+        //     loginData?.Login_details?.profile_photo_path ||
+        //     signUp_account_response?.Login_details?.profile_photo_path,
+        // }}
       />
       <ScrollView>
         <SearchBar frontSearchIcon={true} height={48} marginTop={20} />

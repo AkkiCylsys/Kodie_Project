@@ -116,9 +116,7 @@ const AddContractorModal = (props) => {
           container: AddContractorModalStyle.bottomModal_container,
         }}
       >
-        <AddContractorDetails
-        // onClose={handleClosePopup}
-        />
+        <AddContractorDetails onClose={handleClosePopup} />
       </RBSheet>
     </View>
   );

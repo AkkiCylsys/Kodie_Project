@@ -17,9 +17,12 @@ const imageurl =
 
 const TopHeader = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData.Login_details.profile_photo_path);
+  console.log("loginData", loginData.Login_details?.profile_photo_path);
+  const signUp_account_response = useSelector(
+    (state) => state?.authenticationReducer?.data
+  );
   const userProfileImageUri =
-    loginData?.Login_details?.profile_photo_path ||
+    loginData.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
   return (
     <>

@@ -1,4 +1,4 @@
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { ContractorsStyle } from "./ContractorsStyle";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -91,13 +91,14 @@ const Contractors = (props) => {
                 color={_COLORS.Kodie_GrayColor}
                 style={ContractorsStyle.heartimg}
               />
-
-              <Entypo
-                name="dots-three-horizontal"
-                size={20}
-                color={_COLORS.Kodie_GrayColor}
-                style={ContractorsStyle.closeIcon}
-              />
+              <TouchableOpacity onPress={props.onPress}>
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={20}
+                  color={_COLORS.Kodie_GrayColor}
+                  style={ContractorsStyle.closeIcon}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </View>

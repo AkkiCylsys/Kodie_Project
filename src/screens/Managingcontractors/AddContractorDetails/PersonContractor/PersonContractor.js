@@ -40,7 +40,6 @@ export default PersonContractor = (props) => {
     props.onClose();
   };
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData.....", loginData);
   const validatePersonEmail = (email) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -262,7 +261,68 @@ export default PersonContractor = (props) => {
       </ScrollView>
     );
   };
-  const top4Items = servicesData.slice(0, 4);
+  const Personhandle = () => {
+    console.log("servicesValue..................", selectJobTypeid);
+    const PersonDetailsData = {
+      User_USP_KEY: loginData.Login_details.user_id,
+      User_Account_UDP_KEY: loginData.Login_details.user_account_id,
+      UACP_IS_COMPANY: 0,
+      FIRST_NAME: firstName,
+      LAST_NAME: lastName,
+      ORGANISATION_NAME: "",
+      CATEGORY_CONTRACTOR: selectJobTypeid,
+      CONTRACTOR_PROFESSION: servicesValue,
+      EMAIL: email,
+      PHONE_NUMBER: PhoneNumber,
+      MOBILE_NUMBER: "",
+      WEBSITE: "",
+      NOTES: note,
+    };
+    const url = Config.BASE_URL;
+    const PersonUrl = url + "invitecontractor_details";
+    console.log("Request URL:", PersonUrl);
+    setIsLoading(true);
+
+    axios
+      .post(PersonUrl, PersonDetailsData)
+      .then((response) => {
+        console.log("Person Details_data response", response.data);
+        if (response.data.success == true || response.data.error == false) {
+          alert(response.data.message);
+          setIsLoading(false);
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPhoneNumber("");
+          setPhoneNumber("");
+          setNote("");
+          setIsLoading(false);
+        } else {
+          setEmailError(response.data.message);
+          console.error("personDetail_error:", response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("personDetail error...:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  // setEmailError(response.data.message);
+  // props.navigation.navigate("LeaseSummary");
+  const handleSaveBtn = () => {
+    if (firstName.trim() === "") {
+      setFirstNameError("First name is required.");
+    } else if (lastName.trim() === "") {
+      setLastNameError("Last name is required.");
+    } else if (email.trim() == "") {
+      setEmailError("Email is required.");
+    } else {
+      Personhandle();
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={PersonContractorStyle.mainConatainer}
@@ -409,7 +469,7 @@ export default PersonContractor = (props) => {
                 },
               ]}
               onPress={() => {
-                // handleSaveBtn();
+                handleSaveBtn();
                 // handleOptionClick("Save");
               }}
             >
