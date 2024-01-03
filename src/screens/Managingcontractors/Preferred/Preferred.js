@@ -41,10 +41,10 @@ const Preferred = () => {
   }, []);
   const handlePreferredData = () => {
     const PreferredBody = {
-      account_id: 479,
+      User_USP_KEY: 479,
     };
     const url = Config.BASE_URL;
-    const PreferredUrl = url + "Contractor_details_by_account_id";
+    const PreferredUrl = url + "invitecontractor_details_account_id";
     console.log("Request URL:", PreferredUrl);
     setIsLoading(true);
     axios
@@ -69,7 +69,7 @@ const Preferred = () => {
     <>
       <Contractors
         userImage={{ uri: item.profile_path }}
-        name={`${item.first_name} ${item.last_name}`}
+        name={`${item.FIRST_NAME} ${item.LAST_NAME}`}
         filedname={"Plumber"}
         startRating={"3.6"}
         ratingnumber={"100"}
@@ -84,7 +84,7 @@ const Preferred = () => {
   return (
     <>
       <FlatList
-        data={[PreferredData]}
+        data={PreferredData}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />

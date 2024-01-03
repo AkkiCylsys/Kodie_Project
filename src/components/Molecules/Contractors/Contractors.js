@@ -30,6 +30,7 @@ const Contractors = (props) => {
                 style={{
                   height: 60,
                   width: 60,
+                  borderRadius: 60 / 2,
                 }}
               />
             </View>

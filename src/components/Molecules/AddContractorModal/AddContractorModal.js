@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
 import { _COLORS } from "../../../Themes";
 import { AddContractorModalStyle } from "./AddContractorModalStyle";
@@ -6,6 +6,10 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useNavigation } from "@react-navigation/native";
+import RBSheet from "react-native-raw-bottom-sheet";
+import AddTenantDetails from "../../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
+import AddContractorDetails from "../../../screens/Managingcontractors/AddContractorDetails/AddContractorDetails";
 
 const data = [
   {
@@ -53,12 +57,26 @@ const data = [
 ];
 
 const AddContractorModal = (props) => {
+  const navigation = useNavigation();
+  const refRBSheet = useRef();
+  const handleClosePopup = () => {
+    props.onClose();
+  };
+
   const ContractorsImageContent = ({ item, index }) => {
     return (
       <>
         <TouchableOpacity
           style={AddContractorModalStyle.content_View}
-          onPress={props?.onPress}
+          onPress={() => {
+            if (item.id === "1") {
+              //---- Navigate to OtherScreen when Contact Us is clicked
+              navigation.navigate("Invitefriend");
+            }
+            if (item.id === "3") {
+              refRBSheet.current.open();
+            }
+          }}
         >
           <TouchableOpacity style={AddContractorModalStyle.Bottomcontainer}>
             {/* <Image source={item.Img} style={AddContractorModalStyle.Icons} /> */}
@@ -84,6 +102,24 @@ const AddContractorModal = (props) => {
         keyExtractor={(item) => item?.id}
         renderItem={ContractorsImageContent}
       />
+      <RBSheet
+        ref={refRBSheet}
+        height={850}
+        closeOnDragDown={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: AddContractorModalStyle.bottomModal_container,
+        }}
+      >
+        <AddContractorDetails
+        // onClose={handleClosePopup}
+        />
+      </RBSheet>
     </View>
   );
 };

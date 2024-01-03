@@ -122,7 +122,7 @@ const Managingcontractors = (props) => {
           container: ManagingcontractorsStyle.bottomModal_container,
         }}
       >
-        <AddContractorModal onPress={toggleView} />
+        <AddContractorModal />
       </RBSheet>
     </View>
   );
