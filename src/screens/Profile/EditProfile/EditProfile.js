@@ -273,14 +273,13 @@ const EditProfile = (props) => {
                       />
                     )}
 
-
                     {ImageName ? refRBSheet.current.close() : null}
                     <View style={EditProfileStyle.editlogoview}>
                       <FontAwesome
                         name="edit"
                         color={_COLORS.Kodie_GreenColor}
                         size={18}
-                        style={{alignSelf:"center"}}
+                        style={{ alignSelf: "center" }}
                       />
                     </View>
                   </TouchableOpacity>
@@ -508,6 +507,8 @@ const EditProfile = (props) => {
               <CompanyDetails
                 openMap={openMap}
                 maplocation={location}
+                latitude={latitude}
+                longitude={longitude}
                 // isSearch={setIsSearch(true)}
               />
             )}
@@ -533,14 +534,14 @@ const EditProfile = (props) => {
       {IsMap ? (
         <View
           style={{
-            // flex:0.5,
+            flex:1,
             backgroundColor: "transparent",
           }}
         >
           <MapScreen
             style={{
               // flex:0.5,
-              height: "85%",
+              height: "100%",
               width: "100%",
               alignSelf: "center",
               marginBottom: 10,
