@@ -181,7 +181,7 @@ export default FirstProperty = props => {
     {Bedrooms: CountBedroom},
     {Bathrooms: CountBathroom},
     {'Parking Space': CountParking},
-    {Garages: CountParkingStreet},
+    {'On-StreetParking': CountParkingStreet},
   ];
   const increaseBedroomCount = () => {
     setCountBedroom(prevCount => prevCount + 1);
@@ -795,7 +795,7 @@ export default FirstProperty = props => {
                   <View style={FirstPropertyStyle.mainfeaturesview}>
                     <View style={FirstPropertyStyle.key_feature_Text_view}>
                       <Text style={FirstPropertyStyle.key_feature_Text}>
-                        {'Garages'}
+                        {'On-street parking'}
                       </Text>
                     </View>
 

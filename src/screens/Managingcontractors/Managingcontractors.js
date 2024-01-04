@@ -11,6 +11,10 @@ import CustomTabNavigator from "../../components/Molecules/CustomTopNavigation/C
 import Contractors from "../../components/Molecules/Contractors/Contractors";
 import RBSheet from "react-native-raw-bottom-sheet";
 import ContractorsImage from "../../components/Molecules/Contractors/ContractorsImage/ContractorsImage";
+import Preferred from "./Preferred/Preferred";
+import CurrentContractor from "./Current/Current";
+import PreviousContractor from "./PreviousContractor/PreviousContractor";
+import AddContractorModal from "../../components/Molecules/AddContractorModal/AddContractorModal";
 
 const Managingcontractors = (props) => {
   const refRBSheet = useRef();
@@ -23,123 +27,91 @@ const Managingcontractors = (props) => {
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
+        return <Preferred />;
       case "Tab2":
+        return <CurrentContractor />;
       case "Tab3":
+        return <PreviousContractor />;
     }
   };
   return (
     <View style={ManagingcontractorsStyle.mainContainer}>
-      {/* <TopHeader
-        IsNotification={true}
-        RightUserProfile={IMAGES.Landlordprofile}
-        MiddleText={"Contractors"}
-        leftImage={"menu"}
-        onPressLeftButton={() => props.navigation.openDrawer()}
-      /> */}
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Contractors"}
-        RightUserProfile={IMAGES.Landlordprofile}
+        isprofileImage
         IsNotification={true}
       />
 
-      <ScrollView>
-        <View style={ManagingcontractorsStyle.container}>
-          <View style={ManagingcontractorsStyle.tabview}>
-            <CustomTabNavigator
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              TAB3
-              Tab1={"Preferred"}
-              Tab2={"Current"}
-              Tab3={"Previous"}
-              onPressTab1={() => setActiveTab("Tab1")}
-              onPressTab2={() => setActiveTab("Tab2")}
-              onPressTab3={() => setActiveTab("Tab3")}
-              colorTab1={
-                activeTab === "Tab1"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              colorTab2={
-                activeTab === "Tab2"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              colorTab3={
-                activeTab === "Tab3"
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              styleTab1={
-                activeTab === "Tab1" && ManagingcontractorsStyle.activeTab
-              }
-              styleTab2={
-                activeTab === "Tab2" && ManagingcontractorsStyle.activeTab
-              }
-              styleTab3={
-                activeTab === "Tab3" && ManagingcontractorsStyle.activeTab
-              }
-            />
-          </View>
-          <View style={ManagingcontractorsStyle.Line} />
-          <SearchBar
-            marginTop={20}
-            frontSearchIcon
-            isFilterImage
-            filterImage={IMAGES.filter}
-            height={48}
+      <View style={ManagingcontractorsStyle.container}>
+        <View style={ManagingcontractorsStyle.tabview}>
+          <CustomTabNavigator
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            TAB3
+            Tab1={"Preferred"}
+            Tab2={"Current"}
+            Tab3={"Previous"}
+            onPressTab1={() => setActiveTab("Tab1")}
+            onPressTab2={() => setActiveTab("Tab2")}
+            onPressTab3={() => setActiveTab("Tab3")}
+            colorTab1={
+              activeTab === "Tab1"
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            colorTab2={
+              activeTab === "Tab2"
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            colorTab3={
+              activeTab === "Tab3"
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            styleTab1={
+              activeTab === "Tab1" && ManagingcontractorsStyle.activeTab
+            }
+            styleTab2={
+              activeTab === "Tab2" && ManagingcontractorsStyle.activeTab
+            }
+            styleTab3={
+              activeTab === "Tab3" && ManagingcontractorsStyle.activeTab
+            }
           />
-          <View style={ManagingcontractorsStyle.Line1} />
-          <View style={ManagingcontractorsStyle.buttonview}>
-            <CustomSingleButton
-              _ButtonText={activeScreen ? "" : "+ Add contractor"}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              text_Size={14}
-              backgroundColor={_COLORS.Kodie_BlackColor}
-              height={40}
-              marginTop={20}
-              onPress={() => {
-                refRBSheet.current.open();
-              }}
-              disabled={isLoading ? true : false}
-            />
-          </View>
-          <View style={ManagingcontractorsStyle.Line1} />
-          <Contractors
-            name="Jason Stathom"
-            filedname="Handyman"
-            startRating="4.6"
-            ratingnumber="231"
-            address="1234, Contractor’s address. Australia"
-            notverified="Not verified"
-          />
-
-          <DividerIcon />
-          <Contractors
-            name="Mesut Ozil"
-            filedname="Plumber"
-            startRating="4.0"
-            ratingnumber="100"
-            address="1234, Contractor’s address. Australia"
-            verified={true}
-          />
-
-          <DividerIcon />
-          <Contractors
-            name="Jack Black"
-            filedname="Handyman"
-            startRating="3.6"
-            ratingnumber="231"
-            address="1234, Contractor’s address. Australia"
-            verified={true}
-          />
-          <DividerIcon />
         </View>
-      </ScrollView>
+        <View style={ManagingcontractorsStyle.Line} />
+        <SearchBar
+          marginTop={20}
+          frontSearchIcon
+          isFilterImage
+          filterImage={IMAGES.filter}
+          height={48}
+        />
+        <View style={ManagingcontractorsStyle.Line1} />
+        <View style={ManagingcontractorsStyle.buttonview}>
+          <CustomSingleButton
+            _ButtonText={"Add contractor"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            text_Size={14}
+            backgroundColor={_COLORS.Kodie_BlackColor}
+            height={40}
+            marginTop={20}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+            disabled={isLoading ? true : false}
+          />
+        </View>
+        <View style={ManagingcontractorsStyle.Line1} />
+      </View>
+      {checkTabs()}
+
       <RBSheet
         ref={refRBSheet}
-        height={200}
+        closeOnDragDown={true}
+        height={280}
         customStyles={{
           wrapper: {
             backgroundColor: "rgba(0, 0, 0, 0.20)",
@@ -150,7 +122,7 @@ const Managingcontractors = (props) => {
           container: ManagingcontractorsStyle.bottomModal_container,
         }}
       >
-        <ContractorsImage onPress={toggleView} />
+        <AddContractorModal />
       </RBSheet>
     </View>
   );

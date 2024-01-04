@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,90 +6,90 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-} from 'react-native';
-import {DocumentsStyle} from './DocumentsStyle';
-import {FONTFAMILY, LABEL_STYLES} from '../../../../../Themes';
-import {_COLORS, IMAGES} from '../../../../../Themes';
-import {Dropdown} from 'react-native-element-dropdown';
-import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import UploadImageData from '../../../../../components/Molecules/UploadImage/UploadImage';
-import Entypo from 'react-native-vector-icons/Entypo';
-import CustomDropdown from '../../../../../components/Molecules/CustomDropdown/CustomDropdown';
-import {colors} from '../../../../../Themes/CommonColors/CommonColor';
-import {fontFamily} from '../../../../../Themes/FontStyle/FontStyle';
-import Feather from 'react-native-vector-icons/Feather';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import axios from 'axios';
-import {Config} from '../../../../../Config';
+} from "react-native";
+import { DocumentsStyle } from "./DocumentsStyle";
+import { FONTFAMILY, LABEL_STYLES } from "../../../../../Themes";
+import { _COLORS, IMAGES } from "../../../../../Themes";
+import { Dropdown } from "react-native-element-dropdown";
+import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
+import RBSheet from "react-native-raw-bottom-sheet";
+import UploadImageData from "../../../../../components/Molecules/UploadImage/UploadImage";
+import Entypo from "react-native-vector-icons/Entypo";
+import CustomDropdown from "../../../../../components/Molecules/CustomDropdown/CustomDropdown";
+import { colors } from "../../../../../Themes/CommonColors/CommonColor";
+import { fontFamily } from "../../../../../Themes/FontStyle/FontStyle";
+import Feather from "react-native-vector-icons/Feather";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import axios from "axios";
+import { Config } from "../../../../../Config";
 const Property_documents = [
-  'All',
-  'Pre+post inspection reports',
-  'Property images',
-  'Property floor plan',
+  "All",
+  "Pre+post inspection reports",
+  "Property images",
+  "Property floor plan",
 ];
 
 const Lease_documents = [
-  'All',
-  'Rental invoices',
-  'Lease agreement',
-  'Expense bills',
+  "All",
+  "Rental invoices",
+  "Lease agreement",
+  "Expense bills",
 ];
 
 const Tenant_documents = [
-  'All',
-  'Tenant screening report',
-  'Copy of ID without photo',
-  'Copy of ID with photo',
+  "All",
+  "Tenant screening report",
+  "Copy of ID without photo",
+  "Copy of ID with photo",
 ];
 const data = [
   {
-    id: '1',
-    pdfName: 'Pre+post inspection reports',
-    pdfSize: '4.8MB',
+    id: "1",
+    pdfName: "Pre+post inspection reports",
+    pdfSize: "4.8MB",
   },
   {
-    id: '2',
-    pdfName: 'Pre-inspection-checklist.pdf',
-    pdfSize: '1.3MB',
+    id: "2",
+    pdfName: "Pre-inspection-checklist.pdf",
+    pdfSize: "1.3MB",
   },
   {
-    id: '3',
-    pdfName: 'Pre-inspection-checklist.pdf',
-    pdfSize: '2.2MB',
+    id: "3",
+    pdfName: "Pre-inspection-checklist.pdf",
+    pdfSize: "2.2MB",
   },
 ];
 const folderData = [
   {
-    id: '1',
-    moduleName: 'Property',
-    folderHeading: 'Property documents',
-    totalFile: '12 Files',
+    id: "1",
+    moduleName: "Property",
+    folderHeading: "Property documents",
+    totalFile: "12 Files",
   },
   {
-    id: '2',
-    moduleName: 'Lease',
-    folderHeading: 'Lease documents',
-    totalFile: '13 Files',
+    id: "2",
+    moduleName: "Lease",
+    folderHeading: "Lease documents",
+    totalFile: "13 Files",
   },
   {
-    id: '3',
-    moduleName: 'Tenant',
-    folderHeading: 'Tenant documents',
-    totalFile: '15 Files',
+    id: "3",
+    moduleName: "Tenant",
+    folderHeading: "Tenant documents",
+    totalFile: "15 Files",
   },
 ];
 
 // ----data come from dropdown and define these condition
-const handleApply = selectedOptions => {
-  console.log('Clear Action');
+const handleApply = (selectedOptions) => {
+  console.log("Clear Action");
 };
 const handleClear = () => {
-  console.log('Clear Action');
+  console.log("Clear Action");
 };
 
-export default Documents = props => {
+export default Documents = (props) => {
   useEffect(() => {
     getAllDocuments();
   }, []);
@@ -100,7 +100,7 @@ export default Documents = props => {
   const [uploadDocData, setUploadDocData] = useState([]);
   const refRBSheet = useRef();
 
-  const DocumentsData = ({item, index}) => {
+  const DocumentsData = ({ item, index }) => {
     return (
       <>
         <View style={DocumentsStyle.container}>
@@ -110,19 +110,20 @@ export default Documents = props => {
               name="file-pdf-o"
               size={35}
               color={_COLORS.Kodie_BlackColor}
-              resizeMode={'contain'}
+              resizeMode={"contain"}
             />
             <View style={DocumentsStyle.textContainer}>
               <Text style={DocumentsStyle.pdfName}>{item.PDUM_FILE_NAME}</Text>
               {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text>
+              <Text style={DocumentsStyle.pdfSize}> {"4.5 MB"}</Text>
             </View>
           </View>
           <TouchableOpacity
             style={DocumentsStyle.crossIcon}
             onPress={() => {
               // refRBSheet.current.open();
-            }}>
+            }}
+          >
             <Entypo
               name="dots-three-vertical"
               size={20}
@@ -134,7 +135,7 @@ export default Documents = props => {
     );
   };
 
-  const folderRenderData = ({item, index}) => {
+  const folderRenderData = ({ item, index }) => {
     return (
       <TouchableOpacity
         style={DocumentsStyle.folderView}
@@ -143,9 +144,10 @@ export default Documents = props => {
         //   alert(item?.id)
         // }}
         onPress={() => {
-          console.log('item.id:', item.id);
+          console.log("item.id:", item.id);
           props?.documentDetail(item.id, item.moduleName, property_id);
-        }}>
+        }}
+      >
         <View style={DocumentsStyle.folder_icon}>
           <Ionicons
             name="folder-outline"
@@ -162,7 +164,7 @@ export default Documents = props => {
           <Text style={DocumentsStyle.propertyDocText}>
             {item?.folderHeading}
           </Text>
-          <Text style={DocumentsStyle.files_text}>{'12 files'}</Text>
+          <Text style={DocumentsStyle.files_text}>{"12 files"}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -171,25 +173,25 @@ export default Documents = props => {
   // Api intrigation ......
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
-    const getDocument_url = url + `tanant_details/get/document/${property_id}`;
-    // const getDocument_url = url + `tanant_details/get/document/${15}`;
-    console.log('Request URL:', getDocument_url);
+    // const getDocument_url = url + `tanant_details/get/document/${property_id}`;
+    const getDocument_url = url + `tanant_details/get/document/${15}`;
+    console.log("Request URL:", getDocument_url);
     setIsLoading(true);
     axios
       .get(getDocument_url)
-      .then(response => {
-        console.log('API Response getDocuments:', response.data);
+      .then((response) => {
+        console.log("API Response getDocuments:", response.data);
         if (response.data.success === true) {
           // alert(response.data.message);
           setUploadDocData(response.data.data);
-          console.log('getAlluploadDocData..', response.data.data);
+          console.log("getAlluploadDocData..", response.data.data);
         } else {
           alert(response.data.message);
           setIsLoading(false);
         }
       })
-      .catch(error => {
-        console.error('API failed', error);
+      .catch((error) => {
+        console.error("API failed", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -201,25 +203,25 @@ export default Documents = props => {
     <View style={DocumentsStyle.mainContainer}>
       <ScrollView>
         <View style={DocumentsStyle.recentDocView}>
-          <Text style={DocumentsStyle.reacentDocText}>{'Folders'}</Text>
-          <Text style={DocumentsStyle.seeAllText}>{'See all'}</Text>
+          <Text style={DocumentsStyle.reacentDocText}>{"Folders"}</Text>
+          <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
         </View>
-        <View style={{marginBottom: 50}}>
+        <View style={{ marginBottom: 50 }}>
           <FlatList
             data={folderData}
             scrollEnabled
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
-            keyExtractor={item => item?.id}
+            keyExtractor={(item) => item?.id}
             renderItem={folderRenderData}
           />
         </View>
         <View style={DocumentsStyle.recentDocView}>
           <Text style={DocumentsStyle.reacentDocText}>
-            {'Recent documents'}
+            {"Recent documents"}
           </Text>
-          <Text style={DocumentsStyle.seeAllText}>{'See all'}</Text>
+          <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
         </View>
         <View style={DocumentsStyle.card}>
           <FlatList
@@ -227,7 +229,7 @@ export default Documents = props => {
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
-            keyExtractor={item => item?.id}
+            keyExtractor={(item) => item?.id}
             renderItem={DocumentsData}
           />
         </View>

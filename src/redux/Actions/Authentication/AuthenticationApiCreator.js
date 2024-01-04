@@ -31,26 +31,23 @@ export const loginApiActionCreator = (data) => async (dispatch) => {
         "Content-Type": "application/json",
       },
     });
-     //alert(JSON.stringify(res));
+    //alert(JSON.stringify(res));
     // alert(res.);
     // alert("resInredux....", res);
     if (res.data.success == "true") {
       //alert(res.data.code)
-      if(res.data.code == 6)
-      { 
-       // let LoginStatuscode=6
-        let _Response={
-          User_key:res.data.User_Key,
-          LoginStatuscode:res.data.code
-        }
+      if (res.data.code == 6) {
+        // let LoginStatuscode=6
+        let _Response = {
+          User_key: res.data.User_Key,
+          LoginStatuscode: res.data.code,
+        };
         return _Response;
         //props.navigation.navigate("SignUpSteps");
-      }
-      else{
+      } else {
         dispatch(fetchLoginSuccess(res.data));
         return res;
       }
-    
     } else {
       //dispatch(fetchLoginError(res.data));
       return res;
