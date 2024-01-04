@@ -14,6 +14,9 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import { _COLORS, IMAGES } from "../../../Themes";
 import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
+import DocumentPicker from "react-native-document-picker";
+import axios from "axios";
+import { Config } from "../../../Config";
 const data = [
   {
     PDUM_FILE_KEY: 155,
@@ -46,6 +49,39 @@ const ProfileDocumentDetails = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const [uploadDocValue, setUploadDocValue] = useState("");
+
+  // upload Document...
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [
+          DocumentPicker.types.pdf,
+          DocumentPicker.types.doc,
+          DocumentPicker.types.docx,
+          DocumentPicker.types.images,
+        ],
+        allowMultiSelection: true,
+      });
+      //   const doc = await DocumentPicker.pickSingle({
+      //     type: [
+      //       DocumentPicker.types.pdf,
+      //       DocumentPicker.types.doc,
+      //       DocumentPicker.types.docx,
+      //     ],
+      //   });
+      console.log("doc......", doc);
+      setSelectFile(doc);
+      await uploadDocument(doc);
+      console.log("Documents.....", doc);
+      console.log("selectFile.....", selectFile);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err))
+        console.log("User cancelled the upload", err);
+      else console.log(err);
+    }
+  };
+
+
   // renderItem....
   const DocumentsData = ({ item, index }) => {
     return (
@@ -108,6 +144,53 @@ const ProfileDocumentDetails = (props) => {
       </View>
     );
   };
+// Api intrigation...
+const uploadDocument = async (doc) => {
+  // alert("upload");
+  console.log("uri....", doc[0].uri);
+  console.log("name....", doc[0].name);
+  console.log("type....", doc[0].type);
+  console.log("p_referral_key....", property_id);
+  console.log("p_module_name....", moduleName);
+  const url = Config.BASE_URL;
+  const uploadDoc_url = url + "uploadDocument";
+  console.log("Request URL:", uploadDoc_url);
+  setIsLoading(true);
+  try {
+    const formData = new FormData();
+    formData.append("documents", {
+      uri: doc[0].uri,
+      name: doc[0].name,
+      type: doc[0].type,
+    });
+    formData.append("p_referral_key", property_id);
+    formData.append("p_module_name", moduleName);
+    // formData.append("p_sub_module_name", "Property documents");
+
+    const response = await axios.post(uploadDoc_url, formData);
+
+    console.log("API Response uploadDocument:", response.data);
+
+    if (response.data.success === true) {
+      alert(response.data.message);
+      // props.navigation.pop();
+      // getuploadedDocuments();
+    } else {
+      alert(response.data.message);
+    }
+  } catch (error) {
+    console.error("API failed", error);
+    alert(error);
+    // Handle network errors more gracefully
+    // if (!error.response) {
+    //   alert("Network error. Please check your internet connection.");
+    // } else {
+    //   alert(error.response.data.message);
+    // }
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <View style={ProfileDocumentDetailStyle.mainContainer}>
       <View style={{ flexDirection: "row" }}>
@@ -173,7 +256,7 @@ const ProfileDocumentDetails = (props) => {
           _ButtonText={"Upload document"}
           backgroundColor={_COLORS.Kodie_lightGreenColor}
           onPress={() => {
-            // uploadDocument();
+            selectDoc();
           }}
           disabled={isLoading ? true : false}
         />

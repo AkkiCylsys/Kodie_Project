@@ -186,29 +186,6 @@ const ProfileDocuments = (props) => {
           )}
         </View>
       )}
-
-      {/* {folderId ? (
-        <ProfileDocumentDetails />
-      ) : (
-        <View
-          style={{
-            flex: 1,
-            alignSelf: "center",
-          }}
-        >
-          <FlatList
-            data={folderData}
-            scrollEnabled
-            // horizontal={true}
-            numColumns={2}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
-            renderItem={folderRenderData}
-          />
-        </View>
-      )} */}
-
       <View style={ProfileDocumentStyle.saveBackButton}>
         <View style={ProfileDocumentStyle.secondview}>
           <CustomSingleButton
