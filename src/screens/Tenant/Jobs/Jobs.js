@@ -69,12 +69,14 @@ const Jobs = (props) => {
         // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Jobs"}
+        isprofileImage
+        IsNotification={true}
       />
       <CustomTabNavigator
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         TAB3
-        Tab1={"My Jobs"}
+        Tab1={"My jobs"}
         Tab2={"Search for contractors"}
         Tab3={"Search for jobs"}
         onPressTab1={() => setActiveTab("Tab1")}

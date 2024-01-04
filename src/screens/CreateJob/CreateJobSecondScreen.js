@@ -467,6 +467,7 @@ const CreateJobSecondScreen = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode?"Edit job":"Create new job request"}
       />
+      <View style={{marginVertical:10}}>
       <StepIndicator
         customSignUpStepStyle={firstIndicatorSignUpStepStyle}
         currentPosition={2}
@@ -476,6 +477,7 @@ const CreateJobSecondScreen = (props) => {
         stepCount={4}
         renderLabel={renderLabel}
       />
+      </View>
       <ScrollView>
         <View style={CreateJobSecondStyle.phototextView}>
           <Text style={CreateJobSecondStyle.heading}>

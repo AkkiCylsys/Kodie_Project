@@ -214,6 +214,7 @@ const JobDetails = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Review job details"}
       />
+      <View style={{marginVertical:10}}>
       {View_Job_Details ? null : (
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
@@ -225,7 +226,7 @@ const JobDetails = (props) => {
           renderLabel={renderLabel}
         />
       )}
-
+</View>
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>

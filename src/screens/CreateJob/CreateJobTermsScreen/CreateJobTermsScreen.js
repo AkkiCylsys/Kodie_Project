@@ -94,6 +94,10 @@ export default CreateJobTermsScreen = (props) => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+    setSelectedDate("")
+  };
+  const apply_toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
@@ -546,6 +550,7 @@ export default CreateJobTermsScreen = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? "Edit job" : "Create new job request"}
       />
+      <View style={{marginVertical:10}}>
       <StepIndicator
         customSignUpStepStyle={firstIndicatorSignUpStepStyle}
         currentPosition={1}
@@ -555,11 +560,12 @@ export default CreateJobTermsScreen = (props) => {
         stepCount={4}
         renderLabel={renderLabel}
       />
+      </View>
       <ScrollView>
         <View style={CreateJobTermsStyle.container}>
           <Text style={CreateJobTermsStyle.terms_Text}>{"Terms"}</Text>
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
-            {" Request date and time"}
+            {" What date and time would you prefer? "}
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
@@ -583,7 +589,7 @@ export default CreateJobTermsScreen = (props) => {
                 },
               }}
               _closeButton={toggleModal}
-              _ApplyButton={toggleModal}
+              _ApplyButton={apply_toggleModal}
             />
 
             <View style={CreateJobTermsStyle.spaceView} />
@@ -606,7 +612,7 @@ export default CreateJobTermsScreen = (props) => {
               <TimePicker
                 data={new Date()}
                 getData={(date) => {
-                  setCurrentTime(moment(date).format("hh:mm "));
+                  setCurrentTime(moment(date).format("hh:mm A"));
                 }}
               />
             </View>
