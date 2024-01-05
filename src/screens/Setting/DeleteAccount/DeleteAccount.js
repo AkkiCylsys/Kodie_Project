@@ -1,4 +1,11 @@
-import { View, Text, Image, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { DeleteAccountStyle } from "./DeleteAccountStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -149,6 +156,9 @@ const DeleteAccount = (props) => {
             _ButtonText={"Change number instead"}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             Text_Color={_COLORS.Kodie_BlackColor}
+            onPress={() => {
+              props.navigation.navigate("ChangeContactInput");
+            }}
           />
         </View>
 
