@@ -4,13 +4,13 @@ import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
 export const DeleteAccountStyle = StyleSheet.create({
   container: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    height: "100%",
+    // height: "100%",
   },
   headingview: {
     flexDirection: "row",
     alignItems: "center",
     marginHorizontal: 10,
-    marginTop:20
+    marginTop: 20,
   },
   helpimg: {
     width: 18,
@@ -68,36 +68,6 @@ export const DeleteAccountStyle = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
   },
-  firstview: {
-    marginTop: 30,
-  },
-  oldnumbertext: {
-    fontSize: 13,
-    fontWeight: "600",
-    lineHeight: 20,
-    color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Bold,
-   marginHorizontal:20
-  },
-  inputview: {
-    height: 50,
-    borderWidth: 0.3,
-    width: '90%',
-    borderRadius: 6,
-    color: _COLORS.Kodie_MediumGrayColor,
-    marginTop: 4,
-    fontFamily: FONTFAMILY.K_SemiBold,
-    flexDirection:'row',
-    alignItems:'center',
-    marginHorizontal:15,
-    paddingHorizontal:10
-  },
-  numbercode: {
-    color: _COLORS.Kodie_BlackColor,
-    fontSize: 13,
-    fontWeight: "400",
-    fontFamily: FONTFAMILY.K_SemiBold,
-  },
   downarrowimg: {
     width: 12,
     height: 6,
@@ -106,24 +76,65 @@ export const DeleteAccountStyle = StyleSheet.create({
     height: 21,
     width: 43,
   },
-  firstemailview: {
-    marginTop: 30,
-  },
   buttonblackview: {
-marginHorizontal:10,
+    marginHorizontal: 10,
     marginTop: 50,
+    // marginBottom:30
   },
-  inputemail: {
+  card: {
+    width: "100%",
+    backgroundColor: _COLORS.Kodie_TransparentColor,
+    borderRadius: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowRadius: 2,
+    padding: 20,
+    // marginBottom: 50,
+    // marginBottom: 250,
+  },
+  inputContainer: {
+    marginTop: 15,
+  },
+  input: {
+    height: 45,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginTop: 10,
+  },
+  phoneinputbindview: {
+    width: "98%",
+  },
+  bindnumberview: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  phoneinput: {
     height: 50,
-    marginTop: 12,
-    borderWidth: 0.3,
-    width: '90%',
-    borderRadius: 6,
-    color: _COLORS.Kodie_MediumGrayColor,
-    paddingLeft: 18,
-    marginTop: 4,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    marginTop: 1,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginHorizontal:15,
-    paddingHorizontal:10
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    marginTop: 10,
   },
+  numbercode: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 13,
+    fontWeight: "400",
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  lineimg: {
+    height: 21,
+    width: 45,
+  },
+  error_text: { color: "red", marginLeft: 10,marginTop:5 },
 });

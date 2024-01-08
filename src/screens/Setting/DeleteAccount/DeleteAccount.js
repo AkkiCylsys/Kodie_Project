@@ -1,19 +1,123 @@
-import { View, Text, Image, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { DeleteAccountStyle } from "./DeleteAccountStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _COLORS, IMAGES } from "../../../Themes";
+import { _COLORS, IMAGES, LABEL_STYLES } from "../../../Themes";
 import { _goBack } from "../../../services/CommonServices";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import { Config } from "../../../Config";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 const DeleteAccount = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
   const [isLoading, setIsLoading] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const validateAccountEmail = (email) => {
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    return emailPattern.test(email);
+  };
+  const handleAccountEmail = (text) => {
+    setEmail(text);
+    if (text.trim() === "") {
+      setEmailError("Email is required !");
+    } else if (!validateAccountEmail(text)) {
+      setEmailError(
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
+      );
+    } else {
+      setEmailError("");
+    }
+  };
+  const validateMobileNumber = (text) => {
+    const mobileReg = /^[6-9]\d{9}$/;
+    if (text === "") {
+      setPhoneNumberError("Phone number is required");
+    } else if (!mobileReg.test(text)) {
+      setPhoneNumberError("Invalid phone number format");
+    } else {
+      setPhoneNumberError("");
+    }
+    setPhoneNumber(text);
+  };
+  const handleSubmit = async () => {
+    if (phoneNumber.trim() === "" && email.trim() === "") {
+      setPhoneNumberError("Phone number is required");
+      setEmailError("Email is required!");
+    } else if (phoneNumber.trim() !== "" && email.trim() !== "") {
+      DeleteAccount();
+    } else if (phoneNumber.trim() !== "") {
+      DeleteAccount();
+    } else if (email.trim() !== "") {
+      if (!validateAccountEmail(email)) {
+        setEmailError(
+          "Hold on, this email appears to be invalid. Please enter a valid email address."
+        );
+      } else {
+        DeleteAccount();
+      }
+    }
+  };
+
+  // Api intrigation..
+  const DeleteAccount = () => {
+    const dataToSend = {
+      // uad_key: 644,
+      uad_key: loginData?.Login_details?.user_account_id,
+      // email: "Rupesh1@gmail.com",
+      email: email,
+      // phone_number: "8965656565",
+      phone_number: phoneNumber,
+    };
+
+    const url = Config.BASE_URL;
+    const deleteAccount_url = `${url}profile/deleteuseraccount`;
+    console.log("url...", deleteAccount_url);
+
+    setIsLoading(true);
+
+    axios
+      .delete(deleteAccount_url, { data: dataToSend })
+      .then((res) => {
+        console.log("res delete Account......", res);
+        if (res?.data?.success === true) {
+          alert(res?.data?.message);
+          props.navigation.navigate("LoginScreen");
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.error("Response data:", error.response.data);
+          alert(error.response.data.message);
+        }
+        console.error("Error deleting:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
-    <>
+    <View style={DeleteAccountStyle.container}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Delete this account"}
       />
-      <ScrollView style={DeleteAccountStyle.container}>
+      <ScrollView>
         <View style={DeleteAccountStyle.headingview}>
           <Image
             style={DeleteAccountStyle.helpimg}
@@ -52,6 +156,9 @@ const DeleteAccount = (props) => {
             _ButtonText={"Change number instead"}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             Text_Color={_COLORS.Kodie_BlackColor}
+            onPress={() => {
+              props.navigation.navigate("ChangeContactInput");
+            }}
           />
         </View>
 
@@ -61,55 +168,71 @@ const DeleteAccount = (props) => {
             phone or email address
           </Text>
         </View>
-
-        <View style={DeleteAccountStyle.firstview}>
-          <Text style={DeleteAccountStyle.oldnumbertext}>Phone number</Text>
-
-          <View>
-            <View style={DeleteAccountStyle.inputview}>
-              <Text style={DeleteAccountStyle.numbercode}>+61</Text>
-              <Image
-                style={DeleteAccountStyle.downarrowimg}
-                source={IMAGES.downarrow}
-              />
-              <Image
-                style={DeleteAccountStyle.lineimg}
-                source={IMAGES.verticalLine}
-              />
-              <TextInput
-                keyboardType="numeric"
-                placeholder="Phone number"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
+        <View style={DeleteAccountStyle.card}>
+          <Text style={LABEL_STYLES.commontext}>{"Company phone number"}</Text>
+          <View style={DeleteAccountStyle.phoneinputbindview}>
+            <View style={DeleteAccountStyle.phoneinput}>
+              <View style={DeleteAccountStyle.bindnumberview}>
+                <Text style={DeleteAccountStyle.numbercode}>+61</Text>
+                <Ionicons
+                  name="chevron-down-outline"
+                  size={20}
+                  color={_COLORS.Kodie_LightGrayColor}
+                  resizeMode={"contain"}
+                />
+                <Image
+                  style={DeleteAccountStyle.lineimg}
+                  source={IMAGES.verticalLine}
+                />
+                <TextInput
+                  value={phoneNumber}
+                  onChangeText={setPhoneNumber}
+                  keyboardType="numeric"
+                  placeholder="Phone number"
+                  onBlur={() => validateMobileNumber(phoneNumber)}
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  maxLength={10}
+                />
+              </View>
             </View>
+            {phoneNumberError ? (
+              <Text style={DeleteAccountStyle.error_text}>
+                {phoneNumberError}
+              </Text>
+            ) : null}
           </View>
-        </View>
-
-        <View style={DeleteAccountStyle.firstemailview}>
-          <Text style={DeleteAccountStyle.oldnumbertext}>
-            Enter your email address
-          </Text>
-
-          <View>
+          <View style={DeleteAccountStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>
+              {"Enter your email address"}
+            </Text>
             <TextInput
-              keyboardType="text"
+              style={DeleteAccountStyle.input}
+              value={email}
+              onChangeText={setEmail}
+              onBlur={() => handleAccountEmail(email)}
               placeholder="Email"
-              style={DeleteAccountStyle.inputemail}
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+              placeholderTextColor="#999"
             />
           </View>
+          {emailError ? (
+            <Text style={DeleteAccountStyle.error_text}>{emailError}</Text>
+          ) : null}
         </View>
-
         <View style={DeleteAccountStyle.buttonblackview}>
           <CustomSingleButton
             _ButtonText={"Delete account"}
             backgroundColor={_COLORS.Kodie_BlackColor}
             Text_Color={_COLORS.Kodie_WhiteColor}
             disabled={isLoading ? true : false}
+            onPress={() => {
+              handleSubmit();
+              // DeleteAccount()
+            }}
           />
         </View>
       </ScrollView>
-    </>
+      {isLoading ? <CommonLoader /> : null}
+    </View>
   );
 };
 
