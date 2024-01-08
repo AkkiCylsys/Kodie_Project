@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
-import { Calendar, LocaleConfig } from "react-native-calendars";
+import { Calendar, LocaleConfig,Theme} from "react-native-calendars";
 import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { _COLORS, FONTFAMILY, LABEL_STYLES } from "../../../Themes";
 import { CalenderCss } from "./CalenderModalCss";
@@ -49,6 +49,9 @@ LocaleConfig.locales["en"] = {
 LocaleConfig.defaultLocale = "en";
 
 const CalendarModal = (props) => {
+  const customTheme: Theme = {
+    arrowColor: _COLORS.Kodie_BlackColor,
+  };
   return (
     <View style={CalenderCss.container}>
       <TouchableOpacity
@@ -91,6 +94,7 @@ const CalendarModal = (props) => {
               todayTextColor={_COLORS.Kodie_BlackColor}
               dayTextColor={_COLORS.Kodie_BlackColor}
               markedDates={props.markedDates}
+              theme={customTheme} 
             />
             <View style={CalenderCss.ButtonView}>
               <TouchableOpacity

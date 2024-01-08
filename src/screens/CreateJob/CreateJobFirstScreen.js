@@ -57,7 +57,7 @@ export default CreateJobFirstScreen = (props) => {
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
   const [location, setLocation] = useState("");
-  const [isClick, setIsClick] = useState(null);
+  const [isClick, setIsClick] = useState(166);
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
@@ -363,14 +363,14 @@ export default CreateJobFirstScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobFirstStyle.itemView}>
           {item.lookup_key === property_value ? (
-            <Fontisto
+            <AntDesign
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={"checkcircle"}
               size={20}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -387,14 +387,14 @@ export default CreateJobFirstScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobFirstStyle.itemView}>
           {item.lookup_key === jobPriorityValue ? (
-            <Fontisto
+            <AntDesign
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={"checkcircle"}
               size={20}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -411,14 +411,14 @@ export default CreateJobFirstScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobFirstStyle.itemView}>
           {item.lookup_key === servicesValue ? (
-            <Fontisto
-              color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
-              size={20}
-            />
+            <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={"checkcircle"}
+            size={20}
+          />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -435,14 +435,14 @@ export default CreateJobFirstScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobFirstStyle.itemView}>
           {item.lookup_key === ratingThresholdValue ? (
-            <Fontisto
-              color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
-              size={20}
-            />
+            <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={"checkcircle"}
+            size={20}
+          />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -738,7 +738,7 @@ export default CreateJobFirstScreen = (props) => {
         }
       />
       {IsMap || IsSearch ? null : (
-        <View style={{}}>
+        <View style={{marginVertical:10}}>
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={0}
@@ -849,8 +849,8 @@ export default CreateJobFirstScreen = (props) => {
                 labelField="lookup_description"
                 valueField="lookup_key"
                 placeholder="Select item"
-                searchPlaceholder="Search..."
                 value={servicesValue}
+                searchPlaceholder="Search..."
                 onChange={(item) => {
                   setservicesValue(item.lookup_key);
                   // alert(item.lookup_key)

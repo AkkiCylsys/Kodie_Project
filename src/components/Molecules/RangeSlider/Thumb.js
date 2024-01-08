@@ -7,8 +7,8 @@ const Thumb = () => <View style={styles.root} />;
 
 const styles = StyleSheet.create({
   root: {
-    width: THUMB_RADIUS * 2,
-    height: THUMB_RADIUS * 2,
+    width: THUMB_RADIUS * 1.8,
+    height: THUMB_RADIUS * 1.8,
     borderRadius: THUMB_RADIUS,
     borderWidth: 7,
     borderColor: _COLORS.Kodie_WhiteColor,

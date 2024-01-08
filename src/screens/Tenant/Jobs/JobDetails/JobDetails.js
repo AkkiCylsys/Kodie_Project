@@ -188,7 +188,7 @@ const JobDetails = (props) => {
       case "Tab2":
         return <JodBiddingDetails JOB_ID={JOB_ID} />;
       case "Tab3":
-        return <BiddingDetails />;
+        return <AddJobDetails />;
       case "Tab4":
         return (
           <JobDocuments
@@ -214,6 +214,7 @@ const JobDetails = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Review job details"}
       />
+      <View style={{marginVertical:10}}>
       {View_Job_Details ? null : (
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
@@ -225,7 +226,7 @@ const JobDetails = (props) => {
           renderLabel={renderLabel}
         />
       )}
-
+</View>
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>
