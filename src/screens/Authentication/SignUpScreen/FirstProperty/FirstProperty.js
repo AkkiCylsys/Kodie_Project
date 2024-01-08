@@ -326,51 +326,91 @@ export default FirstProperty = (props) => {
   };
   const handleSaveSignup = async () => {
     setIsLoading(true);
-    const formData = new FormData();
-    formData.append("user", user_key);
-    formData.append("first_name", firstName);
-    formData.append("last_name", lastName);
-    formData.append("phone_number", mobileNumber);
-    formData.append("email", email);
-    formData.append("physical_address", physicalAddress);
-    formData.append("p_longitude", p_longitude);
-    formData.append("p_latitude", p_latitude);
-    formData.append("State", state);
-    formData.append("Country", country);
-    formData.append("City", city);
-    formData.append("organisation_name", organisation);
-    formData.append("referral_code", referral);
-    formData.append("describe_yourself", selectedServiceKeysString);
-    formData.append("kodie_help", kodieHelpValue);
-    formData.append("property_manage", selectManageProperty);
-    formData.append("location", propertyLocation);
-    formData.append("location_longitude", longitude);
-    formData.append("location_latitude", latitude);
-    formData.append("p_state", P_state);
-    formData.append("p_country", p_country);
-    formData.append("p_city", p_city);
-    formData.append("islocation", 1);
-    formData.append("property_description", propertyDesc);
-    formData.append("property_type", property_value);
-    formData.append("key_features", JSON.stringify(AllCountsData));
-    formData.append("land_area", landArea);
-    formData.append("floor_size", buildingFlorSize);
-    formData.append("device_id", deviceId);
-    formData.append("device_type", deviceType);
-    formData.append(
-      "additional_features",
-      JSON.stringify(additionalfeatureskeyvalue)
-    );
-    formData.append("auto_list", selectedButtonId);
-
-    if (ImageName) {
-      const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      formData.append("profile_photo", {
-        uri: imageUri,
-        name: imageName,
-      });
+    let newData = {
+      user_key: user_key,
+      firstName: firstName,
+      lastName: lastName,
+      mobileNumber: mobileNumber,
+      email: email,
+      physicalAddress: physicalAddress,
+      p_longitude: p_longitude,
+      p_latitude: p_latitude,
+      state: state,
+      country: country,
+      city: city,
+      organisation: organisation,
+      referral: referral,
+      selectedServiceKeysString: selectedServiceKeysString,
+      kodieHelpValue: kodieHelpValue,
+      location: propertyLocation,
+      longitude: longitude,
+      latitude: latitude,
+      P_state: P_state,
+      p_country: p_country,
+      p_city: p_city,
+      islocation: 1,
+      propertyDesc: propertyDesc,
+      property_value: property_value,
+      key_features: JSON.stringify(AllCountsData),
+      landArea: landArea,
+      buildingFlorSize: buildingFlorSize,
+      deviceId: deviceId,
+      deviceType: deviceType,
+      additional_features: JSON.stringify(additionalfeatureskeyvalue),
+      auto_list: selectedButtonId,
+    };
+    if (ImageName?.path) {
+      newData = {
+        ...newData,
+        image: {
+          uri: ImageName?.path || "",
+          type: ImageName?.mime || "image/jpeg",
+          name: String(ImageName?.path.split("/").pop()),
+        },
+      };
     }
+    console.log("newData...", JSON.stringify(newData));
+    console.log("ImageName?.path...", JSON.stringify(ImageName?.path));
+    console.log("ImageName?.mime...", JSON.stringify(ImageName?.mime));
+    console.log("image...", JSON.stringify(newData?.image));
+
+    const formData = new FormData();
+    formData.append("user", newData?.user_key);
+    formData.append("first_name", newData?.firstName);
+    formData.append("last_name", newData?.lastName);
+    formData.append("phone_number", newData?.mobileNumber);
+    formData.append("email", newData?.email);
+    formData.append("physical_address", newData?.physicalAddress);
+    formData.append("p_longitude", newData?.p_longitude);
+    formData.append("p_latitude", newData?.p_latitude);
+    formData.append("State", newData?.state);
+    formData.append("Country", newData?.country);
+    formData.append("City", newData?.city);
+    formData.append("organisation_name", newData?.organisation);
+    formData.append("referral_code", newData?.referral);
+    formData.append("describe_yourself", newData?.selectedServiceKeysString);
+    formData.append("kodie_help", newData?.kodieHelpValue);
+    formData.append("property_manage", newData?.selectManageProperty);
+    formData.append("location", newData?.location);
+    formData.append("location_longitude", newData?.longitude);
+    formData.append("location_latitude", newData?.latitude);
+    formData.append("p_state", newData?.P_state);
+    formData.append("p_country", newData?.p_country);
+    formData.append("p_city", newData?.p_city);
+    formData.append("islocation", newData?.islocation);
+    formData.append("property_description", newData?.propertyDesc);
+    formData.append("property_type", newData?.property_value);
+    formData.append("key_features", newData?.key_features);
+    formData.append("land_area", newData?.landArea);
+    formData.append("floor_size", newData?.buildingFlorSize);
+    formData.append("device_id", newData?.deviceId);
+    formData.append("device_type", newData?.deviceType);
+    formData.append("additional_features", newData?.additional_features);
+    formData.append("auto_list", newData?.auto_list);
+    formData.append("profile_photo", newData?.image);
+
+    console.log("formData.....", JSON.stringify(formData));
+
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log("signupAccountApiActionCreator..", res.data);
     if (res.data.status === true) {
@@ -386,47 +426,91 @@ export default FirstProperty = (props) => {
   };
   const handleSaveSignupfill = async () => {
     setIsLoading(true);
-    const formData = new FormData();
-    formData.append("user", user_key);
-    formData.append("first_name", firstName);
-    formData.append("last_name", lastName);
-    formData.append("phone_number", mobileNumber);
-    formData.append("email", email);
-    formData.append("physical_address", physicalAddress);
-    formData.append("p_longitude", p_longitude);
-    formData.append("p_latitude", p_latitude);
-    formData.append("State", state);
-    formData.append("Country", country);
-    formData.append("City", city);
-    formData.append("organisation_name", organisation);
-    formData.append("referral_code", referral);
-    formData.append("describe_yourself", selectedServiceKeysString);
-    formData.append("kodie_help", kodieHelpValue);
-    formData.append("property_manage", selectManageProperty);
-    formData.append("location", null);
-    formData.append("location_longitude", longitude);
-    formData.append("location_latitude", latitude);
-    formData.append("p_state", P_state);
-    formData.append("p_country", p_country);
-    formData.append("p_city", p_city);
-    formData.append("islocation", 1);
-    formData.append("property_description", propertyDesc);
-    formData.append("property_type", property_value);
-    formData.append("key_features", "[]");
-    formData.append("land_area", landArea);
-    formData.append("floor_size", buildingFlorSize);
-    formData.append("device_id", deviceId);
-    formData.append("device_type", deviceType);
-    formData.append("additional_features", "[]");
-    formData.append("auto_list", 0);
-    if (ImageName) {
-      const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      formData.append("profile_photo", {
-        uri: imageUri,
-        name: imageName,
-      });
+    let newData = {
+      user_key: user_key,
+      firstName: firstName,
+      lastName: lastName,
+      mobileNumber: mobileNumber,
+      email: email,
+      physicalAddress: physicalAddress,
+      p_longitude: p_longitude,
+      p_latitude: p_latitude,
+      state: state,
+      country: country,
+      city: city,
+      organisation: organisation,
+      referral: referral,
+      selectedServiceKeysString: selectedServiceKeysString,
+      kodieHelpValue: kodieHelpValue,
+      location: null,
+      longitude: longitude,
+      latitude: latitude,
+      P_state: P_state,
+      p_country: p_country,
+      p_city: p_city,
+      islocation: 1,
+      propertyDesc: propertyDesc,
+      property_value: property_value,
+      key_features: "[]",
+      landArea: landArea,
+      buildingFlorSize: buildingFlorSize,
+      deviceId: deviceId,
+      deviceType: deviceType,
+      additional_features: "[]",
+      auto_list: selectedButtonId,
+    };
+    if (ImageName?.path) {
+      newData = {
+        ...newData,
+        image: {
+          uri: ImageName?.path || "",
+          type: ImageName?.mime || "image/jpeg",
+          name: String(ImageName?.path.split("/").pop()),
+        },
+      };
     }
+    console.log("newData...", JSON.stringify(newData));
+    console.log("ImageName?.path...", JSON.stringify(ImageName?.path));
+    console.log("ImageName?.mime...", JSON.stringify(ImageName?.mime));
+    console.log("image...", JSON.stringify(newData?.image));
+
+    const formData = new FormData();
+    formData.append("user", newData?.user_key);
+    formData.append("first_name", newData?.firstName);
+    formData.append("last_name", newData?.lastName);
+    formData.append("phone_number", newData?.mobileNumber);
+    formData.append("email", newData?.email);
+    formData.append("physical_address", newData?.physicalAddress);
+    formData.append("p_longitude", newData?.p_longitude);
+    formData.append("p_latitude", newData?.p_latitude);
+    formData.append("State", newData?.state);
+    formData.append("Country", newData?.country);
+    formData.append("City", newData?.city);
+    formData.append("organisation_name", newData?.organisation);
+    formData.append("referral_code", newData?.referral);
+    formData.append("describe_yourself", newData?.selectedServiceKeysString);
+    formData.append("kodie_help", newData?.kodieHelpValue);
+    formData.append("property_manage", newData?.selectManageProperty);
+    formData.append("location", newData?.location);
+    formData.append("location_longitude", newData?.longitude);
+    formData.append("location_latitude", newData?.latitude);
+    formData.append("p_state", newData?.P_state);
+    formData.append("p_country", newData?.p_country);
+    formData.append("p_city", newData?.p_city);
+    formData.append("islocation", newData?.islocation);
+    formData.append("property_description", newData?.propertyDesc);
+    formData.append("property_type", newData?.property_value);
+    formData.append("key_features", newData?.key_features);
+    formData.append("land_area", newData?.landArea);
+    formData.append("floor_size", newData?.buildingFlorSize);
+    formData.append("device_id", newData?.deviceId);
+    formData.append("device_type", newData?.deviceType);
+    formData.append("additional_features", newData?.additional_features);
+    formData.append("auto_list", newData?.auto_list);
+    formData.append("profile_photo", newData?.image);
+
+    console.log("formData.....", JSON.stringify(formData));
+
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log("signupAccountApiActionCreator..", res.data);
     if (res.data.status === true) {
@@ -537,9 +621,7 @@ export default FirstProperty = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
-        MiddleText={
-          IsMap || IsSearch ? "Location" : "Set up your Kodie account"
-        }
+        MiddleText={IsMap || IsSearch ? "Location" : "Account set up"}
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}

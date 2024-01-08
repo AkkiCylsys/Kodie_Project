@@ -17,7 +17,7 @@ import PreviousContractor from "./PreviousContractor/PreviousContractor";
 import AddContractorModal from "../../components/Molecules/AddContractorModal/AddContractorModal";
 
 const Managingcontractors = (props) => {
-  const refRBSheet = useRef();
+  const refRBSheet1 = useRef();
   const [activeScreen, setActiveScreen] = useState(false);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [isLoading, setIsLoading] = useState(false);
@@ -99,7 +99,7 @@ const Managingcontractors = (props) => {
             height={40}
             marginTop={20}
             onPress={() => {
-              refRBSheet.current.open();
+              refRBSheet1.current.open();
             }}
             disabled={isLoading ? true : false}
           />
@@ -109,7 +109,7 @@ const Managingcontractors = (props) => {
       {checkTabs()}
 
       <RBSheet
-        ref={refRBSheet}
+        ref={refRBSheet1}
         closeOnDragDown={true}
         height={280}
         customStyles={{
@@ -122,7 +122,7 @@ const Managingcontractors = (props) => {
           container: ManagingcontractorsStyle.bottomModal_container,
         }}
       >
-        <AddContractorModal />
+        <AddContractorModal onCloseModal={() => refRBSheet1.current.close()} />
       </RBSheet>
     </View>
   );

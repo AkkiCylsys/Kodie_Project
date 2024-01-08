@@ -102,26 +102,29 @@ export default CompanyContractor = (props) => {
     }
     setMobileNumber(text);
   };
-  const CompanyDetailsData = {
-    User_USP_KEY: loginData.Login_details.user_id,
-    User_Account_UDP_KEY: loginData.Login_details.user_account_id,
-    UACP_IS_COMPANY: 1,
-    FIRST_NAME: "",
-    LAST_NAME: "",
-    ORGANISATION_NAME: companyName,
-    CATEGORY_CONTRACTOR: selectJobTypeid,
-    CONTRACTOR_PROFESSION: servicesValue,
-    EMAIL: email,
-    PHONE_NUMBER: PhoneNumber,
-    MOBILE_NUMBER: mobileNumber,
-    WEBSITE: website,
-    NOTES: note,
-  };
 
+  const handleClosePopup = () => {
+    props.onCloseSave();
+  };
   // API bind person code here.....
   const Companyhandle = () => {
     // const url = Config.API_URL;
     // const PersonUrl = url + "user_signup";
+    const CompanyDetailsData = {
+      User_USP_KEY: loginData.Login_details.user_id,
+      User_Account_UDP_KEY: loginData.Login_details.user_account_id,
+      UACP_IS_COMPANY: 1,
+      FIRST_NAME: "",
+      LAST_NAME: "",
+      ORGANISATION_NAME: companyName,
+      CATEGORY_CONTRACTOR: selectJobTypeid,
+      CONTRACTOR_PROFESSION: servicesValue,
+      EMAIL: email,
+      PHONE_NUMBER: PhoneNumber,
+      MOBILE_NUMBER: mobileNumber,
+      WEBSITE: website,
+      NOTES: note,
+    };
     const url = Config.BASE_URL;
     const CompanyUrl = url + "invitecontractor_details";
     console.log("Request URL:", CompanyUrl);
@@ -132,7 +135,7 @@ export default CompanyContractor = (props) => {
       .then((response) => {
         setCompanyResponse(response.data);
         console.log("Company Details_data response", response.data);
-        if (response.data.success === true) {
+        if (response.data.success === true || response.data.error == false) {
           // props.navigation.navigate("LeaseSummary");
           alert(response.data.message);
           // setIsLoading(false);
@@ -143,6 +146,7 @@ export default CompanyContractor = (props) => {
           setNote("");
           website("");
           selectJobTypeid("");
+          props.onCloseSave();
           setIsLoading(false);
         } else {
           setEmailError(response.data.message);

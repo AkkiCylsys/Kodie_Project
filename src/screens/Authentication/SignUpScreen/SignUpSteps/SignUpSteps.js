@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-   PermissionsAndroid,
+  PermissionsAndroid,
   Image,
   FlatList,
   // Platform
@@ -474,9 +474,7 @@ const SignUpSteps = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
-        MiddleText={
-          IsMap || IsSearch ? "Location" : "Set up your Kodie account"
-        }
+        MiddleText={IsMap || IsSearch ? "Location" : "Account set up"}
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}

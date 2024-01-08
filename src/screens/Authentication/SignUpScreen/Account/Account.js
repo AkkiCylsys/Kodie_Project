@@ -319,7 +319,7 @@ export default Account = (props) => {
         ) : (
           <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
             <TopHeader
-              MiddleText={"Set up your Kodie account"}
+              MiddleText={"Account set up"}
               onPressLeftButton={goBack}
             />
             <View style={AccountStyle.headingView}>

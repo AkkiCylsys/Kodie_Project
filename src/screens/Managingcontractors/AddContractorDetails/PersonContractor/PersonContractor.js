@@ -296,6 +296,7 @@ export default PersonContractor = (props) => {
           setPhoneNumber("");
           setPhoneNumber("");
           setNote("");
+          props.onCloseSave();
           setIsLoading(false);
         } else {
           setEmailError(response.data.message);
