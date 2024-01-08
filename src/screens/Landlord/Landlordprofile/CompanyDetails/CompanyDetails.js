@@ -40,9 +40,11 @@ const data = [
 ];
 export default CompanyDetails = (props) => {
   maplocation = props.maplocation;
-  // latitude=props.latitude
-  // longitude=props.longitude
+  company_latitude = props.latitude;
+  comapny_longitude = props.longitude;
 
+  console.log("latitude_company....", company_latitude);
+  console.log("longitude company....", comapny_longitude);
   // isSearch = props.isSearch;
   const refRBSheet = useRef();
   const loginData = useSelector((state) => state.authenticationReducer.data);
@@ -80,9 +82,6 @@ export default CompanyDetails = (props) => {
   };
   useEffect(() => {
     handleJobType();
-    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
-      language: "en",
-    });
     handle_ServiceYouPerform();
     if (selectJobType !== null) {
       handleServices(selectJobType);
@@ -118,109 +117,11 @@ export default CompanyDetails = (props) => {
       );
     } else {
       {
-        getCompanyData ? UpdateCompanyData() : addUserCompanyData();
+        getCompanyData.length === 1
+          ? UpdateCompanyData()
+          : addUserCompanyData();
       }
     }
-  };
-
-  //   map....
-  const ConfirmAddress = () => {
-    setIsMap(false);
-  };
-  const openMapandClose = (text) => {
-    setIsMap(false);
-    setIsSearch(true);
-  };
-  const onRegionChange = (Region) => {
-    // alert(JSON.stringify(Region))
-    setlatitude(Region.latitude);
-    setlongitude(Region.longitude);
-    getAddress(Region.latitude, Region.longitude);
-  };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location");
-        // alert("You can use the location");
-        getAddressWithCordinates();
-      } else {
-        console.log("location permission denied");
-        alert("Location permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then((result) => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              "This feature is not available (on this device / in this context)"
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              "The permission has not been requested / is denied but requestable"
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log("The permission is limited: some actions are possible");
-            break;
-          case RESULTS.GRANTED:
-            console.log("The permission is granted");
-            getAddressWithCordinates();
-            break;
-          case RESULTS.BLOCKED:
-            console.log("The permission is denied and not requestable anymore");
-            break;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const getAddressWithCordinates = () => {
-    Geolocation.watchPosition(
-      (position) => {
-        setlatitude(position.coords.latitude);
-        setlongitude(position.coords.longitude);
-        getAddress(position.coords.latitude, position.coords.longitude);
-      },
-      (error) => {
-        alert(error.message.toString());
-      },
-      {
-        showLocationDialog: true,
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 0,
-      }
-    );
-  };
-  const getAddress = (latitude, longitude) => {
-    Geocoder.from(latitude, longitude)
-      .then((json) => {
-        let MainFullAddress = json.results[0].formatted_address;
-        var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
-        setUserCurrentCity(addressComponent2.long_name);
-        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setLocation(MainFullAddress);
-
-        //setAddress(MainFullAddress);
-      })
-      .catch((error) => console.warn(error));
   };
 
   const openMap = () => {
@@ -433,7 +334,7 @@ export default CompanyDetails = (props) => {
   };
 
   const addUserCompanyData = async () => {
-    console.log("Formadata.....", formData);
+    console.log("Formadata company details.....", formData);
     const formData = new FormData();
     if (ImageName && typeof ImageName === "string") {
       const imageUri = ImageName;
@@ -451,8 +352,8 @@ export default CompanyDetails = (props) => {
     formData.append("UCDM_SERVICE_YOU_OFFERING", selectJobTypeid);
     formData.append("UCDM_SERVICE_YOU_PERFORM", servicesValue);
     formData.append("UCDM_COMPANY_ADDRESS", location);
-    formData.append("UCDM_COMPANY_LONGITUDE",props.longitude);
-    formData.append("UCDM_COMPANY_LATITUDE", props.latitude);
+    formData.append("UCDM_COMPANY_LONGITUDE", comapny_longitude);
+    formData.append("UCDM_COMPANY_LATITUDE", company_latitude);
     formData.append("UCDM_COMPANY_GST_VAT_NUMBER", companyGSTNumber);
     console.log("formData", formData);
     const url = Config.BASE_URL;
@@ -496,8 +397,8 @@ export default CompanyDetails = (props) => {
           setCompanyName(response.data.data[0]?.company_name);
           setCompanyEmail(response.data.data[0]?.company_email);
           setPhoneNumber(String(response.data.data[0]?.company_contact));
-          setCompanyDescription(response.data.data[0]?.company_discription);
-          setIsClick(parseInt(response.data.data[0].company_service_offring));
+          setCompanyDescription(response.data.data[0]?.company_description);
+          setIsClick(parseInt(response.data.data[0].company_service_offering));
           setservicesValue(
             parseInt(response.data.data[0].company_service_perform)
           );

@@ -136,7 +136,7 @@ const Reviewjobdetails1 = (props) => {
         <RowTexts leftText={"How often"} rightText={jobDetailsData.how_often} />
         <RowTexts
           leftText={"Budget range"}
-          rightText={jobDetailsData.job_budget}
+          rightText={`${jobDetailsData.job_min_budget} - ${jobDetailsData.job_max_budget}`}
         />
         <RowTexts leftText={"Payment"} rightText={jobDetailsData.payment_by} />
         <RowTexts
