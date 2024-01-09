@@ -515,7 +515,8 @@ export default CreateJobTermsScreen = (props) => {
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_budget: formattedPriceRanges,
+      job_max_budget: jobDetailsData?.job_max_budget,
+      job_min_budget: jobDetailsData?.job_min_budget,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
     };

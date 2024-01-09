@@ -17,6 +17,9 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import DocumentPicker from "react-native-document-picker";
 import axios from "axios";
 import { Config } from "../../../Config";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 const data = [
   {
     PDUM_FILE_KEY: 155,
@@ -46,10 +49,27 @@ const documentData = [
   { lookup_description: "Deep cleaning", lookup_key: 172 },
 ];
 const ProfileDocumentDetails = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
+  // console.log("user_account_id..", loginData?.Login_details?.user_account_id);
+  const user_account_id = loginData?.Login_details?.user_account_id;
+  console.log("Documents lookupId ....", props.documentLookUpType);
+  console.log("Documents moduleName ....", props.ModuleName);
+  const moduleName = props.ModuleName;
+  const D_file_name = props.headingDocument;
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const [uploadDocValue, setUploadDocValue] = useState("");
+  const [selectFile, setSelectFile] = useState([]);
+  const [documentLookupData, setDocumentLookupData] = useState([]);
+  const [documentLookupDataValue, setDocumentLookupDataValue] = useState([]);
+  const [documentdataByModulename, setDocumentdataByModulename] = useState([]);
 
+  useEffect(() => {
+    handleDocumentsLookup();
+    getUploadedDocumentsByModule();
+    // fetchData()
+  }, []);
   // upload Document...
   const selectDoc = async () => {
     try {
@@ -80,7 +100,6 @@ const ProfileDocumentDetails = (props) => {
       else console.log(err);
     }
   };
-
 
   // renderItem....
   const DocumentsData = ({ item, index }) => {
@@ -144,57 +163,119 @@ const ProfileDocumentDetails = (props) => {
       </View>
     );
   };
-// Api intrigation...
-const uploadDocument = async (doc) => {
-  // alert("upload");
-  console.log("uri....", doc[0].uri);
-  console.log("name....", doc[0].name);
-  console.log("type....", doc[0].type);
-  console.log("p_referral_key....", property_id);
-  console.log("p_module_name....", moduleName);
-  const url = Config.BASE_URL;
-  const uploadDoc_url = url + "uploadDocument";
-  console.log("Request URL:", uploadDoc_url);
-  setIsLoading(true);
-  try {
-    const formData = new FormData();
-    formData.append("documents", {
-      uri: doc[0].uri,
-      name: doc[0].name,
-      type: doc[0].type,
-    });
-    formData.append("p_referral_key", property_id);
-    formData.append("p_module_name", moduleName);
-    // formData.append("p_sub_module_name", "Property documents");
+  // Api intrigation...
+  const uploadDocument = async (doc) => {
+    // alert("upload");
+    console.log("uri....", doc[0].uri);
+    console.log("name....", doc[0].name);
+    console.log("type....", doc[0].type);
+    // console.log("p_referral_key....");
+    // console.log("p_module_name....",);
+    const url = Config.BASE_URL;
+    const uploadDoc_url = url + "uploadDocument";
+    console.log("Request URL:", uploadDoc_url);
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("documents", {
+        uri: doc[0].uri,
+        name: doc[0].name,
+        type: doc[0].type,
+      });
+      formData.append("p_referral_key", user_account_id);
+      formData.append("p_module_name", moduleName);
+      formData.append("p_file_Name", D_file_name);
+      formData.append("p_document_type", 1);
 
-    const response = await axios.post(uploadDoc_url, formData);
+      const response = await axios.post(uploadDoc_url, formData);
 
-    console.log("API Response uploadDocument:", response.data);
+      console.log("API Response uploadDocument:", response.data);
 
-    if (response.data.success === true) {
-      alert(response.data.message);
-      // props.navigation.pop();
-      // getuploadedDocuments();
-    } else {
-      alert(response.data.message);
+      if (response.data.success === true) {
+        alert(response.data.message);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.error("API failed", error);
+      alert(error);
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error("API failed", error);
-    alert(error);
-    // Handle network errors more gracefully
-    // if (!error.response) {
-    //   alert("Network error. Please check your internet connection.");
-    // } else {
-    //   alert(error.response.data.message);
-    // }
-  } finally {
-    setIsLoading(false);
-  }
-};
+  };
+
+  const handleDocumentsLookup = (selectJobType) => {
+    const propertyData = {
+      P_PARENT_CODE: props.documentLookUpType,
+      P_TYPE: "OPTION",
+    };
+    const url = Config.BASE_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("Document dropDown Type...", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "Document dropDown Data.......",
+            response.data.lookup_details
+          );
+          setDocumentLookupData(response.data.lookup_details);
+        } else {
+          console.error("Document dropDown..._error:", response.data.error);
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Document dropDown Type error:", error);
+        // alert(error);
+        setIsLoading(false);
+      });
+  };
+  const getUploadedDocumentsByModule = () => {
+    const url = Config.BASE_URL;
+    const getDocumentUrl = `${url}tanant_details/get/documents`;
+    console.log("Request url....", getDocumentUrl);
+    setIsLoading(true);
+    const documentModuleData = {
+      Module_Name:moduleName,
+      fileReferenceKey: user_account_id,
+    };
+
+    console.log("documentModuleData....", JSON.stringify(documentModuleData));
+    axios
+      .post(
+        getDocumentUrl,
+        // params: documentModuleData,
+        documentModuleData
+      )
+      .then((response) => {
+        console.log("API Response getDocumentsByModule:", response.data);
+        if(response.data.success == true){
+          setDocumentdataByModulename(response.data.data)
+        }
+      })
+      .catch((error) => {
+        console.error("API failed_moduleName", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <View style={ProfileDocumentDetailStyle.mainContainer}>
       <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => {}}>
+        <TouchableOpacity
+          style={{ alignSelf: "center" }}
+          onPress={() => {
+            alert("back");
+          }}
+        >
           <Ionicons
             name="chevron-back-outline"
             color={_COLORS.Kodie_BlackColor}
@@ -203,12 +284,12 @@ const uploadDocument = async (doc) => {
           />
         </TouchableOpacity>
         <Text style={ProfileDocumentDetailStyle.documentheadingText}>
-          {props.headingDocument || "Identity documents"}
+          {props.headingDocument || "Identity document"}
         </Text>
       </View>
       <View style={ProfileDocumentDetailStyle.card}>
         <FlatList
-          data={data}
+          data={documentdataByModulename}
           scrollEnabled
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{}}
@@ -233,16 +314,16 @@ const uploadDocument = async (doc) => {
           selectedTextStyle={ProfileDocumentDetailStyle.selectedTextStyle}
           inputSearchStyle={ProfileDocumentDetailStyle.inputSearchStyle}
           iconStyle={ProfileDocumentDetailStyle.iconStyle}
-          data={documentData}
+          data={documentLookupData}
           search
           maxHeight={300}
           labelField="lookup_description"
           valueField="lookup_key"
           placeholder="Select item"
           searchPlaceholder="Search..."
-          value={uploadDocValue}
+          value={documentLookupDataValue}
           onChange={(item) => {
-            setUploadDocValue(item.lookup_key);
+            setDocumentLookupDataValue(item.lookup_key);
             // alert(item.lookup_key)
           }}
           renderItem={documentDataRender}
@@ -261,6 +342,7 @@ const uploadDocument = async (doc) => {
           disabled={isLoading ? true : false}
         />
       </View>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
