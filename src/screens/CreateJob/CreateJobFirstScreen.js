@@ -858,7 +858,7 @@ export default CreateJobFirstScreen = (props) => {
                 renderItem={lookingServices_render}
               />
             </View>
-            <View style={CreateJobFirstStyle.jobDetailsView}>
+            {/* <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>{"Popular services:"}</Text>
 
               <FlatList
@@ -868,7 +868,7 @@ export default CreateJobFirstScreen = (props) => {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
               />
-            </View>
+            </View> */}
             <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>
                 {"Tell us more about your needs:"}

@@ -4,8 +4,10 @@ import {
   View,
   FlatList,
   TouchableOpacity,
+  PermissionsAndroid,
+  Platform,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import ProfileDocumentDetailStyle from "./ProfileDocumentDetailStyle";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -20,6 +22,10 @@ import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import RBSheet from "react-native-raw-bottom-sheet";
+import EditDocumentsModal from "../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
+import RNFetchBlob from "rn-fetch-blob";
+
 const data = [
   {
     PDUM_FILE_KEY: 155,
@@ -49,6 +55,7 @@ const documentData = [
   { lookup_description: "Deep cleaning", lookup_key: 172 },
 ];
 const ProfileDocumentDetails = (props) => {
+  const refRBSheet = useRef();
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
   // console.log("user_account_id..", loginData?.Login_details?.user_account_id);
@@ -64,7 +71,12 @@ const ProfileDocumentDetails = (props) => {
   const [documentLookupData, setDocumentLookupData] = useState([]);
   const [documentLookupDataValue, setDocumentLookupDataValue] = useState([]);
   const [documentdataByModulename, setDocumentdataByModulename] = useState([]);
-
+  const [fileKey, setFileKey] = useState(0);
+  const [fileName, setFileName] = useState("");
+  const [filePath, setFilePath] = useState("");
+  const closeModal = () => {
+    refRBSheet.current.close();
+  };
   useEffect(() => {
     handleDocumentsLookup();
     getUploadedDocumentsByModule();
@@ -103,6 +115,9 @@ const ProfileDocumentDetails = (props) => {
 
   // renderItem....
   const DocumentsData = ({ item, index }) => {
+    setFileKey(item.PDUM_FILE_KEY);
+    setFileName(item.PDUM_FILE_NAME);
+    setFilePath(item.PDUM_FILE_PATH);
     return (
       <>
         <View style={ProfileDocumentDetailStyle.container}>
@@ -128,7 +143,7 @@ const ProfileDocumentDetails = (props) => {
           <TouchableOpacity
             style={ProfileDocumentDetailStyle.crossIcon}
             onPress={() => {
-              // refRBSheet.current.open();
+              refRBSheet.current.open();
             }}
           >
             <Entypo
@@ -193,6 +208,7 @@ const ProfileDocumentDetails = (props) => {
 
       if (response.data.success === true) {
         alert(response.data.message);
+        getUploadedDocumentsByModule();
       } else {
         alert(response.data.message);
       }
@@ -242,7 +258,7 @@ const ProfileDocumentDetails = (props) => {
     console.log("Request url....", getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
-      Module_Name:moduleName,
+      Module_Name: moduleName,
       fileReferenceKey: user_account_id,
     };
 
@@ -255,8 +271,8 @@ const ProfileDocumentDetails = (props) => {
       )
       .then((response) => {
         console.log("API Response getDocumentsByModule:", response.data);
-        if(response.data.success == true){
-          setDocumentdataByModulename(response.data.data)
+        if (response.data.success == true) {
+          setDocumentdataByModulename(response.data.data);
         }
       })
       .catch((error) => {
@@ -266,15 +282,105 @@ const ProfileDocumentDetails = (props) => {
         setIsLoading(false);
       });
   };
+  const deleteHandler = (fileKey) => {
+    console.log("filekeyIn_delete....", fileKey);
+    const dataToSend = {
+      fileId: fileKey,
+    };
+    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
+    const url = Config.BASE_URL;
+    const delete_url = url + "deletedocument";
+    console.log("url...", delete_url);
+    setIsLoading(true);
+    axios
+      .patch(delete_url, dataToSend)
+      .then((res) => {
+        console.log("res......", res);
+        if (res?.data?.success === true) {
+          alert(res?.data?.message);
+          getUploadedDocumentsByModule();
+          closeModal();
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const REMOTE_PATH = filePath;
+  const checkPermission = async () => {
+    setIsLoading(true);
+    if (Platform.OS === "ios") {
+      downloadImage();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: "Storage Permission Required",
+            message: "App needs access to your storage to download Photos",
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          // Once user grant the permission start downloading
+          console.log("Storage Permission Granted.");
+          downloadImage();
+        } else {
+          // If permission denied then show alert
+          alert("Storage Permission Not Granted");
+        }
+      } catch (err) {
+        // To handle permission related exception
+        console.warn(err);
+      }
+    }
+  };
+  const downloadImage = () => {
+    setIsLoading(true);
+    let date = new Date();
+    let image_URL = REMOTE_PATH;
+    let ext = getExtention(image_URL);
+    ext = "." + ext[0];
+    const { config, fs } = RNFetchBlob;
+    let PictureDir = fs.dirs.PictureDir;
+    let options = {
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        path:
+          PictureDir +
+          "/pdf_" +
+          Math.floor(date.getTime() + date.getSeconds() / 2) +
+          ext,
+        description: "pdf",
+      },
+    };
+    config(options)
+      .fetch("GET", image_URL)
+      .then((res) => {
+        // Showing alert after successful downloading
+        console.log("res -> ", JSON.stringify(res));
+        // alert("Image Downloaded Successfully.");
+        alert("File Downloaded Successfully.");
+        setIsLoading(false);
+        closeModal();
+      });
+  };
+
+  const getExtention = (fileName) => {
+    // To get the file extension
+    return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
+  };
 
   return (
     <View style={ProfileDocumentDetailStyle.mainContainer}>
       <View style={{ flexDirection: "row" }}>
         <TouchableOpacity
           style={{ alignSelf: "center" }}
-          onPress={() => {
-            alert("back");
-          }}
+          onPress={props.onPress}
         >
           <Ionicons
             name="chevron-back-outline"
@@ -342,6 +448,29 @@ const ProfileDocumentDetails = (props) => {
           disabled={isLoading ? true : false}
         />
       </View>
+      <RBSheet
+        ref={refRBSheet}
+        height={Platform.OS === "ios" ? 230 : 210}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: ProfileDocumentDetailStyle.bottomModal_container,
+        }}
+      >
+        <EditDocumentsModal
+          closemodal={closeModal}
+          deleteHandler={deleteHandler}
+          downloadFile={checkPermission}
+          fileKey={fileKey}
+          // onpress={() => {
+          //   props.navigation.navigate("ViewDocument");
+          // }}
+        />
+      </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </View>
   );

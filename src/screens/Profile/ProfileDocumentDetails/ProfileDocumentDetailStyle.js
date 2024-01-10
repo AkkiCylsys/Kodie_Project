@@ -51,7 +51,7 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    width: 280,
+    width: 200,
     marginLeft:10,   
   },
   pdfSize: {
@@ -125,5 +125,12 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
   textItem: {
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
+  },
+  bottomModal_container: {
+    borderWidth:1,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
   },
 });
