@@ -394,7 +394,7 @@ const AddBiddingDetails = (props) => {
                   maxHeight={300}
                   labelField="lookup_description"
                   valueField="lookup_key"
-                  placeholder="6-month"
+                  placeholder="3 days"
                   value={duration_value}
                   onChange={(item) => {
                     setDuration_value(item.lookup_key);
@@ -488,7 +488,7 @@ const AddBiddingDetails = (props) => {
                   <Dropdown
                     style={[
                       AddBiddingDetailsCss.dropdown,
-                      { flex: 1, borderRadius: 8, marginLeft: 25 },
+                      { flex: 1, borderRadius: 8, marginLeft: 6 },
                     ]}
                     placeholderStyle={[
                       AddBiddingDetailsCss.placeholderStyle,
@@ -642,7 +642,7 @@ const AddBiddingDetails = (props) => {
                         setNewbid_Value(item.lookup_key);
                       }}
                     />
-                    <Text style={AddBiddingDetailsCss.before}>{"after"}</Text>
+                    <Text style={AddBiddingDetailsCss.after}>{"after"}</Text>
                   </View>
                 </View>
               </View>

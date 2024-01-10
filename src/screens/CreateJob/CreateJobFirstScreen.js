@@ -897,7 +897,7 @@ export default CreateJobFirstScreen = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="Urgent"
+                placeholder="Select item"
                 searchPlaceholder="Search..."
                 value={jobPriorityValue}
                 onChange={(item) => {

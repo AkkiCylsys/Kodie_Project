@@ -163,18 +163,18 @@ export default CreateJobTermsScreen = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Details"
         : position === 1
-        ? "Terms"
-        : position === 2
-        ? "Images"
-        : position === 3
-        ? "Review"
-        : "null";
+          ? "Terms"
+          : position === 2
+            ? "Images"
+            : position === 3
+              ? "Review"
+              : "null";
 
     return (
       <View style={{}}>
@@ -550,16 +550,16 @@ export default CreateJobTermsScreen = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? "Edit job" : "Create new job request"}
       />
-      <View style={{marginVertical:10}}>
-      <StepIndicator
-        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-        currentPosition={1}
-        // onPress={onStepPress}
-        renderStepIndicator={renderStepIndicator}
-        labels={stepLabels}
-        stepCount={4}
-        renderLabel={renderLabel}
-      />
+      <View style={{ marginVertical: 10 }}>
+        <StepIndicator
+          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+          currentPosition={1}
+          // onPress={onStepPress}
+          renderStepIndicator={renderStepIndicator}
+          labels={stepLabels}
+          stepCount={4}
+          renderLabel={renderLabel}
+        />
       </View>
       <ScrollView>
         <View style={CreateJobTermsStyle.container}>
@@ -611,8 +611,8 @@ export default CreateJobTermsScreen = (props) => {
 
               <TimePicker
                 data={new Date()}
-                getData={(date) => {
-                  setCurrentTime(moment(date).format("hh:mm A"));
+               getData={(date) => {
+                   setCurrentTime(moment(date).format("hh:mm"));
                 }}
               />
             </View>
@@ -636,7 +636,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="3 hours"
+            placeholder="Select item"
             searchPlaceholder="Search..."
             value={hourlyNeedValue}
             onChange={(item) => {
@@ -659,7 +659,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="One time"
+            placeholder="Select services"
             searchPlaceholder="Search..."
             value={needServicesValue}
             onChange={(item) => {
@@ -797,11 +797,11 @@ export default CreateJobTermsScreen = (props) => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
               onPress={() =>
-                // props.navigation.navigate("CreateJobSecondScreen")
-                // handleCreateJob()
-                {
-                  JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
-                }
+              // props.navigation.navigate("CreateJobSecondScreen")
+              // handleCreateJob()
+              {
+                JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
+              }
               }
             />
           </View>
