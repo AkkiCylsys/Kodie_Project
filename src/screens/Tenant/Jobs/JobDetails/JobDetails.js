@@ -211,22 +211,24 @@ const JobDetails = (props) => {
   return (
     <View style={JobDetailsStyle.container}>
       <TopHeader
+        isprofileImage
+        IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Review job details"}
       />
-      <View style={{marginVertical:10}}>
-      {View_Job_Details ? null : (
-        <StepIndicator
-          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-          currentPosition={3}
-          // onPress={onStepPress}
-          renderStepIndicator={renderStepIndicator}
-          labels={stepLabels}
-          stepCount={4}
-          renderLabel={renderLabel}
-        />
-      )}
-</View>
+      <View style={{ marginVertical: 10 }}>
+        {View_Job_Details ? null : (
+          <StepIndicator
+            customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+            currentPosition={3}
+            // onPress={onStepPress}
+            renderStepIndicator={renderStepIndicator}
+            labels={stepLabels}
+            stepCount={4}
+            renderLabel={renderLabel}
+          />
+        )}
+      </View>
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>

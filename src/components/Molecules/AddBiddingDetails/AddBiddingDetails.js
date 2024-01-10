@@ -287,7 +287,7 @@ const AddBiddingDetails = (props) => {
     console.log("Request URL:", rental_url);
     setIsLoading(true);
     const notification_data = {
-      P_PARENT_CODE: "LRR",
+      P_PARENT_CODE: "NEW_BID",
       P_TYPE: "OPTION",
     };
     axios

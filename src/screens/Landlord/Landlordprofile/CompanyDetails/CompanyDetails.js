@@ -211,7 +211,23 @@ export default CompanyDetails = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        let MainFullAddress = json.results[0].formatted_address;
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ", " +
+          json.results[0].address_components[2].long_name +
+          ", " +
+          json.results[0].address_components[3].long_name +
+          ", " +
+          json.results[0].address_components[4].long_name +
+          ", " +
+          json.results[0].address_components[5].long_name +
+          ", " +
+          json.results[0].address_components[6].long_name +
+          ", " +
+          json.results[0].address_components[7].long_name +
+          ", " +
+          json.results[0].address_components[8].long_name;
+
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
@@ -451,7 +467,7 @@ export default CompanyDetails = (props) => {
     formData.append("UCDM_SERVICE_YOU_OFFERING", selectJobTypeid);
     formData.append("UCDM_SERVICE_YOU_PERFORM", servicesValue);
     formData.append("UCDM_COMPANY_ADDRESS", location);
-    formData.append("UCDM_COMPANY_LONGITUDE",props.longitude);
+    formData.append("UCDM_COMPANY_LONGITUDE", props.longitude);
     formData.append("UCDM_COMPANY_LATITUDE", props.latitude);
     formData.append("UCDM_COMPANY_GST_VAT_NUMBER", companyGSTNumber);
     console.log("formData", formData);

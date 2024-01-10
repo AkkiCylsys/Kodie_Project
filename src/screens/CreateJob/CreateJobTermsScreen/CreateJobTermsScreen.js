@@ -94,7 +94,7 @@ export default CreateJobTermsScreen = (props) => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-    setSelectedDate("")
+    setSelectedDate("");
   };
   const apply_toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -547,19 +547,21 @@ export default CreateJobTermsScreen = (props) => {
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
+        isprofileImage
+        IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? "Edit job" : "Create new job request"}
       />
-      <View style={{marginVertical:10}}>
-      <StepIndicator
-        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-        currentPosition={1}
-        // onPress={onStepPress}
-        renderStepIndicator={renderStepIndicator}
-        labels={stepLabels}
-        stepCount={4}
-        renderLabel={renderLabel}
-      />
+      <View style={{ marginVertical: 10 }}>
+        <StepIndicator
+          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+          currentPosition={1}
+          // onPress={onStepPress}
+          renderStepIndicator={renderStepIndicator}
+          labels={stepLabels}
+          stepCount={4}
+          renderLabel={renderLabel}
+        />
       </View>
       <ScrollView>
         <View style={CreateJobTermsStyle.container}>

@@ -338,6 +338,8 @@ const JobDocumentDetails = (props) => {
   return (
     <View style={JobDocumentDetailStyle.mainContainer}>
       <TopHeader
+        isprofileImage
+        IsNotification
         MiddleText={
           folderId == 1
             ? "Job proposal"

@@ -6,6 +6,7 @@ import { _goBack } from "./../../../services/CommonServices/index";
 import { _COLORS } from "../../../Themes";
 import { JobsCss } from "./JobsCss";
 import Repair from "./Repair/Repair";
+import SearchForContractor from "./SearchforContractor/SearchForContractor";
 
 const Jobs = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
@@ -44,7 +45,7 @@ const Jobs = (props) => {
         //   </View>
 
         // );
-        return <CreateJobFirstScreen />;
+        return <SearchForContractor />;
 
       case "Tab3":
         // return (
@@ -52,7 +53,7 @@ const Jobs = (props) => {
         //     <Text>khgfd gfjv fhfghhf ghfg hfghghfgh fhgh hdfgsdhfgdf</Text>
         //   </View>
         // );
-        return <CreateJobFirstScreen />;
+        return <SearchForContractor />;
 
       default:
         return (
