@@ -7,6 +7,7 @@ import { _COLORS } from "../../../Themes";
 import { JobsCss } from "./JobsCss";
 import Repair from "./Repair/Repair";
 import SearchForContractor from "./SearchforContractor/SearchForContractor";
+import SearchforJob from "./SearchforJob/SearchforJob";
 
 const Jobs = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
@@ -45,7 +46,16 @@ const Jobs = (props) => {
         //   </View>
 
         // );
-        return <SearchForContractor />;
+        return (
+          <SearchForContractor
+            Search={(SearchData) => {
+              alert(JSON.stringify(SearchData));
+              props.navigation.navigate("SearchDetail", {
+                SearchDataDetail: SearchData,
+              });
+            }}
+          />
+        );
 
       case "Tab3":
         // return (
@@ -53,7 +63,7 @@ const Jobs = (props) => {
         //     <Text>khgfd gfjv fhfghhf ghfg hfghghfgh fhgh hdfgsdhfgdf</Text>
         //   </View>
         // );
-        return <SearchForContractor />;
+        return <SearchforJob />;
 
       default:
         return (

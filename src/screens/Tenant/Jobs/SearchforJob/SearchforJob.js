@@ -45,7 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchBar from "../../../../components/Molecules/SearchBar/SearchBar";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
-export default SearchForContractor = (props) => {
+export default SearchForJob = (props) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
@@ -660,9 +660,7 @@ export default SearchForContractor = (props) => {
           <View
             style={[CreateJobFirstStyle.formContainer, { marginBottom: 0 }]}
           >
-            <Text style={LABEL_STYLES.commontext}>
-              {"Select the type of job you need:"}
-            </Text>
+            <Text style={LABEL_STYLES.commontext}>{"Job category:"}</Text>
           </View>
           <FlatList
             data={jobTypeData}
@@ -674,7 +672,7 @@ export default SearchForContractor = (props) => {
           <View style={CreateJobFirstStyle.formContainer}>
             <View>
               <Text style={LABEL_STYLES.commontext}>
-                {"What service are you looking for?"}
+                {"What type of job do you want to perform?"}
               </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
@@ -698,7 +696,9 @@ export default SearchForContractor = (props) => {
               />
             </View>
             <View style={CreateJobFirstStyle.jobDetailsView}>
-              <Text style={LABEL_STYLES.commontext}>{"Popular services:"}</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {"Add key words related to your preferred job:"}
+              </Text>
 
               <FlatList
                 data={top4Items}
@@ -710,7 +710,7 @@ export default SearchForContractor = (props) => {
             </View>
 
             <View style={{ marginTop: 12 }}>
-              <Text style={LABEL_STYLES.commontext}>{"Job priority:"}</Text>
+              <Text style={LABEL_STYLES.commontext}>{"Availability:"}</Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -734,7 +734,7 @@ export default SearchForContractor = (props) => {
             </View>
             <View style={{ marginTop: 12 }}>
               <Text style={LABEL_STYLES.commontext}>
-                {"Where is the job taking place?"}
+                {"What area do you service?"}
               </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
@@ -785,37 +785,7 @@ export default SearchForContractor = (props) => {
                 />
               </TouchableOpacity>
             </View>
-            <View style={CreateJobFirstStyle.jobDetailsView}>
-              <Text style={LABEL_STYLES.commontext}>{"Rating threshold"}</Text>
-              <Dropdown
-                style={CreateJobFirstStyle.dropdown}
-                placeholderStyle={CreateJobFirstStyle.placeholderStyle}
-                selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
-                inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
-                iconStyle={CreateJobFirstStyle.iconStyle}
-                data={ratingThresholdData}
-                search
-                maxHeight={300}
-                labelField="lookup_description"
-                valueField="lookup_key"
-                placeholder="1 star and above"
-                searchPlaceholder="Search..."
-                value={ratingThresholdValue}
-                onChange={(item) => {
-                  setRatingThresholdValue(item.lookup_key);
-                  // alert(item.lookup_key);
-                }}
-                renderLeftIcon={() => (
-                  <AntDesign
-                    style={CreateJobFirstStyle.starIcon}
-                    color={_COLORS.Kodie_lightGreenColor}
-                    name="star"
-                    size={20}
-                  />
-                )}
-                renderItem={ratingThreshold_render}
-              />
-            </View>
+
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() => {

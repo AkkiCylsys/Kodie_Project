@@ -123,6 +123,7 @@ import JobDocumentDetails from "../../screens/Tenant/Jobs/JobDocuments.js/JobDoc
 import CompanyDetails from "../../screens/Landlord/Landlordprofile/CompanyDetails/CompanyDetails";
 import AddContractorDetails from "../../screens/Managingcontractors/AddContractorDetails/AddContractorDetails";
 import ProfileDocumentDetails from "../../screens/Profile/ProfileDocumentDetails/ProfileDocumentDetails";
+import SearchDetail from "../../screens/Tenant/Jobs/SearchforContractor/SearchDetail";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1040,6 +1041,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ProfileDocumentDetails"}
           component={ProfileDocumentDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SearchDetail"}
+          component={SearchDetail}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

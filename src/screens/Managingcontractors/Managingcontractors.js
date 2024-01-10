@@ -37,6 +37,7 @@ const Managingcontractors = (props) => {
   return (
     <View style={ManagingcontractorsStyle.mainContainer}>
       <TopHeader
+        leftImage={"menu"}
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Contractors"}
         isprofileImage
