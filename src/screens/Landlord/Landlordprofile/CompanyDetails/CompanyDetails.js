@@ -40,9 +40,11 @@ const data = [
 ];
 export default CompanyDetails = (props) => {
   maplocation = props.maplocation;
-  // latitude=props.latitude
-  // longitude=props.longitude
+  company_latitude = props.latitude;
+  comapny_longitude = props.longitude;
 
+  console.log("latitude_company....", company_latitude);
+  console.log("longitude company....", comapny_longitude);
   // isSearch = props.isSearch;
   const refRBSheet = useRef();
   const loginData = useSelector((state) => state.authenticationReducer.data);
@@ -80,9 +82,6 @@ export default CompanyDetails = (props) => {
   };
   useEffect(() => {
     handleJobType();
-    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
-      language: "en",
-    });
     handle_ServiceYouPerform();
     if (selectJobType !== null) {
       handleServices(selectJobType);
@@ -118,7 +117,9 @@ export default CompanyDetails = (props) => {
       );
     } else {
       {
-        getCompanyData ? UpdateCompanyData() : addUserCompanyData();
+        getCompanyData.length === 1
+          ? UpdateCompanyData()
+          : addUserCompanyData();
       }
     }
   };
@@ -449,7 +450,7 @@ export default CompanyDetails = (props) => {
   };
 
   const addUserCompanyData = async () => {
-    console.log("Formadata.....", formData);
+    console.log("Formadata company details.....", formData);
     const formData = new FormData();
     if (ImageName && typeof ImageName === "string") {
       const imageUri = ImageName;
@@ -467,8 +468,8 @@ export default CompanyDetails = (props) => {
     formData.append("UCDM_SERVICE_YOU_OFFERING", selectJobTypeid);
     formData.append("UCDM_SERVICE_YOU_PERFORM", servicesValue);
     formData.append("UCDM_COMPANY_ADDRESS", location);
-    formData.append("UCDM_COMPANY_LONGITUDE", props.longitude);
-    formData.append("UCDM_COMPANY_LATITUDE", props.latitude);
+    formData.append("UCDM_COMPANY_LONGITUDE", comapny_longitude);
+    formData.append("UCDM_COMPANY_LATITUDE", company_latitude);
     formData.append("UCDM_COMPANY_GST_VAT_NUMBER", companyGSTNumber);
     console.log("formData", formData);
     const url = Config.BASE_URL;
@@ -512,8 +513,8 @@ export default CompanyDetails = (props) => {
           setCompanyName(response.data.data[0]?.company_name);
           setCompanyEmail(response.data.data[0]?.company_email);
           setPhoneNumber(String(response.data.data[0]?.company_contact));
-          setCompanyDescription(response.data.data[0]?.company_discription);
-          setIsClick(parseInt(response.data.data[0].company_service_offring));
+          setCompanyDescription(response.data.data[0]?.company_description);
+          setIsClick(parseInt(response.data.data[0].company_service_offering));
           setservicesValue(
             parseInt(response.data.data[0].company_service_perform)
           );

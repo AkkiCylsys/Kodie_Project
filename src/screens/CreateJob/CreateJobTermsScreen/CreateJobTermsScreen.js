@@ -39,8 +39,14 @@ export default CreateJobTermsScreen = (props) => {
     setPriceRanges(priceRange);
     // Do something with the price range in the parent component
   };
-  // const formattedPriceRanges = `$${priceRanges}`;
-  // alert(formattedPriceRanges);
+  const handlemaxRange = (high) => {
+    console.log("High Range in Parent Component:", high);
+    setMax(high);
+  };
+  const handleminRange = (low) => {
+    console.log("Low Range in Parent Component:", low);
+    setMin(low);
+  };
 
   let JobId = props?.route?.params?.JobId;
   let editMode = props?.route?.params?.editMode;
@@ -66,6 +72,8 @@ export default CreateJobTermsScreen = (props) => {
   console.log("longitude.....", longitude);
   console.log("myJob.....", myJob);
 
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -333,7 +341,7 @@ export default CreateJobTermsScreen = (props) => {
       })
       .catch((error) => {
         console.error("NeedServices error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -413,11 +421,13 @@ export default CreateJobTermsScreen = (props) => {
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_budget: formattedPriceRanges,
+      job_min_budget: `$${min}`,
+      job_max_budget: `$${max}`,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
       job_sub_type: myJob == "requested" ? 1 : 0,
     };
+    console.log("createJob_Data....", createJob_Data);
     axios
       .post(createJob_url, createJob_Data)
       .then((response) => {
@@ -509,7 +519,8 @@ export default CreateJobTermsScreen = (props) => {
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_budget: formattedPriceRanges,
+      job_max_budget: jobDetailsData?.job_max_budget,
+      job_min_budget: jobDetailsData?.job_min_budget,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
     };
@@ -677,6 +688,9 @@ export default CreateJobTermsScreen = (props) => {
             from={1}
             to={2000}
             onPriceRangeChange={handlePriceRangeChange}
+            onHighRange={handlemaxRange}
+            onLowRange={handleminRange}
+            onLowrange={2}
           />
           <View style={CreateJobTermsStyle.resp_View}>
             <Text style={LABEL_STYLES.commontext}>

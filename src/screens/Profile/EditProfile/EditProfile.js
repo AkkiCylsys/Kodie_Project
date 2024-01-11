@@ -1,11 +1,18 @@
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { EditProfileStyle } from "./EditProfileStyle";
 import { Divider } from "react-native-paper";
 import { Dropdown } from "react-native-element-dropdown";
 import { CreateJobFirstStyle } from "../../CreateJob/CreateJobFirstScreenCss";
-import { ScrollView } from "react-native-gesture-handler";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS, IMAGES, FONTFAMILY, LABEL_STYLES } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -27,6 +34,7 @@ import { Config } from "../../../Config";
 import axios from "axios";
 import CompanyDetails from "../../Landlord/Landlordprofile/CompanyDetails/CompanyDetails";
 import ProfileDocuments from "../ProfileDocuments/ProfileDocuments";
+import PersonalDetails from "../PersonalDetails/PersonalDetails";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -70,7 +78,12 @@ const EditProfile = (props) => {
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
   const [ImageName, setImageName] = useState("");
+  const [companyPhysicaladdress, setCompanyPhysicaladdress] = useState("");
+  const [company_latitude, setCompany_latitude] = useState("");
+  const [company_longitude, setCompany_longitude] = useState("");
 
+  console.log("latitude....", latitude);
+  console.log("longitude....", longitude);
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
@@ -98,8 +111,18 @@ const EditProfile = (props) => {
   };
   const onRegionChange = (Region) => {
     // alert(JSON.stringify(Region))
-    setlatitude(Region.latitude);
-    setlongitude(Region.longitude);
+    if (activeTab === "Tab1") {
+      setlatitude(Region.latitude);
+    } else {
+      setCompany_latitude(Region.latitude);
+    }
+    if (activeTab === "Tab1") {
+      setlongitude(Region.longitude);
+    } else {
+      setCompany_longitude(Region.longitude);
+    }
+    // setlatitude(Region.latitude);
+    // setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
   };
   const checkpermissionlocation = async () => {
@@ -158,8 +181,18 @@ const EditProfile = (props) => {
   const getAddressWithCordinates = () => {
     Geolocation.watchPosition(
       (position) => {
-        setlatitude(position.coords.latitude);
-        setlongitude(position.coords.longitude);
+        if (activeTab === "Tab1") {
+          setlatitude(position.coords.latitude);
+        } else {
+          setCompany_latitude(position.coords.latitude);
+        }
+        if (activeTab === "Tab1") {
+          setlongitude(position.coords.longitude);
+        } else {
+          setCompany_longitude(position.coords.longitude);
+        }
+        // setlatitude(position.coords.latitude);
+        // setlongitude(position.coords.longitude);
         getAddress(position.coords.latitude, position.coords.longitude);
       },
       (error) => {
@@ -197,7 +230,12 @@ const EditProfile = (props) => {
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setLocation(MainFullAddress);
+        // alert(activeTab)
+        if (activeTab === "Tab1") {
+          setLocation(MainFullAddress);
+        } else {
+          setCompanyPhysicaladdress(MainFullAddress);
+        }
 
         //setAddress(MainFullAddress);
       })
@@ -445,6 +483,7 @@ const EditProfile = (props) => {
               </>
             )}
           </ScrollView>
+          // <PersonalDetails />
         );
       case "Tab2":
         return (
@@ -512,19 +551,31 @@ const EditProfile = (props) => {
               <SearchPlaces
                 onPress={(data, details = null) => {
                   console.log("LocationData....", details);
-                  setlatitude(details.geometry.location.lat);
-                  setlongitude(details.geometry.location.lng);
+                  // setlatitude(details.geometry.location.lat);
+                  // setlongitude(details.geometry.location.lng);
+                  if (activeTab === "Tab1") {
+                    setlatitude(details.geometry.location.lat);
+                  } else {
+                    setCompany_latitude(details.geometry.location.lat);
+                  }
+                  if (activeTab === "Tab1") {
+                    setlongitude(details.geometry.location.lng);
+                  } else {
+                    setCompany_longitude(details.geometry.location.lng);
+                  }
                   setIsSearch(false);
                   setIsMap(true);
-                  setLocation(details.formatted_address);
+                  setCompanyPhysicaladdress(details.formatted_address);
                 }}
               />
             ) : (
               <CompanyDetails
                 openMap={openMap}
-                maplocation={location}
-                latitude={latitude}
-                longitude={longitude}
+                maplocation={companyPhysicaladdress}
+                // latitude={latitude}
+                // longitude={longitude}
+                latitude={company_latitude}
+                longitude={company_longitude}
                 // isSearch={setIsSearch(true)}
               />
             )}
@@ -606,7 +657,11 @@ const EditProfile = (props) => {
             setlongitude(details.geometry.location.lng);
             setIsSearch(false);
             setIsMap(true);
-            setLocation(details.formatted_address);
+            if (activeTab === "Tab1") {
+              setLocation(details.formatted_address);
+            } else {
+              setCompanyPhysicaladdress(details.formatted_address);
+            }
           }}
         />
       ) : (
