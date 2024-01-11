@@ -649,7 +649,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="3 hours"
+            placeholder="Select item"
             searchPlaceholder="Search..."
             value={hourlyNeedValue}
             onChange={(item) => {
@@ -672,7 +672,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="One time"
+            placeholder="Select services"
             searchPlaceholder="Search..."
             value={needServicesValue}
             onChange={(item) => {

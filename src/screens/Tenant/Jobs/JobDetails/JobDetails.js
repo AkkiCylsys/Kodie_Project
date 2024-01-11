@@ -23,6 +23,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import StepIndicator from "react-native-step-indicator";
 import BiddingDetails from "./BiddingDetails/Biddingdetails";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AddJobDetails from "../AddJobDetails";
 import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
 import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 import JobDocuments from "../JobDocuments.js/JobDocuments";
@@ -128,18 +129,18 @@ const JobDetails = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Details"
         : position === 1
-        ? "Terms"
-        : position === 2
-        ? "Images"
-        : position === 3
-        ? "Review"
-        : "null";
+          ? "Terms"
+          : position === 2
+            ? "Images"
+            : position === 3
+              ? "Review"
+              : "null";
 
     return (
       <View style={{}}>
@@ -233,7 +234,7 @@ const JobDetails = (props) => {
         <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>
           {imageFileData.image_file_path &&
-          imageFileData.image_file_path != 0 ? (
+            imageFileData.image_file_path != 0 ? (
             <View style={JobDetailsStyle.slider_view}>
               <SliderBox
                 images={imageFileData?.image_file_path}
@@ -256,9 +257,11 @@ const JobDetails = (props) => {
               />
             </View>
           ) : null}
-          <View style={JobDetailsStyle.bidsview}>
-            <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
-          </View>
+          {imageFileData.image_file_path &&
+            imageFileData.image_file_path != 0 ?
+            <View style={JobDetailsStyle.bidsview}>
+              <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
+            </View> : null}
         </ImageBackground>
         <View style={JobDetailsStyle.headingview}>
           <Text style={JobDetailsStyle.fixingtext}>
