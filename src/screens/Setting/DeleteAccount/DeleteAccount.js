@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { DeleteAccountStyle } from "./DeleteAccountStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -17,6 +17,8 @@ import { Config } from "../../../Config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import PhoneInput from "react-native-phone-number-input";
+
 const DeleteAccount = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
@@ -26,6 +28,8 @@ const DeleteAccount = (props) => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
 
+  const [formattedValue, setFormattedValue] = useState("");
+  const phoneInput = useRef(null);
   const validateAccountEmail = (email) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -170,8 +174,8 @@ const DeleteAccount = (props) => {
         </View>
         <View style={DeleteAccountStyle.card}>
           <Text style={LABEL_STYLES.commontext}>{"Company phone number"}</Text>
-          <View style={DeleteAccountStyle.phoneinputbindview}>
-            <View style={DeleteAccountStyle.phoneinput}>
+          {/* <View style={DeleteAccountStyle.phoneinputbindview}> */}
+          {/* <View style={DeleteAccountStyle.phoneinput}>
               <View style={DeleteAccountStyle.bindnumberview}>
                 <Text style={DeleteAccountStyle.numbercode}>+61</Text>
                 <Ionicons
@@ -194,13 +198,45 @@ const DeleteAccount = (props) => {
                   maxLength={10}
                 />
               </View>
-            </View>
-            {phoneNumberError ? (
-              <Text style={DeleteAccountStyle.error_text}>
-                {phoneNumberError}
-              </Text>
-            ) : null}
+            </View> */}
+          <View style={[DeleteAccountStyle.simpleinputview, { height: 55 }]}>
+            <PhoneInput
+              ref={phoneInput}
+              defaultValue={phoneNumber}
+              defaultCode="IN"
+              layout="first"
+              // onBlur={() => validateMobileNumber(phoneNumber)}
+              // onChangeText={(text) => {
+              //   setPhoneNumber(text);
+              // }}
+              onChangeText={(text) => {
+                validateMobileNumber(text);
+              }}
+              placeholder={"Enter your phone number"}
+              onChangeFormattedText={(text) => {
+                setFormattedValue(text);
+              }}
+              // withDarkTheme
+              // withShadow
+              autoFocus
+              textContainerStyle={{
+                flex: 1,
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+              }}
+              containerStyle={{
+                flex: 1,
+                alignSelf: "center",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            />
           </View>
+          {phoneNumberError ? (
+            <Text style={DeleteAccountStyle.error_text}>
+              {phoneNumberError}
+            </Text>
+          ) : null}
+          {/* </View> */}
           <View style={DeleteAccountStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
               {"Enter your email address"}

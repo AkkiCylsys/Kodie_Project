@@ -64,6 +64,20 @@ export const ChangeContactInputStyle = StyleSheet.create({
     marginVertical: 15,
     marginHorizontal: 15,
   },
+  simpleinputview: {
+    // flex:1,
+    height: 50,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderRadius: 8,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    marginTop: 15,
+  },
   error_text: { color: "red", marginLeft: 10,marginTop:5 },
 
 });
