@@ -636,7 +636,7 @@ const AddBiddingDetails = (props) => {
                       maxHeight={300}
                       labelField="lookup_description"
                       valueField="lookup_key"
-                      placeholder="2 days"
+                      placeholder="2 mins"
                       value={Newbid_Value}
                       onChange={(item) => {
                         setNewbid_Value(item.lookup_key);
