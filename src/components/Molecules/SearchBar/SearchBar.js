@@ -50,7 +50,11 @@ const SearchBar = (props) => {
             },
           ]}
         >
-          <Image source={props.filterImage} />
+          <EvilIcons
+            name="location"
+            size={28}
+            color={_COLORS.Kodie_MediumGrayColor}
+          />
         </TouchableOpacity>
       ) : null}
       {props.mapIcon ? (

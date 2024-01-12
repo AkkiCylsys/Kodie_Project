@@ -5,7 +5,6 @@ export const RangeSliderStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 5,
-    
   },
   range: {
     fontSize: 14,
@@ -15,6 +14,5 @@ export const RangeSliderStyle = StyleSheet.create({
   },
   rangecomponetView: {
     marginTop: 10,
-  
   },
 });

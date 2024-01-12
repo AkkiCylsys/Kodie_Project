@@ -31,7 +31,7 @@ export const SearchBarStyle = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginRight: 16,
-    marginTop: 18,
+    // marginTop: 18,
   },
   buttonView: {
     borderWidth: 1,

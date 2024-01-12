@@ -9,15 +9,15 @@ import { AddContractorstyle } from "./AddContractorstyle";
 export default AddContractorDetail = (props) => {
   const property_id = props.property_id;
   const handleClosePopup = () => {
-    props.onClose();
+    props.onCloseSave();
   };
   const [tabValue, setTabValue] = useState("Person");
   const checkTabs = () => {
     switch (tabValue) {
       case "Person":
-        return <PersonContractor onClose={handleClosePopup} />;
+        return <PersonContractor onCloseSave={handleClosePopup} />;
       case "Company":
-        return <CompanyContractor />;
+        return <CompanyContractor onCloseSave={handleClosePopup} />;
       default:
         return <PersonContractor />;
     }
@@ -29,7 +29,7 @@ export default AddContractorDetail = (props) => {
           <Text style={AddContractorstyle.heading_Text}>
             {"Add contractor details"}
           </Text>
-          <TouchableOpacity onPress={props.onCloseperson}>
+          <TouchableOpacity onPress={handleClosePopup}>
             <AntDesign
               name="close"
               size={22}

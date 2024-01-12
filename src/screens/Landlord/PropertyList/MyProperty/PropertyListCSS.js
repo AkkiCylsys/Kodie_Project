@@ -82,9 +82,9 @@ export const PropertyListCSS = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     paddingVertical: 1,
-    marginLeft: "25%",
+    marginLeft: "10%",
   },
   roundButton: {
     height: 6,

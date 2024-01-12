@@ -47,6 +47,12 @@ const SearchPlaces = (props) => {
         //     setTimeout(() => textInput && textInput.focus(), 100);
         //   },
         // }}
+        // textInputProps={{
+        //   ref: textInput => {
+
+        //       textInput && textInput.focus();
+
+        //   }
         textInputProps={{
           ref: textInputRef,
         }}

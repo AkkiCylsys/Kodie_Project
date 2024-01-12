@@ -92,7 +92,7 @@ export const JobDocumentsStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    width: 280,
+    width: 215,
     marginLeft: 10,
   },
   pdfSize: {
@@ -160,5 +160,12 @@ export const JobDocumentsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_GrayColor,
     marginTop: 4,
+  },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
   },
 });

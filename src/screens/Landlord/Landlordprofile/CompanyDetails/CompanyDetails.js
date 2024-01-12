@@ -32,6 +32,8 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
 import { useDispatch, useSelector } from "react-redux";
+import PhoneInput from "react-native-phone-number-input";
+
 const data = [
   { label: "Item 1", value: "1" },
   { label: "Item 2", value: "2" },
@@ -39,6 +41,13 @@ const data = [
   { label: "Item 4", value: "4" },
 ];
 export default CompanyDetails = (props) => {
+  maplocation = props.maplocation;
+  company_latitude = props.latitude;
+  comapny_longitude = props.longitude;
+
+  console.log("latitude_company....", company_latitude);
+  console.log("longitude company....", comapny_longitude);
+  // isSearch = props.isSearch;
   const refRBSheet = useRef();
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
@@ -46,20 +55,21 @@ export default CompanyDetails = (props) => {
   const [companyName, setCompanyName] = useState("");
   const [companyEmail, setCompanyEmail] = useState("");
   const [companyEmailError, setCompanyEmailError] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(0);
   const [companyDescription, setCompanyDescription] = useState("");
   const [companyGSTNumber, setCompanyGSTNumber] = useState("");
   const [jobTypeData, setJobTypeData] = useState([]);
   const [selectJobType, setSelectJobType] = useState(166);
-  const [selectJobTypeid, setSelectJobTypeid] = useState("");
+  const [selectJobTypeid, setSelectJobTypeid] = useState(166);
   const [isClick, setIsClick] = useState(null);
   const [value, setValue] = useState(null);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(maplocation);
   const [serviceYouPerformData, setServiceYouPerformData] = useState([]);
   const [serviceYouPerformValue, setServiceYouPerformValue] = useState("");
   const [servicesData, setServicesData] = useState([]);
-  const [servicesValue, setservicesValue] = useState("");
+  const [servicesValue, setservicesValue] = useState(0);
   const [ImageName, setImageName] = useState("");
+  const [getCompanyData, setGetCompanyData] = useState([]);
 
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
@@ -67,6 +77,9 @@ export default CompanyDetails = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
+
+  const [formattedValue, setFormattedValue] = useState("");
+  const phoneInput = useRef(null);
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
@@ -74,13 +87,11 @@ export default CompanyDetails = (props) => {
   };
   useEffect(() => {
     handleJobType();
-    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
-      language: "en",
-    });
     handle_ServiceYouPerform();
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
+    getComapnyDetails();
   }, [selectJobType]);
 
   // Validation....
@@ -110,7 +121,11 @@ export default CompanyDetails = (props) => {
         "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else {
-      addUserCompanyData();
+      {
+        getCompanyData.length === 1
+          ? UpdateCompanyData()
+          : addUserCompanyData();
+      }
     }
   };
 
@@ -202,7 +217,23 @@ export default CompanyDetails = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        let MainFullAddress = json.results[0].formatted_address;
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ", " +
+          json.results[0].address_components[2].long_name +
+          ", " +
+          json.results[0].address_components[3].long_name +
+          ", " +
+          json.results[0].address_components[4].long_name +
+          ", " +
+          json.results[0].address_components[5].long_name +
+          ", " +
+          json.results[0].address_components[6].long_name +
+          ", " +
+          json.results[0].address_components[7].long_name +
+          ", " +
+          json.results[0].address_components[8].long_name;
+
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
@@ -220,7 +251,7 @@ export default CompanyDetails = (props) => {
   const handleBoxPress = (lookup_key) => {
     setIsClick(lookup_key);
     setSelectJobTypeid(lookup_key);
-    alert(selectJobTypeid);
+    // alert(selectJobTypeid);
     // alert(isClick)
   };
   //   renderItem....
@@ -307,6 +338,18 @@ export default CompanyDetails = (props) => {
         </Text>
       </View>
     );
+  };
+  // clearState...
+  const clearState = () => {
+    setCompanyName(""),
+      setCompanyEmail(""),
+      setPhoneNumber(""),
+      setCompanyDescription(""),
+      setservicesValue("");
+    setSelectJobTypeid(""),
+      setIsClick(""),
+      setLocation(""),
+      setCompanyGSTNumber("");
   };
   //   ApiIntrigation....
   const handleJobType = () => {
@@ -412,7 +455,7 @@ export default CompanyDetails = (props) => {
   };
 
   const addUserCompanyData = async () => {
-    console.log("Formadata.....", formData);
+    console.log("Formadata company details.....", formData);
     const formData = new FormData();
     if (ImageName && typeof ImageName === "string") {
       const imageUri = ImageName;
@@ -425,13 +468,14 @@ export default CompanyDetails = (props) => {
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
     formData.append("UCDM_COMPANY_NAME", companyName);
     formData.append("UCDM_COMPANY_EMAIL", companyEmail);
-    formData.append("UCDM_COMPANY_CONTACT_NUMBER", phoneNumber);
+    // formData.append("UCDM_COMPANY_CONTACT_NUMBER", phoneNumber);
+    formData.append("UCDM_COMPANY_CONTACT_NUMBER", formattedValue);
     formData.append("UCDM_COMPANY_DESCRIPTION", companyDescription);
     formData.append("UCDM_SERVICE_YOU_OFFERING", selectJobTypeid);
     formData.append("UCDM_SERVICE_YOU_PERFORM", servicesValue);
-    formData.append("UCDM_COMPANY_ADDRESS", "Gadarwara");
-    formData.append("UCDM_COMPANY_LONGITUDE", 25.265256);
-    formData.append("UCDM_COMPANY_LATITUDE", 123.52221);
+    formData.append("UCDM_COMPANY_ADDRESS", location);
+    formData.append("UCDM_COMPANY_LONGITUDE", comapny_longitude);
+    formData.append("UCDM_COMPANY_LATITUDE", company_latitude);
     formData.append("UCDM_COMPANY_GST_VAT_NUMBER", companyGSTNumber);
     console.log("formData", formData);
     const url = Config.BASE_URL;
@@ -447,10 +491,97 @@ export default CompanyDetails = (props) => {
       console.log("addUserCompanyData.....", response.data);
       if (response.data.success === true) {
         alert(response.data.message);
+        clearState();
       }
     } catch (error) {
       alert(error);
       console.log("update_error addUserCompanyData...", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const getComapnyDetails = () => {
+    const url = Config.BASE_URL;
+    const getCompanyDetail_url = url + `profile/getUserCompanyDetails`;
+    console.log("Request URL:", getCompanyDetail_url);
+    const companyDetailsData = {
+      uad_key: 479,
+    };
+    setIsLoading(true);
+    axios
+      .post(getCompanyDetail_url, companyDetailsData)
+      .then((response) => {
+        console.log("API Response getComapnyDetails:", response.data);
+        if (response.data.success === true) {
+          setGetCompanyData(response.data.data);
+          console.log("getComapnyDetails..", response.data.data);
+          // alert(JSON.stringify(response.data.data));
+          setCompanyName(response.data.data[0]?.company_name);
+          setCompanyEmail(response.data.data[0]?.company_email);
+          setPhoneNumber(String(response.data.data[0]?.company_contact));
+          setCompanyDescription(response.data.data[0]?.company_description);
+          setIsClick(parseInt(response.data.data[0].company_service_offering));
+          setservicesValue(
+            parseInt(response.data.data[0].company_service_perform)
+          );
+          setLocation(response.data.data[0]?.company_address);
+          setCompanyGSTNumber(response.data.data[0]?.company_gst_vat_number);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed getComapnyDetails", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const UpdateCompanyData = async () => {
+    const formData = new FormData();
+    if (ImageName && typeof ImageName === "string") {
+      const imageUri = ImageName;
+      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+      formData.append("UCDM_COMPANY_LOGO", {
+        uri: imageUri,
+        name: imageName,
+      });
+    }
+    formData.append("uad_key", loginData?.Login_details?.user_account_id);
+    formData.append("UCDM_COMPANY_NAME", companyName);
+    formData.append("UCDM_COMPANY_EMAIL", companyEmail);
+    // formData.append("UCDM_COMPANY_CONTACT_NUMBER", phoneNumber);
+    formData.append("UCDM_COMPANY_CONTACT_NUMBER", formattedValue);
+    formData.append("UCDM_COMPANY_DESCRIPTION", companyDescription);
+    formData.append("UCDM_SERVICE_YOU_OFFERING", selectJobTypeid);
+    formData.append("UCDM_SERVICE_YOU_PERFORM", servicesValue);
+    formData.append("UCDM_COMPANY_ADDRESS", location);
+    formData.append("UCDM_COMPANY_LONGITUDE", longitude);
+    formData.append("UCDM_COMPANY_LATITUDE", latitude);
+    formData.append("UCDM_COMPANY_GST_VAT_NUMBER", companyGSTNumber);
+    console.log("formData", formData);
+    const url = Config.BASE_URL;
+    const updateCompanyData_url = url + "profile/updateusercompanydata";
+    console.log("Request URL:", updateCompanyData_url);
+    setIsLoading(true);
+    try {
+      const response = await axios.put(updateCompanyData_url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log("UpdateCompanyData....", response.data);
+      if (response.data.success === true) {
+        alert(response.data.message);
+        getComapnyDetails();
+      }
+    } catch (error) {
+      alert(error);
+      console.log("update_error UpdateCompanyData...", error);
     } finally {
       setIsLoading(false);
     }
@@ -460,7 +591,7 @@ export default CompanyDetails = (props) => {
       <View style={CompanyDetailsStyle.mainContaier}>
         <View style={[CompanyDetailsStyle.profilviewmain, { flex: 1 }]}>
           <TouchableOpacity
-            style={{}}
+            style={CompanyDetailsStyle.ProfileView}
             onPress={() => {
               refRBSheet.current.open();
             }}
@@ -472,7 +603,9 @@ export default CompanyDetails = (props) => {
               />
             ) : (
               <Image
-                source={IMAGES?.Landlordprofile}
+                source={{
+                  uri: getCompanyData[0]?.company_logo,
+                }}
                 resizeMode="cover"
                 style={CompanyDetailsStyle.profilelogo}
               />
@@ -483,6 +616,11 @@ export default CompanyDetails = (props) => {
                 name="edit"
                 color={_COLORS.Kodie_GreenColor}
                 size={18}
+                style={{
+                  alignSelf: "center",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               />
             </View>
           </TouchableOpacity>
@@ -522,7 +660,7 @@ export default CompanyDetails = (props) => {
             <Text style={LABEL_STYLES.commontext}>
               {"Company phone number"}
             </Text>
-            <View style={CompanyDetailsStyle.phoneinputbindview}>
+            {/* <View style={CompanyDetailsStyle.phoneinputbindview}>
               <View style={CompanyDetailsStyle.phoneinput}>
                 <View style={CompanyDetailsStyle.bindnumberview}>
                   <Text style={CompanyDetailsStyle.numbercode}>+61</Text>
@@ -546,6 +684,34 @@ export default CompanyDetails = (props) => {
                   />
                 </View>
               </View>
+            </View> */}
+            <View style={[CompanyDetailsStyle.simpleinputview, { height: 55 }]}>
+              <PhoneInput
+                ref={phoneInput}
+                defaultValue={phoneNumber}
+                defaultCode="IN"
+                layout="first"
+                onChangeText={(text) => {
+                  setPhoneNumber(text);
+                }}
+                placeholder={"Enter your phone number"}
+                onChangeFormattedText={(text) => {
+                  setFormattedValue(text);
+                }}
+                // withDarkTheme
+                // withShadow
+                autoFocus
+                textContainerStyle={{
+                  flex: 1,
+                  backgroundColor: _COLORS.Kodie_WhiteColor,
+                }}
+                containerStyle={{
+                  flex: 1,
+                  alignSelf: "center",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              />
             </View>
           </View>
 
@@ -609,7 +775,7 @@ export default CompanyDetails = (props) => {
                 value={location}
                 onChangeText={setLocation}
                 onFocus={() => {
-                  setIsSearch(true);
+                  // isSearch;
                 }}
                 // editable={false}
                 placeholder="Enter new location"

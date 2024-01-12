@@ -7,6 +7,7 @@ import {
   ScrollView,
   FlatList,
   PermissionsAndroid,
+  Platform
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { DocumentDetailStyle } from "./DocumentDetailStyle";
@@ -34,14 +35,16 @@ const DocumentDetails = (props) => {
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState("");
   const [filePath, setFilePath] = useState("");
+  const [getuploadDocByModuleName, setGetuploadDocByModuleName] = useState([]);
   const file = selectFile[0];
+  console.log("moduleName in Documents Details..", moduleName);
   //   alert(folderId);
   // alert(moduleName);
   // alert(property_id);
   console.log("property_id..", property_id);
 
   useEffect(() => {
-    getuploadedDocuments();
+    // getuploadedDocuments();
     getUploadedDocumentsByModule();
   }, []);
   const closeModal = () => {
@@ -94,7 +97,7 @@ const DocumentDetails = (props) => {
           alert(res?.data?.message);
           closeModal();
         }
-        getuploadedDocuments();
+        getUploadedDocumentsByModule();
       })
       .catch((error) => {
         console.error("Error deleting:", error);
@@ -132,7 +135,7 @@ const DocumentDetails = (props) => {
       if (response.data.success === true) {
         alert(response.data.message);
         // props.navigation.pop();
-        getuploadedDocuments();
+        getUploadedDocumentsByModule();
       } else {
         alert(response.data.message);
       }
@@ -183,13 +186,16 @@ const DocumentDetails = (props) => {
     console.log("Request URL:", getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
-      Module_Name: "Lease",
-      fileReferenceKey: "1170",
+      Module_Name: moduleName,
+      fileReferenceKey: property_id,
     };
     axios
-      .get(getDocumentUrl,documentModuleData)
+      .post(getDocumentUrl, documentModuleData)
       .then((response) => {
         console.log("API Response getDocumentsByModule:", response.data);
+        if (response.data.success == true) {
+          setGetuploadDocByModuleName(response.data.data);
+        }
       })
       .catch((error) => {
         console.error("API failed_moduleName", error);
@@ -402,7 +408,7 @@ const DocumentDetails = (props) => {
         </View>
         <View>
           <FlatList
-            data={uploadDocData}
+            data={getuploadDocByModuleName}
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
@@ -426,7 +432,7 @@ const DocumentDetails = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={220}
+          height={ Platform.OS ==="ios" ? 240:220}
           customStyles={{
             wrapper: {
               backgroundColor: "transparent",

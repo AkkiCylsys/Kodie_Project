@@ -34,7 +34,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
 
   placeholderStyle: {
     fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_GrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
   },

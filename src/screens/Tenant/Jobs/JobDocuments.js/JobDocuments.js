@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  PermissionsAndroid
 } from "react-native";
 
 import Entypo from "react-native-vector-icons/Entypo";
@@ -15,6 +16,11 @@ import axios from "axios";
 import { Config } from "../../../../Config";
 import { JobDocumentsStyle } from "./JobDocumentStyle";
 import { _COLORS } from "../../../../Themes";
+import RBSheet from "react-native-raw-bottom-sheet";
+import EditDocumentsModal from "../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
+import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import RNFetchBlob from "rn-fetch-blob";
+
 const folderData = [
   {
     id: "1",
@@ -46,8 +52,111 @@ export default JobDocuments = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const refRBSheet = useRef();
+  const [fileKey, setFileKey] = useState(0);
+  const [fileName, setFileName] = useState("");
+  const [filePath, setFilePath] = useState("");
+  const closeModal = () => {
+    refRBSheet.current.close();
+  };
+  // delete Document...
+  const deleteHandler = (fileKey) => {
+    console.log("filekeyIn_delete....", fileKey);
+    const dataToSend = {
+      fileId: fileKey,
+    };
+    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
+    const url = Config.BASE_URL;
+    const delete_url = url + "deletedocument";
+    console.log("url...", delete_url);
+    setIsLoading(true);
+    axios
+      .patch(delete_url, dataToSend)
+      .then((res) => {
+        console.log("res......", res);
+        if (res?.data?.success === true) {
+          alert(res?.data?.message);
+          closeModal();
+        }
+        getAllDocuments();
+      })
+      .catch((error) => {
+        console.error("Error deleting:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  // Download documents...
+  const REMOTE_PATH = filePath;
+  const checkPermission = async () => {
+    setIsLoading(true);
+    if (Platform.OS === "ios") {
+      downloadImage();
+    } else {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: "Storage Permission Required",
+            message: "App needs access to your storage to download Photos",
+          }
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          // Once user grant the permission start downloading
+          console.log("Storage Permission Granted.");
+          downloadImage();
+        } else {
+          // If permission denied then show alert
+          alert("Storage Permission Not Granted");
+        }
+      } catch (err) {
+        // To handle permission related exception
+        console.warn(err);
+      }
+    }
+  };
+  const downloadImage = () => {
+    setIsLoading(true);
+    let date = new Date();
+    let image_URL = REMOTE_PATH;
+    let ext = getExtention(image_URL);
+    ext = "." + ext[0];
+    const { config, fs } = RNFetchBlob;
+    let PictureDir = fs.dirs.PictureDir;
+    let options = {
+      fileCache: true,
+      addAndroidDownloads: {
+        useDownloadManager: true,
+        notification: true,
+        path:
+          PictureDir +
+          "/pdf_" +
+          Math.floor(date.getTime() + date.getSeconds() / 2) +
+          ext,
+        description: "pdf",
+      },
+    };
+    config(options)
+      .fetch("GET", image_URL)
+      .then((res) => {
+        // Showing alert after successful downloading
+        console.log("res -> ", JSON.stringify(res));
+        // alert("Image Downloaded Successfully.");
+        alert("File Downloaded Successfully.");
+        setIsLoading(false);
+        closeModal();
+      });
+  };
+
+  const getExtention = (fileName) => {
+    // To get the file extension
+    return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
+  };
 
   const DocumentsData = ({ item, index }) => {
+    setFileKey(item.PDUM_FILE_KEY);
+    setFileName(item.PDUM_FILE_NAME);
+    setFilePath(item.PDUM_FILE_PATH);
     return (
       <>
         <View style={JobDocumentsStyle.container}>
@@ -70,7 +179,7 @@ export default JobDocuments = (props) => {
           <TouchableOpacity
             style={JobDocumentsStyle.crossIcon}
             onPress={() => {
-              // refRBSheet.current.open();
+              refRBSheet.current.open();
             }}
           >
             <Entypo
@@ -182,7 +291,32 @@ export default JobDocuments = (props) => {
             renderItem={DocumentsData}
           />
         </View>
+        <RBSheet
+          ref={refRBSheet}
+          height={215}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: JobDocumentsStyle.bottomModal_container,
+          }}
+        >
+          <EditDocumentsModal
+            closemodal={closeModal}
+            deleteHandler={deleteHandler}
+            // // downloadFile={downloadFile}
+            downloadFile={checkPermission}
+            fileKey={fileKey}
+            onpress={() => {
+              // props.navigation.navigate("ViewDocument");
+            }}
+          />
+        </RBSheet>
       </ScrollView>
+      {isLoading?<CommonLoader/>:null}
     </View>
   );
 };

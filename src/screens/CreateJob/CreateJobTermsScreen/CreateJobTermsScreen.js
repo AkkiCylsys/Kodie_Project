@@ -39,8 +39,14 @@ export default CreateJobTermsScreen = (props) => {
     setPriceRanges(priceRange);
     // Do something with the price range in the parent component
   };
-  // const formattedPriceRanges = `$${priceRanges}`;
-  // alert(formattedPriceRanges);
+  const handlemaxRange = (high) => {
+    console.log("High Range in Parent Component:", high);
+    setMax(high);
+  };
+  const handleminRange = (low) => {
+    console.log("Low Range in Parent Component:", low);
+    setMin(low);
+  };
 
   let JobId = props?.route?.params?.JobId;
   let editMode = props?.route?.params?.editMode;
@@ -66,6 +72,8 @@ export default CreateJobTermsScreen = (props) => {
   console.log("longitude.....", longitude);
   console.log("myJob.....", myJob);
 
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -93,6 +101,10 @@ export default CreateJobTermsScreen = (props) => {
   const [jobDetailsData, setJobDetailsData] = useState([]);
 
   const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+    setSelectedDate("");
+  };
+  const apply_toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   const handleDayPress = (day) => {
@@ -329,7 +341,7 @@ export default CreateJobTermsScreen = (props) => {
       })
       .catch((error) => {
         console.error("NeedServices error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -409,11 +421,13 @@ export default CreateJobTermsScreen = (props) => {
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_budget: formattedPriceRanges,
+      job_min_budget: `$${min}`,
+      job_max_budget: `$${max}`,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
       job_sub_type: myJob == "requested" ? 1 : 0,
     };
+    console.log("createJob_Data....", createJob_Data);
     axios
       .post(createJob_url, createJob_Data)
       .then((response) => {
@@ -505,7 +519,8 @@ export default CreateJobTermsScreen = (props) => {
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_budget: formattedPriceRanges,
+      job_max_budget: jobDetailsData?.job_max_budget,
+      job_min_budget: jobDetailsData?.job_min_budget,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
     };
@@ -543,23 +558,27 @@ export default CreateJobTermsScreen = (props) => {
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
+        isprofileImage
+        IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? "Edit job" : "Create new job request"}
       />
-      <StepIndicator
-        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-        currentPosition={1}
-        // onPress={onStepPress}
-        renderStepIndicator={renderStepIndicator}
-        labels={stepLabels}
-        stepCount={4}
-        renderLabel={renderLabel}
-      />
+      <View style={{ marginVertical: 10 }}>
+        <StepIndicator
+          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+          currentPosition={1}
+          // onPress={onStepPress}
+          renderStepIndicator={renderStepIndicator}
+          labels={stepLabels}
+          stepCount={4}
+          renderLabel={renderLabel}
+        />
+      </View>
       <ScrollView>
         <View style={CreateJobTermsStyle.container}>
           <Text style={CreateJobTermsStyle.terms_Text}>{"Terms"}</Text>
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
-            {" Request date and time"}
+            {" What date and time would you prefer? "}
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
@@ -583,7 +602,7 @@ export default CreateJobTermsScreen = (props) => {
                 },
               }}
               _closeButton={toggleModal}
-              _ApplyButton={toggleModal}
+              _ApplyButton={apply_toggleModal}
             />
 
             <View style={CreateJobTermsStyle.spaceView} />
@@ -606,7 +625,7 @@ export default CreateJobTermsScreen = (props) => {
               <TimePicker
                 data={new Date()}
                 getData={(date) => {
-                  setCurrentTime(moment(date).format("hh:mm "));
+                  setCurrentTime(moment(date).format("hh:mm"));
                 }}
               />
             </View>
@@ -630,7 +649,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="3 hours"
+            placeholder="Select item"
             searchPlaceholder="Search..."
             value={hourlyNeedValue}
             onChange={(item) => {
@@ -653,7 +672,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="One time"
+            placeholder="Select services"
             searchPlaceholder="Search..."
             value={needServicesValue}
             onChange={(item) => {
@@ -669,6 +688,9 @@ export default CreateJobTermsScreen = (props) => {
             from={1}
             to={2000}
             onPriceRangeChange={handlePriceRangeChange}
+            onHighRange={handlemaxRange}
+            onLowRange={handleminRange}
+            onLowrange={2}
           />
           <View style={CreateJobTermsStyle.resp_View}>
             <Text style={LABEL_STYLES.commontext}>

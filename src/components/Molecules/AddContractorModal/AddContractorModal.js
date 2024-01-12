@@ -104,7 +104,7 @@ const AddContractorModal = (props) => {
       />
       <RBSheet
         ref={refRBSheet}
-        height={850}
+        height={750}
         closeOnDragDown={true}
         customStyles={{
           wrapper: {
@@ -116,7 +116,10 @@ const AddContractorModal = (props) => {
           container: AddContractorModalStyle.bottomModal_container,
         }}
       >
-        <AddContractorDetails onClose={handleClosePopup} />
+        <AddContractorDetails
+          onCloseSave={() => refRBSheet.current.close()}
+          onClose={() => refRBSheet.current.close()}
+        />
       </RBSheet>
     </View>
   );

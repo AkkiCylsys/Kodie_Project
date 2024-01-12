@@ -50,7 +50,7 @@ const Preferred = () => {
     if (isvisible) {
       handlePreferredData();
     }
-  }, [isvisible]);
+  }, [isvisible, refRBSheet.current]);
   const handlePreferredData = () => {
     const PreferredBody = {
       User_USP_KEY: loginData.Login_details.user_account_id,

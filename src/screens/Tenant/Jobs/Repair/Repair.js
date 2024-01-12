@@ -436,7 +436,7 @@ export default Repair = (props) => {
         </>
         {/* ) : null} */}
 
-        <SearchBar frontSearchIcon height={48} marginTop={5} />
+        <SearchBar frontSearchIcon height={48} marginTop={5} placeholder={"Search  jobs"} />
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
             <FlatList

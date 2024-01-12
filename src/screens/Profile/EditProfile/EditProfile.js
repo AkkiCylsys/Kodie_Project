@@ -1,11 +1,18 @@
-import { View, Text, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { EditProfileStyle } from "./EditProfileStyle";
 import { Divider } from "react-native-paper";
 import { Dropdown } from "react-native-element-dropdown";
 import { CreateJobFirstStyle } from "../../CreateJob/CreateJobFirstScreenCss";
-import { ScrollView } from "react-native-gesture-handler";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { _COLORS, IMAGES, FONTFAMILY, LABEL_STYLES } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -26,6 +33,9 @@ import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveL
 import { Config } from "../../../Config";
 import axios from "axios";
 import CompanyDetails from "../../Landlord/Landlordprofile/CompanyDetails/CompanyDetails";
+import ProfileDocuments from "../ProfileDocuments/ProfileDocuments";
+import PersonalDetails from "../PersonalDetails/PersonalDetails";
+import PhoneInput from "react-native-phone-number-input";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -69,7 +79,15 @@ const EditProfile = (props) => {
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
   const [ImageName, setImageName] = useState("");
-
+  const [companyPhysicaladdress, setCompanyPhysicaladdress] = useState("");
+  const [company_latitude, setCompany_latitude] = useState("");
+  const [company_longitude, setCompany_longitude] = useState("");
+  const [formattedValue, setFormattedValue] = useState("");
+  const phoneInput = useRef(null);
+  console.log("latitude....", latitude);
+  console.log("longitude....", longitude);
+  // console.log("formattedValue....",formattedValue)
+  // console.log("phoneNumber....",phoneNumber)
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
@@ -97,8 +115,18 @@ const EditProfile = (props) => {
   };
   const onRegionChange = (Region) => {
     // alert(JSON.stringify(Region))
-    setlatitude(Region.latitude);
-    setlongitude(Region.longitude);
+    if (activeTab === "Tab1") {
+      setlatitude(Region.latitude);
+    } else {
+      setCompany_latitude(Region.latitude);
+    }
+    if (activeTab === "Tab1") {
+      setlongitude(Region.longitude);
+    } else {
+      setCompany_longitude(Region.longitude);
+    }
+    // setlatitude(Region.latitude);
+    // setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
   };
   const checkpermissionlocation = async () => {
@@ -157,8 +185,18 @@ const EditProfile = (props) => {
   const getAddressWithCordinates = () => {
     Geolocation.watchPosition(
       (position) => {
-        setlatitude(position.coords.latitude);
-        setlongitude(position.coords.longitude);
+        if (activeTab === "Tab1") {
+          setlatitude(position.coords.latitude);
+        } else {
+          setCompany_latitude(position.coords.latitude);
+        }
+        if (activeTab === "Tab1") {
+          setlongitude(position.coords.longitude);
+        } else {
+          setCompany_longitude(position.coords.longitude);
+        }
+        // setlatitude(position.coords.latitude);
+        // setlongitude(position.coords.longitude);
         getAddress(position.coords.latitude, position.coords.longitude);
       },
       (error) => {
@@ -175,12 +213,33 @@ const EditProfile = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        let MainFullAddress = json.results[0].formatted_address;
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ", " +
+          json.results[0].address_components[2].long_name +
+          ", " +
+          json.results[0].address_components[3].long_name +
+          ", " +
+          json.results[0].address_components[4].long_name +
+          ", " +
+          json.results[0].address_components[5].long_name +
+          ", " +
+          json.results[0].address_components[6].long_name +
+          ", " +
+          json.results[0].address_components[7].long_name +
+          ", " +
+          json.results[0].address_components[8].long_name;
+
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setLocation(MainFullAddress);
+        // alert(activeTab)
+        if (activeTab === "Tab1") {
+          setLocation(MainFullAddress);
+        } else {
+          setCompanyPhysicaladdress(MainFullAddress);
+        }
 
         //setAddress(MainFullAddress);
       })
@@ -205,7 +264,9 @@ const EditProfile = (props) => {
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
     formData.append("first_name", fullName);
     formData.append("last_name", lastName);
-    formData.append("phone_number", phoneNumber);
+    // formData.append("phone_number", phoneNumber);
+    formData.append("phone_number", formattedValue);
+    formData.append("about", about);
     formData.append("physical_address", location);
     formData.append("longitude", longitude);
     formData.append("latitude", latitude);
@@ -215,7 +276,7 @@ const EditProfile = (props) => {
     console.log("Request URL:", updateProfile_url);
     setIsLoading(true);
     try {
-      const response = await axios.post(updateProfile_url, formData, {
+      const response = await axios.put(updateProfile_url, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -248,7 +309,7 @@ const EditProfile = (props) => {
               <>
                 <View style={[EditProfileStyle.profilviewmain, { flex: 1 }]}>
                   <TouchableOpacity
-                    style={{}}
+                    style={EditProfileStyle.ProfileView}
                     onPress={() => {
                       refRBSheet.current.open();
                     }}
@@ -270,12 +331,14 @@ const EditProfile = (props) => {
                         resizeMode="cover"
                       />
                     )}
+
                     {ImageName ? refRBSheet.current.close() : null}
                     <View style={EditProfileStyle.editlogoview}>
                       <FontAwesome
                         name="edit"
                         color={_COLORS.Kodie_GreenColor}
                         size={18}
+                        style={{ alignSelf: "center" }}
                       />
                     </View>
                   </TouchableOpacity>
@@ -283,6 +346,7 @@ const EditProfile = (props) => {
                     Edit profile photo
                   </Text>
                 </View>
+
                 <Divider style={EditProfileStyle.firstdivider} />
                 <View style={EditProfileStyle.inputmainview}>
                   <View style={EditProfileStyle.firstview}>
@@ -331,7 +395,7 @@ const EditProfile = (props) => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Phone number
                     </Text>
-                    <View style={EditProfileStyle.phoneinputbindview}>
+                    {/* <View style={EditProfileStyle.phoneinputbindview}>
                       <View style={EditProfileStyle.phoneinput}>
                         <View style={EditProfileStyle.bindnumberview}>
                           <Text style={EditProfileStyle.numbercode}>+61</Text>
@@ -354,8 +418,39 @@ const EditProfile = (props) => {
                           />
                         </View>
                       </View>
+                    </View> */}
+                    <View
+                      style={[EditProfileStyle.simpleinputview, { height: 55 }]}
+                    >
+                      <PhoneInput
+                        ref={phoneInput}
+                        defaultValue={phoneNumber}
+                        defaultCode="IN"
+                        layout="first"
+                        onChangeText={(text) => {
+                          setPhoneNumber(text);
+                        }}
+                        placeholder={"Enter your phone number"}
+                        onChangeFormattedText={(text) => {
+                          setFormattedValue(text);
+                        }}
+                        // withDarkTheme
+                        // withShadow
+                        autoFocus
+                        textContainerStyle={{
+                          flex: 1,
+                          backgroundColor: _COLORS.Kodie_WhiteColor,
+                        }}
+                        containerStyle={{
+                          flex: 1,
+                          alignSelf: "center",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      />
                     </View>
                   </View>
+
                   <View style={EditProfileStyle.inputContainer}>
                     <Text style={LABEL_STYLES.commontext}>{"About"}</Text>
                     <TextInput
@@ -424,6 +519,7 @@ const EditProfile = (props) => {
               </>
             )}
           </ScrollView>
+          // <PersonalDetails />
         );
       case "Tab2":
         return (
@@ -491,24 +587,38 @@ const EditProfile = (props) => {
               <SearchPlaces
                 onPress={(data, details = null) => {
                   console.log("LocationData....", details);
-                  setlatitude(details.geometry.location.lat);
-                  setlongitude(details.geometry.location.lng);
+                  // setlatitude(details.geometry.location.lat);
+                  // setlongitude(details.geometry.location.lng);
+                  if (activeTab === "Tab1") {
+                    setlatitude(details.geometry.location.lat);
+                  } else {
+                    setCompany_latitude(details.geometry.location.lat);
+                  }
+                  if (activeTab === "Tab1") {
+                    setlongitude(details.geometry.location.lng);
+                  } else {
+                    setCompany_longitude(details.geometry.location.lng);
+                  }
                   setIsSearch(false);
                   setIsMap(true);
-                  setLocation(details.formatted_address);
+                  setCompanyPhysicaladdress(details.formatted_address);
                 }}
               />
             ) : (
-              <CompanyDetails openMap={openMap} />
+              <CompanyDetails
+                openMap={openMap}
+                maplocation={companyPhysicaladdress}
+                // latitude={latitude}
+                // longitude={longitude}
+                latitude={company_latitude}
+                longitude={company_longitude}
+                // isSearch={setIsSearch(true)}
+              />
             )}
           </>
         );
       case "Tab3":
-        return (
-          <View>
-            <Text>{"Personal Documents"}</Text>
-          </View>
-        );
+        return <ProfileDocuments />;
     }
   };
   return (
@@ -527,14 +637,14 @@ const EditProfile = (props) => {
       {IsMap ? (
         <View
           style={{
-            // flex:0.5,
+            flex: 1,
             backgroundColor: "transparent",
           }}
         >
           <MapScreen
             style={{
               // flex:0.5,
-              height: "85%",
+              height: "100%",
               width: "100%",
               alignSelf: "center",
               marginBottom: 10,
@@ -583,7 +693,11 @@ const EditProfile = (props) => {
             setlongitude(details.geometry.location.lng);
             setIsSearch(false);
             setIsMap(true);
-            setLocation(details.formatted_address);
+            if (activeTab === "Tab1") {
+              setLocation(details.formatted_address);
+            } else {
+              setCompanyPhysicaladdress(details.formatted_address);
+            }
           }}
         />
       ) : (
@@ -601,7 +715,7 @@ const EditProfile = (props) => {
               TAB3
               Tab1={"Personal Details"}
               Tab2={"Company Details"}
-              Tab3={"Personal Documents"}
+              Tab3={"Documents"}
               onPressTab1={() => setActiveTab("Tab1")}
               onPressTab2={() => setActiveTab("Tab2")}
               onPressTab3={() => setActiveTab("Tab3")}

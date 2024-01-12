@@ -1,37 +1,36 @@
 import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY, IMAGES } from "../../../../Themes";
 export const ChangeContactInputStyle = StyleSheet.create({
-  maincontainer:{
-    backgroundColor:_COLORS.Kodie_WhiteColor,
-    height:'100%'
+  maincontainer: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    height: "100%",
   },
   firstview: {
-    alignItems: "center",
-    marginHorizontal:15,
-    paddingVertical:20
+    marginHorizontal: 15,
+    paddingVertical: 20,
   },
-  secondview:{
-  marginVertical:30,
-  marginHorizontal:15
+  secondview: {
+    marginVertical: 30,
+    marginHorizontal: 15,
   },
-  numbercodefirstview:{
+  numbercodefirstview: {
     height: 50,
     borderWidth: 0.3,
-    width: '100%',
+    width: "100%",
     borderRadius: 8,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    paddingHorizontal:10,
-    marginTop:5
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    marginTop: 15,
   },
 
-  bindview:{
-   flexDirection:'row',
-   alignItems:'center',
-   marginHorizontal:5
+  bindview: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: 5,
   },
   oldnumbertext: {
     fontSize: 13,
@@ -50,7 +49,7 @@ export const ChangeContactInputStyle = StyleSheet.create({
   downarrowimg: {
     width: 12,
     height: 6,
-    marginHorizontal:5
+    marginHorizontal: 5,
   },
   lineimg: {
     height: 21,
@@ -62,8 +61,23 @@ export const ChangeContactInputStyle = StyleSheet.create({
     tintColor: "#CED5D7",
   },
   secondview: {
-    alignItems: "center",
-    marginVertical:15,
-    marginHorizontal:15,
+    marginVertical: 15,
+    marginHorizontal: 15,
   },
+  simpleinputview: {
+    // flex:1,
+    height: 50,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderRadius: 8,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+    marginTop: 15,
+  },
+  error_text: { color: "red", marginLeft: 10,marginTop:5 },
+
 });

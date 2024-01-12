@@ -23,6 +23,7 @@ import Entypo from "react-native-vector-icons/Entypo";
 import StepIndicator from "react-native-step-indicator";
 import BiddingDetails from "./BiddingDetails/Biddingdetails";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AddJobDetails from "../AddJobDetails";
 import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
 import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 import JobDocuments from "../JobDocuments.js/JobDocuments";
@@ -188,7 +189,11 @@ const JobDetails = (props) => {
       case "Tab2":
         return <JodBiddingDetails JOB_ID={JOB_ID} />;
       case "Tab3":
-        return <BiddingDetails />;
+        return (
+          <View>
+            <Text>Milestines</Text>
+          </View>
+        );
       case "Tab4":
         return (
           <JobDocuments
@@ -211,21 +216,24 @@ const JobDetails = (props) => {
   return (
     <View style={JobDetailsStyle.container}>
       <TopHeader
+        isprofileImage
+        IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Review job details"}
       />
-      {View_Job_Details ? null : (
-        <StepIndicator
-          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-          currentPosition={3}
-          // onPress={onStepPress}
-          renderStepIndicator={renderStepIndicator}
-          labels={stepLabels}
-          stepCount={4}
-          renderLabel={renderLabel}
-        />
-      )}
-
+      <View style={{ marginVertical: 10 }}>
+        {View_Job_Details ? null : (
+          <StepIndicator
+            customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+            currentPosition={3}
+            // onPress={onStepPress}
+            renderStepIndicator={renderStepIndicator}
+            labels={stepLabels}
+            stepCount={4}
+            renderLabel={renderLabel}
+          />
+        )}
+      </View>
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>
@@ -253,9 +261,12 @@ const JobDetails = (props) => {
               />
             </View>
           ) : null}
-          <View style={JobDetailsStyle.bidsview}>
-            <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
-          </View>
+          {imageFileData.image_file_path &&
+          imageFileData.image_file_path != 0 ? (
+            <View style={JobDetailsStyle.bidsview}>
+              <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
+            </View>
+          ) : null}
         </ImageBackground>
         <View style={JobDetailsStyle.headingview}>
           <Text style={JobDetailsStyle.fixingtext}>

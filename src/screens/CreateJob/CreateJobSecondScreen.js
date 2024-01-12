@@ -464,18 +464,22 @@ const CreateJobSecondScreen = (props) => {
   return (
     <View style={CreateJobSecondStyle.container}>
       <TopHeader
+        isprofileImage
+        IsNotification
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={editMode?"Edit job":"Create new job request"}
+        MiddleText={editMode ? "Edit job" : "Create new job request"}
       />
-      <StepIndicator
-        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-        currentPosition={2}
-        // onPress={onStepPress}
-        renderStepIndicator={renderStepIndicator}
-        labels={stepLabels}
-        stepCount={4}
-        renderLabel={renderLabel}
-      />
+      <View style={{ marginVertical: 10 }}>
+        <StepIndicator
+          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+          currentPosition={2}
+          // onPress={onStepPress}
+          renderStepIndicator={renderStepIndicator}
+          labels={stepLabels}
+          stepCount={4}
+          renderLabel={renderLabel}
+        />
+      </View>
       <ScrollView>
         <View style={CreateJobSecondStyle.phototextView}>
           <Text style={CreateJobSecondStyle.heading}>
