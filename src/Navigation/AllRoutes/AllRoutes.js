@@ -110,8 +110,10 @@ import DocumentDetails from "../../screens/Landlord/AddNewProperty/PropertyRevie
 import ViewDocument from "../../screens/Landlord/AddNewProperty/PropertyReview/Documents/ViewDocuments/ViewDocument";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import BiddingDetails from "../../screens/Tenant/Jobs/JobDetails/BiddingDetails/Biddingdetails";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import PreScreening from "../../screens/Tenant/PreScreening/PreScreening";
+import AddJobDetails from "../../screens/Tenant/Jobs/AddJobDetails";
 import TenantList from "../../screens/Tenant/TenantList";
 import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 import CurrentTenant from "../../screens/Tenant/CurrentTenant/CurrentTenant";
@@ -119,7 +121,9 @@ import PreviousTenant from "../../screens/Tenant/PreviousTenant/PreviousTenant";
 import JodBiddingDetails from "../../screens/CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 import JobDocumentDetails from "../../screens/Tenant/Jobs/JobDocuments.js/JobDocumentDetails";
 import CompanyDetails from "../../screens/Landlord/Landlordprofile/CompanyDetails/CompanyDetails";
+import AddContractorDetails from "../../screens/Managingcontractors/AddContractorDetails/AddContractorDetails";
 import ProfileDocumentDetails from "../../screens/Profile/ProfileDocumentDetails/ProfileDocumentDetails";
+import SearchDetail from "../../screens/Tenant/Jobs/SearchforContractor/SearchDetail";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1020,13 +1024,28 @@ const AllStackRouts = (props) => {
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name={"BiddingDetails"}
+          component={BiddingDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name={"CompanyDetails"}
           component={CompanyDetails}
           options={{ headerShown: false }}
         />
         <Stack.Screen
+          name={"AddContractorDetails"}
+          component={AddContractorDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
           name={"ProfileDocumentDetails"}
           component={ProfileDocumentDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SearchDetail"}
+          component={SearchDetail}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -129,6 +129,122 @@ export default CompanyDetails = (props) => {
     }
   };
 
+  //   map....
+  const ConfirmAddress = () => {
+    setIsMap(false);
+  };
+  const openMapandClose = (text) => {
+    setIsMap(false);
+    setIsSearch(true);
+  };
+  const onRegionChange = (Region) => {
+    // alert(JSON.stringify(Region))
+    setlatitude(Region.latitude);
+    setlongitude(Region.longitude);
+    getAddress(Region.latitude, Region.longitude);
+  };
+  const checkpermissionlocation = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "Example App",
+          message: "Example App access to your location ",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+        // alert("You can use the location");
+        getAddressWithCordinates();
+      } else {
+        console.log("location permission denied");
+        alert("Location permission denied");
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const CheckIOSMapPermission = () => {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
+      .then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              "This feature is not available (on this device / in this context)"
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              "The permission has not been requested / is denied but requestable"
+            );
+            break;
+          case RESULTS.LIMITED:
+            console.log("The permission is limited: some actions are possible");
+            break;
+          case RESULTS.GRANTED:
+            console.log("The permission is granted");
+            getAddressWithCordinates();
+            break;
+          case RESULTS.BLOCKED:
+            console.log("The permission is denied and not requestable anymore");
+            break;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const getAddressWithCordinates = () => {
+    Geolocation.watchPosition(
+      (position) => {
+        setlatitude(position.coords.latitude);
+        setlongitude(position.coords.longitude);
+        getAddress(position.coords.latitude, position.coords.longitude);
+      },
+      (error) => {
+        alert(error.message.toString());
+      },
+      {
+        showLocationDialog: true,
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+      }
+    );
+  };
+  const getAddress = (latitude, longitude) => {
+    Geocoder.from(latitude, longitude)
+      .then((json) => {
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ", " +
+          json.results[0].address_components[2].long_name +
+          ", " +
+          json.results[0].address_components[3].long_name +
+          ", " +
+          json.results[0].address_components[4].long_name +
+          ", " +
+          json.results[0].address_components[5].long_name +
+          ", " +
+          json.results[0].address_components[6].long_name +
+          ", " +
+          json.results[0].address_components[7].long_name +
+          ", " +
+          json.results[0].address_components[8].long_name;
+
+        var addressComponent2 = json.results[0].address_components[1];
+        // alert(addressComponent2)
+        setUserCurrentCity(addressComponent2.long_name);
+        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
+        setLocation(MainFullAddress);
+
+        //setAddress(MainFullAddress);
+      })
+      .catch((error) => console.warn(error));
+  };
+
   const openMap = () => {
     props.openMap();
   };

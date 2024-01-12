@@ -30,6 +30,7 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import CustomSingleDropdown from "../../../../components/Molecules/CustomSingleDropdown/CustomSingleDropdown";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
@@ -325,9 +326,26 @@ export default PropertyDetails = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        let MainFullAddress = json.results[0].formatted_address;
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ", " +
+          json.results[0].address_components[2].long_name +
+          ", " +
+          json.results[0].address_components[3].long_name +
+          ", " +
+          json.results[0].address_components[4].long_name +
+          ", " +
+          json.results[0].address_components[5].long_name +
+          ", " +
+          json.results[0].address_components[6].long_name +
+          ", " +
+          json.results[0].address_components[7].long_name +
+          ", " +
+          json.results[0].address_components[8].long_name;
+
         var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
+        // alert(addressComponent2);
+
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
@@ -374,7 +392,13 @@ export default PropertyDetails = (props) => {
     <View style={PropertyDetailsStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => {
-          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+          if (IsMap) {
+            setIsMap(false);
+          } else if (IsSearch) {
+            setIsSearch(false);
+          } else {
+            goBack();
+          }
         }}
         MiddleText={
           IsMap || IsSearch
@@ -577,12 +601,24 @@ export default PropertyDetails = (props) => {
                   placeholderTextColor="#999"
                   multiline
                   numberOfLines={5}
+                  maxLength={100}
                   textAlignVertical={"top"}
                 />
               </View>
-              <Text style={PropertyDetailsStyle.AutoList_text}>
-                {"Auto-list property on Kodie property marketplace "}
-              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text style={PropertyDetailsStyle.AutoList_text}>
+                  {"Auto-list property on Kodie property marketplace "}
+                </Text>
+                <TouchableOpacity style={PropertyDetailsStyle.questionmark}>
+                  <AntDesign name="question" size={20} color="#8AFBA5" />
+                </TouchableOpacity>
+              </View>
               <RowButtons
                 LeftButtonText={"Yes"}
                 leftButtonbackgroundColor={

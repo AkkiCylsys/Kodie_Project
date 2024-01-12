@@ -64,7 +64,7 @@ const UploadImageData = (props) => {
                   // console.log(image);
                   setImage(image);
                   setImageName(JSON.stringify(image?.path));
-                  props?.ImageName(image?.path);
+                  props?.ImageName(image);
                   console.log("ImagePath..", imageName);
                 })
                 .catch((err) => {

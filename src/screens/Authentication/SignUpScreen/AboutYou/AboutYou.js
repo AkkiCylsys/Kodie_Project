@@ -424,11 +424,8 @@ export default AboutYou = (props) => {
     console.log("result_data...", result?.assets);
   };
   return (
-    <ScrollView>
-      <TopHeader
-        MiddleText={"Set up your Kodie account"}
-        onPressLeftButton={goBack}
-      />
+    <ScrollView style={{ backgroundColor: _COLORS.Kodie_WhiteColor }}>
+      <TopHeader MiddleText={"Account set up"} onPressLeftButton={goBack} />
       <View style={AboutYouStyle.stepIndicator}>
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}

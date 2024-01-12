@@ -78,7 +78,7 @@ const data = [
 const data1 = [
   {
     id: "1",
-    Data: "Delete property",
+    Data: "Confirm delete property",
     // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons
@@ -109,7 +109,7 @@ const BottomModalData = (props) => {
   const refRBSheet = useRef();
   const handleCloseModal = () => {
     props.onClose(); // Call this function when you want to close the modal without performing delete action
-   //alert('hi')
+    //alert('hi')
   };
   const handleDeleteProperty = (propertyDelId) => {
     console.log(propertyDelId, "catch data");
@@ -147,9 +147,7 @@ const BottomModalData = (props) => {
             >
               {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
               {/* //{item.Icon} */}
-              <View style={BottomModalDataStyle.IconView}>
-            {item.Icon}
-            </View>
+              <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
               <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
             </TouchableOpacity>
           </>
@@ -161,6 +159,7 @@ const BottomModalData = (props) => {
                 navigation.navigate("ViewPropertyDetails", {
                   propertyId: propertyId,
                 });
+                handleCloseModal();
               }
               if (item.id === "5") {
                 // navigation.navigate("ViewPropertyDetails");
@@ -171,9 +170,7 @@ const BottomModalData = (props) => {
             }}
           >
             {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
-            <View style={BottomModalDataStyle.IconView}>
-            {item.Icon}
-            </View>
+            <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
             <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}
@@ -188,7 +185,8 @@ const BottomModalData = (props) => {
           alignSelf: "flex-end",
           paddingHorizontal: 20,
         }}
-        onPress={handleCloseModal}>
+        onPress={handleCloseModal}
+      >
         <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
         {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
       </TouchableOpacity>

@@ -57,7 +57,7 @@ export default CreateJobFirstScreen = (props) => {
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
   const [location, setLocation] = useState("");
-  const [isClick, setIsClick] = useState(null);
+  const [isClick, setIsClick] = useState(166);
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
@@ -172,7 +172,23 @@ export default CreateJobFirstScreen = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        let MainFullAddress = json.results[0].formatted_address;
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ", " +
+          json.results[0].address_components[2].long_name +
+          ", " +
+          json.results[0].address_components[3].long_name +
+          ", " +
+          json.results[0].address_components[4].long_name +
+          ", " +
+          json.results[0].address_components[5].long_name +
+          ", " +
+          json.results[0].address_components[6].long_name +
+          ", " +
+          json.results[0].address_components[7].long_name +
+          ", " +
+          json.results[0].address_components[8].long_name;
+
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
@@ -363,14 +379,14 @@ export default CreateJobFirstScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobFirstStyle.itemView}>
           {item.lookup_key === property_value ? (
-            <Fontisto
+            <AntDesign
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={"checkcircle"}
               size={20}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -387,14 +403,14 @@ export default CreateJobFirstScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobFirstStyle.itemView}>
           {item.lookup_key === jobPriorityValue ? (
-            <Fontisto
+            <AntDesign
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={"checkcircle"}
               size={20}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -411,14 +427,14 @@ export default CreateJobFirstScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobFirstStyle.itemView}>
           {item.lookup_key === servicesValue ? (
-            <Fontisto
+            <AntDesign
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={"checkcircle"}
               size={20}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -435,14 +451,14 @@ export default CreateJobFirstScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobFirstStyle.itemView}>
           {item.lookup_key === ratingThresholdValue ? (
-            <Fontisto
+            <AntDesign
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={"checkcircle"}
               size={20}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -726,6 +742,8 @@ export default CreateJobFirstScreen = (props) => {
   return (
     <View style={CreateJobFirstStyle.container}>
       <TopHeader
+        isprofileImage
+        IsNotification
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}
@@ -738,7 +756,7 @@ export default CreateJobFirstScreen = (props) => {
         }
       />
       {IsMap || IsSearch ? null : (
-        <View style={{}}>
+        <View style={{ marginVertical: 10 }}>
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={0}
@@ -849,8 +867,8 @@ export default CreateJobFirstScreen = (props) => {
                 labelField="lookup_description"
                 valueField="lookup_key"
                 placeholder="Select item"
-                searchPlaceholder="Search..."
                 value={servicesValue}
+                searchPlaceholder="Search..."
                 onChange={(item) => {
                   setservicesValue(item.lookup_key);
                   // alert(item.lookup_key)
@@ -897,7 +915,7 @@ export default CreateJobFirstScreen = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="Urgent"
+                placeholder="Select item"
                 searchPlaceholder="Search..."
                 value={jobPriorityValue}
                 onChange={(item) => {

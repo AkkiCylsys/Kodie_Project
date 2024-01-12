@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-   PermissionsAndroid,
+  PermissionsAndroid,
   Image,
   FlatList,
   // Platform
@@ -218,7 +218,23 @@ const SignUpSteps = (props) => {
   const getAddress = (p_latitude, p_longitude) => {
     Geocoder.from(p_latitude, p_longitude)
       .then((json) => {
-        let MainFullAddress = json.results[0].formatted_address;
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ", " +
+          json.results[0].address_components[2].long_name +
+          ", " +
+          json.results[0].address_components[3].long_name +
+          ", " +
+          json.results[0].address_components[4].long_name +
+          ", " +
+          json.results[0].address_components[5].long_name +
+          ", " +
+          json.results[0].address_components[6].long_name +
+          ", " +
+          json.results[0].address_components[7].long_name +
+          ", " +
+          json.results[0].address_components[8].long_name;
+
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
@@ -474,9 +490,7 @@ const SignUpSteps = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
-        MiddleText={
-          IsMap || IsSearch ? "Location" : "Set up your Kodie account"
-        }
+        MiddleText={IsMap || IsSearch ? "Location" : "Account set up"}
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}

@@ -47,6 +47,7 @@ export const RepairCss = StyleSheet.create({
   },
   Container: {
     marginHorizontal: 16,
+    textAlign:"center"
   },
   RightContainer: { flex: 0.5, alignSelf: "flex-end" },
   flexContainer: { flex: 1 },

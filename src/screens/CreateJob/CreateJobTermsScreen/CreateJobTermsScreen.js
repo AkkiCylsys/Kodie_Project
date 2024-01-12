@@ -102,6 +102,10 @@ export default CreateJobTermsScreen = (props) => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+    setSelectedDate("");
+  };
+  const apply_toggleModal = () => {
+    setModalVisible(!isModalVisible);
   };
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
@@ -554,23 +558,27 @@ export default CreateJobTermsScreen = (props) => {
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
+        isprofileImage
+        IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? "Edit job" : "Create new job request"}
       />
-      <StepIndicator
-        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-        currentPosition={1}
-        // onPress={onStepPress}
-        renderStepIndicator={renderStepIndicator}
-        labels={stepLabels}
-        stepCount={4}
-        renderLabel={renderLabel}
-      />
+      <View style={{ marginVertical: 10 }}>
+        <StepIndicator
+          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+          currentPosition={1}
+          // onPress={onStepPress}
+          renderStepIndicator={renderStepIndicator}
+          labels={stepLabels}
+          stepCount={4}
+          renderLabel={renderLabel}
+        />
+      </View>
       <ScrollView>
         <View style={CreateJobTermsStyle.container}>
           <Text style={CreateJobTermsStyle.terms_Text}>{"Terms"}</Text>
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
-            {" Request date and time"}
+            {" What date and time would you prefer? "}
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
@@ -594,7 +602,7 @@ export default CreateJobTermsScreen = (props) => {
                 },
               }}
               _closeButton={toggleModal}
-              _ApplyButton={toggleModal}
+              _ApplyButton={apply_toggleModal}
             />
 
             <View style={CreateJobTermsStyle.spaceView} />
@@ -617,7 +625,7 @@ export default CreateJobTermsScreen = (props) => {
               <TimePicker
                 data={new Date()}
                 getData={(date) => {
-                  setCurrentTime(moment(date).format("hh:mm "));
+                  setCurrentTime(moment(date).format("hh:mm"));
                 }}
               />
             </View>
@@ -641,7 +649,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="3 hours"
+            placeholder="Select item"
             searchPlaceholder="Search..."
             value={hourlyNeedValue}
             onChange={(item) => {
@@ -664,7 +672,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="One time"
+            placeholder="Select services"
             searchPlaceholder="Search..."
             value={needServicesValue}
             onChange={(item) => {

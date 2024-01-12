@@ -467,7 +467,7 @@ export default PropertyImages = (props) => {
             </Text>
             <View style={{ flex: 1 }}>
               <UploadImageBoxes
-                Box_Text={"Add Photo"}
+                Box_Text={"Add photo"}
                 onPress={() => {
                   refRBSheet.current.open();
                 }}
@@ -497,7 +497,7 @@ export default PropertyImages = (props) => {
 
             {/* {MultiImageName.length == 0 ? refRBSheet.current.close() : null} */}
             <Text style={PropertyImagesStyle.upload_Heading_Text}>
-              {"Upload Video"}
+              {"Upload video"}
             </Text>
             <View style={{ flex: 1 }}>
               <UploadImageBoxes

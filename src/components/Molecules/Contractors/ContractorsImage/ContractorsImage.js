@@ -67,19 +67,25 @@ const data = [
 ];
 
 const ContractorsImage = (props) => {
+  const handleDeleteContractor = (ContractorId) => {
+    console.log(ContractorId, "catch data");
+    props.onDelete(ContractorId);
+  };
   const ContractorsImageContent = ({ item, index }) => {
     return (
       <>
         <TouchableOpacity
           style={ContractorsImageStyle.content_View}
-          onPress={props?.onPress}
+          onPress={() => {
+            if (item.id == "4") {
+              handleDeleteContractor();
+            }
+          }}
         >
           <TouchableOpacity style={ContractorsImageStyle.Bottomcontainer}>
             {/* <Image source={item.Img} style={ContractorsImageStyle.Icons} /> */}
             {/* {item.icon} */}
-            <Text style={ContractorsImageStyle.IconView}>
-            {item.Icon}
-            </Text>
+            <Text style={ContractorsImageStyle.IconView}>{item.Icon}</Text>
           </TouchableOpacity>
           <Text style={ContractorsImageStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
