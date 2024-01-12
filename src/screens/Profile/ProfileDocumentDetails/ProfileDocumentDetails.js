@@ -13,6 +13,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Entypo from "react-native-vector-icons/Entypo";
 import Fontisto from "react-native-vector-icons/Fontisto";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import { _COLORS, IMAGES } from "../../../Themes";
 import { Dropdown } from "react-native-element-dropdown";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -64,12 +65,16 @@ const ProfileDocumentDetails = (props) => {
   console.log("Documents moduleName ....", props.ModuleName);
   const moduleName = props.ModuleName;
   const D_file_name = props.headingDocument;
+  const folderId = props.folderId;
+  // console.log("folderId in personalDocDetails...", folderId);
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const [uploadDocValue, setUploadDocValue] = useState("");
   const [selectFile, setSelectFile] = useState([]);
   const [documentLookupData, setDocumentLookupData] = useState([]);
   const [documentLookupDataValue, setDocumentLookupDataValue] = useState([]);
+  const [documentLookupDataValueError, setDocumentLookupDataValueError] =
+    useState(false);
   const [documentdataByModulename, setDocumentdataByModulename] = useState([]);
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState("");
@@ -113,6 +118,15 @@ const ProfileDocumentDetails = (props) => {
     }
   };
 
+  // validation .....
+
+  const handleUploadDocument = () => {
+    if (documentLookupDataValue == "") {
+      setDocumentLookupDataValueError(true);
+    } else {
+      selectDoc();
+    }
+  };
   // renderItem....
   const DocumentsData = ({ item, index }) => {
     setFileKey(item.PDUM_FILE_KEY);
@@ -159,15 +173,15 @@ const ProfileDocumentDetails = (props) => {
   const documentDataRender = (item) => {
     return (
       <View style={ProfileDocumentDetailStyle.itemView}>
-        {item.lookup_key === uploadDocValue ? (
-          <Fontisto
+        {item.lookup_key === documentLookupDataValue ? (
+          <AntDesign
             color={_COLORS.Kodie_GreenColor}
-            name={"radio-btn-active"}
+            name={"checkcircle"}
             size={20}
           />
         ) : (
           <Fontisto
-            color={_COLORS.Kodie_GreenColor}
+            color={_COLORS.Kodie_GrayColor}
             name={"radio-btn-passive"}
             size={20}
           />
@@ -200,12 +214,10 @@ const ProfileDocumentDetails = (props) => {
       formData.append("p_referral_key", user_account_id);
       formData.append("p_module_name", moduleName);
       formData.append("p_file_Name", D_file_name);
-      formData.append("p_document_type", 1);
-
+      formData.append("p_document_type", folderId ? 0 : 1);
+      formData.append("p_sub_module_name", documentLookupDataValue);
       const response = await axios.post(uploadDoc_url, formData);
-
       console.log("API Response uploadDocument:", response.data);
-
       if (response.data.success === true) {
         alert(response.data.message);
         getUploadedDocumentsByModule();
@@ -431,10 +443,16 @@ const ProfileDocumentDetails = (props) => {
           onChange={(item) => {
             setDocumentLookupDataValue(item.lookup_key);
             // alert(item.lookup_key)
+            setDocumentLookupDataValueError(false);
           }}
           renderItem={documentDataRender}
         />
       </View>
+      {documentLookupDataValueError ? (
+        <Text style={ProfileDocumentDetailStyle.error_text}>
+          {"Please select document type."}
+        </Text>
+      ) : null}
       <View style={{ marginBottom: 30 }}>
         <CustomSingleButton
           leftImage={IMAGES.uploadIcon}
@@ -443,7 +461,7 @@ const ProfileDocumentDetails = (props) => {
           _ButtonText={"Upload document"}
           backgroundColor={_COLORS.Kodie_lightGreenColor}
           onPress={() => {
-            selectDoc();
+            handleUploadDocument();
           }}
           disabled={isLoading ? true : false}
         />
