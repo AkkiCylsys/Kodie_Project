@@ -32,6 +32,8 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
 import { useDispatch, useSelector } from "react-redux";
+import PhoneInput from "react-native-phone-number-input";
+
 const data = [
   { label: "Item 1", value: "1" },
   { label: "Item 2", value: "2" },
@@ -75,6 +77,9 @@ export default CompanyDetails = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
+
+  const [formattedValue, setFormattedValue] = useState("");
+  const phoneInput = useRef(null);
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
@@ -463,7 +468,8 @@ export default CompanyDetails = (props) => {
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
     formData.append("UCDM_COMPANY_NAME", companyName);
     formData.append("UCDM_COMPANY_EMAIL", companyEmail);
-    formData.append("UCDM_COMPANY_CONTACT_NUMBER", phoneNumber);
+    // formData.append("UCDM_COMPANY_CONTACT_NUMBER", phoneNumber);
+    formData.append("UCDM_COMPANY_CONTACT_NUMBER", formattedValue);
     formData.append("UCDM_COMPANY_DESCRIPTION", companyDescription);
     formData.append("UCDM_SERVICE_YOU_OFFERING", selectJobTypeid);
     formData.append("UCDM_SERVICE_YOU_PERFORM", servicesValue);
@@ -548,7 +554,8 @@ export default CompanyDetails = (props) => {
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
     formData.append("UCDM_COMPANY_NAME", companyName);
     formData.append("UCDM_COMPANY_EMAIL", companyEmail);
-    formData.append("UCDM_COMPANY_CONTACT_NUMBER", phoneNumber);
+    // formData.append("UCDM_COMPANY_CONTACT_NUMBER", phoneNumber);
+    formData.append("UCDM_COMPANY_CONTACT_NUMBER", formattedValue);
     formData.append("UCDM_COMPANY_DESCRIPTION", companyDescription);
     formData.append("UCDM_SERVICE_YOU_OFFERING", selectJobTypeid);
     formData.append("UCDM_SERVICE_YOU_PERFORM", servicesValue);
@@ -653,7 +660,7 @@ export default CompanyDetails = (props) => {
             <Text style={LABEL_STYLES.commontext}>
               {"Company phone number"}
             </Text>
-            <View style={CompanyDetailsStyle.phoneinputbindview}>
+            {/* <View style={CompanyDetailsStyle.phoneinputbindview}>
               <View style={CompanyDetailsStyle.phoneinput}>
                 <View style={CompanyDetailsStyle.bindnumberview}>
                   <Text style={CompanyDetailsStyle.numbercode}>+61</Text>
@@ -677,6 +684,34 @@ export default CompanyDetails = (props) => {
                   />
                 </View>
               </View>
+            </View> */}
+            <View style={[CompanyDetailsStyle.simpleinputview, { height: 55 }]}>
+              <PhoneInput
+                ref={phoneInput}
+                defaultValue={phoneNumber}
+                defaultCode="IN"
+                layout="first"
+                onChangeText={(text) => {
+                  setPhoneNumber(text);
+                }}
+                placeholder={"Enter your phone number"}
+                onChangeFormattedText={(text) => {
+                  setFormattedValue(text);
+                }}
+                // withDarkTheme
+                // withShadow
+                autoFocus
+                textContainerStyle={{
+                  flex: 1,
+                  backgroundColor: _COLORS.Kodie_WhiteColor,
+                }}
+                containerStyle={{
+                  flex: 1,
+                  alignSelf: "center",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              />
             </View>
           </View>
 

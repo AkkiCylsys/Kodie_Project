@@ -129,18 +129,18 @@ const JobDetails = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-          ? "#000000"
-          : "#808080";
+        ? "#000000"
+        : "#808080";
     const iconName =
       position === 0
         ? "Details"
         : position === 1
-          ? "Terms"
-          : position === 2
-            ? "Images"
-            : position === 3
-              ? "Review"
-              : "null";
+        ? "Terms"
+        : position === 2
+        ? "Images"
+        : position === 3
+        ? "Review"
+        : "null";
 
     return (
       <View style={{}}>
@@ -189,7 +189,11 @@ const JobDetails = (props) => {
       case "Tab2":
         return <JodBiddingDetails JOB_ID={JOB_ID} />;
       case "Tab3":
-        return <AddJobDetails />;
+        return (
+          <View>
+            <Text>Milestines</Text>
+          </View>
+        );
       case "Tab4":
         return (
           <JobDocuments
@@ -234,7 +238,7 @@ const JobDetails = (props) => {
         <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
         <ImageBackground>
           {imageFileData.image_file_path &&
-            imageFileData.image_file_path != 0 ? (
+          imageFileData.image_file_path != 0 ? (
             <View style={JobDetailsStyle.slider_view}>
               <SliderBox
                 images={imageFileData?.image_file_path}
@@ -258,10 +262,11 @@ const JobDetails = (props) => {
             </View>
           ) : null}
           {imageFileData.image_file_path &&
-            imageFileData.image_file_path != 0 ?
+          imageFileData.image_file_path != 0 ? (
             <View style={JobDetailsStyle.bidsview}>
               <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
-            </View> : null}
+            </View>
+          ) : null}
         </ImageBackground>
         <View style={JobDetailsStyle.headingview}>
           <Text style={JobDetailsStyle.fixingtext}>

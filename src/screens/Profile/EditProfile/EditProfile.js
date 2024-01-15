@@ -35,6 +35,7 @@ import axios from "axios";
 import CompanyDetails from "../../Landlord/Landlordprofile/CompanyDetails/CompanyDetails";
 import ProfileDocuments from "../ProfileDocuments/ProfileDocuments";
 import PersonalDetails from "../PersonalDetails/PersonalDetails";
+import PhoneInput from "react-native-phone-number-input";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -81,9 +82,12 @@ const EditProfile = (props) => {
   const [companyPhysicaladdress, setCompanyPhysicaladdress] = useState("");
   const [company_latitude, setCompany_latitude] = useState("");
   const [company_longitude, setCompany_longitude] = useState("");
-
+  const [formattedValue, setFormattedValue] = useState("");
+  const phoneInput = useRef(null);
   console.log("latitude....", latitude);
   console.log("longitude....", longitude);
+  // console.log("formattedValue....",formattedValue)
+  // console.log("phoneNumber....",phoneNumber)
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
@@ -260,7 +264,8 @@ const EditProfile = (props) => {
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
     formData.append("first_name", fullName);
     formData.append("last_name", lastName);
-    formData.append("phone_number", phoneNumber);
+    // formData.append("phone_number", phoneNumber);
+    formData.append("phone_number", formattedValue);
     formData.append("about", about);
     formData.append("physical_address", location);
     formData.append("longitude", longitude);
@@ -390,7 +395,7 @@ const EditProfile = (props) => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Phone number
                     </Text>
-                    <View style={EditProfileStyle.phoneinputbindview}>
+                    {/* <View style={EditProfileStyle.phoneinputbindview}>
                       <View style={EditProfileStyle.phoneinput}>
                         <View style={EditProfileStyle.bindnumberview}>
                           <Text style={EditProfileStyle.numbercode}>+61</Text>
@@ -413,8 +418,39 @@ const EditProfile = (props) => {
                           />
                         </View>
                       </View>
+                    </View> */}
+                    <View
+                      style={[EditProfileStyle.simpleinputview, { height: 55 }]}
+                    >
+                      <PhoneInput
+                        ref={phoneInput}
+                        defaultValue={phoneNumber}
+                        defaultCode="IN"
+                        layout="first"
+                        onChangeText={(text) => {
+                          setPhoneNumber(text);
+                        }}
+                        placeholder={"Enter your phone number"}
+                        onChangeFormattedText={(text) => {
+                          setFormattedValue(text);
+                        }}
+                        // withDarkTheme
+                        // withShadow
+                        autoFocus
+                        textContainerStyle={{
+                          flex: 1,
+                          backgroundColor: _COLORS.Kodie_WhiteColor,
+                        }}
+                        containerStyle={{
+                          flex: 1,
+                          alignSelf: "center",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      />
                     </View>
                   </View>
+
                   <View style={EditProfileStyle.inputContainer}>
                     <Text style={LABEL_STYLES.commontext}>{"About"}</Text>
                     <TextInput

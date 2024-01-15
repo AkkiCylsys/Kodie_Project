@@ -292,12 +292,12 @@ export const EditProfileStyle = StyleSheet.create({
   },
   input: {
     height: 45,
-    borderRadius: 5,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: _COLORS.Kodie_GrayColor,
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
   },
 });

@@ -1,5 +1,5 @@
 import { View, Text, TextInput, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { ChangeContactInputStyle } from "./ChangeContactInputStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
@@ -8,6 +8,8 @@ import { _goBack } from "../../../../services/CommonServices";
 import axios from "axios";
 import { Config } from "../../../../Config";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import PhoneInput from "react-native-phone-number-input";
+
 //screen number 206
 const ChangeContactInput = (props) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +17,10 @@ const ChangeContactInput = (props) => {
   const [oldPhoneNumberError, setOldPhoneNumberError] = useState("");
   const [newPhoneNumber, setNewPhoneNumber] = useState("");
   const [newPhoneNumberError, setNewPhoneNumberError] = useState("");
+  const [oldNumberformattedValue, setOldNumberFormattedValue] = useState("");
+  const [newNumberformattedValue, setNewNumberFormattedValue] = useState("");
+  const phoneInput = useRef(null);
+
   // Validation....
   const validateOldPhoneNumber = (text) => {
     setOldPhoneNumber(text);
@@ -50,8 +56,8 @@ const ChangeContactInput = (props) => {
       );
     } else {
       props.navigation.navigate("ChangeContactNotify", {
-        oldPhoneNumber: oldPhoneNumber,
-        newPhoneNumber: newPhoneNumber,
+        oldPhoneNumber: oldNumberformattedValue,
+        newPhoneNumber: newNumberformattedValue,
       });
       setOldPhoneNumber("");
       setNewPhoneNumber("");
@@ -68,7 +74,7 @@ const ChangeContactInput = (props) => {
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your old phone number with country code
           </Text>
-          <View style={ChangeContactInputStyle.numbercodefirstview}>
+          {/* <View style={ChangeContactInputStyle.numbercodefirstview}>
             <View style={ChangeContactInputStyle.bindview}>
               <Text style={ChangeContactInputStyle.numbercode}>+61</Text>
               <Image
@@ -95,7 +101,41 @@ const ChangeContactInput = (props) => {
               style={ChangeContactInputStyle.Vectorimg}
               source={IMAGES.pencile}
             />
+          </View> */}
+          <View
+            style={[ChangeContactInputStyle.simpleinputview, { height: 55 }]}
+          >
+            <PhoneInput
+              ref={phoneInput}
+              defaultValue={oldPhoneNumber}
+              defaultCode="IN"
+              layout="first"
+              // onChangeText={(text) => {
+              //   setPhoneNumber(text);
+              // }}
+              onChangeText={(text) => {
+                validateOldPhoneNumber(text);
+              }}
+              placeholder={"Enter your phone number"}
+              onChangeFormattedText={(text) => {
+                setOldNumberFormattedValue(text);
+              }}
+              // withDarkTheme
+              // withShadow
+              autoFocus
+              textContainerStyle={{
+                flex: 1,
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+              }}
+              containerStyle={{
+                flex: 1,
+                alignSelf: "center",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            />
           </View>
+
           {oldPhoneNumberError ? (
             <Text style={ChangeContactInputStyle.error_text}>
               {oldPhoneNumberError}
@@ -107,7 +147,7 @@ const ChangeContactInput = (props) => {
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your new phone number with country code
           </Text>
-          <View style={ChangeContactInputStyle.numbercodefirstview}>
+          {/* <View style={ChangeContactInputStyle.numbercodefirstview}>
             <View style={ChangeContactInputStyle.bindview}>
               <Text style={ChangeContactInputStyle.numbercode}>+61</Text>
               <Image
@@ -131,6 +171,39 @@ const ChangeContactInput = (props) => {
             <Image
               style={ChangeContactInputStyle.Vectorimg}
               source={IMAGES.pencile}
+            />
+          </View> */}
+          <View
+            style={[ChangeContactInputStyle.simpleinputview, { height: 55 }]}
+          >
+            <PhoneInput
+              ref={phoneInput}
+              defaultValue={newPhoneNumber}
+              defaultCode="IN"
+              layout="first"
+              // onChangeText={(text) => {
+              //   setPhoneNumber(text);
+              // }}
+              onChangeText={(text) => {
+                validateNewPhoneNumber(text);
+              }}
+              placeholder={"Enter your phone number"}
+              onChangeFormattedText={(text) => {
+                setNewNumberFormattedValue(text);
+              }}
+              // withDarkTheme
+              // withShadow
+              autoFocus
+              textContainerStyle={{
+                flex: 1,
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+              }}
+              containerStyle={{
+                flex: 1,
+                alignSelf: "center",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             />
           </View>
           {newPhoneNumberError ? (

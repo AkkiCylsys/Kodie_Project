@@ -212,6 +212,9 @@ const ProfileDocuments = (props) => {
         <View>
           {folderId ? (
             <ProfileDocumentDetails
+              onPress={() => {
+                setFolderId(null);
+              }}
               headingDocument={
                 folderId == 1
                   ? "Identity documents"
@@ -282,6 +285,9 @@ const ProfileDocuments = (props) => {
         <View>
           {companyDocumentId ? (
             <ProfileDocumentDetails
+              onPress={() => {
+                setCompanyDocumentId(null);
+              }}
               headingDocument={
                 companyDocumentId == 1
                   ? "Company documents"
