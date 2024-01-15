@@ -80,7 +80,7 @@ export default CompanyDetails = (props) => {
 
   const [formattedValue, setFormattedValue] = useState("");
   const phoneInput = useRef(null);
-  console.log("formattedValue....",formattedValue)
+  console.log("formattedValue....", formattedValue);
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);

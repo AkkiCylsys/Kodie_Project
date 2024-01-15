@@ -625,7 +625,7 @@ export default CreateJobTermsScreen = (props) => {
               <TimePicker
                 data={new Date()}
                 getData={(date) => {
-                  setCurrentTime(moment(date).format("hh:mm"));
+                  setCurrentTime(moment(date).format("hh:mm A"));
                 }}
               />
             </View>

@@ -76,6 +76,25 @@ export default SearchForJob = (props) => {
   const [longitude, setlongitude] = useState("");
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
+  const [priceRanges, setPriceRanges] = useState(0);
+  const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
+
+  const handlePriceRangeChange = (priceRange) => {
+    console.log("Price Range in Parent Component:", priceRange);
+    setPriceRanges(priceRange);
+    // Do something with the price range in the parent component
+  };
+  const handlemaxRange = (high) => {
+    console.log("High Range in Parent Component:", high);
+    setMax(high);
+  };
+  const handleminRange = (low) => {
+    console.log("Low Range in Parent Component:", low);
+    setMin(low);
+  };
+
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -197,6 +216,7 @@ export default SearchForJob = (props) => {
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
+    setFormattedPriceRanges(`$${priceRanges}`);
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
@@ -211,7 +231,7 @@ export default SearchForJob = (props) => {
     setProperty_value("");
     setLocation("");
     setRatingThresholdValue("");
-  }, [selectJobType]);
+  }, [selectJobType, priceRanges]);
   const populorServiceRender = ({ item }) => {
     return (
       <View style={CreateJobFirstStyle.item}>
@@ -422,15 +442,18 @@ export default SearchForJob = (props) => {
       });
   };
   const handleSearch = () => {
-    console.log("property_Datadfvhdhfsffddf", property_Data);
     const SearchData = {
-      job_need: selectJobTypeid,
-      job_service: servicesValue,
+      job_type: selectJobTypeid,
+      job_perform: servicesValue,
       longitude: property_value || longitude,
       latitude: property_value || latitude,
+      available: jobPriorityValue,
+      min_budget: `$${min}`,
+      max_budget: `$${max}`,
     };
     const url = Config.BASE_URL;
-    const SearchType = url + "search_for_contractor";
+    const SearchType = url + "job/searchJobs";
+    console.log("property_Datadfvhdhfsffddf", SearchData);
     console.log("Request URL:", SearchType);
     setIsLoading(true);
     axios
@@ -442,7 +465,7 @@ export default SearchForJob = (props) => {
           console.log("propertyData....", response.data.property_details);
           setSearchType(response.data.property_details);
 
-          props.Search?.({
+          props.SearchJobResult?.({
             searchType,
           });
         } else {
@@ -785,6 +808,17 @@ export default SearchForJob = (props) => {
                 />
               </TouchableOpacity>
             </View>
+            <Text style={[LABEL_STYLES.commontext, { marginTop: 15 }]}>
+              {"What is your budget for this job?"}
+            </Text>
+            <RangeSlider
+              from={1}
+              to={2000}
+              onPriceRangeChange={handlePriceRangeChange}
+              onHighRange={handlemaxRange}
+              onLowRange={handleminRange}
+              onLowrange={2}
+            />
 
             <CustomSingleButton
               disabled={isLoading ? true : false}

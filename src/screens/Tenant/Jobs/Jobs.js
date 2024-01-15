@@ -39,17 +39,10 @@ const Jobs = (props) => {
           />
         );
       case "Tab2":
-        // return (
-        //   <View >
-        //     <Text>khgfdgfjhdfgsdhfgdf</Text>
-
-        //   </View>
-
-        // );
         return (
           <SearchForContractor
             Search={(SearchData) => {
-              alert(JSON.stringify(SearchData));
+              // alert("dfgdsgddgdsdfd", JSON.stringify(SearchData));
               props.navigation.navigate("SearchDetail", {
                 SearchDataDetail: SearchData,
               });
@@ -58,12 +51,16 @@ const Jobs = (props) => {
         );
 
       case "Tab3":
-        // return (
-        //   <View>
-        //     <Text>khgfd gfjv fhfghhf ghfg hfghghfgh fhgh hdfgsdhfgdf</Text>
-        //   </View>
-        // );
-        return <SearchforJob />;
+        return (
+          <SearchforJob
+            SearchJobResult={(Searchjob) => {
+              // alert("khjghjhgfdsdfsd", JSON.stringify(Searchjob));
+              props.navigation.navigate("SearchDetail", {
+                SearchDataDetail: Searchjob,
+              });
+            }}
+          />
+        );
 
       default:
         return (
@@ -74,10 +71,7 @@ const Jobs = (props) => {
 
   return (
     <View style={JobsCss.Container}>
-      {/* <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} /> */}
-
       <TopHeader
-        // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Jobs"}
         isprofileImage

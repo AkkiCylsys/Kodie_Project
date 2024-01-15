@@ -218,7 +218,9 @@ const JobDetails = (props) => {
       <TopHeader
         isprofileImage
         IsNotification
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() =>
+          View_Job_Details ? props.navigation.navigate("Jobs") : _goBack(props)
+        }
         MiddleText={"Review job details"}
       />
       <View style={{ marginVertical: 10 }}>

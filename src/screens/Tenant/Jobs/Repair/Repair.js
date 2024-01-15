@@ -161,7 +161,7 @@ export default Repair = (props) => {
       getJobDetailsByFilter(selectedFilter);
     }
     getJobDetails_Filter_Service(selectedFilter);
-    setActiveScreen(myJob_Type === 0 ? false : true);
+    setActiveScreen(myJob_Type == 0 ? true : false);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
@@ -436,7 +436,12 @@ export default Repair = (props) => {
         </>
         {/* ) : null} */}
 
-        <SearchBar frontSearchIcon height={48} marginTop={5} placeholder={"Search  jobs"} />
+        <SearchBar
+          frontSearchIcon
+          height={48}
+          marginTop={5}
+          placeholder={"Search  jobs"}
+        />
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
             <FlatList
