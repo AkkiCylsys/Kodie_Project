@@ -788,11 +788,13 @@ export default SearchForJob = (props) => {
 
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={() => {
-                handleSearch();
-              }}
+              onPress={
+                // handleSearch();  
+                props.searchJob 
+              }
               _ButtonText={"Search"}
               Text_Color={_COLORS.Kodie_WhiteColor}
+
             />
           </View>
         </ScrollView>

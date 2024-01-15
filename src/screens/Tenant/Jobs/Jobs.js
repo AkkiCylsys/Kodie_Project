@@ -63,7 +63,8 @@ const Jobs = (props) => {
         //     <Text>khgfd gfjv fhfghhf ghfg hfghghfgh fhgh hdfgsdhfgdf</Text>
         //   </View>
         // );
-        return <SearchforJob />;
+                 
+                  return <SearchforJob searchJob={()=> props.navigation.navigate("SearchJobResult")}/>;
 
       default:
         return (
