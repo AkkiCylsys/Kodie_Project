@@ -58,7 +58,7 @@ const Jobs = (props) => {
           // props.navigation.navigate("SearchDetail", {
           //   SearchDataDetail: Searchjob,
           // });
-          // }}
+          // }}ß
           />
         );
 
