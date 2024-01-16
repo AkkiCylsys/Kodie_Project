@@ -389,7 +389,7 @@ export default CompanyDetails = (props) => {
     const getCompanyDetail_url = url + `profile/getUserCompanyDetails`;
     console.log("Request URL:", getCompanyDetail_url);
     const companyDetailsData = {
-      uad_key: 479,
+      uad_key: loginData?.Login_details?.user_account_id,
     };
     setIsLoading(true);
     axios

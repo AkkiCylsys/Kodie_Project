@@ -105,6 +105,7 @@ export default SearchForJob = (props) => {
   };
   const onRegionChange = (Region) => {
     setlatitude(Region.latitude);
+
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
   };
@@ -412,6 +413,7 @@ export default SearchForJob = (props) => {
       </View>
     );
   };
+  console.log("longitude,latitude", longitude, latitude);
   // api intrigation.......
   const handleProperty_Type = () => {
     const propertyData = {
@@ -443,13 +445,21 @@ export default SearchForJob = (props) => {
   };
   const handleSearch = () => {
     const SearchData = {
-      job_type: selectJobTypeid,
-      job_perform: servicesValue,
-      longitude: property_value || longitude,
-      latitude: property_value || latitude,
-      available: jobPriorityValue,
-      min_budget: `$${min}`,
-      max_budget: `$${max}`,
+      // job_type: selectJobTypeid,
+      // job_perform: servicesValue,
+      // longitude: property_value || longitude,
+      // latitude: property_value || latitude,
+      // available: jobPriorityValue,
+      // min_budget: `${min}`,
+      // max_budget: `${max}`,
+
+      job_type: "167",
+      job_perform: "195",
+      available: "235",
+      longitude: "79.03201599999994",
+      latitude: "26.794697800000023",
+      min_budget: "$639",
+      max_budget: "$1382",
     };
     const url = Config.BASE_URL;
     const SearchType = url + "job/searchJobs";
@@ -462,20 +472,20 @@ export default SearchForJob = (props) => {
         console.log("property_type", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          console.log("propertyData....", response.data.property_details);
+          console.log("handleSearch....", response.data.property_details);
           setSearchType(response.data.property_details);
 
           props.SearchJobResult?.({
             searchType,
           });
         } else {
-          console.error("property_type_error:", response.data.error);
+          console.error("handleSearch_error:", response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
-        console.error("property_type error:", error);
+        console.error("handleSearch error:", error);
         // alert(error);
         setIsLoading(false);
       });
