@@ -53,12 +53,12 @@ const Jobs = (props) => {
       case "Tab3":
         return (
           <SearchforJob
-          // SearchJobResult={(Searchjob) => {
-          // alert("khjghjhgfdsdfsd", JSON.stringify(Searchjob));
-          // props.navigation.navigate("SearchDetail", {
-          //   SearchDataDetail: Searchjob,
-          // });
-          // }}ß
+            SearchResultJob={(Searchjob) => {
+              // alert("khjghjhgfdsdfsd", JSON.stringify(Searchjob));
+              props.navigation.navigate("SearchJobResult", {
+                SearchDataDetail: Searchjob,
+              });
+            }}
           />
         );
 

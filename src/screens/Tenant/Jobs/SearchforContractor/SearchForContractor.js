@@ -422,7 +422,7 @@ export default SearchForContractor = (props) => {
       });
   };
   const handleSearch = () => {
-    console.log("property_Datadfvhdhfsffddf", property_value);
+    console.log("property_Datadfvhdhfsffddf", servicesValue);
     const SearchData = {
       job_need: selectJobTypeid,
       job_service: servicesValue,

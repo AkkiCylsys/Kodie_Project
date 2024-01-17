@@ -54,7 +54,7 @@ export default SearchForJob = (props) => {
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
-  const [searchType, setSearchType] = useState([]);
+  const [searchTypeData, setSearchTypeData] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [jobPriorityData, setJobPriorityData] = useState([]);
   const [jobPriorityValue, setJobPriorityValue] = useState([]);
@@ -444,22 +444,23 @@ export default SearchForJob = (props) => {
       });
   };
   const handleSearch = () => {
+    console.log("jobPriorityValue", jobPriorityValue);
     const SearchData = {
-      // job_type: selectJobTypeid,
-      // job_perform: servicesValue,
-      // longitude: property_value || longitude,
-      // latitude: property_value || latitude,
-      // available: jobPriorityValue,
-      // min_budget: `${min}`,
-      // max_budget: `${max}`,
+      job_type: selectJobTypeid,
+      job_perform: servicesValue,
+      longitude: property_value || longitude,
+      latitude: property_value || latitude,
+      available: jobPriorityValue,
+      min_budget: `${min}`,
+      max_budget: `${max}`,
 
-      job_type: "167",
-      job_perform: "195",
-      available: "235",
-      longitude: "79.03201599999994",
-      latitude: "26.794697800000023",
-      min_budget: "$639",
-      max_budget: "$1382",
+      // job_type: "167",
+      // job_perform: "195",
+      // available: "235",
+      // longitude: "79.03201599999994",
+      // latitude: "26.794697800000023",
+      // min_budget: "$639",
+      // max_budget: "$1382",
     };
     const url = Config.BASE_URL;
     const SearchType = url + "job/searchJobs";
@@ -472,11 +473,11 @@ export default SearchForJob = (props) => {
         console.log("property_type", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          console.log("handleSearch....", response.data.property_details);
-          setSearchType(response.data.property_details);
+          console.log("handleSearch....", response.data.data);
+          setSearchTypeData(response.data.data);
 
-          props.SearchJobResult?.({
-            searchType,
+          props.SearchResultJob?.({
+            searchTypeData,
           });
         } else {
           console.error("handleSearch_error:", response.data.error);
@@ -832,13 +833,9 @@ export default SearchForJob = (props) => {
 
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={
-                // handleSearch();  
-                props.searchJob 
-              }
+              onPress={handleSearch}
               _ButtonText={"Search"}
               Text_Color={_COLORS.Kodie_WhiteColor}
-
             />
           </View>
         </ScrollView>

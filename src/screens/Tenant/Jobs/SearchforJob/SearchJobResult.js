@@ -6,7 +6,7 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import { _goBack } from "../../../../services/CommonServices";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
-import { _COLORS, IMAGES } from "../../../../Themes";
+import { _COLORS, IMAGES, FONTFAMILY } from "../../../../Themes";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import { SearchJobResultStyle } from "./SearchJobResultStyle";
 
@@ -26,7 +26,7 @@ const searchData = [
 
 const SearchJobResult = (props) => {
   const [rating, setRating] = useState(4);
-
+  let SearchDataDetail = props?.route?.params?.SearchDataDetail;
   const renderItem = ({ item }) => {
     return (
       <View style={SearchJobResultStyle.Container}>
@@ -36,7 +36,11 @@ const SearchJobResult = (props) => {
             <Text>{item.description}</Text>
           </View>
           <View>
-            <AntDesign name="filter" size={15} color={_COLORS.Kodie_GrayColor} />
+            <AntDesign
+              name="filter"
+              size={15}
+              color={_COLORS.Kodie_GrayColor}
+            />
           </View>
         </View>
         <DividerIcon />
@@ -46,11 +50,19 @@ const SearchJobResult = (props) => {
             <View style={SearchJobResultStyle.hearto}>
               <Text style={SearchJobResultStyle.heartotext}>Panding bid</Text>
             </View>
-            <View >
-              <AntDesign name="hearto" size={20} color={_COLORS.Kodie_GrayColor} />
+            <View>
+              <AntDesign
+                name="hearto"
+                size={20}
+                color={_COLORS.Kodie_GrayColor}
+              />
             </View>
             <View>
-              <Entypo name="dots-three-horizontal" size={20} color={_COLORS.Kodie_GrayColor} />
+              <Entypo
+                name="dots-three-horizontal"
+                size={20}
+                color={_COLORS.Kodie_GrayColor}
+              />
             </View>
           </View>
           <Text>{item.refNumber}</Text>
@@ -61,7 +73,9 @@ const SearchJobResult = (props) => {
         </View>
         <View style={SearchJobResultStyle.locationstyle}>
           <Octicons name="location" size={20} color={_COLORS.Kodie_GrayColor} />
-          <Text style={SearchJobResultStyle.locationcurrent}>{item.location}</Text>
+          <Text style={SearchJobResultStyle.locationcurrent}>
+            {item.location}
+          </Text>
           <Text>{item.budget}</Text>
         </View>
         <View style={{ marginHorizontal: 25, marginTop: 30 }}>
@@ -83,9 +97,45 @@ const SearchJobResult = (props) => {
   return (
     <>
       <View style={SearchJobResultStyle.Mainview}>
-        <TopHeader onPressLeftButton={() => _goBack(props)} MiddleText={"Search results"} />
+        <TopHeader
+          onPressLeftButton={() => _goBack(props)}
+          MiddleText={"Search results"}
+        />
+        <View style={SearchJobResultStyle.Fixtext}>
+          <View style={{ flex: 1 }}>
+            <Text
+              style={{
+                fontSize: 14,
+                fontFamily: FONTFAMILY.K_Bold,
+                color: _COLORS.Kodie_BlackColor,
+              }}
+            >
+              {"Fixing & maintenance"}
+            </Text>
+            <Text>
+              {"Electricals; Sydney; Greater than 4 rating; Budget: $200 ..."}
+            </Text>
+          </View>
+          <View
+            style={{
+              borderWidth: 1,
+              padding: 8,
+              borderRadius: 5,
+              justifyContent: "center",
+              borderColor: _COLORS.Kodie_GrayColor,
+            }}
+          >
+            <AntDesign
+              name="filter"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
+        </View>
+        <DividerIcon />
         <FlatList
-          data={searchData}
+          data={SearchDataDetail}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
         />
