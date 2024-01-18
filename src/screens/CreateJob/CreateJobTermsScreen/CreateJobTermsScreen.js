@@ -16,6 +16,7 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
 import StepIndicator from "react-native-step-indicator";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { Config } from "../../../Config";
@@ -241,25 +242,25 @@ export default CreateJobTermsScreen = (props) => {
   const NeedHour_render = (item) => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobTermsStyle.itemView}>
-          {item.lookup_key === hourlyNeedValue ? (
-            <Fontisto
-              color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
-              size={20}
-            />
-          ) : (
-            <Fontisto
-              color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-passive"}
-              size={20}
-            />
-          )}
-          <Text style={CreateJobTermsStyle.textItem}>
-            {item.lookup_description}
-          </Text>
-        </View>
-      </ScrollView>
+      <View style={CreateJobTermsStyle.itemView}>
+        {item.lookup_key === hourlyNeedValue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={"checkcircle"}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={CreateJobTermsStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    </ScrollView>
     );
   };
   const NeedService_render = (item) => {
@@ -267,17 +268,17 @@ export default CreateJobTermsScreen = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={CreateJobTermsStyle.itemView}>
           {item.lookup_key === needServicesValue ? (
-            <Fontisto
-              color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
-              size={20}
-            />
-          ) : (
-            <Fontisto
-              color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-passive"}
-              size={20}
-            />
+            <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={"checkcircle"}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
           )}
           <Text style={CreateJobTermsStyle.textItem}>
             {item.lookup_description}
