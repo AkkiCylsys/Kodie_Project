@@ -159,8 +159,8 @@ export default Repair = (props) => {
   useEffect(() => {
     if (isvisible) {
       getJobDetailsByFilter(selectedFilter);
+      getJobDetails_Filter_Service(selectedFilter);
     }
-    getJobDetails_Filter_Service(selectedFilter);
     setActiveScreen(myJob_Type == 0 ? true : false);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
@@ -179,8 +179,12 @@ export default Repair = (props) => {
       console.log("API Response:", response.data);
       if (response.data.success === true) {
         Alert.alert("Job Deleted", response.data.message);
+        {
+          myJob_Type == 0
+            ? getJobDetailsByFilter(selectedFilter)
+            : getJobDetails_Filter_Service(selectedFilter);
+        }
 
-        getJobDetailsByFilter(selectedFilter);
         setIsLoading(false);
       }
     } catch (error) {
@@ -240,26 +244,6 @@ export default Repair = (props) => {
   // Archive component call here...................
   <ArchiveJob />;
 
-  // Api intrigation....
-  // const getAllJob = () => {
-  //   const url = Config.BASE_URL;
-  //   const getAllJobUrl = url + `job/getAlljobs/${account_id}`;
-  //   console.log("Request URL:", getAllJobUrl);
-  //   setIsLoading(true);
-  //   axios
-  //     .get(getAllJobUrl)
-  //     .then((response) => {
-  //       console.log("API Response getAllJob..:", response.data);
-  //       setAllJobData(response.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("API failed_moduleName", error);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
-
   const propertyData_render1 = ({ item }) => {
     setJob_Id(item?.job_id);
     return (
@@ -276,7 +260,7 @@ export default Repair = (props) => {
               </Text>
             </View>
             <View style={RepairCss.RightContainer}>
-              <View
+              <TouchableOpacity
                 style={[
                   RepairCss.buttonView,
                   {
@@ -310,19 +294,18 @@ export default Repair = (props) => {
                         : item.isongoing
                         ? _COLORS.Kodie_DarkOrange
                         : _COLORS.Kodie_GreenColor,
-                      flex: 1,
                     },
                   ]}
                 >
                   {"Awaiting"}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <TouchableOpacity
               onPress={() => {
                 setIsDeleteBottomSheetVisible(true);
                 setJobId(item.job_id);
-                setAddress(item?.job_location);
+                setAddress(`Ref #${item?.job_reference}`);
               }}
             >
               <Entypo
@@ -333,7 +316,9 @@ export default Repair = (props) => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={LABEL_STYLES.commonMidtext}>{item.job_reference}</Text>
+          <Text
+            style={LABEL_STYLES.commonMidtext}
+          >{`Ref #${item.job_reference}`}</Text>
           <View style={RepairCss.flat_MainView}>
             <View style={RepairCss.flexContainer}>
               <View style={RepairCss.propertyView}>
@@ -358,7 +343,7 @@ export default Repair = (props) => {
             <View style={[RepairCss.BudgetView]}>
               <View style={RepairCss.flexContainer}>
                 <Text style={RepairCss.bugetText}>{"Budget"}</Text>
-                <Text style={RepairCss.spend}>{item.job_budget}</Text>
+                <Text style={RepairCss.spend}>{item.job_max_budget}</Text>
               </View>
             </View>
           </View>

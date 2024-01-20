@@ -703,24 +703,11 @@ const AddBiddingDetails = (props) => {
           {isLoading ? <CommonLoader /> : null}
         </View>
       ) : (
-        // <View style={AddBiddingDetailsCss.ModalMainView}>
-        //   <View style={AddBiddingDetailsCss.ModalView}>
         <View style={AddBiddingDetailsCss.modalContainer}>
-          {/* <TouchableOpacity>
-                <AntDesign
-                  name="close"
-                  size={20}
-                  color={_COLORS.Kodie_BlackColor}
-                  style={AddBiddingDetailsCss.modalCloseIcon}
-                />
-              </TouchableOpacity> */}
           <Text style={AddBiddingDetailsCss.modalMainText}>
             Bidding enabled
           </Text>
           <Text style={AddBiddingDetailsCss.modalSubText}>
-            {/* Congratulations! You have successfully enabled property
-                  bidding feature. You will be notified once a tenant places a
-                  bid . */}
             {BidData?.message}
           </Text>
           <Image

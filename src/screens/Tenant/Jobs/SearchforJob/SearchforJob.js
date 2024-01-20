@@ -54,7 +54,7 @@ export default SearchForJob = (props) => {
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
-  const [searchTypeData, setSearchTypeData] = useState([]);
+  // const [searchTypeData, setSearchTypeData] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [jobPriorityData, setJobPriorityData] = useState([]);
   const [jobPriorityValue, setJobPriorityValue] = useState([]);
@@ -225,13 +225,13 @@ export default SearchForJob = (props) => {
       language: "en",
     });
     CheckIOSMapPermission();
-    setSelectJobType("");
-    setservicesValue("");
-    setAboutyourNeed("");
-    setJobPriorityValue("");
-    setProperty_value("");
-    setLocation("");
-    setRatingThresholdValue("");
+    // setSelectJobType("");
+    // setservicesValue("");
+    // setAboutyourNeed("");
+    // setJobPriorityValue("");
+    // setProperty_value("");
+
+    // setRatingThresholdValue("");
   }, [selectJobType, priceRanges]);
   const populorServiceRender = ({ item }) => {
     return (
@@ -448,19 +448,11 @@ export default SearchForJob = (props) => {
     const SearchData = {
       job_type: selectJobTypeid,
       job_perform: servicesValue,
-      longitude: property_value || longitude,
-      latitude: property_value || latitude,
+      longitude: longitude || property_value.longitude,
+      latitude: latitude || property_value.latitude,
       available: jobPriorityValue,
       min_budget: `${min}`,
       max_budget: `${max}`,
-
-      // job_type: "167",
-      // job_perform: "195",
-      // available: "235",
-      // longitude: "79.03201599999994",
-      // latitude: "26.794697800000023",
-      // min_budget: "$639",
-      // max_budget: "$1382",
     };
     const url = Config.BASE_URL;
     const SearchType = url + "job/searchJobs";
@@ -474,10 +466,10 @@ export default SearchForJob = (props) => {
         if (response.data.success === true) {
           setIsLoading(false);
           console.log("handleSearch....", response.data.data);
-          setSearchTypeData(response.data.data);
+          // setSearchTypeData(response.data.data);
 
           props.SearchResultJob?.({
-            searchTypeData,
+            searchTypeData: response.data.data,
           });
         } else {
           console.error("handleSearch_error:", response.data.error);
@@ -785,7 +777,10 @@ export default SearchForJob = (props) => {
                 searchPlaceholder="Search..."
                 value={property_value}
                 onChange={(item) => {
-                  setProperty_value(item.longitude);
+                  setProperty_value({
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                  });
                 }}
                 renderItem={property_Type_render}
               />

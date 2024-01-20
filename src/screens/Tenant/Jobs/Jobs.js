@@ -42,7 +42,7 @@ const Jobs = (props) => {
         return (
           <SearchForContractor
             Search={(SearchData) => {
-              // alert("dfgdsgddgdsdfd", JSON.stringify(SearchData));
+              alert("dfgdsgddgdsdfd", JSON.stringify(SearchData));
               props.navigation.navigate("SearchDetail", {
                 SearchDataDetail: SearchData,
               });

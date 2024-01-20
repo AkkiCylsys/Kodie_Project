@@ -422,12 +422,12 @@ export default SearchForContractor = (props) => {
       });
   };
   const handleSearch = () => {
-    console.log("property_Datadfvhdhfsffddf", servicesValue);
+    console.log("property_Datadfvhdhfsffddf", longitude, latitude);
     const SearchData = {
       job_need: selectJobTypeid,
       job_service: servicesValue,
-      longitude: property_value || longitude,
-      latitude: property_value || latitude,
+      longitude: longitude || property_value.longitude,
+      latitude: latitude || property_value.latitude,
     };
     const url = Config.BASE_URL;
     const SearchType = url + "search_for_contractor";
@@ -751,7 +751,10 @@ export default SearchForContractor = (props) => {
                 searchPlaceholder="Search..."
                 value={property_value}
                 onChange={(item) => {
-                  setProperty_value(item.longitude);
+                  setProperty_value({
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                  });
                 }}
                 renderItem={property_Type_render}
               />

@@ -62,7 +62,7 @@ const data = [
 const data1 = [
   {
     id: "1",
-    Data: "Delete job",
+    Data: "Confirm delete job",
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -174,7 +174,7 @@ const BottomJobModal = (props) => {
               {props?.isDeletePropertyClicked ? (
                 <Text
                   style={BottomModalDataStyle.text}
-                >{`Delete property: ${props?.Address} ?`}</Text>
+                >{`Delete job: ${props?.Address}`}</Text>
               ) : null}
             </>
           );

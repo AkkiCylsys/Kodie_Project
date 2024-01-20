@@ -48,6 +48,9 @@ const JobDetails = (props) => {
   let update_JOB_ID = props?.route?.params?.JobId;
   let View_Job_Details = props?.route?.params?.View_Job_Details;
   let editMode = props?.route?.params?.editMode;
+  const SearchJobId = props.route.params.SearchJobId;
+  const searchView = props.route.params.searchView;
+  console.log("SearchJobId...", SearchJobId, searchView);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [currentPage, setCurrentPage] = useState(3);
   const [visible, setVisible] = useState(false);
@@ -171,6 +174,8 @@ const JobDetails = (props) => {
       case "Tab1":
         return (
           <Reviewjobdetails1
+            SearchJobId={SearchJobId}
+            searchView={searchView}
             job_id={job_id}
             JOB_ID={JOB_ID}
             update_JOB_ID={update_JOB_ID}
@@ -184,6 +189,11 @@ const JobDetails = (props) => {
               // alert("hello")
             }}
             onJobDetailsSuccess={handleJobDetailsSuccess}
+            BidonPress={() => {
+              props.navigation.navigate("BidforJob", {
+                SearchJobId: SearchJobId,
+              });
+            }}
           />
         );
       case "Tab2":
@@ -224,7 +234,7 @@ const JobDetails = (props) => {
         MiddleText={"Review job details"}
       />
       <View style={{ marginVertical: 10 }}>
-        {View_Job_Details ? null : (
+        {View_Job_Details || searchView ? null : (
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={3}
@@ -292,13 +302,19 @@ const JobDetails = (props) => {
             TAB4
             TAB3
             Tab1={"Details"}
-            Tab2={View_Job_Details ? "Bids" : null}
-            Tab3={View_Job_Details ? "Milestones" : null}
-            Tab4={View_Job_Details ? "Documents" : null}
+            Tab2={View_Job_Details || searchView ? "Bids" : null}
+            Tab3={View_Job_Details || searchView ? "Milestones" : null}
+            Tab4={View_Job_Details || searchView ? "Documents" : null}
             onPressTab1={() => setActiveTab("Tab1")}
-            onPressTab2={() => (View_Job_Details ? setActiveTab("Tab2") : null)}
-            onPressTab3={() => (View_Job_Details ? setActiveTab("Tab3") : null)}
-            onPressTab4={() => (View_Job_Details ? setActiveTab("Tab4") : null)}
+            onPressTab2={() =>
+              View_Job_Details || searchView ? setActiveTab("Tab2") : null
+            }
+            onPressTab3={() =>
+              View_Job_Details || searchView ? setActiveTab("Tab3") : null
+            }
+            onPressTab4={() =>
+              View_Job_Details || searchView ? setActiveTab("Tab4") : null
+            }
             colorTab1={
               activeTab === "Tab1"
                 ? _COLORS.Kodie_BlackColor
