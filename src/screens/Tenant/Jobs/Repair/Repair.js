@@ -81,7 +81,7 @@ export default Repair = (props) => {
   // alert(Job_Id);
 
   const myJob_Type = props.myJob_Type;
-  console.log("myJob_Type in repair..", myJob_Type);
+  console.log("myJob_Type in job module", myJob_Type);
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -161,7 +161,7 @@ export default Repair = (props) => {
       getJobDetailsByFilter(selectedFilter);
       getJobDetails_Filter_Service(selectedFilter);
     }
-    setActiveScreen(myJob_Type == 0 ? true : false);
+    setActiveScreen(myJob_Type == 1 ? true : false);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);

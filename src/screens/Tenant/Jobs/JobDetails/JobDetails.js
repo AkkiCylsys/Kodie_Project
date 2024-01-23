@@ -45,8 +45,8 @@ const Apartment_data = [
 const JobDetails = (props) => {
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
-  console.log("JOB_ID......",JOB_ID)
-  console.log("job_id......",job_id)
+  console.log("JOB_ID......", JOB_ID);
+  console.log("job_id......", job_id);
   let update_JOB_ID = props?.route?.params?.JobId;
   let View_Job_Details = props?.route?.params?.View_Job_Details;
   let editMode = props?.route?.params?.editMode;
@@ -59,10 +59,10 @@ const JobDetails = (props) => {
   const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [myJobType, setMyJobType] = useState(0);
-
   const handleJobDetailsSuccess = (jobTypeMy) => {
     console.log("jobTypeMy in JobDetails component:", jobTypeMy);
     setMyJobType(jobTypeMy);
+    console.log("myJobType key....",myJobType)
   };
 
   const handleImageFilePath = async (imagesFilePath) => {
@@ -187,6 +187,7 @@ const JobDetails = (props) => {
             onPress={() => {
               props.navigation.navigate("Jobs", {
                 myJob_Type: myJobType,
+                
               });
             }}
             onJobDetailsSuccess={handleJobDetailsSuccess}

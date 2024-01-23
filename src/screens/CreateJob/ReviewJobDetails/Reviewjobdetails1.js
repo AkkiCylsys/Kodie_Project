@@ -33,7 +33,7 @@ const Reviewjobdetails1 = (props) => {
     } else {
       getJobDetails();
     }
-  }, []);
+  }, [F_job_id]);
 
   const getJobDetails = () => {
     const url = Config.BASE_URL;
@@ -54,7 +54,7 @@ const Reviewjobdetails1 = (props) => {
           console.log("jobDetailsData....", response.data.data);
           // alert(JSON.stringify(response.data.data))
           // alert(response.data.message);
-          // console.log("myJobType..", myJobType);
+          console.log("job_type_my..", response.data.data.job_type_my);
           props.onJobDetailsSuccess(response.data.data.job_type_my);
         } else {
           alert(response.data.message);

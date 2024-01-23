@@ -11,8 +11,10 @@ import SearchforJob from "./SearchforJob/SearchforJob";
 
 const Jobs = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
-  let myJob_Type = props?.route?.params?.myJob_Type;
+  let myJob_Type = props.route.params?.myJob_Type;
+  let name = props.route.params?.name;
   console.log("myJob in Job section....", myJob_Type);
+  console.log("name.......", name);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -30,8 +32,7 @@ const Jobs = (props) => {
               });
             }}
             create_job_id={(job_id) => {
-              // const { newJob_Id } = job_id;
-              alert(job_id)
+              // alert(job_id);
               props.navigation.navigate("JobDetails", {
                 JOB_ID: job_id,
                 View_Job_Details: "View_Job_Details",

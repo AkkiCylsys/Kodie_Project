@@ -146,7 +146,6 @@ export default CompanyDetails = (props) => {
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
               ? "cleaning-services"
