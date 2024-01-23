@@ -1,59 +1,151 @@
 //ScreenNo:225
-import { View, Text, TextInput, Image } from "react-native";
+import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { ContactusStyle } from "./ContactusStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
 import { CustomButtonstyles } from "../../../components/Atoms/CustomButton/CustomButtonCss";
-import { _COLORS } from "../../../Themes";
+import { _COLORS, LABEL_STYLES } from "../../../Themes";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import Entypo from "react-native-vector-icons/Entypo";
 import { _goBack } from "../../../services/CommonServices";
+import DeviceInfo from "react-native-device-info";
+import { Config } from "../../../Config";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
 const Contactus = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData?.Login_details?.email);
+  const accountEmail = loginData?.Login_details?.email;
+  const [check, setCheck] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [aboutHelp, setAboutHelp] = useState("");
+  const [aboutHelpError, setAboutHelpError] = useState("");
+  const osName = DeviceInfo.getSystemName();
+  console.log("Operating System:", osName);
+
+  const handleCheck = () => {
+    setCheck(!check);
+  };
+  // validation...
+
+  const handleAbouthelp = (text) => {
+    setAboutHelp(text);
+    if (text == "") {
+      setAboutHelpError("Message in required.");
+    } else {
+      setAboutHelpError("");
+    }
+  };
+
+  const handleSubmit = () => {
+    if (aboutHelp.trim() == "") {
+      setAboutHelpError("Message in required.");
+    } else {
+      handleContactus();
+    }
+  };
+  // Api intrigation ....
+  const handleContactus = () => {
+    const url = Config.BASE_URL;
+    const contactUsUrl = url + "Contact_Us";
+    console.log("Request URL:", contactUsUrl);
+    setIsLoading(true);
+    const contactus_data = {
+      email: accountEmail,
+      message: aboutHelp,
+      device_information: check ? osName : null,
+    };
+    axios
+      .post(contactUsUrl, contactus_data)
+      .then((response) => {
+        console.log("API Response contact us:", response.data);
+        if (response.data.status === true) {
+          alert(response.data.message);
+          setAboutHelp("");
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed contact us", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
-    <View style={{ backgroundColor: "#FFFFFF", height: "100%" }}>
+    <View style={{ flex: 1 }}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Contact us"}
       />
-      <View style={ContactusStyle.inputview}>
-        <Text style={ContactusStyle.textmessage}>Tell us how we can help</Text>
-        <View style={ContactusStyle.inputboxview}>
-          <TextInput
-            style={ContactusStyle.input}
-            placeholder="Tell us how we can help"
-          />
-        </View>
-
-        <View style={ContactusStyle.checkboxview}>
-          <Ionicons name="checkbox" style={ContactusStyle.imgcheckbox} />
-          <View style={ContactusStyle.checkboxtextview}>
-            <Text style={ContactusStyle.optionaltext}>
-              Include device information? (optional)
-            </Text>
-            <Text style={ContactusStyle.answertext}>
-              Technical details like your model and setting can help us answer
-              your question.
-            </Text>
+      <View style={ContactusStyle.inputContainer}>
+        <Text style={LABEL_STYLES.commontext}>{"Tell us how we can help"}</Text>
+        <TextInput
+          style={[ContactusStyle.input, { height: 119 }]}
+          value={aboutHelp}
+          onChangeText={(text) => {
+            handleAbouthelp(text);
+          }}
+          placeholder="Tell us how we can help"
+          placeholderTextColor="#999"
+          // onBlur={() => {
+          //   handleAbouthelp(aboutHelp);
+          // }}
+          multiline
+          numberOfLines={5}
+          textAlignVertical={"top"}
+        />
+      </View>
+      {aboutHelpError ? (
+        <Text style={ContactusStyle.error_text}>{aboutHelpError}</Text>
+      ) : null}
+      <View style={ContactusStyle.checkboxview}>
+        <TouchableOpacity
+          onPress={() => {
+            handleCheck();
+          }}
+        >
+          <View style={ContactusStyle.checkboxTouch}>
+            {check && (
+              <Entypo name="check" color={_COLORS.Kodie_GreenColor} size={22} />
+            )}
           </View>
-        </View>
-
-        <View style={ContactusStyle.viaemailview}>
-          <Text style={ContactusStyle.viaemailtext}>
-            We will get back to you via email.
+        </TouchableOpacity>
+        <View style={ContactusStyle.checkboxtextview}>
+          <Text style={ContactusStyle.optionaltext}>
+            Include device information? (optional)
+          </Text>
+          <Text style={ContactusStyle.answertext}>
+            Technical details like your model and setting can help us answer
+            your question.
           </Text>
         </View>
-        <View style={ContactusStyle.buttonview}>
-          <CustomSingleButton
-            _ButtonText={"Submit"}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            disabled={isLoading ? true : false}
-            onPress={() => {
-              props.navigation.navigate("AppInfo");
-            }}
-          />
-        </View>
       </View>
+
+      <View style={ContactusStyle.viaemailview}>
+        <Text style={ContactusStyle.viaemailtext}>
+          We will get back to you via email.
+        </Text>
+      </View>
+      <View style={ContactusStyle.buttonview}>
+        <CustomSingleButton
+          _ButtonText={"Submit"}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+          disabled={isLoading ? true : false}
+          onPress={() => {
+            // props.navigation.navigate("AppInfo");
+            handleSubmit();
+          }}
+        />
+      </View>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
