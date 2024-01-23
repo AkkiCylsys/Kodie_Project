@@ -59,7 +59,9 @@ const EditProfile = (props) => {
     loginData?.Account_details[0]?.UAD_LAST_NAME
   );
   const [email, setEmail] = useState(loginData?.Login_details?.email);
-  const [phoneNumber, setPhoneNumber] = useState(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
+  const [phoneNumber, setPhoneNumber] = useState(
+    String(loginData?.Account_details[0]?.UAD_PHONE_NO)
+  );
   const [location, setLocation] = useState(
     loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD
   );
@@ -86,12 +88,6 @@ const EditProfile = (props) => {
   console.log("longitude....", longitude);
   // console.log("formattedValue....",formattedValue)
   // console.log("phoneNumber....",phoneNumber)
-
-  // const formatedtext = String(loginData?.Account_details[0]?.UAD_PHONE_NO);
-  // console.log("formatedtext...", formatedtext);
-  // var plusIndex = formatedtext.indexOf("1");
-  // var formatednumberinput = formatedtext.substring(plusIndex + 1);
-  // console.log("countryCode...", formatednumberinput);
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
@@ -241,14 +237,8 @@ const EditProfile = (props) => {
         // alert(activeTab)
         if (activeTab === "Tab1") {
           setLocation(MainFullAddress);
-          console.log("MainFullAddress location...", MainFullAddress);
         } else {
           setCompanyPhysicaladdress(MainFullAddress);
-          console.log("MainFullAddress....", MainFullAddress);
-          console.log(
-            "companyPhysicaladdress edit company....",
-            companyPhysicaladdress
-          );
         }
 
         //setAddress(MainFullAddress);
@@ -263,23 +253,13 @@ const EditProfile = (props) => {
   // Api intrrigation......
   const Updateprofile = async () => {
     const formData = new FormData();
-    // if (ImageName && typeof ImageName === "string") {
-    //   const imageUri = ImageName;
-    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-    //   formData.append("profile_photo", {
-    //     uri: imageUri,
-    //     name: imageName,
-    //   });
-    // }
     if (ImageName && typeof ImageName === "string") {
       const imageUri = ImageName;
       const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-      const imageFile = {
+      formData.append("profile_photo", {
         uri: imageUri,
         name: imageName,
-        type: "image/jpeg",
-      };
-      formData.append("profile_photo", imageFile);
+      });
     }
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
     formData.append("first_name", fullName);
@@ -290,7 +270,7 @@ const EditProfile = (props) => {
     formData.append("physical_address", location);
     formData.append("longitude", longitude);
     formData.append("latitude", latitude);
-    console.log("edit profile formData.......", formData);
+    console.log("formData", formData);
     const url = Config.BASE_URL;
     const updateProfile_url = url + "profile/updateProfile";
     console.log("Request URL:", updateProfile_url);
@@ -312,6 +292,7 @@ const EditProfile = (props) => {
       setIsLoading(false);
     }
   };
+
   const openMap = () => {
     Platform.OS == "ios" ? CheckIOSMapPermission : checkpermissionlocation();
     setIsMap(true);
@@ -714,10 +695,6 @@ const EditProfile = (props) => {
             setIsMap(true);
             if (activeTab === "Tab1") {
               setLocation(details.formatted_address);
-              console.log(
-                "MainFullAddress location details...",
-                details.formatted_address
-              );
             } else {
               setCompanyPhysicaladdress(details.formatted_address);
             }

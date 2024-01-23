@@ -22,6 +22,7 @@ const Reviewjobdetails1 = (props) => {
   console.log("SearchJobId...", props.SearchJobId, searchView);
   console.log("View_Job_Details_sdfsdf.....", props.View_Job_Details);
   console.log("JOB_IDfsdfsdfs.....", props.JOB_ID);
+  console.log("JOB_IDfsdfsdfs small.....", props.job_id);
   const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
 
   // alert(props.job_id)
@@ -42,7 +43,7 @@ const Reviewjobdetails1 = (props) => {
     const jobDetailsData = {
       // jm_job_id: 1,
       // jm_job_id: props.job_id,
-      jm_job_id: F_job_id || props.SearchJobId,
+      jm_job_id: F_job_id || SearchJobId,
     };
     axios
       .post(jobDetails_url, jobDetailsData)
@@ -166,9 +167,7 @@ const Reviewjobdetails1 = (props) => {
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
-              onPress={props.onPress?.({
-                jobTypeMy: jobDetailsData.job_type_my,
-              })}
+              onPress={props.onPress}
             />
           </View>
           <TouchableOpacity style={ReviewjobdetailsStyle1.goBack_View}>

@@ -45,6 +45,8 @@ const Apartment_data = [
 const JobDetails = (props) => {
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
+  console.log("JOB_ID......",JOB_ID)
+  console.log("job_id......",job_id)
   let update_JOB_ID = props?.route?.params?.JobId;
   let View_Job_Details = props?.route?.params?.View_Job_Details;
   let editMode = props?.route?.params?.editMode;
@@ -186,7 +188,6 @@ const JobDetails = (props) => {
               props.navigation.navigate("Jobs", {
                 myJob_Type: myJobType,
               });
-              // alert("hello")
             }}
             onJobDetailsSuccess={handleJobDetailsSuccess}
             BidonPress={() => {

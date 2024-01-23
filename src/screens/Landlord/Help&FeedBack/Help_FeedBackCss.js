@@ -16,7 +16,6 @@ export const Help_FeedBackCss = StyleSheet.create({
   profileView: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical:10
   },
   profileIcon: {
     width: 35,
@@ -30,9 +29,6 @@ export const Help_FeedBackCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
     alignSelf: "center",
-    alignItems:"center",
-    justifyContent:"center",
-    textAlign:"center",
   },
 
   ArrowIcon: {
@@ -57,6 +53,7 @@ export const Help_FeedBackCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightWhiteColor,
     marginLeft: 5,
     width: 35,
+    marginTop:10,
     height: 35,
     padding:7,
   },

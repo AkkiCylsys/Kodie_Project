@@ -235,7 +235,7 @@ export const CompanyDetailsStyle = StyleSheet.create({
   },
   simpleinputview: {
     flex:1,
-    height: 55,
+    height: 50,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_ExtraLightGrayColor,
     borderRadius: 8,
