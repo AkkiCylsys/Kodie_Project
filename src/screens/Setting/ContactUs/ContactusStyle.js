@@ -2,27 +2,6 @@ import { StyleSheet } from "react-native";
 import { IMAGES, _COLORS, FONTFAMILY } from "./../../../Themes/index";
 
 export const ContactusStyle = StyleSheet.create({
-  inputview: {
-    top: 20,
-  },
-  inputboxview: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  input: {
-    width: 330,
-    height: 120,
-    borderColor: _COLORS.Kodie_LightGrayColor,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    fontSize: 14,
-    fontWeight: "500",
-    color: _COLORS.Kodie_LightGrayColor,
-    paddingBottom: 80,
-    paddingLeft: 20,
-    fontFamily: FONTFAMILY.K_Light,
-  },
   textmessage: {
     fontSize: 15,
     fontWeight: "600",
@@ -31,17 +10,38 @@ export const ContactusStyle = StyleSheet.create({
     lineHeight: 30,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
+  inputContainer: {
+    marginTop: 15,
+    marginHorizontal: 20,
+  },
+  input: {
+    height: 45,
+    borderRadius: 8,
+    borderWidth: 1,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginTop: 10,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+  },
   checkboxview: {
     flexDirection: "row",
-    marginTop: 10,
+    marginTop: 40,
+  },
+  checkboxTouch: {
+    borderWidth: 1,
+    height: 25,
+    width: 25,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginLeft: 20,
   },
   imgcheckbox: {
-    width: 25,
-    height: 24,
-    left: 20,
+    marginLeft: 30,
+    // color:_COLORS.Kodie_WhiteColor
   },
   checkboxtextview: {
-    marginHorizontal: 30,
+    marginLeft: 20,
     width: 300,
   },
   optionaltext: {
@@ -75,4 +75,5 @@ export const ContactusStyle = StyleSheet.create({
   buttontext: {
     fontFamily: FONTFAMILY.K_SemiBold,
   },
+  error_text: { color: "red", marginLeft: 20,marginTop:5 },
 });

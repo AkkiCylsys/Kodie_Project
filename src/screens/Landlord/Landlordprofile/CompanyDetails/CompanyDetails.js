@@ -47,6 +47,7 @@ export default CompanyDetails = (props) => {
 
   console.log("latitude_company....", company_latitude);
   console.log("longitude company....", comapny_longitude);
+  console.log("maplocation....", maplocation);
   // isSearch = props.isSearch;
   const refRBSheet = useRef();
   const loginData = useSelector((state) => state.authenticationReducer.data);
@@ -55,7 +56,8 @@ export default CompanyDetails = (props) => {
   const [companyName, setCompanyName] = useState("");
   const [companyEmail, setCompanyEmail] = useState("");
   const [companyEmailError, setCompanyEmailError] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(0);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [companyphoneNumber, setCompanyphoneNumber] = useState("");
   const [companyDescription, setCompanyDescription] = useState("");
   const [companyGSTNumber, setCompanyGSTNumber] = useState("");
   const [jobTypeData, setJobTypeData] = useState([]);
@@ -81,6 +83,7 @@ export default CompanyDetails = (props) => {
   const [formattedValue, setFormattedValue] = useState("");
   const phoneInput = useRef(null);
   console.log("formattedValue....", formattedValue);
+  console.log("phone number update....", phoneNumber);
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
@@ -123,9 +126,7 @@ export default CompanyDetails = (props) => {
       );
     } else {
       {
-        getCompanyData.length === 1
-          ? UpdateCompanyData()
-          : addUserCompanyData();
+        getCompanyData.length > 0 ? UpdateCompanyData() : addUserCompanyData();
       }
     }
   };
@@ -228,6 +229,7 @@ export default CompanyDetails = (props) => {
     setCompanyName(""),
       setCompanyEmail(""),
       setPhoneNumber(""),
+      setCompanyphoneNumber(""),
       setCompanyDescription(""),
       setservicesValue("");
     setSelectJobTypeid(""),
@@ -402,8 +404,10 @@ export default CompanyDetails = (props) => {
           // alert(JSON.stringify(response.data.data));
           setCompanyName(response.data.data[0]?.company_name);
           setCompanyEmail(response.data.data[0]?.company_email);
-          setPhoneNumber(String(response.data.data[0]?.company_contact));
-          // setFormattedValue(String(response.data.data[0]?.company_contact))
+          // setPhoneNumber(response.data.data[0]?.company_contact);
+          setCompanyphoneNumber(String(response.data.data[0]?.company_contact));
+          console.log("company number...", companyphoneNumber);
+
           setCompanyDescription(response.data.data[0]?.company_description);
           setIsClick(parseInt(response.data.data[0].company_service_offering));
           setservicesValue(
@@ -560,8 +564,8 @@ export default CompanyDetails = (props) => {
                     source={IMAGES.verticalLine}
                   />
                   <TextInput
-                    value={phoneNumber}
-                    onChangeText={setPhoneNumber}
+                    value={companyphoneNumber}
+                    onChangeText={setCompanyphoneNumber}
                     keyboardType="numeric"
                     placeholder="1234567890"
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -570,14 +574,14 @@ export default CompanyDetails = (props) => {
                 </View>
               </View>
             </View> */}
-            <View style={[CompanyDetailsStyle.simpleinputview, { height: 55 }]}>
+            <View style={[CompanyDetailsStyle.simpleinputview, {}]}>
               <PhoneInput
                 ref={phoneInput}
-                defaultValue={phoneNumber}
+                defaultValue={companyphoneNumber}
                 defaultCode="IN"
                 layout="first"
                 onChangeText={(text) => {
-                  setPhoneNumber(text);
+                  setCompanyphoneNumber(text);
                 }}
                 placeholder={"Enter your phone number"}
                 onChangeFormattedText={(text) => {
