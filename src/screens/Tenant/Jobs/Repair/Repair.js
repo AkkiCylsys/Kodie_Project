@@ -72,6 +72,7 @@ export default Repair = (props) => {
   const [JobId, setJobId] = useState(0);
   const [Job_Id, setJob_Id] = useState(0);
   const [job_sub_type, setJob_sub_type] = useState(0);
+  const [job_sub_type_services, setJob_sub_type_services] = useState(0);
   const [Address, setAddress] = useState();
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
     useState(false);
@@ -82,6 +83,8 @@ export default Repair = (props) => {
 
   const myJob_Type = props.myJob_Type;
   console.log("myJob_Type in job module", myJob_Type);
+  const job_sub_type_req = props.job_sub_type_req;
+  console.log("job_sub_type_ser_req....", job_sub_type_req);
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -90,6 +93,7 @@ export default Repair = (props) => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
   };
+  // job i have requested...
   const getJobDetailsByFilter = async (filter) => {
     setIsLoading(true);
     // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
@@ -108,7 +112,7 @@ export default Repair = (props) => {
 
       setJobData(response?.data?.job_details);
       console.log("listJobdata", response?.data?.job_details);
-      setJob_sub_type(response?.data?.job_details.job_sub_type);
+      // setJob_sub_type(response?.data?.job_details.job_sub_type);
       console.log("Job_sub_type....", response?.data?.job_details.job_sub_type);
       setIsLoading(false);
     } catch (error) {
@@ -123,6 +127,7 @@ export default Repair = (props) => {
       setIsLoading(false);
     }
   };
+  // job i have servicing...
   const getJobDetails_Filter_Service = async (filter) => {
     setIsLoading(true);
     try {
@@ -161,7 +166,7 @@ export default Repair = (props) => {
       getJobDetailsByFilter(selectedFilter);
       getJobDetails_Filter_Service(selectedFilter);
     }
-    setActiveScreen(myJob_Type == 1 ? true : false);
+    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1? true : false);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
@@ -246,6 +251,8 @@ export default Repair = (props) => {
 
   const propertyData_render1 = ({ item }) => {
     setJob_Id(item?.job_id);
+    setJob_sub_type(item.job_sub_type);
+    // console.log("job type servicing and request .....", item.job_sub_type);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -470,6 +477,9 @@ export default Repair = (props) => {
           onDeleteData={FinalDeleteProperty}
           Address={Address}
           onClose={CloseUp}
+          // job_sub_type_serv={1}
+          // job_sub_type_req={0}
+          job_sub_type={job_sub_type}
         />
       </Modal>
       {isLoading ? <CommonLoader /> : null}

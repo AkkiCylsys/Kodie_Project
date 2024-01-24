@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { JobDetailsStyle } from "./JobDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
@@ -28,6 +28,7 @@ import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdeta
 import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 import JobDocuments from "../JobDocuments.js/JobDocuments";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
+
 const images = [
   BANNERS.previewImage,
   BANNERS.Apartment,
@@ -62,9 +63,12 @@ const JobDetails = (props) => {
   const handleJobDetailsSuccess = (jobTypeMy) => {
     console.log("jobTypeMy in JobDetails component:", jobTypeMy);
     setMyJobType(jobTypeMy);
-    console.log("myJobType key....",myJobType)
+    console.log("myJobType key....", myJobType);
   };
 
+  useEffect(() => {
+    setActiveTab("Tab1");
+  }, []);
   const handleImageFilePath = async (imagesFilePath) => {
     setImageFileData(imagesFilePath);
     // console.log("imagesFilePath....sdfs.", imagesFilePath);
@@ -187,7 +191,6 @@ const JobDetails = (props) => {
             onPress={() => {
               props.navigation.navigate("Jobs", {
                 myJob_Type: myJobType,
-                
               });
             }}
             onJobDetailsSuccess={handleJobDetailsSuccess}
@@ -231,7 +234,11 @@ const JobDetails = (props) => {
         isprofileImage
         IsNotification
         onPressLeftButton={() =>
-          View_Job_Details ? props.navigation.navigate("Jobs") : _goBack(props)
+          View_Job_Details
+            ? props.navigation.navigate("Jobs", {
+                myJob_Type: myJobType,
+              })
+            : _goBack(props)
         }
         MiddleText={"Review job details"}
       />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
@@ -8,13 +8,15 @@ import { JobsCss } from "./JobsCss";
 import Repair from "./Repair/Repair";
 import SearchForContractor from "./SearchforContractor/SearchForContractor";
 import SearchforJob from "./SearchforJob/SearchforJob";
+import { useRoute } from "@react-navigation/native";
 
 const Jobs = (props) => {
+  const route = useRoute();
+  const [job_sub_type, setJobSubType] = useState(1);
   const [activeTab, setActiveTab] = useState("Tab1");
   let myJob_Type = props.route.params?.myJob_Type;
-  let name = props.route.params?.name;
-  console.log("myJob in Job section....", myJob_Type);
-  console.log("name.......", name);
+  let job_sub_type_req = props.route.params?.job_sub_type;
+  console.log("job_sub_type_req...", job_sub_type_req);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -38,6 +40,7 @@ const Jobs = (props) => {
                 View_Job_Details: "View_Job_Details",
               });
             }}
+            job_sub_type_req={job_sub_type_req}
           />
         );
       case "Tab2":
@@ -56,7 +59,7 @@ const Jobs = (props) => {
         return (
           <SearchforJob
             SearchResultJob={(Searchjob) => {
-              // alert("khjghjhgfdsdfsd", JSON.stringify(Searchjob));
+              // alert("Searchjob", JSON.stringify(Searchjob));
               props.navigation.navigate("SearchJobResult", {
                 SearchDataDetail: Searchjob,
               });
