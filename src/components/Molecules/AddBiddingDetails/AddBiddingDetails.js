@@ -712,7 +712,7 @@ const AddBiddingDetails = (props) => {
           </Text>
           <Image
             source={IMAGES.CheckIcon}
-            resizeMode={"center"}
+            resizeMode={"cover"}
             style={AddBiddingDetailsCss.checkStl}
           />
           <CustomSingleButton
