@@ -87,6 +87,9 @@ const data1 = [
 const BottomJobModal = (props) => {
   const JobId = props.JobId;
   console.log("JobId...", JobId);
+  const job_sub_type = props.job_sub_type;
+  console.log("job_sub_type...", job_sub_type);
+
   // alert(JobId);
   const navigation = useNavigation();
   const refRBSheet = useRef();
@@ -134,6 +137,7 @@ const BottomJobModal = (props) => {
                 navigation.navigate("CreateJobFirstScreen", {
                   JobId: JobId,
                   editMode: "editMode",
+                  job_sub_type: job_sub_type,
                 });
                 handleCloseModal();
               }

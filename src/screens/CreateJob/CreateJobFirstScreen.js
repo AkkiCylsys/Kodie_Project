@@ -50,8 +50,10 @@ export default CreateJobFirstScreen = (props) => {
   const JobId = props.route.params?.JobId;
   const editMode = props.route.params?.editMode;
   const myJob = props.route.params?.myJob;
+  const job_sub_type = props.route.params?.job_sub_type;
   console.log("myJob.......", myJob);
   console.log("editMode.......", editMode);
+  console.log("job_sub_type.......", job_sub_type);
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
@@ -61,10 +63,13 @@ export default CreateJobFirstScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
+  const [property_valueError, setProperty_valueError] = useState(false);
   const [selectedAddressData, setSelectedAddreeData] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState([]);
   const [jobPriorityData, setJobPriorityData] = useState([]);
   const [jobPriorityValue, setJobPriorityValue] = useState([]);
+  const [jobPriorityValueError, setJobPriorityValueError] = useState(false);
+
   const [ratingThresholdData, setRatingThresholdData] = useState([]);
   const [ratingThresholdValue, setRatingThresholdValue] = useState([]);
   const [jobTypeData, setJobTypeData] = useState([]);
@@ -82,8 +87,37 @@ export default CreateJobFirstScreen = (props) => {
   const [longitude, setlongitude] = useState("");
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
+
+  // validation.....
+
+  const handleNextbtn = () => {
+    if (jobPriorityValue == "") {
+      setJobPriorityValueError(true);
+    } else if (property_value == "") {
+      setProperty_valueError(true);
+    } else {
+      props.navigation.navigate("CreateJobTermsScreen", {
+        selectJobType: selectJobTypeid,
+        servicesValue: servicesValue,
+        aboutyourNeed: aboutyourNeed,
+        jobPriorityValue: jobPriorityValue,
+        property_value: property_value,
+        location: location || selectedAddress.location,
+        ratingThresholdValue: ratingThresholdValue,
+        latitude: latitude || selectedAddress.latitude,
+        longitude: longitude || selectedAddress.longitude,
+        JobId: JobId,
+        editMode: editMode,
+        myJob: myJob,
+      });
+    }
+  };
+
   const goBack = () => {
     props.navigation.pop();
+    props.navigation.navigate("Jobs", {
+      job_sub_type: job_sub_type,
+    });
   };
   // ...Location
   const ConfirmAddress = () => {
@@ -974,10 +1008,16 @@ export default CreateJobFirstScreen = (props) => {
                 onChange={(item) => {
                   setJobPriorityValue(item.lookup_key);
                   // alert(item.lookup_key)
+                  setJobPriorityValueError(false);
                 }}
                 renderItem={jobPriority_render}
               />
             </View>
+            {jobPriorityValueError ? (
+              <Text style={CreateJobFirstStyle.error_text}>
+                {"Job priority is require."}
+              </Text>
+            ) : null}
             <View style={{ marginTop: 12 }}>
               <Text style={LABEL_STYLES.commontext}>{"Property type"}</Text>
               <Dropdown
@@ -996,10 +1036,16 @@ export default CreateJobFirstScreen = (props) => {
                 value={property_value}
                 onChange={(item) => {
                   setProperty_value(item.lookup_key);
+                  setProperty_valueError(false);
                 }}
                 renderItem={property_Type_render}
               />
             </View>
+            {property_valueError ? (
+              <Text style={CreateJobFirstStyle.error_text}>
+                {"Property type is require."}
+              </Text>
+            ) : null}
             <View style={{ marginTop: 12 }}>
               <Text style={LABEL_STYLES.commontext}>
                 {"Where is the job taking place?"}
@@ -1092,20 +1138,7 @@ export default CreateJobFirstScreen = (props) => {
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() => {
-                props.navigation.navigate("CreateJobTermsScreen", {
-                  selectJobType: selectJobTypeid,
-                  servicesValue: servicesValue,
-                  aboutyourNeed: aboutyourNeed,
-                  jobPriorityValue: jobPriorityValue,
-                  property_value: property_value,
-                  location: location || selectedAddress.location,
-                  ratingThresholdValue: ratingThresholdValue,
-                  latitude: latitude || selectedAddress.latitude,
-                  longitude: longitude || selectedAddress.longitude,
-                  JobId: JobId,
-                  editMode: editMode,
-                  myJob: myJob,
-                });
+                handleNextbtn();
               }}
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}
