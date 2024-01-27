@@ -51,6 +51,7 @@ const Logrentalpayment = (props) => {
   const [selected_Create_rental_Id, setSelected_Create_rental_Id] = useState(0);
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    handlePopUp()
   };
 
   const toggleModal = () => {
@@ -441,7 +442,7 @@ const Logrentalpayment = (props) => {
                   },
                 ]}
               >
-                {"cancel"}
+                {"Cancel"}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
