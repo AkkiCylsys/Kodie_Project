@@ -106,7 +106,7 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "6",
+        order_col: "8",
         order_wise: "DESC",
       });
 
@@ -139,9 +139,10 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "6",
+        order_col: "8",
         order_wise: "DESC",
       });
+      console.log("response.. job by filter ser....",response?.data)
       setServicingJobData(response?.data?.job_details);
       console.log(
         "listJobdata for servicing.....",
