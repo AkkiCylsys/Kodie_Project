@@ -380,6 +380,7 @@ export default Dashboard = (props) => {
                   _ButtonText={"View all jobs"}
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_lightGreenColor}
+                  borderColor={_COLORS.Kodie_GreenColor}
                   height={45}
                 />
               </View>

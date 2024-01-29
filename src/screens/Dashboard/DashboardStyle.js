@@ -12,6 +12,7 @@ export const DashboardStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 22,
     fontFamily: FONTFAMILY.K_Bold,
+    marginTop: 15,
   },
   welcome_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -54,17 +55,22 @@ export const DashboardStyle = StyleSheet.create({
   },
   income_Box_View: {
     borderWidth: 1,
-    height: 130,
-    width: 150,
+    // height: 130,
+    width: 160,
     marginTop: 16,
     borderRadius: 15,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
-    shadowRadius: 2,
+    shadowColor: _COLORS.Kodie_GrayColor,
+    // shadowOffset: { width: 1, height: 2 },
+    // shadowOpacity: Platform.OS == "android" ? 0.2 : 0.2,
+    // shadowRadius: 2,
+    shadowOffset: { width: 0, height: 2 }, // iOS shadow
+    shadowOpacity: 0.5, // iOS shadow
+    shadowRadius: 3, // iOS shadow
     backgroundColor: _COLORS.Kodie_WhiteColor,
     marginHorizontal: 5,
     borderColor: _COLORS.Kodie_GrayColor,
+    padding: 15,
+    elevation: 2,
   },
   inc_view: {
     flexDirection: "row",
@@ -109,9 +115,9 @@ export const DashboardStyle = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
     paddingVertical: 18,
   },
-  floating_action_btn_view:{
+  floating_action_btn_view: {
     // flex:1,
-    marginLeft:373,
+    marginLeft: 373,
   },
   maintenance_view: {
     flexDirection: "row",

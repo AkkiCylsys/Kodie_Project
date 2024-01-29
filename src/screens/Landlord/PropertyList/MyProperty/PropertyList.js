@@ -618,10 +618,11 @@ const PropertyList = (props) => {
         <SearchBar filterImage={IMAGES.filter} frontSearchIcon marginTop={3} />
         {activeScreen ? (
           <>
-            <DividerIcon />
+            {/* for static that by its hide.... */}
+            {/* <DividerIcon /> */}
 
-            <FlatList data={property_List2} renderItem={propertyData2_render} />
-            <View style={PropertyListCSS.propertyRentMainView}>
+            {/* <FlatList data={property_List2} renderItem={propertyData2_render} /> */}
+            {/* <View style={PropertyListCSS.propertyRentMainView}>
               <View style={PropertyListCSS.LeftTextView}>
                 <Text style={PropertyListCSS.LeftText}>
                   Your rent is due. You have not selected autopay as a payment
@@ -638,7 +639,7 @@ const PropertyList = (props) => {
                   </Text>
                 </TouchableOpacity>
               </View>
-            </View>
+            </View> */}
           </>
         ) : (
           <>
