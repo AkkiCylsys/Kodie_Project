@@ -247,8 +247,8 @@ export default Repair = (props) => {
   };
 
   // Archive component call here...................
-  // <ArchiveJob />;
-  <JobRequestArchive />;
+  <ArchiveJob />;
+  // <JobRequestArchive />;
 
   const propertyData_render1 = ({ item }) => {
     setJob_Id(item?.job_id);

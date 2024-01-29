@@ -1,5 +1,12 @@
-import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
-import React, { useRef, useState } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from "react-native";
+import React, { useRef, useState, useEffect } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import DividerIcon from "../../Atoms/Devider/DividerIcon";
 import BottomModalData from "../BottomModal/BottomModalData";
@@ -9,7 +16,10 @@ import { _COLORS, IMAGES, BANNERS } from "../../../Themes";
 import AddBiddingDetails from "../AddBiddingDetails/AddBiddingDetails";
 import InviteTenant from "../InviteTenant/InviteTenant";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-
+import VacantModal from "../VacantModal/VacantModal";
+import { Config } from "../../../Config";
+import { CommonLoader } from "../ActiveLoader/ActiveLoader";
+import axios from "axios";
 const property_List1 = [
   {
     id: "1",
@@ -98,17 +108,79 @@ const PropertyListing = () => {
   const refRBSheet3 = useRef();
   const CloseUp = () => {
     refRBSheet1.current.close();
+    setIsDeleteData_Clicked(false);
   };
   const [expandedItems, setExpandedItems] = useState([]);
+  const [Vacant_data, setVacantData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [propId, setPropId] = useState(0);
+  const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
+
+  // Get Api Bind here...
+  const get_Vacant_Details = () => {
+    const url = Config.BASE_URL;
+    const Vacant_Details_url = url + "/get_vacant_property_list";
+    setIsLoading(true);
+    console.log("Request URL:", Vacant_Details_url);
+    // setIsLoading(true);
+    axios
+      .get(Vacant_Details_url)
+      .then((response) => {
+        console.log("API Response Vacant_Details_url:", response.data);
+        if (response.data.success === true) {
+          setVacantData(response.data.property_details);
+          // console.log("Vacent Details Data..", response.data.data);
+          setIsLoading(false);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const vacantDelete = async () => {
+    setIsDeleteData_Clicked(true);
+  };
+
+  const FinalDeleteVacant = async () => {
+    setIsLoading(true);
+    setIsDeleteData_Clicked(false);
+    CloseUp();
+    const url = Config.BASE_URL;
+    const vacantdelete = url + "delete_property_by_id";
+    console.log("vacantdelete", vacantdelete);
+    try {
+      const response = await axios.delete(vacantdelete);
+      console.log("API Response:", response.data);
+      if (response.data.success === true) {
+        alert(response.data.message);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("API Error:", error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    get_Vacant_Details();
+  }, []);
   const propertyData1_render = ({ item }) => {
     const isExpanded = expandedItems.includes(item.id);
+    setPropId(item.property_id);
     return (
       <>
         <View style={PropertyListingCss.flatListContainer}>
           <View style={PropertyListingCss.flat_MainView}>
             <View style={PropertyListingCss.flexContainer}>
               <Text style={PropertyListingCss.apartmentText}>
-                {item.propertyName}
+                {item.property_type}
               </Text>
               <Text style={PropertyListingCss.commontext}>{item.name}</Text>
               <View style={PropertyListingCss.flat_MainView}>
@@ -122,20 +194,24 @@ const PropertyListing = () => {
                 </Text>
               </View>
             </View>
-            <Image source={item.image} style={PropertyListingCss.imageStyle} />
+            <Image
+              source={{ uri: item.image_path[0] }}
+              style={PropertyListingCss.imageStyle}
+            />
             <View style={PropertyListingCss.flexContainer}>
               <View style={PropertyListingCss.noteStyle}>
                 <TouchableOpacity>
-                  {/* <Image
+                  <Image
                     source={IMAGES.noteBook}
                     style={PropertyListingCss.noteIcon}
-                  /> */}
-                  <SimpleLineIcons
+                    resizeMode={"contain"}
+                  />
+                  {/* <SimpleLineIcons
                     name="note"
                     size={25}
                     color={_COLORS.Kodie_LightGrayColor}
                     resizeMode={"contain"}
-                  />
+                  /> */}
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
@@ -188,7 +264,8 @@ const PropertyListing = () => {
                     refRBSheet3.current.open();
                   }}
                 >
-                  {item.buttonName}
+                  {/* {item.buttonName} */}
+                  "+ invite"
                 </Text>
               </View>
             </View>
@@ -242,13 +319,18 @@ const PropertyListing = () => {
             container: PropertyListingCss.bottomModal_container,
           }}
         >
-          <BottomModalData
+          <VacantModal
             onPress={() => {
               refRBSheet2.current.open();
             }}
             onClose={CloseUp}
+            onDeleteData={FinalDeleteVacant}
+            propertyId={propId}
+            onDelete={vacantDelete}
+            isDeletePropertyClicked={isDeleteData_Clicked}
           />
         </RBSheet>
+       
         {/* AddBiddingDetails popup */}
         <RBSheet
           ref={refRBSheet2}
@@ -291,7 +373,9 @@ const PropertyListing = () => {
   };
   return (
     <View>
-      <FlatList data={property_List1} renderItem={propertyData1_render} />
+      {/* <FlatList data={property_List1} renderItem={propertyData1_render} /> */}
+      <FlatList data={Vacant_data} renderItem={propertyData1_render} />
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };
