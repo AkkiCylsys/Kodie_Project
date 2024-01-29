@@ -68,5 +68,14 @@ export const PrivacySecurityStyle = StyleSheet.create({
     fontSize:12,
     color:_COLORS.Kodie_MediumGrayColor,
     marginTop:3
-  }
+  },
+  IconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
+    marginLeft: 5,
+    width: 35,
+    height: 35,
+    justifyContent: "center",
+  },
 });

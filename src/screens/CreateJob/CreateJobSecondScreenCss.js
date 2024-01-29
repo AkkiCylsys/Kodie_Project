@@ -25,6 +25,7 @@ export const CreateJobSecondStyle = StyleSheet.create({
     margin: 0,
   },
   heading_Text: {
+    flex: 1,
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -61,5 +62,18 @@ export const CreateJobSecondStyle = StyleSheet.create({
     // borderWidth: 1,
     marginVertical: 25,
   },
-  uploadImagebox:{flexDirection:"row"}
+  uploadImagebox: { flexDirection: "row" },
+  upload_Heading_Text: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginTop: 10,
+  },
+  error_text: {
+    color: "red",
+
+    marginTop: 10,
+
+    // borderWidth: 1,
+  },
 });

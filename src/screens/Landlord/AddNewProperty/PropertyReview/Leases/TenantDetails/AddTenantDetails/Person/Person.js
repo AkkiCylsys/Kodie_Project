@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Platform
+  Platform,
 } from "react-native";
 import { PersonStyle } from "./PersonStyle";
 import { _COLORS, LABEL_STYLES } from "../../../../../../../../Themes";
@@ -14,7 +14,11 @@ import axios from "axios";
 import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useDispatch, useSelector } from "react-redux";
 export default Person = (props) => {
+  const handleClosePopup = () => {
+    props.onClose();
+  };
   const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginData.....", loginData);
   const property_id = props.property_id;
   const [firstName, setFirstName] = useState("");
   const [firstNameError, setFirstNameError] = useState("");
@@ -89,12 +93,10 @@ export default Person = (props) => {
     setPhoneNumber(text);
   };
 
-
   // API bind person code here.....
   const Personhandle = () => {
-
     const PersonDetailsData = {
-      user_key: loginData.Login_details.result,
+      user_key: loginData.Login_details.user_id,
       upd_key: property_id,
       first_name: firstName,
       last_name: lastName,
@@ -122,6 +124,7 @@ export default Person = (props) => {
           setPhoneNumber("");
           setNote("");
           setIsLoading(false);
+          handleClosePopup();
         } else {
           setEmailError(response.data.message);
           console.error("personDetail_error:", response.data.error);
@@ -149,7 +152,10 @@ export default Person = (props) => {
   };
 
   return (
-    <KeyboardAvoidingView style={PersonStyle.mainConatainer}   behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <KeyboardAvoidingView
+      style={PersonStyle.mainConatainer}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <ScrollView>
         <View style={PersonStyle.card}>
           <View style={PersonStyle.inputContainer}>

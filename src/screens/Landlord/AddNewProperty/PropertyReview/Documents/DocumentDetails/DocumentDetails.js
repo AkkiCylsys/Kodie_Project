@@ -7,6 +7,7 @@ import {
   ScrollView,
   FlatList,
   PermissionsAndroid,
+  Platform
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { DocumentDetailStyle } from "./DocumentDetailStyle";
@@ -28,19 +29,23 @@ const DocumentDetails = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const folderId = props.route.params?.folderId;
-  const folderHeading = props.route.params?.folderHeading;
+  const moduleName = props.route.params?.moduleName;
   const property_id = props.route.params?.property_id;
   const [selectFile, setSelectFile] = useState([]);
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState("");
   const [filePath, setFilePath] = useState("");
+  const [getuploadDocByModuleName, setGetuploadDocByModuleName] = useState([]);
   const file = selectFile[0];
+  console.log("moduleName in Documents Details..", moduleName);
   //   alert(folderId);
-  // alert(folderHeading);
+  // alert(moduleName);
   // alert(property_id);
+  console.log("property_id..", property_id);
 
   useEffect(() => {
-    getuploadedDocuments();
+    // getuploadedDocuments();
+    getUploadedDocumentsByModule();
   }, []);
   const closeModal = () => {
     refRBSheet.current.close();
@@ -63,7 +68,9 @@ const DocumentDetails = (props) => {
       //       DocumentPicker.types.docx,
       //     ],
       //   });
+      console.log("doc......", doc);
       setSelectFile(doc);
+      await uploadDocument(doc);
       console.log("Documents.....", doc);
       console.log("selectFile.....", selectFile);
     } catch (err) {
@@ -90,7 +97,7 @@ const DocumentDetails = (props) => {
           alert(res?.data?.message);
           closeModal();
         }
-        getuploadedDocuments();
+        getUploadedDocumentsByModule();
       })
       .catch((error) => {
         console.error("Error deleting:", error);
@@ -99,12 +106,13 @@ const DocumentDetails = (props) => {
         setIsLoading(false);
       });
   };
-  const uploadDocument = async () => {
-    console.log("uri....", file.uri);
-    console.log("name....", file.name);
-    console.log("type....", file.type);
+  const uploadDocument = async (doc) => {
+    // alert("upload");
+    console.log("uri....", doc[0].uri);
+    console.log("name....", doc[0].name);
+    console.log("type....", doc[0].type);
     console.log("p_referral_key....", property_id);
-    console.log("p_module_name....", folderHeading);
+    console.log("p_module_name....", moduleName);
     const url = Config.BASE_URL;
     const uploadDoc_url = url + "uploadDocument";
     console.log("Request URL:", uploadDoc_url);
@@ -112,13 +120,13 @@ const DocumentDetails = (props) => {
     try {
       const formData = new FormData();
       formData.append("documents", {
-        uri: file.uri,
-        name: file.name,
-        type: file.type,
+        uri: doc[0].uri,
+        name: doc[0].name,
+        type: doc[0].type,
       });
       formData.append("p_referral_key", property_id);
-      formData.append("p_module_name", folderHeading);
-      formData.append("p_sub_module_name", "Property documents");
+      formData.append("p_module_name", moduleName);
+      // formData.append("p_sub_module_name", "Property documents");
 
       const response = await axios.post(uploadDoc_url, formData);
 
@@ -127,13 +135,13 @@ const DocumentDetails = (props) => {
       if (response.data.success === true) {
         alert(response.data.message);
         // props.navigation.pop();
-        getuploadedDocuments();
+        getUploadedDocumentsByModule();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
       console.error("API failed", error);
-      alert(error)
+      alert(error);
       // Handle network errors more gracefully
       // if (!error.response) {
       //   alert("Network error. Please check your internet connection.");
@@ -167,6 +175,30 @@ const DocumentDetails = (props) => {
         console.error("API failed", error);
         setIsLoading(false);
         // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const getUploadedDocumentsByModule = () => {
+    const url = Config.BASE_URL;
+    const getDocumentUrl = url + "tanant_details/get/documents";
+    console.log("Request URL:", getDocumentUrl);
+    setIsLoading(true);
+    const documentModuleData = {
+      Module_Name: moduleName,
+      fileReferenceKey: property_id,
+    };
+    axios
+      .post(getDocumentUrl, documentModuleData)
+      .then((response) => {
+        console.log("API Response getDocumentsByModule:", response.data);
+        if (response.data.success == true) {
+          setGetuploadDocByModuleName(response.data.data);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed_moduleName", error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -331,7 +363,7 @@ const DocumentDetails = (props) => {
           marginHorizontal: 16,
         }}
       >
-        <View style={{}}>
+        {/* <View style={{}}>
           <CustomSingleButton
             leftImage={IMAGES.uploadIcon}
             isLeftImage={true}
@@ -343,8 +375,8 @@ const DocumentDetails = (props) => {
             }}
             disabled={isLoading ? true : false}
           />
-        </View>
-        <View>
+        </View> */}
+        {/* <View>
           <Text style={DocumentDetailStyle.property_doc_text}>
             {folderId == 1
               ? "Property documents"
@@ -354,28 +386,16 @@ const DocumentDetails = (props) => {
               ? "Tenant documents"
               : "Property documents"}
           </Text>
-        </View>
+        </View> */}
 
-        <FlatList
+        {/* <FlatList
           data={selectFile}
           scrollEnabled
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{}}
           keyExtractor={(item, index) => index}
           renderItem={DocumentsData}
-        />
-
-        <View>
-          <FlatList
-            data={uploadDocData}
-            scrollEnabled
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{}}
-            keyExtractor={(item, index) => index}
-            renderItem={GetuploadedDocumentrender}
-          />
-        </View>
-
+        /> */}
         <View>
           <Text style={DocumentDetailStyle.upload_doc_text}>
             {"Upload documents"}
@@ -386,7 +406,17 @@ const DocumentDetails = (props) => {
             }
           </Text>
         </View>
-        <View style={{}}>
+        <View>
+          <FlatList
+            data={getuploadDocByModuleName}
+            scrollEnabled
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{}}
+            keyExtractor={(item, index) => index}
+            renderItem={GetuploadedDocumentrender}
+          />
+        </View>
+        <View style={{ marginBottom: 30 }}>
           <CustomSingleButton
             leftImage={IMAGES.uploadIcon}
             isLeftImage={true}
@@ -394,14 +424,15 @@ const DocumentDetails = (props) => {
             _ButtonText={"Upload"}
             backgroundColor={_COLORS.Kodie_lightGreenColor}
             onPress={() => {
-              uploadDocument();
+              // uploadDocument();
+              selectDoc();
             }}
             disabled={isLoading ? true : false}
           />
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={220}
+          height={ Platform.OS ==="ios" ? 240:220}
           customStyles={{
             wrapper: {
               backgroundColor: "transparent",

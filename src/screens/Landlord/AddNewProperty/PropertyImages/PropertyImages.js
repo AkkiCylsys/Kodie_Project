@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect,index } from "react";
+import React, { useState, useRef, useEffect, index } from "react";
 import {
   View,
   Text,
@@ -41,7 +41,7 @@ export default PropertyImages = (props) => {
   const [currentPage, setCurrentPage] = useState(2);
   const [selectedVideos, setSelectedVideos] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
-  const [imagePath, setImagePaths] = useState([]);
+  const [serverimagePath, setImagePaths] = useState([]);
   useEffect(() => {
     DetailsData();
   }, []);
@@ -60,10 +60,10 @@ export default PropertyImages = (props) => {
         console.log("propertyDetail", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.data);
-          setImagePaths(response.data.data?.image_path);
+          setProperty_Details(response.data.property_details[0]);
+          setImagePaths(response.data.property_details[0]?.image_path);
           // alert(JSON.stringify(response.data.property_details));
-          console.log("propertyDetail....", response.data.data);
+          console.log("propertyDetail....", response.data.property_details);
         } else {
           console.error("propertyDetail_error:", response.data.error);
           alert(response.data.error);
@@ -101,16 +101,23 @@ export default PropertyImages = (props) => {
     const formData = new FormData();
     formData.append("property_id", property_id);
     console.log("kljproperty_Data_id", property_id);
-    const imagePaths = MultiImageName.map((image) => image.path);
+    if (MultiImageName && Array.isArray(MultiImageName)) {
+      const imagePaths = MultiImageName.map((image) => image.path);
 
-    // Append all image paths to the same key 'images[]'
-    imagePaths.forEach((path, index) => {
-      formData.append("images", {
-        uri: path,
-        name: `image.jpg`,
-        type: "image/jpeg",
+      imagePaths.forEach((path, index) => {
+        formData.append("images", {
+          uri: path,
+          name: path,
+          type: "image/jpeg",
+        });
       });
-    });
+    } else {
+      console.error(
+        "MultiImageName is not defined or not an array:",
+        MultiImageName
+      );
+      return; // Stop execution if MultiImageName is not properly defined
+    }
     // Append videos
     if (selectedVideos && selectedVideos.length > 0) {
       selectedVideos.forEach((videoUri, index) => {
@@ -285,7 +292,7 @@ export default PropertyImages = (props) => {
     updatedVideos.splice(indexToRemove, 1);
     setSelectedVideos(updatedVideos);
   };
- 
+
   const imagePaths = MultiImageName.map((image) => image.path);
   // alert(imagePaths);
   const handleSaveImage = async () => {
@@ -299,7 +306,7 @@ export default PropertyImages = (props) => {
       imagePaths.forEach((path, index) => {
         formData.append("images", {
           uri: path,
-          name: `image_${index}.jpg`,
+          name: path,
           type: "image/jpeg",
         });
       });
@@ -327,9 +334,8 @@ export default PropertyImages = (props) => {
     }
 
     console.log("formData", formData);
-
-    const saveAccountDetails =
-      "https://e3.cylsys.com/api/v1/add_property_images_videos";
+    const url = Config.BASE_URL;
+    const saveAccountDetails = url + "add_property_images_videos";
     console.log("Request URL:", saveAccountDetails);
 
     setIsLoading(true);
@@ -372,7 +378,10 @@ export default PropertyImages = (props) => {
 
   return (
     <View style={PropertyImagesStyle.mainContainer}>
-      <TopHeader onPressLeftButton={goBack} MiddleText={"Add new property"} />
+      <TopHeader
+        onPressLeftButton={goBack}
+        MiddleText={editMode ? "Edit property" : "Add new property"}
+      />
       <View
         style={{
           marginTop: 15,
@@ -395,13 +404,15 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-              {/* {imagePath ? (
+              {/* {property_Detail.image_path &&
+              property_Detail.image_path.length != 0 ? (
                 <SliderBox
                   images={
-                    // property_Detail[0]?.image_path
-                    //   ? property_Detail[0]?.image_path
-                    //   :
-                    imagePath
+                    
+                    property_Detail?.image_path
+                    // //   ? property_Detail[0]?.image_path
+                    // //   :
+                    // imagePath
                   }
                   sliderBoxHeight={200}
                   onCurrentImagePressed={(index) =>
@@ -425,9 +436,10 @@ export default PropertyImages = (props) => {
               ) : ( */}
               <SliderBox
                 images={
-                  property_Detail[0]?.image_path
-                    ? property_Detail[0]?.image_path
-                    : imagePaths
+                  // property_Detail?.image_path
+                  //   ? property_Detail.image_path
+                  //   :
+                  editMode ? serverimagePath : imagePaths
                 }
                 sliderBoxHeight={200}
                 onCurrentImagePressed={(index) =>
@@ -455,7 +467,7 @@ export default PropertyImages = (props) => {
             </Text>
             <View style={{ flex: 1 }}>
               <UploadImageBoxes
-                Box_Text={"Add Photo"}
+                Box_Text={"Add photo"}
                 onPress={() => {
                   refRBSheet.current.open();
                 }}
@@ -485,7 +497,7 @@ export default PropertyImages = (props) => {
 
             {/* {MultiImageName.length == 0 ? refRBSheet.current.close() : null} */}
             <Text style={PropertyImagesStyle.upload_Heading_Text}>
-              {"Upload Video"}
+              {"Upload video"}
             </Text>
             <View style={{ flex: 1 }}>
               <UploadImageBoxes
@@ -519,13 +531,24 @@ export default PropertyImages = (props) => {
                             position: "absolute",
                             // top: 2,
                             right: 5,
-                            // backgroundColor: "rgba(255,255,255,0.7)",
-                            borderRadius: 15,
-                            padding: 3,
+                            backgroundColor: "rgba(255,255,255,0.7)",
+                            height: "15%",
+                            width: "15%",
+                            borderRadius: 8,
+                            // padding: 3,
+                            justifyContent: "center",
                           }}
                           onPress={() => removeVideo(index)}
                         >
-                          <Text style={{ color: "black" }}>X</Text>
+                          <Text
+                            style={{
+                              color: "black",
+                              fontWeight: "bold",
+                              alignSelf: "center",
+                            }}
+                          >
+                            X
+                          </Text>
                         </TouchableOpacity>
                         {/* <Text style={{fontSize:14,color:_COLORS?.Kodie_BlackColor}}>{item.path}</Text> */}
                       </>
@@ -580,7 +603,11 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.btnView}>
             <CustomSingleButton
-              _ButtonText={"Add property features later"}
+              _ButtonText={
+                editMode
+                  ? "Edit property features later"
+                  : "Add property features later"
+              }
               Text_Color={_COLORS.Kodie_BlackColor}
               backgroundColor={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}

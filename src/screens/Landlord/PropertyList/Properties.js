@@ -20,6 +20,9 @@ const Properties = (props) => {
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    <PropertyList />;
+  }, []);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -33,6 +36,13 @@ const Properties = (props) => {
               props.navigation.navigate("PropertyDetails", {
                 propertyid: propertyid,
                 editMode: "editMode",
+              });
+            }}
+            onPropertyView={(propView) => {
+              const { propertyid } = propView;
+              props.navigation.navigate("PropertyReview", {
+                propertyid: propertyid,
+                propertyView: "propertyView",
               });
             }}
           />

@@ -44,9 +44,11 @@ const ChatPopup = (props) => {
         <TouchableOpacity style={ChatPopupStyle.content_View} onPress={props?.onPress}>
           <TouchableOpacity style={ChatPopupStyle.Bottomcontainer}>
             {/* <Image source={item.Img} style={ChatPopupStyle.Icons} /> */}
+            {/* {item.icon} */}
+            <Text style={ChatPopupStyle.IconView}>
             {item.icon}
-          </TouchableOpacity>
-  
+            </Text>
+          </TouchableOpacity> 
           <Text style={ChatPopupStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
       </>

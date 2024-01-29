@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,28 +6,28 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-} from "react-native";
-import axios from "axios";
-import { Config } from "../../../../Config";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { useIsFocused } from "@react-navigation/native";
-import { useSelector } from "react-redux";
-import TopHeader from "../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../services/CommonServices";
-import { SliderBox } from "react-native-image-slider-box";
-import { _COLORS, BANNERS, IMAGES } from "../../../../Themes";
-import Entypo from "react-native-vector-icons/Entypo";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { ViewDetailCss } from "./ViewPropertyDetailsCss";
-import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
-import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
-import { DetailsStyle } from "../../AddNewProperty/PropertyReview/Details/DetailsStyles";
+} from 'react-native';
+import axios from 'axios';
+import {Config} from '../../../../Config';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {useIsFocused} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import TopHeader from '../../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../../services/CommonServices';
+import {SliderBox} from 'react-native-image-slider-box';
+import {_COLORS, BANNERS, IMAGES} from '../../../../Themes';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {ViewDetailCss} from './ViewPropertyDetailsCss';
+import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
+import {DetailsStyle} from '../../AddNewProperty/PropertyReview/Details/DetailsStyles';
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
@@ -36,51 +36,52 @@ const images = [
 ];
 const Detail = [
   {
-    id: "1",
+    id: '1',
     images: IMAGES.BedroomIcon,
-    name: "Bedrooms: 3",
+    name: 'Bedrooms: 3',
   },
   {
-    id: "2",
+    id: '2',
     images: IMAGES.Bathroom,
-    name: "Bathrooms: 2",
+    name: 'Bathrooms: 2',
   },
   {
-    id: "3",
+    id: '3',
     images: IMAGES.Parking,
-    name: "Garages: 1",
+    name: 'Garages: 1',
   },
   {
-    id: "4",
+    id: '4',
     images: IMAGES.BedroomIcon,
-    name: "Parkings: 1",
+    name: 'Parkings: 1',
   },
   {
-    id: "5",
+    id: '5',
     images: IMAGES.BedroomIcon,
-    name: "Garden",
+    name: 'Garden',
   },
   {
-    id: "6",
+    id: '6',
     images: IMAGES.BedroomIcon,
-    name: "Pool",
+    name: 'Pool',
   },
   {
-    id: "7",
+    id: '7',
     images: IMAGES.BedroomIcon,
-    name: "Furnished",
+    name: 'Furnished',
   },
   {
-    id: "8",
+    id: '8',
     images: IMAGES.BedroomIcon,
-    name: "WiFi",
+    name: 'WiFi',
   },
 ];
 
-export default ViewPropertyDetails = (props) => {
+export default ViewPropertyDetails = props => {
   // const propertyDelId = props?.route?.params?.propertyDelId;
   const propertyid = props?.route?.params?.propertyId;
-  console.log(propertyid, "viewpropertydetails id....");
+
+  console.log(propertyid, 'viewpropertydetails id....');
   // console.log(propertyDelId);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Detail, setProperty_Details] = useState([]);
@@ -88,11 +89,12 @@ export default ViewPropertyDetails = (props) => {
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
   const [additionalKeyFeaturesString, setAdditionalKeyFeaturesString] =
     useState([]);
-  const Detail_rander = ({ item, index }) => {
+  const [numColumns, setNumColumns] = useState(2);
+  const Detail_rander = ({item, index}) => {
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
-          {Object.keys(item)[0] == "Bedrooms" ? (
+          {Object.keys(item)[0] == 'Bedrooms' ? (
             // (<Image
             //     source={IMAGES.BedroomIcon}
             //     style={DetailsStyle.DetailsIcon}
@@ -102,9 +104,9 @@ export default ViewPropertyDetails = (props) => {
               name="bed-double-outline"
               size={25}
               color={_COLORS.Kodie_GreenColor}
-              resizeMode={"contain"}
+              resizeMode={'contain'}
             />
-          ) : Object.keys(item)[0] == "Bathrooms" ? (
+          ) : Object.keys(item)[0] == 'Bathrooms' ? (
             // (
             //   <Image source={IMAGES.Bathroom}
             //   style={DetailsStyle.DetailsIcon} />
@@ -113,9 +115,9 @@ export default ViewPropertyDetails = (props) => {
               name="shower-head"
               size={25}
               color={_COLORS.Kodie_GreenColor}
-              resizeMode={"contain"}
+              resizeMode={'contain'}
             />
-          ) : Object.keys(item)[0] == "Parking Space" ? (
+          ) : Object.keys(item)[0] == 'Parking Space' ? (
             // (
             //   <Image source={IMAGES.Parking}
             //   style={DetailsStyle.DetailsIcon} />
@@ -124,7 +126,7 @@ export default ViewPropertyDetails = (props) => {
               name="car-outline"
               size={25}
               color={_COLORS.Kodie_GreenColor}
-              resizeMode={"contain"}
+              resizeMode={'contain'}
             />
           ) : (
             // (
@@ -135,20 +137,20 @@ export default ViewPropertyDetails = (props) => {
               name="car-outline"
               size={25}
               color={_COLORS.Kodie_GreenColor}
-              resizeMode={"contain"}
+              resizeMode={'contain'}
             />
           )}
           <Text style={DetailsStyle.details_text}>
-            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ""}
+            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}
             {/* {`${key}: ${value}`} */}
           </Text>
         </View>
       </>
     );
   };
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={DetailsStyle.DetailsView}>
-      {item === "Pool" ? (
+      {item === 'Pool' ? (
         // (
         //   <Image source={IMAGES.Bathroom}
         //   style={DetailsStyle.DetailsIcon} />
@@ -157,9 +159,9 @@ export default ViewPropertyDetails = (props) => {
           name="pool"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Garage" ? (
+      ) : item === 'Garage' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -168,9 +170,9 @@ export default ViewPropertyDetails = (props) => {
           name="garage"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Balcony" ? (
+      ) : item === 'Balcony' ? (
         //   (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -179,9 +181,9 @@ export default ViewPropertyDetails = (props) => {
           name="window-closed-variant"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Outdoor Area" ? (
+      ) : item === 'Outdoor Area' ? (
         // (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -190,9 +192,9 @@ export default ViewPropertyDetails = (props) => {
           name="table-chair"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Ensuite" ? (
+      ) : item === 'Ensuite' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -201,9 +203,9 @@ export default ViewPropertyDetails = (props) => {
           name="shower"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Dishwasher" ? (
+      ) : item === 'Dishwasher' ? (
         // (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -212,9 +214,9 @@ export default ViewPropertyDetails = (props) => {
           name="dishwasher"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Study" ? (
+      ) : item === 'Study' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -223,9 +225,9 @@ export default ViewPropertyDetails = (props) => {
           name="bookshelf"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Built in Robes" ? (
+      ) : item === 'Built in Robes' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -234,9 +236,9 @@ export default ViewPropertyDetails = (props) => {
           name="fireplace"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Air Conditioning" ? (
+      ) : item === 'Air Conditioning' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -245,9 +247,9 @@ export default ViewPropertyDetails = (props) => {
           name="air-conditioner"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Solar Panels" ? (
+      ) : item === 'Solar Panels' ? (
         // (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -256,9 +258,9 @@ export default ViewPropertyDetails = (props) => {
           name="solar-panel"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "Heating" ? (
+      ) : item === 'Heating' ? (
         //   (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -267,9 +269,9 @@ export default ViewPropertyDetails = (props) => {
           name="fireplace"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
-      ) : item === "High Energy Efficiency" ? (
+      ) : item === 'High Energy Efficiency' ? (
         //  (
         //   <Image source={IMAGES.BedroomIcon}
         //   style={DetailsStyle.DetailsIcon} />
@@ -278,7 +280,7 @@ export default ViewPropertyDetails = (props) => {
           name="energy"
           size={25}
           color={_COLORS.Kodie_GreenColor}
-          resizeMode={"contain"}
+          resizeMode={'contain'}
         />
       ) : null}
       <Text style={DetailsStyle.details_text}>{item}</Text>
@@ -322,33 +324,35 @@ export default ViewPropertyDetails = (props) => {
   const fetchData = async () => {
     try {
       // Fetch property details
-      const detailData = { property_id: propertyid };
+      const detailData = {
+        property_id: propertyid,
+      };
       const url = Config.BASE_URL;
-      const property_Detailss = url + "get_property_details";
+      const property_Detailss = url + 'get_property_details';
 
-      console.log("url..", property_Detailss);
+      console.log('url..', property_Detailss);
       setIsLoading(true);
       const response = await axios.post(property_Detailss, detailData);
       setIsLoading(false);
-      console.log("response_get_property_details...", response.data);
+      console.log('response_get_property_details...', response.data);
       if (response.data.success === true) {
-        setProperty_Details(response.data.data[0]);
+        setProperty_Details(response.data.property_details[0]);
         // Fetch and process key features..........
-        if (response.data.data[0].key_features) {
+        if (response.data.property_details[0].key_features) {
           const parsedData = JSON.parse(
-            response.data.data[0].key_features.replace(/\\/g, "")
+            response.data.property_details[0].key_features.replace(/\\/g, ''),
           );
           setDetail(parsedData);
         }
         const additionalKeyFeatures =
-          response.data.data[0].additional_key_features[0];
+          response.data.property_details[0].additional_key_features[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
-        console.error("propertyDetail_error:", response.data.error);
+        console.error('propertyDetail_error:', response.data.error);
         alert(response.data.error);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
       alert(error);
       setIsLoading(false);
     }
@@ -359,11 +363,16 @@ export default ViewPropertyDetails = (props) => {
   useEffect(() => {
     fetchData();
     try {
-      const keyFeaturesArray = additionalKeyFeaturesString.split(",");
+      const keyFeaturesArray = additionalKeyFeaturesString.split(',');
       setAdditionalKeyFeatures(keyFeaturesArray);
     } catch (error) {
-      console.error("Error parsing additional_key_features:", error);
+      console.error('Error parsing additional_key_features:', error);
     }
+    const timeout = setTimeout(() => {
+      setNumColumns(2); // Change to the desired number of columns
+    }, 2000); // Change this delay as needed
+
+    return () => clearTimeout(timeout);
   }, [propertyid, additionalKeyFeaturesString]);
 
   return (
@@ -375,25 +384,27 @@ export default ViewPropertyDetails = (props) => {
       />
       <ScrollView>
         <View style={ViewDetailCss.slider_view}>
-          <SliderBox
-            // images={property_Detail.image_path}
-            images={images}
-            sliderBoxHeight={200}
-            onCurrentImagePressed={(index) =>
-              console.warn(`image ${index} pressed`)
-            }
-            inactiveDotColor={_COLORS.Kodie_GrayColor}
-            dotColor={_COLORS.Kodie_GreenColor}
-            autoplay
-            circleLoop
-            resizeMethod={"resize"}
-            resizeMode={"cover"}
-            dotStyle={ViewDetailCss.dotStyle}
-            ImageComponentStyle={{
-              flex: 1,
-              resizeMode: "cover",
-            }}
-          />
+          {property_Detail.image_path &&
+          property_Detail.image_path.length != 0 ? (
+            <SliderBox
+              images={property_Detail.image_path}
+              sliderBoxHeight={200}
+              onCurrentImagePressed={index =>
+                console.warn(`image ${index} pressed`)
+              }
+              inactiveDotColor={_COLORS.Kodie_GrayColor}
+              dotColor={_COLORS.Kodie_GreenColor}
+              autoplay
+              circleLoop
+              resizeMethod={'resize'}
+              resizeMode={'cover'}
+              dotStyle={ViewDetailCss.dotStyle}
+              ImageComponentStyle={{
+                flex: 1,
+                resizeMode: 'cover',
+              }}
+            />
+          ) : null}
         </View>
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.apartment_View}>
@@ -447,16 +458,45 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <DividerIcon />
         <View style={ViewDetailCss.subContainer}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <Text style={[DetailsStyle.propery_det]}>{'Key features'}</Text>
+          <FlatList
+            data={Detail}
+            scrollEnabled
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{}}
+            numColumns={numColumns}
+            keyExtractor={item => item?.id}
+            // keyExtractor={(item, index) => index.toString()}
+            renderItem={Detail_rander}
+          />
+          <DividerIcon />
+          {property_Detail?.additional_key_features_id === '[]' ? null : (
+            <Text style={[DetailsStyle.propery_det]}>
+              {'Additional key features'}
+            </Text>
+          )}
+
+          <FlatList
+            data={additionalKeyFeatures}
+            numColumns={numColumns}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+          />
+          {/* </View> */}
+          {property_Detail?.additional_key_features_id === '[]' ? null : (
+            <DividerIcon
+              borderBottomWidth={1}
+              color={_COLORS.Kodie_GrayColor}
+            />
+          )}
+          {/* <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <FlatList
               data={Detail}
               scrollEnabled
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{}}
               // numColumns={2}
-              keyExtractor={(item) => item?.id}
+              keyExtractor={item => item?.id}
               // keyExtractor={(item, index) => index.toString()}
               renderItem={Detail_rander}
             />
@@ -465,21 +505,21 @@ export default ViewPropertyDetails = (props) => {
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />
-          </View>
+          </View> */}
         </View>
         <DividerIcon />
         <View style={ViewDetailCss.Container}>
-          <Text style={ViewDetailCss.inspections}>{"Inspections"}</Text>
+          <Text style={ViewDetailCss.inspections}>{'Inspections'}</Text>
           <CustomSingleButton
             disabled={isLoading ? true : false}
-            _ButtonText={"Request an inspection"}
+            _ButtonText={'Request an inspection'}
             Text_Color={_COLORS.Kodie_WhiteColor}
           />
         </View>
         <DividerIcon />
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
-            <Text style={ViewDetailCss.propery_det}>{"Property details"}</Text>
+            <Text style={ViewDetailCss.propery_det}>{'Property details'}</Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>
               <AntDesign
@@ -493,7 +533,7 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
-            <Text style={ViewDetailCss.propery_det}>{"Rooms"}</Text>
+            <Text style={ViewDetailCss.propery_det}>{'Rooms'}</Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>
               <AntDesign
@@ -508,7 +548,7 @@ export default ViewPropertyDetails = (props) => {
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
             <Text style={ViewDetailCss.propery_det}>
-              {"External featuress"}
+              {'External featuress'}
             </Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>
@@ -524,7 +564,7 @@ export default ViewPropertyDetails = (props) => {
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
             <Text style={ViewDetailCss.propery_det}>
-              {"Points of interest"}
+              {'Points of interest'}
             </Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>
@@ -539,14 +579,14 @@ export default ViewPropertyDetails = (props) => {
         </View>
         <View style={ViewDetailCss.bottomButtonMainView}>
           <RowButtons
-            LeftButtonText={"Submit application"}
+            LeftButtonText={'Submit application'}
             LeftButtonTextColor={_COLORS.Kodie_BlackColor}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_BlackColor}
             onPressLeftButton={() =>
-              props.navigation.navigate("SubmitApplication")
+              props.navigation.navigate('SubmitApplication')
             }
-            RightButtonText={"Message owner"}
+            RightButtonText={'Message owner'}
             RightButtonborderColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}

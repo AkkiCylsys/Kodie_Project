@@ -103,5 +103,7 @@ export const CreateJobTermsStyle = StyleSheet.create({
   textItem: {
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
+    alignSelf: "center",
   },
+  error_text: { color: "red", marginLeft: 10 },
 });

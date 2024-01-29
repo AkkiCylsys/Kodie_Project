@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, Text, Platform } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { SearchPlacesStyle } from "./SearchPlacesStyle";
@@ -9,6 +9,11 @@ const SearchPlaces = (props) => {
   const [longitude, setLongitude] = useState("");
   const [description, setDescription] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
+  const textInputRef = useRef(null);
+  useEffect(() => {
+    // Focus on the text input when the component mounts
+    textInputRef.current?.focus();
+  }, []);
   return (
     <View style={SearchPlacesStyle.container}>
       {/* <TopHeader MiddleText={"Location"} /> */}
@@ -35,16 +40,32 @@ const SearchPlaces = (props) => {
         //     });
         //   }
         // }}
+
+        // textInputProps={{
+        //   // Super hacky..
+        //   ref: (textInput) => {
+        //     setTimeout(() => textInput && textInput.focus(), 100);
+        //   },
+        // }}
+        // textInputProps={{
+        //   ref: textInput => {
+
+        //       textInput && textInput.focus();
+
+        //   }
+        textInputProps={{
+          ref: textInputRef,
+        }}
         query={{
           key: "AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw",
           language: "en",
         }}
         fetchDetails={true} // Enable fetching place details
-        minLength={2}
+        // minLength={2}
         styles={{
           textInputContainer: {
             marginHorizontal: 16,
-            borderWidth: Platform.OS=='ios'?0: 1,
+            borderWidth: Platform.OS == "ios" ? 0 : 1,
             borderColor: "#E5E4E2",
             borderRadius: 8,
             marginTop: 10,

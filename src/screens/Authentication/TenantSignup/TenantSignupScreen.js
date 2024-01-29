@@ -87,7 +87,7 @@ export default TenantSignup = (props) => {
                 />
                 <TouchableOpacity onPress={handleTogglePassword}>
                   <MaterialCommunityIcons
-                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    name={showPassword ? "eye-outline" : "eye-off-outline"}
                     size={20}
                     color={_COLORS.Kodie_BlackColor}
                     style={TenantStyle.eyeIcon}

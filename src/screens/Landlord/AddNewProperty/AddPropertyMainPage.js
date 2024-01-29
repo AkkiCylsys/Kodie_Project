@@ -348,7 +348,23 @@ const AddPropertyMainPage = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        let MainFullAddress = json.results[0].formatted_address;
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ", " +
+          json.results[0].address_components[2].long_name +
+          ", " +
+          json.results[0].address_components[3].long_name +
+          ", " +
+          json.results[0].address_components[4].long_name +
+          ", " +
+          json.results[0].address_components[5].long_name +
+          ", " +
+          json.results[0].address_components[6].long_name +
+          ", " +
+          json.results[0].address_components[7].long_name +
+          ", " +
+          json.results[0].address_components[8].long_name;
+
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
@@ -1443,7 +1459,7 @@ const AddPropertyMainPage = (props) => {
                     <View style={FirstPropertyStyle.mainfeaturesview}>
                       <View style={FirstPropertyStyle.key_feature_Text_view}>
                         <Text style={FirstPropertyStyle.key_feature_Text}>
-                          {"On-street parking"}
+                          {"Garages"}
                         </Text>
                       </View>
 

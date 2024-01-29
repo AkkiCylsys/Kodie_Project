@@ -303,14 +303,14 @@ export default AddLeaseDetails = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={AddLeaseDetailsStyle.itemView}>
           {item.lookup_key === lease_term_value ? (
-            <Fontisto
+            <AntDesign
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={"checkcircle"}
               size={20}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -326,14 +326,14 @@ export default AddLeaseDetails = (props) => {
     return (
       <View style={AddLeaseDetailsStyle.itemView}>
         {item.lookup_key === notification_type_value ? (
-          <Fontisto
-            color={_COLORS.Kodie_GreenColor}
-            name={"radio-btn-active"}
-            size={20}
-          />
+         <AntDesign
+         color={_COLORS.Kodie_GreenColor}
+         name={"checkcircle"}
+         size={20}
+       />
         ) : (
           <Fontisto
-            color={_COLORS.Kodie_GreenColor}
+            color={_COLORS.Kodie_GrayColor}
             name={"radio-btn-passive"}
             size={20}
           />
@@ -501,7 +501,7 @@ export default AddLeaseDetails = (props) => {
               style={AddLeaseDetailsStyle.input}
               value={paymentDueDay}
               onChangeText={setPaymentDueDay}
-              // placeholder="2023-12-30"
+              placeholder="2023-12-30"
               // placeholderTextColor="#999"
             />
           </View>
@@ -570,7 +570,7 @@ export default AddLeaseDetails = (props) => {
               <Dropdown
                 style={[
                   AddLeaseDetailsStyle.dropdown,
-                  { flex: 1, borderRadius: 15 },
+                  { flex: 1, borderRadius: 8, marginLeft: 45 },
                 ]}
                 placeholderStyle={[
                   AddLeaseDetailsStyle.placeholderStyle,
@@ -608,7 +608,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
-            <View style={{margin:5}}/>
+            <View style={{ margin: 5 }} />
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Lease expiry reminder"}
             </Text>
@@ -653,7 +653,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
-            <View style={{margin:5}}/>
+            <View style={{ margin: 5 }} />
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Rent payment reminder"}
             </Text>
@@ -697,7 +697,7 @@ export default AddLeaseDetails = (props) => {
               containerStyle={AddLeaseDetailsStyle.toggle_con}
               circleStyle={AddLeaseDetailsStyle.toggle_circle}
             />
-            <View style={{margin:5}}/>
+            <View style={{ margin: 5 }} />
             <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
               {"Late rental reminder"}
             </Text>

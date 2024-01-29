@@ -9,7 +9,7 @@ export const RepairCss = StyleSheet.create({
   },
   item_style: {
     fontSize: 12,
-    fontFamily: fontFamily.K_Regular,
+    fontFamily: fontFamily.K_Medium,
     color: _COLORS.Kodie_VeryLightGrayColor,
   },
   flat_MainView: { flexDirection: "row" },
@@ -47,6 +47,7 @@ export const RepairCss = StyleSheet.create({
   },
   Container: {
     marginHorizontal: 16,
+    textAlign: "center",
   },
   RightContainer: { flex: 0.5, alignSelf: "flex-end" },
   flexContainer: { flex: 1 },
@@ -60,13 +61,13 @@ export const RepairCss = StyleSheet.create({
   },
   tom: {
     fontSize: 12,
-    fontFamily: fontFamily.K_Regular,
+    fontFamily: fontFamily.K_Medium,
     color: _COLORS.Kodie_MediumGrayColor,
   },
   locationView: { flex: 1, flexDirection: "row" },
   locationText: {
     fontSize: 12,
-    fontFamily: fontFamily.K_Regular,
+    fontFamily: fontFamily.K_Medium,
     color: _COLORS.Kodie_BlackColor,
     alignSelf: "center",
     marginLeft: 5,
@@ -75,13 +76,13 @@ export const RepairCss = StyleSheet.create({
   buttonView: {
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
+    alignSelf: "center",
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    paddingHorizontal: 4,
-    paddingVertical: 1,
+    paddingHorizontal: 15,
+    paddingVertical: 2,
     marginLeft: 10,
   },
   roundButton: {
@@ -89,23 +90,26 @@ export const RepairCss = StyleSheet.create({
     width: 6,
     borderRadius: 6 / 2,
     alignSelf: "center",
+    alignItems: "center",
     marginRight: 5,
   },
   buttonText: {
     fontSize: 12,
     fontFamily: fontFamily.K_Bold,
-    alignSelf: "center",
+
+    textAlign: "center",
   },
   spend: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: fontFamily.K_Regular,
+    fontFamily: fontFamily.K_Bold,
     textAlign: "right",
+    marginTop: 5,
   },
   bugetText: {
     fontSize: 12,
     color: _COLORS.Kodie_GrayColor,
-    fontFamily: fontFamily.K_Regular,
+    fontFamily: fontFamily.K_Medium,
     textAlign: "right",
   },
   readMore: {
@@ -116,12 +120,12 @@ export const RepairCss = StyleSheet.create({
   textStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontFamily: FONTFAMILY.K_Medium,
     marginBottom: 30,
   },
   filter: { marginTop: 15 },
-  dividerIcon:{
-    marginTop:30
+  dividerIcon: {
+    marginTop: 30,
   },
   //  swiperview list style--------------------------------
   bindview: {
@@ -167,5 +171,9 @@ export const RepairCss = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_WhiteColor,
+  },
+  bottomModal_container: {
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
   },
 });

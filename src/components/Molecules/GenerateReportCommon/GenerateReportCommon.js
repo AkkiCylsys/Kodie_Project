@@ -1,6 +1,8 @@
 import { View, Text, ScrollView ,Image, TouchableOpacity} from "react-native";
 import React from "react";
 import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { GeneralReportCommonStyle } from "./GenerateReportCommonStyle";
 import { _COLORS,IMAGES } from "../../../Themes";
 import { useRef } from "react";
@@ -19,40 +21,43 @@ const GenerateReportCommon = (props) => {
           <Entypo name="cross" color={_COLORS.Kodie_BlackColor} size={30} />
         </View>
 
-        <View style={GeneralReportCommonStyle.optionsmenu}>
+        <TouchableOpacity style={GeneralReportCommonStyle.optionsmenu}>
           <View>
-            <Image
-              source={props.imageSource}
-              style={GeneralReportCommonStyle.image}
-            />
+             <MaterialIcons
+                name="preview"
+                size={20}
+                color={_COLORS.Kodie_GreenColor}
+              />
           </View>
           <View>
             <Text  style={GeneralReportCommonStyle.title}>{props.title}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
 
-        <View style={GeneralReportCommonStyle.optionsmenu}>
+        <TouchableOpacity style={GeneralReportCommonStyle.optionsmenu}>
           <View>
-            <Image
-              source={props.secondimg}
-              style={GeneralReportCommonStyle.image}
-            />
+            <MaterialCommunityIcons
+                name="file-download-outline"
+                size={20}
+                color={_COLORS.Kodie_GreenColor}
+              />
           </View>
           <View>
             <Text  style={GeneralReportCommonStyle.title}>{props.secondDesc}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
         <TouchableOpacity style={GeneralReportCommonStyle.optionsmenu}    
             onPress={() => {
               refRBSheet.current.open();
             }}>
           <View>
-            <Image
-              source={props.thirdimg}
-              style={GeneralReportCommonStyle.image}
-            />
+            <MaterialCommunityIcons
+                name="email-send-outline"
+                size={20}
+                color={_COLORS.Kodie_GreenColor}
+              />
           </View>
           <View>
             <Text  style={GeneralReportCommonStyle.title}>{props.thirdDesc}</Text>

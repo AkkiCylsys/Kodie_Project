@@ -18,8 +18,11 @@ import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderM
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
+
 import { Config } from "../../../Config";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 const data = [
@@ -29,6 +32,26 @@ const data = [
   { label: "6 hours", value: "4" },
 ];
 export default CreateJobTermsScreen = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
+
+  const handlePriceRangeChange = (priceRange) => {
+    console.log("Price Range in Parent Component:", priceRange);
+    setPriceRanges(priceRange);
+    // Do something with the price range in the parent component
+  };
+  const handlemaxRange = (high) => {
+    console.log("High Range in Parent Component:", high);
+    setMax(high);
+  };
+  const handleminRange = (low) => {
+    console.log("Low Range in Parent Component:", low);
+    setMin(low);
+  };
+
+  let JobId = props?.route?.params?.JobId;
+  let editMode = props?.route?.params?.editMode;
+  // alert(JobId)
   let selectJobType = props?.route?.params?.selectJobType;
   let servicesValue = props?.route?.params?.servicesValue;
   let aboutyourNeed = props?.route?.params?.aboutyourNeed;
@@ -38,6 +61,7 @@ export default CreateJobTermsScreen = (props) => {
   let ratingThresholdValue = props?.route?.params?.ratingThresholdValue;
   let latitude = props?.route?.params?.latitude;
   let longitude = props?.route?.params?.longitude;
+  let myJob = props?.route?.params?.myJob;
   console.log("selectJobType.....", selectJobType);
   console.log("servicesValue.....", servicesValue);
   console.log("aboutyourNeed.....", aboutyourNeed);
@@ -47,12 +71,19 @@ export default CreateJobTermsScreen = (props) => {
   console.log("ratingThresholdValue.....", ratingThresholdValue);
   console.log("latitude.....", latitude);
   console.log("longitude.....", longitude);
+  console.log("myJob.....", myJob);
 
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
+  const [priceRanges, setPriceRanges] = useState(0);
+  const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [currentTime, setCurrentTime] = useState("");
   const [value, setValue] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDateError, setSelectedDateError] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
   const [hourlyNeedData, setHourlyNeedData] = useState([]);
   const [hourlyNeedValue, setHourlyNeedValue] = useState([]);
@@ -68,7 +99,13 @@ export default CreateJobTermsScreen = (props) => {
     useState(false);
   const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
     useState(262);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+
   const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+    setSelectedDate("");
+  };
+  const apply_toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
   const handleDayPress = (day) => {
@@ -173,27 +210,58 @@ export default CreateJobTermsScreen = (props) => {
     );
   };
 
+  const handleRequestDate = (text) => {
+    setSelectedDate(text);
+    if (text.trim() === "") {
+      setSelectedDateError("Request date is required.");
+    } else {
+      setSelectedDateError("");
+    }
+  };
+
+  const handleValidatiomtionCreateJob = () => {
+    if (selectedDate.trim() === "") {
+      setSelectedDateError("Payment date is required.");
+    } else {
+      handleCreateJob();
+    }
+  };
+
   useEffect(() => {
     handleHourlyNeed();
     handleNeedServices();
     handleResponsible();
     handleBookingInsurance();
-  }, []);
+    setFormattedPriceRanges(`$${priceRanges}`);
+    getJobDetails();
+  }, [priceRanges]);
+  // alert(`Formatted Price Range: ${formattedPriceRanges}`);
+  console.log(`Formatted Price Range: ${formattedPriceRanges}`);
 
   // renderitems.....
   const NeedHour_render = (item) => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobTermsStyle.itemView}>
+        <View
+          style={[
+            CreateJobTermsStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === hourlyNeedValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
           {item.lookup_key === hourlyNeedValue ? (
-            <Fontisto
+            <Ionicons
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
-              size={20}
+              name={"checkmark-circle"}
+              size={25}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -208,16 +276,26 @@ export default CreateJobTermsScreen = (props) => {
   const NeedService_render = (item) => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobTermsStyle.itemView}>
+        <View
+          style={[
+            CreateJobTermsStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === needServicesValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
           {item.lookup_key === needServicesValue ? (
-            <Fontisto
+            <Ionicons
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
-              size={20}
+              name={"checkmark-circle"}
+              size={25}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -284,7 +362,7 @@ export default CreateJobTermsScreen = (props) => {
       })
       .catch((error) => {
         console.error("NeedServices error:", error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -350,7 +428,7 @@ export default CreateJobTermsScreen = (props) => {
     console.log("Request URL:", createJob_url);
     setIsLoading(true);
     const createJob_Data = {
-      user_account_details_id: 264,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
       type_of_job: selectJobType,
       job_service_you_looking: servicesValue,
       more_about_job: aboutyourNeed,
@@ -364,17 +442,22 @@ export default CreateJobTermsScreen = (props) => {
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_budget: "$200",
+      job_min_budget: `$${min}`,
+      job_max_budget: `$${max}`,
       job_payment_by: selectedButtonResponsibleId,
       job_booking_insurance: selectedButtonBookingInsuranceId,
+      job_sub_type: myJob == "requested" ? 1 : 0,
     };
+    console.log("createJob_Data....", createJob_Data);
     axios
       .post(createJob_url, createJob_Data)
       .then((response) => {
-        console.log("API Response add_lease:", response.data);
+        console.log("API Response jobCreate..:", response.data);
         if (response.data.success === true) {
           alert(response.data.message);
-          props.navigation.navigate("CreateJobSecondScreen");
+          props.navigation.navigate("CreateJobSecondScreen", {
+            job_id: response.data.job_id,
+          });
           setSelectedDate(""),
             setCurrentTime(""),
             setHourlyNeedValue(""),
@@ -395,27 +478,128 @@ export default CreateJobTermsScreen = (props) => {
         setIsLoading(false);
       });
   };
+  // EditMode Api.........
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetails_Data = {
+      jm_job_id: JobId,
+    };
+    axios
+      .post(jobDetails_url, jobDetails_Data)
+      .then((response) => {
+        console.log("API Response JobDetails:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData_term....", response.data.data);
+          setSelectedDate(response.data.data.job_date.substring(0, 10));
+          setCurrentTime(response.data.data.job_time);
+          setHourlyNeedValue(parseInt(response.data.data.job_hourly_key));
+          setneedServicesValue(parseInt(response.data.data.job_how_often_key));
+          setFormattedPriceRanges(response.data.data.job_budget);
+          setSelectedButtonResponsible(
+            parseInt(response.data.data.job_payment_by_key)
+          );
+          setSelectedButtonBookingInsurance(
+            parseInt(response.data.data.job_insurence_key)
+          );
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
+  const updateCreateJob = () => {
+    const url = Config.BASE_URL;
+    const update_createJob_url = url + `job/updateJob/${JobId}`;
+    // const update_createJob_url = url + "job/updateJob/1";
+    console.log("Request URL:", update_createJob_url);
+    setIsLoading(true);
+    const update_createJob_Data = {
+      type_of_job: selectJobType,
+      job_service_you_looking: servicesValue,
+      more_about_job: aboutyourNeed,
+      job_priority: jobPriorityValue,
+      property_type: property_value,
+      job_location: location,
+      location_latitude: latitude,
+      location_longitude: longitude,
+      job_rating: ratingThresholdValue,
+      job_date: selectedDate,
+      job_time: currentTime,
+      job_hourly: hourlyNeedValue,
+      job_often_need_service: needServicesValue,
+      job_max_budget: jobDetailsData?.job_max_budget,
+      job_min_budget: jobDetailsData?.job_min_budget,
+      job_payment_by: selectedButtonResponsibleId,
+      job_booking_insurance: selectedButtonBookingInsuranceId,
+    };
+    console.log("updatedBody.....", update_createJob_Data);
+    axios
+      .put(update_createJob_url, update_createJob_Data)
+      .then((response) => {
+        console.log("API Response updateCreateJob..:", response.data);
+        if (response.data.success === true) {
+          alert(response.data.message);
+          props.navigation.navigate("CreateJobSecondScreen", {
+            JobId: JobId,
+            editMode: editMode,
+          });
+          setSelectedDate(""),
+            setCurrentTime(""),
+            setHourlyNeedValue(""),
+            setneedServicesValue(""),
+            setSelectedButtonResponsibleId("");
+          setSelectedButtoBookingInsuranceId("");
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed updateCreateJob", error);
+        setIsLoading(false);
+        alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   return (
     <View style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
+        isprofileImage
+        IsNotification
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Create new job request"}
+        MiddleText={editMode ? "Edit job" : "Create new job request"}
       />
-      <StepIndicator
-        customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-        currentPosition={1}
-        // onPress={onStepPress}
-        renderStepIndicator={renderStepIndicator}
-        labels={stepLabels}
-        stepCount={4}
-        renderLabel={renderLabel}
-      />
+      <View style={{ marginVertical: 10 }}>
+        <StepIndicator
+          customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+          currentPosition={1}
+          // onPress={onStepPress}
+          renderStepIndicator={renderStepIndicator}
+          labels={stepLabels}
+          stepCount={4}
+          renderLabel={renderLabel}
+        />
+      </View>
       <ScrollView>
         <View style={CreateJobTermsStyle.container}>
           <Text style={CreateJobTermsStyle.terms_Text}>{"Terms"}</Text>
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
-            {" Request date and time"}
+            {" What date and time would you prefer? "}
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
@@ -426,7 +610,9 @@ export default CreateJobTermsScreen = (props) => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModal}
-              onDayPress={handleDayPress}
+              // onDayPress={handleDayPress}
+              onDayPress={(day) => handleRequestDate(day.dateString)}
+              onChangeText={() => handleRequestDate(selectedDate)}
               Visible={isModalVisible}
               onRequestClose={toggleModal}
               markedDates={{
@@ -437,34 +623,31 @@ export default CreateJobTermsScreen = (props) => {
                 },
               }}
               _closeButton={toggleModal}
-              _ApplyButton={toggleModal}
+              _ApplyButton={apply_toggleModal}
             />
 
             <View style={CreateJobTermsStyle.spaceView} />
-            <View style={[CreateJobTermsStyle.calenderView]}>
-              <Text
-                style={[
-                  CreateJobTermsStyle.textInputStyle,
-                  {
-                    color: currentTime
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_GrayColor,
-                  },
-                ]}
-              >
-                {currentTime && currentTime != ""
-                  ? String(currentTime)
-                  : "Select time"}
-              </Text>
 
-              <TimePicker
-                data={new Date()}
-                getData={(date) => {
-                  setCurrentTime(moment(date).format("hh:mm "));
-                }}
-              />
-            </View>
+            <TimePicker
+              selectedTime={
+                currentTime && currentTime != ""
+                  ? String(currentTime)
+                  : "Select time"
+              }
+              _TextTimeColor={
+                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+              }
+              data={new Date()}
+              getData={(date) => {
+                setCurrentTime(moment(date).format("hh:mm A"));
+              }}
+            />
           </View>
+          {selectedDateError ? (
+            <Text style={CreateJobTermsStyle.error_text}>
+              {selectedDateError}
+            </Text>
+          ) : null}
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {"How many hours do you need?"}
           </Text>
@@ -479,7 +662,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="3 hours"
+            placeholder="Select item"
             searchPlaceholder="Search..."
             value={hourlyNeedValue}
             onChange={(item) => {
@@ -502,7 +685,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="One time"
+            placeholder="Select services"
             searchPlaceholder="Search..."
             value={needServicesValue}
             onChange={(item) => {
@@ -514,7 +697,14 @@ export default CreateJobTermsScreen = (props) => {
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {"What is your budget for this job?"}
           </Text>
-          <RangeSlider from={1} to={2000} />
+          <RangeSlider
+            from={1}
+            to={2000}
+            onPriceRangeChange={handlePriceRangeChange}
+            onHighRange={handlemaxRange}
+            onLowRange={handleminRange}
+            onLowrange={2}
+          />
           <View style={CreateJobTermsStyle.resp_View}>
             <Text style={LABEL_STYLES.commontext}>
               {"Who is responsible for paying for this?"}
@@ -544,9 +734,7 @@ export default CreateJobTermsScreen = (props) => {
               }
               onPressLeftButton={() => {
                 setSelectedButtonResponsible(false);
-                setSelectedButtonResponsibleId(
-                  selectedResponsibleData[0]?.lookup_key
-                );
+                setSelectedButtonResponsibleId(259);
                 // alert(selectedResponsibleData[0]?.lookup_key);
               }}
               RightButtonText={
@@ -569,9 +757,7 @@ export default CreateJobTermsScreen = (props) => {
               }
               onPressRightButton={() => {
                 setSelectedButtonResponsible(true);
-                setSelectedButtonResponsibleId(
-                  selectedResponsibleData[1]?.lookup_key
-                );
+                setSelectedButtonResponsibleId(260);
               }}
             />
           </View>
@@ -599,9 +785,7 @@ export default CreateJobTermsScreen = (props) => {
             }
             onPressLeftButton={() => {
               setSelectedButtonBookingInsurance(false);
-              setSelectedButtoBookingInsuranceId(
-                bookingInsuranceData[0]?.lookup_key
-              );
+              setSelectedButtoBookingInsuranceId(262);
               // alert(bookingInsuranceData[0]?.lookup_key);
             }}
             RightButtonText={
@@ -624,9 +808,7 @@ export default CreateJobTermsScreen = (props) => {
             }
             onPressRightButton={() => {
               setSelectedButtonBookingInsurance(true);
-              setSelectedButtoBookingInsuranceId(
-                bookingInsuranceData[1]?.lookup_key
-              );
+              setSelectedButtoBookingInsuranceId(263);
               // alert(bookingInsuranceData[1]?.lookup_key);
             }}
           />
@@ -637,7 +819,10 @@ export default CreateJobTermsScreen = (props) => {
               disabled={isLoading ? true : false}
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
-                handleCreateJob()
+                // handleCreateJob()
+                {
+                  JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
+                }
               }
             />
           </View>

@@ -25,7 +25,7 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 250,
   },
   inputContainer: {
     marginTop: 15,

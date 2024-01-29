@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { useFocusEffect } from "@react-navigation/native";
 import {
   _COLORS,
@@ -84,7 +85,10 @@ const PropertyList = (props) => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
   };
-
+  const CloseUp = () => {
+    setIsDeleteBottomSheetVisible(false);
+    setIsDeleteData_Clicked(false);
+  };
   // Extract property_id values
 
   const getPropertyDetailsByFilter = async (filter) => {
@@ -102,19 +106,20 @@ const PropertyList = (props) => {
         order_col: "1",
         order_wise: "DESC",
       });
-
+      //alert(JSON.stringify(response))
       setPropertyData(response?.data?.property_details);
 
       setIsLoading(false);
     } catch (error) {
-      if (error.response && error.response.status === 500) {
-        alert(error.response.message);
+      if (error.response && error.response.status == 500) {
+        // alert(error.response.data.message);
         setIsLoading(false);
       } else {
         alert("An error occurred. Please try again later.");
+        // alert(error.response.message);
         setIsLoading(false);
       }
-      console.error("API Error:", error);
+      // alert(error.response.message);
       setIsLoading(false);
     }
   };
@@ -214,7 +219,13 @@ const PropertyList = (props) => {
     // const propertyIds = data.map(item => item.property_id);
     setPropId(item.property_id);
     return (
-      <>
+      <TouchableOpacity
+        onPress={() => {
+          props?.onPropertyView?.({
+            propertyid: item?.property_id,
+          });
+        }}
+      >
         <View key={index} style={PropertyListCSS.flatListContainer}>
           <View style={PropertyListCSS.flat_MainView}>
             <View style={PropertyListCSS.flexContainer}>
@@ -273,7 +284,9 @@ const PropertyList = (props) => {
                     style={PropertyListCSS.noteIcon}
                   /> */}
                 </TouchableOpacity>
+                <View style={{ margin: 3 }} />
                 <TouchableOpacity
+                  style={{}}
                   onPress={() => {
                     // refRBSheetDelete.current.open();
                     setIsDeleteBottomSheetVisible(true);
@@ -289,7 +302,7 @@ const PropertyList = (props) => {
                   />
                 </TouchableOpacity>
               </View>
-              <View
+              <TouchableOpacity
                 style={[
                   PropertyListCSS.buttonView,
                   {
@@ -301,7 +314,7 @@ const PropertyList = (props) => {
                   },
                 ]}
               >
-                <View
+                {/* <View
                   style={[
                     PropertyListCSS.roundButton,
                     {
@@ -312,7 +325,7 @@ const PropertyList = (props) => {
                         : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
-                />
+                /> */}
                 <Text
                   style={[
                     PropertyListCSS.buttonText,
@@ -327,7 +340,7 @@ const PropertyList = (props) => {
                 >
                   {"+ Invite Tenant"}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <DividerIcon
@@ -387,7 +400,7 @@ const PropertyList = (props) => {
             Address={Address}
           />
         </RBSheet> */}
-      </>
+      </TouchableOpacity>
     );
   };
   const propertyData2_render = ({ item }) => {
@@ -591,7 +604,7 @@ const PropertyList = (props) => {
             Text_Color={_COLORS.Kodie_WhiteColor}
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}
-            height={38}
+            height={40}
             marginTop={3}
             onPress={props.propertyDetail}
             disabled={isLoading ? true : false}
@@ -687,6 +700,7 @@ const PropertyList = (props) => {
           isDeletePropertyClicked={isDeleteData_Clicked}
           onDeleteData={FinalDeleteProperty}
           Address={Address}
+          onClose={CloseUp}
         />
       </Modal>
       {isLoading ? <CommonLoader /> : null}

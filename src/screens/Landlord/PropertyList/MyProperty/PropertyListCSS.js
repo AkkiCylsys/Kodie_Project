@@ -77,14 +77,14 @@ export const PropertyListCSS = StyleSheet.create({
     // flex: 0.7,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    paddingHorizontal: 1,
+    // paddingHorizontal: 10,
     paddingVertical: 1,
-    marginLeft: 10,
+    marginLeft: "10%",
   },
   roundButton: {
     height: 6,
@@ -115,7 +115,7 @@ export const PropertyListCSS = StyleSheet.create({
   rentView: { flex: 1, alignItems: "flex-end" },
   bottomModal_container: {
     // borderWidth: 0.5,
-  
+
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     // elevation: 10,

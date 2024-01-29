@@ -75,24 +75,31 @@ export const DocumentsStyle = StyleSheet.create({
   },
 
   textContainer: {
+    flex:1,
     flexDirection: "column",
     marginLeft: 5,
+    // borderWidth:1
   },
 
   pdfInfo: {
+    flex:1,
     flexDirection: "row",
     alignItems: "center",
     padding: 10,
   },
   pdfName: {
+    flex: 0.5,
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
+    width: 280,
+    marginLeft:10,   
   },
   pdfSize: {
     fontSize: 12,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
+    marginLeft:10
   },
   pdfIcon: {
     width: 45,

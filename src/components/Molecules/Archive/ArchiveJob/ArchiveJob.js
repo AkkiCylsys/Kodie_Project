@@ -16,9 +16,8 @@ import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import { ArchiveJobStyle } from "./ArchiveJobStyle";
-import { _COLORS,FONTFAMILY,LABEL_STYLES } from "../../../../Themes";
+import { _COLORS, FONTFAMILY, LABEL_STYLES } from "../../../../Themes";
 import DividerIcon from "../../../Atoms/Devider/DividerIcon";
-
 
 const property_List = [
   {
@@ -96,7 +95,10 @@ const HiddenItemWithActions = (props) => {
 
   return (
     <Animated.View
-      style={[ArchiveJobStyle.rowBack, { height: rowAnimatedValues[rowKey].rowHeight }]}
+      style={[
+        ArchiveJobStyle.rowBack,
+        { height: rowAnimatedValues[rowKey].rowHeight },
+      ]}
     >
       {!rightActionActivated && (
         <TouchableWithoutFeedback onPress={onClose}>
@@ -183,7 +185,11 @@ const HiddenItemWithActions = (props) => {
             ]}
           >
             <View style={ArchiveJobStyle.backBtnInner}>
-              <Ionicons name="archive-outline"  size={22} color={_COLORS.Kodie_WhiteColor} />
+              <Ionicons
+                name="archive-outline"
+                size={22}
+                color={_COLORS.Kodie_WhiteColor}
+              />
               <Text style={ArchiveJobStyle.backBtnText}>Archive</Text>
             </View>
           </Animated.View>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
@@ -6,36 +6,66 @@ import { _goBack } from "./../../../services/CommonServices/index";
 import { _COLORS } from "../../../Themes";
 import { JobsCss } from "./JobsCss";
 import Repair from "./Repair/Repair";
+import SearchForContractor from "./SearchforContractor/SearchForContractor";
+import SearchforJob from "./SearchforJob/SearchforJob";
+import { useRoute } from "@react-navigation/native";
 
 const Jobs = (props) => {
+  const route = useRoute();
+  const [job_sub_type, setJobSubType] = useState(1);
   const [activeTab, setActiveTab] = useState("Tab1");
+  let myJob_Type = props.route.params?.myJob_Type;
+  let job_sub_type_req = props.route.params?.job_sub_type;
+  console.log("job_sub_type_req...", job_sub_type_req);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
         return (
           <Repair
             onpress={() => {
-              props.navigation.navigate("CreateJobFirstScreen");
+              props.navigation.navigate("CreateJobFirstScreen", {
+                myJob: "requested",
+              });
             }}
+            myJob_Type={myJob_Type}
+            servicing_press={() => {
+              props.navigation.navigate("CreateJobFirstScreen", {
+                myJob: "Servicing",
+              });
+            }}
+            create_job_id={(job_id) => {
+              // alert(job_id);
+              props.navigation.navigate("JobDetails", {
+                JOB_ID: job_id,
+                View_Job_Details: "View_Job_Details",
+              });
+            }}
+            job_sub_type_req={job_sub_type_req}
           />
         );
       case "Tab2":
-        // return (
-        //   <View >
-        //     <Text>khgfdgfjhdfgsdhfgdf</Text>
-
-        //   </View>
-
-        // );
-        return <CreateJobFirstScreen />;
+        return (
+          <SearchForContractor
+            Search={(SearchData) => {
+              alert("dfgdsgddgdsdfd", JSON.stringify(SearchData));
+              props.navigation.navigate("SearchDetail", {
+                SearchDataDetail: SearchData,
+              });
+            }}
+          />
+        );
 
       case "Tab3":
-        // return (
-        //   <View>
-        //     <Text>khgfd gfjv fhfghhf ghfg hfghghfgh fhgh hdfgsdhfgdf</Text>
-        //   </View>
-        // );
-        return <CreateJobFirstScreen />;
+        return (
+          <SearchforJob
+            SearchResultJob={(Searchjob) => {
+              // alert("Searchjob", JSON.stringify(Searchjob));
+              props.navigation.navigate("SearchJobResult", {
+                SearchDataDetail: Searchjob,
+              });
+            }}
+          />
+        );
 
       default:
         return (
@@ -46,18 +76,17 @@ const Jobs = (props) => {
 
   return (
     <View style={JobsCss.Container}>
-      {/* <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} /> */}
-
       <TopHeader
-        // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Jobs"}
+        isprofileImage
+        IsNotification={true}
       />
       <CustomTabNavigator
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         TAB3
-        Tab1={"My Jobs"}
+        Tab1={"My jobs"}
         Tab2={"Search for contractors"}
         Tab3={"Search for jobs"}
         onPressTab1={() => setActiveTab("Tab1")}

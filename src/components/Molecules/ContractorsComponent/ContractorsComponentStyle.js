@@ -16,13 +16,13 @@ export const ContractorsComponentStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft: 23,
   },
   Nottext: {
     fontSize: 10,
     marginLeft: 8,
   },
   text1234: {
+    flex: 1,
     fontSize: 12,
   },
 
@@ -45,25 +45,29 @@ export const ContractorsComponentStyle = StyleSheet.create({
 
   //   --------------------
   mainview: {
+    flex: 1,
     marginHorizontal: 15,
+    marginVertical: 5,
   },
   mainbindview: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 5,
+    // flexDirection: "row",
+    // justifyContent: "space-between",
+    // marginHorizontal: 5,
   },
   databindview: {
-    flexDirection: "row",
+    // flexDirection: "row",
   },
   menuiconview: {
-    flexDirection: "row",
-    marginTop: 10,
+    // flexDirection: "row",
+    // alignSelf: "center",
   },
   heartimg: {
     marginRight: 10,
   },
   namebindview: {
+    flex: 1,
     flexDirection: "row",
+    // justifyContent: "space-evenly",
     alignItems: "center",
   },
   ratingbindview: {
@@ -71,26 +75,28 @@ export const ContractorsComponentStyle = StyleSheet.create({
   },
   iconbindview: {
     flexDirection: "row",
-  },
-  imageview: {
-    flexDirection: "row",
-  },
-  Container: {
-    flexDirection: "row",
     justifyContent: "space-between",
   },
-  CoverView:{
-    marginTop:40,
+  imageview: {
+    flex: 1,
+    flexDirection: "row",
+    // justifyContent: "space-between",
   },
-  CoverTextView: {
+
+  Container: { flex: 1, flexDirection: "row", justifyContent: "space-evenly" },
+  textStyle: {
+    fontSize: 12,
+    color: _COLORS.Kodie_GrayColor,
+    fontFamily: FONTFAMILY.K_Regular,
+  },
+  CoverText: {
+    fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_SemiBold,
-    fontSize:12,
+    fontFamily: FONTFAMILY.K_Bold,
   },
-  CoverTextView2: {
-    fontSize:12
-  },
-  CoverTextView3: {
-   color:_COLORS.Kodie_GreenColor
+  readMore: {
+    color: _COLORS.Kodie_GreenColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Bold,
   },
 });

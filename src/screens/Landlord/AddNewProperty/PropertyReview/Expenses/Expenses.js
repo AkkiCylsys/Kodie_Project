@@ -1,67 +1,61 @@
-import React, { useRef, useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import { ExpensesStyle } from "./ExpensesStyle";
-import { _COLORS } from "../../../../../Themes";
-import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
-import RBSheet from "react-native-raw-bottom-sheet";
-import AddExpensesDetails from "./AddExpensesDetails/AddExpensesDetails";
-import PropertyExpenses from "./PropertyExpenses/PropertyExpenses";
-import Entypo from "react-native-vector-icons/Entypo";
-import axios from "axios";
-import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import moment from "moment/moment";
-import { Config } from "../../../../../Config";
+import React, {useRef, useEffect, useState} from 'react';
+import {View, Text, ScrollView, FlatList, TouchableOpacity} from 'react-native';
+import {ExpensesStyle} from './ExpensesStyle';
+import {_COLORS} from '../../../../../Themes';
+import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import AddExpensesDetails from './AddExpensesDetails/AddExpensesDetails';
+import PropertyExpenses from './PropertyExpenses/PropertyExpenses';
+import Entypo from 'react-native-vector-icons/Entypo';
+import axios from 'axios';
+import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import moment from 'moment/moment';
+import {Config} from '../../../../../Config';
 const proper_expens_data = [
   {
-    id: "1",
-    heading: "Accounting",
-    amount_status: "Amount due",
-    paidByUser: "Tenant",
-    Amount: "$100",
-    Date: "9 August 2023",
-    payment_status: "Awaiting Payment",
+    id: '1',
+    heading: 'Accounting',
+    amount_status: 'Amount due',
+    paidByUser: 'Tenant',
+    Amount: '$100',
+    Date: '9 August 2023',
+    payment_status: 'Awaiting Payment',
   },
   {
-    id: "2",
-    heading: "Repairs and maintenance",
-    amount_status: "Amount paid",
-    paidByUser: "LandLord",
-    Amount: "$200",
-    Date: "16 August 2023",
-    payment_status: "Paid",
+    id: '2',
+    heading: 'Repairs and maintenance',
+    amount_status: 'Amount paid',
+    paidByUser: 'LandLord',
+    Amount: '$200',
+    Date: '16 August 2023',
+    payment_status: 'Paid',
   },
   {
-    id: "3",
-    heading: "Cleaning",
-    amount_status: "Amount due",
-    paidByUser: "Tenant",
-    Amount: "$300",
-    Date: "23 August 2023",
-    payment_status: "paid",
+    id: '3',
+    heading: 'Cleaning',
+    amount_status: 'Amount due',
+    paidByUser: 'Tenant',
+    Amount: '$300',
+    Date: '23 August 2023',
+    payment_status: 'paid',
   },
   {
-    id: "4",
-    heading: "Repairs and maintenance",
-    amount_status: "Amount due",
-    paidByUser: "Tenant",
-    Amount: "$150",
-    Date: "30 August 2023",
-    payment_status: "paid",
+    id: '4',
+    heading: 'Repairs and maintenance',
+    amount_status: 'Amount due',
+    paidByUser: 'Tenant',
+    Amount: '$150',
+    Date: '30 August 2023',
+    payment_status: 'paid',
   },
 ];
-export default Expenses = (props) => {
+export default Expenses = props => {
   // alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
-  console.log("property_id in Expenses..", property_id);
+  console.log('property_id in Expenses..', property_id);
   const refRBSheet = useRef();
   const [Expenses_data, setExpenses_Data] = useState([]);
-  const [Expenses_value, setExpenses_vata] = useState("");
+  const [Expenses_value, setExpenses_vata] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const CloseUp = () => {
     refRBSheet.current.close();
@@ -74,23 +68,23 @@ export default Expenses = (props) => {
     const Expenses_Details_url =
       url + `property_expenses_details/getAll/${property_id}`;
     setIsLoading(true);
-    console.log("Request URL:", Expenses_Details_url);
+    console.log('Request URL:', Expenses_Details_url);
     // setIsLoading(true);
     axios
       .get(Expenses_Details_url)
-      .then((response) => {
-        console.log("API Response Expenses_Details_url:", response.data);
+      .then(response => {
+        console.log('API Response Expenses_Details_url:', response.data);
         if (response.data.success === true) {
           setExpenses_Data(response.data.data);
-          console.log("Expenses Details Data..", response.data.data);
+          console.log('Expenses Details Data..', response.data.data);
           setIsLoading(false);
         } else {
           alert(response.data.message);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed", error);
+      .catch(error => {
+        console.error('API failed', error);
         setIsLoading(false);
       })
       .finally(() => {
@@ -102,50 +96,50 @@ export default Expenses = (props) => {
     get_Expenses_Details();
   }, []);
 
-  const property_expense_render = ({ item, index }) => {
+  const property_expense_render = ({item, index}) => {
     // Function to get expense category description based on lookup key
-    const getExpenseCategory = (lookupKey) => {
+    const getExpenseCategory = lookupKey => {
       switch (lookupKey) {
         case 269:
-          return "Accounting";
+          return 'Accounting';
         case 270:
-          return "Advertising";
+          return 'Advertising';
         case 271:
-          return "Agent fees";
+          return 'Agent fees';
         case 272:
-          return "Bank fees";
+          return 'Bank fees';
         case 273:
-          return "Cleaning";
+          return 'Cleaning';
         case 274:
-          return "Electricity";
+          return 'Electricity';
         case 275:
-          return "Ground rents";
+          return 'Ground rents';
         case 276:
-          return "Insurance";
+          return 'Insurance';
         case 277:
-          return "Internet";
+          return 'Internet';
         case 278:
-          return "Late payment fees";
+          return 'Late payment fees';
         case 279:
-          return "Legal";
+          return 'Legal';
         case 280:
-          return "Mortgage expenses";
+          return 'Mortgage expenses';
         case 281:
-          return "Other";
+          return 'Other';
         case 282:
-          return "Rates";
+          return 'Rates';
         case 283:
-          return "Rent arrears";
+          return 'Rent arrears';
         case 284:
-          return "Repairs and maintenance";
+          return 'Repairs and maintenance';
         case 285:
-          return "Property tax";
+          return 'Property tax';
         case 286:
-          return "Utilities";
+          return 'Utilities';
         case 287:
-          return "Water";
+          return 'Water';
         default:
-          return "";
+          return '';
       }
     };
     return (
@@ -157,18 +151,18 @@ export default Expenses = (props) => {
                 <Text style={ExpensesStyle.Accounting_Text}>
                   {getExpenseCategory(item.UPED_EXPENSE_CATEGORY)}
                 </Text>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={ExpensesStyle.Paid_Text}>{"Paid by:"}</Text>
+                <View style={{flexDirection: 'row'}}>
+                  <Text style={ExpensesStyle.Paid_Text}>{'Paid by:'}</Text>
                   <Text style={ExpensesStyle.Paid_Text}>
                     {item.UPED_RESPONSIBLE_PAYING == 266
-                      ? "Landlord"
-                      : "Tenant"}
+                      ? 'Landlord'
+                      : 'Tenant'}
                   </Text>
                 </View>
               </View>
               <View>
                 <Text style={ExpensesStyle.Amount_Text}>
-                  {item.UPED_PAID == 0 ? "Amount due" : "Amount paid"}
+                  {item.UPED_PAID == 0 ? 'Amount due' : 'Amount paid'}
                 </Text>
                 <Text style={ExpensesStyle.Accounting_Text}>
                   ${item.UPED_TOTAL_AMOUNT}
@@ -179,11 +173,9 @@ export default Expenses = (props) => {
           <View style={ExpensesStyle.datePaid_main_view}>
             <View style={ExpensesStyle.paidDate_subView}>
               <View style={ExpensesStyle.paid_Date_View}>
-                <Text style={ExpensesStyle.date_paid}>{"Date paid:"}</Text>
+                <Text style={ExpensesStyle.date_paid}>{'Date paid:'}</Text>
                 <Text style={ExpensesStyle.Amount_Text}>
-                  {moment(item.UPED_DUE_DATE.substring(0, 10)).format(
-                    "DD MMMM YYYY"
-                  )}
+                  {moment(item.UPED_DUE_DATE.substring(0, 10)).format('DD-MMM')}
                 </Text>
               </View>
               <TouchableOpacity
@@ -192,12 +184,11 @@ export default Expenses = (props) => {
                   {
                     backgroundColor:
                       item.UPED_PAID == 0
-                        ? "#E9F2E9"
+                        ? '#E9F2E9'
                         : _COLORS.Kodie_LightOrange,
                   },
-                ]}
-              >
-                <View style={{ flexDirection: "row" }}>
+                ]}>
+                <View style={{flexDirection: 'row'}}>
                   <Entypo
                     name="dot-single"
                     size={25}
@@ -216,9 +207,8 @@ export default Expenses = (props) => {
                             ? _COLORS.Kodie_GreenColor
                             : _COLORS.Kodie_DarkOrange,
                       },
-                    ]}
-                  >
-                    {item.UPED_PAID == 0 ? "Paid" : "Awaiting payment"}
+                    ]}>
+                    {item.UPED_PAID == 0 ? 'Paid' : 'Awaiting payment'}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -234,22 +224,22 @@ export default Expenses = (props) => {
       <ScrollView>
         <View style={ExpensesStyle.add_Expenses_view}>
           <Text style={ExpensesStyle.add_Expenses_Text}>
-            {"Start by adding an expense "}
+            {'Start by adding an expense '}
           </Text>
         </View>
-        <Text style={ExpensesStyle.heading_Text}>{"Property expenses"}</Text>
+        <Text style={ExpensesStyle.heading_Text}>{'Property expenses'}</Text>
         {/* <PropertyExpenses /> */}
         <FlatList
           data={Expenses_data}
           scrollEnabled
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{}}
-          keyExtractor={(item) => item?.id}
+          keyExtractor={item => item?.id}
           renderItem={property_expense_render}
         />
         <View style={ExpensesStyle.btn_View}>
           <CustomSingleButton
-            _ButtonText={"+ Add expense"}
+            _ButtonText={'+ Add expense'}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={() => {
               refRBSheet.current.open();
@@ -259,17 +249,16 @@ export default Expenses = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={510}
+          height={760}
           customStyles={{
             wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
             container: ExpensesStyle.bottomModal_container,
-          }}
-        >
+          }}>
           <AddExpensesDetails onClose={CloseUp} property_id={property_id} />
         </RBSheet>
       </ScrollView>

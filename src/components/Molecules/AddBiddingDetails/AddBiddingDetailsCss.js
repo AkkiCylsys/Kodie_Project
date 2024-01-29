@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS,FONTFAMILY } from "../../../Themes";
+import { Platform, StyleSheet } from "react-native";
+import { _COLORS, FONTFAMILY } from "../../../Themes";
 
 export const AddBiddingDetailsCss = StyleSheet.create({
   mainContainer: {
@@ -26,7 +26,7 @@ export const AddBiddingDetailsCss = StyleSheet.create({
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     marginBottom: 20,
@@ -34,17 +34,17 @@ export const AddBiddingDetailsCss = StyleSheet.create({
   inputContainer: {
     marginBottom: 15,
   },
-  datePickerView: { flexDirection: "row" },
+  datePickerView: { flexDirection: "row", marginBottom: 15 },
   card: {
     width: "100%",
     backgroundColor: _COLORS.Kodie_TransparentColor,
     borderRadius: 4,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: Platform.OS == "ios" ? 50 : 300,
   },
   dropdown: {
     borderWidth: 1,
@@ -69,17 +69,17 @@ export const AddBiddingDetailsCss = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     marginRight: 16,
-    tintColor:_COLORS.Kodie_BlackColor
+    tintColor: _COLORS.Kodie_BlackColor,
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
   },
-//   inputContainer: {
-//     marginTop: 15,
-//   },
+  //   inputContainer: {
+  //     marginTop: 15,
+  //   },
   input: {
     height: 45,
     borderRadius: 6,
@@ -97,7 +97,9 @@ export const AddBiddingDetailsCss = StyleSheet.create({
     height: 25,
     borderRadius: 20,
     padding: 5,
-    marginTop: 20,
+    marginTop: 15,
+    alignSelf: "center",
+    // justifyContent: "center",
   },
   toggle_circle: {
     width: 18,
@@ -116,11 +118,24 @@ export const AddBiddingDetailsCss = StyleSheet.create({
   reminder_dropdown: { flex: 0.8, flexDirection: "row" },
   reminder_dropdown_sty: { flex: 1.8, borderRadius: 15 },
   before: {
-    marginLeft: 10,
+    // flex: 0.5,
+    // marginLeft: 10,
+    // alignSelf: "center",
+    // color: _COLORS.Kodie_BlackColor,
+    // fontSize: 10,
+    // fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 5,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
     fontSize: 10,
-    fontFamily: FONTFAMILY.K_Medium,
+    fontFamily: FONTFAMILY.K_Regular,
+  },
+  after:{
+    marginLeft: 14,
+    alignSelf: "center",
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 10,
+    fontFamily: FONTFAMILY.K_Regular,
   },
   ButtonView: {
     flexDirection: "row",
@@ -140,29 +155,29 @@ export const AddBiddingDetailsCss = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 10,
     borderRadius: 8,
-    color:_COLORS.Kodie_WhiteColor
+    color: _COLORS.Kodie_WhiteColor,
   },
   text: {
     color: _COLORS.Kodie_WhiteColor,
-    alignSelf:"center",
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_SemiBold,
+    alignSelf: "center",
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
   ModalMainView: {
     flex: 1,
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "flex-end",
   },
   ModalView: {
     backgroundColor: "white",
-    width: "100%",
-    height: "70%",
+    // width: "100%",
+    // height: "70%",
     borderRadius: 20,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
     elevation: 10,
   },
-  modalContainer: { flex: 1, marginHorizontal: 16 },
+  modalContainer: { marginHorizontal: 16, marginVertical: 16 },
   modalCloseIcon: {
     justifyContent: "flex-end",
     alignSelf: "flex-end",
@@ -182,6 +197,22 @@ export const AddBiddingDetailsCss = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     textAlign: "center",
     alignSelf: "center",
+    marginTop: 19,
   },
-  checkStl: { height: 120, width: 120, alignSelf: "center" },
+  checkStl: {
+    height: 120,
+    width: 120,
+    alignSelf: "center",
+    marginVertical: 50,
+  },
+  itemView: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
 });

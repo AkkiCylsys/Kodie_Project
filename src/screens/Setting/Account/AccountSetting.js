@@ -20,14 +20,18 @@ const AccountSetting = (props) => {
         >
           <RowTab
             isSecondRowText={true}
-            LeftImage={IMAGES.Accountsetting}
+            // LeftImage={IMAGES.Accountsetting}
+            LeftIconName={"settings-outline"}
+            LeftIconLibrary={"Ionicons"}
             TabTaxt="General account settings"
             TabSubTaxt="Currency symbol, tax rate,  time zone"
           />
         </TouchableOpacity>
         <RowTab
           isSecondRowText={true}
-          LeftImage={IMAGES.Autopayment}
+          // LeftImage={IMAGES.Autopayment}
+          LeftIconName={"pay-circle-o1"}
+          LeftIconLibrary={"AntDesign"}
           TabTaxt="Autopayment set up"
           TabSubTaxt="Configure autopayment for rentals & deposits"
         />
@@ -36,7 +40,9 @@ const AccountSetting = (props) => {
         >
           <RowTab
             isSecondRowText={true}
-            LeftImage={IMAGES.kodiepayment}
+            // LeftImage={IMAGES.kodiepayment}
+            LeftIconName={"payment"}
+            LeftIconLibrary={"MaterialIcons"}
             TabTaxt="Kodie payment methods"
             TabSubTaxt="Add or edit payment methods"
           />
@@ -47,7 +53,9 @@ const AccountSetting = (props) => {
         >
           <RowTab
             isSecondRowText={true}
-            LeftImage={IMAGES.changecontact}
+            // LeftImage={IMAGES.changecontact}
+            LeftIconName={"pencil"}
+            LeftIconLibrary={"SimpleLineIcons"}
             TabTaxt="Change Contact Details"
             TabSubTaxt="Update personal contact information"
           />
@@ -58,7 +66,9 @@ const AccountSetting = (props) => {
         >
           <RowTab
             isSecondRowText={true}
-            LeftImage={IMAGES.delete}
+            // LeftImage={IMAGES.delete}
+            LeftIconName={"delete"}
+            LeftIconLibrary={"AntDesign"}
             TabTaxt="Delete account"
             TabSubTaxt="Delete your account"
             IsDivider={false}

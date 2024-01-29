@@ -34,7 +34,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
 
   placeholderStyle: {
     fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_GrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
   },
@@ -226,4 +226,6 @@ export const CreateJobFirstStyle = StyleSheet.create({
     marginBottom: 20,
     position: "absolute",
   },
+  error_text: { color: "red", marginLeft: 10,marginTop:5 },
+
 });

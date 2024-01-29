@@ -14,9 +14,9 @@ export default AddTenantDetails = (props) => {
   const checkTabs = () => {
     switch (tabValue) {
       case "Person":
-        return <Person property_id={property_id}/>;
+        return <Person property_id={property_id} onClose={handleClosePopup} />;
       case "Company":
-        return <Company property_id={property_id}/>;
+        return <Company property_id={property_id} />;
       default:
         return <Person />;
     }
@@ -33,7 +33,7 @@ export default AddTenantDetails = (props) => {
               name="close"
               size={22}
               color={_COLORS.Kodie_BlackColor}
-              style={{ alignSelf: "center",marginTop:5}}
+              style={{ alignSelf: "center", marginTop: 5 }}
             />
           </TouchableOpacity>
         </View>
