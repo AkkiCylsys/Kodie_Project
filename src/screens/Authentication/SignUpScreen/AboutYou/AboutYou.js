@@ -424,7 +424,7 @@ export default AboutYou = (props) => {
     console.log("result_data...", result?.assets);
   };
   return (
-    <ScrollView style={{ backgroundColor: _COLORS.Kodie_WhiteColor }}>
+    <ScrollView style={{flex:1,backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader MiddleText={"Account set up"} onPressLeftButton={goBack} />
       <View style={AboutYouStyle.stepIndicator}>
         <StepIndicator

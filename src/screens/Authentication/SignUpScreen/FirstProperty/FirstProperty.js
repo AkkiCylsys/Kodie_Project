@@ -765,7 +765,7 @@ export default FirstProperty = (props) => {
                   value={propertyDesc}
                   onChangeText={setPropertyDesc}
                   placeholder="Describe your property here..."
-                  placeholderTextColor="#999"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   multiline
                   numberOfLines={5}
                   textAlignVertical={"top"}
@@ -786,7 +786,7 @@ export default FirstProperty = (props) => {
                   maxHeight={300}
                   labelField="lookup_description"
                   valueField="lookup_key"
-                  placeholder="Apartment"
+                  placeholder="Please select property type"
                   value={property_value}
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
@@ -961,7 +961,10 @@ export default FirstProperty = (props) => {
                   </Text>
                   <MultiSelect
                     style={FirstPropertyStyle.dropdown}
-                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
+                    placeholderStyle={[
+                      FirstPropertyStyle.placeholderStyle,
+                      { color: _COLORS.Kodie_LightGrayColor },
+                    ]}
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}

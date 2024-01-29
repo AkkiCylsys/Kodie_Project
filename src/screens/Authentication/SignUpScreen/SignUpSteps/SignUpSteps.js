@@ -387,7 +387,7 @@ const SignUpSteps = (props) => {
               value={firstName}
               onChangeText={validateFirstName}
               placeholder="Enter your first name"
-              placeholderTextColor="#999"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
             <Text style={AccountStyle.errorText}>{firstNameError}</Text>
           </View>
@@ -398,7 +398,8 @@ const SignUpSteps = (props) => {
               value={lastName}
               onChangeText={validateLastName}
               placeholder="Enter your last name"
-              placeholderTextColor="#999"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+
             />
             <Text style={AccountStyle.errorText}>{lastNameError}</Text>
           </View>
@@ -412,7 +413,7 @@ const SignUpSteps = (props) => {
               onChangeText={setMobileNumber}
               onBlur={() => validateMobileNumber(mobileNumber)}
               placeholder="Enter your phone number"
-              placeholderTextColor="#999"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               keyboardType="phone-pad"
               maxLength={10}
             />
@@ -464,7 +465,7 @@ const SignUpSteps = (props) => {
               value={organisation}
               onChangeText={setOrganisation}
               placeholder="Enter the name of your company"
-              placeholderTextColor="#999"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
           </View>
           <Text style={AccountStyle.org_desc}>
@@ -479,7 +480,7 @@ const SignUpSteps = (props) => {
               value={referral}
               onChangeText={setRefferral}
               placeholder="If you have a referral code, enter it here"
-              placeholderTextColor="#999"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
           </View>
         </View>
