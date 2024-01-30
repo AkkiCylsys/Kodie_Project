@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { JobDetailsStyle } from "./JobDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
@@ -28,6 +28,7 @@ import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdeta
 import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 import JobDocuments from "../JobDocuments.js/JobDocuments";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
+
 const images = [
   BANNERS.previewImage,
   BANNERS.Apartment,
@@ -45,21 +46,29 @@ const Apartment_data = [
 const JobDetails = (props) => {
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
+  console.log("JOB_ID......", JOB_ID);
+  console.log("job_id......", job_id);
   let update_JOB_ID = props?.route?.params?.JobId;
   let View_Job_Details = props?.route?.params?.View_Job_Details;
   let editMode = props?.route?.params?.editMode;
+  const SearchJobId = props.route.params.SearchJobId;
+  const searchView = props.route.params.searchView;
+  console.log("SearchJobId...", SearchJobId, searchView);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [currentPage, setCurrentPage] = useState(3);
   const [visible, setVisible] = useState(false);
   const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [myJobType, setMyJobType] = useState(0);
-
   const handleJobDetailsSuccess = (jobTypeMy) => {
     console.log("jobTypeMy in JobDetails component:", jobTypeMy);
     setMyJobType(jobTypeMy);
+    console.log("myJobType key....", myJobType);
   };
 
+  useEffect(() => {
+    setActiveTab("Tab1");
+  }, []);
   const handleImageFilePath = async (imagesFilePath) => {
     setImageFileData(imagesFilePath);
     // console.log("imagesFilePath....sdfs.", imagesFilePath);
@@ -171,6 +180,8 @@ const JobDetails = (props) => {
       case "Tab1":
         return (
           <Reviewjobdetails1
+            SearchJobId={SearchJobId}
+            searchView={searchView}
             job_id={job_id}
             JOB_ID={JOB_ID}
             update_JOB_ID={update_JOB_ID}
@@ -181,9 +192,13 @@ const JobDetails = (props) => {
               props.navigation.navigate("Jobs", {
                 myJob_Type: myJobType,
               });
-              // alert("hello")
             }}
             onJobDetailsSuccess={handleJobDetailsSuccess}
+            BidonPress={() => {
+              props.navigation.navigate("BidforJob", {
+                SearchJobId: SearchJobId,
+              });
+            }}
           />
         );
       case "Tab2":
@@ -196,16 +211,18 @@ const JobDetails = (props) => {
         );
       case "Tab4":
         return (
-          <JobDocuments
-            JobDocumentDetails={(folderId, moduleName, propertyid) => {
-              props.navigation.navigate("JobDocumentDetails", {
-                folderId: folderId,
-                moduleName: moduleName,
-                JOB_ID: JOB_ID,
-              });
-            }}
-            JOB_ID={JOB_ID}
-          />
+          <>
+            <JobDocuments
+              JobDocumentDetails={(folderId, moduleName, propertyid) => {
+                props.navigation.navigate("JobDocumentDetails", {
+                  folderId: folderId,
+                  moduleName: moduleName,
+                  JOB_ID: JOB_ID,
+                });
+              }}
+              JOB_ID={JOB_ID}
+            />
+          </>
         );
     }
   };
@@ -218,11 +235,17 @@ const JobDetails = (props) => {
       <TopHeader
         isprofileImage
         IsNotification
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() =>
+          View_Job_Details
+            ? props.navigation.navigate("Jobs", {
+                myJob_Type: myJobType,
+              })
+            : _goBack(props)
+        }
         MiddleText={"Review job details"}
       />
       <View style={{ marginVertical: 10 }}>
-        {View_Job_Details ? null : (
+        {View_Job_Details || searchView ? null : (
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={3}
@@ -290,13 +313,19 @@ const JobDetails = (props) => {
             TAB4
             TAB3
             Tab1={"Details"}
-            Tab2={View_Job_Details ? "Bids" : null}
-            Tab3={View_Job_Details ? "Milestones" : null}
-            Tab4={View_Job_Details ? "Documents" : null}
+            Tab2={View_Job_Details || searchView ? "Bids" : null}
+            Tab3={View_Job_Details || searchView ? "Milestones" : null}
+            Tab4={View_Job_Details || searchView ? "Documents" : null}
             onPressTab1={() => setActiveTab("Tab1")}
-            onPressTab2={() => (View_Job_Details ? setActiveTab("Tab2") : null)}
-            onPressTab3={() => (View_Job_Details ? setActiveTab("Tab3") : null)}
-            onPressTab4={() => (View_Job_Details ? setActiveTab("Tab4") : null)}
+            onPressTab2={() =>
+              View_Job_Details || searchView ? setActiveTab("Tab2") : null
+            }
+            onPressTab3={() =>
+              View_Job_Details || searchView ? setActiveTab("Tab3") : null
+            }
+            onPressTab4={() =>
+              View_Job_Details || searchView ? setActiveTab("Tab4") : null
+            }
             colorTab1={
               activeTab === "Tab1"
                 ? _COLORS.Kodie_BlackColor
@@ -329,10 +358,22 @@ const JobDetails = (props) => {
             FONTFAMILY4={
               activeTab === "Tab4" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
             }
-            styleTab1={activeTab === "Tab1" && JobDetailsStyle.activeTab}
-            styleTab2={activeTab === "Tab2" && JobDetailsStyle.activeTab}
-            styleTab3={activeTab === "Tab3" && JobDetailsStyle.activeTab}
-            styleTab4={activeTab === "Tab4" && JobDetailsStyle.activeTab}
+            styleTab1={[activeTab === "Tab1" && JobDetailsStyle.activeTab]}
+            styleTab2={
+              View_Job_Details || searchView
+                ? activeTab === "Tab2" && JobDetailsStyle.activeTab
+                : null
+            }
+            styleTab3={
+              View_Job_Details || searchView
+                ? activeTab === "Tab3" && JobDetailsStyle.activeTab
+                : null
+            }
+            styleTab4={
+              View_Job_Details || searchView
+                ? activeTab === "Tab4" && JobDetailsStyle.activeTab
+                : null
+            }
           />
         </View>
         {checkTabs()}

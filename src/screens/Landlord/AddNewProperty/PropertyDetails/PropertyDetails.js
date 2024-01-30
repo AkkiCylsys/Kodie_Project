@@ -53,7 +53,7 @@ export default PropertyDetails = (props) => {
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
   const [property_value, setProperty_value] = useState(0);
-  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [propertyTypeData, setPropertyTypeData] = useState([]);

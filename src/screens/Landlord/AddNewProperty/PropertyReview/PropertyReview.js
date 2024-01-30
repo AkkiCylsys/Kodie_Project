@@ -329,8 +329,8 @@ export default PropertyReview = (props) => {
   };
 
   useEffect(() => {
+    setActiveTab("Tab1")
     fetchData();
-
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(",");
       setAdditionalKeyFeatures(keyFeaturesArray);

@@ -107,7 +107,7 @@ export const AccountStyle = StyleSheet.create({
     fontSize: 16,
   },
   org_desc: {
-    fontSize: 16,
+    fontSize: 12,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginVertical: 16,

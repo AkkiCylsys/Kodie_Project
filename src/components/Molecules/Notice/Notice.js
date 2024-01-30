@@ -7,6 +7,7 @@ import Select from "../Select/Select";
 import { _COLORS, IMAGES } from "../../../Themes";
 const Notice = (props) => {
   const refRBSheet = useRef();
+  
   return (
     <>
       <View style={NoticeStyle.mainContainer}>
@@ -61,7 +62,7 @@ const Notice = (props) => {
           container: NoticeStyle.bottomModal_container,
         }}
       >
-        <Select />
+        <Select/>
       </RBSheet>
     </>
   );

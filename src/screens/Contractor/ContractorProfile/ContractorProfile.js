@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -11,14 +11,53 @@ import {
 import { ContractorProfileStyle } from "./ContractorProfileStyle";
 import { _COLORS, IMAGES, BANNERS } from "../../../Themes";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
 import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
+import axios from "axios";
+import { Config } from "../../../Config";
+import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 const data = [
   { id: "1", image: BANNERS.previewImage },
   { id: "2", image: BANNERS.previewImage },
 ];
 export default ContractorProfile = (props) => {
+  const [ContractorData, setContractorData] = useState([]);
+  let account_id = props?.route?.params?.account_id;
+  const [isLoading, setIsLoading] = useState(false);
+  console.log(account_id, "jgfdsmnmhffiudffhju");
+  useEffect(() => {
+    getContractorProfile();
+  }, []);
+  const getContractorProfile = () => {
+    const url = Config.BASE_URL;
+    const dataProfile = {
+      account_id: account_id,
+    };
+    const ContractorUrl = url + `Contractor_details_by_account_id`;
+    console.log("Request URL:", ContractorUrl);
+    setIsLoading(true);
+    axios
+      .post(ContractorUrl, dataProfile)
+      .then((response) => {
+        console.log("API Response ContractorProfile:", response.data);
+        if (response.data.success === true) {
+          setContractorData(response.data.data);
+          console.log("ContractorProfile..", response.data.data);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("ContractorProfile errorr", error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   const proposalData = ({ item, index }) => {
     return (
       <>
@@ -46,29 +85,24 @@ export default ContractorProfile = (props) => {
     <View style={ContractorProfileStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Proposal Detail"}
+        MiddleText={"Contractor Profile"}
       />
       <ScrollView>
         <View style={ContractorProfileStyle.profileView}>
-          <TouchableOpacity>
+          <TouchableOpacity style={ContractorProfileStyle.profileImage}>
             <Image
-              source={IMAGES.userImage}
+              source={{ uri: ContractorData.profile_path }}
               style={ContractorProfileStyle.profileImage}
             />
           </TouchableOpacity>
         </View>
-        <Text style={ContractorProfileStyle.userName}>{"Jason Statham"}</Text>
-        <Text style={ContractorProfileStyle.profileName}>
-          {"Plasterer specialist"}
+        <Text style={ContractorProfileStyle.userName}>
+          {`${ContractorData.first_name} ${ContractorData.last_name}`}
         </Text>
         <View style={ContractorProfileStyle.Propose_Con}>
-          <Text style={ContractorProfileStyle.ProposeText}>{"Proposed:"}</Text>
-          <Text style={ContractorProfileStyle.prize}>{"$200"}</Text>
-          <View style={ContractorProfileStyle.autoView}>
-            <TouchableOpacity style={ContractorProfileStyle.button}>
-              <Text style={ContractorProfileStyle.buttonText}>Auto</Text>
-            </TouchableOpacity>
-          </View>
+          <Text style={ContractorProfileStyle.profileName}>
+            {"Plasterer specialist"}
+          </Text>
           <View style={ContractorProfileStyle.verticalLine} />
           <View style={ContractorProfileStyle.ratingView}>
             <AntDesign
@@ -79,9 +113,27 @@ export default ContractorProfile = (props) => {
             <Text style={ContractorProfileStyle.ratingText}>{"4.6 (231)"}</Text>
           </View>
         </View>
+        <View
+          style={[
+            ContractorProfileStyle.Propose_Con,
+            { paddingHorizontal: 80 },
+          ]}
+        >
+          <Entypo
+            color={_COLORS.Kodie_lightGreenColor}
+            name="location-pin"
+            size={20}
+            style={{ marginTop: 10 }}
+          />
+          <Text style={ContractorProfileStyle.ProposeText}>
+            {ContractorData.address}
+          </Text>
+        </View>
         <View style={ContractorProfileStyle.hor_Line} />
         <View style={ContractorProfileStyle.proposalView}>
-          <Text style={ContractorProfileStyle.proposalText}>{"Proposal"}</Text>
+          <Text style={ContractorProfileStyle.proposalText}>
+            {"Cover leter"}
+          </Text>
           <Text style={ContractorProfileStyle.descriptionText}>
             {
               "I am the best contractor in town, ready to go. Check my best works portfolio and. Check out my job history and I think you'll find I'm a great fit for this job."
@@ -93,8 +145,10 @@ export default ContractorProfile = (props) => {
           <Text style={ContractorProfileStyle.descriptionText}>
             {"I look forward to hearing from you if this is a good fit."}
           </Text>
+          <DividerIcon />
           <Text style={ContractorProfileStyle.proposalText}>{"Preview"}</Text>
         </View>
+
         <FlatList
           data={data}
           scrollEnabled
@@ -116,10 +170,7 @@ export default ContractorProfile = (props) => {
           LeftButtonborderColor={_COLORS.Kodie_BlackColor}
           RightButtonborderColor={_COLORS.Kodie_BlackColor}
           LeftButtonText={"Message"}
-          RightButtonText={"Hire"}
-          onPressRightButton={() => {
-            props.navigation.navigate("DocumentList");
-          }}
+          RightButtonText={"Request quote"}
         />
       </View>
     </View>

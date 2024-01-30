@@ -175,5 +175,6 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   textItem: {
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
+    alignSelf:'center'
   },
 });

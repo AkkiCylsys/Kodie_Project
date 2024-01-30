@@ -27,8 +27,12 @@ export default Company = (props) => {
   const [note, setNote] = useState("");
   const [selectedOption, setSelectedOption] = useState("Save");
   const [companyResponse, setCompanyResponse] = useState("");
+  const handleClosePopup = () => {
+    props.onClose();
+  };
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    handleClosePopup();
   };
 
   //... Regex signup email validation

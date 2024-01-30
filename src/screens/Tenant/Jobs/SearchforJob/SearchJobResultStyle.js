@@ -1,45 +1,51 @@
 import { StyleSheet } from "react-native";
-import { _COLORS,FONTFAMILY } from "../../../../Themes";
+import { _COLORS, FONTFAMILY } from "../../../../Themes";
 export const SearchJobResultStyle = StyleSheet.create({
   Mainview: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
-  Container: { 
-    marginHorizontal:16
+  Container: {
+    marginHorizontal: 16,
   },
-  Fixtext:{
-    marginTop:10,
-    justifyContent:"space-between",
-    flexDirection:"row"
+  Fixtext: {
+    marginTop: 10,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    marginHorizontal: 16,
   },
-  fixcontain:{
-    flexDirection:"row",
-    justifyContent:"space-between"
+  fixcontain: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  Budgetstyle:{
-    justifyContent:"space-between",
-    flexDirection:"row",
-    marginTop:25
+  Budgetstyle: {
+    flex: 1,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    marginTop: 25,
   },
-  hearto:{
-    marginLeft:100,
-    // borderWidth:1,
-    height:24,
-    width:99,
-    alignItems:"center",
-    borderRadius:10,
-    backgroundColor:"#FFEDB5"
+  hearto: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    alignSelf: "center",
+    borderRadius: 10,
+    backgroundColor: "#FFEDB5",
   },
-  heartotext:{
-    color:"#F9A000"
+  heartotext: {
+    fontSize: 13,
+    fontFamily: FONTFAMILY.K_Medium,
+    color: "#F9A000",
+    textAlign: "center",
+    alignSelf: "center",
   },
-  locationstyle:{
-    marginTop:5,
-    justifyContent:"space-between",
-    flexDirection:"row"
+  locationstyle: {
+    marginTop: 5,
   },
-  locationcurrent:{
-    marginRight:90
-  }
+  locationcurrent: {
+    flex: 1,
+    marginLeft: 9,
+    fontSize: 13,
+    fontFamily: FONTFAMILY.K_Medium,
+    color: _COLORS.Kodie_BlackColor,
+  },
 });

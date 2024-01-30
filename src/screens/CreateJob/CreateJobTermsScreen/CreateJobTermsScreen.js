@@ -19,6 +19,7 @@ import StepIndicator from "react-native-step-indicator";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
+
 import { Config } from "../../../Config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -242,43 +243,63 @@ export default CreateJobTermsScreen = (props) => {
   const NeedHour_render = (item) => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-      <View style={CreateJobTermsStyle.itemView}>
-        {item.lookup_key === hourlyNeedValue ? (
-          <AntDesign
-            color={_COLORS.Kodie_GreenColor}
-            name={"checkcircle"}
-            size={20}
-          />
-        ) : (
-          <Fontisto
-            color={_COLORS.Kodie_GrayColor}
-            name={"radio-btn-passive"}
-            size={20}
-          />
-        )}
-        <Text style={CreateJobTermsStyle.textItem}>
-          {item.lookup_description}
-        </Text>
-      </View>
-    </ScrollView>
+        <View
+          style={[
+            CreateJobTermsStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === hourlyNeedValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
+          {item.lookup_key === hourlyNeedValue ? (
+            <Ionicons
+              color={_COLORS.Kodie_GreenColor}
+              name={"checkmark-circle"}
+              size={25}
+            />
+          ) : (
+            <Fontisto
+              color={_COLORS.Kodie_GrayColor}
+              name={"radio-btn-passive"}
+              size={20}
+            />
+          )}
+          <Text style={CreateJobTermsStyle.textItem}>
+            {item.lookup_description}
+          </Text>
+        </View>
+      </ScrollView>
     );
   };
   const NeedService_render = (item) => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobTermsStyle.itemView}>
+        <View
+          style={[
+            CreateJobTermsStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === needServicesValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
           {item.lookup_key === needServicesValue ? (
-            <AntDesign
-            color={_COLORS.Kodie_GreenColor}
-            name={"checkcircle"}
-            size={20}
-          />
-        ) : (
-          <Fontisto
-            color={_COLORS.Kodie_GrayColor}
-            name={"radio-btn-passive"}
-            size={20}
-          />
+            <Ionicons
+              color={_COLORS.Kodie_GreenColor}
+              name={"checkmark-circle"}
+              size={25}
+            />
+          ) : (
+            <Fontisto
+              color={_COLORS.Kodie_GrayColor}
+              name={"radio-btn-passive"}
+              size={20}
+            />
           )}
           <Text style={CreateJobTermsStyle.textItem}>
             {item.lookup_description}
@@ -607,29 +628,21 @@ export default CreateJobTermsScreen = (props) => {
             />
 
             <View style={CreateJobTermsStyle.spaceView} />
-            <View style={[CreateJobTermsStyle.calenderView]}>
-              <Text
-                style={[
-                  CreateJobTermsStyle.textInputStyle,
-                  {
-                    color: currentTime
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_GrayColor,
-                  },
-                ]}
-              >
-                {currentTime && currentTime != ""
-                  ? String(currentTime)
-                  : "Select time"}
-              </Text>
 
-              <TimePicker
-                data={new Date()}
-                getData={(date) => {
-                  setCurrentTime(moment(date).format("hh:mm"));
-                }}
-              />
-            </View>
+            <TimePicker
+              selectedTime={
+                currentTime && currentTime != ""
+                  ? String(currentTime)
+                  : "Select time"
+              }
+              _TextTimeColor={
+                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+              }
+              data={new Date()}
+              getData={(date) => {
+                setCurrentTime(moment(date).format("hh:mm A"));
+              }}
+            />
           </View>
           {selectedDateError ? (
             <Text style={CreateJobTermsStyle.error_text}>
@@ -722,9 +735,7 @@ export default CreateJobTermsScreen = (props) => {
               }
               onPressLeftButton={() => {
                 setSelectedButtonResponsible(false);
-                setSelectedButtonResponsibleId(
-                  selectedResponsibleData[0]?.lookup_key
-                );
+                setSelectedButtonResponsibleId(259);
                 // alert(selectedResponsibleData[0]?.lookup_key);
               }}
               RightButtonText={
@@ -747,9 +758,7 @@ export default CreateJobTermsScreen = (props) => {
               }
               onPressRightButton={() => {
                 setSelectedButtonResponsible(true);
-                setSelectedButtonResponsibleId(
-                  selectedResponsibleData[1]?.lookup_key
-                );
+                setSelectedButtonResponsibleId(260);
               }}
             />
           </View>
@@ -777,9 +786,7 @@ export default CreateJobTermsScreen = (props) => {
             }
             onPressLeftButton={() => {
               setSelectedButtonBookingInsurance(false);
-              setSelectedButtoBookingInsuranceId(
-                bookingInsuranceData[0]?.lookup_key
-              );
+              setSelectedButtoBookingInsuranceId(262);
               // alert(bookingInsuranceData[0]?.lookup_key);
             }}
             RightButtonText={
@@ -802,9 +809,7 @@ export default CreateJobTermsScreen = (props) => {
             }
             onPressRightButton={() => {
               setSelectedButtonBookingInsurance(true);
-              setSelectedButtoBookingInsuranceId(
-                bookingInsuranceData[1]?.lookup_key
-              );
+              setSelectedButtoBookingInsuranceId(263);
               // alert(bookingInsuranceData[1]?.lookup_key);
             }}
           />

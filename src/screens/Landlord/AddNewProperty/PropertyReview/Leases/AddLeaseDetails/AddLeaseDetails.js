@@ -303,14 +303,14 @@ export default AddLeaseDetails = (props) => {
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View style={AddLeaseDetailsStyle.itemView}>
           {item.lookup_key === lease_term_value ? (
-            <Fontisto
+            <AntDesign
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={"checkcircle"}
               size={20}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -326,14 +326,14 @@ export default AddLeaseDetails = (props) => {
     return (
       <View style={AddLeaseDetailsStyle.itemView}>
         {item.lookup_key === notification_type_value ? (
-          <Fontisto
-            color={_COLORS.Kodie_GreenColor}
-            name={"radio-btn-active"}
-            size={20}
-          />
+         <AntDesign
+         color={_COLORS.Kodie_GreenColor}
+         name={"checkcircle"}
+         size={20}
+       />
         ) : (
           <Fontisto
-            color={_COLORS.Kodie_GreenColor}
+            color={_COLORS.Kodie_GrayColor}
             name={"radio-btn-passive"}
             size={20}
           />

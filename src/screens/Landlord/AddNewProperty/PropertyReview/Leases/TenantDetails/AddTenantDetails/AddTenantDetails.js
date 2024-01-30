@@ -16,7 +16,7 @@ export default AddTenantDetails = (props) => {
       case "Person":
         return <Person property_id={property_id} onClose={handleClosePopup} />;
       case "Company":
-        return <Company property_id={property_id} />;
+        return <Company property_id={property_id} onClose={handleClosePopup} />;
       default:
         return <Person />;
     }

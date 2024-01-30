@@ -10,6 +10,8 @@ export const ContractorProfileStyle = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     resizeMode: "cover",
+    borderWidthL: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
   },
   profileView: {
     alignSelf: "center",
@@ -28,26 +30,26 @@ export const ContractorProfileStyle = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     textAlign: "center",
-    marginTop: 16,
+    marginTop: 10,
   },
   Propose_Con: {
     flex: 1,
     flexDirection: "row",
     alignSelf: "center",
-    marginTop: 8,
   },
   ProposeText: {
     fontSize: 14,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 8,
+    marginTop: 10,
+    textAlign: "center",
     alignSelf: "center",
   },
   prize: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 8,
+    marginTop: 10,
     alignSelf: "center",
   },
   autoView: {
@@ -118,7 +120,7 @@ export const ContractorProfileStyle = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  rowBtnView: { marginHorizontal: 16, marginBottom: 20 },
+  rowBtnView: { marginHorizontal: 36, marginBottom: 50 },
   verticalLine: {
     height: "50%",
     width: 1,
@@ -127,5 +129,4 @@ export const ContractorProfileStyle = StyleSheet.create({
     alignSelf: "center",
     marginTop: 10,
   },
-
 });

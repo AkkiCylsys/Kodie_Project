@@ -130,7 +130,7 @@ export const AddBiddingDetailsCss = StyleSheet.create({
     fontSize: 10,
     fontFamily: FONTFAMILY.K_Regular,
   },
-  after:{
+  after: {
     marginLeft: 14,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
@@ -201,7 +201,7 @@ export const AddBiddingDetailsCss = StyleSheet.create({
   },
   checkStl: {
     height: 120,
-    width: 120,
+    width: "50%",
     alignSelf: "center",
     marginVertical: 50,
   },
