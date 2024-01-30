@@ -88,6 +88,7 @@ const AddBiddingDetails = (props) => {
   }, []);
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    handleclosepopUp();
   };
   const sendDataToParent = () => {
     const data = "Hello from child!";
@@ -669,7 +670,7 @@ const AddBiddingDetails = (props) => {
                       },
                     ]}
                   >
-                    {"cancel"}
+                    {"Cancel"}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -712,7 +713,7 @@ const AddBiddingDetails = (props) => {
           </Text>
           <Image
             source={IMAGES.CheckIcon}
-            resizeMode={"center"}
+            resizeMode={"cover"}
             style={AddBiddingDetailsCss.checkStl}
           />
           <CustomSingleButton
