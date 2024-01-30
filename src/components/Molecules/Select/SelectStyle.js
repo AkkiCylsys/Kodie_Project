@@ -5,7 +5,8 @@ export const SelectStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: 'space-between',
     alignItems: "center",
-    marginHorizontal:20
+    marginHorizontal:20,
+    marginVertical:10
   },
   headingtext: {
     fontSize: 20,

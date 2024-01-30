@@ -8,67 +8,15 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginTop: 20,
     marginHorizontal: 16,
   },
-
-  dropdownheadingtext: {
-    fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Bold,
-  },
-  dropdown: {
-    borderWidth: 1,
-    height: 50,
-    borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 10,
-    borderRadius: 8,
-  },
-  placeholderStyle: {
-    fontSize: 14,
-    color: _COLORS.Kodie_LightGrayColor,
-    fontFamily: FONTFAMILY.K_Medium,
-    marginHorizontal: 10,
-  },
-  selectedTextStyle: {
-    fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Medium,
-    marginLeft: 10,
-  },
-  inputSearchStyle: {
-    height: 40,
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    marginRight: 16,
-  },
-
   locationInputview: {
     height: 48,
     borderWidth: 0.4,
     borderColor: _COLORS.Kodie_GrayColor,
-    borderRadius: 5,
+    borderRadius: 10,
     marginTop: 4,
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 10,
-  },
-  Noticeview: {
-    flex: 1,
-  },
-  locationInput: {
-    borderWidth: 0.4,
-    borderRadius: 5,
-    paddingHorizontal: 15,
-    marginTop: 5,
-    borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
-  },
-  noticehead: {
-    fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Bold,
-    marginTop: 15,
   },
   mainreapeatview: {
     flex: 1,
@@ -79,17 +27,14 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
 
   noticedropdownview: {
-    width: 170,
-  },
-  dropdownNotice: {
-    height: 35,
-    paddingBottom: 4,
-    borderWidth: 0.8,
+    width: 215,
   },
   repeattext: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
+    alignSelf: "center",
+    marginTop: 10,
   },
   iconStyle: {
     width: 20,
@@ -128,8 +73,9 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   dateview: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
-    padding: 5,
+    justifyContent: "space-between",
+    paddingVertical:10,
+    marginLeft:45
   },
   datetext: {
     color: _COLORS.Kodie_BlackColor,
@@ -144,7 +90,6 @@ export const AddNewNoticeStyle = StyleSheet.create({
   dividerthird: {
     marginTop: 20,
   },
-
   secondmainview: {
     flex: 1,
   },
@@ -158,12 +103,10 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginBottom: 5,
     marginTop: 5,
   },
-
   dividerfourth: {
     marginTop: 20,
     marginBottom: 5,
   },
-
   setnotificationview: {
     flexDirection: "row",
     alignItems: "center",
@@ -180,6 +123,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     height: 23,
     alignItems: "center",
     paddingTop: 5,
+    color:_COLORS.Kodie_GrayColor
   },
   rightarrowimg: {
     width: 6,
@@ -226,7 +170,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft: 15,
+    marginLeft:45,
   },
   inputContainer: {
     marginBottom: 15,
@@ -250,11 +194,102 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   addattachmentbtnview: {
     flex: 1,
+    marginBottom:20
   },
   addattachment: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
+    marginTop:24,
+    
+  },
+  // ....drop down
+  jobDetailsView: {
+    marginTop: 12,
+  },
+  dropdown: {
+    borderWidth: 1,
+    height: 50,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 12,
+    borderRadius: 8,
   },
 
+  placeholderStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_GrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    // borderWidth: 1,
+    marginRight: 16,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  // ...
+  input: {
+    height: 48,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: "#333",
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginTop: 20,
+  },
+  toggle_con: {
+    width: 45,
+    height: 20,
+    borderRadius: 20,
+    padding: 5,
+    // marginTop: 18,
+    alignItems: "center",
+  },
+  toggle_circle: {
+    width: 15,
+    height: 15,
+    borderRadius: 15 / 2,
+  },
+  input_guest:{
+    flex: 1,
+    flexDirection: "row",
+    borderWidth: 1,
+    justifyContent: "space-between",
+  },
+  ChatText:{
+    fontSize:10,
+    color:_COLORS.Kodie_WhiteColor,
+    fontFamily:FONTFAMILY.K_Medium,
+    alignSelf:"center"
+
+  },
+  chatBtn:{
+    borderWidth: 1,
+    width: 56,
+    height: 48,
+    marginLeft:10,
+    alignSelf:"center",
+    marginTop:20,
+    borderRadius:8,
+    backgroundColor:_COLORS.Kodie_lightGreenColor,
+    borderColor:_COLORS.Kodie_lightGreenColor,
+  },
+  customIcon:{
+    height: 23,
+    width: 23,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 8,
+  }
 });

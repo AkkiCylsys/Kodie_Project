@@ -18,7 +18,7 @@ import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import Notice from "../../../components/Molecules/Notice/Notice";
 import Entypo from "react-native-vector-icons/Entypo";
 import RBSheet from "react-native-raw-bottom-sheet";
-import Select from "../../../components/Molecules/Select/Select";
+import NoticeBottomModal from "../../../components/Molecules/Select/Select";
 import { useState } from "react";
 const HorizontalData = ["General", "Inspection", "Rent", "Job"];
 
@@ -60,9 +60,9 @@ const Notices = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
-  const onClose = () => {
-    refRBSheet.current.close();
-  };
+  // const onClose = () => {
+  //   refRBSheet.current.close();
+  // };
   // renderItems....
   const horizontal_render = ({ item }) => {
     return (
@@ -125,6 +125,9 @@ const Notices = (props) => {
             backgroundColor={_COLORS.Kodie_BlackColor}
             Text_Color={_COLORS.Kodie_WhiteColor}
             disabled={isLoading ? true : false}
+            onPress={() => {
+              props.navigation.navigate("AddNewNotice");
+            }}
           />
         </View>
 
@@ -174,7 +177,7 @@ const Notices = (props) => {
             color={_COLORS.Kodie_BlackColor}
           />
         </View>
-        <View style={{ flex: 1, alignSelf: "center" }}>
+        <View style={{ flex: 1, alignSelf: "center",marginTop:20 }}>
           <FlatList
             showsHorizontalScrollIndicator={false}
             data={noticeData}
@@ -186,8 +189,8 @@ const Notices = (props) => {
       <RBSheet
         ref={refRBSheet}
         height={220}
-        // closeOnDragDown={true}
-        closeOnPressMask={false}
+        closeOnDragDown={true}
+        // closeOnPressMask={false}
         customStyles={{
           wrapper: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -198,7 +201,9 @@ const Notices = (props) => {
           container: NoticesStyle.bottomModal_container,
         }}
       >
-        <Select onClose={onClose} />
+        <NoticeBottomModal       
+        // onClose={onClose()}
+         />
       </RBSheet>
     </View>
   );
