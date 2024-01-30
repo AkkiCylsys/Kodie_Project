@@ -102,7 +102,7 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "6",
+        order_col: "8",
         order_wise: "DESC",
       });
 
@@ -135,7 +135,7 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "6",
+        order_col: "8",
         order_wise: "DESC",
       });
       setServicingJobData(response?.data?.job_details);
@@ -162,7 +162,7 @@ export default Repair = (props) => {
       getJobDetailsByFilter(selectedFilter);
       getJobDetails_Filter_Service(selectedFilter);
     }
-    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1? true : false);
+    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1 ? true : false);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);

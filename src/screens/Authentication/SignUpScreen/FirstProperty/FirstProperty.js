@@ -130,7 +130,7 @@ export default FirstProperty = (props) => {
   const [propertyDesc, setPropertyDesc] = useState("");
   const [property_Data, setProperty_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
-  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
