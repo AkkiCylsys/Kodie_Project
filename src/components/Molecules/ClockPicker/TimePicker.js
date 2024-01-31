@@ -26,18 +26,21 @@ const TimePicker = (props) => {
   return (
     <View style={{ flex: 1 }}>
       <TouchableOpacity
-        style={{
-          backgroundColor: _COLORS.Kodie_WhiteColor,
-          borderRadius: 5,
-          borderWidth: 1,
-          paddingVertical: 5,
-          borderColor: _COLORS.Kodie_GrayColor,
-          flexDirection: "row",
-          justifyContent: "center",
-          alignSelf: "center",
-          marginTop: 15,
-          flex: 1,
-        }}
+        style={[
+          {
+            backgroundColor: _COLORS.Kodie_WhiteColor,
+            borderRadius: 5,
+            borderWidth: 1,
+            paddingVertical: 5,
+            borderColor: _COLORS.Kodie_GrayColor,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignSelf: "center",
+            marginTop: 15,
+            flex: 1,
+          },
+          props.timerConStyle,
+        ]}
         onPress={() => {
           setDatePickerVisibility(true);
         }}
@@ -60,8 +63,23 @@ const TimePicker = (props) => {
         >
           {props.selectedTime}
         </Text>
-
-        <TouchableOpacity
+        {!props.timerIcons ? (
+          <TouchableOpacity
+            disabled={props?.isDisable ? true : false}
+            onPress={() => {
+              setDatePickerVisibility(true);
+            }}
+            style={[clockStyle.mainView]}
+          >
+            <MacIcon
+              name={props?.iconName || "clock-outline"}
+              size={23}
+              color={_COLORS.Kodie_MediumGrayColor}
+              style={[clockStyle.iconStyle]}
+            />
+          </TouchableOpacity>
+        ) : null}
+        {/* <TouchableOpacity
           disabled={props?.isDisable ? true : false}
           onPress={() => {
             setDatePickerVisibility(true);
@@ -74,7 +92,7 @@ const TimePicker = (props) => {
             color={_COLORS.Kodie_MediumGrayColor}
             style={[clockStyle.iconStyle]}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <DateTimePickerModal
           isVisible={isDatePickerVisible}

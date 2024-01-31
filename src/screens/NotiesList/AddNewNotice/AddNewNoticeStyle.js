@@ -69,7 +69,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginLeft: 15,
   },
   datetimeview: {
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
   },
   dateview: {
     flexDirection: "row",
@@ -291,5 +291,55 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
-  }
+  },
+  firstview: {
+    alignItems: "flex-start",
+    marginVertical: 10,
+  },
+  oldnumbertext: {
+    fontSize: 13,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginBottom: 12,
+    marginTop:22
+  },
+  locationContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  locationInput: {
+    flex: 1,
+    height: 48,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+  },
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    marginLeft: 10,
+    width: "15%",
+    height: 48,
+    justifyContent: "center",
+  },
+  locationIcon: {
+    alignSelf: "center",
+  },
+  BtnContainer: {
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "flex-end",
+    paddingVertical: 3,
+    borderRadius: 10,
+    width: "30%",
+    height: 50,
+    bottom: 0,
+    right: 20,
+    marginBottom: 20,
+    position: "absolute",
+  },
 });
