@@ -47,13 +47,13 @@ const data = [
   { label: "America", value: "3" },
 ];
 const AddNewNotice = (props) => {
+  const noticeReminderid = props.route.params?.noticeReminderid;
+  console.log("noticeReminderid in addNewNotice...", noticeReminderid);
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
-  const [value, setValue] = useState(null);
   const [location, setLocation] = useState("");
   const [noticeTittle, setNoticeTittle] = useState("");
   const [addGuest, setAddGuest] = useState("");
-  const [select, setSelect] = useState("");
   const [notes, setNotes] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [toggleDay, setToggleDay] = useState(false);
@@ -63,7 +63,7 @@ const AddNewNotice = (props) => {
   const [noticeTypeData, setNoticeTypeData] = useState([]);
   const [noticeTypeDataValue, setNoticeTypeDataValue] = useState("");
   const [repeatData, setRepeatData] = useState([]);
-  const [repeatDataValue, setRepeatDataValue] = useState([]);
+  const [repeatDataValue, setRepeatDataValue] = useState("");
   const [notification_type_Data, setNotification_type_Data] = useState([]);
   const [notification_type_value, setNotification_type_value] = useState("");
   const [UserCurrentCity, setUserCurrentCity] = useState("");
@@ -88,6 +88,7 @@ const AddNewNotice = (props) => {
     handle_notice();
     handle_Repeat();
     handle_notification_type();
+    getNoticesReminderDetails();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
@@ -320,6 +321,24 @@ const AddNewNotice = (props) => {
         setIsLoading(false);
       });
   };
+  // clearState ..
+  const clearState = () => {
+    setNoticeTypeDataValue(""),
+      setNoticeTittle(""),
+      setRepeatDataValue(""),
+      setToggleDayValue("");
+    setNotes(""),
+      setAddGuest(""),
+      setToggleDay(false),
+      setToggleNotification(false),
+      setToggleNotificationValue("");
+    setNotification_type_value("");
+    setLocation(""),
+      setSelectedDate(""),
+      setSelectedToDate(""),
+      setCurrentfromTime(""),
+      setCurrentToTime("");
+  };
   const createNoticeReminder = async () => {
     const formData = new FormData();
     formData.append("account_id", loginData?.Login_details?.user_account_id);
@@ -327,11 +346,11 @@ const AddNewNotice = (props) => {
     formData.append("notice_title", noticeTittle);
     formData.append("notice_repeat", repeatDataValue);
     formData.append("notice_notifications", toggleDayValue);
-    formData.append("notice_from_date", "2024-12-25");
-    formData.append("notice_from_time", "5:00pm");
-    formData.append("notice_to_date", "2024-12-26");
-    formData.append("notice_to_time", "5:00am");
-    formData.append("guests", 1);
+    formData.append("notice_from_date", selectedDate);
+    formData.append("notice_from_time", currentfromTime);
+    formData.append("notice_to_date", selectedToDate);
+    formData.append("notice_to_time", currentToTime);
+    formData.append("guests", addGuest);
     formData.append("location", location);
     formData.append("longitude", longitude);
     formData.append("latitude", latitude);
@@ -360,7 +379,9 @@ const AddNewNotice = (props) => {
       console.log("createNoticeReminder....", response.data);
       if (response.data.status === true) {
         alert(response.data.message);
+        props.navigation.navigate("Notices");
       }
+      clearState();
       setIsLoading(false);
     } catch (error) {
       alert(error);
@@ -368,6 +389,51 @@ const AddNewNotice = (props) => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const getNoticesReminderDetails = () => {
+    const url = Config.BASE_URL;
+    const getNoticesReminderDetails_url = url + "get_notices_reminder_details";
+    console.log("Request URL:", getNoticesReminderDetails_url);
+    setIsLoading(true);
+    const notification_data = {
+      notices_reminder_id: noticeReminderid,
+    };
+    axios
+      .post(getNoticesReminderDetails_url, notification_data)
+      .then((response) => {
+        console.log(
+          "API Response getNoticesReminderDetailsData...:",
+          response.data
+        );
+        if (response.data.status === true) {
+          setNoticeTypeDataValue(parseInt(response.data.data.type_notice_id))
+          setNoticeTittle(response.data.data.title)
+          setRepeatDataValue(parseInt(response.data.data.Repeat_id))
+          setToggleDay(String(response.data.data.notification_notice))
+          setSelectedDate(response.data.data.from_date)
+          setSelectedToDate(response.data.data.to_date)
+          setCurrentfromTime(response.data.data.from_time)
+          setCurrentToTime(response.data.data.to_time)
+          setAddGuest(response.data.data.guests)
+          setLocation(response.data.data.location)
+          setToggleNotification(response.data.data.notifications)
+          setNotification_type_value(parseInt(response.data.data.type_id))
+          setNotes(response.data.data.notes)
+
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed getNoticesReminderDetails_url", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
   // Documents....
   const selectDoc = async () => {
@@ -557,7 +623,7 @@ const AddNewNotice = (props) => {
                 switchOn={toggleDay}
                 onPress={() => {
                   setToggleDay(!toggleDay);
-                  setToggleDayValue(toggleDay ? 1 : 0);
+                  setToggleDayValue(toggleDay ? 0 : 1);
                   // alert(toggleDayValue);
                 }}
                 circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
@@ -777,7 +843,7 @@ const AddNewNotice = (props) => {
                   switchOn={toggleNotification}
                   onPress={() => {
                     setToggleNotification(!toggleNotification);
-                    setToggleNotificationValue(toggleNotification?1:0)
+                    setToggleNotificationValue(toggleNotification ? 1 : 0);
                     // alert(toggle_lease_expire);
                   }}
                   circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}

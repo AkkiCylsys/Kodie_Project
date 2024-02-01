@@ -1,13 +1,16 @@
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import { SelectStyle } from "./SelectStyle";
+import { NoticeBottomModalStyle } from "./NoticeBottomModalStyle";
 import Entypo from "react-native-vector-icons/Entypo";
 import { _COLORS } from "../../../Themes";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { FlatList } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 const NoticeBottomModal = (props) => {
+  const navigation = useNavigation();
+
   const onClosemodal = () => {
     props.onClose();
   };
@@ -40,10 +43,22 @@ const NoticeBottomModal = (props) => {
 
   const modalRenderData = ({ item }) => {
     return (
-      <View style={SelectStyle.optionsmainview}>
-        <TouchableOpacity style={SelectStyle.optionsview}>
-          <View style={SelectStyle.optionsiconview}>{item.icon}</View>
-          <Text style={SelectStyle.textoption}>{item.Data}</Text>
+      <View style={NoticeBottomModalStyle.optionsmainview}>
+        <TouchableOpacity
+          style={NoticeBottomModalStyle.optionsview}
+          onPress={() => {
+            if (item.id == 1) {
+              navigation.navigate("AddNewNotice", {
+                noticeReminderid: props.noticeReminderid,
+              });
+            }
+            onClosemodal();
+          }}
+        >
+          <View style={NoticeBottomModalStyle.optionsiconview}>
+            {item.icon}
+          </View>
+          <Text style={NoticeBottomModalStyle.textoption}>{item.Data}</Text>
         </TouchableOpacity>
       </View>
     );
