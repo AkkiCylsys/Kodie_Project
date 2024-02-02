@@ -407,20 +407,21 @@ const AddNewNotice = (props) => {
           response.data
         );
         if (response.data.status === true) {
-          setNoticeTypeDataValue(parseInt(response.data.data.type_notice_id))
-          setNoticeTittle(response.data.data.title)
-          setRepeatDataValue(parseInt(response.data.data.Repeat_id))
-          setToggleDay(String(response.data.data.notification_notice))
-          setSelectedDate(response.data.data.from_date)
-          setSelectedToDate(response.data.data.to_date)
-          setCurrentfromTime(response.data.data.from_time)
-          setCurrentToTime(response.data.data.to_time)
-          setAddGuest(response.data.data.guests)
-          setLocation(response.data.data.location)
-          setToggleNotification(response.data.data.notifications)
-          setNotification_type_value(parseInt(response.data.data.type_id))
-          setNotes(response.data.data.notes)
-
+          setNoticeTypeDataValue(parseInt(response.data.data.type_notice_id));
+          setNoticeTittle(response.data.data.title);
+          setRepeatDataValue(parseInt(response.data.data.Repeat_id));
+          setToggleDay(String(response.data.data.notification_notice));
+          setSelectedDate(response.data.data.from_date);
+          setSelectedToDate(response.data.data.to_date);
+          setCurrentfromTime(response.data.data.from_time);
+          setCurrentToTime(response.data.data.to_time);
+          setAddGuest(response.data.data.guests);
+          setLocation(response.data.data.location);
+          setToggleNotification(response.data.data.notifications);
+          setNotification_type_value(parseInt(response.data.data.type_id));
+          setNotes(response.data.data.notes);
+          // setFileName(response.data.data.file_name)
+          setSelectFile(response.data.data.file_name);
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -434,6 +435,60 @@ const AddNewNotice = (props) => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+  const update_createNoticeReminder = async () => {
+    const formData = new FormData();
+    formData.append("notices_reminder_id", noticeReminderid);
+    formData.append("notice_type", noticeTypeDataValue);
+    formData.append("notice_title", noticeTittle);
+    formData.append("notice_repeat", repeatDataValue);
+    formData.append("notice_notifications", toggleDayValue);
+    formData.append("notice_from_date", selectedDate);
+    formData.append("notice_from_time", currentfromTime);
+    formData.append("notice_to_date", selectedToDate);
+    formData.append("notice_to_time", currentToTime);
+    formData.append("guests", addGuest);
+    formData.append("location", location);
+    formData.append("longitude", longitude);
+    formData.append("latitude", latitude);
+    formData.append("notification", toggleNotificationValue);
+    formData.append("notification_type", notification_type_value);
+    formData.append("custom", 1);
+    formData.append("notes", notes);
+    // formData.append("file_name", fileName);
+    formData.append("file_name", {
+      uri: selectFile[0].uri,
+      name: selectFile[0].name,
+      type: selectFile[0].type,
+    });
+    console.log("formData", formData);
+    const url = Config.BASE_URL;
+    const update_createNoticeReminder_url = url + "update_notices_reminder";
+    setIsLoading(true);
+    try {
+      console.log("Request URL:", update_createNoticeReminder_url);
+      const response = await axios.put(
+        update_createNoticeReminder_url,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("update_createNoticeReminderResponse....", response.data);
+      if (response.data.status === true) {
+        alert(response.data.message);
+        props.navigation.navigate("Notices");
+      }
+      clearState();
+      setIsLoading(false);
+    } catch (error) {
+      alert(error);
+      console.log("update_createNoticeReminder_url...", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   // Documents....
   const selectDoc = async () => {
@@ -929,7 +984,9 @@ const AddNewNotice = (props) => {
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 disabled={isLoading ? true : false}
                 onPress={() => {
-                  createNoticeReminder();
+                  noticeReminderid
+                    ? update_createNoticeReminder()
+                    : createNoticeReminder();
                 }}
               />
             </View>

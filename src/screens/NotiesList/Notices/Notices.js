@@ -25,6 +25,7 @@ import axios from "axios";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import moment from "moment/moment";
 import { useDispatch, useSelector } from "react-redux";
+import { useIsFocused } from "@react-navigation/native";
 
 const HorizontalData = [
   { filtername: "All", filterId: "All" },
@@ -69,6 +70,7 @@ const noticeData = [
   },
 ];
 const Notices = (props) => {
+  const isFocused = useIsFocused();
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
   const [isLoading, setIsLoading] = useState(false);
@@ -80,10 +82,15 @@ const Notices = (props) => {
   const onClose = () => {
     refRBSheet.current.close();
   };
-  useEffect(() => {
-    getNoticesReminderDeatilsByFilter(selectedFilter);
-  }, [selectedFilter]);
+  // useEffect(() => {
+  //   getNoticesReminderDeatilsByFilter(selectedFilter);
+  // }, [selectedFilter,]);
 
+  useEffect(() => {
+    if (isFocused) {
+      getNoticesReminderDeatilsByFilter(selectedFilter);
+    }
+  }, [isFocused, selectedFilter]);
   // RenderItems......
   const horizontal_render = ({ item }) => {
     return (
@@ -132,7 +139,6 @@ const Notices = (props) => {
   };
 
   const noticeRenderData = ({ item, index }) => {
-    
     return (
       <View style={NoticesStyle.mainContainer}>
         <View style={NoticesStyle.dateDayview}>
@@ -160,7 +166,7 @@ const Notices = (props) => {
             onPress={() => {
               refRBSheet.current.open();
               setNoticeReminderid(item.id);
-              console.log("noticereminderId....",item.id)
+              console.log("noticereminderId....", item.id);
             }}
           >
             <Entypo
@@ -214,6 +220,31 @@ const Notices = (props) => {
         setIsLoading(false);
       }
       console.error("API Error NoticesReminderDeatilsByFilter_Data:", error);
+      setIsLoading(false);
+    }
+  };
+
+  const FinalDeleteProperty = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const noticedelete = url + `delete_notices_reminder_details`;
+    console.log("noticedelete", noticedelete);
+    const noticesDeleteData = {
+      notices_reminder_id: noticeReminderid,
+      // notices_reminder_id: 24,
+    };
+    console.log("noticesDeleteData body.....", noticesDeleteData);
+    try {
+      const response = await axios.post(noticedelete, noticesDeleteData);
+      console.log("API Response:", response.data);
+      if (response.data.status === true) {
+        // Alert.alert("notice Deleted", response.data.message);
+        alert(response.data.data);
+        getNoticesReminderDeatilsByFilter(selectedFilter);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("API Error noticedelete:", error);
       setIsLoading(false);
     }
   };
@@ -300,7 +331,11 @@ const Notices = (props) => {
           container: NoticesStyle.bottomModal_container,
         }}
       >
-        <NoticeBottomModal onClose={onClose} noticeReminderid={noticeReminderid} />
+        <NoticeBottomModal
+          onClose={onClose}
+          noticeReminderid={noticeReminderid}
+          FinalDeleteProperty={FinalDeleteProperty}
+        />
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
     </View>
