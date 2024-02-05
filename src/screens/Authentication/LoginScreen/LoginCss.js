@@ -151,4 +151,18 @@ export const LoginStyles = StyleSheet.create({
     alignItems: "center",
   },
   error_text: { color: "red", marginLeft: 10 },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  passwordInput: {
+    flex: 1,
+    height: 48,
+    paddingHorizontal: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+    color: _COLORS.Kodie_BlackColor,
+  },
 });
