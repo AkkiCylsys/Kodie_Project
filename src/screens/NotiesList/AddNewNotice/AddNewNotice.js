@@ -359,11 +359,13 @@ const AddNewNotice = (props) => {
     formData.append("custom", 1);
     formData.append("notes", notes);
     // formData.append("file_name", fileName);
-    formData.append("file_name", {
-      uri: selectFile[0].uri,
-      name: selectFile[0].name,
-      type: selectFile[0].type,
-    });
+    if (selectFile.length > 0 && selectFile[0]) {
+      formData.append("file_name", {
+        uri: selectFile[0].uri || null,
+        name: selectFile[0].name || null,
+        type: selectFile[0].type || null,
+      });
+    }
     console.log("formData", formData);
     const url = Config.BASE_URL;
     const createNoticeReminder_url = url + "create_notices_reminder";
@@ -379,7 +381,9 @@ const AddNewNotice = (props) => {
       console.log("createNoticeReminder....", response.data);
       if (response.data.status === true) {
         alert(response.data.message);
-        props.navigation.navigate("Notices");
+        props.navigation.navigate("Notices",{
+          selectFile:selectFile
+        });
       }
       clearState();
       setIsLoading(false);
@@ -456,11 +460,13 @@ const AddNewNotice = (props) => {
     formData.append("custom", 1);
     formData.append("notes", notes);
     // formData.append("file_name", fileName);
-    formData.append("file_name", {
-      uri: selectFile[0].uri,
-      name: selectFile[0].name,
-      type: selectFile[0].type,
-    });
+    if (selectFile) {
+      formData.append("file_name", {
+        uri: selectFile[0].uri || null,
+        name: selectFile[0].name || selectFile,
+        type: selectFile[0].type || null,
+      });
+    }
     console.log("formData", formData);
     const url = Config.BASE_URL;
     const update_createNoticeReminder_url = url + "update_notices_reminder";

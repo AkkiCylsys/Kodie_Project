@@ -335,6 +335,7 @@ const Notices = (props) => {
           onClose={onClose}
           noticeReminderid={noticeReminderid}
           FinalDeleteProperty={FinalDeleteProperty}
+          selectFile={null}
         />
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}

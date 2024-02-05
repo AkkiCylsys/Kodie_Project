@@ -35,6 +35,7 @@ const NoticeBottomModal = (props) => {
   };
   useEffect(() => {
     getNoticesReminderDetails();
+    console.log("selectFile.....",selectFile)
   }, []);
   const getNoticesReminderDetails = () => {
     const url = Config.BASE_URL;
@@ -48,14 +49,17 @@ const NoticeBottomModal = (props) => {
       .post(getNoticesReminderDetails_url, notification_data)
       .then((response) => {
         console.log(
-          "API Response getNoticesReminderDetailsData...:",
+          "API Response getNoticesReminderDetailsData for duplicate...:",
           response.data
         );
         setNoticeRemiderDetails(response?.data?.data);
         setIsLoading(false);
       })
       .catch((error) => {
-        console.error("API failed getNoticesReminderDetails_url", error);
+        console.error(
+          "API failed getNoticesReminderDetails_url duplicate",
+          error
+        );
         setIsLoading(false);
         // alert(error);
       })
@@ -86,11 +90,13 @@ const NoticeBottomModal = (props) => {
     formData.append("custom", noticeRemiderDetails.custom);
     formData.append("notes", noticeRemiderDetails.notes);
     // formData.append("file_name", fileName);
-    formData.append("file_name", {
-      uri: selectFile,
-      name: noticeRemiderDetails.file_name,
-      type: selectFile,
-    });
+    if (selectFile.length > 0 && selectFile[0]) {
+      formData.append("file_name", {
+        uri: selectFile[0].uri || null,
+        name: selectFile[0].name || null,
+        type: selectFile[0].type || null,
+      });
+    }
     console.log("formData", formData);
     const url = Config.BASE_URL;
     const createNoticeReminder_url = url + "create_notices_reminder";
@@ -102,7 +108,6 @@ const NoticeBottomModal = (props) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("hello deependra");
       console.log("createNoticeReminder....", response.data);
       if (response.data.status === true) {
         alert(response.data.message);
@@ -219,7 +224,7 @@ const NoticeBottomModal = (props) => {
             }
             if (item.id == 2) {
               createNoticeReminder();
-              alert("create Notice");
+              // alert("create Notice");
             }
             if (item.id == 4) {
               FinalDeleteProperty(props.noticeReminderid);
