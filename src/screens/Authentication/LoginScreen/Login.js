@@ -851,7 +851,7 @@ export default Login = (props) => {
               {
                 marginBottom: 500,
                 marginTop:
-                  isClick === 1 || isClick === 2 || isClick === 3 ? 1 : 160,
+                  isClick === 1 || isClick === 2 || isClick === 3 ? 150 : 250,
               },
             ]}
           >
