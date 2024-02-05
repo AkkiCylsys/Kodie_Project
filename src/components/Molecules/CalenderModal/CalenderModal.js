@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
-import { Calendar, LocaleConfig,Theme} from "react-native-calendars";
+import { Calendar, LocaleConfig, Theme } from "react-native-calendars";
 import MacIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { _COLORS, FONTFAMILY, LABEL_STYLES } from "../../../Themes";
 import { CalenderCss } from "./CalenderModalCss";
@@ -56,19 +56,29 @@ const CalendarModal = (props) => {
     <View style={CalenderCss.container}>
       <TouchableOpacity
         onPress={props.calenderIcon}
-        style={CalenderCss.calenderView}
+        style={[CalenderCss.calenderView, props.calenderStyle]}
       >
         <Text style={[CalenderCss.textInputStyle, props._textInputStyle]}>
           {props.SelectDate}
         </Text>
-        <TouchableOpacity onPress={props.calenderIcon}>
+        {!props.calenderIcons ? (
+          <TouchableOpacity onPress={props.calenderIcon}>
+            <MacIcon
+              name={"calendar-month-outline"}
+              size={23}
+              color={_COLORS.Kodie_MediumGrayColor}
+              style={CalenderCss.calenderSty}
+            />
+          </TouchableOpacity>
+        ) : null}
+        {/* <TouchableOpacity onPress={props.calenderIcon}>
           <MacIcon
             name={"calendar-month-outline"}
             size={23}
             color={_COLORS.Kodie_MediumGrayColor}
             style={CalenderCss.calenderSty}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </TouchableOpacity>
 
       <Modal
@@ -94,7 +104,7 @@ const CalendarModal = (props) => {
               todayTextColor={_COLORS.Kodie_BlackColor}
               dayTextColor={_COLORS.Kodie_BlackColor}
               markedDates={props.markedDates}
-              theme={customTheme} 
+              theme={customTheme}
             />
             <View style={CalenderCss.ButtonView}>
               <TouchableOpacity

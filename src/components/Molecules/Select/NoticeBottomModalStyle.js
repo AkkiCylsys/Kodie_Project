@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 import { _COLORS,IMAGES,FONTFAMILY } from "../../../Themes";
-export const SelectStyle = StyleSheet.create({
+export const NoticeBottomModalStyle = StyleSheet.create({
   headingview: {
     flexDirection: "row",
     justifyContent: 'space-between',
     alignItems: "center",
-    marginHorizontal:20
+    marginHorizontal:20,
+    marginVertical:10
   },
   headingtext: {
     fontSize: 20,

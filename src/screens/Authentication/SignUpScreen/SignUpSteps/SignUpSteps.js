@@ -271,7 +271,9 @@ const SignUpSteps = (props) => {
   };
   // Validation for Phone Number
   const validateMobileNumber = (text) => {
-    const mobileReg = /^[6-9]\d{9}$/;
+    // const mobileReg = /^[6-9]\d{9}$/;
+    // const mobileReg = /^04[0-9]{8}$/;
+    const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === "") {
       setMobileNumberError("Phone number is required");
     } else if (!mobileReg.test(text)) {
