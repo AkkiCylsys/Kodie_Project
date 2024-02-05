@@ -18,7 +18,7 @@ export const LABEL_STYLES = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   commonMidtext: {
-    fontSize: 14,
+    fontSize: 12,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
   },

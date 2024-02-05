@@ -16,6 +16,7 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
 import StepIndicator from "react-native-step-indicator";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 
