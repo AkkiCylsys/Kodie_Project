@@ -1,6 +1,7 @@
 export const logos = {
   mainLogo: require("./../../assets/images/Logo/MainLogo.png"),
-  KodieSplash: require("./../../assets/images/Logo/KodieSplash.png"),
+  // KodieSplash: require("./../../assets/images/Logo/KodieSplash.png"),
+  KodieSplash: require("./../../assets/images/Logo/kodiebg.png"),
   MainLogoWhite: require("./../../assets/images/Logo/MainLogoWhite.png"),
 };
 
