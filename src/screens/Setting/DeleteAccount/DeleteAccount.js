@@ -48,7 +48,8 @@ const DeleteAccount = (props) => {
     }
   };
   const validateMobileNumber = (text) => {
-    const mobileReg = /^[6-9]\d{9}$/;
+    // const mobileReg = /^[6-9]\d{9}$/;
+    const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === "") {
       setPhoneNumberError("Phone number is required");
     } else if (!mobileReg.test(text)) {

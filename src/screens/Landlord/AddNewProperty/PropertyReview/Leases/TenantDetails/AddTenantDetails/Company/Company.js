@@ -83,7 +83,8 @@ export default Company = (props) => {
   };
   // Validation for Phone Number
   const validateMobileNumber = (text) => {
-    const mobileReg = /^\d{10}$/;
+    // const mobileReg = /^\d{10}$/;
+    const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === "") {
       setMobileNumberError("Phone number is required");
     } else if (!mobileReg.test(text)) {
