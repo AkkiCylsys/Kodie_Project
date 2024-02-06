@@ -269,15 +269,21 @@ const SignUpSteps = (props) => {
     }
     setLastName(text);
   };
+  const validMobileNumber =()=>{
+    // const mobileReg = /^61[4][0-9]{9}$/;
+    const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
+    // const mobileReg = /^(?:\+61|0)(?:(?:2[0-9])|(?:3[0-9])|(?:4[0-9])|(?:7[0-9])|(?:8[0-9]))(?:\d{8})$/;
+    return mobileReg.test(mobileNumber);
+  }
   // Validation for Phone Number
   const validateMobileNumber = (text) => {
     // const mobileReg = /^[6-9]\d{9}$/;
     // const mobileReg = /^04[0-9]{8}$/;
-    const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
+    // const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === "") {
-      setMobileNumberError("Phone number is required");
-    } else if (!mobileReg.test(text)) {
-      setMobileNumberError("Invalid phone number format");
+      setMobileNumberError("Phone number is required.");
+    } else if (!validMobileNumber(text)) {
+      setMobileNumberError("Invalid phone number format.");
     } else {
       setMobileNumberError("");
     }
@@ -290,6 +296,8 @@ const SignUpSteps = (props) => {
       setLastNameError("Last name is required.");
     } else if (mobileNumber.trim() === "") {
       setMobileNumberError("Phone number is required.");
+    } else if (!validMobileNumber(mobileNumber)) {
+      setMobileNumberError("Invalid phone number format.");
     } else {
       props.navigation.navigate("AboutYou", {
         firstName: firstName,
@@ -401,7 +409,6 @@ const SignUpSteps = (props) => {
               onChangeText={validateLastName}
               placeholder="Enter your last name"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-
             />
             <Text style={AccountStyle.errorText}>{lastNameError}</Text>
           </View>
@@ -417,7 +424,7 @@ const SignUpSteps = (props) => {
               placeholder="Enter your phone number"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               keyboardType="phone-pad"
-              maxLength={10}
+              maxLength={11}
             />
             <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
           </View>

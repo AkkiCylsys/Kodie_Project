@@ -496,24 +496,24 @@ export default Login = (props) => {
             <View style={LoginStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>Password</Text>
               <View style={LoginStyles.passwordContainer}>
-              <TextInput
-                style={LoginStyles.passwordInput}
-                value={password}
-                onChangeText={setPassword}
-                onBlur={() => handleLoginPassword(password)}
-                placeholder="Password"
-                placeholderTextColor="#999"
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity onPress={handleTogglePassword}>
-                <MaterialCommunityIcons
-                  name={showPassword ? "eye-outline" : "eye-off-outline"}
-                  size={20}
-                  color={_COLORS.Kodie_BlackColor}
-                  style={LoginStyles.eyeIcon}
+                <TextInput
+                  style={LoginStyles.passwordInput}
+                  value={password}
+                  onChangeText={setPassword}
+                  onBlur={() => handleLoginPassword(password)}
+                  placeholder="Password"
+                  placeholderTextColor="#999"
+                  secureTextEntry={!showPassword}
                 />
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity onPress={handleTogglePassword}>
+                  <MaterialCommunityIcons
+                    name={showPassword ? "eye-outline" : "eye-off-outline"}
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                    style={LoginStyles.eyeIcon}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
             {passwordError ? (
               <Text style={LoginStyles.error_text}>{passwordError}</Text>
@@ -851,7 +851,7 @@ export default Login = (props) => {
               {
                 marginBottom: 500,
                 marginTop:
-                  isClick === 1 || isClick === 2 || isClick === 3 ? 150 : 250,
+                  isClick === 1 || isClick === 2 || isClick === 3 ? 90 : 180,
               },
             ]}
           >

@@ -26,7 +26,7 @@ import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveL
 import moment from "moment/moment";
 import { useDispatch, useSelector } from "react-redux";
 import { useIsFocused } from "@react-navigation/native";
-
+import { Calendar } from "react-native-calendars"; //calender
 const HorizontalData = [
   { filtername: "All", filterId: "All" },
   { filtername: "General", filterId: "367" },
@@ -70,6 +70,7 @@ const noticeData = [
   },
 ];
 const Notices = (props) => {
+  const [selectedDate, setSelectedDate] = useState(""); // calender state
   const isFocused = useIsFocused();
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
@@ -78,6 +79,11 @@ const Notices = (props) => {
   const [selectedFilter, setSelectedFilter] = useState(["All"]);
   const [noticeReminderid, setNoticeReminderid] = useState("");
   const refRBSheet = useRef();
+
+  const onDayPress = (day) => {
+    //......
+    setSelectedDate(day.dateString);
+  };
 
   const onClose = () => {
     refRBSheet.current.close();
@@ -293,8 +299,18 @@ const Notices = (props) => {
           </View>
         </View>
         <DividerIcon />
-
-        <View style={NoticesStyle.calenderview}>
+        {/* .....calender */}
+        <View style={{ flex: 1, backgroundColor: "#FFFFFF", marginTop: 100 }}>
+          <Calendar
+            onDayPress={onDayPress}
+            markedDates={{ [selectedDate]: { selected: true } }}
+          />
+          <View>
+            <Text>Selected Date: {selectedDate}</Text>
+          </View>
+        </View>
+        {/* ..... */}
+        {/* <View style={NoticesStyle.calenderview}>
           <MaterialCommunityIcons
             name={"chevron-left"}
             size={25}
@@ -306,7 +322,7 @@ const Notices = (props) => {
             size={25}
             color={_COLORS.Kodie_BlackColor}
           />
-        </View>
+        </View> */}
         <View style={{ marginTop: 20, alignSelf: "center" }}>
           <FlatList
             showsHorizontalScrollIndicator={false}

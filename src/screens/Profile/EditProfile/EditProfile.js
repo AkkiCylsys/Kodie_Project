@@ -91,7 +91,12 @@ const EditProfile = (props) => {
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
-    console.log("................ImageNAmeDeependra", newImageName.path);
+    // const fileUri = ImageName.path;
+    // const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+    // const fileType = ImageName.mime;
+    // console.log("fileUri....", fileUri);
+    // console.log("fileName....", fileName);
+    // console.log("fileType....", fileType);
   };
   useEffect(() => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
@@ -253,12 +258,22 @@ const EditProfile = (props) => {
   // Api intrrigation......
   const Updateprofile = async () => {
     const formData = new FormData();
-    if (ImageName && typeof ImageName === "string") {
-      const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    const fileUri = ImageName.path;
+    const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+    const fileType = ImageName.mime;
+
+    console.log("fileUri....", fileUri);
+    console.log("fileName....", fileName);
+    console.log("fileType....", fileType);
+
+    if (!fileUri || !fileName || !fileType) {
+      console.error("Invalid image data:", ImageName);
+      // Handle invalid image data
+    } else {
       formData.append("profile_photo", {
-        uri: imageUri,
-        name: imageName,
+        uri: fileUri,
+        name: fileName,
+        type: fileType,
       });
     }
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
