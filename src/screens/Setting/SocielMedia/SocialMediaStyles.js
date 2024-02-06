@@ -2,16 +2,13 @@ import { StyleSheet } from "react-native";
 import { FONTFAMILY, IMAGES, _COLORS } from "../../../Themes/index";
 
 export const SocialMediaStyle = StyleSheet.create({
-
   Helpview: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 15,
     alignItems: "center",
-    paddingHorizontal: 15,
     marginBottom: 3,
 },
-
 Helpselctionview: {
   flexDirection: "row",
   justifyContent: "space-evenly",

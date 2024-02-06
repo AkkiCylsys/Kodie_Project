@@ -372,9 +372,9 @@ const EditProfile = (props) => {
                       <TextInput
                         value={fullName}
                         onChangeText={setFullName}
-                        keyboardType="numeric"
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        style={EditProfileStyle.inputStyle}
                       />
                     </View>
                   </View>
@@ -384,9 +384,9 @@ const EditProfile = (props) => {
                     </Text>
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
+                        style={EditProfileStyle.inputStyle}
                         value={lastName}
                         onChangeText={setLastName}
-                        keyboardType="numeric"
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />
@@ -398,6 +398,7 @@ const EditProfile = (props) => {
                     </Text>
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
+                        style={EditProfileStyle.inputStyle}
                         value={email}
                         onChangeText={setEmail}
                         keyboardType="numeric"
