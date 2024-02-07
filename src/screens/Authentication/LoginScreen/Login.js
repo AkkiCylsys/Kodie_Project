@@ -561,10 +561,10 @@ export default Login = (props) => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={() =>
-                // props.navigation.navigate("ManageSubscription")
-                props.navigation.navigate("DrawerNavigatorLeftMenu")
-              }
+              // onPress={() =>
+              //   // props.navigation.navigate("ManageSubscription")
+              //   // props.navigation.navigate("DrawerNavigatorLeftMenu")
+              // }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={"Login with Facebook"}
