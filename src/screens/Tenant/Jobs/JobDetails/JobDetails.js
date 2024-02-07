@@ -40,7 +40,7 @@ const Apartment_data = [
   { label: "Cottage", value: "2" },
   { label: "Apartment / Flat", value: "3" },
   { label: "Townhouse", value: "4" },
-  { label: "ApLand / vacant plot", value: "5" },
+  { label: "ApLand / Vacant Plot", value: "5" },
   { label: "Farm", value: "6" },
 ];
 const JobDetails = (props) => {

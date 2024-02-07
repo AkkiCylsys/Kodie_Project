@@ -227,7 +227,7 @@ export default Expenses = props => {
             {'Start by adding an expense '}
           </Text>
         </View>
-        <Text style={ExpensesStyle.heading_Text}>{'Property expenses'}</Text>
+        {/* <Text style={ExpensesStyle.heading_Text}>{'Property expenses'}</Text> */}
         {/* <PropertyExpenses /> */}
         <FlatList
           data={Expenses_data}
@@ -244,6 +244,7 @@ export default Expenses = props => {
             onPress={() => {
               refRBSheet.current.open();
             }}
+            height={45}
             disabled={isLoading ? true : false}
           />
         </View>

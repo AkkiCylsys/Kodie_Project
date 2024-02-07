@@ -425,29 +425,6 @@ export default AddLeaseDetails = (props) => {
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Rental amount"}</Text>
-            <TextInput
-              style={AddLeaseDetailsStyle.input}
-              value={rentalAmount}
-              onChangeText={setRentalAmount}
-              placeholder="Enter the rental amount"
-              placeholderTextColor="#999"
-              keyboardType="number-pad"
-              maxLength={5}
-            />
-          </View>
-          <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Rental bond"}</Text>
-            <TextInput
-              style={AddLeaseDetailsStyle.input}
-              value={rentalBond}
-              onChangeText={setRentalBond}
-              placeholder="Enter the rental bond amount"
-              placeholderTextColor="#999"
-              keyboardType="number-pad"
-            />
-          </View>
-          <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
               {"Rental payment frequency"}
             </Text>
@@ -496,6 +473,29 @@ export default AddLeaseDetails = (props) => {
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{"Rental amount"}</Text>
+            <TextInput
+              style={AddLeaseDetailsStyle.input}
+              value={rentalAmount}
+              onChangeText={setRentalAmount}
+              placeholder="Enter the rental amount"
+              placeholderTextColor="#999"
+              keyboardType="number-pad"
+              maxLength={5}
+            />
+          </View>
+          <View style={AddLeaseDetailsStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{"Rental bond"}</Text>
+            <TextInput
+              style={AddLeaseDetailsStyle.input}
+              value={rentalBond}
+              onChangeText={setRentalBond}
+              placeholder="Enter the rental bond amount"
+              placeholderTextColor="#999"
+              keyboardType="number-pad"
+            />
+          </View>
+          <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Payment due day"}</Text>
             <TextInput
               style={AddLeaseDetailsStyle.input}
@@ -526,7 +526,7 @@ export default AddLeaseDetails = (props) => {
                   ? _COLORS.Kodie_GrayColor
                   : _COLORS.Kodie_LightWhiteColor
               }
-              onPressLeftButton={() => {
+              onPressLeftButton={() => {   
                 setSelected_payment_Button(false);
                 setSelected_payment_Id(1);
                 // alert(selectedButtonId)
