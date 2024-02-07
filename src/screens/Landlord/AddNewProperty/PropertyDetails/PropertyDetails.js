@@ -113,6 +113,7 @@ export default PropertyDetails = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
+    CheckIOSMapPermission();
     setLocation(property_Detail?.location);
   }, []);
 

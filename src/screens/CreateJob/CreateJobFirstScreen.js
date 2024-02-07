@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  // PermissionsAndroid
 } from "react-native";
 import { CreateJobFirstStyle } from "./CreateJobFirstScreenCss";
 import StepText from "../../components/Molecules/StepText/StepText";

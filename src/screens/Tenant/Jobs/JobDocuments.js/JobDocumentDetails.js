@@ -127,8 +127,11 @@ const JobDocumentDetails = (props) => {
       formData.append("p_module_name", moduleName);
       // formData.append("p_sub_module_name", "Property documents");
 
-      const response = await axios.post(uploadDoc_url, formData);
-
+      const response = await axios.post(uploadDoc_url, formData,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log("API Response uploadDocument:", response.data);
 
       if (response.data.success === true) {
