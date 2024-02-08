@@ -17,6 +17,7 @@ const Jobs = (props) => {
   let myJob_Type = props.route.params?.myJob_Type;
   let job_sub_type_req = props.route.params?.job_sub_type;
   console.log("job_sub_type_req...", job_sub_type_req);
+  console.log("jmyJob_Type", myJob_Type);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":

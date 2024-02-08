@@ -5,7 +5,7 @@ export const HeaderStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     height: 55, // Adjust height for iOS
-    marginTop: Platform.OS === "ios" ? 38 : 25,
+    marginTop: Platform.OS === "ios" ? 38 : 40,
     width: "100%",
   },
   leftButtonView: { width: "25%", alignSelf: "center" },

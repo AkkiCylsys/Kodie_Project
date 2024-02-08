@@ -27,6 +27,8 @@ import AddJobDetails from "../AddJobDetails";
 import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
 import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
 import JobDocuments from "../JobDocuments.js/JobDocuments";
+import { CommonActions } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const images = [
@@ -44,6 +46,7 @@ const Apartment_data = [
   { label: "Farm", value: "6" },
 ];
 const JobDetails = (props) => {
+  // const dispatch = useDispatch();
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
   console.log("JOB_ID......", JOB_ID);
@@ -189,6 +192,7 @@ const JobDetails = (props) => {
             View_Job_Details={View_Job_Details}
             imagesFilePath={handleImageFilePath}
             onPress={() => {
+              props.navigation.pop(4)
               props.navigation.navigate("Jobs", {
                 myJob_Type: myJobType,
               });

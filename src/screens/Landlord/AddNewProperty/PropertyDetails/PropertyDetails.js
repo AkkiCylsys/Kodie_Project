@@ -31,6 +31,7 @@ import CustomSingleDropdown from "../../../../components/Molecules/CustomSingleD
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
@@ -390,6 +391,35 @@ export default PropertyDetails = (props) => {
       });
   };
 
+  //dropDown render Item....
+  const propertyType_render = (item) => {
+    return (
+      <View style={[PropertyDetailsStyle.itemView,
+        {
+          backgroundColor:
+            item.lookup_key === property_value
+              ? _COLORS.Kodie_MidLightGreenColor
+              : null,
+        },]}>
+        {item.lookup_key === property_value ? (
+          <AntDesign
+          color={_COLORS.Kodie_GreenColor}
+          name={"checkcircle"}
+          size={20}
+        />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={PropertyDetailsStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
   const goBack = () => {
     props.navigation.pop();
   };
@@ -587,6 +617,7 @@ export default PropertyDetails = (props) => {
                     // handlePropertyValue()
                     // setpropertytypeError("");
                   }}
+                  renderItem={propertyType_render}
                 />
                 {/* {propertytypeError ? (
                   <Text style={PropertyDetailsStyle.error_text}>

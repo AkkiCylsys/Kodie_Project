@@ -10,6 +10,7 @@ import {AddExpensesDetailsStyle} from './AddExpensesDetailsStyle';
 import {_COLORS} from '../../../../../../Themes';
 import {LABEL_STYLES} from '../../../../../../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import CalendarModal from '../../../../../../components/Molecules/CalenderModal/CalenderModal';
 import RowButtons from '../../../../../../components/Molecules/RowButtons/RowButtons';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -274,6 +275,35 @@ export default AddExpensesDetails = props => {
     handleResponsible();
     Expencehandle();
   }, []);
+  // dropDownRender
+  const expenseCategory_render = (item) => {
+    return (
+      <View style={[AddExpensesDetailsStyle.itemView,
+        {
+          backgroundColor:
+            item.lookup_key === ExpenceCategoryValue
+              ? _COLORS.Kodie_MidLightGreenColor
+              : null,
+        },]}>
+        {item.lookup_key === ExpenceCategoryValue ? (
+          <AntDesign
+          color={_COLORS.Kodie_GreenColor}
+          name={"checkcircle"}
+          size={20}
+        />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={AddExpensesDetailsStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
   return (
     <View style={AddExpensesDetailsStyle.mainContainer}>
       <View style={AddExpensesDetailsStyle.heading_View}>
@@ -497,6 +527,7 @@ export default AddExpensesDetails = props => {
                 setExpenceCategoryValue(item.lookup_key);
                 handleDropdownChange();
               }}
+              renderItem={expenseCategory_render}
             />
             <Text style={AddExpensesDetailsStyle.errorText}>
               {ExpenceCategoryValueError}

@@ -129,11 +129,11 @@ export default CreateJobFirstScreen = (props) => {
   };
   const onRegionChange = (Region) => {
     // alert(JSON.stringify(Region))
-    console.log("Region....",JSON.stringify(Region))
+    console.log("Region....", JSON.stringify(Region));
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -209,9 +209,9 @@ export default CreateJobFirstScreen = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setLocation(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -231,11 +231,11 @@ export default CreateJobFirstScreen = (props) => {
 
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
-        console.log("addressComponent2.....",addressComponent2)
+        console.log("addressComponent2.....", addressComponent2);
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
-        console.log("mainFullAddress....",MainFullAddress)
+        console.log("mainFullAddress....", MainFullAddress);
 
         //setAddress(MainFullAddress);
       })
@@ -784,13 +784,13 @@ export default CreateJobFirstScreen = (props) => {
           setservicesValue(
             parseInt(response.data.data?.job_service_you_looking_key)
           );
-
           setJobPriorityValue(parseInt(response.data.data?.job_priority_key));
           setProperty_value(parseInt(response.data.data?.property_type_key));
           setLocation(response.data.data?.job_location);
           setRatingThresholdValue(parseInt(response.data.data?.job_rating_key));
           setlatitude(response.data.data?.location_latitude);
           setlongitude(response.data.data?.location_longitude);
+          handleServices(response.data.data.job_type_key);
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -1080,36 +1080,38 @@ export default CreateJobFirstScreen = (props) => {
                 renderItem={Selected_Time_render}
               />
             </View>
-
-            <View style={CreateJobFirstStyle.locationContainer}>
-              <TextInput
-                style={CreateJobFirstStyle.locationInput}
-                value={location}
-                onChangeText={setLocation}
-                onFocus={() => {
-                  setIsSearch(true);
-                }}
-                // editable={false}
-                placeholder="Enter new location"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
-              <TouchableOpacity
-                style={CreateJobFirstStyle.locationIconView}
-                onPress={() => {
-                  Platform.OS == "ios"
-                    ? CheckIOSMapPermission
-                    : checkpermissionlocation();
-                  setIsMap(true);
-                }}
-              >
-                <Octicons
-                  name={"location"}
-                  size={22}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={CreateJobFirstStyle.locationIcon}
+            {!selectedAddress ? (
+              <View style={CreateJobFirstStyle.locationContainer}>
+                <TextInput
+                  style={CreateJobFirstStyle.locationInput}
+                  value={location}
+                  onChangeText={setLocation}
+                  onFocus={() => {
+                    setIsSearch(true);
+                  }}
+                  // editable={false}
+                  placeholder="Enter new location"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  style={CreateJobFirstStyle.locationIconView}
+                  onPress={() => {
+                    Platform.OS == "ios"
+                      ? CheckIOSMapPermission
+                      : checkpermissionlocation();
+                    setIsMap(true);
+                  }}
+                >
+                  <Octicons
+                    name={"location"}
+                    size={22}
+                    color={_COLORS.Kodie_GreenColor}
+                    style={CreateJobFirstStyle.locationIcon}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+
             <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>{"Rating threshold"}</Text>
               <Dropdown

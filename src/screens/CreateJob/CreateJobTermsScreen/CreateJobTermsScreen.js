@@ -51,6 +51,7 @@ export default CreateJobTermsScreen = (props) => {
   };
 
   let JobId = props?.route?.params?.JobId;
+  console.log("JobId....", JobId);
   let editMode = props?.route?.params?.editMode;
   // alert(JobId)
   let selectJobType = props?.route?.params?.selectJobType;
@@ -76,6 +77,8 @@ export default CreateJobTermsScreen = (props) => {
 
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
+  const [minBudget, setMinBudget] = useState(0);
+  const [maxBudget, setMaxBudget] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -506,6 +509,10 @@ export default CreateJobTermsScreen = (props) => {
           setSelectedButtonBookingInsurance(
             parseInt(response.data.data.job_insurence_key)
           );
+          setMaxBudget(response.data.data.job_max_budget);
+          setMinBudget(response.data.data.job_min_budget);
+          console.log("max budget..", maxBudget);
+          console.log("min budget..", minBudget);
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -701,6 +708,8 @@ export default CreateJobTermsScreen = (props) => {
           <RangeSlider
             from={1}
             to={2000}
+            // from={minBudget !== null ? minBudget : 1}
+            // to={maxBudget !== null ? maxBudget : 2000}
             onPriceRangeChange={handlePriceRangeChange}
             onHighRange={handlemaxRange}
             onLowRange={handleminRange}

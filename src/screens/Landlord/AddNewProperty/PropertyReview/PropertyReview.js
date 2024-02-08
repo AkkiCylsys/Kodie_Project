@@ -183,7 +183,7 @@ export default PropertyReview = (props) => {
         //   style={DetailsStyle.DetailsIcon} />
         // )
         <MaterialCommunityIcons
-          name="window-closed-variant"
+          name="balcony"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
@@ -238,7 +238,7 @@ export default PropertyReview = (props) => {
         //   style={DetailsStyle.DetailsIcon} />
         // )
         <MaterialCommunityIcons
-          name="fireplace"
+          name="cupboard"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
