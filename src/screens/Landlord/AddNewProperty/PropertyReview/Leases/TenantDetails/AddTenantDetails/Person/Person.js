@@ -34,6 +34,7 @@ export default Person = (props) => {
   const [personResponse, setpersonResponse] = useState("");
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    handleClosePopup();
   };
 
   //... Regex signup email validation

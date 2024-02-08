@@ -216,7 +216,11 @@ const ProfileDocumentDetails = (props) => {
       formData.append("p_file_Name", D_file_name);
       formData.append("p_document_type", folderId ? 0 : 1);
       formData.append("p_sub_module_name", documentLookupDataValue);
-      const response = await axios.post(uploadDoc_url, formData);
+      const response = await axios.post(uploadDoc_url, formData,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log("API Response uploadDocument:", response.data);
       if (response.data.success === true) {
         alert(response.data.message);

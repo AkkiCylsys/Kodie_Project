@@ -53,7 +53,7 @@ export default PropertyDetails = (props) => {
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
   const [property_value, setProperty_value] = useState(0);
-  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [propertyTypeData, setPropertyTypeData] = useState([]);
@@ -113,6 +113,7 @@ export default PropertyDetails = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
+    CheckIOSMapPermission();
     setLocation(property_Detail?.location);
   }, []);
 
@@ -322,10 +323,14 @@ export default PropertyDetails = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    getAddress()
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
+        console.log("json location.......",json)
+        console.log("current address...",json.results[0].formatted_address)
+        setLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +

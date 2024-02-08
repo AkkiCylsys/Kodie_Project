@@ -7,7 +7,7 @@ import {
   ScrollView,
   FlatList,
   PermissionsAndroid,
-  Platform
+  Platform,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { DocumentDetailStyle } from "./DocumentDetailStyle";
@@ -128,7 +128,11 @@ const DocumentDetails = (props) => {
       formData.append("p_module_name", moduleName);
       // formData.append("p_sub_module_name", "Property documents");
 
-      const response = await axios.post(uploadDoc_url, formData);
+      const response = await axios.post(uploadDoc_url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       console.log("API Response uploadDocument:", response.data);
 
@@ -432,7 +436,7 @@ const DocumentDetails = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={ Platform.OS ==="ios" ? 240:220}
+          height={Platform.OS === "ios" ? 240 : 220}
           customStyles={{
             wrapper: {
               backgroundColor: "transparent",

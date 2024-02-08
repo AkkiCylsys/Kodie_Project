@@ -91,7 +91,12 @@ const EditProfile = (props) => {
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
-    console.log("................ImageNAmeDeependra", newImageName.path);
+    // const fileUri = ImageName.path;
+    // const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+    // const fileType = ImageName.mime;
+    // console.log("fileUri....", fileUri);
+    // console.log("fileName....", fileName);
+    // console.log("fileType....", fileType);
   };
   useEffect(() => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
@@ -128,6 +133,7 @@ const EditProfile = (props) => {
     // setlatitude(Region.latitude);
     // setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    getAddress()
   };
   const checkpermissionlocation = async () => {
     try {
@@ -213,6 +219,13 @@ const EditProfile = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
+        console.log("json location.......",json)
+        console.log("current address...",json.results[0].formatted_address)
+        if (activeTab === "Tab1") {
+          setLocation(json.results[0].formatted_address);
+        } else {
+          setCompanyPhysicaladdress(json.results[0].formatted_address);
+        }
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -253,12 +266,22 @@ const EditProfile = (props) => {
   // Api intrrigation......
   const Updateprofile = async () => {
     const formData = new FormData();
-    if (ImageName && typeof ImageName === "string") {
-      const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    const fileUri = ImageName.path;
+    const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+    const fileType = ImageName.mime;
+
+    console.log("fileUri....", fileUri);
+    console.log("fileName....", fileName);
+    console.log("fileType....", fileType);
+
+    if (!fileUri || !fileName || !fileType) {
+      console.error("Invalid image data:", ImageName);
+      // Handle invalid image data
+    } else {
       formData.append("profile_photo", {
-        uri: imageUri,
-        name: imageName,
+        uri: fileUri,
+        name: fileName,
+        type: fileType,
       });
     }
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
@@ -357,9 +380,9 @@ const EditProfile = (props) => {
                       <TextInput
                         value={fullName}
                         onChangeText={setFullName}
-                        keyboardType="numeric"
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        style={EditProfileStyle.inputStyle}
                       />
                     </View>
                   </View>
@@ -369,9 +392,9 @@ const EditProfile = (props) => {
                     </Text>
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
+                        style={EditProfileStyle.inputStyle}
                         value={lastName}
                         onChangeText={setLastName}
-                        keyboardType="numeric"
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />
@@ -383,6 +406,7 @@ const EditProfile = (props) => {
                     </Text>
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
+                        style={EditProfileStyle.inputStyle}
                         value={email}
                         onChangeText={setEmail}
                         keyboardType="numeric"

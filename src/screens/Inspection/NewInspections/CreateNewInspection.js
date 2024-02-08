@@ -279,6 +279,7 @@ const CreateNewInspection = (props) => {
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}
           disabled={isLoading ? true : false}
+          onPress={()=>props.navigation.navigate("Inspection")}
         />
       </ScrollView>
     </View>

@@ -341,12 +341,30 @@ export default CompanyDetails = (props) => {
   const addUserCompanyData = async () => {
     console.log("Formadata company details.....", formData);
     const formData = new FormData();
-    if (ImageName && typeof ImageName === "string") {
-      const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    // if (ImageName && typeof ImageName === "string") {
+    //   const imageUri = ImageName;
+    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   formData.append("UCDM_COMPANY_LOGO", {
+    //     uri: imageUri,
+    //     name: imageName,
+    //   });
+    // }
+    const fileUri = ImageName.path;
+    const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+    const fileType = ImageName.mime;
+
+    console.log("fileUri....", fileUri);
+    console.log("fileName....", fileName);
+    console.log("fileType....", fileType);
+
+    if (!fileUri || !fileName || !fileType) {
+      console.error("Invalid image data:", ImageName);
+      // Handle invalid image data
+    } else {
       formData.append("UCDM_COMPANY_LOGO", {
-        uri: imageUri,
-        name: imageName,
+        uri: fileUri,
+        name: fileName,
+        type: fileType,
       });
     }
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
@@ -428,12 +446,30 @@ export default CompanyDetails = (props) => {
 
   const UpdateCompanyData = async () => {
     const formData = new FormData();
-    if (ImageName && typeof ImageName === "string") {
-      const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    // if (ImageName && typeof ImageName === "string") {
+    //   const imageUri = ImageName;
+    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   formData.append("UCDM_COMPANY_LOGO", {
+    //     uri: imageUri,
+    //     name: imageName,
+    //   });
+    // }
+    const fileUri = ImageName.path;
+    const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+    const fileType = ImageName.mime;
+
+    console.log("fileUri....", fileUri);
+    console.log("fileName....", fileName);
+    console.log("fileType....", fileType);
+
+    if (!fileUri || !fileName || !fileType) {
+      console.error("Invalid image data:", ImageName);
+      // Handle invalid image data
+    } else {
       formData.append("UCDM_COMPANY_LOGO", {
-        uri: imageUri,
-        name: imageName,
+        uri: fileUri,
+        name: fileName,
+        type: fileType,
       });
     }
     formData.append("uad_key", loginData?.Login_details?.user_account_id);

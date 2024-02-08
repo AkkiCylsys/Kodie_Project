@@ -211,16 +211,18 @@ const JobDetails = (props) => {
         );
       case "Tab4":
         return (
-          <JobDocuments
-            JobDocumentDetails={(folderId, moduleName, propertyid) => {
-              props.navigation.navigate("JobDocumentDetails", {
-                folderId: folderId,
-                moduleName: moduleName,
-                JOB_ID: JOB_ID,
-              });
-            }}
-            JOB_ID={JOB_ID}
-          />
+          <>
+            <JobDocuments
+              JobDocumentDetails={(folderId, moduleName, propertyid) => {
+                props.navigation.navigate("JobDocumentDetails", {
+                  folderId: folderId,
+                  moduleName: moduleName,
+                  JOB_ID: JOB_ID,
+                });
+              }}
+              JOB_ID={JOB_ID}
+            />
+          </>
         );
     }
   };
@@ -356,10 +358,22 @@ const JobDetails = (props) => {
             FONTFAMILY4={
               activeTab === "Tab4" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
             }
-            styleTab1={activeTab === "Tab1" && JobDetailsStyle.activeTab}
-            styleTab2={activeTab === "Tab2" && JobDetailsStyle.activeTab}
-            styleTab3={activeTab === "Tab3" && JobDetailsStyle.activeTab}
-            styleTab4={activeTab === "Tab4" && JobDetailsStyle.activeTab}
+            styleTab1={[activeTab === "Tab1" && JobDetailsStyle.activeTab]}
+            styleTab2={
+              View_Job_Details || searchView
+                ? activeTab === "Tab2" && JobDetailsStyle.activeTab
+                : null
+            }
+            styleTab3={
+              View_Job_Details || searchView
+                ? activeTab === "Tab3" && JobDetailsStyle.activeTab
+                : null
+            }
+            styleTab4={
+              View_Job_Details || searchView
+                ? activeTab === "Tab4" && JobDetailsStyle.activeTab
+                : null
+            }
           />
         </View>
         {checkTabs()}

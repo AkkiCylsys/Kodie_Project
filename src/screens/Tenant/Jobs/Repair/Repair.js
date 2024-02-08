@@ -66,8 +66,6 @@ export default Repair = (props) => {
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
   const [activeScreen, setActiveScreen] = useState(false);
-
-  const [allJobData, setAllJobData] = useState([]);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [JobId, setJobId] = useState(0);
   const [Job_Id, setJob_Id] = useState(0);
@@ -79,8 +77,6 @@ export default Repair = (props) => {
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [JobData, setJobData] = useState([]);
   const [servicingJobData, setServicingJobData] = useState([]);
-  // alert(Job_Id);
-
   const myJob_Type = props.myJob_Type;
   console.log("myJob_Type in job module", myJob_Type);
   const job_sub_type_req = props.job_sub_type_req;
@@ -106,7 +102,7 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "6",
+        order_col: "8",
         order_wise: "DESC",
       });
 
@@ -139,9 +135,10 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "6",
+        order_col: "8",
         order_wise: "DESC",
       });
+      console.log("response.. job by filter ser....",response?.data)
       setServicingJobData(response?.data?.job_details);
       console.log(
         "listJobdata for servicing.....",
@@ -166,7 +163,7 @@ export default Repair = (props) => {
       getJobDetailsByFilter(selectedFilter);
       getJobDetails_Filter_Service(selectedFilter);
     }
-    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1? true : false);
+    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1 ? true : false);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
@@ -184,12 +181,8 @@ export default Repair = (props) => {
       console.log("API Response:", response.data);
       if (response.data.success === true) {
         Alert.alert("Job Deleted", response.data.message);
-        {
-          myJob_Type == 0
-            ? getJobDetailsByFilter(selectedFilter)
-            : getJobDetails_Filter_Service(selectedFilter);
-        }
-
+        getJobDetailsByFilter(selectedFilter);
+        getJobDetails_Filter_Service(selectedFilter);
         setIsLoading(false);
       }
     } catch (error) {
@@ -197,9 +190,6 @@ export default Repair = (props) => {
       setIsLoading(false);
     }
   };
-  // useEffect(() => {
-  //   getAllJob();
-  // }, []);
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity
@@ -245,11 +235,7 @@ export default Repair = (props) => {
       </TouchableOpacity>
     );
   };
-
-  // Archive component call here...................
   <ArchiveJob />;
-  // <JobRequestArchive />;
-
   const propertyData_render1 = ({ item }) => {
     setJob_Id(item?.job_id);
     setJob_sub_type(item.job_sub_type);
