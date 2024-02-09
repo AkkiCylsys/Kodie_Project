@@ -228,7 +228,7 @@ export default Expenses = props => {
           </Text>
         </View>
         {/* <Text style={ExpensesStyle.heading_Text}>{'Property expenses'}</Text> */}
-        {/* <PropertyExpenses /> */}
+        <PropertyExpenses />
         <FlatList
           data={Expenses_data}
           scrollEnabled

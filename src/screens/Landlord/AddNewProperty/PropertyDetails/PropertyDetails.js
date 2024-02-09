@@ -616,12 +616,12 @@ export default PropertyDetails = (props) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={PropertyDetailsStyle.AutoList_text}>
+                {/* <Text style={PropertyDetailsStyle.AutoList_text}>
                   {"Auto-list property on Kodie property marketplace "}
                 </Text>
                 <TouchableOpacity style={PropertyDetailsStyle.questionmark}>
                   <AntDesign name="question" size={20} color="#8AFBA5" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
               <RowButtons
                 LeftButtonText={"Yes"}

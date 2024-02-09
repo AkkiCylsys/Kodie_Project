@@ -36,6 +36,7 @@ import CompanyDetails from "../../Landlord/Landlordprofile/CompanyDetails/Compan
 import ProfileDocuments from "../ProfileDocuments/ProfileDocuments";
 import PersonalDetails from "../PersonalDetails/PersonalDetails";
 import PhoneInput from "react-native-phone-number-input";
+import styles from "rn-range-slider/styles";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
