@@ -24,6 +24,9 @@ const TopHeader = (props) => {
   const userProfileImageUri =
     loginData.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
+  const HandleProfileNavigation = () => {
+    props.navigation.navigate("EditProfile");
+  };
   return (
     <>
       <StatusBar
@@ -84,14 +87,19 @@ const TopHeader = (props) => {
               // />
               null}
             </TouchableOpacity>
-            {props.isprofileImage ? (
-              <Image
-                source={{
-                  uri: userProfileImageUri,
-                }}
-                style={HeaderStyle.usericon}
-              />
-            ) : null}
+            <TouchableOpacity
+              onPress={props?.onPressRightImgProfile}
+              style={{ alignSelf: "center" }}
+            >
+              {props.isprofileImage ? (
+                <Image
+                  source={{
+                    uri: userProfileImageUri,
+                  }}
+                  style={HeaderStyle.usericon}
+                />
+              ) : null}
+            </TouchableOpacity>
           </View>
         )}
       </View>

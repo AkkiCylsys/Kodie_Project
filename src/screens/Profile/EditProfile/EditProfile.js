@@ -133,7 +133,7 @@ const EditProfile = (props) => {
     // setlatitude(Region.latitude);
     // setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -219,8 +219,8 @@ const EditProfile = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
         if (activeTab === "Tab1") {
           setLocation(json.results[0].formatted_address);
         } else {
@@ -316,6 +316,7 @@ const EditProfile = (props) => {
     }
   };
 
+  
   const openMap = () => {
     Platform.OS == "ios" ? CheckIOSMapPermission : checkpermissionlocation();
     setIsMap(true);
@@ -443,9 +444,7 @@ const EditProfile = (props) => {
                         </View>
                       </View>
                     </View> */}
-                    <View
-                      style={[EditProfileStyle.simpleinputview, { height: 55 }]}
-                    >
+                    <View style={[EditProfileStyle.simpleinputview]}>
                       <PhoneInput
                         ref={phoneInput}
                         defaultValue={phoneNumber}
@@ -464,14 +463,20 @@ const EditProfile = (props) => {
                         textContainerStyle={{
                           flex: 1,
                           backgroundColor: _COLORS.Kodie_WhiteColor,
+                          // borderWidth:1,
+                          paddingVertical: 2,
+                      
                         }}
                         containerStyle={{
                           flex: 1,
                           alignSelf: "center",
                           alignItems: "center",
                           justifyContent: "center",
+                          // borderWidth:1,
+                          
                         }}
                       />
+              
                     </View>
                   </View>
 
