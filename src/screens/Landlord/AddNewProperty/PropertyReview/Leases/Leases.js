@@ -192,7 +192,7 @@ export default Leases = (props) => {
           <View style={LeaseSummaryStyle.lease_term_View}>
             <View>
               <Text style={LeaseSummaryStyle.lease_term_Text}>
-                {"Lease term"}
+                {"Lease to term"}
               </Text>
               <View style={LeaseSummaryStyle.sub_View}>
                 <Text style={LeaseSummaryStyle.date_Text}>

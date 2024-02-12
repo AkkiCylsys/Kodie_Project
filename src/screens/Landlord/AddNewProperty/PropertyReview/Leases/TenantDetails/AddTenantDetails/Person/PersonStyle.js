@@ -14,11 +14,11 @@ export const PersonStyle = StyleSheet.create({
     shadowOpacity:Platform.OS =='android'? 0.2:null,
     shadowRadius: 2,
     paddingHorizontal: 20,
-    // paddingTop:1,
+    paddingTop: 1,
     // marginBottom: 20,
   },
   inputContainer: {
-    marginTop: 5,
+    marginBottom:5
   },
   input: {
     height: 45,
@@ -28,7 +28,7 @@ export const PersonStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 5,
+    marginTop: 10
   },
   ButtonView: {
     flexDirection: "row",
@@ -52,9 +52,9 @@ export const PersonStyle = StyleSheet.create({
   },
   text: {
     color: _COLORS.Kodie_WhiteColor,
-    alignSelf:"center",
-    fontSize:14,
-    fontFamily:FONTFAMILY.K_SemiBold
+    alignSelf: "center",
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
   errorText: { color: "red", marginLeft: 10 },
 });

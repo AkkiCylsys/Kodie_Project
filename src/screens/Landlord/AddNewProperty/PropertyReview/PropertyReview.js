@@ -32,6 +32,7 @@ import { DetailsStyle } from "./Details/DetailsStyles";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import { FONTFAMILY, fontFamily } from "../../../../Themes/FontStyle/FontStyle";
+import { Divider } from "react-native-paper";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const Detail = [
@@ -460,7 +461,7 @@ export default PropertyReview = (props) => {
             {/* <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             > */}
-
+            <DividerIcon marginTop={10}/>
             <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
               {"Key features"}
             </Text>
@@ -561,6 +562,7 @@ export default PropertyReview = (props) => {
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
+                  height={50}
                   _ButtonText={
                     editMode
                       ? "Save property"

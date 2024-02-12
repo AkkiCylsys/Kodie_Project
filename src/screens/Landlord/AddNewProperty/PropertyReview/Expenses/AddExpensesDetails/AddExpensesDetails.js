@@ -418,7 +418,7 @@ export default AddExpensesDetails = props => {
             </Text>
           </View>
 
-          <View style={AddExpensesDetailsStyle.addition_featureView}>
+          <View style={AddExpensesDetailsStyle.additiontext}>
             <Text style={AddExpensesDetailsStyle.Furnished_Text}>
               {'Who is responsible for paying for this?'}
             </Text>
