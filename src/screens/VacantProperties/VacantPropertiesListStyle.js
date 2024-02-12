@@ -10,7 +10,7 @@ export const VacantPropertiesListStyle = StyleSheet.create({
     marginTop: 10,
   },
   divider:{
-    borderBottomWidth:3,
+    borderBottomWidth:1.5,
     borderColor:_COLORS.Kodie_LightGrayColor, 
   }
 });

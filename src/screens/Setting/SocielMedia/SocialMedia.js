@@ -1,6 +1,12 @@
-
 //ScreenNo:227
-import { View, Text, Image } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { SocialMediaStyle } from "./SocialMediaStyles";
@@ -14,8 +20,10 @@ import { Config } from "../../../Config";
 import Entypo from "react-native-vector-icons/Entypo";
 import { _COLORS } from "../../../Themes/index";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Feather from "react-native-vector-icons/Feather";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 const SocialMedia = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [socialMediaData, setSocialMediaData] = useState([]);
@@ -24,8 +32,8 @@ const SocialMedia = (props) => {
   const [twitter, setTwitter] = useState("");
   const [linkdin, setLinkdin] = useState("");
   useEffect(() => {
-    handle_SocialMedia()
-  }, [])
+    handle_SocialMedia();
+  }, []);
   const handle_SocialMedia = () => {
     const url = Config.BASE_URL;
     const SocialMedia_url = url + "lookup_details";
@@ -57,49 +65,55 @@ const SocialMedia = (props) => {
       });
   };
 
-  return (
-    <>
-      <View style={SocialMediaStyle.Mainview}>
-        <TopHeader
-          onPressLeftButton={() => _goBack(props)}
-          MiddleText={"Follow us on social media"}
-        />
-        {/* <RowTab LeftImage={IMAGES.instagram} TabTaxt="Instagram" /> */}
-        {/* <RowTab
-            // isSecondRowText={true}
-            LeftIconName={"instagram"}
-            LeftIconLibrary={"AntDesign"}
-            TabTaxt="Instagram"
-          />
-        <RowTab
-            // isSecondRowText={true}
-            LeftIconName={"facebook-square"}
-            LeftIconLibrary={"AntDesign"}
-            TabTaxt="Facebook"
-          />
-        <RowTab
-            // isSecondRowText={true}
-            LeftIconName={"linkedin"}
-            LeftIconLibrary={"MaterialCommunityIcons"}
-            TabTaxt="Linkedin"
-          />
-        <RowTab
-            // isSecondRowText={true}
-            LeftIconName={"twitter-square"}
-            LeftIconLibrary={"FontAwesome"}
-            TabTaxt="Twitter" */}
-        {/* /> */}
-        <View onPress={() => { }} style={SocialMediaStyle.Helpview}>
+  const socialMediaRender = ({ item }) => {
+    return (
+      <View style={{ marginHorizontal: 16 }}>
+        <TouchableOpacity
+          onPress={() => {
+            Linking.openURL(item.lookup_description);
+          }}
+          style={SocialMediaStyle.Helpview}
+        >
           <View style={SocialMediaStyle.Helpselctionview}>
             <View style={SocialMediaStyle.Helpimgview}>
-              <AntDesign
-                name={"instagram"}
-                size={18}
-                color={_COLORS.Kodie_GreenColor}
-              />
+              {item.lookup_key == 362 ? (
+                <AntDesign
+                  name={"instagram"}
+                  size={18}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+              ) : item.lookup_key == 363 ? (
+                <Feather
+                  name={"facebook"}
+                  size={18}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+              ) : item.lookup_key == 364 ? (
+                <Entypo
+                  name={"linkedin"}
+                  size={18}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+              ) : item.lookup_key == 365 ? (
+                <Fontisto
+                  name={"twitter"}
+                  size={18}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+              ) : null}
             </View>
             <View style={SocialMediaStyle.TextViewMain}>
-              <Text style={SocialMediaStyle.Helptext}>{"Instagram"}</Text>
+              <Text style={SocialMediaStyle.Helptext}>
+                {item.lookup_key == 362
+                  ? "Instagram"
+                  : item.lookup_key == 363
+                  ? "Facebook"
+                  : item.lookup_key == 364
+                  ? "Linkedin"
+                  : item.lookup_key == 365
+                  ? "Twitter"
+                  : null}
+              </Text>
             </View>
           </View>
           <View style={SocialMediaStyle.arrowiconview}>
@@ -109,11 +123,27 @@ const SocialMedia = (props) => {
               color={_COLORS.Kodie_BlackColor}
             />
           </View>
-        </View>
-        <View style={{ marginHorizontal: 16 }}>
-          <DividerIcon />
-        </View>
+        </TouchableOpacity>
+        <DividerIcon />
       </View>
+    );
+  };
+
+  return (
+    <>
+      <View style={SocialMediaStyle.Mainview}>
+        <TopHeader
+          onPressLeftButton={() => _goBack(props)}
+          MiddleText={"Follow us on social media"}
+        />
+        <FlatList
+          showsHorizontalScrollIndicator={false}
+          data={socialMediaData}
+          keyExtractor={(index, item) => index.toString()}
+          renderItem={socialMediaRender}
+        />
+      </View>
+      {isLoading ? <CommonLoader /> : null}
     </>
   );
 };

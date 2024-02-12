@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  // PermissionsAndroid
 } from "react-native";
 import { CreateJobFirstStyle } from "./CreateJobFirstScreenCss";
 import StepText from "../../components/Molecules/StepText/StepText";
@@ -43,7 +44,6 @@ import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useSelector } from "react-redux";
-
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 export default CreateJobFirstScreen = (props) => {
@@ -129,9 +129,11 @@ export default CreateJobFirstScreen = (props) => {
   };
   const onRegionChange = (Region) => {
     // alert(JSON.stringify(Region))
+    console.log("Region....",JSON.stringify(Region))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    getAddress()
   };
   const checkpermissionlocation = async () => {
     try {
@@ -207,6 +209,9 @@ export default CreateJobFirstScreen = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
+        console.log("json location.......",json)
+        console.log("current address...",json.results[0].formatted_address)
+        setLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -226,9 +231,11 @@ export default CreateJobFirstScreen = (props) => {
 
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
+        console.log("addressComponent2.....",addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
+        console.log("mainFullAddress....",MainFullAddress)
 
         //setAddress(MainFullAddress);
       })
@@ -357,7 +364,6 @@ export default CreateJobFirstScreen = (props) => {
     setProperty_value("");
     setLocation("");
     setSelectedAddress("");
-
     setRatingThresholdValue("");
   }, [selectJobType]);
   const Selected_Time_render = (item) => {

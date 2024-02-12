@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../../Themes";
 
-export const ArchivePropertiesStyle = StyleSheet.create({
+export const JobRequestStyle = StyleSheet.create({
   Container: {
     marginHorizontal: 16,
     paddingVertical: 8,

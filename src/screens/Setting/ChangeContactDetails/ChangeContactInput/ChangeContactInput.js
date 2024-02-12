@@ -103,7 +103,7 @@ const ChangeContactInput = (props) => {
             />
           </View> */}
           <View
-            style={[ChangeContactInputStyle.simpleinputview, { height: 55 }]}
+            style={[ChangeContactInputStyle.simpleinputview]}
           >
             <PhoneInput
               ref={phoneInput}
@@ -126,6 +126,7 @@ const ChangeContactInput = (props) => {
               textContainerStyle={{
                 flex: 1,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
+                paddingVertical: 2,
               }}
               containerStyle={{
                 flex: 1,
@@ -174,7 +175,7 @@ const ChangeContactInput = (props) => {
             />
           </View> */}
           <View
-            style={[ChangeContactInputStyle.simpleinputview, { height: 55 }]}
+            style={[ChangeContactInputStyle.simpleinputview]}
           >
             <PhoneInput
               ref={phoneInput}
@@ -197,6 +198,7 @@ const ChangeContactInput = (props) => {
               textContainerStyle={{
                 flex: 1,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
+                paddingVertical: 2,
               }}
               containerStyle={{
                 flex: 1,

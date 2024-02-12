@@ -73,20 +73,21 @@ export const EditProfileStyle = StyleSheet.create({
     marginBottom: 12,
   },
   simpleinputview: {
-    height: 50,
+    // height: 50,
     borderWidth: 1,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
     flexDirection: "row",
     alignItems: "center",
-    width: "90%",
+    // width: "90%",
     justifyContent: "space-between",
     marginHorizontal: 15,
     paddingHorizontal: 10,
   },
   phoneinputbindview: {
-    width: "98%",
+    // width: "100%",
   },
   bindnumberview: {
     flexDirection: "row",
@@ -300,4 +301,8 @@ export const EditProfileStyle = StyleSheet.create({
     marginTop: 10,
     borderColor: _COLORS.Kodie_ExtraLightGrayColor,
   },
+  inputStyle:{
+    flex:1,
+    color:_COLORS.Kodie_BlackColor
+  }
 });
