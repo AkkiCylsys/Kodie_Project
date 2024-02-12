@@ -80,6 +80,8 @@ export default CompanyDetails = (props) => {
 
   const [formattedValue, setFormattedValue] = useState("");
   const phoneInput = useRef(null);
+  console.log("formattedValue....", formattedValue);
+  console.log("phone number update....", phoneNumber);
   const handleImageNameChange = async (newImageName) => {
     setImageName(newImageName);
     console.log("................ImageNAme", newImageName);
@@ -128,123 +130,6 @@ export default CompanyDetails = (props) => {
       }
     }
   };
-
-  //   map....
-  const ConfirmAddress = () => {
-    setIsMap(false);
-  };
-  const openMapandClose = (text) => {
-    setIsMap(false);
-    setIsSearch(true);
-  };
-  const onRegionChange = (Region) => {
-    // alert(JSON.stringify(Region))
-    setlatitude(Region.latitude);
-    setlongitude(Region.longitude);
-    getAddress(Region.latitude, Region.longitude);
-  };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location");
-        // alert("You can use the location");
-        getAddressWithCordinates();
-      } else {
-        console.log("location permission denied");
-        alert("Location permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then((result) => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              "This feature is not available (on this device / in this context)"
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              "The permission has not been requested / is denied but requestable"
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log("The permission is limited: some actions are possible");
-            break;
-          case RESULTS.GRANTED:
-            console.log("The permission is granted");
-            getAddressWithCordinates();
-            break;
-          case RESULTS.BLOCKED:
-            console.log("The permission is denied and not requestable anymore");
-            break;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const getAddressWithCordinates = () => {
-    Geolocation.watchPosition(
-      (position) => {
-        setlatitude(position.coords.latitude);
-        setlongitude(position.coords.longitude);
-        getAddress(position.coords.latitude, position.coords.longitude);
-      },
-      (error) => {
-        alert(error.message.toString());
-      },
-      {
-        showLocationDialog: true,
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 0,
-      }
-    );
-  };
-  const getAddress = (latitude, longitude) => {
-    Geocoder.from(latitude, longitude)
-      .then((json) => {
-        let MainFullAddress =
-          json.results[0].address_components[1].long_name +
-          ", " +
-          json.results[0].address_components[2].long_name +
-          ", " +
-          json.results[0].address_components[3].long_name +
-          ", " +
-          json.results[0].address_components[4].long_name +
-          ", " +
-          json.results[0].address_components[5].long_name +
-          ", " +
-          json.results[0].address_components[6].long_name +
-          ", " +
-          json.results[0].address_components[7].long_name +
-          ", " +
-          json.results[0].address_components[8].long_name;
-
-        var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
-        setUserCurrentCity(addressComponent2.long_name);
-        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setLocation(MainFullAddress);
-
-        //setAddress(MainFullAddress);
-      })
-      .catch((error) => console.warn(error));
-  };
-
   const openMap = () => {
     props.openMap();
   };
@@ -261,7 +146,6 @@ export default CompanyDetails = (props) => {
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
               ? "cleaning-services"
@@ -457,12 +341,30 @@ export default CompanyDetails = (props) => {
   const addUserCompanyData = async () => {
     console.log("Formadata company details.....", formData);
     const formData = new FormData();
-    if (ImageName && typeof ImageName === "string") {
-      const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    // if (ImageName && typeof ImageName === "string") {
+    //   const imageUri = ImageName;
+    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   formData.append("UCDM_COMPANY_LOGO", {
+    //     uri: imageUri,
+    //     name: imageName,
+    //   });
+    // }
+    const fileUri = ImageName.path;
+    const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+    const fileType = ImageName.mime;
+
+    console.log("fileUri....", fileUri);
+    console.log("fileName....", fileName);
+    console.log("fileType....", fileType);
+
+    if (!fileUri || !fileName || !fileType) {
+      console.error("Invalid image data:", ImageName);
+      // Handle invalid image data
+    } else {
       formData.append("UCDM_COMPANY_LOGO", {
-        uri: imageUri,
-        name: imageName,
+        uri: fileUri,
+        name: fileName,
+        type: fileType,
       });
     }
     formData.append("uad_key", loginData?.Login_details?.user_account_id);
@@ -505,7 +407,7 @@ export default CompanyDetails = (props) => {
     const getCompanyDetail_url = url + `profile/getUserCompanyDetails`;
     console.log("Request URL:", getCompanyDetail_url);
     const companyDetailsData = {
-      uad_key: 479,
+      uad_key: loginData?.Login_details?.user_account_id,
     };
     setIsLoading(true);
     axios
@@ -519,6 +421,7 @@ export default CompanyDetails = (props) => {
           setCompanyName(response.data.data[0]?.company_name);
           setCompanyEmail(response.data.data[0]?.company_email);
           setPhoneNumber(String(response.data.data[0]?.company_contact));
+          // setFormattedValue(String(response.data.data[0]?.company_contact))
           setCompanyDescription(response.data.data[0]?.company_description);
           setIsClick(parseInt(response.data.data[0].company_service_offering));
           setservicesValue(
@@ -543,12 +446,30 @@ export default CompanyDetails = (props) => {
 
   const UpdateCompanyData = async () => {
     const formData = new FormData();
-    if (ImageName && typeof ImageName === "string") {
-      const imageUri = ImageName;
-      const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    // if (ImageName && typeof ImageName === "string") {
+    //   const imageUri = ImageName;
+    //   const imageName = imageUri.substring(imageUri.lastIndexOf("/") + 1);
+    //   formData.append("UCDM_COMPANY_LOGO", {
+    //     uri: imageUri,
+    //     name: imageName,
+    //   });
+    // }
+    const fileUri = ImageName.path;
+    const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
+    const fileType = ImageName.mime;
+
+    console.log("fileUri....", fileUri);
+    console.log("fileName....", fileName);
+    console.log("fileType....", fileType);
+
+    if (!fileUri || !fileName || !fileType) {
+      console.error("Invalid image data:", ImageName);
+      // Handle invalid image data
+    } else {
       formData.append("UCDM_COMPANY_LOGO", {
-        uri: imageUri,
-        name: imageName,
+        uri: fileUri,
+        name: fileName,
+        type: fileType,
       });
     }
     formData.append("uad_key", loginData?.Login_details?.user_account_id);

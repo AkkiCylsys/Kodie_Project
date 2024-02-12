@@ -16,8 +16,10 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import Ionicons from "react-native-vector-icons/Ionicons";
 import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
 import StepIndicator from "react-native-step-indicator";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Fontisto from "react-native-vector-icons/Fontisto";
+
 import { Config } from "../../../Config";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,6 +51,7 @@ export default CreateJobTermsScreen = (props) => {
   };
 
   let JobId = props?.route?.params?.JobId;
+  console.log("JobId....", JobId);
   let editMode = props?.route?.params?.editMode;
   // alert(JobId)
   let selectJobType = props?.route?.params?.selectJobType;
@@ -74,6 +77,8 @@ export default CreateJobTermsScreen = (props) => {
 
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
+  const [minBudget, setMinBudget] = useState(0);
+  const [maxBudget, setMaxBudget] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -241,16 +246,26 @@ export default CreateJobTermsScreen = (props) => {
   const NeedHour_render = (item) => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobTermsStyle.itemView}>
+        <View
+          style={[
+            CreateJobTermsStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === hourlyNeedValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
           {item.lookup_key === hourlyNeedValue ? (
-            <Fontisto
+            <Ionicons
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
-              size={20}
+              name={"checkmark-circle"}
+              size={25}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -265,16 +280,26 @@ export default CreateJobTermsScreen = (props) => {
   const NeedService_render = (item) => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobTermsStyle.itemView}>
+        <View
+          style={[
+            CreateJobTermsStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === needServicesValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
           {item.lookup_key === needServicesValue ? (
-            <Fontisto
+            <Ionicons
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
-              size={20}
+              name={"checkmark-circle"}
+              size={25}
             />
           ) : (
             <Fontisto
-              color={_COLORS.Kodie_GreenColor}
+              color={_COLORS.Kodie_GrayColor}
               name={"radio-btn-passive"}
               size={20}
             />
@@ -484,6 +509,10 @@ export default CreateJobTermsScreen = (props) => {
           setSelectedButtonBookingInsurance(
             parseInt(response.data.data.job_insurence_key)
           );
+          setMaxBudget(response.data.data.job_max_budget);
+          setMinBudget(response.data.data.job_min_budget);
+          console.log("max budget..", maxBudget);
+          console.log("min budget..", minBudget);
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -606,29 +635,21 @@ export default CreateJobTermsScreen = (props) => {
             />
 
             <View style={CreateJobTermsStyle.spaceView} />
-            <View style={[CreateJobTermsStyle.calenderView]}>
-              <Text
-                style={[
-                  CreateJobTermsStyle.textInputStyle,
-                  {
-                    color: currentTime
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_GrayColor,
-                  },
-                ]}
-              >
-                {currentTime && currentTime != ""
-                  ? String(currentTime)
-                  : "Select time"}
-              </Text>
 
-              <TimePicker
-                data={new Date()}
-                getData={(date) => {
-                  setCurrentTime(moment(date).format("hh:mm"));
-                }}
-              />
-            </View>
+            <TimePicker
+              selectedTime={
+                currentTime && currentTime != ""
+                  ? String(currentTime)
+                  : "Select time"
+              }
+              _TextTimeColor={
+                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+              }
+              data={new Date()}
+              getData={(date) => {
+                setCurrentTime(moment(date).format("hh:mm A"));
+              }}
+            />
           </View>
           {selectedDateError ? (
             <Text style={CreateJobTermsStyle.error_text}>
@@ -687,6 +708,8 @@ export default CreateJobTermsScreen = (props) => {
           <RangeSlider
             from={1}
             to={2000}
+            // from={minBudget !== null ? minBudget : 1}
+            // to={maxBudget !== null ? maxBudget : 2000}
             onPriceRangeChange={handlePriceRangeChange}
             onHighRange={handlemaxRange}
             onLowRange={handleminRange}
@@ -721,9 +744,7 @@ export default CreateJobTermsScreen = (props) => {
               }
               onPressLeftButton={() => {
                 setSelectedButtonResponsible(false);
-                setSelectedButtonResponsibleId(
-                  selectedResponsibleData[0]?.lookup_key
-                );
+                setSelectedButtonResponsibleId(259);
                 // alert(selectedResponsibleData[0]?.lookup_key);
               }}
               RightButtonText={
@@ -746,9 +767,7 @@ export default CreateJobTermsScreen = (props) => {
               }
               onPressRightButton={() => {
                 setSelectedButtonResponsible(true);
-                setSelectedButtonResponsibleId(
-                  selectedResponsibleData[1]?.lookup_key
-                );
+                setSelectedButtonResponsibleId(260);
               }}
             />
           </View>
@@ -776,9 +795,7 @@ export default CreateJobTermsScreen = (props) => {
             }
             onPressLeftButton={() => {
               setSelectedButtonBookingInsurance(false);
-              setSelectedButtoBookingInsuranceId(
-                bookingInsuranceData[0]?.lookup_key
-              );
+              setSelectedButtoBookingInsuranceId(262);
               // alert(bookingInsuranceData[0]?.lookup_key);
             }}
             RightButtonText={
@@ -801,9 +818,7 @@ export default CreateJobTermsScreen = (props) => {
             }
             onPressRightButton={() => {
               setSelectedButtonBookingInsurance(true);
-              setSelectedButtoBookingInsuranceId(
-                bookingInsuranceData[1]?.lookup_key
-              );
+              setSelectedButtoBookingInsuranceId(263);
               // alert(bookingInsuranceData[1]?.lookup_key);
             }}
           />

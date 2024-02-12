@@ -88,6 +88,7 @@ const AddBiddingDetails = (props) => {
   }, []);
   const handleOptionClick = (option) => {
     setSelectedOption(option);
+    handleclosepopUp();
   };
   const sendDataToParent = () => {
     const data = "Hello from child!";
@@ -313,7 +314,17 @@ const AddBiddingDetails = (props) => {
   };
   const notification_render = (item) => {
     return (
-      <View style={AddBiddingDetailsCss.itemView}>
+      <View
+        style={[
+          AddBiddingDetailsCss.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === notification_type_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}
+      >
         {item.lookup_key === notification_type_value ? (
           <Fontisto
             color={_COLORS.Kodie_GreenColor}
@@ -322,7 +333,39 @@ const AddBiddingDetails = (props) => {
           />
         ) : (
           <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={AddBiddingDetailsCss.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
+  const Durantion_render = (item) => {
+    return (
+      <View
+        style={[
+          AddBiddingDetailsCss.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === duration_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}
+      >
+        {item.lookup_key === duration_value ? (
+          <AntDesign
             color={_COLORS.Kodie_GreenColor}
+            name={"checkcircle"}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
             name={"radio-btn-passive"}
             size={20}
           />
@@ -399,6 +442,7 @@ const AddBiddingDetails = (props) => {
                   onChange={(item) => {
                     setDuration_value(item.lookup_key);
                   }}
+                  renderItem={Durantion_render}
                 />
               </View>
               <View style={AddBiddingDetailsCss.inputContainer}>
@@ -669,7 +713,7 @@ const AddBiddingDetails = (props) => {
                       },
                     ]}
                   >
-                    {"cancel"}
+                    {"Cancel"}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -703,29 +747,16 @@ const AddBiddingDetails = (props) => {
           {isLoading ? <CommonLoader /> : null}
         </View>
       ) : (
-        // <View style={AddBiddingDetailsCss.ModalMainView}>
-        //   <View style={AddBiddingDetailsCss.ModalView}>
         <View style={AddBiddingDetailsCss.modalContainer}>
-          {/* <TouchableOpacity>
-                <AntDesign
-                  name="close"
-                  size={20}
-                  color={_COLORS.Kodie_BlackColor}
-                  style={AddBiddingDetailsCss.modalCloseIcon}
-                />
-              </TouchableOpacity> */}
           <Text style={AddBiddingDetailsCss.modalMainText}>
             Bidding enabled
           </Text>
           <Text style={AddBiddingDetailsCss.modalSubText}>
-            {/* Congratulations! You have successfully enabled property
-                  bidding feature. You will be notified once a tenant places a
-                  bid . */}
             {BidData?.message}
           </Text>
           <Image
             source={IMAGES.CheckIcon}
-            resizeMode={"center"}
+            resizeMode={"cover"}
             style={AddBiddingDetailsCss.checkStl}
           />
           <CustomSingleButton

@@ -205,13 +205,14 @@ const ProfileDocuments = (props) => {
         />
       </View>
       <DividerIcon borderBottomWidth={6} />
-      {folderId && companyDocumentId ? null : (
+      {folderId == null && companyDocumentId == null ? (
         <Text style={ProfileDocumentStyle.reacentDocText}>{"All folders"}</Text>
-      )}
+      ) : null}
       {selectedTabId === 0 ? (
         <View>
           {folderId ? (
             <ProfileDocumentDetails
+              folderId={"folderId"}
               onPress={() => {
                 setFolderId(null);
               }}

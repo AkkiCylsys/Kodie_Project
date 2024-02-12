@@ -17,10 +17,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Octicons from "react-native-vector-icons/Octicons";
 import Feather from "react-native-vector-icons/Feather";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { logoutActionCreator } from "../../redux/Actions/Authentication/AuthenticationApiCreator";
+import { useDispatch, useSelector } from "react-redux";
 
 const CustomSidebarMenu = (props) => {
   const [selectedId, setselectedId] = useState("");
-
+  const dispatch = useDispatch();
   const check = (data) => {
     switch (data) {
       case "PropertyLinking":
@@ -70,13 +72,18 @@ const CustomSidebarMenu = (props) => {
         break;
       case "LogOut":
         setselectedId("LogOut");
-        props.navigation.navigate("LoginScreen");
+        // props.navigation.navigate("LoginScreen");
+        LogOut()
         break;
 
       default:
         setselectedId("Dashboard");
         break;
     }
+  };
+  const LogOut = () => {
+    dispatch(logoutActionCreator());
+    props.navigation.navigate("DrawerNavigatorLeftMenu");
   };
   return (
     <SafeAreaView style={DrawerStyle.mainContainer}>
@@ -157,10 +164,10 @@ const CustomSidebarMenu = (props) => {
               size={25}
               color={_COLORS.Kodie_GreenColor}
               resizeMode={"contain"}
-              style={{ alignSelf: "center",justifyContent:"center"}}
+              style={{ alignSelf: "center", justifyContent: "center" }}
             />
           </View>
-          
+
           <Text style={DrawerStyle.SubHeading}>{"Vacant properties"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -297,7 +304,7 @@ const CustomSidebarMenu = (props) => {
               resizeMode={"contain"}
               style={{ alignSelf: "center" }}
             />
-            </View>
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Notices & reminders"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -341,7 +348,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Reports")}
         >
-           <View
+          <View
             style={DrawerStyle.IconView}
           >
             <MaterialIcons
@@ -351,7 +358,7 @@ const CustomSidebarMenu = (props) => {
               resizeMode={"contain"}
               style={{ alignSelf: "center" }}
             />
-            </View>
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Reports"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
@@ -381,25 +388,31 @@ const CustomSidebarMenu = (props) => {
           <Text style={DrawerStyle.SubHeading}>{"Partners"}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
             {
               backgroundColor:
-                selectedId == "LogOut"
+                selectedId == "Partners"
                   ? _COLORS.Kodie_LiteWhiteColor
                   : _COLORS.Kodie_WhiteColor,
             },
           ]}
           onPress={() => check("LogOut")}
         >
-          <Image
-            source={IMAGES.Logout}
-            style={DrawerStyle.ImageStyle}
-            resizeMode={"center"}
-          />
+          <View
+            style={DrawerStyle.IconView}
+          >
+            <MaterialCommunityIcons
+              name="logout"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={"contain"}
+              style={{ alignSelf: "center" }}
+            />
+          </View>
           <Text style={DrawerStyle.SubHeading}>{"Log Out"}</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

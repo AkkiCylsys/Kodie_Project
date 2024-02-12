@@ -89,11 +89,12 @@ const Managingcontractors = (props) => {
           isFilterImage
           filterImage={IMAGES.filter}
           height={48}
+          placeholder={"Search tenent"}
         />
         <View style={ManagingcontractorsStyle.Line1} />
         <View style={ManagingcontractorsStyle.buttonview}>
           <CustomSingleButton
-            _ButtonText={"Add contractor"}
+            _ButtonText={"+ Add contractor"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             text_Size={14}
             backgroundColor={_COLORS.Kodie_BlackColor}

@@ -467,7 +467,7 @@ export default PropertyImages = (props) => {
             </Text>
             <View style={{ flex: 1 }}>
               <UploadImageBoxes
-                Box_Text={"Add photo"}
+                Box_Text={"Add Photo"}
                 onPress={() => {
                   refRBSheet.current.open();
                 }}
@@ -501,7 +501,7 @@ export default PropertyImages = (props) => {
             </Text>
             <View style={{ flex: 1 }}>
               <UploadImageBoxes
-                Box_Text={"Add video"}
+                Box_Text={"Add Video"}
                 onPress={() => {
                   // refRBSheet.current.open();
                   openVideoPicker();

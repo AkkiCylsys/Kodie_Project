@@ -300,4 +300,8 @@ export const EditProfileStyle = StyleSheet.create({
     marginTop: 10,
     borderColor: _COLORS.Kodie_ExtraLightGrayColor,
   },
+  inputStyle:{
+    flex:1,
+    color:_COLORS.Kodie_BlackColor
+  }
 });

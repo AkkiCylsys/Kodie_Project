@@ -133,4 +133,6 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
+  error_text: { color: "red", marginLeft: 10,marginTop:5 },
+
 });

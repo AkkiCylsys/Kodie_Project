@@ -10,8 +10,8 @@ export const JobDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
-    marginHorizontal:16,
-    marginVertical:25
+    marginHorizontal: 16,
+    marginVertical: 25,
   },
   slider_view: {
     flex: 1,

@@ -62,7 +62,7 @@ const data = [
 const data1 = [
   {
     id: "1",
-    Data: "Delete job",
+    Data: "Confirm delete job",
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -87,6 +87,9 @@ const data1 = [
 const BottomJobModal = (props) => {
   const JobId = props.JobId;
   console.log("JobId...", JobId);
+  const job_sub_type = props.job_sub_type;
+  console.log("job_sub_type...", job_sub_type);
+
   // alert(JobId);
   const navigation = useNavigation();
   const refRBSheet = useRef();
@@ -134,6 +137,7 @@ const BottomJobModal = (props) => {
                 navigation.navigate("CreateJobFirstScreen", {
                   JobId: JobId,
                   editMode: "editMode",
+                  job_sub_type: job_sub_type,
                 });
                 handleCloseModal();
               }
@@ -174,7 +178,7 @@ const BottomJobModal = (props) => {
               {props?.isDeletePropertyClicked ? (
                 <Text
                   style={BottomModalDataStyle.text}
-                >{`Delete property: ${props?.Address} ?`}</Text>
+                >{`Delete job: ${props?.Address}`}</Text>
               ) : null}
             </>
           );

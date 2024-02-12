@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
@@ -8,11 +8,16 @@ import { JobsCss } from "./JobsCss";
 import Repair from "./Repair/Repair";
 import SearchForContractor from "./SearchforContractor/SearchForContractor";
 import SearchforJob from "./SearchforJob/SearchforJob";
+import { useRoute } from "@react-navigation/native";
 
 const Jobs = (props) => {
+  const route = useRoute();
+  const [job_sub_type, setJobSubType] = useState(1);
   const [activeTab, setActiveTab] = useState("Tab1");
-  let myJob_Type = props?.route?.params?.myJob_Type;
-  console.log("myJob in Job section....", myJob_Type);
+  let myJob_Type = props.route.params?.myJob_Type;
+  let job_sub_type_req = props.route.params?.job_sub_type;
+  console.log("job_sub_type_req...", job_sub_type_req);
+  console.log("jmyJob_Type", myJob_Type);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -30,26 +35,20 @@ const Jobs = (props) => {
               });
             }}
             create_job_id={(job_id) => {
-              // const { newJob_Id } = job_id;
+              // alert(job_id);
               props.navigation.navigate("JobDetails", {
                 JOB_ID: job_id,
                 View_Job_Details: "View_Job_Details",
               });
             }}
+            job_sub_type_req={job_sub_type_req}
           />
         );
       case "Tab2":
-        // return (
-        //   <View >
-        //     <Text>khgfdgfjhdfgsdhfgdf</Text>
-
-        //   </View>
-
-        // );
         return (
           <SearchForContractor
             Search={(SearchData) => {
-              alert(JSON.stringify(SearchData));
+              alert("dfgdsgddgdsdfd", JSON.stringify(SearchData));
               props.navigation.navigate("SearchDetail", {
                 SearchDataDetail: SearchData,
               });
@@ -58,12 +57,16 @@ const Jobs = (props) => {
         );
 
       case "Tab3":
-        // return (
-        //   <View>
-        //     <Text>khgfd gfjv fhfghhf ghfg hfghghfgh fhgh hdfgsdhfgdf</Text>
-        //   </View>
-        // );
-        return <SearchforJob />;
+        return (
+          <SearchforJob
+            SearchResultJob={(Searchjob) => {
+              // alert("Searchjob", JSON.stringify(Searchjob));
+              props.navigation.navigate("SearchJobResult", {
+                SearchDataDetail: Searchjob,
+              });
+            }}
+          />
+        );
 
       default:
         return (
@@ -74,10 +77,7 @@ const Jobs = (props) => {
 
   return (
     <View style={JobsCss.Container}>
-      {/* <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} /> */}
-
       <TopHeader
-        // onPressLeftButton={() => _goBack(props)}
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Jobs"}
         isprofileImage

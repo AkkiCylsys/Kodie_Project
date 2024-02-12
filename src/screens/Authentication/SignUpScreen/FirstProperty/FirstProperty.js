@@ -130,7 +130,7 @@ export default FirstProperty = (props) => {
   const [propertyDesc, setPropertyDesc] = useState("");
   const [property_Data, setProperty_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
-  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
@@ -538,6 +538,7 @@ export default FirstProperty = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    getAddress()
   };
   const checkpermissionlocation = async () => {
     try {
@@ -610,6 +611,9 @@ export default FirstProperty = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
+        console.log("json location.......",json)
+        console.log("current address...",json.results[0].formatted_address)
+        setPropertyLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -765,7 +769,7 @@ export default FirstProperty = (props) => {
                   value={propertyDesc}
                   onChangeText={setPropertyDesc}
                   placeholder="Describe your property here..."
-                  placeholderTextColor="#999"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   multiline
                   numberOfLines={5}
                   textAlignVertical={"top"}
@@ -786,7 +790,7 @@ export default FirstProperty = (props) => {
                   maxHeight={300}
                   labelField="lookup_description"
                   valueField="lookup_key"
-                  placeholder="Apartment"
+                  placeholder="Please select property type"
                   value={property_value}
                   onChange={(item) => {
                     setProperty_value(item.lookup_key);
@@ -961,7 +965,10 @@ export default FirstProperty = (props) => {
                   </Text>
                   <MultiSelect
                     style={FirstPropertyStyle.dropdown}
-                    placeholderStyle={FirstPropertyStyle.placeholderStyle}
+                    placeholderStyle={[
+                      FirstPropertyStyle.placeholderStyle,
+                      { color: _COLORS.Kodie_LightGrayColor },
+                    ]}
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}

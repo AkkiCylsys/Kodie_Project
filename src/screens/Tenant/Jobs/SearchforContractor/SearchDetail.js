@@ -3,15 +3,23 @@ import React, { useState } from "react";
 import { SearchDetailStyle } from "./SearchDetailStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import Icon from "react-native-vector-icons/AntDesign";
-import { _COLORS } from "../../../../Themes";
+import { FONTFAMILY, _COLORS } from "../../../../Themes";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import ContractorsComponent from "../../../../components/Molecules/ContractorsComponent/ContractorsComponent";
+import axios from "axios";
 
 const SearchDetail = (props) => {
   let SearchDataDetail = props?.route?.params?.SearchDataDetail;
   const [expanded, setExpanded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  console.log(SearchDataDetail);
+  console.log("...............", SearchDataDetail);
+  const uniqueJobTypes = [
+    ...new Set(SearchDataDetail.searchType.map((item) => item.job_type)),
+  ];
+  const uniqueServices = [
+    ...new Set(SearchDataDetail.searchType.map((item) => item.service)),
+  ];
+  console.log("uniqueJobTypes", uniqueJobTypes, uniqueServices);
   const renderItem = ({ item }) => (
     <View>
       <ContractorsComponent
@@ -24,12 +32,17 @@ const SearchDetail = (props) => {
         notverified={item.notverified}
         verified={item.verified}
         CoverText1={item.coverText1}
+        ViewProfileBtn={() =>
+          props.navigation.navigate("ContractorProfile", {
+            account_id: item.account_id,
+          })
+        }
       />
 
       <DividerIcon
-        IsShowIcon
-        iconName={expanded ? "chevron-up" : "chevron-down"}
-        onPress={toggleItems}
+      // IsShowIcon
+      // iconName={expanded ? "chevron-up" : "chevron-down"}
+      // onPress={toggleItems}
       />
     </View>
   );
@@ -42,8 +55,24 @@ const SearchDetail = (props) => {
       <View style={SearchDetailStyle.ContainerView}>
         <View style={SearchDetailStyle.flexContainer}>
           <View style={{ flex: 1 }}>
-            <Text>{"Fixing & maintenance"}</Text>
-            <Text>{"Electricals; Sydney; Greater than 4 rating..."}</Text>
+            <Text
+              style={{
+                fontSize: 16,
+                color: _COLORS.Kodie_BlackColor,
+                fontFamily: FONTFAMILY.K_Bold,
+              }}
+            >
+              {uniqueJobTypes || " "}
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                color: _COLORS.Kodie_BlackColor,
+                fontFamily: FONTFAMILY.K_Medium,
+              }}
+            >
+              {uniqueServices || " "}
+            </Text>
           </View>
           <View style={SearchDetailStyle.filterIcon}>
             <Icon
@@ -57,7 +86,7 @@ const SearchDetail = (props) => {
       </View>
       <DividerIcon borderBottomWidth={3} marginTop={8} />
       <FlatList
-        data={SearchDataDetail}
+        data={SearchDataDetail.searchType}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />

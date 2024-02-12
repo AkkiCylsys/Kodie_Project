@@ -54,7 +54,7 @@ export default SearchForJob = (props) => {
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
-  const [searchType, setSearchType] = useState([]);
+  // const [searchTypeData, setSearchTypeData] = useState([]);
   const [property_value, setProperty_value] = useState([]);
   const [jobPriorityData, setJobPriorityData] = useState([]);
   const [jobPriorityValue, setJobPriorityValue] = useState([]);
@@ -76,6 +76,25 @@ export default SearchForJob = (props) => {
   const [longitude, setlongitude] = useState("");
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
+  const [priceRanges, setPriceRanges] = useState(0);
+  const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
+
+  const handlePriceRangeChange = (priceRange) => {
+    console.log("Price Range in Parent Component:", priceRange);
+    setPriceRanges(priceRange);
+    // Do something with the price range in the parent component
+  };
+  const handlemaxRange = (high) => {
+    console.log("High Range in Parent Component:", high);
+    setMax(high);
+  };
+  const handleminRange = (low) => {
+    console.log("Low Range in Parent Component:", low);
+    setMin(low);
+  };
+
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -86,8 +105,10 @@ export default SearchForJob = (props) => {
   };
   const onRegionChange = (Region) => {
     setlatitude(Region.latitude);
+
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    getAddress()
   };
   const checkpermissionlocation = async () => {
     try {
@@ -162,6 +183,9 @@ export default SearchForJob = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
+        console.log("json location.......",json)
+        console.log("current address...",json.results[0].formatted_address)
+        setLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -197,6 +221,7 @@ export default SearchForJob = (props) => {
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
+    setFormattedPriceRanges(`$${priceRanges}`);
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
@@ -204,14 +229,14 @@ export default SearchForJob = (props) => {
       language: "en",
     });
     CheckIOSMapPermission();
-    setSelectJobType("");
-    setservicesValue("");
-    setAboutyourNeed("");
-    setJobPriorityValue("");
-    setProperty_value("");
-    setLocation("");
-    setRatingThresholdValue("");
-  }, [selectJobType]);
+    // setSelectJobType("");
+    // setservicesValue("");
+    // setAboutyourNeed("");
+    // setJobPriorityValue("");
+    // setProperty_value("");
+
+    // setRatingThresholdValue("");
+  }, [selectJobType, priceRanges]);
   const populorServiceRender = ({ item }) => {
     return (
       <View style={CreateJobFirstStyle.item}>
@@ -392,6 +417,7 @@ export default SearchForJob = (props) => {
       </View>
     );
   };
+  console.log("longitude,latitude", longitude, latitude);
   // api intrigation.......
   const handleProperty_Type = () => {
     const propertyData = {
@@ -422,15 +448,19 @@ export default SearchForJob = (props) => {
       });
   };
   const handleSearch = () => {
-    console.log("property_Datadfvhdhfsffddf", property_Data);
+    console.log("jobPriorityValue", jobPriorityValue);
     const SearchData = {
-      job_need: selectJobTypeid,
-      job_service: servicesValue,
-      longitude: property_value || longitude,
-      latitude: property_value || latitude,
+      job_type: selectJobTypeid,
+      job_perform: servicesValue,
+      longitude: longitude || property_value.longitude,
+      latitude: latitude || property_value.latitude,
+      available: jobPriorityValue,
+      min_budget: `${min}`,
+      max_budget: `${max}`,
     };
     const url = Config.BASE_URL;
-    const SearchType = url + "search_for_contractor";
+    const SearchType = url + "job/searchJobs";
+    console.log("property_Datadfvhdhfsffddf", SearchData);
     console.log("Request URL:", SearchType);
     setIsLoading(true);
     axios
@@ -439,20 +469,20 @@ export default SearchForJob = (props) => {
         console.log("property_type", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          console.log("propertyData....", response.data.property_details);
-          setSearchType(response.data.property_details);
+          console.log("handleSearch....", response.data.data);
+          // setSearchTypeData(response.data.data);
 
-          props.Search?.({
-            searchType,
+          props.SearchResultJob?.({
+            searchTypeData: response.data.data,
           });
         } else {
-          console.error("property_type_error:", response.data.error);
+          console.error("handleSearch_error:", response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
-        console.error("property_type error:", error);
+        console.error("handleSearch error:", error);
         // alert(error);
         setIsLoading(false);
       });
@@ -751,7 +781,10 @@ export default SearchForJob = (props) => {
                 searchPlaceholder="Search..."
                 value={property_value}
                 onChange={(item) => {
-                  setProperty_value(item.longitude);
+                  setProperty_value({
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                  });
                 }}
                 renderItem={property_Type_render}
               />
@@ -785,12 +818,21 @@ export default SearchForJob = (props) => {
                 />
               </TouchableOpacity>
             </View>
+            <Text style={[LABEL_STYLES.commontext, { marginTop: 15 }]}>
+              {"What is your budget for this job?"}
+            </Text>
+            <RangeSlider
+              from={1}
+              to={2000}
+              onPriceRangeChange={handlePriceRangeChange}
+              onHighRange={handlemaxRange}
+              onLowRange={handleminRange}
+              onLowrange={2}
+            />
 
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={() => {
-                handleSearch();
-              }}
+              onPress={handleSearch}
               _ButtonText={"Search"}
               Text_Color={_COLORS.Kodie_WhiteColor}
             />

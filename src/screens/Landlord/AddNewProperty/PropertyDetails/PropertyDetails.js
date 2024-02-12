@@ -31,6 +31,7 @@ import CustomSingleDropdown from "../../../../components/Molecules/CustomSingleD
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
@@ -53,7 +54,7 @@ export default PropertyDetails = (props) => {
   const [UserCurrentCity, setUserCurrentCity] = useState("");
   const [UserZip_Code, setUserZip_Code] = useState("");
   const [property_value, setProperty_value] = useState(0);
-  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [propertyTypeData, setPropertyTypeData] = useState([]);
@@ -113,6 +114,7 @@ export default PropertyDetails = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
+    CheckIOSMapPermission();
     setLocation(property_Detail?.location);
   }, []);
 
@@ -222,18 +224,18 @@ export default PropertyDetails = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Details"
         : position === 1
-        ? "Features"
-        : position === 2
-        ? "Images"
-        : position === 3
-        ? "Review"
-        : "null";
+          ? "Features"
+          : position === 2
+            ? "Images"
+            : position === 3
+              ? "Review"
+              : "null";
 
     return (
       <View style={{}}>
@@ -322,10 +324,14 @@ export default PropertyDetails = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    getAddress()
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
+        console.log("json location.......",json)
+        console.log("current address...",json.results[0].formatted_address)
+        setLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -385,6 +391,35 @@ export default PropertyDetails = (props) => {
       });
   };
 
+  //dropDown render Item....
+  const propertyType_render = (item) => {
+    return (
+      <View style={[PropertyDetailsStyle.itemView,
+        {
+          backgroundColor:
+            item.lookup_key === property_value
+              ? _COLORS.Kodie_MidLightGreenColor
+              : null,
+        },]}>
+        {item.lookup_key === property_value ? (
+          <AntDesign
+          color={_COLORS.Kodie_GreenColor}
+          name={"checkcircle"}
+          size={20}
+        />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={PropertyDetailsStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
   const goBack = () => {
     props.navigation.pop();
   };
@@ -404,8 +439,8 @@ export default PropertyDetails = (props) => {
           IsMap || IsSearch
             ? "Location"
             : editMode
-            ? "Edit property"
-            : "Add new property"
+              ? "Edit property"
+              : "Add new property"
         }
       />
       <KeyboardAvoidingView
@@ -582,6 +617,7 @@ export default PropertyDetails = (props) => {
                     // handlePropertyValue()
                     // setpropertytypeError("");
                   }}
+                  renderItem={propertyType_render}
                 />
                 {/* {propertytypeError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
@@ -601,10 +637,14 @@ export default PropertyDetails = (props) => {
                   placeholderTextColor="#999"
                   multiline
                   numberOfLines={5}
-                  maxLength={100}
+                  maxLength={1000}
                   textAlignVertical={"top"}
                 />
+                <Text style={PropertyDetailsStyle.characterLimit}>
+                  {propertyDesc.length}/1000
+                </Text>
               </View>
+
               <View
                 style={{
                   flexDirection: "row",

@@ -57,6 +57,7 @@ export default Login = (props) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isClick, setIsClick] = useState(0);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -64,6 +65,9 @@ export default Login = (props) => {
   const [loginResponse, setLoginResponse] = useState(true);
   const deviceId = DeviceInfo.getDeviceId();
   const deviceType = DeviceInfo.getDeviceType();
+  const handleTogglePassword = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   console.log("Device ID:", deviceId);
   console.log("Device type:", deviceType);
   // const Login_response = useSelector(
@@ -400,6 +404,15 @@ export default Login = (props) => {
       }
     });
   };
+  //...... password validation define here
+  const handleLoginPassword = (text) => {
+    setPassword(text);
+    if (text.trim() === "") {
+      setPasswordError("Password is required !");
+    } else {
+      setPasswordError("");
+    }
+  };
   //------ create_password Api code here
   const create_password = async () => {
     try {
@@ -482,22 +495,25 @@ export default Login = (props) => {
             ) : null}
             <View style={LoginStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>Password</Text>
-              <TextInput
-                style={[
-                  LoginStyles.input,
-                  {
-                    borderColor: passwordError
-                      ? _COLORS.Kodie_lightRedColor
-                      : _COLORS.Kodie_GrayColor,
-                  },
-                ]}
-                value={password}
-                onChangeText={setPassword}
-                onBlur={() => handlePasswordChange(password)}
-                placeholder="Enter password"
-                placeholderTextColor="#999"
-                secureTextEntry
-              />
+              <View style={LoginStyles.passwordContainer}>
+                <TextInput
+                  style={LoginStyles.passwordInput}
+                  value={password}
+                  onChangeText={setPassword}
+                  onBlur={() => handleLoginPassword(password)}
+                  placeholder="Password"
+                  placeholderTextColor="#999"
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity onPress={handleTogglePassword}>
+                  <MaterialCommunityIcons
+                    name={showPassword ? "eye-outline" : "eye-off-outline"}
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                    style={LoginStyles.eyeIcon}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
             {passwordError ? (
               <Text style={LoginStyles.error_text}>{passwordError}</Text>
@@ -545,10 +561,10 @@ export default Login = (props) => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              onPress={() =>
-                // props.navigation.navigate("ManageSubscription")
-                props.navigation.navigate("DrawerNavigatorLeftMenu")
-              }
+              // onPress={() =>
+              //   // props.navigation.navigate("ManageSubscription")
+              //   // props.navigation.navigate("DrawerNavigatorLeftMenu")
+              // }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={"Login with Facebook"}
@@ -558,6 +574,7 @@ export default Login = (props) => {
               _LeftButtonText={"Don't have an account yet? "}
               _RightButtonText={"Sign up"}
               onPress={() => {
+                // props.navigation.navigate("SearchJobResult");
                 props.navigation.navigate("SignUp");
               }}
             />
@@ -834,7 +851,7 @@ export default Login = (props) => {
               {
                 marginBottom: 500,
                 marginTop:
-                  isClick === 1 || isClick === 2 || isClick === 3 ? 1 : 160,
+                  isClick === 1 || isClick === 2 || isClick === 3 ? 90 : 180,
               },
             ]}
           >

@@ -3,10 +3,11 @@ import React, { useRef } from "react";
 import { NoticeStyle } from "./NoticeStyle";
 import Entypo from "react-native-vector-icons/Entypo";
 import RBSheet from "react-native-raw-bottom-sheet";
-import Select from "../Select/Select";
+import Select from "../Select/NoticeBottomModal";
 import { _COLORS, IMAGES } from "../../../Themes";
 const Notice = (props) => {
   const refRBSheet = useRef();
+  
   return (
     <>
       <View style={NoticeStyle.mainContainer}>
@@ -61,7 +62,7 @@ const Notice = (props) => {
           container: NoticeStyle.bottomModal_container,
         }}
       >
-        <Select />
+        <Select/>
       </RBSheet>
     </>
   );

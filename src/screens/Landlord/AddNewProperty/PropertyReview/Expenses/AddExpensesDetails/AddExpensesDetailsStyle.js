@@ -111,4 +111,14 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   errorText: { color: "red", marginLeft: 10 },
+  itemView: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
 });

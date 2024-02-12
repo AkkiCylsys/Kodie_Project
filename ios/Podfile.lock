@@ -310,7 +310,7 @@ PODS:
     - React
   - react-native-image-picker (7.1.0):
     - React-Core
-  - react-native-maps (1.8.4):
+  - react-native-maps (1.10.1):
     - React-Core
   - react-native-netinfo (9.5.0):
     - React-Core
@@ -671,7 +671,7 @@ SPEC CHECKSUMS:
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
-  DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 6c76fe46345039d5cf0549e9ddaf5aa169630a4a
   FBReactNativeSpec: 1a270246542f5c52248cb26a96db119cfe3cb760
   Flipper: 26fc4b7382499f1281eb8cb921e5c3ad6de91fe0
@@ -684,7 +684,7 @@ SPEC CHECKSUMS:
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: cbdee19bdd4e7f05472a66ce290f1b729ba3cb86
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
-  glog: 04b94705f318337d7ead9e6d17c019bd9b1f6b1b
+  glog: 476ee3e89abb49e07f822b48323c51c57124b572
   hermes-engine: 8e84f1284180801c1a1b241f443ba64f931ff561
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   OpenSSL-Universal: ebc357f1e6bc71fa463ccb2fe676756aff50e88c
@@ -706,7 +706,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: b4f4a23b73f864ce17965b284c0757648993805b
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-image-picker: a82b781c14f1f5c16953290bee2039db43822517
-  react-native-maps: e2b78affd8e90c807a87bd042dc6b1af2decbcf1
+  react-native-maps: 7f058386db652a5c7994f59f7f85e1d21693ab37
   react-native-netinfo: 48c5f79a84fbc3ba1d28a8b0d04adeda72885fa8
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-video: c26780b224543c62d5e1b2a7244a5cd1b50e8253

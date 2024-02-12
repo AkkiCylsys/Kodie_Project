@@ -40,6 +40,7 @@ const Properties = (props) => {
             }}
             onPropertyView={(propView) => {
               const { propertyid } = propView;
+              // props.navigation.pop(1);
               props.navigation.navigate("PropertyReview", {
                 propertyid: propertyid,
                 propertyView: "propertyView",

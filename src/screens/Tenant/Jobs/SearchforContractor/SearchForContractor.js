@@ -88,6 +88,7 @@ export default SearchForContractor = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    getAddress()
   };
   const checkpermissionlocation = async () => {
     try {
@@ -162,6 +163,9 @@ export default SearchForContractor = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
+        console.log("json location.......",json)
+        console.log("current address...",json.results[0].formatted_address)
+        setLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -422,12 +426,12 @@ export default SearchForContractor = (props) => {
       });
   };
   const handleSearch = () => {
-    console.log("property_Datadfvhdhfsffddf", property_Data);
+    console.log("property_Datadfvhdhfsffddf", longitude, latitude);
     const SearchData = {
       job_need: selectJobTypeid,
       job_service: servicesValue,
-      longitude: property_value || longitude,
-      latitude: property_value || latitude,
+      longitude: longitude || property_value.longitude,
+      latitude: latitude || property_value.latitude,
     };
     const url = Config.BASE_URL;
     const SearchType = url + "search_for_contractor";
@@ -439,14 +443,14 @@ export default SearchForContractor = (props) => {
         console.log("property_type", response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          console.log("propertyData....", response.data.property_details);
+          console.log("SearchCotractor....", response.data.property_details);
           setSearchType(response.data.property_details);
 
           props.Search?.({
             searchType,
           });
         } else {
-          console.error("property_type_error:", response.data.error);
+          console.error("SearchCotractor_error:", response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
@@ -751,7 +755,10 @@ export default SearchForContractor = (props) => {
                 searchPlaceholder="Search..."
                 value={property_value}
                 onChange={(item) => {
-                  setProperty_value(item.longitude);
+                  setProperty_value({
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                  });
                 }}
                 renderItem={property_Type_render}
               />

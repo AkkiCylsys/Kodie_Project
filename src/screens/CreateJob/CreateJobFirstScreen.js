@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  // PermissionsAndroid
 } from "react-native";
 import { CreateJobFirstStyle } from "./CreateJobFirstScreenCss";
 import StepText from "../../components/Molecules/StepText/StepText";
@@ -42,33 +43,37 @@ import MapScreen from "../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
-
+import { useSelector } from "react-redux";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 export default CreateJobFirstScreen = (props) => {
   const JobId = props.route.params?.JobId;
   const editMode = props.route.params?.editMode;
   const myJob = props.route.params?.myJob;
-  // alert(JobId)
-  // alert(editMode)
+  const job_sub_type = props.route.params?.job_sub_type;
   console.log("myJob.......", myJob);
   console.log("editMode.......", editMode);
+  console.log("job_sub_type.......", job_sub_type);
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
   const [location, setLocation] = useState("");
-  const [isClick, setIsClick] = useState(166);
+  const [isClick, setIsClick] = useState();
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
   const [property_value, setProperty_value] = useState([]);
+  const [property_valueError, setProperty_valueError] = useState(false);
+  const [selectedAddressData, setSelectedAddreeData] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState([]);
   const [jobPriorityData, setJobPriorityData] = useState([]);
   const [jobPriorityValue, setJobPriorityValue] = useState([]);
+  const [jobPriorityValueError, setJobPriorityValueError] = useState(false);
+
   const [ratingThresholdData, setRatingThresholdData] = useState([]);
   const [ratingThresholdValue, setRatingThresholdValue] = useState([]);
   const [jobTypeData, setJobTypeData] = useState([]);
-  const [selectedServices, setSelectedServices] = useState([]);
-  const [selectJobType, setSelectJobType] = useState(166);
+  const [selectJobType, setSelectJobType] = useState();
   const [selectJobTypeid, setSelectJobTypeid] = useState("");
   const [servicesData, setServicesData] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
@@ -80,9 +85,39 @@ export default CreateJobFirstScreen = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
+
+  // validation.....
+
+  const handleNextbtn = () => {
+    if (jobPriorityValue == "") {
+      setJobPriorityValueError(true);
+    } else if (property_value == "") {
+      setProperty_valueError(true);
+    } else {
+      props.navigation.navigate("CreateJobTermsScreen", {
+        selectJobType: selectJobTypeid,
+        servicesValue: servicesValue,
+        aboutyourNeed: aboutyourNeed,
+        jobPriorityValue: jobPriorityValue,
+        property_value: property_value,
+        location: location || selectedAddress.location,
+        ratingThresholdValue: ratingThresholdValue,
+        latitude: latitude || selectedAddress.latitude,
+        longitude: longitude || selectedAddress.longitude,
+        JobId: JobId,
+        editMode: editMode,
+        myJob: myJob,
+      });
+    }
+  };
 
   const goBack = () => {
     props.navigation.pop();
+    props.navigation.navigate("Jobs", {
+      job_sub_type: job_sub_type,
+    });
   };
   // ...Location
   const ConfirmAddress = () => {
@@ -94,9 +129,11 @@ export default CreateJobFirstScreen = (props) => {
   };
   const onRegionChange = (Region) => {
     // alert(JSON.stringify(Region))
+    console.log("Region....", JSON.stringify(Region));
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -172,6 +209,9 @@ export default CreateJobFirstScreen = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -191,9 +231,11 @@ export default CreateJobFirstScreen = (props) => {
 
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
+        console.log("addressComponent2.....", addressComponent2);
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
+        console.log("mainFullAddress....", MainFullAddress);
 
         //setAddress(MainFullAddress);
       })
@@ -205,37 +247,6 @@ export default CreateJobFirstScreen = (props) => {
     // alert(selectJobTypeid);
     // alert(isClick)
   };
-  const priority_render = ({ item, index }) => {
-    return (
-      <View style={CreateJobFirstStyle.priority_container}>
-        <View style={CreateJobFirstStyle.priority_view}>
-          <TouchableOpacity
-            onPress={() => {
-              setCheck(item.id);
-            }}
-          >
-            <View
-              style={[
-                CreateJobFirstStyle.checkbox_View,
-                {
-                  borderColor:
-                    Check == item.id
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_ExtraLightGrayColor,
-                },
-              ]}
-            >
-              {Check == item.id ? (
-                <View style={CreateJobFirstStyle.radioBg}></View>
-              ) : null}
-            </View>
-          </TouchableOpacity>
-          <Text style={CreateJobFirstStyle.priority_Text}>{item?.name}</Text>
-        </View>
-      </View>
-    );
-  };
-
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: "feed",
@@ -333,9 +344,9 @@ export default CreateJobFirstScreen = (props) => {
       </View>
     );
   };
-
   useEffect(() => {
     handleProperty_Type();
+    Selected_Address_Type();
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
@@ -347,38 +358,32 @@ export default CreateJobFirstScreen = (props) => {
       language: "en",
     });
     CheckIOSMapPermission();
-    // clear state...
-    setSelectJobType("");
     setservicesValue("");
     setAboutyourNeed("");
     setJobPriorityValue("");
     setProperty_value("");
     setLocation("");
+    setSelectedAddress("");
     setRatingThresholdValue("");
   }, [selectJobType]);
-  const populorServiceRender = ({ item }) => {
-    return (
-      <View style={CreateJobFirstStyle.item}>
-        <Text style={CreateJobFirstStyle.selectedStyle}>
-          {item.lookup_description}
-        </Text>
-        <TouchableOpacity style={{ alignSelf: "center" }}>
-          <Entypo
-            style={CreateJobFirstStyle.icon}
-            color={_COLORS.Kodie_WhiteColor}
-            name="cross"
-            size={18}
-          />
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  const Selected_Time_render = (item) => {
+    const isSelected =
+      item.longitude === selectedAddress.longitude &&
+      item.latitude === selectedAddress.latitude;
 
-  const property_Type_render = (item) => {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobFirstStyle.itemView}>
-          {item.lookup_key === property_value ? (
+      <View contentContainerStyle={{ flex: 1, height: "100%" }}>
+        <View
+          style={[
+            CreateJobFirstStyle.itemView,
+            {
+              backgroundColor: isSelected
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+            },
+          ]}
+        >
+          {isSelected ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
               name={"checkcircle"}
@@ -391,17 +396,26 @@ export default CreateJobFirstScreen = (props) => {
               size={20}
             />
           )}
-          <Text style={CreateJobFirstStyle.textItem}>
-            {item.lookup_description}
-          </Text>
+          <Text style={CreateJobFirstStyle.textItem}>{item.location}</Text>
         </View>
-      </ScrollView>
+      </View>
     );
   };
+
   const jobPriority_render = (item) => {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobFirstStyle.itemView}>
+      <View contentContainerStyle={{ flex: 1, height: "100%" }}>
+        <View
+          style={[
+            CreateJobFirstStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === jobPriorityValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
           {item.lookup_key === jobPriorityValue ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
@@ -419,13 +433,57 @@ export default CreateJobFirstScreen = (props) => {
             {item.lookup_description}
           </Text>
         </View>
-      </ScrollView>
+      </View>
+    );
+  };
+  const property_Type_render = (item) => {
+    return (
+      <View contentContainerStyle={{ flex: 1, height: "100%" }}>
+        <View
+          style={[
+            CreateJobFirstStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === property_value
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
+          {item.lookup_key === property_value ? (
+            <AntDesign
+              color={_COLORS.Kodie_GreenColor}
+              name={"checkcircle"}
+              size={20}
+            />
+          ) : (
+            <Fontisto
+              color={_COLORS.Kodie_GrayColor}
+              name={"radio-btn-passive"}
+              size={20}
+            />
+          )}
+          <Text style={CreateJobFirstStyle.textItem}>
+            {item.lookup_description}
+          </Text>
+        </View>
+      </View>
     );
   };
   const lookingServices_render = (item) => {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobFirstStyle.itemView}>
+      <View contentContainerStyle={{ flex: 1, height: "100%" }}>
+        <View
+          style={[
+            CreateJobFirstStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === servicesValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
           {item.lookup_key === servicesValue ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
@@ -443,13 +501,23 @@ export default CreateJobFirstScreen = (props) => {
             {item.lookup_description}
           </Text>
         </View>
-      </ScrollView>
+      </View>
     );
   };
   const ratingThreshold_render = (item) => {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
-        <View style={CreateJobFirstStyle.itemView}>
+      <View contentContainerStyle={{ flex: 1, height: "100%" }}>
+        <View
+          style={[
+            CreateJobFirstStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === ratingThresholdValue
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : null,
+            },
+          ]}
+        >
           {item.lookup_key === ratingThresholdValue ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
@@ -473,7 +541,7 @@ export default CreateJobFirstScreen = (props) => {
             {item.lookup_description}
           </Text>
         </View>
-      </ScrollView>
+      </View>
     );
   };
   const jobType_render = ({ item }) => {
@@ -538,33 +606,33 @@ export default CreateJobFirstScreen = (props) => {
       </View>
     );
   };
+  console.log(selectedAddress.latitude, "jkhujsdgfhdgsfildsgfliuesfgdsjg");
   // api intrigation.......
-  const handleProperty_Type = () => {
-    const propertyData = {
-      P_PARENT_CODE: "PROP_TYPE",
-      P_TYPE: "OPTION",
+  const Selected_Address_Type = () => {
+    const Selected_Address = {
+      account_id: loginData?.Login_details?.user_account_id,
     };
     const url = Config.BASE_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
+    const Selected_AddressType = url + "get_property_details_my_acc_id";
+    console.log("Request URL:", Selected_AddressType);
     setIsLoading(true);
     axios
-      .post(propertyType, propertyData)
+      .post(Selected_AddressType, Selected_Address)
       .then((response) => {
-        console.log("property_type", response.data);
-        if (response.data.status === true) {
+        console.log("Selected_Address", response.data);
+        if (response.data.success === true) {
           setIsLoading(false);
-          console.log("propertyData....", response.data.lookup_details);
-          setProperty_Data(response.data.lookup_details);
+          console.log("Selected_Address....", response.data.property_details);
+          setSelectedAddreeData(response.data.property_details);
         } else {
-          console.error("property_type_error:", response.data.error);
+          console.error("Selected_Address_error:", response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
       .catch((error) => {
-        console.error("property_type error:", error);
-        alert(error);
+        console.error("Selected_Address error:", error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -655,7 +723,6 @@ export default CreateJobFirstScreen = (props) => {
         setIsLoading(false);
       });
   };
-
   const handleServices = (selectJobType) => {
     const propertyData = {
       P_PARENT_CODE:
@@ -723,6 +790,7 @@ export default CreateJobFirstScreen = (props) => {
           setRatingThresholdValue(parseInt(response.data.data?.job_rating_key));
           setlatitude(response.data.data?.location_latitude);
           setlongitude(response.data.data?.location_longitude);
+          handleServices(response.data.data.job_type_key);
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -737,8 +805,35 @@ export default CreateJobFirstScreen = (props) => {
         setIsLoading(false);
       });
   };
-
-  const top4Items = servicesData.slice(0, 4);
+  const handleProperty_Type = () => {
+    const propertyData = {
+      P_PARENT_CODE: "PROP_TYPE",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.BASE_URL;
+    const propertyType = url + "lookup_details";
+    console.log("Request URL:", propertyType);
+    setIsLoading(true);
+    axios
+      .post(propertyType, propertyData)
+      .then((response) => {
+        console.log("property_type", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log("propertyData....", response.data.lookup_details);
+          setProperty_Data(response.data.lookup_details);
+        } else {
+          console.error("property_type_error:", response.data.error);
+          // alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("property_type error:", error);
+        // alert(error);
+        setIsLoading(false);
+      });
+  };
   return (
     <View style={CreateJobFirstStyle.container}>
       <TopHeader
@@ -851,12 +946,19 @@ export default CreateJobFirstScreen = (props) => {
             numColumns={2}
           />
           <View style={CreateJobFirstStyle.formContainer}>
-            <View>
+            <View style={{ flex: 1 }}>
               <Text style={LABEL_STYLES.commontext}>
                 {"What service are you looking for?"}
               </Text>
               <Dropdown
-                style={CreateJobFirstStyle.dropdown}
+                style={[
+                  CreateJobFirstStyle.dropdown,
+                  {
+                    backgroundColor: isClick
+                      ? null
+                      : _COLORS.Kodie_LightGrayLineColor,
+                  },
+                ]}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
                 selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
                 inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
@@ -868,6 +970,7 @@ export default CreateJobFirstScreen = (props) => {
                 valueField="lookup_key"
                 placeholder="Select item"
                 value={servicesValue}
+                disable={isClick ? false : true}
                 searchPlaceholder="Search..."
                 onChange={(item) => {
                   setservicesValue(item.lookup_key);
@@ -876,17 +979,6 @@ export default CreateJobFirstScreen = (props) => {
                 renderItem={lookingServices_render}
               />
             </View>
-            {/* <View style={CreateJobFirstStyle.jobDetailsView}>
-              <Text style={LABEL_STYLES.commontext}>{"Popular services:"}</Text>
-
-              <FlatList
-                data={top4Items}
-                keyExtractor={(item) => item.id}
-                renderItem={populorServiceRender}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              />
-            </View> */}
             <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>
                 {"Tell us more about your needs:"}
@@ -898,6 +990,7 @@ export default CreateJobFirstScreen = (props) => {
                 placeholder="Describe the job you need help with..."
                 placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 multiline
+                maxLength={150}
                 numberOfLines={5}
                 textAlignVertical={"top"}
               />
@@ -921,10 +1014,16 @@ export default CreateJobFirstScreen = (props) => {
                 onChange={(item) => {
                   setJobPriorityValue(item.lookup_key);
                   // alert(item.lookup_key)
+                  setJobPriorityValueError(false);
                 }}
                 renderItem={jobPriority_render}
               />
             </View>
+            {jobPriorityValueError ? (
+              <Text style={CreateJobFirstStyle.error_text}>
+                {"Job priority is require."}
+              </Text>
+            ) : null}
             <View style={{ marginTop: 12 }}>
               <Text style={LABEL_STYLES.commontext}>{"Property type"}</Text>
               <Dropdown
@@ -938,17 +1037,22 @@ export default CreateJobFirstScreen = (props) => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="Select property"
+                placeholder="Select property type"
                 searchPlaceholder="Search..."
                 value={property_value}
                 onChange={(item) => {
                   setProperty_value(item.lookup_key);
-                  // alert(item.lookup_key)
+                  setProperty_valueError(false);
                 }}
                 renderItem={property_Type_render}
               />
             </View>
-            {/* <View style={{ marginTop: 12 }}>
+            {property_valueError ? (
+              <Text style={CreateJobFirstStyle.error_text}>
+                {"Property type is require."}
+              </Text>
+            ) : null}
+            <View style={{ marginTop: 12 }}>
               <Text style={LABEL_STYLES.commontext}>
                 {"Where is the job taking place?"}
               </Text>
@@ -958,48 +1062,56 @@ export default CreateJobFirstScreen = (props) => {
                 selectedTextStyle={CreateJobFirstStyle.selectedTextStyle}
                 inputSearchStyle={CreateJobFirstStyle.inputSearchStyle}
                 iconStyle={CreateJobFirstStyle.iconStyle}
-                data={data}
+                data={selectedAddressData}
                 search
                 maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="Electricals"
+                labelField="location"
+                valueField="longitude"
+                placeholder="Select property"
                 searchPlaceholder="Search..."
-                value={value}
+                value={selectedAddress}
                 onChange={(item) => {
-                  setValue(item.value);
+                  setSelectedAddress({
+                    latitude: item.latitude,
+                    longitude: item.longitude,
+                    location: item.location,
+                  });
                 }}
+                renderItem={Selected_Time_render}
               />
-            </View> */}
-            <View style={CreateJobFirstStyle.locationContainer}>
-              <TextInput
-                style={CreateJobFirstStyle.locationInput}
-                value={location}
-                onChangeText={setLocation}
-                onFocus={() => {
-                  setIsSearch(true);
-                }}
-                // editable={false}
-                placeholder="Enter new location"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
-              <TouchableOpacity
-                style={CreateJobFirstStyle.locationIconView}
-                onPress={() => {
-                  Platform.OS == "ios"
-                    ? CheckIOSMapPermission
-                    : checkpermissionlocation();
-                  setIsMap(true);
-                }}
-              >
-                <Octicons
-                  name={"location"}
-                  size={22}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={CreateJobFirstStyle.locationIcon}
-                />
-              </TouchableOpacity>
             </View>
+            {!selectedAddress ? (
+              <View style={CreateJobFirstStyle.locationContainer}>
+                <TextInput
+                  style={CreateJobFirstStyle.locationInput}
+                  value={location}
+                  onChangeText={setLocation}
+                  onFocus={() => {
+                    setIsSearch(true);
+                  }}
+                  // editable={false}
+                  placeholder="Enter new location"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+                <TouchableOpacity
+                  style={CreateJobFirstStyle.locationIconView}
+                  onPress={() => {
+                    Platform.OS == "ios"
+                      ? CheckIOSMapPermission
+                      : checkpermissionlocation();
+                    setIsMap(true);
+                  }}
+                >
+                  <Octicons
+                    name={"location"}
+                    size={22}
+                    color={_COLORS.Kodie_GreenColor}
+                    style={CreateJobFirstStyle.locationIcon}
+                  />
+                </TouchableOpacity>
+              </View>
+            ) : null}
+
             <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>{"Rating threshold"}</Text>
               <Dropdown
@@ -1034,28 +1146,7 @@ export default CreateJobFirstScreen = (props) => {
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() => {
-                props.navigation.navigate("CreateJobTermsScreen", {
-                  selectJobType: selectJobTypeid,
-                  servicesValue: servicesValue,
-                  aboutyourNeed: aboutyourNeed,
-                  jobPriorityValue: jobPriorityValue,
-                  property_value: property_value,
-                  location: location,
-                  ratingThresholdValue: ratingThresholdValue,
-                  latitude: latitude,
-                  longitude: longitude,
-                  JobId: JobId,
-                  editMode: editMode,
-                  myJob: myJob,
-                });
-                setIsClick("");
-                setSelectJobType("");
-                setservicesValue("");
-                setAboutyourNeed("");
-                setJobPriorityValue("");
-                setJobPriorityValue("");
-                setLocation("");
-                setRatingThresholdValue("");
+                handleNextbtn();
               }}
               _ButtonText={"Next"}
               Text_Color={_COLORS.Kodie_WhiteColor}

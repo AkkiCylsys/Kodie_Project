@@ -8,15 +8,21 @@ import RowTexts from "../../../components/Molecules/RowTexts/RowTexts";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Config } from "../../../Config";
 import axios from "axios";
+import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import moment from "moment/moment";
 const Reviewjobdetails1 = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
   const imagesFiles = jobDetailsData.image_file_path;
+  // const SearchJobId = props.route.params.SearchJobId;
+  const searchView = props.searchView;
+  const SearchJobId = props.SearchJobId;
   console.log("imagesFiles...", imagesFiles);
+  console.log("SearchJobId...", props.SearchJobId, searchView);
   console.log("View_Job_Details_sdfsdf.....", props.View_Job_Details);
   console.log("JOB_IDfsdfsdfs.....", props.JOB_ID);
+  console.log("JOB_IDfsdfsdfs small.....", props.job_id);
   const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
 
   // alert(props.job_id)
@@ -27,7 +33,7 @@ const Reviewjobdetails1 = (props) => {
     } else {
       getJobDetails();
     }
-  }, []);
+  }, [F_job_id]);
 
   const getJobDetails = () => {
     const url = Config.BASE_URL;
@@ -37,7 +43,7 @@ const Reviewjobdetails1 = (props) => {
     const jobDetailsData = {
       // jm_job_id: 1,
       // jm_job_id: props.job_id,
-      jm_job_id: F_job_id,
+      jm_job_id: F_job_id || SearchJobId,
     };
     axios
       .post(jobDetails_url, jobDetailsData)
@@ -48,7 +54,7 @@ const Reviewjobdetails1 = (props) => {
           console.log("jobDetailsData....", response.data.data);
           // alert(JSON.stringify(response.data.data))
           // alert(response.data.message);
-          // console.log("myJobType..", myJobType);
+          console.log("job_type_my..", response.data.data.job_type_my);
           props.onJobDetailsSuccess(response.data.data.job_type_my);
         } else {
           alert(response.data.message);
@@ -100,6 +106,7 @@ const Reviewjobdetails1 = (props) => {
         setIsLoading(false);
       });
   };
+
   props?.imagesFilePath(jobDetailsData);
   // alert(JSON.stringify(jobDetailsData.first_name))
   return (
@@ -113,7 +120,10 @@ const Reviewjobdetails1 = (props) => {
         </Text>
       </View>
       <View style={{ marginBottom: 50 }}>
-        <RowTexts leftText={"Name"} rightText={jobDetailsData.first_name} />
+        <RowTexts
+          leftText={"Name"}
+          rightText={`${jobDetailsData.first_name} ${jobDetailsData.last_name}`}
+        />
         <RowTexts
           leftText={"Location"}
           rightText={jobDetailsData.job_location}
@@ -124,12 +134,16 @@ const Reviewjobdetails1 = (props) => {
         />
         <RowTexts
           leftText={"Proposed date"}
-          rightText={moment(jobDetailsData.job_date).format('MMM DD, YYYY')}
+          rightText={moment(jobDetailsData.job_date).format("MMM DD, YYYY")}
         />
         <RowTexts
           leftText={"Proposed time"}
-          rightText={jobDetailsData.job_time}
-          // rightText={moment(jobDetailsData.job_time, 'h:mm a').format('h:mm A')}
+          // rightText={jobDetailsData.job_time}
+          rightText={`${moment(jobDetailsData.job_time, "h:mm a").format(
+            "h:mm A"
+          )} - ${moment(jobDetailsData.proposed_time, "h:mm a").format(
+            "h:mm A"
+          )}`}
         />
         <RowTexts
           leftText={"Number of hours"}
@@ -146,7 +160,7 @@ const Reviewjobdetails1 = (props) => {
           rightText={jobDetailsData.insurance}
         />
       </View>
-      {props.View_Job_Details ? null : (
+      {props.View_Job_Details || searchView ? null : (
         <>
           <View style={ReviewjobdetailsStyle1.nextBtn_view}>
             <CustomSingleButton
@@ -168,6 +182,96 @@ const Reviewjobdetails1 = (props) => {
           </TouchableOpacity>
         </>
       )}
+      {searchView ? (
+        <View style={{ borderWidth: 0.3, borderRadius: 15 }}>
+          <View style={{ marginHorizontal: 20, marginVertical: 25 }}>
+            <View
+              style={{
+                justifyContent: "space-between",
+                flexDirection: "row",
+              }}
+            >
+              <Text style={{ fontSize: 12 }}>Bidding ends in</Text>
+              <Text style={{ fontSize: 12 }}>Budget:</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "space-between",
+                flexDirection: "row",
+                marginTop: 5,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                }}
+              >
+                <View
+                  style={{
+                    borderWidth: 0.4,
+                    borderRadius: 8,
+                    paddingHorizontal: 5,
+                    paddingVertical: 8,
+                    color: _COLORS.Kodie_GrayColor,
+                  }}
+                >
+                  <Text style={{ fontSize: 9 }}>22 hrs</Text>
+                </View>
+                <View
+                  style={{
+                    borderWidth: 0.4,
+                    marginHorizontal: 5,
+                    fontSize: 9,
+                    borderRadius: 5,
+                    paddingHorizontal: 5,
+                    paddingVertical: 8,
+                  }}
+                >
+                  <Text style={{ fontSize: 9 }}>33 mins</Text>
+                </View>
+                <View
+                  style={{
+                    borderWidth: 0.4,
+                    fontSize: 9,
+                    borderRadius: 8,
+                    paddingHorizontal: 5,
+                    paddingVertical: 8,
+                    color: _COLORS.Kodie_GrayColor,
+                  }}
+                >
+                  <Text style={{ fontSize: 9 }}>10 secs</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  borderWidth: 0.4,
+                  borderRadius: 8,
+                  paddingHorizontal: 5,
+                  paddingVertical: 8,
+                  color: _COLORS.Kodie_GrayColor,
+                }}
+              >
+                <Text style={{ fontSize: 9 }}>$100 per hour</Text>
+              </View>
+            </View>
+            <View style={{ marginTop: 8 }}>
+              <RowButtons
+                LeftButtonText={"Bid for job"}
+                leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+                LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+                LeftButtonborderColor={_COLORS.Kodie_BlackColor}
+                RightButtonText={"Message"}
+                RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+                RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+                RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+                onPressLeftButton={props.BidonPress}
+                onPressRightButton={props.MessageBtn}
+              />
+            </View>
+          </View>
+        </View>
+      ) : null}
       {isLoading ? <CommonLoader /> : null}
     </View>
   );

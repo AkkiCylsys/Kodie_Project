@@ -25,6 +25,7 @@ export const CreateJobSecondStyle = StyleSheet.create({
     margin: 0,
   },
   heading_Text: {
+    flex: 1,
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -70,9 +71,9 @@ export const CreateJobSecondStyle = StyleSheet.create({
   },
   error_text: {
     color: "red",
-    marginLeft: 10,
+
     marginTop: 10,
-    alignSelf: "center",
+
     // borderWidth: 1,
   },
 });

@@ -136,6 +136,8 @@ const ContractorsComponent = (props) => {
             RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
+            onPressLeftButton={props.ViewProfileBtn}
+            onPressRightButton={props.MessageBtn}
           />
         </View>
       </View>

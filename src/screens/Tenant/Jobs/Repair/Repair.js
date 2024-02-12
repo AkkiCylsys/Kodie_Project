@@ -66,22 +66,21 @@ export default Repair = (props) => {
   const account_id = loginData?.Login_details?.user_account_id;
   const [isLoading, setIsLoading] = useState(false);
   const [activeScreen, setActiveScreen] = useState(false);
-
-  const [allJobData, setAllJobData] = useState([]);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [JobId, setJobId] = useState(0);
   const [Job_Id, setJob_Id] = useState(0);
   const [job_sub_type, setJob_sub_type] = useState(0);
+  const [job_sub_type_services, setJob_sub_type_services] = useState(0);
   const [Address, setAddress] = useState();
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
     useState(false);
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [JobData, setJobData] = useState([]);
   const [servicingJobData, setServicingJobData] = useState([]);
-  // alert(Job_Id);
-
   const myJob_Type = props.myJob_Type;
-  console.log("myJob_Type in repair..", myJob_Type);
+  console.log("myJob_Type in job module", myJob_Type);
+  const job_sub_type_req = props.job_sub_type_req;
+  console.log("job_sub_type_ser_req....", job_sub_type_req);
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -90,6 +89,7 @@ export default Repair = (props) => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
   };
+  // job i have requested...
   const getJobDetailsByFilter = async (filter) => {
     setIsLoading(true);
     // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
@@ -102,13 +102,13 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "6",
+        order_col: "8",
         order_wise: "DESC",
       });
 
       setJobData(response?.data?.job_details);
       console.log("listJobdata", response?.data?.job_details);
-      setJob_sub_type(response?.data?.job_details.job_sub_type);
+      // setJob_sub_type(response?.data?.job_details.job_sub_type);
       console.log("Job_sub_type....", response?.data?.job_details.job_sub_type);
       setIsLoading(false);
     } catch (error) {
@@ -123,6 +123,7 @@ export default Repair = (props) => {
       setIsLoading(false);
     }
   };
+  // job i have servicing...
   const getJobDetails_Filter_Service = async (filter) => {
     setIsLoading(true);
     try {
@@ -134,9 +135,10 @@ export default Repair = (props) => {
         user_account_id: account_id,
         page_no: 1,
         limit: filter == "Recent" ? 5 : 10,
-        order_col: "6",
+        order_col: "8",
         order_wise: "DESC",
       });
+      console.log("response.. job by filter ser....",response?.data)
       setServicingJobData(response?.data?.job_details);
       console.log(
         "listJobdata for servicing.....",
@@ -159,9 +161,9 @@ export default Repair = (props) => {
   useEffect(() => {
     if (isvisible) {
       getJobDetailsByFilter(selectedFilter);
+      getJobDetails_Filter_Service(selectedFilter);
     }
-    getJobDetails_Filter_Service(selectedFilter);
-    setActiveScreen(myJob_Type === 0 ? false : true);
+    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1 ? true : false);
   }, [selectedFilter, isvisible]);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
@@ -179,8 +181,8 @@ export default Repair = (props) => {
       console.log("API Response:", response.data);
       if (response.data.success === true) {
         Alert.alert("Job Deleted", response.data.message);
-
         getJobDetailsByFilter(selectedFilter);
+        getJobDetails_Filter_Service(selectedFilter);
         setIsLoading(false);
       }
     } catch (error) {
@@ -188,9 +190,6 @@ export default Repair = (props) => {
       setIsLoading(false);
     }
   };
-  // useEffect(() => {
-  //   getAllJob();
-  // }, []);
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity
@@ -236,32 +235,11 @@ export default Repair = (props) => {
       </TouchableOpacity>
     );
   };
-
-  // Archive component call here...................
   <ArchiveJob />;
-
-  // Api intrigation....
-  // const getAllJob = () => {
-  //   const url = Config.BASE_URL;
-  //   const getAllJobUrl = url + `job/getAlljobs/${account_id}`;
-  //   console.log("Request URL:", getAllJobUrl);
-  //   setIsLoading(true);
-  //   axios
-  //     .get(getAllJobUrl)
-  //     .then((response) => {
-  //       console.log("API Response getAllJob..:", response.data);
-  //       setAllJobData(response.data.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("API failed_moduleName", error);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
-
   const propertyData_render1 = ({ item }) => {
     setJob_Id(item?.job_id);
+    setJob_sub_type(item.job_sub_type);
+    // console.log("job type servicing and request .....", item.job_sub_type);
     return (
       <TouchableOpacity
         onPress={() => {
@@ -276,7 +254,7 @@ export default Repair = (props) => {
               </Text>
             </View>
             <View style={RepairCss.RightContainer}>
-              <View
+              <TouchableOpacity
                 style={[
                   RepairCss.buttonView,
                   {
@@ -310,19 +288,18 @@ export default Repair = (props) => {
                         : item.isongoing
                         ? _COLORS.Kodie_DarkOrange
                         : _COLORS.Kodie_GreenColor,
-                      flex: 1,
                     },
                   ]}
                 >
                   {"Awaiting"}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
             <TouchableOpacity
               onPress={() => {
                 setIsDeleteBottomSheetVisible(true);
                 setJobId(item.job_id);
-                setAddress(item?.job_location);
+                setAddress(`Ref #${item?.job_reference}`);
               }}
             >
               <Entypo
@@ -333,7 +310,9 @@ export default Repair = (props) => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={LABEL_STYLES.commonMidtext}>{item.job_reference}</Text>
+          <Text
+            style={LABEL_STYLES.commonMidtext}
+          >{`Ref #${item.job_reference}`}</Text>
           <View style={RepairCss.flat_MainView}>
             <View style={RepairCss.flexContainer}>
               <View style={RepairCss.propertyView}>
@@ -358,7 +337,7 @@ export default Repair = (props) => {
             <View style={[RepairCss.BudgetView]}>
               <View style={RepairCss.flexContainer}>
                 <Text style={RepairCss.bugetText}>{"Budget"}</Text>
-                <Text style={RepairCss.spend}>{item.job_budget}</Text>
+                <Text style={RepairCss.spend}>{item.job_max_budget}</Text>
               </View>
             </View>
           </View>
@@ -436,7 +415,12 @@ export default Repair = (props) => {
         </>
         {/* ) : null} */}
 
-        <SearchBar frontSearchIcon height={48} marginTop={5} placeholder={"Search  jobs"} />
+        <SearchBar
+          frontSearchIcon
+          height={48}
+          marginTop={5}
+          placeholder={"Search  jobs"}
+        />
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
             <FlatList
@@ -480,6 +464,9 @@ export default Repair = (props) => {
           onDeleteData={FinalDeleteProperty}
           Address={Address}
           onClose={CloseUp}
+          // job_sub_type_serv={1}
+          // job_sub_type_req={0}
+          job_sub_type={job_sub_type}
         />
       </Modal>
       {isLoading ? <CommonLoader /> : null}
