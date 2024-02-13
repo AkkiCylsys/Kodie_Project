@@ -404,36 +404,7 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-              {/* {property_Detail.image_path &&
-              property_Detail.image_path.length != 0 ? (
-                <SliderBox
-                  images={
-                    
-                    property_Detail?.image_path
-                    // //   ? property_Detail[0]?.image_path
-                    // //   :
-                    // imagePath
-                  }
-                  sliderBoxHeight={200}
-                  onCurrentImagePressed={(index) =>
-                    console.warn(`image ${index} pressed`)
-                  }
-                  inactiveDotColor={_COLORS.Kodie_GrayColor}
-                  dotColor={_COLORS.Kodie_GreenColor}
-                  autoplay
-                  circleLoop
-                  resizeMethod={"resize"}
-                  resizeMode={"cover"}
-                  dotStyle={PropertyImagesStyle.dotStyle}
-                  ImageComponentStyle={{
-                    flex: 1,
-                    resizeMode: "cover",
-                    borderRadius: 15,
-                    width: "90%",
-                    // position: "relative",
-                  }}
-                />
-              ) : ( */}
+
               <SliderBox
                 images={
                   // property_Detail?.image_path
@@ -474,23 +445,9 @@ export default PropertyImages = (props) => {
               />
               {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
 
-              {/* {MultiImageName.length > 0 && (
-                  <FlatList
-                    horizontal
-                    data={MultiImageName}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                      <Image
-                        source={{ uri: item.path }}
-                        style={{ width: 100, height: 100, margin: 5 }}
-                      />
-                    )}
-                  />
-                )} */}
-
               <Text style={PropertyImagesStyle.formatted_property_text}>
                 {
-                  "Images should be formatted .jpg or .png Size per image should not exceed 2 MB"
+                  "Images should be formatted .jpg or .png Size per image should not exceed 5 MB"
                 }
               </Text>
             </View>
@@ -522,7 +479,7 @@ export default PropertyImages = (props) => {
                             width: 150,
                             height: 150,
                             borderRadius: 5,
-                            marginLeft: 10,
+                            marginLeft: 5,
                           }}
                           controls={true}
                         />
@@ -575,6 +532,7 @@ export default PropertyImages = (props) => {
                 },
                 draggableIcon: {
                   backgroundColor: _COLORS.Kodie_LightGrayColor,
+                  marginBottom:2
                 },
                 container: PropertyImagesStyle.bottomModal_container,
               }}

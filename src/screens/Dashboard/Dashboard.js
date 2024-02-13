@@ -192,6 +192,7 @@ export default Dashboard = (props) => {
           MiddleText={"Kodie"}
           Text_Color={_COLORS.Kodie_BlackColor}
           onPressLeftButton={() => props.navigation.openDrawer()}
+          onPressRightImgProfile={()=>props.navigation.navigate("EditProfile")}
           // statusBarColor="red"
           // statusBarStyle="dark-content"
         />

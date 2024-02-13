@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  Alert,
 } from "react-native";
 import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -65,6 +66,7 @@ export default PropertyDetails = (props) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
+
   // const [locationError, setlocationError] = useState("");
   // const [propertytypeError, setpropertytypeError] = useState("");
   // const validateFields = () => {
@@ -77,6 +79,7 @@ export default PropertyDetails = (props) => {
   //     null;
   //   }
   // };
+
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -95,18 +98,6 @@ export default PropertyDetails = (props) => {
       };
     }, [IsMap, IsSearch])
   );
-
-  const handle_next_btn = () => {
-    props.navigation.navigate("PropertyFeature", {
-      location: location,
-      property_value: property_value,
-      propertyDesc: propertyDesc,
-      selectedButtonId: selectedButtonId,
-      latitude: latitude,
-      longitude: longitude,
-      propertyid: propertyid,
-    });
-  };
 
   useEffect(() => {
     handleProperty_Type();
@@ -324,14 +315,14 @@ export default PropertyDetails = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setLocation(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -421,7 +412,30 @@ export default PropertyDetails = (props) => {
     );
   };
   const goBack = () => {
+    // Alert.alert(
+    //   "Save or Discard Changes?",
+    //   "Do you want to save or discard your changes?",
+    //   [
+    //     {
+    //       text: "Save",
+    //       onPress: () => {
+    //         handleSave();
+    //         props.navigation.pop();
+    //         console.log("save presed");
+    //       },
+    //     },
+    //     {
+    //       text: "Discard",
+    //       onPress: () => {
+    //         handleDiscard();
+    //         props.navigation.pop();
+    //         console.log("save presed");
+    //       },
+    //     },
+    //   ]
+    // );
     props.navigation.pop();
+
   };
   return (
     <View style={PropertyDetailsStyle.mainContainer}>
@@ -652,12 +666,12 @@ export default PropertyDetails = (props) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={PropertyDetailsStyle.AutoList_text}>
+                {/* <Text style={PropertyDetailsStyle.AutoList_text}>
                   {"Auto-list property on Kodie property marketplace "}
                 </Text>
                 <TouchableOpacity style={PropertyDetailsStyle.questionmark}>
                   <AntDesign name="question" size={20} color="#8AFBA5" />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
               <RowButtons
                 LeftButtonText={"Yes"}
@@ -723,9 +737,9 @@ export default PropertyDetails = (props) => {
                       country: country,
                       editMode: editMode,
                     });
-                    setLocation("");
-                    setPropertyDesc("");
-                    setProperty_value("");
+                    // setLocation("");
+                    // setPropertyDesc("");
+                    // setProperty_value("");
                   }}
                   disabled={isLoading ? true : false}
                 />

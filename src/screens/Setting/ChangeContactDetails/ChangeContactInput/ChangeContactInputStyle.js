@@ -65,10 +65,10 @@ export const ChangeContactInputStyle = StyleSheet.create({
     marginHorizontal: 15,
   },
   simpleinputview: {
-    // flex:1,
-    height: 50,
+    // height: 50,
     borderWidth: 1,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
     flexDirection: "row",

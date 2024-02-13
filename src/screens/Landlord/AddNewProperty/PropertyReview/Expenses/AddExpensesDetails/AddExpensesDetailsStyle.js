@@ -28,7 +28,7 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     marginBottom: 250,
   },
   inputContainer: {
-    marginTop: 15,
+    // marginTop: 10
   },
   Tax_input_cont: { flex: 1, marginLeft: 8 },
   input: {
@@ -42,12 +42,22 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     marginTop: 10,
   },
   addition_featureView: {
-    marginTop: 15,
+    // marginBottom: 20,
   },
+  additionview:{
+    marginBottom:20,
+    marginTop:10
+  },
+  inputContainertext:{
+    marginBottom:12,
+    marginTop:5
+  },
+  
   Furnished_Text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 13,
     fontFamily: FONTFAMILY.K_SemiBold,
+    marginBottom:5
   },
   tax_main_view: {
     flex: 1,
