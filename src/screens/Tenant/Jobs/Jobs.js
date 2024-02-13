@@ -9,7 +9,8 @@ import Repair from "./Repair/Repair";
 import SearchForContractor from "./SearchforContractor/SearchForContractor";
 import SearchforJob from "./SearchforJob/SearchforJob";
 import { useRoute } from "@react-navigation/native";
-
+import Geocoder from "react-native-geocoding";
+import Geolocation from "react-native-geolocation-service";
 const Jobs = (props) => {
   const route = useRoute();
   const [job_sub_type, setJobSubType] = useState(1);
@@ -17,7 +18,86 @@ const Jobs = (props) => {
   let myJob_Type = props.route.params?.myJob_Type;
   let job_sub_type_req = props.route.params?.job_sub_type;
   console.log("job_sub_type_req...", job_sub_type_req);
-  console.log("jmyJob_Type", myJob_Type);
+
+  useEffect(() => {
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
+  }, []);
+  // Location.....
+  const CheckIOSMapPermission = () => {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
+      .then((result) => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              "This feature is not available (on this device / in this context)"
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              "The permission has not been requested / is denied but requestable"
+            );
+            break;
+          case RESULTS.LIMITED:
+            console.log("The permission is limited: some actions are possible");
+            break;
+          case RESULTS.GRANTED:
+            console.log("The permission is granted");
+            getOneTimeLocation();
+            break;
+          case RESULTS.BLOCKED:
+            console.log("The permission is denied and not requestable anymore");
+            break;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  const checkpermissionlocation = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: "App permission",
+          message: "App need access to your location ",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log("You can use the location");
+        getOneTimeLocation();
+      } else {
+        console.log("location permission denied");
+        alert("Location permission denied");
+      }
+    } catch (err) {
+      console.log("err....", err);
+    }
+  };
+  const getOneTimeLocation = () => {
+    Geolocation.getCurrentPosition(
+      //Will give you the current location
+      (position) => {
+        console.log("Postition location......", position);
+        //getting the Longitude from the location json
+        const currentLongitude = JSON.stringify(position.coords.longitude);
+        //getting the Latitude from the location json
+        const currentLatitude = JSON.stringify(position.coords.latitude);
+        // setlatitude(currentLatitude);
+        // setlongitude(currentLongitude);
+        // dispatch(saveLocationData({...position?.coords}));
+        // saveLocation(position?.coords);
+      },
+      (error) => {
+        console.log("error.....", error);
+        //setLocationStatus(error.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 30000,
+        maximumAge: 1000,
+      }
+    );
+  };
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":

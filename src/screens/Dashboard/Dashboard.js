@@ -107,6 +107,11 @@ export default Dashboard = (props) => {
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
+  console.log(
+    "UAD_FirstName.....",
+    loginData?.Account_details[0]?.UAD_FIRST_NAME
+  );
+  const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
   //---click back button closing the app
   useEffect(() => {
     const handleBackPress = () => {
@@ -190,11 +195,13 @@ export default Dashboard = (props) => {
           // statusBarColor="red"
           // statusBarStyle="dark-content"
         />
-
         <ScrollView showsVerticalScrollIndicator={false}>
           <DeshboardNotice />
           <View style={DashboardStyle.container}>
-            <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text>
+            {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
+            <Text
+              style={DashboardStyle.Name_Text}
+            >{`Hi ${UADFirstName}!`}</Text>
             <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
             <View
               style={{
