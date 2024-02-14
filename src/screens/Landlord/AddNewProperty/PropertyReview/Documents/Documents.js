@@ -6,7 +6,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from "react-native";
 import { DocumentsStyle } from "./DocumentsStyle";
 import { FONTFAMILY, LABEL_STYLES } from "../../../../../Themes";
@@ -64,26 +64,6 @@ const data = [
     pdfSize: "2.2MB",
   },
 ];
-const folderData = [
-  {
-    id: "1",
-    moduleName: "Property",
-    folderHeading: "Property documents",
-    totalFile: "12 Files",
-  },
-  {
-    id: "2",
-    moduleName: "Lease",
-    folderHeading: "Lease documents",
-    totalFile: "13 Files",
-  },
-  {
-    id: "3",
-    moduleName: "Tenant",
-    folderHeading: "Tenant documents",
-    totalFile: "15 Files",
-  },
-];
 
 // ----data come from dropdown and define these condition
 const handleApply = (selectedOptions) => {
@@ -96,6 +76,9 @@ const handleClear = () => {
 export default Documents = (props) => {
   useEffect(() => {
     getAllDocuments();
+    getUploadedDocumentsByModule("Property");
+    getUploadedDocumentsByModule("Lease");
+    getUploadedDocumentsByModule("Tenant");
   }, []);
   const property_id = props.property_id;
   // alert(props.property_id);
@@ -105,6 +88,34 @@ export default Documents = (props) => {
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState("");
   const [filePath, setFilePath] = useState("");
+  const [propertyDocByproperty, setpropertyDocByproperty] = useState([]);
+  const [propertyDocByLease, setpropertyDocByLease] = useState([]);
+  const [propertyDocByTenant, setpropertyDocByTenant] = useState([]);
+  const [propertyDocBypropertylength, setpropertyDocBypropertylength] =
+    useState("");
+  const [propertyDocByLeaselength, setpropertyDocByLeaselength] = useState("");
+  const [propertyDocByTenantlength, setpropertyDocByTenantlength] =
+    useState("");
+  const folderData = [
+    {
+      id: "1",
+      moduleName: "Property",
+      folderHeading: "Property documents",
+      totalFile: propertyDocBypropertylength,
+    },
+    {
+      id: "2",
+      moduleName: "Lease",
+      folderHeading: "Lease documents",
+      totalFile: propertyDocByLeaselength,
+    },
+    {
+      id: "3",
+      moduleName: "Tenant",
+      folderHeading: "Tenant documents",
+      totalFile: propertyDocByTenantlength,
+    },
+  ];
   const refRBSheet = useRef();
 
   const closeModal = () => {
@@ -271,7 +282,7 @@ export default Documents = (props) => {
           <Text style={DocumentsStyle.propertyDocText}>
             {item?.folderHeading}
           </Text>
-          <Text style={DocumentsStyle.files_text}>{"12 files"}</Text>
+          <Text style={DocumentsStyle.files_text}>{`${item.totalFile} Files`}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -301,6 +312,68 @@ export default Documents = (props) => {
         console.error("API failed", error);
         setIsLoading(false);
         // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const getUploadedDocumentsByModule = (moduleName) => {
+    const url = Config.BASE_URL;
+    const getDocumentUrl = url + "tanant_details/get/documents";
+    console.log("Request URL:", getDocumentUrl);
+    setIsLoading(true);
+    const documentModuleData = {
+      Module_Name: moduleName,
+      fileReferenceKey: property_id,
+    };
+    axios
+      .post(getDocumentUrl, documentModuleData)
+      .then((response) => {
+        console.log(`API Response for ${moduleName}:`, response.data);
+        if (response.data.success == true) {
+          switch (moduleName) {
+            case "Property":
+              setpropertyDocByproperty(response.data.data);
+              console.log("Length for property:", response.data.data.length);
+              setpropertyDocBypropertylength(response.data.data.length);
+              console.log(
+                "setpropertyDocBypropertylength..",
+                propertyDocBypropertylength
+              );
+
+              break;
+            case "Lease":
+              setpropertyDocByLease(response.data.data);
+              console.log(
+                "Length for propertyDocByLease:",
+                response.data.data.length
+              );
+              setpropertyDocByLeaselength(response.data.data.length);
+              console.log(
+                "propertyDocByLeaselength...",
+                propertyDocByLeaselength
+              );
+              break;
+            case "Tenant":
+              setpropertyDocByTenant(response.data.data);
+              console.log(
+                "Length for propertyDocByTenant:",
+                response.data.data.length
+              );
+              setpropertyDocByTenantlength(response.data.data.length);
+              console.log(
+                "propertyDocByTenantlength..",
+                propertyDocByTenantlength
+              );
+              break;
+            // Add cases for other module names if needed
+            default:
+              break;
+          }
+        }
+      })
+      .catch((error) => {
+        console.error(`API failed for ${moduleName}:`, error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -365,7 +438,7 @@ export default Documents = (props) => {
           />
         </RBSheet>
       </ScrollView>
-      {isLoading?<CommonLoader/>:null}
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

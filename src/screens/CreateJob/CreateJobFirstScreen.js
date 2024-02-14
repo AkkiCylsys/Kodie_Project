@@ -198,6 +198,7 @@ export default CreateJobFirstScreen = (props) => {
     Geolocation.watchPosition(
       (position) => {
         // alert("with cordinates..");
+        console.log("with cordinates..")
         setGetLat(position.coords.latitude);
         setGetLong(position.coords.longitude);
         // setlatitude(position.coords.latitude);

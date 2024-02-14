@@ -24,16 +24,10 @@ const MapScreen = (props) => {
       initialRegion={{
         latitude: props?.Maplat
           ? parseFloat(props?.Maplat)
-          : 
-          // 22.924898263688327
-          23.1756755
-          ,
+          : 22.924898263688327,
         longitude: props?.Maplng
           ? parseFloat(props?.Maplng)
-          : 
-          // 78.77681708434507
-          79.8881241
-          ,
+          : 78.77681708434507,
         latitudeDelta: 0.02,
         longitudeDelta: 0.02,
       }}

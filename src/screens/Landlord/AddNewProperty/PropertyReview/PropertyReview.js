@@ -86,6 +86,7 @@ export default PropertyReview = (props) => {
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
   console.log(propertyView, propertyid);
+  console.log("propertyid...",propertyid);
   console.log("propertyView.....",propertyView);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [isLoading, setIsLoading] = useState([]);

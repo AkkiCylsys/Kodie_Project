@@ -217,7 +217,8 @@ const PropertyList = (props) => {
   const propertyData1_render = ({ item, index }) => {
     const isExpanded = expandedItems.includes(item.property_id);
     // const propertyIds = data.map(item => item.property_id);
-    setPropId(item.property_id);
+    // setPropId(item.property_id);
+    // console.log("property id in modal",item.property_id)
     return (
       <TouchableOpacity
         onPress={() => {
@@ -293,6 +294,8 @@ const PropertyList = (props) => {
                     setPropertyDelId(item.property_id);
                     // alert(propertyDelId);
                     setAddress(item?.location);
+                    setPropId(item?.property_id);
+                    console.log("property id..", item.property_id);
                   }}
                 >
                   <MaterialCommunityIcons

@@ -156,8 +156,11 @@ const BottomModalData = (props) => {
             style={BottomModalDataStyle.container}
             onPress={() => {
               if (item.id === "1") {
-                navigation.navigate("ViewPropertyDetails", {
-                  propertyId: propertyId,
+                navigation.navigate("PropertyReview", {
+                  // propertyId: propertyId,
+                  // propertyView: "propertyView",
+                  propertyid: propertyId,
+                  propertyView: "propertyView",
                 });
                 handleCloseModal();
               }
