@@ -121,7 +121,6 @@ const DeshboardNotice = (props) => {
           </TouchableOpacity>
         </View>
       </View>
-      {isLoading ? <CommonLoader /> : null}
     </>
   );
 };

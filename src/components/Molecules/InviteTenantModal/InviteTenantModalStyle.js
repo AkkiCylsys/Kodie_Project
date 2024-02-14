@@ -7,7 +7,7 @@ export const InviteTenantModalStyle = StyleSheet.create({
   },
   subContainer: {
     marginHorizontal: 16,
-    marginTop: 25,
+    // marginTop: 25,
   },
   Invite_tenant: {
     color: _COLORS.Kodie_BlackColor,

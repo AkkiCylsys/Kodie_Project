@@ -39,7 +39,7 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     color: "#333",
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 10,
+    marginTop:14
   },
   addition_featureView: {
     // marginBottom: 20,
@@ -57,7 +57,7 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 13,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginBottom:5
+    marginBottom:10
   },
   tax_main_view: {
     flex: 1,
@@ -69,7 +69,7 @@ export const AddExpensesDetailsStyle = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 10,
+    // marginTop: 10,
     borderRadius: 8,
   },
 

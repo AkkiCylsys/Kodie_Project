@@ -25,6 +25,7 @@ export const ExpensesStyle = StyleSheet.create({
   btn_View: {
     flex:1,
     marginHorizontal: 16,
+    marginBottom:10
   },
   bottomModal_container: {
     borderWidth: 0.5,

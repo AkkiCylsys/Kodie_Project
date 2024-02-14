@@ -18,7 +18,7 @@ export const PersonStyle = StyleSheet.create({
     // marginBottom: 20,
   },
   inputContainer: {
-    marginBottom:5
+    // marginBottom:5
   },
   input: {
     height: 45,

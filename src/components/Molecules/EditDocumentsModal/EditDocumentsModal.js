@@ -34,9 +34,9 @@ export default EditDocumentsModal = (props) => {
     <TouchableOpacity
       style={EditDocumentsModalStyle.Main_View}
       onPress={() => {
-        if (item.id === "1") {
-          props.onpress();
-        }
+        // if (item.id === "1") {
+        //   props.onpress();
+        // }
         if (item.id === "2") {
           deleteHandler(fileKey);
         }

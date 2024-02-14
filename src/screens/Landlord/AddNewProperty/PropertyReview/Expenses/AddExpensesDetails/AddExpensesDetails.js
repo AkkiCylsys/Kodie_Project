@@ -210,7 +210,7 @@ export default AddExpensesDetails = (props) => {
       expenses_description: expenseDes,
       note: notes,
       paid: selectedButtonDepositId,
-      start_date: selectedPaidDate,
+      start_date: selectedPaidDate?selectedPaidDate:null,
       is_active: 1,
     };
     const url = Config.BASE_URL;
@@ -259,7 +259,11 @@ export default AddExpensesDetails = (props) => {
       setSelectedDateError("Due date is required.");
     } else if (!ExpenceCategoryValue) {
       setExpenceCategoryValueError("Select Responsible Category.");
-    } else if (selectedPaidDate.trim() === "") {
+    }
+    // else if (selectedPaidDate.trim() === "") {
+    //   setSelectedPaidDateError("Paid date is required.");
+    // }
+    else if (!selectedButtonDeposit && selectedPaidDate.trim() === "") {
       setSelectedPaidDateError("Paid date is required.");
     } else {
       Expencehandle();
@@ -370,7 +374,7 @@ export default AddExpensesDetails = (props) => {
               />
             </View>
           </View>
-          <View style={AddExpensesDetailsStyle.inputContainer}>
+          <View style={[AddExpensesDetailsStyle.inputContainer,{marginTop:14}]}>
             <Text style={LABEL_STYLES.commontext}>{"Due date*"}</Text>
             <View style={AddExpensesDetailsStyle.datePickerView}>
               <CalendarModal
@@ -514,7 +518,7 @@ export default AddExpensesDetails = (props) => {
           <View style={AddExpensesDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Expense category*"}</Text>
             <Dropdown
-              style={AddExpensesDetailsStyle.dropdown}
+              style={[AddExpensesDetailsStyle.dropdown,{marginTop:14}]}
               placeholderStyle={[
                 AddExpensesDetailsStyle.placeholderStyle,
                 { color: _COLORS.Kodie_LightGrayColor },
@@ -550,7 +554,7 @@ export default AddExpensesDetails = (props) => {
             />
           </View>
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Expense description"}</Text>
+            <Text style={[LABEL_STYLES.commontext,{marginTop:14}]}>{"Expense description"}</Text>
             <TextInput
               style={AddExpensesDetailsStyle.input}
               value={expenseDes}
@@ -561,7 +565,7 @@ export default AddExpensesDetails = (props) => {
           </View>
 
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
+            <Text style={[LABEL_STYLES.commontext,{marginTop:14}]}>{"Notes"}</Text>
             <TextInput
               style={[AddExpensesDetailsStyle.input, { height: 100 }]}
               value={notes}
@@ -574,7 +578,7 @@ export default AddExpensesDetails = (props) => {
             />
           </View>
           <View style={AddExpensesDetailsStyle.addition_featureView}>
-            <Text style={AddExpensesDetailsStyle.Furnished_Text}>
+            <Text style={[AddExpensesDetailsStyle.Furnished_Text,{marginTop:14}]}>
               {"Mark as paid?"}
             </Text>
             <RowButtons

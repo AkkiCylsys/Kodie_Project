@@ -199,10 +199,10 @@ export default Dashboard = (props) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <DeshboardNotice />
           <View style={DashboardStyle.container}>
-            {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
-            <Text
+            <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text>
+            {/* <Text
               style={DashboardStyle.Name_Text}
-            >{`Hi ${UADFirstName}!`}</Text>
+            >{`Hi ${UADFirstName}!`}</Text> */}
             <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
             <View
               style={{
