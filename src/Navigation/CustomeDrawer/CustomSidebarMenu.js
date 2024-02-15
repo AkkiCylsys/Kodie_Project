@@ -49,7 +49,7 @@ const CustomSidebarMenu = (props) => {
       case "MaintenanceJobs":
         setselectedId("MaintenanceJobs");
         // props.navigation.navigate("Reviewjobdetails1");
-        alert("Maintenance job pressed.")
+        alert("Maintenance job pressed.");
         break;
       case "Contractors":
         setselectedId("Contractors");
@@ -61,7 +61,9 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Documents":
         setselectedId("Documents");
-        props.navigation.navigate("AccountStep");
+        // props.navigation.navigate("AccountStep");
+        alert("Documents pressed.");
+
         break;
       case "Reports":
         setselectedId("Reports");
@@ -74,7 +76,7 @@ const CustomSidebarMenu = (props) => {
       case "Logout":
         setselectedId("LogOut");
         // props.navigation.navigate("LoginScreen");
-        LogOut()
+        LogOut();
         break;
 
       default:
@@ -84,7 +86,8 @@ const CustomSidebarMenu = (props) => {
   };
   const LogOut = () => {
     dispatch(logoutActionCreator());
-    props.navigation.navigate("DrawerNavigatorLeftMenu");
+    // props.navigation.navigate("DrawerNavigatorLeftMenu");
+    props.navigation.navigate("LoginScreen");
   };
   return (
     <SafeAreaView style={DrawerStyle.mainContainer}>
@@ -105,9 +108,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("PropertyLinking")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-text-outline"
               size={25}
@@ -131,9 +132,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("RentalOffers")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-arrow-left"
               size={25}
@@ -157,9 +156,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("vacantProperties")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <Octicons
               name="shield-x"
               size={25}
@@ -184,9 +181,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Inspection")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-search"
               size={25}
@@ -210,9 +205,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Tetants")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="shield-account-outline"
               size={25}
@@ -240,9 +233,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("MaintenanceJobs")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <Feather
               name="list"
               size={25}
@@ -266,9 +257,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Contractors")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialIcons
               name="engineering"
               size={25}
@@ -295,9 +284,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Notices")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <Ionicons
               name="mail-unread-outline"
               size={25}
@@ -322,9 +309,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Documents")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="file-download-outline"
               size={25}
@@ -349,9 +334,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Reports")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialIcons
               name="bar-chart"
               size={25}
@@ -375,9 +358,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("Partners")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="seal"
               size={25}
@@ -401,9 +382,7 @@ const CustomSidebarMenu = (props) => {
           ]}
           onPress={() => check("LogOut")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="logout"
               size={25}

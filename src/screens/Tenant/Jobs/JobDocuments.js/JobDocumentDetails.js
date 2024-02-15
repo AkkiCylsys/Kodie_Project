@@ -7,7 +7,7 @@ import {
   ScrollView,
   FlatList,
   PermissionsAndroid,
-  Platform
+  Platform,
 } from "react-native";
 import React, { useState, useEffect, useRef } from "react";
 import { JobDocumentDetailStyle } from "./JobDocumentDetailStyle";
@@ -24,6 +24,8 @@ import EditDocumentsModal from "../../../../components/Molecules/EditDocumentsMo
 // import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
 import { Config } from "../../../../Config";
+import Share from "react-native-share";
+
 const JobDocumentDetails = (props) => {
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -46,6 +48,14 @@ const JobDocumentDetails = (props) => {
   useEffect(() => {
     getUploadedDocumentsByModule();
   }, []);
+  // share doc....
+  const shareDocFile = async () => {
+    try {
+      await Share.open({ url: filePath });
+    } catch (error) {
+      console.error("Error sharing PDF file:", error);
+    }
+  };
   const closeModal = () => {
     refRBSheet.current.close();
   };
@@ -127,7 +137,7 @@ const JobDocumentDetails = (props) => {
       formData.append("p_module_name", moduleName);
       // formData.append("p_sub_module_name", "Property documents");
 
-      const response = await axios.post(uploadDoc_url, formData,{
+      const response = await axios.post(uploadDoc_url, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -213,8 +223,6 @@ const JobDocumentDetails = (props) => {
   const GetuploadedDocumentrender = ({ item, index }) => {
     setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
-    setFilePath(item.PDUM_FILE_PATH);
-    console.log("fileKey....", fileKey);
     return (
       <>
         <View style={JobDocumentDetailStyle.container}>
@@ -237,6 +245,8 @@ const JobDocumentDetails = (props) => {
             style={JobDocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
+              setFilePath(item.PDUM_FILE_PATH);
+              console.log("fileKey....", fileKey);
             }}
           >
             <Entypo
@@ -407,7 +417,7 @@ const JobDocumentDetails = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={ Platform.OS ==="ios" ? 240:210}
+          height={Platform.OS === "ios" ? 260 : 260}
           customStyles={{
             wrapper: {
               backgroundColor: "transparent",
@@ -424,6 +434,8 @@ const JobDocumentDetails = (props) => {
             // downloadFile={downloadFile}
             downloadFile={checkPermission}
             fileKey={fileKey}
+            filePath={filePath}
+            shareDocFile={shareDocFile}
             onpress={() => {
               props.navigation.navigate("ViewDocument");
             }}

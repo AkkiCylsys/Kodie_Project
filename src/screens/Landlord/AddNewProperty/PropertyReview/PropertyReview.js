@@ -85,10 +85,12 @@ export default PropertyReview = (props) => {
   const MultiImageName = props?.route?.params?.MultiImageName;
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
+  const DocTab = props?.route?.params?.DocTab;
+  console.log("DocTab..", DocTab);
   console.log(propertyView, propertyid);
-  console.log("propertyid...",propertyid);
-  console.log("propertyView.....",propertyView);
-  const [activeTab, setActiveTab] = useState("Tab1");
+  console.log("propertyid...", propertyid);
+  console.log("propertyView.....", propertyView);
+  const [activeTab, setActiveTab] = useState("Tab4");
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
@@ -331,7 +333,7 @@ export default PropertyReview = (props) => {
   };
 
   useEffect(() => {
-    setActiveTab("Tab1")
+    setActiveTab(DocTab ? "Tab4" : "Tab1");
     fetchData();
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(",");
@@ -462,7 +464,7 @@ export default PropertyReview = (props) => {
             {/* <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             > */}
-            <DividerIcon marginTop={10}/>
+            <DividerIcon marginTop={10} />
             <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
               {"Key features"}
             </Text>

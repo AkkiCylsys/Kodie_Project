@@ -144,6 +144,14 @@ const BottomJobModal = (props) => {
               if (item.id === "4") {
                 handleDeleteProperty();
               }
+              if (item.id === "2") {
+                navigation.navigate("JobDetails", {
+                  JOB_ID: JobId,
+                  View_Job_Details: "View_Job_Details",
+                  jobDocTab: "jobDocTab",
+                });
+                handleCloseModal();
+              }
             }}
           >
             <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>

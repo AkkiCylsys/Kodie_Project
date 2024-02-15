@@ -21,14 +21,21 @@ const data = [
     title: "Download document",
     image: IMAGES.Download_doc,
   },
+  {
+    id: "4",
+    title: "Share folder",
+    image: IMAGES.Download_doc,
+  },
 ];
 
 export default EditDocumentsModal = (props) => {
   const property_id = props.property_id;
   const closemodal = props.closemodal;
   const deleteHandler = props.deleteHandler;
+  const shareDocFile = props.shareDocFile;
   const downloadFile = props.downloadFile;
   const fileKey = props.fileKey;
+  const filePath = props.filePath;
   // alert(fileKey)
   const renderItem = ({ item, index }) => (
     <TouchableOpacity
@@ -42,6 +49,10 @@ export default EditDocumentsModal = (props) => {
         }
         if (item.id === "3") {
           downloadFile();
+        }
+        if (item.id === "4") {
+          shareDocFile(filePath);
+          closemodal();
         }
       }}
     >
