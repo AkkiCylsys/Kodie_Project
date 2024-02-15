@@ -48,7 +48,8 @@ const CustomSidebarMenu = (props) => {
         break;
       case "MaintenanceJobs":
         setselectedId("MaintenanceJobs");
-        props.navigation.navigate("Reviewjobdetails1");
+        // props.navigation.navigate("Reviewjobdetails1");
+        alert("Maintenance job pressed.")
         break;
       case "Contractors":
         setselectedId("Contractors");
@@ -70,7 +71,7 @@ const CustomSidebarMenu = (props) => {
         setselectedId("Partners");
         props.navigation.navigate("Partners");
         break;
-      case "LogOut":
+      case "Logout":
         setselectedId("LogOut");
         // props.navigation.navigate("LoginScreen");
         LogOut()

@@ -18,7 +18,7 @@ export const CompanyStyle = StyleSheet.create({
     // marginBottom: 20,
   },
   inputContainer: {
-    marginTop: 5,
+    // marginTop: 5,
   },
   input: {
     height: 45,

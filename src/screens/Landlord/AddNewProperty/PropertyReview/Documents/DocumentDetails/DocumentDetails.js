@@ -400,7 +400,7 @@ const DocumentDetails = (props) => {
           keyExtractor={(item, index) => index}
           renderItem={DocumentsData}
         /> */}
-        <View>
+        <View style={{marginVertical:18}}>
           <Text style={DocumentDetailStyle.upload_doc_text}>
             {"Upload documents"}
           </Text>

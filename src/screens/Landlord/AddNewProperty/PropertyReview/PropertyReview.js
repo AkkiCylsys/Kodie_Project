@@ -86,6 +86,7 @@ export default PropertyReview = (props) => {
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
   console.log(propertyView, propertyid);
+  console.log("propertyid...",propertyid);
   console.log("propertyView.....",propertyView);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [isLoading, setIsLoading] = useState([]);
@@ -184,7 +185,7 @@ export default PropertyReview = (props) => {
         //   style={DetailsStyle.DetailsIcon} />
         // )
         <MaterialCommunityIcons
-          name="window-closed-variant"
+          name="balcony"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}
@@ -239,7 +240,7 @@ export default PropertyReview = (props) => {
         //   style={DetailsStyle.DetailsIcon} />
         // )
         <MaterialCommunityIcons
-          name="fireplace"
+          name="cupboard"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={"contain"}

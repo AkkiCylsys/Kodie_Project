@@ -155,7 +155,7 @@ export default Company = (props) => {
       <ScrollView>
         <View style={CompanyStyle.card}>
           <View style={CompanyStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Organisation name*"}</Text>
+            <Text style={[LABEL_STYLES.commontext,{marginTop:15}]}>{"Organisation name*"}</Text>
             <TextInput
               style={CompanyStyle.input}
               value={companyName}

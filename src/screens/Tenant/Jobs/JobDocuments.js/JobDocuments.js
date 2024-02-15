@@ -6,7 +6,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from "react-native";
 
 import Entypo from "react-native-vector-icons/Entypo";
@@ -21,31 +21,15 @@ import EditDocumentsModal from "../../../../components/Molecules/EditDocumentsMo
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
 
-const folderData = [
-  {
-    id: "1",
-    moduleName: "Job_proposal",
-    folderHeading: "Job proposal",
-    totalFile: "12 Files",
-  },
-  {
-    id: "2",
-    moduleName: "Job_Invoice",
-    folderHeading: "Invoice & proof of payment",
-    totalFile: "13 Files",
-  },
-  {
-    id: "3",
-    moduleName: "Job_Completed",
-    folderHeading: "Proof of work completed",
-    totalFile: "15 Files",
-  },
-];
-
 export default JobDocuments = (props) => {
   useEffect(() => {
     getAllDocuments();
+    // getUploadedDocumentsByModule();
+    getUploadedDocumentsByModule("Job_proposal");
+    getUploadedDocumentsByModule("Job_Invoice");
+    getUploadedDocumentsByModule("Job_Completed");
   }, []);
+
   const JOB_ID = props.JOB_ID;
   // alert(props.JOB_ID);
   const [value, setValue] = useState(null);
@@ -55,6 +39,34 @@ export default JobDocuments = (props) => {
   const [fileKey, setFileKey] = useState(0);
   const [fileName, setFileName] = useState("");
   const [filePath, setFilePath] = useState("");
+  const [jobDocByModulename, setJobDocByModulename] = useState([]);
+  const [jobDocByjobInvoice, setJobDocByjobInvoice] = useState([]);
+  const [jobDocByjobcomplete, setJobDocByjobcomplete] = useState([]);
+  const [jobDocByModulenamelength, setJobDocByModulenamelength] = useState("");
+  const [jobDocByjobInvoicelength, setJobDocByjobInvoicelength] = useState("");
+  const [jobDocByjobcompletelength, setJobDocByjobcompletelength] =
+    useState("");
+
+  const folderData = [
+    {
+      id: "1",
+      moduleName: "Job_proposal",
+      folderHeading: "Job proposal",
+      totalFile: jobDocByModulenamelength,
+    },
+    {
+      id: "2",
+      moduleName: "Job_Invoice",
+      folderHeading: "Invoice & proof of payment",
+      totalFile: jobDocByjobInvoicelength,
+    },
+    {
+      id: "3",
+      moduleName: "Job_Completed",
+      folderHeading: "Proof of work completed",
+      totalFile: jobDocByjobcompletelength,
+    },
+  ];
   const closeModal = () => {
     refRBSheet.current.close();
   };
@@ -192,7 +204,6 @@ export default JobDocuments = (props) => {
       </>
     );
   };
-
   const folderRenderData = ({ item, index }) => {
     return (
       <TouchableOpacity
@@ -222,7 +233,9 @@ export default JobDocuments = (props) => {
           <Text style={JobDocumentsStyle.propertyDocText}>
             {item?.folderHeading}
           </Text>
-          <Text style={JobDocumentsStyle.files_text}>{"12 files"}</Text>
+          <Text
+            style={JobDocumentsStyle.files_text}
+          >{`${item.totalFile} Files`}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -257,6 +270,76 @@ export default JobDocuments = (props) => {
         setIsLoading(false);
       });
   };
+
+  const getUploadedDocumentsByModule = (moduleName) => {
+    const url = Config.BASE_URL;
+    const getDocumentUrl = url + "tanant_details/get/documents";
+    console.log("Request URL:", getDocumentUrl);
+    setIsLoading(true);
+    const documentModuleData = {
+      Module_Name: moduleName,
+      fileReferenceKey: JOB_ID,
+    };
+    axios
+      .post(getDocumentUrl, documentModuleData)
+      .then((response) => {
+        console.log(`API Response for ${moduleName}:`, response.data);
+        if (response.data.success == true) {
+          switch (moduleName) {
+            case "Job_proposal":
+              setJobDocByModulename(response.data.data);
+              console.log("jobDocByModulename....", jobDocByModulename);
+              console.log(
+                "Length for Job_proposal:",
+                response.data.data.length
+              );
+              setJobDocByModulenamelength(response.data.data.length);
+              console.log(
+                "setJobDocByModulenamelength..",
+                jobDocByModulenamelength
+              );
+
+              break;
+            case "Job_Invoice":
+              setJobDocByjobInvoice(response.data.data);
+              console.log("jobDocByjobInvoice...", jobDocByjobInvoice);
+              console.log(
+                "Length for jobDocByjobInvoice:",
+                response.data.data.length
+              );
+              setJobDocByjobInvoicelength(response.data.data.length);
+              console.log(
+                "jobDocByjobInvoicelength...",
+                jobDocByjobInvoicelength
+              );
+              break;
+            case "Job_Completed":
+              setJobDocByjobcomplete(response.data.data);
+              console.log("jobDocByjobcomplete....", jobDocByjobcomplete);
+              console.log(
+                "Length for jobDocByjobcomplete:",
+                response.data.data.length
+              );
+              setJobDocByjobcompletelength(response.data.data.length);
+              console.log(
+                "jobDocByjobcompletelength..",
+                jobDocByjobcompletelength
+              );
+              break;
+            // Add cases for other module names if needed
+            default:
+              break;
+          }
+        }
+      })
+      .catch((error) => {
+        console.error(`API failed for ${moduleName}:`, error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <View style={JobDocumentsStyle.mainContainer}>
       <ScrollView>
@@ -316,7 +399,7 @@ export default JobDocuments = (props) => {
           />
         </RBSheet>
       </ScrollView>
-      {isLoading?<CommonLoader/>:null}
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

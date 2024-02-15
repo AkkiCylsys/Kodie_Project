@@ -15,9 +15,17 @@ export const ExpensesStyle = StyleSheet.create({
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Medium,
   },
+  propertyExpensetext:{
+    color: _COLORS.Kodie_BlackColor,
+    marginLeft: 16,
+    fontSize: 20,
+    marginVertical: 5,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
   btn_View: {
+    flex:1,
     marginHorizontal: 16,
-    marginBottom:50
+    marginBottom:10
   },
   bottomModal_container: {
     borderWidth: 0.5,
@@ -52,7 +60,7 @@ export const ExpensesStyle = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     backgroundColor: _COLORS.Kodie_LiteWhiteColor,
-    elevation:3
+    elevation:3,
   },
   Accounting_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -106,6 +114,7 @@ export const ExpensesStyle = StyleSheet.create({
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    elevation:3
+    elevation:3,
+    marginBottom:5
   }
 });

@@ -519,7 +519,7 @@ export default Leases = (props) => {
         </RBSheet>
         <RBSheet
           ref={refRBSheet3}
-          height={250}
+          height={240}
           closeOnDragDown={true}
           customStyles={{
             wrapper: {

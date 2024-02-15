@@ -317,7 +317,6 @@ const EditProfile = (props) => {
     }
   };
 
-  
   const openMap = () => {
     Platform.OS == "ios" ? CheckIOSMapPermission : checkpermissionlocation();
     setIsMap(true);
@@ -376,7 +375,7 @@ const EditProfile = (props) => {
                 <View style={EditProfileStyle.inputmainview}>
                   <View style={EditProfileStyle.firstview}>
                     <Text style={EditProfileStyle.oldnumbertext}>
-                      Full name
+                      First name
                     </Text>
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
@@ -466,7 +465,6 @@ const EditProfile = (props) => {
                           backgroundColor: _COLORS.Kodie_WhiteColor,
                           // borderWidth:1,
                           paddingVertical: 2,
-                      
                         }}
                         containerStyle={{
                           flex: 1,
@@ -474,15 +472,13 @@ const EditProfile = (props) => {
                           alignItems: "center",
                           justifyContent: "center",
                           // borderWidth:1,
-                          
                         }}
                       />
-              
                     </View>
                   </View>
 
                   <View style={EditProfileStyle.inputContainer}>
-                    <Text style={LABEL_STYLES.commontext}>{"About"}</Text>
+                    <Text style={LABEL_STYLES.commontext}>{"Bio"}</Text>
                     <TextInput
                       style={[EditProfileStyle.input, { height: 119 }]}
                       value={about}

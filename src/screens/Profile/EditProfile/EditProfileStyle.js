@@ -73,7 +73,7 @@ export const EditProfileStyle = StyleSheet.create({
     marginBottom: 12,
   },
   simpleinputview: {
-    // height: 50,
+    height: 50,
     borderWidth: 1,
     // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
     borderColor: _COLORS.Kodie_GrayColor,

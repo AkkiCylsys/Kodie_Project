@@ -32,6 +32,7 @@ import CustomSingleDropdown from "../../../../components/Molecules/CustomSingleD
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Fontisto from "react-native-vector-icons/Fontisto";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
@@ -214,18 +215,18 @@ export default PropertyDetails = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-          ? "#000000"
-          : "#808080";
+        ? "#000000"
+        : "#808080";
     const iconName =
       position === 0
         ? "Details"
         : position === 1
-          ? "Features"
-          : position === 2
-            ? "Images"
-            : position === 3
-              ? "Review"
-              : "null";
+        ? "Features"
+        : position === 2
+        ? "Images"
+        : position === 3
+        ? "Review"
+        : "null";
 
     return (
       <View style={{}}>
@@ -381,20 +382,39 @@ export default PropertyDetails = (props) => {
       });
   };
 
-  // const handleSave = () => {
-  //   setLocation(location);
-  //   setPropertyDesc(propertyDesc);
-  //   setProperty_value(property_value);
-  //   setSelectedButtonId(selectedButtonId);
-  // };
-
-  // const handleDiscard = () => {
-  //   setLocation("");
-  //   setPropertyDesc("");
-  //   setProperty_value("");
-  //   setSelectedButtonId("");
-  // };
-
+  //dropDown render Item....
+  const propertyType_render = (item) => {
+    return (
+      <View
+        style={[
+          PropertyDetailsStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === property_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}
+      >
+        {item.lookup_key === property_value ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={"checkcircle"}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={"radio-btn-passive"}
+            size={20}
+          />
+        )}
+        <Text style={PropertyDetailsStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
   const goBack = () => {
     // Alert.alert(
     //   "Save or Discard Changes?",
@@ -419,7 +439,6 @@ export default PropertyDetails = (props) => {
     //   ]
     // );
     props.navigation.pop();
-
   };
   return (
     <View style={PropertyDetailsStyle.mainContainer}>
@@ -437,8 +456,8 @@ export default PropertyDetails = (props) => {
           IsMap || IsSearch
             ? "Location"
             : editMode
-              ? "Edit property"
-              : "Add new property"
+            ? "Edit property"
+            : "Add new property"
         }
       />
       <KeyboardAvoidingView
@@ -615,6 +634,7 @@ export default PropertyDetails = (props) => {
                     // handlePropertyValue()
                     // setpropertytypeError("");
                   }}
+                  renderItem={propertyType_render}
                 />
                 {/* {propertytypeError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
@@ -641,20 +661,19 @@ export default PropertyDetails = (props) => {
                   {propertyDesc.length}/1000
                 </Text>
               </View>
-
-              <View
+              {/* <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
               >
-                {/* <Text style={PropertyDetailsStyle.AutoList_text}>
+                <Text style={PropertyDetailsStyle.AutoList_text}>
                   {"Auto-list property on Kodie property marketplace "}
                 </Text>
                 <TouchableOpacity style={PropertyDetailsStyle.questionmark}>
                   <AntDesign name="question" size={20} color="#8AFBA5" />
-                </TouchableOpacity> */}
+                </TouchableOpacity>
               </View>
               <RowButtons
                 LeftButtonText={"Yes"}
@@ -698,7 +717,7 @@ export default PropertyDetails = (props) => {
                   setSelectedButton(true);
                   setSelectedButtonId(1);
                 }}
-              />
+              /> */}
               <View style={PropertyDetailsStyle.btnView}>
                 <CustomSingleButton
                   _ButtonText={"Next"}

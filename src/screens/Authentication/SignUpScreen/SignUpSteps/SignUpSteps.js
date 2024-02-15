@@ -138,7 +138,7 @@ const SignUpSteps = (props) => {
     setP_longitude(Region.longitude);
     console.log("p_longitude...", p_longitude);
     getAddress(Region.latitude, Region.longitude);
-    // getAddress()
+    getAddress()
   };
   const checkpermissionlocation = async () => {
     try {
@@ -219,9 +219,9 @@ const SignUpSteps = (props) => {
   const getAddress = (p_latitude, p_longitude) => {
     Geocoder.from(p_latitude, p_longitude)
       .then((json) => {
-        // console.log("json location.......",json)
-        // console.log("current address...",json.results[0].formatted_address)
-        // setPhysicalAddress(json.results[0].formatted_address)
+        console.log("json location.......",json)
+        console.log("current address...",json.results[0].formatted_address)
+        setPhysicalAddress(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
