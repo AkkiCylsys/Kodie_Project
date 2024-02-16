@@ -27,7 +27,7 @@ const CustomSidebarMenu = (props) => {
     switch (data) {
       case "PropertyLinking":
         setselectedId("PropertyLinking");
-        props.navigation.navigate("PropertyListings");
+        props.navigation.navigate("Properties");
         break;
       case "RentalOffers":
         setselectedId("RentalOffers");
@@ -48,8 +48,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "MaintenanceJobs":
         setselectedId("MaintenanceJobs");
-        // props.navigation.navigate("Reviewjobdetails1");
-        alert("Maintenance job pressed.");
+        props.navigation.navigate("Jobs");
         break;
       case "Contractors":
         setselectedId("Contractors");
@@ -61,8 +60,9 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Documents":
         setselectedId("Documents");
-        // props.navigation.navigate("AccountStep");
-        alert("Documents pressed.");
+        props.navigation.navigate("EditProfile", {
+          profileDoc: "profileDoc",
+        });
 
         break;
       case "Reports":
@@ -99,12 +99,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
-            {
-              backgroundColor:
-                selectedId == "PropertyLinking"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "PropertyLinking"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("PropertyLinking")}
         >
@@ -123,12 +123,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "RentalOffers"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "RentalOffers"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("RentalOffers")}
         >
@@ -147,12 +147,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "vacantProperties"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "vacantProperties"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("vacantProperties")}
         >
@@ -172,12 +172,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Inspection"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Inspection"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Inspection")}
         >
@@ -196,12 +196,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Tetants"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Tetants"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Tetants")}
         >
@@ -224,12 +224,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
-            {
-              backgroundColor:
-                selectedId == "MaintenanceJobs"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "MaintenanceJobs"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("MaintenanceJobs")}
         >
@@ -248,12 +248,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Contractors"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Contractors"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Contractors")}
         >
@@ -275,12 +275,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
-            {
-              backgroundColor:
-                selectedId == "Notices"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Notices"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Notices")}
         >
@@ -300,12 +300,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Documents"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Documents"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Documents")}
         >
@@ -325,12 +325,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Reports"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Reports"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Reports")}
         >
@@ -349,12 +349,12 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Partners"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Partners"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Partners")}
         >
@@ -373,14 +373,14 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Partners"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Partners"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
-          onPress={() => check("LogOut")}
+          onPress={() => check("Logout")}
         >
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
@@ -391,7 +391,7 @@ const CustomSidebarMenu = (props) => {
               style={{ alignSelf: "center" }}
             />
           </View>
-          <Text style={DrawerStyle.SubHeading}>{"Log Out"}</Text>
+          <Text style={DrawerStyle.SubHeading}>{"Logout"}</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

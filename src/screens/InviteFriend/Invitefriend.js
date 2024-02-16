@@ -1,5 +1,5 @@
 //ScreenNo:228
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   FlatList,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  PermissionsAndroid,
 } from "react-native";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices/CommonMethods";
@@ -15,7 +16,9 @@ import SearchBar from "../../components/Molecules/SearchBar/SearchBar";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { _COLORS, IMAGES } from "../../Themes/index";
 import Entypo from "react-native-vector-icons/Entypo";
-
+import Contacts from "react-native-contacts";
+import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
+import EvilIcons from "react-native-vector-icons/EvilIcons";
 const LandlordData = [
   {
     id: "1",
@@ -79,18 +82,65 @@ const LandlordData = [
   },
 ];
 export default Invitefriend = (props) => {
+  const [contacts, setContacts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    requestContactsPermission(); // Request permission when component mounts
+  }, []);
+
+  const requestContactsPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+        {
+          title: "Contacts Permission",
+          message: "This app needs access to your contacts.",
+          buttonPositive: "OK",
+        }
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        // Permission granted, fetch contacts
+        fetchContacts();
+      } else {
+        console.log("Contacts permission denied");
+      }
+    } catch (error) {
+      console.error("Error requesting contacts permission:", error);
+    }
+  };
+  const fetchContacts = async () => {
+    try {
+      const data = await Contacts.getAll();
+      console.log("contact..", data);
+      setContacts(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+      setIsLoading(false);
+    }
+  };
   const UserList_renderItem = ({ item, index }) => {
     return (
       <>
         <View style={InviteStyles.container}>
           <View style={InviteStyles.profileView}>
-            <Image
-              source={IMAGES.Landlordprofile}
-              style={InviteStyles.usericon}
-              resizeMode="contain"
-            />
+            {item.thumbnailPath ? (
+              <Image
+                // source={IMAGES.Landlordprofile}
+                source={{ uri: item.thumbnailPath }}
+                style={InviteStyles.usericon}
+                resizeMode="contain"
+              />
+            ) : (
+              <EvilIcons name="user" size={65} style={{
+                alignSelf:"center"
+              }} />
+            )}
             <View style={InviteStyles.textContainer}>
-              <Text style={InviteStyles.profile_Heading}>{item.Heading}</Text>
+              <Text style={InviteStyles.profile_Heading}>
+                {item.displayName}
+              </Text>
               <Text style={InviteStyles.profile_SubHeading}>
                 {item.Sub_heading}
               </Text>
@@ -131,11 +181,7 @@ export default Invitefriend = (props) => {
               style={InviteStyles.contactIcon}
               resizeMode="contain"
             /> */}
-            <Entypo
-              name="share"
-              size={20}
-              color={_COLORS.Kodie_GreenColor}
-            />
+            <Entypo name="share" size={20} color={_COLORS.Kodie_GreenColor} />
           </TouchableOpacity>
           <View style={InviteStyles.shareTextView}>
             <Text style={InviteStyles.shareText}>{"Share Link"}</Text>
@@ -144,7 +190,7 @@ export default Invitefriend = (props) => {
       </View>
       <FlatList
         style={InviteStyles.FlatlistContainer}
-        data={LandlordData}
+        data={contacts}
         scrollEnabled
         ListHeaderComponent={ListHeader}
         showsVerticalScrollIndicator={false}
@@ -152,6 +198,7 @@ export default Invitefriend = (props) => {
         keyExtractor={(item) => item?.id}
         renderItem={UserList_renderItem}
       />
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

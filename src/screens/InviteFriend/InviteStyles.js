@@ -36,6 +36,9 @@ export const InviteStyles = StyleSheet.create({
     usericon: {
         height: 45,
         width: 45,
+        borderWidth:1,
+        borderRadius:45/2,
+        borderColor:_COLORS.Kodie_GrayColor,
         marginHorizontal: 10,
         justifyContent: "center",
         alignSelf: "center",

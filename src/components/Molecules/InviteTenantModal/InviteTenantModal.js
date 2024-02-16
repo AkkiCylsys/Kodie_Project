@@ -102,6 +102,7 @@ export default InviteTenantModal = (props) => {
         if (item.id === "1") {
           //---- Navigate to OtherScreen when Contact Us is clicked
           navigation.navigate("Invitefriend");
+          CloseUp()
         }
         if (item.id === "3") {
           refRBSheet.current.open();
