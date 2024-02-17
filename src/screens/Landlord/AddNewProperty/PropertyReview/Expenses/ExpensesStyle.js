@@ -48,7 +48,8 @@ export const ExpensesStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
-    marginHorizontal:16
+    marginHorizontal:16,
+    marginTop:20,marginBottom:10
   },
   account_view: { flexDirection: "row", justifyContent: "space-between" },
   Account_main_View: {

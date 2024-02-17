@@ -710,7 +710,7 @@ export default FirstProperty = (props) => {
             }}
           />
         ) : (
-          <ScrollView>
+          <View>
             <View style={FirstPropertyStyle.stepIndicator}>
               <StepIndicator
                 customSignUpStepStyle={firstIndicatorSignUpStepStyle}
@@ -721,6 +721,7 @@ export default FirstProperty = (props) => {
                 renderLabel={renderLabel}
               />
             </View>
+            <ScrollView>
             <View style={FirstPropertyStyle.headingView}>
               <Text style={FirstPropertyStyle.heading}>
                 {"Add your first property"}
@@ -774,6 +775,9 @@ export default FirstProperty = (props) => {
                   numberOfLines={5}
                   textAlignVertical={"top"}
                 />
+                <Text style={FirstPropertyStyle.characterLimit}>
+                  {propertyDesc.length}/1000
+                </Text>
               </View>
               <View style={FirstPropertyStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>Property type</Text>
@@ -965,6 +969,7 @@ export default FirstProperty = (props) => {
                   </Text>
                   <MultiSelect
                     style={FirstPropertyStyle.dropdown}
+                    activeColor = {_COLORS.Kodie_MidLightGreenColor}
                     placeholderStyle={[
                       FirstPropertyStyle.placeholderStyle,
                       { color: _COLORS.Kodie_LightGrayColor },
@@ -1091,7 +1096,8 @@ export default FirstProperty = (props) => {
               </View>
               <Text style={FirstPropertyStyle.goBack_Text}>{"Go back"}</Text>
             </TouchableOpacity>
-          </ScrollView>
+            </ScrollView>
+          </View>
         )}
       </View>
       {isLoading ? <CommonLoader /> : null}

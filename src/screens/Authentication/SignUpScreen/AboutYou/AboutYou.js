@@ -372,16 +372,16 @@ export default AboutYou = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+          ? "#000000"
+          : "#808080";
     const iconName =
       position === 0
         ? "Account"
         : position === 1
-        ? "About you"
-        : position === 2
-        ? "First Property"
-        : "circle";
+          ? "About you"
+          : position === 2
+            ? "First Property"
+            : "circle";
 
     return (
       <View style={{}}>
@@ -424,7 +424,7 @@ export default AboutYou = (props) => {
     console.log("result_data...", result?.assets);
   };
   return (
-    <ScrollView style={{flex:1,backgroundColor: _COLORS.Kodie_WhiteColor }}>
+    <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader MiddleText={"Account set up"} onPressLeftButton={goBack} />
       <View style={AboutYouStyle.stepIndicator}>
         <StepIndicator
@@ -437,168 +437,170 @@ export default AboutYou = (props) => {
           renderLabel={renderLabel}
         />
       </View>
-      <View style={AboutYouStyle.Container}>
-        <Text style={AboutYouStyle.heading_Text}>
-          {"Tell us more about you"}
-        </Text>
-        <Text style={AboutYouStyle.profile_Text}>{"Profile photo"}</Text>
-        <TouchableOpacity
-          style={AboutYouStyle.logoContainer}
-          onPress={() => {
-            refRBSheet.current.open();
-          }}
-        >
-          {ImageName ? (
-            <Image
-              source={{ uri: ImageName.path || ImageName }}
-              style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
-            />
-          ) : (
-            <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
-          )}
-        </TouchableOpacity>
-        {ImageName ? null : (
-          <Text style={AboutYouStyle.error_text}>{imageError}</Text>
-        )}
-
-        {ImageName ? refRBSheet.current.close() : null}
-        <Text style={AboutYouStyle.want_Heading}>
-          {"How would you describe yourself? (you can select multiple options)"}
-        </Text>
-        <FlatList
-          data={kodieDescribeYourselfData}
-          renderItem={renderItemDescribeYourself}
-          keyExtractor={(item) => item.lookup_key.toString()}
-          numColumns={2}
-        />
-        {kodieDescribeYourselfId === 2 ||
-        kodieDescribeYourselfId === 4 ? null : (
-          <View>
-            <Text style={AboutYouStyle.want_Heading}>
-              {"How many properties do you own, manage or rent?"}
-            </Text>
-            <FlatList
-              data={manage_property_Data}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.lookup_key.toString()}
-              numColumns={2}
-            />
-          </View>
-        )}
-        <Text style={AboutYouStyle.want_Heading}>
-          {"What do you want to do first with Kodie"}
-        </Text>
-
-        <FlatList
-          data={kodiehelpData}
-          scrollEnabled
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{}}
-          keyExtractor={(item) => item?.id}
-          renderItem={wantList}
-        />
-
-        <RBSheet
-          ref={refRBSheet}
-          // closeOnDragDown={true}
-          closeOnPressMask={true}
-          height={200}
-          customStyles={{
-            wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: AboutYouStyle.bottomModal_container,
-          }}
-        >
-          <View style={AboutYouStyle.upload_View}>
-            <Text style={AboutYouStyle.uploadImgText}>
-              {props.heading_Text || "Upload image"}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.close();
-              }}
-            >
-              <Entypo
-                name="cross"
-                size={25}
-                color={_COLORS.Kodie_BlackColor}
-                style={AboutYouStyle.crossIconStyle}
+      <ScrollView>
+        <View style={AboutYouStyle.Container}>
+          <Text style={AboutYouStyle.heading_Text}>
+            {"Tell us more about you"}
+          </Text>
+          <Text style={AboutYouStyle.profile_Text}>{"Profile photo"}</Text>
+          <TouchableOpacity
+            style={AboutYouStyle.logoContainer}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+          >
+            {ImageName ? (
+              <Image
+                source={{ uri: ImageName.path || ImageName }}
+                style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
               />
-            </TouchableOpacity>
-          </View>
+            ) : (
+              <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
+            )}
+          </TouchableOpacity>
+          {ImageName ? null : (
+            <Text style={AboutYouStyle.error_text}>{imageError}</Text>
+          )}
 
-          {/* <TouchableOpacity
+          {ImageName ? refRBSheet.current.close() : null}
+          <Text style={AboutYouStyle.want_Heading}>
+            {"How would you describe yourself? (you can select multiple options)"}
+          </Text>
+          <FlatList
+            data={kodieDescribeYourselfData}
+            renderItem={renderItemDescribeYourself}
+            keyExtractor={(item) => item.lookup_key.toString()}
+            numColumns={2}
+          />
+          {kodieDescribeYourselfId === 2 ||
+            kodieDescribeYourselfId === 4 ? null : (
+            <View>
+              <Text style={AboutYouStyle.want_Heading}>
+                {"How many properties do you own, manage or rent?"}
+              </Text>
+              <FlatList
+                data={manage_property_Data}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.lookup_key.toString()}
+                numColumns={2}
+              />
+            </View>
+          )}
+          <Text style={AboutYouStyle.want_Heading}>
+            {"What do you want to do first with Kodie"}
+          </Text>
+
+          <FlatList
+            data={kodiehelpData}
+            scrollEnabled
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{}}
+            keyExtractor={(item) => item?.id}
+            renderItem={wantList}
+          />
+
+          <RBSheet
+            ref={refRBSheet}
+            // closeOnDragDown={true}
+            closeOnPressMask={true}
+            height={200}
+            customStyles={{
+              wrapper: {
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+              },
+              draggableIcon: {
+                backgroundColor: _COLORS.Kodie_LightGrayColor,
+              },
+              container: AboutYouStyle.bottomModal_container,
+            }}
+          >
+            <View style={AboutYouStyle.upload_View}>
+              <Text style={AboutYouStyle.uploadImgText}>
+                {props.heading_Text || "Upload image"}
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet.current.close();
+                }}
+              >
+                <Entypo
+                  name="cross"
+                  size={25}
+                  color={_COLORS.Kodie_BlackColor}
+                  style={AboutYouStyle.crossIconStyle}
+                />
+              </TouchableOpacity>
+            </View>
+
+            {/* <TouchableOpacity
             style={{ alignSelf: "center", backgroundColor: "green" }}
             onPress={openGallery}
           >
             <Text>{"open gallery"}</Text>
           </TouchableOpacity> */}
 
-          <UploadImageData
-            heading_Text={"Upload image"}
-            ImageName={handleImageNameChange}
-          />
-        </RBSheet>
-      </View>
-      <View style={{ marginHorizontal: 16 }}>
-        <CustomSingleButton
-          disabled={isLoading ? true : false}
-          _ButtonText={"Next"}
-          Text_Color={_COLORS.Kodie_WhiteColor}
-          onPress={() => {
-            // props.navigation.navigate("FirstProperty", {
-            //   firstName: firstName,
-            //   lastName: lastName,
-            //   mobileNumber: mobileNumber,
-            //   physicalAddress: physicalAddress,
-            //   organisation: organisation,
-            //   referral: referral,
-            //   selectManageProperty: selectManageProperty,
-            //   selectedServiceKeysString: selectedServiceKeysString,
-            //   kodieHelpValue: kodieHelpValue,
-            //   ImageName: ImageName,
-            //   email: email,
-            //   country: country,
-            //   state: state,
-            //   city: city,
-            //   p_latitude: p_latitude,
-            //   p_longitude: p_longitude,
-            //   user_key: user_key,
-            // });
-            handle_profile_photo();
-          }}
-        />
-      </View>
-      <View style={{ marginHorizontal: 16 }}>
-        <CustomSingleButton
-          disabled={isLoading ? true : false}
-          _ButtonText={"Fill these details out later"}
-          Text_Color={_COLORS.Kodie_BlackColor}
-          backgroundColor={_COLORS.Kodie_WhiteColor}
-          onPress={() => {
-            if (ImageName) {
-              props.navigation.navigate("FirstProperty");
-            } else {
-              setImageError("Please select an image before proceeding.");
-            }
-          }}
-        />
-      </View>
-      <TouchableOpacity style={AboutYouStyle.goBack_View} onPress={goBack}>
-        <View style={AboutYouStyle.backIcon}>
-          <Ionicons
-            name="chevron-back"
-            size={22}
-            color={_COLORS.Kodie_MediumGrayColor}
+            <UploadImageData
+              heading_Text={"Upload image"}
+              ImageName={handleImageNameChange}
+            />
+          </RBSheet>
+        </View>
+        <View style={{ marginHorizontal: 16 }}>
+          <CustomSingleButton
+            disabled={isLoading ? true : false}
+            _ButtonText={"Next"}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            onPress={() => {
+              // props.navigation.navigate("FirstProperty", {
+              //   firstName: firstName,
+              //   lastName: lastName,
+              //   mobileNumber: mobileNumber,
+              //   physicalAddress: physicalAddress,
+              //   organisation: organisation,
+              //   referral: referral,
+              //   selectManageProperty: selectManageProperty,
+              //   selectedServiceKeysString: selectedServiceKeysString,
+              //   kodieHelpValue: kodieHelpValue,
+              //   ImageName: ImageName,
+              //   email: email,
+              //   country: country,
+              //   state: state,
+              //   city: city,
+              //   p_latitude: p_latitude,
+              //   p_longitude: p_longitude,
+              //   user_key: user_key,
+              // });
+              handle_profile_photo();
+            }}
           />
         </View>
-        <Text style={AboutYouStyle.goBack_Text}>{"Go back"}</Text>
-      </TouchableOpacity>
+        <View style={{ marginHorizontal: 16 ,marginBottom:10}}>
+          <CustomSingleButton
+            disabled={isLoading ? true : false}
+            _ButtonText={"Fill these details out later"}
+            Text_Color={_COLORS.Kodie_BlackColor}
+            backgroundColor={_COLORS.Kodie_WhiteColor}
+            onPress={() => {
+              if (ImageName) {
+                props.navigation.navigate("FirstProperty");
+              } else {
+                setImageError("Please select an image before proceeding.");
+              }
+            }}
+          />
+        </View>
+        <TouchableOpacity style={AboutYouStyle.goBack_View} onPress={goBack}>
+          <View style={AboutYouStyle.backIcon}>
+            <Ionicons
+              name="chevron-back"
+              size={22}
+              color={_COLORS.Kodie_MediumGrayColor}
+            />
+          </View>
+          <Text style={AboutYouStyle.goBack_Text}>{"Go back"}</Text>
+        </TouchableOpacity>
+      </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </ScrollView>
+    </View>
   );
 };
