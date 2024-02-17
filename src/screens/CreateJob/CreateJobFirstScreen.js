@@ -61,7 +61,7 @@ export default CreateJobFirstScreen = (props) => {
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
   const [location, setLocation] = useState("");
-  const [isClick, setIsClick] = useState();
+  const [isClick, setIsClick] = useState(false);
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
@@ -88,6 +88,7 @@ export default CreateJobFirstScreen = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
+  const [arrowIcon , setArrowIcon] = useState(false)
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
 
@@ -138,6 +139,7 @@ export default CreateJobFirstScreen = (props) => {
     getAddress(Region.latitude, Region.longitude);
     getAddress();
   };
+
   const checkpermissionlocation = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -198,7 +200,7 @@ export default CreateJobFirstScreen = (props) => {
     Geolocation.watchPosition(
       (position) => {
         // alert("with cordinates..");
-        console.log("with cordinates..")
+        console.log("with cordinates..");
         setGetLat(position.coords.latitude);
         setGetLong(position.coords.longitude);
         // setlatitude(position.coords.latitude);
@@ -296,6 +298,7 @@ export default CreateJobFirstScreen = (props) => {
     // alert(selectJobTypeid);
     // alert(isClick)
   };
+  
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: "feed",
@@ -328,6 +331,8 @@ export default CreateJobFirstScreen = (props) => {
     }
     return iconConfig;
   };
+
+
   const firstIndicatorSignUpStepStyle = {
     stepIndicatorSize: 40,
     currentStepIndicatorSize: 20,
@@ -523,6 +528,7 @@ export default CreateJobFirstScreen = (props) => {
     );
   };
   const lookingServices_render = (item) => {
+    setArrowIcon
     return (
       <View contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View
@@ -1031,6 +1037,14 @@ export default CreateJobFirstScreen = (props) => {
                   // alert(item.lookup_key)
                 }}
                 renderItem={lookingServices_render}
+                renderRightIcon={() => (
+                  <AntDesign
+                    // name={dropdownIcon ? "down" : "up"}
+                    // name="down"
+                    name={arrowIcon ? "up" : "down"} 
+                    size={20}
+                  />
+                )}
               />
             </View>
             <View style={CreateJobFirstStyle.jobDetailsView}>

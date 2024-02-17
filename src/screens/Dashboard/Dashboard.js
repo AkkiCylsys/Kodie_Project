@@ -199,7 +199,7 @@ export default Dashboard = (props) => {
           // statusBarStyle="dark-content"
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <DeshboardNotice />
+          <DeshboardNotice onClose={CloseUp}/>
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text

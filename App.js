@@ -6,8 +6,8 @@
  * @flow strict-local
  */
 
-import React, { useEffect } from 'react';
-import type { Node } from 'react';
+import React, { useEffect } from "react";
+import type { Node } from "react";
 import {
   SafeAreaView,
   ScrollView,
@@ -16,23 +16,24 @@ import {
   Text,
   useColorScheme,
   View,
-  LogBox
-} from 'react-native';
-import { isConnected } from './src/errorPages/NoInternet/CheckInternet';
+  LogBox,
+  Image
+} from "react-native";
+import { isConnected } from "./src/errorPages/NoInternet/CheckInternet";
 import {
   Colors,
   DebugInstructions,
   Header,
   LearnMoreLinks,
   ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+} from "react-native/Libraries/NewAppScreen";
 import Routes from "./src/Navigation/AllRoutes/AllRoutes";
-import { Provider } from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
-import store,{persistor} from './src/redux/Store/index';
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "./src/redux/Store/index";
 
 const Section = ({ children, title }): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
+  const isDarkMode = useColorScheme() === "dark";
   return (
     <View style={styles.sectionContainer}>
       <Text
@@ -41,7 +42,8 @@ const Section = ({ children, title }): Node => {
           {
             color: isDarkMode ? Colors.white : Colors.black,
           },
-        ]}>
+        ]}
+      >
         {title}
       </Text>
       <Text
@@ -50,36 +52,35 @@ const Section = ({ children, title }): Node => {
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-        ]}>
+        ]}
+      >
         {children}
       </Text>
     </View>
   );
 };
 
-
-const App = () =>{
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
+  const isDarkMode = useColorScheme() === "dark";
+  Text.defaultProps = Text.defaultProps || {};
+  Text.defaultProps.allowFontScaling = false;
 
   useEffect(() => {
     //SplashScreen.hide()
-    LogBox.ignoreAllLogs(true)
+    LogBox.ignoreAllLogs(true);
     isConnected()
-      .then(() => console.log('has internet connection'))
+      .then(() => console.log("has internet connection"))
       // .then(() => console.log(userInfoJiMunim))
-      .catch(() => console.log('has No internet connection'));
-
+      .catch(() => console.log("has No internet connection"));
   }, []);
 
   return (
-
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
         <Routes />
       </PersistGate>
     </Provider>
-
   );
 };
 
@@ -90,15 +91,15 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   highlight: {
-    fontWeight: '700',
+    fontWeight: "700",
   },
 });
 

@@ -13,8 +13,9 @@ export const AddTenantDetailsStyle = StyleSheet.create({
   heading_View: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // marginTop: 10,
+    marginTop: 20,
     marginHorizontal: 16,
+    marginBottom:6
   },
   btn_main_view:{
     flexDirection: "row",
@@ -24,7 +25,7 @@ export const AddTenantDetailsStyle = StyleSheet.create({
     // paddingHorizontal: 8,
     // paddingVertical: 5,
     padding:5,
-    marginRight: 150,
+    marginRight: 205,
     borderRadius: 10,
     borderColor: _COLORS.Kodie_GrayColor,
   },

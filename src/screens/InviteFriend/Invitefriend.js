@@ -85,6 +85,8 @@ const LandlordData = [
     img: IMAGES.Logout,
   },
 ];
+
+
 export default Invitefriend = (props) => {
   const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);

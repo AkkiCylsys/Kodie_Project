@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
+  Alert
 } from "react-native";
 import { PropertyImagesStyle } from "./PropertyImagesStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -270,18 +271,17 @@ export default PropertyImages = (props) => {
     props.navigation.pop();
   };
   const handleImageNameChange = (multipleImages) => {
-    // const imageSizeLimit = 2 * 1024 * 1024; // 2 MB in bytes
+    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    const oversizedImage = multipleImages.find(
+      (image) => image.size > MAX_FILE_SIZE
+    );
 
-    // const imagesWithinSizeLimit = multipleImages.filter(
-    //   (image) => image.size <= imageSizeLimit
-    // );
+    if (oversizedImage) {
+      Alert.alert("The uploaded image must be less than 5 MB in size.");
+      refRBSheet.current.close();
+      return;
+    }
 
-    // if (imagesWithinSizeLimit.length === multipleImages.length) {
-    //   setMultiImageName(multipleImages);
-    //   refRBSheet.current.close();
-    // } else {
-    //   Alert.alert("Warning", "Image size should not exceed 2 MB.");
-    // }
     setMultiImageName(multipleImages);
     console.log("................ImageNAme", multipleImages);
     console.log("................ImageNAme", multipleImages.path);
@@ -404,7 +404,6 @@ export default PropertyImages = (props) => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-
               <SliderBox
                 images={
                   // property_Detail?.image_path
@@ -465,7 +464,7 @@ export default PropertyImages = (props) => {
                 }}
               />
               {selectedVideos.length > 0 && (
-                <View style={{ marginTop: 10 }}>
+                <View style={{ marginTop: 10}}>
                   {/* <Text>Selected Videos:</Text> */}
                   <FlatList
                     horizontal
@@ -476,10 +475,10 @@ export default PropertyImages = (props) => {
                         <Video
                           source={{ uri: item.path }}
                           style={{
-                            width: 150,
-                            height: 150,
+                            width: 200,
+                            height: 100,
                             borderRadius: 5,
-                            marginLeft: 5,
+                            marginLeft: 5,   
                           }}
                           controls={true}
                         />
@@ -532,7 +531,7 @@ export default PropertyImages = (props) => {
                 },
                 draggableIcon: {
                   backgroundColor: _COLORS.Kodie_LightGrayColor,
-                  marginBottom:2
+                  marginBottom: 2,
                 },
                 container: PropertyImagesStyle.bottomModal_container,
               }}

@@ -192,7 +192,7 @@ export default Leases = (props) => {
           <View style={LeaseSummaryStyle.lease_term_View}>
             <View>
               <Text style={LeaseSummaryStyle.lease_term_Text}>
-                {"Lease to term"}
+                {"Lease term"}
               </Text>
               <View style={LeaseSummaryStyle.sub_View}>
                 <Text style={LeaseSummaryStyle.date_Text}>
@@ -200,6 +200,7 @@ export default Leases = (props) => {
                     ? ""
                     : item?.UPLD_COMMENCEMENT_DATE.substring(0, 10)}
                 </Text>
+                <Text style={LeaseSummaryStyle.date_Text}>to</Text>
                 <Text style={LeaseSummaryStyle.date_Text}>
                   {item?.lease_term === null
                     ? ""

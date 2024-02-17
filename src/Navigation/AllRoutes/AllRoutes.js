@@ -184,7 +184,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 11,
+                    fontSize: 10,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -240,7 +240,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 11,
+                    fontSize: 10,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -296,7 +296,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 11,
+                    fontSize: 10,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -353,7 +353,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 11,
+                    fontSize: 10,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
@@ -394,7 +394,7 @@ const BottomNav = (props) => {
               <Text
                 style={[
                   {
-                    fontSize: 11,
+                    fontSize: 10,
                     fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
