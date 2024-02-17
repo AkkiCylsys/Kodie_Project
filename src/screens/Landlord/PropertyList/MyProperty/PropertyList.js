@@ -316,6 +316,7 @@ const PropertyList = (props) => {
                       : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
+                onPress={props.onInvite}
               >
                 {/* <View
                   style={[
