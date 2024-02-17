@@ -3,10 +3,12 @@ import { FONTFAMILY, IMAGES, _COLORS } from "./../../../Themes/index";
 export const DeshBoardNoticeCss = StyleSheet.create({
   MainView: {
     marginTop: 10,
-    marginHorizontal: 5,
     alignSelf: "center",
     backgroundColor: _COLORS.Kodie_BlackColor,
     borderRadius: 15,
+    // flex:1,
+    // alignItems:'center',
+    width:'95%'
   },
   crossview: { alignSelf: "flex-end", marginHorizontal: 5 },
   percentageText: {
@@ -19,12 +21,10 @@ export const DeshBoardNoticeCss = StyleSheet.create({
   progressView: {
     paddingHorizontal: 4,
     paddingVertical: 4,
-    // padding: 10,
     width: "100%",
-    // height: 100,
   },
   progressText: {
-    fontSize: 9,
+    fontSize: 10,
     fontFamily: FONTFAMILY.K_Regular,
     alignSelf: "center",
     color: _COLORS.Kodie_WhiteColor,
@@ -39,7 +39,9 @@ export const DeshBoardNoticeCss = StyleSheet.create({
     marginTop: 5,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf: "center",
+    textAlign:'justify',
+    lineHeight:18,
+    alignSelf:'center'
   },
   continueText: {
     color: _COLORS.Kodie_lightGreenColor,

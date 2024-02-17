@@ -78,7 +78,10 @@ const LandlordData = [
     img: IMAGES.Logout,
   },
 ];
+
+
 export default Invitefriend = (props) => {
+  
   const UserList_renderItem = ({ item, index }) => {
     return (
       <>
@@ -123,7 +126,8 @@ export default Invitefriend = (props) => {
         <SearchBar backSearchIcon={true} height={48} marginTop={20} />
         <View style={InviteStyles.shareMainView}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("Help_FeedBack")}
+            // onPress={() => props.navigation.navigate("Help_FeedBack")}
+            onPress={myShare}
             style={InviteStyles.contactIconView}
           >
             {/* <Image
@@ -131,11 +135,7 @@ export default Invitefriend = (props) => {
               style={InviteStyles.contactIcon}
               resizeMode="contain"
             /> */}
-            <Entypo
-              name="share"
-              size={20}
-              color={_COLORS.Kodie_GreenColor}
-            />
+            <Entypo name="share" size={20} color={_COLORS.Kodie_GreenColor} />
           </TouchableOpacity>
           <View style={InviteStyles.shareTextView}>
             <Text style={InviteStyles.shareText}>{"Share Link"}</Text>

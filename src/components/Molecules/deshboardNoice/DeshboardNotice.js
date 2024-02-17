@@ -16,6 +16,7 @@ const DeshboardNotice = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [profileDay, setProfileDay] = useState("");
   const [profileCompletion, setProfileCompletion] = useState("");
+  const [show, setShow] = useState(false);
   const userID = loginData?.Login_details?.user_id;
   useEffect(() => {
     handleprofileDays();
@@ -75,52 +76,62 @@ const DeshboardNotice = (props) => {
       });
   };
 
+  const handleClosePopup = () => {
+    // props.onClose();
+    setShow(!show);
+  };
   return (
     <>
-      <View style={DeshBoardNoticeCss.MainView}>
-        <View style={DeshBoardNoticeCss.progressView}>
-          <View style={DeshBoardNoticeCss?.PercenView}>
-            <View style={DeshBoardNoticeCss?.percentageText}>
-              <Text style={DeshBoardNoticeCss.progressText}>
-                {profileCompletion} complete, nice work!
-              </Text>
+      {show ? null : (
+        <View style={DeshBoardNoticeCss.MainView}>
+          <View style={DeshBoardNoticeCss.progressView}>
+            <View style={DeshBoardNoticeCss?.PercenView}>
+              <View style={DeshBoardNoticeCss?.percentageText}>
+                <Text style={DeshBoardNoticeCss.progressText}>
+                  {profileCompletion} complete, nice work!
+                </Text>
+              </View>
+              <TouchableOpacity
+                onPress={handleClosePopup}
+                style={[DeshBoardNoticeCss.crossview]}
+              >
+                <Entypo
+                  name="cross"
+                  size={15}
+                  color={_COLORS.Kodie_WhiteColor}
+                />
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              onPress={props._closeButton}
-              style={[DeshBoardNoticeCss.crossview]}
-            >
-              <Entypo name="cross" size={15} color={_COLORS.Kodie_WhiteColor} />
+            <ProgressBar
+              progress={progressValue}
+              // progress={0.5}
+              width={300}
+              height={8}
+              color={_COLORS.Kodie_lightGreenColor}
+              style={DeshBoardNoticeCss.progresBar}
+              borderColor="black"
+            />
+            <Text style={DeshBoardNoticeCss.profileText}>
+              We are happy to have you on board. You have almost completed your
+              profile set up.
+              <TouchableOpacity>
+                <Text style={DeshBoardNoticeCss.continueText}>
+                  Tap to continue
+                </Text>
+              </TouchableOpacity>
+            </Text>
+          </View>
+          <View style={DeshBoardNoticeCss.spaceLine} />
+          <View style={DeshBoardNoticeCss.trialView}>
+            <Text style={DeshBoardNoticeCss.trialText}>
+              Your free trial ends in {profileDay} days.
+            </Text>
+            <TouchableOpacity style={DeshBoardNoticeCss.upgradeView}>
+              <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
             </TouchableOpacity>
           </View>
-          <ProgressBar
-            progress={progressValue}
-            // progress={0.5}
-            width={300}
-            height={8}
-            color={_COLORS.Kodie_lightGreenColor}
-            style={DeshBoardNoticeCss.progresBar}
-            borderColor="black"
-          />
-          <Text style={DeshBoardNoticeCss.profileText}>
-            We are happy to have you on board. You have almost completed your
-            profile set up.
-            <TouchableOpacity>
-              <Text style={DeshBoardNoticeCss.continueText}>
-                Tap to continue
-              </Text>
-            </TouchableOpacity>
-          </Text>
         </View>
-        <View style={DeshBoardNoticeCss.spaceLine} />
-        <View style={DeshBoardNoticeCss.trialView}>
-          <Text style={DeshBoardNoticeCss.trialText}>
-            Your free trial ends in {profileDay} days.
-          </Text>
-          <TouchableOpacity style={DeshBoardNoticeCss.upgradeView}>
-            <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+      )}
     </>
   );
 };
