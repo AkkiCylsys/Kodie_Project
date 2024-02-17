@@ -7,19 +7,20 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
-  subContainer: {
-    marginHorizontal: 16,
-  },
+  // subContainer: {
+  //   marginHorizontal: 16,
+  // },
   heading_Text: {
     fontSize: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
+    alignSelf: "center" 
   },
   heading_View: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
-    marginHorizontal: 16,
+    marginTop: 16,
+    marginHorizontal:18,
   },
   card: {
     width: "100%",
@@ -30,13 +31,14 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    // marginBottom: 50,
     marginBottom: 250,
   },
   inputContainer: {
     marginBottom: 15,
   },
-  datePickerView: { flexDirection: "row" },
+  datePickerView: { 
+    flexDirection: "row",
+  },
 
   dropdown: {
     flex: 1,
@@ -91,7 +93,6 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     flex: 1,
     alignSelf: "center",
     fontSize: 13,
-    // marginRight:70
   },
   toggle_con: {
     width: 35,

@@ -10,11 +10,8 @@ export const LeaseSummaryStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
-  },
-  heading_Text: {
-    color: _COLORS.Kodie_BlackColor,
-    fontSize: 20,
-    fontFamily: FONTFAMILY.K_Bold,
+    marginTop:20,
+    marginBottom:10
   },
   subContainer: {
     marginHorizontal: 16,

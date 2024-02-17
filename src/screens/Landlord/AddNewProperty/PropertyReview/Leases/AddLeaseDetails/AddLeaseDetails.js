@@ -326,11 +326,11 @@ export default AddLeaseDetails = (props) => {
     return (
       <View style={AddLeaseDetailsStyle.itemView}>
         {item.lookup_key === notification_type_value ? (
-         <AntDesign
-         color={_COLORS.Kodie_GreenColor}
-         name={"checkcircle"}
-         size={20}
-       />
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={"checkcircle"}
+            size={20}
+          />
         ) : (
           <Fontisto
             color={_COLORS.Kodie_GrayColor}
@@ -350,19 +350,20 @@ export default AddLeaseDetails = (props) => {
         <Text style={AddLeaseDetailsStyle.heading_Text}>
           {"Add lease details"}
         </Text>
+        <View style={{ alignSelf: "center" ,marginTop:5}}>
+          <TouchableOpacity onPress={handlePopUp}>
+            <AntDesign
+              name="close"
+              size={22}
+              color={_COLORS.Kodie_BlackColor}
 
-        <TouchableOpacity onPress={handlePopUp}>
-          <AntDesign
-            name="close"
-            size={22}
-            color={_COLORS.Kodie_BlackColor}
-            style={{ alignSelf: "center" }}
-          />
-        </TouchableOpacity>
+            />
+          </TouchableOpacity>
+        </View>
       </View>
       <ScrollView>
         <View style={AddLeaseDetailsStyle.card}>
-          <Text style={LABEL_STYLES.commontext}>{"Commencement date"}</Text>
+          <Text style={[LABEL_STYLES.commontext,]}>{"Commencement date"}</Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
             <CalendarModal
               SelectDate={selectedDate ? selectedDate : "Start Date"}
@@ -502,7 +503,7 @@ export default AddLeaseDetails = (props) => {
               value={paymentDueDay}
               onChangeText={setPaymentDueDay}
               placeholder="2023-12-30"
-              // placeholderTextColor="#999"
+            // placeholderTextColor="#999"
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -526,7 +527,7 @@ export default AddLeaseDetails = (props) => {
                   ? _COLORS.Kodie_GrayColor
                   : _COLORS.Kodie_LightWhiteColor
               }
-              onPressLeftButton={() => {   
+              onPressLeftButton={() => {
                 setSelected_payment_Button(false);
                 setSelected_payment_Id(1);
                 // alert(selectedButtonId)

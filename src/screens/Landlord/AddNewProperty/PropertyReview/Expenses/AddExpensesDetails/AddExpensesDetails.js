@@ -339,7 +339,7 @@ export default AddExpensesDetails = (props) => {
               placeholder="Enter the total amount of the expense"
               placeholderTextColor="#999"
               keyboardType="phone-pad"
-              maxLength={5}
+              // maxLength={5}
             />
             <Text style={AddExpensesDetailsStyle.errorText}>
               {totalAmountError}

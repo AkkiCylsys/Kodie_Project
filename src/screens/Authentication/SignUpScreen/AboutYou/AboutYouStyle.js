@@ -147,6 +147,7 @@ export const AboutYouStyle = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     marginVertical: 29,
+    marginTop:5,
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -193,17 +194,6 @@ export const AboutYouStyle = StyleSheet.create({
   crossIconStyle: { alignSelf: "center", marginRight: 10 },
   stepIndicator: {
     marginTop: 15,
-  },
-  goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
-    marginVertical: 12,
-  },
-  goBack_Text: {
-    color: _COLORS.Kodie_BlackColor,
-    fontSize: 16,
-    fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft: 5,
   },
   backIcon: {
     borderWidth: 1,
