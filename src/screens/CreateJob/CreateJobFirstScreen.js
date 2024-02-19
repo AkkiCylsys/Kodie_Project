@@ -207,7 +207,8 @@ export default CreateJobFirstScreen = (props) => {
         console.log("withCordinates latitude....", position.coords.latitude);
         // setlongitude(position.coords.longitude);
         console.log("withCordinates Longitude....", position.coords.longitude);
-        getAddress(position.coords.latitude, position.coords.longitude);
+        // getAddress(position.coords.latitude, position.coords.longitude);
+        getAddress(getLat,getLong);
       },
       (error) => {
         alert(error.message.toString());

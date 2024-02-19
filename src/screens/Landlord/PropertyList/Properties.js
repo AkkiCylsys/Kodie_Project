@@ -11,6 +11,7 @@ import RantalOffer from "./RentalOffer/RantalOffer";
 import { Config } from "../../../Config";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const Properties = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
@@ -19,7 +20,7 @@ const Properties = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const navigation = useNavigation();
   useEffect(() => {
     <PropertyList />;
   }, []);
@@ -37,6 +38,10 @@ const Properties = (props) => {
                 propertyid: propertyid,
                 editMode: "editMode",
               });
+            }}
+            onInvite={() => {
+              navigation.navigate("Invitefriend");
+              // alert("hsdjfh")
             }}
             onPropertyView={(propView) => {
               const { propertyid } = propView;

@@ -66,6 +66,8 @@ const EditProfile = (props) => {
   const [location, setLocation] = useState(
     loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD
   );
+  let profileDoc = props?.route?.params?.profileDoc;
+  console.log("profileDoc....", profileDoc);
   const [about, setAbout] = useState("");
   const [activeTab, setActiveTab] = useState("Tab1");
   const [value, setValue] = useState(null);
@@ -108,6 +110,7 @@ const EditProfile = (props) => {
     // setEmail(loginData?.Login_details?.email);
     // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
     // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
+    setActiveTab(profileDoc ? "Tab3" : "Tab1");
   }, []);
   const goBack = () => {
     props.navigation.pop();

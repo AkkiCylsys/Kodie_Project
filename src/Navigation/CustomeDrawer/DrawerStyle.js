@@ -20,6 +20,7 @@ export const DrawerStyle = StyleSheet.create({
   },
   ImageStyle: { height: 35, width: "12%" },
   SubHeading: {
+    flex:1,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_BlackColor,

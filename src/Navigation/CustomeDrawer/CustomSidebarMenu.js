@@ -27,7 +27,7 @@ const CustomSidebarMenu = (props) => {
     switch (data) {
       case "PropertyLinking":
         setselectedId("PropertyLinking");
-        props.navigation.navigate("PropertyListings");
+        props.navigation.navigate("Properties");
         break;
       case "RentalOffers":
         setselectedId("RentalOffers");
@@ -48,8 +48,7 @@ const CustomSidebarMenu = (props) => {
         break;
       case "MaintenanceJobs":
         setselectedId("MaintenanceJobs");
-        // props.navigation.navigate("Reviewjobdetails1");
-        alert("Maintenance job pressed.")
+        props.navigation.navigate("Jobs");
         break;
       case "Contractors":
         setselectedId("Contractors");
@@ -61,7 +60,10 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Documents":
         setselectedId("Documents");
-        props.navigation.navigate("AccountStep");
+        props.navigation.navigate("EditProfile", {
+          profileDoc: "profileDoc",
+        });
+
         break;
       case "Reports":
         setselectedId("Reports");
@@ -69,12 +71,13 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Partners":
         setselectedId("Partners");
-        props.navigation.navigate("Partners");
+        // props.navigation.navigate("Partners");
+        props.navigation.navigate("ConfirmJobCompletion");
         break;
       case "Logout":
         setselectedId("LogOut");
         // props.navigation.navigate("LoginScreen");
-        LogOut()
+        LogOut();
         break;
 
       default:
@@ -84,7 +87,8 @@ const CustomSidebarMenu = (props) => {
   };
   const LogOut = () => {
     dispatch(logoutActionCreator());
-    props.navigation.navigate("DrawerNavigatorLeftMenu");
+    // props.navigation.navigate("DrawerNavigatorLeftMenu");
+    props.navigation.navigate("LoginScreen");
   };
   return (
     <SafeAreaView style={DrawerStyle.mainContainer}>
@@ -96,18 +100,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
-            {
-              backgroundColor:
-                selectedId == "PropertyLinking"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "PropertyLinking"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("PropertyLinking")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-text-outline"
               size={25}
@@ -122,18 +124,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "RentalOffers"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "RentalOffers"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("RentalOffers")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-arrow-left"
               size={25}
@@ -148,18 +148,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "vacantProperties"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "vacantProperties"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("vacantProperties")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <Octicons
               name="shield-x"
               size={25}
@@ -175,18 +173,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Inspection"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Inspection"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Inspection")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-search"
               size={25}
@@ -201,18 +197,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Tetants"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Tetants"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Tetants")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="shield-account-outline"
               size={25}
@@ -231,18 +225,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
-            {
-              backgroundColor:
-                selectedId == "MaintenanceJobs"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "MaintenanceJobs"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("MaintenanceJobs")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <Feather
               name="list"
               size={25}
@@ -257,18 +249,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Contractors"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Contractors"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Contractors")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialIcons
               name="engineering"
               size={25}
@@ -286,18 +276,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
-            {
-              backgroundColor:
-                selectedId == "Notices"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Notices"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Notices")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <Ionicons
               name="mail-unread-outline"
               size={25}
@@ -313,18 +301,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Documents"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Documents"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Documents")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="file-download-outline"
               size={25}
@@ -340,18 +326,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Reports"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Reports"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Reports")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialIcons
               name="bar-chart"
               size={25}
@@ -366,18 +350,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Partners"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Partners"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
           onPress={() => check("Partners")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="seal"
               size={25}
@@ -392,18 +374,16 @@ const CustomSidebarMenu = (props) => {
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
-            {
-              backgroundColor:
-                selectedId == "Partners"
-                  ? _COLORS.Kodie_LiteWhiteColor
-                  : _COLORS.Kodie_WhiteColor,
-            },
+            // {
+            //   backgroundColor:
+            //     selectedId == "Partners"
+            //       ? _COLORS.Kodie_LiteWhiteColor
+            //       : _COLORS.Kodie_WhiteColor,
+            // },
           ]}
-          onPress={() => check("LogOut")}
+          onPress={() => check("Logout")}
         >
-          <View
-            style={DrawerStyle.IconView}
-          >
+          <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="logout"
               size={25}
@@ -412,7 +392,7 @@ const CustomSidebarMenu = (props) => {
               style={{ alignSelf: "center" }}
             />
           </View>
-          <Text style={DrawerStyle.SubHeading}>{"Log Out"}</Text>
+          <Text style={DrawerStyle.SubHeading}>{"Logout"}</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

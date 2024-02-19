@@ -20,15 +20,17 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import EditDocumentsModal from "../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import RNFetchBlob from "rn-fetch-blob";
-
+import Share from "react-native-share";
+import { useIsFocused } from "@react-navigation/native";
 export default JobDocuments = (props) => {
+  const isfocused = useIsFocused();
   useEffect(() => {
     getAllDocuments();
     // getUploadedDocumentsByModule();
     getUploadedDocumentsByModule("Job_proposal");
     getUploadedDocumentsByModule("Job_Invoice");
     getUploadedDocumentsByModule("Job_Completed");
-  }, []);
+  }, [isfocused]);
 
   const JOB_ID = props.JOB_ID;
   // alert(props.JOB_ID);
@@ -46,7 +48,10 @@ export default JobDocuments = (props) => {
   const [jobDocByjobInvoicelength, setJobDocByjobInvoicelength] = useState("");
   const [jobDocByjobcompletelength, setJobDocByjobcompletelength] =
     useState("");
-
+  const [showAllDocuments, setShowAllDocuments] = useState(false);
+  const toggleShowAllDocuments = () => {
+    setShowAllDocuments(!showAllDocuments);
+  };
   const folderData = [
     {
       id: "1",
@@ -69,6 +74,14 @@ export default JobDocuments = (props) => {
   ];
   const closeModal = () => {
     refRBSheet.current.close();
+  };
+  // share doc....
+  const shareDocFile = async () => {
+    try {
+      await Share.open({ url: filePath });
+    } catch (error) {
+      console.error("Error sharing PDF file:", error);
+    }
   };
   // delete Document...
   const deleteHandler = (fileKey) => {
@@ -168,7 +181,6 @@ export default JobDocuments = (props) => {
   const DocumentsData = ({ item, index }) => {
     setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
-    setFilePath(item.PDUM_FILE_PATH);
     return (
       <>
         <View style={JobDocumentsStyle.container}>
@@ -192,6 +204,7 @@ export default JobDocuments = (props) => {
             style={JobDocumentsStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
+              setFilePath(item.PDUM_FILE_PATH);
             }}
           >
             <Entypo
@@ -362,11 +375,15 @@ export default JobDocuments = (props) => {
           <Text style={JobDocumentsStyle.reacentDocText}>
             {"Recent documents"}
           </Text>
-          <Text style={JobDocumentsStyle.seeAllText}>{"See all"}</Text>
+          <TouchableOpacity onPress={toggleShowAllDocuments}>
+            <Text style={JobDocumentsStyle.seeAllText}>
+              {showAllDocuments ? "Hide all" : "See all"}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={JobDocumentsStyle.card}>
           <FlatList
-            data={uploadDocData}
+            data={showAllDocuments ? uploadDocData : uploadDocData.slice(0, 2)}
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
@@ -376,7 +393,7 @@ export default JobDocuments = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={215}
+          height={260}
           customStyles={{
             wrapper: {
               backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -393,6 +410,8 @@ export default JobDocuments = (props) => {
             // // downloadFile={downloadFile}
             downloadFile={checkPermission}
             fileKey={fileKey}
+            filePath={filePath}
+            shareDocFile={shareDocFile}
             onpress={() => {
               // props.navigation.navigate("ViewDocument");
             }}

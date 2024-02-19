@@ -138,7 +138,7 @@ export default Repair = (props) => {
         order_col: "8",
         order_wise: "DESC",
       });
-      console.log("response.. job by filter ser....",response?.data)
+      console.log("response.. job by filter ser....", response?.data);
       setServicingJobData(response?.data?.job_details);
       console.log(
         "listJobdata for servicing.....",
@@ -449,7 +449,7 @@ export default Repair = (props) => {
             left: -20,
             bottom: -30,
             width: "100%",
-            height: isDeleteData_Clicked ? "40%" : "45%",
+            height: isDeleteData_Clicked ? "30%" : "35%",
             backgroundColor: "white",
             borderRadius: 10,
             paddingVertical: 8,

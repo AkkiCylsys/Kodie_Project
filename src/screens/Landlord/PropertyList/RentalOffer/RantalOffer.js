@@ -413,11 +413,14 @@ const RantalOffer = (props) => {
   };
 
   return (
-    <>
-      {/* <TopHeader
+    <View style={{
+      flex:1,
+      backgroundColor: _COLORS.Kodie_WhiteColor,
+    }}>
+      <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"RantalOffers"}
-      /> */}
+      />
       <View style={RantalOfferCss.mainContainer}>
         <ScrollView showsHorizontalScrollIndicator={false}>
           <View style={RantalOfferCss.propertyRentMainView}>
@@ -494,7 +497,7 @@ const RantalOffer = (props) => {
           )}
         </ScrollView>
       </View>
-    </>
+    </View>
   );
 };
 

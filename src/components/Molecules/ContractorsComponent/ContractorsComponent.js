@@ -93,20 +93,23 @@ const ContractorsComponent = (props) => {
                 </View>
               </View>
             </View>
-            <View style={{ flexDirection: "row" }}>
-              <AntDesign
-                name="hearto"
-                size={25}
-                color={_COLORS.Kodie_GrayColor}
-                style={ContractorsComponentStyle.heartimg}
-              />
+            <View>
+              <View style={{ flexDirection: "row" }}>
+                <AntDesign
+                  name="hearto"
+                  size={25}
+                  color={_COLORS.Kodie_GrayColor}
+                  style={ContractorsComponentStyle.heartimg}
+                />
 
-              <Entypo
-                name="dots-three-horizontal"
-                size={20}
-                color={_COLORS.Kodie_GrayColor}
-                style={ContractorsComponentStyle.closeIcon}
-              />
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={20}
+                  color={_COLORS.Kodie_GrayColor}
+                  style={ContractorsComponentStyle.closeIcon}
+                />
+              </View>
+              <Text>{props.bidDate}</Text>
             </View>
           </View>
         </View>

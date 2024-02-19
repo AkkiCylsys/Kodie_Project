@@ -24,6 +24,7 @@ const DeshboardNotice = (props) => {
   }, []);
   const profileValueWithoutPercent = profileCompletion.replace("%", "");
   const progressValue = profileValueWithoutPercent / 100;
+  console.log("progressValue...",progressValue)
   const handlePress = () => {
     setProgress((prevProgress) => prevProgress + 0.1);
   };
@@ -57,8 +58,8 @@ const DeshboardNotice = (props) => {
     console.log("requested url..", profileCompletion_url);
     setIsLoading(true);
     const profileCompletion_urlBody = {
-      account_id: "531",
-      // account_id: userID,
+      // account_id: "531",
+      account_id: userID,
     };
     axios
       .post(profileCompletion_url, profileCompletion_urlBody)

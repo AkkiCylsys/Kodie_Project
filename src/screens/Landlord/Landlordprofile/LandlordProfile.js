@@ -26,7 +26,8 @@ export default LandlordProfile = (props) => {
 
   const LogOut = () => {
     dispatch(logoutActionCreator());
-    props.navigation.navigate("DrawerNavigatorLeftMenu");
+    // props.navigation.navigate("DrawerNavigatorLeftMenu");
+    props.navigation.navigate("LoginScreen");
   };
   return (
     <View style={LandlordProfileStyle.mainContainer}>
@@ -58,15 +59,12 @@ export default LandlordProfile = (props) => {
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
-              {
-                // loginData?.Account_details[0]?.UAD_FIRST_NAME +
-                //   " " +
-                //   loginData?.Account_details[0]?.UAD_LAST_NAME
-                // ||
-                // signUp_account_response?.Account_details[0]?.UAD_FIRST_NAME +
-                //   " " +
-                //   signUp_account_response?.Account_details[0]?.UAD_LAST_NAME
-              }
+              {loginData?.Account_details[0]?.UAD_FIRST_NAME +
+                " " +
+                loginData?.Account_details[0]?.UAD_LAST_NAME ||
+                signUp_account_response?.Account_details[0]?.UAD_FIRST_NAME +
+                  " " +
+                  signUp_account_response?.Account_details[0]?.UAD_LAST_NAME}
             </Text>
             <Text
               style={LandlordProfileStyle.emailText}

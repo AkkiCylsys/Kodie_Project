@@ -316,6 +316,7 @@ const PropertyList = (props) => {
                       : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
+                onPress={props.onInvite}
               >
                 {/* <View
                   style={[
@@ -685,7 +686,7 @@ const PropertyList = (props) => {
             left: -20,
             bottom: -30,
             width: "100%",
-            height: isDeleteData_Clicked ? "30%" : "50%",
+            height: isDeleteData_Clicked ? "30%" : "35%",
             backgroundColor: "white",
             borderRadius: 10,
             paddingVertical: 8,

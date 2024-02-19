@@ -49,6 +49,7 @@ const JobDetails = (props) => {
   // const dispatch = useDispatch();
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
+  let jobDocTab = props?.route?.params?.jobDocTab;
   console.log("JOB_ID......", JOB_ID);
   console.log("job_id......", job_id);
   let update_JOB_ID = props?.route?.params?.JobId;
@@ -70,7 +71,7 @@ const JobDetails = (props) => {
   };
 
   useEffect(() => {
-    setActiveTab("Tab1");
+    setActiveTab(jobDocTab ? "Tab4" : "Tab1");
   }, []);
   const handleImageFilePath = async (imagesFilePath) => {
     setImageFileData(imagesFilePath);
@@ -192,7 +193,7 @@ const JobDetails = (props) => {
             View_Job_Details={View_Job_Details}
             imagesFilePath={handleImageFilePath}
             onPress={() => {
-              props.navigation.pop(4)
+              props.navigation.pop(4);
               props.navigation.navigate("Jobs", {
                 myJob_Type: myJobType,
               });

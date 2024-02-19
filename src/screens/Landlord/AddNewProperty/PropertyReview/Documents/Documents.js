@@ -27,6 +27,9 @@ import { Config } from "../../../../../Config";
 import EditDocumentsModal from "../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
 import RNFetchBlob from "rn-fetch-blob";
 import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { useIsFocused } from "@react-navigation/native";
+import Share from "react-native-share";
+
 const Property_documents = [
   "All",
   "Pre+post inspection reports",
@@ -74,12 +77,13 @@ const handleClear = () => {
 };
 
 export default Documents = (props) => {
+  const isfocused = useIsFocused();
   useEffect(() => {
     getAllDocuments();
     getUploadedDocumentsByModule("Property");
     getUploadedDocumentsByModule("Lease");
     getUploadedDocumentsByModule("Tenant");
-  }, []);
+  }, [isfocused]);
   const property_id = props.property_id;
   // alert(props.property_id);
   const [value, setValue] = useState(null);
@@ -96,6 +100,10 @@ export default Documents = (props) => {
   const [propertyDocByLeaselength, setpropertyDocByLeaselength] = useState("");
   const [propertyDocByTenantlength, setpropertyDocByTenantlength] =
     useState("");
+  const [showAllDocuments, setShowAllDocuments] = useState(false);
+  const toggleShowAllDocuments = () => {
+    setShowAllDocuments(!showAllDocuments);
+  };
   const folderData = [
     {
       id: "1",
@@ -120,6 +128,14 @@ export default Documents = (props) => {
 
   const closeModal = () => {
     refRBSheet.current.close();
+  };
+  // share doc....
+  const shareDocFile = async () => {
+    try {
+      await Share.open({ url: filePath });
+    } catch (error) {
+      console.error("Error sharing PDF file:", error);
+    }
   };
   // delete Document...
   const deleteHandler = (fileKey) => {
@@ -218,7 +234,7 @@ export default Documents = (props) => {
   const DocumentsData = ({ item, index }) => {
     setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
-    setFilePath(item.PDUM_FILE_PATH);
+
     return (
       <>
         <View style={DocumentsStyle.container}>
@@ -240,6 +256,8 @@ export default Documents = (props) => {
             style={DocumentsStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
+              setFilePath(item.PDUM_FILE_PATH);
+              console.log("file Path..", item.PDUM_FILE_PATH);
             }}
           >
             <Entypo
@@ -282,7 +300,9 @@ export default Documents = (props) => {
           <Text style={DocumentsStyle.propertyDocText}>
             {item?.folderHeading}
           </Text>
-          <Text style={DocumentsStyle.files_text}>{`${item.totalFile} Files`}</Text>
+          <Text
+            style={DocumentsStyle.files_text}
+          >{`${item.totalFile} Files`}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -379,6 +399,7 @@ export default Documents = (props) => {
         setIsLoading(false);
       });
   };
+
   return (
     <View style={DocumentsStyle.mainContainer}>
       <ScrollView>
@@ -401,11 +422,15 @@ export default Documents = (props) => {
           <Text style={DocumentsStyle.reacentDocText}>
             {"Recent documents"}
           </Text>
-          <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
+          <TouchableOpacity onPress={toggleShowAllDocuments}>
+            <Text style={DocumentsStyle.seeAllText}>
+              {showAllDocuments ? "Hide all" : "See all"}
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={DocumentsStyle.card}>
           <FlatList
-            data={uploadDocData}
+            data={showAllDocuments ? uploadDocData : uploadDocData.slice(0, 2)}
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
@@ -415,7 +440,7 @@ export default Documents = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={215}
+          height={260}
           customStyles={{
             wrapper: {
               backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -432,6 +457,8 @@ export default Documents = (props) => {
             // // downloadFile={downloadFile}
             downloadFile={checkPermission}
             fileKey={fileKey}
+            filePath={filePath}
+            shareDocFile={shareDocFile}
             onpress={() => {
               props.navigation.navigate("ViewDocument");
             }}

@@ -24,6 +24,8 @@ import EditDocumentsModal from "../../../../../../components/Molecules/EditDocum
 // import RNFS from "react-native-fs";
 import RNFetchBlob from "rn-fetch-blob";
 import { Config } from "../../../../../../Config";
+import Share from "react-native-share";
+
 const DocumentDetails = (props) => {
   const refRBSheet = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -156,7 +158,14 @@ const DocumentDetails = (props) => {
       setIsLoading(false);
     }
   };
-
+  // share doc....
+  const shareDocFile = async () => {
+    try {
+      await Share.open({ url: filePath });
+    } catch (error) {
+      console.error("Error sharing PDF file:", error);
+    }
+  };
   const getuploadedDocuments = () => {
     const url = Config.BASE_URL;
     const getDocument_url = url + `tanant_details/get/document/${property_id}`;
@@ -244,8 +253,6 @@ const DocumentDetails = (props) => {
   const GetuploadedDocumentrender = ({ item, index }) => {
     setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
-    setFilePath(item.PDUM_FILE_PATH);
-    console.log("fileKey....", fileKey);
     return (
       <>
         <View style={DocumentDetailStyle.container}>
@@ -268,6 +275,8 @@ const DocumentDetails = (props) => {
             style={DocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
+              setFilePath(item.PDUM_FILE_PATH);
+              console.log("fileKey....", fileKey);
             }}
           >
             <Entypo
@@ -400,7 +409,7 @@ const DocumentDetails = (props) => {
           keyExtractor={(item, index) => index}
           renderItem={DocumentsData}
         /> */}
-        <View style={{marginVertical:18}}>
+        <View style={{ marginVertical: 18 }}>
           <Text style={DocumentDetailStyle.upload_doc_text}>
             {"Upload documents"}
           </Text>
@@ -436,7 +445,7 @@ const DocumentDetails = (props) => {
         </View>
         <RBSheet
           ref={refRBSheet}
-          height={Platform.OS === "ios" ? 240 : 220}
+          height={Platform.OS === "ios" ? 260 : 260}
           customStyles={{
             wrapper: {
               backgroundColor: "transparent",
@@ -453,6 +462,8 @@ const DocumentDetails = (props) => {
             // downloadFile={downloadFile}
             downloadFile={checkPermission}
             fileKey={fileKey}
+            filePath={filePath}
+            shareDocFile={shareDocFile}
             onpress={() => {
               props.navigation.navigate("ViewDocument");
             }}

@@ -199,6 +199,9 @@ const Billinginformation = (props) => {
               _ButtonText={"Pay $173.25 now"}
               backgroundColor={_COLORS.Kodie_BlackColor}
               disabled={isLoading ? true : false}
+              onPress={()=>{
+                props.navigation.navigate('PaymentMethod')
+              }}
             />
 
             <TouchableOpacity style={BillinginformationStyle.goBack_View}>

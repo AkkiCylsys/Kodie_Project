@@ -9,7 +9,14 @@ import { Config } from "../../../../Config";
 import axios from "axios";
 import Contractors from "../../../../components/Molecules/Contractors/Contractors";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
+import ContractorsComponent from "../../../../components/Molecules/ContractorsComponent/ContractorsComponent";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
 export default JobBiddingDetails = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse jobbiding.....", loginData);
+  const userAccountid = loginData?.Login_details.user_account_id;
+  console.log("userAccountid..",userAccountid)
   const [Biddatadetail, setBiddatadetail] = useState(null);
   const [getContractorData, setgetContractorData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,11 +34,16 @@ export default JobBiddingDetails = (props) => {
   }, []);
   const handleGetContractor = () => {
     const url = Config.BASE_URL;
-    const ContractorUrl = url + "job/getContractors";
+    const ContractorUrl = url + "job/getallBidRequestForJob";
     console.log("Request URL:", ContractorUrl);
     setIsLoading(true);
+    const bidRequestData = {
+      // job_id: JOB_ID,
+      job_id: 1,
+      uad_key: userAccountid,
+    };
     axios
-      .get(ContractorUrl)
+      .post(ContractorUrl, bidRequestData)
       .then((response) => {
         console.log("getContractor", response.data);
         if (response.data.success === true) {
@@ -54,15 +66,27 @@ export default JobBiddingDetails = (props) => {
   const refRBSheet = useRef();
   const renderItem = ({ item }) => (
     <>
-      <Contractors
+      {/* <Contractors
         userImage={{ uri: item.UAD_PROFILE_PHOTO_PATH }}
-        name={`${item.UAD_FIRST_NAME} ${item.UAD_LAST_NAME}`}
+        name={`${item?.first_name} ${item?.last_name}`}
         filedname={"Plumber"}
         startRating={"3.6"}
         ratingnumber={"100"}
-        address={item.UAD_CURR_PHYSICAL_ADD}
+        address={item.address}
         notverified={"verified"}
         verified={item.verified}
+      /> */}
+      <ContractorsComponent
+        userImage={{ uri: item.UAD_PROFILE_PHOTO_PATH }}
+        name={`${item?.first_name} ${item?.last_name}`}
+        filedname={"Plumber"}
+        startRating={"3.6"}
+        ratingnumber={"100"}
+        address={item.address}
+        notverified={"verified"}
+        verified={item.verified}
+        CoverText1={item.cover_later}
+        bidDate={moment(item.job_bid_date).format("MMM DD, YYYY")}
       />
       <DividerIcon />
     </>
