@@ -45,12 +45,14 @@ export const RowTabStyle = StyleSheet.create({
         fontSize: 11,
         marginLeft: 10,
         color: _COLORS.Kodie_ExtraLightGrayColor,
-        fontFamily: FONTFAMILY.K_Regular
+        fontFamily: FONTFAMILY.K_Regular,
     },
     TextViewMain:{
         flexDirection:'column',
         justifyContent:'center',
         marginBottom:5,
+        // backgroundColor:'red',
+        flex:0.9
     },
     rightarrowicon: {
         width: 15,
