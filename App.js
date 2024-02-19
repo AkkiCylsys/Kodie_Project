@@ -62,8 +62,6 @@ const Section = ({ children, title }): Node => {
 
 const App = () => {
   const isDarkMode = useColorScheme() === "dark";
-  Text.defaultProps = Text.defaultProps || {};
-  Text.defaultProps.allowFontScaling = false;
 
   useEffect(() => {
     //SplashScreen.hide()

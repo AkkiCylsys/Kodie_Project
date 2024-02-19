@@ -81,9 +81,9 @@ export const RepairCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingVertical: 2,
-    marginLeft: 10,
+    marginLeft: "10%",
   },
   roundButton: {
     height: 6,

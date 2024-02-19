@@ -9,8 +9,10 @@ export const RowTabStyle = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: 15,
         alignItems: "center",
-        paddingHorizontal: 15,
+        // paddingHorizontal: 15,
         marginBottom: 3,
+        flex:1,
+        marginHorizontal:12
     },
 
     Helpselctionview: {
@@ -35,20 +37,20 @@ export const RowTabStyle = StyleSheet.create({
 
     Helptext: {
         fontSize: 14,
-        marginLeft: 15,
+        marginLeft: 10,
         color: _COLORS.Kodie_BlackColor,
         fontFamily: FONTFAMILY.K_SemiBold
     },
     SecondRowtext: {
         fontSize: 11,
-        marginLeft: 15,
+        marginLeft: 10,
         color: _COLORS.Kodie_ExtraLightGrayColor,
         fontFamily: FONTFAMILY.K_Regular
     },
     TextViewMain:{
         flexDirection:'column',
         justifyContent:'center',
-        marginBottom:5
+        marginBottom:5,
     },
     rightarrowicon: {
         width: 15,
@@ -57,8 +59,8 @@ export const RowTabStyle = StyleSheet.create({
     },
 
     arrowiconview: {
-        height: 30,
-        width: 30,
+        height: 28,
+        width: 28,
         borderWidth: 0.5,
         alignItems: 'center',
         justifyContent: 'center',

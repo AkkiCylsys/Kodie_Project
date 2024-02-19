@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { _COLORS, IMAGES } from "../../../Themes/index";
 const SearchBar = (props) => {
   const [search, setSearch] = useState("");
+
   return (
     <View style={SearchBarStyle.serchheaderView}>
       <View

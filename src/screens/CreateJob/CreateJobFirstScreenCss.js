@@ -52,7 +52,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
+    fontSize: 15,
   },
   jobDetailsView: {
     marginTop: 12,

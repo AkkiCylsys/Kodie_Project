@@ -1,25 +1,24 @@
 import { StyleSheet } from "react-native";
-import { _COLORS ,FONTFAMILY} from "../../../Themes";
+import { _COLORS, FONTFAMILY } from "../../../Themes";
 
 export const CircleProgressStyle = StyleSheet.create({
-  maincontainerview:{
-    backgroundColor:_COLORS.Kodie_WhiteColor
+  maincontainerview: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   mainview: {
-    width: '100%',
+    width: "100%",
     height: 75,
     borderWidth: 0.5,
     borderRadius: 12,
     borderColor: _COLORS.Kodie_LightGrayColor,
-    flexDirection:'row',
-    justifyContent: 'space-evenly',
-    alignItems:'center',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
     elevation: 2,
-    backgroundColor:_COLORS.Kodie_WhiteColor
-
+    backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   circle: {
-    width:50,
+    width: 50,
     height: 50,
     borderWidth: 2,
     borderRadius: 100,
@@ -29,32 +28,33 @@ export const CircleProgressStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  rateview: {
+    marginLeft: 8,
+  },
   homeicon: {
     color: _COLORS.Kodie_LightGrayColor,
   },
-  bindview:{
-    flexDirection:'row'
+  bindview: {
+    flexDirection: "row",
   },
-  persentview:{
-    marginHorizontal:8
+  persentview: {
+    marginHorizontal: 8,
   },
-  persenttext:{
-    fontSize:22,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_SemiBold
+  persenttext: {
+    fontSize: 21,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
-  ratetext:{
-    fontSize:12,
-    color:_COLORS.Kodie_ExtraminLiteGrayColor
-  },
-
-  floatbtn:{
-    position: 'absolute',
-    right:0,
-    marginVertical:60,
-    marginHorizontal:-30,
-    zIndex:1,
-
+  ratetext: {
+    fontSize: 11,
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
   },
 
+  floatbtn: {
+    position: "absolute",
+    right: 0,
+    marginVertical: 60,
+    marginHorizontal: -30,
+    zIndex: 1,
+  },
 });

@@ -208,11 +208,12 @@ export default Dashboard = (props) => {
               style={{
                 // flex: 1,
                 flexDirection: "row",
-                justifyContent: "space-between",
+                justifyContent:'space-between',
+                // marginRight:16
               }}
             >
               <Dropdown
-                style={[DashboardStyle.dropdown, { flex: 1 }]}
+                style={[DashboardStyle.dropdown, { flex:1}]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
@@ -231,7 +232,7 @@ export default Dashboard = (props) => {
               />
 
               <Dropdown
-                style={[DashboardStyle.dropdown, { flex: 1 }]}
+                style={[DashboardStyle.dropdown, { flex:1 }]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}

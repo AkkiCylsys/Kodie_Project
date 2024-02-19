@@ -68,7 +68,11 @@ export default LandlordProfile = (props) => {
                 //   signUp_account_response?.Account_details[0]?.UAD_LAST_NAME
               }
             </Text>
-            <Text style={LandlordProfileStyle.emailText}>
+            <Text
+              style={LandlordProfileStyle.emailText}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
               {loginData?.Login_details?.email}
             </Text>
             <View style={LandlordProfileStyle.staricon}>
@@ -113,6 +117,7 @@ export default LandlordProfile = (props) => {
             LeftImage={IMAGES.Accountsetting}
             TabTaxt="Account"
             TabSubTaxt="Manage your account & payment settings"
+            
           />
         </TouchableOpacity>
 

@@ -26,7 +26,7 @@ export const DashboardStyle = StyleSheet.create({
   dropdown: {
     borderWidth: 1,
     height: 40,
-    marginHorizontal: 5,
+    marginHorizontal: 6,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 12,
     borderRadius: 8,
@@ -51,7 +51,7 @@ export const DashboardStyle = StyleSheet.create({
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
+    fontSize: 15,
   },
   income_Box_View: {
     borderWidth: 1,
