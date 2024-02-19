@@ -71,7 +71,8 @@ const CustomSidebarMenu = (props) => {
         break;
       case "Partners":
         setselectedId("Partners");
-        props.navigation.navigate("Partners");
+        // props.navigation.navigate("Partners");
+        props.navigation.navigate("ConfirmJobCompletion");
         break;
       case "Logout":
         setselectedId("LogOut");
