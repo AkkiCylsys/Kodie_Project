@@ -51,7 +51,7 @@ export const DeshBoardNoticeCss = StyleSheet.create({
   },
   spaceLine: { height: 3, backgroundColor: _COLORS.Kodie_lightGreenColor },
   trialView: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
@@ -67,7 +67,7 @@ export const DeshBoardNoticeCss = StyleSheet.create({
   },
   upgradeView: {
     backgroundColor: _COLORS.Kodie_lightGreenColor,
-    paddingHorizontal: 8,
+    paddingHorizontal: 5,
     borderRadius: 5,
     paddingVertical: 4,
     justifyContent: "center",

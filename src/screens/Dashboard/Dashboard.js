@@ -151,6 +151,12 @@ export default Dashboard = (props) => {
       </>
     );
   };
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength - 3) + "...";
+    }
+    return text;
+  };
 
   const NoticeData = ({ item, index }) => {
     return (
@@ -159,7 +165,13 @@ export default Dashboard = (props) => {
           <View style={DashboardStyle.pdfInfo}>
             <Image source={item.image} style={DashboardStyle.lines} />
             <View style={DashboardStyle.textContainer}>
-              <Text style={DashboardStyle.note}>{item.notice}</Text>
+              <Text
+                style={DashboardStyle.note}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {item.notice}
+              </Text>
             </View>
           </View>
           <TouchableOpacity style={DashboardStyle.crossIcon}>
@@ -199,7 +211,7 @@ export default Dashboard = (props) => {
           // statusBarStyle="dark-content"
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <DeshboardNotice onClose={CloseUp}/>
+          <DeshboardNotice onClose={CloseUp} />
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text
@@ -210,12 +222,12 @@ export default Dashboard = (props) => {
               style={{
                 // flex: 1,
                 flexDirection: "row",
-                justifyContent:'space-between',
+                justifyContent: "space-between",
                 // marginRight:16
               }}
             >
               <Dropdown
-                style={[DashboardStyle.dropdown, { flex:1}]}
+                style={[DashboardStyle.dropdown, { flex: 1 }]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
@@ -225,7 +237,8 @@ export default Dashboard = (props) => {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder="All Properties"
+                // placeholder="All Properties"
+                placeholder={truncateText("All Properties", 12)}
                 searchPlaceholder="Search..."
                 value={value}
                 onChange={(item) => {
@@ -234,7 +247,7 @@ export default Dashboard = (props) => {
               />
 
               <Dropdown
-                style={[DashboardStyle.dropdown, { flex:1 }]}
+                style={[DashboardStyle.dropdown, { flex: 1 }]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
@@ -244,7 +257,8 @@ export default Dashboard = (props) => {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder="Year to date"
+                // placeholder="Year to date"
+                placeholder={truncateText("Year to date", 12)}
                 searchPlaceholder="Search..."
                 value={value}
                 onChange={(item) => {

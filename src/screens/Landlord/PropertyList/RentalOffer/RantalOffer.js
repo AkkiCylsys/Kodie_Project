@@ -417,10 +417,10 @@ const RantalOffer = (props) => {
       flex:1,
       backgroundColor: _COLORS.Kodie_WhiteColor,
     }}>
-      <TopHeader
+      {/* <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"RantalOffers"}
-      />
+      /> */}
       <View style={RantalOfferCss.mainContainer}>
         <ScrollView showsHorizontalScrollIndicator={false}>
           <View style={RantalOfferCss.propertyRentMainView}>

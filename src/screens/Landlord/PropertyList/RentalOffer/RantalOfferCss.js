@@ -48,7 +48,7 @@ export const RantalOfferCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: "center",
   },
-  flatListContainer: { marginHorizontal: 30, flex: 1 },
+  flatListContainer: { marginHorizontal: 4, flex: 1 },
   expandedContent: {
     marginHorizontal: 30,
     flex: 1,
