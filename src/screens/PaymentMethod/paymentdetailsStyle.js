@@ -56,8 +56,8 @@ export const paymentdetailsStyle = StyleSheet.create({
       },
       ViewTextstyle:{
         marginHorizontal:11,
-        marginTop:35,
-        marginBottom:58
+        marginTop:30,
+        marginBottom:45
       },
       Textstyle:{
         // alignItems:"center",
@@ -68,6 +68,46 @@ export const paymentdetailsStyle = StyleSheet.create({
         fontSize: 16,
         fontFamily: FONTFAMILY.K_SemiBold,
       },
+      btnview:{
+        marginBottom:43,
+      },
       job_billing: { marginTop: 16 },
       switchBtn_view:{marginTop:12},
+      bottomModal_container:{
+        borderRadius:15,
+      },
+      modalContainer: { marginHorizontal: 16, marginVertical: 16},
+      modalMainText: {
+        fontFamily: FONTFAMILY.K_Medium,
+        fontSize: 21,
+        color: _COLORS.Kodie_BlackColor,
+        textAlign: "center",
+        alignSelf: "center",
+        marginVertical: 10,
+      },
+      modalMainText2: {
+        // fontFamily: FONTFAMILY.K_Medium,
+        fontSize: 14,
+        color: _COLORS.Kodie_LightGrayColor,
+        textAlign: "center",
+        alignSelf: "center",
+        justifyContent:"center",
+        textAlign:"center"
+        // marginVertical: 10,
+      },
+      modalSubText: {
+        fontFamily: FONTFAMILY.K_Regular,
+        fontSize: 14,
+        color: _COLORS.Kodie_MediumGrayColor,
+        textAlign: "center",
+        alignSelf: "center",
+        marginTop: 19,
+      },
+      checkStl: {
+        height: 120,
+        width: 120,
+        alignSelf: "center",
+        marginVertical: 50,
+        marginBottom:10
+      },
 });

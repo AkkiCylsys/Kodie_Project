@@ -1,14 +1,22 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import React, { useRef } from "react";
+import { View, Text, TextInput, ScrollView, Image, } from "react-native";
 import TopHeader from "../../components/Molecules/Header/Header";
 import { _goBack } from "../../services/CommonServices";
-import { _COLORS } from "../../Themes";
-import PayButton from "../../components/PayButton/PayButton"
+import { _COLORS, IMAGES } from "../../Themes";
+import PayButton from "../../components/PayButton/PayButton";
 import { paymentdetailsStyle } from "./paymentdetailsStyle";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import RBSheet from "react-native-raw-bottom-sheet";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 
 const paymentdetails = (props) => {
+    const refRBSheet = useRef(); // Move useRef inside the component
+
+    const CloseUp = () => {
+        refRBSheet.current.close();
+        setOverlayVisible(false);
+    };
+
     return (
         <View style={paymentdetailsStyle.Mainview}>
             <View style={paymentdetailsStyle.MainContainer}>
@@ -84,16 +92,16 @@ const paymentdetails = (props) => {
                             </View>
                         </View>
                         <View>
-                            <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-                            <Text style={paymentdetailsStyle.inputtext}>
-                                CVV / CVC
-                            </Text>
-                            <AntDesign
-                                name={"questioncircleo"}
-                                size={20}
-                                color={_COLORS.Kodie_lightGreenColor}
-                                style={{marginRight:25}}
-                            />
+                            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                                <Text style={paymentdetailsStyle.inputtext}>
+                                    CVV / CVC
+                                </Text>
+                                <AntDesign
+                                    name={"questioncircleo"}
+                                    size={20}
+                                    color={_COLORS.Kodie_lightGreenColor}
+                                    style={{ marginRight: 25 }}
+                                />
                             </View>
                             <View style={paymentdetailsStyle.inputCarddate}>
                                 <TextInput
@@ -115,14 +123,55 @@ const paymentdetails = (props) => {
                             _ButtonText={"Complete payment"}
                             backgroundColor={_COLORS.Kodie_BlackColor}
                             Text_Color={_COLORS.Kodie_WhiteColor}
-                        // disabled={isLoading ? true : false}
-                        // onPress={()=>{
-                        //   props.navigation.navigate("paymentdetails")
-                        // }}
+                            // disabled={isLoading ? true : false}
+                            onPress={() => {
+                                refRBSheet.current.open();
+                            }}
                         />
                     </View>
                 </View>
             </ScrollView>
+            <RBSheet
+                ref={refRBSheet}
+                height={400}
+                customStyles={{
+                    wrapper: {
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    },
+                    draggableIcon: {
+                        backgroundColor: _COLORS.Kodie_LightGrayColor,
+                    },
+                    container: paymentdetailsStyle.bottomModal_container,
+                }}
+            >
+                <View style={paymentdetailsStyle.modalContainer}>
+                    <Text style={paymentdetailsStyle.modalMainText}>Payment Successful!</Text>
+                    <Text style={paymentdetailsStyle.modalMainText2}>Successfully made payment
+                        and scheduled job.</Text>
+                    <Image
+                        source={IMAGES.CheckIcon}
+                        resizeMode={"center"}
+                        style={paymentdetailsStyle.checkStl}
+                    />
+                    <CustomSingleButton
+                        _ButtonText={"View history"}
+                        Text_Color={_COLORS.Kodie_WhiteColor}
+                        height={48}
+                        onPress={() => {
+                            refRBSheet.current.close();
+                            _goBack(props);
+                        }}
+                    />
+                    <CustomSingleButton
+                        // disabled={isLoading ? true : false}
+                        _ButtonText={"Return home"}
+                        Text_Color={_COLORS.Kodie_BlackColor}
+                        height={48}
+                        borderColor={_COLORS.Kodie_WhiteColor}
+                        backgroundColor={_COLORS.Kodie_WhiteColor}
+                    />
+                </View>
+            </RBSheet>
         </View>
     );
 };
