@@ -19,7 +19,8 @@ const Chat = props => {
   const [messageList, setMessageList] = useState([]);
   const route = useRoute();
   const [pendingMessage, setPendingMessage] = useState(null);
-
+  const userData = route.params.data;
+  console.log(route.params.data, 'datadatadatadatadata');
   const initializeChat = async () => {
     try {
       const snapshot = await firestore()
@@ -75,16 +76,13 @@ const Chat = props => {
           GiftedChat.append(previousMessages, myMsg),
         );
 
-        try {
-          await firestore()
-            .collection('chats')
-            .doc(`${route.params.userid}`)
-            .collection('messages')
-            .doc(myMsg._id)
-            .set(myMsg);
-        } catch (error) {
-          console.error('Error saving message in Firebase:', error);
-        }
+        const messageRef = firestore()
+          .collection('chats')
+          .doc(`${route.params.userid}`)
+          .collection('messages')
+          .doc(myMsg._id);
+
+        messageRef.set(myMsg);
 
         if (msg.image) {
           // Upload image logic
@@ -192,7 +190,7 @@ const Chat = props => {
   return (
     <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
-        MiddleText={route.params.name}
+        MiddleText={`${userData.firstName} ${userData.lastName}`}
         onPressLeftButton={() => _goBack(props)}
       />
       <GiftedChat

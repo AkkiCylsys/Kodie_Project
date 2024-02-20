@@ -1,45 +1,45 @@
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { View, Text, FlatList } from "react-native";
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-import ContractorsComponent from "../../../components/Molecules/ContractorsComponent/ContractorsComponent";
-import { Config } from "../../../Config";
-import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import axios from 'axios';
+import React, {useState, useEffect} from 'react';
+import {View, Text, FlatList} from 'react-native';
+import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
+import ContractorsComponent from '../../../components/Molecules/ContractorsComponent/ContractorsComponent';
+import {Config} from '../../../Config';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 
 const data = [
   {
-    name: "Jason Stathom",
-    filedname: "Handyman",
-    startRating: "4.6",
-    ratingnumber: "231",
-    address: "1234, Contractor’s address. Australia",
-    notverified: "Not verified",
+    name: 'Jason Stathom',
+    filedname: 'Handyman',
+    startRating: '4.6',
+    ratingnumber: '231',
+    address: '1234, Contractor’s address. Australia',
+    notverified: 'Not verified',
     verified: false,
 
     coverText1:
-      "I am the best contractor in town, ready to go. Check my best works portfolio and...",
+      'I am the best contractor in town, ready to go. Check my best works portfolio and...',
   },
   {
-    name: "Mesut Ozil",
-    filedname: "Plumber",
-    startRating: "4.0",
-    ratingnumber: "100",
-    address: "1234, Contractor’s address. Australia",
+    name: 'Mesut Ozil',
+    filedname: 'Plumber',
+    startRating: '4.0',
+    ratingnumber: '100',
+    address: '1234, Contractor’s address. Australia',
     verified: true,
 
     coverText1:
-      "I am the best contractor in town, ready to go. Check my best works portfolio and...",
+      'I am the best contractor in town, ready to go. Check my best works portfolio and...',
   },
   {
-    name: "Jack Black",
-    filedname: "Handyman",
-    startRating: "3.6",
-    ratingnumber: "231",
-    address: "1234, Contractor’s address. Australia",
+    name: 'Jack Black',
+    filedname: 'Handyman',
+    startRating: '3.6',
+    ratingnumber: '231',
+    address: '1234, Contractor’s address. Australia',
     verified: true,
 
     coverText1:
-      "I am the best contractor in town, ready to go. Check my best works portfolio and...",
+      'I am the best contractor in town, ready to go. Check my best works portfolio and...',
   },
 ];
 
@@ -52,24 +52,24 @@ const CurrentContractor = () => {
   }, []);
   const handlePreferredData = () => {
     const url = Config.BASE_URL;
-    const PreferredUrl = url + "current_contractor_details";
-    console.log("Request URL:", PreferredUrl);
+    const PreferredUrl = url + 'current_contractor_details';
+    console.log('Request URL:', PreferredUrl);
     setIsLoading(true);
     axios
       .get(PreferredUrl)
-      .then((response) => {
-        console.log("PreferredData", response.data);
+      .then(response => {
+        console.log('PreferredData', response.data);
         if (response.data.success === true) {
           setIsLoading(false);
-          console.log("PreferredData....", response.data.data);
+          console.log('PreferredData....', response.data.data);
           setPreferredData(response.data.data);
         } else {
-          console.error("PreferredData_error:", response.data.error);
+          console.error('PreferredData_error:', response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("PreferredData error:", error);
+      .catch(error => {
+        console.error('PreferredData error:', error);
         setIsLoading(false);
       });
   };
@@ -77,11 +77,11 @@ const CurrentContractor = () => {
     setExpanded(!expanded);
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View>
       <ContractorsComponent
         name={`${item.UAD_FIRST_NAME} ${item.UAD_LAST_NAME}`}
-        userImage={{ uri: item.UAD_PROFILE_PHOTO_PATH }}
+        userImage={{uri: item.UAD_PROFILE_PHOTO_PATH}}
         filedname={item.filedname}
         startRating={item.startRating}
         ratingnumber={item.ratingnumber}
@@ -93,7 +93,7 @@ const CurrentContractor = () => {
 
       <DividerIcon
         IsShowIcon
-        iconName={expanded ? "chevron-up" : "chevron-down"}
+        iconName={expanded ? 'chevron-up' : 'chevron-down'}
         onPress={toggleItems}
       />
     </View>
