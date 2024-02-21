@@ -120,7 +120,13 @@ export default RowTab = (props) => {
           <View style={RowTabStyle.TextViewMain}>
             <Text style={RowTabStyle.Helptext}>{props?.TabTaxt}</Text>
             {props.isSecondRowText ? (
-              <Text style={RowTabStyle.SecondRowtext}>{props?.TabSubTaxt}</Text>
+              <Text
+                style={RowTabStyle.SecondRowtext}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {props?.TabSubTaxt}
+              </Text>
             ) : null}
           </View>
         </View>

@@ -127,6 +127,7 @@ import SearchDetail from "../../screens/Tenant/Jobs/SearchforContractor/SearchDe
 import SearchJobResult from "../../screens/Tenant/Jobs/SearchforJob/SearchJobResult";
 import BidforJob from "../../screens/Tenant/Jobs/BidforJob/BidforJob";
 import PaymentScreen from "../../screens/PaymentMethod/PaymentScreen";
+import paymentdetails from "../../screens/PaymentMethod/paymentdetails";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1064,6 +1065,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"PaymentScreen"}
           component={PaymentScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"paymentdetails"}
+          component={paymentdetails}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

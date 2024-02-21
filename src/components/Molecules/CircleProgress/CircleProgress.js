@@ -12,10 +12,10 @@ const CircleProgress = (props) => {
       <View style={CircleProgressStyle.maincontainerview}>
         <View style={CircleProgressStyle.mainview}>
           <View style={CircleProgressStyle.bindview}>
-            <View style={CircleProgressStyle.circle}>
+            <View style={[CircleProgressStyle.circle,CircleProgressStyle.rateview]}>
               <MaterialCommunityIcons
                 name="home-city"
-                size={20}
+                size={22}
                 style={CircleProgressStyle.homeicon}
               />
             </View>

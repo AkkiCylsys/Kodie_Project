@@ -88,7 +88,7 @@ export default SearchForContractor = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -163,9 +163,9 @@ export default SearchForContractor = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setLocation(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -660,6 +660,7 @@ export default SearchForContractor = (props) => {
             frontSearchIcon
             placeholder={"Start typing to search"}
             isFilterImage
+        
           />
           <View
             style={[CreateJobFirstStyle.formContainer, { marginBottom: 0 }]}

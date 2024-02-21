@@ -15,7 +15,7 @@ export const SearchBarStyle = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 14,
+    fontSize: 13,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
   },
@@ -28,7 +28,7 @@ export const SearchBarStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
-    paddingVertical: 10,
+    paddingVertical: 8,
     paddingHorizontal: 12,
     marginRight: 16,
     // marginTop: 18,

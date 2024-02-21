@@ -567,7 +567,7 @@ export default Login = (props) => {
               // }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
-              _ButtonText={"Login with Facebook"}
+              _ButtonText={"th Facebook"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <BottomTextsButton
