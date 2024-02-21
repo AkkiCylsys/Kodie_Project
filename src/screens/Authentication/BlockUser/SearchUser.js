@@ -77,6 +77,10 @@ const LandlordData = [
   },
 ];
 export default SearchUser = (props) => {
+
+  const searchUserData =()=>{
+
+  }
   const UserList_renderItem = ({ item, index }) => {
     return (
       <>
@@ -145,6 +149,8 @@ export default SearchUser = (props) => {
           backSearchIcon={true}
           height={48}
           marginTop={20}
+          searchData={searchUserData}
+
         />
       </View>
       <FlatList

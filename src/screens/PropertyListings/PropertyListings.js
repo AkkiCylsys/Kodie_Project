@@ -27,6 +27,9 @@ const PropertyListings = (props) => {
   const [openMenuId, setOpenMenuId] = useState(null);
   const [selectedComponent, setSelectedComponent] = useState(null);
 
+  const searchPropertyListing =()=>{
+    
+  }
   const toggleMenu = (id) => {
     if (openMenuId === id) {
       setOpenMenuId(null);
@@ -71,6 +74,8 @@ const PropertyListings = (props) => {
             frontSearchIcon
             marginTop={3}
             placeholder="Search properties"
+        searchData={searchPropertyListing}
+
           />
         </View>
 

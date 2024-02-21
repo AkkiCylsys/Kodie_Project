@@ -20,7 +20,7 @@ const AppInfo = (props) => {
   const previousYear = currentYear - 1;
   console.log("Previous Year:", previousYear);
   return (
-    <>
+    <View style={{flex:1,backgroundColor:_COLORS.Kodie_WhiteColor}}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"App info"}
@@ -53,7 +53,7 @@ const AppInfo = (props) => {
           </View>
         </View>
       </ScrollView>
-    </>
+    </View>
   );
 };
 

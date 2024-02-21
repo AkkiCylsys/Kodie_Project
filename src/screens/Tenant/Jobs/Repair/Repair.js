@@ -346,6 +346,8 @@ export default Repair = (props) => {
       </TouchableOpacity>
     );
   };
+
+  const searchJobList = () => {};
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
@@ -420,6 +422,7 @@ export default Repair = (props) => {
           height={48}
           marginTop={5}
           placeholder={"Search  jobs"}
+          searchData={searchJobList}
         />
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>

@@ -51,6 +51,10 @@ export default InviteTenant = (props) => {
   const [inviteTenantALl, setInviteTenantAll] = useState([]);
   const refRBSheet = useRef();
   // Get APi bind first user show bydefault showing here....
+const searchInviteTenant=()=>{
+  
+}
+
   const get_Tenent_Details = () => {
     const url = Config.BASE_URL;
     const Invite_Tenant_url = url + `tanant_details/getAll/tanant`;
@@ -223,6 +227,8 @@ export default InviteTenant = (props) => {
         marginTop={20}
         placeholder={"Search tenants"}
         frontSearchIcon
+        searchData={searchInviteTenant}
+
       />
       <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />
       <FlatList

@@ -99,6 +99,9 @@ export default SearchForJob = (props) => {
     console.log("Low Range in Parent Component:", low);
     setMin(low);
   };
+const searchForjob =()=>{
+  
+}
 
   // ...Location
   const ConfirmAddress = () => {
@@ -703,6 +706,8 @@ export default SearchForJob = (props) => {
             frontSearchIcon
             placeholder={"Start typing to search"}
             isFilterImage
+            searchData={searchForjob}
+
           />
           <View
             style={[CreateJobFirstStyle.formContainer, { marginBottom: 0 }]}

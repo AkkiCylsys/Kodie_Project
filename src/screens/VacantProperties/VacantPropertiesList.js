@@ -8,6 +8,10 @@ import { _COLORS, IMAGES } from "../../Themes";
 import DividerIcon from "../../components/Atoms/Devider/DividerIcon";
 import PropertyListing from "../../components/Molecules/PropertyListings/PropertyListing";
 const VacantPropertiesList = (props) => {
+
+  const searchVacantProperty =()=>{
+    
+  }
   return (
     <View style={VacantPropertiesListStyle.maincontainer}>
       <TopHeader
@@ -22,6 +26,8 @@ const VacantPropertiesList = (props) => {
             isFilterImage
             filterImage={IMAGES.filter}
             height={48}
+        searchData={searchVacantProperty}
+
           />
         </View>
         <DividerIcon style={VacantPropertiesListStyle.divider} />

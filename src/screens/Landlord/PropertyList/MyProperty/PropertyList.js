@@ -90,7 +90,8 @@ const PropertyList = (props) => {
     setIsDeleteData_Clicked(false);
   };
   // Extract property_id values
-
+  // search propertyList....
+  const searchPropertyList = () => {};
   const getPropertyDetailsByFilter = async (filter) => {
     setIsLoading(true);
     // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
@@ -619,7 +620,12 @@ const PropertyList = (props) => {
           color={_COLORS.Kodie_LiteWhiteColor}
         />
 
-        <SearchBar filterImage={IMAGES.filter} frontSearchIcon marginTop={3} />
+        <SearchBar
+          filterImage={IMAGES.filter}
+          frontSearchIcon
+          marginTop={3}
+          searchData={searchPropertyList}
+        />
         {activeScreen ? (
           <>
             {/* for static that by its hide.... */}

@@ -31,6 +31,10 @@ const PropertyList2 = (props) => {
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const searchpropertyList2 =()=>{
+    
+  }
   const renderDataItem = (item) => {
     return (
       <View style={PropertyList2Css.item}>
@@ -48,7 +52,10 @@ const PropertyList2 = (props) => {
   return (
     <>
       <ScrollView contentContainerStyle={PropertyList2Css.scrollViewStl}>
-        <SearchBar frontSearchIcon height={48} mapIcon />
+        <SearchBar frontSearchIcon height={48} mapIcon
+            searchData={searchpropertyList2}
+
+         />
         <View style={PropertyList2Css.Container}>
           <Text style={PropertyList2Css.inputText}>Property Type:</Text>
           <Dropdown

@@ -30,6 +30,9 @@ const Reports = (props) => {
   const toggleProperty = () => {
     setProperty(!property);
   };
+  const searchReport =()=>{
+    
+  }
   return (
     <View style={ReportsStyle.mainContainer}>
       <TopHeader
@@ -43,6 +46,7 @@ const Reports = (props) => {
             frontSearchIcon
             marginTop={3}
             placeholder="Search reports"
+            searchData={searchReport}
           />
         </View>
 
@@ -121,7 +125,7 @@ const Reports = (props) => {
                   address='A "Rental Received Report"
                 summarizes income from tenants, detailing payments, 
                 essential for property management.'
-                solidheart={true}
+                  solidheart={true}
                 />
               </View>
 
@@ -208,13 +212,13 @@ const Reports = (props) => {
             <Text style={ReportsStyle.placeholderdroptext}>
               Property management reports
             </Text>
-            <TouchableOpacity onPress={toggleProperty} >
-            <Entypo
-              name={property ? "chevron-up" : "chevron-down"}
-              size={20}
-              color={_COLORS.Kodie_BlackColor}
-            />
-             </TouchableOpacity>
+            <TouchableOpacity onPress={toggleProperty}>
+              <Entypo
+                name={property ? "chevron-up" : "chevron-down"}
+                size={20}
+                color={_COLORS.Kodie_BlackColor}
+              />
+            </TouchableOpacity>
           </View>
 
           {property && (
@@ -290,8 +294,6 @@ const Reports = (props) => {
               </View>
             </View>
           )}
-
-
         </View>
       </ScrollView>
     </View>
