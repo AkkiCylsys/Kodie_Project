@@ -1037,14 +1037,14 @@ export default CreateJobFirstScreen = (props) => {
                   // alert(item.lookup_key)
                 }}
                 renderItem={lookingServices_render}
-                renderRightIcon={() => (
-                  <AntDesign
-                    // name={dropdownIcon ? "down" : "up"}
-                    // name="down"
-                    name={arrowIcon ? "up" : "down"} 
-                    size={20}
-                  />
-                )}
+                // renderRightIcon={() => (
+                //   <AntDesign
+                //     // name={dropdownIcon ? "down" : "up"}
+                //     // name="down"
+                //     name={arrowIcon ? "up" : "down"} 
+                //     size={20}
+                //   />
+                // )}
               />
             </View>
             <View style={CreateJobFirstStyle.jobDetailsView}>

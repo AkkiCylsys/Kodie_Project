@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  PermissionsAndroid,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -24,7 +25,8 @@ import Octicons from "react-native-vector-icons/Octicons";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import UploadImageData from "../../../components/Molecules/UploadImage/UploadImage";
 import Geocoder from "react-native-geocoding";
-import Geolocation from "react-native-geolocation-service";
+// import Geolocation from "react-native-geolocation-service";
+import Geolocation from "@react-native-community/geolocation";
 import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
@@ -86,6 +88,10 @@ const EditProfile = (props) => {
   const [company_latitude, setCompany_latitude] = useState("");
   const [company_longitude, setCompany_longitude] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
+
+  const [getLat, setGetLat] = useState("");
+  const [getLong, setGetLong] = useState("");
+
   const phoneInput = useRef(null);
   console.log("latitude....", latitude);
   console.log("longitude....", longitude);
@@ -105,7 +111,7 @@ const EditProfile = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    CheckIOSMapPermission();
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     // setFullName(loginData?.Account_details[0]?.UAD_FIRST_NAME);
     // setEmail(loginData?.Login_details?.email);
     // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
@@ -193,17 +199,23 @@ const EditProfile = (props) => {
   };
 
   const getAddressWithCordinates = () => {
+    console.log("Enter cordinates..");
     Geolocation.watchPosition(
       (position) => {
+        console.log("with cordinates..");
         if (activeTab === "Tab1") {
           setlatitude(position.coords.latitude);
+          console.log("profile latitute....", position.coords.latitude);
         } else {
           setCompany_latitude(position.coords.latitude);
+          console.log("company latitude....", position.coords.latitude);
         }
         if (activeTab === "Tab1") {
           setlongitude(position.coords.longitude);
+          console.log("profile longitude....", position.coords.longitude);
         } else {
           setCompany_longitude(position.coords.longitude);
+          console.log("company longitude....", position.coords.longitude);
         }
         // setlatitude(position.coords.latitude);
         // setlongitude(position.coords.longitude);
@@ -679,8 +691,8 @@ const EditProfile = (props) => {
               marginBottom: 10,
             }}
             onRegionChange={onRegionChange}
-            Maplat={latitude}
-            Maplng={longitude}
+            Maplat={activeTab === "Tab1" ? latitude : company_latitude}
+            Maplng={activeTab === "Tab1" ? longitude : company_longitude}
           />
           <View
             style={{
