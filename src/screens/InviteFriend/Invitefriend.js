@@ -86,14 +86,13 @@ const LandlordData = [
   },
 ];
 
-
 export default Invitefriend = (props) => {
   const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [inviteFriendData, setInviteFriendData] = useState("");
   const [inviteFriendPath, setInviteFriendPath] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [filteredContacts, setFilteredContacts] = useState([]);
   useEffect(() => {
     requestContactsPermission(); // Request permission when component mounts
     inviteFriend();
@@ -170,22 +169,22 @@ export default Invitefriend = (props) => {
       const data = await Contacts.getAll();
       console.log("contact..", data);
       setContacts(data);
+      setFilteredContacts(data);
       setIsLoading(false);
     } catch (error) {
       console.error("Error fetching contacts:", error);
       setIsLoading(false);
     }
   };
-  // const handleSearch = (query) => {
-  //   console.log("query", query);
-  //   setSearchQuery(query);
-  // };
-
-  // const filteredContacts = contacts.filter(
-  //   (contact) =>
-  //     contact.displayName &&
-  //     contact.displayName.toLowerCase().includes(searchQuery.toLowerCase())
-  // );
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const filtered = contacts.filter(
+      (contact) =>
+        contact.displayName &&
+        contact.displayName.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredContacts(filtered);
+  };
 
   const UserList_renderItem = ({ item, index }) => {
     return (
@@ -214,7 +213,7 @@ export default Invitefriend = (props) => {
                 {item.displayName}
               </Text>
               <Text style={InviteStyles.profile_SubHeading}>
-                {item.Sub_heading}
+                {item.phoneNumbers?.[0]?.number || "No phone number available"}
               </Text>
             </View>
           </View>
@@ -249,8 +248,8 @@ export default Invitefriend = (props) => {
           backSearchIcon={true}
           height={48}
           marginTop={20}
-          // searchContact={handleSearch}
-          // textvalue={searchQuery}
+          searchData={handleSearch}
+          textvalue={searchQuery}
         />
         <View style={InviteStyles.shareMainView}>
           <TouchableOpacity
@@ -266,8 +265,8 @@ export default Invitefriend = (props) => {
       </View>
       <FlatList
         style={InviteStyles.FlatlistContainer}
-        data={contacts}
-        // data={filteredContacts}
+        // data={contacts}
+        data={filteredContacts}
         scrollEnabled
         ListHeaderComponent={ListHeader}
         showsVerticalScrollIndicator={false}

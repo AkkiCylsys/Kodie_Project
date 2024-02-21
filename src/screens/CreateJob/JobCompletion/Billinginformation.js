@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
 import { BillinginformationStyle } from "./BillinginformationStyle";
@@ -18,9 +18,47 @@ import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSin
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import { normalizeUnits } from "moment";
+import { Config } from "../../../Config";
+import axios from "axios";
 const Billinginformation = (props) => {
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+
+  useEffect(() => {
+    getJobDetails();
+  }, []);
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetailsData = {
+      jm_job_id: 72,
+    };
+    axios
+      .post(jobDetails_url, jobDetailsData)
+      .then((response) => {
+        console.log("API Response JobDetails:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData....", response.data.data);
+          console.log("job_type_my..", response.data.data.job_type_my);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed JobDetails ", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const toggleView = () => {
     setShow(!show);
   };
@@ -199,12 +237,17 @@ const Billinginformation = (props) => {
               _ButtonText={"Pay $173.25 now"}
               backgroundColor={_COLORS.Kodie_BlackColor}
               disabled={isLoading ? true : false}
-              onPress={()=>{
-                props.navigation.navigate('PaymentMethod')
+              onPress={() => {
+                props.navigation.navigate("PaymentMethod");
+                // props.navigation.navigate('PaymentDetailsScreen')
               }}
             />
-
-            <TouchableOpacity style={BillinginformationStyle.goBack_View}>
+            <TouchableOpacity
+              style={BillinginformationStyle.goBack_View}
+              onPress={() => {
+                props.navigation.navigate("PaymentDetailsScreen");
+              }}
+            >
               <View style={BillinginformationStyle.backIcon}>
                 <Ionicons
                   name="chevron-back"

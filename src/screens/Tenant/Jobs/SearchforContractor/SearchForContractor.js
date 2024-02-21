@@ -76,6 +76,11 @@ export default SearchForContractor = (props) => {
   const [longitude, setlongitude] = useState("");
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
+
+  const searchForContractor =()=>{
+    
+  }
+
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -660,6 +665,7 @@ export default SearchForContractor = (props) => {
             frontSearchIcon
             placeholder={"Start typing to search"}
             isFilterImage
+            searchData={searchForContractor}
         
           />
           <View

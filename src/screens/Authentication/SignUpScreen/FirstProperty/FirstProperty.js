@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   Platform,
+  PermissionsAndroid
 } from "react-native";
 import { FirstPropertyStyle } from "./FirstPropertyStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -28,7 +29,8 @@ import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
-import Geolocation from "react-native-geolocation-service";
+// import Geolocation from "react-native-geolocation-service";
+import Geolocation from "@react-native-community/geolocation";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useDispatch, useSelector } from "react-redux";
@@ -264,7 +266,7 @@ export default FirstProperty = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    CheckIOSMapPermission();
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
   }, []);
   const handleProperty_Type = () => {
     const propertyData = {
@@ -538,7 +540,7 @@ export default FirstProperty = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -591,8 +593,10 @@ export default FirstProperty = (props) => {
       });
   };
   const getAddressWithCordinates = () => {
+    console.log("Enter cordinates");
     Geolocation.watchPosition(
       (position) => {
+        console.log("With cordinates");
         setlatitude(position.coords.latitude);
         setlongitude(position.coords.longitude);
         getAddress(position.coords.latitude, position.coords.longitude);
@@ -611,9 +615,10 @@ export default FirstProperty = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setPropertyLocation(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setPropertyLocation(json.results[0].formatted_address);
+        getAddressWithCordinates()
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -722,254 +727,67 @@ export default FirstProperty = (props) => {
               />
             </View>
             <ScrollView>
-            <View style={FirstPropertyStyle.headingView}>
-              <Text style={FirstPropertyStyle.heading}>
-                {"Add your first property"}
-              </Text>
-            </View>
-            <View style={FirstPropertyStyle.card}>
-              <View style={FirstPropertyStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
-                <View style={FirstPropertyStyle.locationConView}>
-                  <View style={FirstPropertyStyle.locationContainer}>
-                    <TextInput
-                      style={FirstPropertyStyle.locationInput}
-                      value={propertyLocation}
-                      onChangeText={setPropertyLocation}
-                      onFocus={() => {
-                        setIsSearch(true);
-                      }}
-                      placeholder="Search location"
-                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                    />
-                  </View>
-                  <TouchableOpacity
-                    style={FirstPropertyStyle.locationIconView}
-                    onPress={() => {
-                      Platform.OS == "ios"
-                        ? CheckIOSMapPermission
-                        : checkpermissionlocation();
-                      setIsMap(true);
-                    }}
-                  >
-                    <Octicons
-                      name={"location"}
-                      size={25}
-                      color={_COLORS.Kodie_GreenColor}
-                      style={FirstPropertyStyle.locationIcon}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={FirstPropertyStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>
-                  Property description
-                </Text>
-                <TextInput
-                  style={FirstPropertyStyle.input}
-                  value={propertyDesc}
-                  onChangeText={setPropertyDesc}
-                  placeholder="Describe your property here..."
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  multiline
-                  numberOfLines={5}
-                  textAlignVertical={"top"}
-                />
-                <Text style={FirstPropertyStyle.characterLimit}>
-                  {propertyDesc.length}/1000
+              <View style={FirstPropertyStyle.headingView}>
+                <Text style={FirstPropertyStyle.heading}>
+                  {"Add your first property"}
                 </Text>
               </View>
-              <View style={FirstPropertyStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Property type</Text>
-                <Dropdown
-                  style={FirstPropertyStyle.dropdown}
-                  placeholderStyle={[
-                    FirstPropertyStyle.placeholderStyle,
-                    { color: _COLORS.Kodie_LightGrayColor },
-                  ]}
-                  selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                  inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                  iconStyle={FirstPropertyStyle.iconStyle}
-                  data={property_Data}
-                  maxHeight={300}
-                  labelField="lookup_description"
-                  valueField="lookup_key"
-                  placeholder="Please select property type"
-                  value={property_value}
-                  onChange={(item) => {
-                    setProperty_value(item.lookup_key);
-                  }}
-                />
-              </View>
-              <Text
-                style={[
-                  LABEL_STYLES._texinputLabel,
-                  FirstPropertyStyle.addition_featureText,
-                ]}
-              >
-                Key features
-              </Text>
-              <View style={FirstPropertyStyle.inputContainer}>
-                <View>
-                  <View style={FirstPropertyStyle.mainfeaturesview}>
-                    <View style={FirstPropertyStyle.key_feature_Text_view}>
-                      <Text style={FirstPropertyStyle.key_feature_Text}>
-                        {"Bedrooms"}
-                      </Text>
-                    </View>
-
-                    <TouchableOpacity style={FirstPropertyStyle.plus_minusview}>
-                      <TouchableOpacity
-                        style={FirstPropertyStyle.menusIconView}
-                        onPress={decreaseBedroomCount}
-                      >
-                        <AntDesign name="minus" size={20} />
-                      </TouchableOpacity>
-                      <Text style={FirstPropertyStyle.countdata}>
-                        {CountBedroom}
-                      </Text>
-                      <TouchableOpacity
-                        style={FirstPropertyStyle.menusIconView}
-                        onPress={() => {
-                          increaseBedroomCount();
-                        }}
-                      >
-                        <AntDesign name="plus" size={20} />
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={FirstPropertyStyle.mainfeaturesview}>
-                    <View style={FirstPropertyStyle.key_feature_Text_view}>
-                      <Text style={FirstPropertyStyle.key_feature_Text}>
-                        {"Bathrooms"}
-                      </Text>
-                    </View>
-
-                    <TouchableOpacity style={FirstPropertyStyle.plus_minusview}>
-                      <TouchableOpacity
-                        style={FirstPropertyStyle.menusIconView}
-                        onPress={decreaseBathroomCount}
-                      >
-                        <AntDesign name="minus" size={20} />
-                      </TouchableOpacity>
-                      <Text style={FirstPropertyStyle.countdata}>
-                        {CountBathroom}
-                      </Text>
-                      <TouchableOpacity
-                        style={FirstPropertyStyle.menusIconView}
-                        onPress={increaseBathroomCount}
-                      >
-                        <AntDesign name="plus" size={20} />
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={FirstPropertyStyle.mainfeaturesview}>
-                    <View style={FirstPropertyStyle.key_feature_Text_view}>
-                      <Text style={FirstPropertyStyle.key_feature_Text}>
-                        {"Parking spaces"}
-                      </Text>
-                    </View>
-
-                    <TouchableOpacity style={FirstPropertyStyle.plus_minusview}>
-                      <TouchableOpacity
-                        style={FirstPropertyStyle.menusIconView}
-                        onPress={decreaseParkingCount}
-                      >
-                        <AntDesign name="minus" size={20} />
-                      </TouchableOpacity>
-                      <Text style={FirstPropertyStyle.countdata}>
-                        {CountParking}
-                      </Text>
-                      <TouchableOpacity
-                        style={FirstPropertyStyle.menusIconView}
-                        onPress={increaseParkingCount}
-                      >
-                        <AntDesign name="plus" size={20} />
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View style={FirstPropertyStyle.mainfeaturesview}>
-                    <View style={FirstPropertyStyle.key_feature_Text_view}>
-                      <Text style={FirstPropertyStyle.key_feature_Text}>
-                        {"On-street parking"}
-                      </Text>
-                    </View>
-
-                    <TouchableOpacity style={FirstPropertyStyle.plus_minusview}>
-                      <TouchableOpacity
-                        style={FirstPropertyStyle.menusIconView}
-                        onPress={decreaseParkingStreetCount}
-                      >
-                        <AntDesign name="minus" size={20} />
-                      </TouchableOpacity>
-                      <Text style={FirstPropertyStyle.countdata}>
-                        {CountParkingStreet}
-                      </Text>
-                      <TouchableOpacity
-                        style={FirstPropertyStyle.menusIconView}
-                        onPress={increaseParkingStreetCount}
-                      >
-                        <AntDesign name="plus" size={20} />
-                      </TouchableOpacity>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-
-                <View>
-                  <View style={FirstPropertyStyle.key_feature_mainView}>
-                    <View style={FirstPropertyStyle.key_feature_subView}>
-                      <Text style={FirstPropertyStyle.key_feature_Text}>
-                        {"Building floor size  (optional)"}
-                      </Text>
-                    </View>
-
-                    <View style={FirstPropertyStyle.floorsizeview}>
-                      <TextInput
-                        style={FirstPropertyStyle.flor_input_field}
-                        value={buildingFlorSize}
-                        onChangeText={setBuildingFlorSize}
-                        placeholder="102m2"
-                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                        keyboardType="number-pad"
-                      />
-                    </View>
-                  </View>
-
-                  <View style={FirstPropertyStyle.key_feature_mainView}>
-                    <View style={FirstPropertyStyle.key_feature_subView}>
-                      <Text style={FirstPropertyStyle.key_feature_Text}>
-                        {"Land area (optional)"}
-                      </Text>
-                    </View>
-
-                    <View style={FirstPropertyStyle.floorsizeview}>
-                      <TextInput
-                        style={FirstPropertyStyle.flor_input_field}
-                        value={landArea}
-                        onChangeText={setLandArea}
-                        placeholder="102m2"
-                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                        keyboardType="number-pad"
-                      />
-                    </View>
-                  </View>
-                </View>
-
+              <View style={FirstPropertyStyle.card}>
                 <View style={FirstPropertyStyle.inputContainer}>
-                  <Text
-                    style={[
-                      LABEL_STYLES._texinputLabel,
-                      FirstPropertyStyle.addition_featureText,
-                    ]}
-                  >
-                    Additional features
+                  <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
+                  <View style={FirstPropertyStyle.locationConView}>
+                    <View style={FirstPropertyStyle.locationContainer}>
+                      <TextInput
+                        style={FirstPropertyStyle.locationInput}
+                        value={propertyLocation}
+                        onChangeText={setPropertyLocation}
+                        onFocus={() => {
+                          setIsSearch(true);
+                        }}
+                        placeholder="Search location"
+                        placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                      />
+                    </View>
+                    <TouchableOpacity
+                      style={FirstPropertyStyle.locationIconView}
+                      onPress={() => {
+                        Platform.OS == "ios"
+                          ? CheckIOSMapPermission
+                          : checkpermissionlocation();
+                        setIsMap(true);
+                      }}
+                    >
+                      <Octicons
+                        name={"location"}
+                        size={25}
+                        color={_COLORS.Kodie_GreenColor}
+                        style={FirstPropertyStyle.locationIcon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={FirstPropertyStyle.inputContainer}>
+                  <Text style={LABEL_STYLES._texinputLabel}>
+                    Property description
                   </Text>
-                  <MultiSelect
+                  <TextInput
+                    style={FirstPropertyStyle.input}
+                    value={propertyDesc}
+                    onChangeText={setPropertyDesc}
+                    placeholder="Describe your property here..."
+                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                    multiline
+                    numberOfLines={5}
+                    textAlignVertical={"top"}
+                  />
+                  <Text style={FirstPropertyStyle.characterLimit}>
+                    {propertyDesc.length}/1000
+                  </Text>
+                </View>
+                <View style={FirstPropertyStyle.inputContainer}>
+                  <Text style={LABEL_STYLES._texinputLabel}>Property type</Text>
+                  <Dropdown
                     style={FirstPropertyStyle.dropdown}
-                    activeColor = {_COLORS.Kodie_MidLightGreenColor}
                     placeholderStyle={[
                       FirstPropertyStyle.placeholderStyle,
                       { color: _COLORS.Kodie_LightGrayColor },
@@ -977,125 +795,320 @@ export default FirstProperty = (props) => {
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                     iconStyle={FirstPropertyStyle.iconStyle}
-                    data={additionalfeatureskey}
-                    labelField="features_name"
-                    valueField="paf_key"
-                    placeholder="Select additional features"
-                    value={additionalfeatureskeyvalue}
-                    search
-                    searchPlaceholder="Search..."
+                    data={property_Data}
+                    maxHeight={300}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="Please select property type"
+                    value={property_value}
                     onChange={(item) => {
-                      setAdditionalFeaturesKeyValue(item);
-                      // alert(item);
+                      setProperty_value(item.lookup_key);
                     }}
-                    renderItem={renderDataItem}
-                    renderSelectedItem={(item, unSelect) => (
-                      <TouchableOpacity
-                        onPress={() => unSelect && unSelect(item)}
-                      >
-                        <View style={FirstPropertyStyle.selectedStyle}>
-                          <Text style={FirstPropertyStyle.textSelectedStyle}>
-                            {item.features_name}
-                          </Text>
-                          <AntDesign color="white" name="close" size={17} />
-                        </View>
-                      </TouchableOpacity>
-                    )}
                   />
                 </View>
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={FirstPropertyStyle.AutoList_text}>
-                  {"Auto-list property on Kodie property marketplace "}
+                <Text
+                  style={[
+                    LABEL_STYLES._texinputLabel,
+                    FirstPropertyStyle.addition_featureText,
+                  ]}
+                >
+                  Key features
                 </Text>
-                <TouchableOpacity style={FirstPropertyStyle.questionmark}>
-                  <AntDesign name="question" size={20} color="#8AFBA5" />
-                </TouchableOpacity>
-              </View>
-              <RowButtons
-                LeftButtonText={"Yes"}
-                leftButtonbackgroundColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                LeftButtonTextColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                LeftButtonborderColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressLeftButton={() => {
-                  setSelectedButton(false);
-                  setSelectedButtonId(0);
-                }}
-                RightButtonText={"No"}
-                RightButtonbackgroundColor={
-                  selectedButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                RightButtonTextColor={
-                  selectedButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                RightButtonborderColor={
-                  selectedButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressRightButton={() => {
-                  setSelectedButton(true);
-                  setSelectedButtonId(1);
-                }}
-              />
-            </View>
-            <View style={{ marginHorizontal: 16 }}>
-              <CustomSingleButton
-                disabled={isLoading ? true : false}
-                _ButtonText={"Save"}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  handleSaveSignup();
-                }}
-              />
-            </View>
-            <View style={{ marginHorizontal: 16 }}>
-              <CustomSingleButton
-                disabled={isLoading ? true : false}
-                _ButtonText={"Fill these details out later"}
-                Text_Color={_COLORS.Kodie_BlackColor}
-                backgroundColor={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  handleSaveSignupfill();
-                }}
-              />
-            </View>
-            <TouchableOpacity
-              style={FirstPropertyStyle.goBack_View}
-              onPress={goBack}
-            >
-              <View style={FirstPropertyStyle.backIcon}>
-                <Ionicons
-                  name="chevron-back"
-                  size={22}
-                  color={_COLORS.Kodie_MediumGrayColor}
+                <View style={FirstPropertyStyle.inputContainer}>
+                  <View>
+                    <View style={FirstPropertyStyle.mainfeaturesview}>
+                      <View style={FirstPropertyStyle.key_feature_Text_view}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Bedrooms"}
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.plus_minusview}
+                      >
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                          onPress={decreaseBedroomCount}
+                        >
+                          <AntDesign name="minus" size={20} />
+                        </TouchableOpacity>
+                        <Text style={FirstPropertyStyle.countdata}>
+                          {CountBedroom}
+                        </Text>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                          onPress={() => {
+                            increaseBedroomCount();
+                          }}
+                        >
+                          <AntDesign name="plus" size={20} />
+                        </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={FirstPropertyStyle.mainfeaturesview}>
+                      <View style={FirstPropertyStyle.key_feature_Text_view}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Bathrooms"}
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.plus_minusview}
+                      >
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                          onPress={decreaseBathroomCount}
+                        >
+                          <AntDesign name="minus" size={20} />
+                        </TouchableOpacity>
+                        <Text style={FirstPropertyStyle.countdata}>
+                          {CountBathroom}
+                        </Text>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                          onPress={increaseBathroomCount}
+                        >
+                          <AntDesign name="plus" size={20} />
+                        </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={FirstPropertyStyle.mainfeaturesview}>
+                      <View style={FirstPropertyStyle.key_feature_Text_view}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Parking spaces"}
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.plus_minusview}
+                      >
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                          onPress={decreaseParkingCount}
+                        >
+                          <AntDesign name="minus" size={20} />
+                        </TouchableOpacity>
+                        <Text style={FirstPropertyStyle.countdata}>
+                          {CountParking}
+                        </Text>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                          onPress={increaseParkingCount}
+                        >
+                          <AntDesign name="plus" size={20} />
+                        </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={FirstPropertyStyle.mainfeaturesview}>
+                      <View style={FirstPropertyStyle.key_feature_Text_view}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"On-street parking"}
+                        </Text>
+                      </View>
+
+                      <TouchableOpacity
+                        style={FirstPropertyStyle.plus_minusview}
+                      >
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                          onPress={decreaseParkingStreetCount}
+                        >
+                          <AntDesign name="minus" size={20} />
+                        </TouchableOpacity>
+                        <Text style={FirstPropertyStyle.countdata}>
+                          {CountParkingStreet}
+                        </Text>
+                        <TouchableOpacity
+                          style={FirstPropertyStyle.menusIconView}
+                          onPress={increaseParkingStreetCount}
+                        >
+                          <AntDesign name="plus" size={20} />
+                        </TouchableOpacity>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+
+                  <View>
+                    <View style={FirstPropertyStyle.key_feature_mainView}>
+                      <View style={FirstPropertyStyle.key_feature_subView}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Building floor size  (optional)"}
+                        </Text>
+                      </View>
+
+                      <View style={FirstPropertyStyle.floorsizeview}>
+                        <TextInput
+                          style={FirstPropertyStyle.flor_input_field}
+                          value={buildingFlorSize}
+                          onChangeText={setBuildingFlorSize}
+                          placeholder="102m2"
+                          placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                          keyboardType="number-pad"
+                        />
+                      </View>
+                    </View>
+
+                    <View style={FirstPropertyStyle.key_feature_mainView}>
+                      <View style={FirstPropertyStyle.key_feature_subView}>
+                        <Text style={FirstPropertyStyle.key_feature_Text}>
+                          {"Land area (optional)"}
+                        </Text>
+                      </View>
+
+                      <View style={FirstPropertyStyle.floorsizeview}>
+                        <TextInput
+                          style={FirstPropertyStyle.flor_input_field}
+                          value={landArea}
+                          onChangeText={setLandArea}
+                          placeholder="102m2"
+                          placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                          keyboardType="number-pad"
+                        />
+                      </View>
+                    </View>
+                  </View>
+
+                  <View style={FirstPropertyStyle.inputContainer}>
+                    <Text
+                      style={[
+                        LABEL_STYLES._texinputLabel,
+                        FirstPropertyStyle.addition_featureText,
+                      ]}
+                    >
+                      Additional features
+                    </Text>
+                    <MultiSelect
+                      style={FirstPropertyStyle.dropdown}
+                      activeColor={_COLORS.Kodie_MidLightGreenColor}
+                      placeholderStyle={[
+                        FirstPropertyStyle.placeholderStyle,
+                        { color: _COLORS.Kodie_LightGrayColor },
+                      ]}
+                      selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+                      inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+                      iconStyle={FirstPropertyStyle.iconStyle}
+                      data={additionalfeatureskey}
+                      labelField="features_name"
+                      valueField="paf_key"
+                      placeholder="Select additional features"
+                      value={additionalfeatureskeyvalue}
+                      search
+                      searchPlaceholder="Search..."
+                      onChange={(item) => {
+                        setAdditionalFeaturesKeyValue(item);
+                        // alert(item);
+                      }}
+                      renderItem={renderDataItem}
+                      renderSelectedItem={(item, unSelect) => (
+                        <TouchableOpacity
+                          onPress={() => unSelect && unSelect(item)}
+                        >
+                          <View style={FirstPropertyStyle.selectedStyle}>
+                            <Text style={FirstPropertyStyle.textSelectedStyle}>
+                              {item.features_name}
+                            </Text>
+                            <AntDesign color="white" name="close" size={17} />
+                          </View>
+                        </TouchableOpacity>
+                      )}
+                    />
+                  </View>
+                </View>
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={FirstPropertyStyle.AutoList_text}>
+                    {"Auto-list property on Kodie property marketplace "}
+                  </Text>
+                  <TouchableOpacity style={FirstPropertyStyle.questionmark}>
+                    <AntDesign name="question" size={20} color="#8AFBA5" />
+                  </TouchableOpacity>
+                </View>
+                <RowButtons
+                  LeftButtonText={"Yes"}
+                  leftButtonbackgroundColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedButton(false);
+                    setSelectedButtonId(0);
+                  }}
+                  RightButtonText={"No"}
+                  RightButtonbackgroundColor={
+                    selectedButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedButton(true);
+                    setSelectedButtonId(1);
+                  }}
                 />
               </View>
-              <Text style={FirstPropertyStyle.goBack_Text}>{"Go back"}</Text>
-            </TouchableOpacity>
+              <View style={{ marginHorizontal: 16 }}>
+                <CustomSingleButton
+                  disabled={isLoading ? true : false}
+                  _ButtonText={"Save"}
+                  Text_Color={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    handleSaveSignup();
+                  }}
+                />
+              </View>
+              <View style={{ marginHorizontal: 16 }}>
+                <CustomSingleButton
+                  disabled={isLoading ? true : false}
+                  _ButtonText={"Fill these details out later"}
+                  Text_Color={_COLORS.Kodie_BlackColor}
+                  backgroundColor={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    handleSaveSignupfill();
+                  }}
+                />
+              </View>
+              <TouchableOpacity
+                style={FirstPropertyStyle.goBack_View}
+                onPress={goBack}
+              >
+                <View style={FirstPropertyStyle.backIcon}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={22}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                  />
+                </View>
+                <Text style={FirstPropertyStyle.goBack_Text}>{"Go back"}</Text>
+              </TouchableOpacity>
             </ScrollView>
           </View>
         )}

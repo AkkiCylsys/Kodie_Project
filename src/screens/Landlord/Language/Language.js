@@ -12,6 +12,10 @@ import LanguageData from "../../../components/Molecules/LanguageData/LanguageDat
 import { ScrollView } from "react-native-gesture-handler";
 export default Language = (props) => {
   const [on, setOn] = useState(true);
+
+  const searchLanguage =()=>{
+    
+  }
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
   return (
     <View style={Languagestyle.mainContainer}>
@@ -70,7 +74,12 @@ export default Language = (props) => {
         <View style={Languagestyle.language_view}>
           <Text style={Languagestyle.language_Text}>{"Language"}</Text>
         </View>
-        <SearchBar backSearchIcon height={48} marginTop={20} />
+        <SearchBar
+          backSearchIcon
+          height={48}
+          marginTop={20}
+          searchData={searchLanguage}
+        />
         <LanguageData />
       </ScrollView>
     </View>

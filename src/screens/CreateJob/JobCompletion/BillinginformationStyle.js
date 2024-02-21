@@ -210,7 +210,7 @@ export const BillinginformationStyle = StyleSheet.create({
   },
   buttonview: {
     marginHorizontal: 10,
-    marginBottom: 50,
+    marginBottom: 100,
   },
   gobackicon: {
     justifyContent: "center",

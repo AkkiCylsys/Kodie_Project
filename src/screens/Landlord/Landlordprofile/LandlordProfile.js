@@ -29,6 +29,9 @@ export default LandlordProfile = (props) => {
     // props.navigation.navigate("DrawerNavigatorLeftMenu");
     props.navigation.navigate("LoginScreen");
   };
+  const searchprofileMenu =()=>{
+    
+  }
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
@@ -43,7 +46,12 @@ export default LandlordProfile = (props) => {
         // }}
       />
       <ScrollView>
-        <SearchBar frontSearchIcon={true} height={48} marginTop={20} />
+        <SearchBar
+          frontSearchIcon={true}
+          height={48}
+          marginTop={20}
+          searchData={searchprofileMenu}
+        />
         <View style={LandlordProfileStyle.profilemainView}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
             <Image
@@ -115,7 +123,6 @@ export default LandlordProfile = (props) => {
             LeftImage={IMAGES.Accountsetting}
             TabTaxt="Account"
             TabSubTaxt="Manage your account & payment settings"
-            
           />
         </TouchableOpacity>
 

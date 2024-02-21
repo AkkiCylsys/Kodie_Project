@@ -38,6 +38,9 @@ const CurrentTenant = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
+  const searchCurrentTenant =()=>{
+    
+  }
   const CloseUp = () => {
     refRBSheet.current.close();
   };
@@ -121,6 +124,8 @@ const CurrentTenant = (props) => {
         marginTop={20}
         placeholder={"Search tenants"}
         frontSearchIcon
+        searchData={searchCurrentTenant}
+        
       />
 
       <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />

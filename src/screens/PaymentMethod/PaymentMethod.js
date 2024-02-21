@@ -46,8 +46,10 @@ const PaymentMethod = (props) => {
             backgroundColor={_COLORS.Kodie_BlackColor}
             Text_Color={_COLORS.Kodie_WhiteColor}
             disabled={isLoading ? true : false}
-            onPress={()=>{
+            onPress={() => {
+              // props.navigation.navigate("PaymentScreen");
               props.navigation.navigate("paymentdetails")
+
             }}
           />
         </View>

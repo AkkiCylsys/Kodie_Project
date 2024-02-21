@@ -30,6 +30,10 @@ const data = [
 ];
 export default ContractorList = (props) => {
   const [isauto, setIsauto] = useState(false);
+
+  const searchContractorList =()=>{
+    
+  }
   const renderContractorList = ({ item, index }) => {
     return (
       <>
@@ -112,6 +116,8 @@ export default ContractorList = (props) => {
         isFilterImage
         height={48}
         marginTop={20}
+        searchData={searchContractorList}
+
       />
       <View style={ContractorlistStyle.hor_Line} />
       <FlatList

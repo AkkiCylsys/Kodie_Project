@@ -151,6 +151,7 @@ const RantalOffer = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
 
+  const searchRentalOffer = () => {};
   const propertyData2_render = ({ item }) => {
     const isExpanded = expandedItems.includes(item.id);
     return (
@@ -413,10 +414,12 @@ const RantalOffer = (props) => {
   };
 
   return (
-    <View style={{
-      flex:1,
-      backgroundColor: _COLORS.Kodie_WhiteColor,
-    }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: _COLORS.Kodie_WhiteColor,
+      }}
+    >
       {/* <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"RantalOffers"}
@@ -473,6 +476,7 @@ const RantalOffer = (props) => {
             isFilterImage
             filterImage={IMAGES.filter}
             height={40}
+            searchData={searchRentalOffer}
           />
           <DividerIcon
             borderBottomWidth={2}

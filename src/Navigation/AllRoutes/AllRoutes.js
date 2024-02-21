@@ -126,6 +126,7 @@ import ProfileDocumentDetails from "../../screens/Profile/ProfileDocumentDetails
 import SearchDetail from "../../screens/Tenant/Jobs/SearchforContractor/SearchDetail";
 import SearchJobResult from "../../screens/Tenant/Jobs/SearchforJob/SearchJobResult";
 import BidforJob from "../../screens/Tenant/Jobs/BidforJob/BidforJob";
+import PaymentScreen from "../../screens/PaymentMethod/PaymentScreen";
 import paymentdetails from "../../screens/PaymentMethod/paymentdetails";
 import ApplePay from "../../screens/PaymentMethod/ApplePay/ApplePay";
 import CreditCard from "../../screens/PaymentMethod/CreditCard/CreditCard";
@@ -1061,6 +1062,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"BidforJob"}
           component={BidforJob}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"PaymentScreen"}
+          component={PaymentScreen}
           options={{ headerShown: false }}
         />
         <Stack.Screen

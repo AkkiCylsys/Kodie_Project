@@ -33,6 +33,7 @@ const Contractors1 = (props) => {
       case "Tab3":
     }
   };
+  const searchcontractor1 = () => {};
   return (
     <View style={ContractorsStyle1.mainContainer}>
       <TopHeader
@@ -83,6 +84,7 @@ const Contractors1 = (props) => {
             isFilterImage
             filterImage={IMAGES.filter}
             height={48}
+            searchData={searchcontractor1}
           />
           <View style={ContractorsStyle1.Line1} />
           <View style={ContractorsStyle1.buttonview}>
