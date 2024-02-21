@@ -138,8 +138,8 @@ export default RowTab = (props) => {
                     /> */}
           <Entypo
             name={"chevron-small-right"}
-            size={20}
-            color={_COLORS.Kodie_BlackColor}
+            size={22}
+            color={_COLORS.Kodie_ExtraLightGrayColor}
           />
         </View>
       </View>

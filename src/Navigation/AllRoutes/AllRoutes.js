@@ -127,6 +127,8 @@ import SearchDetail from "../../screens/Tenant/Jobs/SearchforContractor/SearchDe
 import SearchJobResult from "../../screens/Tenant/Jobs/SearchforJob/SearchJobResult";
 import BidforJob from "../../screens/Tenant/Jobs/BidforJob/BidforJob";
 import paymentdetails from "../../screens/PaymentMethod/paymentdetails";
+import ApplePay from "../../screens/PaymentMethod/ApplePay/ApplePay";
+import CreditCard from "../../screens/PaymentMethod/CreditCard/CreditCard";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1064,6 +1066,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"paymentdetails"}
           component={paymentdetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CreditCard"}
+          component={CreditCard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"ApplePay"}
+          component={ApplePay}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

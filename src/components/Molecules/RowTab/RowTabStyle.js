@@ -12,7 +12,8 @@ export const RowTabStyle = StyleSheet.create({
         // paddingHorizontal: 15,
         marginBottom: 3,
         flex:1,
-        marginHorizontal:12
+        marginHorizontal:12,
+   
     },
 
     Helpselctionview: {
@@ -22,11 +23,15 @@ export const RowTabStyle = StyleSheet.create({
     },
 
     Helpimgview: {
-        padding: 8,
-        borderWidth: 0.5,
-        borderRadius: 5,
+        // padding: 8,
+        borderWidth: 0.4,
+        borderRadius: 10,
         borderColor: _COLORS.Kodie_MediumGrayColor,
         backgroundColor: _COLORS.Kodie_TransparentColor,
+        width:34,
+        height:34,
+        alignItems:'center',
+        justifyContent:'center'
     },
 
     imgbox: {
@@ -36,16 +41,19 @@ export const RowTabStyle = StyleSheet.create({
     },
 
     Helptext: {
-        fontSize: 14,
+        fontSize: 15,
         marginLeft: 10,
         color: _COLORS.Kodie_BlackColor,
-        fontFamily: FONTFAMILY.K_SemiBold
+        fontFamily: FONTFAMILY.K_SemiBold,
+        letterSpacing:0.3
     },
     SecondRowtext: {
-        fontSize: 11,
+        fontSize: 12,
         marginLeft: 10,
         color: _COLORS.Kodie_ExtraLightGrayColor,
         fontFamily: FONTFAMILY.K_Regular,
+        letterSpacing:0.3,
+        marginTop:2
     },
     TextViewMain:{
         flexDirection:'column',
@@ -66,17 +74,17 @@ export const RowTabStyle = StyleSheet.create({
         borderWidth: 0.5,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 5,
+        borderRadius: 10,
         borderColor: _COLORS.Kodie_MediumGrayColor,
 
     },
 
     hairlinebuttom: {
         backgroundColor: _COLORS.Kodie_LightGrayLineColor,
-        height: 0.5,
+        height: 1.35,
         alignSelf: 'center',
         width: '94%',
-        marginTop: 15,
+        marginTop: 10,
         opacity: 0.7,
 
     },
