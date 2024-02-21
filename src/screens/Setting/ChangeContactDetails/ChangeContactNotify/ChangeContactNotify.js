@@ -10,10 +10,12 @@ import { _goBack } from "../../../../services/CommonServices";
 import { Config } from "../../../../Config";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useDispatch, useSelector } from "react-redux";
+import SwitchToggle from "react-native-switch-toggle";
 import axios from "axios";
 //ScreenNo:207
 const ChangeContactNotify = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
+  const [notify, setNotify] = useState(false);
   console.log("loginResponse.....", loginData);
   let oldPhoneNumber = props?.route?.params?.oldPhoneNumber;
   let newPhoneNumber = props?.route?.params?.newPhoneNumber;
@@ -38,7 +40,7 @@ const ChangeContactNotify = (props) => {
         console.log("res UpdateContactDetails......", res.data);
         if (res?.data?.success === true) {
           alert(res?.data?.message);
-          props.navigation.navigate("AccountSetting")
+          props.navigation.navigate("AccountSetting");
         }
       })
       .catch((error) => {
@@ -81,17 +83,18 @@ const ChangeContactNotify = (props) => {
         <View>
           <View style={ChangeNotifyStyle.notifyview}>
             <Text style={ChangeNotifyStyle.notifytext}>Notify others</Text>
-            <View>
-              <ToggleSwitch
-                isOn={false}
-                onColor="#D8D8D8"
-                offColor="#D8D8D8"
-                size="small"
-                thumbOnStyle={{ backgroundColor: _COLORS.Kodie_GreenColor }}
-                thumbOffStyle={{ backgroundColor: _COLORS.Kodie_BlackColor }}
-                onToggle={(isOn) => console.log("changed to : ", isOn)}
-              />
-            </View>
+            <SwitchToggle
+              switchOn={notify}
+              onPress={() => {
+                setNotify(!notify);
+              }}
+              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+              circleColorOn={_COLORS.Kodie_BlackColor}
+              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+              containerStyle={ChangeNotifyStyle.toggle_con}
+              circleStyle={ChangeNotifyStyle.toggle_circle}
+            />
           </View>
         </View>
 

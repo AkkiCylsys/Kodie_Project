@@ -47,7 +47,7 @@ export const ChangeNotifyStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 20,
-    marginTop: 30,
+    marginVertical:30
   },
   notifytext: {
     fontSize: 14,
@@ -59,10 +59,21 @@ export const ChangeNotifyStyle = StyleSheet.create({
   Dividerlinesecond: {
     color: "#DBDBDB",
     height: 1.5,
-    marginTop: 45,
   },
   buttonview: {
     marginHorizontal: 20,
     marginTop: 30,
+  },
+  toggle_con: {
+    width: 35,
+    height: 18,
+    borderRadius: 20,
+    padding: 5,
+    alignItems: "center",
+  },
+  toggle_circle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
   },
 });

@@ -39,9 +39,10 @@ const SearchBar = (props) => {
         <TextInput
           style={SearchBarStyle.input}
           value={props.textvalue}
-          onChangeText={(text) =>
-            text ? handleSearchChange(text) : setSearch("")
-          }
+          // onChangeText={(text) =>
+          //   text ? handleSearchChange(text) : setSearch()
+          // }
+          onChangeText={handleSearchChange}
           placeholder={truncatePlaceholder(props.placeholder, 15)}
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />
