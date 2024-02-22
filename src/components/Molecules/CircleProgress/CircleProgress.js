@@ -20,7 +20,7 @@ const CircleProgress = (props) => {
               />
             </View>
             <View style={CircleProgressStyle.persentview}>
-              <Text style={CircleProgressStyle.persenttext}>80%</Text>
+              <Text style={CircleProgressStyle.persenttext}>0%</Text>
               <Text style={CircleProgressStyle.ratetext}>Occupancy rate</Text>
             </View>
           </View>
@@ -34,7 +34,7 @@ const CircleProgress = (props) => {
               />
             </View>
             <View style={CircleProgressStyle.persentview}>
-              <Text style={CircleProgressStyle.persenttext}>95%</Text>
+              <Text style={CircleProgressStyle.persenttext}>0%</Text>
               <Text style={CircleProgressStyle.ratetext}>
                 Rental collection
               </Text>
