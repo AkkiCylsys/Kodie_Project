@@ -35,21 +35,21 @@ const IncomeData = [
     id: "1",
     icm_heading: "Income",
     percentage: "+2.5%",
-    price: "$10 500",
+    price: "$0",
     compare_text: "Compared to($10 000 last month)",
   },
   {
     id: "2",
     icm_heading: "Expenses",
     percentage: "-1.5%",
-    price: "$10 500",
+    price: "$0",
     compare_text: "Compared to($10 000 last month)",
   },
   {
     id: "3",
     icm_heading: "Profit",
     percentage: "+2.5%",
-    price: "$10 500",
+    price: "$0",
     compare_text: "Compared to($10 000 last month)",
   },
 ];
@@ -270,11 +270,11 @@ export default Dashboard = (props) => {
                     datasets: [
                       {
                         data: [
-                          Math.random(),
-                          Math.random() * 100,
-                          Math.random() * 120,
-                          Math.random() * 140,
-                          Math.random() * 160,
+                          Math.random() ,
+                          Math.random() * 0,
+                          Math.random() * 0,
+                          Math.random() * 0,
+                          Math.random() * 0,
                         ],
                       },
                     ],
@@ -377,13 +377,13 @@ export default Dashboard = (props) => {
                 </View>
                 <View style={DashboardStyle.maintenance_sts_NOView}>
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {"8"}
+                    {"0"}
                   </Text>
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {"5"}
+                    {"0"}
                   </Text>
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {"3"}
+                    {"0"}
                   </Text>
                 </View>
                 <CustomSingleButton
