@@ -459,7 +459,7 @@ const EditProfile = (props) => {
                         </View>
                       </View>
                     </View> */}
-                    <View style={[EditProfileStyle.simpleinputview]}>
+                    <View style={[EditProfileStyle.phoneinputview]}>
                       <PhoneInput
                         ref={phoneInput}
                         defaultValue={phoneNumber}
@@ -475,18 +475,28 @@ const EditProfile = (props) => {
                         // withDarkTheme
                         // withShadow
                         autoFocus
+                        withFlag={false}
                         textContainerStyle={{
                           flex: 1,
                           backgroundColor: _COLORS.Kodie_WhiteColor,
+                          // backgroundColor: _COLORS.Kodie_ExtraLightGrayColor,
                           // borderWidth:1,
                           paddingVertical: 2,
+                          // borderWidth:1,
+                          // borderColor:'red',
+                          borderRadius:10,
+                       
                         }}
                         containerStyle={{
                           flex: 1,
                           alignSelf: "center",
                           alignItems: "center",
                           justifyContent: "center",
-                          // borderWidth:1,
+                          borderWidth:1,
+                          // backgroundColor: 'blue',
+                          borderColor:_COLORS.Kodie_GrayColor,
+                          borderRadius:12,
+                        
                         }}
                       />
                     </View>
