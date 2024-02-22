@@ -33,6 +33,8 @@ import CustomSingleButton from "../../../../components/Atoms/CustomButton/Custom
 import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import { FONTFAMILY, fontFamily } from "../../../../Themes/FontStyle/FontStyle";
 import { Divider } from "react-native-paper";
+import Share from "react-native-share";
+
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const Detail = [
@@ -99,6 +101,15 @@ export default PropertyReview = (props) => {
   const [currentPage, setCurrentPage] = useState(3);
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
+  const [like, setLike] = useState(false);
+
+  const shareDocFile = async () => {
+    try {
+      await Share.open({ url: inviteFriendPath });
+    } catch (error) {
+      console.error("Error sharing property ", error);
+    }
+  };
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -720,7 +731,11 @@ export default PropertyReview = (props) => {
               {property_Detail?.property_type}
             </Text>
             <View style={PropertyReviewStyle.share_View}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  // shareDocFile
+                }}
+              >
                 <Entypo
                   name="share"
                   color={_COLORS.Kodie_MediumGrayColor}
@@ -728,10 +743,18 @@ export default PropertyReview = (props) => {
                   style={PropertyReviewStyle.share_sty}
                 />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setLike(!like);
+                }}
+              >
                 <Entypo
-                  name="heart-outlined"
-                  color={_COLORS.Kodie_MediumGrayColor}
+                  name={like ? "heart" : "heart-outlined"}
+                  color={
+                    like
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
                   size={22}
                 />
               </TouchableOpacity>

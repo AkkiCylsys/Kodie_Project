@@ -389,17 +389,6 @@ export default AddLeaseDetails = (props) => {
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Rental lease term"}</Text>
-
-            {/* <View>
-              <CustomDropdown
-                data={data}
-                placeholdertext="6-month"
-                onApply={handleApply}
-                onClear={handleClear}
-                btnview={true}
-              />
-            </View> */}
-            {/* ... */}
             <Dropdown
               style={[
                 AddLeaseDetailsStyle.dropdown,

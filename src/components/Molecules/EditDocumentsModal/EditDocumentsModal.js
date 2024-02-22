@@ -1,30 +1,62 @@
 import React, { useRef } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList, ScrollView } from "react-native";
 import { IMAGES } from "../../../Themes";
 import { useNavigation } from "@react-navigation/native";
 import { _COLORS } from "../../../Themes";
 import { EditDocumentsModalStyle } from "./EditDocumentsModalStyle";
 import Entypo from "react-native-vector-icons/Entypo";
+import Fontisto from "react-native-vector-icons/Fontisto";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
 const data = [
   {
     id: "1",
     title: "View document",
-    image: IMAGES.view_doc,
+    image: (
+      <MaterialIcons
+        name="preview"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+        style={{ alignSelf: "center" }}
+      />
+    ),
   },
   {
     id: "2",
     title: "Delete document",
-    image: IMAGES.Delete,
+    image: (
+      <MaterialIcons
+        name="delete-outline"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+        style={{ alignSelf: "center" }}
+      />
+    ),
   },
   {
     id: "3",
     title: "Download document",
-    image: IMAGES.Download_doc,
+    image: (
+      <MaterialCommunityIcons
+        name="download-box"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+        style={{ alignSelf: "center" }}
+      />
+    ),
   },
   {
     id: "4",
-    title: "Share folder",
-    image: IMAGES.Download_doc,
+    title: "Share document",
+    image: (
+      <Fontisto
+        name="share-a"
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+        style={{ alignSelf: "center" }}
+      />
+    ),
   },
 ];
 
@@ -56,12 +88,13 @@ export default EditDocumentsModal = (props) => {
         }
       }}
     >
-      <Image source={item.image} style={EditDocumentsModalStyle.Icons} />
+      {/* <Image source={item.image} style={EditDocumentsModalStyle.IconView} /> */}
+      <View style={EditDocumentsModalStyle.IconView}>{item.image}</View>
       <Text style={EditDocumentsModalStyle.Invite_Data_Text}>{item.title}</Text>
     </TouchableOpacity>
   );
   return (
-    <View style={EditDocumentsModalStyle.mainContainer}>
+    <ScrollView style={EditDocumentsModalStyle.mainContainer}>
       <View style={EditDocumentsModalStyle.subContainer}>
         <Text style={EditDocumentsModalStyle.Invite_tenant}>
           {"Edit document"}
@@ -81,6 +114,6 @@ export default EditDocumentsModal = (props) => {
           keyExtractor={(item) => item.id}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };

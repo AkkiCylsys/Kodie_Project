@@ -27,6 +27,7 @@ import { TenantDetailsStyle } from "./TenantDetails/TenantDetailsStyle";
 import StarRating from "react-native-star-rating";
 import RowButtons from "../../../../../components/Molecules/RowButtons/RowButtons";
 import DividerIcon from "../../../../../components/Atoms/Devider/DividerIcon";
+import LeaseBottomModal from "../../../../../components/Molecules/BottomModal/LeaseBottomModal/LeaseBottomModal";
 export default Leases = (props) => {
   // alert(JSON.stringify(props.property_id));
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +36,7 @@ export default Leases = (props) => {
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
+  const refRBSheet4 = useRef();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [islogSheetOpen, setIslogSheetOpen] = useState(false);
   const [isTenantsSheetOpen, setIsTenantsSheetOpen] = useState(false);
@@ -52,10 +54,6 @@ export default Leases = (props) => {
       get_manually_tenantsDetails();
     }
   }, [isSheetOpen, islogSheetOpen, isTenantsSheetOpen]);
-
-  // useEffect(() => {
-  //   lease_summary();
-  // }, []);
   const handleClose = () => {
     refRBSheet.current.close();
     setIsSheetOpen(false);
@@ -67,6 +65,9 @@ export default Leases = (props) => {
   const handleTenantClose = () => {
     refRBSheet3.current.close();
     setIsTenantsSheetOpen(false);
+  };
+  const handleLeaseClose = () => {
+    refRBSheet4.current.close();
   };
   // Api intrigation.....
   const lease_summary = () => {
@@ -155,7 +156,6 @@ export default Leases = (props) => {
   };
   // Data render.......
   const LeaseSummary_render = ({ item }) => {
-    // alert(JSON.stringify(item?.UPLD_LEASE_KEY));
     setLease_key(item?.UPLD_LEASE_KEY);
     return (
       <View style={LeaseSummaryStyle.subContainer}>
@@ -169,22 +169,31 @@ export default Leases = (props) => {
                 >{`${item.due_day} days`}</Text>
               </View>
               <Text style={LeaseSummaryStyle.date_cld_Text}>
-                {/* {moment(item?.UPLD_PAYMENT_DUE_DAY).format("dddd  ")} 
-                 {moment(item?.UPLD_PAYMENT_DUE_DAY).format("LL")} */}
                 {moment(item?.UPLD_PAYMENT_DUE_DAY).format("dddd D MMMM YYYY")}
-                {/* {item?.UPLD_PAYMENT_DUE_DAY} */}
               </Text>
             </View>
             <View style={LeaseSummaryStyle.due_View}>
-              <Image
-                source={IMAGES.noteBook}
-                style={LeaseSummaryStyle.note_b_img_sty}
-              />
-              <Entypo
-                name="dots-three-horizontal"
-                size={20}
-                color={_COLORS.Kodie_GrayColor}
-              />
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet.current.open();
+                }}
+              >
+                <Image
+                  source={IMAGES.noteBook}
+                  style={LeaseSummaryStyle.note_b_img_sty}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet4.current.open();
+                }}
+              >
+                <Entypo
+                  name="dots-three-horizontal"
+                  size={20}
+                  color={_COLORS.Kodie_GrayColor}
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -260,7 +269,9 @@ export default Leases = (props) => {
         <View style={LeaseSummaryStyle.Account_main_View}>
           <View style={LeaseSummaryStyle.account_view}>
             <View>
-              <Text style={LeaseSummaryStyle.Accounting_Text}>{"Rental"}</Text>
+              <Text style={LeaseSummaryStyle.Accounting_Text}>
+                {item.Payment_type}
+              </Text>
               <View style={{ flexDirection: "row" }}>
                 <Text style={LeaseSummaryStyle.Paid_Text}>{"Period: "}</Text>
                 <Text style={LeaseSummaryStyle.Paid_Text}>
@@ -537,6 +548,22 @@ export default Leases = (props) => {
             onClose={handleTenantClose}
             property_id={property_id}
           />
+        </RBSheet>
+        <RBSheet
+          ref={refRBSheet4}
+          height={180}
+          closeOnDragDown={true}
+          customStyles={{
+            wrapper: {
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: LeaseSummaryStyle.bottomModal_container,
+          }}
+        >
+          <LeaseBottomModal onClose={handleLeaseClose} />
         </RBSheet>
       </ScrollView>
     </View>
