@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { LeasesStyle } from "./LeasesStyle";
-import { IMAGES, _COLORS } from "../../../../../Themes";
+import { IMAGES, _COLORS,FONTFAMILY } from "../../../../../Themes";
 import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
 import RBSheet from "react-native-raw-bottom-sheet";
 import AddLeaseDetails from "./AddLeaseDetails/AddLeaseDetails";
@@ -207,13 +207,15 @@ export default Leases = (props) => {
                 <Text style={LeaseSummaryStyle.date_Text}>
                   {item?.UPLD_COMMENCEMENT_DATE === null
                     ? ""
-                    : item?.UPLD_COMMENCEMENT_DATE.substring(0, 10)}
+                    : moment(item?.UPLD_COMMENCEMENT_DATE).format(
+                        "D MMM YYYY"
+                      )}
                 </Text>
-                <Text style={LeaseSummaryStyle.date_Text}>to</Text>
+                <Text style={LeaseSummaryStyle.date_Text}>-</Text>
                 <Text style={LeaseSummaryStyle.date_Text}>
                   {item?.lease_term === null
                     ? ""
-                    : item?.lease_term.substring(0, 10)}
+                    : moment(item?.lease_term).format("D MMM YYYY")}
                 </Text>
               </View>
             </View>
@@ -222,7 +224,7 @@ export default Leases = (props) => {
                 {"Rent remaining due"}
               </Text>
               <Text
-                style={[LeaseSummaryStyle.date_Text, { alignSelf: "flex-end" }]}
+                style={[LeaseSummaryStyle.date_Text, { alignSelf: "flex-end", fontFamily: FONTFAMILY.K_Bold, }]}
               >{`$ ${item.UPLD_RENTAL_AMMOUNT}`}</Text>
             </View>
           </View>
@@ -241,6 +243,7 @@ export default Leases = (props) => {
                   name="dot-single"
                   size={25}
                   color={_COLORS.Kodie_DarkGreenColor}
+                  style={{alignSelf:"center"}}
                 />
                 <Text style={LeaseSummaryStyle.rent_received_text}>
                   {"Rent received"}

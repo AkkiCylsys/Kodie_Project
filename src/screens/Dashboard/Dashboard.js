@@ -8,6 +8,7 @@ import {
   Dimensions,
   ScrollView,
   Platform,
+  Modal,
 } from "react-native";
 import { useNavigation, useTheme } from "@react-navigation/native";
 import { DashboardStyle } from "./DashboardStyle";
@@ -89,28 +90,35 @@ export default Dashboard = (props) => {
   const [isOverlayVisible, setOverlayVisible] = useState(false);
   const [value, setValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [upsheet, setUpsheet] = useState("");
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
+  const [modalVisible, setModalVisible] = useState(false);
   // props.onPress(handleClosePopup);
   // alert(handleClosePopup, "close");
   // console.log(handleClosePopup, "close");
 
+  const handlegetCalenderid = (Calenderid) => {
+    console.log("Calenderid....", Calenderid);
+    setUpsheet(Calenderid);
+  };
   const CloseUp = () => {
     refRBSheet.current.close();
     refRBSheet2.current.close();
     setOverlayVisible(false);
   };
+
   // const Login_response = useSelector(
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
-  console.log(
-    "UAD_FirstName.....",
-    loginData?.Account_details[0]?.UAD_FIRST_NAME
-  );
+  // console.log(
+  //   "UAD_FirstName.....",
+  //   loginData?.Account_details[0]?.UAD_FIRST_NAME
+  // );
   const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
   //---click back button closing the app
   useEffect(() => {
@@ -285,7 +293,7 @@ export default Dashboard = (props) => {
                     datasets: [
                       {
                         data: [
-                          Math.random() ,
+                          Math.random(),
                           Math.random() * 0,
                           Math.random() * 0,
                           Math.random() * 0,
@@ -346,7 +354,8 @@ export default Dashboard = (props) => {
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    refRBSheet2.current.open();
+                    // refRBSheet2.current.open();
+                    setModalVisible(true);
                   }}
                 >
                   <Entypo
@@ -467,9 +476,9 @@ export default Dashboard = (props) => {
         </RBSheet>
 
         {/* RBSheet 2 define here */}
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet2}
-          height={450}
+          height={upsheet == true ? 600 : 460}
           closeOnDragDown={true}
           closeOnPressMask={false}
           customStyles={{
@@ -482,8 +491,44 @@ export default Dashboard = (props) => {
             container: DashboardStyle.bottomModal_container,
           }}
         >
-          <SelectDate onClose={CloseUp} />
-        </RBSheet>
+          <SelectDate onClose={CloseUp} CalenderId={handlegetCalenderid} />
+        </RBSheet> */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22,
+          }}
+        ></View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        >
+          <ScrollView
+            style={{
+              position: "absolute",
+              // left: -20,
+              bottom: -30,
+              width: "100%",
+              height: upsheet == true ? "100%" : '65%',
+              backgroundColor: "white",
+              borderRadius: 15,
+              paddingVertical: 8,
+              borderWidth:1,
+              borderColor:_COLORS.Kodie_GrayColor
+            }}
+          >
+            <SelectDate
+              onClose={() => setModalVisible(false)}
+              CalenderId={handlegetCalenderid}
+            />
+          </ScrollView>
+        </Modal>
       </View>
 
       <FloatingActionButton />

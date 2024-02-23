@@ -8,7 +8,7 @@ import {
 import React, { useState, useRef, useEffect } from "react";
 import { SelectDateStyle } from "./SelectDateStyle";
 import Entypo from "react-native-vector-icons/Entypo";
-import { _COLORS } from "../../../Themes";
+import { _COLORS, LABEL_STYLES } from "../../../Themes";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 
@@ -16,6 +16,11 @@ const SelectDate = (props) => {
   const [selected, setSelected] = useState("");
   const [calender, setCalender] = useState(false);
   const [optionStates, setOptionStates] = useState([]);
+  const [selectedOption, setSelectedOption] = useState("Save");
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+  };
 
   useEffect(() => {
     setOptionStates(
@@ -33,6 +38,8 @@ const SelectDate = (props) => {
     );
     setSelected((prevSelected) => (prevSelected === id ? "" : id));
     setCalender(id === 8 && !calender);
+    // alert(id === 8 && !calender)
+    props?.CalenderId(id === 8 && !calender);
   };
 
   const handleClosePopup = () => {
@@ -58,19 +65,14 @@ const SelectDate = (props) => {
           <View style={SelectDateStyle.optionsiconview}>
             <MaterialIcons
               size={25}
-              // color={
-              //   optionStates
-              //     ? _COLORS.Kodie_ExtraDarkGreen
-              //     : _COLORS.Kodie_GrayColor
-              // }
               color={
                 optionStates.find((state) => state.id === item.id)?.checked
-                  ? _COLORS.Kodie_BlackColor
+                  ? _COLORS.Kodie_GreenColor
                   : _COLORS.Kodie_GrayColor
               }
               name={
                 optionStates.find((state) => state.id === item.id)?.checked
-                  ? "radio-button-checked"
+                  ? "check-circle"
                   : "radio-button-unchecked"
               }
             />
@@ -103,92 +105,86 @@ const SelectDate = (props) => {
             />
 
             {calender && (
-              <View>
-                <Calendar
-                  onDayPress={(day) => {
-                    setSelected(day.dateString);
-                  }}
-                  markedDates={{
-                    [selected]: {
-                      selected: true,
-                      disableTouchEvent: true,
-                      selectedDotColor: "orange",
-                    },
-                  }}
-                />
-              </View>
-            )}
-          </ScrollView> 
-          {/* <ScrollView>
-            {[
-              "Today",
-              "Yesterday",
-              "Last 7 days",
-              "Last 30 days",
-              "This month",
-              "Last month",
-              "Last year",
-            ].map((option, index) => (
-              <View key={index} style={SelectDateStyle.optionsview}>
-                <View style={SelectDateStyle.bindview}>
-                  <TouchableOpacity onPress={() => handleOptionToggle(option)}>
-                    <View style={SelectDateStyle.optionsiconview}>
-                      <MaterialCommunityIcons
-                        size={25}
-                        color={_COLORS.Kodie_GrayColor}
-                        name={
-                          selectedOption === option
-                            ? "checkbox-marked-circle"
-                            : "checkbox-blank-circle-outline"
-                        }
-                      />
-                    </View>
-                  </TouchableOpacity>
-                  <Text style={SelectDateStyle.textoption}>{option}</Text>
+              <>
+                <View>
+                  <Calendar
+                    onDayPress={(day) => {
+                      setSelected(day.dateString);
+                    }}
+                    markedDates={{
+                      [selected]: {
+                        selected: true,
+                        disableTouchEvent: true,
+                        selectedDotColor: "orange",
+                      },
+                    }}
+                  />
                 </View>
-              </View>
-            ))}
-
-            <Divider style={SelectDateStyle.Divider} />
-
-            <View style={SelectDateStyle.optionsview}>
-              <View style={SelectDateStyle.bindview}>
-                <TouchableOpacity onPress={handleCustomRangeToggle}>
-                  <View style={SelectDateStyle.optionsiconview}>
-                    <TouchableOpacity onPress={handleCustomRangeToggle}>
-                      <MaterialCommunityIcons
-                        size={25}
-                        color={_COLORS.Kodie_GrayColor}
-                        name={
-                          selectedOption === "Custom Range"
-                            ? "checkbox-marked-circle"
-                            : "checkbox-blank-circle-outline"
-                        }
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </TouchableOpacity>
-                <Text style={SelectDateStyle.textoption}>Custom range</Text>
-              </View>
-            </View>
-
-            {calender && (
-              <View>
-                <Calendar
-                  onDayPress={(day) => {
-                    setSelected(day.dateString);
-                  }}
-                  markedDates={{
-                    [selected]: {
-                      selected: true,
-                      disableTouchEvent: true,
-                      selectedDotColor: "orange",
-                    },
-                  }}
-                />
-              </View>
+                <View style={SelectDateStyle.ButtonView}>
+                  <TouchableOpacity
+                    style={[
+                      SelectDateStyle.closeText,
+                      SelectDateStyle.applyText,
+                      {
+                        backgroundColor:
+                          selectedOption == "Cancel"
+                            ? _COLORS.Kodie_BlackColor
+                            : _COLORS.Kodie_WhiteColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      handleOptionClick("Cancel");
+                      handleClosePopup();
+                    }}
+                  >
+                    <Text
+                      style={[
+                        LABEL_STYLES.commontext,
+                        {
+                          color:
+                            selectedOption == "Cancel"
+                              ? _COLORS.Kodie_WhiteColor
+                              : null,
+                        },
+                      ]}
+                    >
+                      {"Cancel"}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      SelectDateStyle.applyText,
+                      {
+                        backgroundColor:
+                          selectedOption == "Save"
+                            ? _COLORS.Kodie_BlackColor
+                            : _COLORS.Kodie_WhiteColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      handleOptionClick("Save");
+                      handleClosePopup();
+                    }}
+                  >
+                    <Text
+                      style={[
+                        LABEL_STYLES.commontext,
+                        SelectDateStyle.text,
+                        {
+                          color:
+                            selectedOption == "Save"
+                              ? _COLORS.Kodie_WhiteColor
+                              : null,
+                        },
+                      ]}
+                    >
+                      {" Save"}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </>
             )}
-          </ScrollView> */}
+          </ScrollView>
         </View>
       </ScrollView>
     </View>

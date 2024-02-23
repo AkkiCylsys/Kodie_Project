@@ -240,7 +240,7 @@ const Logrentalpayment = (props) => {
               onChangeText={setTotalAmount}
               onBlur={() => handleTotalAmount(totalAmount)}
               placeholder="Enter the total amount of the expense"
-              placeholderTextColor="#999"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               keyboardType="number-pad"
               maxLength={5}
             />
@@ -509,7 +509,7 @@ const Logrentalpayment = (props) => {
               value={notes}
               onChangeText={setNotes}
               placeholder="Enter any notes about your expense"
-              placeholderTextColor="#999"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               multiline
               numberOfLines={5}
               textAlignVertical={"top"}

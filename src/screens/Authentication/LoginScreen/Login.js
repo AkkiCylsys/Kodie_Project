@@ -551,7 +551,7 @@ export default Login = (props) => {
               disabled={isLoading ? true : false}
               onPress={() => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
-                props.navigation.navigate("SignUpSteps");
+                // props.navigation.navigate("SignUpSteps");
                 // props.navigation.navigate("Account");
               }}
               leftImage={IMAGES.GoogleIcon}
@@ -567,7 +567,7 @@ export default Login = (props) => {
               // }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
-              _ButtonText={"th Facebook"}
+              _ButtonText={"Login with Facebook"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <BottomTextsButton
