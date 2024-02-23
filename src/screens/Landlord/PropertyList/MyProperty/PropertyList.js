@@ -81,6 +81,9 @@ const PropertyList = (props) => {
   const [propId, setPropId] = useState(0);
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
     useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredpropertyData, setFilteredpropertyData] = useState([]);
+
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -90,7 +93,19 @@ const PropertyList = (props) => {
     setIsDeleteData_Clicked(false);
   };
   // Extract property_id values
-
+  // search propertyList....
+  const searchPropertyList = (query) => {
+    setSearchQuery(query);
+    const filtered = query
+      ? propertyData.filter(
+          (item) =>
+            item.property_type &&
+            item.property_type.toLowerCase().includes(query.toLowerCase())
+        )
+      : propertyData;
+    console.log("filtered.........", filtered);
+    setFilteredpropertyData(filtered);
+  };
   const getPropertyDetailsByFilter = async (filter) => {
     setIsLoading(true);
     // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
@@ -108,7 +123,7 @@ const PropertyList = (props) => {
       });
       //alert(JSON.stringify(response))
       setPropertyData(response?.data?.property_details);
-
+      console.log("property Data....", response?.data?.property_details);
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status == 500) {
@@ -619,7 +634,13 @@ const PropertyList = (props) => {
           color={_COLORS.Kodie_LiteWhiteColor}
         />
 
-        <SearchBar filterImage={IMAGES.filter} frontSearchIcon marginTop={3} />
+        <SearchBar
+          filterImage={IMAGES.filter}
+          frontSearchIcon
+          marginTop={3}
+          searchData={searchPropertyList}
+          textvalue={searchQuery}
+        />
         {activeScreen ? (
           <>
             {/* for static that by its hide.... */}
@@ -667,7 +688,8 @@ const PropertyList = (props) => {
             </View>
             <DividerIcon />
             <FlatList
-              data={propertyData}
+              // data={propertyData}
+              data={searchQuery ? filteredpropertyData : propertyData}
               onEndReached={handleEndReached}
               onEndReachedThreshold={0.8}
               renderItem={propertyData1_render}

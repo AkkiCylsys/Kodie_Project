@@ -120,7 +120,13 @@ export default RowTab = (props) => {
           <View style={RowTabStyle.TextViewMain}>
             <Text style={RowTabStyle.Helptext}>{props?.TabTaxt}</Text>
             {props.isSecondRowText ? (
-              <Text style={RowTabStyle.SecondRowtext}>{props?.TabSubTaxt}</Text>
+              <Text
+                style={RowTabStyle.SecondRowtext}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {props?.TabSubTaxt}
+              </Text>
             ) : null}
           </View>
         </View>
@@ -132,8 +138,8 @@ export default RowTab = (props) => {
                     /> */}
           <Entypo
             name={"chevron-small-right"}
-            size={20}
-            color={_COLORS.Kodie_BlackColor}
+            size={22}
+            color={_COLORS.Kodie_ExtraLightGrayColor}
           />
         </View>
       </View>

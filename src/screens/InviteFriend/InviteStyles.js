@@ -3,7 +3,7 @@ import { FONTFAMILY, _COLORS } from "../../Themes/index";
 export const InviteStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: _COLORS.Kodie_LiteWhiteColor,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   shareMainView: {
     flexDirection: "row",
@@ -97,9 +97,8 @@ export const InviteStyles = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_MediumGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
-    alignSelf: "center",
-    textAlign: "center",
-    justifyContent: "center",
+    // alignSelf: "center",
+    marginTop:5
   },
   ArrowIcon: {
     width: "18%",

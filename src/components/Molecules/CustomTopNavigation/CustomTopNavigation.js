@@ -28,7 +28,11 @@ const CustomTabNavigator = (props) => {
             {
               fontFamily:props.FONTFAMILY1
             }
+          
+
           ]}
+          numberOfLines={1}
+                ellipsizeMode="tail"
         >
           {props.Tab1}
         </Text>
@@ -39,6 +43,8 @@ const CustomTabNavigator = (props) => {
         onPress={props.onPressTab2}
       >
         <Text
+        numberOfLines={1}
+        ellipsizeMode="tail"
           style={[
             TopNavigationstyles.tabText,
             {
@@ -58,6 +64,8 @@ const CustomTabNavigator = (props) => {
           onPress={props.onPressTab3}
         >
           <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
             style={[
               TopNavigationstyles.tabText,
               {
@@ -78,6 +86,8 @@ const CustomTabNavigator = (props) => {
           onPress={props.onPressTab4}
         >
           <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
             style={[
               TopNavigationstyles.tabText,
               {

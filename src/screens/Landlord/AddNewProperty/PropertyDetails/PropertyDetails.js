@@ -11,6 +11,8 @@ import {
   Keyboard,
   Platform,
   Alert,
+  PermissionsAndroid,
+
 } from "react-native";
 import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -38,6 +40,8 @@ import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
+import Geolocation from "@react-native-community/geolocation";
+
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 export default PropertyDetails = (props) => {
   const propertyid = props?.route?.params?.propertyid;
@@ -66,6 +70,9 @@ export default PropertyDetails = (props) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
+
+  const [getLat, setGetLat] = useState("");
+  const [getLong, setGetLong] = useState("");
 
   // const [locationError, setlocationError] = useState("");
   // const [propertytypeError, setpropertytypeError] = useState("");
@@ -105,7 +112,7 @@ export default PropertyDetails = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    CheckIOSMapPermission();
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     setLocation(property_Detail?.location);
   }, []);
 
@@ -351,6 +358,34 @@ export default PropertyDetails = (props) => {
       })
       .catch((error) => console.warn(error));
   };
+  const getAddressWithCordinates = () => {
+    console.log("Enter cordinates..");
+    Geolocation.watchPosition(
+      (position) => {
+        // alert("with cordinates..");
+        console.log("with cordinates..");
+        setGetLat(position.coords.latitude);
+        setGetLong(position.coords.longitude);
+        // setlatitude(position.coords.latitude);
+        console.log("withCordinates latitude....", position.coords.latitude);
+        // setlongitude(position.coords.longitude);
+        console.log("withCordinates Longitude....", position.coords.longitude);
+        // getAddress(position.coords.latitude, position.coords.longitude);
+        getAddress(getLat, getLong);
+      },
+      (error) => {
+        alert(error.message.toString());
+        console.log("watch cordinates err..", error.message);
+      },
+      {
+        showLocationDialog: true,
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+      }
+    );
+  };
+
   const handleProperty_Type = () => {
     const propertyData = {
       P_PARENT_CODE: "PROP_TYPE",
@@ -496,8 +531,10 @@ export default PropertyDetails = (props) => {
                 marginBottom: 10,
               }}
               onRegionChange={onRegionChange}
-              Maplat={latitude}
-              Maplng={longitude}
+              // Maplat={latitude}
+              // Maplng={longitude}
+              Maplat={getLat}
+              Maplng={getLong}
             />
             <View
               style={{

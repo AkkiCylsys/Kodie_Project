@@ -7,8 +7,15 @@ import { _COLORS, IMAGES } from "../../../Themes/index";
 const SearchBar = (props) => {
   const [search, setSearch] = useState("");
 
-  const serachcontactData = () => {
-    props.searchContact();
+  const handleSearchChange = (text) => {
+    setSearch(text); // Update the search state
+    props.searchData(text); // Pass the search query to the parent component
+  };
+  const truncatePlaceholder = (placeholder, maxLength) => {
+    if (placeholder.length > maxLength) {
+      return placeholder.substring(0, maxLength - 3) + "...";
+    }
+    return placeholder;
   };
   return (
     <View style={SearchBarStyle.serchheaderView}>
@@ -32,8 +39,11 @@ const SearchBar = (props) => {
         <TextInput
           style={SearchBarStyle.input}
           value={props.textvalue}
-          // onChange={serachcontactData}
-          placeholder={props.placeholder}
+          // onChangeText={(text) =>
+          //   text ? handleSearchChange(text) : setSearch()
+          // }
+          onChangeText={handleSearchChange}
+          placeholder={truncatePlaceholder(props.placeholder, 15)}
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />
         {props.backSearchIcon ? (

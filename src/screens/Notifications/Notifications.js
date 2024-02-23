@@ -63,6 +63,9 @@ const Notifications = (props) => {
     },
   ];
 
+  const searchNotification =()=>{
+
+  }
   const HorizontalData = ["Starred", "Snoozed", "Archived", "Muted"];
 
   const horizontal_render = ({ item }) => {
@@ -171,8 +174,8 @@ const Notifications = (props) => {
         isFilterImage
         height={48}
         marginTop={20}
+        searchData={searchNotification}
       />
-
       <View style={NotificationStyle.Container}>
         <View style={NotificationStyle.flat_MainView}>
           <TouchableOpacity style={NotificationStyle.AllView}>

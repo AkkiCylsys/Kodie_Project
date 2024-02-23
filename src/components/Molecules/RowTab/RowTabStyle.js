@@ -9,8 +9,11 @@ export const RowTabStyle = StyleSheet.create({
         justifyContent: "space-between",
         marginTop: 15,
         alignItems: "center",
-        paddingHorizontal: 15,
+        // paddingHorizontal: 15,
         marginBottom: 3,
+        flex:1,
+        marginHorizontal:12,
+   
     },
 
     Helpselctionview: {
@@ -20,11 +23,15 @@ export const RowTabStyle = StyleSheet.create({
     },
 
     Helpimgview: {
-        padding: 8,
-        borderWidth: 0.5,
-        borderRadius: 5,
+        // padding: 8,
+        borderWidth: 0.4,
+        borderRadius: 10,
         borderColor: _COLORS.Kodie_MediumGrayColor,
         backgroundColor: _COLORS.Kodie_TransparentColor,
+        width:34,
+        height:34,
+        alignItems:'center',
+        justifyContent:'center'
     },
 
     imgbox: {
@@ -34,21 +41,26 @@ export const RowTabStyle = StyleSheet.create({
     },
 
     Helptext: {
-        fontSize: 14,
-        marginLeft: 15,
+        fontSize: 15,
+        marginLeft: 10,
         color: _COLORS.Kodie_BlackColor,
-        fontFamily: FONTFAMILY.K_SemiBold
+        fontFamily: FONTFAMILY.K_SemiBold,
+        letterSpacing:0.3
     },
     SecondRowtext: {
-        fontSize: 11,
-        marginLeft: 15,
+        fontSize: 12,
+        marginLeft: 10,
         color: _COLORS.Kodie_ExtraLightGrayColor,
-        fontFamily: FONTFAMILY.K_Regular
+        fontFamily: FONTFAMILY.K_Regular,
+        letterSpacing:0.3,
+        marginTop:2
     },
     TextViewMain:{
         flexDirection:'column',
         justifyContent:'center',
-        marginBottom:5
+        marginBottom:5,
+        // backgroundColor:'red',
+        flex:0.9
     },
     rightarrowicon: {
         width: 15,
@@ -57,22 +69,22 @@ export const RowTabStyle = StyleSheet.create({
     },
 
     arrowiconview: {
-        height: 30,
-        width: 30,
+        height: 28,
+        width: 28,
         borderWidth: 0.5,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 5,
+        borderRadius: 10,
         borderColor: _COLORS.Kodie_MediumGrayColor,
 
     },
 
     hairlinebuttom: {
         backgroundColor: _COLORS.Kodie_LightGrayLineColor,
-        height: 0.5,
+        height: 1.35,
         alignSelf: 'center',
         width: '94%',
-        marginTop: 15,
+        marginTop: 10,
         opacity: 0.7,
 
     },

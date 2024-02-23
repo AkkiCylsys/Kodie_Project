@@ -52,6 +52,8 @@ const inspection_data = [
 
 export default NewInspection = (props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const searchInspection = () => {};
+
   const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity style={NewInspectionStyle.flatlistView}>
@@ -88,13 +90,13 @@ export default NewInspection = (props) => {
                 style={NewInspectionStyle.note_b_img_sty}
               /> */}
               <TouchableOpacity>
-              <SimpleLineIcons
-                    name="note"
-                    size={25}
-                    color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={"contain"}
-                  />
-                  </TouchableOpacity>
+                <SimpleLineIcons
+                  name="note"
+                  size={25}
+                  color={_COLORS.Kodie_LightGrayColor}
+                  resizeMode={"contain"}
+                />
+              </TouchableOpacity>
               <TouchableOpacity>
                 <Entypo
                   name="dots-three-horizontal"
@@ -150,6 +152,7 @@ export default NewInspection = (props) => {
           isFilterImage
           height={48}
           marginTop={20}
+          searchData={searchInspection}
         />
         <View style={NewInspectionStyle.flat_MainView}>
           <TouchableOpacity style={NewInspectionStyle.AllView}>

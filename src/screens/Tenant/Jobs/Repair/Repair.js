@@ -77,6 +77,12 @@ export default Repair = (props) => {
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [JobData, setJobData] = useState([]);
   const [servicingJobData, setServicingJobData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredServicingpropertyData, setFilteredServicingpropertyData] =
+    useState([]);
+  const [filteredRequestpropertyData, setFilteredRequestpropertyData] =
+    useState([]);
+
   const myJob_Type = props.myJob_Type;
   console.log("myJob_Type in job module", myJob_Type);
   const job_sub_type_req = props.job_sub_type_req;
@@ -85,6 +91,34 @@ export default Repair = (props) => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
   };
+
+  // search propertyList....
+  const searchJobList = (query) => {
+    if (activeScreen) {
+      setSearchQuery(query);
+      const filtered = query
+        ? JobData.filter(
+            (item) =>
+              item.service_looking &&
+              item.service_looking.toLowerCase().includes(query.toLowerCase())
+          )
+        : JobData;
+      console.log("filtered job.........", filtered);
+      setFilteredRequestpropertyData(filtered);
+    } else {
+      setSearchQuery(query);
+      const filtered = query
+        ? servicingJobData.filter(
+            (item) =>
+              item.service_looking &&
+              item.service_looking.toLowerCase().includes(query.toLowerCase())
+          )
+        : servicingJobData;
+      console.log("filtered job.........", filtered);
+      setFilteredServicingpropertyData(filtered);
+    }
+  };
+
   const CloseUp = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -157,7 +191,6 @@ export default Repair = (props) => {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
     if (isvisible) {
       getJobDetailsByFilter(selectedFilter);
@@ -346,6 +379,7 @@ export default Repair = (props) => {
       </TouchableOpacity>
     );
   };
+
   return (
     <View style={RepairCss.mainContainer}>
       <ScrollView>
@@ -420,6 +454,7 @@ export default Repair = (props) => {
           height={48}
           marginTop={5}
           placeholder={"Search  jobs"}
+          searchData={searchJobList}
         />
         <View style={RepairCss.Container}>
           <View style={RepairCss.flat_MainView}>
@@ -433,10 +468,20 @@ export default Repair = (props) => {
         </View>
         <DividerIcon />
         {activeScreen ? (
-          <FlatList data={JobData} renderItem={propertyData_render1} />
+          <FlatList
+            //  data={JobData}
+            data={searchQuery ? filteredRequestpropertyData : JobData}
+            renderItem={propertyData_render1}
+          />
         ) : (
           // <ArchiveJob />
-          <FlatList data={servicingJobData} renderItem={propertyData_render1} />
+          <FlatList
+            // data={servicingJobData}
+            data={
+              searchQuery ? filteredServicingpropertyData : servicingJobData
+            }
+            renderItem={propertyData_render1}
+          />
         )}
       </ScrollView>
       <Modal

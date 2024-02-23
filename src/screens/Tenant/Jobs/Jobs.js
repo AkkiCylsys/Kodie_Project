@@ -53,6 +53,7 @@ const Jobs = (props) => {
                 SearchDataDetail: SearchData,
               });
             }}
+          
           />
         );
 

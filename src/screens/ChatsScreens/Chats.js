@@ -17,6 +17,9 @@ const Chats = (props) => {
   const toggleView = () => {
     setVisible(!visible);
   };
+  const searchchatList =()=>{
+    
+  }
   return (
     <>
       <View style={ChatsStyle.container}>
@@ -33,6 +36,7 @@ const Chats = (props) => {
                 filterImage={IMAGES.filter}
                 frontSearchIcon
                 marginTop={3}
+                searchData={searchchatList}
               />
             </View>
             <TouchableOpacity
