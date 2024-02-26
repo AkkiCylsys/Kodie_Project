@@ -14,13 +14,13 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     fontSize: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf: "center" 
+    alignSelf: "center"
   },
   heading_View: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 16,
-    marginHorizontal:18,
+    marginHorizontal: 18,
   },
   card: {
     width: "100%",
@@ -36,7 +36,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   inputContainer: {
     marginBottom: 15,
   },
-  datePickerView: { 
+  datePickerView: {
     flexDirection: "row",
   },
 
@@ -176,6 +176,14 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   textItem: {
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
-    alignSelf:'center'
+    alignSelf: 'center'
   },
+  down_Arrow_icon: {
+    borderWidth: 1,
+    paddingHorizontal: 2,
+    paddingVertical: 2,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_GrayColor,
+  },
+ 
 });
