@@ -606,7 +606,7 @@ export default CompanyDetails = (props) => {
                 </View>
               </View>
             </View> */}
-            <View style={[CompanyDetailsStyle.simpleinputview, { height: 55 }]}>
+            <View style={[CompanyDetailsStyle.simpleinputview]}>
               <PhoneInput
                 ref={phoneInput}
                 defaultValue={phoneNumber}
@@ -625,6 +625,7 @@ export default CompanyDetails = (props) => {
                 textContainerStyle={{
                   flex: 1,
                   backgroundColor: _COLORS.Kodie_WhiteColor,
+                  paddingVertical: 2,
                 }}
                 containerStyle={{
                   flex: 1,

@@ -80,6 +80,10 @@ const Notices = (props) => {
   const [noticeReminderid, setNoticeReminderid] = useState("");
   const refRBSheet = useRef();
 
+
+  const searchNoticesList =()=>{
+    
+  }
   const onDayPress = (day) => {
     //......
     setSelectedDate(day.dateString);
@@ -284,6 +288,8 @@ const Notices = (props) => {
             filterImage={IMAGES.up_down_Arrow}
             height={40}
             placeholder="Search notices"
+          searchData={searchNoticesList}
+            
           />
         </View>
 

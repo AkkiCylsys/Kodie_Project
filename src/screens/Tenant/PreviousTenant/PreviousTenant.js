@@ -38,6 +38,9 @@ const PreviousTenant = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
   
+  const searchprevioustenant =()=>{
+    
+  }
   const CloseUp = () => {
     refRBSheet.current.close();
   };
@@ -122,6 +125,8 @@ const PreviousTenant = (props) => {
         marginTop={20}
         placeholder={"Search tenants"}
         frontSearchIcon
+        searchData={searchprevioustenant}
+
       />
 
       <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />

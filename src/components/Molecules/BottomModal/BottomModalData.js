@@ -156,11 +156,25 @@ const BottomModalData = (props) => {
             style={BottomModalDataStyle.container}
             onPress={() => {
               if (item.id === "1") {
-                navigation.navigate("ViewPropertyDetails", {
-                  propertyId: propertyId,
+                navigation.navigate("PropertyReview", {
+                  // propertyId: propertyId,
+                  // propertyView: "propertyView",
+                  propertyid: propertyId,
+                  propertyView: "propertyView",
                 });
                 handleCloseModal();
               }
+              if (item.id === "2") {
+                navigation.navigate("PropertyReview", {
+                  // propertyId: propertyId,
+                  // propertyView: "propertyView",
+                  propertyid: propertyId,
+                  propertyView: "propertyView",
+                  DocTab:"DocTab"
+                });
+                handleCloseModal();
+              }
+
               if (item.id === "5") {
                 // navigation.navigate("ViewPropertyDetails");
                 handleDeleteProperty();

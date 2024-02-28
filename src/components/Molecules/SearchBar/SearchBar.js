@@ -6,6 +6,17 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { _COLORS, IMAGES } from "../../../Themes/index";
 const SearchBar = (props) => {
   const [search, setSearch] = useState("");
+
+  const handleSearchChange = (text) => {
+    setSearch(text); // Update the search state
+    props.searchData(text); // Pass the search query to the parent component
+  };
+  const truncatePlaceholder = (placeholder, maxLength) => {
+    if (placeholder.length > maxLength) {
+      return placeholder.substring(0, maxLength - 3) + "...";
+    }
+    return placeholder;
+  };
   return (
     <View style={SearchBarStyle.serchheaderView}>
       <View
@@ -27,9 +38,12 @@ const SearchBar = (props) => {
 
         <TextInput
           style={SearchBarStyle.input}
-          value={search}
-          onChange={(text) => setSearch(text)}
-          placeholder={props.placeholder}
+          value={props.textvalue}
+          // onChangeText={(text) =>
+          //   text ? handleSearchChange(text) : setSearch()
+          // }
+          onChangeText={handleSearchChange}
+          placeholder={truncatePlaceholder(props.placeholder, 15)}
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />
         {props.backSearchIcon ? (

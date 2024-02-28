@@ -5,7 +5,6 @@ export const PaymentMethodStyle = StyleSheet.create({
     maincontainer:{
         marginVertical:10,
         marginTop:15,
-
     },
     bindview:{
         borderWidth:0.3,

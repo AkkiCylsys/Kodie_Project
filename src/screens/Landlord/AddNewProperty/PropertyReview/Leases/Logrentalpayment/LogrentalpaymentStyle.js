@@ -104,5 +104,50 @@ export const LogrentalPaymentStyle = StyleSheet.create({
     fontSize:14,
     fontFamily:FONTFAMILY.K_SemiBold
   },
+  dropdown: {
+    flex: 1,
+    borderWidth: 1,
+    height: 35,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 10,
+    borderRadius: 8,
+    color: _COLORS.Kodie_BlackColor,
+  },
+
+  placeholderStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_GreenColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 5,
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 5,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    // borderWidth: 1,
+    marginRight: 16,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 15,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  itemView: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
+    alignSelf:'center'
+  },
   error_text: { color: "red", marginLeft: 10 },
 });

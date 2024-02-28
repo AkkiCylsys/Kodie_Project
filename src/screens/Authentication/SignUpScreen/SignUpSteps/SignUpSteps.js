@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  // PermissionsAndroid,
+  PermissionsAndroid,
   Image,
   FlatList,
   // Platform
@@ -30,7 +30,9 @@ import { useDispatch, useSelector } from "react-redux";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import Geocoder from "react-native-geocoding";
-import Geolocation from "react-native-geolocation-service";
+// import Geolocation from "react-native-geolocation-service";
+import Geolocation from "@react-native-community/geolocation";
+
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
@@ -92,6 +94,8 @@ const SignUpSteps = (props) => {
   const [p_latitude, setP_latitude] = useState("");
   const [p_longitude, setP_longitude] = useState("");
 
+  const [getLat, setGetLat] = useState("");
+  const [getLong, setGetLong] = useState("");
   const addressParts = physicalAddress.split(", ");
 
   const country = addressParts.pop();
@@ -138,7 +142,7 @@ const SignUpSteps = (props) => {
     setP_longitude(Region.longitude);
     console.log("p_longitude...", p_longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -194,8 +198,11 @@ const SignUpSteps = (props) => {
   };
 
   const getAddressWithCordinates = () => {
+    console.log("Enter cordinates..");
+
     Geolocation.watchPosition(
       (position) => {
+        console.log("with cordinates..");
         setP_latitude(position.coords.latitude);
         console.log("p_latitude...", p_latitude);
 
@@ -219,9 +226,9 @@ const SignUpSteps = (props) => {
   const getAddress = (p_latitude, p_longitude) => {
     Geocoder.from(p_latitude, p_longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setPhysicalAddress(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setPhysicalAddress(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -273,12 +280,12 @@ const SignUpSteps = (props) => {
     }
     setLastName(text);
   };
-  const validMobileNumber =()=>{
+  const validMobileNumber = () => {
     // const mobileReg = /^61[4][0-9]{9}$/;
     const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
     // const mobileReg = /^(?:\+61|0)(?:(?:2[0-9])|(?:3[0-9])|(?:4[0-9])|(?:7[0-9])|(?:8[0-9]))(?:\d{8})$/;
     return mobileReg.test(mobileNumber);
-  }
+  };
   // Validation for Phone Number
   const validateMobileNumber = (text) => {
     // const mobileReg = /^[6-9]\d{9}$/;
@@ -324,7 +331,7 @@ const SignUpSteps = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    CheckIOSMapPermission();
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
   }, []);
 
   //  go back button...............

@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-  // PermissionsAndroid
+  PermissionsAndroid,
 } from "react-native";
 import { CreateJobFirstStyle } from "./CreateJobFirstScreenCss";
 import StepText from "../../components/Molecules/StepText/StepText";
@@ -38,7 +38,8 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Config } from "../../Config";
 import axios from "axios";
 import Geocoder from "react-native-geocoding";
-import Geolocation from "react-native-geolocation-service";
+// import Geolocation from "react-native-geolocation-service";
+import Geolocation from "@react-native-community/geolocation";
 import MapScreen from "../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
@@ -47,6 +48,8 @@ import { useSelector } from "react-redux";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 export default CreateJobFirstScreen = (props) => {
+  const [getLat, setGetLat] = useState("");
+  const [getLong, setGetLong] = useState("");
   const JobId = props.route.params?.JobId;
   const editMode = props.route.params?.editMode;
   const myJob = props.route.params?.myJob;
@@ -58,7 +61,7 @@ export default CreateJobFirstScreen = (props) => {
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState("");
   const [location, setLocation] = useState("");
-  const [isClick, setIsClick] = useState();
+  const [isClick, setIsClick] = useState(false);
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [property_Data, setProperty_Data] = useState([]);
@@ -85,6 +88,7 @@ export default CreateJobFirstScreen = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
+  const [arrowIcon , setArrowIcon] = useState(false)
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
 
@@ -135,6 +139,7 @@ export default CreateJobFirstScreen = (props) => {
     getAddress(Region.latitude, Region.longitude);
     getAddress();
   };
+
   const checkpermissionlocation = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -148,6 +153,7 @@ export default CreateJobFirstScreen = (props) => {
         console.log("You can use the location");
         // alert("You can use the location");
         getAddressWithCordinates();
+        // getOneTimeLocation();
       } else {
         console.log("location permission denied");
         alert("Location permission denied");
@@ -177,6 +183,7 @@ export default CreateJobFirstScreen = (props) => {
           case RESULTS.GRANTED:
             console.log("The permission is granted");
             getAddressWithCordinates();
+            // getOneTimeLocation();
             break;
           case RESULTS.BLOCKED:
             console.log("The permission is denied and not requestable anymore");
@@ -189,14 +196,23 @@ export default CreateJobFirstScreen = (props) => {
   };
 
   const getAddressWithCordinates = () => {
+    console.log("Enter cordinates..");
     Geolocation.watchPosition(
       (position) => {
+        // alert("with cordinates..");
+        console.log("with cordinates..");
+        // setGetLat(position.coords.latitude);
+        // setGetLong(position.coords.longitude);
         setlatitude(position.coords.latitude);
+        console.log("withCordinates latitude....", position.coords.latitude);
         setlongitude(position.coords.longitude);
+        console.log("withCordinates Longitude....", position.coords.longitude);
         getAddress(position.coords.latitude, position.coords.longitude);
+        // getAddress(getLat,getLong);
       },
       (error) => {
         alert(error.message.toString());
+        console.log("watch cordinates err..", error.message);
       },
       {
         showLocationDialog: true,
@@ -206,12 +222,48 @@ export default CreateJobFirstScreen = (props) => {
       }
     );
   };
+  // const getOneTimeLocation = () => {
+  //   // setLocationStatus('Getting Location ...');
+  //   console.log("Getting Location ...");
+  //   Geolocation.getCurrentPosition(
+  //     (position) => {
+  //       // setLocationStatus('You are Here');
+  //       console.log("You are Here");
+  //       alert("you are here")
+  //       const currentLongitude = JSON.stringify(position.coords.longitude);
+  //       const currentLatitude = JSON.stringify(position.coords.latitude);
+  //       // setlatitude(currentLatitude);
+  //       // setlongitude(currentLongitude);
+
+  //       // Log the latitude and longitude to check if they are received correctly
+  //       console.log("Latitude:", currentLatitude);
+  //       console.log("Longitude:", currentLongitude);
+  //       setGetLat(position.coords.latitude);
+  //       setGetLong(position.coords.longitude)
+  //       getAddress(currentLatitude, currentLongitude);
+  //     },
+  //     (error) => {
+  //       // setLocationStatus(error.message);
+  //       // Log any error messages
+  //       console.error("Location Error!:", error.message);
+  //     },
+  //     {
+  //       enableHighAccuracy: true,
+  //       timeout: 30000,
+  //       maximumAge: 1000,
+  //     }
+  //   );
+  // };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
         setLocation(json.results[0].formatted_address);
+        // getAddressWithCordinates();
+        // checkpermissionlocation();
+        // getOneTimeLocation();
+        getAddressWithCordinates();
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -236,7 +288,6 @@ export default CreateJobFirstScreen = (props) => {
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
         console.log("mainFullAddress....", MainFullAddress);
-
         //setAddress(MainFullAddress);
       })
       .catch((error) => console.warn(error));
@@ -247,6 +298,7 @@ export default CreateJobFirstScreen = (props) => {
     // alert(selectJobTypeid);
     // alert(isClick)
   };
+  
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: "feed",
@@ -279,6 +331,8 @@ export default CreateJobFirstScreen = (props) => {
     }
     return iconConfig;
   };
+
+
   const firstIndicatorSignUpStepStyle = {
     stepIndicatorSize: 40,
     currentStepIndicatorSize: 20,
@@ -357,7 +411,7 @@ export default CreateJobFirstScreen = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    CheckIOSMapPermission();
+    // CheckIOSMapPermission();
     setservicesValue("");
     setAboutyourNeed("");
     setJobPriorityValue("");
@@ -365,6 +419,9 @@ export default CreateJobFirstScreen = (props) => {
     setLocation("");
     setSelectedAddress("");
     setRatingThresholdValue("");
+
+    // map...
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
   }, [selectJobType]);
   const Selected_Time_render = (item) => {
     const isSelected =
@@ -471,6 +528,7 @@ export default CreateJobFirstScreen = (props) => {
     );
   };
   const lookingServices_render = (item) => {
+    setArrowIcon
     return (
       <View contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View
@@ -884,6 +942,8 @@ export default CreateJobFirstScreen = (props) => {
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}
+            // Maplat={getLat}
+            // Maplng={getLong}
           />
           <View
             style={{
@@ -977,6 +1037,14 @@ export default CreateJobFirstScreen = (props) => {
                   // alert(item.lookup_key)
                 }}
                 renderItem={lookingServices_render}
+                // renderRightIcon={() => (
+                //   <AntDesign
+                //     // name={dropdownIcon ? "down" : "up"}
+                //     // name="down"
+                //     name={arrowIcon ? "up" : "down"} 
+                //     size={20}
+                //   />
+                // )}
               />
             </View>
             <View style={CreateJobFirstStyle.jobDetailsView}>

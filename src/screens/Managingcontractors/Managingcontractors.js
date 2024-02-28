@@ -21,6 +21,10 @@ const Managingcontractors = (props) => {
   const [activeScreen, setActiveScreen] = useState(false);
   const [activeTab, setActiveTab] = useState("Tab1");
   const [isLoading, setIsLoading] = useState(false);
+
+  const searchmanagingContractor =()=>{
+    
+  }
   const toggleView = () => {
     setVisible(!visible);
   };
@@ -90,6 +94,8 @@ const Managingcontractors = (props) => {
           filterImage={IMAGES.filter}
           height={48}
           placeholder={"Search tenent"}
+          searchData={searchmanagingContractor}
+
         />
         <View style={ManagingcontractorsStyle.Line1} />
         <View style={ManagingcontractorsStyle.buttonview}>

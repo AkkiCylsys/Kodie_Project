@@ -12,15 +12,15 @@ const CircleProgress = (props) => {
       <View style={CircleProgressStyle.maincontainerview}>
         <View style={CircleProgressStyle.mainview}>
           <View style={CircleProgressStyle.bindview}>
-            <View style={CircleProgressStyle.circle}>
+            <View style={[CircleProgressStyle.circle,CircleProgressStyle.rateview]}>
               <MaterialCommunityIcons
                 name="home-city"
-                size={20}
+                size={22}
                 style={CircleProgressStyle.homeicon}
               />
             </View>
             <View style={CircleProgressStyle.persentview}>
-              <Text style={CircleProgressStyle.persenttext}>80%</Text>
+              <Text style={CircleProgressStyle.persenttext}>0%</Text>
               <Text style={CircleProgressStyle.ratetext}>Occupancy rate</Text>
             </View>
           </View>
@@ -34,7 +34,7 @@ const CircleProgress = (props) => {
               />
             </View>
             <View style={CircleProgressStyle.persentview}>
-              <Text style={CircleProgressStyle.persenttext}>95%</Text>
+              <Text style={CircleProgressStyle.persenttext}>0%</Text>
               <Text style={CircleProgressStyle.ratetext}>
                 Rental collection
               </Text>

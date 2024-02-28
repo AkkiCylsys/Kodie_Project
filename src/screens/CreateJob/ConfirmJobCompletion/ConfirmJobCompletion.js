@@ -1,5 +1,5 @@
 // Screen no: 149
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { ConfirmJobCompletionStyle } from "./ConfirmJobCompletionStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -11,8 +11,47 @@ import Entypo from "react-native-vector-icons/Entypo";
 import UploadImageBoxes from "../../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
 import SwitchButton from "../../../components/Molecules/SwitchButton/SwitchButton";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { useState } from "react";
+import axios from "axios";
+import { Config } from "../../../Config";
+import moment from "moment/moment";
+
 export default ConfirmJobCompletion = (props) => {
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+
+  useEffect(() => {
+    getJobDetails();
+  }, []);
+  const getJobDetails = () => {
+    const url = Config.BASE_URL;
+    const jobDetails_url = url + "job/get";
+    console.log("Request URL:", jobDetails_url);
+    setIsLoading(true);
+    const jobDetailsData = {
+      jm_job_id: 72,
+    };
+    axios
+      .post(jobDetails_url, jobDetailsData)
+      .then((response) => {
+        console.log("API Response JobDetails:", response.data);
+        if (response.data.success === true) {
+          setJobDetailsData(response.data.data);
+          console.log("jobDetailsData....", response.data.data);
+          console.log("job_type_my..", response.data.data.job_type_my);
+        } else {
+          alert(response.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed JobDetails ", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   const [isLoading, setIsLoading] = useState(false);
   return (
     <View style={ConfirmJobCompletionStyle.mainContainer}>
@@ -23,30 +62,34 @@ export default ConfirmJobCompletion = (props) => {
       <ScrollView>
         <View style={ConfirmJobCompletionStyle.container}>
           <Text style={ConfirmJobCompletionStyle.heading_Text}>
-            {"Plasterer to fix wall"}
+            {jobDetailsData?.service_looking}
           </Text>
           <Text style={ConfirmJobCompletionStyle.Sub_heading_Text}>
-            {"Posted Nov 11, 2022"}
+            {`Posted  ${moment(jobDetailsData?.job_date).format(
+              "MMM  DD, YYYY"
+            )}`}
           </Text>
           <DividerIcon />
           <View>
             <Text style={ConfirmJobCompletionStyle.job_Details_txt}>
               {"Job detail"}
             </Text>
-            <RowTexts leftText={"Name of job owner"} rightText={"Tom"} />
+            <RowTexts leftText={"Name of job owner"} rightText={jobDetailsData?.first_name} />
             <RowTexts
               leftText={"Location"}
-              rightText={"1729 Melbourne St Australia"}
+              rightText={jobDetailsData?.job_location}
             />
-            <RowTexts leftText={"Proposed date"} rightText={"Nov 11, 2022"} />
+            <RowTexts leftText={"Proposed date"} rightText={moment(jobDetailsData?.job_date).format(
+              "MMM  DD, YYYY"
+            )} />
             <RowTexts
               leftText={"Proposed time"}
-              rightText={"10pm - 2am (4 hours)"}
+              rightText={`${jobDetailsData?.job_time} ${jobDetailsData?.number_of_hours}`}
             />
-            <RowTexts leftText={"Number of hours"} rightText={"3 hours"} />
-            <RowTexts leftText={"How often"} rightText={"One time"} />
-            <RowTexts leftText={"Budget range"} rightText={"$100 - $200"} />
-            <RowTexts leftText={"Booking insurance"} rightText={"Yes"} />
+            <RowTexts leftText={"Number of hours"} rightText={jobDetailsData?.number_of_hours} />
+            <RowTexts leftText={"How often"} rightText={jobDetailsData?.how_often} />
+            <RowTexts leftText={"Budget range"} rightText={`${jobDetailsData?.job_max_budget}  ${jobDetailsData?.job_min_budget}`} />
+            <RowTexts leftText={"Booking insurance"} rightText={jobDetailsData?.insurance} />
           </View>
           <View style={ConfirmJobCompletionStyle.job_billing}>
             <Text style={ConfirmJobCompletionStyle.job_Details_txt}>

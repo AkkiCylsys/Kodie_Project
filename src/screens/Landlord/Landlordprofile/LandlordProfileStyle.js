@@ -72,5 +72,6 @@ export const LandlordProfileStyle = StyleSheet.create({
     paddingHorizontal: 16,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
+    marginTop:20
   },
 });

@@ -114,4 +114,11 @@ export const DetailsStyle = StyleSheet.create({
   stepIndicator: {
     marginTop: 15,
   },
+  p_rowTextView:{
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+    // marginTop: 10,
+  }
 });

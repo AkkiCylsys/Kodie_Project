@@ -20,9 +20,9 @@ export const UploadImageStyle = StyleSheet.create({
   upload_View: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 10,
+    // marginTop: 10,
   },
-  crossIconStyle: { alignSelf: "center", marginRight: 10 },
+  crossIconStyle: { alignSelf: "center", marginRight: 10 ,marginTop:5},
   uploadImgText: {
     marginHorizontal: 16,
     color: _COLORS.Kodie_BlackColor,

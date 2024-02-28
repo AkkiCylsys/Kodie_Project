@@ -15,10 +15,10 @@ export const CompanyStyle = StyleSheet.create({
     shadowRadius: 2,
     paddingHorizontal: 20,
     paddingTop: 1,
-    // marginBottom: 20,
+    marginBottom: 12,
   },
   inputContainer: {
-    marginTop: 5,
+    // marginTop: 5,
   },
   input: {
     height: 45,

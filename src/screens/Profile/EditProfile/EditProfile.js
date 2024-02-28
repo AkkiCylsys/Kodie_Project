@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  PermissionsAndroid,
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -24,7 +25,8 @@ import Octicons from "react-native-vector-icons/Octicons";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import UploadImageData from "../../../components/Molecules/UploadImage/UploadImage";
 import Geocoder from "react-native-geocoding";
-import Geolocation from "react-native-geolocation-service";
+// import Geolocation from "react-native-geolocation-service";
+import Geolocation from "@react-native-community/geolocation";
 import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
@@ -36,6 +38,7 @@ import CompanyDetails from "../../Landlord/Landlordprofile/CompanyDetails/Compan
 import ProfileDocuments from "../ProfileDocuments/ProfileDocuments";
 import PersonalDetails from "../PersonalDetails/PersonalDetails";
 import PhoneInput from "react-native-phone-number-input";
+import styles from "rn-range-slider/styles";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -65,6 +68,8 @@ const EditProfile = (props) => {
   const [location, setLocation] = useState(
     loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD
   );
+  let profileDoc = props?.route?.params?.profileDoc;
+  console.log("profileDoc....", profileDoc);
   const [about, setAbout] = useState("");
   const [activeTab, setActiveTab] = useState("Tab1");
   const [value, setValue] = useState(null);
@@ -83,6 +88,10 @@ const EditProfile = (props) => {
   const [company_latitude, setCompany_latitude] = useState("");
   const [company_longitude, setCompany_longitude] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
+
+  const [getLat, setGetLat] = useState("");
+  const [getLong, setGetLong] = useState("");
+
   const phoneInput = useRef(null);
   console.log("latitude....", latitude);
   console.log("longitude....", longitude);
@@ -102,11 +111,12 @@ const EditProfile = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    CheckIOSMapPermission();
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     // setFullName(loginData?.Account_details[0]?.UAD_FIRST_NAME);
     // setEmail(loginData?.Login_details?.email);
     // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
     // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
+    setActiveTab(profileDoc ? "Tab3" : "Tab1");
   }, []);
   const goBack = () => {
     props.navigation.pop();
@@ -133,7 +143,7 @@ const EditProfile = (props) => {
     // setlatitude(Region.latitude);
     // setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -189,17 +199,23 @@ const EditProfile = (props) => {
   };
 
   const getAddressWithCordinates = () => {
+    console.log("Enter cordinates..");
     Geolocation.watchPosition(
       (position) => {
+        console.log("with cordinates..");
         if (activeTab === "Tab1") {
           setlatitude(position.coords.latitude);
+          console.log("profile latitute....", position.coords.latitude);
         } else {
           setCompany_latitude(position.coords.latitude);
+          console.log("company latitude....", position.coords.latitude);
         }
         if (activeTab === "Tab1") {
           setlongitude(position.coords.longitude);
+          console.log("profile longitude....", position.coords.longitude);
         } else {
           setCompany_longitude(position.coords.longitude);
+          console.log("company longitude....", position.coords.longitude);
         }
         // setlatitude(position.coords.latitude);
         // setlongitude(position.coords.longitude);
@@ -219,8 +235,8 @@ const EditProfile = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
         if (activeTab === "Tab1") {
           setLocation(json.results[0].formatted_address);
         } else {
@@ -374,7 +390,7 @@ const EditProfile = (props) => {
                 <View style={EditProfileStyle.inputmainview}>
                   <View style={EditProfileStyle.firstview}>
                     <Text style={EditProfileStyle.oldnumbertext}>
-                      Full name
+                      First name
                     </Text>
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
@@ -443,9 +459,7 @@ const EditProfile = (props) => {
                         </View>
                       </View>
                     </View> */}
-                    <View
-                      style={[EditProfileStyle.simpleinputview, { height: 55 }]}
-                    >
+                    <View style={[EditProfileStyle.phoneinputview]}>
                       <PhoneInput
                         ref={phoneInput}
                         defaultValue={phoneNumber}
@@ -461,22 +475,35 @@ const EditProfile = (props) => {
                         // withDarkTheme
                         // withShadow
                         autoFocus
+                        withFlag={false}
                         textContainerStyle={{
                           flex: 1,
                           backgroundColor: _COLORS.Kodie_WhiteColor,
+                          // backgroundColor: _COLORS.Kodie_ExtraLightGrayColor,
+                          // borderWidth:1,
+                          paddingVertical: 2,
+                          // borderWidth:1,
+                          // borderColor:'red',
+                          borderRadius:10,
+                       
                         }}
                         containerStyle={{
                           flex: 1,
                           alignSelf: "center",
                           alignItems: "center",
                           justifyContent: "center",
+                          borderWidth:1,
+                          // backgroundColor: 'blue',
+                          borderColor:_COLORS.Kodie_GrayColor,
+                          borderRadius:12,
+                        
                         }}
                       />
                     </View>
                   </View>
 
                   <View style={EditProfileStyle.inputContainer}>
-                    <Text style={LABEL_STYLES.commontext}>{"About"}</Text>
+                    <Text style={LABEL_STYLES.commontext}>{"Bio"}</Text>
                     <TextInput
                       style={[EditProfileStyle.input, { height: 119 }]}
                       value={about}
@@ -674,8 +701,8 @@ const EditProfile = (props) => {
               marginBottom: 10,
             }}
             onRegionChange={onRegionChange}
-            Maplat={latitude}
-            Maplng={longitude}
+            Maplat={activeTab === "Tab1" ? latitude : company_latitude}
+            Maplng={activeTab === "Tab1" ? longitude : company_longitude}
           />
           <View
             style={{

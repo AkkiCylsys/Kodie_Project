@@ -160,7 +160,7 @@ export default Person = (props) => {
       <ScrollView>
         <View style={PersonStyle.card}>
           <View style={PersonStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"First name*"}</Text>
+            <Text style={[LABEL_STYLES.commontext,{marginTop:15}]}>{"First name*"}</Text>
             <TextInput
               style={PersonStyle.input}
               value={firstName}

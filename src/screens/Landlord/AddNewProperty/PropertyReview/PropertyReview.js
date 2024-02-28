@@ -11,7 +11,7 @@ import { PropertyReviewStyle } from "./PropertyReviewStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../../services/CommonServices";
 import { SliderBox } from "react-native-image-slider-box";
-import { _COLORS, BANNERS, IMAGES } from "../../../../Themes";
+import { _COLORS, BANNERS, IMAGES, LABEL_STYLES } from "../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
 import Leases from "./Leases/Leases";
 import Details from "./Details/Details";
@@ -32,6 +32,10 @@ import { DetailsStyle } from "./Details/DetailsStyles";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import { FONTFAMILY, fontFamily } from "../../../../Themes/FontStyle/FontStyle";
+import { Divider } from "react-native-paper";
+import Share from "react-native-share";
+import RowTexts from "../../../../components/Molecules/RowTexts/RowTexts";
+
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 const Detail = [
@@ -84,9 +88,12 @@ export default PropertyReview = (props) => {
   const MultiImageName = props?.route?.params?.MultiImageName;
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
+  const DocTab = props?.route?.params?.DocTab;
+  console.log("DocTab..", DocTab);
   console.log(propertyView, propertyid);
-  console.log("propertyView.....",propertyView);
-  const [activeTab, setActiveTab] = useState("Tab1");
+  console.log("propertyid...", propertyid);
+  console.log("propertyView.....", propertyView);
+  const [activeTab, setActiveTab] = useState("Tab4");
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
@@ -95,6 +102,21 @@ export default PropertyReview = (props) => {
   const [currentPage, setCurrentPage] = useState(3);
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
+  const [like, setLike] = useState(false);
+
+  const [addtionalFeaturesID, setAddtionalFeaturesID] = useState("");
+  const [propertyDetailsClp, setPropertyDetailsClp] = useState(false);
+  const [roomClp, setRoomClp] = useState(false);
+  const [externalfeaturesClp, setExternalfeaturesClp] = useState(false);
+  const [pointOfInterest, setPointOfInterest] = useState(false);
+
+  const shareDocFile = async () => {
+    try {
+      await Share.open({ url: inviteFriendPath });
+    } catch (error) {
+      console.error("Error sharing property ", error);
+    }
+  };
   const Detail_rander = ({ item, index }) => {
     return (
       <>
@@ -313,6 +335,7 @@ export default PropertyReview = (props) => {
             response.data.property_details[0].key_features.replace(/\\/g, "")
           );
           setDetail(parsedData);
+          console.log("parsedData....", parsedData);
         }
         const additionalKeyFeatures =
           response.data.property_details[0].additional_key_features[0];
@@ -321,6 +344,11 @@ export default PropertyReview = (props) => {
         console.error("propertyDetail_error:", response.data.error);
         alert(response.data.error);
       }
+      const additionalFeatures_id =
+        response.data.property_details[0].additional_features_id;
+      console.log("additionalFeaturesid....", additionalFeatures_id);
+      const is_additionalFeaturesid = additionalFeatures_id.split(",");
+      setAddtionalFeaturesID(is_additionalFeaturesid);
     } catch (error) {
       console.error("Error:", error);
       alert(error);
@@ -329,7 +357,7 @@ export default PropertyReview = (props) => {
   };
 
   useEffect(() => {
-    setActiveTab("Tab1")
+    setActiveTab(DocTab ? "Tab4" : "Tab1");
     fetchData();
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(",");
@@ -460,7 +488,7 @@ export default PropertyReview = (props) => {
             {/* <View
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             > */}
-
+            <DividerIcon marginTop={10} />
             <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
               {"Key features"}
             </Text>
@@ -497,70 +525,354 @@ export default PropertyReview = (props) => {
               />
             )}
 
-            {/* <View style={DetailsStyle.subContainer}>
+            <View style={DetailsStyle.subContainer}>
               <View style={DetailsStyle.propety_details_view}>
                 <Text style={DetailsStyle.propery_det}>
                   {"Property details"}
                 </Text>
 
-                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
-                  <AntDesign
-                    name="down"
-                    size={15}
+                <TouchableOpacity
+                  style={DetailsStyle.down_Arrow_icon}
+                  onPress={() => {
+                    setPropertyDetailsClp(!propertyDetailsClp);
+                  }}
+                >
+                  <Entypo
+                    name={
+                      propertyDetailsClp
+                        ? "chevron-small-up"
+                        : "chevron-small-down"
+                    }
+                    size={18}
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
               </View>
               <DividerIcon marginTop={8} />
+              {propertyDetailsClp ? (
+                <>
+                  <View style={DetailsStyle.p_rowTextView}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      {"Listing Number"}
+                    </Text>
+                    <Text
+                      style={[
+                        LABEL_STYLES.commontext,
+                        { fontFamily: FONTFAMILY.K_Medium },
+                      ]}
+                    >
+                      {"name"}
+                    </Text>
+                  </View>
+                  <DividerIcon marginTop={8} />
+                  <View style={DetailsStyle.p_rowTextView}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      {"Type of Property"}
+                    </Text>
+                    <Text
+                      style={[
+                        LABEL_STYLES.commontext,
+                        { fontFamily: FONTFAMILY.K_Medium },
+                      ]}
+                    >
+                      {property_Detail?.property_type}
+                    </Text>
+                  </View>
+                  <DividerIcon marginTop={8} />
+                  <View style={DetailsStyle.p_rowTextView}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      {"Floor Size"}
+                    </Text>
+                    <Text
+                      style={[
+                        LABEL_STYLES.commontext,
+                        { fontFamily: FONTFAMILY.K_Medium },
+                      ]}
+                    >
+                      {property_Detail?.floor_size}
+                    </Text>
+                  </View>
+                  <DividerIcon marginTop={8} />
+                  <View style={DetailsStyle.p_rowTextView}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      {"Pets Allowed"}
+                    </Text>
+                    <Text
+                      style={[
+                        LABEL_STYLES.commontext,
+                        { fontFamily: FONTFAMILY.K_Medium },
+                      ]}
+                    >
+                      {"Name"}
+                    </Text>
+                  </View>
+                  <DividerIcon marginTop={8} />
+                  <View style={DetailsStyle.p_rowTextView}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      {addtionalFeaturesID[0]}
+                    </Text>
+                    <Text
+                      style={[
+                        LABEL_STYLES.commontext,
+                        { fontFamily: FONTFAMILY.K_Medium },
+                      ]}
+                    >
+                      {addtionalFeaturesID[1]}
+                    </Text>
+                  </View>
+                  <DividerIcon marginTop={8} />
+                  <View style={DetailsStyle.p_rowTextView}>
+                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                      {"Smoking"}
+                    </Text>
+                    <Text
+                      style={[
+                        LABEL_STYLES.commontext,
+                        { fontFamily: FONTFAMILY.K_Medium },
+                      ]}
+                    >
+                      {"No"}
+                    </Text>
+                  </View>
+                  <DividerIcon marginTop={8} />
+                </>
+              ) : null}
+
+              {/* <DividerIcon marginTop={8} /> */}
             </View>
             <View style={DetailsStyle.subContainer}>
               <View style={DetailsStyle.propety_details_view}>
                 <Text style={DetailsStyle.propery_det}>{"Rooms"}</Text>
-
-                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
-                  <AntDesign
-                    name="down"
-                    size={15}
+                <TouchableOpacity
+                  style={DetailsStyle.down_Arrow_icon}
+                  onPress={() => {
+                    setRoomClp(!roomClp);
+                  }}
+                >
+                  <Entypo
+                    name={roomClp ? "chevron-small-up" : "chevron-small-down"}
+                    size={18}
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
               </View>
-              <DividerIcon marginTop={8} />
             </View>
+            <DividerIcon marginTop={8} />
+            {roomClp ? (
+              <>
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Bedrooms"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {Detail[0]?.Bedrooms}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Bathrooms"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {Detail[1]?.Bathrooms}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Kitchen"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Lounge"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Dining Room"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Other"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+              </>
+            ) : null}
             <View style={DetailsStyle.subContainer}>
               <View style={DetailsStyle.propety_details_view}>
                 <Text style={DetailsStyle.propery_det}>
                   {"External featuress"}
                 </Text>
 
-                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
-                  <AntDesign
-                    name="down"
-                    size={15}
+                <TouchableOpacity style={DetailsStyle.down_Arrow_icon} onPress={()=>{
+                  setExternalfeaturesClp(!externalfeaturesClp)
+                }}>
+                  <Entypo
+                    name={externalfeaturesClp ? "chevron-small-up" : "chevron-small-down"}
+                    size={18}
+                    color={_COLORS.Kodie_GrayColor}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+              <DividerIcon marginTop={8} />
+              {externalfeaturesClp ? (
+              <>
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Car Spaces"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {Detail[0]?.Bedrooms}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"On-Street Parking Spaces"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Garden"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Pool"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Outdoor Patio"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+                <View style={DetailsStyle.p_rowTextView}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    {"Other"}
+                  </Text>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      { fontFamily: FONTFAMILY.K_Medium },
+                    ]}
+                  >
+                    {"0"}
+                  </Text>
+                </View>
+                <DividerIcon marginTop={8} />
+              </>
+            ) : null}
+            <View style={DetailsStyle.subContainer}>
+              <View style={DetailsStyle.propety_details_view}>
+                <Text style={DetailsStyle.propery_det}>
+                  {"Points of interest"}
+                </Text>
+                <TouchableOpacity style={DetailsStyle.down_Arrow_icon} onPress={()=>{
+                  setPointOfInterest(!pointOfInterest)
+                }}>
+                  <Entypo
+                    name={pointOfInterest ? "chevron-small-up" : "chevron-small-down"}
+                    size={18}
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
               </View>
               <DividerIcon marginTop={8} />
-            </View> */}
-            <View style={DetailsStyle.subContainer}>
-              {/* <View style={DetailsStyle.propety_details_view}>
-                <Text style={DetailsStyle.propery_det}>
-                  {"Points of interest"}
-                </Text>
-
-                <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
-                  <AntDesign
-                    name="down"
-                    size={15}
-                    color={_COLORS.Kodie_GrayColor}
-                  />
-                </TouchableOpacity>
-              </View>
-              <DividerIcon marginTop={8} /> */}
+              
               <View style={PropertyReviewStyle.btnView}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
+                  height={50}
                   _ButtonText={
                     editMode
                       ? "Save property"
@@ -715,7 +1027,11 @@ export default PropertyReview = (props) => {
               {property_Detail?.property_type}
             </Text>
             <View style={PropertyReviewStyle.share_View}>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  // shareDocFile
+                }}
+              >
                 <Entypo
                   name="share"
                   color={_COLORS.Kodie_MediumGrayColor}
@@ -723,10 +1039,18 @@ export default PropertyReview = (props) => {
                   style={PropertyReviewStyle.share_sty}
                 />
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  setLike(!like);
+                }}
+              >
                 <Entypo
-                  name="heart-outlined"
-                  color={_COLORS.Kodie_MediumGrayColor}
+                  name={like ? "heart" : "heart-outlined"}
+                  color={
+                    like
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
                   size={22}
                 />
               </TouchableOpacity>

@@ -204,6 +204,7 @@ export const AddBiddingDetailsCss = StyleSheet.create({
     width: "50%",
     alignSelf: "center",
     marginVertical: 50,
+    resizeMode:'contain'
   },
   itemView: {
     flex: 1,

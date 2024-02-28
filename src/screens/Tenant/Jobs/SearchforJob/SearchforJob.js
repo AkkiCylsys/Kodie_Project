@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  PermissionsAndroid,
 } from "react-native";
 import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
 import {
@@ -35,7 +36,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { Config } from "../../../../Config";
 import axios from "axios";
 import Geocoder from "react-native-geocoding";
-import Geolocation from "react-native-geolocation-service";
+// import Geolocation from "react-native-geolocation-service";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
@@ -43,6 +44,8 @@ import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/Acti
 import { CreateJobFirstStyle } from "../../../CreateJob/CreateJobFirstScreenCss";
 import { useDispatch, useSelector } from "react-redux";
 import SearchBar from "../../../../components/Molecules/SearchBar/SearchBar";
+import Geolocation from "@react-native-community/geolocation";
+
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 export default SearchForJob = (props) => {
@@ -81,6 +84,8 @@ export default SearchForJob = (props) => {
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
 
+  const [getLat, setGetLat] = useState("");
+  const [getLong, setGetLong] = useState("");
   const handlePriceRangeChange = (priceRange) => {
     console.log("Price Range in Parent Component:", priceRange);
     setPriceRanges(priceRange);
@@ -94,6 +99,9 @@ export default SearchForJob = (props) => {
     console.log("Low Range in Parent Component:", low);
     setMin(low);
   };
+const searchForjob =()=>{
+  
+}
 
   // ...Location
   const ConfirmAddress = () => {
@@ -108,7 +116,7 @@ export default SearchForJob = (props) => {
 
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -161,16 +169,24 @@ export default SearchForJob = (props) => {
         console.log(error);
       });
   };
-
   const getAddressWithCordinates = () => {
+    console.log("Enter cordinates..");
     Geolocation.watchPosition(
       (position) => {
+        // alert("with cordinates..");
+        console.log("with cordinates..");
+        // setGetLat(position.coords.latitude);
+        // setGetLong(position.coords.longitude);
         setlatitude(position.coords.latitude);
+        console.log("withCordinates latitude....", position.coords.latitude);
         setlongitude(position.coords.longitude);
+        console.log("withCordinates Longitude....", position.coords.longitude);
         getAddress(position.coords.latitude, position.coords.longitude);
+        // getAddress(getLat, getLong);
       },
       (error) => {
         alert(error.message.toString());
+        console.log("watch cordinates err..", error.message);
       },
       {
         showLocationDialog: true,
@@ -180,12 +196,14 @@ export default SearchForJob = (props) => {
       }
     );
   };
+
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setLocation(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
+        getAddressWithCordinates();
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -228,7 +246,7 @@ export default SearchForJob = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    CheckIOSMapPermission();
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     // setSelectJobType("");
     // setservicesValue("");
     // setAboutyourNeed("");
@@ -634,6 +652,8 @@ export default SearchForJob = (props) => {
             onRegionChange={onRegionChange}
             Maplat={latitude}
             Maplng={longitude}
+            // Maplat={getLat}
+            // Maplng={getLong}
           />
           <View
             style={{
@@ -686,6 +706,8 @@ export default SearchForJob = (props) => {
             frontSearchIcon
             placeholder={"Start typing to search"}
             isFilterImage
+            searchData={searchForjob}
+
           />
           <View
             style={[CreateJobFirstStyle.formContainer, { marginBottom: 0 }]}

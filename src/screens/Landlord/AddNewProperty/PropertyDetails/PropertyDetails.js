@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,9 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  Alert,
+  PermissionsAndroid,
+
 } from "react-native";
 import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -37,6 +40,8 @@ import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
 import { useFocusEffect } from "@react-navigation/native";
 import { BackHandler } from "react-native";
+import Geolocation from "@react-native-community/geolocation";
+
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 export default PropertyDetails = (props) => {
   const propertyid = props?.route?.params?.propertyid;
@@ -65,6 +70,10 @@ export default PropertyDetails = (props) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
+
+  const [getLat, setGetLat] = useState("");
+  const [getLong, setGetLong] = useState("");
+
   // const [locationError, setlocationError] = useState("");
   // const [propertytypeError, setpropertytypeError] = useState("");
   // const validateFields = () => {
@@ -77,6 +86,7 @@ export default PropertyDetails = (props) => {
   //     null;
   //   }
   // };
+
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -96,25 +106,13 @@ export default PropertyDetails = (props) => {
     }, [IsMap, IsSearch])
   );
 
-  const handle_next_btn = () => {
-    props.navigation.navigate("PropertyFeature", {
-      location: location,
-      property_value: property_value,
-      propertyDesc: propertyDesc,
-      selectedButtonId: selectedButtonId,
-      latitude: latitude,
-      longitude: longitude,
-      propertyid: propertyid,
-    });
-  };
-
   useEffect(() => {
     handleProperty_Type();
     DetailsData();
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    CheckIOSMapPermission();
+    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     setLocation(property_Detail?.location);
   }, []);
 
@@ -224,18 +222,18 @@ export default PropertyDetails = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-          ? "#000000"
-          : "#808080";
+        ? "#000000"
+        : "#808080";
     const iconName =
       position === 0
         ? "Details"
         : position === 1
-          ? "Features"
-          : position === 2
-            ? "Images"
-            : position === 3
-              ? "Review"
-              : "null";
+        ? "Features"
+        : position === 2
+        ? "Images"
+        : position === 3
+        ? "Review"
+        : "null";
 
     return (
       <View style={{}}>
@@ -324,14 +322,14 @@ export default PropertyDetails = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setLocation(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -360,6 +358,34 @@ export default PropertyDetails = (props) => {
       })
       .catch((error) => console.warn(error));
   };
+  const getAddressWithCordinates = () => {
+    console.log("Enter cordinates..");
+    Geolocation.watchPosition(
+      (position) => {
+        // alert("with cordinates..");
+        console.log("with cordinates..");
+        // setGetLat(position.coords.latitude);
+        // setGetLong(position.coords.longitude);
+        setlatitude(position.coords.latitude);
+        console.log("withCordinates latitude....", position.coords.latitude);
+        setlongitude(position.coords.longitude);
+        console.log("withCordinates Longitude....", position.coords.longitude);
+        getAddress(position.coords.latitude, position.coords.longitude);
+        // getAddress(getLat, getLong);
+      },
+      (error) => {
+        alert(error.message.toString());
+        console.log("watch cordinates err..", error.message);
+      },
+      {
+        showLocationDialog: true,
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 0,
+      }
+    );
+  };
+
   const handleProperty_Type = () => {
     const propertyData = {
       P_PARENT_CODE: "PROP_TYPE",
@@ -394,19 +420,23 @@ export default PropertyDetails = (props) => {
   //dropDown render Item....
   const propertyType_render = (item) => {
     return (
-      <View style={[PropertyDetailsStyle.itemView,
-        {
-          backgroundColor:
-            item.lookup_key === property_value
-              ? _COLORS.Kodie_MidLightGreenColor
-              : null,
-        },]}>
+      <View
+        style={[
+          PropertyDetailsStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === property_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}
+      >
         {item.lookup_key === property_value ? (
           <AntDesign
-          color={_COLORS.Kodie_GreenColor}
-          name={"checkcircle"}
-          size={20}
-        />
+            color={_COLORS.Kodie_GreenColor}
+            name={"checkcircle"}
+            size={20}
+          />
         ) : (
           <Fontisto
             color={_COLORS.Kodie_GrayColor}
@@ -421,6 +451,28 @@ export default PropertyDetails = (props) => {
     );
   };
   const goBack = () => {
+    // Alert.alert(
+    //   "Save or Discard Changes?",
+    //   "Do you want to save or discard your changes?",
+    //   [
+    //     {
+    //       text: "Save",
+    //       onPress: () => {
+    //         handleSave();
+    //         props.navigation.pop();
+    //         console.log("save presed");
+    //       },
+    //     },
+    //     {
+    //       text: "Discard",
+    //       onPress: () => {
+    //         handleDiscard();
+    //         props.navigation.pop();
+    //         console.log("save presed");
+    //       },
+    //     },
+    //   ]
+    // );
     props.navigation.pop();
   };
   return (
@@ -439,8 +491,8 @@ export default PropertyDetails = (props) => {
           IsMap || IsSearch
             ? "Location"
             : editMode
-              ? "Edit property"
-              : "Add new property"
+            ? "Edit property"
+            : "Add new property"
         }
       />
       <KeyboardAvoidingView
@@ -481,6 +533,8 @@ export default PropertyDetails = (props) => {
               onRegionChange={onRegionChange}
               Maplat={latitude}
               Maplng={longitude}
+              // Maplat={getLat}
+              // Maplng={getLong}
             />
             <View
               style={{
@@ -644,8 +698,7 @@ export default PropertyDetails = (props) => {
                   {propertyDesc.length}/1000
                 </Text>
               </View>
-
-              <View
+              {/* <View
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
@@ -701,7 +754,7 @@ export default PropertyDetails = (props) => {
                   setSelectedButton(true);
                   setSelectedButtonId(1);
                 }}
-              />
+              /> */}
               <View style={PropertyDetailsStyle.btnView}>
                 <CustomSingleButton
                   _ButtonText={"Next"}
@@ -723,9 +776,9 @@ export default PropertyDetails = (props) => {
                       country: country,
                       editMode: editMode,
                     });
-                    setLocation("");
-                    setPropertyDesc("");
-                    setProperty_value("");
+                    // setLocation("");
+                    // setPropertyDesc("");
+                    // setProperty_value("");
                   }}
                   disabled={isLoading ? true : false}
                 />

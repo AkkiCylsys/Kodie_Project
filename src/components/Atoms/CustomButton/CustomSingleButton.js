@@ -29,6 +29,8 @@ const CustomSingleButton = (props) => {
           CustomButtonstyles.buttonText,
           { color: props.Text_Color, fontSize: props.text_Size },
         ]}
+        numberOfLines={1}
+                ellipsizeMode="tail"
       >
         {props._ButtonText}
       </Text>

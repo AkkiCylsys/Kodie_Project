@@ -184,18 +184,27 @@ export const PropertyFeatureStyle = StyleSheet.create({
   key_feature_subView: { flex: 1 },
   floorsizeview: {
     flex: 0.5,
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
     flexDirection: "row",
+    alignItems:'center',
+    alignSelf:'center'
+   
+   
   },
   flor_input_field: {
     borderWidth: 0.5,
     borderRadius: 6,
     borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
-    color: "#333",
+    color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
     textAlign: "center",
-    width: 105,
-    height: 36,
+    width: '100%',
+    // height: 38,
+    paddingTop:5,
+    alignSelf:'center',
+    justifyContent:'center',
+
+
   },
   key_feature_Text: {
     color: _COLORS.Kodie_ExtraminLiteGrayColor,

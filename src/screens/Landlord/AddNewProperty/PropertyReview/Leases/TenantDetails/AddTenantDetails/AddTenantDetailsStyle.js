@@ -13,21 +13,23 @@ export const AddTenantDetailsStyle = StyleSheet.create({
   heading_View: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // marginTop: 10,
+    marginTop: 20,
     marginHorizontal: 16,
+    marginBottom: 6,
   },
-  btn_main_view:{
+  btn_main_view: {
     flexDirection: "row",
     marginLeft: 10,
     // marginTop: 10,
     borderWidth: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 5,
+    // paddingHorizontal: 8,
+    // paddingVertical: 5,
+    padding: 5,
     marginRight: 150,
     borderRadius: 10,
     borderColor: _COLORS.Kodie_GrayColor,
   },
-  person_view:{
+  person_view: {
     backgroundColor: _COLORS.Kodie_GreenColor,
     paddingHorizontal: 20,
     paddingVertical: 5,
@@ -37,13 +39,13 @@ export const AddTenantDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_WhiteColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf:"center"
+    alignSelf: "center",
   },
   company_text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf:"center",
-    marginLeft:5
+    alignSelf: "center",
+    marginLeft: 5,
   },
 });

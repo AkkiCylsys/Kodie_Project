@@ -1,5 +1,5 @@
 // Screen 2,3,4,5,6
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   BackHandler,
@@ -14,48 +14,47 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
-} from 'react-native';
-import {logos} from '../../../Themes/CommonVectors/Images';
-import {LoginStyles} from './LoginCss';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import Entypo from 'react-native-vector-icons/Entypo';
-import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import BottomTextsButton from './../../../components/Molecules/BottomTextsButton/BottomTextsButton';
-import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+} from "react-native";
+import { logos } from "../../../Themes/CommonVectors/Images";
+import { LoginStyles } from "./LoginCss";
+import RBSheet from "react-native-raw-bottom-sheet";
+import Entypo from "react-native-vector-icons/Entypo";
+import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
+import BottomTextsButton from "./../../../components/Molecules/BottomTextsButton/BottomTextsButton";
+import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   FONTFAMILY,
   LABEL_STYLES,
   IMAGES,
   _COLORS,
-} from './../../../Themes/index';
-import {useFocusEffect, useTheme} from '@react-navigation/native';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchLoginSuccess} from '../../../redux/Actions/Authentication/AuthenticationApiAction';
-import axios from 'axios';
-import {Config} from '../../../Config';
-import DeviceInfo from 'react-native-device-info';
+} from "./../../../Themes/index";
+import { useFocusEffect, useTheme } from "@react-navigation/native";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { CountdownCircleTimer } from "react-native-countdown-circle-timer";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchLoginSuccess } from "../../../redux/Actions/Authentication/AuthenticationApiAction";
+import axios from "axios";
+import { Config } from "../../../Config";
+import DeviceInfo from "react-native-device-info";
 // import CryptoJS from "crypto-js";
-import CryptoJS from 'react-native-crypto-js';
-import firestore from '@react-native-firebase/firestore';
+import CryptoJS from "react-native-crypto-js";
 
-import {loginApiActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
-export default Login = props => {
+import { loginApiActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
+export default Login = (props) => {
   const dispatch = useDispatch();
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [resetEmail, setResetEmail] = useState('');
-  const [resetEmailError, setResetEmailError] = useState('');
-  const [verificationcode, setVerificationcode] = useState('');
-  const [verificationcodeError, setVerificationcodeError] = useState('');
-  const [newpassword, setNewPassword] = useState('');
-  const [newpasswordError, setNewPasswordError] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetEmailError, setResetEmailError] = useState("");
+  const [verificationcode, setVerificationcode] = useState("");
+  const [verificationcodeError, setVerificationcodeError] = useState("");
+  const [newpassword, setNewPassword] = useState("");
+  const [newpasswordError, setNewPasswordError] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [isClick, setIsClick] = useState(0);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -67,19 +66,19 @@ export default Login = props => {
   const deviceId = DeviceInfo.getDeviceId();
   const deviceType = DeviceInfo.getDeviceType();
   const handleTogglePassword = () => {
-    setShowPassword(prevShowPassword => !prevShowPassword);
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
-  console.log('Device ID:', deviceId);
-  console.log('Device type:', deviceType);
+  console.log("Device ID:", deviceId);
+  console.log("Device type:", deviceType);
   // const Login_response = useSelector(
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("Login_response.....", Login_response);
   const buttonLabels = [
-    'Send verification code',
-    'Next',
-    'Save',
-    'Back to login',
+    "Send verification code",
+    "Next",
+    "Save",
+    "Back to login",
   ];
 
   useFocusEffect(
@@ -90,27 +89,27 @@ export default Login = props => {
         setIsClick(0);
         return true;
       };
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
       return () => {
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
       };
-    }, []),
+    }, [])
   );
   const handleToggleNewPassword = () => {
-    setShowNewPassword(prevShowPassword => !prevShowPassword);
+    setShowNewPassword((prevShowPassword) => !prevShowPassword);
   };
 
   const handleToggleResetPassword = () => {
-    setShowResetPassword(prevShowPassword => !prevShowPassword);
+    setShowResetPassword((prevShowPassword) => !prevShowPassword);
   };
 
   // Reset validation email..
   const handleforgetValidation = () => {
-    if (resetEmail.trim() === '') {
-      setResetEmailError('Email is required!');
+    if (resetEmail.trim() === "") {
+      setResetEmailError("Email is required!");
     } else if (!validateResetEmail(resetEmail)) {
       setResetEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else {
       send_verification_code();
@@ -118,30 +117,30 @@ export default Login = props => {
   };
 
   //... Regex login email validation
-  const validateResetEmail = resetEmail => {
+  const validateResetEmail = (resetEmail) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(resetEmail);
   };
 
   //... inner reset password email variable define here
-  const handleResetEmailChange = text => {
+  const handleResetEmailChange = (text) => {
     setResetEmail(text);
-    if (text.trim() === '') {
-      setResetEmailError('Email is required');
+    if (text.trim() === "") {
+      setResetEmailError("Email is required");
     } else if (!validateResetEmail(text)) {
       setResetEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else {
-      setResetEmailError('');
+      setResetEmailError("");
     }
   };
 
   //... inner reset password varification_Code variable define here
   const handleverificationcodes = () => {
-    if (verificationcode.trim() === '') {
-      setVerificationcodeError('Verification code is required');
+    if (verificationcode.trim() === "") {
+      setVerificationcodeError("Verification code is required");
     } else {
       verify_Otp();
     }
@@ -149,14 +148,14 @@ export default Login = props => {
 
   //... inner reset password Password_Check variable define here
   const handleResetpasswordCheck = () => {
-    if (newpassword.trim() === '') {
-      setNewPasswordError('Please enter a new password');
-    } else if (confirmPassword.trim() === '') {
-      setConfirmPasswordError('Please enter a confirmation password');
+    if (newpassword.trim() === "") {
+      setNewPasswordError("Please enter a new password");
+    } else if (confirmPassword.trim() === "") {
+      setConfirmPasswordError("Please enter a confirmation password");
     } else if (newpassword !== confirmPassword) {
-      setConfirmPasswordError('Password do not match');
+      setConfirmPasswordError("Password do not match");
     } else {
-      setConfirmPasswordError('');
+      setConfirmPasswordError("");
       create_password();
     }
   };
@@ -176,68 +175,68 @@ export default Login = props => {
     }
   };
   //... inner reset password rejex variable define here
-  const validateEmail = email => {
+  const validateEmail = (email) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
 
   //... inner  email variable define here
-  const handleEmailChange = text => {
+  const handleEmailChange = (text) => {
     setEmail(text);
-    if (text.trim() === '') {
-      setEmailError('Email is required.');
+    if (text.trim() === "") {
+      setEmailError("Email is required.");
     } else if (!validateEmail(text)) {
       setEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
     } else {
-      setEmailError('');
+      setEmailError("");
     }
   };
 
   //... inner reset password password variable define here
-  const handlePasswordChange = text => {
+  const handlePasswordChange = (text) => {
     setPassword(text);
-    if (text.trim() === '') {
-      setPasswordError('Password is required.');
+    if (text.trim() === "") {
+      setPasswordError("Password is required.");
     } else {
-      setPasswordError('');
+      setPasswordError("");
     }
   };
 
   //... inner reset password new password variable define here
-  const handleNewPassword = text => {
+  const handleNewPassword = (text) => {
     setNewPassword(text);
-    if (text.trim() === '') {
-      setNewPasswordError('New Password is required.');
+    if (text.trim() === "") {
+      setNewPasswordError("New Password is required.");
     } else {
-      setNewPasswordError('');
+      setNewPasswordError("");
     }
   };
 
   //... inner reset password confirm password variable define here
-  const handleConfirmpassword = text => {
+  const handleConfirmpassword = (text) => {
     setConfirmPassword(text);
-    if (text.trim() === '') {
-      setConfirmPasswordError('Please enter a confirmation password.');
+    if (text.trim() === "") {
+      setConfirmPasswordError("Please enter a confirmation password.");
     } else if (newpassword !== text) {
-      setConfirmPasswordError('Password do not match.');
+      setConfirmPasswordError("Password do not match.");
     } else {
-      setConfirmPasswordError(''); // Clear the error message
+      setConfirmPasswordError(""); // Clear the error message
     }
   };
 
   //... inner reset password submit button variable define here
   const handleSubmit = async () => {
-    if (email.trim() === '') {
-      setEmailError('Email is required!');
+    if (email.trim() === "") {
+      setEmailError("Email is required!");
     } else if (!validateEmail(email)) {
       setEmailError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        "Hold on, this email appears to be invalid. Please enter a valid email address."
       );
-    } else if (password.trim() === '') {
-      setPasswordError('Password is required.');
+    } else if (password.trim() === "") {
+      setPasswordError("Password is required.");
     } else {
       Keyboard.dismiss();
       setIsLoading(true);
@@ -247,76 +246,54 @@ export default Login = props => {
         device_id: deviceId,
         device_os_type: deviceType,
       };
-      try {
-        // Fetch user data from Firestore
-        const userSnapshot = await firestore()
-          .collection('Users')
-          .where('email', '==', email)
-          .get();
-
-        if (userSnapshot.empty) {
-          setIsLoading(false);
-          setPasswordError(
-            'Hmm, it seems like the credentials you entered are invalid. Please try again.',
-          );
-          return;
-        }
-
-        setIsLoading(true);
-
-        let res = await dispatch(loginApiActionCreator(data));
-        /// alert(JSON.stringify(res));
+      setIsLoading(true);
+      let res = await dispatch(loginApiActionCreator(data));
+      /// alert(JSON.stringify(res));
+      setIsLoading(false);
+      if (res === 401) {
         setIsLoading(false);
-        if (res === 401) {
-          setIsLoading(false);
-          setPasswordError(
-            'Hmm, it seems like the credentials you entered are invalid. Please try again.',
-          );
-        } else if (res.LoginStatuscode == 6) {
-          props.navigation.navigate('SignUpSteps', {
-            email: email,
-            user_key: res.User_key,
-          });
-        } else if (res.data.success == 'true') {
-          //  alert("Login successful");
-          setIsLoading(false);
-          // if (res.data.code == 6) {
-          //   alert(res.data.message);
-          //   props.navigation.navigate("SignUpSteps");
-          // }
-          //  else {
-
-          // }
-          props.navigation.navigate('DrawerNavigatorLeftMenu');
-          setEmail('');
-          setPassword('');
-        } else {
-          setIsLoading(false);
-          setPasswordError(
-            'Hmm, it seems like the credentials you entered are invalid. Please try again.',
-          );
-        }
-      } catch (error) {
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
+      } else if (res.LoginStatuscode == 6) {
+        props.navigation.navigate("SignUpSteps", {
+          email: email,
+          user_key: res.User_key,
+        });
+      } else if (res.data.success == "true") {
+        //  alert("Login successful");
         setIsLoading(false);
-        console.error('Error:', error);
-        alert('Error occurred');
+        // if (res.data.code == 6) {
+        //   alert(res.data.message);
+        //   props.navigation.navigate("SignUpSteps");
+        // }
+        //  else {
+
+        // }
+        props.navigation.navigate("DrawerNavigatorLeftMenu");
+        setEmail("");
+        setPassword("");
+      } else {
+        setIsLoading(false);
+        setPasswordError(
+          "Hmm, it seems like the credentials you entered are invalid. Please try again."
+        );
       }
-
       // }
     }
     // Keyboard.dismiss();
   };
 
   //...  verification variable define here
-  const handleverificationCode = text => {
+  const handleverificationCode = (text) => {
     const regex = /^[0-9]+$/;
     setVerificationcode(text);
-    if (text.trim() === '') {
-      setVerificationcodeError('Verification code is required.');
+    if (text.trim() === "") {
+      setVerificationcodeError("Verification code is required.");
     } else if (!regex.test(text)) {
-      setVerificationcodeError('Verification code must contain only numbers.');
+      setVerificationcodeError("Verification code must contain only numbers.");
     } else {
-      setVerificationcodeError('');
+      setVerificationcodeError("");
     }
   };
 
@@ -326,24 +303,24 @@ export default Login = props => {
     // const verification_code_url = url + "user_reset_password_email_verify";
 
     // const url = "https://e3.cylsys.com/api/v1/SendOTP";
-    const verification_code_url = url + 'SendOTP';
-    console.log('Request URL:', verification_code_url);
+    const verification_code_url = url + "SendOTP";
+    console.log("Request URL:", verification_code_url);
     setIsLoading(true);
     axios
       .post(verification_code_url, {
         email: resetEmail,
       })
-      .then(response => {
-        console.log('API Response send otp:', response.data);
+      .then((response) => {
+        console.log("API Response send otp:", response.data);
         // if (response.data.status === true)
-        if (response.data.message === 'OTP sent successfully') {
+        if (response.data.message === "OTP sent successfully") {
           alert(
-            response.data.message || 'The otp has been sent to your email.',
+            response.data.message || "The otp has been sent to your email."
           );
           if (isClick === 1) {
             setIsTimeron(true);
             setIsClick(1);
-            setVerificationcode('');
+            setVerificationcode("");
             setIsTimeron(true);
           } else {
             setIsClick(isClick + 1);
@@ -352,13 +329,13 @@ export default Login = props => {
           alert(response.data.message);
         }
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response || error.response.status === 400) {
-          alert('Failed to send OTP via email. Please try again later.');
+          alert("Failed to send OTP via email. Please try again later.");
         } else {
-          alert('An error occurred. Please try again later.');
+          alert("An error occurred. Please try again later.");
         }
-        console.error('sendotp error:', error);
+        console.error("sendotp error:", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -372,38 +349,38 @@ export default Login = props => {
     const url = Config.BASE_URL;
     // const verify_Otp_url = url + "user_signup_verifyotp";
     // const url = "https://e3.cylsys.com/api/v1/verifyotp";
-    const verify_Otp_url = url + 'verifyotp';
-    console.log('Request URL:', verify_Otp_url);
+    const verify_Otp_url = url + "verifyotp";
+    console.log("Request URL:", verify_Otp_url);
     setIsLoading(true);
     axios
       .post(verify_Otp_url, {
         email: resetEmail,
         otp: verificationcode,
       })
-      .then(response => {
-        console.log('API Response verify otp:', response.data);
+      .then((response) => {
+        console.log("API Response verify otp:", response.data);
         if (response.data.success === true) {
           alert(response.data.message);
           setIsClick(isClick + 1);
         } else if (verificationcode.length < 6) {
           setVerificationcodeError(
-            'Verification code must be at least 6 digits.',
+            "Verification code must be at least 6 digits."
           );
         } else {
           setVerificationcodeError(
-            'The Verification Code You’ve Entered is Incorrect. Please Try Again.',
+            "The Verification Code You’ve Entered is Incorrect. Please Try Again."
           );
         }
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response && error.response.status === 404) {
-          alert('Incorrect OTP. Please try again.');
+          alert("Incorrect OTP. Please try again.");
         } else if (error.response && error.response.status === 401) {
-          alert(error.response.message || 'User Unauthorized');
+          alert(error.response.message || "User Unauthorized");
         } else {
-          alert('An error occurred. Please try again later.');
+          alert("An error occurred. Please try again later.");
         }
-        console.error('signup Verification error:', error);
+        console.error("signup Verification error:", error);
         setIsLoading(false);
       })
       .finally(() => {
@@ -411,16 +388,16 @@ export default Login = props => {
       });
   };
 
-  const secretKey = 'XkhZG4fW2t2W';
+  const secretKey = "XkhZG4fW2t2W";
   const encryptPassword = (password, secretKey) => {
     return new Promise((resolve, reject) => {
       try {
         const key = secretKey;
         const keyutf = CryptoJS.enc.Utf8.parse(key);
-        const iv = CryptoJS.enc.Utf8.parse('XkhZG4fW2t2W');
-        const enc = CryptoJS.AES.encrypt(password, keyutf, {iv: iv});
+        const iv = CryptoJS.enc.Utf8.parse("XkhZG4fW2t2W");
+        const enc = CryptoJS.AES.encrypt(password, keyutf, { iv: iv });
         const encStr = enc.toString();
-        console.log('Encrypted Password:', encStr);
+        console.log("Encrypted Password:", encStr);
         resolve(encStr);
       } catch (error) {
         reject(error);
@@ -428,23 +405,23 @@ export default Login = props => {
     });
   };
   //...... password validation define here
-  const handleLoginPassword = text => {
+  const handleLoginPassword = (text) => {
     setPassword(text);
-    if (text.trim() === '') {
-      setPasswordError('Password is required !');
+    if (text.trim() === "") {
+      setPasswordError("Password is required !");
     } else {
-      setPasswordError('');
+      setPasswordError("");
     }
   };
   //------ create_password Api code here
   const create_password = async () => {
     try {
       const encryptedPassword = await encryptPassword(newpassword, secretKey);
-      console.log('encryptedPassword', encryptedPassword);
+      console.log("encryptedPassword", encryptedPassword);
       const url = Config.BASE_URL;
       // const url = "https://e3.cylsys.com/api/v1/forgetpassword";
-      const create_password_url = url + 'forgetpassword';
-      console.log('Request URL:', create_password_url);
+      const create_password_url = url + "forgetpassword";
+      console.log("Request URL:", create_password_url);
 
       setIsLoading(true);
 
@@ -453,12 +430,12 @@ export default Login = props => {
         password: encryptedPassword,
       });
 
-      console.log('API Response create_password:', response.data);
+      console.log("API Response create_password:", response.data);
 
       if (response.data.success === true) {
         if (
           response.data.message ==
-          'Try again with a password you haven’t used before'
+          "Try again with a password you haven’t used before"
         ) {
           alert(response.data.message);
         } else {
@@ -466,15 +443,15 @@ export default Login = props => {
           setIsClick(isClick + 1);
         }
       } else {
-        alert('Password not created.');
+        alert("Password not created.");
       }
     } catch (error) {
       // if (error.response && error.response.status == 500) {
       //   alert("Your password is old. Please enter new password.");
       // }
-      console.error('API failed', error);
+      console.error("API failed", error);
       // Handle errors appropriately
-      alert(error.message || 'An error occurred during the API call');
+      alert(error.message || "An error occurred during the API call");
     } finally {
       setIsLoading(false);
     }
@@ -482,8 +459,9 @@ export default Login = props => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={LoginStyles.container}>
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={LoginStyles.container}
+    >
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
@@ -509,7 +487,7 @@ export default Login = props => {
                 placeholder="Your email address"
                 placeholderTextColor="#999"
                 maxLength={30}
-                autoCapitalize={'none'}
+                autoCapitalize={"none"}
               />
             </View>
             {emailError ? (
@@ -529,7 +507,7 @@ export default Login = props => {
                 />
                 <TouchableOpacity onPress={handleTogglePassword}>
                   <MaterialCommunityIcons
-                    name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                    name={showPassword ? "eye-outline" : "eye-off-outline"}
                     size={20}
                     color={_COLORS.Kodie_BlackColor}
                     style={LoginStyles.eyeIcon}
@@ -544,40 +522,41 @@ export default Login = props => {
               onPress={() => {
                 refRBSheet.current.open();
                 setIsClick(0);
-                setResetEmail('');
-                setVerificationcode('');
-                setVerificationcodeError('');
-                setNewPassword('');
-                setPasswordError('');
-                setConfirmPassword('');
-                setConfirmPasswordError('');
-                setResetEmailError('');
-              }}>
+                setResetEmail("");
+                setVerificationcode("");
+                setVerificationcodeError("");
+                setNewPassword("");
+                setPasswordError("");
+                setConfirmPassword("");
+                setConfirmPasswordError("");
+                setResetEmailError("");
+              }}
+            >
               <Text style={LoginStyles.forgot}>Forgot password?</Text>
             </TouchableOpacity>
 
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={handleSubmit}
-              _ButtonText={'Login'}
+              _ButtonText={"Login"}
               Text_Color={_COLORS.Kodie_WhiteColor}
               marginTop={20}
             />
             {/* <View style={LoginStyles.loderview}></View> */}
             <DividerIcon
-              DeviderText={'or'}
-              style={{marginTop: 32, marginBottom: 30}}
+              DeviderText={"or"}
+              style={{ marginTop: 32, marginBottom: 30 }}
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
-                props.navigation.navigate('SignUpSteps');
+                // props.navigation.navigate("SignUpSteps");
                 // props.navigation.navigate("Account");
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
-              _ButtonText={'Login with Google'}
+              _ButtonText={"Login with Google"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <CustomSingleButton
@@ -588,15 +567,15 @@ export default Login = props => {
               // }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
-              _ButtonText={'Login with Facebook'}
+              _ButtonText={"Login with Facebook"}
               backgroundColor={_COLORS.Kodie_WhiteColor}
             />
             <BottomTextsButton
               _LeftButtonText={"Don't have an account yet? "}
-              _RightButtonText={'Sign up'}
+              _RightButtonText={"Sign up"}
               onPress={() => {
                 // props.navigation.navigate("SearchJobResult");
-                props.navigation.navigate('SignUp');
+                props.navigation.navigate("SignUp");
               }}
             />
           </View>
@@ -608,31 +587,33 @@ export default Login = props => {
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={false}
-        height={Platform.OS === 'android' ? 550 : 480}
+        height={Platform.OS === "android" ? 550 : 480}
         customStyles={{
           wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: LoginStyles.bottomModal_container,
-        }}>
+        }}
+      >
         <View style={LoginStyles.ModalMainView}>
           <Text style={LoginStyles.Modaltitle}>Reset password</Text>
           <TouchableOpacity
             onPress={() => {
               refRBSheet.current.close();
               setIsClick(0);
-              setResetEmail('');
-              setVerificationcode('');
-              setVerificationcodeError('');
-              setNewPassword('');
-              setPasswordError('');
-              setConfirmPassword('');
-              setConfirmPasswordError('');
-              setResetEmailError('');
-            }}>
+              setResetEmail("");
+              setVerificationcode("");
+              setVerificationcodeError("");
+              setNewPassword("");
+              setPasswordError("");
+              setConfirmPassword("");
+              setConfirmPasswordError("");
+              setResetEmailError("");
+            }}
+          >
             <Entypo
               name="cross"
               size={20}
@@ -664,7 +645,7 @@ export default Login = props => {
                   placeholder="Your email address"
                   placeholderTextColor="#999"
                   maxLength={30}
-                  autoCapitalize={'none'}
+                  autoCapitalize={"none"}
                 />
               </View>
               {resetEmailError ? (
@@ -681,7 +662,7 @@ export default Login = props => {
                 <TextInput
                   style={[
                     LoginStyles.input,
-                    {backgroundColor: _COLORS?.Kodie_LightGrayLineColor},
+                    { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
                   ]}
                   value={resetEmail}
                   placeholder="Your Email Address"
@@ -690,7 +671,7 @@ export default Login = props => {
                 />
               </View>
               <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, {flex: 1}]}>
+                <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
                   <Text style={LABEL_STYLES._texinputLabel}>
                     Verification code
                   </Text>
@@ -725,16 +706,17 @@ export default Login = props => {
                       colors={_COLORS.Kodie_lightGreenColor}
                       onComplete={() => {
                         setIsTimeron(false);
-                      }}>
-                      {({remainingTime}) => (
-                        <Text style={{color: _COLORS.Kodie_WhiteColor}}>
+                      }}
+                    >
+                      {({ remainingTime }) => (
+                        <Text style={{ color: _COLORS.Kodie_WhiteColor }}>
                           {remainingTime} S
                         </Text>
                       )}
                     </CountdownCircleTimer>
                   ) : (
                     <TouchableOpacity onPress={send_verification_code}>
-                      <Text style={LoginStyles.getButton}>{'Resend'}</Text>
+                      <Text style={LoginStyles.getButton}>{"Resend"}</Text>
                     </TouchableOpacity>
                   )}
                 </View>
@@ -751,12 +733,14 @@ export default Login = props => {
           {/* ------ Reset passowrd 2 section start code  here ........... */}
           {isClick === 2 && (
             <ScrollView
-              contentContainerStyle={{marginBottom: 90}}
+              contentContainerStyle={{ marginBottom: 90 }}
               showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled">
+              keyboardShouldPersistTaps="handled"
+            >
               <View style={LoginStyles.inputContainer}>
                 <Text
-                  style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}>
+                  style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}
+                >
                   New password
                 </Text>
                 <View
@@ -767,7 +751,8 @@ export default Login = props => {
                         ? _COLORS.Kodie_lightRedColor
                         : _COLORS.Kodie_GrayColor,
                     },
-                  ]}>
+                  ]}
+                >
                   <TextInput
                     style={LoginStyles.passwordInput}
                     value={newpassword}
@@ -779,7 +764,7 @@ export default Login = props => {
                   />
                   <TouchableOpacity onPress={handleToggleNewPassword}>
                     <MaterialCommunityIcons
-                      name={showNewPassword ? 'eye-outline' : 'eye-off-outline'}
+                      name={showNewPassword ? "eye-outline" : "eye-off-outline"}
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
                       style={LoginStyles.eyeIcon}
@@ -792,7 +777,8 @@ export default Login = props => {
               </View>
               <View style={LoginStyles.inputContainer}>
                 <Text
-                  style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}>
+                  style={[LABEL_STYLES._texinputLabel, LoginStyles.cardHeight]}
+                >
                   Confirm password
                 </Text>
                 <View
@@ -803,7 +789,8 @@ export default Login = props => {
                         ? _COLORS.Kodie_lightRedColor
                         : _COLORS.Kodie_GrayColor,
                     },
-                  ]}>
+                  ]}
+                >
                   <TextInput
                     style={LoginStyles.passwordInput}
                     value={confirmPassword}
@@ -816,7 +803,7 @@ export default Login = props => {
                   <TouchableOpacity onPress={handleToggleResetPassword}>
                     <MaterialCommunityIcons
                       name={
-                        showResetPassword ? 'eye-outline' : 'eye-off-outline'
+                        showResetPassword ? "eye-outline" : "eye-off-outline"
                       }
                       size={20}
                       color={_COLORS.Kodie_BlackColor}
@@ -838,13 +825,14 @@ export default Login = props => {
             <>
               <View style={LoginStyles.inputContainer}>
                 <Text
-                  style={[LABEL_STYLES._texinputLabel, LoginStyles.passchange]}>
+                  style={[LABEL_STYLES._texinputLabel, LoginStyles.passchange]}
+                >
                   Password successfully updated
                 </Text>
                 <Image
                   source={IMAGES.CheckIcon}
                   style={LoginStyles.checkicon}
-                  resizeMode={'contain'}
+                  resizeMode={"contain"}
                 />
               </View>
             </>
@@ -865,7 +853,8 @@ export default Login = props => {
                 marginTop:
                   isClick === 1 || isClick === 2 || isClick === 3 ? 90 : 180,
               },
-            ]}>
+            ]}
+          >
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={handleButtonPress}

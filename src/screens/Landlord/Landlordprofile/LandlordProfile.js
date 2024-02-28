@@ -26,13 +26,17 @@ export default LandlordProfile = (props) => {
 
   const LogOut = () => {
     dispatch(logoutActionCreator());
-    props.navigation.navigate("DrawerNavigatorLeftMenu");
+    // props.navigation.navigate("DrawerNavigatorLeftMenu");
+    props.navigation.navigate("LoginScreen");
   };
+  const searchprofileMenu =()=>{
+    
+  }
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
-        isprofileImage
+        // isprofileImage
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Profile"}
         // RightUserProfile={{
@@ -42,7 +46,12 @@ export default LandlordProfile = (props) => {
         // }}
       />
       <ScrollView>
-        <SearchBar frontSearchIcon={true} height={48} marginTop={20} />
+        <SearchBar
+          frontSearchIcon={true}
+          height={48}
+          marginTop={20}
+          searchData={searchprofileMenu}
+        />
         <View style={LandlordProfileStyle.profilemainView}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
             <Image
@@ -58,17 +67,18 @@ export default LandlordProfile = (props) => {
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
-              {
-                // loginData?.Account_details[0]?.UAD_FIRST_NAME +
-                //   " " +
-                //   loginData?.Account_details[0]?.UAD_LAST_NAME
-                // ||
-                // signUp_account_response?.Account_details[0]?.UAD_FIRST_NAME +
-                //   " " +
-                //   signUp_account_response?.Account_details[0]?.UAD_LAST_NAME
-              }
+              {loginData?.Account_details[0]?.UAD_FIRST_NAME +
+                " " +
+                loginData?.Account_details[0]?.UAD_LAST_NAME ||
+                signUp_account_response?.Account_details[0]?.UAD_FIRST_NAME +
+                  " " +
+                  signUp_account_response?.Account_details[0]?.UAD_LAST_NAME}
             </Text>
-            <Text style={LandlordProfileStyle.emailText}>
+            <Text
+              style={LandlordProfileStyle.emailText}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
               {loginData?.Login_details?.email}
             </Text>
             <View style={LandlordProfileStyle.staricon}>

@@ -147,4 +147,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
   },
+  characterLimit:{
+    marginTop:5
+  }
 });

@@ -1693,7 +1693,7 @@ const AddPropertyMainPage = (props) => {
                       Additional key features
                     </Text>
                     <MultiSelect
-                      style={FirstPropertyStyle.dropdown}
+                      style={FirstPropertyStyle.dropdown}                     
                       placeholderStyle={FirstPropertyStyle.placeholderStyle}
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}

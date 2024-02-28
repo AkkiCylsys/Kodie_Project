@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,149 +8,120 @@ import {
   Dimensions,
   ScrollView,
   Platform,
-} from 'react-native';
-import {useNavigation, useTheme} from '@react-navigation/native';
-import {DashboardStyle} from './DashboardStyle';
-import TopHeader from '../../components/Molecules/Header/Header';
-import {_goBack} from '../../services/CommonServices';
-import {Dropdown} from 'react-native-element-dropdown';
-import {IMAGES, SMALLICON, _COLORS} from '../../Themes/index';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
-import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
-import DeshboardNotice from '../../components/Molecules/deshboardNoice/DeshboardNotice';
-import {LineChart} from 'react-native-chart-kit';
-import {Card} from 'react-native-paper';
-import {logos} from '../../Themes/CommonVectors/Images';
-import CircleProgress from '../../components/Molecules/CircleProgress/CircleProgress';
-import SelectProperties from '../../components/Molecules/SelectProperties/SelectProperties';
-import SelectDate from '../../components/Molecules/SelectDate/SelectDate';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import {BackHandler} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import FloatingActionButton from '../../components/Molecules/FloatingActionButton/FloatingActionButton';
-import messaging from '@react-native-firebase/messaging';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+  Modal,
+} from "react-native";
+import { useNavigation, useTheme } from "@react-navigation/native";
+import { DashboardStyle } from "./DashboardStyle";
+import TopHeader from "../../components/Molecules/Header/Header";
+import { _goBack } from "../../services/CommonServices";
+import { Dropdown } from "react-native-element-dropdown";
+import { IMAGES, SMALLICON, _COLORS } from "../../Themes/index";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
+import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
+import DeshboardNotice from "../../components/Molecules/deshboardNoice/DeshboardNotice";
+import { LineChart } from "react-native-chart-kit";
+import { Card } from "react-native-paper";
+import { logos } from "../../Themes/CommonVectors/Images";
+import CircleProgress from "../../components/Molecules/CircleProgress/CircleProgress";
+import SelectProperties from "../../components/Molecules/SelectProperties/SelectProperties";
+import SelectDate from "../../components/Molecules/SelectDate/SelectDate";
+import RBSheet from "react-native-raw-bottom-sheet";
+import { BackHandler } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import FloatingActionButton from "../../components/Molecules/FloatingActionButton/FloatingActionButton";
 
 const IncomeData = [
   {
-    id: '1',
-    icm_heading: 'Income',
-    percentage: '+2.5%',
-    price: '$10 500',
-    compare_text: 'Compared to($10 000 last month)',
+    id: "1",
+    icm_heading: "Income",
+    percentage: "+2.5%",
+    price: "$0",
+    compare_text: "Compared to($10 000 last month)",
   },
   {
-    id: '2',
-    icm_heading: 'Expenses',
-    percentage: '-1.5%',
-    price: '$10 500',
-    compare_text: 'Compared to($10 000 last month)',
+    id: "2",
+    icm_heading: "Expenses",
+    percentage: "-1.5%",
+    price: "$0",
+    compare_text: "Compared to($10 000 last month)",
   },
   {
-    id: '3',
-    icm_heading: 'Profit',
-    percentage: '+2.5%',
-    price: '$10 500',
-    compare_text: 'Compared to($10 000 last month)',
+    id: "3",
+    icm_heading: "Profit",
+    percentage: "+2.5%",
+    price: "$0",
+    compare_text: "Compared to($10 000 last month)",
   },
 ];
 const Notice = [
   {
-    id: '1',
+    id: "1",
     image: IMAGES.redLine,
-    notice: 'Lease agreement expiring in 30 days',
-    location: '2118 Thornridge Cir. Syracuse,',
+    notice: "Lease agreement expiring in 30 days",
+    location: "2118 Thornridge Cir. Syracuse,",
   },
   {
-    id: '2',
+    id: "2",
     image: IMAGES.greenLine,
-    notice: 'Pre move inspection due',
-    location: '8502 Preston Rd. Inglewood',
+    notice: "Pre move inspection due",
+    location: "8502 Preston Rd. Inglewood",
   },
   {
-    id: '3',
+    id: "3",
     image: IMAGES.blueLine,
-    notice: 'Post move inspection due',
-    location: '65 Mountain View Parade',
+    notice: "Post move inspection due",
+    location: "65 Mountain View Parade",
   },
 ];
 
 const data = [
-  {label: 'Bharat', value: '1'},
-  {label: 'Australia', value: '2'},
-  {label: 'America', value: '3'},
+  { label: "Bharat", value: "1" },
+  { label: "Australia", value: "2" },
+  { label: "America", value: "3" },
 ];
 
-export default Dashboard = props => {
-  async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-
-    if (enabled) {
-      console.log('Authorization status:', authStatus);
-      getTocken();
-    }
-  }
-  const handlemessage = async () => {
-    messaging().onNotificationOpenedApp(remoteMessage => {
-      console.log(
-        'Notification casued app to open from background state :',
-        remoteMessage.notification,
-      );
-    });
-    messaging().onMessage(async remoteMessage => {
-      console.log('Message handled in the foreground!', remoteMessage);
-    });
-
-    messaging()
-      .getInitialNotification()
-      .then(remoteMessage => {
-        if (remoteMessage) {
-          console.log(
-            'Notification casued app to open from quit state.',
-            remoteMessage.notification,
-          );
-        }
-      });
-  };
+export default Dashboard = (props) => {
   const signUp_account_response = useSelector(
-    state => state?.authenticationReducer?.data,
+    (state) => state?.authenticationReducer?.data
   );
-  console.log('signUp_account_response.....', signUp_account_response);
+  console.log("signUp_account_response.....", signUp_account_response);
   const singup_Data = signUp_account_response;
   const [isOverlayVisible, setOverlayVisible] = useState(false);
   const [value, setValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [upsheet, setUpsheet] = useState("");
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
+  const [modalVisible, setModalVisible] = useState(false);
   // props.onPress(handleClosePopup);
   // alert(handleClosePopup, "close");
   // console.log(handleClosePopup, "close");
 
+  const handlegetCalenderid = (Calenderid) => {
+    console.log("Calenderid....", Calenderid);
+    setUpsheet(Calenderid);
+  };
   const CloseUp = () => {
     refRBSheet.current.close();
     refRBSheet2.current.close();
     setOverlayVisible(false);
   };
 
-  const getTocken = async () => {
-    const token = await messaging().getToken();
-    console.log(token, 'token');
-  };
   // const Login_response = useSelector(
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("Login_response.....", Login_response);
-  const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
+  // console.log(
+  //   "UAD_FirstName.....",
+  //   loginData?.Account_details[0]?.UAD_FIRST_NAME
+  // );
+  // const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
   //---click back button closing the app
   useEffect(() => {
-    handlemessage();
-    requestUserPermission();
     const handleBackPress = () => {
       if (navigation.isFocused()) {
         BackHandler.exitApp();
@@ -159,15 +130,15 @@ export default Dashboard = props => {
       return false;
     };
 
-    BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    BackHandler.addEventListener("hardwareBackPress", handleBackPress);
     return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+      BackHandler.removeEventListener("hardwareBackPress", handleBackPress);
     };
   }, [navigation]);
 
   //---click back button closing the app
 
-  const Income_render = ({item, index}) => {
+  const Income_render = ({ item, index }) => {
     return (
       <>
         <View style={DashboardStyle.income_Box_View}>
@@ -188,15 +159,27 @@ export default Dashboard = props => {
       </>
     );
   };
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength - 3) + "...";
+    }
+    return text;
+  };
 
-  const NoticeData = ({item, index}) => {
+  const NoticeData = ({ item, index }) => {
     return (
       <>
         <View style={DashboardStyle.pdf_container}>
           <View style={DashboardStyle.pdfInfo}>
             <Image source={item.image} style={DashboardStyle.lines} />
             <View style={DashboardStyle.textContainer}>
-              <Text style={DashboardStyle.note}>{item.notice}</Text>
+              <Text
+                style={DashboardStyle.note}
+                numberOfLines={1}
+                ellipsizeMode="tail"
+              >
+                {item.notice}
+              </Text>
             </View>
           </View>
           <TouchableOpacity style={DashboardStyle.crossIcon}>
@@ -225,27 +208,34 @@ export default Dashboard = props => {
           //   uri: userProfileImageUri,
           // }}
           MiddleImage={logos.mainLogo}
-          leftImage={'menu'}
-          MiddleText={'Kodie'}
+          leftImage={"menu"}
+          MiddleText={"Kodie"}
           Text_Color={_COLORS.Kodie_BlackColor}
           onPressLeftButton={() => props.navigation.openDrawer()}
+          onPressRightImgProfile={() =>
+            props.navigation.navigate("LandlordProfile")
+          }
           // statusBarColor="red"
           // statusBarStyle="dark-content"
         />
-
         <ScrollView showsVerticalScrollIndicator={false}>
-          <DeshboardNotice />
+          <DeshboardNotice onClose={CloseUp} />
           <View style={DashboardStyle.container}>
-            <Text style={DashboardStyle.Name_Text}>{'Hi Jason!'}</Text>
-            <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
+            {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
+            <Text
+              style={DashboardStyle.Name_Text}
+            >{`Hi ${loginData?.Account_details[0]?.UAD_FIRST_NAME}!`}</Text>
+            <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
             <View
               style={{
                 // flex: 1,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
+                flexDirection: "row",
+                justifyContent: "space-between",
+                // marginRight:16
+              }}
+            >
               <Dropdown
-                style={[DashboardStyle.dropdown, {flex: 1}]}
+                style={[DashboardStyle.dropdown, { flex: 1 }]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
@@ -255,16 +245,17 @@ export default Dashboard = props => {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder="All Properties"
+                // placeholder="All Properties"
+                placeholder={truncateText("All Properties", 12)}
                 searchPlaceholder="Search..."
                 value={value}
-                onChange={item => {
+                onChange={(item) => {
                   setValue(item.value);
                 }}
               />
 
               <Dropdown
-                style={[DashboardStyle.dropdown, {flex: 1}]}
+                style={[DashboardStyle.dropdown, { flex: 1 }]}
                 placeholderStyle={DashboardStyle.placeholderStyle}
                 selectedTextStyle={DashboardStyle.selectedTextStyle}
                 inputSearchStyle={DashboardStyle.inputSearchStyle}
@@ -274,10 +265,11 @@ export default Dashboard = props => {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                placeholder="Year to date"
+                // placeholder="Year to date"
+                placeholder={truncateText("Year to date", 12)}
                 searchPlaceholder="Search..."
                 value={value}
-                onChange={item => {
+                onChange={(item) => {
                   setValue(item.value);
                 }}
               />
@@ -288,7 +280,7 @@ export default Dashboard = props => {
                   <Text style={DashboardStyle.header}>Cash flow overview</Text>
                   <TouchableOpacity>
                     <Entypo
-                      name={'dots-three-horizontal'}
+                      name={"dots-three-horizontal"}
                       size={20}
                       color={_COLORS.Kodie_GrayColor}
                       style={DashboardStyle.icon}
@@ -297,22 +289,22 @@ export default Dashboard = props => {
                 </View>
                 <LineChart
                   data={{
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr'],
+                    labels: ["Jan", "Feb", "Mar", "Apr"],
                     datasets: [
                       {
                         data: [
                           Math.random(),
-                          Math.random() * 100,
-                          Math.random() * 120,
-                          Math.random() * 140,
-                          Math.random() * 160,
+                          Math.random() * 0,
+                          Math.random() * 0,
+                          Math.random() * 0,
+                          Math.random() * 0,
                         ],
                       },
                     ],
                   }}
-                  width={Dimensions.get('window').width - 56} // from react-native
+                  width={Dimensions.get("window").width - 56} // from react-native
                   height={160}
-                  yAxisLabel={'$'}
+                  yAxisLabel={"$"}
                   chartConfig={{
                     backgroundColor: _COLORS.Kodie_WhiteColor,
                     backgroundGradientFrom: _COLORS.Kodie_WhiteColor,
@@ -350,7 +342,7 @@ export default Dashboard = props => {
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{}}
-                keyExtractor={item => item?.id}
+                keyExtractor={(item) => item?.id}
                 renderItem={Income_render}
               />
             </View>
@@ -358,12 +350,14 @@ export default Dashboard = props => {
             <View style={DashboardStyle.maintenance_statusView}>
               <View style={DashboardStyle.maintenance_view}>
                 <Text style={DashboardStyle.maintenance_Text}>
-                  {'Maintenance status'}
+                  {"Maintenance status"}
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    refRBSheet2.current.open();
-                  }}>
+                    // refRBSheet2.current.open();
+                    setModalVisible(true);
+                  }}
+                >
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}
@@ -380,7 +374,7 @@ export default Dashboard = props => {
                       color={_COLORS.Kodie_yellow}
                     />
                     <Text style={DashboardStyle.request_Text}>
-                      {'Requested'}
+                      {"Requested"}
                     </Text>
                   </View>
                   <View style={DashboardStyle.maintenance_menu}>
@@ -390,7 +384,7 @@ export default Dashboard = props => {
                       color={_COLORS.Kodie_GreenColor}
                     />
                     <Text style={DashboardStyle.request_Text}>
-                      {'Approved'}
+                      {"Approved"}
                     </Text>
                   </View>
                   <View style={DashboardStyle.maintenance_menu}>
@@ -401,23 +395,23 @@ export default Dashboard = props => {
                     />
 
                     <Text style={DashboardStyle.request_Text}>
-                      {'Rejected'}
+                      {"Rejected"}
                     </Text>
                   </View>
                 </View>
                 <View style={DashboardStyle.maintenance_sts_NOView}>
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {'8'}
+                    {"0"}
                   </Text>
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {'5'}
+                    {"0"}
                   </Text>
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {'3'}
+                    {"0"}
                   </Text>
                 </View>
                 <CustomSingleButton
-                  _ButtonText={'View all jobs'}
+                  _ButtonText={"View all jobs"}
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_lightGreenColor}
                   borderColor={_COLORS.Kodie_GreenColor}
@@ -427,11 +421,12 @@ export default Dashboard = props => {
             </View>
             <View style={DashboardStyle.Noticemain_View}>
               <View style={DashboardStyle.Notice_view}>
-                <Text style={DashboardStyle.maintenance_Text}>{'Notices'}</Text>
+                <Text style={DashboardStyle.maintenance_Text}>{"Notices"}</Text>
                 <TouchableOpacity
                   onPress={() => {
                     refRBSheet.current.open();
-                  }}>
+                  }}
+                >
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}
@@ -445,13 +440,13 @@ export default Dashboard = props => {
                 scrollEnabled
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{}}
-                keyExtractor={item => item?.id}
+                keyExtractor={(item) => item?.id}
                 renderItem={NoticeData}
               />
               <View style={DashboardStyle.btnView}>
                 <CustomSingleButton
                   height={45}
-                  _ButtonText={'View all notices'}
+                  _ButtonText={"View all notices"}
                   backgroundColor={_COLORS.Kodie_lightGreenColor}
                   Text_Color={_COLORS.Kodie_BlackColor}
                   borderColor={_COLORS.Kodie_GreenColor}
@@ -469,33 +464,71 @@ export default Dashboard = props => {
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
             container: DashboardStyle.bottomModal_container,
-          }}>
+          }}
+        >
           <SelectProperties onClose={CloseUp} />
         </RBSheet>
 
         {/* RBSheet 2 define here */}
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet2}
-          height={450}
+          height={upsheet == true ? 600 : 460}
           closeOnDragDown={true}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
             container: DashboardStyle.bottomModal_container,
-          }}>
-          <SelectDate onClose={CloseUp} />
-        </RBSheet>
+          }}
+        >
+          <SelectDate onClose={CloseUp} CalenderId={handlegetCalenderid} />
+        </RBSheet> */}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 22,
+          }}
+        ></View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(false);
+          }}
+        >
+          <ScrollView
+            style={{
+              position: "absolute",
+              // left: -20,
+              bottom: -30,
+              width: "100%",
+              height: upsheet == true ? "100%" : '65%',
+              backgroundColor: "white",
+              borderRadius: 15,
+              paddingVertical: 8,
+              borderWidth:1,
+              borderColor:_COLORS.Kodie_GrayColor
+            }}
+          >
+            <SelectDate
+              onClose={() => setModalVisible(false)}
+              CalenderId={handlegetCalenderid}
+            />
+          </ScrollView>
+        </Modal>
       </View>
 
       <FloatingActionButton />

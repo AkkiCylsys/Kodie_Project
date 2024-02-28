@@ -9,7 +9,8 @@ import Repair from "./Repair/Repair";
 import SearchForContractor from "./SearchforContractor/SearchForContractor";
 import SearchforJob from "./SearchforJob/SearchforJob";
 import { useRoute } from "@react-navigation/native";
-
+import Geocoder from "react-native-geocoding";
+import Geolocation from "react-native-geolocation-service";
 const Jobs = (props) => {
   const route = useRoute();
   const [job_sub_type, setJobSubType] = useState(1);
@@ -17,7 +18,6 @@ const Jobs = (props) => {
   let myJob_Type = props.route.params?.myJob_Type;
   let job_sub_type_req = props.route.params?.job_sub_type;
   console.log("job_sub_type_req...", job_sub_type_req);
-  console.log("jmyJob_Type", myJob_Type);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -53,6 +53,7 @@ const Jobs = (props) => {
                 SearchDataDetail: SearchData,
               });
             }}
+          
           />
         );
 
@@ -74,7 +75,6 @@ const Jobs = (props) => {
         );
     }
   };
-
   return (
     <View style={JobsCss.Container}>
       <TopHeader

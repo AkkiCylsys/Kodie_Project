@@ -22,7 +22,7 @@ export const SelectDateStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent:'space-between',
     flex:1,
-    paddingVertical:8
+    paddingVertical:5
   },
   bindview:{
     flexDirection:'row',
@@ -56,5 +56,31 @@ export const SelectDateStyle = StyleSheet.create({
     // borderTopLeftRadius: 30,
     // borderTopRightRadius: 30,
     // elevation: 10,
+  },
+  ButtonView: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginRight: 10,
+    marginTop: 20,
+    marginBottom:50
+  },
+  closeText: {
+    paddingHorizontal: 25,
+    paddingVertical: 15,
+    borderRadius: 4,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  applyText: {
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    borderRadius: 8,
+  },
+  text: {
+    color: _COLORS.Kodie_WhiteColor,
+    alignSelf: "center",
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
   },
 });

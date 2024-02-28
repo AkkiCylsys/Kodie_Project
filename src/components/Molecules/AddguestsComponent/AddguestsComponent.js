@@ -5,6 +5,10 @@ import Entypo from "react-native-vector-icons/Entypo";
 import SearchBar from "../SearchBar/SearchBar";
 import { AddguestsComponentStyle } from "./AddguestsComponentStyle";
 const AddguestsComponent = (props) => {
+
+  const searchGuest =()=>{
+    
+  }
   return (
     <View>
       <Modal
@@ -27,7 +31,7 @@ const AddguestsComponent = (props) => {
                 />
               </TouchableOpacity>
             </View>
-            <SearchBar frontSearchIcon height={45} marginTop={20} />
+            <SearchBar frontSearchIcon height={45} marginTop={20} searchData={searchGuest} />
             <View style={AddguestsComponentStyle.Imageview}>
               <View style={AddguestsComponentStyle.imagetext}>
                 <Image
