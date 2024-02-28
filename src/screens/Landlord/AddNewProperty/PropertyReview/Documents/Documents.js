@@ -407,7 +407,7 @@ export default Documents = (props) => {
           <Text style={DocumentsStyle.reacentDocText}>{"Folders"}</Text>
           <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
         </View>
-        <View style={{ marginBottom: 50 }}>
+        <View style={{}}>
           <FlatList
             data={folderData}
             scrollEnabled

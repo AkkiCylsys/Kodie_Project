@@ -119,7 +119,7 @@ export default Dashboard = (props) => {
   //   "UAD_FirstName.....",
   //   loginData?.Account_details[0]?.UAD_FIRST_NAME
   // );
-  const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
+  // const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
   //---click back button closing the app
   useEffect(() => {
     const handleBackPress = () => {
@@ -224,7 +224,7 @@ export default Dashboard = (props) => {
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text
               style={DashboardStyle.Name_Text}
-            >{`Hi ${UADFirstName}!`}</Text>
+            >{`Hi ${loginData?.Account_details[0]?.UAD_FIRST_NAME}!`}</Text>
             <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
             <View
               style={{

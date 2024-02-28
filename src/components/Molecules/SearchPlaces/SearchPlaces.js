@@ -66,7 +66,7 @@ const SearchPlaces = (props) => {
           textInputContainer: {
             marginHorizontal: 16,
             borderWidth: Platform.OS == "ios" ? 0 : 1,
-            borderColor: "#E5E4E2",
+            borderColor: _COLORS.Kodie_WhiteColor,
             borderRadius: 8,
             marginTop: 10,
           },
