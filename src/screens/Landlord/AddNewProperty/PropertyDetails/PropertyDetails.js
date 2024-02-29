@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -12,52 +12,51 @@ import {
   Platform,
   Alert,
   PermissionsAndroid,
+} from 'react-native';
+import {PropertyDetailsStyle} from './PropertyDetailsStyle';
+import TopHeader from '../../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../../services/CommonServices';
+import {Dropdown} from 'react-native-element-dropdown';
+import Octicons from 'react-native-vector-icons/Octicons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {IMAGES, LABEL_STYLES} from '../../../../Themes';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
+import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import CustomDropdown from '../../../../components/Molecules/CustomDropdown/CustomDropdown';
+import {Config} from '../../../../Config';
+import axios from 'axios';
+import Geocoder from 'react-native-geocoding';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import CustomSingleDropdown from '../../../../components/Molecules/CustomSingleDropdown/CustomSingleDropdown';
+import StepIndicator from 'react-native-step-indicator';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
+import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
+import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
+import {useFocusEffect} from '@react-navigation/native';
+import {BackHandler} from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 
-} from "react-native";
-import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
-import TopHeader from "../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../services/CommonServices";
-import { Dropdown } from "react-native-element-dropdown";
-import Octicons from "react-native-vector-icons/Octicons";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { IMAGES, LABEL_STYLES } from "../../../../Themes";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
-import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
-import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import CustomDropdown from "../../../../components/Molecules/CustomDropdown/CustomDropdown";
-import { Config } from "../../../../Config";
-import axios from "axios";
-import Geocoder from "react-native-geocoding";
-import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import CustomSingleDropdown from "../../../../components/Molecules/CustomSingleDropdown/CustomSingleDropdown";
-import StepIndicator from "react-native-step-indicator";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
-import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
-import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
-import { useFocusEffect } from "@react-navigation/native";
-import { BackHandler } from "react-native";
-import Geolocation from "@react-native-community/geolocation";
-
-const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
-export default PropertyDetails = (props) => {
+const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
+export default PropertyDetails = props => {
   const propertyid = props?.route?.params?.propertyid;
   const editMode = props?.route?.params?.editMode;
-  console.log("propertyid....", propertyid);
-  console.log("EditProperty....", editMode);
+  console.log('propertyid....', propertyid);
+  console.log('EditProperty....', editMode);
   const [currentPage, setCurrentPage] = useState(0);
-  const [location, setLocation] = useState("");
-  const [propertyDesc, setPropertyDesc] = useState("");
+  const [location, setLocation] = useState('');
+  const [propertyDesc, setPropertyDesc] = useState('');
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
-  const [latitude, setlatitude] = useState("");
-  const [longitude, setlongitude] = useState("");
+  const [latitude, setlatitude] = useState('');
+  const [longitude, setlongitude] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [UserCurrentCity, setUserCurrentCity] = useState("");
-  const [UserZip_Code, setUserZip_Code] = useState("");
+  const [UserCurrentCity, setUserCurrentCity] = useState('');
+  const [UserZip_Code, setUserZip_Code] = useState('');
   const [property_value, setProperty_value] = useState(0);
   const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
@@ -67,12 +66,13 @@ export default PropertyDetails = (props) => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [updateProperty_Details, setupdateProperty_Details] = useState([]);
   const [property_Data_id, setProperty_Data_id] = useState({});
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [country, setCountry] = useState('');
+  const [currentLocation, setCurrentLocation] = useState(false);
 
-  const [getLat, setGetLat] = useState("");
-  const [getLong, setGetLong] = useState("");
+  const [getLat, setGetLat] = useState('');
+  const [getLong, setGetLong] = useState('');
 
   // const [locationError, setlocationError] = useState("");
   // const [propertytypeError, setpropertytypeError] = useState("");
@@ -98,93 +98,93 @@ export default PropertyDetails = (props) => {
         return false;
       };
 
-      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
       return () => {
-        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
       };
-    }, [IsMap, IsSearch])
+    }, [IsMap, IsSearch]),
   );
 
   useEffect(() => {
     handleProperty_Type();
     DetailsData();
-    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
-      language: "en",
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+      language: 'en',
     });
-    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
+    Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
     setLocation(property_Detail?.location);
-  }, []);
+  }, [currentLocation]);
 
   const DetailsData = () => {
     const detailData = {
       property_id: propertyid,
     };
-    console.log("detailData", detailData);
+    console.log('detailData', detailData);
     const url = Config.BASE_URL;
-    const property_Detailss = url + "get_property_details";
-    console.log("Request URL:", property_Detailss);
+    const property_Detailss = url + 'get_property_details';
+    console.log('Request URL:', property_Detailss);
     setIsLoading(true);
     axios
       .post(property_Detailss, detailData)
-      .then((response) => {
-        console.log("propertyDetail", response.data);
+      .then(response => {
+        console.log('propertyDetail', response.data);
         if (response.data.success === true) {
           setIsLoading(false);
           setProperty_Details(response.data.property_details[0]);
           setLocation(response.data.property_details[0]?.location);
           setProperty_value(
             // 24
-            parseInt(response.data.property_details[0]?.property_type_id)
+            parseInt(response.data.property_details[0]?.property_type_id),
             // response.data.property_details[0]?.property_type_id.replace(
             //   /\D/g,
             //   ""
             // )
           );
           setSelectedButton(
-            parseInt(response.data.property_details[0]?.auto_list)
+            parseInt(response.data.property_details[0]?.auto_list),
           );
           setPropertyDesc(
-            response.data.property_details[0]?.property_description
+            response.data.property_details[0]?.property_description,
           );
 
-          console.log("propertyDetail....", response.data.property_details);
+          console.log('propertyDetail....', response.data.property_details);
         } else {
-          console.error("propertyDetail_error:", response.data.error);
+          console.error('propertyDetail_error:', response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("property_type error:", error);
+      .catch(error => {
+        console.error('property_type error:', error);
         // alert(error);
         setIsLoading(false);
       });
   };
 
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
-      name: "feed",
+      name: 'feed',
       // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
-      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+      color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
 
     switch (position) {
       case 0: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 1: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 2: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 3: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
 
@@ -208,32 +208,32 @@ export default PropertyDetails = (props) => {
     currentStepIndicatorLabelFontSize: 15,
     stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
     stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
-    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+    stepIndicatorLabelUnFinishedColor: 'rgba(255,255,255,0.5)',
     labelColor: _COLORS.Kodie_BlackColor,
     labelSize: 14,
-    labelAlign: "center",
+    labelAlign: 'center',
   };
-  const renderStepIndicator = (params) => (
+  const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
-        : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+        : stepStatus === 'finished'
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
-        ? "Details"
+        ? 'Details'
         : position === 1
-        ? "Features"
+        ? 'Features'
         : position === 2
-        ? "Images"
+        ? 'Images'
         : position === 3
-        ? "Review"
-        : "null";
+        ? 'Review'
+        : 'null';
 
     return (
       <View style={{}}>
@@ -243,17 +243,15 @@ export default PropertyDetails = (props) => {
             marginTop: 1,
             marginHorizontal: 10,
             color: iconColor,
-            alignSelf: "center",
-          }}
-        >{`Step ${position + 1}`}</Text>
+            alignSelf: 'center',
+          }}>{`Step ${position + 1}`}</Text>
         <Text
           style={{
             fontSize: 14,
             marginTop: 5,
             marginHorizontal: 10,
             color: iconColor,
-          }}
-        >
+          }}>
           {iconName}
         </Text>
       </View>
@@ -261,31 +259,31 @@ export default PropertyDetails = (props) => {
   };
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then((result) => {
+      .then(result => {
         switch (result) {
           case RESULTS.UNAVAILABLE:
             console.log(
-              "This feature is not available (on this device / in this context)"
+              'This feature is not available (on this device / in this context)',
             );
             break;
           case RESULTS.DENIED:
             console.log(
-              "The permission has not been requested / is denied but requestable"
+              'The permission has not been requested / is denied but requestable',
             );
             break;
           case RESULTS.LIMITED:
-            console.log("The permission is limited: some actions are possible");
+            console.log('The permission is limited: some actions are possible');
             break;
           case RESULTS.GRANTED:
-            console.log("The permission is granted");
-            getAddressWithCordinates();
+            console.log('The permission is granted');
+            fetchCurrentLocation();
             break;
           case RESULTS.BLOCKED:
-            console.log("The permission is denied and not requestable anymore");
+            console.log('The permission is denied and not requestable anymore');
             break;
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -294,17 +292,17 @@ export default PropertyDetails = (props) => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
+          title: 'Example App',
+          message: 'Example App access to your location ',
+        },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location");
+        console.log('You can use the location');
         // alert("You can use the location");
-        getAddressWithCordinates();
+        fetchCurrentLocation();
       } else {
-        console.log("location permission denied");
-        alert("Location permission denied");
+        console.log('location permission denied');
+        alert('Location permission denied');
       }
     } catch (err) {
       console.warn(err);
@@ -312,12 +310,13 @@ export default PropertyDetails = (props) => {
   };
   const ConfirmAddress = () => {
     setIsMap(false);
+    setCurrentLocation(true);
   };
-  const openMapandClose = (text) => {
+  const openMapandClose = text => {
     setIsMap(false);
     setIsSearch(true);
   };
-  const onRegionChange = (Region) => {
+  const onRegionChange = Region => {
     // alert(JSON.stringify(Region))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
@@ -326,25 +325,25 @@ export default PropertyDetails = (props) => {
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
-      .then((json) => {
-        console.log("json location.......", json);
-        console.log("current address...", json.results[0].formatted_address);
-        setLocation(json.results[0].formatted_address);
+      .then(json => {
+        console.log('json location.......', json);
+        console.log('current address...', json.results[0].formatted_address);
+        currentLocation ? setLocation(json.results[0].formatted_address) : null;
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[2].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[3].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[4].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[5].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[6].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[7].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[8].long_name;
 
         var addressComponent2 = json.results[0].address_components[1];
@@ -353,72 +352,92 @@ export default PropertyDetails = (props) => {
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
-        console.log("location....", location);
+        console.log('location....', location);
         //setAddress(MainFullAddress);
       })
-      .catch((error) => console.warn(error));
+      .catch(error => console.warn(error));
   };
-  const getAddressWithCordinates = () => {
-    console.log("Enter cordinates..");
-    Geolocation.watchPosition(
-      (position) => {
-        // alert("with cordinates..");
-        console.log("with cordinates..");
-        // setGetLat(position.coords.latitude);
-        // setGetLong(position.coords.longitude);
-        setlatitude(position.coords.latitude);
-        console.log("withCordinates latitude....", position.coords.latitude);
-        setlongitude(position.coords.longitude);
-        console.log("withCordinates Longitude....", position.coords.longitude);
-        getAddress(position.coords.latitude, position.coords.longitude);
-        // getAddress(getLat, getLong);
+  // const getAddressWithCordinates = () => {
+  //   console.log("Enter cordinates..");
+  //   Geolocation.watchPosition(
+  //     (position) => {
+  //       // alert("with cordinates..");
+  //       console.log("with cordinates..");
+  //       // setGetLat(position.coords.latitude);
+  //       // setGetLong(position.coords.longitude);
+  //       setlatitude(position.coords.latitude);
+  //       console.log("withCordinates latitude....", position.coords.latitude);
+  //       setlongitude(position.coords.longitude);
+  //       console.log("withCordinates Longitude....", position.coords.longitude);
+  //       getAddress(position.coords.latitude, position.coords.longitude);
+  //       // getAddress(getLat, getLong);
+  //     },
+  //     (error) => {
+  //       alert(error.message.toString());
+  //       console.log("watch cordinates err..", error.message);
+  //     },
+  //     {
+  //       showLocationDialog: true,
+  //       enableHighAccuracy: true,
+  //       timeout: 20000,
+  //       maximumAge: 0,
+  //     }
+  //   );
+  // };
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log('This is your current location.');
+        const {latitude, longitude} = position.coords;
+        console.log('position.coords....', position.coords);
+        setlatitude(latitude);
+        setlongitude(longitude);
+        getAddress(latitude, longitude);
       },
-      (error) => {
-        alert(error.message.toString());
-        console.log("watch cordinates err..", error.message);
+      error => {
+        console.error('Error fetching location:', error);
       },
       {
-        showLocationDialog: true,
         enableHighAccuracy: true,
         timeout: 20000,
-        maximumAge: 0,
-      }
+        maximumAge: 1000,
+      },
     );
   };
 
   const handleProperty_Type = () => {
     const propertyData = {
-      P_PARENT_CODE: "PROP_TYPE",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'PROP_TYPE',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
+    const propertyType = url + 'lookup_details';
+    console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
-      .then((response) => {
-        console.log("property_type", response.data);
+      .then(response => {
+        console.log('property_type', response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("propertyData....", response.data.lookup_details);
+          console.log('propertyData....', response.data.lookup_details);
           setProperty_Data(response.data.lookup_details);
           // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
-          console.error("property_type_error:", response.data.error);
+          console.error('property_type_error:', response.data.error);
           // alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("property_type error:", error);
+      .catch(error => {
+        console.error('property_type error:', error);
         // alert(error);
         setIsLoading(false);
       });
   };
 
   //dropDown render Item....
-  const propertyType_render = (item) => {
+  const propertyType_render = item => {
     return (
       <View
         style={[
@@ -429,18 +448,17 @@ export default PropertyDetails = (props) => {
                 ? _COLORS.Kodie_MidLightGreenColor
                 : null,
           },
-        ]}
-      >
+        ]}>
         {item.lookup_key === property_value ? (
           <AntDesign
             color={_COLORS.Kodie_GreenColor}
-            name={"checkcircle"}
+            name={'checkcircle'}
             size={20}
           />
         ) : (
           <Fontisto
             color={_COLORS.Kodie_GrayColor}
-            name={"radio-btn-passive"}
+            name={'radio-btn-passive'}
             size={20}
           />
         )}
@@ -489,22 +507,20 @@ export default PropertyDetails = (props) => {
         }}
         MiddleText={
           IsMap || IsSearch
-            ? "Location"
+            ? 'Location'
             : editMode
-            ? "Edit property"
-            : "Add new property"
+            ? 'Edit property'
+            : 'Add new property'
         }
       />
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
         {IsMap || IsSearch ? null : (
           <View
             style={{
               marginTop: 15,
-            }}
-          >
+            }}>
             <StepIndicator
               customSignUpStepStyle={firstIndicatorSignUpStepStyle}
               currentPosition={0}
@@ -520,14 +536,13 @@ export default PropertyDetails = (props) => {
           <View
             style={{
               flex: 1,
-              backgroundColor: "transparent",
-            }}
-          >
+              backgroundColor: 'transparent',
+            }}>
             <MapScreen
               style={{
-                height: "100%",
-                width: "100%",
-                alignSelf: "center",
+                height: '100%',
+                width: '100%',
+                alignSelf: 'center',
                 marginBottom: 10,
               }}
               onRegionChange={onRegionChange}
@@ -538,35 +553,34 @@ export default PropertyDetails = (props) => {
             />
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignSelf: "center",
-                width: "96%",
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                width: '96%',
                 borderWidth: 1,
                 borderRadius: 8,
-                backgroundColor: "white",
-                borderColor: "#E5E4E2",
+                backgroundColor: 'white',
+                borderColor: '#E5E4E2',
                 marginTop: 10,
-                position: "absolute",
-              }}
-            >
+                position: 'absolute',
+              }}>
               <TextInput
                 style={{
-                  backgroundColor: "transparent",
+                  backgroundColor: 'transparent',
 
-                  width: "90%",
+                  width: '90%',
                   height: 45,
-                  alignSelf: "center",
+                  alignSelf: 'center',
                 }}
                 onFocus={() => openMapandClose()}
-                placeholder={"Search Place"}
+                placeholder={'Search Place'}
+                placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
-              onPress={ConfirmAddress}
-            >
-              <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+              onPress={ConfirmAddress}>
+              <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
             </TouchableOpacity>
           </View>
         ) : IsSearch ? (
@@ -583,20 +597,19 @@ export default PropertyDetails = (props) => {
               setCity(city);
               setState(state);
               setCountry(country);
-              console.log("locationSearch....", location);
-              console.log("details.......", details);
-              console.log(city, state, country, "location rahul..........");
+              console.log('locationSearch....', location);
+              console.log('details.......', details);
+              console.log(city, state, country, 'location rahul..........');
             }}
           />
         ) : (
           <ScrollView
-            contentContainerStyle={{ marginBottom: 190 }}
+            contentContainerStyle={{marginBottom: 190}}
             showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-          >
+            keyboardShouldPersistTaps="handled">
             <View style={PropertyDetailsStyle.headingView}>
               <Text style={PropertyDetailsStyle.heading}>
-                {"Property details"}
+                {'Property details'}
               </Text>
             </View>
 
@@ -621,14 +634,13 @@ export default PropertyDetails = (props) => {
                     style={PropertyDetailsStyle.locationIconView}
                     onPress={() => {
                       // props.navigation.navigate("Location");
-                      Platform.OS == "ios"
+                      Platform.OS == 'ios'
                         ? CheckIOSMapPermission
                         : checkpermissionlocation();
                       setIsMap(true);
-                    }}
-                  >
+                    }}>
                     <Octicons
-                      name={"location"}
+                      name={'location'}
                       size={22}
                       color={_COLORS.Kodie_GreenColor}
                       style={PropertyDetailsStyle.locationIcon}
@@ -649,7 +661,7 @@ export default PropertyDetails = (props) => {
                   style={PropertyDetailsStyle.dropdown}
                   placeholderStyle={[
                     PropertyDetailsStyle.placeholderStyle,
-                    { color: _COLORS.Kodie_LightGrayColor },
+                    {color: _COLORS.Kodie_LightGrayColor},
                   ]}
                   selectedTextStyle={PropertyDetailsStyle.selectedTextStyle}
                   inputSearchStyle={PropertyDetailsStyle.inputSearchStyle}
@@ -666,7 +678,7 @@ export default PropertyDetails = (props) => {
                     property_value
                     // 24
                   }
-                  onChange={(item) => {
+                  onChange={item => {
                     setProperty_value(item.lookup_key);
                     // handlePropertyValue()
                     // setpropertytypeError("");
@@ -692,7 +704,7 @@ export default PropertyDetails = (props) => {
                   multiline
                   numberOfLines={5}
                   maxLength={1000}
-                  textAlignVertical={"top"}
+                  textAlignVertical={'top'}
                 />
                 <Text style={PropertyDetailsStyle.characterLimit}>
                   {propertyDesc.length}/1000
@@ -757,13 +769,13 @@ export default PropertyDetails = (props) => {
               /> */}
               <View style={PropertyDetailsStyle.btnView}>
                 <CustomSingleButton
-                  _ButtonText={"Next"}
+                  _ButtonText={'Next'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
                     // handleLocation(location);
                     // handlePropertyValue(property_value);
                     // if (handleLocation() ||handlePropertyValue()) {
-                    props.navigation.navigate("PropertyFeature", {
+                    props.navigation.navigate('PropertyFeature', {
                       location: location,
                       property_value: property_value,
                       propertyDesc: propertyDesc,
@@ -788,8 +800,7 @@ export default PropertyDetails = (props) => {
                 style={PropertyDetailsStyle.goBack_View}
                 onPress={() => {
                   goBack();
-                }}
-              >
+                }}>
                 <View style={PropertyDetailsStyle.backIcon}>
                   <Ionicons
                     name="chevron-back"
@@ -798,7 +809,7 @@ export default PropertyDetails = (props) => {
                   />
                 </View>
                 <Text style={PropertyDetailsStyle.goBack_Text}>
-                  {"Go back"}
+                  {'Go back'}
                 </Text>
               </TouchableOpacity>
             </View>

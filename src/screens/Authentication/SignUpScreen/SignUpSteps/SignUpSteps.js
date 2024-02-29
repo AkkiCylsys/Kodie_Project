@@ -2,7 +2,7 @@
 //ScreenNo:12
 //ScreenNo:13
 //ScreenNo:14
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,30 +13,30 @@ import {
   Image,
   FlatList,
   // Platform
-} from "react-native";
-import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import StepIndicator from "react-native-step-indicator";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import TopHeader from "../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../services/CommonServices";
-import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import { SignUpStepStyle } from "./SignUpStepsStyle";
-import { AccountStyle } from "../Account/AccountStyle";
-import { LABEL_STYLES, _COLORS, IMAGES } from "../../../../Themes";
-import Entypo from "react-native-vector-icons/Entypo";
+} from 'react-native';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import StepIndicator from 'react-native-step-indicator';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import TopHeader from '../../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../../services/CommonServices';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import {SignUpStepStyle} from './SignUpStepsStyle';
+import {AccountStyle} from '../Account/AccountStyle';
+import {LABEL_STYLES, _COLORS, IMAGES} from '../../../../Themes';
+import Entypo from 'react-native-vector-icons/Entypo';
 
-import { useDispatch, useSelector } from "react-redux";
-import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
-import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
-import Geocoder from "react-native-geocoding";
+import {useDispatch, useSelector} from 'react-redux';
+import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
+import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
+import Geocoder from 'react-native-geocoding';
 // import Geolocation from "react-native-geolocation-service";
-import Geolocation from "@react-native-community/geolocation";
+import Geolocation from '@react-native-community/geolocation';
 
-import Ionicons from "react-native-vector-icons/Ionicons";
-import { useFocusEffect } from "@react-navigation/native";
-import { BackHandler } from "react-native";
-const labels = ["Step 1", "Step 2", "Step 3"];
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useFocusEffect} from '@react-navigation/native';
+import {BackHandler} from 'react-native';
+const labels = ['Step 1', 'Step 2', 'Step 3'];
 
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -52,23 +52,23 @@ const firstIndicatorSignUpStepStyle = {
   currentStepIndicatorLabelFontSize: 15,
   stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
   stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
-  stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+  stepIndicatorLabelUnFinishedColor: 'rgba(255,255,255,0.5)',
   labelColor: _COLORS.Kodie_BlackColor,
   labelSize: 14,
-  labelAlign: "center",
+  labelAlign: 'center',
 };
 
-const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+const getStepIndicatorIconConfig = ({position, stepStatus}) => {
   const iconConfig = {
-    name: "feed",
-    color: stepStatus === "finished" ? "#ffffff" : "black",
+    name: 'feed',
+    color: stepStatus === 'finished' ? '#ffffff' : 'black',
     size: 20,
   };
-  iconConfig.name = stepStatus === "finished" ? "check" : null;
+  iconConfig.name = stepStatus === 'finished' ? 'check' : null;
 
   return iconConfig;
 };
-const SignUpSteps = (props) => {
+const SignUpSteps = props => {
   // const signup_response = useSelector(
   //   (state) => state?.authenticationReducer?.data
   // );
@@ -78,29 +78,30 @@ const SignUpSteps = (props) => {
   const ref = React.useRef(null);
   const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [physicalAddress, setPhysicalAddress] = useState("");
-  const [organisation, setOrganisation] = useState("");
-  const [referral, setRefferral] = useState("");
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [mobileNumberError, setMobileNumberError] = useState("");
-  const [UserCurrentCity, setUserCurrentCity] = useState("");
-  const [UserZip_Code, setUserZip_Code] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [physicalAddress, setPhysicalAddress] = useState('');
+  const [organisation, setOrganisation] = useState('');
+  const [referral, setRefferral] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [mobileNumberError, setMobileNumberError] = useState('');
+  const [UserCurrentCity, setUserCurrentCity] = useState('');
+  const [UserZip_Code, setUserZip_Code] = useState('');
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
-  const [p_latitude, setP_latitude] = useState("");
-  const [p_longitude, setP_longitude] = useState("");
+  const [p_latitude, setP_latitude] = useState('');
+  const [p_longitude, setP_longitude] = useState('');
+  const [currentLocation, setCurrentLocation] = useState(false);
 
-  const [getLat, setGetLat] = useState("");
-  const [getLong, setGetLong] = useState("");
-  const addressParts = physicalAddress.split(", ");
+  const [getLat, setGetLat] = useState('');
+  const [getLong, setGetLong] = useState('');
+  const addressParts = physicalAddress.split(', ');
 
   const country = addressParts.pop();
   const state = addressParts.pop();
-  const city = addressParts.join(", ");
+  const city = addressParts.join(', ');
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -112,35 +113,36 @@ const SignUpSteps = (props) => {
         return false;
       };
 
-      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
 
       return () => {
-        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
       };
-    }, [IsMap, IsSearch])
+    }, [IsMap, IsSearch]),
   );
 
-  console.log("Country:", country);
-  console.log("State:", state);
-  console.log("City:", city);
+  console.log('Country:', country);
+  console.log('State:', state);
+  console.log('City:', city);
 
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
-  console.log("email...", email);
-  console.log("user_key...", user_key);
+  console.log('email...', email);
+  console.log('user_key...', user_key);
   const ConfirmAddress = () => {
     setIsMap(false);
+    setCurrentLocation(true);
   };
-  const openMapandClose = (text) => {
+  const openMapandClose = text => {
     setIsMap(false);
     setIsSearch(true);
   };
-  const onRegionChange = (Region) => {
+  const onRegionChange = Region => {
     // alert(JSON.stringify(Region))
     setP_latitude(Region.latitude);
-    console.log("p_latitude...", p_latitude);
+    console.log('p_latitude...', p_latitude);
     setP_longitude(Region.longitude);
-    console.log("p_longitude...", p_longitude);
+    console.log('p_longitude...', p_longitude);
     getAddress(Region.latitude, Region.longitude);
     getAddress();
   };
@@ -149,17 +151,17 @@ const SignUpSteps = (props) => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
+          title: 'Example App',
+          message: 'Example App access to your location ',
+        },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location");
+        console.log('You can use the location');
         // alert("You can use the location");
-        getAddressWithCordinates();
+        fetchCurrentLocation();
       } else {
-        console.log("location permission denied");
-        alert("Location permission denied");
+        console.log('location permission denied');
+        alert('Location permission denied');
       }
     } catch (err) {
       console.warn(err);
@@ -168,82 +170,105 @@ const SignUpSteps = (props) => {
 
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then((result) => {
+      .then(result => {
         switch (result) {
           case RESULTS.UNAVAILABLE:
             console.log(
-              "This feature is not available (on this device / in this context)"
+              'This feature is not available (on this device / in this context)',
             );
             break;
           case RESULTS.DENIED:
             console.log(
-              "The permission has not been requested / is denied but requestable"
+              'The permission has not been requested / is denied but requestable',
             );
             break;
           case RESULTS.LIMITED:
-            console.log("The permission is limited: some actions are possible");
+            console.log('The permission is limited: some actions are possible');
             break;
           case RESULTS.GRANTED:
-            console.log("The permission is granted");
-            getAddressWithCordinates();
+            console.log('The permission is granted');
+            fetchCurrentLocation();
             break;
           case RESULTS.BLOCKED:
-            console.log("The permission is denied and not requestable anymore");
+            console.log('The permission is denied and not requestable anymore');
             break;
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
 
-  const getAddressWithCordinates = () => {
-    console.log("Enter cordinates..");
+  // const getAddressWithCordinates = () => {
+  //   console.log("Enter cordinates..");
 
-    Geolocation.watchPosition(
-      (position) => {
-        console.log("with cordinates..");
-        setP_latitude(position.coords.latitude);
-        console.log("p_latitude...", p_latitude);
+  //   Geolocation.watchPosition(
+  //     (position) => {
+  //       console.log("with cordinates..");
+  //       setP_latitude(position.coords.latitude);
+  //       console.log("p_latitude...", p_latitude);
 
-        setP_longitude(position.coords.longitude);
-        console.log("p_longitude...", p_longitude);
+  //       setP_longitude(position.coords.longitude);
+  //       console.log("p_longitude...", p_longitude);
 
-        getAddress(position.coords.latitude, position.coords.longitude);
+  //       getAddress(position.coords.latitude, position.coords.longitude);
+  //     },
+  //     (error) => {
+  //       alert(error.message.toString());
+  //     },
+  //     {
+  //       showLocationDialog: true,
+  //       enableHighAccuracy: true,
+  //       timeout: 20000,
+  //       maximumAge: 0,
+  //     }
+  //   );
+  // };
+
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log('This is your current location.');
+        const {latitude, longitude} = position.coords;
+        console.log('position.coords....', position.coords);
+        setP_latitude(latitude);
+        setP_longitude(longitude);
+        getAddress(latitude, longitude);
       },
-      (error) => {
-        alert(error.message.toString());
+      error => {
+        console.error('Error fetching location:', error);
       },
       {
-        showLocationDialog: true,
         enableHighAccuracy: true,
         timeout: 20000,
-        maximumAge: 0,
-      }
+        maximumAge: 1000,
+      },
     );
   };
 
   const getAddress = (p_latitude, p_longitude) => {
     Geocoder.from(p_latitude, p_longitude)
-      .then((json) => {
-        console.log("json location.......", json);
-        console.log("current address...", json.results[0].formatted_address);
-        setPhysicalAddress(json.results[0].formatted_address);
+      .then(json => {
+        console.log('json location.......', json);
+        console.log('current address...', json.results[0].formatted_address);
+        currentLocation
+          ? setPhysicalAddress(json.results[0].formatted_address)
+          : null;
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[2].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[3].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[4].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[5].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[6].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[7].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[8].long_name;
 
         var addressComponent2 = json.results[0].address_components[1];
@@ -251,32 +276,32 @@ const SignUpSteps = (props) => {
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setPhysicalAddress(MainFullAddress);
-        console.log("physicalAddress....", physicalAddress);
+        console.log('physicalAddress....', physicalAddress);
 
         //setAddress(MainFullAddress);
       })
-      .catch((error) => console.warn(error));
+      .catch(error => console.warn(error));
   };
   // Validation for First Name
-  const validateFirstName = (text) => {
-    if (text === "") {
-      setFirstNameError("First name is required");
+  const validateFirstName = text => {
+    if (text === '') {
+      setFirstNameError('First name is required');
     } else if (!/^[A-Za-z]+$/.test(text)) {
-      setFirstNameError("First name should contain only alphabetic characters");
+      setFirstNameError('First name should contain only alphabetic characters');
     } else {
-      setFirstNameError("");
+      setFirstNameError('');
     }
     setFirstName(text);
   };
 
   // Validation for Last Name
-  const validateLastName = (text) => {
-    if (text === "") {
-      setLastNameError("Last name is required");
+  const validateLastName = text => {
+    if (text === '') {
+      setLastNameError('Last name is required');
     } else if (!/^[A-Za-z]+$/.test(text)) {
-      setLastNameError("Last name should contain only alphabetic characters");
+      setLastNameError('Last name should contain only alphabetic characters');
     } else {
-      setLastNameError("");
+      setLastNameError('');
     }
     setLastName(text);
   };
@@ -287,30 +312,30 @@ const SignUpSteps = (props) => {
     return mobileReg.test(mobileNumber);
   };
   // Validation for Phone Number
-  const validateMobileNumber = (text) => {
+  const validateMobileNumber = text => {
     // const mobileReg = /^[6-9]\d{9}$/;
     // const mobileReg = /^04[0-9]{8}$/;
     // const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
-    if (text === "") {
-      setMobileNumberError("Phone number is required.");
+    if (text === '') {
+      setMobileNumberError('Phone number is required.');
     } else if (!validMobileNumber(text)) {
-      setMobileNumberError("Invalid phone number format.");
+      setMobileNumberError('Invalid phone number format.');
     } else {
-      setMobileNumberError("");
+      setMobileNumberError('');
     }
     setMobileNumber(text);
   };
   const handleNextBtn = () => {
-    if (firstName.trim() === "") {
-      setFirstNameError("First name is required.");
-    } else if (lastName.trim() === "") {
-      setLastNameError("Last name is required.");
-    } else if (mobileNumber.trim() === "") {
-      setMobileNumberError("Phone number is required.");
+    if (firstName.trim() === '') {
+      setFirstNameError('First name is required.');
+    } else if (lastName.trim() === '') {
+      setLastNameError('Last name is required.');
+    } else if (mobileNumber.trim() === '') {
+      setMobileNumberError('Phone number is required.');
     } else if (!validMobileNumber(mobileNumber)) {
-      setMobileNumberError("Invalid phone number format.");
+      setMobileNumberError('Invalid phone number format.');
     } else {
-      props.navigation.navigate("AboutYou", {
+      props.navigation.navigate('AboutYou', {
         firstName: firstName,
         lastName: lastName,
         mobileNumber: mobileNumber,
@@ -328,15 +353,15 @@ const SignUpSteps = (props) => {
     }
   };
   useEffect(() => {
-    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
-      language: "en",
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+      language: 'en',
     });
-    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
-  }, []);
+    Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
+  }, [currentLocation]);
 
   //  go back button...............
   const goBack = () => {
-    props.navigation.navigate("LoginScreen");
+    props.navigation.navigate('LoginScreen');
     // props.navigation.pop();
   };
   // const goBack = () => {
@@ -348,21 +373,21 @@ const SignUpSteps = (props) => {
   //   }
   // };
 
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
-        : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+        : stepStatus === 'finished'
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
-        ? "Account"
+        ? 'Account'
         : position === 1
-        ? "About you"
+        ? 'About you'
         : position === 2
-        ? "First Property"
-        : "circle";
+        ? 'First Property'
+        : 'circle';
 
     return (
       <View style={SignUpStepStyle.labelContainer}>
@@ -372,24 +397,22 @@ const SignUpSteps = (props) => {
             marginTop: 1,
             marginHorizontal: 10,
             color: iconColor,
-            alignSelf: "center",
-          }}
-        >{`Step ${position + 1}`}</Text>
+            alignSelf: 'center',
+          }}>{`Step ${position + 1}`}</Text>
         <Text
           style={{
             fontSize: 14,
             marginTop: 5,
             marginHorizontal: 10,
             color: iconColor,
-          }}
-        >
+          }}>
           {iconName}
         </Text>
       </View>
     );
   };
 
-  const renderStepIndicator = (params) => (
+  const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderPageContent = () => {
@@ -397,7 +420,7 @@ const SignUpSteps = (props) => {
       <ScrollView ref={scrollViewRef}>
         <View style={AccountStyle.headingView}>
           <Text style={AccountStyle.heading}>
-            {"Introduce yourself to Kodie"}
+            {'Introduce yourself to Kodie'}
           </Text>
         </View>
         <View style={AccountStyle.card}>
@@ -461,14 +484,13 @@ const SignUpSteps = (props) => {
                 onPress={() => {
                   // props.navigation.navigate("Location");
 
-                  Platform.OS == "ios"
+                  Platform.OS == 'ios'
                     ? CheckIOSMapPermission
                     : checkpermissionlocation();
                   setIsMap(true);
-                }}
-              >
+                }}>
                 <Entypo
-                  name={"location-pin"}
+                  name={'location-pin'}
                   size={28}
                   color={_COLORS.Kodie_GreenColor}
                   style={AccountStyle.locationIcon}
@@ -477,7 +499,7 @@ const SignUpSteps = (props) => {
             </View>
           </View>
           <View style={AccountStyle.inputContainer}>
-            <Text style={[LABEL_STYLES._texinputLabel, { marginTop: 16 }]}>
+            <Text style={[LABEL_STYLES._texinputLabel, {marginTop: 16}]}>
               Organisation name
             </Text>
             <TextInput
@@ -490,7 +512,7 @@ const SignUpSteps = (props) => {
           </View>
           <Text style={AccountStyle.org_desc}>
             {
-              "Your organisation name will be used in emails and SMS correspondence from Kodie."
+              'Your organisation name will be used in emails and SMS correspondence from Kodie.'
             }
           </Text>
           <View style={AccountStyle.inputContainer}>
@@ -509,9 +531,9 @@ const SignUpSteps = (props) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
+    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
-        MiddleText={IsMap || IsSearch ? "Location" : "Account set up"}
+        MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}
@@ -534,17 +556,16 @@ const SignUpSteps = (props) => {
             style={{
               flex: 1,
               // paddingHorizontal: 10,
-              backgroundColor: "transparent",
-            }}
-          >
+              backgroundColor: 'transparent',
+            }}>
             <MapScreen
               style={{
-                height: "100%",
-                width: "100%",
+                height: '100%',
+                width: '100%',
                 // borderRadius: 20,
                 // borderWidth: 1,
                 //borderColor: .greenAppColor,
-                alignSelf: "center",
+                alignSelf: 'center',
                 marginBottom: 10,
               }}
               onRegionChange={onRegionChange}
@@ -553,57 +574,55 @@ const SignUpSteps = (props) => {
             />
             <View
               style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignSelf: "center",
-                width: "96%",
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                width: '96%',
                 borderWidth: 1,
                 borderRadius: 8,
-                backgroundColor: "white",
-                borderColor: "#E5E4E2",
+                backgroundColor: 'white',
+                borderColor: '#E5E4E2',
                 marginTop: 10,
-                position: "absolute",
-              }}
-            >
+                position: 'absolute',
+              }}>
               <TextInput
                 style={{
-                  backgroundColor: "transparent",
-                  width: "90%",
+                  backgroundColor: 'transparent',
+                  width: '90%',
                   height: 45,
-                  alignSelf: "center",
+                  alignSelf: 'center',
                   //marginTop: 10,
                 }}
                 onFocus={() => openMapandClose()}
-                placeholder={"Search Place"}
+                placeholder={'Search Place'}
+                placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
-              onPress={ConfirmAddress}
-            >
+              onPress={ConfirmAddress}>
               {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
-              <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+              <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
             </TouchableOpacity>
           </View>
         ) : IsSearch ? (
           <SearchPlaces
             onPress={(data, details = null) => {
               setP_latitude(details.geometry.location.lat);
-              console.log("p_latitude...", p_latitude);
+              console.log('p_latitude...', p_latitude);
               setP_longitude(details.geometry.location.lng);
-              console.log("p_longitude...", p_longitude);
+              console.log('p_longitude...', p_longitude);
               setIsSearch(false);
               setIsMap(true);
               setPhysicalAddress(details.formatted_address);
-              console.log("physicalAddressSearch....", physicalAddress);
-              console.log("details.......", details);
+              console.log('physicalAddressSearch....', physicalAddress);
+              console.log('details.......', details);
             }}
           />
         ) : (
           <ScrollView
-            contentContainerStyle={{ marginBottom: 50 }}
-            showsVerticalScrollIndicator={false}
-          >
+            contentContainerStyle={{marginBottom: 50}}
+            showsVerticalScrollIndicator={false}>
             <View style={SignUpStepStyle.stepIndicator}>
               {renderPageContent()}
             </View>
@@ -613,17 +632,15 @@ const SignUpSteps = (props) => {
                 marginHorizontal: 16,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
                 marginBottom: 10,
-              }}
-            >
+              }}>
               <View
                 style={{
-                  justifyContent: "flex-end",
+                  justifyContent: 'flex-end',
                   marginBottom: 30,
-                }}
-              >
+                }}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
-                  _ButtonText={"Next"}
+                  _ButtonText={'Next'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
                     handleNextBtn();
@@ -632,8 +649,7 @@ const SignUpSteps = (props) => {
                 />
                 <TouchableOpacity
                   style={SignUpStepStyle.goBack_View}
-                  onPress={goBack}
-                >
+                  onPress={goBack}>
                   <View style={SignUpStepStyle.backIcon}>
                     <Ionicons
                       name="chevron-back"
@@ -641,7 +657,7 @@ const SignUpSteps = (props) => {
                       color={_COLORS.Kodie_MediumGrayColor}
                     />
                   </View>
-                  <Text style={SignUpStepStyle.goBack_Text}>{"Go back"}</Text>
+                  <Text style={SignUpStepStyle.goBack_Text}>{'Go back'}</Text>
                 </TouchableOpacity>
               </View>
             </View>

@@ -1,5 +1,5 @@
 //ScreenNo:159
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,90 +7,90 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-} from "react-native";
-import { AddNewNoticeStyle } from "./AddNewNoticeStyle";
-import TopHeader from "../../../components/Molecules/Header/Header";
-import { Dropdown } from "react-native-element-dropdown";
-import { _COLORS, IMAGES, LABEL_STYLES } from "../../../Themes";
-import { Divider } from "react-native-paper";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Entypo from "react-native-vector-icons/Entypo";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import Feather from "react-native-vector-icons/Feather";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Octicons from "react-native-vector-icons/Octicons";
-import ToggleSwitch from "toggle-switch-react-native";
-import AddGuest from "../../../components/Molecules/AddGuests/AddGuest";
-import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _goBack } from "../../../services/CommonServices";
-import SwitchToggle from "react-native-switch-toggle";
-import { Config } from "../../../Config";
-import axios from "axios";
-import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
-import Geocoder from "react-native-geocoding";
-import Geolocation from "react-native-geolocation-service";
-import MapScreen from "../../../components/Molecules/GoogleMap/googleMap";
-import SearchPlaces from "../../../components/Molecules/SearchPlaces/SearchPlaces";
-import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
-import { useDispatch, useSelector } from "react-redux";
+} from 'react-native';
+import {AddNewNoticeStyle} from './AddNewNoticeStyle';
+import TopHeader from '../../../components/Molecules/Header/Header';
+import {Dropdown} from 'react-native-element-dropdown';
+import {_COLORS, IMAGES, LABEL_STYLES} from '../../../Themes';
+import {Divider} from 'react-native-paper';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import Feather from 'react-native-vector-icons/Feather';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Octicons from 'react-native-vector-icons/Octicons';
+import ToggleSwitch from 'toggle-switch-react-native';
+import AddGuest from '../../../components/Molecules/AddGuests/AddGuest';
+import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
+import {_goBack} from '../../../services/CommonServices';
+import SwitchToggle from 'react-native-switch-toggle';
+import {Config} from '../../../Config';
+import axios from 'axios';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import Geocoder from 'react-native-geocoding';
+import Geolocation from 'react-native-geolocation-service';
+import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
+import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {useDispatch, useSelector} from 'react-redux';
 
-import RNFetchBlob from "rn-fetch-blob";
-import DocumentPicker from "react-native-document-picker";
-import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
-import TimePicker from "../../../components/Molecules/ClockPicker/TimePicker";
-import moment from "moment/moment";
+import RNFetchBlob from 'rn-fetch-blob';
+import DocumentPicker from 'react-native-document-picker';
+import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
+import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
+import moment from 'moment/moment';
 
 const data = [
-  { label: "Bharat", value: "1" },
-  { label: "Australia", value: "2" },
-  { label: "America", value: "3" },
+  {label: 'Bharat', value: '1'},
+  {label: 'Australia', value: '2'},
+  {label: 'America', value: '3'},
 ];
-const AddNewNotice = (props) => {
+const AddNewNotice = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
-  console.log("noticeReminderid in addNewNotice...", noticeReminderid);
-  const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginResponse.....", loginData);
-  const [location, setLocation] = useState("");
-  const [noticeTittle, setNoticeTittle] = useState("");
-  const [addGuest, setAddGuest] = useState("");
-  const [notes, setNotes] = useState("");
+  console.log('noticeReminderid in addNewNotice...', noticeReminderid);
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginResponse.....', loginData);
+  const [location, setLocation] = useState('');
+  const [noticeTittle, setNoticeTittle] = useState('');
+  const [addGuest, setAddGuest] = useState('');
+  const [notes, setNotes] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [toggleDay, setToggleDay] = useState(false);
   const [toggleDayValue, setToggleDayValue] = useState(0);
   const [toggleNotification, setToggleNotification] = useState(false);
   const [toggleNotificationValue, setToggleNotificationValue] = useState(0);
   const [noticeTypeData, setNoticeTypeData] = useState([]);
-  const [noticeTypeDataValue, setNoticeTypeDataValue] = useState("");
+  const [noticeTypeDataValue, setNoticeTypeDataValue] = useState('');
   const [repeatData, setRepeatData] = useState([]);
-  const [repeatDataValue, setRepeatDataValue] = useState("");
+  const [repeatDataValue, setRepeatDataValue] = useState('');
   const [notification_type_Data, setNotification_type_Data] = useState([]);
-  const [notification_type_value, setNotification_type_value] = useState("");
-  const [UserCurrentCity, setUserCurrentCity] = useState("");
-  const [UserZip_Code, setUserZip_Code] = useState("");
+  const [notification_type_value, setNotification_type_value] = useState('');
+  const [UserCurrentCity, setUserCurrentCity] = useState('');
+  const [UserZip_Code, setUserZip_Code] = useState('');
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
-  const [latitude, setlatitude] = useState("");
-  const [longitude, setlongitude] = useState("");
+  const [latitude, setlatitude] = useState('');
+  const [longitude, setlongitude] = useState('');
 
   const [selectFile, setSelectFile] = useState([]);
   const [fileKey, setFileKey] = useState(0);
-  const [fileName, setFileName] = useState("");
-  const [filePath, setFilePath] = useState("");
+  const [fileName, setFileName] = useState('');
+  const [filePath, setFilePath] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedToDate, setSelectedToDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedToDate, setSelectedToDate] = useState('');
   const [isModalToDateVisible, setModalToDateVisible] = useState(false);
-  const [currentfromTime, setCurrentfromTime] = useState("");
-  const [currentToTime, setCurrentToTime] = useState("");
+  const [currentfromTime, setCurrentfromTime] = useState('');
+  const [currentToTime, setCurrentToTime] = useState('');
 
   useEffect(() => {
     handle_notice();
     handle_Repeat();
     handle_notification_type();
     getNoticesReminderDetails();
-    Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
-      language: "en",
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+      language: 'en',
     });
     CheckIOSMapPermission();
   }, []);
@@ -98,15 +98,15 @@ const AddNewNotice = (props) => {
   // calender..
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-    setSelectedDate("");
+    setSelectedDate('');
   };
   const apply_toggleModal = () => {
     setModalVisible(!isModalVisible);
-    console.log("date...", selectedDate);
+    console.log('date...', selectedDate);
   };
   const toggleToDateModal = () => {
     setModalToDateVisible(!isModalToDateVisible);
-    setSelectedToDate("");
+    setSelectedToDate('');
   };
   const apply_toggleToDateModal = () => {
     setModalToDateVisible(!isModalToDateVisible);
@@ -116,33 +116,33 @@ const AddNewNotice = (props) => {
   const ConfirmAddress = () => {
     setIsMap(false);
   };
-  const openMapandClose = (text) => {
+  const openMapandClose = text => {
     setIsMap(false);
     setIsSearch(true);
   };
-  const onRegionChange = (Region) => {
+  const onRegionChange = Region => {
     // alert(JSON.stringify(Region))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
+          title: 'Example App',
+          message: 'Example App access to your location ',
+        },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location");
+        console.log('You can use the location');
         // alert("You can use the location");
         getAddressWithCordinates();
       } else {
-        console.log("location permission denied");
-        alert("Location permission denied");
+        console.log('location permission denied');
+        alert('Location permission denied');
       }
     } catch (err) {
       console.warn(err);
@@ -151,43 +151,43 @@ const AddNewNotice = (props) => {
 
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then((result) => {
+      .then(result => {
         switch (result) {
           case RESULTS.UNAVAILABLE:
             console.log(
-              "This feature is not available (on this device / in this context)"
+              'This feature is not available (on this device / in this context)',
             );
             break;
           case RESULTS.DENIED:
             console.log(
-              "The permission has not been requested / is denied but requestable"
+              'The permission has not been requested / is denied but requestable',
             );
             break;
           case RESULTS.LIMITED:
-            console.log("The permission is limited: some actions are possible");
+            console.log('The permission is limited: some actions are possible');
             break;
           case RESULTS.GRANTED:
-            console.log("The permission is granted");
+            console.log('The permission is granted');
             getAddressWithCordinates();
             break;
           case RESULTS.BLOCKED:
-            console.log("The permission is denied and not requestable anymore");
+            console.log('The permission is denied and not requestable anymore');
             break;
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
 
   const getAddressWithCordinates = () => {
     Geolocation.watchPosition(
-      (position) => {
+      position => {
         setlatitude(position.coords.latitude);
         setlongitude(position.coords.longitude);
         getAddress(position.coords.latitude, position.coords.longitude);
       },
-      (error) => {
+      error => {
         alert(error.message.toString());
       },
       {
@@ -195,30 +195,30 @@ const AddNewNotice = (props) => {
         enableHighAccuracy: true,
         timeout: 20000,
         maximumAge: 0,
-      }
+      },
     );
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
-      .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setLocation(json.results[0].formatted_address)
+      .then(json => {
+        console.log('json location.......', json);
+        console.log('current address...', json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[2].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[3].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[4].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[5].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[6].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[7].long_name +
-          ", " +
+          ', ' +
           json.results[0].address_components[8].long_name;
 
         var addressComponent2 = json.results[0].address_components[1];
@@ -230,23 +230,23 @@ const AddNewNotice = (props) => {
 
         //setAddress(MainFullAddress);
       })
-      .catch((error) => console.warn(error));
+      .catch(error => console.warn(error));
   };
 
   // Api intrrigation....
   const handle_notice = () => {
     const url = Config.BASE_URL;
-    const noticeType_url = url + "lookup_details";
-    console.log("Request URL:", noticeType_url);
+    const noticeType_url = url + 'lookup_details';
+    console.log('Request URL:', noticeType_url);
     setIsLoading(true);
     const notification_data = {
-      P_PARENT_CODE: "TYPE_OF_NOTICE",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'TYPE_OF_NOTICE',
+      P_TYPE: 'OPTION',
     };
     axios
       .post(noticeType_url, notification_data)
-      .then((response) => {
-        console.log("API Response noticeType_url:", response.data);
+      .then(response => {
+        console.log('API Response noticeType_url:', response.data);
         if (response.data.status === true) {
           setNoticeTypeData(response.data.lookup_details);
           // alert(JSON.stringify(response.data.lookup_details));
@@ -255,8 +255,8 @@ const AddNewNotice = (props) => {
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed", error);
+      .catch(error => {
+        console.error('API failed', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -266,17 +266,17 @@ const AddNewNotice = (props) => {
   };
   const handle_Repeat = () => {
     const url = Config.BASE_URL;
-    const Repear_url = url + "lookup_details";
-    console.log("Request URL:", Repear_url);
+    const Repear_url = url + 'lookup_details';
+    console.log('Request URL:', Repear_url);
     setIsLoading(true);
     const notification_data = {
-      P_PARENT_CODE: "REPEAT",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'REPEAT',
+      P_TYPE: 'OPTION',
     };
     axios
       .post(Repear_url, notification_data)
-      .then((response) => {
-        console.log("API Response Repear_url:", response.data);
+      .then(response => {
+        console.log('API Response Repear_url:', response.data);
         if (response.data.status === true) {
           setRepeatData(response.data.lookup_details);
           // alert(JSON.stringify(response.data.lookup_details));
@@ -285,8 +285,8 @@ const AddNewNotice = (props) => {
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed", error);
+      .catch(error => {
+        console.error('API failed', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -296,18 +296,18 @@ const AddNewNotice = (props) => {
   };
   const handle_notification_type = () => {
     const url = Config.BASE_URL;
-    const notification_url = url + "lookup_details";
-    console.log("Request URL:", notification_url);
+    const notification_url = url + 'lookup_details';
+    console.log('Request URL:', notification_url);
     setIsLoading(true);
     const notification_data = {
-      P_PARENT_CODE: "SNT",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'SNT',
+      P_TYPE: 'OPTION',
     };
 
     axios
       .post(notification_url, notification_data)
-      .then((response) => {
-        console.log("API Response notification_type:", response.data);
+      .then(response => {
+        console.log('API Response notification_type:', response.data);
         if (response.data.status === true) {
           setNotification_type_Data(response.data.lookup_details);
           // alert(JSON.stringify(response.data.lookup_details));
@@ -316,8 +316,8 @@ const AddNewNotice = (props) => {
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed", error);
+      .catch(error => {
+        console.error('API failed', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -327,73 +327,73 @@ const AddNewNotice = (props) => {
   };
   // clearState ..
   const clearState = () => {
-    setNoticeTypeDataValue(""),
-      setNoticeTittle(""),
-      setRepeatDataValue(""),
-      setToggleDayValue("");
-    setNotes(""),
-      setAddGuest(""),
+    setNoticeTypeDataValue(''),
+      setNoticeTittle(''),
+      setRepeatDataValue(''),
+      setToggleDayValue('');
+    setNotes(''),
+      setAddGuest(''),
       setToggleDay(false),
       setToggleNotification(false),
-      setToggleNotificationValue("");
-    setNotification_type_value("");
-    setLocation(""),
-      setSelectedDate(""),
-      setSelectedToDate(""),
-      setCurrentfromTime(""),
-      setCurrentToTime("");
+      setToggleNotificationValue('');
+    setNotification_type_value('');
+    setLocation(''),
+      setSelectedDate(''),
+      setSelectedToDate(''),
+      setCurrentfromTime(''),
+      setCurrentToTime('');
   };
   const createNoticeReminder = async () => {
     const formData = new FormData();
-    formData.append("account_id", loginData?.Login_details?.user_account_id);
-    formData.append("notice_type", noticeTypeDataValue);
-    formData.append("notice_title", noticeTittle);
-    formData.append("notice_repeat", repeatDataValue);
-    formData.append("notice_notifications", toggleDayValue);
-    formData.append("notice_from_date", selectedDate);
-    formData.append("notice_from_time", currentfromTime);
-    formData.append("notice_to_date", selectedToDate);
-    formData.append("notice_to_time", currentToTime);
-    formData.append("guests", addGuest);
-    formData.append("location", location);
-    formData.append("longitude", longitude);
-    formData.append("latitude", latitude);
-    formData.append("notification", toggleNotificationValue);
-    formData.append("notification_type", notification_type_value);
-    formData.append("custom", 1);
-    formData.append("notes", notes);
+    formData.append('account_id', loginData?.Login_details?.user_account_id);
+    formData.append('notice_type', noticeTypeDataValue);
+    formData.append('notice_title', noticeTittle);
+    formData.append('notice_repeat', repeatDataValue);
+    formData.append('notice_notifications', toggleDayValue);
+    formData.append('notice_from_date', selectedDate);
+    formData.append('notice_from_time', currentfromTime);
+    formData.append('notice_to_date', selectedToDate);
+    formData.append('notice_to_time', currentToTime);
+    formData.append('guests', addGuest);
+    formData.append('location', location);
+    formData.append('longitude', longitude);
+    formData.append('latitude', latitude);
+    formData.append('notification', toggleNotificationValue);
+    formData.append('notification_type', notification_type_value);
+    formData.append('custom', 1);
+    formData.append('notes', notes);
     // formData.append("file_name", fileName);
     if (selectFile.length > 0 && selectFile[0]) {
-      formData.append("file_name", {
+      formData.append('file_name', {
         uri: selectFile[0].uri || null,
         name: selectFile[0].name || null,
         type: selectFile[0].type || null,
       });
     }
-    console.log("formData", formData);
+    console.log('formData', formData);
     const url = Config.BASE_URL;
-    const createNoticeReminder_url = url + "create_notices_reminder";
+    const createNoticeReminder_url = url + 'create_notices_reminder';
     setIsLoading(true);
     try {
-      console.log("Request URL:", createNoticeReminder_url);
+      console.log('Request URL:', createNoticeReminder_url);
       const response = await axios.post(createNoticeReminder_url, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
       });
-      console.log("hello deependra");
-      console.log("createNoticeReminder....", response.data);
+      console.log('hello deependra');
+      console.log('createNoticeReminder....', response.data);
       if (response.data.status === true) {
         alert(response.data.message);
-        props.navigation.navigate("Notices",{
-          selectFile:selectFile
+        props.navigation.navigate('Notices', {
+          selectFile: selectFile,
         });
       }
       clearState();
       setIsLoading(false);
     } catch (error) {
       alert(error);
-      console.log("createNoticeReminder_error...", error);
+      console.log('createNoticeReminder_error...', error);
     } finally {
       setIsLoading(false);
     }
@@ -401,18 +401,18 @@ const AddNewNotice = (props) => {
 
   const getNoticesReminderDetails = () => {
     const url = Config.BASE_URL;
-    const getNoticesReminderDetails_url = url + "get_notices_reminder_details";
-    console.log("Request URL:", getNoticesReminderDetails_url);
+    const getNoticesReminderDetails_url = url + 'get_notices_reminder_details';
+    console.log('Request URL:', getNoticesReminderDetails_url);
     setIsLoading(true);
     const notification_data = {
       notices_reminder_id: noticeReminderid,
     };
     axios
       .post(getNoticesReminderDetails_url, notification_data)
-      .then((response) => {
+      .then(response => {
         console.log(
-          "API Response getNoticesReminderDetailsData...:",
-          response.data
+          'API Response getNoticesReminderDetailsData...:',
+          response.data,
         );
         if (response.data.status === true) {
           setNoticeTypeDataValue(parseInt(response.data.data.type_notice_id));
@@ -435,8 +435,8 @@ const AddNewNotice = (props) => {
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed getNoticesReminderDetails_url", error);
+      .catch(error => {
+        console.error('API failed getNoticesReminderDetails_url', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -446,56 +446,56 @@ const AddNewNotice = (props) => {
   };
   const update_createNoticeReminder = async () => {
     const formData = new FormData();
-    formData.append("notices_reminder_id", noticeReminderid);
-    formData.append("notice_type", noticeTypeDataValue);
-    formData.append("notice_title", noticeTittle);
-    formData.append("notice_repeat", repeatDataValue);
-    formData.append("notice_notifications", toggleDayValue);
-    formData.append("notice_from_date", selectedDate);
-    formData.append("notice_from_time", currentfromTime);
-    formData.append("notice_to_date", selectedToDate);
-    formData.append("notice_to_time", currentToTime);
-    formData.append("guests", addGuest);
-    formData.append("location", location);
-    formData.append("longitude", longitude);
-    formData.append("latitude", latitude);
-    formData.append("notification", toggleNotificationValue);
-    formData.append("notification_type", notification_type_value);
-    formData.append("custom", 1);
-    formData.append("notes", notes);
+    formData.append('notices_reminder_id', noticeReminderid);
+    formData.append('notice_type', noticeTypeDataValue);
+    formData.append('notice_title', noticeTittle);
+    formData.append('notice_repeat', repeatDataValue);
+    formData.append('notice_notifications', toggleDayValue);
+    formData.append('notice_from_date', selectedDate);
+    formData.append('notice_from_time', currentfromTime);
+    formData.append('notice_to_date', selectedToDate);
+    formData.append('notice_to_time', currentToTime);
+    formData.append('guests', addGuest);
+    formData.append('location', location);
+    formData.append('longitude', longitude);
+    formData.append('latitude', latitude);
+    formData.append('notification', toggleNotificationValue);
+    formData.append('notification_type', notification_type_value);
+    formData.append('custom', 1);
+    formData.append('notes', notes);
     // formData.append("file_name", fileName);
     if (selectFile) {
-      formData.append("file_name", {
+      formData.append('file_name', {
         uri: selectFile[0].uri || null,
         name: selectFile[0].name || selectFile,
         type: selectFile[0].type || null,
       });
     }
-    console.log("formData", formData);
+    console.log('formData', formData);
     const url = Config.BASE_URL;
-    const update_createNoticeReminder_url = url + "update_notices_reminder";
+    const update_createNoticeReminder_url = url + 'update_notices_reminder';
     setIsLoading(true);
     try {
-      console.log("Request URL:", update_createNoticeReminder_url);
+      console.log('Request URL:', update_createNoticeReminder_url);
       const response = await axios.put(
         update_createNoticeReminder_url,
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            'Content-Type': 'multipart/form-data',
           },
-        }
+        },
       );
-      console.log("update_createNoticeReminderResponse....", response.data);
+      console.log('update_createNoticeReminderResponse....', response.data);
       if (response.data.status === true) {
         alert(response.data.message);
-        props.navigation.navigate("Notices");
+        props.navigation.navigate('Notices');
       }
       clearState();
       setIsLoading(false);
     } catch (error) {
       alert(error);
-      console.log("update_createNoticeReminder_url...", error);
+      console.log('update_createNoticeReminder_url...', error);
     } finally {
       setIsLoading(false);
     }
@@ -519,16 +519,16 @@ const AddNewNotice = (props) => {
       //       DocumentPicker.types.docx,
       //     ],
       //   });
-      console.log("doc......", doc);
+      console.log('doc......', doc);
       setSelectFile(doc);
       setFileName(doc[0].name);
-      console.log("filename...", doc[0].name);
+      console.log('filename...', doc[0].name);
       // await uploadDocument(doc);
       // console.log("Documents.....", doc);
       // console.log("selectFile.....", selectFile);
     } catch (err) {
       if (DocumentPicker.isCancel(err))
-        console.log("User cancelled the upload", err);
+        console.log('User cancelled the upload', err);
       else console.log(err);
     }
   };
@@ -536,24 +536,23 @@ const AddNewNotice = (props) => {
     <View style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Add new notice"}
+        MiddleText={'Add new notice'}
       />
       {IsMap ? (
         <View
           style={{
             flex: 1,
             // paddingHorizontal: 10,
-            backgroundColor: "transparent",
-          }}
-        >
+            backgroundColor: 'transparent',
+          }}>
           <MapScreen
             style={{
-              height: "100%",
-              width: "100%",
+              height: '100%',
+              width: '100%',
               // borderRadius: 20,
               // borderWidth: 1,
               //borderColor: .greenAppColor,
-              alignSelf: "center",
+              alignSelf: 'center',
               marginBottom: 10,
             }}
             onRegionChange={onRegionChange}
@@ -562,42 +561,41 @@ const AddNewNotice = (props) => {
           />
           <View
             style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignSelf: "center",
-              width: "96%",
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignSelf: 'center',
+              width: '96%',
               borderWidth: 1,
               borderRadius: 8,
-              backgroundColor: "white",
-              borderColor: "#E5E4E2",
+              backgroundColor: 'white',
+              borderColor: '#E5E4E2',
               marginTop: 10,
-              position: "absolute",
-            }}
-          >
+              position: 'absolute',
+            }}>
             <TextInput
               style={{
-                backgroundColor: "transparent",
+                backgroundColor: 'transparent',
 
-                width: "90%",
+                width: '90%',
                 height: 45,
-                alignSelf: "center",
+                alignSelf: 'center',
                 //marginTop: 10,
               }}
               onFocus={() => openMapandClose()}
-              placeholder={"Search Place"}
+              placeholder={'Search Place'}
+              placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
           <TouchableOpacity
             style={AddNewNoticeStyle.BtnContainer}
-            onPress={ConfirmAddress}
-          >
-            <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+            onPress={ConfirmAddress}>
+            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
           </TouchableOpacity>
         </View>
       ) : IsSearch ? (
         <SearchPlaces
           onPress={(data, details = null) => {
-            console.log("LocationData....", details);
+            console.log('LocationData....', details);
             setlatitude(details.geometry.location.lat);
             setlongitude(details.geometry.location.lng);
             setIsSearch(false);
@@ -606,11 +604,11 @@ const AddNewNotice = (props) => {
           }}
         />
       ) : (
-        <ScrollView contentContainerStyle={{ marginBottom: 50 }}>
+        <ScrollView contentContainerStyle={{marginBottom: 50}}>
           <View style={AddNewNoticeStyle.mainview}>
             <View style={AddNewNoticeStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>
-                {"Select the type of notice you want to create"}
+                {'Select the type of notice you want to create'}
               </Text>
               <Dropdown
                 style={AddNewNoticeStyle.dropdown}
@@ -626,14 +624,14 @@ const AddNewNotice = (props) => {
                 placeholder="Inspection reminder"
                 searchPlaceholder="Search..."
                 value={noticeTypeDataValue}
-                onChange={(item) => {
+                onChange={item => {
                   setNoticeTypeDataValue(item.lookup_key);
                   // alert(item.lookup_key)
                 }}
               />
             </View>
             <View style={AddNewNoticeStyle.jobDetailsView}>
-              <Text style={LABEL_STYLES.commontext}>{"Notice title"}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Notice title'}</Text>
               <TextInput
                 style={[AddNewNoticeStyle.input]}
                 value={noticeTittle}
@@ -649,14 +647,14 @@ const AddNewNotice = (props) => {
                 name="arrow-swap"
                 size={30}
                 color={_COLORS.Kodie_ExtraLiteGrayColor}
-                style={{ marginTop: 10 }}
+                style={{marginTop: 10}}
               />
               <Text style={AddNewNoticeStyle.repeattext}>Repeat</Text>
               <View style={AddNewNoticeStyle.noticedropdownview}>
                 <Dropdown
                   style={[
                     AddNewNoticeStyle.dropdown,
-                    { borderRadius: 8, height: 25 },
+                    {borderRadius: 8, height: 25},
                   ]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
@@ -670,7 +668,7 @@ const AddNewNotice = (props) => {
                   placeholder="Every weekday (Mon-Fri)"
                   searchPlaceholder="Search..."
                   value={repeatDataValue}
-                  onChange={(item) => {
+                  onChange={item => {
                     setRepeatDataValue(item.lookup_key);
                     // alert(item.lookup_key)
                   }}
@@ -701,13 +699,13 @@ const AddNewNotice = (props) => {
             </View>
             <View style={AddNewNoticeStyle.datetimeview}>
               <View style={AddNewNoticeStyle.dateview}>
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   <CalendarModal
                     // SelectDate={selectedDate ? selectedDate : "Select Date"}
                     SelectDate={
                       selectedDate
-                        ? moment(selectedDate).format("ddd, MMM DD YYYY")
-                        : "Select from Date"
+                        ? moment(selectedDate).format('ddd, MMM DD YYYY')
+                        : 'Select from Date'
                     }
                     _textInputStyle={{
                       color: selectedDate
@@ -723,7 +721,7 @@ const AddNewNotice = (props) => {
                     // onDayPress={handleDayPress}
                     // onDayPress={(day) => handleRequestDate(day.dateString)}
                     // onChangeText={() => handleRequestDate(selectedDate)}
-                    onDayPress={(day) => setSelectedDate(day.dateString)}
+                    onDayPress={day => setSelectedDate(day.dateString)}
                     onChangeText={() => setSelectedDate(selectedDate)}
                     Visible={isModalVisible}
                     onRequestClose={toggleModal}
@@ -740,9 +738,9 @@ const AddNewNotice = (props) => {
                 </View>
                 <TimePicker
                   selectedTime={
-                    currentfromTime && currentfromTime != ""
+                    currentfromTime && currentfromTime != ''
                       ? String(currentfromTime)
-                      : "Select from time"
+                      : 'Select from time'
                   }
                   timerConStyle={{
                     borderWidth: 0,
@@ -755,19 +753,19 @@ const AddNewNotice = (props) => {
                   }
                   timerIcons
                   data={new Date()}
-                  getData={(date) => {
-                    setCurrentfromTime(moment(date).format("hh:mm A"));
+                  getData={date => {
+                    setCurrentfromTime(moment(date).format('hh:mm A'));
                   }}
                 />
               </View>
               <View style={AddNewNoticeStyle.dateview}>
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   <CalendarModal
                     // SelectDate={selectedDate ? selectedDate : "Select Date"}
                     SelectDate={
                       selectedToDate
-                        ? moment(selectedToDate).format("ddd, MMM DD YYYY")
-                        : "Select to Date"
+                        ? moment(selectedToDate).format('ddd, MMM DD YYYY')
+                        : 'Select to Date'
                     }
                     _textInputStyle={{
                       color: selectedToDate
@@ -783,7 +781,7 @@ const AddNewNotice = (props) => {
                     // onDayPress={handleDayPress}
                     // onDayPress={(day) => handleRequestDate(day.dateString)}
                     // onChangeText={() => handleRequestDate(selectedDate)}
-                    onDayPress={(day) => setSelectedToDate(day.dateString)}
+                    onDayPress={day => setSelectedToDate(day.dateString)}
                     onChangeText={() => setSelectedToDate(selectedToDate)}
                     Visible={isModalToDateVisible}
                     onRequestClose={toggleToDateModal}
@@ -800,9 +798,9 @@ const AddNewNotice = (props) => {
                 </View>
                 <TimePicker
                   selectedTime={
-                    currentToTime && currentToTime != ""
+                    currentToTime && currentToTime != ''
                       ? String(currentToTime)
-                      : "Select time"
+                      : 'Select time'
                   }
                   timerConStyle={{
                     borderWidth: 0,
@@ -815,8 +813,8 @@ const AddNewNotice = (props) => {
                   }
                   timerIcons
                   data={new Date()}
-                  getData={(date) => {
-                    setCurrentToTime(moment(date).format("hh:mm A"));
+                  getData={date => {
+                    setCurrentToTime(moment(date).format('hh:mm A'));
                   }}
                 />
               </View>
@@ -826,16 +824,15 @@ const AddNewNotice = (props) => {
             <View style={AddNewNoticeStyle.secondmainview}>
               {/* <AddGuest /> */}
               <View style={AddNewNoticeStyle.jobDetailsView}>
-                <Text style={LABEL_STYLES.commontext}>{"Add guests"}</Text>
-                <View style={{ flex: 1, flexDirection: "row" }}>
+                <Text style={LABEL_STYLES.commontext}>{'Add guests'}</Text>
+                <View style={{flex: 1, flexDirection: 'row'}}>
                   <View
                     style={[
                       AddNewNoticeStyle.input,
                       AddNewNoticeStyle.input_guest,
-                    ]}
-                  >
+                    ]}>
                     <TextInput
-                      style={{ flex: 1 }}
+                      style={{flex: 1}}
                       value={addGuest}
                       onChangeText={setAddGuest}
                       placeholder="Add guests"
@@ -845,7 +842,7 @@ const AddNewNotice = (props) => {
                       name="user-plus"
                       size={30}
                       color={_COLORS.Kodie_GrayColor}
-                      style={{ alignSelf: "center", marginHorizontal: 10 }}
+                      style={{alignSelf: 'center', marginHorizontal: 10}}
                     />
                   </View>
                   <TouchableOpacity style={AddNewNoticeStyle.chatBtn}>
@@ -853,9 +850,9 @@ const AddNewNotice = (props) => {
                       name="chatbubble-ellipses-outline"
                       size={30}
                       color={_COLORS.Kodie_WhiteColor}
-                      style={{ alignSelf: "center" }}
+                      style={{alignSelf: 'center'}}
                     />
-                    <Text style={AddNewNoticeStyle.ChatText}>{"Chat "}</Text>
+                    <Text style={AddNewNoticeStyle.ChatText}>{'Chat '}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -879,14 +876,13 @@ const AddNewNotice = (props) => {
                   <TouchableOpacity
                     style={AddNewNoticeStyle.locationIconView}
                     onPress={() => {
-                      Platform.OS == "ios"
+                      Platform.OS == 'ios'
                         ? CheckIOSMapPermission
                         : checkpermissionlocation();
                       setIsMap(true);
-                    }}
-                  >
+                    }}>
                     <Octicons
-                      name={"location"}
+                      name={'location'}
                       size={22}
                       color={_COLORS.Kodie_GreenColor}
                       style={AddNewNoticeStyle.locationIcon}
@@ -901,7 +897,7 @@ const AddNewNotice = (props) => {
                 <View style={AddNewNoticeStyle.notificationbind}>
                   <SimpleLineIcons name="bell" size={25} />
                   <Text style={AddNewNoticeStyle.settext}>
-                    Set notification{" "}
+                    Set notification{' '}
                   </Text>
                 </View>
                 <SwitchToggle
@@ -925,10 +921,7 @@ const AddNewNotice = (props) => {
                   Set notification type
                 </Text>
                 <Dropdown
-                  style={[
-                    AddNewNoticeStyle.setnotificationdrop,
-                    { width: 130 },
-                  ]}
+                  style={[AddNewNoticeStyle.setnotificationdrop, {width: 130}]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                   inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -939,7 +932,7 @@ const AddNewNotice = (props) => {
                   valueField="lookup_key"
                   placeholder="Select"
                   value={notification_type_value}
-                  onChange={(item) => {
+                  onChange={item => {
                     setNotification_type_value(item.lookup_key);
                     // alert(item.lookup_key)
                   }}
@@ -953,7 +946,7 @@ const AddNewNotice = (props) => {
                     name="chevron-small-right"
                     size={22}
                     color={_COLORS.Kodie_GrayColor}
-                    style={{ flex: 1, alignItems: "center" }}
+                    style={{flex: 1, alignItems: 'center'}}
                   />
                 </View>
               </View>
@@ -961,16 +954,16 @@ const AddNewNotice = (props) => {
 
             <Divider style={AddNewNoticeStyle.dividerfourth} />
             <View style={AddNewNoticeStyle.jobDetailsView}>
-              <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
               <TextInput
-                style={[AddNewNoticeStyle.input, { height: 100 }]}
+                style={[AddNewNoticeStyle.input, {height: 100}]}
                 value={notes}
                 onChangeText={setNotes}
                 placeholder="Add additional notes"
                 placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 multiline
                 numberOfLines={5}
-                textAlignVertical={"top"}
+                textAlignVertical={'top'}
               />
             </View>
             <View style={AddNewNoticeStyle.addattachmentbtnview}>
@@ -980,7 +973,7 @@ const AddNewNotice = (props) => {
               <CustomSingleButton
                 leftImage={IMAGES.uploadIcon}
                 isLeftImage={true}
-                _ButtonText={"Upload"}
+                _ButtonText={'Upload'}
                 backgroundColor={_COLORS.Kodie_lightGreenColor}
                 Text_Color={_COLORS.Kodie_BlackColor}
                 disabled={isLoading ? true : false}
@@ -990,7 +983,7 @@ const AddNewNotice = (props) => {
               />
               <Divider style={AddNewNoticeStyle.dividerfourth} />
               <CustomSingleButton
-                _ButtonText={"Add notice"}
+                _ButtonText={'Add notice'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 disabled={isLoading ? true : false}
                 onPress={() => {

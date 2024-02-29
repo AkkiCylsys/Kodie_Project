@@ -35,7 +35,9 @@
 			</dict>
 		</dict>
 	</dict>
-		<key>NSAppleMusicUsageDescription</key>
+	<key>NSContactsUsageDescription</key>
+<string>We need access to your contacts to provide XYZ feature.</string>
+	<key>NSAppleMusicUsageDescription</key>
 	<string>Kodie requires Apple Music access to allows you quick and secure access.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
 	<string>Kodie requires Bluetooth access to allows you quick and secure access.</string>

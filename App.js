@@ -17,8 +17,9 @@ import {
   useColorScheme,
   View,
   LogBox,
-} from 'react-native';
-import {isConnected} from './src/errorPages/NoInternet/CheckInternet';
+  Image
+} from "react-native";
+import { isConnected } from "./src/errorPages/NoInternet/CheckInternet";
 import {
   Colors,
   DebugInstructions,
@@ -41,7 +42,8 @@ const Section = ({children, title}): Node => {
           {
             color: isDarkMode ? Colors.white : Colors.black,
           },
-        ]}>
+        ]}
+      >
         {title}
       </Text>
       <Text
@@ -50,7 +52,8 @@ const Section = ({children, title}): Node => {
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-        ]}>
+        ]}
+      >
         {children}
       </Text>
     </View>
@@ -64,7 +67,7 @@ const App = () => {
     //SplashScreen.hide()
     LogBox.ignoreAllLogs(true);
     isConnected()
-      .then(() => console.log('has internet connection'))
+      .then(() => console.log("has internet connection"))
       // .then(() => console.log(userInfoJiMunim))
       .catch(() => console.log('has No internet connection'));
   }, []);
@@ -72,7 +75,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
         <Routes />
       </PersistGate>
     </Provider>
@@ -86,15 +89,15 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   sectionDescription: {
     marginTop: 8,
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: "400",
   },
   highlight: {
-    fontWeight: '700',
+    fontWeight: "700",
   },
 });
 

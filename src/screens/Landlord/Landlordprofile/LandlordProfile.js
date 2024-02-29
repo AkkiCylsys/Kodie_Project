@@ -1,44 +1,42 @@
-import React from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import TopHeader from "../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../services/CommonServices";
-import { LandlordProfileStyle } from "./LandlordProfileStyle";
-import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { _COLORS, IMAGES } from "../../../Themes/index";
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-import LandlordProfileData from "../../../components/Molecules/LandlordProfileData/LandlordProfileData";
-import { logoutActionCreator } from "../../../redux/Actions/Authentication/AuthenticationApiCreator";
-import { useDispatch, useSelector } from "react-redux";
-import RowTab from "../../../components/Molecules/RowTab/RowTab";
-export default LandlordProfile = (props) => {
+import React from 'react';
+import {View, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import TopHeader from '../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../services/CommonServices';
+import {LandlordProfileStyle} from './LandlordProfileStyle';
+import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {_COLORS, IMAGES} from '../../../Themes/index';
+import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
+import LandlordProfileData from '../../../components/Molecules/LandlordProfileData/LandlordProfileData';
+import {logoutActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import {useDispatch, useSelector} from 'react-redux';
+import RowTab from '../../../components/Molecules/RowTab/RowTab';
+export default LandlordProfile = props => {
   const dispatch = useDispatch();
   const signUp_account_response = useSelector(
-    (state) => state?.authenticationReducer?.data
+    state => state?.authenticationReducer?.data,
   );
-  console.log("signUp_account_response.....", signUp_account_response);
-  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log('signUp_account_response.....', signUp_account_response);
+  const loginData = useSelector(state => state.authenticationReducer.data);
   console.log(
-    "loginResponse.....",
-    loginData?.Login_details?.profile_photo_path
+    'loginResponse.....',
+    loginData?.Login_details?.profile_photo_path,
   );
 
   const LogOut = () => {
     dispatch(logoutActionCreator());
     // props.navigation.navigate("DrawerNavigatorLeftMenu");
-    props.navigation.navigate("LoginScreen");
+    props.navigation.navigate('LoginScreen');
   };
-  const searchprofileMenu =()=>{
-    
-  }
+  const searchprofileMenu = () => {};
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
         // isprofileImage
-        onPressLeftButton={() => props.navigation.navigate("Dashboard")}
-        MiddleText={"Profile"}
+        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        MiddleText={'Profile'}
         // RightUserProfile={{
         //   uri:
         //     loginData?.Login_details?.profile_photo_path ||
@@ -68,17 +66,16 @@ export default LandlordProfile = (props) => {
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
               {loginData?.Account_details[0]?.UAD_FIRST_NAME +
-                " " +
+                ' ' +
                 loginData?.Account_details[0]?.UAD_LAST_NAME ||
                 signUp_account_response?.Account_details[0]?.UAD_FIRST_NAME +
-                  " " +
+                  ' ' +
                   signUp_account_response?.Account_details[0]?.UAD_LAST_NAME}
             </Text>
             <Text
               style={LandlordProfileStyle.emailText}
               numberOfLines={1}
-              ellipsizeMode="tail"
-            >
+              ellipsizeMode="tail">
               {loginData?.Login_details?.email}
             </Text>
             <View style={LandlordProfileStyle.staricon}>
@@ -88,21 +85,20 @@ export default LandlordProfile = (props) => {
                 color={_COLORS.Kodie_lightGreenColor}
                 style={LandlordProfileStyle.star}
               />
-              <Text style={LandlordProfileStyle.ratingText}>{"4.6"}</Text>
-              <Text style={LandlordProfileStyle.subrating}>({"231"})</Text>
+              <Text style={LandlordProfileStyle.ratingText}>{'4.6'}</Text>
+              <Text style={LandlordProfileStyle.subrating}>({'231'})</Text>
             </View>
           </View>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("EditProfile")}
-            style={LandlordProfileStyle.contactIconView}
-          >
+            onPress={() => props.navigation.navigate('EditProfile')}
+            style={LandlordProfileStyle.contactIconView}>
             {/* <Image
               source={IMAGES.contactDetails}
               style={LandlordProfileStyle.contactIcon}
               resizeMode="contain"
             /> */}
             <MaterialCommunityIcons
-              name={"account-edit-outline"}
+              name={'account-edit-outline'}
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
@@ -112,13 +108,12 @@ export default LandlordProfile = (props) => {
         <Text style={LandlordProfileStyle.AllcontactsText}>Settings</Text>
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("AccountSetting");
-          }}
-        >
+            props.navigation.navigate('AccountSetting');
+          }}>
           <RowTab
-            LeftIconLibrary={"FontAwesome5"}
+            LeftIconLibrary={'FontAwesome5'}
             IsDivider={false}
-            LeftIconName={"user-alt"}
+            LeftIconName={'user-alt'}
             isSecondRowText={true}
             LeftImage={IMAGES.Accountsetting}
             TabTaxt="Account"
@@ -128,14 +123,13 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            // props.navigation.navigate("ManageSubscription");
-          }}
-        >
+            props.navigation.navigate('ManageSubscription');
+          }}>
           <RowTab
-            LeftIconLibrary={"MaterialIcons"}
+            LeftIconLibrary={'MaterialIcons'}
             IsDivider={false}
             isSecondRowText={true}
-            LeftIconName={"subscriptions"}
+            LeftIconName={'subscriptions'}
             // LeftImage={IMAGES.ManageSubscription}
             TabTaxt="Manage Subscription"
             TabSubTaxt="Manage your subscription plans"
@@ -144,14 +138,13 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("PrivacySecurity");
-          }}
-        >
+            props.navigation.navigate('PrivacySecurity');
+          }}>
           <RowTab
-            LeftIconLibrary={"MaterialCommunityIcons"}
+            LeftIconLibrary={'MaterialCommunityIcons'}
             IsDivider={false}
             isSecondRowText={true}
-            LeftIconName={"lock"}
+            LeftIconName={'lock'}
             // LeftImage={IMAGES.Privacy}
             TabTaxt="Privacy & Security"
             TabSubTaxt="View your privacy and security settings"
@@ -160,13 +153,12 @@ export default LandlordProfile = (props) => {
         <TouchableOpacity
           onPress={() => {
             // props.navigation.navigate("ManageSubscription");
-          }}
-        >
+          }}>
           <RowTab
-            LeftIconLibrary={"MaterialIcons"}
+            LeftIconLibrary={'MaterialIcons'}
             IsDivider={false}
             isSecondRowText={true}
-            LeftIconName={"storage"}
+            LeftIconName={'storage'}
             // LeftImage={IMAGES.ManageSubscription}
             TabTaxt="Storage & Data"
             TabSubTaxt="Manage storage and data settings"
@@ -176,14 +168,13 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Help_FeedBack");
-          }}
-        >
+            props.navigation.navigate('Help_FeedBack');
+          }}>
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            LeftIconName={"help-with-circle"}
-            LeftIconLibrary={"Entypo"}
+            LeftIconName={'help-with-circle'}
+            LeftIconLibrary={'Entypo'}
             // LeftImage={IMAGES.Accountsetting}
             TabTaxt="Help & Feedback"
             TabSubTaxt="Get help and leave feedback"
@@ -192,15 +183,14 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("SocialMedia");
-          }}
-        >
+            props.navigation.navigate('SocialMedia');
+          }}>
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
             // LeftImage={IMAGES.Subscription}
-            LeftIconName={"like1"}
-            LeftIconLibrary={"AntDesign"}
+            LeftIconName={'like1'}
+            LeftIconLibrary={'AntDesign'}
             TabTaxt="Follow us on social media"
             TabSubTaxt="Follow us for news, insights and more!"
           />
@@ -210,15 +200,14 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("Invitefriend");
-          }}
-        >
+            props.navigation.navigate('Invitefriend');
+          }}>
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
             // LeftImage={IMAGES.Subscription}
-            LeftIconName={"user-plus"}
-            LeftIconLibrary={"FontAwesome5"}
+            LeftIconName={'user-plus'}
+            LeftIconLibrary={'FontAwesome5'}
             TabTaxt="Tell a Friend"
             TabSubTaxt="Tell your friends about Kodie"
           />
@@ -226,15 +215,14 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            props.navigation.navigate("GenerateReport");
-          }}
-        >
+            props.navigation.navigate('GenerateReport');
+          }}>
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
             // LeftImage={IMAGES.RateKodie}
-            LeftIconName={"rate-review"}
-            LeftIconLibrary={"MaterialIcons"}
+            LeftIconName={'rate-review'}
+            LeftIconLibrary={'MaterialIcons'}
             TabTaxt="Rate Kodie"
             TabSubTaxt="Rate your Kodie experience"
           />
@@ -245,8 +233,8 @@ export default LandlordProfile = (props) => {
             IsDivider={false}
             isSecondRowText={true}
             // LeftImage={IMAGES.Logout}
-            LeftIconName={"logout"}
-            LeftIconLibrary={"MaterialCommunityIcons"}
+            LeftIconName={'logout'}
+            LeftIconLibrary={'MaterialCommunityIcons'}
             TabTaxt="Logout"
             TabSubTaxt="Logout of your Kodie profile"
           />
