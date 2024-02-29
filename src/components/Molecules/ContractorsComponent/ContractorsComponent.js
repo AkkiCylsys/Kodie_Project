@@ -1,14 +1,14 @@
-import { View, Text, Image, ScrollView } from "react-native";
-import React, { useState } from "react";
-import { ContractorsComponentStyle } from "./ContractorsComponentStyle";
-import Entypo from "react-native-vector-icons/Entypo";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import StarRating from "react-native-star-rating";
-import RowButtons from "../../Molecules/RowButtons/RowButtons";
-import { _COLORS, IMAGES } from "../../../Themes";
-import ReadMore from "@fawazahmed/react-native-read-more";
+import {View, Text, Image, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {ContractorsComponentStyle} from './ContractorsComponentStyle';
+import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import StarRating from 'react-native-star-rating';
+import RowButtons from '../../Molecules/RowButtons/RowButtons';
+import {_COLORS, IMAGES} from '../../../Themes';
+import ReadMore from '@fawazahmed/react-native-read-more';
 
-const ContractorsComponent = (props) => {
+const ContractorsComponent = props => {
   const [rating, setRating] = useState(4);
   return (
     <>
@@ -22,12 +22,11 @@ const ContractorsComponent = (props) => {
                 width: 60,
                 borderWidth: 1,
                 borderRadius: 60 / 2,
-                alignSelf: "center",
-              }}
-            >
+                alignSelf: 'center',
+              }}>
               <Image
                 source={props.userImage || IMAGES.userImage}
-                resizeMode={"cover"}
+                resizeMode={'cover'}
                 style={{
                   height: 60,
                   width: 60,
@@ -35,7 +34,7 @@ const ContractorsComponent = (props) => {
                 }}
               />
             </View>
-            <View style={{ flex: 1, marginHorizontal: 15 }}>
+            <View style={{flex: 1, marginHorizontal: 15}}>
               <View style={ContractorsComponentStyle.namebindview}>
                 <Text style={ContractorsComponentStyle.Jasontext}>
                   {props.name}
@@ -69,7 +68,7 @@ const ContractorsComponent = (props) => {
                     fullStarColor={_COLORS.Kodie_lightGreenColor}
                     emptyStarColor={_COLORS.Kodie_LightGrayColor}
                     starSize={20}
-                    selectedStar={(rating) => setRating(rating)}
+                    selectedStar={rating => setRating(rating)}
                     starStyle={ContractorsComponentStyle.startRating}
                   />
                   <Text style={ContractorsComponentStyle.starView}>
@@ -94,7 +93,7 @@ const ContractorsComponent = (props) => {
               </View>
             </View>
             <View>
-              <View style={{ flexDirection: "row" }}>
+              <View style={{flexDirection: 'row'}}>
                 <AntDesign
                   name="hearto"
                   size={25}
@@ -115,27 +114,26 @@ const ContractorsComponent = (props) => {
         </View>
         <View style={ContractorsComponentStyle.CoverView}>
           <Text style={ContractorsComponentStyle.CoverText}>
-            {"Cover letter -"}
+            {'Cover letter -'}
           </Text>
           <ReadMore
             seeMoreStyle={ContractorsComponentStyle.readMore}
             seeLessStyle={ContractorsComponentStyle.readMore}
-            seeMoreText={"read more"}
-            seeLessText={"read Less"}
+            seeMoreText={'read more'}
+            seeLessText={'read Less'}
             numberOfLines={2}
-            style={ContractorsComponentStyle.textStyle}
-          >
+            style={ContractorsComponentStyle.textStyle}>
             {props.CoverText1}
           </ReadMore>
         </View>
         {/* button section here */}
         <View>
           <RowButtons
-            LeftButtonText={"View profile"}
+            LeftButtonText={'View profile'}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonTextColor={_COLORS.Kodie_BlackColor}
             LeftButtonborderColor={_COLORS.Kodie_BlackColor}
-            RightButtonText={"Message"}
+            RightButtonText={'Message'}
             RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}

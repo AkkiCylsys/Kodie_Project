@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,29 +7,33 @@ import {
   Image,
   TouchableOpacity,
   PermissionsAndroid,
-} from "react-native";
+} from 'react-native';
 
-import Entypo from "react-native-vector-icons/Entypo";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import axios from "axios";
-import { Config } from "../../../../Config";
-import { JobDocumentsStyle } from "./JobDocumentStyle";
-import { _COLORS } from "../../../../Themes";
-import RBSheet from "react-native-raw-bottom-sheet";
-import EditDocumentsModal from "../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import RNFetchBlob from "rn-fetch-blob";
-import Share from "react-native-share";
-import { useIsFocused } from "@react-navigation/native";
-export default JobDocuments = (props) => {
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import {Config} from '../../../../Config';
+import {JobDocumentsStyle} from './JobDocumentStyle';
+import {_COLORS} from '../../../../Themes';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import RNFetchBlob from 'rn-fetch-blob';
+import Share from 'react-native-share';
+import {useIsFocused} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+
+export default JobDocuments = props => {
+  const navigation = useNavigation();
+
   const isfocused = useIsFocused();
   useEffect(() => {
     getAllDocuments();
     // getUploadedDocumentsByModule();
-    getUploadedDocumentsByModule("Job_proposal");
-    getUploadedDocumentsByModule("Job_Invoice");
-    getUploadedDocumentsByModule("Job_Completed");
+    getUploadedDocumentsByModule('Job_proposal');
+    getUploadedDocumentsByModule('Job_Invoice');
+    getUploadedDocumentsByModule('Job_Completed');
   }, [isfocused]);
 
   const JOB_ID = props.JOB_ID;
@@ -39,36 +43,36 @@ export default JobDocuments = (props) => {
   const [uploadDocData, setUploadDocData] = useState([]);
   const refRBSheet = useRef();
   const [fileKey, setFileKey] = useState(0);
-  const [fileName, setFileName] = useState("");
-  const [filePath, setFilePath] = useState("");
+  const [fileName, setFileName] = useState('');
+  const [filePath, setFilePath] = useState('');
   const [jobDocByModulename, setJobDocByModulename] = useState([]);
   const [jobDocByjobInvoice, setJobDocByjobInvoice] = useState([]);
   const [jobDocByjobcomplete, setJobDocByjobcomplete] = useState([]);
-  const [jobDocByModulenamelength, setJobDocByModulenamelength] = useState("");
-  const [jobDocByjobInvoicelength, setJobDocByjobInvoicelength] = useState("");
+  const [jobDocByModulenamelength, setJobDocByModulenamelength] = useState('');
+  const [jobDocByjobInvoicelength, setJobDocByjobInvoicelength] = useState('');
   const [jobDocByjobcompletelength, setJobDocByjobcompletelength] =
-    useState("");
+    useState('');
   const [showAllDocuments, setShowAllDocuments] = useState(false);
   const toggleShowAllDocuments = () => {
     setShowAllDocuments(!showAllDocuments);
   };
   const folderData = [
     {
-      id: "1",
-      moduleName: "Job_proposal",
-      folderHeading: "Job proposal",
+      id: '1',
+      moduleName: 'Job_proposal',
+      folderHeading: 'Job proposal',
       totalFile: jobDocByModulenamelength,
     },
     {
-      id: "2",
-      moduleName: "Job_Invoice",
-      folderHeading: "Invoice & proof of payment",
+      id: '2',
+      moduleName: 'Job_Invoice',
+      folderHeading: 'Invoice & proof of payment',
       totalFile: jobDocByjobInvoicelength,
     },
     {
-      id: "3",
-      moduleName: "Job_Completed",
-      folderHeading: "Proof of work completed",
+      id: '3',
+      moduleName: 'Job_Completed',
+      folderHeading: 'Proof of work completed',
       totalFile: jobDocByjobcompletelength,
     },
   ];
@@ -78,34 +82,34 @@ export default JobDocuments = (props) => {
   // share doc....
   const shareDocFile = async () => {
     try {
-      await Share.open({ url: filePath });
+      await Share.open({url: filePath});
     } catch (error) {
-      console.error("Error sharing PDF file:", error);
+      console.error('Error sharing PDF file:', error);
     }
   };
   // delete Document...
-  const deleteHandler = (fileKey) => {
-    console.log("filekeyIn_delete....", fileKey);
+  const deleteHandler = fileKey => {
+    console.log('filekeyIn_delete....', fileKey);
     const dataToSend = {
       fileId: fileKey,
     };
     // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
-    const delete_url = url + "deletedocument";
-    console.log("url...", delete_url);
+    const delete_url = url + 'deletedocument';
+    console.log('url...', delete_url);
     setIsLoading(true);
     axios
       .patch(delete_url, dataToSend)
-      .then((res) => {
-        console.log("res......", res);
+      .then(res => {
+        console.log('res......', res);
         if (res?.data?.success === true) {
           alert(res?.data?.message);
           closeModal();
         }
         getAllDocuments();
       })
-      .catch((error) => {
-        console.error("Error deleting:", error);
+      .catch(error => {
+        console.error('Error deleting:', error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -115,24 +119,24 @@ export default JobDocuments = (props) => {
   const REMOTE_PATH = filePath;
   const checkPermission = async () => {
     setIsLoading(true);
-    if (Platform.OS === "ios") {
+    if (Platform.OS === 'ios') {
       downloadImage();
     } else {
       try {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: "Storage Permission Required",
-            message: "App needs access to your storage to download Photos",
-          }
+            title: 'Storage Permission Required',
+            message: 'App needs access to your storage to download Photos',
+          },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           // Once user grant the permission start downloading
-          console.log("Storage Permission Granted.");
+          console.log('Storage Permission Granted.');
           downloadImage();
         } else {
           // If permission denied then show alert
-          alert("Storage Permission Not Granted");
+          alert('Storage Permission Not Granted');
         }
       } catch (err) {
         // To handle permission related exception
@@ -145,8 +149,8 @@ export default JobDocuments = (props) => {
     let date = new Date();
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
-    ext = "." + ext[0];
-    const { config, fs } = RNFetchBlob;
+    ext = '.' + ext[0];
+    const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -155,30 +159,30 @@ export default JobDocuments = (props) => {
         notification: true,
         path:
           PictureDir +
-          "/pdf_" +
+          '/pdf_' +
           Math.floor(date.getTime() + date.getSeconds() / 2) +
           ext,
-        description: "pdf",
+        description: 'pdf',
       },
     };
     config(options)
-      .fetch("GET", image_URL)
-      .then((res) => {
+      .fetch('GET', image_URL)
+      .then(res => {
         // Showing alert after successful downloading
-        console.log("res -> ", JSON.stringify(res));
+        console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        alert("File Downloaded Successfully.");
+        alert('File Downloaded Successfully.');
         setIsLoading(false);
         closeModal();
       });
   };
 
-  const getExtention = (fileName) => {
+  const getExtention = fileName => {
     // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
 
-  const DocumentsData = ({ item, index }) => {
+  const DocumentsData = ({item, index}) => {
     setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
     return (
@@ -190,14 +194,14 @@ export default JobDocuments = (props) => {
               name="file-pdf-o"
               size={35}
               color={_COLORS.Kodie_BlackColor}
-              resizeMode={"contain"}
+              resizeMode={'contain'}
             />
             <View style={JobDocumentsStyle.textContainer}>
               <Text style={JobDocumentsStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
               {/* <Text style={JobDocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              <Text style={JobDocumentsStyle.pdfSize}> {"4.5 MB"}</Text>
+              <Text style={JobDocumentsStyle.pdfSize}> {'4.5 MB'}</Text>
             </View>
           </View>
           <TouchableOpacity
@@ -205,8 +209,7 @@ export default JobDocuments = (props) => {
             onPress={() => {
               refRBSheet.current.open();
               setFilePath(item.PDUM_FILE_PATH);
-            }}
-          >
+            }}>
             <Entypo
               name="dots-three-vertical"
               size={20}
@@ -217,7 +220,7 @@ export default JobDocuments = (props) => {
       </>
     );
   };
-  const folderRenderData = ({ item, index }) => {
+  const folderRenderData = ({item, index}) => {
     return (
       <TouchableOpacity
         style={JobDocumentsStyle.folderView}
@@ -226,10 +229,9 @@ export default JobDocuments = (props) => {
         //   alert(item?.id)
         // }}
         onPress={() => {
-          console.log("item.id:", item.id);
+          console.log('item.id:', item.id);
           props?.JobDocumentDetails(item.id, item.moduleName, JOB_ID);
-        }}
-      >
+        }}>
         <View style={JobDocumentsStyle.folder_icon}>
           <Ionicons
             name="folder-outline"
@@ -247,8 +249,9 @@ export default JobDocuments = (props) => {
             {item?.folderHeading}
           </Text>
           <Text
-            style={JobDocumentsStyle.files_text}
-          >{`${item.totalFile} Files`}</Text>
+            style={
+              JobDocumentsStyle.files_text
+            }>{`${item.totalFile} Files`}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -259,23 +262,23 @@ export default JobDocuments = (props) => {
     const url = Config.BASE_URL;
     const getDocument_url = url + `tanant_details/get/document/${JOB_ID}`;
     // const getDocument_url = url + `tanant_details/get/document/${15}`;
-    console.log("Request URL:", getDocument_url);
+    console.log('Request URL:', getDocument_url);
     setIsLoading(true);
     axios
       .get(getDocument_url)
-      .then((response) => {
-        console.log("API Response getDocuments:", response.data);
+      .then(response => {
+        console.log('API Response getDocuments:', response.data);
         if (response.data.success === true) {
           // alert(response.data.message);
           setUploadDocData(response.data.data);
-          console.log("getAlluploadDocData..", response.data.data);
+          console.log('getAlluploadDocData..', response.data.data);
         } else {
           alert(response.data.message);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed", error);
+      .catch(error => {
+        console.error('API failed', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -284,10 +287,10 @@ export default JobDocuments = (props) => {
       });
   };
 
-  const getUploadedDocumentsByModule = (moduleName) => {
+  const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + "tanant_details/get/documents";
-    console.log("Request URL:", getDocumentUrl);
+    const getDocumentUrl = url + 'tanant_details/get/documents';
+    console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
@@ -295,48 +298,48 @@ export default JobDocuments = (props) => {
     };
     axios
       .post(getDocumentUrl, documentModuleData)
-      .then((response) => {
+      .then(response => {
         console.log(`API Response for ${moduleName}:`, response.data);
         if (response.data.success == true) {
           switch (moduleName) {
-            case "Job_proposal":
+            case 'Job_proposal':
               setJobDocByModulename(response.data.data);
-              console.log("jobDocByModulename....", jobDocByModulename);
+              console.log('jobDocByModulename....', jobDocByModulename);
               console.log(
-                "Length for Job_proposal:",
-                response.data.data.length
+                'Length for Job_proposal:',
+                response.data.data.length,
               );
               setJobDocByModulenamelength(response.data.data.length);
               console.log(
-                "setJobDocByModulenamelength..",
-                jobDocByModulenamelength
+                'setJobDocByModulenamelength..',
+                jobDocByModulenamelength,
               );
 
               break;
-            case "Job_Invoice":
+            case 'Job_Invoice':
               setJobDocByjobInvoice(response.data.data);
-              console.log("jobDocByjobInvoice...", jobDocByjobInvoice);
+              console.log('jobDocByjobInvoice...', jobDocByjobInvoice);
               console.log(
-                "Length for jobDocByjobInvoice:",
-                response.data.data.length
+                'Length for jobDocByjobInvoice:',
+                response.data.data.length,
               );
               setJobDocByjobInvoicelength(response.data.data.length);
               console.log(
-                "jobDocByjobInvoicelength...",
-                jobDocByjobInvoicelength
+                'jobDocByjobInvoicelength...',
+                jobDocByjobInvoicelength,
               );
               break;
-            case "Job_Completed":
+            case 'Job_Completed':
               setJobDocByjobcomplete(response.data.data);
-              console.log("jobDocByjobcomplete....", jobDocByjobcomplete);
+              console.log('jobDocByjobcomplete....', jobDocByjobcomplete);
               console.log(
-                "Length for jobDocByjobcomplete:",
-                response.data.data.length
+                'Length for jobDocByjobcomplete:',
+                response.data.data.length,
               );
               setJobDocByjobcompletelength(response.data.data.length);
               console.log(
-                "jobDocByjobcompletelength..",
-                jobDocByjobcompletelength
+                'jobDocByjobcompletelength..',
+                jobDocByjobcompletelength,
               );
               break;
             // Add cases for other module names if needed
@@ -345,7 +348,7 @@ export default JobDocuments = (props) => {
           }
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(`API failed for ${moduleName}:`, error);
       })
       .finally(() => {
@@ -357,27 +360,27 @@ export default JobDocuments = (props) => {
     <View style={JobDocumentsStyle.mainContainer}>
       <ScrollView>
         <View style={JobDocumentsStyle.recentDocView}>
-          <Text style={JobDocumentsStyle.reacentDocText}>{"Folders"}</Text>
-          <Text style={JobDocumentsStyle.seeAllText}>{"See all"}</Text>
+          <Text style={JobDocumentsStyle.reacentDocText}>{'Folders'}</Text>
+          <Text style={JobDocumentsStyle.seeAllText}>{'See all'}</Text>
         </View>
-        <View style={{ marginBottom: 50 }}>
+        <View style={{marginBottom: 50}}>
           <FlatList
             data={folderData}
             scrollEnabled
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
+            keyExtractor={item => item?.id}
             renderItem={folderRenderData}
           />
         </View>
         <View style={JobDocumentsStyle.recentDocView}>
           <Text style={JobDocumentsStyle.reacentDocText}>
-            {"Recent documents"}
+            {'Recent documents'}
           </Text>
           <TouchableOpacity onPress={toggleShowAllDocuments}>
             <Text style={JobDocumentsStyle.seeAllText}>
-              {showAllDocuments ? "Hide all" : "See all"}
+              {showAllDocuments ? 'Hide all' : 'See all'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -387,7 +390,7 @@ export default JobDocuments = (props) => {
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
+            keyExtractor={item => item?.id}
             renderItem={DocumentsData}
           />
         </View>
@@ -396,14 +399,13 @@ export default JobDocuments = (props) => {
           height={260}
           customStyles={{
             wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
             container: JobDocumentsStyle.bottomModal_container,
-          }}
-        >
+          }}>
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}
@@ -413,7 +415,9 @@ export default JobDocuments = (props) => {
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              // props.navigation.navigate("ViewDocument");
+              navigation.navigate('ViewDocument', {
+                filePath: filePath,
+              });
             }}
           />
         </RBSheet>
