@@ -7,10 +7,10 @@ export const ChangeContactInputStyle = StyleSheet.create({
   },
   firstview: {
     marginHorizontal: 15,
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   secondview: {
-    marginVertical: 30,
+    marginVertical: 15,
     marginHorizontal: 15,
   },
   numbercodefirstview: {
@@ -24,7 +24,7 @@ export const ChangeContactInputStyle = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 10,
-    marginTop: 15,
+    // marginTop: 15,
   },
 
   bindview: {
@@ -33,11 +33,13 @@ export const ChangeContactInputStyle = StyleSheet.create({
     marginHorizontal: 5,
   },
   oldnumbertext: {
-    fontSize: 13,
+    fontSize: 14,
     fontWeight: "600",
     lineHeight: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal: 8,
+    marginVertical:11,
   },
 
   numbercode: {
@@ -61,22 +63,26 @@ export const ChangeContactInputStyle = StyleSheet.create({
     tintColor: "#CED5D7",
   },
   secondview: {
-    marginVertical: 15,
+    marginTop: 12,
     marginHorizontal: 15,
   },
-  simpleinputview: {
-    // height: 50,
-    borderWidth: 1,
-    // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
-    borderColor: _COLORS.Kodie_GrayColor,
-    borderRadius: 8,
-    fontFamily: FONTFAMILY.K_SemiBold,
+  simpleinputNewPhoneview: {
+    height: 55,
     flexDirection: "row",
     alignItems: "center",
-    width: "100%",
     justifyContent: "space-between",
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderRadius: 12,
+    borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 10,
-    marginTop: 15,
+  },
+  simpleinputview: {
+    height: 60,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 5,
   },
   error_text: { color: "red", marginLeft: 10,marginTop:5 },
 

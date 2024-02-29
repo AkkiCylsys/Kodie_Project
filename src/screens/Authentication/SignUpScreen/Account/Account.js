@@ -134,6 +134,7 @@ export default Account = (props) => {
       props.navigation.navigate("AboutYou");
       // alert("done")
     }
+    console.log('mobileNumber..',mobileNumber)
   };
   const goBack = () => {
     props.navigation.pop();
