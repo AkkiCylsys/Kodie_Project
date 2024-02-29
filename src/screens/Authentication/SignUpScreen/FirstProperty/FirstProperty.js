@@ -150,6 +150,7 @@ export default FirstProperty = (props) => {
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [buildingFlorSize, setBuildingFlorSize] = useState("");
   const [landArea, setLandArea] = useState("");
+  const [currentLocation, setCurrentLocation] = useState(false);
   const dispatch = useDispatch();
   const P_addressParts = propertyLocation.split(", ");
   console.log("P_addressParts", P_addressParts);
@@ -267,7 +268,7 @@ export default FirstProperty = (props) => {
       language: "en",
     });
     Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
-  }, []);
+  }, [currentLocation]);
   const handleProperty_Type = () => {
     const propertyData = {
       P_PARENT_CODE: "PROP_TYPE",
@@ -531,6 +532,7 @@ export default FirstProperty = (props) => {
   };
   const ConfirmAddress = () => {
     setIsMap(false);
+    setCurrentLocation(true);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -553,7 +555,7 @@ export default FirstProperty = (props) => {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
-        getAddressWithCordinates();
+        fetchCurrentLocation();
       } else {
         console.log("location permission denied");
         alert("Location permission denied");
@@ -581,7 +583,7 @@ export default FirstProperty = (props) => {
             break;
           case RESULTS.GRANTED:
             console.log("The permission is granted");
-            getAddressWithCordinates();
+            fetchCurrentLocation();
             break;
           case RESULTS.BLOCKED:
             console.log("The permission is denied and not requestable anymore");
@@ -592,23 +594,23 @@ export default FirstProperty = (props) => {
         console.log(error);
       });
   };
-  const getAddressWithCordinates = () => {
-    console.log("Enter cordinates");
-    Geolocation.watchPosition(
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
       (position) => {
-        console.log("With cordinates");
-        setlatitude(position.coords.latitude);
-        setlongitude(position.coords.longitude);
-        getAddress(position.coords.latitude, position.coords.longitude);
+        console.log("This is your current location.");
+        const { latitude, longitude } = position.coords;
+        console.log("position.coords....", position.coords);
+        setlatitude(latitude);
+        setlongitude(longitude);
+        getAddress(latitude, longitude);
       },
       (error) => {
-        alert(error.message.toString());
+        console.error("Error fetching location:", error);
       },
       {
-        showLocationDialog: true,
         enableHighAccuracy: true,
         timeout: 20000,
-        maximumAge: 0,
+        maximumAge: 1000,
       }
     );
   };
@@ -617,8 +619,9 @@ export default FirstProperty = (props) => {
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        setPropertyLocation(json.results[0].formatted_address);
-        getAddressWithCordinates();
+        currentLocation
+          ? setPropertyLocation(json.results[0].formatted_address)
+          : null;
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -694,6 +697,7 @@ export default FirstProperty = (props) => {
                 }}
                 onFocus={() => openMapandClose()}
                 placeholder={"Search Place"}
+                placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
             <TouchableOpacity

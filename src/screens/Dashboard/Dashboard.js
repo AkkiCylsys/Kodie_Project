@@ -224,7 +224,8 @@ export default Dashboard = (props) => {
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text
               style={DashboardStyle.Name_Text}
-            >{`Hi ${loginData?.Account_details[0]?.UAD_FIRST_NAME}!`}</Text>
+            // >{`Hi ${loginData?.Account_details[0]?.UAD_FIRST_NAME}!`}</Text>
+            >{'Hi jason'}</Text>
             <Text style={DashboardStyle.welcome_Text}>{"Welcome Back"}</Text>
             <View
               style={{

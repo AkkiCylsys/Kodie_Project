@@ -12,7 +12,6 @@ import {
   Platform,
   Alert,
   PermissionsAndroid,
-
 } from "react-native";
 import { PropertyDetailsStyle } from "./PropertyDetailsStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -70,6 +69,7 @@ export default PropertyDetails = (props) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
+  const [currentLocation, setCurrentLocation] = useState(false);
 
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
@@ -114,7 +114,7 @@ export default PropertyDetails = (props) => {
     });
     Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     setLocation(property_Detail?.location);
-  }, []);
+  }, [currentLocation]);
 
   const DetailsData = () => {
     const detailData = {
@@ -278,7 +278,7 @@ export default PropertyDetails = (props) => {
             break;
           case RESULTS.GRANTED:
             console.log("The permission is granted");
-            getAddressWithCordinates();
+            fetchCurrentLocation();
             break;
           case RESULTS.BLOCKED:
             console.log("The permission is denied and not requestable anymore");
@@ -301,7 +301,7 @@ export default PropertyDetails = (props) => {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
         // alert("You can use the location");
-        getAddressWithCordinates();
+        fetchCurrentLocation();
       } else {
         console.log("location permission denied");
         alert("Location permission denied");
@@ -312,6 +312,7 @@ export default PropertyDetails = (props) => {
   };
   const ConfirmAddress = () => {
     setIsMap(false);
+    setCurrentLocation(true);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -329,7 +330,7 @@ export default PropertyDetails = (props) => {
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        setLocation(json.results[0].formatted_address);
+        currentLocation ? setLocation(json.results[0].formatted_address) : null;
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -358,30 +359,50 @@ export default PropertyDetails = (props) => {
       })
       .catch((error) => console.warn(error));
   };
-  const getAddressWithCordinates = () => {
-    console.log("Enter cordinates..");
-    Geolocation.watchPosition(
+  // const getAddressWithCordinates = () => {
+  //   console.log("Enter cordinates..");
+  //   Geolocation.watchPosition(
+  //     (position) => {
+  //       // alert("with cordinates..");
+  //       console.log("with cordinates..");
+  //       // setGetLat(position.coords.latitude);
+  //       // setGetLong(position.coords.longitude);
+  //       setlatitude(position.coords.latitude);
+  //       console.log("withCordinates latitude....", position.coords.latitude);
+  //       setlongitude(position.coords.longitude);
+  //       console.log("withCordinates Longitude....", position.coords.longitude);
+  //       getAddress(position.coords.latitude, position.coords.longitude);
+  //       // getAddress(getLat, getLong);
+  //     },
+  //     (error) => {
+  //       alert(error.message.toString());
+  //       console.log("watch cordinates err..", error.message);
+  //     },
+  //     {
+  //       showLocationDialog: true,
+  //       enableHighAccuracy: true,
+  //       timeout: 20000,
+  //       maximumAge: 0,
+  //     }
+  //   );
+  // };
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
       (position) => {
-        // alert("with cordinates..");
-        console.log("with cordinates..");
-        // setGetLat(position.coords.latitude);
-        // setGetLong(position.coords.longitude);
-        setlatitude(position.coords.latitude);
-        console.log("withCordinates latitude....", position.coords.latitude);
-        setlongitude(position.coords.longitude);
-        console.log("withCordinates Longitude....", position.coords.longitude);
-        getAddress(position.coords.latitude, position.coords.longitude);
-        // getAddress(getLat, getLong);
+        console.log("This is your current location.");
+        const { latitude, longitude } = position.coords;
+        console.log("position.coords....", position.coords);
+        setlatitude(latitude);
+        setlongitude(longitude);
+        getAddress(latitude, longitude);
       },
       (error) => {
-        alert(error.message.toString());
-        console.log("watch cordinates err..", error.message);
+        console.error("Error fetching location:", error);
       },
       {
-        showLocationDialog: true,
         enableHighAccuracy: true,
         timeout: 20000,
-        maximumAge: 0,
+        maximumAge: 1000,
       }
     );
   };
@@ -560,6 +581,7 @@ export default PropertyDetails = (props) => {
                 }}
                 onFocus={() => openMapandClose()}
                 placeholder={"Search Place"}
+                placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
             <TouchableOpacity

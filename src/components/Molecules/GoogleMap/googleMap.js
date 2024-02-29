@@ -21,6 +21,7 @@ const MapScreen = (props) => {
       provider={Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
       style={props?.style ? props?.style : GoogleMapStyle.MapView}
       showsUserLocation={true}
+      showsMyLocationButton={true}
       initialRegion={{
         latitude: props?.Maplat
           ? parseFloat(props?.Maplat)

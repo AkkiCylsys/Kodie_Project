@@ -6,7 +6,8 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { _COLORS, IMAGES } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
 import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-const CreditCard = () => {
+import { _goBack } from "../../../services/CommonServices";
+const CreditCard = (props) => {
   const refRBSheet = useRef();
   return (
     <View>
@@ -24,7 +25,6 @@ const CreditCard = () => {
             color={_COLORS.Kodie_LightGrayColor}
             style={CreditCardStyle.cardIcon}
           />
-         
         </View>
       </View>
 
@@ -120,7 +120,6 @@ const CreditCard = () => {
             height={48}
             onPress={() => {
               refRBSheet.current.close();
-              _goBack(props);
             }}
           />
           <CustomSingleButton
