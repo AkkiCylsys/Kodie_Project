@@ -56,26 +56,21 @@ const ChangeContactInput = (props) => {
   };
 
   const handleSubmit = async () => {
-    const slicedOldPhoneNumber = phoneDataNumber.slice(3);
+
     if (oldPhoneNumber.trim() === "") {
       setOldPhoneNumberError("Old phone number is required.");
     } else if (newPhoneNumber.trim() === "") {
       setNewPhoneNumberError("New phone number is required.");
-    } else if (oldPhoneNumber.trim() === newPhoneNumber.trim()) {
+    } else if (phoneDataNumber.trim() === newPhoneNumber.trim()) {
       setNewPhoneNumberError(
         "New phone number must be different from the old one."
       );
       setOldPhoneNumberError("");
     } else {
-      const fullOldPhoneNumber = phoneDataNumber;
-      const fullNewPhoneNumber = "+91" + newPhoneNumber;
-      console.log("Full Old Phone Number:", fullOldPhoneNumber);
-      console.log("Full New Phone Number:", fullNewPhoneNumber);
+    
       props.navigation.navigate("ChangeContactNotify", {
-        // oldPhoneNumber: oldNumberformattedValue,
-        // newPhoneNumber: newNumberformattedValue,
-        oldPhoneNumber: fullOldPhoneNumber,
-        newPhoneNumber: fullNewPhoneNumber,
+        oldPhoneNumber: oldNumberformattedValue,
+        newPhoneNumber: newNumberformattedValue,
       });
       // setOldPhoneNumber("");
       // setNewPhoneNumber("")
