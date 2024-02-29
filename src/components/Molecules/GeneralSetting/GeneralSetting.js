@@ -4,7 +4,7 @@ import { GeneralSettingStyle } from "./GeneralSettingStyle";
 
 const GeneralSetting = (props) => {
   return (
-    <View>
+
       <View style={GeneralSettingStyle.main}>
         <View style={GeneralSettingStyle.bindview}>
           <View style={GeneralSettingStyle.imageview}>
@@ -13,16 +13,17 @@ const GeneralSetting = (props) => {
               style={GeneralSettingStyle.image}
             />
           </View>
-          <View>
+          
+        </View>
+        <View style={{flex:1}}>
             <Text style={GeneralSettingStyle.headingtext}>{props.heading}</Text>
             <Text style={GeneralSettingStyle.desctext}>
               {props.description}
             </Text>
           </View>
-        </View>
         <Image source={props.leftarrowimg} style={GeneralSettingStyle.image} />
       </View>
-    </View>
+  
   );
 };
 

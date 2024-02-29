@@ -33,7 +33,7 @@ const GeneralSettings = (props) => {
               description="Select the currency symbol to display"
             />
           </View>
-          <View style={GeneralSettingsStyle.dropdownview}>
+          <View style={[GeneralSettingsStyle.dropdownview,{alignItems:'center',flex:0.3,justifyContent:'center'}]}>
             <Dropdown
               style={GeneralSettingsStyle.dropdown}
               placeholderStyle={GeneralSettingsStyle.placeholderStyle}
@@ -41,12 +41,12 @@ const GeneralSettings = (props) => {
               inputSearchStyle={GeneralSettingsStyle.inputSearchStyle}
               iconStyle={GeneralSettingsStyle.iconStyle}
               data={data}
-              search
+              // search
               maxHeight={300}
               labelField="label"
               valueField="value"
               placeholder="Aus $"
-              searchPlaceholder="Search..."
+              // searchPlaceholder="Search..."
               value={value}
               onChange={(item) => {
                 setValue(item.value);
