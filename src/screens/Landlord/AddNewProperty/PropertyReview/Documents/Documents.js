@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,82 +7,85 @@ import {
   Image,
   TouchableOpacity,
   PermissionsAndroid,
-} from "react-native";
-import { DocumentsStyle } from "./DocumentsStyle";
-import { FONTFAMILY, LABEL_STYLES } from "../../../../../Themes";
-import { _COLORS, IMAGES } from "../../../../../Themes";
-import { Dropdown } from "react-native-element-dropdown";
-import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
-import RBSheet from "react-native-raw-bottom-sheet";
-import UploadImageData from "../../../../../components/Molecules/UploadImage/UploadImage";
-import Entypo from "react-native-vector-icons/Entypo";
-import CustomDropdown from "../../../../../components/Molecules/CustomDropdown/CustomDropdown";
-import { colors } from "../../../../../Themes/CommonColors/CommonColor";
-import { fontFamily } from "../../../../../Themes/FontStyle/FontStyle";
-import Feather from "react-native-vector-icons/Feather";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import axios from "axios";
-import { Config } from "../../../../../Config";
-import EditDocumentsModal from "../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal";
-import RNFetchBlob from "rn-fetch-blob";
-import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { useIsFocused } from "@react-navigation/native";
-import Share from "react-native-share";
+} from 'react-native';
+import {DocumentsStyle} from './DocumentsStyle';
+import {FONTFAMILY, LABEL_STYLES} from '../../../../../Themes';
+import {_COLORS, IMAGES} from '../../../../../Themes';
+import {Dropdown} from 'react-native-element-dropdown';
+import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import UploadImageData from '../../../../../components/Molecules/UploadImage/UploadImage';
+import Entypo from 'react-native-vector-icons/Entypo';
+import CustomDropdown from '../../../../../components/Molecules/CustomDropdown/CustomDropdown';
+import {colors} from '../../../../../Themes/CommonColors/CommonColor';
+import {fontFamily} from '../../../../../Themes/FontStyle/FontStyle';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
+import {Config} from '../../../../../Config';
+import EditDocumentsModal from '../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
+import RNFetchBlob from 'rn-fetch-blob';
+import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {useIsFocused} from '@react-navigation/native';
+import Share from 'react-native-share';
+import {useNavigation} from '@react-navigation/native';
 
 const Property_documents = [
-  "All",
-  "Pre+post inspection reports",
-  "Property images",
-  "Property floor plan",
+  'All',
+  'Pre+post inspection reports',
+  'Property images',
+  'Property floor plan',
 ];
 
 const Lease_documents = [
-  "All",
-  "Rental invoices",
-  "Lease agreement",
-  "Expense bills",
+  'All',
+  'Rental invoices',
+  'Lease agreement',
+  'Expense bills',
 ];
 
 const Tenant_documents = [
-  "All",
-  "Tenant screening report",
-  "Copy of ID without photo",
-  "Copy of ID with photo",
+  'All',
+  'Tenant screening report',
+  'Copy of ID without photo',
+  'Copy of ID with photo',
 ];
 const data = [
   {
-    id: "1",
-    pdfName: "Pre+post inspection reports",
-    pdfSize: "4.8MB",
+    id: '1',
+    pdfName: 'Pre+post inspection reports',
+    pdfSize: '4.8MB',
   },
   {
-    id: "2",
-    pdfName: "Pre-inspection-checklist.pdf",
-    pdfSize: "1.3MB",
+    id: '2',
+    pdfName: 'Pre-inspection-checklist.pdf',
+    pdfSize: '1.3MB',
   },
   {
-    id: "3",
-    pdfName: "Pre-inspection-checklist.pdf",
-    pdfSize: "2.2MB",
+    id: '3',
+    pdfName: 'Pre-inspection-checklist.pdf',
+    pdfSize: '2.2MB',
   },
 ];
 
 // ----data come from dropdown and define these condition
-const handleApply = (selectedOptions) => {
-  console.log("Clear Action");
+const handleApply = selectedOptions => {
+  console.log('Clear Action');
 };
 const handleClear = () => {
-  console.log("Clear Action");
+  console.log('Clear Action');
 };
 
-export default Documents = (props) => {
+export default Documents = props => {
   const isfocused = useIsFocused();
+  const navigation = useNavigation();
+
   useEffect(() => {
     getAllDocuments();
-    getUploadedDocumentsByModule("Property");
-    getUploadedDocumentsByModule("Lease");
-    getUploadedDocumentsByModule("Tenant");
+    getUploadedDocumentsByModule('Property');
+    getUploadedDocumentsByModule('Lease');
+    getUploadedDocumentsByModule('Tenant');
   }, [isfocused]);
   const property_id = props.property_id;
   // alert(props.property_id);
@@ -90,37 +93,37 @@ export default Documents = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [uploadDocData, setUploadDocData] = useState([]);
   const [fileKey, setFileKey] = useState(0);
-  const [fileName, setFileName] = useState("");
-  const [filePath, setFilePath] = useState("");
+  const [fileName, setFileName] = useState('');
+  const [filePath, setFilePath] = useState('');
   const [propertyDocByproperty, setpropertyDocByproperty] = useState([]);
   const [propertyDocByLease, setpropertyDocByLease] = useState([]);
   const [propertyDocByTenant, setpropertyDocByTenant] = useState([]);
   const [propertyDocBypropertylength, setpropertyDocBypropertylength] =
-    useState("");
-  const [propertyDocByLeaselength, setpropertyDocByLeaselength] = useState("");
+    useState('');
+  const [propertyDocByLeaselength, setpropertyDocByLeaselength] = useState('');
   const [propertyDocByTenantlength, setpropertyDocByTenantlength] =
-    useState("");
+    useState('');
   const [showAllDocuments, setShowAllDocuments] = useState(false);
   const toggleShowAllDocuments = () => {
     setShowAllDocuments(!showAllDocuments);
   };
   const folderData = [
     {
-      id: "1",
-      moduleName: "Property",
-      folderHeading: "Property documents",
+      id: '1',
+      moduleName: 'Property',
+      folderHeading: 'Property documents',
       totalFile: propertyDocBypropertylength,
     },
     {
-      id: "2",
-      moduleName: "Lease",
-      folderHeading: "Lease documents",
+      id: '2',
+      moduleName: 'Lease',
+      folderHeading: 'Lease documents',
       totalFile: propertyDocByLeaselength,
     },
     {
-      id: "3",
-      moduleName: "Tenant",
-      folderHeading: "Tenant documents",
+      id: '3',
+      moduleName: 'Tenant',
+      folderHeading: 'Tenant documents',
       totalFile: propertyDocByTenantlength,
     },
   ];
@@ -132,34 +135,34 @@ export default Documents = (props) => {
   // share doc....
   const shareDocFile = async () => {
     try {
-      await Share.open({ url: filePath });
+      await Share.open({url: filePath});
     } catch (error) {
-      console.error("Error sharing PDF file:", error);
+      console.error('Error sharing PDF file:', error);
     }
   };
   // delete Document...
-  const deleteHandler = (fileKey) => {
-    console.log("filekeyIn_delete....", fileKey);
+  const deleteHandler = fileKey => {
+    console.log('filekeyIn_delete....', fileKey);
     const dataToSend = {
       fileId: fileKey,
     };
     // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
-    const delete_url = url + "deletedocument";
-    console.log("url...", delete_url);
+    const delete_url = url + 'deletedocument';
+    console.log('url...', delete_url);
     setIsLoading(true);
     axios
       .patch(delete_url, dataToSend)
-      .then((res) => {
-        console.log("res......", res);
+      .then(res => {
+        console.log('res......', res);
         if (res?.data?.success === true) {
           alert(res?.data?.message);
           closeModal();
         }
         getAllDocuments();
       })
-      .catch((error) => {
-        console.error("Error deleting:", error);
+      .catch(error => {
+        console.error('Error deleting:', error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -169,24 +172,24 @@ export default Documents = (props) => {
   const REMOTE_PATH = filePath;
   const checkPermission = async () => {
     setIsLoading(true);
-    if (Platform.OS === "ios") {
+    if (Platform.OS === 'ios') {
       downloadImage();
     } else {
       try {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: "Storage Permission Required",
-            message: "App needs access to your storage to download Photos",
-          }
+            title: 'Storage Permission Required',
+            message: 'App needs access to your storage to download Photos',
+          },
         );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           // Once user grant the permission start downloading
-          console.log("Storage Permission Granted.");
+          console.log('Storage Permission Granted.');
           downloadImage();
         } else {
           // If permission denied then show alert
-          alert("Storage Permission Not Granted");
+          alert('Storage Permission Not Granted');
         }
       } catch (err) {
         // To handle permission related exception
@@ -199,8 +202,8 @@ export default Documents = (props) => {
     let date = new Date();
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
-    ext = "." + ext[0];
-    const { config, fs } = RNFetchBlob;
+    ext = '.' + ext[0];
+    const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -209,29 +212,29 @@ export default Documents = (props) => {
         notification: true,
         path:
           PictureDir +
-          "/pdf_" +
+          '/pdf_' +
           Math.floor(date.getTime() + date.getSeconds() / 2) +
           ext,
-        description: "pdf",
+        description: 'pdf',
       },
     };
     config(options)
-      .fetch("GET", image_URL)
-      .then((res) => {
+      .fetch('GET', image_URL)
+      .then(res => {
         // Showing alert after successful downloading
-        console.log("res -> ", JSON.stringify(res));
+        console.log('res -> ', JSON.stringify(res));
         // alert("Image Downloaded Successfully.");
-        alert("File Downloaded Successfully.");
+        alert('File Downloaded Successfully.');
         setIsLoading(false);
         closeModal();
       });
   };
 
-  const getExtention = (fileName) => {
+  const getExtention = fileName => {
     // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
-  const DocumentsData = ({ item, index }) => {
+  const DocumentsData = ({item, index}) => {
     setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
 
@@ -244,12 +247,12 @@ export default Documents = (props) => {
               name="file-pdf-o"
               size={35}
               color={_COLORS.Kodie_BlackColor}
-              resizeMode={"contain"}
+              resizeMode={'contain'}
             />
             <View style={DocumentsStyle.textContainer}>
               <Text style={DocumentsStyle.pdfName}>{item.PDUM_FILE_NAME}</Text>
               {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              <Text style={DocumentsStyle.pdfSize}> {"4.5 MB"}</Text>
+              <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text>
             </View>
           </View>
           <TouchableOpacity
@@ -257,9 +260,8 @@ export default Documents = (props) => {
             onPress={() => {
               refRBSheet.current.open();
               setFilePath(item.PDUM_FILE_PATH);
-              console.log("file Path..", item.PDUM_FILE_PATH);
-            }}
-          >
+              console.log('file Path..', item.PDUM_FILE_PATH);
+            }}>
             <Entypo
               name="dots-three-vertical"
               size={20}
@@ -271,7 +273,7 @@ export default Documents = (props) => {
     );
   };
 
-  const folderRenderData = ({ item, index }) => {
+  const folderRenderData = ({item, index}) => {
     return (
       <TouchableOpacity
         style={DocumentsStyle.folderView}
@@ -280,10 +282,9 @@ export default Documents = (props) => {
         //   alert(item?.id)
         // }}
         onPress={() => {
-          console.log("item.id:", item.id);
+          console.log('item.id:', item.id);
           props?.documentDetail(item.id, item.moduleName, property_id);
-        }}
-      >
+        }}>
         <View style={DocumentsStyle.folder_icon}>
           <Ionicons
             name="folder-outline"
@@ -301,8 +302,7 @@ export default Documents = (props) => {
             {item?.folderHeading}
           </Text>
           <Text
-            style={DocumentsStyle.files_text}
-          >{`${item.totalFile} Files`}</Text>
+            style={DocumentsStyle.files_text}>{`${item.totalFile} Files`}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -313,23 +313,23 @@ export default Documents = (props) => {
     const url = Config.BASE_URL;
     const getDocument_url = url + `tanant_details/get/document/${property_id}`;
     // const getDocument_url = url + `tanant_details/get/document/${15}`;
-    console.log("Request URL:", getDocument_url);
+    console.log('Request URL:', getDocument_url);
     setIsLoading(true);
     axios
       .get(getDocument_url)
-      .then((response) => {
-        console.log("API Response getDocuments:", response.data);
+      .then(response => {
+        console.log('API Response getDocuments:', response.data);
         if (response.data.success === true) {
           // alert(response.data.message);
           setUploadDocData(response.data.data);
-          console.log("getAlluploadDocData..", response.data.data);
+          console.log('getAlluploadDocData..', response.data.data);
         } else {
           alert(response.data.message);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed", error);
+      .catch(error => {
+        console.error('API failed', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -337,10 +337,10 @@ export default Documents = (props) => {
         setIsLoading(false);
       });
   };
-  const getUploadedDocumentsByModule = (moduleName) => {
+  const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + "tanant_details/get/documents";
-    console.log("Request URL:", getDocumentUrl);
+    const getDocumentUrl = url + 'tanant_details/get/documents';
+    console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
       Module_Name: moduleName,
@@ -348,42 +348,42 @@ export default Documents = (props) => {
     };
     axios
       .post(getDocumentUrl, documentModuleData)
-      .then((response) => {
+      .then(response => {
         console.log(`API Response for ${moduleName}:`, response.data);
         if (response.data.success == true) {
           switch (moduleName) {
-            case "Property":
+            case 'Property':
               setpropertyDocByproperty(response.data.data);
-              console.log("Length for property:", response.data.data.length);
+              console.log('Length for property:', response.data.data.length);
               setpropertyDocBypropertylength(response.data.data.length);
               console.log(
-                "setpropertyDocBypropertylength..",
-                propertyDocBypropertylength
+                'setpropertyDocBypropertylength..',
+                propertyDocBypropertylength,
               );
 
               break;
-            case "Lease":
+            case 'Lease':
               setpropertyDocByLease(response.data.data);
               console.log(
-                "Length for propertyDocByLease:",
-                response.data.data.length
+                'Length for propertyDocByLease:',
+                response.data.data.length,
               );
               setpropertyDocByLeaselength(response.data.data.length);
               console.log(
-                "propertyDocByLeaselength...",
-                propertyDocByLeaselength
+                'propertyDocByLeaselength...',
+                propertyDocByLeaselength,
               );
               break;
-            case "Tenant":
+            case 'Tenant':
               setpropertyDocByTenant(response.data.data);
               console.log(
-                "Length for propertyDocByTenant:",
-                response.data.data.length
+                'Length for propertyDocByTenant:',
+                response.data.data.length,
               );
               setpropertyDocByTenantlength(response.data.data.length);
               console.log(
-                "propertyDocByTenantlength..",
-                propertyDocByTenantlength
+                'propertyDocByTenantlength..',
+                propertyDocByTenantlength,
               );
               break;
             // Add cases for other module names if needed
@@ -392,7 +392,7 @@ export default Documents = (props) => {
           }
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(`API failed for ${moduleName}:`, error);
       })
       .finally(() => {
@@ -404,8 +404,8 @@ export default Documents = (props) => {
     <View style={DocumentsStyle.mainContainer}>
       <ScrollView>
         <View style={DocumentsStyle.recentDocView}>
-          <Text style={DocumentsStyle.reacentDocText}>{"Folders"}</Text>
-          <Text style={DocumentsStyle.seeAllText}>{"See all"}</Text>
+          <Text style={DocumentsStyle.reacentDocText}>{'Folders'}</Text>
+          <Text style={DocumentsStyle.seeAllText}>{'See all'}</Text>
         </View>
         <View style={{}}>
           <FlatList
@@ -414,17 +414,17 @@ export default Documents = (props) => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
+            keyExtractor={item => item?.id}
             renderItem={folderRenderData}
           />
         </View>
         <View style={DocumentsStyle.recentDocView}>
           <Text style={DocumentsStyle.reacentDocText}>
-            {"Recent documents"}
+            {'Recent documents'}
           </Text>
           <TouchableOpacity onPress={toggleShowAllDocuments}>
             <Text style={DocumentsStyle.seeAllText}>
-              {showAllDocuments ? "Hide all" : "See all"}
+              {showAllDocuments ? 'Hide all' : 'See all'}
             </Text>
           </TouchableOpacity>
         </View>
@@ -434,7 +434,7 @@ export default Documents = (props) => {
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
+            keyExtractor={item => item?.id}
             renderItem={DocumentsData}
           />
         </View>
@@ -443,14 +443,13 @@ export default Documents = (props) => {
           height={260}
           customStyles={{
             wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
             container: DocumentsStyle.bottomModal_container,
-          }}
-        >
+          }}>
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}
@@ -460,7 +459,9 @@ export default Documents = (props) => {
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              props.navigation.navigate("ViewDocument");
+              navigation.navigate('ViewDocument', {
+                filePath: filePath,
+              });
             }}
           />
         </RBSheet>
