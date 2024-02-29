@@ -8,7 +8,7 @@ import {
   TextInput,
   Image,
   Platform,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from "react-native";
 import { FirstPropertyStyle } from "./FirstPropertyStyle";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -618,7 +618,7 @@ export default FirstProperty = (props) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
         setPropertyLocation(json.results[0].formatted_address);
-        getAddressWithCordinates()
+        getAddressWithCordinates();
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -1017,8 +1017,8 @@ export default FirstProperty = (props) => {
                     />
                   </View>
                 </View>
-
-                <View
+                {/* we comment auto list market place for json requirment for now.... */}
+                {/* <View
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
@@ -1031,8 +1031,8 @@ export default FirstProperty = (props) => {
                   <TouchableOpacity style={FirstPropertyStyle.questionmark}>
                     <AntDesign name="question" size={20} color="#8AFBA5" />
                   </TouchableOpacity>
-                </View>
-                <RowButtons
+                </View> */}
+                {/* <RowButtons
                   LeftButtonText={"Yes"}
                   leftButtonbackgroundColor={
                     !selectedButton
@@ -1073,7 +1073,7 @@ export default FirstProperty = (props) => {
                     setSelectedButton(true);
                     setSelectedButtonId(1);
                   }}
-                />
+                /> */}
               </View>
               <View style={{ marginHorizontal: 16 }}>
                 <CustomSingleButton

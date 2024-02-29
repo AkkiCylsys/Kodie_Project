@@ -364,14 +364,14 @@ export default PropertyDetails = (props) => {
       (position) => {
         // alert("with cordinates..");
         console.log("with cordinates..");
-        setGetLat(position.coords.latitude);
-        setGetLong(position.coords.longitude);
-        // setlatitude(position.coords.latitude);
+        // setGetLat(position.coords.latitude);
+        // setGetLong(position.coords.longitude);
+        setlatitude(position.coords.latitude);
         console.log("withCordinates latitude....", position.coords.latitude);
-        // setlongitude(position.coords.longitude);
+        setlongitude(position.coords.longitude);
         console.log("withCordinates Longitude....", position.coords.longitude);
-        // getAddress(position.coords.latitude, position.coords.longitude);
-        getAddress(getLat, getLong);
+        getAddress(position.coords.latitude, position.coords.longitude);
+        // getAddress(getLat, getLong);
       },
       (error) => {
         alert(error.message.toString());
@@ -531,10 +531,10 @@ export default PropertyDetails = (props) => {
                 marginBottom: 10,
               }}
               onRegionChange={onRegionChange}
-              // Maplat={latitude}
-              // Maplng={longitude}
-              Maplat={getLat}
-              Maplng={getLong}
+              Maplat={latitude}
+              Maplng={longitude}
+              // Maplat={getLat}
+              // Maplng={getLong}
             />
             <View
               style={{

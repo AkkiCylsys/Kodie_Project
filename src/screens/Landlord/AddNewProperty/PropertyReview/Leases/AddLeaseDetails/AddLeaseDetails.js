@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { AddLeaseDetailsStyle } from "./AddLeaseDetailsStyle";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { FONTFAMILY, _COLORS } from "../../../../../../Themes";
 import { LABEL_STYLES } from "../../../../../../Themes/CommonStyles/CommonStyles";
@@ -20,6 +21,8 @@ import axios from "axios";
 import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { Config } from "../../../../../../Config";
 import { useDispatch, useSelector } from "react-redux";
+import DividerIcon from "../../../../../../components/Atoms/Devider/DividerIcon";
+import { color } from "react-native-reanimated";
 const data = [
   "All",
   "2- Month",
@@ -350,7 +353,7 @@ export default AddLeaseDetails = (props) => {
         <Text style={AddLeaseDetailsStyle.heading_Text}>
           {"Add lease details"}
         </Text>
-        <View style={{ alignSelf: "center" ,marginTop:5}}>
+        <View style={{ alignSelf: "center", marginTop: 5 }}>
           <TouchableOpacity onPress={handlePopUp}>
             <AntDesign
               name="close"
@@ -363,10 +366,10 @@ export default AddLeaseDetails = (props) => {
       </View>
       <ScrollView>
         <View style={AddLeaseDetailsStyle.card}>
-          <Text style={[LABEL_STYLES.commontext,]}>{"Commencement date"}</Text>
+          <Text style={[LABEL_STYLES.commontext,]}>{"Commencement date*"}</Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
             <CalendarModal
-              SelectDate={selectedDate ? selectedDate : "Start Date"}
+              SelectDate={selectedDate ? selectedDate : "Start date of the lease"}
               _textInputStyle={{
                 color: selectedDate
                   ? _COLORS.Kodie_BlackColor
@@ -388,18 +391,7 @@ export default AddLeaseDetails = (props) => {
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Rental lease term"}</Text>
-
-            {/* <View>
-              <CustomDropdown
-                data={data}
-                placeholdertext="6-month"
-                onApply={handleApply}
-                onClear={handleClear}
-                btnview={true}
-              />
-            </View> */}
-            {/* ... */}
+            <Text style={LABEL_STYLES.commontext}>{"Rental lease term*"}</Text>
             <Dropdown
               style={[
                 AddLeaseDetailsStyle.dropdown,
@@ -416,7 +408,7 @@ export default AddLeaseDetails = (props) => {
               maxHeight={300}
               labelField="lookup_description"
               valueField="lookup_key"
-              placeholder="6-month"
+              placeholder="Select length of lease"
               value={lease_term_value}
               onChange={(item) => {
                 setlLease_term_value(item.lookup_key);
@@ -425,7 +417,58 @@ export default AddLeaseDetails = (props) => {
               renderItem={lease_term_render}
             />
           </View>
+          <Text style={[LABEL_STYLES.commontext,]}>{"Lease end date*"}</Text>
+          <View style={AddLeaseDetailsStyle.datePickerView}>
+            <CalendarModal
+              SelectDate={selectedDate ? selectedDate : "End date of the lease"}
+              _textInputStyle={{
+                color: selectedDate
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor,
+              }}
+              calenderIcon={toggleModal}
+              onDayPress={handleDayPress}
+              Visible={isModalVisible}
+              onRequestClose={toggleModal}
+              markedDates={{
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: _COLORS.Kodie_lightGreenColor,
+                  selectedTextColor: _COLORS.Kodie_BlackColor,
+                },
+              }}
+              _closeButton={toggleModal}
+              _ApplyButton={toggleModal}
+            />
+          </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{"Payment frequency*"}</Text>
+            <Dropdown
+              style={[
+                AddLeaseDetailsStyle.dropdown,
+                { flex: 1, borderRadius: 5, height: 45 },
+              ]}
+              placeholderStyle={[
+                AddLeaseDetailsStyle.placeholderStyle,
+                { color: _COLORS.Kodie_LightGrayColor },
+              ]}
+              selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+              inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+              iconStyle={AddLeaseDetailsStyle.iconStyle}
+              data={lease_term_Data}
+              maxHeight={300}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              placeholder="How often is rent paid"
+              value={lease_term_value}
+              onChange={(item) => {
+                setlLease_term_value(item.lookup_key);
+                // alert(item.lookup_key);
+              }}
+              renderItem={lease_term_render}
+            />
+          </View>
+          {/* <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
               {"Rental payment frequency"}
             </Text>
@@ -472,9 +515,9 @@ export default AddLeaseDetails = (props) => {
                 setSelected_frequency_Id(0);
               }}
             />
-          </View>
+          </View> */}
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Rental amount"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{"Rental amount*"}</Text>
             <TextInput
               style={AddLeaseDetailsStyle.input}
               value={rentalAmount}
@@ -486,27 +529,98 @@ export default AddLeaseDetails = (props) => {
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Rental bond"}</Text>
-            <TextInput
-              style={AddLeaseDetailsStyle.input}
-              value={rentalBond}
-              onChangeText={setRentalBond}
-              placeholder="Enter the rental bond amount"
-              placeholderTextColor="#999"
-              keyboardType="number-pad"
+            <Text style={LABEL_STYLES.commontext}>{"Payment due day*"}</Text>
+            <Dropdown
+              style={[
+                AddLeaseDetailsStyle.dropdown,
+                { flex: 1, borderRadius: 5, height: 45 },
+              ]}
+              placeholderStyle={[
+                AddLeaseDetailsStyle.placeholderStyle,
+                { color: _COLORS.Kodie_LightGrayColor },
+              ]}
+              selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+              inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+              iconStyle={AddLeaseDetailsStyle.iconStyle}
+              data={lease_term_Data}
+              maxHeight={300}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              placeholder="Select day in each period rent is paid"
+              value={lease_term_value}
+              onChange={(item) => {
+                setlLease_term_value(item.lookup_key);
+                // alert(item.lookup_key);
+              }}
+              renderItem={lease_term_render}
             />
           </View>
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
+          <View>
+            <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+            <Text style={{fontSize:18,fontFamily:FONTFAMILY.K_Bold,color:_COLORS.Kodie_BlackColor}}>
+            Other lease details
+            </Text>
+            <TouchableOpacity style={AddLeaseDetailsStyle.down_Arrow_icon}>
+            <Entypo
+              name="chevron-small-up"
+              size={22}
+              color={_COLORS.Kodie_BlackColor}
+            />
+          </TouchableOpacity>
+            </View>
+            <Text style={{fontSize:12}}>
+            Enter extra information about your lease
+            </Text>
+          </View>
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Payment due day"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{"Rental bond"}</Text>
             <TextInput
               style={AddLeaseDetailsStyle.input}
               value={paymentDueDay}
               onChangeText={setPaymentDueDay}
-              placeholder="2023-12-30"
-            // placeholderTextColor="#999"
+              placeholder="Enter the rental bond amount"
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{"Rental deposit"}</Text>
+            <TextInput
+              style={AddLeaseDetailsStyle.input}
+              value={paymentDueDay}
+              onChangeText={setPaymentDueDay}
+              placeholder="Enter the rental deposit amount"
+            />
+          </View>
+          <View style={AddLeaseDetailsStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{"Rental escalation %"}</Text>
+            <TextInput
+              style={AddLeaseDetailsStyle.input}
+              value={paymentDueDay}
+              onChangeText={setPaymentDueDay}
+              placeholder="Period rent escalation %"
+            />
+          </View>
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
+          <View>
+            <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+            <Text style={{fontSize:18,fontFamily:FONTFAMILY.K_Bold,color:_COLORS.Kodie_BlackColor}}>
+            Set property notifications
+            </Text>
+            <TouchableOpacity style={AddLeaseDetailsStyle.down_Arrow_icon}>
+            <Entypo
+              name="chevron-small-up"
+              size={22}
+              color={_COLORS.Kodie_BlackColor}
+            />
+          </TouchableOpacity>
+            </View>
+            <Text style={{fontSize:12}}>
+            Select the automatic notifications you would like sent
+            </Text>
+          </View>
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
+          {/* <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
               {"Pro rata first rental payment"}
             </Text>
@@ -553,12 +667,12 @@ export default AddLeaseDetails = (props) => {
                 setSelected_payment_Id(0);
               }}
             />
-          </View>
+          </View> */}
 
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>
+            {/* <Text style={LABEL_STYLES.commontext}>
               {"Set property notifications"}
-            </Text>
+            </Text> */}
             <View style={AddLeaseDetailsStyle.notification_view}>
               <Text
                 style={[

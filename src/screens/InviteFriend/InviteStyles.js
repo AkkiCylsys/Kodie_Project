@@ -3,7 +3,7 @@ import { FONTFAMILY, _COLORS } from "../../Themes/index";
 export const InviteStyles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    backgroundColor: _COLORS.Kodie_LiteWhiteColor,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   shareMainView: {
     flexDirection: "row",
