@@ -78,7 +78,7 @@ const GeneralSettings = (props) => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={GeneralSettingsStyle.origanisationview}
+        {/* <TouchableOpacity style={GeneralSettingsStyle.origanisationview}
           onPress={() => props.navigation.navigate("AccountStep")}>
           <GeneralSetting
             heading="Organisation profile"
@@ -87,7 +87,7 @@ const GeneralSettings = (props) => {
             correspondence and also invoices  "
             leftarrowimg={IMAGES.rightarrow}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </View>
   );

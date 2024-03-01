@@ -79,7 +79,7 @@ export const DeleteAccountStyle = StyleSheet.create({
   buttonblackview: {
     marginHorizontal: 10,
     marginTop: 50,
-    // marginBottom:30
+    marginBottom:110
   },
   card: {
     width: "100%",
@@ -126,6 +126,20 @@ export const DeleteAccountStyle = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: 10,
   },
+    simpleinputview: {
+      // height: 50,
+      borderWidth: 1,
+      // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+      borderColor: _COLORS.Kodie_GrayColor,
+      borderRadius: 8,
+      fontFamily: FONTFAMILY.K_SemiBold,
+      flexDirection: "row",
+      alignItems: "center",
+      width: "100%",
+      justifyContent: "space-between",
+      paddingHorizontal: 10,
+      marginTop: 15,
+    },
   numbercode: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 13,

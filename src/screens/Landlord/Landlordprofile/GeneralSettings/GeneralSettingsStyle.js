@@ -82,5 +82,8 @@ export const GeneralSettingsStyle = StyleSheet.create({
     marginVertical:10,
     marginHorizontal:20
     // marginRight:10
+  },
+  ratetext:{
+    color:_COLORS.Kodie_BlackColor
   }
 });
