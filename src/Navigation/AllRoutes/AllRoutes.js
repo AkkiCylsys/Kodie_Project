@@ -130,6 +130,8 @@ import PaymentScreen from "../../screens/PaymentMethod/PaymentScreen";
 import paymentdetails from "../../screens/PaymentMethod/paymentdetails";
 import ApplePay from "../../screens/PaymentMethod/ApplePay/ApplePay";
 import CreditCard from "../../screens/PaymentMethod/CreditCard/CreditCard";
+import CompanyInProfile from "../../screens/Landlord/Landlordprofile/CompanyDetails/Company/CompanyInProfile";
+import IndividualInProfile from "../../screens/Landlord/Landlordprofile/CompanyDetails/Individual/IndividualInProfile";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1037,6 +1039,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"CompanyDetails"}
           component={CompanyDetails}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CompanyInProfile"}
+          component={CompanyInProfile}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"IndividualInProfile"}
+          component={IndividualInProfile}
           options={{ headerShown: false }}
         />
         <Stack.Screen

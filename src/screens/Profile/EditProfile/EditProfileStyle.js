@@ -56,6 +56,23 @@ export const EditProfileStyle = StyleSheet.create({
   firstdivider: {
     marginTop: 20,
   },
+  want_Heading: {
+    marginTop: 24,
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginBottom:10,
+    lineHeight:20
+  },
+  box_Text_Style: { color: _COLORS.Kodie_BlackColor,fontSize:14 },
+  box_style: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderColor: _COLORS.Kodie_GrayColor,
+    height: 44,
+  },
+  describeYourselfView: {
+    marginHorizontal: 16,
+  },
 
   // input filed style here
   inputmainview: {
@@ -86,7 +103,7 @@ export const EditProfileStyle = StyleSheet.create({
     marginHorizontal: 15,
     paddingHorizontal: 10,
   },
-  phoneinputview:{
+  phoneinputview: {
     height: 60,
     // borderWidth: 1,
     // borderColor: _COLORS.Kodie_GrayColor,
@@ -312,8 +329,8 @@ export const EditProfileStyle = StyleSheet.create({
     marginTop: 10,
     borderColor: _COLORS.Kodie_ExtraLightGrayColor,
   },
-  inputStyle:{
-    flex:1,
-    color:_COLORS.Kodie_BlackColor
-  }
+  inputStyle: {
+    flex: 1,
+    color: _COLORS.Kodie_BlackColor,
+  },
 });

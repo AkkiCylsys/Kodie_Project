@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   PermissionsAndroid,
+  FlatList
 } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -39,6 +40,7 @@ import ProfileDocuments from "../ProfileDocuments/ProfileDocuments";
 import PersonalDetails from "../PersonalDetails/PersonalDetails";
 import PhoneInput from "react-native-phone-number-input";
 import styles from "rn-range-slider/styles";
+import ServicesBox from "../../../components/Molecules/ServicesBox/ServicesBox";
 //ScreenNo:189
 //ScreenNo:190
 //ScreenNo:192
@@ -88,7 +90,12 @@ const EditProfile = (props) => {
   const [company_latitude, setCompany_latitude] = useState("");
   const [company_longitude, setCompany_longitude] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
-
+  const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
+    []
+  );
+  const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
+  useState("");
+  const [selectedServices, setSelectedServices] = useState([]);
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
 
@@ -117,7 +124,77 @@ const EditProfile = (props) => {
     // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
     // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
     setActiveTab(profileDoc ? "Tab3" : "Tab1");
+    handle_describe_yourself();
   }, []);
+  // describe your self Api call code here .....
+  const handle_describe_yourself = () => {
+    const describe_yourself_Data = {
+      P_PARENT_CODE: "TEN_DESC",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.BASE_URL;
+    const describeYourselfApi = url + "lookup_details";
+    console.log("Request URL:", describeYourselfApi);
+    setIsLoading(true);
+    axios
+      .post(describeYourselfApi, describe_yourself_Data)
+      .then((response) => {
+        console.log("kodie_describeYouself_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "kodie_describeYouself_Data....",
+            response.data.lookup_details
+          );
+          setKodieDescribeYourselfData(response.data.lookup_details);
+        } else {
+          console.error(
+            "kodie_describeYouself_Data_error:",
+            response.data.error
+          );
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("kodie_describeYouself_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  const toggleSelection = (lookup_key) => {
+    if (selectedServices.includes(lookup_key)) {
+      // Item is already selected, remove it
+      setSelectedServices((prevSelected) =>
+        prevSelected.filter((item) => item !== lookup_key)
+      );
+    } else {
+      // Item is not selected, add it
+      setSelectedServices((prevSelected) => [...prevSelected, lookup_key]);
+    }
+  };
+
+  const renderItemDescribeYourself = ({ item }) => (
+    <ServicesBox
+      Services_Name={item?.lookup_description}
+      BoxStyling={[
+        EditProfileStyle.box_style,
+        {
+          margin: 8,
+          backgroundColor: selectedServices.includes(item.lookup_key)
+            ? _COLORS.Kodie_lightGreenColor
+            : _COLORS.Kodie_WhiteColor,
+        },
+      ]}
+      textColor={[EditProfileStyle.box_Text_Style]}
+      onPress={() => {
+        toggleSelection(item.lookup_key);
+        setKodieDescribeYourselfDataId(item.lookup_key);
+        // alert(item.lookup_key);
+      }}
+    />
+  );
+
   const goBack = () => {
     props.navigation.pop();
   };
@@ -464,7 +541,7 @@ const EditProfile = (props) => {
                         ref={phoneInput}
                         defaultValue={phoneNumber}
                         defaultCode="IN"
-                        layout="first"
+                        layout="second"
                         onChangeText={(text) => {
                           setPhoneNumber(text);
                         }}
@@ -484,19 +561,17 @@ const EditProfile = (props) => {
                           paddingVertical: 2,
                           // borderWidth:1,
                           // borderColor:'red',
-                          borderRadius:10,
-                       
+                          borderRadius: 10,
                         }}
                         containerStyle={{
                           flex: 1,
                           alignSelf: "center",
                           alignItems: "center",
                           justifyContent: "center",
-                          borderWidth:1,
+                          borderWidth: 1,
                           // backgroundColor: 'blue',
-                          borderColor:_COLORS.Kodie_GrayColor,
-                          borderRadius:12,
-                        
+                          borderColor: _COLORS.Kodie_GrayColor,
+                          borderRadius: 12,
                         }}
                       />
                     </View>
@@ -513,6 +588,19 @@ const EditProfile = (props) => {
                       multiline
                       numberOfLines={5}
                       textAlignVertical={"top"}
+                    />
+                  </View>
+                  <View style={EditProfileStyle.describeYourselfView}>
+                    <Text style={EditProfileStyle.want_Heading}>
+                      {
+                        "How would you describe yourself? (you can select multiple options)"
+                      }
+                    </Text>
+                    <FlatList
+                      data={kodieDescribeYourselfData}
+                      renderItem={renderItemDescribeYourself}
+                      keyExtractor={(item) => item.lookup_key.toString()}
+                      numColumns={2}
                     />
                   </View>
                   <View style={EditProfileStyle.firstview}>
