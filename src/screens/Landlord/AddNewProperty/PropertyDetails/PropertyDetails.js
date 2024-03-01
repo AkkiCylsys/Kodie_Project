@@ -34,6 +34,7 @@ import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Fontisto from "react-native-vector-icons/Fontisto";
+import Entypo from "react-native-vector-icons/Entypo";
 import SearchPlaces from "../../../../components/Molecules/SearchPlaces/SearchPlaces";
 import MapScreen from "../../../../components/Molecules/GoogleMap/googleMap";
 import { SignUpStepStyle } from "../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle";
@@ -574,7 +575,6 @@ export default PropertyDetails = (props) => {
               <TextInput
                 style={{
                   backgroundColor: "transparent",
-
                   width: "90%",
                   height: 45,
                   alignSelf: "center",
@@ -584,6 +584,20 @@ export default PropertyDetails = (props) => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
+            <TouchableOpacity
+            style={PropertyDetailsStyle.c_locationBtn}
+            onPress={() => {
+              Platform.OS == "ios"
+                ? CheckIOSMapPermission()
+                : checkpermissionlocation();
+            }}
+          >
+            <Entypo
+              name="location-pin"
+              size={30}
+              color={_COLORS.Kodie_lightGreenColor}
+            />
+          </TouchableOpacity>
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}

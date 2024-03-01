@@ -1,7 +1,7 @@
 //ScreenNo:143
 //ScreenNo:139
 //ScreenNo:121
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -45,9 +45,12 @@ import SearchPlaces from "../../components/Molecules/SearchPlaces/SearchPlaces";
 import { check, request, PERMISSIONS, RESULTS } from "react-native-permissions";
 import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
 export default CreateJobFirstScreen = (props) => {
+  const mapRef = useRef(null);
+  const navigation = useNavigation();
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
   const JobId = props.route.params?.JobId;
@@ -128,6 +131,7 @@ export default CreateJobFirstScreen = (props) => {
   const ConfirmAddress = () => {
     setIsMap(false);
     setCurrentLocation(true);
+    // alert(currentLocation)
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -925,11 +929,12 @@ export default CreateJobFirstScreen = (props) => {
           </View>
           <TouchableOpacity
             style={CreateJobFirstStyle.c_locationBtn}
-            onPress={()=>{
-              alert("pressed..")
+            onPress={() => {
+              Platform.OS == "ios"
+                ? CheckIOSMapPermission()
+                : checkpermissionlocation();
             }}
           >
-            {/* <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} /> */}
             <Entypo
               name="location-pin"
               size={30}

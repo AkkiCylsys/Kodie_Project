@@ -16,6 +16,7 @@ import { _goBack } from "../../../../services/CommonServices";
 import Octicons from "react-native-vector-icons/Octicons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
+import Entypo from "react-native-vector-icons/Entypo";
 import { _COLORS, FONTFAMILY } from "../../../../Themes";
 import { LABEL_STYLES, IMAGES } from "../../../../Themes";
 import { Dropdown } from "react-native-element-dropdown";
@@ -700,6 +701,20 @@ export default FirstProperty = (props) => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
+            <TouchableOpacity
+              style={FirstPropertyStyle.c_locationBtn}
+              onPress={() => {
+                Platform.OS == "ios"
+                  ? CheckIOSMapPermission()
+                  : checkpermissionlocation();
+              }}
+            >
+              <Entypo
+                name="location-pin"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity>
             <TouchableOpacity
               style={FirstPropertyStyle.BtnContainer}
               onPress={ConfirmAddress}

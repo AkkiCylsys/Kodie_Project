@@ -732,6 +732,20 @@ const EditProfile = (props) => {
             />
           </View>
           <TouchableOpacity
+              style={EditProfileStyle.c_locationBtn}
+              onPress={() => {
+                Platform.OS == "ios"
+                  ? CheckIOSMapPermission()
+                  : checkpermissionlocation();
+              }}
+            >
+              <Entypo
+                name="location-pin"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity>
+          <TouchableOpacity
             style={EditProfileStyle.BtnContainer}
             onPress={ConfirmAddress}
           >

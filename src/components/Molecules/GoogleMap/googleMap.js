@@ -21,7 +21,8 @@ const MapScreen = (props) => {
       provider={Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
       style={props?.style ? props?.style : GoogleMapStyle.MapView}
       showsUserLocation={true}
-      showsMyLocationButton={true}
+      showsCompass={true}
+      compassStyle={GoogleMapStyle.compass} 
       initialRegion={{
         latitude: props?.Maplat
           ? parseFloat(props?.Maplat)
@@ -32,6 +33,8 @@ const MapScreen = (props) => {
         latitudeDelta: 0.02,
         longitudeDelta: 0.02,
       }}
+      showsMyLocationButton={true}
+
     >
       <Marker
         coordinate={{
@@ -45,11 +48,11 @@ const MapScreen = (props) => {
         <Icon name="location-pin" size={30} color={"red"} />
 
         <Callout tooltip onPress={props?.onPressTooltip}>
-          <View style={GoogleMapStyle.tooltipView}>
+          {/* <View style={GoogleMapStyle.tooltipView}>
             <Text style={GoogleMapStyle.tooltipText}>
               {props?.ToolTxt ? props?.ToolTxt : "Cayman island"}
             </Text>
-          </View>
+          </View> */}
         </Callout>
       </Marker>
     </MapView>

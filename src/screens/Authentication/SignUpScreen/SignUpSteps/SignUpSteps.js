@@ -158,7 +158,7 @@ const SignUpSteps = (props) => {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
         // alert("You can use the location");
-        fetchCurrentLocation()
+        fetchCurrentLocation();
       } else {
         console.log("location permission denied");
         alert("Location permission denied");
@@ -187,7 +187,7 @@ const SignUpSteps = (props) => {
             break;
           case RESULTS.GRANTED:
             console.log("The permission is granted");
-            fetchCurrentLocation()
+            fetchCurrentLocation();
             break;
           case RESULTS.BLOCKED:
             console.log("The permission is denied and not requestable anymore");
@@ -251,7 +251,9 @@ const SignUpSteps = (props) => {
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        currentLocation ? setPhysicalAddress(json.results[0].formatted_address) : null;
+        currentLocation
+          ? setPhysicalAddress(json.results[0].formatted_address)
+          : null;
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -601,6 +603,20 @@ const SignUpSteps = (props) => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
+            <TouchableOpacity
+              style={SignUpStepStyle.c_locationBtn}
+              onPress={() => {
+                Platform.OS == "ios"
+                  ? CheckIOSMapPermission()
+                  : checkpermissionlocation();
+              }}
+            >
+              <Entypo
+                name="location-pin"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity>
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}

@@ -674,6 +674,20 @@ export default SearchForJob = (props) => {
             />
           </View>
           <TouchableOpacity
+              style={CreateJobFirstStyle.c_locationBtn}
+              onPress={() => {
+                Platform.OS == "ios"
+                  ? CheckIOSMapPermission()
+                  : checkpermissionlocation();
+              }}
+            >
+              <Entypo
+                name="location-pin"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity>
+          <TouchableOpacity
             style={CreateJobFirstStyle.BtnContainer}
             onPress={ConfirmAddress}
           >

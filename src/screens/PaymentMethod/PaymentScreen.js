@@ -32,10 +32,10 @@ const PaymentScreen = (props) => {
   const { confirmPayment, loading } = useConfirmPayment();
 
   const publishableKey =
-    "pk_test_51OfGf5Dgq6jpphimcWFMZZWwZaalNDAgck8321AtYxdQSCyJpcwZoPKpuih5jhxFPD3XSTnUWVTINztQSFpvwfP600vLxObKoL";
+    "pk_test_51OjyJLKIJa7H9ZVBjnXta8L5vHNNyrWQvKquiuFlNpfaRmtZSTO85mLiNRMb2C6xHYcGnYAr7fR8DpNo9XM0Bgt400OxyjHWqW";
 
   const secretKey =
-    "sk_test_51OfGf5Dgq6jpphimSSMtArZPmwLOtmlpwgComIMYI0q14Ofa4HXZXE5QaaLNbAgBCkBVcd4GQHQ8s2ueqCmDBtNX00CVSGYO3X";
+    "sk_test_51OjyJLKIJa7H9ZVBnDiBLNOg5vJf2AZF5vV5z9zPzmPaGko2Ky95lyKmxRs3DaY3c1A269lP8g4l5NeXz6S7VDTu00w9XBNXYZ";
 
   const fetchCardDetail = (cardDetail) => {
     if (cardDetail?.complete) {
@@ -47,47 +47,8 @@ const PaymentScreen = (props) => {
   useEffect(() => {
     getPaymentIntent();
   }, []);
-  // const fetchPaymentIntentClientSecret = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       "https://api.stripe.com/v1/create-payment-intent",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${secretKey}`,
-  //         },
-  //         body: JSON.stringify({
-  //           amount: 1900,
-  //           currency: "AUD",
-  //           payment_method_types: "card",
-  //         }),
-  //       }
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch payment intent client secret");
-  //     }
-  //     const responseData = await response.json();
-  //     console.log("Response data:", responseData);
-
-  //     const { client_secret } = responseData;
-  //     console.log("Client secret:", client_secret);
-
-  //     return client_secret;
-  //   } catch (error) {
-  //     console.log(
-  //       "Error fetching payment intent client secret:",
-  //       error.message
-  //     );
-  //     throw error;
-  //   }
-  // };
-
   const getPaymentIntent = async () => {
-    // const SECRET_KEY = process.env.STRIPE_PAYMENT_SECRET_KEY;
     console.log("amount.....", amount);
-    // var data = `amount=${amount}&currency=Inr&payment_method_types%5B%5D=card`;
     var data = `amount=${amount}&currency=usd&payment_method_types%5B%5D=card`;
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
@@ -175,11 +136,45 @@ const PaymentScreen = (props) => {
           confirmPaymentIntent.paymentIntent.status
         );
         alert(confirmPaymentIntent.paymentIntent.status);
+        await subscribeCustomer(
+          confirmPaymentIntent.paymentIntent.paymentMethodId
+        );
+        Alert.alert("Success", "Payment successful. Subscription created.");
       }
     } catch (error) {
       console.log("Payment error", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const subscribeCustomer = async (paymentMethodId) => {
+    try {
+      // Call your backend server to create a customer and subscribe to a plan
+      const response = await fetch("your_backend_url/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paymentMethodId: paymentMethodId,
+          // Other subscription parameters if needed
+        }),
+      });
+
+      if (response.ok) {
+        alert("Subscription created successfully");
+      } else {
+        const responseData = await response.json();
+        console.error("Subscription error:", responseData.error);
+        Alert.alert(
+          "Error",
+          "Failed to subscribe to the plan. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Subscription error:", error);
+      Alert.alert("Error", "An unexpected error occurred. Please try again.");
     }
   };
 
