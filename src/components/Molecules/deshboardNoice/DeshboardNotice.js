@@ -16,15 +16,14 @@ const DeshboardNotice = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [profileDay, setProfileDay] = useState("");
   const [profileCompletion, setProfileCompletion] = useState("");
+  const [progressPercentage, setProgressPercentage] = useState("");
   const [show, setShow] = useState(false);
   const userID = loginData?.Login_details?.user_id;
   useEffect(() => {
     handleprofileDays();
     handleprofileCompletion();
   }, []);
-  const profileValueWithoutPercent = profileCompletion.replace("%", "");
-  const progressValue = profileValueWithoutPercent / 100;
-  console.log("progressValue...",progressValue)
+
   const handlePress = () => {
     setProgress((prevProgress) => prevProgress + 0.1);
   };
@@ -67,6 +66,10 @@ const DeshboardNotice = (props) => {
         console.log("profileCompletion response....", response.data);
         setProfileCompletion(response.data.data[0].result);
         console.log("profileCompletion..", response.data.data[0].result);
+        const profileValueWithoutPercent = profileCompletion.replace("%", "");
+        const progressValue = profileValueWithoutPercent / 100;
+        console.log("progressValue...", progressValue);
+        setProgressPercentage(progressValue)
       })
       .catch((error) => {
         console.log("profileCompletion error...", error);
@@ -104,7 +107,7 @@ const DeshboardNotice = (props) => {
               </TouchableOpacity>
             </View>
             <ProgressBar
-              progress={progressValue}
+              progress={progressPercentage}
               // progress={0.5}
               width={300}
               height={8}

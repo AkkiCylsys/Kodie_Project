@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import TopHeader from "../../components/Molecules/Header/Header";
-import { _goBack } from "../../services/CommonServices";
 import { _COLORS, IMAGES } from "../../Themes";
 import PayButton from "../../components/PayButton/PayButton";
 import { paymentdetailsStyle } from "./paymentdetailsStyle";
@@ -17,7 +16,6 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
 import ApplePay from "./ApplePay/ApplePay";
 import CreditCard from "./CreditCard/CreditCard";
-
 const paymentdetails = (props) => {
   const [tabValue, setTabValue] = useState("CreditCard");
   const checkTabs = () => {

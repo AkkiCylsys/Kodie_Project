@@ -125,7 +125,7 @@ const AddNewNotice = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -201,9 +201,9 @@ const AddNewNotice = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setLocation(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -385,8 +385,8 @@ const AddNewNotice = (props) => {
       console.log("createNoticeReminder....", response.data);
       if (response.data.status === true) {
         alert(response.data.message);
-        props.navigation.navigate("Notices",{
-          selectFile:selectFile
+        props.navigation.navigate("Notices", {
+          selectFile: selectFile,
         });
       }
       clearState();
@@ -585,6 +585,7 @@ const AddNewNotice = (props) => {
               }}
               onFocus={() => openMapandClose()}
               placeholder={"Search Place"}
+              placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
           <TouchableOpacity

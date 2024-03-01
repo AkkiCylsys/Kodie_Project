@@ -77,9 +77,7 @@ export default SearchForContractor = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
 
-  const searchForContractor =()=>{
-    
-  }
+  const searchForContractor = () => {};
 
   // ...Location
   const ConfirmAddress = () => {
@@ -639,6 +637,7 @@ export default SearchForContractor = (props) => {
               }}
               onFocus={() => openMapandClose()}
               placeholder={"Search Place"}
+              placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
           <TouchableOpacity
@@ -666,7 +665,6 @@ export default SearchForContractor = (props) => {
             placeholder={"Start typing to search"}
             isFilterImage
             searchData={searchForContractor}
-        
           />
           <View
             style={[CreateJobFirstStyle.formContainer, { marginBottom: 0 }]}

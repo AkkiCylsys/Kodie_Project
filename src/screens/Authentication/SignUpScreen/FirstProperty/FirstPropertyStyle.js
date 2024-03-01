@@ -226,6 +226,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "center",
     marginVertical: 12,
+    marginBottom:130
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,

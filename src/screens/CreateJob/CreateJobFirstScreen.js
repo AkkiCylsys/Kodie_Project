@@ -88,7 +88,8 @@ export default CreateJobFirstScreen = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState("");
   const [longitude, setlongitude] = useState("");
-  const [arrowIcon , setArrowIcon] = useState(false)
+  const [arrowIcon, setArrowIcon] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState(false);
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
 
@@ -126,6 +127,7 @@ export default CreateJobFirstScreen = (props) => {
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
+    setCurrentLocation(true);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -139,7 +141,6 @@ export default CreateJobFirstScreen = (props) => {
     getAddress(Region.latitude, Region.longitude);
     getAddress();
   };
-
   const checkpermissionlocation = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -151,9 +152,7 @@ export default CreateJobFirstScreen = (props) => {
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
-        // alert("You can use the location");
-        getAddressWithCordinates();
-        // getOneTimeLocation();
+        fetchCurrentLocation();
       } else {
         console.log("location permission denied");
         alert("Location permission denied");
@@ -162,7 +161,6 @@ export default CreateJobFirstScreen = (props) => {
       console.warn(err);
     }
   };
-
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
       .then((result) => {
@@ -182,8 +180,7 @@ export default CreateJobFirstScreen = (props) => {
             break;
           case RESULTS.GRANTED:
             console.log("The permission is granted");
-            getAddressWithCordinates();
-            // getOneTimeLocation();
+            fetchCurrentLocation();
             break;
           case RESULTS.BLOCKED:
             console.log("The permission is denied and not requestable anymore");
@@ -194,76 +191,32 @@ export default CreateJobFirstScreen = (props) => {
         console.log(error);
       });
   };
-
-  const getAddressWithCordinates = () => {
-    console.log("Enter cordinates..");
-    Geolocation.watchPosition(
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
       (position) => {
-        // alert("with cordinates..");
-        console.log("with cordinates..");
-        setGetLat(position.coords.latitude);
-        setGetLong(position.coords.longitude);
-        // setlatitude(position.coords.latitude);
-        console.log("withCordinates latitude....", position.coords.latitude);
-        // setlongitude(position.coords.longitude);
-        console.log("withCordinates Longitude....", position.coords.longitude);
-        // getAddress(position.coords.latitude, position.coords.longitude);
-        getAddress(getLat,getLong);
+        console.log("This is your current location.");
+        const { latitude, longitude } = position.coords;
+        console.log("position.coords....", position.coords);
+        setlatitude(latitude);
+        setlongitude(longitude);
+        getAddress(latitude, longitude);
       },
       (error) => {
-        alert(error.message.toString());
-        console.log("watch cordinates err..", error.message);
+        console.error("Error fetching location:", error);
       },
       {
-        showLocationDialog: true,
         enableHighAccuracy: true,
         timeout: 20000,
-        maximumAge: 0,
+        maximumAge: 1000,
       }
     );
   };
-  // const getOneTimeLocation = () => {
-  //   // setLocationStatus('Getting Location ...');
-  //   console.log("Getting Location ...");
-  //   Geolocation.getCurrentPosition(
-  //     (position) => {
-  //       // setLocationStatus('You are Here');
-  //       console.log("You are Here");
-  //       alert("you are here")
-  //       const currentLongitude = JSON.stringify(position.coords.longitude);
-  //       const currentLatitude = JSON.stringify(position.coords.latitude);
-  //       // setlatitude(currentLatitude);
-  //       // setlongitude(currentLongitude);
-
-  //       // Log the latitude and longitude to check if they are received correctly
-  //       console.log("Latitude:", currentLatitude);
-  //       console.log("Longitude:", currentLongitude);
-  //       setGetLat(position.coords.latitude);
-  //       setGetLong(position.coords.longitude)
-  //       getAddress(currentLatitude, currentLongitude);
-  //     },
-  //     (error) => {
-  //       // setLocationStatus(error.message);
-  //       // Log any error messages
-  //       console.error("Location Error!:", error.message);
-  //     },
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 30000,
-  //       maximumAge: 1000,
-  //     }
-  //   );
-  // };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        setLocation(json.results[0].formatted_address);
-        // getAddressWithCordinates();
-        // checkpermissionlocation();
-        // getOneTimeLocation();
-        getAddressWithCordinates();
+        currentLocation ? setLocation(json.results[0].formatted_address) : null;
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -282,13 +235,11 @@ export default CreateJobFirstScreen = (props) => {
           json.results[0].address_components[8].long_name;
 
         var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
         console.log("addressComponent2.....", addressComponent2);
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setLocation(MainFullAddress);
         console.log("mainFullAddress....", MainFullAddress);
-        //setAddress(MainFullAddress);
       })
       .catch((error) => console.warn(error));
   };
@@ -298,7 +249,7 @@ export default CreateJobFirstScreen = (props) => {
     // alert(selectJobTypeid);
     // alert(isClick)
   };
-  
+
   const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: "feed",
@@ -331,7 +282,6 @@ export default CreateJobFirstScreen = (props) => {
     }
     return iconConfig;
   };
-
 
   const firstIndicatorSignUpStepStyle = {
     stepIndicatorSize: 40,
@@ -422,7 +372,7 @@ export default CreateJobFirstScreen = (props) => {
 
     // map...
     Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
-  }, [selectJobType]);
+  }, [selectJobType, currentLocation]);
   const Selected_Time_render = (item) => {
     const isSelected =
       item.longitude === selectedAddress.longitude &&
@@ -528,7 +478,7 @@ export default CreateJobFirstScreen = (props) => {
     );
   };
   const lookingServices_render = (item) => {
-    setArrowIcon
+    setArrowIcon;
     return (
       <View contentContainerStyle={{ flex: 1, height: "100%" }}>
         <View
@@ -940,10 +890,10 @@ export default CreateJobFirstScreen = (props) => {
               marginBottom: 10,
             }}
             onRegionChange={onRegionChange}
-            // Maplat={latitude}
-            // Maplng={longitude}
-            Maplat={getLat}
-            Maplng={getLong}
+            Maplat={latitude}
+            Maplng={longitude}
+            // Maplat={getLat}
+            // Maplng={getLong}
           />
           <View
             style={{
@@ -970,8 +920,22 @@ export default CreateJobFirstScreen = (props) => {
               }}
               onFocus={() => openMapandClose()}
               placeholder={"Search Place"}
+              placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
+          <TouchableOpacity
+            style={CreateJobFirstStyle.c_locationBtn}
+            onPress={()=>{
+              alert("pressed..")
+            }}
+          >
+            {/* <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} /> */}
+            <Entypo
+              name="location-pin"
+              size={30}
+              color={_COLORS.Kodie_lightGreenColor}
+            />
+          </TouchableOpacity>
           <TouchableOpacity
             style={CreateJobFirstStyle.BtnContainer}
             onPress={ConfirmAddress}
@@ -1041,7 +1005,7 @@ export default CreateJobFirstScreen = (props) => {
                 //   <AntDesign
                 //     // name={dropdownIcon ? "down" : "up"}
                 //     // name="down"
-                //     name={arrowIcon ? "up" : "down"} 
+                //     name={arrowIcon ? "up" : "down"}
                 //     size={20}
                 //   />
                 // )}

@@ -55,6 +55,7 @@ const SearchPlaces = (props) => {
         //   }
         textInputProps={{
           ref: textInputRef,
+          placeholderTextColor: _COLORS.Kodie_BlackColor,
         }}
         query={{
           key: "AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw",
@@ -66,12 +67,16 @@ const SearchPlaces = (props) => {
           textInputContainer: {
             marginHorizontal: 16,
             borderWidth: Platform.OS == "ios" ? 0 : 1,
-            borderColor: "#E5E4E2",
+            borderColor: _COLORS.Kodie_WhiteColor,
             borderRadius: 8,
             marginTop: 10,
           },
           textInput: {
-            backgroundColor: _COLORS.Kodie_ExtraLiteGrayColor,
+            // backgroundColor: _COLORS.Kodie_ExtraLiteGrayColor,
+            backgroundColor:
+              Platform.OS === "ios"
+                ? _COLORS.Kodie_ExtraLiteGrayColor
+                : _COLORS.Kodie_WhiteColor,
             height: 44,
             borderRadius: 5,
             paddingVertical: 5,
@@ -79,6 +84,11 @@ const SearchPlaces = (props) => {
             fontSize: 15,
             flex: 1,
             color: _COLORS.Kodie_BlackColor,
+            borderWidth: Platform.OS === "ios" ? 0 : 1,
+            borderColor:
+              Platform.OS === "ios"
+                ? _COLORS.Kodie_ExtraLiteGrayColor
+                : _COLORS.Kodie_GrayColor,
           },
         }}
       />

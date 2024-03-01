@@ -29,9 +29,7 @@ export default LandlordProfile = (props) => {
     // props.navigation.navigate("DrawerNavigatorLeftMenu");
     props.navigation.navigate("LoginScreen");
   };
-  const searchprofileMenu =()=>{
-    
-  }
+  const searchprofileMenu = () => {};
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
@@ -128,7 +126,7 @@ export default LandlordProfile = (props) => {
 
         <TouchableOpacity
           onPress={() => {
-            // props.navigation.navigate("ManageSubscription");
+            props.navigation.navigate("ManageSubscription");
           }}
         >
           <RowTab

@@ -88,6 +88,7 @@ const EditProfile = (props) => {
   const [company_latitude, setCompany_latitude] = useState("");
   const [company_longitude, setCompany_longitude] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
+  const [currentLocation, setCurrentLocation] = useState(false);
 
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
@@ -117,12 +118,13 @@ const EditProfile = (props) => {
     // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
     // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
     setActiveTab(profileDoc ? "Tab3" : "Tab1");
-  }, []);
+  }, [currentLocation]);
   const goBack = () => {
     props.navigation.pop();
   };
   const ConfirmAddress = () => {
     setIsMap(false);
+    setCurrentLocation(true);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -157,7 +159,8 @@ const EditProfile = (props) => {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
         // alert("You can use the location");
-        getAddressWithCordinates();
+        // getAddressWithCordinates();
+        fetchCurrentLocation();
       } else {
         console.log("location permission denied");
         alert("Location permission denied");
@@ -186,7 +189,8 @@ const EditProfile = (props) => {
             break;
           case RESULTS.GRANTED:
             console.log("The permission is granted");
-            getAddressWithCordinates();
+            // getAddressWithCordinates();
+            fetchCurrentLocation();
             break;
           case RESULTS.BLOCKED:
             console.log("The permission is denied and not requestable anymore");
@@ -197,12 +201,10 @@ const EditProfile = (props) => {
         console.log(error);
       });
   };
-
-  const getAddressWithCordinates = () => {
-    console.log("Enter cordinates..");
-    Geolocation.watchPosition(
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
       (position) => {
-        console.log("with cordinates..");
+        console.log("This is your current location.");
         if (activeTab === "Tab1") {
           setlatitude(position.coords.latitude);
           console.log("profile latitute....", position.coords.latitude);
@@ -217,18 +219,14 @@ const EditProfile = (props) => {
           setCompany_longitude(position.coords.longitude);
           console.log("company longitude....", position.coords.longitude);
         }
-        // setlatitude(position.coords.latitude);
-        // setlongitude(position.coords.longitude);
-        getAddress(position.coords.latitude, position.coords.longitude);
       },
       (error) => {
-        alert(error.message.toString());
+        console.error("Error fetching location:", error);
       },
       {
-        showLocationDialog: true,
         enableHighAccuracy: true,
         timeout: 20000,
-        maximumAge: 0,
+        maximumAge: 1000,
       }
     );
   };
@@ -238,9 +236,13 @@ const EditProfile = (props) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
         if (activeTab === "Tab1") {
-          setLocation(json.results[0].formatted_address);
+          currentLocation
+            ? setLocation(json.results[0].formatted_address)
+            : null;
         } else {
-          setCompanyPhysicaladdress(json.results[0].formatted_address);
+          currentLocation
+            ? setCompanyPhysicaladdress(json.results[0].formatted_address)
+            : null;
         }
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
@@ -484,19 +486,17 @@ const EditProfile = (props) => {
                           paddingVertical: 2,
                           // borderWidth:1,
                           // borderColor:'red',
-                          borderRadius:10,
-                       
+                          borderRadius: 10,
                         }}
                         containerStyle={{
                           flex: 1,
                           alignSelf: "center",
                           alignItems: "center",
                           justifyContent: "center",
-                          borderWidth:1,
+                          borderWidth: 1,
                           // backgroundColor: 'blue',
-                          borderColor:_COLORS.Kodie_GrayColor,
-                          borderRadius:12,
-                        
+                          borderColor: _COLORS.Kodie_GrayColor,
+                          borderRadius: 12,
                         }}
                       />
                     </View>
@@ -622,6 +622,7 @@ const EditProfile = (props) => {
                     }}
                     onFocus={() => openMapandClose()}
                     placeholder={"Search Place"}
+                    placeholderTextColor={_COLORS.Kodie_BlackColor}
                   />
                 </View>
                 <TouchableOpacity
@@ -727,6 +728,7 @@ const EditProfile = (props) => {
               }}
               onFocus={() => openMapandClose()}
               placeholder={"Search Place"}
+              placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
           <TouchableOpacity

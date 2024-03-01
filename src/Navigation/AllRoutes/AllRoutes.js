@@ -130,6 +130,7 @@ import PaymentScreen from "../../screens/PaymentMethod/PaymentScreen";
 import paymentdetails from "../../screens/PaymentMethod/paymentdetails";
 import ApplePay from "../../screens/PaymentMethod/ApplePay/ApplePay";
 import CreditCard from "../../screens/PaymentMethod/CreditCard/CreditCard";
+import SubscriptionScreen from "../../screens/Subscription/SubscriptionScreen";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -1082,6 +1083,11 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"ApplePay"}
           component={ApplePay}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"SubscriptionScreen"}
+          component={SubscriptionScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

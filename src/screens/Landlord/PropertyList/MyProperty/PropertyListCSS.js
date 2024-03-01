@@ -77,14 +77,15 @@ export const PropertyListCSS = StyleSheet.create({
     // flex: 0.7,
     flexDirection: "row",
     justifyContent: "center",
-    // alignItems: "center",
+    alignItems: "center",
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
     // paddingHorizontal: 10,
-    paddingVertical: 1,
+    // paddingVertical: 1,
     marginLeft: "10%",
+    paddingBottom:3
   },
   roundButton: {
     height: 6,
