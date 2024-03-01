@@ -153,6 +153,7 @@ export default FirstProperty = props => {
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [buildingFlorSize, setBuildingFlorSize] = useState('');
   const [landArea, setLandArea] = useState('');
+  const [currentLocation, setCurrentLocation] = useState(false);
   const dispatch = useDispatch();
   const P_addressParts = propertyLocation.split(', ');
   console.log('P_addressParts', P_addressParts);
@@ -561,6 +562,41 @@ export default FirstProperty = props => {
       setIsLoading(false);
       console.error('Save Account Details error:', res.data.error);
       alert(res.data.error);
+    }
+  };
+  const registerUserfill = async () => {
+    const userId = uuid.v4();
+    try {
+      await firestore()
+        .collection('Users')
+        .doc(userId)
+        .set({
+          name: `${firstName} ${lastName}`,
+          email: email,
+          mobile: mobileNumber,
+          userId: userId,
+          user_key: String(user_key),
+          image: {
+            uri: ImageName?.path || '',
+            type: ImageName?.mime || 'image/jpeg',
+            name: String(ImageName?.path.split('/').pop()),
+          },
+        });
+      console.log('User created');
+
+      // Save data to AsyncStorage
+      await AsyncStorage.setItem('USERID', userId);
+      await AsyncStorage.setItem('NAME', firstName);
+      await AsyncStorage.setItem('EMAIL', email);
+      await AsyncStorage.setItem('MOBILE', mobileNumber);
+      await AsyncStorage.setItem('USERKEY', String(user_key));
+
+      console.log('User data saved to AsyncStorage');
+
+      // Call handleSaveSignup function
+      handleSaveSignupfill();
+    } catch (error) {
+      console.error('Error creating user:', error);
     }
   };
   const goBack = () => {
@@ -1102,7 +1138,8 @@ export default FirstProperty = props => {
                   _ButtonText={'Save'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    handleSaveSignup();
+                    // handleSaveSignup();
+                    registerUser();
                   }}
                 />
               </View>
@@ -1113,7 +1150,8 @@ export default FirstProperty = props => {
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    handleSaveSignupfill();
+                    // handleSaveSignupfill();
+                    registerUserfill();
                   }}
                 />
               </View>

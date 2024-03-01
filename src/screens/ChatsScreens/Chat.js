@@ -22,9 +22,11 @@ import {_goBack} from '../../services/CommonServices';
 import {IMAGES, _COLORS} from '../../Themes';
 import {useSelector} from 'react-redux';
 import {fontFamily} from '../../Themes/FontStyle/FontStyle';
+import {useNavigation} from '@react-navigation/native';
 const Chat = props => {
   const [messageList, setMessageList] = useState([]);
   const route = useRoute();
+  const navigation = useNavigation();
   const [pendingMessage, setPendingMessage] = useState(null);
   const userData = route.params.data;
   console.log(route.params.data, 'datadatadatadatadata');
@@ -292,7 +294,9 @@ const Chat = props => {
         MiddleText={
           route.params.chatname ? route.params.name : `${userData.name}`
         }
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => {
+          route.params.chatname ? navigation.navigate('Chats') : _goBack(props);
+        }}
       />
       <GiftedChat
         messages={messageList}

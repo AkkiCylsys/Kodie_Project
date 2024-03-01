@@ -10,7 +10,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import SplashScreen from '../../screens/SplashScreen/SplashScreen';
-import Login from './../../screens/Authentication/LoginScreen/Login';
+import LoginScreen from './../../screens/Authentication/LoginScreen/Login';
 import UserType from './../../screens/Authentication/UserType/UserType';
 import ContractorSignUpSecondScreen from '../../screens/Authentication/ContractorSignUp/ContractorSignUpSecondScreen';
 import ContractorSignUpThirdScreen from '../../screens/Authentication/ContractorSignUp/ContractorSignUpThirdScreen';
@@ -493,139 +493,8 @@ const AllStackRouts = props => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name={'CreateJobFirstScreen'}
-          component={CreateJobFirstScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'CreateJobSecondScreen'}
-          component={CreateJobSecondScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'Contractorlist'}
-          component={Contractorlist}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'ContractorProfile'}
-          component={ContractorProfile}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'HireContractor'}
-          component={HireContractor}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'JobCompletion'}
-          component={JobCompletion}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'DocumentList'}
-          component={DocumentList}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'RejectConfirm'}
-          component={RejectConfirm}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'InviteTenant'}
-          component={InviteTenant}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'Notice'}
-          component={Notice}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'Properties'}
-          component={Properties}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'Jobs'}
-          component={Jobs}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'Help_FeedBack'}
-          component={Help_FeedBack}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'Language'}
-          component={Language}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'SignUp'}
-          component={SignUp}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'SignUpVerification'}
-          component={SignUpVerification}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'Location'}
-          component={Location}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'AboutYou'}
-          component={AboutYou}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'CreateJobTermsScreen'}
-          component={CreateJobTermsScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'ConfirmJobCompletion'}
-          component={ConfirmJobCompletion}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'SignUpSteps'}
-          component={SignUpSteps}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'FirstProperty'}
-          component={FirstProperty}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'AddPropertyMainPage'}
-          component={AddPropertyMainPage}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'PropertyFeature'}
-          component={PropertyFeature}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'PropertyImages'}
-          component={PropertyImages}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name={'PropertyReview'}
-          component={PropertyReview}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
           name={'LoginScreen'}
-          component={Login}
+          component={LoginScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen

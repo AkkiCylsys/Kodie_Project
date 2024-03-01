@@ -107,17 +107,25 @@ const Chats = props => {
                       });
                     }}>
                     {item.image ? (
-                      <Image
-                        source={{uri: item.image.uri}}
-                        // source={IMAGES.adduser}
+                      <View
                         style={{
                           width: 50,
                           height: 50,
-                          borderRadius: 25,
+                          borderRadius: 50 / 2,
                           borderWidth: 1,
-                        }}
-                        resizeMode={'cover'}
-                      />
+                          borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+                        }}>
+                        <Image
+                          source={{uri: item.image.uri}}
+                          // source={IMAGES.adduser}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 50 / 2,
+                          }}
+                          resizeMode={'cover'}
+                        />
+                      </View>
                     ) : (
                       <FontAwesome
                         name="user-circle-o"

@@ -99,7 +99,7 @@ const PreviousContractor = () => {
             name: `${item.UAD_FIRST_NAME} ${item.UAD_LAST_NAME}`,
             chatname: 'chatName',
           });
-          alert(item.UAD_KEY);
+          // alert(item.UAD_KEY);
         }}
       />
 
