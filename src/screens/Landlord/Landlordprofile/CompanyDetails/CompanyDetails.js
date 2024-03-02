@@ -538,11 +538,11 @@ export default CompanyDetails = (props) => {
               />
             ) : (
               <Image
+                style={CompanyDetailsStyle.profilelogo}
                 source={{
-                  uri: getCompanyData[0]?.company_logo,
+                  uri: loginData?.Login_details?.profile_photo_path,
                 }}
                 resizeMode="cover"
-                style={CompanyDetailsStyle.profilelogo}
               />
             )}
             {ImageName ? refRBSheet.current.close() : null}
