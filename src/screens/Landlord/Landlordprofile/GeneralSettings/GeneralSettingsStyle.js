@@ -4,7 +4,7 @@ import { _COLORS, FONTFAMILY } from "../../../../Themes";
 export const GeneralSettingsStyle = StyleSheet.create({
   mainContainer: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    height:'100%'
+    height:'100%',
   },
   Headingview: {
     marginHorizontal: 20,
@@ -16,7 +16,10 @@ export const GeneralSettingsStyle = StyleSheet.create({
     marginVertical: 15,
   },
   componentview:{
-    width:'90%',
+    flex:1.5,
+    // borderWidth:1,
+    // width:'90%',
+    // marginRight:30
   },
 
   rowview:{
@@ -51,24 +54,36 @@ export const GeneralSettingsStyle = StyleSheet.create({
   },
   textratemainview:{
     flexDirection:'row',
-    marginVertical:10
+    marginVertical:20,
+    marginHorizontal:20
   },
   textratecomponentview:{
-    width:'75%'
+    flex:2,
+    // borderWidth:1
+    // width:'75%'
   },
   rateview:{
+    flex:0.5,
     borderWidth:1,
-    width:75,
-    flexDirection:'row',
+    height:40,
+    // width:75,
+    // flexDirection:'row',
     justifyContent:'center',
     alignItems:'center',
     borderRadius:10,
     borderColor:_COLORS.Kodie_GrayColor
   },
   calenderview:{
-    marginVertical:10
+    marginVertical:10,
+    marginHorizontal:20
+    // marginRight:10
   },
   origanisationview:{
-    marginVertical:10
+    marginVertical:10,
+    marginHorizontal:20
+    // marginRight:10
+  },
+  ratetext:{
+    color:_COLORS.Kodie_BlackColor
   }
 });

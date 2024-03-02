@@ -273,7 +273,7 @@ const AddPropertyMainPage = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress()
+    getAddress();
   };
   const checkpermissionlocation = async () => {
     try {
@@ -349,9 +349,9 @@ const AddPropertyMainPage = (props) => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
-        console.log("json location.......",json)
-        console.log("current address...",json.results[0].formatted_address)
-        setLocation(json.results[0].formatted_address)
+        console.log("json location.......", json);
+        console.log("current address...", json.results[0].formatted_address);
+        setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -1693,7 +1693,7 @@ const AddPropertyMainPage = (props) => {
                       Additional key features
                     </Text>
                     <MultiSelect
-                      style={FirstPropertyStyle.dropdown}                     
+                      style={FirstPropertyStyle.dropdown}
                       placeholderStyle={FirstPropertyStyle.placeholderStyle}
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
@@ -2223,6 +2223,7 @@ const AddPropertyMainPage = (props) => {
                 }}
                 onFocus={() => openMapandClose()}
                 placeholder={"Search Place"}
+                placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
             <TouchableOpacity

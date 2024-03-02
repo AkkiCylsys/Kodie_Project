@@ -30,7 +30,7 @@ Helptext: {
   fontSize: 14,
   marginLeft: 15,
   color: _COLORS.Kodie_BlackColor,
-  fontFamily: FONTFAMILY.K_SemiBold
+  fontFamily: FONTFAMILY.K_SemiBold,
 },
 SecondRowtext: {
   fontSize: 11,
@@ -44,7 +44,7 @@ arrowiconview: {
   borderWidth: 0.5,
   alignItems: 'center',
   justifyContent: 'center',
-  borderRadius: 5,
+  borderRadius: 8,
   borderColor: _COLORS.Kodie_MediumGrayColor,
 
 },

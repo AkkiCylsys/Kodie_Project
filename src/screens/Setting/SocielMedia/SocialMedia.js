@@ -111,7 +111,7 @@ const SocialMedia = (props) => {
                   : item.lookup_key == 364
                   ? "Linkedin"
                   : item.lookup_key == 365
-                  ? "Twitter"
+                  ? "X"
                   : null}
               </Text>
             </View>
@@ -120,11 +120,11 @@ const SocialMedia = (props) => {
             <Entypo
               name={"chevron-small-right"}
               size={20}
-              color={_COLORS.Kodie_BlackColor}
+              color={"#787D8B"}
             />
           </View>
         </TouchableOpacity>
-        <DividerIcon />
+        <DividerIcon style={{marginBottom:10}}/>
       </View>
     );
   };

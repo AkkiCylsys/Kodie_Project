@@ -93,6 +93,7 @@ const SignUpSteps = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [p_latitude, setP_latitude] = useState("");
   const [p_longitude, setP_longitude] = useState("");
+  const [currentLocation, setCurrentLocation] = useState(false);
 
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
@@ -130,6 +131,7 @@ const SignUpSteps = (props) => {
   console.log("user_key...", user_key);
   const ConfirmAddress = () => {
     setIsMap(false);
+    setCurrentLocation(true);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -156,7 +158,7 @@ const SignUpSteps = (props) => {
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
         // alert("You can use the location");
-        getAddressWithCordinates();
+        fetchCurrentLocation()
       } else {
         console.log("location permission denied");
         alert("Location permission denied");
@@ -185,7 +187,7 @@ const SignUpSteps = (props) => {
             break;
           case RESULTS.GRANTED:
             console.log("The permission is granted");
-            getAddressWithCordinates();
+            fetchCurrentLocation()
             break;
           case RESULTS.BLOCKED:
             console.log("The permission is denied and not requestable anymore");
@@ -197,28 +199,49 @@ const SignUpSteps = (props) => {
       });
   };
 
-  const getAddressWithCordinates = () => {
-    console.log("Enter cordinates..");
+  // const getAddressWithCordinates = () => {
+  //   console.log("Enter cordinates..");
 
-    Geolocation.watchPosition(
+  //   Geolocation.watchPosition(
+  //     (position) => {
+  //       console.log("with cordinates..");
+  //       setP_latitude(position.coords.latitude);
+  //       console.log("p_latitude...", p_latitude);
+
+  //       setP_longitude(position.coords.longitude);
+  //       console.log("p_longitude...", p_longitude);
+
+  //       getAddress(position.coords.latitude, position.coords.longitude);
+  //     },
+  //     (error) => {
+  //       alert(error.message.toString());
+  //     },
+  //     {
+  //       showLocationDialog: true,
+  //       enableHighAccuracy: true,
+  //       timeout: 20000,
+  //       maximumAge: 0,
+  //     }
+  //   );
+  // };
+
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
       (position) => {
-        console.log("with cordinates..");
-        setP_latitude(position.coords.latitude);
-        console.log("p_latitude...", p_latitude);
-
-        setP_longitude(position.coords.longitude);
-        console.log("p_longitude...", p_longitude);
-
-        getAddress(position.coords.latitude, position.coords.longitude);
+        console.log("This is your current location.");
+        const { latitude, longitude } = position.coords;
+        console.log("position.coords....", position.coords);
+        setP_latitude(latitude);
+        setP_longitude(longitude);
+        getAddress(latitude, longitude);
       },
       (error) => {
-        alert(error.message.toString());
+        console.error("Error fetching location:", error);
       },
       {
-        showLocationDialog: true,
         enableHighAccuracy: true,
         timeout: 20000,
-        maximumAge: 0,
+        maximumAge: 1000,
       }
     );
   };
@@ -228,7 +251,7 @@ const SignUpSteps = (props) => {
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        setPhysicalAddress(json.results[0].formatted_address);
+        currentLocation ? setPhysicalAddress(json.results[0].formatted_address) : null;
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -332,7 +355,7 @@ const SignUpSteps = (props) => {
       language: "en",
     });
     Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
-  }, []);
+  }, [currentLocation]);
 
   //  go back button...............
   const goBack = () => {
@@ -575,6 +598,7 @@ const SignUpSteps = (props) => {
                 }}
                 onFocus={() => openMapandClose()}
                 placeholder={"Search Place"}
+                placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
             <TouchableOpacity

@@ -83,6 +83,7 @@ export default SearchForJob = (props) => {
   const [min, setMin] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
+  const [currentLocation, setCurrentLocation] = useState(false);
 
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
@@ -99,13 +100,12 @@ export default SearchForJob = (props) => {
     console.log("Low Range in Parent Component:", low);
     setMin(low);
   };
-const searchForjob =()=>{
-  
-}
+  const searchForjob = () => {};
 
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
+    setCurrentLocation(true);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -129,7 +129,7 @@ const searchForjob =()=>{
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log("You can use the location");
-        getAddressWithCordinates();
+        fetchCurrentLocation()
       } else {
         console.log("location permission denied");
         alert("Location permission denied");
@@ -158,7 +158,7 @@ const searchForjob =()=>{
             break;
           case RESULTS.GRANTED:
             console.log("The permission is granted");
-            getAddressWithCordinates();
+            fetchCurrentLocation()
             break;
           case RESULTS.BLOCKED:
             console.log("The permission is denied and not requestable anymore");
@@ -169,41 +169,32 @@ const searchForjob =()=>{
         console.log(error);
       });
   };
-  const getAddressWithCordinates = () => {
-    console.log("Enter cordinates..");
-    Geolocation.watchPosition(
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
       (position) => {
-        // alert("with cordinates..");
-        console.log("with cordinates..");
-        // setGetLat(position.coords.latitude);
-        // setGetLong(position.coords.longitude);
-        setlatitude(position.coords.latitude);
-        console.log("withCordinates latitude....", position.coords.latitude);
-        setlongitude(position.coords.longitude);
-        console.log("withCordinates Longitude....", position.coords.longitude);
-        getAddress(position.coords.latitude, position.coords.longitude);
-        // getAddress(getLat, getLong);
+        console.log("This is your current location.");
+        const { latitude, longitude } = position.coords;
+        console.log("position.coords....", position.coords);
+        setlatitude(latitude);
+        setlongitude(longitude);
+        getAddress(latitude, longitude);
       },
       (error) => {
-        alert(error.message.toString());
-        console.log("watch cordinates err..", error.message);
+        console.error("Error fetching location:", error);
       },
       {
-        showLocationDialog: true,
         enableHighAccuracy: true,
         timeout: 20000,
-        maximumAge: 0,
+        maximumAge: 1000,
       }
     );
   };
-
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        setLocation(json.results[0].formatted_address);
-        getAddressWithCordinates();
+        currentLocation ? setLocation(json.results[0].formatted_address) : null;
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -254,7 +245,7 @@ const searchForjob =()=>{
     // setProperty_value("");
 
     // setRatingThresholdValue("");
-  }, [selectJobType, priceRanges]);
+  }, [selectJobType, priceRanges,currentLocation]);
   const populorServiceRender = ({ item }) => {
     return (
       <View style={CreateJobFirstStyle.item}>
@@ -672,7 +663,6 @@ const searchForjob =()=>{
             <TextInput
               style={{
                 backgroundColor: "transparent",
-
                 width: "90%",
                 height: 45,
                 alignSelf: "center",
@@ -680,6 +670,7 @@ const searchForjob =()=>{
               }}
               onFocus={() => openMapandClose()}
               placeholder={"Search Place"}
+              placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
           <TouchableOpacity
@@ -707,7 +698,6 @@ const searchForjob =()=>{
             placeholder={"Start typing to search"}
             isFilterImage
             searchData={searchForjob}
-
           />
           <View
             style={[CreateJobFirstStyle.formContainer, { marginBottom: 0 }]}
