@@ -126,7 +126,78 @@ const EditProfile = (props) => {
     // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
     // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
     setActiveTab(profileDoc ? "Tab3" : "Tab1");
+    handle_describe_yourself();
   }, [currentLocation]);
+  // describe your self Api call code here .....
+  const handle_describe_yourself = () => {
+    const describe_yourself_Data = {
+      P_PARENT_CODE: "TEN_DESC",
+      P_TYPE: "OPTION",
+    };
+    const url = Config.BASE_URL;
+    const describeYourselfApi = url + "lookup_details";
+    console.log("Request URL:", describeYourselfApi);
+    setIsLoading(true);
+    axios
+      .post(describeYourselfApi, describe_yourself_Data)
+      .then((response) => {
+        console.log("kodie_describeYouself_Data", response.data);
+        if (response.data.status === true) {
+          setIsLoading(false);
+          console.log(
+            "kodie_describeYouself_Data....",
+            response.data.lookup_details
+          );
+          setKodieDescribeYourselfData(response.data.lookup_details);
+        } else {
+          console.error(
+            "kodie_describeYouself_Data_error:",
+            response.data.error
+          );
+          alert(response.data.error);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("kodie_describeYouself_Data error:", error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
+  const toggleSelection = (lookup_key) => {
+    if (selectedServices.includes(lookup_key)) {
+      // Item is already selected, remove it
+      setSelectedServices((prevSelected) =>
+        prevSelected.filter((item) => item !== lookup_key)
+      );
+    } else {
+      // Item is not selected, add it
+      setSelectedServices((prevSelected) => [...prevSelected, lookup_key]);
+    }
+  };
+
+  const renderItemDescribeYourself = ({ item }) => (
+    <ServicesBox
+      Services_Name={item?.lookup_description}
+      BoxStyling={[
+        EditProfileStyle.box_style,
+        {
+          margin: 8,
+          backgroundColor: selectedServices.includes(item.lookup_key)
+            ? _COLORS.Kodie_lightGreenColor
+            : _COLORS.Kodie_WhiteColor,
+        },
+      ]}
+      textColor={[EditProfileStyle.box_Text_Style]}
+      onPress={() => {
+        toggleSelection(item.lookup_key);
+        setKodieDescribeYourselfDataId(item.lookup_key);
+        // alert(item.lookup_key);
+      }}
+    />
+  );
+
+  // }, [currentLocation]);
   const goBack = () => {
     props.navigation.pop();
   };
