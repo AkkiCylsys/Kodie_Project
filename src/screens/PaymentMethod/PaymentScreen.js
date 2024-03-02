@@ -4,6 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import TopHeader from "../../components/Molecules/Header/Header";
@@ -20,7 +21,11 @@ import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingle
 import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useEffect } from "react";
 import axios from "axios";
+import { Config } from "../../Config";
+import { useSelector } from "react-redux";
 const PaymentScreen = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
   const [cardInfo, setCardInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [clintsecretkey, setclintsecretkey] = useState("");
@@ -28,6 +33,7 @@ const PaymentScreen = (props) => {
   const [transactionID, settransactionID] = useState("");
   const [amount, setamount] = useState(Math.round(50) * 100);
   const [paymentDetailsData, setPaymentDetailsData] = useState("");
+  const [paymentMethodId, setPaymentMethodId] = useState("");
 
   const { confirmPayment, loading } = useConfirmPayment();
 
@@ -80,46 +86,10 @@ const PaymentScreen = (props) => {
 
     xhr.send(data);
   };
-  const addPaymentDetails = () => {
-    const url = Config.BASE_URL;
-    const paymentDetaills_Url = url + "payment_details";
-    console.log("Request URL:", paymentDetaills_Url);
-    setIsLoading(true);
-    const paymentDetails_Data = {
-      user_key: 0,
-      amount: "string",
-      currency: "string",
-      payment_method: "string",
-      customer_id: "string",
-      payment_date: "string",
-      status: "string",
-      is_active: "string",
-      created_by: "string",
-    };
-    axios
-      .post(paymentDetaills_Url, paymentDetails_Data)
-      .then((response) => {
-        console.log("API Response paymentDetails_Data:", response.data);
-        if (response.data.status === true) {
-          // setPaymentDetailsData(response.data.lookup_details);
-        } else {
-          alert(response.data.message);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("API failed paymentDetails", error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
   const handlePayPress = async () => {
     setIsLoading(true);
     const billingDetails = {
-      email: "jenny.rosen@example.com",
+      email: "info@kodie.com.au",
     };
     try {
       console.log("clientSecret data....", clintsecretkey);
@@ -135,10 +105,9 @@ const PaymentScreen = (props) => {
           "Payment successful",
           confirmPaymentIntent.paymentIntent.status
         );
-        alert(confirmPaymentIntent.paymentIntent.status);
-        await subscribeCustomer(
-          confirmPaymentIntent.paymentIntent.paymentMethodId
-        );
+        setPaymentMethodId(confirmPaymentIntent.paymentIntent.paymentMethodId);
+        // alert(confirmPaymentIntent.paymentIntent.status);
+        await subscribeCustomer(paymentMethodId);
         Alert.alert("Success", "Payment successful. Subscription created.");
       }
     } catch (error) {
@@ -147,23 +116,32 @@ const PaymentScreen = (props) => {
       setIsLoading(false);
     }
   };
-
   const subscribeCustomer = async (paymentMethodId) => {
+    const url = Config.BASE_URL;
+    const Subscription_Url = url + "subscription";
+    console.log("Subscription_Url...", Subscription_Url);
+    setIsLoading(true);
     try {
-      // Call your backend server to create a customer and subscribe to a plan
-      const response = await fetch("your_backend_url/subscribe", {
+      const response = await fetch(Subscription_Url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          paymentMethodId: paymentMethodId,
-          // Other subscription parameters if needed
+          // paymentMethodId: paymentMethodId,
+          user_id: loginData.Login_details.user_id,
+          account_id: loginData.Login_details.user_account_id,
+          subscription_id: paymentMethodId,
+          startDate: "1/03/2024",
+          endDate: "5/03/2024",
+          collection_method: "weekly",
+          subscribe_type: "card",
         }),
       });
-
+      console.log("response..",response.data)
       if (response.ok) {
         alert("Subscription created successfully");
+        setIsLoading(false);
       } else {
         const responseData = await response.json();
         console.error("Subscription error:", responseData.error);
@@ -171,6 +149,7 @@ const PaymentScreen = (props) => {
           "Error",
           "Failed to subscribe to the plan. Please try again."
         );
+        setIsLoading(false);
       }
     } catch (error) {
       console.error("Subscription error:", error);
