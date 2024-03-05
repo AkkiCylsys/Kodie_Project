@@ -116,7 +116,7 @@ const Chats = props => {
                           borderColor: _COLORS.Kodie_ExtraLightGrayColor,
                         }}>
                         <Image
-                          source={{uri: item.image.uri}}
+                          source={{uri: item.image}}
                           // source={IMAGES.adduser}
                           style={{
                             width: 50,

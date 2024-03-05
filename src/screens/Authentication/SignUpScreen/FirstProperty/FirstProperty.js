@@ -41,6 +41,7 @@ import {signupAccountApiActionCreator} from '../../../../redux/Actions/Authentic
 import mime from 'mime';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
@@ -430,6 +431,10 @@ export default FirstProperty = props => {
   };
   const registerUser = async () => {
     const userId = uuid.v4();
+    const storageRef = storage().ref(`user_images/${userId}`);
+    await storageRef.putFile(ImageName.path);
+
+    const downloadURL = await storageRef.getDownloadURL();
     try {
       await firestore()
         .collection('Users')
@@ -440,11 +445,12 @@ export default FirstProperty = props => {
           mobile: mobileNumber,
           userId: userId,
           user_key: String(user_key),
-          image: {
-            uri: ImageName?.path || '',
-            type: ImageName?.mime || 'image/jpeg',
-            name: String(ImageName?.path.split('/').pop()),
-          },
+          image: downloadURL,
+          // image: {
+          //   uri: ImageName?.path || '',
+          //   type: ImageName?.mime || 'image/jpeg',
+          //   name: String(ImageName?.path.split('/').pop()),
+          // },
         });
       console.log('User created');
 
