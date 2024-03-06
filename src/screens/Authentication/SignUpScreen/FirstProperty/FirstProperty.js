@@ -39,6 +39,7 @@ import { BackHandler } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { signupAccountApiActionCreator } from "../../../../redux/Actions/Authentication/AuthenticationApiCreator";
 import mime from "mime";
+
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -152,6 +153,11 @@ export default FirstProperty = (props) => {
   const [landArea, setLandArea] = useState("");
   const [currentLocation, setCurrentLocation] = useState(false);
   const dispatch = useDispatch();
+  const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
+  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(70);
+  const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
+  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
+    useState(67);
   const P_addressParts = propertyLocation.split(", ");
   console.log("P_addressParts", P_addressParts);
   const p_city = P_addressParts[P_addressParts.length - 2]?.trim() ?? "";
@@ -646,6 +652,8 @@ export default FirstProperty = (props) => {
       })
       .catch((error) => console.warn(error));
   };
+  const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
+  console.log(PreFriedly, "pre friedly............");
   return (
     <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader
@@ -975,6 +983,113 @@ export default FirstProperty = (props) => {
                     </View>
                   </View>
 
+                  <View style={FirstPropertyStyle.addition_featureView}>
+                    <Text  style={[
+                        LABEL_STYLES._texinputLabel,
+                        FirstPropertyStyle.addition_featureText,
+                      ]}>
+                      {"Additional features"}
+                    </Text>
+                    <View style={FirstPropertyStyle.addition_featureView}>
+                      <Text style={FirstPropertyStyle.Furnished_Text}>
+                        {"Furnished or unfurnished ?"}
+                      </Text>
+                      <RowButtons
+                        LeftButtonText={"Furnished"}
+                        leftButtonbackgroundColor={
+                          !selectedButtonFurnished
+                            ? _COLORS.Kodie_lightGreenColor
+                            : _COLORS.Kodie_WhiteColor
+                        }
+                        LeftButtonTextColor={
+                          !selectedButtonFurnished
+                            ? _COLORS.Kodie_BlackColor
+                            : _COLORS.Kodie_MediumGrayColor
+                        }
+                        LeftButtonborderColor={
+                          !selectedButtonFurnished
+                            ? _COLORS.Kodie_GrayColor
+                            : _COLORS.Kodie_LightWhiteColor
+                        }
+                        onPressLeftButton={() => {
+                          setSelectedButtonFurnished(false);
+                          setSelectedButtonFurnishedId(67);
+                          // alert(selectedButtonId)
+                        }}
+                        RightButtonText={"Unfurnished"}
+                        RightButtonbackgroundColor={
+                          selectedButtonFurnished
+                            ? _COLORS.Kodie_lightGreenColor
+                            : _COLORS.Kodie_WhiteColor
+                        }
+                        RightButtonTextColor={
+                          selectedButtonFurnished
+                            ? _COLORS.Kodie_BlackColor
+                            : _COLORS.Kodie_MediumGrayColor
+                        }
+                        RightButtonborderColor={
+                          selectedButtonFurnished
+                            ? _COLORS.Kodie_GrayColor
+                            : _COLORS.Kodie_LightWhiteColor
+                        }
+                        onPressRightButton={() => {
+                          setSelectedButtonFurnished(true);
+                          setSelectedButtonFurnishedId(68);
+                          // alert(selectedButtonId)
+                        }}
+                      />
+                    </View>
+                    <View style={FirstPropertyStyle.addition_featureView}>
+                      <Text style={FirstPropertyStyle.Furnished_Text}>
+                        {"Pet friendly ?"}
+                      </Text>
+                      <RowButtons
+                        LeftButtonText={"Yes"}
+                        leftButtonbackgroundColor={
+                          !selectedButtonDeposit
+                            ? _COLORS.Kodie_lightGreenColor
+                            : _COLORS.Kodie_WhiteColor
+                        }
+                        LeftButtonTextColor={
+                          !selectedButtonDeposit
+                            ? _COLORS.Kodie_BlackColor
+                            : _COLORS.Kodie_MediumGrayColor
+                        }
+                        LeftButtonborderColor={
+                          !selectedButtonDeposit
+                            ? _COLORS.Kodie_GrayColor
+                            : _COLORS.Kodie_LightWhiteColor
+                        }
+                        onPressLeftButton={() => {
+                          setSelectedButtonDeposit(false);
+                          setSelectedButtonDepositId(70);
+                          // alert(selectedButtonId)
+                        }}
+                        RightButtonText={"No"}
+                        RightButtonbackgroundColor={
+                          selectedButtonDeposit
+                            ? _COLORS.Kodie_lightGreenColor
+                            : _COLORS.Kodie_WhiteColor
+                        }
+                        RightButtonTextColor={
+                          selectedButtonDeposit
+                            ? _COLORS.Kodie_BlackColor
+                            : _COLORS.Kodie_MediumGrayColor
+                        }
+                        RightButtonborderColor={
+                          selectedButtonDeposit
+                            ? _COLORS.Kodie_GrayColor
+                            : _COLORS.Kodie_LightWhiteColor
+                        }
+                        onPressRightButton={() => {
+                          setSelectedButtonDeposit(true);
+                          setSelectedButtonDepositId(71);
+                          // alert(selectedButtonId)
+                        }}
+                      />
+                    </View>
+                  </View>
+
                   <View style={FirstPropertyStyle.inputContainer}>
                     <Text
                       style={[
@@ -982,7 +1097,7 @@ export default FirstProperty = (props) => {
                         FirstPropertyStyle.addition_featureText,
                       ]}
                     >
-                      Additional features
+                    Additional key features
                     </Text>
                     <MultiSelect
                       style={FirstPropertyStyle.dropdown}

@@ -26,6 +26,8 @@ import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { launchCamera, launchImageLibrary } from "react-native-image-picker";
+import IndividualSignup from "./IndividualSignup/IndividualSignup";
+import CompanySignup from "./CompanySignup/CompanySignup";
 const labels = ["Step 1", "Step 2", "Step 3"];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -167,11 +169,11 @@ export default AboutYou = (props) => {
     );
   };
 
-  const handleImageNameChange = async (newImageName) => {
-    setImageName(newImageName);
-    console.log("................ImageNAme", newImageName);
-    console.log("................ImageNAmeDeependra", newImageName.path);
-  };
+  // const handleImageNameChange = async (newImageName) => {
+  //   setImageName(newImageName);
+  //   console.log("................ImageNAme", newImageName);
+  //   console.log("................ImageNAmeDeependra", newImageName.path);
+  // };
 
   const renderItem = ({ item }) => (
     <ServicesBox
@@ -258,9 +260,9 @@ export default AboutYou = (props) => {
     // else if (ImageName) {
     //   setImageError("");
     // }
-    else {
-      setImageError("Please select an image before proceeding.");
-    }
+    // else {
+    //   setImageError("Please select an image before proceeding.");
+    // }
   };
 
   const selectedServiceKeysString = selectedServices.join(",");
@@ -372,16 +374,16 @@ export default AboutYou = (props) => {
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
         : stepStatus === "finished"
-          ? "#000000"
-          : "#808080";
+        ? "#000000"
+        : "#808080";
     const iconName =
       position === 0
         ? "Account"
         : position === 1
-          ? "About you"
-          : position === 2
-            ? "First Property"
-            : "circle";
+        ? "About you"
+        : position === 2
+        ? "First Property"
+        : "circle";
 
     return (
       <View style={{}}>
@@ -423,6 +425,19 @@ export default AboutYou = (props) => {
     setImageName(result?.assets);
     console.log("result_data...", result?.assets);
   };
+
+  // tab code here .....
+  const [tabValue, setTabValue] = useState("IndividualSignup");
+  const checkTabs = () => {
+    switch (tabValue) {
+      case "IndividualSignup":
+        return <IndividualSignup />;
+      case "CompanySignup":
+        return <CompanySignup />;
+      default:
+        return <IndividualSignup />;
+    }
+  };
   return (
     <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
       <TopHeader MiddleText={"Account set up"} onPressLeftButton={goBack} />
@@ -442,8 +457,8 @@ export default AboutYou = (props) => {
           <Text style={AboutYouStyle.heading_Text}>
             {"Tell us more about you"}
           </Text>
-          <Text style={AboutYouStyle.profile_Text}>{"Profile photo"}</Text>
-          <TouchableOpacity
+          {/* <Text style={AboutYouStyle.profile_Text}>{"Profile photo"}</Text> */}
+          {/* <TouchableOpacity
             style={AboutYouStyle.logoContainer}
             onPress={() => {
               refRBSheet.current.open();
@@ -457,14 +472,16 @@ export default AboutYou = (props) => {
             ) : (
               <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
             )}
-          </TouchableOpacity>
-          {ImageName ? null : (
+          </TouchableOpacity> */}
+          {/* {ImageName ? null : (
             <Text style={AboutYouStyle.error_text}>{imageError}</Text>
-          )}
+          )} */}
 
-          {ImageName ? refRBSheet.current.close() : null}
+          {/* {ImageName ? refRBSheet.current.close() : null} */}
           <Text style={AboutYouStyle.want_Heading}>
-            {"How would you describe yourself? (you can select multiple options)"}
+            {
+              "How would you describe yourself? (you can select multiple options)"
+            }
           </Text>
           <FlatList
             data={kodieDescribeYourselfData}
@@ -473,7 +490,7 @@ export default AboutYou = (props) => {
             numColumns={2}
           />
           {kodieDescribeYourselfId === 2 ||
-            kodieDescribeYourselfId === 4 ? null : (
+          kodieDescribeYourselfId === 4 ? null : (
             <View>
               <Text style={AboutYouStyle.want_Heading}>
                 {"How many properties do you own, manage or rent?"}
@@ -486,6 +503,74 @@ export default AboutYou = (props) => {
               />
             </View>
           )}
+
+          {/* Tab component code here...... */}
+          <View style={AboutYouStyle.tabmainview}>
+            <Text style={AboutYouStyle.tabheadingtext}>
+              How do you run your business?
+            </Text>
+            <View style={AboutYouStyle.btn_main_view}>
+              <TouchableOpacity
+                style={[
+                  AboutYouStyle.person_view,
+                  {
+                    backgroundColor:
+                      tabValue === "IndividualSignup"
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_WhiteColor,
+                  },
+                ]}
+                onPress={() => {
+                  setTabValue("IndividualSignup");
+                }}
+              >
+                <Text
+                  style={[
+                    AboutYouStyle.person_text,
+                    {
+                      color:
+                        tabValue === "IndividualSignup"
+                          ? _COLORS.Kodie_WhiteColor
+                          : _COLORS.Kodie_BlackColor,
+                    },
+                  ]}
+                >
+                  {"Individual"}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  AboutYouStyle.person_view,
+                  {
+                    backgroundColor:
+                      tabValue === "CompanySignup"
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_WhiteColor,
+                  },
+                ]}
+                onPress={() => {
+                  setTabValue("CompanySignup");
+                }}
+              >
+                <Text
+                  style={[
+                    AboutYouStyle.company_text,
+                    {
+                      color:
+                        tabValue === "CompanySignup"
+                          ? _COLORS.Kodie_WhiteColor
+                          : _COLORS.Kodie_BlackColor,
+                    },
+                  ]}
+                >
+                  {"Company"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {checkTabs()}
+
           <Text style={AboutYouStyle.want_Heading}>
             {"What do you want to do first with Kodie"}
           </Text>
@@ -499,7 +584,7 @@ export default AboutYou = (props) => {
             renderItem={wantList}
           />
 
-          <RBSheet
+          {/* <RBSheet
             ref={refRBSheet}
             // closeOnDragDown={true}
             closeOnPressMask={true}
@@ -539,11 +624,11 @@ export default AboutYou = (props) => {
             <Text>{"open gallery"}</Text>
           </TouchableOpacity> */}
 
-            <UploadImageData
+            {/* <UploadImageData
               heading_Text={"Upload image"}
               ImageName={handleImageNameChange}
-            />
-          </RBSheet>
+            /> */}
+          {/* </RBSheet> */}
         </View>
         <View style={{ marginHorizontal: 16 }}>
           <CustomSingleButton
@@ -551,41 +636,41 @@ export default AboutYou = (props) => {
             _ButtonText={"Next"}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={() => {
-              // props.navigation.navigate("FirstProperty", {
-              //   firstName: firstName,
-              //   lastName: lastName,
-              //   mobileNumber: mobileNumber,
-              //   physicalAddress: physicalAddress,
-              //   organisation: organisation,
-              //   referral: referral,
-              //   selectManageProperty: selectManageProperty,
-              //   selectedServiceKeysString: selectedServiceKeysString,
-              //   kodieHelpValue: kodieHelpValue,
-              //   ImageName: ImageName,
-              //   email: email,
-              //   country: country,
-              //   state: state,
-              //   city: city,
-              //   p_latitude: p_latitude,
-              //   p_longitude: p_longitude,
-              //   user_key: user_key,
-              // });
-              handle_profile_photo();
+              props.navigation.navigate("FirstProperty", {
+                firstName: firstName,
+                lastName: lastName,
+                mobileNumber: mobileNumber,
+                physicalAddress: physicalAddress,
+                organisation: organisation,
+                referral: referral,
+                selectManageProperty: selectManageProperty,
+                selectedServiceKeysString: selectedServiceKeysString,
+                kodieHelpValue: kodieHelpValue,
+                // ImageName: ImageName,
+                email: email,
+                country: country,
+                state: state,
+                city: city,
+                p_latitude: p_latitude,
+                p_longitude: p_longitude,
+                user_key: user_key,
+              });
+              // handle_profile_photo();
             }}
           />
         </View>
-        <View style={{ marginHorizontal: 16 ,marginBottom:10}}>
+        <View style={{ marginHorizontal: 16, marginBottom: 10 }}>
           <CustomSingleButton
             disabled={isLoading ? true : false}
             _ButtonText={"Fill these details out later"}
             Text_Color={_COLORS.Kodie_BlackColor}
             backgroundColor={_COLORS.Kodie_WhiteColor}
             onPress={() => {
-              if (ImageName) {
+              // if (ImageName) {
                 props.navigation.navigate("FirstProperty");
-              } else {
-                setImageError("Please select an image before proceeding.");
-              }
+              // } else {
+              //   setImageError("Please select an image before proceeding.");
+              // }
             }}
           />
         </View>

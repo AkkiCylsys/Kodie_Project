@@ -9,6 +9,94 @@ export const AccountStyle = StyleSheet.create({
     fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
   },
+  profilviewmain: {
+    alignItems: "center",
+    marginTop: 10,
+    paddingTop: 10,
+  },
+  ProfileView: {
+    width: 140,
+    height: 140,
+    borderRadius: 140 / 2,
+    backgroundColor: "#F5F5F5",
+    justifyContent: "center",
+    alignItems: "center",
+    // marginTop: 20,
+    marginHorizontal: 16,
+    alignItems: "center",
+  },
+  logo: {
+    width: 110,
+    height: 110,
+    // resizeMode: "cover",
+  },
+  profilelogo: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_ExtraLiteGrayColor,
+  },
+  editlogoview: {
+    position: "absolute",
+    top: 100,
+    right: 10,
+    backgroundColor: "#F5F5F5",
+    borderRadius: 12,
+    padding: 5,
+    width: 35,
+    height: 35,
+    // borderWidth:1,
+    borderRadius: 35 / 2,
+    alignSelf: "center",
+  },
+  edittext: {
+    marginTop: 24,
+    marginHorizontal: 16,
+    fontSize: 16,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  upload_View: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  uploadImgText: {
+    marginHorizontal: 16,
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 20,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
+  crossIconStyle: { alignSelf: "center", marginRight: 10 },
+  bottomModal_container: {
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
+  inputContainerbio: {
+    marginBottom: 15,
+  },
+  _texinputLabel: {
+    fontSize: 16,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    marginBottom: 12,
+  },
+  inputdescription: {
+    height: 120,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: '#333',
+    paddingLeft: 10,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  characterLimit:{
+    marginTop:5
+  },
   card: {
     width: "100%",
     backgroundColor: _COLORS.Kodie_TransparentColor,
@@ -22,6 +110,9 @@ export const AccountStyle = StyleSheet.create({
   },
   inputContainer: {
     // marginBottom:5,
+  },
+  referralcode:{
+    marginTop:15
   },
   input: {
     height: 48,

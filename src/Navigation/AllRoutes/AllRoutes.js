@@ -133,6 +133,8 @@ import CreditCard from "../../screens/PaymentMethod/CreditCard/CreditCard";
 import CompanyInProfile from "../../screens/Landlord/Landlordprofile/CompanyDetails/Company/CompanyInProfile";
 import IndividualInProfile from "../../screens/Landlord/Landlordprofile/CompanyDetails/Individual/IndividualInProfile";
 import SubscriptionScreen from "../../screens/Subscription/SubscriptionScreen";
+import IndividualSignup from "../../screens/Authentication/SignUpScreen/AboutYou/IndividualSignup/IndividualSignup";
+import CompanySignup from "../../screens/Authentication/SignUpScreen/AboutYou/CompanySignup/CompanySignup";
 const Tab = createBottomTabNavigator();
 const BottomNav = (props) => {
   return (
@@ -631,6 +633,16 @@ const AllStackRouts = (props) => {
         <Stack.Screen
           name={"AboutYou"}
           component={AboutYou}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"IndividualSignup"}
+          component={IndividualSignup}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name={"CompanySignup"}
+          component={CompanySignup}
           options={{ headerShown: false }}
         />
         <Stack.Screen
