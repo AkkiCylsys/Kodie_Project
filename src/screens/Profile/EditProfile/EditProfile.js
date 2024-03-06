@@ -112,19 +112,17 @@ const EditProfile = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     // setFullName(loginData?.Account_details[0]?.UAD_FIRST_NAME);
     // setEmail(loginData?.Login_details?.email);
     // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
     // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
     setActiveTab(profileDoc ? "Tab3" : "Tab1");
-  }, [currentLocation]);
+  }, []);
   const goBack = () => {
     props.navigation.pop();
   };
   const ConfirmAddress = () => {
     setIsMap(false);
-    setCurrentLocation(true);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -147,102 +145,15 @@ const EditProfile = (props) => {
     getAddress(Region.latitude, Region.longitude);
     getAddress();
   };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location");
-        // alert("You can use the location");
-        // getAddressWithCordinates();
-        fetchCurrentLocation();
-      } else {
-        console.log("location permission denied");
-        alert("Location permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then((result) => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              "This feature is not available (on this device / in this context)"
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              "The permission has not been requested / is denied but requestable"
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log("The permission is limited: some actions are possible");
-            break;
-          case RESULTS.GRANTED:
-            console.log("The permission is granted");
-            // getAddressWithCordinates();
-            fetchCurrentLocation();
-            break;
-          case RESULTS.BLOCKED:
-            console.log("The permission is denied and not requestable anymore");
-            break;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const fetchCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        console.log("This is your current location.");
-        if (activeTab === "Tab1") {
-          setlatitude(position.coords.latitude);
-          console.log("profile latitute....", position.coords.latitude);
-        } else {
-          setCompany_latitude(position.coords.latitude);
-          console.log("company latitude....", position.coords.latitude);
-        }
-        if (activeTab === "Tab1") {
-          setlongitude(position.coords.longitude);
-          console.log("profile longitude....", position.coords.longitude);
-        } else {
-          setCompany_longitude(position.coords.longitude);
-          console.log("company longitude....", position.coords.longitude);
-        }
-      },
-      (error) => {
-        console.error("Error fetching location:", error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      }
-    );
-  };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
         if (activeTab === "Tab1") {
-          currentLocation
-            ? setLocation(json.results[0].formatted_address)
-            : null;
+          setLocation(json.results[0].formatted_address);
         } else {
-          currentLocation
-            ? setCompanyPhysicaladdress(json.results[0].formatted_address)
-            : null;
+          setCompanyPhysicaladdress(json.results[0].formatted_address);
         }
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
@@ -335,7 +246,6 @@ const EditProfile = (props) => {
   };
 
   const openMap = () => {
-    Platform.OS == "ios" ? CheckIOSMapPermission : checkpermissionlocation();
     setIsMap(true);
   };
   const checkTabs = () => {
@@ -535,9 +445,6 @@ const EditProfile = (props) => {
                       <TouchableOpacity
                         style={EditProfileStyle.locationIconView}
                         onPress={() => {
-                          Platform.OS == "ios"
-                            ? CheckIOSMapPermission
-                            : checkpermissionlocation();
                           setIsMap(true);
                         }}
                       >
@@ -732,19 +639,15 @@ const EditProfile = (props) => {
             />
           </View>
           <TouchableOpacity
-              style={EditProfileStyle.c_locationBtn}
-              onPress={() => {
-                Platform.OS == "ios"
-                  ? CheckIOSMapPermission()
-                  : checkpermissionlocation();
-              }}
-            >
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity>
+            style={EditProfileStyle.c_locationBtn}
+            onPress={() => {}}
+          >
+            <Entypo
+              name="location-pin"
+              size={30}
+              color={_COLORS.Kodie_lightGreenColor}
+            />
+          </TouchableOpacity>
           <TouchableOpacity
             style={EditProfileStyle.BtnContainer}
             onPress={ConfirmAddress}

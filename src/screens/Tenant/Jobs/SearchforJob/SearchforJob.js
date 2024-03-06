@@ -118,83 +118,12 @@ export default SearchForJob = (props) => {
     getAddress(Region.latitude, Region.longitude);
     getAddress();
   };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: "Example App",
-          message: "Example App access to your location ",
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log("You can use the location");
-        fetchCurrentLocation()
-      } else {
-        console.log("location permission denied");
-        alert("Location permission denied");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then((result) => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              "This feature is not available (on this device / in this context)"
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              "The permission has not been requested / is denied but requestable"
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log("The permission is limited: some actions are possible");
-            break;
-          case RESULTS.GRANTED:
-            console.log("The permission is granted");
-            fetchCurrentLocation()
-            break;
-          case RESULTS.BLOCKED:
-            console.log("The permission is denied and not requestable anymore");
-            break;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  const fetchCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      (position) => {
-        console.log("This is your current location.");
-        const { latitude, longitude } = position.coords;
-        console.log("position.coords....", position.coords);
-        setlatitude(latitude);
-        setlongitude(longitude);
-        getAddress(latitude, longitude);
-      },
-      (error) => {
-        console.error("Error fetching location:", error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      }
-    );
-  };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        currentLocation ? setLocation(json.results[0].formatted_address) : null;
+        setLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -237,7 +166,6 @@ export default SearchForJob = (props) => {
     Geocoder.init("AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw", {
       language: "en",
     });
-    Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     // setSelectJobType("");
     // setservicesValue("");
     // setAboutyourNeed("");
@@ -245,7 +173,7 @@ export default SearchForJob = (props) => {
     // setProperty_value("");
 
     // setRatingThresholdValue("");
-  }, [selectJobType, priceRanges,currentLocation]);
+  }, [selectJobType, priceRanges]);
   const populorServiceRender = ({ item }) => {
     return (
       <View style={CreateJobFirstStyle.item}>
@@ -676,9 +604,6 @@ export default SearchForJob = (props) => {
           <TouchableOpacity
               style={CreateJobFirstStyle.c_locationBtn}
               onPress={() => {
-                Platform.OS == "ios"
-                  ? CheckIOSMapPermission()
-                  : checkpermissionlocation();
               }}
             >
               <Entypo
@@ -830,9 +755,6 @@ export default SearchForJob = (props) => {
               <TouchableOpacity
                 style={CreateJobFirstStyle.locationIconView}
                 onPress={() => {
-                  Platform.OS == "ios"
-                    ? CheckIOSMapPermission
-                    : checkpermissionlocation();
                   setIsMap(true);
                 }}
               >
