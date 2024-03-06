@@ -178,7 +178,6 @@ const Chat = props => {
             style={{
               alignItems: 'center',
               justifyContent: 'space-between',
-              // marginHorizontal: 10,
               marginLeft: 18,
               marginBottom: 8,
             }}>
