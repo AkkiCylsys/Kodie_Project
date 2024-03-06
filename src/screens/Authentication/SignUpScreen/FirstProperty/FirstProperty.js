@@ -430,6 +430,7 @@ export default FirstProperty = props => {
     }
   };
   const registerUser = async () => {
+    setIsLoading(true);
     const userId = uuid.v4();
     const storageRef = storage().ref(`user_images/${userId}`);
     await storageRef.putFile(ImageName.path);
@@ -467,6 +468,7 @@ export default FirstProperty = props => {
       handleSaveSignup();
     } catch (error) {
       console.error('Error creating user:', error);
+      setIsLoading(false);
     }
   };
 
@@ -571,7 +573,12 @@ export default FirstProperty = props => {
     }
   };
   const registerUserfill = async () => {
+    setIsLoading(true);
     const userId = uuid.v4();
+    const storageRef = storage().ref(`user_images/${userId}`);
+    await storageRef.putFile(ImageName.path);
+
+    const downloadURL = await storageRef.getDownloadURL();
     try {
       await firestore()
         .collection('Users')
@@ -582,11 +589,12 @@ export default FirstProperty = props => {
           mobile: mobileNumber,
           userId: userId,
           user_key: String(user_key),
-          image: {
-            uri: ImageName?.path || '',
-            type: ImageName?.mime || 'image/jpeg',
-            name: String(ImageName?.path.split('/').pop()),
-          },
+          image: downloadURL,
+          // image: {
+          //   uri: ImageName?.path || '',
+          //   type: ImageName?.mime || 'image/jpeg',
+          //   name: String(ImageName?.path.split('/').pop()),
+          // },
         });
       console.log('User created');
 
@@ -603,6 +611,7 @@ export default FirstProperty = props => {
       handleSaveSignupfill();
     } catch (error) {
       console.error('Error creating user:', error);
+      setIsLoading(false);
     }
   };
   const goBack = () => {

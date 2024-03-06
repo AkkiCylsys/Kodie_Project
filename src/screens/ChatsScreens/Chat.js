@@ -22,12 +22,10 @@ import {_goBack} from '../../services/CommonServices';
 import {IMAGES, _COLORS} from '../../Themes';
 import {useSelector} from 'react-redux';
 import {fontFamily} from '../../Themes/FontStyle/FontStyle';
-import {useNavigation} from '@react-navigation/native';
-import RNFS from 'react-native-fs';
+import storage from '@react-native-firebase/storage';
 const Chat = props => {
   const [messageList, setMessageList] = useState([]);
   const route = useRoute();
-  const navigation = useNavigation();
   const [pendingMessage, setPendingMessage] = useState(null);
   const userData = route.params.data;
   console.log(route.params.data, 'datadatadatadatadata');
@@ -36,7 +34,7 @@ const Chat = props => {
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
-  const [imagePathUrl, setImagePathUrl] = useState([]);
+
   const openOptionsModal = () => {
     setOptionsModalVisible(true);
   };
@@ -90,18 +88,19 @@ const Chat = props => {
 
   const onSend = messageArray => {
     const msg = messageArray[0];
-    const {type, text, uri, video, _id, pdf, ...otherProps} = msg;
+    const {type, text, uri, video, pdf, ...otherProps} = msg;
     const mymsg = {
       ...msg,
-      _id: uuid.v4(),
       sentBy: loginData.Login_details.user_id,
       sentTo: route.params.userid,
 
       createdAt: new Date(),
-      user: {_id: loginData.Login_details.user_id},
-      image: imagePathUrl,
+      user: {
+        _id: loginData.Login_details.user_id,
+        avatar: loginData.Login_details.profile_photo_path,
+      },
     };
-    console.log(loginData.Login_details.user_id, 'idsent');
+
     setMessageList(previousMessages =>
       GiftedChat.append(previousMessages, mymsg),
     );
@@ -120,15 +119,17 @@ const Chat = props => {
   const pickImageOrPdf = async () => {
     try {
       const result = await ImagePicker.openPicker({
-        multiple: false,
+        multiple: true,
         mediaType: 'any',
         compressImageQuality: Platform.OS === 'ios' ? 0.8 : 1,
-        // cropping: false,
       });
-      if (result.mime && result.mime.startsWith('image')) {
-        onSend([{image: result}]);
+      const userId = uuid.v4();
+      const storageRef = storage().ref(`images/${userId}`);
+      await storageRef.putFile(result.path);
 
-        console.log(result.data, 'firebaseimg');
+      const downloadURL = await storageRef.getDownloadURL();
+      if (result.mime && result.mime.startsWith('image')) {
+        onSend([{image: downloadURL}]);
       } else if (result.mime && result.mime.startsWith('application/pdf')) {
         onSend([{pdf: result.path}]);
       }
@@ -141,35 +142,17 @@ const Chat = props => {
     try {
       const result = await ImagePicker.openCamera({
         compressImageQuality: Platform.OS === 'ios' ? 0.8 : 1,
-        // cropping: false,
       });
+      const userId = uuid.v4();
+      const storageRef = storage().ref(`images/${userId}`);
+      await storageRef.putFile(result.path);
 
-      const imageUrl = await uploadImageToFirebase(result.path);
-
+      const downloadURL = await storageRef.getDownloadURL();
       if (result.mime && result.mime.startsWith('image')) {
-        onSend([{image: imageUrl}]);
+        onSend([{image: downloadURL}]);
       }
     } catch (error) {
       console.log('Error picking image from camera:', error);
-    }
-  };
-  const uploadImageToFirebase = async imagePath => {
-    try {
-      // Create a unique filename for the image
-      const imageName = uuid.v4();
-      const imageRef = storage().ref().child(`images/${imageName}`);
-
-      // Upload image to Firebase Storage
-      await imageRef.putFile(imagePath);
-
-      // Get the download URL of the uploaded image
-      const imageUrl = await imageRef.getDownloadURL();
-      console.log(imageUrl, 'firebase image URL');
-
-      return imageUrl;
-    } catch (error) {
-      console.error('Error uploading image to Firebase:', error);
-      throw error;
     }
   };
 
@@ -237,6 +220,51 @@ const Chat = props => {
         onLongPress={() => {
           setSelectedMessage(props.currentMessage);
           openDeleteModal();
+        }}
+        renderAvatar={renderAvatar(props)}>
+        {props.currentMessage?.user?._id !==
+          loginData.Login_details.user_id && (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginLeft: isCurrentUser ? 0 : 8,
+            }}>
+            <Image
+              source={IMAGES.userImage} // Replace with the appropriate image source
+              style={{
+                width: 24,
+                height: 24,
+                borderRadius: 12,
+                marginRight: 4,
+              }}
+            />
+            <Text
+              style={{
+                color: _COLORS.Kodie_GreenColor,
+                fontSize: 12,
+              }}>
+              {props.currentMessage?.user?.name
+                ? props.currentMessage.user.name
+                    .split(' ')
+                    .map(word => word[0])
+                    .join('')
+                : ''}
+            </Text>
+          </View>
+        )}
+      </Bubble>
+    );
+  };
+  const renderAvatar = props => () => {
+    return (
+      <Image
+        source={{uri: props.currentMessage?.user?.avatar}}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          marginRight: 8,
         }}
       />
     );
@@ -321,16 +349,14 @@ const Chat = props => {
         MiddleText={
           route.params.chatname ? route.params.name : `${userData.name}`
         }
-        onPressLeftButton={() => {
-          route.params.chatname ? navigation.navigate('Chats') : _goBack(props);
-        }}
+        onPressLeftButton={() => _goBack(props)}
       />
       <GiftedChat
         messages={messageList}
         onSend={onSend}
         user={{
           _id: loginData.Login_details.user_id,
-          avatar: IMAGES.userImage,
+          avatar: loginData.Login_details.profile_photo_path,
         }}
         // renderActions={renderActions}
         alwaysShowSend
