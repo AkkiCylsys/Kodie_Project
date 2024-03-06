@@ -3,9 +3,10 @@ import { _COLORS,FONTFAMILY } from "../../../Themes";
 
 export const GeneralSettingStyle = StyleSheet.create({
    main:{
+   
     flexDirection:'row',
     justifyContent:'space-between',
-    marginHorizontal:15,
+   //  marginHorizontal:15,
     alignItems:'center'
    },
    bindview:{
@@ -22,13 +23,14 @@ export const GeneralSettingStyle = StyleSheet.create({
     fontSize:12,
     color:_COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily:FONTFAMILY.K_SemiBold,
-    marginHorizontal:15
+    marginHorizontal:15,
    },
    image:{
     width:20,
     height:20
    },
    imageview:{
+      borderWidth:1,
       width:38,
       height:38,
       borderWidth:0.4,

@@ -27,14 +27,14 @@ export const AppInfoStyle = StyleSheet.create({
   },
 
   mainlogo: {
-    marginVertical:40,
+    marginVertical:27,
     width: 220,
     height: 43,
   },
 
   timedurationview: {
     alignItems: "center",
-    marginVertical:50
+    // marginVertical:50
   },
 
   timedurationtext: {

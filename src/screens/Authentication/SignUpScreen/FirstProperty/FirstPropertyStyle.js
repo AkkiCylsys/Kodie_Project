@@ -25,6 +25,22 @@ export const FirstPropertyStyle = StyleSheet.create({
     padding: 20,
     marginBottom: 20,
   },
+  addition_featureView: {
+    marginTop: 15,
+  },
+  Furnished_Text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 13,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  additional_Text: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  addition_featureView: {
+    marginTop: 15,
+  },
   inputContainer: {
     marginBottom: 15,
   },

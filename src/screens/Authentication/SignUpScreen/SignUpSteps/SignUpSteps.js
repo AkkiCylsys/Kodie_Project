@@ -36,7 +36,10 @@ import Geolocation from '@react-native-community/geolocation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {BackHandler} from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import RBSheet from 'react-native-raw-bottom-sheet';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
+import UploadImageData from '../../../../components/Molecules/UploadImage/UploadImage';
 
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -76,8 +79,11 @@ const SignUpSteps = props => {
 
   const [isLoading, setIsLoading] = useState(false);
   const ref = React.useRef(null);
+  const refRBSheet = useRef();
+  const [ImageName, setImageName] = useState('');
   const scrollViewRef = useRef();
   const [currentPage, setCurrentPage] = useState(0);
+  const [bio, setBio] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
@@ -121,6 +127,10 @@ const SignUpSteps = props => {
     }, [IsMap, IsSearch]),
   );
 
+  const handleImageNameChange = async newImageName => {
+    setImageName(newImageName);
+    console.log(newImageName, 'ImageNAme');
+  };
   console.log('Country:', country);
   console.log('State:', state);
   console.log('City:', city);
@@ -423,6 +433,44 @@ const SignUpSteps = props => {
             {'Introduce yourself to Kodie'}
           </Text>
         </View>
+
+        <Text style={AccountStyle.edittext}>Profile photo</Text>
+        <View style={[AccountStyle.profilviewmain, {flex: 1}]}>
+          <TouchableOpacity
+            style={AccountStyle.ProfileView}
+            onPress={() => {
+              refRBSheet.current.open();
+            }}>
+            {ImageName ? (
+              <Image
+                source={{uri: ImageName.path || ImageName}}
+                style={[AccountStyle.logo, {borderRadius: 110 / 2}]}
+              />
+            ) : (
+              <Image
+                style={AccountStyle.profilelogo}
+                source={
+                  {
+                    // uri: loginData?.Login_details?.profile_photo_path,
+                  }
+                }
+                resizeMode="cover"
+              />
+            )}
+
+            {ImageName ? refRBSheet.current.close() : null}
+            <View style={AccountStyle.editlogoview}>
+              <FontAwesome
+                name="edit"
+                color={_COLORS.Kodie_GreenColor}
+                size={18}
+                style={{alignSelf: 'center'}}
+              />
+            </View>
+          </TouchableOpacity>
+          {/* <Text style={AccountStyle.edittext}>Edit profile photo</Text> */}
+        </View>
+
         <View style={AccountStyle.card}>
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>
@@ -462,6 +510,25 @@ const SignUpSteps = props => {
             />
             <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
           </View>
+
+          <View style={AccountStyle.inputContainerbio}>
+            <Text style={LABEL_STYLES._texinputLabel}>Bio</Text>
+            <TextInput
+              style={AccountStyle.inputdescription}
+              value={bio}
+              onChangeText={setBio}
+              placeholder="Tell us a bit more about yourself"
+              placeholderTextColor="#999"
+              multiline
+              numberOfLines={5}
+              maxLength={1000}
+              textAlignVertical={'top'}
+            />
+            {/* <Text style={AccountStyle.characterLimit}>
+              {bio.length}/1000
+            </Text> */}
+          </View>
+
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>
               Current physical address
@@ -498,8 +565,8 @@ const SignUpSteps = props => {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={AccountStyle.inputContainer}>
-            <Text style={[LABEL_STYLES._texinputLabel, {marginTop: 16}]}>
+          {/* <View style={AccountStyle.inputContainer}>
+            <Text style={[LABEL_STYLES._texinputLabel, { marginTop: 16 }]}>
               Organisation name
             </Text>
             <TextInput
@@ -514,8 +581,9 @@ const SignUpSteps = props => {
             {
               'Your organisation name will be used in emails and SMS correspondence from Kodie.'
             }
-          </Text>
-          <View style={AccountStyle.inputContainer}>
+          </Text> */}
+          <View
+            style={[AccountStyle.inputContainer, AccountStyle.referralcode]}>
             <Text style={LABEL_STYLES._texinputLabel}>Referral code</Text>
             <TextInput
               style={AccountStyle.input}
@@ -526,6 +594,41 @@ const SignUpSteps = props => {
             />
           </View>
         </View>
+
+        {/*----------- first RBSheet of signup first steps ---------*/}
+        <RBSheet
+          ref={refRBSheet}
+          height={200}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: AccountStyle.bottomModal_container,
+          }}>
+          <View style={AccountStyle.upload_View}>
+            <Text style={AccountStyle.uploadImgText}>
+              {props.heading_Text || 'Upload image'}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                refRBSheet.current.close();
+              }}>
+              <Entypo
+                name="cross"
+                size={25}
+                color={_COLORS.Kodie_BlackColor}
+                style={AccountStyle.crossIconStyle}
+              />
+            </TouchableOpacity>
+          </View>
+          <UploadImageData
+            heading_Text={'Upload image'}
+            ImageName={handleImageNameChange}
+          />
+        </RBSheet>
       </ScrollView>
     );
   };

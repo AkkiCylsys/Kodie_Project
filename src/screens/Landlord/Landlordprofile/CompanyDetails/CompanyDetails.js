@@ -33,6 +33,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
 import { useDispatch, useSelector } from "react-redux";
 import PhoneInput from "react-native-phone-number-input";
+import CompanyInProfile from "./Company/CompanyInProfile";
+import IndividualInProfile from "./Individual/IndividualInProfile";
 
 const data = [
   { label: "Item 1", value: "1" },
@@ -507,6 +509,18 @@ export default CompanyDetails = (props) => {
       setIsLoading(false);
     }
   };
+
+  const [tabValue, setTabValue] = useState("IndividualInProfile");
+  const checkTabs = () => {
+    switch (tabValue) {
+      case "IndividualInProfile":
+        return <IndividualInProfile />;
+      case "CompanyInProfile":
+        return <CompanyInProfile />;
+      default:
+        return <IndividualInProfile />;
+    }
+  };
   return (
     <>
       <View style={CompanyDetailsStyle.mainContaier}>
@@ -524,11 +538,11 @@ export default CompanyDetails = (props) => {
               />
             ) : (
               <Image
+                style={CompanyDetailsStyle.profilelogo}
                 source={{
-                  uri: getCompanyData[0]?.company_logo,
+                  uri: loginData?.Login_details?.profile_photo_path,
                 }}
                 resizeMode="cover"
-                style={CompanyDetailsStyle.profilelogo}
               />
             )}
             {ImageName ? refRBSheet.current.close() : null}
@@ -548,7 +562,75 @@ export default CompanyDetails = (props) => {
           <Text style={CompanyDetailsStyle.edittext}>Edit company logo</Text>
         </View>
         <Divider style={CompanyDetailsStyle.firstdivider} />
-        <View style={CompanyDetailsStyle.card}>
+
+        {/* Tab component code here...... */}
+        <View style={CompanyDetailsStyle.tabmainview}>
+          <Text style={CompanyDetailsStyle.tabheadingtext}>
+            How do you run your business?
+          </Text>
+          <View style={CompanyDetailsStyle.btn_main_view}>
+            <TouchableOpacity
+              style={[
+                CompanyDetailsStyle.person_view,
+                {
+                  backgroundColor:
+                    tabValue === "IndividualInProfile"
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              onPress={() => {
+                setTabValue("IndividualInProfile");
+              }}
+            >
+              <Text
+                style={[
+                  CompanyDetailsStyle.person_text,
+                  {
+                    color:
+                      tabValue === "IndividualInProfile"
+                        ? _COLORS.Kodie_WhiteColor
+                        : _COLORS.Kodie_BlackColor,
+                  },
+                ]}
+              >
+                {"Individual"}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                CompanyDetailsStyle.person_view,
+                {
+                  backgroundColor:
+                    tabValue === "CompanyInProfile"
+                      ? _COLORS.Kodie_GreenColor
+                      : _COLORS.Kodie_WhiteColor,
+                },
+              ]}
+              onPress={() => {
+                setTabValue("CompanyInProfile");
+              }}
+            >
+              <Text
+                style={[
+                  CompanyDetailsStyle.company_text,
+                  {
+                    color:
+                      tabValue === "CompanyInProfile"
+                        ? _COLORS.Kodie_WhiteColor
+                        : _COLORS.Kodie_BlackColor,
+                  },
+                ]}
+              >
+                {"Company"}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {checkTabs()}
+
+        {/* <View style={CompanyDetailsStyle.card}>
           <View style={CompanyDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Company name"}</Text>
             <TextInput
@@ -581,31 +663,7 @@ export default CompanyDetails = (props) => {
             <Text style={LABEL_STYLES.commontext}>
               {"Company phone number"}
             </Text>
-            {/* <View style={CompanyDetailsStyle.phoneinputbindview}>
-              <View style={CompanyDetailsStyle.phoneinput}>
-                <View style={CompanyDetailsStyle.bindnumberview}>
-                  <Text style={CompanyDetailsStyle.numbercode}>+61</Text>
-                  <Ionicons
-                    name="chevron-down-outline"
-                    size={20}
-                    color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={"contain"}
-                  />
-                  <Image
-                    style={CompanyDetailsStyle.lineimg}
-                    source={IMAGES.verticalLine}
-                  />
-                  <TextInput
-                    value={phoneNumber}
-                    onChangeText={setPhoneNumber}
-                    keyboardType="numeric"
-                    placeholder="1234567890"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                    maxLength={10}
-                  />
-                </View>
-              </View>
-            </View> */}
+          
             <View style={[CompanyDetailsStyle.simpleinputview]}>
               <PhoneInput
                 ref={phoneInput}
@@ -734,7 +792,7 @@ export default CompanyDetails = (props) => {
               placeholderTextColor="#999"
             />
           </View>
-        </View>
+        </View> */}
         <View style={CompanyDetailsStyle.saveBackButton}>
           <View style={CompanyDetailsStyle.secondview}>
             <CustomSingleButton

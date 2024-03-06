@@ -344,6 +344,8 @@ export default Account = props => {
                 {'Introduce yourself to Kodie'}
               </Text>
             </View>
+
+            
             <View style={AccountStyle.card}>
               <View style={AccountStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>

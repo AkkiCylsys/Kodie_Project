@@ -53,6 +53,62 @@ export const CompanyDetailsStyle = StyleSheet.create({
   },
   firstdivider: {
     marginTop: 20,
+    height:0.5,
+  },
+
+  // tab menu css here ..
+  tabmainview:{
+    marginHorizontal:16,
+    marginTop:16
+  },
+  tabheadingtext:{
+    color:_COLORS.Kodie_BlackColor,
+    fontSize:14,
+    fontFamily:FONTFAMILY.K_SemiBold
+  },
+  btn_main_view: {
+    flexDirection: "row",
+    justifyContent:'center',
+    alignItems:'center',
+    width:200,
+    height:40,
+    borderWidth: 1,
+    // padding: 5,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_GrayColor,
+    // backgroundColor: _COLORS.Kodie_LightGrayColor,
+    marginTop:12
+  },
+  person_view: {
+    backgroundColor: _COLORS.Kodie_GreenColor,
+    // padding:24,
+    borderRadius: 4,
+    height:28,
+    width:80,
+    flexDirection:'row',
+    alignItems:'center',
+    // justifyContent:'space-evenly',
+    justifyContent:'center',
+    marginRight:2
+
+  },
+  person_text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Medium,
+    alignSelf: "center",
+    // lineHeight:18,
+    letterSpacing:0.2,
+    // marginLeft: 8,
+  },
+  company_text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Medium,
+    alignSelf: "center",
+    // marginLeft: 8,
+    letterSpacing:0.2,
+    // lineHeight:18,
   },
   card: {
     width: "100%",

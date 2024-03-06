@@ -174,7 +174,7 @@ const DeleteAccount = (props) => {
           </Text>
         </View>
         <View style={DeleteAccountStyle.card}>
-          <Text style={LABEL_STYLES.commontext}>{"Company phone number"}</Text>
+          <Text style={LABEL_STYLES.commontext}>{"Phone number"}</Text>
           {/* <View style={DeleteAccountStyle.phoneinputbindview}> */}
           {/* <View style={DeleteAccountStyle.phoneinput}>
               <View style={DeleteAccountStyle.bindnumberview}>
@@ -200,8 +200,8 @@ const DeleteAccount = (props) => {
                 />
               </View>
             </View> */}
-          <View style={[DeleteAccountStyle.simpleinputview, { height: 55 }]}>
-            <PhoneInput
+          <View style={DeleteAccountStyle.simpleinputview}>
+            {/* <PhoneInput
               ref={phoneInput}
               defaultValue={phoneNumber}
               defaultCode="IN"
@@ -223,6 +223,31 @@ const DeleteAccount = (props) => {
               textContainerStyle={{
                 flex: 1,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
+              }}
+              containerStyle={{
+                flex: 1,
+                alignSelf: "center",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            /> */}
+            <PhoneInput
+              ref={phoneInput}
+              defaultValue={phoneNumber}
+              defaultCode="IN"
+              layout="second"
+              onChangeText={(text) => {
+                validateMobileNumber(text);
+              }}
+              placeholder={"Enter your phone number"}
+              onChangeFormattedText={(text) => {
+                setFormattedValue(text);
+              }}
+              autoFocus
+              textContainerStyle={{
+                flex: 1,
+                backgroundColor: _COLORS.Kodie_WhiteColor,
+                paddingVertical: 2,
               }}
               containerStyle={{
                 flex: 1,

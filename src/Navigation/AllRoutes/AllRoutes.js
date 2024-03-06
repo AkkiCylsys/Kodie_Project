@@ -132,6 +132,10 @@ import ApplePay from '../../screens/PaymentMethod/ApplePay/ApplePay';
 import CreditCard from '../../screens/PaymentMethod/CreditCard/CreditCard';
 import SubscriptionScreen from '../../screens/Subscription/SubscriptionScreen';
 import Chat from '../../screens/ChatsScreens/Chat';
+import CompanyInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Company/CompanyInProfile';
+import IndividualInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Individual/IndividualInProfile';
+import IndividualSignup from '../../screens/Authentication/SignUpScreen/AboutYou/IndividualSignup/IndividualSignup';
+import CompanySignup from '../../screens/Authentication/SignUpScreen/AboutYou/CompanySignup/CompanySignup';
 
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
@@ -619,6 +623,16 @@ const AllStackRouts = props => {
           options={{headerShown: false}}
         />
         <Stack.Screen
+          name={'IndividualSignup'}
+          component={IndividualSignup}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'CompanySignup'}
+          component={CompanySignup}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
           name={'CreateJobTermsScreen'}
           component={CreateJobTermsScreen}
           options={{headerShown: false}}
@@ -1030,6 +1044,16 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'CompanyDetails'}
           component={CompanyDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'CompanyInProfile'}
+          component={CompanyInProfile}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'IndividualInProfile'}
+          component={IndividualInProfile}
           options={{headerShown: false}}
         />
         <Stack.Screen
