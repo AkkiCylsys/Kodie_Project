@@ -1,6 +1,6 @@
 //ScreenNo:11
 //ScreenNo:12
-import React, { useState, useRef, useEffect } from "react";
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,27 +8,24 @@ import {
   TouchableOpacity,
   ScrollView,
   FlatList,
-} from "react-native";
-import { AboutYouStyle } from "./AboutYouStyle";
-import ServicesBox from "../../../../components/Molecules/ServicesBox/ServicesBox";
-import { IMAGES, _COLORS } from "../../../../Themes";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import RBSheet from "react-native-raw-bottom-sheet";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
-import TopHeader from "../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../services/CommonServices";
-import Entypo from "react-native-vector-icons/Entypo";
-import { Config } from "../../../../Config";
-import axios from "axios";
-import StepIndicator from "react-native-step-indicator";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { launchCamera, launchImageLibrary } from "react-native-image-picker";
-import IndividualSignup from "./IndividualSignup/IndividualSignup";
-import CompanySignup from "./CompanySignup/CompanySignup";
-const labels = ["Step 1", "Step 2", "Step 3"];
+} from 'react-native';
+import {AboutYouStyle} from './AboutYouStyle';
+import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBox';
+import {_COLORS} from '../../../../Themes';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import TopHeader from '../../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../../services/CommonServices';
+import {Config} from '../../../../Config';
+import axios from 'axios';
+import StepIndicator from 'react-native-step-indicator';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {launchImageLibrary} from 'react-native-image-picker';
+import IndividualSignup from './IndividualSignup/IndividualSignup';
+import CompanySignup from './CompanySignup/CompanySignup';
+const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
   currentStepIndicatorSize: 50,
@@ -43,24 +40,23 @@ const firstIndicatorSignUpStepStyle = {
   currentStepIndicatorLabelFontSize: 15,
   stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
   stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
-  stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+  stepIndicatorLabelUnFinishedColor: 'rgba(255,255,255,0.5)',
   labelColor: _COLORS.Kodie_BlackColor,
   labelSize: 14,
-  labelAlign: "center",
+  labelAlign: 'center',
 };
 
-const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+const getStepIndicatorIconConfig = ({position, stepStatus}) => {
   const iconConfig = {
-    name: "feed",
-    // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
-    color: stepStatus === "finished" ? "#ffffff" : "#ffffff",
+    name: 'feed',
+    color: stepStatus === 'finished' ? '#ffffff' : '#ffffff',
     size: 20,
   };
-  iconConfig.name = stepStatus === "finished" ? "check" : null;
+  iconConfig.name = stepStatus === 'finished' ? 'check' : null;
   return iconConfig;
 };
 
-export default AboutYou = (props) => {
+export default AboutYou = props => {
   let firstName = props?.route?.params?.firstName;
   let lastName = props?.route?.params?.lastName;
   let mobileNumber = props?.route?.params?.mobileNumber;
@@ -74,59 +70,65 @@ export default AboutYou = (props) => {
   let p_latitude = props?.route?.params?.p_latitude;
   let p_longitude = props?.route?.params?.p_longitude;
   let user_key = props?.route?.params?.user_key;
-  console.log("firstname..", firstName);
-  console.log("lastName..", lastName);
-  console.log("mobileNumber..", mobileNumber);
-  console.log("physicalAddress..", physicalAddress);
-  console.log("organisation..", organisation);
-  console.log("referral..", referral);
-  console.log("email..", email);
-  console.log("country..", country);
-  console.log("state..", state);
-  console.log("city..", city);
-  console.log("p_latitude..", p_latitude);
-  console.log("p_longitude..", p_longitude);
-  console.log("user_key_a..", user_key);
-
-  const scrollViewRef = useRef();
+  let image = props?.route?.params?.image;
+  let Bio = props?.route?.params?.Bio;
+  console.log('firstname..', firstName);
+  console.log('lastName..', lastName);
+  console.log('mobileNumber..', mobileNumber);
+  console.log('physicalAddress..', physicalAddress);
+  console.log('organisation..', organisation);
+  console.log('referral..', referral);
+  console.log('email..', email);
+  console.log('country..', country);
+  console.log('state..', state);
+  console.log('city..', city);
+  console.log('p_latitude..', p_latitude);
+  console.log('p_longitude..', p_longitude);
+  console.log('user_key_a..', user_key);
+  console.log('image', image);
+  console.log('Bio..', Bio);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
-  const [selectManageProperty, setSelectManageProperty] = useState("");
+  const [selectManageProperty, setSelectManageProperty] = useState('');
   const [selected, setSelected] = useState([]);
   const [kodiehelpData, setKodiehelpData] = useState([]);
   const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
-    []
+    [],
   );
   const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
-    useState("");
+    useState('');
   const [manage_property_Data, setmanage_property_Data] = useState([]);
-  const [property_value, setProperty_value] = useState([]);
-  const [ImageName, setImageName] = useState("");
-  const [imageError, setImageError] = useState(true);
-
+  const [ImageName, setImageName] = useState('');
   const [kodiehelplookupid, setKodiehelplookupid] = useState(0);
   const [selectedServices, setSelectedServices] = useState([]);
-  const [selectedkey_features, setSelectedkey_features] = useState([]);
   const [selectedLookupKeys, setSelectedLookupKeys] = useState([]); // State to store selected lookup keys
-
-  // const [imageResult, setImageResult] = useState("");
+  const [Individual, setIndividual] = useState({});
+  const [CompanyCome, setCompanyCome] = useState({});
+  const handleIndividualData = e => {
+    setIndividual(e);
+  };
+  const handleCompanyData = e => {
+    setCompanyCome(e);
+  };
+  console.log('Individual', Individual);
+  console.log('CompanyCome', CompanyCome);
   const refRBSheet = useRef();
   // .....
-  const handleBoxPress = (lookupID) => {
+  const handleBoxPress = lookupID => {
     setIsClick(lookupID);
     setSelectManageProperty(lookupID);
   };
-  const toggleCheckbox = (lookupKey) => {
+  const toggleCheckbox = lookupKey => {
     if (selectedLookupKeys.includes(lookupKey)) {
       setSelectedLookupKeys(
-        selectedLookupKeys.filter((key) => key !== lookupKey)
+        selectedLookupKeys.filter(key => key !== lookupKey),
       );
     } else {
       setSelectedLookupKeys([...selectedLookupKeys, lookupKey]);
     }
   };
-  const wantList = ({ item }) => {
+  const wantList = ({item}) => {
     const isSelected = selectedLookupKeys.includes(item.lookup_key);
 
     return (
@@ -136,9 +138,8 @@ export default AboutYou = (props) => {
             onPress={() => {
               toggleCheckbox(item.lookup_key);
               setKodiehelplookupid(item.lookup_key);
-            }}
-          >
-            <View style={{ flex: 1, flexDirection: "row" }}>
+            }}>
+            <View style={{flex: 1, flexDirection: 'row'}}>
               <View
                 style={[
                   AboutYouStyle.checkbox_View,
@@ -147,8 +148,7 @@ export default AboutYou = (props) => {
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_ExtraLightGrayColor,
                   },
-                ]}
-              >
+                ]}>
                 {isSelected ? (
                   <FontAwesome
                     name="check"
@@ -169,13 +169,7 @@ export default AboutYou = (props) => {
     );
   };
 
-  // const handleImageNameChange = async (newImageName) => {
-  //   setImageName(newImageName);
-  //   console.log("................ImageNAme", newImageName);
-  //   console.log("................ImageNAmeDeependra", newImageName.path);
-  // };
-
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <ServicesBox
       Services_Name={item?.lookup_description}
       BoxStyling={[
@@ -195,22 +189,20 @@ export default AboutYou = (props) => {
       }}
     />
   );
-  const renderStepIndicator = (params) => (
+  const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
 
-  const toggleSelection = (lookup_key) => {
+  const toggleSelection = lookup_key => {
     if (selectedServices.includes(lookup_key)) {
-      // Item is already selected, remove it
-      setSelectedServices((prevSelected) =>
-        prevSelected.filter((item) => item !== lookup_key)
+      setSelectedServices(prevSelected =>
+        prevSelected.filter(item => item !== lookup_key),
       );
     } else {
-      // Item is not selected, add it
-      setSelectedServices((prevSelected) => [...prevSelected, lookup_key]);
+      setSelectedServices(prevSelected => [...prevSelected, lookup_key]);
     }
   };
-  const renderItemDescribeYourself = ({ item }) => (
+  const renderItemDescribeYourself = ({item}) => (
     <ServicesBox
       Services_Name={item?.lookup_description}
       BoxStyling={[
@@ -226,7 +218,6 @@ export default AboutYou = (props) => {
       onPress={() => {
         toggleSelection(item.lookup_key);
         setKodieDescribeYourselfDataId(item.lookup_key);
-        // alert(item.lookup_key);
       }}
     />
   );
@@ -234,73 +225,42 @@ export default AboutYou = (props) => {
     handle_manage_property(), handle_kodiehelp(), handle_describe_yourself();
   }, []);
 
-  const handle_profile_photo = () => {
-    if (ImageName) {
-      props.navigation.navigate("FirstProperty", {
-        firstName: firstName,
-        lastName: lastName,
-        mobileNumber: mobileNumber,
-        physicalAddress: physicalAddress,
-        organisation: organisation,
-        referral: referral,
-        selectManageProperty: selectManageProperty,
-        selectedServiceKeysString: selectedServiceKeysString,
-        kodieHelpValue: kodieHelpValue,
-        ImageName: ImageName,
-        email: email,
-        country: country,
-        state: state,
-        city: city,
-        p_latitude: p_latitude,
-        p_longitude: p_longitude,
-        user_key: user_key,
-        // image_result: result?.assets,
-      });
-    }
-    // else if (ImageName) {
-    //   setImageError("");
-    // }
-    // else {
-    //   setImageError("Please select an image before proceeding.");
-    // }
-  };
-
-  const selectedServiceKeysString = selectedServices.join(",");
-  const kodieHelpValue = selectedLookupKeys.join(",");
+  const selectedServiceKeysString = selectedServices.join(',');
+  const kodieHelpValue = selectedLookupKeys.join(',');
 
   // ...Api intrigatrion
   // describe your self.....
   const handle_describe_yourself = () => {
     const describe_yourself_Data = {
-      P_PARENT_CODE: "TEN_DESC",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'TEN_DESC',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const describeYourselfApi = url + "lookup_details";
-    console.log("Request URL:", describeYourselfApi);
+    const describeYourselfApi = url + 'lookup_details';
+    console.log('Request URL:', describeYourselfApi);
     setIsLoading(true);
     axios
       .post(describeYourselfApi, describe_yourself_Data)
-      .then((response) => {
-        console.log("kodie_describeYouself_Data", response.data);
+      .then(response => {
+        console.log('kodie_describeYouself_Data', response.data);
         if (response.data.status === true) {
           setIsLoading(false);
           console.log(
-            "kodie_describeYouself_Data....",
-            response.data.lookup_details
+            'kodie_describeYouself_Data....',
+            response.data.lookup_details,
           );
           setKodieDescribeYourselfData(response.data.lookup_details);
         } else {
           console.error(
-            "kodie_describeYouself_Data_error:",
-            response.data.error
+            'kodie_describeYouself_Data_error:',
+            response.data.error,
           );
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("kodie_describeYouself_Data error:", error);
+      .catch(error => {
+        console.error('kodie_describeYouself_Data error:', error);
         alert(error);
         setIsLoading(false);
       });
@@ -308,29 +268,29 @@ export default AboutYou = (props) => {
   // manage property API with lookup key...
   const handle_manage_property = () => {
     const propertyData = {
-      P_PARENT_CODE: "TEN_PROPERTY",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'TEN_PROPERTY',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
+    const propertyType = url + 'lookup_details';
+    console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
-      .then((response) => {
-        console.log("maneg_property_type", response.data);
+      .then(response => {
+        console.log('maneg_property_type', response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("maneg_property_type....", response.data.lookup_details);
+          console.log('maneg_property_type....', response.data.lookup_details);
           setmanage_property_Data(response.data.lookup_details);
         } else {
-          console.error("property_type_error:", response.data.error);
+          console.error('property_type_error:', response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("property_type error:", error);
+      .catch(error => {
+        console.error('property_type error:', error);
         alert(error);
         setIsLoading(false);
       });
@@ -338,52 +298,55 @@ export default AboutYou = (props) => {
   // kodie help api...
   const handle_kodiehelp = () => {
     const kodiehelp_Data = {
-      P_PARENT_CODE: "KODIE_HELP",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'KODIE_HELP',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const kodiehelpApi = url + "lookup_details";
-    console.log("Request URL:", kodiehelp_Data);
+    const kodiehelpApi = url + 'lookup_details';
+    console.log('Request URL:', kodiehelp_Data);
     setIsLoading(true);
     axios
       .post(kodiehelpApi, kodiehelp_Data)
-      .then((response) => {
-        console.log("kodie_Data", response.data);
+      .then(response => {
+        console.log('kodie_Data', response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("kodie_Data....", response.data.lookup_details);
+          console.log('kodie_Data....', response.data.lookup_details);
           setKodiehelpData(response.data.lookup_details);
         } else {
-          console.error("kodie_Data_error:", response.data.lookup_details);
+          console.error('kodie_Data_error:', response.data.lookup_details);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("kodie_Data error:", error);
+      .catch(error => {
+        console.error('kodie_Data error:', error);
         alert(error);
         setIsLoading(false);
       });
   };
+  const openMapCom = openMapCom => {
+    console.log('isMapcon......', isMapcon);
+  };
   const goBack = () => {
     props.navigation.pop();
   };
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
-        : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+        : stepStatus === 'finished'
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
-        ? "Account"
+        ? 'Account'
         : position === 1
-        ? "About you"
+        ? 'About you'
         : position === 2
-        ? "First Property"
-        : "circle";
+        ? 'First Property'
+        : 'circle';
 
     return (
       <View style={{}}>
@@ -393,59 +356,48 @@ export default AboutYou = (props) => {
             marginTop: 1,
             marginHorizontal: 10,
             color: iconColor,
-            alignSelf: "center",
-          }}
-        >{`Step ${position + 1}`}</Text>
+            alignSelf: 'center',
+          }}>{`Step ${position + 1}`}</Text>
         <Text
           style={{
             fontSize: 14,
             marginTop: 5,
             marginHorizontal: 10,
             color: iconColor,
-          }}
-        >
+          }}>
           {iconName}
         </Text>
       </View>
     );
   };
 
-  const openGallery = async () => {
-    const options = {
-      title: "Select Image",
-      type: "library",
-      options: {
-        selectionLimit: 1,
-        mediaType: "photo",
-        includeBase64: false,
-      },
-    };
-    const result = await launchImageLibrary(options);
-    console.log("result...", result);
-    setImageName(result?.assets);
-    console.log("result_data...", result?.assets);
-  };
-
   // tab code here .....
-  const [tabValue, setTabValue] = useState("IndividualSignup");
+  const [tabValue, setTabValue] = useState('IndividualSignup');
+  const website = dataa => {
+    console.log('data', dataa);
+  };
   const checkTabs = () => {
     switch (tabValue) {
-      case "IndividualSignup":
-        return <IndividualSignup />;
-      case "CompanySignup":
-        return <CompanySignup />;
+      case 'IndividualSignup':
+        return (
+          <IndividualSignup
+            IndividualData={handleIndividualData}
+            openMapCom={openMapCom}
+          />
+        );
+      case 'CompanySignup':
+        return <CompanySignup CompanyData={handleCompanyData} />;
       default:
         return <IndividualSignup />;
     }
   };
   return (
-    <View style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
-      <TopHeader MiddleText={"Account set up"} onPressLeftButton={goBack} />
+    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+      <TopHeader MiddleText={'Account set up'} onPressLeftButton={goBack} />
       <View style={AboutYouStyle.stepIndicator}>
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
           currentPosition={currentPage}
-          // onPress={onStepPress}
           renderStepIndicator={renderStepIndicator}
           labels={labels}
           stepCount={3}
@@ -455,56 +407,34 @@ export default AboutYou = (props) => {
       <ScrollView>
         <View style={AboutYouStyle.Container}>
           <Text style={AboutYouStyle.heading_Text}>
-            {"Tell us more about you"}
+            {'Tell us more about you'}
           </Text>
-          {/* <Text style={AboutYouStyle.profile_Text}>{"Profile photo"}</Text> */}
-          {/* <TouchableOpacity
-            style={AboutYouStyle.logoContainer}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-          >
-            {ImageName ? (
-              <Image
-                source={{ uri: ImageName.path || ImageName }}
-                style={[AboutYouStyle.logo, { borderRadius: 110 / 2 }]}
-              />
-            ) : (
-              <Image source={IMAGES?.userIcons} style={[AboutYouStyle.logo]} />
-            )}
-          </TouchableOpacity> */}
-          {/* {ImageName ? null : (
-            <Text style={AboutYouStyle.error_text}>{imageError}</Text>
-          )} */}
-
-          {/* {ImageName ? refRBSheet.current.close() : null} */}
           <Text style={AboutYouStyle.want_Heading}>
             {
-              "How would you describe yourself? (you can select multiple options)"
+              'How would you describe yourself? (you can select multiple options)'
             }
           </Text>
           <FlatList
             data={kodieDescribeYourselfData}
             renderItem={renderItemDescribeYourself}
-            keyExtractor={(item) => item.lookup_key.toString()}
+            keyExtractor={item => item.lookup_key.toString()}
             numColumns={2}
           />
           {kodieDescribeYourselfId === 2 ||
           kodieDescribeYourselfId === 4 ? null : (
             <View>
               <Text style={AboutYouStyle.want_Heading}>
-                {"How many properties do you own, manage or rent?"}
+                {'How many properties do you own, manage or rent?'}
               </Text>
               <FlatList
                 data={manage_property_Data}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.lookup_key.toString()}
+                keyExtractor={item => item.lookup_key.toString()}
                 numColumns={2}
               />
             </View>
           )}
 
-          {/* Tab component code here...... */}
           <View style={AboutYouStyle.tabmainview}>
             <Text style={AboutYouStyle.tabheadingtext}>
               How do you run your business?
@@ -515,27 +445,25 @@ export default AboutYou = (props) => {
                   AboutYouStyle.person_view,
                   {
                     backgroundColor:
-                      tabValue === "IndividualSignup"
+                      tabValue === 'IndividualSignup'
                         ? _COLORS.Kodie_GreenColor
                         : _COLORS.Kodie_WhiteColor,
                   },
                 ]}
                 onPress={() => {
-                  setTabValue("IndividualSignup");
-                }}
-              >
+                  setTabValue('IndividualSignup');
+                }}>
                 <Text
                   style={[
                     AboutYouStyle.person_text,
                     {
                       color:
-                        tabValue === "IndividualSignup"
+                        tabValue === 'IndividualSignup'
                           ? _COLORS.Kodie_WhiteColor
                           : _COLORS.Kodie_BlackColor,
                     },
-                  ]}
-                >
-                  {"Individual"}
+                  ]}>
+                  {'Individual'}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -543,27 +471,25 @@ export default AboutYou = (props) => {
                   AboutYouStyle.person_view,
                   {
                     backgroundColor:
-                      tabValue === "CompanySignup"
+                      tabValue === 'CompanySignup'
                         ? _COLORS.Kodie_GreenColor
                         : _COLORS.Kodie_WhiteColor,
                   },
                 ]}
                 onPress={() => {
-                  setTabValue("CompanySignup");
-                }}
-              >
+                  setTabValue('CompanySignup');
+                }}>
                 <Text
                   style={[
                     AboutYouStyle.company_text,
                     {
                       color:
-                        tabValue === "CompanySignup"
+                        tabValue === 'CompanySignup'
                           ? _COLORS.Kodie_WhiteColor
                           : _COLORS.Kodie_BlackColor,
                     },
-                  ]}
-                >
-                  {"Company"}
+                  ]}>
+                  {'Company'}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -572,7 +498,7 @@ export default AboutYou = (props) => {
           {checkTabs()}
 
           <Text style={AboutYouStyle.want_Heading}>
-            {"What do you want to do first with Kodie"}
+            {'What do you want to do first with Kodie'}
           </Text>
 
           <FlatList
@@ -580,73 +506,27 @@ export default AboutYou = (props) => {
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
+            keyExtractor={item => item?.id}
             renderItem={wantList}
           />
-
-          {/* <RBSheet
-            ref={refRBSheet}
-            // closeOnDragDown={true}
-            closeOnPressMask={true}
-            height={200}
-            customStyles={{
-              wrapper: {
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-              },
-              draggableIcon: {
-                backgroundColor: _COLORS.Kodie_LightGrayColor,
-              },
-              container: AboutYouStyle.bottomModal_container,
-            }}
-          >
-            <View style={AboutYouStyle.upload_View}>
-              <Text style={AboutYouStyle.uploadImgText}>
-                {props.heading_Text || "Upload image"}
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  refRBSheet.current.close();
-                }}
-              >
-                <Entypo
-                  name="cross"
-                  size={25}
-                  color={_COLORS.Kodie_BlackColor}
-                  style={AboutYouStyle.crossIconStyle}
-                />
-              </TouchableOpacity>
-            </View>
-
-            {/* <TouchableOpacity
-            style={{ alignSelf: "center", backgroundColor: "green" }}
-            onPress={openGallery}
-          >
-            <Text>{"open gallery"}</Text>
-          </TouchableOpacity> */}
-
-            {/* <UploadImageData
-              heading_Text={"Upload image"}
-              ImageName={handleImageNameChange}
-            /> */}
-          {/* </RBSheet> */}
         </View>
-        <View style={{ marginHorizontal: 16 }}>
+        <View style={{marginHorizontal: 16}}>
           <CustomSingleButton
             disabled={isLoading ? true : false}
-            _ButtonText={"Next"}
+            _ButtonText={'Next'}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={() => {
-              props.navigation.navigate("FirstProperty", {
+              props.navigation.navigate('FirstProperty', {
                 firstName: firstName,
                 lastName: lastName,
                 mobileNumber: mobileNumber,
                 physicalAddress: physicalAddress,
-                organisation: organisation,
                 referral: referral,
                 selectManageProperty: selectManageProperty,
                 selectedServiceKeysString: selectedServiceKeysString,
                 kodieHelpValue: kodieHelpValue,
-                // ImageName: ImageName,
+                ImageName: image,
+                Bio: Bio,
                 email: email,
                 country: country,
                 state: state,
@@ -654,23 +534,31 @@ export default AboutYou = (props) => {
                 p_latitude: p_latitude,
                 p_longitude: p_longitude,
                 user_key: user_key,
+                BusinessNumber: CompanyCome.businessNumber,
+                companyName: CompanyCome.companyName,
+                CompanyselectJobType: CompanyCome.selectJobType,
+                CompanyservicesValue: CompanyCome.servicesValue,
+                CompanyWebSide: CompanyCome.website,
+                Individualp_latitude: Individual.p_latitude,
+                Individualp_longitude: Individual.p_longitude,
+                Companyp_latitude: CompanyCome.p_latitude,
+                Companyp_longitude: CompanyCome.p_longitude,
+                IndividualselectJobType: Individual.selectJobType,
+                IndividualservicesValue: Individual.servicesValue,
+                IndividualWebSide: Individual.website,
+                run_your_business: tabValue == 'IndividualSignup' ? 0 : 1,
               });
-              // handle_profile_photo();
             }}
           />
         </View>
-        <View style={{ marginHorizontal: 16, marginBottom: 10 }}>
+        <View style={{marginHorizontal: 16, marginBottom: 10}}>
           <CustomSingleButton
             disabled={isLoading ? true : false}
-            _ButtonText={"Fill these details out later"}
+            _ButtonText={'Fill these details out later'}
             Text_Color={_COLORS.Kodie_BlackColor}
             backgroundColor={_COLORS.Kodie_WhiteColor}
             onPress={() => {
-              // if (ImageName) {
-                props.navigation.navigate("FirstProperty");
-              // } else {
-              //   setImageError("Please select an image before proceeding.");
-              // }
+              props.navigation.navigate('FirstProperty');
             }}
           />
         </View>
@@ -682,7 +570,7 @@ export default AboutYou = (props) => {
               color={_COLORS.Kodie_MediumGrayColor}
             />
           </View>
-          <Text style={AboutYouStyle.goBack_Text}>{"Go back"}</Text>
+          <Text style={AboutYouStyle.goBack_Text}>{'Go back'}</Text>
         </TouchableOpacity>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}

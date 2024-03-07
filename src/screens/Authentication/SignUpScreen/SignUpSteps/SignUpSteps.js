@@ -100,6 +100,7 @@ const SignUpSteps = props => {
   const [p_latitude, setP_latitude] = useState('');
   const [p_longitude, setP_longitude] = useState('');
   const [currentLocation, setCurrentLocation] = useState(false);
+  const [imageError, setImageError] = useState(true);
 
   const [getLat, setGetLat] = useState('');
   const [getLong, setGetLong] = useState('');
@@ -336,7 +337,9 @@ const SignUpSteps = props => {
     setMobileNumber(text);
   };
   const handleNextBtn = () => {
-    if (firstName.trim() === '') {
+    if (!ImageName) {
+      setImageError('Please select an image before proceeding.');
+    } else if (firstName.trim() === '') {
       setFirstNameError('First name is required.');
     } else if (lastName.trim() === '') {
       setLastNameError('Last name is required.');
@@ -345,6 +348,9 @@ const SignUpSteps = props => {
     } else if (!validMobileNumber(mobileNumber)) {
       setMobileNumberError('Invalid phone number format.');
     } else {
+      // ImageName ? refRBSheet.current.close() : null;
+
+      // if (ImageName) {
       props.navigation.navigate('AboutYou', {
         firstName: firstName,
         lastName: lastName,
@@ -359,7 +365,10 @@ const SignUpSteps = props => {
         p_latitude: p_latitude,
         p_longitude: p_longitude,
         user_key: user_key,
+        image: ImageName,
+        Bio: bio,
       });
+      // }
     }
   };
   useEffect(() => {
@@ -425,6 +434,14 @@ const SignUpSteps = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
+  const handleimage = () => {
+    // if (ImageName == true) {
+    //   refRBSheet.current.open();
+    // } else {
+    //   refRBSheet.current.close();
+    // }
+    refRBSheet.current.close();
+  };
   const renderPageContent = () => {
     return (
       <ScrollView ref={scrollViewRef}>
@@ -440,6 +457,7 @@ const SignUpSteps = props => {
             style={AccountStyle.ProfileView}
             onPress={() => {
               refRBSheet.current.open();
+              // handleimage();
             }}>
             {ImageName ? (
               <Image
@@ -447,18 +465,24 @@ const SignUpSteps = props => {
                 style={[AccountStyle.logo, {borderRadius: 110 / 2}]}
               />
             ) : (
-              <Image
-                style={AccountStyle.profilelogo}
-                source={
-                  {
-                    // uri: loginData?.Login_details?.profile_photo_path,
-                  }
-                }
-                resizeMode="cover"
-              />
+              <View style={AccountStyle.profilelogo}>
+                <FontAwesome
+                  size={50}
+                  name={'user-circle-o'}
+                  style={{
+                    alignSelf: 'center',
+                    justifyContent: 'center',
+                  }}
+                  color={_COLORS.Kodie_ExtraLightGrayColor}
+                />
+              </View>
+              // <Image
+              //   style={AccountStyle.profilelogo}
+              //   source={IMAGES.userIcons}
+              //   resizeMode="cover"
+              // />
             )}
 
-            {ImageName ? refRBSheet.current.close() : null}
             <View style={AccountStyle.editlogoview}>
               <FontAwesome
                 name="edit"
@@ -468,9 +492,13 @@ const SignUpSteps = props => {
               />
             </View>
           </TouchableOpacity>
+          {ImageName ? refRBSheet.current.close() : null}
           {/* <Text style={AccountStyle.edittext}>Edit profile photo</Text> */}
         </View>
-
+        {ImageName ? null : (
+          <Text style={AccountStyle.error_text}>{imageError}</Text>
+        )}
+        {/* {ImageName ? refRBSheet.current.close() : null} */}
         <View style={AccountStyle.card}>
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>

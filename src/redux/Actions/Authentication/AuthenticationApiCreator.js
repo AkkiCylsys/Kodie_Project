@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import {
   fetchLoginData,
   fetchLoginSuccess,
@@ -16,25 +16,25 @@ import {
   fetchSavePassword,
   fetchSavePasswordSuccess,
   fetchSavePasswordError,
-} from "./AuthenticationApiAction";
+} from './AuthenticationApiAction';
 // import { Config } from './../../../Config/index'
-import { Config } from "../../../Config";
+import {Config} from '../../../Config';
 
 const url = Config.BASE_URL;
 
-export const loginApiActionCreator = (data) => async (dispatch) => {
+export const loginApiActionCreator = data => async dispatch => {
   // alert(JSON.stringify(data));
   dispatch(fetchLoginData());
   try {
-    const res = await axios.post(url + "login", data, {
+    const res = await axios.post(url + 'login', data, {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
     //alert(JSON.stringify(res));
     // alert(res.);
     // alert("resInredux....", res);
-    if (res.data.success == "true") {
+    if (res.data.success == 'true') {
       //alert(res.data.code)
       if (res.data.code == 6) {
         // let LoginStatuscode=6
@@ -59,21 +59,22 @@ export const loginApiActionCreator = (data) => async (dispatch) => {
     return error?.response?.status;
   }
 };
-export const signupAccountApiActionCreator = (data) => async (dispatch) => {
+export const signupAccountApiActionCreator = data => async dispatch => {
   //alert(url)
   dispatch(fetchRegistrationData());
   try {
     const res = await axios.post(
       // url + "user_save_signup_account_details",
-      url + "signup_step_one",
+      // url + "signup_step_one",
+      'https://kodieapis.cylsys.com/api/v1/signup_step_one',
       data,
       {
         headers: {
-          "content-type": "multipart/form-data",
+          'content-type': 'multipart/form-data',
         },
-      }
+      },
     );
-    console.log("res....", res.data);
+    console.log('res....', res.data);
     if (res.data.status == true) {
       dispatch(fetchRegistrationSuccess(res.data));
       // alert(JSON.stringify(res.data));
@@ -88,7 +89,7 @@ export const signupAccountApiActionCreator = (data) => async (dispatch) => {
   }
 };
 
-export const logoutActionCreator = () => async (dispatch) => {
+export const logoutActionCreator = () => async dispatch => {
   try {
     dispatch(fetchLogout());
   } catch (error) {

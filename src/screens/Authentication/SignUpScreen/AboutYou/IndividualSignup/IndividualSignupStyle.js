@@ -1,14 +1,14 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../../Themes';
 
 export default IndividualSignupStyle = StyleSheet.create({
   card: {
-    width: "100%",
+    width: '100%',
     backgroundColor: _COLORS.Kodie_TransparentColor,
     borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     padding: 7,
     // marginBottom: 50,
@@ -19,7 +19,7 @@ export default IndividualSignupStyle = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
@@ -28,16 +28,16 @@ export default IndividualSignupStyle = StyleSheet.create({
     marginTop: 15,
   },
   chekboxview: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom:8
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
   },
   Check_Icon: {
     marginTop: 2,
-    alignSelf: "center",
+    alignSelf: 'center',
     borderRadius: 10,
-    width:24,
-    height:24
+    width: 24,
+    height: 24,
     // borderWidth:1
   },
   checkbox_View: {
@@ -52,11 +52,10 @@ export default IndividualSignupStyle = StyleSheet.create({
   },
   commonaddresstext: {
     fontSize: 12,
-    color:_COLORS.Kodie_BlackColor,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    letterSpacing:0.5,
-    marginHorizontal:10
-
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    letterSpacing: 0.5,
+    marginHorizontal: 10,
   },
   smstext: {
     fontSize: 12,
@@ -88,14 +87,14 @@ export default IndividualSignupStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     // width: "100%",
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
     marginTop: 15,
   },
-  box_Text_Style: { color: _COLORS.Kodie_MediumGrayColor },
+  box_Text_Style: {color: _COLORS.Kodie_MediumGrayColor},
   //   Dropdown Style..
   dropdown: {
     borderWidth: 1,
@@ -113,9 +112,10 @@ export default IndividualSignupStyle = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_WhiteColor,
     fontFamily: FONTFAMILY.K_Medium,
-    marginLeft: 10,
+    marginHorizontal: 5,
+    alignSelf: 'center',
   },
   iconStyle: {
     width: 20,
@@ -130,18 +130,18 @@ export default IndividualSignupStyle = StyleSheet.create({
   //   ........
   locationConView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   locationContainer: {
     flex: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 6,
-    shadowColor: "#000",
+    shadowColor: '#000',
   },
   locationIcon: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   locationInput: {
     flex: 1,
@@ -152,14 +152,14 @@ export default IndividualSignupStyle = StyleSheet.create({
   locationIconView: {
     borderWidth: 1,
     borderRadius: 5,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     marginLeft: 5,
-    width: "15%",
-    justifyContent: "center",
+    width: '15%',
+    justifyContent: 'center',
     height: 50,
   },
   locationIcon: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   saveBackButton: {
     elevation: 2,
@@ -169,5 +169,39 @@ export default IndividualSignupStyle = StyleSheet.create({
   secondview: {
     marginHorizontal: 10,
     marginVertical: 15,
+  },
+  itemView: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  BtnContainer: {
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    paddingVertical: 3,
+    borderRadius: 10,
+
+    // borderWidth: 1,
+    width: '30%',
+    height: 50,
+    bottom: 0,
+    right: 20,
+    marginBottom: 20,
+    position: 'absolute',
+    //borderColor: Colors.appColor,
+  },
+  labeltxt: {
+    textAlign: 'center',
+    fontSize: 18,
+    color: _COLORS.Kodie_WhiteColor,
+    fontWeight: 'bold',
   },
 });

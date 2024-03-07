@@ -42,6 +42,7 @@ import mime from 'mime';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
+import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
@@ -98,7 +99,6 @@ export default FirstProperty = props => {
   let lastName = props?.route?.params?.lastName;
   let mobileNumber = props?.route?.params?.mobileNumber;
   let physicalAddress = props?.route?.params?.physicalAddress;
-  let organisation = props?.route?.params?.organisation;
   let referral = props?.route?.params?.referral;
   let selectManageProperty = props?.route?.params?.selectManageProperty;
   let selectedServiceKeysString =
@@ -112,12 +112,25 @@ export default FirstProperty = props => {
   let p_latitude = props?.route?.params?.p_latitude;
   let p_longitude = props?.route?.params?.p_longitude;
   let user_key = props?.route?.params?.user_key;
+  let run_your_business = props?.route?.params?.run_your_business;
+  let BusinessNumber = props?.route?.params?.BusinessNumber;
+  let companyName = props?.route?.params?.companyName;
+  let CompanyselectJobType = props?.route?.params?.CompanyselectJobType;
+  let IndividualservicesValue = props?.route?.params?.IndividualservicesValue;
+  let IndividualWebSide = props?.route?.params?.IndividualWebSide;
+  let IndividualselectJobType = props?.route?.params?.IndividualselectJobType;
+  let Individualp_longitude = props?.route?.params?.Individualp_longitude;
+  let Individualp_latitude = props?.route?.params?.Individualp_latitude;
+  let CompanyWebSide = props?.route?.params?.CompanyWebSide;
+  let CompanyservicesValue = props?.route?.params?.CompanyservicesValue;
+  let Bio = props?.route?.params?.Bio;
+  let Companyp_latitude = props?.route?.params?.Companyp_latitude;
+  let Companyp_longitude = props?.route?.params?.Companyp_longitude;
 
   console.log('firstname..', firstName);
   console.log('lastName..', lastName);
   console.log('mobileNumber..', mobileNumber);
   console.log('physicalAddress..', physicalAddress);
-  console.log('organisation..', organisation);
   console.log('referral..', referral);
   console.log('selectManageProperty..', selectManageProperty);
   console.log('selectedServiceKeysString..', selectedServiceKeysString);
@@ -130,6 +143,20 @@ export default FirstProperty = props => {
   console.log('p_latitude..', p_latitude);
   console.log('p_longitude..', p_longitude);
   console.log('user_key..', user_key);
+  console.log(
+    'run_your_business..',
+    run_your_business,
+    BusinessNumber,
+    IndividualWebSide,
+    companyName,
+    CompanyselectJobType,
+    IndividualservicesValue,
+    IndividualselectJobType,
+    Individualp_longitude,
+    Individualp_latitude,
+    CompanyWebSide,
+    CompanyservicesValue,
+  );
   const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyLocation, setPropertyLocation] = useState('');
@@ -154,6 +181,7 @@ export default FirstProperty = props => {
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [buildingFlorSize, setBuildingFlorSize] = useState('');
   const [landArea, setLandArea] = useState('');
+  const [Fcm_token, setFcm_token] = useState('');
   const [currentLocation, setCurrentLocation] = useState(false);
   const dispatch = useDispatch();
   const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
@@ -166,6 +194,46 @@ export default FirstProperty = props => {
   const p_city = P_addressParts[P_addressParts.length - 2]?.trim() ?? '';
   const P_state = P_addressParts[2]?.trim() ?? '';
   const p_country = P_addressParts[P_addressParts.length - 1]?.trim() ?? '';
+
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+      getTocken();
+    }
+  }
+  const handlemessage = async () => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification casued app to open from background state :',
+        remoteMessage.notification,
+      );
+    });
+    messaging().onMessage(async remoteMessage => {
+      console.log('Message handled in the foreground!', remoteMessage);
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification casued app to open from quit state.',
+            remoteMessage.notification,
+          );
+        }
+      });
+  };
+
+  const getTocken = async () => {
+    const token = await messaging().getToken();
+    console.log(token, 'token');
+    setFcm_token(token);
+  };
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -269,6 +337,8 @@ export default FirstProperty = props => {
     );
   };
   useEffect(() => {
+    handlemessage();
+    requestUserPermission();
     handleProperty_Type();
     additional_features();
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
@@ -348,7 +418,7 @@ export default FirstProperty = props => {
       state: state,
       country: country,
       city: city,
-      organisation: organisation,
+      organisation: companyName,
       referral: referral,
       selectedServiceKeysString: selectedServiceKeysString,
       kodieHelpValue: kodieHelpValue,
@@ -368,6 +438,24 @@ export default FirstProperty = props => {
       deviceType: deviceType,
       additional_features: JSON.stringify(additionalfeatureskeyvalue),
       auto_list: selectedButtonId,
+      fcm_token: Fcm_token,
+      run_your_business: run_your_business,
+      bio: Bio,
+      website: run_your_business === 0 ? IndividualWebSide : CompanyWebSide,
+      company_latitude:
+        run_your_business === 0 ? Individualp_latitude : Companyp_latitude,
+      company_longitude:
+        run_your_business === 0 ? Individualp_longitude : Companyp_longitude,
+      company_address: 'gadarwara',
+      category_service_perform:
+        run_your_business === 0
+          ? IndividualservicesValue
+          : CompanyservicesValue,
+      category_service_offer:
+        run_your_business === 0
+          ? IndividualselectJobType
+          : CompanyselectJobType,
+      austrilian_busi_no: BusinessNumber,
     };
     if (ImageName?.path) {
       newData = {
@@ -418,6 +506,19 @@ export default FirstProperty = props => {
     formData.append('additional_features', newData?.additional_features);
     formData.append('auto_list', newData?.auto_list);
     formData.append('profile_photo', newData?.image);
+    formData.append('fcm_token', newData?.fcm_token);
+    formData.append('run_your_business', newData?.run_your_business);
+    formData.append('bio', newData?.bio);
+    formData.append('website', newData?.website);
+    formData.append('company_latitude', newData?.company_latitude);
+    formData.append('company_longitude', newData?.company_longitude);
+    formData.append('company_address', newData?.company_address);
+    formData.append(
+      'category_service_perform',
+      newData?.category_service_perform,
+    );
+    formData.append('category_service_offer', newData?.category_service_offer);
+    formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
 
     console.log('formData.....', JSON.stringify(formData));
 
@@ -491,7 +592,7 @@ export default FirstProperty = props => {
       state: state,
       country: country,
       city: city,
-      organisation: organisation,
+      organisation: companyName,
       referral: referral,
       selectedServiceKeysString: selectedServiceKeysString,
       kodieHelpValue: kodieHelpValue,
@@ -511,6 +612,24 @@ export default FirstProperty = props => {
       deviceType: deviceType,
       additional_features: '[]',
       auto_list: selectedButtonId,
+      fcm_token: Fcm_token,
+      run_your_business: run_your_business,
+      bio: Bio,
+      website: run_your_business === 0 ? IndividualWebSide : CompanyWebSide,
+      company_latitude:
+        run_your_business === 0 ? Individualp_latitude : Companyp_latitude,
+      company_longitude:
+        run_your_business === 0 ? Individualp_longitude : Companyp_longitude,
+      company_address: 'gadarwara',
+      category_service_perform:
+        run_your_business === 0
+          ? IndividualservicesValue
+          : CompanyservicesValue,
+      category_service_offer:
+        run_your_business === 0
+          ? IndividualselectJobType
+          : CompanyselectJobType,
+      austrilian_busi_no: BusinessNumber,
     };
     if (ImageName?.path) {
       newData = {
@@ -561,6 +680,19 @@ export default FirstProperty = props => {
     formData.append('additional_features', newData?.additional_features);
     formData.append('auto_list', newData?.auto_list);
     formData.append('profile_photo', newData?.image);
+    formData.append('fcm_token', newData?.fcm_token);
+    formData.append('run_your_business', newData?.run_your_business);
+    formData.append('bio', newData?.bio);
+    formData.append('website', newData?.website);
+    formData.append('company_latitude', newData?.company_latitude);
+    formData.append('company_longitude', newData?.company_longitude);
+    formData.append('company_address', newData?.company_address);
+    formData.append(
+      'category_service_perform',
+      newData?.category_service_perform,
+    );
+    formData.append('category_service_offer', newData?.category_service_offer);
+    formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
 
     console.log('formData.....', JSON.stringify(formData));
 

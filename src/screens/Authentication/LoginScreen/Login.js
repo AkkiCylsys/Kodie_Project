@@ -39,6 +39,7 @@ import {Config} from '../../../Config';
 import DeviceInfo from 'react-native-device-info';
 // import CryptoJS from "crypto-js";
 import CryptoJS from 'react-native-crypto-js';
+import messaging from '@react-native-firebase/messaging';
 
 import {loginApiActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 export default Login = props => {
@@ -65,6 +66,8 @@ export default Login = props => {
   const [loginResponse, setLoginResponse] = useState(true);
   const deviceId = DeviceInfo.getDeviceId();
   const deviceType = DeviceInfo.getDeviceType();
+  const [Fcm_token, setFcm_token] = useState('');
+
   const handleTogglePassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
   };
@@ -80,7 +83,49 @@ export default Login = props => {
     'Save',
     'Back to login',
   ];
+  async function requestUserPermission() {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
+    if (enabled) {
+      console.log('Authorization status:', authStatus);
+      getTocken();
+    }
+  }
+  const handlemessage = async () => {
+    messaging().onNotificationOpenedApp(remoteMessage => {
+      console.log(
+        'Notification casued app to open from background state :',
+        remoteMessage.notification,
+      );
+    });
+    messaging().onMessage(async remoteMessage => {
+      console.log('Message handled in the foreground!', remoteMessage);
+    });
+
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(
+            'Notification casued app to open from quit state.',
+            remoteMessage.notification,
+          );
+        }
+      });
+  };
+
+  const getTocken = async () => {
+    const token = await messaging().getToken();
+    console.log(token, 'token');
+    setFcm_token(token);
+  };
+  useEffect(() => {
+    handlemessage();
+    requestUserPermission();
+  }, []);
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -245,6 +290,7 @@ export default Login = props => {
         password: password,
         device_id: deviceId,
         device_os_type: deviceType,
+        fcm_token: Fcm_token,
       };
       setIsLoading(true);
       let res = await dispatch(loginApiActionCreator(data));
