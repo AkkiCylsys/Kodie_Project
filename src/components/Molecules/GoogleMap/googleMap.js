@@ -109,38 +109,6 @@ const MapScreen = (props) => {
         console.log(error);
       });
   };
-  const onMarkerDragEnd = (e) => {
-    alert(e);
-    const { latitude, longitude } = e.nativeEvent.coordinate;
-    // Handle the updated coordinates here, for example, update state or call a function
-    console.log("New marker coordinates:", latitude, longitude);
-  };
-  const handleMarkerDragStart = (e) => {
-    alert(e);
-    console.log("Marker drag started:", e.nativeEvent.coordinate);
-    // Add any other logic you want to perform when marker drag starts
-  };
-  const animateToCoordinate = (latitude, longitude) => {
-    mapRef.current?.animateToCoordinate(
-      {
-        latitude,
-        longitude,
-      },
-      1000
-    ); // 1000 milliseconds duration for the animation
-  };
-
-  // const debouncedRegionChange = useRef(
-  //   _.debounce((region) => {
-  //     // Handle the debounced region change here
-  //     console.log("Debounced region:", region);
-  //   }, 500)
-  // ).current; // Adjust the debounce delay as needed (in milliseconds)
-
-  // const handleRegionChange = (region) => {
-  //   // Call the debounced region change handler
-  //   debouncedRegionChange(region);
-  // };
 
   return (
     <>
@@ -148,10 +116,7 @@ const MapScreen = (props) => {
         <CommonLoader />
       ) : (
         <MapView
-          // region={''}
           onRegionChange={props?.onRegionChange}
-          // onRegionChange={handleRegionChange}
-          // onRegionChangeComplete={props?.onRegionChangeComplete}
           provider={
             Platform.OS === "android" ? PROVIDER_GOOGLE : PROVIDER_DEFAULT
           }
@@ -165,14 +130,6 @@ const MapScreen = (props) => {
             latitudeDelta: 0.02,
             longitudeDelta: 0.02,
           }}
-          // initialRegion={{
-          //   latitude: lat,
-          //   longitude: long,
-          //   // latitude: 22.924898263688327,
-          //   // longitude: 78.77681708434507,
-          //   latitudeDelta: 0.02,
-          //   longitudeDelta: 0.02,
-          // }}
           showsMyLocationButton={true}
         >
           <Marker
@@ -181,8 +138,6 @@ const MapScreen = (props) => {
               latitude: props?.Maplat ? parseFloat(props?.Maplat) : lat,
               longitude: props?.Maplng ? parseFloat(props?.Maplng) : long,
             }}
-            // onDragStart={(e) => handleMarkerDragStart(e)}
-            // onDrag={onMarkerDragEnd}
             onPress={props?.onPress}
           >
             <Icon name="location-pin" size={30} color={"red"} />

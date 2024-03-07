@@ -88,6 +88,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: "#ccc",
+    color: _COLORS.Kodie_LightGrayColor,
   },
   cardHeight: { marginBottom: 8 },
   locationIcon: {
@@ -226,7 +227,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     marginBottom: 30,
     position: "absolute",
   },
-  c_locationBtn:{
+  c_locationBtn: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     flexDirection: "row",
     justifyContent: "center",
@@ -242,6 +243,5 @@ export const CreateJobFirstStyle = StyleSheet.create({
     marginBottom: 30,
     position: "absolute",
   },
-  error_text: { color: "red", marginLeft: 10,marginTop:5 },
-
+  error_text: { color: "red", marginLeft: 10, marginTop: 5 },
 });

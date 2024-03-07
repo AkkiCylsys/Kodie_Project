@@ -181,45 +181,6 @@ export default CreateJobFirstScreen = (props) => {
       })
       .catch((error) => console.warn(error));
   };
-
-  // const onRegionChange = (Region) => {
-  //   console.log("Region....", JSON.stringify(Region));
-  //   setlatitude(Region.latitude);
-  //   setlongitude(Region.longitude);
-  //   // getAddressDebounced(Region.latitude, Region.longitude);
-  // };
-
-  // const getAddress = (latitude, longitude) => {
-  //   Geocoder.from(latitude, longitude)
-  //     .then((json) => {
-  //       console.log("json location.......", json);
-  //       console.log("current address...", json.results[0].formatted_address);
-  //       const formattedAddress = json.results[0].formatted_address;
-  //       setLocation(formattedAddress); // Call setLocation here
-  //       let MainFullAddress = "";
-  //       if (json.results.length > 0) {
-  //         const addressComponents = json.results[0].address_components;
-  //         MainFullAddress = addressComponents
-  //           .slice(1, 9)
-  //           .map((component) => component.long_name)
-  //           .join(", ");
-  //         setUserCurrentCity(addressComponents[1].long_name);
-  //         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-  //       }
-  //       console.log("mainFullAddress....", MainFullAddress);
-  //     })
-  //     .catch((error) => console.warn(error));
-  // };
-
-  // const getAddressDebounced = debounce((latitude, longitude) => {
-  //   getAddress(latitude, longitude);
-  // }, 5000);
-
-  // const handleDragEnd = (newRegion) => {
-  //   // Your logic here to handle the drag endsetMapRegion(newRegion);
-  //   console.log("Drag stopped:", newRegion);
-  // };
-
   const handleBoxPress = (lookup_key) => {
     setIsClick(lookup_key);
     setSelectJobTypeid(lookup_key);
