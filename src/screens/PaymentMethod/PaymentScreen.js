@@ -89,7 +89,8 @@ const PaymentScreen = (props) => {
   const handlePayPress = async () => {
     setIsLoading(true);
     const billingDetails = {
-      email: "info@kodie.com.au",
+      // email: "info@kodie.com.au",
+      email: "rohanRamraj@gmail.com",
     };
     try {
       console.log("clientSecret data....", clintsecretkey);
@@ -108,7 +109,7 @@ const PaymentScreen = (props) => {
         setPaymentMethodId(confirmPaymentIntent.paymentIntent.paymentMethodId);
         // alert(confirmPaymentIntent.paymentIntent.status);
         await subscribeCustomer(paymentMethodId);
-        Alert.alert("Success", "Payment successful. Subscription created.");
+        // Alert.alert("Success", "Payment successful. Subscription created.");
       }
     } catch (error) {
       console.log("Payment error", error);
@@ -116,44 +117,75 @@ const PaymentScreen = (props) => {
       setIsLoading(false);
     }
   };
+  // const subscribeCustomer = async (paymentMethodId) => {
+  //   const url = Config.BASE_URL;
+  //   const Subscription_Url = url + "your_backend_url/subscribe";
+  //   console.log("Subscription_Url...", Subscription_Url);
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await fetch(Subscription_Url, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         paymentMethodId: paymentMethodId,
+  //         // user_id: loginData.Login_details.user_id,
+  //         // account_id: loginData.Login_details.user_account_id,
+  //         // subscription_id: paymentMethodId,
+  //         // startDate: "1/03/2024",
+  //         // endDate: "5/03/2024",
+  //         // collection_method: "weekly",
+  //         // subscribe_type: "card",
+  //       }),
+  //     });
+  //     console.log("response..",response.data)
+  //     if (response.ok) {
+  //       alert("Subscription created successfully");
+  //       setIsLoading(false);
+  //     } else {
+  //       const responseData = await response.json();
+  //       console.error("Subscription error:", responseData.error);
+  //       Alert.alert(
+  //         "Error",
+  //         "Failed to subscribe to the plan. Please try again."
+  //       );
+  //       setIsLoading(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Subscription error:", error);
+  //     Alert.alert("Error", "An unexpected error occurred. Please try again.");
+  //   }
+  // };
   const subscribeCustomer = async (paymentMethodId) => {
-    const url = Config.BASE_URL;
-    const Subscription_Url = url + "subscription";
-    console.log("Subscription_Url...", Subscription_Url);
-    setIsLoading(true);
     try {
-      const response = await fetch(Subscription_Url, {
+      const response = await fetch("your_backend_url/subscribe", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // paymentMethodId: paymentMethodId,
-          user_id: loginData.Login_details.user_id,
-          account_id: loginData.Login_details.user_account_id,
-          subscription_id: paymentMethodId,
-          startDate: "1/03/2024",
-          endDate: "5/03/2024",
-          collection_method: "weekly",
-          subscribe_type: "card",
+          paymentMethodId: paymentMethodId,
+          // Other subscription parameters if needed
         }),
       });
-      console.log("response..",response.data)
+
       if (response.ok) {
-        alert("Subscription created successfully");
-        setIsLoading(false);
+        // Subscription created successfully
+        console.log("Subscription successful");
       } else {
         const responseData = await response.json();
         console.error("Subscription error:", responseData.error);
+        // Assuming Alert is defined somewhere else in your code
         Alert.alert(
           "Error",
           "Failed to subscribe to the plan. Please try again."
         );
-        setIsLoading(false);
       }
     } catch (error) {
       console.error("Subscription error:", error);
-      Alert.alert("Error", "An unexpected error occurred. Please try again.");
+      // Assuming Alert is defined somewhere else in your code
+      // Alert.alert("Error");
     }
   };
 

@@ -70,7 +70,7 @@ export default PropertyDetails = (props) => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
-  const [currentLocation, setCurrentLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState("");
 
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
@@ -313,6 +313,7 @@ export default PropertyDetails = (props) => {
   // };
   const ConfirmAddress = () => {
     setIsMap(false);
+    setLocation(currentLocation);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -323,14 +324,16 @@ export default PropertyDetails = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress();
+    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        setLocation(json.results[0].formatted_address);
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
+        // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -353,7 +356,7 @@ export default PropertyDetails = (props) => {
 
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setLocation(MainFullAddress);
+        // setLocation(MainFullAddress);
         console.log("location....", location);
         //setAddress(MainFullAddress);
       })
@@ -556,7 +559,7 @@ export default PropertyDetails = (props) => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={PropertyDetailsStyle.c_locationBtn}
               onPress={() => {
                 // Platform.OS == "ios"
@@ -569,7 +572,7 @@ export default PropertyDetails = (props) => {
                 size={30}
                 color={_COLORS.Kodie_lightGreenColor}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}
@@ -587,7 +590,8 @@ export default PropertyDetails = (props) => {
               const city = details.address_components[0].long_name;
               const state = details.address_components[3].long_name;
               const country = details.address_components[4].long_name;
-              setLocation(details.formatted_address);
+              // setLocation(details.formatted_address);
+              setCurrentLocation(details.formatted_address);
               setCity(city);
               setState(state);
               setCountry(country);

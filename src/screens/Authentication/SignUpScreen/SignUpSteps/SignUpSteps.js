@@ -93,7 +93,7 @@ const SignUpSteps = (props) => {
   const [IsSearch, setIsSearch] = useState(false);
   const [p_latitude, setP_latitude] = useState("");
   const [p_longitude, setP_longitude] = useState("");
-  const [currentLocation, setCurrentLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState("");
 
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
@@ -131,6 +131,7 @@ const SignUpSteps = (props) => {
   console.log("user_key...", user_key);
   const ConfirmAddress = () => {
     setIsMap(false);
+    setPhysicalAddress(currentLocation)
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -143,16 +144,15 @@ const SignUpSteps = (props) => {
     setP_longitude(Region.longitude);
     console.log("p_longitude...", p_longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress();
+    // getAddress();
   };
   const getAddress = (p_latitude, p_longitude) => {
     Geocoder.from(p_latitude, p_longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        currentLocation
-          ? setPhysicalAddress(json.results[0].formatted_address)
-          : null;
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -502,7 +502,7 @@ const SignUpSteps = (props) => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={SignUpStepStyle.c_locationBtn}
               onPress={() => {
                 // Platform.OS == "ios"
@@ -515,7 +515,7 @@ const SignUpSteps = (props) => {
                 size={30}
                 color={_COLORS.Kodie_lightGreenColor}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}
@@ -533,7 +533,8 @@ const SignUpSteps = (props) => {
               console.log("p_longitude...", p_longitude);
               setIsSearch(false);
               setIsMap(true);
-              setPhysicalAddress(details.formatted_address);
+              setCurrentLocation(details.formatted_address)
+              // setPhysicalAddress(details.formatted_address);
               console.log("physicalAddressSearch....", physicalAddress);
               console.log("details.......", details);
             }}

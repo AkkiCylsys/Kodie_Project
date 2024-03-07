@@ -151,7 +151,7 @@ export default FirstProperty = (props) => {
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [buildingFlorSize, setBuildingFlorSize] = useState("");
   const [landArea, setLandArea] = useState("");
-  const [currentLocation, setCurrentLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState("");
   const dispatch = useDispatch();
   const P_addressParts = propertyLocation.split(", ");
   console.log("P_addressParts", P_addressParts);
@@ -532,6 +532,7 @@ export default FirstProperty = (props) => {
   };
   const ConfirmAddress = () => {
     setIsMap(false);
+    setPropertyLocation(currentLocation);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -541,14 +542,16 @@ export default FirstProperty = (props) => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress();
+    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        setPropertyLocation(json.results[0].formatted_address);
+        // setPropertyLocation(json.results[0].formatted_address);
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -627,7 +630,7 @@ export default FirstProperty = (props) => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={FirstPropertyStyle.c_locationBtn}
               onPress={() => {}}
             >
@@ -636,7 +639,7 @@ export default FirstProperty = (props) => {
                 size={30}
                 color={_COLORS.Kodie_lightGreenColor}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={FirstPropertyStyle.BtnContainer}
               onPress={ConfirmAddress}
@@ -652,7 +655,8 @@ export default FirstProperty = (props) => {
               setlongitude(details.geometry.location.lng);
               setIsSearch(false);
               setIsMap(true);
-              setPropertyLocation(details.formatted_address);
+              // setPropertyLocation(details.formatted_address);
+              setCurrentLocation(details.formatted_address);
             }}
           />
         ) : (

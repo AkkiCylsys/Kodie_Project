@@ -132,6 +132,7 @@ export default CreateJobFirstScreen = (props) => {
   const ConfirmAddress = () => {
     setIsMap(false);
     // setLocation(currentLocation);
+    setLocation(currentLocation);
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -151,9 +152,9 @@ export default CreateJobFirstScreen = (props) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
         // currentLocation ? setLocation(json.results[0].formatted_address) : null;
-        // const formatedAddress = json.results[0].formatted_address;
-        // setCurrentLocation(formatedAddresss);
-        setLocation(json.results[0].formatted_address);
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
+        // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -900,7 +901,7 @@ export default CreateJobFirstScreen = (props) => {
               placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={CreateJobFirstStyle.c_locationBtn}
             onPress={() => {
               // Platform.OS == "ios"
@@ -913,7 +914,7 @@ export default CreateJobFirstScreen = (props) => {
               size={30}
               color={_COLORS.Kodie_lightGreenColor}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={CreateJobFirstStyle.BtnContainer}
             onPress={ConfirmAddress}
@@ -929,7 +930,8 @@ export default CreateJobFirstScreen = (props) => {
             setlongitude(details.geometry.location.lng);
             setIsSearch(false);
             setIsMap(true);
-            setLocation(details.formatted_address);
+            setCurrentLocation(details.formatted_address)
+            // setLocation(details.formatted_address);
           }}
         />
       ) : (

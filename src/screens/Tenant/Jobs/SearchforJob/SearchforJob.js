@@ -83,7 +83,7 @@ export default SearchForJob = (props) => {
   const [min, setMin] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
   const [formattedPriceRanges, setFormattedPriceRanges] = useState("");
-  const [currentLocation, setCurrentLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState("");
 
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
@@ -105,7 +105,7 @@ export default SearchForJob = (props) => {
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
-    setCurrentLocation(true);
+    setLocation(currentLocation)
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -116,14 +116,16 @@ export default SearchForJob = (props) => {
 
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress();
+    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
-        setLocation(json.results[0].formatted_address)
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
+        // setLocation(json.results[0].formatted_address)
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ", " +
@@ -145,7 +147,7 @@ export default SearchForJob = (props) => {
 
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setLocation(MainFullAddress);
+        // setLocation(MainFullAddress);
       })
       .catch((error) => console.warn(error));
   };
@@ -601,7 +603,7 @@ export default SearchForJob = (props) => {
               placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
               style={CreateJobFirstStyle.c_locationBtn}
               onPress={() => {
               }}
@@ -611,7 +613,7 @@ export default SearchForJob = (props) => {
                 size={30}
                 color={_COLORS.Kodie_lightGreenColor}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           <TouchableOpacity
             style={CreateJobFirstStyle.BtnContainer}
             onPress={ConfirmAddress}
@@ -627,7 +629,8 @@ export default SearchForJob = (props) => {
             setlongitude(details.geometry.location.lng);
             setIsSearch(false);
             setIsMap(true);
-            setLocation(details.formatted_address);
+            setCurrentLocation(details.formatted_address)
+            // setLocation(details.formatted_address);
           }}
         />
       ) : (

@@ -88,7 +88,7 @@ const EditProfile = (props) => {
   const [company_latitude, setCompany_latitude] = useState("");
   const [company_longitude, setCompany_longitude] = useState("");
   const [formattedValue, setFormattedValue] = useState("");
-  const [currentLocation, setCurrentLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState("");
 
   const [getLat, setGetLat] = useState("");
   const [getLong, setGetLong] = useState("");
@@ -123,6 +123,11 @@ const EditProfile = (props) => {
   };
   const ConfirmAddress = () => {
     setIsMap(false);
+    if (activeTab === "Tab1") {
+      setLocation(currentLocation);
+    } else {
+      setCompanyPhysicaladdress(currentLocation);
+    }
   };
   const openMapandClose = (text) => {
     setIsMap(false);
@@ -150,10 +155,13 @@ const EditProfile = (props) => {
       .then((json) => {
         console.log("json location.......", json);
         console.log("current address...", json.results[0].formatted_address);
+        const formatedAddress = json.results[0].formatted_address;
         if (activeTab === "Tab1") {
-          setLocation(json.results[0].formatted_address);
+          // setLocation(json.results[0].formatted_address);
+          setCurrentLocation(formatedAddress);
         } else {
-          setCompanyPhysicaladdress(json.results[0].formatted_address);
+          // setCompanyPhysicaladdress(json.results[0].formatted_address);
+          setCurrentLocation(formatedAddress);
         }
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
@@ -177,11 +185,11 @@ const EditProfile = (props) => {
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         // alert(activeTab)
-        if (activeTab === "Tab1") {
-          setLocation(MainFullAddress);
-        } else {
-          setCompanyPhysicaladdress(MainFullAddress);
-        }
+        // if (activeTab === "Tab1") {
+        //   setLocation(MainFullAddress);
+        // } else {
+        //   setCompanyPhysicaladdress(MainFullAddress);
+        // }
 
         //setAddress(MainFullAddress);
       })
@@ -638,7 +646,7 @@ const EditProfile = (props) => {
               placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={EditProfileStyle.c_locationBtn}
             onPress={() => {}}
           >
@@ -647,7 +655,7 @@ const EditProfile = (props) => {
               size={30}
               color={_COLORS.Kodie_lightGreenColor}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={EditProfileStyle.BtnContainer}
             onPress={ConfirmAddress}
@@ -664,9 +672,11 @@ const EditProfile = (props) => {
             setIsSearch(false);
             setIsMap(true);
             if (activeTab === "Tab1") {
-              setLocation(details.formatted_address);
+              // setLocation(details.formatted_address);
+              setCurrentLocation(details.formatted_address);
             } else {
-              setCompanyPhysicaladdress(details.formatted_address);
+              // setCompanyPhysicaladdress(details.formatted_address);
+              setCurrentLocation(details.formatted_address);
             }
           }}
         />
