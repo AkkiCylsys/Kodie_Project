@@ -9,6 +9,9 @@ import SwitchButton from '../../../components/Molecules/SwitchButton/SwitchButto
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {FlatList} from 'react-native-gesture-handler';
+import {useSelector} from 'react-redux';
+import axios from 'axios';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 //ScreenNo:209
 
 const subscriptionData = [
@@ -68,10 +71,13 @@ const subscriptionData = [
   },
 ];
 const ManageSubscription = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginResponse.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [priceRanges, setPriceRanges] = useState(0);
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
+  const [customerID, setCustomerID] = useState('');
 
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
@@ -146,14 +152,48 @@ const ManageSubscription = props => {
               alert('Contact us pressed')
             }
             onPressRightButton={() => {
-              // props.navigation.navigate("SubscriptionScreen");
-              props.navigation.navigate('PaymentScreen');
+              createCustomer();
+              // props.navigation.navigate("SubscriptionScreen", {
+              //   customerID: customerID,
+              // });
+              // props.navigation.navigate("PaymentScreen");
               // alert("Subscription")
             }}
           />
         </View>
       </View>
     );
+  };
+  const createCustomer = () => {
+    const url = 'https://kodieapis.cylsys.com/api/v1/create_customer';
+    console.log('Request URL:', url);
+    setIsLoading(true);
+    const createCustomer_data = {
+      name: loginData?.Account_details[0]?.UAD_FIRST_NAME,
+      email: loginData?.Login_details?.email,
+    };
+    axios
+      .post(url, createCustomer_data)
+      .then(response => {
+        console.log('API Response createCustomer', response.data);
+        if (response.data.success === true) {
+          console.log('customer ID ....', response.data.data.id);
+          setCustomerID(response.data.data.id);
+          props.navigation.navigate('SubscriptionScreen', {
+            customerID: response.data.data.id,
+          });
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('API failed createCustomer', error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
   return (
     <>
@@ -195,12 +235,7 @@ const ManageSubscription = props => {
             </Text>
             .
           </Text>
-          <Text
-            style={[
-              ManageSubscriptionStyle.SubUnderlineHeading,
-              {color: _COLORS.Kodie_GreenColor},
-            ]}>
-            {' '}
+          <Text style={[ManageSubscriptionStyle.SubUnderlineHeading]}>
             14-days unlimited FREE trial, then only $69 / month
           </Text>
           <View style={ManageSubscriptionStyle.RangeSliderView}>
@@ -362,13 +397,16 @@ const ManageSubscription = props => {
             keyExtractor={(item, index) => item.id}
             renderItem={subscriptionCardRender}
           />
-          <CustomSingleButton
-            onPress={() => props.navigation.navigate('BottomNav')}
-            _ButtonText={'Subscribe for only $69 / month'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            disabled={isLoading ? true : false}
-          />
+          <View style={{marginBottom: 10}}>
+            <CustomSingleButton
+              onPress={() => props.navigation.navigate('BottomNav')}
+              _ButtonText={'Subscribe for only $69 / month'}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
+            />
+          </View>
         </ScrollView>
+        {isLoading ? <CommonLoader /> : null}
       </View>
     </>
   );

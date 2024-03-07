@@ -4,6 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import TopHeader from "../../components/Molecules/Header/Header";
@@ -20,7 +21,11 @@ import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingle
 import { CommonLoader } from "../../components/Molecules/ActiveLoader/ActiveLoader";
 import { useEffect } from "react";
 import axios from "axios";
+import { Config } from "../../Config";
+import { useSelector } from "react-redux";
 const PaymentScreen = (props) => {
+  const loginData = useSelector((state) => state.authenticationReducer.data);
+  console.log("loginResponse.....", loginData);
   const [cardInfo, setCardInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [clintsecretkey, setclintsecretkey] = useState("");
@@ -28,14 +33,15 @@ const PaymentScreen = (props) => {
   const [transactionID, settransactionID] = useState("");
   const [amount, setamount] = useState(Math.round(50) * 100);
   const [paymentDetailsData, setPaymentDetailsData] = useState("");
+  const [paymentMethodId, setPaymentMethodId] = useState("");
 
   const { confirmPayment, loading } = useConfirmPayment();
 
   const publishableKey =
-    "pk_test_51OfGf5Dgq6jpphimcWFMZZWwZaalNDAgck8321AtYxdQSCyJpcwZoPKpuih5jhxFPD3XSTnUWVTINztQSFpvwfP600vLxObKoL";
+    "pk_test_51OjyJLKIJa7H9ZVBjnXta8L5vHNNyrWQvKquiuFlNpfaRmtZSTO85mLiNRMb2C6xHYcGnYAr7fR8DpNo9XM0Bgt400OxyjHWqW";
 
   const secretKey =
-    "sk_test_51OfGf5Dgq6jpphimSSMtArZPmwLOtmlpwgComIMYI0q14Ofa4HXZXE5QaaLNbAgBCkBVcd4GQHQ8s2ueqCmDBtNX00CVSGYO3X";
+    "sk_test_51OjyJLKIJa7H9ZVBnDiBLNOg5vJf2AZF5vV5z9zPzmPaGko2Ky95lyKmxRs3DaY3c1A269lP8g4l5NeXz6S7VDTu00w9XBNXYZ";
 
   const fetchCardDetail = (cardDetail) => {
     if (cardDetail?.complete) {
@@ -47,47 +53,8 @@ const PaymentScreen = (props) => {
   useEffect(() => {
     getPaymentIntent();
   }, []);
-  // const fetchPaymentIntentClientSecret = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       "https://api.stripe.com/v1/create-payment-intent",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${secretKey}`,
-  //         },
-  //         body: JSON.stringify({
-  //           amount: 1900,
-  //           currency: "AUD",
-  //           payment_method_types: "card",
-  //         }),
-  //       }
-  //     );
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to fetch payment intent client secret");
-  //     }
-  //     const responseData = await response.json();
-  //     console.log("Response data:", responseData);
-
-  //     const { client_secret } = responseData;
-  //     console.log("Client secret:", client_secret);
-
-  //     return client_secret;
-  //   } catch (error) {
-  //     console.log(
-  //       "Error fetching payment intent client secret:",
-  //       error.message
-  //     );
-  //     throw error;
-  //   }
-  // };
-
   const getPaymentIntent = async () => {
-    // const SECRET_KEY = process.env.STRIPE_PAYMENT_SECRET_KEY;
     console.log("amount.....", amount);
-    // var data = `amount=${amount}&currency=Inr&payment_method_types%5B%5D=card`;
     var data = `amount=${amount}&currency=usd&payment_method_types%5B%5D=card`;
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
@@ -119,46 +86,11 @@ const PaymentScreen = (props) => {
 
     xhr.send(data);
   };
-  const addPaymentDetails = () => {
-    const url = Config.BASE_URL;
-    const paymentDetaills_Url = url + "payment_details";
-    console.log("Request URL:", paymentDetaills_Url);
-    setIsLoading(true);
-    const paymentDetails_Data = {
-      user_key: 0,
-      amount: "string",
-      currency: "string",
-      payment_method: "string",
-      customer_id: "string",
-      payment_date: "string",
-      status: "string",
-      is_active: "string",
-      created_by: "string",
-    };
-    axios
-      .post(paymentDetaills_Url, paymentDetails_Data)
-      .then((response) => {
-        console.log("API Response paymentDetails_Data:", response.data);
-        if (response.data.status === true) {
-          // setPaymentDetailsData(response.data.lookup_details);
-        } else {
-          alert(response.data.message);
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("API failed paymentDetails", error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
   const handlePayPress = async () => {
     setIsLoading(true);
     const billingDetails = {
-      email: "jenny.rosen@example.com",
+      // email: "info@kodie.com.au",
+      email: "rohanRamraj@gmail.com",
     };
     try {
       console.log("clientSecret data....", clintsecretkey);
@@ -174,12 +106,86 @@ const PaymentScreen = (props) => {
           "Payment successful",
           confirmPaymentIntent.paymentIntent.status
         );
-        alert(confirmPaymentIntent.paymentIntent.status);
+        setPaymentMethodId(confirmPaymentIntent.paymentIntent.paymentMethodId);
+        // alert(confirmPaymentIntent.paymentIntent.status);
+        await subscribeCustomer(paymentMethodId);
+        // Alert.alert("Success", "Payment successful. Subscription created.");
       }
     } catch (error) {
       console.log("Payment error", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+  // const subscribeCustomer = async (paymentMethodId) => {
+  //   const url = Config.BASE_URL;
+  //   const Subscription_Url = url + "your_backend_url/subscribe";
+  //   console.log("Subscription_Url...", Subscription_Url);
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await fetch(Subscription_Url, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         paymentMethodId: paymentMethodId,
+  //         // user_id: loginData.Login_details.user_id,
+  //         // account_id: loginData.Login_details.user_account_id,
+  //         // subscription_id: paymentMethodId,
+  //         // startDate: "1/03/2024",
+  //         // endDate: "5/03/2024",
+  //         // collection_method: "weekly",
+  //         // subscribe_type: "card",
+  //       }),
+  //     });
+  //     console.log("response..",response.data)
+  //     if (response.ok) {
+  //       alert("Subscription created successfully");
+  //       setIsLoading(false);
+  //     } else {
+  //       const responseData = await response.json();
+  //       console.error("Subscription error:", responseData.error);
+  //       Alert.alert(
+  //         "Error",
+  //         "Failed to subscribe to the plan. Please try again."
+  //       );
+  //       setIsLoading(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Subscription error:", error);
+  //     Alert.alert("Error", "An unexpected error occurred. Please try again.");
+  //   }
+  // };
+  const subscribeCustomer = async (paymentMethodId) => {
+    try {
+      const response = await fetch("your_backend_url/subscribe", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paymentMethodId: paymentMethodId,
+          // Other subscription parameters if needed
+        }),
+      });
+
+      if (response.ok) {
+        // Subscription created successfully
+        console.log("Subscription successful");
+      } else {
+        const responseData = await response.json();
+        console.error("Subscription error:", responseData.error);
+        // Assuming Alert is defined somewhere else in your code
+        Alert.alert(
+          "Error",
+          "Failed to subscribe to the plan. Please try again."
+        );
+      }
+    } catch (error) {
+      console.error("Subscription error:", error);
+      // Assuming Alert is defined somewhere else in your code
+      // Alert.alert("Error");
     }
   };
 

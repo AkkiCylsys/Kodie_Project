@@ -92,7 +92,7 @@ const DeshboardNotice = (props) => {
             <View style={DeshBoardNoticeCss?.PercenView}>
               <View style={DeshBoardNoticeCss?.percentageText}>
                 <Text style={DeshBoardNoticeCss.progressText}>
-                  {profileCompletion} complete, nice work!
+                  {profileCompletion}  Complete, nice work!
                 </Text>
               </View>
               <TouchableOpacity

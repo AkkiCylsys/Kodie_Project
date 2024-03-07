@@ -34,6 +34,7 @@ import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import Entypo from 'react-native-vector-icons/Entypo';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
@@ -69,7 +70,7 @@ export default PropertyDetails = props => {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
-  const [currentLocation, setCurrentLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState('');
 
   const [getLat, setGetLat] = useState('');
   const [getLong, setGetLong] = useState('');
@@ -112,9 +113,9 @@ export default PropertyDetails = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
+    // Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
     setLocation(property_Detail?.location);
-  }, [currentLocation]);
+  }, []);
 
   const DetailsData = () => {
     const detailData = {
@@ -257,60 +258,60 @@ export default PropertyDetails = props => {
       </View>
     );
   };
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log('The permission is limited: some actions are possible');
-            break;
-          case RESULTS.GRANTED:
-            console.log('The permission is granted');
-            fetchCurrentLocation();
-            break;
-          case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
-            break;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Example App',
-          message: 'Example App access to your location ',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-        // alert("You can use the location");
-        fetchCurrentLocation();
-      } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
+  // const CheckIOSMapPermission = () => {
+  //   request(PERMISSIONS.IOS.LOCATION_ALWAYS)
+  //     .then((result) => {
+  //       switch (result) {
+  //         case RESULTS.UNAVAILABLE:
+  //           console.log(
+  //             "This feature is not available (on this device / in this context)"
+  //           );
+  //           break;
+  //         case RESULTS.DENIED:
+  //           console.log(
+  //             "The permission has not been requested / is denied but requestable"
+  //           );
+  //           break;
+  //         case RESULTS.LIMITED:
+  //           console.log("The permission is limited: some actions are possible");
+  //           break;
+  //         case RESULTS.GRANTED:
+  //           console.log("The permission is granted");
+  //           fetchCurrentLocation();
+  //           break;
+  //         case RESULTS.BLOCKED:
+  //           console.log("The permission is denied and not requestable anymore");
+  //           break;
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
+  // const checkpermissionlocation = async () => {
+  //   try {
+  //     const granted = await PermissionsAndroid.request(
+  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+  //       {
+  //         title: "Example App",
+  //         message: "Example App access to your location ",
+  //       }
+  //     );
+  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //       console.log("You can use the location");
+  //       // alert("You can use the location");
+  //       fetchCurrentLocation();
+  //     } else {
+  //       console.log("location permission denied");
+  //       alert("Location permission denied");
+  //     }
+  //   } catch (err) {
+  //     console.warn(err);
+  //   }
+  // };
   const ConfirmAddress = () => {
     setIsMap(false);
-    setCurrentLocation(true);
+    setLocation(currentLocation);
   };
   const openMapandClose = text => {
     setIsMap(false);
@@ -321,14 +322,16 @@ export default PropertyDetails = props => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress();
+    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then(json => {
         console.log('json location.......', json);
         console.log('current address...', json.results[0].formatted_address);
-        currentLocation ? setLocation(json.results[0].formatted_address) : null;
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
+        // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ', ' +
@@ -351,59 +354,32 @@ export default PropertyDetails = props => {
 
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setLocation(MainFullAddress);
+        // setLocation(MainFullAddress);
         console.log('location....', location);
         //setAddress(MainFullAddress);
       })
       .catch(error => console.warn(error));
   };
-  // const getAddressWithCordinates = () => {
-  //   console.log("Enter cordinates..");
-  //   Geolocation.watchPosition(
+  // const fetchCurrentLocation = () => {
+  //   Geolocation.getCurrentPosition(
   //     (position) => {
-  //       // alert("with cordinates..");
-  //       console.log("with cordinates..");
-  //       // setGetLat(position.coords.latitude);
-  //       // setGetLong(position.coords.longitude);
-  //       setlatitude(position.coords.latitude);
-  //       console.log("withCordinates latitude....", position.coords.latitude);
-  //       setlongitude(position.coords.longitude);
-  //       console.log("withCordinates Longitude....", position.coords.longitude);
-  //       getAddress(position.coords.latitude, position.coords.longitude);
-  //       // getAddress(getLat, getLong);
+  //       console.log("This is your current location.");
+  //       const { latitude, longitude } = position.coords;
+  //       console.log("position.coords....", position.coords);
+  //       setlatitude(latitude);
+  //       setlongitude(longitude);
+  //       getAddress(latitude, longitude);
   //     },
   //     (error) => {
-  //       alert(error.message.toString());
-  //       console.log("watch cordinates err..", error.message);
+  //       console.error("Error fetching location:", error);
   //     },
   //     {
-  //       showLocationDialog: true,
   //       enableHighAccuracy: true,
   //       timeout: 20000,
-  //       maximumAge: 0,
+  //       maximumAge: 1000,
   //     }
   //   );
   // };
-  const fetchCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('This is your current location.');
-        const {latitude, longitude} = position.coords;
-        console.log('position.coords....', position.coords);
-        setlatitude(latitude);
-        setlongitude(longitude);
-        getAddress(latitude, longitude);
-      },
-      error => {
-        console.error('Error fetching location:', error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      },
-    );
-  };
 
   const handleProperty_Type = () => {
     const propertyData = {
@@ -567,7 +543,6 @@ export default PropertyDetails = props => {
               <TextInput
                 style={{
                   backgroundColor: 'transparent',
-
                   width: '90%',
                   height: 45,
                   alignSelf: 'center',
@@ -577,6 +552,20 @@ export default PropertyDetails = props => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
+            {/* <TouchableOpacity
+              style={PropertyDetailsStyle.c_locationBtn}
+              onPress={() => {
+                // Platform.OS == "ios"
+                //   ? CheckIOSMapPermission()
+                //   : checkpermissionlocation();
+              }}
+            >
+              <Entypo
+                name="location-pin"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}>
@@ -593,7 +582,8 @@ export default PropertyDetails = props => {
               const city = details.address_components[0].long_name;
               const state = details.address_components[3].long_name;
               const country = details.address_components[4].long_name;
-              setLocation(details.formatted_address);
+              // setLocation(details.formatted_address);
+              setCurrentLocation(details.formatted_address);
               setCity(city);
               setState(state);
               setCountry(country);
@@ -634,9 +624,9 @@ export default PropertyDetails = props => {
                     style={PropertyDetailsStyle.locationIconView}
                     onPress={() => {
                       // props.navigation.navigate("Location");
-                      Platform.OS == 'ios'
-                        ? CheckIOSMapPermission
-                        : checkpermissionlocation();
+                      // Platform.OS == "ios"
+                      //   ? CheckIOSMapPermission
+                      //   : checkpermissionlocation();
                       setIsMap(true);
                     }}>
                     <Octicons

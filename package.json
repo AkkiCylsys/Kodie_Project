@@ -107,6 +107,7 @@
     "rn-fetch-blob": "^0.12.0",
     "rn-otp-timer": "^1.0.1",
     "rn-range-slider": "^2.2.2",
+    "lodash": "^4.17.21",
     "toggle-switch-react-native": "^3.3.0"
   },
   "devDependencies": {

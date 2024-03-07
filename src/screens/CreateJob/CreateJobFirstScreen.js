@@ -1,7 +1,7 @@
 //ScreenNo:143
 //ScreenNo:139
 //ScreenNo:121
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef, useCallback} from 'react';
 import {
   View,
   Text,
@@ -45,9 +45,14 @@ import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {debounce} from 'lodash';
+import MapComponent from '../../components/Molecules/GoogleMap/mapComponets';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default CreateJobFirstScreen = props => {
+  const mapRef = useRef(null);
+  const navigation = useNavigation();
   const [getLat, setGetLat] = useState('');
   const [getLong, setGetLong] = useState('');
   const JobId = props.route.params?.JobId;
@@ -89,12 +94,12 @@ export default CreateJobFirstScreen = props => {
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const [arrowIcon, setArrowIcon] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
 
   // validation.....
-
   const handleNextbtn = () => {
     if (jobPriorityValue == '') {
       setJobPriorityValueError(true);
@@ -117,7 +122,6 @@ export default CreateJobFirstScreen = props => {
       });
     }
   };
-
   const goBack = () => {
     props.navigation.pop();
     props.navigation.navigate('Jobs', {
@@ -127,96 +131,30 @@ export default CreateJobFirstScreen = props => {
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
-    setCurrentLocation(true);
+    // setLocation(currentLocation);
+    setLocation(currentLocation);
   };
   const openMapandClose = text => {
     setIsMap(false);
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    // alert(JSON.stringify(Region))
+    // alert(JSON.stringify(Region));
     console.log('Region....', JSON.stringify(Region));
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress();
-  };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Example App',
-          message: 'Example App access to your location ',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-        fetchCurrentLocation();
-      } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log('The permission is limited: some actions are possible');
-            break;
-          case RESULTS.GRANTED:
-            console.log('The permission is granted');
-            fetchCurrentLocation();
-            break;
-          case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
-            break;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-  const fetchCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('This is your current location.');
-        const {latitude, longitude} = position.coords;
-        console.log('position.coords....', position.coords);
-        setlatitude(latitude);
-        setlongitude(longitude);
-        getAddress(latitude, longitude);
-      },
-      error => {
-        console.error('Error fetching location:', error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      },
-    );
+    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then(json => {
         console.log('json location.......', json);
         console.log('current address...', json.results[0].formatted_address);
-        currentLocation ? setLocation(json.results[0].formatted_address) : null;
+        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
+        // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ', ' +
@@ -238,7 +176,7 @@ export default CreateJobFirstScreen = props => {
         console.log('addressComponent2.....', addressComponent2);
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setLocation(MainFullAddress);
+        // setLocation(MainFullAddress);
         console.log('mainFullAddress....', MainFullAddress);
       })
       .catch(error => console.warn(error));
@@ -366,10 +304,9 @@ export default CreateJobFirstScreen = props => {
     setLocation('');
     setSelectedAddress('');
     setRatingThresholdValue('');
-
     // map...
-    Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
-  }, [selectJobType, currentLocation]);
+    // Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
+  }, [selectJobType]);
   const Selected_Time_render = item => {
     const isSelected =
       item.longitude === selectedAddress.longitude &&
@@ -881,11 +818,13 @@ export default CreateJobFirstScreen = props => {
               marginBottom: 10,
             }}
             onRegionChange={onRegionChange}
+            // onRegionChangeComplete={onRegionChangeComplete}
             Maplat={latitude}
             Maplng={longitude}
             // Maplat={getLat}
             // Maplng={getLong}
           />
+          {/* <MapComponent/> */}
           <View
             style={{
               flexDirection: 'row',
@@ -913,18 +852,20 @@ export default CreateJobFirstScreen = props => {
               placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={CreateJobFirstStyle.c_locationBtn}
             onPress={() => {
-              alert('pressed..');
-            }}>
-            {/* <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} /> */}
+              // Platform.OS == "ios"
+              //   ? CheckIOSMapPermission()
+              //   : checkpermissionlocation();
+            }}
+          >
             <Entypo
               name="location-pin"
               size={30}
               color={_COLORS.Kodie_lightGreenColor}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={CreateJobFirstStyle.BtnContainer}
             onPress={ConfirmAddress}>
@@ -939,7 +880,8 @@ export default CreateJobFirstScreen = props => {
             setlongitude(details.geometry.location.lng);
             setIsSearch(false);
             setIsMap(true);
-            setLocation(details.formatted_address);
+            setCurrentLocation(details.formatted_address);
+            // setLocation(details.formatted_address);
           }}
         />
       ) : (
@@ -1116,10 +1058,11 @@ export default CreateJobFirstScreen = props => {
                 <TouchableOpacity
                   style={CreateJobFirstStyle.locationIconView}
                   onPress={() => {
-                    Platform.OS == 'ios'
-                      ? CheckIOSMapPermission
-                      : checkpermissionlocation();
+                    // Platform.OS == "ios"
+                    //   ? CheckIOSMapPermission
+                    //   : checkpermissionlocation();
                     setIsMap(true);
+                    // onRegionChange(Region);
                   }}>
                   <Octicons
                     name={'location'}

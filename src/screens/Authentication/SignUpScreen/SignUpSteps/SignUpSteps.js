@@ -99,7 +99,7 @@ const SignUpSteps = props => {
   const [IsSearch, setIsSearch] = useState(false);
   const [p_latitude, setP_latitude] = useState('');
   const [p_longitude, setP_longitude] = useState('');
-  const [currentLocation, setCurrentLocation] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState('');
   const [imageError, setImageError] = useState(true);
 
   const [getLat, setGetLat] = useState('');
@@ -142,7 +142,7 @@ const SignUpSteps = props => {
   console.log('user_key...', user_key);
   const ConfirmAddress = () => {
     setIsMap(false);
-    setCurrentLocation(true);
+    setPhysicalAddress(currentLocation);
   };
   const openMapandClose = text => {
     setIsMap(false);
@@ -155,116 +155,15 @@ const SignUpSteps = props => {
     setP_longitude(Region.longitude);
     console.log('p_longitude...', p_longitude);
     getAddress(Region.latitude, Region.longitude);
-    getAddress();
+    // getAddress();
   };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Example App',
-          message: 'Example App access to your location ',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-        // alert("You can use the location");
-        fetchCurrentLocation();
-      } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log('The permission is limited: some actions are possible');
-            break;
-          case RESULTS.GRANTED:
-            console.log('The permission is granted');
-            fetchCurrentLocation();
-            break;
-          case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
-            break;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  // const getAddressWithCordinates = () => {
-  //   console.log("Enter cordinates..");
-
-  //   Geolocation.watchPosition(
-  //     (position) => {
-  //       console.log("with cordinates..");
-  //       setP_latitude(position.coords.latitude);
-  //       console.log("p_latitude...", p_latitude);
-
-  //       setP_longitude(position.coords.longitude);
-  //       console.log("p_longitude...", p_longitude);
-
-  //       getAddress(position.coords.latitude, position.coords.longitude);
-  //     },
-  //     (error) => {
-  //       alert(error.message.toString());
-  //     },
-  //     {
-  //       showLocationDialog: true,
-  //       enableHighAccuracy: true,
-  //       timeout: 20000,
-  //       maximumAge: 0,
-  //     }
-  //   );
-  // };
-
-  const fetchCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('This is your current location.');
-        const {latitude, longitude} = position.coords;
-        console.log('position.coords....', position.coords);
-        setP_latitude(latitude);
-        setP_longitude(longitude);
-        getAddress(latitude, longitude);
-      },
-      error => {
-        console.error('Error fetching location:', error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      },
-    );
-  };
-
   const getAddress = (p_latitude, p_longitude) => {
     Geocoder.from(p_latitude, p_longitude)
       .then(json => {
         console.log('json location.......', json);
         console.log('current address...', json.results[0].formatted_address);
-        currentLocation
-          ? setPhysicalAddress(json.results[0].formatted_address)
-          : null;
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ', ' +
@@ -375,8 +274,8 @@ const SignUpSteps = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
-  }, [currentLocation]);
+    // Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
+  }, []);
 
   //  go back button...............
   const goBack = () => {
@@ -579,9 +478,9 @@ const SignUpSteps = props => {
                 onPress={() => {
                   // props.navigation.navigate("Location");
 
-                  Platform.OS == 'ios'
-                    ? CheckIOSMapPermission
-                    : checkpermissionlocation();
+                  // Platform.OS == "ios"
+                  //   ? CheckIOSMapPermission
+                  //   : checkpermissionlocation();
                   setIsMap(true);
                 }}>
                 <Entypo
@@ -729,6 +628,20 @@ const SignUpSteps = props => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
+            {/* <TouchableOpacity
+              style={SignUpStepStyle.c_locationBtn}
+              onPress={() => {
+                // Platform.OS == "ios"
+                //   ? CheckIOSMapPermission()
+                //   : checkpermissionlocation();
+              }}
+            >
+              <Entypo
+                name="location-pin"
+                size={30}
+                color={_COLORS.Kodie_lightGreenColor}
+              />
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}>
@@ -745,7 +658,8 @@ const SignUpSteps = props => {
               console.log('p_longitude...', p_longitude);
               setIsSearch(false);
               setIsMap(true);
-              setPhysicalAddress(details.formatted_address);
+              setCurrentLocation(details.formatted_address);
+              // setPhysicalAddress(details.formatted_address);
               console.log('physicalAddressSearch....', physicalAddress);
               console.log('details.......', details);
             }}
