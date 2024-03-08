@@ -115,6 +115,8 @@ const DeshboardNotice = (props) => {
               style={DeshBoardNoticeCss.progresBar}
               borderColor="black"
             />
+        
+
             <Text style={DeshBoardNoticeCss.profileText}>
               We are happy to have you on board. You have almost completed your
               profile set up.
@@ -124,6 +126,7 @@ const DeshboardNotice = (props) => {
                 </Text>
               </TouchableOpacity>
             </Text>
+       
           </View>
           <View style={DeshBoardNoticeCss.spaceLine} />
           <View style={DeshBoardNoticeCss.trialView}>

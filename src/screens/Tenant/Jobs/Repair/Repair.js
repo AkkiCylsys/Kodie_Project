@@ -425,7 +425,10 @@ export default Repair = (props) => {
               onPressRightButton={() => setActiveScreen(true)}
             />
           </View>
-          <DividerIcon borderBottomWidth={5} marginTop={8} />
+          <DividerIcon
+          borderBottomWidth={9}
+          color={_COLORS.Kodie_LiteWhiteColor}
+        />
         </>
         {/* ) : null} */}
 
@@ -445,7 +448,11 @@ export default Repair = (props) => {
               onPress={activeScreen ? props.onpress : props.servicing_press}
             />
           </View>
-          <DividerIcon borderBottomWidth={5} marginTop={8} />
+          <DividerIcon
+          borderBottomWidth={9}
+          color={_COLORS.Kodie_LiteWhiteColor}
+          // marginTop={20}
+        />
         </>
         {/* ) : null} */}
 

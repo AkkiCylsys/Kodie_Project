@@ -22,12 +22,13 @@ export const UploadImageStyle = StyleSheet.create({
     justifyContent: "space-between",
     // marginTop: 10,
   },
-  crossIconStyle: { alignSelf: "center", marginRight: 10 ,marginTop:5},
+  crossIconStyle: { alignSelf: "center", marginRight: 10 ,marginTop:15},
   uploadImgText: {
     marginHorizontal: 16,
     color: _COLORS.Kodie_BlackColor,
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
+    marginTop:10
   },
   content_View: {
     flexDirection: "row",

@@ -8,6 +8,7 @@ export const BottomModalDataStyle = StyleSheet.create({
     // padding: "1%",
     marginHorizontal: 10,
     backgroundColor: _COLORS.Kodie_WhiteColor,
+    marginBottom:20
   },
   text: {
     fontSize: 14,

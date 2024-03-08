@@ -20,6 +20,7 @@ export const DeshBoardNoticeCss = StyleSheet.create({
   },
   progressView: {
     paddingHorizontal: 4,
+    // marginHorizontal:15,
     paddingVertical: 4,
     width: "100%",
   },
@@ -35,13 +36,15 @@ export const DeshBoardNoticeCss = StyleSheet.create({
     marginTop: 5,
   },
   profileText: {
+    flex:1,
     color: _COLORS.Kodie_WhiteColor,
     marginTop: 5,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
     textAlign:'justify',
     lineHeight:18,
-    alignSelf:'center'
+    alignSelf:'center',
+    paddingHorizontal:5
   },
   continueText: {
     color: _COLORS.Kodie_lightGreenColor,
@@ -51,7 +54,7 @@ export const DeshBoardNoticeCss = StyleSheet.create({
   },
   spaceLine: { height: 3, backgroundColor: _COLORS.Kodie_lightGreenColor },
   trialView: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 10,
