@@ -1,5 +1,5 @@
 import { View, Text, Image, ScrollView } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { ManageSubscriptionStyle } from "./ManageSubscriptionStyle";
 import { IMAGES, FONTFAMILY, _COLORS } from "../../../Themes/index";
@@ -114,6 +114,70 @@ const ManageSubscription = (props) => {
     );
   };
 
+  useEffect(() => {
+    // getProduct();
+  }, []);
+  // Api intrigation....
+  const createCustomer = () => {
+    const url = "https://kodieapis.cylsys.com/api/v1/create_customer";
+    console.log("Request URL:", url);
+    setIsLoading(true);
+    const createCustomer_data = {
+      name: loginData?.Account_details[0]?.UAD_FIRST_NAME,
+      email: loginData?.Login_details?.email,
+    };
+    axios
+      .post(url, createCustomer_data)
+      .then((response) => {
+        console.log("API Response createCustomer", response.data);
+        if (response.data.success === true) {
+          console.log("customer ID ....", response.data.data.id);
+          setCustomerID(response.data.data.id);
+          props.navigation.navigate("SubscriptionScreen", {
+            customerID: response.data.data.id,
+          });
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("API failed createCustomer", error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  // const getProduct = () => {
+  //   const url = "{{baseUrl}}/v1/products";
+  //   console.log("Request URL:", url);
+  //   setIsLoading(true);
+  //   axios
+  //     .get(url)
+  //     .then((response) => {
+  //       console.log("API Response getProduct", response.data);
+  //       // if (response.data.success === true) {
+  //       //   console.log("customer ID ....", response.data.data.id);
+  //       //   setCustomerID(response.data.data.id);
+  //       //   props.navigation.navigate("SubscriptionScreen", {
+  //       //     customerID: response.data.data.id,
+  //       //   });
+  //       // } else {
+  //       //   setIsLoading(false);
+  //       // }
+  //     })
+  //     .catch((error) => {
+  //       console.error("API failed getProduct", error);
+  //       setIsLoading(false);
+  //       // alert(error);
+  //     })
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // };
+
   const subscriptionCardRender = ({ item }) => {
     return (
       <View style={ManageSubscriptionStyle.SubscriptionDataView}>
@@ -157,6 +221,7 @@ const ManageSubscription = (props) => {
               // props.navigation.navigate("SubscriptionScreen", {
               //   customerID: customerID,
               // });
+              // props.navigation.navigate("SubscriptionScreen");
               // props.navigation.navigate("PaymentScreen");
               // alert("Subscription")
             }}
@@ -164,37 +229,6 @@ const ManageSubscription = (props) => {
         </View>
       </View>
     );
-  };
-  const createCustomer = () => {
-    const url = "https://kodieapis.cylsys.com/api/v1/create_customer";
-    console.log("Request URL:", url);
-    setIsLoading(true);
-    const createCustomer_data = {
-      name: loginData?.Account_details[0]?.UAD_FIRST_NAME,
-      email: loginData?.Login_details?.email,
-    };
-    axios
-      .post(url, createCustomer_data)
-      .then((response) => {
-        console.log("API Response createCustomer", response.data);
-        if (response.data.success === true) {
-          console.log("customer ID ....", response.data.data.id);
-          setCustomerID(response.data.data.id);
-          props.navigation.navigate("SubscriptionScreen", {
-            customerID: response.data.data.id,
-          });
-        } else {
-          setIsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("API failed createCustomer", error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
   };
   return (
     <>

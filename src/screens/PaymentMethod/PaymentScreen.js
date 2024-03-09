@@ -106,9 +106,13 @@ const PaymentScreen = (props) => {
           "Payment successful",
           confirmPaymentIntent.paymentIntent.status
         );
+        console.log(
+          "payment method id .....",
+          confirmPaymentIntent.paymentIntent.paymentMethodId
+        );
         setPaymentMethodId(confirmPaymentIntent.paymentIntent.paymentMethodId);
         // alert(confirmPaymentIntent.paymentIntent.status);
-        await subscribeCustomer(paymentMethodId);
+        // await subscribeCustomer(paymentMethodId);
         // Alert.alert("Success", "Payment successful. Subscription created.");
       }
     } catch (error) {

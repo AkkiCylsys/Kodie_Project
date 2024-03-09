@@ -5,6 +5,7 @@ import {
   CardField,
   useStripe,
   useConfirmPayment,
+  createPaymentMethod,
 } from "@stripe/stripe-react-native";
 import { useSelector } from "react-redux";
 import TopHeader from "../../components/Molecules/Header/Header";
@@ -13,12 +14,13 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 import { _COLORS } from "../../Themes";
 import { _goBack } from "../../services/CommonServices";
 import axios from "axios";
+import stripe from "tipsi-stripe";
 const SubscriptionScreen = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
   console.log("loginResponse.....", loginData);
 
-  const customerID = props.route.params.customerID;
-  console.log("customerID in subscription screen...", customerID);
+  // const customerID = props.route.params.customerID;
+  // console.log("customerID in subscription screen...", customerID);
 
   console.log(
     "loginResponse.....",
@@ -83,37 +85,57 @@ const SubscriptionScreen = (props) => {
       });
   };
 
-  const handlePayPress = async () => {
-    setIsLoading(true);
-    const billingDetails = {
-      Name: loginData?.Account_details[0]?.UAD_FIRST_NAME,
-      email: loginData?.Login_details?.email,
-    };
+  // const handlePayPress = async () => {
+  //   setIsLoading(true);
+  //   const billingDetails = {
+  //     Name: loginData?.Account_details[0]?.UAD_FIRST_NAME,
+  //     email: loginData?.Login_details?.email,
+  //   };
+  //   try {
+  //     // console.log("clientSecret data....", clintsecretkey);
+  //     let confirmPaymentIntent = await confirmPayment(clientSecretKey, {
+  //       paymentMethodType: "Card",
+  //       paymentMethodData: {
+  //         billingDetails,
+  //       },
+  //     });
+  //     console.log("confirmPaymentIntent....", confirmPaymentIntent);
+  //     if (confirmPaymentIntent.paymentIntent.status == "Succeeded") {
+  //       console.log(
+  //         "Payment successful",
+  //         confirmPaymentIntent.paymentIntent.status
+  //       );
+  //       setPaymentMethodId(confirmPaymentIntent.paymentIntent.paymentMethodId);
+  //       // alert(confirmPaymentIntent.paymentIntent.status);
+  //       // await subscribeCustomer(paymentMethodId);
+  //       // Alert.alert("Success", "Payment successful. Subscription created.");
+  //     }
+  //   } catch (error) {
+  //     console.log("Payment error", error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+  stripe.init({
+    publishableKey: publishableKey,
+  });
+  const createpayment = async () => {
     try {
-      // console.log("clientSecret data....", clintsecretkey);
-      let confirmPaymentIntent = await confirmPayment(clientSecretKey, {
-        paymentMethodType: "Card",
-        paymentMethodData: {
-          billingDetails,
+      const paymentMethod = await stripe.createTokenWithCard({
+        card: {
+          number: "42424242424242424242",
+          cvc: "123",
+          expMonth: 11,
+          expYear: 2020,
         },
       });
-      console.log("confirmPaymentIntent....", confirmPaymentIntent);
-      if (confirmPaymentIntent.paymentIntent.status == "Succeeded") {
-        console.log(
-          "Payment successful",
-          confirmPaymentIntent.paymentIntent.status
-        );
-        setPaymentMethodId(confirmPaymentIntent.paymentIntent.paymentMethodId);
-        // alert(confirmPaymentIntent.paymentIntent.status);
-        await subscribeCustomer(paymentMethodId);
-        Alert.alert("Success", "Payment successful. Subscription created.");
-      }
-    } catch (error) {
-      console.log("Payment error", error);
-    } finally {
-      setIsLoading(false);
+      console.log("paymentMethod......", paymentMethod);
+    } catch (e) {
+      // Handle error
+      console.log("paymentMethod error....", e);
     }
   };
+
   const subscribeCustomer = (paymentMethodId) => {
     const url = "https://kodieapis.cylsys.com/api/v1/create_subscription";
     console.log("Request URL:", url);
@@ -121,7 +143,7 @@ const SubscriptionScreen = (props) => {
     console.log("customer id inside..", customerID);
     const subscribeCustomer_data = {
       // customer_id: customerID,
-      customer_id: "cus_PenbsmBdrGURhV",
+      // customer_id: "cus_PenbsmBdrGURhV",
       price: "price_1Oqa9iKIJa7H9ZVBdnDQYQg9",
     };
     axios
@@ -141,7 +163,7 @@ const SubscriptionScreen = (props) => {
         setIsLoading(false);
       });
   };
-  
+
   // const subscribeCustomer = async (paymentMethodId) => {
   //   const url = Config.BASE_URL;
   //   const Subscription_Url =
@@ -229,7 +251,8 @@ const SubscriptionScreen = (props) => {
           _ButtonText={"Subscribe"}
           backgroundColor={_COLORS.Kodie_BlackColor}
           onPress={() => {
-            handlePayPress();
+            // handlePayPress();
+            createpayment();
           }}
         />
       </View>
