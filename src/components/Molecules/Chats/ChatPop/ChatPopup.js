@@ -11,7 +11,7 @@ const data = [
     // Img: IMAGES.Message,
     icon:<Ionicons
     name="chatbox-ellipses-outline"
-    size={20}
+    size={25}
     color={_COLORS.Kodie_GreenColor}
   />
   },

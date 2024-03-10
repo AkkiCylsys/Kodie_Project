@@ -232,24 +232,7 @@ const Logrentalpayment = (props) => {
           </TouchableOpacity>
         </View>
         <View style={LogrentalPaymentStyle.card}>
-          <View style={LogrentalPaymentStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Total amount*"}</Text>
-            <TextInput
-              style={LogrentalPaymentStyle.input}
-              value={totalAmount}
-              onChangeText={setTotalAmount}
-              onBlur={() => handleTotalAmount(totalAmount)}
-              placeholder="Enter the total amount of the expense"
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              keyboardType="number-pad"
-              maxLength={5}
-            />
-          </View>
-          {totalAmountError ? (
-            <Text style={LogrentalPaymentStyle.error_text}>
-              {totalAmountError}
-            </Text>
-          ) : null}
+        
           <View style={LogrentalPaymentStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{"Payment type"}</Text>
             <Dropdown
@@ -281,6 +264,24 @@ const Logrentalpayment = (props) => {
           {paymentTypeError ? (
             <Text style={LogrentalPaymentStyle.error_text}>
               {"Payment type is required."}
+            </Text>
+          ) : null}
+            <View style={LogrentalPaymentStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{"Total amount*"}</Text>
+            <TextInput
+              style={LogrentalPaymentStyle.input}
+              value={totalAmount}
+              onChangeText={setTotalAmount}
+              onBlur={() => handleTotalAmount(totalAmount)}
+              placeholder="Enter the total amount of the expense"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+              keyboardType="number-pad"
+              maxLength={5}
+            />
+          </View>
+          {totalAmountError ? (
+            <Text style={LogrentalPaymentStyle.error_text}>
+              {totalAmountError}
             </Text>
           ) : null}
           <View style={LogrentalPaymentStyle.inputContainer}>

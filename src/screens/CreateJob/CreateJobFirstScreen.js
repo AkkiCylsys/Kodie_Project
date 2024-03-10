@@ -923,6 +923,7 @@ export default CreateJobFirstScreen = props => {
                 labelField="lookup_description"
                 valueField="lookup_key"
                 placeholder="Select item"
+                iconColor={_COLORS.Kodie_BlackColor}
                 value={servicesValue}
                 disable={isClick ? false : true}
                 searchPlaceholder="Search..."

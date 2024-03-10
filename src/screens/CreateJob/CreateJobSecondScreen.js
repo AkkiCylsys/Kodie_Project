@@ -24,6 +24,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import Entypo from "react-native-vector-icons/Entypo";
 import StepIndicator from "react-native-step-indicator";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import Video from "react-native-video";
 import ImagePicker from "react-native-image-crop-picker";
 import UploadLeftImage from "../../components/Molecules/UploadImage/UploadLeftImage";
@@ -517,10 +518,10 @@ const CreateJobSecondScreen = (props) => {
             <Text style={CreateJobSecondStyle.heading_Text}>
               {"Upload clear images of the front profile"}
             </Text>
-            <MaterialCommunityIcons
-              name="information"
-              size={25}
-              color={_COLORS.Kodie_GrayColor}
+            <AntDesign
+              name="questioncircle"
+              size={20}
+              color={_COLORS.Kodie_MediumGreenColor}
             />
           </View>
 
@@ -542,10 +543,10 @@ const CreateJobSecondScreen = (props) => {
             <Text style={CreateJobSecondStyle.heading_Text}>
               {"Upload clear images of the left side profile"}
             </Text>
-            <MaterialCommunityIcons
-              name="information"
-              size={25}
-              color={_COLORS.Kodie_GrayColor}
+            <AntDesign
+              name="questioncircle"
+              size={20}
+              color={_COLORS.Kodie_MediumGreenColor}
             />
           </View>
           <View style={{ flex: 1 }}>
@@ -561,10 +562,10 @@ const CreateJobSecondScreen = (props) => {
             <Text style={CreateJobSecondStyle.heading_Text}>
               {"Upload clear images of the right side profile"}
             </Text>
-            <MaterialCommunityIcons
-              name="information"
-              size={25}
-              color={_COLORS.Kodie_GrayColor}
+            <AntDesign
+              name="questioncircle"
+              size={20}
+              color={_COLORS.Kodie_MediumGreenColor}
             />
           </View>
           <View style={{ flex: 1 }}>
@@ -582,10 +583,10 @@ const CreateJobSecondScreen = (props) => {
                 "Upload a video clearly showing and describing the job that you need completed"
               }
             </Text>
-            <MaterialCommunityIcons
-              name="information"
-              size={25}
-              color={_COLORS.Kodie_GrayColor}
+            <AntDesign
+              name="questioncircle"
+              size={20}
+              color={_COLORS.Kodie_MediumGreenColor}
             />
           </View>
           <UploadImageBoxes

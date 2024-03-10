@@ -670,7 +670,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="Select item"
+            placeholder="Select number"
             searchPlaceholder="Search..."
             value={hourlyNeedValue}
             onChange={(item) => {
@@ -693,7 +693,7 @@ export default CreateJobTermsScreen = (props) => {
             maxHeight={300}
             labelField="lookup_description"
             valueField="lookup_key"
-            placeholder="Select services"
+            placeholder="Select frequency"
             searchPlaceholder="Search..."
             value={needServicesValue}
             onChange={(item) => {
@@ -771,7 +771,7 @@ export default CreateJobTermsScreen = (props) => {
               }}
             />
           </View>
-          <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
+          {/* <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
             {"Booking insurance?"}
           </Text>
           <RowButtons
@@ -821,7 +821,7 @@ export default CreateJobTermsScreen = (props) => {
               setSelectedButtoBookingInsuranceId(263);
               // alert(bookingInsuranceData[1]?.lookup_key);
             }}
-          />
+          /> */}
           <View style={CreateJobTermsStyle.nextBtn_view}>
             <CustomSingleButton
               _ButtonText={"Next"}

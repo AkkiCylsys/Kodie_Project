@@ -37,6 +37,7 @@ export const DeshBoardNoticeCss = StyleSheet.create({
     borderRadius: 5,
   },
   profileText: {
+    flex: 1,
     color: _COLORS.Kodie_WhiteColor,
     marginTop: 5,
     fontSize: 12,

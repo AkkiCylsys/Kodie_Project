@@ -99,7 +99,7 @@ const CustomSidebarMenu = props => {
         showsVerticalScrollIndicator={false}
         style={DrawerStyle.Container}>
         <Text style={DrawerStyle.HeaderText}>{'Properties'}</Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
             // {
@@ -119,9 +119,9 @@ const CustomSidebarMenu = props => {
               style={{alignSelf: 'center'}}
             />
           </View>
-          <Text style={DrawerStyle.SubHeading}>{'Property listings'}</Text>
-        </TouchableOpacity>
-        <DividerIcon marginBottom={3} marginTop={5} />
+          <Text style={DrawerStyle.SubHeading}>{"Property listings"}</Text>
+        </TouchableOpacity> */}
+        {/* <DividerIcon marginBottom={3} marginTop={5} /> */}
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
