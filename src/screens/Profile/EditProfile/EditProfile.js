@@ -57,22 +57,18 @@ const data = [
 const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
-  const [fullName, setFullName] = useState(
-    loginData?.Account_details[0]?.UAD_FIRST_NAME,
-  );
-  const [lastName, setLastName] = useState(
-    loginData?.Account_details[0]?.UAD_LAST_NAME,
-  );
+  const [fullName, setFullName] = useState(accountDetails?.UAD_FIRST_NAME);
+  const [lastName, setLastName] = useState(accountDetails?.UAD_LAST_NAME);
   const [email, setEmail] = useState(loginData?.Login_details?.email);
   const [phoneNumber, setPhoneNumber] = useState(
-    String(loginData?.Account_details[0]?.UAD_PHONE_NO),
+    String(loginData.Account_details[0]?.UAD_PHONE_NO),
   );
   const [location, setLocation] = useState(
-    loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD,
+    accountDetails?.UAD_CURR_PHYSICAL_ADD,
   );
   let profileDoc = props?.route?.params?.profileDoc;
   console.log('profileDoc....', profileDoc);
-  const [about, setAbout] = useState(loginData?.Account_details[0]?.UAD_BIO);
+  const [about, setAbout] = useState(accountDetails?.UAD_BIO);
   const [activeTab, setActiveTab] = useState('Tab1');
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
@@ -95,10 +91,12 @@ const EditProfile = props => {
   );
   const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
     useState('');
-  const [selectedServices, setSelectedServices] = useState([
-    loginData?.Account_details[0]?.user_role,
-  ]);
+  const initialJobTypeIds = accountDetails?.user_role_id
+    ? accountDetails.user_role_id.split(',').map(Number)
+    : [];
+  const [selectedServices, setSelectedServices] = useState(initialJobTypeIds);
   const [currentLocation, setCurrentLocation] = useState('');
+  const [accountDetails, setAccountDetails] = useState(null);
 
   const [Individuallatitude, setIndividuallatitude] = useState('');
   const [Individuallongitude, setIndividuallongitude] = useState('');
@@ -117,20 +115,34 @@ const EditProfile = props => {
     // console.log("fileName....", fileName);
     // console.log("fileType....", fileType);
   };
+  const getPersonalDetails = () => {
+    const url = Config.BASE_URL;
 
+    const apiUrl =
+      url + `getAccount_details/${loginData.Login_details.user_id}`;
+    console.log(apiUrl, 'apiUrl');
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data);
+        setAccountDetails(response.data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+      });
+  };
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-
+    getPersonalDetails();
     console.log('companyPhysicaladdress', companyPhysicaladdress);
-    // setFullName(loginData?.Account_details[0]?.UAD_FIRST_NAME);
-    // setEmail(loginData?.Login_details?.email);
-    // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
-    // setLocation(loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD);
     setActiveTab(profileDoc ? 'Tab3' : 'Tab1');
     handle_describe_yourself();
-  }, [currentLocation]);
+  }, []);
   // describe your self Api call code here .....
   const handle_describe_yourself = () => {
     const describe_yourself_Data = {
@@ -200,26 +212,6 @@ const EditProfile = props => {
     />
   );
 
-  // const userphoneNumber = loginData?.Account_details[0]?.UAD_PHONE_NO;
-  // const userphoneNumber = phoneNumber;
-
-  // // Use regular expression to extract country code and the remaining part
-  // const phoneNumberParts = userphoneNumber.match(/^(\+\d{1,2})(\d+)$/);
-
-  // if (phoneNumberParts) {
-  //   const countryCode = phoneNumberParts[1]; // Extracted country code
-  //   const remainingNumber = phoneNumberParts[2]; // Remaining part of the number
-
-  //   console.log('CountryCode:', countryCode);
-  //   setCountry_Code_Get(countryCode);
-  //   console.log('RemainingsNumber:', remainingNumber);
-  //   setUserMobileNumber(remainingNumber);
-  //   console.log(country_Code_Get, 'country_Code_Get');
-  // } else {
-  //   console.error('Invalid phone number format');
-  // }
-
-  // }, [currentLocation]);
   const goBack = () => {
     props.navigation.pop();
   };
@@ -247,8 +239,6 @@ const EditProfile = props => {
     } else {
       setCompany_longitude(Region.longitude);
     }
-    // setlatitude(Region.latitude);
-    // setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
     getAddress();
   };
@@ -259,10 +249,8 @@ const EditProfile = props => {
         console.log('current address...', json.results[0].formatted_address);
         const formatedAddress = json.results[0].formatted_address;
         if (activeTab === 'Tab1') {
-          // setLocation(json.results[0].formatted_address);
           setCurrentLocation(formatedAddress);
         } else {
-          // setCompanyPhysicaladdress(json.results[0].formatted_address);
           setCurrentLocation(formatedAddress);
         }
         let MainFullAddress =
@@ -286,14 +274,6 @@ const EditProfile = props => {
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // alert(activeTab)
-        // if (activeTab === "Tab1") {
-        //   setLocation(MainFullAddress);
-        // } else {
-        //   setCompanyPhysicaladdress(MainFullAddress);
-        // }
-
-        //setAddress(MainFullAddress);
       })
       .catch(error => console.warn(error));
   };
@@ -328,7 +308,6 @@ const EditProfile = props => {
     formData.append('uad_key', loginData?.Login_details?.user_id);
     formData.append('first_name', fullName);
     formData.append('last_name', lastName);
-    // formData.append("phone_number", phoneNumber);
     formData.append('phone_number', phoneNumber);
     formData.append('bio', about);
     formData.append('describe_yourself', selectedServices);
@@ -349,6 +328,7 @@ const EditProfile = props => {
       console.log('updateprofile....', response.data);
       if (response.data.success === true) {
         alert(response.data.message);
+        getPersonalDetails();
       }
     } catch (error) {
       alert(error);
@@ -455,92 +435,20 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Phone number
                     </Text>
-                    {/* <View style={EditProfileStyle.phoneinputbindview}>
-                      <View style={EditProfileStyle.phoneinput}>
-                        <View style={EditProfileStyle.bindnumberview}>
-                          <Text style={EditProfileStyle.numbercode}>+61</Text>
-                          <Ionicons
-                            name="chevron-down-outline"
-                            size={20}
-                            color={_COLORS.Kodie_LightGrayColor}
-                            resizeMode={"contain"}
-                          />
-                          <Image
-                            style={EditProfileStyle.lineimg}
-                            source={IMAGES.verticalLine}
-                          />
-                          <TextInput
-                            value={phoneNumber}
-                            onChangeText={setPhoneNumber}
-                            keyboardType="numeric"
-                            placeholder="1234567890"
-                            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                          />
-                        </View>
-                      </View>
-                    </View> */}
+
                     <View style={[EditProfileStyle.phoneinputview]}>
-                      {/* <PhoneInput
-                        ref={phoneInput}
-                        defaultValue={phoneNumber}
-                        defaultCode="IN"
-                        layout="second"
-                        onChangeText={text => {
-                          setPhoneNumber(text);
-                        }}
-                        placeholder={'Enter your phone number'}
-                        onChangeFormattedText={text => {
-                          setFormattedValue(text);
-                        }}
-                        // withDarkTheme
-                        // withShadow
-                        autoFocus
-                        withFlag={false}
-                        textContainerStyle={{
-                          flex: 1,
-                          backgroundColor: _COLORS.Kodie_WhiteColor,
-                          // backgroundColor: _COLORS.Kodie_ExtraLightGrayColor,
-                          // borderWidth:1,
-                          paddingVertical: 2,
-                          // borderWidth:1,
-                          // borderColor:'red',
-                          borderRadius: 10,
-                        }}
-                        containerStyle={{
-                          flex: 1,
-                          alignSelf: 'center',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          borderWidth: 1,
-                          // backgroundColor: 'blue',
-                          borderColor: _COLORS.Kodie_GrayColor,
-                          borderRadius: 12,
-                        }}
-                      /> */}
                       <PhoneInput
-                        // ref={phoneInput}
                         defaultValue={phoneNumber.slice(3)}
-                        // defaultValue={
-                        //   loginData?.Account_details[0].UAD_PHONE_NO
-                        // }
                         defaultCode="AU"
                         layout="second"
                         Country={false}
                         textInputProps={{
                           maxLength: 9,
                         }}
-                        // disabled
-                        // onChangeText={text => {
-                        //   // setPhoneNumber(text);
-                        //   setMobileNumber(text);
-                        // }}
                         placeholder={'Enter your phone number'}
                         onChangeFormattedText={text => {
-                          // setFormattedValue(text);
-                          // validateMobileNumber(text)
                           setPhoneNumber(text);
                         }}
-                        // onBlur={() => validateMobileNumber(mobileNumber)}
                         textContainerStyle={{
                           flex: 1,
                           backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -599,7 +507,6 @@ const EditProfile = props => {
                         onFocus={() => {
                           setIsSearch(true);
                         }}
-                        // editable={false}
                         placeholder="Enter new location"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />
@@ -635,7 +542,6 @@ const EditProfile = props => {
               </>
             )}
           </ScrollView>
-          // <PersonalDetails />
         );
       case 'Tab2':
         return (
@@ -644,16 +550,12 @@ const EditProfile = props => {
               <View
                 style={{
                   flex: 1,
-                  // paddingHorizontal: 10,
                   backgroundColor: 'transparent',
                 }}>
                 <MapScreen
                   style={{
                     height: '100%',
                     width: '100%',
-                    // borderRadius: 20,
-                    // borderWidth: 1,
-                    //borderColor: .greenAppColor,
                     alignSelf: 'center',
                     marginBottom: 10,
                   }}
@@ -681,7 +583,6 @@ const EditProfile = props => {
                       width: '90%',
                       height: 45,
                       alignSelf: 'center',
-                      //marginTop: 10,
                     }}
                     onFocus={() => openMapandClose()}
                     placeholder={'Search Place'}
@@ -701,8 +602,6 @@ const EditProfile = props => {
               <SearchPlaces
                 onPress={(data, details = null) => {
                   console.log('LocationData....', details);
-                  // setlatitude(details.geometry.location.lat);
-                  // setlongitude(details.geometry.location.lng);
                   if (activeTab === 'Tab1') {
                     setlatitude(details.geometry.location.lat);
                   } else {
@@ -722,11 +621,8 @@ const EditProfile = props => {
               <CompanyDetails
                 openMap={openMap}
                 maplocation={companyPhysicaladdress}
-                // latitude={latitude}
-                // longitude={longitude}
                 latitude={company_latitude}
                 longitude={company_longitude}
-                // isSearch={setIsSearch(true)}
               />
             )}
           </>
@@ -790,16 +686,6 @@ const EditProfile = props => {
               placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
-          {/* <TouchableOpacity
-            style={EditProfileStyle.c_locationBtn}
-            onPress={() => {}}
-          >
-            <Entypo
-              name="location-pin"
-              size={30}
-              color={_COLORS.Kodie_lightGreenColor}
-            />
-          </TouchableOpacity> */}
           <TouchableOpacity
             style={EditProfileStyle.BtnContainer}
             onPress={ConfirmAddress}>
@@ -815,10 +701,8 @@ const EditProfile = props => {
             setIsSearch(false);
             setIsMap(true);
             if (activeTab === 'Tab1') {
-              // setLocation(details.formatted_address);
               setCurrentLocation(details.formatted_address);
             } else {
-              // setCompanyPhysicaladdress(details.formatted_address);
               setCurrentLocation(details.formatted_address);
             }
           }}

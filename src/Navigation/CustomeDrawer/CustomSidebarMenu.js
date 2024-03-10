@@ -89,7 +89,7 @@ const CustomSidebarMenu = props => {
     props.navigation.navigate('LoginScreen');
     setTimeout(() => {
       dispatch(logoutActionCreator());
-    }, 1000);
+    }, 3000);
     // props.navigation.navigate("DrawerNavigatorLeftMenu");
     // props.navigation.navigate("LoginScreen");
   };

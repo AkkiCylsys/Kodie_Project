@@ -60,7 +60,7 @@ export default CompanyDetails = props => {
   console.log('loginResponse.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [location, setLocation] = useState(
-    loginData?.Account_details[0]?.UAD_CURR_PHYSICAL_ADD,
+    accountDetails?.UAD_CURR_PHYSICAL_ADD,
   );
   const [ImageName, setImageName] = useState('');
   const [Individual, setIndividual] = useState({});
@@ -73,8 +73,11 @@ export default CompanyDetails = props => {
   const [longitude, setlongitude] = useState('');
   const [Companylatitude, setCompanylatitude] = useState('');
   const [Companylongitude, setCompanylongitude] = useState('');
-  const [Companylocation, setCompanyLocation] = useState('');
+  const [Companylocation, setCompanyLocation] = useState(
+    accountDetails?.UAD_CURR_PHYSICAL_ADD,
+  );
   const [currentLocation, setCurrentLocation] = useState('');
+  const [accountDetails, setAccountDetails] = useState(null);
   console.log('formattedValue....', CompanyCome);
   const handleImageNameChange = async newImageName => {
     setImageName(newImageName);
@@ -142,9 +145,34 @@ export default CompanyDetails = props => {
       })
       .catch(error => console.warn(error));
   };
+  useEffect(() => {
+    getPersonalDetails();
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+      language: 'en',
+    });
+  }, []);
   const openMapCom = () => {
     setIsMap(true);
     console.log('Location pressed');
+  };
+  const getPersonalDetails = () => {
+    const url = Config.BASE_URL;
+
+    const apiUrl =
+      url + `getAccount_details/${loginData.Login_details.user_id}`;
+
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data);
+        setAccountDetails(response.data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+      });
   };
   const UpdateCompanyData = async () => {
     const formData = new FormData();
@@ -227,6 +255,7 @@ export default CompanyDetails = props => {
       console.log('UpdateCompanyData....', response.data);
       if (response.data.success === true) {
         alert(response.data.message);
+        getPersonalDetails();
         // getComapnyDetails();
       }
     } catch (error) {

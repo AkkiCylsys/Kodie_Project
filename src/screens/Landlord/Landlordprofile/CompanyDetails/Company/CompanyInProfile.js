@@ -38,25 +38,26 @@ const CompanyInProfile = ({
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
   const [companyName, setCompanyName] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? loginData?.Account_details[0]?.UAD_ORGANIZATION_NAME
+    // loginData?.Account_details[0]?.
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? accountDetails?.UAD_ORGANIZATION_NAME
       : '',
   );
   const [website, setWebsite] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? loginData?.Account_details[0]?.UAD_WEBSITE
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? accountDetails?.UAD_WEBSITE
       : '',
   );
   const [companyGSTNumber, setCompanyGSTNumber] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? loginData?.Account_details[0]?.UAD_COMPANY_GST_VAT_NO
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? accountDetails?.UAD_COMPANY_GST_VAT_NO
       : '',
   );
   const [location, setLocation] = useState('');
   const [servicesValue, setservicesValue] = useState([]);
   const [businessNumber, SetBusinessNumber] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? loginData?.Account_details[0]?.UAD_AUSTR_BUSINESS_NO
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? accountDetails?.UAD_AUSTR_BUSINESS_NO
       : '',
   );
   const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
@@ -65,29 +66,21 @@ const CompanyInProfile = ({
   const [p_latitude, setP_latitude] = useState('');
   const [p_longitude, setP_longitude] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const initialJobTypeIds = loginData?.Account_details[0]
-    ?.UAD_CATEGORY_SERVICE_YOU_OFFER
-    ? loginData.Account_details[0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
-        ',',
-      ).map(Number)
+  const initialJobTypeIds = accountDetails?.UAD_CATEGORY_SERVICE_YOU_OFFER
+    ? accountDetails?.UAD_CATEGORY_SERVICE_YOU_OFFER.split(',').map(Number)
     : [];
-  const initialServiceIds = loginData?.Account_details[0]
-    ?.UAD_SERVICE_YOU_PERFORM
-    ? loginData.Account_details[0].UAD_SERVICE_YOU_PERFORM.split(',').map(
-        Number,
-      )
+  const initialServiceIds = accountDetails?.UAD_SERVICE_YOU_PERFORM
+    ? accountDetails?.UAD_SERVICE_YOU_PERFORM.split(',').map(Number)
     : [];
   const [selectJobTypeid, setSelectJobTypeid] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? initialServiceIds
-      : [],
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1 ? initialJobTypeIds : [],
   );
   const [selectJobType, setSelectJobType] = useState();
   const [servicesData, setServicesData] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? initialServiceIds
-      : [],
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1 ? initialServiceIds : [],
   );
+  const [accountDetails, setAccountDetails] = useState(null);
+
   const toggleSelection = lookup_key => {
     if (selectJobTypeid.includes(lookup_key)) {
       setSelectJobTypeid(prevSelected =>
@@ -257,7 +250,25 @@ const CompanyInProfile = ({
 
     fetchAllServices();
   };
+  const getPersonalDetails = () => {
+    const url = Config.BASE_URL;
 
+    const apiUrl =
+      url + `getAccount_details/${loginData.Login_details.user_id}`;
+
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data);
+        setAccountDetails(response.data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+      });
+  };
   useEffect(() => {
     CompanyData({
       companyName: companyName,
@@ -273,6 +284,7 @@ const CompanyInProfile = ({
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
+    getPersonalDetails();
   }, [
     selectJobType,
     companyName,

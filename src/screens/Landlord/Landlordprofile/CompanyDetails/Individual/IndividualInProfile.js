@@ -40,8 +40,8 @@ const IndividualInProfile = ({
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
   const [website, setWebsite] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-      ? loginData?.Account_details[0]?.UAD_WEBSITE
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+      ? accountDetails?.UAD_WEBSITE
       : '',
   );
   const [servicesValue, setservicesValue] = useState([]);
@@ -49,34 +49,26 @@ const IndividualInProfile = ({
     [],
   );
   const [isLoading, setIsLoading] = useState(false);
-  const initialJobTypeIds = loginData?.Account_details[0]
-    ?.UAD_CATEGORY_SERVICE_YOU_OFFER
-    ? loginData.Account_details[0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
-        ',',
-      ).map(Number)
+  const initialJobTypeIds = accountDetails?.UAD_CATEGORY_SERVICE_YOU_OFFER
+    ? accountDetails.UAD_CATEGORY_SERVICE_YOU_OFFER.split(',').map(Number)
     : [];
-  const initialServiceIds = loginData?.Account_details[0]
-    ?.UAD_SERVICE_YOU_PERFORM
-    ? loginData.Account_details[0].UAD_SERVICE_YOU_PERFORM.split(',').map(
-        Number,
-      )
+  const initialServiceIds = accountDetails?.UAD_SERVICE_YOU_PERFORM
+    ? accountDetails.UAD_SERVICE_YOU_PERFORM.split(',').map(Number)
     : [];
   console.log(
     'UAD_SERVICE_YOU_PERFORM:',
-    loginData?.Account_details[0]?.UAD_SERVICE_YOU_PERFORM,
+    accountDetails?.UAD_SERVICE_YOU_PERFORM,
   );
   console.log('initialServiceIds:', initialServiceIds);
   const [selectJobTypeid, setSelectJobTypeid] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-      ? initialJobTypeIds
-      : [],
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0 ? initialJobTypeIds : [],
   );
   const [selectJobType, setSelectJobType] = useState();
   const [servicesData, setServicesData] = useState(
-    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-      ? initialServiceIds
-      : [],
+    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0 ? initialServiceIds : [],
   );
+  const [accountDetails, setAccountDetails] = useState(null);
+
   const toggleSelection = lookup_key => {
     if (selectJobTypeid.includes(lookup_key)) {
       setSelectJobTypeid(prevSelected =>
@@ -246,7 +238,25 @@ const IndividualInProfile = ({
 
     fetchAllServices();
   };
+  const getPersonalDetails = () => {
+    const url = Config.BASE_URL;
 
+    const apiUrl =
+      url + `getAccount_details/${loginData.Login_details.user_id}`;
+
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data);
+        setAccountDetails(response.data);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+      });
+  };
   useEffect(() => {
     IndividualData({
       website: website,
@@ -257,6 +267,7 @@ const IndividualInProfile = ({
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
+    getPersonalDetails();
   }, [selectJobType, website, selectedselectJobTypesString, servicesValue]);
   return (
     <View>
