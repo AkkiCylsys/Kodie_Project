@@ -37,48 +37,22 @@ const CompanyInProfile = ({
 }) => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
-  const [companyName, setCompanyName] = useState(
-    // loginData?.Account_details[0]?.
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? accountDetails?.UAD_ORGANIZATION_NAME
-      : '',
-  );
-  const [website, setWebsite] = useState(
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? accountDetails?.UAD_WEBSITE
-      : '',
-  );
-  const [companyGSTNumber, setCompanyGSTNumber] = useState(
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? accountDetails?.UAD_COMPANY_GST_VAT_NO
-      : '',
-  );
+  const [companyName, setCompanyName] = useState('');
+  const [website, setWebsite] = useState('');
+  const [companyGSTNumber, setCompanyGSTNumber] = useState('');
   const [location, setLocation] = useState('');
   const [servicesValue, setservicesValue] = useState([]);
-  const [businessNumber, SetBusinessNumber] = useState(
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-      ? accountDetails?.UAD_AUSTR_BUSINESS_NO
-      : '',
-  );
+  const [businessNumber, SetBusinessNumber] = useState('');
   const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
     [],
   );
   const [p_latitude, setP_latitude] = useState('');
   const [p_longitude, setP_longitude] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const initialJobTypeIds = accountDetails?.UAD_CATEGORY_SERVICE_YOU_OFFER
-    ? accountDetails?.UAD_CATEGORY_SERVICE_YOU_OFFER.split(',').map(Number)
-    : [];
-  const initialServiceIds = accountDetails?.UAD_SERVICE_YOU_PERFORM
-    ? accountDetails?.UAD_SERVICE_YOU_PERFORM.split(',').map(Number)
-    : [];
-  const [selectJobTypeid, setSelectJobTypeid] = useState(
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1 ? initialJobTypeIds : [],
-  );
+
+  const [selectJobTypeid, setSelectJobTypeid] = useState([]);
   const [selectJobType, setSelectJobType] = useState();
-  const [servicesData, setServicesData] = useState(
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1 ? initialServiceIds : [],
-  );
+  const [servicesData, setServicesData] = useState([]);
   const [accountDetails, setAccountDetails] = useState(null);
 
   const toggleSelection = lookup_key => {
@@ -261,8 +235,50 @@ const CompanyInProfile = ({
       .get(apiUrl)
       .then(response => {
         // Handle successful response
-        console.log('API Response:', response.data);
-        setAccountDetails(response.data);
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+        const initialJobTypeIds = response.data.data[0][0]
+          ?.UAD_CATEGORY_SERVICE_YOU_OFFER
+          ? response.data.data[0][0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
+              ',',
+            ).map(Number)
+          : [];
+        const initialServiceIds = response.data.data[0][0]
+          ?.UAD_SERVICE_YOU_PERFORM
+          ? response.data.data[0][0].UAD_SERVICE_YOU_PERFORM.split(',').map(
+              Number,
+            )
+          : [];
+        setSelectJobTypeid(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? initialJobTypeIds
+            : [],
+        );
+        // setservicesValue(
+        //   response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+        //     ? initialServiceIds
+        //     : [],
+        // );
+        setWebsite(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response.data.data[0][0]?.UAD_WEBSITE
+            : '',
+        );
+        setCompanyName(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response.data.data[0][0]?.UAD_ORGANIZATION_NAME
+            : '',
+        );
+        SetBusinessNumber(
+          accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? accountDetails?.UAD_AUSTR_BUSINESS_NO
+            : '',
+        );
+        setCompanyGSTNumber(
+          accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? accountDetails?.UAD_COMPANY_GST_VAT_NO
+            : '',
+        );
       })
       .catch(error => {
         // Handle error

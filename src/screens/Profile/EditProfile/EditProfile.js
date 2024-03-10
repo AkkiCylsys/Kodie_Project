@@ -57,8 +57,8 @@ const data = [
 const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
-  const [fullName, setFullName] = useState(accountDetails?.UAD_FIRST_NAME);
-  const [lastName, setLastName] = useState(accountDetails?.UAD_LAST_NAME);
+  const [fullName, setFullName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState(loginData?.Login_details?.email);
   const [phoneNumber, setPhoneNumber] = useState(
     String(loginData.Account_details[0]?.UAD_PHONE_NO),
@@ -68,7 +68,7 @@ const EditProfile = props => {
   );
   let profileDoc = props?.route?.params?.profileDoc;
   console.log('profileDoc....', profileDoc);
-  const [about, setAbout] = useState(accountDetails?.UAD_BIO);
+  const [about, setAbout] = useState('');
   const [activeTab, setActiveTab] = useState('Tab1');
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
@@ -91,10 +91,8 @@ const EditProfile = props => {
   );
   const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
     useState('');
-  const initialJobTypeIds = accountDetails?.user_role_id
-    ? accountDetails.user_role_id.split(',').map(Number)
-    : [];
-  const [selectedServices, setSelectedServices] = useState(initialJobTypeIds);
+
+  const [selectedServices, setSelectedServices] = useState([]);
   const [currentLocation, setCurrentLocation] = useState('');
   const [accountDetails, setAccountDetails] = useState(null);
 
@@ -126,8 +124,18 @@ const EditProfile = props => {
       .get(apiUrl)
       .then(response => {
         // Handle successful response
-        console.log('API Response:', response.data);
-        setAccountDetails(response.data);
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+        setFullName(response.data.data[0][0]?.UAD_FIRST_NAME);
+        setLastName(response.data.data[0][0]?.UAD_LAST_NAME);
+        setLocation(response.data.data[0][0]?.UAD_CURR_PHYSICAL_ADD);
+        setAbout(response.data.data[0][0]?.UAD_BIO);
+
+        const initialJobTypeIds = response.data.data[0][0]?.user_role_id
+          ? response.data.data[0][0]?.user_role_id.split(',').map(Number)
+          : [];
+        setSelectedServices(initialJobTypeIds);
+        console.log(accountDetails.UAD_AUSTR_BUSINESS_NO);
       })
       .catch(error => {
         // Handle error

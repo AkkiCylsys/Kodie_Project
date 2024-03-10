@@ -60,13 +60,9 @@ const IndividualInProfile = ({
     accountDetails?.UAD_SERVICE_YOU_PERFORM,
   );
   console.log('initialServiceIds:', initialServiceIds);
-  const [selectJobTypeid, setSelectJobTypeid] = useState(
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0 ? initialJobTypeIds : [],
-  );
+  const [selectJobTypeid, setSelectJobTypeid] = useState([]);
   const [selectJobType, setSelectJobType] = useState();
-  const [servicesData, setServicesData] = useState(
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0 ? initialServiceIds : [],
-  );
+  const [servicesData, setServicesData] = useState([]);
   const [accountDetails, setAccountDetails] = useState(null);
 
   const toggleSelection = lookup_key => {
@@ -239,6 +235,7 @@ const IndividualInProfile = ({
     fetchAllServices();
   };
   const getPersonalDetails = () => {
+    setIsLoading(true);
     const url = Config.BASE_URL;
 
     const apiUrl =
@@ -249,8 +246,36 @@ const IndividualInProfile = ({
       .get(apiUrl)
       .then(response => {
         // Handle successful response
-        console.log('API Response:', response.data);
-        setAccountDetails(response.data);
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+        const initialJobTypeIds = response.data.data[0][0]
+          ?.UAD_CATEGORY_SERVICE_YOU_OFFER
+          ? response.data.data[0][0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
+              ',',
+            ).map(Number)
+          : [];
+        const initialServiceIds = response.data.data[0][0]
+          ?.UAD_SERVICE_YOU_PERFORM
+          ? response.data.data[0][0].UAD_SERVICE_YOU_PERFORM.split(',').map(
+              Number,
+            )
+          : [];
+        setSelectJobTypeid(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? initialJobTypeIds
+            : [],
+        );
+        // setservicesValue(
+        //   response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+        //     ? initialServiceIds
+        //     : [],
+        // );
+        setWebsite(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? response.data.data[0][0]?.UAD_WEBSITE
+            : '',
+        );
+        setIsLoading(false);
       })
       .catch(error => {
         // Handle error
