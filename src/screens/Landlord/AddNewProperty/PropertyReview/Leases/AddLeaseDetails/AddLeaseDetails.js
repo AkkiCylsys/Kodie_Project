@@ -43,7 +43,9 @@ export default AddLeaseDetails = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisibleEndDate, setModalVisibleEndDate] = useState(false);
   const [rentalAmount, setRentalAmount] = useState(null);
   const [rentalBond, setRentalBond] = useState(null);
   const [paymentDueDay, setPaymentDueDay] = useState("");
@@ -87,8 +89,14 @@ export default AddLeaseDetails = (props) => {
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
+  const toggleModalEndDate = () => {
+    setModalVisibleEndDate(!isModalVisibleEndDate);
+  };
   const handleDayPress = (day) => {
     setSelectedDate(day.dateString);
+  };
+  const handleEndDayPress = (day) => {
+    setSelectedEndDate(day.dateString);
   };
 
   // ----data come from dropdown and define these condition
@@ -420,25 +428,25 @@ export default AddLeaseDetails = (props) => {
           <Text style={[LABEL_STYLES.commontext,]}>{"Lease end date*"}</Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
             <CalendarModal
-              SelectDate={selectedDate ? selectedDate : "End date of the lease"}
+              SelectDate={selectedEndDate ? selectedEndDate : "End date of the lease"}
               _textInputStyle={{
-                color: selectedDate
+                color: selectedEndDate
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_GrayColor,
               }}
-              calenderIcon={toggleModal}
-              onDayPress={handleDayPress}
-              Visible={isModalVisible}
-              onRequestClose={toggleModal}
+              calenderIcon={toggleModalEndDate}
+              onDayPress={handleEndDayPress}
+              Visible={isModalVisibleEndDate}
+              onRequestClose={toggleModalEndDate}
               markedDates={{
-                [selectedDate]: {
+                [selectedEndDate]: {
                   selected: true,
                   selectedColor: _COLORS.Kodie_lightGreenColor,
                   selectedTextColor: _COLORS.Kodie_BlackColor,
                 },
               }}
-              _closeButton={toggleModal}
-              _ApplyButton={toggleModal}
+              _closeButton={toggleModalEndDate}
+              _ApplyButton={toggleModalEndDate}
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
