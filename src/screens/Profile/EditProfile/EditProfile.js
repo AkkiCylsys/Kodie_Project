@@ -72,7 +72,7 @@ const EditProfile = props => {
   );
   let profileDoc = props?.route?.params?.profileDoc;
   console.log('profileDoc....', profileDoc);
-  const [about, setAbout] = useState('');
+  const [about, setAbout] = useState(loginData?.Account_details[0]?.UAD_BIO);
   const [activeTab, setActiveTab] = useState('Tab1');
   const [value, setValue] = useState(null);
   const refRBSheet = useRef();
@@ -95,12 +95,13 @@ const EditProfile = props => {
   );
   const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
     useState('');
-  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([
+    loginData?.Account_details[0]?.user_role,
+  ]);
   const [currentLocation, setCurrentLocation] = useState('');
 
-  const [getLat, setGetLat] = useState('');
-  const [getLong, setGetLong] = useState('');
-
+  const [Individuallatitude, setIndividuallatitude] = useState('');
+  const [Individuallongitude, setIndividuallongitude] = useState('');
   const phoneInput = useRef(null);
   console.log('latitude....', latitude);
   console.log('longitude....', longitude);
@@ -116,10 +117,13 @@ const EditProfile = props => {
     // console.log("fileName....", fileName);
     // console.log("fileType....", fileType);
   };
+
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
+
+    console.log('companyPhysicaladdress', companyPhysicaladdress);
     // setFullName(loginData?.Account_details[0]?.UAD_FIRST_NAME);
     // setEmail(loginData?.Login_details?.email);
     // setPhoneNumber(String(loginData?.Account_details[0]?.UAD_PHONE_NO));
@@ -195,6 +199,25 @@ const EditProfile = props => {
       }}
     />
   );
+
+  // const userphoneNumber = loginData?.Account_details[0]?.UAD_PHONE_NO;
+  // const userphoneNumber = phoneNumber;
+
+  // // Use regular expression to extract country code and the remaining part
+  // const phoneNumberParts = userphoneNumber.match(/^(\+\d{1,2})(\d+)$/);
+
+  // if (phoneNumberParts) {
+  //   const countryCode = phoneNumberParts[1]; // Extracted country code
+  //   const remainingNumber = phoneNumberParts[2]; // Remaining part of the number
+
+  //   console.log('CountryCode:', countryCode);
+  //   setCountry_Code_Get(countryCode);
+  //   console.log('RemainingsNumber:', remainingNumber);
+  //   setUserMobileNumber(remainingNumber);
+  //   console.log(country_Code_Get, 'country_Code_Get');
+  // } else {
+  //   console.error('Invalid phone number format');
+  // }
 
   // }, [currentLocation]);
   const goBack = () => {
@@ -274,7 +297,7 @@ const EditProfile = props => {
       })
       .catch(error => console.warn(error));
   };
-
+  console.log(selectedServices, 'selectedServices');
   const toggleView = () => {
     setVisible(!visible);
   };
@@ -282,9 +305,11 @@ const EditProfile = props => {
   // Api intrrigation......
   const Updateprofile = async () => {
     const formData = new FormData();
-    const fileUri = ImageName.path;
-    const fileName = fileUri.substring(fileUri.lastIndexOf('/') + 1);
-    const fileType = ImageName.mime;
+    const fileUri = ImageName?.path; // Use optional chaining to avoid errors if ImageName is undefined
+    const fileName = fileUri
+      ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
+      : null;
+    const fileType = ImageName?.mime;
 
     console.log('fileUri....', fileUri);
     console.log('fileName....', fileName);
@@ -300,12 +325,13 @@ const EditProfile = props => {
         type: fileType,
       });
     }
-    formData.append('uad_key', loginData?.Login_details?.user_account_id);
+    formData.append('uad_key', loginData?.Login_details?.user_id);
     formData.append('first_name', fullName);
     formData.append('last_name', lastName);
     // formData.append("phone_number", phoneNumber);
-    formData.append('phone_number', formattedValue);
-    formData.append('about', about);
+    formData.append('phone_number', phoneNumber);
+    formData.append('bio', about);
+    formData.append('describe_yourself', selectedServices);
     formData.append('physical_address', location);
     formData.append('longitude', longitude);
     formData.append('latitude', latitude);
@@ -389,7 +415,7 @@ const EditProfile = props => {
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
                         value={fullName}
-                        onChangeText={setFullName}
+                        onChangeText={text => setFullName(text)}
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         style={EditProfileStyle.inputStyle}
@@ -404,7 +430,7 @@ const EditProfile = props => {
                       <TextInput
                         style={EditProfileStyle.inputStyle}
                         value={lastName}
-                        onChangeText={setLastName}
+                        onChangeText={text => setLastName(text)}
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />
@@ -418,7 +444,7 @@ const EditProfile = props => {
                       <TextInput
                         style={EditProfileStyle.inputStyle}
                         value={email}
-                        onChangeText={setEmail}
+                        onChangeText={text => setEmail(text)}
                         keyboardType="numeric"
                         placeholder="jason5@gmail.com"
                         editable={false}
@@ -454,7 +480,7 @@ const EditProfile = props => {
                       </View>
                     </View> */}
                     <View style={[EditProfileStyle.phoneinputview]}>
-                      <PhoneInput
+                      {/* <PhoneInput
                         ref={phoneInput}
                         defaultValue={phoneNumber}
                         defaultCode="IN"
@@ -490,6 +516,46 @@ const EditProfile = props => {
                           borderColor: _COLORS.Kodie_GrayColor,
                           borderRadius: 12,
                         }}
+                      /> */}
+                      <PhoneInput
+                        // ref={phoneInput}
+                        defaultValue={phoneNumber.slice(3)}
+                        // defaultValue={
+                        //   loginData?.Account_details[0].UAD_PHONE_NO
+                        // }
+                        defaultCode="AU"
+                        layout="second"
+                        Country={false}
+                        textInputProps={{
+                          maxLength: 9,
+                        }}
+                        // disabled
+                        // onChangeText={text => {
+                        //   // setPhoneNumber(text);
+                        //   setMobileNumber(text);
+                        // }}
+                        placeholder={'Enter your phone number'}
+                        onChangeFormattedText={text => {
+                          // setFormattedValue(text);
+                          // validateMobileNumber(text)
+                          setPhoneNumber(text);
+                        }}
+                        // onBlur={() => validateMobileNumber(mobileNumber)}
+                        textContainerStyle={{
+                          flex: 1,
+                          backgroundColor: _COLORS.Kodie_WhiteColor,
+                          paddingVertical: 2,
+                          borderRadius: 10,
+                        }}
+                        containerStyle={{
+                          flex: 1,
+                          alignSelf: 'center',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderWidth: 1,
+                          borderColor: _COLORS.Kodie_GrayColor,
+                          borderRadius: 12,
+                        }}
                       />
                     </View>
                   </View>
@@ -499,7 +565,7 @@ const EditProfile = props => {
                     <TextInput
                       style={[EditProfileStyle.input, {height: 119}]}
                       value={about}
-                      onChangeText={setAbout}
+                      onChangeText={text => setAbout(text)}
                       placeholder="Tell us a bit more about yourself"
                       placeholderTextColor="#999"
                       multiline
@@ -529,7 +595,7 @@ const EditProfile = props => {
                       <TextInput
                         style={EditProfileStyle.locationInput}
                         value={location}
-                        onChangeText={setLocation}
+                        onChangeText={text => setLocation(text)}
                         onFocus={() => {
                           setIsSearch(true);
                         }}
@@ -555,8 +621,6 @@ const EditProfile = props => {
                 <View style={EditProfileStyle.saveBackButton}>
                   <View style={EditProfileStyle.secondview}>
                     <CustomSingleButton
-                      leftImage={IMAGES.uploadIcon}
-                      isLeftImage={true}
                       Text_Color={_COLORS.Kodie_WhiteColor}
                       borderColor={_COLORS.Kodie_TransparentColor}
                       _ButtonText={'Save and back'}

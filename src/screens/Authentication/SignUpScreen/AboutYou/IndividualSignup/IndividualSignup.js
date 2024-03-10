@@ -1,58 +1,46 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  Image,
   TextInput,
   FlatList,
-  Platform,
   BackHandler,
-  PermissionsAndroid,
 } from 'react-native';
-import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
-import {_COLORS, LABEL_STYLES, FONTFAMILY} from '../../../../../Themes';
+import {MultiSelect} from 'react-native-element-dropdown';
+import {_COLORS, LABEL_STYLES} from '../../../../../Themes';
 import Octicons from 'react-native-vector-icons/Octicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Config} from '../../../../../Config';
 import ServicesBox from '../../../../../components/Molecules/ServicesBox/ServicesBox';
 import IndividualSignupStyle from './IndividualSignupStyle';
 import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useFocusEffect} from '@react-navigation/native';
-import Geocoder from 'react-native-geocoding';
-import Geolocation from '@react-native-community/geolocation';
-const IndividualSignup = ({IndividualData, props}) => {
+const IndividualSignup = ({
+  IndividualData,
+  physicalAddress,
+  Individualp_latitude,
+  Individualp_longitude,
+  onPresslocation,
+  IndividualLocation,
+  onChangeIndivialLocation,
+  IndividualOnFocus,
+}) => {
   const [website, setWebsite] = useState('');
-  const [location, setLocation] = useState('');
   const [servicesValue, setservicesValue] = useState([]);
   const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
     [],
   );
-  const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
-    useState('');
-  const [selectedServices, setSelectedServices] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectJobTypeid, setSelectJobTypeid] = useState([]);
   const [servicesData, setServicesData] = useState([]);
 
   const [selectJobType, setSelectJobType] = useState([]);
-  const [isClick, setIsClick] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const [arrowIcon, setArrowIcon] = useState(false);
-  const [currentLocation, setCurrentLocation] = useState(false);
-  const [UserCurrentCity, setUserCurrentCity] = useState('');
-  const [UserZip_Code, setUserZip_Code] = useState('');
+  const [currentLocation, setCurrentLocation] = useState('');
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
-  const [p_latitude, setP_latitude] = useState('');
-  const [p_longitude, setP_longitude] = useState('');
-  const [toSet, setToSet] = useState({});
-  // const handleBoxPress = lookup_key => {
-  //   setIsClick(lookup_key);
-  //   setSelectJobTypeid(lookup_key);
-  // };
+
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -242,193 +230,35 @@ const IndividualSignup = ({IndividualData, props}) => {
   };
 
   useEffect(() => {
+    console.log('physicalAddress...', physicalAddress);
+    console.log('pLatitudehhh', Individualp_latitude);
     IndividualData({
       website: website,
       selectJobType: selectedselectJobTypesString,
       servicesValue: servicesValue,
-      p_latitude: p_latitude,
-      p_longitude: p_longitude,
+      p_latitude: isChecked ? '' : Individualp_latitude,
+      p_longitude: Individualp_longitude,
+      physicalAddress: physicalAddress,
     });
-    // console.log('About Data in IndividualSignup:', IndividualData);
 
     handle_describe_yourself();
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
-    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
-      language: 'en',
-    });
-    Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
   }, [
     selectJobType,
     currentLocation,
     website,
-    selectJobTypeid,
+    selectedselectJobTypesString,
     servicesValue,
-    p_latitude,
-    p_longitude,
+    Individualp_latitude,
+    Individualp_longitude,
+    physicalAddress,
   ]);
-  const lookingServices_render = item => {
-    console.log(item, 'ithjhgbjbjbn');
-    return (
-      <View contentContainerStyle={{flex: 1, height: '100%'}}>
-        <View
-          style={[
-            IndividualSignupStyle.itemView,
-            {
-              backgroundColor: item === servicesValue ? 'red' : null,
-            },
-          ]}>
-          {item.isChecked ? (
-            <AntDesign
-              color={_COLORS.Kodie_GreenColor}
-              name={'checkcircle'}
-              size={20}
-            />
-          ) : (
-            <Fontisto
-              color={_COLORS.Kodie_GrayColor}
-              name={'radio-btn-passive'}
-              size={20}
-            />
-          )}
-          <Text style={IndividualSignupStyle.textItem}>
-            {item.lookup_description}
-          </Text>
-        </View>
-      </View>
-    );
-  };
   const handleChecked = () => {
     setIsChecked(!isChecked);
   };
-  const checkpermissionlocation = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Example App',
-          message: 'Example App access to your location ',
-        },
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-        // alert("You can use the location");
-        fetchCurrentLocation();
-      } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
 
-  const CheckIOSMapPermission = () => {
-    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-      .then(result => {
-        switch (result) {
-          case RESULTS.UNAVAILABLE:
-            console.log(
-              'This feature is not available (on this device / in this context)',
-            );
-            break;
-          case RESULTS.DENIED:
-            console.log(
-              'The permission has not been requested / is denied but requestable',
-            );
-            break;
-          case RESULTS.LIMITED:
-            console.log('The permission is limited: some actions are possible');
-            break;
-          case RESULTS.GRANTED:
-            console.log('The permission is granted');
-            fetchCurrentLocation();
-            break;
-          case RESULTS.BLOCKED:
-            console.log('The permission is denied and not requestable anymore');
-            break;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-  const fetchCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        console.log('This is your current location.');
-        const {latitude, longitude} = position.coords;
-        console.log('position.coords....', position.coords);
-        setP_latitude(latitude);
-        setP_longitude(longitude);
-        getAddress(latitude, longitude);
-      },
-      error => {
-        console.error('Error fetching location:', error);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
-      },
-    );
-  };
-
-  const getAddress = (p_latitude, p_longitude) => {
-    Geocoder.from(p_latitude, p_longitude)
-      .then(json => {
-        console.log('json location.......', json);
-        console.log('current address...', json.results[0].formatted_address);
-        currentLocation
-          ? setPhysicalAddress(json.results[0].formatted_address)
-          : null;
-        let MainFullAddress =
-          json.results[0].address_components[1].long_name +
-          ', ' +
-          json.results[0].address_components[2].long_name +
-          ', ' +
-          json.results[0].address_components[3].long_name +
-          ', ' +
-          json.results[0].address_components[4].long_name +
-          ', ' +
-          json.results[0].address_components[5].long_name +
-          ', ' +
-          json.results[0].address_components[6].long_name +
-          ', ' +
-          json.results[0].address_components[7].long_name +
-          ', ' +
-          json.results[0].address_components[8].long_name;
-
-        var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
-        setUserCurrentCity(addressComponent2.long_name);
-        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        setPhysicalAddress(MainFullAddress);
-        console.log('physicalAddress....', physicalAddress);
-
-        //setAddress(MainFullAddress);
-      })
-      .catch(error => console.warn(error));
-  };
-  const ConfirmAddress = () => {
-    setIsMap(false);
-    setCurrentLocation(true);
-  };
-  const openMapandClose = text => {
-    setIsMap(false);
-    setIsSearch(true);
-  };
-  const onRegionChange = Region => {
-    // alert(JSON.stringify(Region))
-    setP_latitude(Region.latitude);
-    console.log('p_latitude...', p_latitude);
-    setP_longitude(Region.longitude);
-    console.log('p_longitude...', p_longitude);
-    getAddress(Region.latitude, Region.longitude);
-    getAddress();
-  };
-  console.log(servicesData, 'servicesData...............');
   return (
     <View>
       <View style={IndividualSignupStyle.card}>
@@ -537,29 +367,29 @@ const IndividualSignup = ({IndividualData, props}) => {
             </View>
             <View style={IndividualSignupStyle.locationConView}>
               <View style={IndividualSignupStyle.locationContainer}>
-                <TextInput
-                  style={IndividualSignupStyle.locationInput}
-                  value={location}
-                  onChangeText={setLocation}
-                  onFocus={() => {
-                    setIsSearch(true);
-                    // setlocationError("");
-                  }}
-                  placeholder="Search location"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                />
+                {isChecked ? (
+                  <TextInput
+                    style={IndividualSignupStyle.locationInput}
+                    value={isChecked ? physicalAddress : ''}
+                    onChangeText={onChangeIndivialLocation}
+                    placeholder="Search location"
+                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  />
+                ) : (
+                  <TextInput
+                    style={IndividualSignupStyle.locationInput}
+                    // value={location}
+                    value={IndividualLocation}
+                    onChangeText={onChangeIndivialLocation}
+                    onFocus={IndividualOnFocus}
+                    placeholder="Search location"
+                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  />
+                )}
               </View>
               <TouchableOpacity
                 style={IndividualSignupStyle.locationIconView}
-                onPress={() => {
-                  // props.navigation.navigate("Location");
-                  Platform.OS == 'ios'
-                    ? CheckIOSMapPermission
-                    : checkpermissionlocation();
-                  setIsMap(true);
-                  console.log('IsMap....', IsMap);
-                  props?.openMapCom(IsMap);
-                }}>
+                onPress={onPresslocation}>
                 <Octicons
                   name={'location'}
                   size={22}

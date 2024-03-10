@@ -221,10 +221,9 @@ export default Dashboard = props => {
           <DeshboardNotice onClose={CloseUp} />
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
-            <Text
-              style={
-                DashboardStyle.Name_Text
-              }>{`Hi ${loginData?.Account_details[0]?.UAD_FIRST_NAME}!`}</Text>
+            <Text style={DashboardStyle.Name_Text}>{`Hi ${
+              loginData?.Account_details[0]?.UAD_FIRST_NAME || null
+            }! `}</Text>
             <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
             <View
               style={{

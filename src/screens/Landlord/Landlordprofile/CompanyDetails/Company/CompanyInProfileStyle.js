@@ -1,15 +1,15 @@
-import { StyleSheet } from "react-native";
-import CompanyInProfile from "./CompanyInProfile";
-import { _COLORS,FONTFAMILY } from "../../../../../Themes";
+import {StyleSheet} from 'react-native';
+import CompanyInProfile from './CompanyInProfile';
+import {_COLORS, FONTFAMILY} from '../../../../../Themes';
 
 export default CompanyInProfileStyle = StyleSheet.create({
   card: {
-    width: "100%",
+    width: '100%',
     backgroundColor: _COLORS.Kodie_TransparentColor,
     borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
     // marginBottom: 50,
@@ -20,7 +20,7 @@ export default CompanyInProfileStyle = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
@@ -28,13 +28,13 @@ export default CompanyInProfileStyle = StyleSheet.create({
   inputContainer: {
     marginTop: 15,
   },
-  smstext:{
-    fontSize:12,
-    fontFamily:FONTFAMILY.K_SemiBold,
-    color:_COLORS.Kodie_ExtraLightGrayColor,
-    letterSpacing:0.5,
-    lineHeight:20,
-    marginVertical:8
+  smstext: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_ExtraLightGrayColor,
+    letterSpacing: 0.5,
+    lineHeight: 20,
+    marginVertical: 8,
   },
   box_style: {
     flex: 1,
@@ -51,21 +51,21 @@ export default CompanyInProfileStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   simpleinputview: {
-    flex:1,
+    flex: 1,
     // height: 50,
     borderWidth: 1,
     // borderColor: _COLORS.Kodie_ExtraLightGrayColor,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     fontFamily: FONTFAMILY.K_SemiBold,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     // width: "100%",
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     paddingHorizontal: 10,
     marginTop: 15,
   },
-  box_Text_Style: { color: _COLORS.Kodie_MediumGrayColor },
+  box_Text_Style: {color: _COLORS.Kodie_MediumGrayColor},
   //   Dropdown Style..
   dropdown: {
     borderWidth: 1,
@@ -83,7 +83,7 @@ export default CompanyInProfileStyle = StyleSheet.create({
   },
   selectedTextStyle: {
     fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_WhiteColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
   },
@@ -129,7 +129,7 @@ export default CompanyInProfileStyle = StyleSheet.create({
     height: 50,
   },
   locationIcon: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   saveBackButton: {
     elevation: 2,

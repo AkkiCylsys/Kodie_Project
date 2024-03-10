@@ -78,6 +78,13 @@ export const AccountStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
+  phoneinputview: {
+    height: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // marginHorizontal: 15,
+  },
   inputContainerbio: {
     marginBottom: 15,
   },
@@ -246,9 +253,9 @@ export const AccountStyle = StyleSheet.create({
     //borderColor: Colors.appColor,
   },
   error_text: {
-    color: "red",
+    color: 'red',
     marginLeft: 10,
     marginTop: 10,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 });

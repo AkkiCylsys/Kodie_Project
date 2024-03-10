@@ -219,7 +219,7 @@ export const EditProfileStyle = StyleSheet.create({
   },
   secondview: {
     marginHorizontal: 10,
-    marginBottom: 30,
+    // marginBottom: 10,
   },
 
   textContainer: {

@@ -126,10 +126,12 @@ export default FirstProperty = props => {
   let Bio = props?.route?.params?.Bio;
   let Companyp_latitude = props?.route?.params?.Companyp_latitude;
   let Companyp_longitude = props?.route?.params?.Companyp_longitude;
+  let individualAddress = props?.route?.params?.individualAddress;
+  let country_code = props?.route?.params?.country_code;
 
   console.log('firstname..', firstName);
   console.log('lastName..', lastName);
-  console.log('mobileNumber..', mobileNumber);
+  console.log('mobileNumber..first', mobileNumber);
   console.log('physicalAddress..', physicalAddress);
   console.log('referral..', referral);
   console.log('selectManageProperty..', selectManageProperty);
@@ -143,6 +145,7 @@ export default FirstProperty = props => {
   console.log('p_latitude..', p_latitude);
   console.log('p_longitude..', p_longitude);
   console.log('user_key..', user_key);
+  console.log('country_code.....first', country_code);
   console.log(
     'run_your_business..',
     run_your_business,
@@ -435,7 +438,8 @@ export default FirstProperty = props => {
       buildingFlorSize: buildingFlorSize,
       deviceId: deviceId,
       deviceType: deviceType,
-      additional_features: JSON.stringify(additionalfeatureskeyvalue),
+      additional_features: PreFriedly,
+      key_additional_features: additionalfeatureskeyvalue,
       auto_list: selectedButtonId,
       fcm_token: Fcm_token,
       run_your_business: run_your_business,
@@ -445,7 +449,7 @@ export default FirstProperty = props => {
         run_your_business === 0 ? Individualp_latitude : Companyp_latitude,
       company_longitude:
         run_your_business === 0 ? Individualp_longitude : Companyp_longitude,
-      company_address: 'gadarwara',
+      company_address: run_your_business === 0 ? individualAddress : '',
       category_service_perform:
         run_your_business === 0
           ? IndividualservicesValue
@@ -518,6 +522,10 @@ export default FirstProperty = props => {
     );
     formData.append('category_service_offer', newData?.category_service_offer);
     formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
+    formData.append(
+      'key_additional_features',
+      newData?.key_additional_features,
+    );
 
     console.log('formData.....', JSON.stringify(formData));
 
@@ -525,6 +533,8 @@ export default FirstProperty = props => {
     console.log('signupAccountApiActionCreator..', res.data);
     if (res.data.status === true) {
       setIsLoading(false);
+
+      registerUser();
       props.navigation.navigate('DrawerNavigatorLeftMenu');
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
@@ -568,9 +578,10 @@ export default FirstProperty = props => {
       await AsyncStorage.setItem('USERKEY', String(user_key));
 
       console.log('User data saved to AsyncStorage');
+      props.navigation.navigate('DrawerNavigatorLeftMenu');
 
       // Call handleSaveSignup function
-      handleSaveSignup();
+      // handleSaveSignup();
     } catch (error) {
       console.error('Error creating user:', error);
       setIsLoading(false);
@@ -610,6 +621,7 @@ export default FirstProperty = props => {
       deviceId: deviceId,
       deviceType: deviceType,
       additional_features: '[]',
+      key_additional_features: '[]',
       auto_list: selectedButtonId,
       fcm_token: Fcm_token,
       run_your_business: run_your_business,
@@ -619,7 +631,7 @@ export default FirstProperty = props => {
         run_your_business === 0 ? Individualp_latitude : Companyp_latitude,
       company_longitude:
         run_your_business === 0 ? Individualp_longitude : Companyp_longitude,
-      company_address: 'gadarwara',
+      company_address: run_your_business === 0 ? individualAddress : '',
       category_service_perform:
         run_your_business === 0
           ? IndividualservicesValue
@@ -692,6 +704,10 @@ export default FirstProperty = props => {
     );
     formData.append('category_service_offer', newData?.category_service_offer);
     formData.append('austrilian_busi_no', newData?.austrilian_busi_no);
+    formData.append(
+      'key_additional_features',
+      newData?.key_additional_features,
+    );
 
     console.log('formData.....', JSON.stringify(formData));
 
@@ -699,7 +715,8 @@ export default FirstProperty = props => {
     console.log('signupAccountApiActionCreator..', res.data);
     if (res.data.status === true) {
       setIsLoading(false);
-      props.navigation.navigate('DrawerNavigatorLeftMenu');
+      // props.navigation.navigate('DrawerNavigatorLeftMenu');
+      registerUserfill();
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
     } else {
@@ -742,9 +759,9 @@ export default FirstProperty = props => {
       await AsyncStorage.setItem('USERKEY', String(user_key));
 
       console.log('User data saved to AsyncStorage');
-
+      props.navigation.navigate('DrawerNavigatorLeftMenu');
       // Call handleSaveSignup function
-      handleSaveSignupfill();
+      // handleSaveSignupfill();
     } catch (error) {
       console.error('Error creating user:', error);
       setIsLoading(false);
@@ -1337,8 +1354,8 @@ export default FirstProperty = props => {
                   _ButtonText={'Save'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    // handleSaveSignup();
-                    registerUser();
+                    handleSaveSignup();
+                    // registerUser();
                   }}
                 />
               </View>
@@ -1349,8 +1366,8 @@ export default FirstProperty = props => {
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    // handleSaveSignupfill();
-                    registerUserfill();
+                    handleSaveSignupfill();
+                    // registerUserfill();
                   }}
                 />
               </View>

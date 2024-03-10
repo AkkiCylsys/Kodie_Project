@@ -40,7 +40,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RBSheet from 'react-native-raw-bottom-sheet';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 import UploadImageData from '../../../../components/Molecules/UploadImage/UploadImage';
-
+import PhoneInput from 'react-native-phone-number-input';
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
   currentStepIndicatorSize: 50,
@@ -101,7 +101,7 @@ const SignUpSteps = props => {
   const [p_longitude, setP_longitude] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [imageError, setImageError] = useState(true);
-
+  const [country_Code_Get, setCountry_Code_Get] = useState('');
   const [getLat, setGetLat] = useState('');
   const [getLong, setGetLong] = useState('');
   const addressParts = physicalAddress.split(', ');
@@ -131,6 +131,7 @@ const SignUpSteps = props => {
   const handleImageNameChange = async newImageName => {
     setImageName(newImageName);
     console.log(newImageName, 'ImageNAme');
+    refRBSheet.current.close();
   };
   console.log('Country:', country);
   console.log('State:', state);
@@ -219,7 +220,7 @@ const SignUpSteps = props => {
     // const mobileReg = /^61[4][0-9]{9}$/;
     const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
     // const mobileReg = /^(?:\+61|0)(?:(?:2[0-9])|(?:3[0-9])|(?:4[0-9])|(?:7[0-9])|(?:8[0-9]))(?:\d{8})$/;
-    return mobileReg.test(mobileNumber);
+    // return mobileReg.test(mobileNumber);
   };
   // Validation for Phone Number
   const validateMobileNumber = text => {
@@ -235,7 +236,28 @@ const SignUpSteps = props => {
     }
     setMobileNumber(text);
   };
+  // const BreakMobileNumber = mobileNumber.slice(3);
+  // console.log('BreakMobileNumber', BreakMobileNumber);
+  const phoneNumber = mobileNumber;
+
+  // Use regular expression to extract country code and the remaining part
+  const phoneNumberParts = phoneNumber.match(/^(\+\d{1,2})(\d+)$/);
+
+  if (phoneNumberParts) {
+    const countryCode = phoneNumberParts[1]; // Extracted country code
+    const remainingNumber = phoneNumberParts[2]; // Remaining part of the number
+
+    console.log('CountryCode:', countryCode);
+    setCountry_Code_Get(countryCode);
+    console.log('RemainingsNumber:', remainingNumber);
+    setMobileNumber(remainingNumber);
+    console.log(country_Code_Get, 'country_Code_Get');
+  } else {
+    console.error('Invalid phone number format');
+  }
+
   const handleNextBtn = () => {
+    alert(mobileNumber);
     if (!ImageName) {
       setImageError('Please select an image before proceeding.');
     } else if (firstName.trim() === '') {
@@ -244,8 +266,8 @@ const SignUpSteps = props => {
       setLastNameError('Last name is required.');
     } else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required.');
-    } else if (!validMobileNumber(mobileNumber)) {
-      setMobileNumberError('Invalid phone number format.');
+      // } else if (!validMobileNumber(mobileNumber)) {
+      //   setMobileNumberError('Invalid phone number format.');
     } else {
       // ImageName ? refRBSheet.current.close() : null;
 
@@ -266,6 +288,7 @@ const SignUpSteps = props => {
         user_key: user_key,
         image: ImageName,
         Bio: bio,
+        country_code: country_Code_Get,
       });
       // }
     }
@@ -391,7 +414,7 @@ const SignUpSteps = props => {
               />
             </View>
           </TouchableOpacity>
-          {ImageName ? refRBSheet.current.close() : null}
+          {/* {ImageName ? refRBSheet.current.close() : null} */}
           {/* <Text style={AccountStyle.edittext}>Edit profile photo</Text> */}
         </View>
         {ImageName ? null : (
@@ -425,7 +448,7 @@ const SignUpSteps = props => {
             <Text style={LABEL_STYLES._texinputLabel}>
               Phone number* (mobile preferred)
             </Text>
-            <TextInput
+            {/* <TextInput
               style={AccountStyle.input}
               value={mobileNumber}
               onChangeText={setMobileNumber}
@@ -434,7 +457,48 @@ const SignUpSteps = props => {
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               keyboardType="phone-pad"
               maxLength={11}
-            />
+            /> */}
+            <View style={[AccountStyle.phoneinputview]}>
+              <PhoneInput
+                // ref={phoneInput}
+                defaultValue={mobileNumber}
+                defaultCode="AU"
+                layout="second"
+                Country={false}
+                textInputProps={{
+                  maxLength: 9,
+                }}
+                // disabled
+                // onChangeText={text => {
+                //   // setPhoneNumber(text);
+                //   setMobileNumber(text);
+                // }}
+                placeholder={'Enter your phone number'}
+                onChangeFormattedText={text => {
+                  // setFormattedValue(text);
+                  // validateMobileNumber(text)
+                  setMobileNumber(text);
+                }}
+                // onBlur={() => validateMobileNumber(mobileNumber)}
+                // autoFocus
+                // withFlag={false}
+                textContainerStyle={{
+                  flex: 1,
+                  backgroundColor: _COLORS.Kodie_WhiteColor,
+                  paddingVertical: 2,
+                  borderRadius: 10,
+                }}
+                containerStyle={{
+                  flex: 1,
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderWidth: 1,
+                  borderColor: _COLORS.Kodie_GrayColor,
+                  borderRadius: 12,
+                }}
+              />
+            </View>
             <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
           </View>
 

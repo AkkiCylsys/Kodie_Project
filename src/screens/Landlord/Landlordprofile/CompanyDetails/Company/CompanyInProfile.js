@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,157 +7,288 @@ import {
   TextInput,
   FlatList,
   Platform,
-} from "react-native";
-import CompanyInProfileStyle from "./CompanyInProfileStyle";
-import PhoneInput from "react-native-phone-number-input";
-import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
-import { Dropdown } from "react-native-element-dropdown";
-import { _COLORS, FONTFAMILY, LABEL_STYLES } from "../../../../../Themes";
-import { Divider } from "react-native-paper";
-import { IMAGES } from "../../../../../Themes";
-import Octicons from "react-native-vector-icons/Octicons";
-import { Config } from "../../../../../Config";
-import ServicesBox from "../../../../../components/Molecules/ServicesBox/ServicesBox";
-import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import axios from "axios";
+} from 'react-native';
+import CompanyInProfileStyle from './CompanyInProfileStyle';
+import PhoneInput from 'react-native-phone-number-input';
+import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
+import {MultiSelect} from 'react-native-element-dropdown';
+import {_COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../../Themes';
+import {Divider} from 'react-native-paper';
+import {IMAGES} from '../../../../../Themes';
+import Octicons from 'react-native-vector-icons/Octicons';
+import {Config} from '../../../../../Config';
+import ServicesBox from '../../../../../components/Molecules/ServicesBox/ServicesBox';
+import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import axios from 'axios';
+import {useSelector} from 'react-redux';
 const data = [
-  { lookup_key: 1, lookup_description: "Item 1" },
-  { lookup_key: 2, lookup_description: "Item 2" },
-  { lookup_key: 3, lookup_description: "Item 3" },
-  { lookup_key: 4, lookup_description: "Item 4" },
+  {lookup_key: 1, lookup_description: 'Item 1'},
+  {lookup_key: 2, lookup_description: 'Item 2'},
+  {lookup_key: 3, lookup_description: 'Item 3'},
+  {lookup_key: 4, lookup_description: 'Item 4'},
 ];
 
-const CompanyInProfile = (props) => {
-  const [companyName, setCompanyName] = useState("");
-  const [website, setWebsite] = useState("");
-  const [companyGSTNumber, setCompanyGSTNumber] = useState("");
-  const [location, setLocation] = useState("");
-  const [servicesValue, setservicesValue] = useState(0);
-  const [businessNumber, SetBusinessNumber] = useState("");
-  const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
-    []
+const CompanyInProfile = ({
+  CompanyData,
+  CompanyLocation,
+  CompanyOnFocus,
+  onPressCompanylocation,
+  onChangeCompanyLocation,
+}) => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginResponse.....', loginData);
+  const [companyName, setCompanyName] = useState(
+    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? loginData?.Account_details[0]?.UAD_ORGANIZATION_NAME
+      : '',
   );
-  const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
-    useState("");
-    const [selectedServices, setSelectedServices] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [selectJobTypeid, setSelectJobTypeid] = useState("");
-    const [selectJobType, setSelectJobType] = useState();
-    const [isClick, setIsClick] = useState(false);
-
-    const handleBoxPress = (lookup_key) => {
-      setIsClick(lookup_key);
-      setSelectJobTypeid(lookup_key);
-      // alert(selectJobTypeid);
-      // alert(isClick)
-    };
-    const jobType_render = ({ item }) => {
-      return (
-        <View style={{ flex: 1 }}>
-          <ServicesBox
-            images
-            Services_Name={item.lookup_description}
-            // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
-            Services_Icon={
-              item.lookup_key === 166
-                ? "cleaning-services"
-                : item.lookup_key === 167
-                ? "mower-bag"
-                : item.lookup_key === 168
-                ? "forklift"
-                : item.lookup_key === 169
-                ? "tools"
-                : "MaterialIcons"
-            }
-            iconLibrary={
-              item.lookup_key === 166
-                ? "MaterialIcons"
-                : item.lookup_key === 167
-                ? "MaterialCommunityIcons"
-                : item.lookup_key === 168
-                ? "MaterialCommunityIcons"
-                : item.lookup_key === 169
-                ? "Entypo"
-                : "MaterialIcons"
-            }
-            iconColor={
-              isClick === item.lookup_key
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_GrayColor
-            }
-            BoxStyling={[
-              CompanyInProfileStyle.box_style,
-              {
-                backgroundColor:
-                  isClick === item.lookup_key
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor,
-              },
-            ]}
-            textColor={[
-              CompanyInProfileStyle.box_Text_Style,
-              {
-                color:
-                  isClick === item.lookup_key
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor,
-              },
-            ]}
-            // onPress={() => setIsClick(!isClick)}
-            onPress={() => {
-              handleBoxPress(item.lookup_key);
-              setSelectJobType(item.lookup_key);
-              // alert(item.lookup_key);
-            }}
-          />
-        </View>
+  const [website, setWebsite] = useState(
+    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? loginData?.Account_details[0]?.UAD_WEBSITE
+      : '',
+  );
+  const [companyGSTNumber, setCompanyGSTNumber] = useState(
+    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? loginData?.Account_details[0]?.UAD_COMPANY_GST_VAT_NO
+      : '',
+  );
+  const [location, setLocation] = useState('');
+  const [servicesValue, setservicesValue] = useState([]);
+  const [businessNumber, SetBusinessNumber] = useState(
+    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? loginData?.Account_details[0]?.UAD_AUSTR_BUSINESS_NO
+      : '',
+  );
+  const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
+    [],
+  );
+  const [p_latitude, setP_latitude] = useState('');
+  const [p_longitude, setP_longitude] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const initialJobTypeIds = loginData?.Account_details[0]
+    ?.UAD_CATEGORY_SERVICE_YOU_OFFER
+    ? loginData.Account_details[0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
+        ',',
+      ).map(Number)
+    : [];
+  const initialServiceIds = loginData?.Account_details[0]
+    ?.UAD_SERVICE_YOU_PERFORM
+    ? loginData.Account_details[0].UAD_SERVICE_YOU_PERFORM.split(',').map(
+        Number,
+      )
+    : [];
+  const [selectJobTypeid, setSelectJobTypeid] = useState(
+    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? initialServiceIds
+      : [],
+  );
+  const [selectJobType, setSelectJobType] = useState();
+  const [servicesData, setServicesData] = useState(
+    loginData?.Account_details[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+      ? initialServiceIds
+      : [],
+  );
+  const toggleSelection = lookup_key => {
+    if (selectJobTypeid.includes(lookup_key)) {
+      setSelectJobTypeid(prevSelected =>
+        prevSelected.filter(item => item !== lookup_key),
       );
-    };
-      // describe your self.....
+    } else {
+      setSelectJobTypeid(prevSelected => [...prevSelected, lookup_key]);
+    }
+  };
+  const jobType_render = ({item}) => {
+    return (
+      <View style={{flex: 1}}>
+        <ServicesBox
+          images
+          Services_Name={item.lookup_description}
+          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
+          Services_Icon={
+            item.lookup_key === 166
+              ? 'cleaning-services'
+              : item.lookup_key === 167
+              ? 'mower-bag'
+              : item.lookup_key === 168
+              ? 'forklift'
+              : item.lookup_key === 169
+              ? 'tools'
+              : 'MaterialIcons'
+          }
+          iconLibrary={
+            item.lookup_key === 166
+              ? 'MaterialIcons'
+              : item.lookup_key === 167
+              ? 'MaterialCommunityIcons'
+              : item.lookup_key === 168
+              ? 'MaterialCommunityIcons'
+              : item.lookup_key === 169
+              ? 'Entypo'
+              : 'MaterialIcons'
+          }
+          iconColor={
+            // isClick === item.lookup_key
+            selectJobTypeid.includes(item.lookup_key)
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_GrayColor
+          }
+          BoxStyling={[
+            CompanyInProfileStyle.box_style,
+            {
+              backgroundColor:
+                // isClick === item.lookup_key
+                selectJobTypeid.includes(item.lookup_key)
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          textColor={[
+            CompanyInProfileStyle.box_Text_Style,
+            {
+              color:
+                // isClick === item.lookup_key
+                selectJobTypeid.includes(item.lookup_key)
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor,
+            },
+          ]}
+          // onPress={() => setIsClick(!isClick)}
+          onPress={() => {
+            toggleSelection(item.lookup_key);
+            setSelectJobType(item.lookup_key);
+            // alert(item.lookup_key);
+          }}
+        />
+      </View>
+    );
+  };
+  const selectedselectJobTypesString = selectJobTypeid.join(',');
+  console.log(selectedselectJobTypesString, 'selectedselectJobTypesString');
+
+  // describe your self.....
   const handle_describe_yourself = () => {
     const describe_yourself_Data = {
-      P_PARENT_CODE: "JOB_TYPE",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'JOB_TYPE',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const describeYourselfApi = url + "lookup_details";
-    console.log("Request URL:", describeYourselfApi);
+    const describeYourselfApi = url + 'lookup_details';
+    console.log('Request URL:', describeYourselfApi);
     setIsLoading(true);
     axios
       .post(describeYourselfApi, describe_yourself_Data)
-      .then((response) => {
-        console.log("kodie_describeYouself_Data", response.data);
+      .then(response => {
+        console.log('kodie_describeYouself_Data', response.data);
         if (response.data.status === true) {
           setIsLoading(false);
           console.log(
-            "kodie_describeYouself_Data....",
-            response.data.lookup_details
+            'kodie_describeYouself_Data....',
+            response.data.lookup_details,
           );
           setKodieDescribeYourselfData(response.data.lookup_details);
         } else {
           console.error(
-            "kodie_describeYouself_Data_error:",
-            response.data.error
+            'kodie_describeYouself_Data_error:',
+            response.data.error,
           );
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("kodie_describeYouself_Data error:", error);
+      .catch(error => {
+        console.error('kodie_describeYouself_Data error:', error);
         alert(error);
         setIsLoading(false);
       });
   };
+  const handleServices = selectJobType => {
+    const jobTypes = selectedselectJobTypesString.split(',').map(Number);
+    console.log(jobTypes, 'klhfudssdkjfhdsjk');
+    const servicesDatas = [];
+
+    setIsLoading(true);
+
+    const fetchServiceData = async jobType => {
+      const propertyData = {
+        P_PARENT_CODE:
+          jobType === 166
+            ? 'HOME_CLEANING'
+            : jobType === 167
+            ? 'OUTDOOR_CLEANING'
+            : jobType === 168
+            ? 'HEAVY_LIFTING'
+            : jobType === 169
+            ? 'FIXING_AND_MAINTENANCE'
+            : null,
+        P_TYPE: 'OPTION',
+      };
+
+      const url = Config.BASE_URL;
+      const propertyType = url + 'lookup_details';
+
+      try {
+        const response = await axios.post(propertyType, propertyData);
+
+        if (response.data.status === true) {
+          servicesDatas.push(...response.data.lookup_details);
+        } else {
+          console.error('Services_error:', response.data.error);
+          alert(response.data.error);
+        }
+      } catch (error) {
+        console.error('Services error:', error);
+        // alert(error);
+      }
+    };
+
+    const fetchAllServices = async () => {
+      try {
+        const promises = jobTypes.map(jobType => fetchServiceData(jobType));
+        await Promise.all(promises);
+
+        setIsLoading(false);
+        console.log('All Services Data:', servicesDatas);
+        setServicesData(servicesDatas);
+      } catch (error) {
+        setIsLoading(false);
+        console.error('Error fetching services:', error);
+      }
+    };
+
+    fetchAllServices();
+  };
 
   useEffect(() => {
-  handle_describe_yourself();
-  }, []);
+    CompanyData({
+      companyName: companyName,
+      businessNumber: businessNumber,
+      selectJobType: selectedselectJobTypesString,
+      servicesValue: servicesValue,
+      website: website,
+      p_latitude: p_latitude,
+      p_longitude: p_longitude,
+      CompanyGst: companyGSTNumber,
+    });
+    handle_describe_yourself();
+    if (selectJobType !== null) {
+      handleServices(selectJobType);
+    }
+  }, [
+    selectJobType,
+    companyName,
+    website,
+    businessNumber,
+    selectedselectJobTypesString,
+    servicesValue,
+    p_latitude,
+    p_longitude,
+    companyGSTNumber,
+  ]);
   return (
     <View>
       <View style={CompanyInProfileStyle.card}>
         <View style={CompanyInProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>{"Organisation name"}</Text>
+          <Text style={LABEL_STYLES.commontext}>{'Organisation name'}</Text>
           <TextInput
             style={CompanyInProfileStyle.input}
             value={companyName}
@@ -173,7 +304,7 @@ const CompanyInProfile = (props) => {
 
         <View style={CompanyInProfileStyle.inputContainer}>
           <Text style={LABEL_STYLES.commontext}>
-            {"Australian business number"}
+            {'Australian business number'}
           </Text>
           <TextInput
             style={[CompanyInProfileStyle.input]}
@@ -186,7 +317,7 @@ const CompanyInProfile = (props) => {
 
         <View style={CompanyInProfileStyle.inputContainer}>
           <Text style={LABEL_STYLES.commontext}>
-            {"Company GST / VAT number"}
+            {'Company GST / VAT number'}
           </Text>
           <TextInput
             style={[CompanyInProfileStyle.input]}
@@ -200,77 +331,80 @@ const CompanyInProfile = (props) => {
         <View>
           <Text style={CompanyInProfileStyle.want_Heading}>
             {
-              "How would you describe yourself? (you can select multiple options)"
+              'How would you describe yourself? (you can select multiple options)'
             }
           </Text>
           <FlatList
             data={kodieDescribeYourselfData}
             renderItem={jobType_render}
-            keyExtractor={(item) => item.lookup_key.toString()}
+            keyExtractor={item => item.lookup_key.toString()}
             numColumns={2}
           />
         </View>
+        {selectedselectJobTypesString == '' ? null : (
+          <View style={CompanyInProfileStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'The type of service you perform'}
+            </Text>
+            <MultiSelect
+              style={[CompanyInProfileStyle.dropdown]}
+              placeholderStyle={CompanyInProfileStyle.placeholderStyle}
+              selectedTextStyle={CompanyInProfileStyle.selectedTextStyle}
+              inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
+              iconStyle={CompanyInProfileStyle.iconStyle}
+              search
+              data={servicesData}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              placeholder="Select item"
+              searchPlaceholder="Search..."
+              value={servicesValue}
+              onChange={selectedItems => {
+                setservicesValue(selectedItems);
+              }}
+              selectedStyle={{
+                backgroundColor: _COLORS.Kodie_BlackColor,
+                borderRadius: 20,
+                alignSelf: 'center',
+              }}
+            />
+          </View>
+        )}
         <View style={CompanyInProfileStyle.inputContainer}>
           <Text style={LABEL_STYLES.commontext}>
-            {"The type of service you perform"}
-          </Text>
-          <Dropdown
-            style={CompanyInProfileStyle.dropdown}
-            placeholderStyle={CompanyInProfileStyle.placeholderStyle}
-            selectedTextStyle={CompanyInProfileStyle.selectedTextStyle}
-            inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
-            iconStyle={CompanyInProfileStyle.iconStyle}
-            data={data}
-            search
-            maxHeight={300}
-            labelField="lookup_description"
-            valueField="lookup_key"
-            placeholder="Select item"
-            searchPlaceholder="Search..."
-            value={servicesValue}
-            onChange={(item) => {
-              setservicesValue(item.lookup_key);
-              // You can perform any additional actions here based on the selected item
-            }}
-          />
-        </View>
-        <View style={CompanyInProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>
-            {"Company physical address"}
+            {'Company physical address'}
           </Text>
 
           <View style={CompanyInProfileStyle.inputContainer}>
-            <View style={CompanyInProfileStyle.locationConView}>
-              <View style={CompanyInProfileStyle.locationContainer}>
-                <TextInput
-                  style={CompanyInProfileStyle.locationInput}
-                  value={location}
-                  onChangeText={setLocation}
-                  onFocus={() => {
-                    setIsSearch(true);
-                    // setlocationError("");
-                  }}
-                  placeholder="Search location"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                />
+            <View style={CompanyInProfileStyle.inputContainer}>
+              <View style={CompanyInProfileStyle.locationConView}>
+                <View style={CompanyInProfileStyle.locationContainer}>
+                  <TextInput
+                    style={CompanyInProfileStyle.locationInput}
+                    // value={location}
+                    value={CompanyLocation}
+                    onChangeText={onChangeCompanyLocation}
+                    onFocus={CompanyOnFocus}
+                    placeholder="Search location"
+                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  />
+                </View>
+                <TouchableOpacity
+                  style={CompanyInProfileStyle.locationIconView}
+                  onPress={onPressCompanylocation}>
+                  <Octicons
+                    name={'location'}
+                    size={22}
+                    color={_COLORS.Kodie_GreenColor}
+                    style={CompanyInProfileStyle.locationIcon}
+                  />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={CompanyInProfileStyle.locationIconView}
-                onPress={() => {
-                  // props.navigation.navigate("Location");
-                  Platform.OS == "ios"
-                    ? CheckIOSMapPermission
-                    : checkpermissionlocation();
-                  setIsMap(true);
-                }}
-              >
-                <Octicons
-                  name={"location"}
-                  size={22}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={CompanyInProfileStyle.locationIcon}
-                />
-              </TouchableOpacity>
+              {/* {locationError ? (
+                  <Text style={PropertyDetailsStyle.error_text}>
+                    {locationError}
+                  </Text>
+                ) : null} */}
             </View>
             {/* {locationError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
@@ -281,7 +415,7 @@ const CompanyInProfile = (props) => {
         </View>
 
         <View style={CompanyInProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>{"Website"}</Text>
+          <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
           <TextInput
             style={CompanyInProfileStyle.input}
             value={website}
