@@ -30,6 +30,8 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {BackHandler} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import FloatingActionButton from '../../components/Molecules/FloatingActionButton/FloatingActionButton';
+import {Config} from '../../Config';
+import axios from 'axios';
 
 const IncomeData = [
   {
@@ -95,6 +97,8 @@ export default Dashboard = props => {
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
   const [modalVisible, setModalVisible] = useState(false);
+  const [accountDetails, setAccountDetails] = useState(null);
+
   // props.onPress(handleClosePopup);
   // alert(handleClosePopup, "close");
   // console.log(handleClosePopup, "close");
@@ -195,6 +199,28 @@ export default Dashboard = props => {
   const userProfileImageUri =
     loginData?.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
+  const getPersonalDetails = () => {
+    const url = Config.BASE_URL;
+
+    const apiUrl =
+      url + `getAccount_details/${loginData.Login_details.user_id}`;
+
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+      });
+  };
+  useEffect(() => {
+    getPersonalDetails();
+  }, []);
 
   return (
     <>
@@ -222,7 +248,7 @@ export default Dashboard = props => {
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text style={DashboardStyle.Name_Text}>{`Hi ${
-              loginData?.Account_details[0]?.UAD_FIRST_NAME || null
+              accountDetails?.UAD_FIRST_NAME || null
             }! `}</Text>
             <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
             <View

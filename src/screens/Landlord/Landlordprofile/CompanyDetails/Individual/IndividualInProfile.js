@@ -39,11 +39,10 @@ const IndividualInProfile = ({
 }) => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
-  const [website, setWebsite] = useState(
-    accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-      ? accountDetails?.UAD_WEBSITE
-      : '',
-  );
+  const [website, setWebsite] = useState('');
+  // accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+  //   ? accountDetails?.UAD_WEBSITE
+  //   : '',
   const [servicesValue, setservicesValue] = useState([]);
   const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
     [],
@@ -237,15 +236,12 @@ const IndividualInProfile = ({
   const getPersonalDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
-
     const apiUrl =
       url + `getAccount_details/${loginData.Login_details.user_id}`;
 
-    // Make a GET request using Axios
     axios
       .get(apiUrl)
       .then(response => {
-        // Handle successful response
         console.log('API Response:', response.data.data[0][0]);
         setAccountDetails(response.data.data[0][0]);
         const initialJobTypeIds = response.data.data[0][0]
@@ -265,11 +261,11 @@ const IndividualInProfile = ({
             ? initialJobTypeIds
             : [],
         );
-        // setservicesValue(
-        //   response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-        //     ? initialServiceIds
-        //     : [],
-        // );
+        setservicesValue(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? initialServiceIds
+            : [],
+        );
         setWebsite(
           response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
             ? response.data.data[0][0]?.UAD_WEBSITE
@@ -278,22 +274,27 @@ const IndividualInProfile = ({
         setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error:', error);
       });
   };
+
+  useEffect(() => {
+    getPersonalDetails();
+  }, []); // Call this useEffect only once on component mount
+
   useEffect(() => {
     IndividualData({
       website: website,
-      selectJobType: selectedselectJobTypesString,
+      selectJobType: selectJobTypeid.join(','),
       servicesValue: servicesValue,
     });
+
     handle_describe_yourself();
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
-    getPersonalDetails();
-  }, [selectJobType, website, selectedselectJobTypesString, servicesValue]);
+  }, [selectJobType, website, selectJobTypeid, servicesValue]);
+
   return (
     <View>
       <View style={IndividualProfileStyle.card}>
@@ -375,7 +376,9 @@ const IndividualInProfile = ({
           <TextInput
             style={IndividualProfileStyle.input}
             value={website}
-            onChangeText={setWebsite}
+            onChangeText={text => {
+              setWebsite(text);
+            }}
             placeholder="Enter your website address (if you have one)"
             placeholderTextColor={_COLORS.Kodie_LightGrayColor}
           />

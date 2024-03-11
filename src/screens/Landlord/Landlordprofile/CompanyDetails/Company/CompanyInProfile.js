@@ -254,11 +254,11 @@ const CompanyInProfile = ({
             ? initialJobTypeIds
             : [],
         );
-        // setservicesValue(
-        //   response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-        //     ? initialServiceIds
-        //     : [],
-        // );
+        setservicesValue(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? initialServiceIds
+            : [],
+        );
         setWebsite(
           response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
             ? response.data.data[0][0]?.UAD_WEBSITE
@@ -270,13 +270,13 @@ const CompanyInProfile = ({
             : '',
         );
         SetBusinessNumber(
-          accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? accountDetails?.UAD_AUSTR_BUSINESS_NO
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response.data.data[0][0]?.UAD_AUSTR_BUSINESS_NO
             : '',
         );
         setCompanyGSTNumber(
-          accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? accountDetails?.UAD_COMPANY_GST_VAT_NO
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response.data.data[0][0]?.UAD_COMPANY_GST_VAT_NO
             : '',
         );
       })
@@ -286,21 +286,21 @@ const CompanyInProfile = ({
       });
   };
   useEffect(() => {
+    getPersonalDetails();
+  }, []); // Call this useEffect only once on component mount
+  useEffect(() => {
     CompanyData({
       companyName: companyName,
       businessNumber: businessNumber,
       selectJobType: selectedselectJobTypesString,
       servicesValue: servicesValue,
       website: website,
-      p_latitude: p_latitude,
-      p_longitude: p_longitude,
       CompanyGst: companyGSTNumber,
     });
     handle_describe_yourself();
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
-    getPersonalDetails();
   }, [
     selectJobType,
     companyName,

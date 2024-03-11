@@ -59,9 +59,7 @@ export default CompanyDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
-  const [location, setLocation] = useState(
-    accountDetails?.UAD_CURR_PHYSICAL_ADD,
-  );
+  const [location, setLocation] = useState('');
   const [ImageName, setImageName] = useState('');
   const [Individual, setIndividual] = useState({});
   const [CompanyCome, setCompanyCome] = useState({});
@@ -73,9 +71,7 @@ export default CompanyDetails = props => {
   const [longitude, setlongitude] = useState('');
   const [Companylatitude, setCompanylatitude] = useState('');
   const [Companylongitude, setCompanylongitude] = useState('');
-  const [Companylocation, setCompanyLocation] = useState(
-    accountDetails?.UAD_CURR_PHYSICAL_ADD,
-  );
+  const [Companylocation, setCompanyLocation] = useState();
   const [currentLocation, setCurrentLocation] = useState('');
   const [accountDetails, setAccountDetails] = useState(null);
   console.log('formattedValue....', CompanyCome);
@@ -147,6 +143,8 @@ export default CompanyDetails = props => {
   };
   useEffect(() => {
     getPersonalDetails();
+  }, []); // Call this useEffect only once on component mount
+  useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -165,9 +163,18 @@ export default CompanyDetails = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        // Handle successful response
-        console.log('API Response:', response.data);
-        setAccountDetails(response.data);
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+        setLocation(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? response.data.data[0][0]?.UAD_CURR_PHYSICAL_ADD
+            : '',
+        );
+        setCompanyLocation(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response.data.data[0][0]?.UAD_CURR_PHYSICAL_ADD
+            : '',
+        );
       })
       .catch(error => {
         // Handle error
