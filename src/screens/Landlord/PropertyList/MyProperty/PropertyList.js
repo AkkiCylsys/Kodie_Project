@@ -158,9 +158,10 @@ const PropertyList = props => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
     try {
+      const url = Config.BASE_URL;
       const response = await axios.delete(
         // "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id",
-        'https://e3.cylsys.com/api/v1/delete_property_by_id',
+        url + 'delete_property_by_id',
         {
           data: JSON.stringify({property_id: propertyDelId}),
           headers: {

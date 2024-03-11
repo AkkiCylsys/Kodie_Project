@@ -1,96 +1,97 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   View,
   Text,
   TextInput,
   ScrollView,
   TouchableOpacity,
-} from "react-native";
-import { CompanyStyle } from "./CompanyStyle";
-import { _COLORS, LABEL_STYLES } from "../../../../../../../../Themes";
-import { useDispatch, useSelector } from "react-redux";
-import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import axios from "axios";
+} from 'react-native';
+import {CompanyStyle} from './CompanyStyle';
+import {_COLORS, LABEL_STYLES} from '../../../../../../../../Themes';
+import {useDispatch, useSelector} from 'react-redux';
+import {CommonLoader} from '../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import axios from 'axios';
+import {Config} from '../../../../../../../../Config';
 
-export default Company = (props) => {
-  const loginData = useSelector((state) => state.authenticationReducer.data);
+export default Company = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
   const property_id = props.property_id;
-  const [companyName, setCompanyName] = useState("");
-  const [companyNameError, setCompanyNameError] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [companyName, setCompanyName] = useState('');
+  const [companyNameError, setCompanyNameError] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [PhoneNumber, setPhoneNumber] = useState("");
-  const [PhoneNumberError, setPhoneNumberError] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [mobileNumberError, setMobileNumberError] = useState("");
-  const [note, setNote] = useState("");
-  const [selectedOption, setSelectedOption] = useState("Save");
-  const [companyResponse, setCompanyResponse] = useState("");
+  const [PhoneNumber, setPhoneNumber] = useState('');
+  const [PhoneNumberError, setPhoneNumberError] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [mobileNumberError, setMobileNumberError] = useState('');
+  const [note, setNote] = useState('');
+  const [selectedOption, setSelectedOption] = useState('Save');
+  const [companyResponse, setCompanyResponse] = useState('');
   const handleClosePopup = () => {
     props.onClose();
   };
-  const handleOptionClick = (option) => {
+  const handleOptionClick = option => {
     setSelectedOption(option);
     handleClosePopup();
   };
 
   //... Regex signup email validation
-  const validateCompanyEmail = (email) => {
+  const validateCompanyEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
   // Validation for First Name....
-  const validateCompanyName = (text) => {
-    if (text === "") {
-      setCompanyNameError("Organisation name is required");
+  const validateCompanyName = text => {
+    if (text === '') {
+      setCompanyNameError('Organisation name is required');
     } else if (!/^[A-Za-z]+$/.test(text)) {
       setCompanyNameError(
-        "Organisation name should contain only alphabetic characters"
+        'Organisation name should contain only alphabetic characters',
       );
     } else {
-      setCompanyNameError("");
+      setCompanyNameError('');
     }
     setCompanyName(text);
   };
 
   // Email validation define here....
-  const handleCompanyEmail = (text) => {
+  const handleCompanyEmail = text => {
     setEmail(text);
-    if (text.trim() === "") {
-      setEmailError("Email is required");
+    if (text.trim() === '') {
+      setEmailError('Email is required');
     } else if (!validateCompanyEmail(text)) {
       setEmailError(
-        "Hold on, this email appears to be invalid. Please enter a valid email address."
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
-      setEmailError("");
+      setEmailError('');
     }
   };
 
   // Validation for Phone Number
-  const validatePhoneNumber = (text) => {
+  const validatePhoneNumber = text => {
     const mobileReg = /^\d{6}$/;
-    if (text === "") {
-      setPhoneNumberError("Phone number is required");
+    if (text === '') {
+      setPhoneNumberError('Phone number is required');
     } else if (!mobileReg.test(text)) {
-      setPhoneNumberError("Invalid phone number format");
+      setPhoneNumberError('Invalid phone number format');
     } else {
-      setPhoneNumberError("");
+      setPhoneNumberError('');
     }
     setPhoneNumber(text);
   };
   // Validation for Phone Number
-  const validateMobileNumber = (text) => {
+  const validateMobileNumber = text => {
     // const mobileReg = /^\d{10}$/;
     const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
-    if (text === "") {
-      setMobileNumberError("Phone number is required");
+    if (text === '') {
+      setMobileNumberError('Phone number is required');
     } else if (!mobileReg.test(text)) {
-      setMobileNumberError("Invalid phone number format");
+      setMobileNumberError('Invalid phone number format');
     } else {
-      setMobileNumberError("");
+      setMobileNumberError('');
     }
     setMobileNumber(text);
   };
@@ -108,44 +109,44 @@ export default Company = (props) => {
   const Companyhandle = () => {
     // const url = Config.API_URL;
     // const PersonUrl = url + "user_signup";
-    const CompanyUrl =
-      "https://e3.cylsys.com/api/v1/tanant_details/create/company";
-    console.log("Request URL:", CompanyUrl);
+    const url = Config.BASE_URL;
+    const CompanyUrl = url + 'tanant_details/create/company';
+    console.log('Request URL:', CompanyUrl);
     setIsLoading(true);
 
     axios
       .post(CompanyUrl, CompanyDetailsData)
-      .then((response) => {
+      .then(response => {
         setCompanyResponse(response.data);
-        console.log("Company Details_data response", response.data);
+        console.log('Company Details_data response', response.data);
         if (response.data.success === true) {
           // props.navigation.navigate("LeaseSummary");
           alert(response.data.message);
           // setIsLoading(false);
-          setCompanyName("");
-          setEmail("");
-          setPhoneNumber("");
-          setMobileNumber("");
-          setNote("");
+          setCompanyName('');
+          setEmail('');
+          setPhoneNumber('');
+          setMobileNumber('');
+          setNote('');
           setIsLoading(false);
         } else {
           setEmailError(response.data.message);
-          console.error("CompanyDetail_error:", response.data.error);
+          console.error('CompanyDetail_error:', response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("CompanyDetail error...:", error);
+      .catch(error => {
+        console.error('CompanyDetail error...:', error);
         setIsLoading(false);
       });
   };
 
   const handleSaveBtn = () => {
-    if (companyName.trim() === "") {
-      setCompanyNameError("Organisation name is required.");
-    } else if (email.trim() == "") {
-      setEmailError("Email is required.");
+    if (companyName.trim() === '') {
+      setCompanyNameError('Organisation name is required.');
+    } else if (email.trim() == '') {
+      setEmailError('Email is required.');
     } else {
       Companyhandle();
     }
@@ -155,7 +156,9 @@ export default Company = (props) => {
       <ScrollView>
         <View style={CompanyStyle.card}>
           <View style={CompanyStyle.inputContainer}>
-            <Text style={[LABEL_STYLES.commontext,{marginTop:15}]}>{"Organisation name*"}</Text>
+            <Text style={[LABEL_STYLES.commontext, {marginTop: 15}]}>
+              {'Organisation name*'}
+            </Text>
             <TextInput
               style={CompanyStyle.input}
               value={companyName}
@@ -166,7 +169,7 @@ export default Company = (props) => {
             <Text style={CompanyStyle.errorText}>{companyNameError}</Text>
           </View>
           <View style={CompanyStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Email*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Email*'}</Text>
             <TextInput
               style={CompanyStyle.input}
               value={email}
@@ -178,7 +181,7 @@ export default Company = (props) => {
             <Text style={CompanyStyle.errorText}>{emailError}</Text>
           </View>
           <View style={CompanyStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Phone number"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Phone number'}</Text>
             <TextInput
               style={CompanyStyle.input}
               value={PhoneNumber}
@@ -192,7 +195,7 @@ export default Company = (props) => {
             <Text style={CompanyStyle.errorText}>{PhoneNumberError}</Text>
           </View>
           <View style={CompanyStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Mobile number"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Mobile number'}</Text>
             <TextInput
               style={CompanyStyle.input}
               value={mobileNumber}
@@ -206,16 +209,16 @@ export default Company = (props) => {
             <Text style={CompanyStyle.errorText}>{mobileNumberError}</Text>
           </View>
           <View style={CompanyStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
             <TextInput
-              style={[CompanyStyle.input, { height: 100 }]}
+              style={[CompanyStyle.input, {height: 100}]}
               value={note}
               onChangeText={setNote}
               placeholder="Enter any notes about your tenant"
               placeholderTextColor="#999"
               multiline
               numberOfLines={5}
-              textAlignVertical={"top"}
+              textAlignVertical={'top'}
             />
           </View>
           <View style={CompanyStyle.ButtonView}>
@@ -225,27 +228,25 @@ export default Company = (props) => {
                 CompanyStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Cancel"
+                    selectedOption == 'Cancel'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("Cancel");
-              }}
-            >
+                handleOptionClick('Cancel');
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "Cancel"
+                      selectedOption == 'Cancel'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {"Cancel"}
+                ]}>
+                {'Cancel'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -253,7 +254,7 @@ export default Company = (props) => {
                 CompanyStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Save"
+                    selectedOption == 'Save'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
@@ -261,21 +262,19 @@ export default Company = (props) => {
               onPress={() => {
                 handleSaveBtn();
                 // handleOptionClick("Save");
-              }}
-            >
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   CompanyStyle.text,
                   {
                     color:
-                      selectedOption == "Save"
+                      selectedOption == 'Save'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {" Save"}
+                ]}>
+                {' Save'}
               </Text>
             </TouchableOpacity>
           </View>

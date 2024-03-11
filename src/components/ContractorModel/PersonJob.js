@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,90 +7,91 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-} from "react-native";
+} from 'react-native';
 // import { PersonStyle } from "./PersonStyle";
-import { PersonJobStyle } from "./PersonJobStyle";
+import {PersonJobStyle} from './PersonJobStyle';
 // import { _COLORS, LABEL_STYLES } from "../../../../../../../../Themes";
-import { _COLORS, LABEL_STYLES } from "../../Themes";
+import {_COLORS, LABEL_STYLES} from '../../Themes';
 // import axios from "axios";
-import axios from "axios";
+import axios from 'axios';
 // import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { CommonLoader } from "../Molecules/ActiveLoader/ActiveLoader";
+import {CommonLoader} from '../Molecules/ActiveLoader/ActiveLoader';
 // import { useDispatch, useSelector } from "react-redux";
-import { useDispatch, useSelector} from "react-redux";
-export default PersonJob = (props) => {
-  const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData.....", loginData);
+import {useDispatch, useSelector} from 'react-redux';
+import {Config} from '../../Config';
+export default PersonJob = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginData.....', loginData);
   const property_id = props.property_id;
-  const [firstName, setFirstName] = useState("");
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [PhoneNumber, setPhoneNumber] = useState("");
-  const [PhoneNumbeError, setPhoneNumberError] = useState("");
-  const [note, setNote] = useState("");
-  const [selectedOption, setSelectedOption] = useState("Save");
+  const [firstName, setFirstName] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [PhoneNumber, setPhoneNumber] = useState('');
+  const [PhoneNumbeError, setPhoneNumberError] = useState('');
+  const [note, setNote] = useState('');
+  const [selectedOption, setSelectedOption] = useState('Save');
   const [isLoading, setIsLoading] = useState(false);
-  const [personResponse, setpersonResponse] = useState("");
-  const handleOptionClick = (option) => {
+  const [personResponse, setpersonResponse] = useState('');
+  const handleOptionClick = option => {
     setSelectedOption(option);
   };
 
   //... Regex signup email validation
-  const validatePersonEmail = (email) => {
+  const validatePersonEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
   // Validation for First Name....
-  const validateFirstName = (text) => {
-    if (text === "") {
-      setFirstNameError("First name is required");
+  const validateFirstName = text => {
+    if (text === '') {
+      setFirstNameError('First name is required');
     } else if (!/^[A-Za-z]+$/.test(text)) {
-      setFirstNameError("First name should contain only alphabetic characters");
+      setFirstNameError('First name should contain only alphabetic characters');
     } else {
-      setFirstNameError("");
+      setFirstNameError('');
     }
     setFirstName(text);
   };
 
   // Validation for Last Name....
-  const validateLastName = (text) => {
-    if (text === "") {
-      setLastNameError("Last name is required");
+  const validateLastName = text => {
+    if (text === '') {
+      setLastNameError('Last name is required');
     } else if (!/^[A-Za-z]+$/.test(text)) {
-      setLastNameError("Last name should contain only alphabetic characters");
+      setLastNameError('Last name should contain only alphabetic characters');
     } else {
-      setLastNameError("");
+      setLastNameError('');
     }
     setLastName(text);
   };
 
   // Email validation define here....
-  const handlePersonEmail = (text) => {
+  const handlePersonEmail = text => {
     setEmail(text);
-    if (text.trim() === "") {
-      setEmailError("Email is required");
+    if (text.trim() === '') {
+      setEmailError('Email is required');
     } else if (!validatePersonEmail(text)) {
       setEmailError(
-        "Hold on, this email appears to be invalid. Please enter a valid email address."
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
-      setEmailError("");
+      setEmailError('');
     }
   };
 
   // Validation for Phone Number
-  const validatePhoneNumber = (text) => {
+  const validatePhoneNumber = text => {
     const mobileReg = /^\d{10}$/;
-    if (text === "") {
-      setPhoneNumberError("Phone number is required");
+    if (text === '') {
+      setPhoneNumberError('Phone number is required');
     } else if (!mobileReg.test(text)) {
-      setPhoneNumberError("Invalid phone number format");
+      setPhoneNumberError('Invalid phone number format');
     } else {
-      setPhoneNumberError("");
+      setPhoneNumberError('');
     }
     setPhoneNumber(text);
   };
@@ -106,34 +107,34 @@ export default PersonJob = (props) => {
       phone_number: PhoneNumber,
       notes: note,
     };
-    const PersonUrl =
-      "https://e3.cylsys.com/api/v1/tanant_details/create/person";
-    console.log("Request URL:", PersonUrl);
+    const url = Config.BASE_URL;
+    const PersonUrl = url + 'tanant_details/create/person';
+    console.log('Request URL:', PersonUrl);
     setIsLoading(true);
 
     axios
       .post(PersonUrl, PersonDetailsData)
-      .then((response) => {
+      .then(response => {
         setpersonResponse(response.data);
-        console.log("Person Details_data response", response.data);
+        console.log('Person Details_data response', response.data);
         if (response.data.success == true || response.data.error == false) {
           alert(response.data.message);
           setIsLoading(false);
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setPhoneNumber("");
-          setPhoneNumber("");
-          setNote("");
+          setFirstName('');
+          setLastName('');
+          setEmail('');
+          setPhoneNumber('');
+          setPhoneNumber('');
+          setNote('');
           setIsLoading(false);
         } else {
           setEmailError(response.data.message);
-          console.error("personDetail_error:", response.data.error);
+          console.error('personDetail_error:', response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("personDetail error...:", error);
+      .catch(error => {
+        console.error('personDetail error...:', error);
         alert(error);
         setIsLoading(false);
       });
@@ -141,12 +142,12 @@ export default PersonJob = (props) => {
   // setEmailError(response.data.message);
   // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
-    if (firstName.trim() === "") {
-      setFirstNameError("First name is required.");
-    } else if (lastName.trim() === "") {
-      setLastNameError("Last name is required.");
-    } else if (email.trim() == "") {
-      setEmailError("Email is required.");
+    if (firstName.trim() === '') {
+      setFirstNameError('First name is required.');
+    } else if (lastName.trim() === '') {
+      setLastNameError('Last name is required.');
+    } else if (email.trim() == '') {
+      setEmailError('Email is required.');
     } else {
       Personhandle();
     }
@@ -155,12 +156,11 @@ export default PersonJob = (props) => {
   return (
     <KeyboardAvoidingView
       style={PersonJobStyle.mainConatainer}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView>
         <View style={PersonJobStyle.card}>
           <View style={PersonJobStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"First name*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'First name*'}</Text>
             <TextInput
               style={PersonJobStyle.input}
               value={firstName}
@@ -172,7 +172,7 @@ export default PersonJob = (props) => {
           </View>
 
           <View style={PersonJobStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Last name*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Last name*'}</Text>
             <TextInput
               style={PersonJobStyle.input}
               value={lastName}
@@ -184,7 +184,7 @@ export default PersonJob = (props) => {
           </View>
 
           <View style={PersonJobStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Email*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Email*'}</Text>
             <TextInput
               style={PersonJobStyle.input}
               value={email}
@@ -199,7 +199,7 @@ export default PersonJob = (props) => {
 
           <View style={PersonJobStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {"Phone number (mobile preferred)"}
+              {'Phone number (mobile preferred)'}
             </Text>
             <TextInput
               style={PersonJobStyle.input}
@@ -214,16 +214,16 @@ export default PersonJob = (props) => {
             <Text style={PersonJobStyle.errorText}>{PhoneNumbeError}</Text>
           </View>
           <View style={PersonJobStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
             <TextInput
-              style={[PersonJobStyle.input, { height: 100 }]}
+              style={[PersonJobStyle.input, {height: 100}]}
               value={note}
               onChangeText={setNote}
               placeholder="Enter any notes about your tenant"
               placeholderTextColor="#999"
               multiline
               numberOfLines={5}
-              textAlignVertical={"top"}
+              textAlignVertical={'top'}
             />
           </View>
           <View style={PersonJobStyle.ButtonView}>
@@ -233,27 +233,25 @@ export default PersonJob = (props) => {
                 PersonJobStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Cancel"
+                    selectedOption == 'Cancel'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("Cancel");
-              }}
-            >
+                handleOptionClick('Cancel');
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "Cancel"
+                      selectedOption == 'Cancel'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {"Cancel"}
+                ]}>
+                {'Cancel'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -261,7 +259,7 @@ export default PersonJob = (props) => {
                 PersonJobStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Save"
+                    selectedOption == 'Save'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
@@ -269,21 +267,19 @@ export default PersonJob = (props) => {
               onPress={() => {
                 handleSaveBtn();
                 // handleOptionClick("Save");
-              }}
-            >
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   PersonJobStyle.text,
                   {
                     color:
-                      selectedOption == "Save"
+                      selectedOption == 'Save'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {" Save"}
+                ]}>
+                {' Save'}
               </Text>
             </TouchableOpacity>
           </View>
