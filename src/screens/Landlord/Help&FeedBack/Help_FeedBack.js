@@ -74,7 +74,8 @@ const Help_FeedBack = props => {
         onPress={() => {
           if (item.id === '1') {
             //---- Navigate to OtherScreen when Contact Us is clicked
-            navigation.navigate('OtherScreen');
+            // navigation.navigate("OtherScreen");
+            alert('Coming soon');
           }
           if (item.id === '2') {
             //---- Navigate to OtherScreen when Contact Us is clicked
@@ -83,11 +84,13 @@ const Help_FeedBack = props => {
 
           if (item.id === '3') {
             //---- Navigate to OtherScreen when Contact Us is clicked
-            navigation.navigate('OtherScreen');
+            // navigation.navigate("OtherScreen");
+            alert('Coming soon');
           }
           if (item.id === '4') {
             //----- Navigate to OtherScreen when AppInfo is clicked
             navigation.navigate('AppInfo');
+            // alert('Coming soon')
           }
         }}>
         <View style={Help_FeedBackCss.container}>
