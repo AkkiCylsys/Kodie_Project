@@ -15,7 +15,7 @@ import Feather from "react-native-vector-icons/Feather";
 const feedbackData = [
   {
     id: "1",
-    Heading: "Halp Center",
+    Heading: "Help Center",
     // img: IMAGES.helpCenter,
     icon: (
       <AntDesign
