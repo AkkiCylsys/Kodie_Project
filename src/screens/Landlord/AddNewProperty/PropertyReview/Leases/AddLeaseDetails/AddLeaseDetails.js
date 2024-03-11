@@ -72,6 +72,8 @@ export default AddLeaseDetails = (props) => {
   const [toggle_rent_payment, setToggle_rent_payment] = useState(0);
   const [toggle_rental, setToggle_rental] = useState(false);
   const [toggle_late_rental, setToggle_late_rental] = useState(0);
+  const [showNotificationData, setShowNotificationData] = useState(false);
+  const [showLeaseDetailsData, setLeaseDetailsData] = useState(false);
   // <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
 
   useEffect(() => {
@@ -99,6 +101,12 @@ export default AddLeaseDetails = (props) => {
     setSelectedEndDate(day.dateString);
   };
 
+  const handleShowNotificationData = () => {
+    setShowNotificationData(!showNotificationData);
+  };
+  const handleShowLeaseDetailsData = () => {
+    setLeaseDetailsData(!showLeaseDetailsData);
+  };
   // ----data come from dropdown and define these condition
   const handleApply = (selectedOptions) => {
     console.log("Clear Action");
@@ -367,17 +375,18 @@ export default AddLeaseDetails = (props) => {
               name="close"
               size={22}
               color={_COLORS.Kodie_BlackColor}
-
             />
           </TouchableOpacity>
         </View>
       </View>
       <ScrollView>
         <View style={AddLeaseDetailsStyle.card}>
-          <Text style={[LABEL_STYLES.commontext,]}>{"Commencement date*"}</Text>
+          <Text style={[LABEL_STYLES.commontext]}>{"Commencement date*"}</Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
             <CalendarModal
-              SelectDate={selectedDate ? selectedDate : "Start date of the lease"}
+              SelectDate={
+                selectedDate ? selectedDate : "Start date of the lease"
+              }
               _textInputStyle={{
                 color: selectedDate
                   ? _COLORS.Kodie_BlackColor
@@ -425,10 +434,12 @@ export default AddLeaseDetails = (props) => {
               renderItem={lease_term_render}
             />
           </View>
-          <Text style={[LABEL_STYLES.commontext,]}>{"Lease end date*"}</Text>
+          <Text style={[LABEL_STYLES.commontext]}>{"Lease end date*"}</Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
             <CalendarModal
-              SelectDate={selectedEndDate ? selectedEndDate : "End date of the lease"}
+              SelectDate={
+                selectedEndDate ? selectedEndDate : "End date of the lease"
+              }
               _textInputStyle={{
                 color: selectedEndDate
                   ? _COLORS.Kodie_BlackColor
@@ -563,71 +574,107 @@ export default AddLeaseDetails = (props) => {
               renderItem={lease_term_render}
             />
           </View>
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           <View>
-            <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-            <Text style={{fontSize:18,fontFamily:FONTFAMILY.K_Bold,color:_COLORS.Kodie_BlackColor}}>
-            Other lease details
-            </Text>
-            <TouchableOpacity style={AddLeaseDetailsStyle.down_Arrow_icon}>
-            <Entypo
-              name="chevron-small-up"
-              size={22}
-              color={_COLORS.Kodie_BlackColor}
-            />
-          </TouchableOpacity>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontFamily: FONTFAMILY.K_Bold,
+                  color: _COLORS.Kodie_BlackColor,
+                }}
+              >
+                Other lease details
+              </Text>
+              <TouchableOpacity
+                style={AddLeaseDetailsStyle.down_Arrow_icon}
+                onPress={handleShowLeaseDetailsData}
+              >
+                <Entypo
+                  name={
+                    showLeaseDetailsData
+                      ? "chevron-small-up"
+                      : "chevron-small-down"
+                  }
+                  size={22}
+                  color={_COLORS.Kodie_BlackColor}
+                />
+              </TouchableOpacity>
             </View>
-            <Text style={{fontSize:12}}>
-            Enter extra information about your lease
+            <Text style={{ fontSize: 12 }}>
+              Enter extra information about your lease
             </Text>
           </View>
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
-          <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Rental bond"}</Text>
-            <TextInput
-              style={AddLeaseDetailsStyle.input}
-              value={paymentDueDay}
-              onChangeText={setPaymentDueDay}
-              placeholder="Enter the rental bond amount"
-            />
-          </View>
-          <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Rental deposit"}</Text>
-            <TextInput
-              style={AddLeaseDetailsStyle.input}
-              value={paymentDueDay}
-              onChangeText={setPaymentDueDay}
-              placeholder="Enter the rental deposit amount"
-            />
-          </View>
-          <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Rental escalation %"}</Text>
-            <TextInput
-              style={AddLeaseDetailsStyle.input}
-              value={paymentDueDay}
-              onChangeText={setPaymentDueDay}
-              placeholder="Period rent escalation %"
-            />
-          </View>
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
+          {showLeaseDetailsData ? (
+            <View>
+              <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
+              <View style={AddLeaseDetailsStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>{"Rental bond"}</Text>
+                <TextInput
+                  style={AddLeaseDetailsStyle.input}
+                  value={paymentDueDay}
+                  onChangeText={setPaymentDueDay}
+                  placeholder="Enter the rental bond amount"
+                />
+              </View>
+              <View style={AddLeaseDetailsStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>{"Rental deposit"}</Text>
+                <TextInput
+                  style={AddLeaseDetailsStyle.input}
+                  value={paymentDueDay}
+                  onChangeText={setPaymentDueDay}
+                  placeholder="Enter the rental deposit amount"
+                />
+              </View>
+              <View style={AddLeaseDetailsStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {"Rental escalation %"}
+                </Text>
+                <TextInput
+                  style={AddLeaseDetailsStyle.input}
+                  value={paymentDueDay}
+                  onChangeText={setPaymentDueDay}
+                  placeholder="Period rent escalation %"
+                />
+              </View>
+            </View>
+          ) : null}
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           <View>
-            <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-            <Text style={{fontSize:18,fontFamily:FONTFAMILY.K_Bold,color:_COLORS.Kodie_BlackColor}}>
-            Set property notifications
-            </Text>
-            <TouchableOpacity style={AddLeaseDetailsStyle.down_Arrow_icon}>
-            <Entypo
-              name="chevron-small-up"
-              size={22}
-              color={_COLORS.Kodie_BlackColor}
-            />
-          </TouchableOpacity>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontFamily: FONTFAMILY.K_Bold,
+                  color: _COLORS.Kodie_BlackColor,
+                }}
+              >
+                Set property notifications
+              </Text>
+              <TouchableOpacity
+                style={AddLeaseDetailsStyle.down_Arrow_icon}
+                onPress={handleShowNotificationData}
+              >
+                <Entypo
+                  name={
+                    showNotificationData
+                      ? "chevron-small-up"
+                      : "chevron-small-down"
+                  }
+                  size={22}
+                  color={_COLORS.Kodie_BlackColor}
+                />
+              </TouchableOpacity>
             </View>
-            <Text style={{fontSize:12}}>
-            Select the automatic notifications you would like sent
+            <Text style={{ fontSize: 12 }}>
+              Select the automatic notifications you would like sent
             </Text>
           </View>
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           {/* <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
               {"Pro rata first rental payment"}
@@ -676,180 +723,183 @@ export default AddLeaseDetails = (props) => {
               }}
             />
           </View> */}
-
-          <View style={AddLeaseDetailsStyle.inputContainer}>
-            {/* <Text style={LABEL_STYLES.commontext}>
+          {showNotificationData ? (
+            <View>
+              <View style={AddLeaseDetailsStyle.inputContainer}>
+                {/* <Text style={LABEL_STYLES.commontext}>
               {"Set property notifications"}
             </Text> */}
-            <View style={AddLeaseDetailsStyle.notification_view}>
-              <Text
-                style={[
-                  LABEL_STYLES.commontext,
-                  AddLeaseDetailsStyle.notification_text,
-                ]}
-              >
-                {"Set notification type"}
-              </Text>
-              <Dropdown
-                style={[
-                  AddLeaseDetailsStyle.dropdown,
-                  { flex: 1, borderRadius: 8, marginLeft: 45 },
-                ]}
-                placeholderStyle={[
-                  AddLeaseDetailsStyle.placeholderStyle,
-                  { color: _COLORS.Kodie_LightGrayColor },
-                ]}
-                selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
-                inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
-                iconStyle={AddLeaseDetailsStyle.iconStyle}
-                data={notification_type_Data}
-                maxHeight={300}
-                labelField="lookup_description"
-                valueField="lookup_key"
-                placeholder="Email"
-                value={notification_type_value}
-                onChange={(item) => {
-                  setNotification_type_value(item.lookup_key);
-                  // alert(item.lookup_key);
-                }}
-                renderItem={notification_render}
-              />
+                <View style={AddLeaseDetailsStyle.notification_view}>
+                  <Text
+                    style={[
+                      LABEL_STYLES.commontext,
+                      AddLeaseDetailsStyle.notification_text,
+                    ]}
+                  >
+                    {"Set notification type"}
+                  </Text>
+                  <Dropdown
+                    style={[
+                      AddLeaseDetailsStyle.dropdown,
+                      { flex: 1, borderRadius: 8, marginLeft: 45 },
+                    ]}
+                    placeholderStyle={[
+                      AddLeaseDetailsStyle.placeholderStyle,
+                      { color: _COLORS.Kodie_LightGrayColor },
+                    ]}
+                    selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+                    inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+                    iconStyle={AddLeaseDetailsStyle.iconStyle}
+                    data={notification_type_Data}
+                    maxHeight={300}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="Email"
+                    value={notification_type_value}
+                    onChange={(item) => {
+                      setNotification_type_value(item.lookup_key);
+                      // alert(item.lookup_key);
+                    }}
+                    renderItem={notification_render}
+                  />
+                </View>
+              </View>
+              <View style={AddLeaseDetailsStyle.reminder_m_view}>
+                <SwitchToggle
+                  switchOn={toggle_expiry}
+                  onPress={() => {
+                    setToggle_expiry(!toggle_expiry);
+                    setToggle_lease_expire(toggle_expiry ? 0 : 1);
+                    // alert(toggle_lease_expire);
+                  }}
+                  circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                  circleColorOn={_COLORS.Kodie_GreenColor}
+                  backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                  backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                  containerStyle={AddLeaseDetailsStyle.toggle_con}
+                  circleStyle={AddLeaseDetailsStyle.toggle_circle}
+                />
+                <View style={{ margin: 5 }} />
+                <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
+                  {"Lease expiry reminder"}
+                </Text>
+                <View style={AddLeaseDetailsStyle.reminder_dropdown}>
+                  <Dropdown
+                    style={[
+                      AddLeaseDetailsStyle.dropdown,
+                      AddLeaseDetailsStyle.reminder_dropdown_sty,
+                    ]}
+                    placeholderStyle={[
+                      AddLeaseDetailsStyle.placeholderStyle,
+                      { color: _COLORS.Kodie_LightGrayColor },
+                    ]}
+                    selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+                    inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+                    iconStyle={AddLeaseDetailsStyle.iconStyle}
+                    data={expiry_reminder_Data}
+                    maxHeight={300}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="30 days"
+                    value={expiry_reminder_value}
+                    onChange={(item) => {
+                      setExpiry_reminder_value(item.lookup_key);
+                      // alert(item.lookup_key)
+                    }}
+                  />
+                  <Text style={AddLeaseDetailsStyle.before}>{"before"}</Text>
+                </View>
+              </View>
+              <View style={AddLeaseDetailsStyle.reminder_m_view}>
+                <SwitchToggle
+                  switchOn={toggle_payment}
+                  onPress={() => {
+                    setToggle_payment(!toggle_payment);
+                    setToggle_rent_payment(toggle_payment ? 0 : 1);
+                  }}
+                  circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                  circleColorOn={_COLORS.Kodie_GreenColor}
+                  backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                  backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                  containerStyle={AddLeaseDetailsStyle.toggle_con}
+                  circleStyle={AddLeaseDetailsStyle.toggle_circle}
+                />
+                <View style={{ margin: 5 }} />
+                <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
+                  {"Rent payment reminder"}
+                </Text>
+                <View style={AddLeaseDetailsStyle.reminder_dropdown}>
+                  <Dropdown
+                    style={[
+                      AddLeaseDetailsStyle.dropdown,
+                      AddLeaseDetailsStyle.reminder_dropdown_sty,
+                    ]}
+                    placeholderStyle={[
+                      AddLeaseDetailsStyle.placeholderStyle,
+                      { color: _COLORS.Kodie_LightGrayColor },
+                    ]}
+                    selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+                    inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+                    iconStyle={AddLeaseDetailsStyle.iconStyle}
+                    data={payment_reminder_Data}
+                    maxHeight={300}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="2 days"
+                    value={payment_reminder_value}
+                    onChange={(item) => {
+                      setPayment_reminder_value(item.lookup_key);
+                    }}
+                  />
+                  <Text style={AddLeaseDetailsStyle.before}>{"before"}</Text>
+                </View>
+              </View>
+              <View style={AddLeaseDetailsStyle.reminder_m_view}>
+                <SwitchToggle
+                  switchOn={toggle_rental}
+                  onPress={() => {
+                    setToggle_rental(!toggle_rental);
+                    setToggle_late_rental(toggle_rental ? 0 : 1);
+                  }}
+                  circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                  circleColorOn={_COLORS.Kodie_GreenColor}
+                  backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                  backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                  containerStyle={AddLeaseDetailsStyle.toggle_con}
+                  circleStyle={AddLeaseDetailsStyle.toggle_circle}
+                />
+                <View style={{ margin: 5 }} />
+                <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
+                  {"Late rental reminder"}
+                </Text>
+                <View style={AddLeaseDetailsStyle.reminder_dropdown}>
+                  <Dropdown
+                    style={[
+                      AddLeaseDetailsStyle.dropdown,
+                      AddLeaseDetailsStyle.reminder_dropdown_sty,
+                    ]}
+                    placeholderStyle={[
+                      AddLeaseDetailsStyle.placeholderStyle,
+                      { color: _COLORS.Kodie_LightGrayColor },
+                    ]}
+                    selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+                    inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+                    iconStyle={AddLeaseDetailsStyle.iconStyle}
+                    data={rental_reminder_Data}
+                    maxHeight={300}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="2 days"
+                    value={rental_reminder_value}
+                    onChange={(item) => {
+                      setrental_reminder_value(item.lookup_key);
+                    }}
+                  />
+                  <Text style={AddLeaseDetailsStyle.after}>{"after"}</Text>
+                </View>
+              </View>
             </View>
-          </View>
-          <View style={AddLeaseDetailsStyle.reminder_m_view}>
-            <SwitchToggle
-              switchOn={toggle_expiry}
-              onPress={() => {
-                setToggle_expiry(!toggle_expiry);
-                setToggle_lease_expire(toggle_expiry ? 0 : 1);
-                // alert(toggle_lease_expire);
-              }}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={AddLeaseDetailsStyle.toggle_con}
-              circleStyle={AddLeaseDetailsStyle.toggle_circle}
-            />
-            <View style={{ margin: 5 }} />
-            <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
-              {"Lease expiry reminder"}
-            </Text>
-            <View style={AddLeaseDetailsStyle.reminder_dropdown}>
-              <Dropdown
-                style={[
-                  AddLeaseDetailsStyle.dropdown,
-                  AddLeaseDetailsStyle.reminder_dropdown_sty,
-                ]}
-                placeholderStyle={[
-                  AddLeaseDetailsStyle.placeholderStyle,
-                  { color: _COLORS.Kodie_LightGrayColor },
-                ]}
-                selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
-                inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
-                iconStyle={AddLeaseDetailsStyle.iconStyle}
-                data={expiry_reminder_Data}
-                maxHeight={300}
-                labelField="lookup_description"
-                valueField="lookup_key"
-                placeholder="30 days"
-                value={expiry_reminder_value}
-                onChange={(item) => {
-                  setExpiry_reminder_value(item.lookup_key);
-                  // alert(item.lookup_key)
-                }}
-              />
-              <Text style={AddLeaseDetailsStyle.before}>{"before"}</Text>
-            </View>
-          </View>
-          <View style={AddLeaseDetailsStyle.reminder_m_view}>
-            <SwitchToggle
-              switchOn={toggle_payment}
-              onPress={() => {
-                setToggle_payment(!toggle_payment);
-                setToggle_rent_payment(toggle_payment ? 0 : 1);
-              }}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={AddLeaseDetailsStyle.toggle_con}
-              circleStyle={AddLeaseDetailsStyle.toggle_circle}
-            />
-            <View style={{ margin: 5 }} />
-            <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
-              {"Rent payment reminder"}
-            </Text>
-            <View style={AddLeaseDetailsStyle.reminder_dropdown}>
-              <Dropdown
-                style={[
-                  AddLeaseDetailsStyle.dropdown,
-                  AddLeaseDetailsStyle.reminder_dropdown_sty,
-                ]}
-                placeholderStyle={[
-                  AddLeaseDetailsStyle.placeholderStyle,
-                  { color: _COLORS.Kodie_LightGrayColor },
-                ]}
-                selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
-                inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
-                iconStyle={AddLeaseDetailsStyle.iconStyle}
-                data={payment_reminder_Data}
-                maxHeight={300}
-                labelField="lookup_description"
-                valueField="lookup_key"
-                placeholder="2 days"
-                value={payment_reminder_value}
-                onChange={(item) => {
-                  setPayment_reminder_value(item.lookup_key);
-                }}
-              />
-              <Text style={AddLeaseDetailsStyle.before}>{"before"}</Text>
-            </View>
-          </View>
-          <View style={AddLeaseDetailsStyle.reminder_m_view}>
-            <SwitchToggle
-              switchOn={toggle_rental}
-              onPress={() => {
-                setToggle_rental(!toggle_rental);
-                setToggle_late_rental(toggle_rental ? 0 : 1);
-              }}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_GreenColor}
-              backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-              backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-              containerStyle={AddLeaseDetailsStyle.toggle_con}
-              circleStyle={AddLeaseDetailsStyle.toggle_circle}
-            />
-            <View style={{ margin: 5 }} />
-            <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
-              {"Late rental reminder"}
-            </Text>
-            <View style={AddLeaseDetailsStyle.reminder_dropdown}>
-              <Dropdown
-                style={[
-                  AddLeaseDetailsStyle.dropdown,
-                  AddLeaseDetailsStyle.reminder_dropdown_sty,
-                ]}
-                placeholderStyle={[
-                  AddLeaseDetailsStyle.placeholderStyle,
-                  { color: _COLORS.Kodie_LightGrayColor },
-                ]}
-                selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
-                inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
-                iconStyle={AddLeaseDetailsStyle.iconStyle}
-                data={rental_reminder_Data}
-                maxHeight={300}
-                labelField="lookup_description"
-                valueField="lookup_key"
-                placeholder="2 days"
-                value={rental_reminder_value}
-                onChange={(item) => {
-                  setrental_reminder_value(item.lookup_key);
-                }}
-              />
-              <Text style={AddLeaseDetailsStyle.after}>{"after"}</Text>
-            </View>
-          </View>
+          ) : null}
           <View style={AddLeaseDetailsStyle.ButtonView}>
             <TouchableOpacity
               style={[
