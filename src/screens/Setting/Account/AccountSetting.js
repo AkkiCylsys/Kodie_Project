@@ -1,5 +1,5 @@
 //ScreenNo:196
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity,Alert } from "react-native";
 import React from "react";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { AccountStyle } from "./AccountStyle";
@@ -9,6 +9,9 @@ import RowTab from "../../../components/Molecules/RowTab/RowTab";
 import { _goBack } from "../../../services/CommonServices/CommonMethods";
 import { ScrollView } from "react-native-gesture-handler";
 const AccountSetting = (props) => {
+  const handleGeneralSettingsPress = () => {
+    Alert.alert("Coming soon");
+  };
   return (
     <>
       <View style={AccountStyle.Mainview}>
@@ -18,31 +21,33 @@ const AccountSetting = (props) => {
         />
         <ScrollView>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("GeneralSettings")}
+            // onPress={() => props.navigation.navigate("GeneralSettings")} // navigate To General setting
+            onPress={handleGeneralSettingsPress}
           >
             <RowTab
               isSecondRowText={true}
-              // LeftImage={IMAGES.Accountsetting}
               LeftIconName={"settings-outline"}
               LeftIconLibrary={"Ionicons"}
               TabTaxt="General account settings"
               TabSubTaxt="Currency symbol, tax rate,  time zone"
             />
           </TouchableOpacity>
+          <TouchableOpacity
+          onPress={handleGeneralSettingsPress}>
           <RowTab
             isSecondRowText={true}
-            // LeftImage={IMAGES.Autopayment}
             LeftIconName={"pay-circle-o1"}
             LeftIconLibrary={"AntDesign"}
             TabTaxt="Autopayment set up"
             TabSubTaxt="Configure autopayment for rentals & deposits"
           />
+          </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("PaymentMethod")}
+            // onPress={() => props.navigation.navigate("PaymentMethod")}// Navigate To Select Payment
+            onPress={handleGeneralSettingsPress}
           >
             <RowTab
               isSecondRowText={true}
-              // LeftImage={IMAGES.kodiepayment}
               LeftIconName={"payment"}
               LeftIconLibrary={"MaterialIcons"}
               TabTaxt="Kodie payment methods"
@@ -55,7 +60,6 @@ const AccountSetting = (props) => {
           >
             <RowTab
               isSecondRowText={true}
-              // LeftImage={IMAGES.changecontact}
               LeftIconName={"pencil"}
               LeftIconLibrary={"SimpleLineIcons"}
               TabTaxt="Change Contact Details"

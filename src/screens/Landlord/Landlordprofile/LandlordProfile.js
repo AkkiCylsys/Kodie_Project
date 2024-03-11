@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from "react-native";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
 import { LandlordProfileStyle } from "./LandlordProfileStyle";
@@ -30,6 +30,11 @@ export default LandlordProfile = (props) => {
     props.navigation.navigate("LoginScreen");
   };
   const searchprofileMenu = () => {};
+
+  // Alert_____
+  const handleGeneralSettingsPress = () => {
+    Alert.alert("Coming soon");
+  };
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
@@ -134,38 +139,35 @@ export default LandlordProfile = (props) => {
             IsDivider={false}
             isSecondRowText={true}
             LeftIconName={"subscriptions"}
-            // LeftImage={IMAGES.ManageSubscription}
             TabTaxt="Manage Subscription"
             TabSubTaxt="Manage your subscription plans"
           />
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate("PrivacySecurity");
-          }}
+        onPress={handleGeneralSettingsPress}
+          // onPress={() => {//   props.navigation.navigate("PrivacySecurity");// }} // Navigate To PrivacySecurity
         >
           <RowTab
             LeftIconLibrary={"MaterialCommunityIcons"}
             IsDivider={false}
             isSecondRowText={true}
             LeftIconName={"lock"}
-            // LeftImage={IMAGES.Privacy}
             TabTaxt="Privacy & Security"
             TabSubTaxt="View your privacy and security settings"
           />
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {
-            // props.navigation.navigate("ManageSubscription");
-          }}
+          // onPress={() => {
+          //   // props.navigation.navigate("ManageSubscription");
+          // }}
+          onPress={handleGeneralSettingsPress}
         >
           <RowTab
             LeftIconLibrary={"MaterialIcons"}
             IsDivider={false}
             isSecondRowText={true}
             LeftIconName={"storage"}
-            // LeftImage={IMAGES.ManageSubscription}
             TabTaxt="Storage & Data"
             TabSubTaxt="Manage storage and data settings"
           />
@@ -182,7 +184,6 @@ export default LandlordProfile = (props) => {
             isSecondRowText={true}
             LeftIconName={"help-with-circle"}
             LeftIconLibrary={"Entypo"}
-            // LeftImage={IMAGES.Accountsetting}
             TabTaxt="Help & Feedback"
             TabSubTaxt="Get help and leave feedback"
           />
@@ -196,7 +197,6 @@ export default LandlordProfile = (props) => {
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            // LeftImage={IMAGES.Subscription}
             LeftIconName={"like1"}
             LeftIconLibrary={"AntDesign"}
             TabTaxt="Follow us on social media"
@@ -214,7 +214,6 @@ export default LandlordProfile = (props) => {
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            // LeftImage={IMAGES.Subscription}
             LeftIconName={"user-plus"}
             LeftIconLibrary={"FontAwesome5"}
             TabTaxt="Tell a Friend"
@@ -223,14 +222,12 @@ export default LandlordProfile = (props) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => {
-            props.navigation.navigate("GenerateReport");
-          }}
+          // onPress={() => { props.navigation.navigate("GenerateReport");}}Navigate To Generate report
+            onPress={handleGeneralSettingsPress}
         >
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            // LeftImage={IMAGES.RateKodie}
             LeftIconName={"rate-review"}
             LeftIconLibrary={"MaterialIcons"}
             TabTaxt="Rate Kodie"
@@ -242,7 +239,6 @@ export default LandlordProfile = (props) => {
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
-            // LeftImage={IMAGES.Logout}
             LeftIconName={"logout"}
             LeftIconLibrary={"MaterialCommunityIcons"}
             TabTaxt="Logout"

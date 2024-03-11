@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   View,
+  Alert
 } from "react-native";
 import { IMAGES, _COLORS } from "../../Themes";
 import DividerIcon from "../../components/Atoms/Devider/DividerIcon";
@@ -90,6 +91,9 @@ const CustomSidebarMenu = (props) => {
     // props.navigation.navigate("DrawerNavigatorLeftMenu");
     props.navigation.navigate("LoginScreen");
   };
+  const handleGeneralSettingsPress = () => {
+    Alert.alert("Coming soon");
+  };
   return (
     <SafeAreaView style={DrawerStyle.mainContainer}>
       <ScrollView
@@ -131,7 +135,8 @@ const CustomSidebarMenu = (props) => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          onPress={() => check("RentalOffers")}
+          // onPress={() => check("RentalOffers")} Navigate To Rental Offers
+          onPress={handleGeneralSettingsPress}
         >
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
@@ -180,7 +185,8 @@ const CustomSidebarMenu = (props) => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          onPress={() => check("Inspection")}
+          // onPress={() => check("Inspection")} Navigate To Inspections
+          onPress={handleGeneralSettingsPress}
         >
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
@@ -232,7 +238,8 @@ const CustomSidebarMenu = (props) => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          onPress={() => check("MaintenanceJobs")}
+          // onPress={() => check("MaintenanceJobs")} Navigate To Jobs
+          onPress={handleGeneralSettingsPress}
         >
           <View style={DrawerStyle.IconView}>
             <Feather
@@ -283,7 +290,8 @@ const CustomSidebarMenu = (props) => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          onPress={() => check("Notices")}
+          // onPress={() => check("Notices")} Navigate To Notices & riminders
+          onPress={handleGeneralSettingsPress}
         >
           <View style={DrawerStyle.IconView}>
             <Ionicons
@@ -333,7 +341,8 @@ const CustomSidebarMenu = (props) => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          onPress={() => check("Reports")}
+          // onPress={() => check("Reports")} Navigate To Reports
+          onPress={handleGeneralSettingsPress}
         >
           <View style={DrawerStyle.IconView}>
             <MaterialIcons
@@ -357,7 +366,8 @@ const CustomSidebarMenu = (props) => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          onPress={() => check("Partners")}
+          // onPress={() => check("Partners")} Navigate To Confirm Job
+          onPress={handleGeneralSettingsPress}
         >
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
