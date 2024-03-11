@@ -85,11 +85,12 @@ const Help_FeedBack = (props) => {
           if (item.id === "3") {
             //---- Navigate to OtherScreen when Contact Us is clicked
             navigation.navigate("OtherScreen");
+            alert('Coming soon')
           }
           if (item.id === "4") {
             //----- Navigate to OtherScreen when AppInfo is clicked
-            // navigation.navigate("AppInfo");
-            alert('Coming soon')
+            navigation.navigate("AppInfo");
+            // alert('Coming soon')
           }
         }}
       >
