@@ -373,7 +373,7 @@ const EditProfile = props => {
                       <Image
                         style={EditProfileStyle.profilelogo}
                         source={{
-                          uri: loginData?.Login_details?.profile_photo_path,
+                          uri: accountDetails?.image_path[0],
                         }}
                         resizeMode="cover"
                       />

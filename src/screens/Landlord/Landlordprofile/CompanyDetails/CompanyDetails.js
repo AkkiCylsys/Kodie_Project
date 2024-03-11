@@ -416,7 +416,7 @@ export default CompanyDetails = props => {
                   <Image
                     style={CompanyDetailsStyle.profilelogo}
                     source={{
-                      uri: loginData?.Login_details?.profile_photo_path,
+                      uri: `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.UAD_Company_logo}`,
                     }}
                     resizeMode="cover"
                   />
