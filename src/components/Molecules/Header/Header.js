@@ -21,31 +21,32 @@ const TopHeader = props => {
 
   const [accountDetails, setAccountDetails] = useState(null);
 
-  const getPersonalDetails = () => {
-    const url = Config.BASE_URL;
+  // const getPersonalDetails = () => {
+  //   const url = Config.BASE_URL;
 
-    const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_id}`;
+  //   const apiUrl =
+  //     url + `getAccount_details/${loginData.Login_details.user_id}`;
 
-    // Make a GET request using Axios
-    axios
-      .get(apiUrl)
-      .then(response => {
-        // Handle successful response
-        console.log('API Response:', response.data.data[0][0]);
-        setAccountDetails(response.data.data[0][0]);
-      })
-      .catch(error => {
-        // Handle error
-        console.error('API Error:', error);
-      });
-  };
-  useEffect(() => {
-    getPersonalDetails();
-  }, []);
-  const userProfileImageUri = accountDetails?.image_path[0];
-  // loginData.Login_details?.profile_photo_path ||
-  // signUp_account_response?.Login_details?.profile_photo_path;
+  //   // Make a GET request using Axios
+  //   axios
+  //     .get(apiUrl)
+  //     .then(response => {
+  //       // Handle successful response
+  //       console.log('API Response:', response.data.data[0][0]);
+  //       setAccountDetails(response.data.data[0][0]);
+  //     })
+  //     .catch(error => {
+  //       // Handle error
+  //       console.error('API Error:', error);
+  //     });
+  // };
+  // useEffect(() => {
+  //   getPersonalDetails();
+  // }, []);
+  const userProfileImageUri =
+    // accountDetails?.image_path[0];
+    loginData.Login_details?.profile_photo_path ||
+    signUp_account_response?.Login_details?.profile_photo_path;
   const HandleProfileNavigation = () => {
     props.navigation.navigate('EditProfile');
   };

@@ -28,28 +28,28 @@ export default LandlordProfile = props => {
   );
   const [accountDetails, setAccountDetails] = useState(null);
 
-  const getPersonalDetails = () => {
-    const url = Config.BASE_URL;
+  // const getPersonalDetails = () => {
+  //   const url = Config.BASE_URL;
 
-    const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_id}`;
+  //   const apiUrl =
+  //     url + `getAccount_details/${loginData.Login_details.user_id}`;
 
-    // Make a GET request using Axios
-    axios
-      .get(apiUrl)
-      .then(response => {
-        // Handle successful response
-        console.log('API Response:', response.data.data[0][0]);
-        setAccountDetails(response.data.data[0][0]);
-      })
-      .catch(error => {
-        // Handle error
-        console.error('API Error:', error);
-      });
-  };
-  useEffect(() => {
-    getPersonalDetails();
-  }, []);
+  //   // Make a GET request using Axios
+  //   axios
+  //     .get(apiUrl)
+  //     .then(response => {
+  //       // Handle successful response
+  //       console.log('API Response:', response.data.data[0][0]);
+  //       setAccountDetails(response.data.data[0][0]);
+  //     })
+  //     .catch(error => {
+  //       // Handle error
+  //       console.error('API Error:', error);
+  //     });
+  // };
+  // useEffect(() => {
+  //   getPersonalDetails();
+  // }, []);
   console.log('signUp_account_response.....', signUp_account_response);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log(
@@ -93,7 +93,8 @@ export default LandlordProfile = props => {
             <Image
               // source={IMAGES.Landlordprofile}
               source={{
-                uri: accountDetails?.image_path[0],
+                // uri: accountDetails?.image_path[0],
+                uri: loginData.Login_details?.profile_photo_path,
               }}
               style={LandlordProfileStyle.usericon}
               resizeMode="cover"
@@ -101,9 +102,11 @@ export default LandlordProfile = props => {
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
-              {accountDetails?.UAD_FIRST_NAME +
+              {/* {accountDetails?.UAD_FIRST_NAME + */}
+              {loginData.Account_details[0]?.UAD_FIRST_NAME +
                 ' ' +
-                accountDetails?.UAD_LAST_NAME}
+                // accountDetails?.UAD_LAST_NAME}
+                loginData.Account_details[0]?.UAD_LAST_NAME}
             </Text>
             <Text
               style={LandlordProfileStyle.emailText}

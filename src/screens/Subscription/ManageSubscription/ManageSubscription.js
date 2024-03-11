@@ -245,7 +245,7 @@ const ManageSubscription = props => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'insert_subscription';
     console.log('Request URL:', url);
-    console.log(id);
+    // console.log(id);
     setIsLoading(true);
     const Insert_data = {
       user_id: loginData.Login_details?.user_id,

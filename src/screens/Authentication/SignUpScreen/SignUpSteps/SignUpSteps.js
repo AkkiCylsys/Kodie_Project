@@ -257,7 +257,7 @@ const SignUpSteps = props => {
   }
 
   const handleNextBtn = () => {
-    alert(mobileNumber);
+    // alert(mobileNumber);
     if (!ImageName) {
       setImageError('Please select an image before proceeding.');
     } else if (firstName.trim() === '') {
