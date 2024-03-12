@@ -10,6 +10,8 @@ import {
   Platform,
   Modal,
 } from 'react-native';
+
+import {userSubscribedCreator} from '../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import {DashboardStyle} from './DashboardStyle';
 import TopHeader from '../../components/Molecules/Header/Header';
@@ -98,7 +100,7 @@ export default Dashboard = props => {
   const refRBSheet2 = useRef();
   const [modalVisible, setModalVisible] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
-
+  const dispatch = useDispatch();
   // props.onPress(handleClosePopup);
   // alert(handleClosePopup, "close");
   // console.log(handleClosePopup, "close");
@@ -119,21 +121,30 @@ export default Dashboard = props => {
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
+  const SubscriptionData = useSelector(state => state.subscriptionReducer.data?.data);
+  console.log('SubscriptionData.....', SubscriptionData);
   // console.log(
   //   "UAD_FirstName.....",
   //   loginData?.Account_details[0]?.UAD_FIRST_NAME
   // );
   // const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
   //---click back button closing the app
+
+
+
   useEffect(() => {
+    check_subscription()
+    
     const handleBackPress = () => {
+   
       if (navigation.isFocused()) {
         BackHandler.exitApp();
         return true;
       }
+      
       return false;
     };
-
+    
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
@@ -141,6 +152,19 @@ export default Dashboard = props => {
   }, [navigation]);
 
   //---click back button closing the app
+
+
+  const check_subscription= async()=>{
+   // alert('hi')
+    let check_Subs={
+      account_id:loginData?.Login_details?.user_account_id,
+      
+     // account_id:res?.data?.Login_details?.user_account_id
+    }
+    console.log('checkid99',check_Subs)
+    const res = await dispatch(userSubscribedCreator(check_Subs))
+    //alert(JSON.stringify(res?.data))
+  }
 
   const Income_render = ({item, index}) => {
     return (
@@ -244,7 +268,7 @@ export default Dashboard = props => {
           // statusBarStyle="dark-content"
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <DeshboardNotice onClose={CloseUp} />
+          <DeshboardNotice ShowUpgradeButton={SubscriptionData?.status=='active'?false:true} onClose={CloseUp} />
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text style={DashboardStyle.Name_Text}>{`Hi ${
