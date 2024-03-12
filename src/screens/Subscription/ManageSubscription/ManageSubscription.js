@@ -1,4 +1,4 @@
-import {View, Text, Image, ScrollView} from 'react-native';
+import {View, Text, Image, ScrollView, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {ManageSubscriptionStyle} from './ManageSubscriptionStyle';
@@ -211,7 +211,7 @@ const ManageSubscription = props => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'demo';
     console.log('Request URL:', url);
-    console.log(id);
+    // console.log(id);
     setIsLoading(true);
     const createSubscription_data = {
       customer_id: customerID,
@@ -227,7 +227,7 @@ const ManageSubscription = props => {
           setSubscriptionID(response.data.data.id);
 
           Insertdemodata();
-          alert('Successfully subscriped');
+          Alert.alert('Successfully subscribed');
         } else {
           setIsLoading(false);
         }
