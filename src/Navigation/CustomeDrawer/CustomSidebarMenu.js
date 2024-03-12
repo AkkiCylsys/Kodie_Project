@@ -75,11 +75,11 @@ const CustomSidebarMenu = props => {
         // props.navigation.navigate("Partners");
         props.navigation.navigate('ConfirmJobCompletion');
         break;
-      case 'Logout':
-        setselectedId('LogOut');
-        // props.navigation.navigate("LoginScreen");
-        LogOut();
-        break;
+      // case 'Logout':
+      //   setselectedId('LogOut');
+      //   // props.navigation.navigate("LoginScreen");
+      //   LogOut();
+      //   break;
 
       default:
         setselectedId('Dashboard');
@@ -368,7 +368,7 @@ const CustomSidebarMenu = props => {
           <Text style={DrawerStyle.SubHeading}>{'Partners'}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
             // {
@@ -389,7 +389,7 @@ const CustomSidebarMenu = props => {
             />
           </View>
           <Text style={DrawerStyle.SubHeading}>{'Logout'}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );

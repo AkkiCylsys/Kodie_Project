@@ -306,13 +306,13 @@ export default LandlordProfile = props => {
           />
         </View>
         <View style={LandlordProfileStyle.ViewBtn}>
-          <TouchableOpacity onPress={handleClose}>
-          <Text style={LandlordProfileStyle.CancelBtn}>
+          <TouchableOpacity onPress={handleClose} style={{height:58,}}>
+          <Text style={LandlordProfileStyle.CancelBtn} >
           Cancel
           </Text>
           </TouchableOpacity>
           <View style={{margin:5}}/>
-          <TouchableOpacity onPress={LogOut}>
+          <TouchableOpacity onPress={LogOut} style={{height:58}}>
           <Text style={LandlordProfileStyle.LogoutBtn}>
           Logout
           </Text>

@@ -206,7 +206,7 @@ export default Dashboard = props => {
     const url = Config.BASE_URL;
 
     const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_id}`;
+      url + `getAccount_details/${loginData.Login_details.user_id || signUp_account_response.Login_details.user_id}`;
 
     // Make a GET request using Axios
     axios
