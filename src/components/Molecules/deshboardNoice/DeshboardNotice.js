@@ -147,9 +147,12 @@ const DeshboardNotice = props => {
             <Text style={DeshBoardNoticeCss.trialText}>
               Your free trial ends in {profileDay} days.
             </Text>
+            {props.ShowUpgradeButton?
             <TouchableOpacity style={DeshBoardNoticeCss.upgradeView}>
               <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
             </TouchableOpacity>
+            :null
+}
           </View>
         </View>
       )}

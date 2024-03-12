@@ -9,17 +9,20 @@ import SwitchButton from '../../../components/Molecules/SwitchButton/SwitchButto
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {FlatList} from 'react-native-gesture-handler';
-import {useSelector} from 'react-redux';
+
 import axios from 'axios';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {Config} from '../../../Config';
+import {useDispatch, useSelector} from 'react-redux';
+import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
+import {colors} from '../../../Themes/CommonColors/CommonColor';
 //ScreenNo:209
 
 const subscriptionData = [
   {
     id: 1,
     cardHeading: 'Property Essential',
-    amount: '69',
+    amount: 69,
     duration: 'Month',
     description: 'The best place to get started',
     rule_desc: 'You get:',
@@ -37,38 +40,37 @@ const subscriptionData = [
   {
     id: 2,
     cardHeading: 'Portfolio Pioneer',
-    amount: '149',
+    amount: 149,
     duration: 'Month',
     description: 'The best place to get started',
     rule_desc: 'You get:',
-    rule_no_1: 'Easily manage up to 3 properties',
-    rule_no_2: 'Single user',
-    rule_no_3: 'Standard financial dashboards(revenues & expenses)',
+    rule_no_1: 'Up to 10 properties',
+    rule_no_2: 'Up to 3 users',
+    rule_no_3: 'Advanced data insights and dynamic dashboards',
     rule_no_4: 'Service & maintenance requests with ease',
-    rule_no_5: 'Standard access to contractors',
-    rule_no_6: 'Income & expense tracking',
-    rule_no_7: 'Tenant screening',
-    rule_no_8: 'Standard document management',
-    rule_no_9:
-      'Standard rental property listings on Kodie Property Marketplace',
+    rule_no_5: '5% off for all contractors',
+    rule_no_6: 'Dynamic unit inspection checklists',
+    rule_no_7: 'Reporting features including report download',
+    rule_no_8: 'Unlimited document storage',
+    rule_no_9: '',
   },
   {
     id: 3,
     cardHeading: 'Property Mogul',
-    amount: '69',
+    amount: 249,
     duration: 'Month',
-    description: 'The best place to get started',
+    description: 'For the experienced property moguls',
     rule_desc: 'You get:',
-    rule_no_1: 'Easily manage up to 3 properties',
-    rule_no_2: 'Single user',
-    rule_no_3: 'Standard financial dashboards(revenues & expenses)',
-    rule_no_4: 'Service & maintenance requests with ease',
-    rule_no_5: 'Standard access to contractors',
-    rule_no_6: 'Income & expense tracking',
-    rule_no_7: 'Tenant screening',
-    rule_no_8: 'Standard document management',
-    rule_no_9:
-      'Standard rental property listings on Kodie Property Marketplace',
+    rule_no_1: 'Unlimited properties',
+    rule_no_2: 'Unlimited users',
+    rule_no_3: 'Customisable dashboards with report download',
+    rule_no_4: '10% off for all contractors',
+    rule_no_5: 'Dedicated customer support',
+    rule_no_6:
+      'Preferential rental property listings on Kodie Property Marketplace',
+    rule_no_7: '',
+    rule_no_8: '',
+    rule_no_9: '',
   },
 ];
 const ManageSubscription = props => {
@@ -80,7 +82,10 @@ const ManageSubscription = props => {
   const [min, setMin] = useState(0);
   const [customerID, setCustomerID] = useState('');
   const [SubscriptionID, setSubscriptionID] = useState('');
+  const [SubscriptionStatus, setSubscriptionStatus] = useState('');
+  const [SubscribedPLan, setsetSubscribedPLan] = useState('');
 
+  const dispatch = useDispatch();
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
     setPriceRanges(priceRange);
@@ -130,7 +135,15 @@ const ManageSubscription = props => {
       demoSubscription(selectedPriceId);
     };
     return (
-      <View style={ManageSubscriptionStyle.SubscriptionDataView}>
+      <View
+        style={[
+          ManageSubscriptionStyle.SubscriptionDataView,
+          {
+            borderWidth: 2,
+            borderColor:
+              item.amount == SubscribedPLan ? 'green' : 'transparent',
+          },
+        ]}>
         <Text style={ManageSubscriptionStyle.Heading}>{item.cardHeading}</Text>
         <Text style={ManageSubscriptionStyle.Subscriptionprice}>
           ${item.amount}
@@ -143,15 +156,28 @@ const ManageSubscription = props => {
         </Text>
         <View style={ManageSubscriptionStyle.ShadowLine} />
         <Text style={ManageSubscriptionStyle.getText}>{item.rule_desc}</Text>
-        <RowsData DataTexts="Easily manage up to 3 properties" />
-        <RowsData DataTexts="Single user" />
-        <RowsData DataTexts="Standard financial dashboard (revenues & expenses)" />
-        <RowsData DataTexts="Service & maintenance requests with ease" />
-        <RowsData DataTexts="Standard access to contractors" />
-        <RowsData DataTexts="Income & expense tracking" />
-        <RowsData DataTexts="Tenant screening" />
-        <RowsData DataTexts="Standard document management" />
-        <RowsData DataTexts="Standard rental property listings on Kodie Property Marketplace" />
+        <RowsData DataTexts={item.rule_no_1} />
+        <RowsData DataTexts={item.rule_no_2} />
+        <RowsData DataTexts={item.rule_no_3} />
+        <RowsData DataTexts={item.rule_no_4} />
+        <RowsData DataTexts={item.rule_no_5} />
+        <RowsData DataTexts={item.rule_no_6} />
+        {item.rule_no_7 == '' ? (
+          <Text style={{marginTop: 10}}></Text>
+        ) : (
+          <RowsData DataTexts={item.rule_no_7} />
+        )}
+        {item.rule_no_8 == '' ? (
+          <Text style={{marginTop: 10}}></Text>
+        ) : (
+          <RowsData DataTexts={item.rule_no_8} />
+        )}
+        {item.rule_no_9 == '' ? (
+          <Text style={{marginTop: 10}}></Text>
+        ) : (
+          <RowsData DataTexts={item.rule_no_9} />
+        )}
+
         <View style={{padding: 5}}>
           <RowButtons
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
@@ -166,6 +192,7 @@ const ManageSubscription = props => {
               // props.navigation.navigate("ContractorProfile")
               alert('Contact us pressed')
             }
+            isShowRightButton={SubscriptionStatus == 'active' ? false : true}
             onPressRightButton={handleSubscribePress}
           />
         </View>
@@ -174,7 +201,20 @@ const ManageSubscription = props => {
   };
   useEffect(() => {
     createCustomer();
+    checkSubscribedCustomer();
   }, []);
+
+  const checkSubscribedCustomer = async () => {
+    let check_Subs = {
+      // account_id:711
+      account_id: loginData?.Login_details?.user_account_id,
+    };
+    const res = await dispatch(userSubscribedCreator(check_Subs));
+    console.log('000000000', JSON.stringify(res?.data?.data?.plan));
+    //alert(JSON.stringify((res?.data?.data?.plan?.amount)/100))
+    setSubscriptionStatus(res?.data?.data?.status);
+    setsetSubscribedPLan(res?.data?.data?.plan?.amount / 100);
+  };
   const createCustomer = () => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'create_customer';
@@ -224,10 +264,12 @@ const ManageSubscription = props => {
         console.log('API Response createSubscription_data', response.data);
         if (response.data.success === true) {
           console.log('Subscription ID ....', response.data.data.id);
-          setSubscriptionID(response.data.data.id);
+          setSubscriptionID(response?.data?.data?.id);
 
-          Insertdemodata();
-          Alert.alert('Successfully subscribed');
+          Insertdemodata(response?.data?.data?.id);
+          saveSubscriptionData();
+          alert('You have Successfully subscribed .');
+          props.navigation.navigate('Dashboard');
         } else {
           setIsLoading(false);
         }
@@ -241,7 +283,14 @@ const ManageSubscription = props => {
         setIsLoading(false);
       });
   };
-  const Insertdemodata = () => {
+  const saveSubscriptionData = async () => {
+    let check_Subs = {
+      account_id: loginData?.Login_details?.user_account_id,
+    };
+    const res = await dispatch(userSubscribedCreator(check_Subs));
+  };
+
+  const Insertdemodata = _Subscrip_id => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'insert_subscription';
     console.log('Request URL:', url);
@@ -251,7 +300,7 @@ const ManageSubscription = props => {
       user_id: loginData.Login_details?.user_id,
       account_id: loginData.Login_details?.user_account_id,
       customer_id: customerID,
-      subscription_id: SubscriptionID,
+      subscription_id: _Subscrip_id,
       startDate: 'string',
       endDate: 'string',
       collection_method: 'string',
@@ -282,7 +331,11 @@ const ManageSubscription = props => {
       <View style={ManageSubscriptionStyle.Mainview}>
         <TopHeader
           onPressLeftButton={() => _goBack(props)}
-          MiddleText={'Manage Subscription'}
+          MiddleText={
+            SubscriptionStatus == 'active'
+              ? 'Your Subscription'
+              : 'Manage Subscription'
+          }
         />
 
         <ScrollView style={{paddingHorizontal: 10}}>
@@ -292,50 +345,55 @@ const ManageSubscription = props => {
             resizeMode="contain"
           />
           <Text style={ManageSubscriptionStyle.MainHeading}>
-            {'Subscribe to Kodie'}
+            {SubscriptionStatus == 'active'
+              ? 'Your Current Subscription'
+              : 'Subscribe to Kodie'}
           </Text>
-          <Text style={ManageSubscriptionStyle.SubHeading}>
-            Go beyond the limits, get{' '}
-            <Text
-              style={[
-                ManageSubscriptionStyle.SubHeading,
-                {color: _COLORS.Kodie_GreenColor},
-              ]}>
-              {' '}
-              exclusive features
-            </Text>{' '}
-            by subscribing to{' '}
-            <Text
-              style={[
-                ManageSubscriptionStyle.SubHeading,
-                {
-                  color: _COLORS.Kodie_GreenColor,
-                  fontFamily: FONTFAMILY.K_Bold,
-                },
-              ]}>
-              Kodie
+          {SubscriptionStatus == 'active' ? null : (
+            <Text style={ManageSubscriptionStyle.SubHeading}>
+              Go beyond the limits, get{' '}
+              <Text
+                style={[
+                  ManageSubscriptionStyle.SubHeading,
+                  {color: _COLORS.Kodie_GreenColor},
+                ]}>
+                {' '}
+                exclusive features
+              </Text>{' '}
+              by subscribing to{' '}
+              <Text
+                style={[
+                  ManageSubscriptionStyle.SubHeading,
+                  {
+                    color: _COLORS.Kodie_GreenColor,
+                    fontFamily: FONTFAMILY.K_Bold,
+                  },
+                ]}>
+                Kodie
+              </Text>
+              .
             </Text>
-            .
-          </Text>
-          <Text style={[ManageSubscriptionStyle.SubUnderlineHeading]}>
-            14-days unlimited FREE trial, then only $69 / month
-          </Text>
+          )}
+          {SubscriptionStatus == 'active' ? null : (
+            <Text style={[ManageSubscriptionStyle.SubUnderlineHeading]}>
+              14-days unlimited FREE trial, then only $69 / month
+            </Text>
+          )}
           <View style={ManageSubscriptionStyle.RangeSliderView}>
-            <View style={ManageSubscriptionStyle.switchBtn_view}>
-              <SwitchButton
-                leftBtnText={'Not approved'}
-                rightBtnText={'Approved'}
-              />
-            </View>
+            {SubscriptionStatus == 'active' ? null : (
+              <View style={ManageSubscriptionStyle.switchBtn_view}>
+                <SwitchButton leftBtnText={'Monthly'} rightBtnText={'Yearly'} />
+              </View>
+            )}
 
-            <RangeSlider
+            {/* <RangeSlider
               from={1}
               to={20}
               onPriceRangeChange={handlePriceRangeChange}
               onHighRange={handlemaxRange}
               onLowRange={handleminRange}
               onLowrange={2}
-            />
+            /> */}
           </View>
           {/* <ScrollView style={{ width: "100%" }} horizontal={true}>
             <View style={ManageSubscriptionStyle.SubscriptionDataView}>
@@ -479,14 +537,14 @@ const ManageSubscription = props => {
             keyExtractor={(item, index) => item.id}
             renderItem={subscriptionCardRender}
           />
-          <View style={{marginBottom: 10}}>
+          {/* <View style={{marginBottom: 10}}>
             <CustomSingleButton
               onPress={() => props.navigation.navigate('BottomNav')}
               _ButtonText={'Subscribe for only $69 / month'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
             />
-          </View>
+          </View> */}
         </ScrollView>
         {isLoading ? <CommonLoader /> : null}
       </View>
