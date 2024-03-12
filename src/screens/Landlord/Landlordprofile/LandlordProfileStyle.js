@@ -74,4 +74,46 @@ export const LandlordProfileStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     marginTop:20
   },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
+  popupcantainer:{
+    marginHorizontal:16,
+    marginTop:10,
+    flexDirection:"row",
+    justifyContent:"space-between"
+  },
+  popuptext:{
+    fontSize:20,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,color: _COLORS.Kodie_BlackColor,
+  },
+  ViewBtn:{
+    justifyContent:"flex-end",
+    // marginLeft:100,
+    marginHorizontal:16,
+    flexDirection:"row",
+    marginTop:48,
+    alignItems:"flex-end"
+  },
+  CancelBtn:{
+    borderWidth:0,
+    color:_COLORS.Kodie_BlackColor,
+    paddingHorizontal:15,
+    paddingVertical:5,
+    borderRadius:4,
+    fontSize:14
+  },
+  LogoutBtn:{
+    backgroundColor:_COLORS.Kodie_BlackColor,
+    paddingHorizontal:15,
+    paddingVertical:5,
+    borderRadius:4,
+    color:_COLORS.Kodie_WhiteColor,
+    fontSize:14
+  }
 });

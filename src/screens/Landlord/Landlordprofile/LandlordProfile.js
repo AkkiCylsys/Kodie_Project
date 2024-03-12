@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import {_goBack} from '../../../services/CommonServices';
 import {LandlordProfileStyle} from './LandlordProfileStyle';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {_COLORS, IMAGES} from '../../../Themes/index';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
@@ -21,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import RowTab from '../../../components/Molecules/RowTab/RowTab';
 import {Config} from '../../../Config';
 import axios from 'axios';
+import RBSheet from 'react-native-raw-bottom-sheet';
 export default LandlordProfile = props => {
   const dispatch = useDispatch();
   const signUp_account_response = useSelector(
@@ -63,10 +65,17 @@ export default LandlordProfile = props => {
     props.navigation.navigate('LoginScreen');
   };
   const searchprofileMenu = () => {};
-
+  const refRBSheet = useRef();
   // Alert_____
   const handleGeneralSettingsPress = () => {
     Alert.alert('Coming soon');
+  };
+  const CloseUp = () => {
+    refRBSheet.current.close();
+    setOverlayVisible(false);
+  };
+  const handleClose = () => {
+    refRBSheet.current.close();
   };
   return (
     <View style={LandlordProfileStyle.mainContainer}>
@@ -257,7 +266,10 @@ export default LandlordProfile = props => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={LogOut}>
+        <TouchableOpacity
+          onPress={() => {
+            refRBSheet.current.open();
+          }}>
           <RowTab
             IsDivider={false}
             isSecondRowText={true}
@@ -269,6 +281,44 @@ export default LandlordProfile = props => {
         </TouchableOpacity>
         {/* <LandlordProfileData /> */}
       </ScrollView>
+      <RBSheet
+        ref={refRBSheet}
+        height={150}
+        closeOnDragDown={false}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: LandlordProfileStyle.bottomModal_container,
+        }}>
+        <View style={LandlordProfileStyle.popupcantainer}>
+          <Text style={LandlordProfileStyle.popuptext}>Logout from device</Text>
+          <MaterialIcons
+            name="close"
+            size={24}
+            color="black"
+            onPress={handleClose}
+            style={{marginTop:8}}
+          />
+        </View>
+        <View style={LandlordProfileStyle.ViewBtn}>
+          <TouchableOpacity onPress={handleClose}>
+          <Text style={LandlordProfileStyle.CancelBtn}>
+          Cancel
+          </Text>
+          </TouchableOpacity>
+          <View style={{margin:5}}/>
+          <TouchableOpacity onPress={LogOut}>
+          <Text style={LandlordProfileStyle.LogoutBtn}>
+          Logout
+          </Text>
+          </TouchableOpacity>
+        </View>
+      </RBSheet>
     </View>
   );
 };
