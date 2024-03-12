@@ -260,8 +260,11 @@ export default AboutYou = props => {
       }}
     />
   );
-  useEffect(() => {
+  useEffect(()=>{
     handle_manage_property(), handle_kodiehelp(), handle_describe_yourself();
+  },[])
+  useEffect(() => {
+   
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });

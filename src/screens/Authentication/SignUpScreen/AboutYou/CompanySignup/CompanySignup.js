@@ -391,8 +391,6 @@ const CompanySignup = ({
       selectJobType: selectedselectJobTypesString,
       servicesValue: servicesValue,
       website: website,
-      p_latitude: p_latitude,
-      p_longitude: p_longitude,
     });
     handle_describe_yourself();
     if (selectJobType !== null) {
@@ -401,16 +399,13 @@ const CompanySignup = ({
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    // Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
-    handle_describe_yourself();
+
   }, [
     companyName,
     website,
     businessNumber,
     selectedselectJobTypesString,
     servicesValue,
-    p_latitude,
-    p_longitude,
     selectJobType,
   ]);
   return (

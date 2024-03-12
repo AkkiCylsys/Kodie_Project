@@ -97,7 +97,7 @@ export default Dashboard = props => {
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
   const [modalVisible, setModalVisible] = useState(false);
-  const [accountDetails, setAccountDetails] = useState(null);
+  const [accountDetails, setAccountDetails] = useState([]);
 
   // props.onPress(handleClosePopup);
   // alert(handleClosePopup, "close");
@@ -126,6 +126,7 @@ export default Dashboard = props => {
   // const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
   //---click back button closing the app
   useEffect(() => {
+    getPersonalDetails();
     const handleBackPress = () => {
       if (navigation.isFocused()) {
         BackHandler.exitApp();
@@ -138,6 +139,7 @@ export default Dashboard = props => {
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
+   
   }, [navigation]);
 
   //---click back button closing the app
@@ -199,25 +201,28 @@ export default Dashboard = props => {
   const userProfileImageUri =
     loginData?.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
-  // const getPersonalDetails = () => {
-  //   const url = Config.BASE_URL;
+  const getPersonalDetails = () => {
+    setIsLoading(true)
+    const url = Config.BASE_URL;
 
-  //   const apiUrl =
-  //     url + `getAccount_details/${loginData.Login_details.user_id}`;
+    const apiUrl =
+      url + `getAccount_details/${loginData.Login_details.user_id}`;
 
-  //   // Make a GET request using Axios
-  //   axios
-  //     .get(apiUrl)
-  //     .then(response => {
-  //       // Handle successful response
-  //       console.log('API Response:', response.data.data[0][0]);
-  //       setAccountDetails(response.data.data[0][0]);
-  //     })
-  //     .catch(error => {
-  //       // Handle error
-  //       console.error('API Error:', error);
-  //     });
-  // };
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+        setIsLoading(false)
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+        setIsLoading(false)
+      });
+  };
   // useEffect(() => {
   //   getPersonalDetails();
   // }, []);
@@ -248,8 +253,8 @@ export default Dashboard = props => {
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text style={DashboardStyle.Name_Text}>{`Hi ${
-              // accountDetails?.UAD_FIRST_NAME || null
-              loginData.Account_details[0]?.UAD_FIRST_NAME || null
+              accountDetails?.UAD_FIRST_NAME || ""
+              // loginData.Account_details[0]?.UAD_FIRST_NAME || null
             }! `}</Text>
             <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
             <View
