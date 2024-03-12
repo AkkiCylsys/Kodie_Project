@@ -228,7 +228,12 @@ const IndividualSignup = ({
 
     fetchAllServices();
   };
-
+  useEffect(() => {
+    handle_describe_yourself();
+    if (selectJobType !== null) {
+      handleServices(selectJobType);
+    }
+  }, [selectJobType]);
   useEffect(() => {
     console.log('physicalAddress...', physicalAddress);
     console.log('pLatitudehhh', Individualp_latitude);
@@ -236,18 +241,11 @@ const IndividualSignup = ({
       website: website,
       selectJobType: selectedselectJobTypesString,
       servicesValue: servicesValue,
-      p_latitude: isChecked ? '' : Individualp_latitude,
+      p_latitude: Individualp_latitude,
       p_longitude: Individualp_longitude,
       physicalAddress: physicalAddress,
     });
-
-    handle_describe_yourself();
-    if (selectJobType !== null) {
-      handleServices(selectJobType);
-    }
   }, [
-    selectJobType,
-    currentLocation,
     website,
     selectedselectJobTypesString,
     servicesValue,
@@ -309,33 +307,7 @@ const IndividualSignup = ({
               }}
               // renderItem={lookingServices_render}
             />
-            {/* <Dropdown
-    style={[
-      IndividualSignupStyle.dropdown,
-      {
-        backgroundColor: isClick
-          ? null
-          : _COLORS.Kodie_LightGrayLineColor,
-      },
-    ]}
-    placeholderStyle={IndividualSignupStyle.placeholderStyle}
-    selectedTextStyle={IndividualSignupStyle.selectedTextStyle}
-    inputSearchStyle={IndividualSignupStyle.inputSearchStyle}
-    iconStyle={IndividualSignupStyle.iconStyle}
-    data={servicesData}
-    search
-    maxHeight={300}
-    labelField="lookup_description"
-    valueField="lookup_key"
-    placeholder="Select item"
-    value={servicesValue}
-    disable={selectedselectJobTypesString ? false : true}
-    searchPlaceholder="Search..."
-    onChange={item => {
-      setservicesValue(item.lookup_key);
-    }}
-    renderItem={lookingServices_render}
-  /> */}
+            
           </View>
         )}
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity,TouchableWithoutFeedback} from 'react-native';
 // import ProgressBar from 'react-native-progress/Bar';
 import {ProgressBar, MD3Colors} from 'react-native-paper';
 import {_COLORS} from '../../../Themes';
@@ -17,7 +17,7 @@ const DeshboardNotice = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [profileDay, setProfileDay] = useState('');
   const [profileCompletion, setProfileCompletion] = useState('');
-  const [progressPercentage, setProgressPercentage] = useState('');
+  const [progressPercentage, setProgressPercentage] = useState(0);
   const [show, setShow] = useState(false);
   const [Progresswidth, setProgresswidth] = useState('100%');
   const userID = loginData?.Login_details?.user_id;
@@ -85,6 +85,12 @@ const DeshboardNotice = props => {
   const handleClosePopup = () => {
     // props.onClose();
     setShow(!show);
+
+  };
+  const handletextPress = () => {
+    // alert('Coming soon')
+    // Yaha par aap click event ka logic likh sakte hain
+    console.log('Text clicked!');
   };
   return (
     <>
@@ -124,15 +130,17 @@ const DeshboardNotice = props => {
               style={DeshBoardNoticeCss.progresBar}
               borderColor="black"
             /> */}
+            <View>
             <Text style={DeshBoardNoticeCss.profileText}>
-              We are happy to have you on board. You have almost completed your
-              profile set up.
-              <TouchableOpacity>
-                <Text style={DeshBoardNoticeCss.continueText}>
-                  Tap to continue
+             {"We are happy to have you on board. You have almost completed your profile set up.  "}
+ 
+              <TouchableWithoutFeedback  onPress={handletextPress}>
+                <Text style={[DeshBoardNoticeCss.continueText]}>
+                  {'Tap to continue'}
                 </Text>
-              </TouchableOpacity>
+              </TouchableWithoutFeedback>
             </Text>
+            </View>
           </View>
           <View style={DeshBoardNoticeCss.spaceLine} />
           <View style={DeshBoardNoticeCss.trialView}>

@@ -98,6 +98,7 @@ export const FirstPropertyStyle = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
+    color:_COLORS.Kodie_BlackColor
   },
   key_feature_Dropdownstyle: {flex: 1, height: 40},
   additional: {flex: 0.85},
