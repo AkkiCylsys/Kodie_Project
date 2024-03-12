@@ -217,7 +217,7 @@ const ManageSubscription = props => {
       customer_id: customerID,
       price_id: priceId,
     };
-    console.log(createSubscription_data);
+    console.log(createSubscription_data, 'createSubscription_data');
     axios
       .post(url, createSubscription_data)
       .then(response => {

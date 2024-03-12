@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 
 export const AboutYouStyle = StyleSheet.create({
   mainContainer: {
@@ -22,7 +22,7 @@ export const AboutYouStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   logoContainer: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   logo: {
     width: 110,
@@ -43,12 +43,12 @@ export const AboutYouStyle = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 12,
   },
-  BioD_: { height: 100 },
+  BioD_: {height: 100},
   dropdown: {
     borderWidth: 1,
     height: 50,
@@ -86,9 +86,9 @@ export const AboutYouStyle = StyleSheet.create({
     marginLeft: 15,
   },
   locationContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#ccc",
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 8,
     marginTop: 12,
@@ -103,76 +103,75 @@ export const AboutYouStyle = StyleSheet.create({
   },
   want_List_View: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 6,
-    marginHorizontal:10
+    marginHorizontal: 10,
   },
   want_Heading: {
     marginTop: 20,
     color: _COLORS.Kodie_BlackColor,
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginHorizontal:8
+    marginHorizontal: 8,
   },
-    // tab menu css here ..
-    tabmainview:{
-      marginHorizontal:6,
-      marginTop:16
-    },
-    tabheadingtext:{
-      color:_COLORS.Kodie_BlackColor,
-      fontSize:14,
-      fontFamily:FONTFAMILY.K_SemiBold
-    },
-    btn_main_view: {
-      flexDirection: "row",
-      justifyContent:'center',
-      alignItems:'center',
-      width:200,
-      height:40,
-      borderWidth: 1,
-      // padding: 5,
-      borderRadius: 8,
-      borderColor: _COLORS.Kodie_GrayColor,
-      // backgroundColor: _COLORS.Kodie_LightGrayColor,
-      marginTop:12
-    },
-    person_view: {
-      backgroundColor: _COLORS.Kodie_GreenColor,
-      // padding:24,
-      borderRadius: 4,
-      height:28,
-      width:80,
-      flexDirection:'row',
-      alignItems:'center',
-      // justifyContent:'space-evenly',
-      justifyContent:'center',
-      marginRight:2
-  
-    },
-    person_text: {
-      color: _COLORS.Kodie_BlackColor,
-      fontSize: 12,
-      fontFamily: FONTFAMILY.K_Medium,
-      alignSelf: "center",
-      // lineHeight:18,
-      letterSpacing:0.2,
-      // marginLeft: 8,
-    },
-    company_text: {
-      color: _COLORS.Kodie_BlackColor,
-      fontSize: 12,
-      fontFamily: FONTFAMILY.K_Medium,
-      alignSelf: "center",
-      // marginLeft: 8,
-      letterSpacing:0.2,
-      // lineHeight:18,
-    },
+  // tab menu css here ..
+  tabmainview: {
+    marginHorizontal: 6,
+    marginTop: 16,
+  },
+  tabheadingtext: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  btn_main_view: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 178,
+    height: 38,
+    borderWidth: 1,
+    // padding: 5,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_GrayColor,
+    // backgroundColor: _COLORS.Kodie_LightGrayColor,
+    marginTop: 12,
+  },
+  person_view: {
+    backgroundColor: _COLORS.Kodie_GreenColor,
+    // padding:24,
+    borderRadius: 4,
+    height: 28,
+    width: 80,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // justifyContent:'space-evenly',
+    justifyContent: 'center',
+    marginRight: 2,
+  },
+  person_text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Medium,
+    alignSelf: 'center',
+    // lineHeight:18,
+    letterSpacing: 0.2,
+    // marginLeft: 8,
+  },
+  company_text: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Medium,
+    alignSelf: 'center',
+    // marginLeft: 8,
+    letterSpacing: 0.2,
+    // lineHeight:18,
+  },
   want_List_text: {
     color: _COLORS.Kodie_BlackColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginLeft: 10,
   },
   checkbox_View: {
@@ -197,13 +196,13 @@ export const AboutYouStyle = StyleSheet.create({
   // },
   Check_Icon: {
     marginTop: 2,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
-    marginTop:5,
+    marginTop: 5,
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,
@@ -225,20 +224,20 @@ export const AboutYouStyle = StyleSheet.create({
   },
   servicesBoxView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
   },
-  spaceView: { margin: 3 },
+  spaceView: {margin: 3},
   box_style: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderColor: _COLORS.Kodie_GrayColor,
-    height:44,
+    height: 44,
   },
-  box_Text_Style: { color: _COLORS.Kodie_BlackColor },
+  box_Text_Style: {color: _COLORS.Kodie_BlackColor},
   upload_View: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
   },
   uploadImgText: {
@@ -247,7 +246,7 @@ export const AboutYouStyle = StyleSheet.create({
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
   },
-  crossIconStyle: { alignSelf: "center", marginRight: 10 },
+  crossIconStyle: {alignSelf: 'center', marginRight: 10},
   stepIndicator: {
     marginTop: 15,
   },
@@ -257,9 +256,9 @@ export const AboutYouStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
   error_text: {
-    color: "red",
+    color: 'red',
     marginLeft: 10,
     marginTop: 10,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 });
