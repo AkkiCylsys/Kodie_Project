@@ -5,12 +5,12 @@ import TopHeader from '../../../../components/Molecules/Header/Header';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_COLORS, IMAGES} from '../../../../Themes';
 import {_goBack} from '../../../../services/CommonServices';
-import axios from 'axios';
-import {Config} from '../../../../Config';
+
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import { colors } from '../../../../Themes/CommonColors/CommonColor';
 //screen number 206
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +23,7 @@ const ChangeContactInput = props => {
   const phoneInput = useRef(null);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponseContact.....', loginData);
-  const phoneDataNumber = loginData.Account_details[0].UAD_PHONE_NO;
+  const phoneDataNumber = loginData?.Account_details[0]?.UAD_PHONE_NO;
   console.log('phoneDataNumber..', phoneDataNumber);
   const navigation = useNavigation();
   useEffect(() => {
@@ -87,12 +87,19 @@ const ChangeContactInput = props => {
             Enter your old phone number with country code
           </Text>
 
-          <View style={[ChangeContactInputStyle.simpleinputview]}>
-            <PhoneInput
+          <View style={[ChangeContactInputStyle.simpleinputview,{backgroundColor:colors.Kodie_GrayColor,borderRadius:8}]}>
+          <Text style={[ChangeContactInputStyle.oldnumbertext,{marginLeft:15,width:'15%'}]}>
+           +61
+          </Text>
+
+          <Text style={[ChangeContactInputStyle.oldnumbertext,{width:'85%',textAlign:'left'}]}>
+          {phoneDataNumber}
+          </Text>
+            {/* <PhoneInput
               ref={phoneInput}
               defaultValue={phoneDataNumber}
               defaultCode="IN"
-              disabled="false"
+             // disabled="false"
               layout="second"
               onChangeText={text => {
                 validateOldPhoneNumber(text);
@@ -119,7 +126,7 @@ const ChangeContactInput = props => {
                 borderWidth: 1,
                 backgroundColor: _COLORS.Kodie_GrayColor,
               }}
-            />
+            /> */}
           </View>
 
           {oldPhoneNumberError ? (

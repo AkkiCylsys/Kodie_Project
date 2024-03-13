@@ -1,5 +1,5 @@
 //ScreenNo:196
-import {View, Text, Image, TouchableOpacity, Alert} from 'react-native';
+import {View,ScrollView, Text, Image, TouchableOpacity, Alert} from 'react-native';
 import React from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {AccountStyle} from './AccountStyle';
@@ -7,7 +7,7 @@ import {IMAGES} from '../../../Themes/index';
 import RowTab from '../../../components/Molecules/RowTab/RowTab';
 
 import {_goBack} from '../../../services/CommonServices/CommonMethods';
-import {ScrollView} from 'react-native-gesture-handler';
+
 const AccountSetting = props => {
   const handleGeneralSettingsPress = () => {
     Alert.alert('Coming soon');
@@ -53,8 +53,8 @@ const AccountSetting = props => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            // onPress={() => props.navigation.navigate('ChangeContactInput')}
-            onPress={() => Alert.alert('Coming soon')}>
+             onPress={() => props.navigation.navigate('ChangeContactInput')}>
+
             <RowTab
               isSecondRowText={true}
               LeftIconName={'pencil'}
