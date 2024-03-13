@@ -359,7 +359,7 @@ const CompanyInProfile = ({
         <View>
           <Text style={CompanyInProfileStyle.want_Heading}>
             {
-              'How would you describe yourself? (you can select multiple options)'
+              'The category of service you offer (you can select multiple options)'
             }
           </Text>
           <FlatList
@@ -371,7 +371,11 @@ const CompanyInProfile = ({
         </View>
         {selectedselectJobTypesString == '' ? null : (
           <View style={CompanyInProfileStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>
+            <Text
+              style={[
+                // CompanyInProfileStyle.companycommontext,
+                CompanyInProfileStyle.typescommontext,
+              ]}>
               {'The type of service you perform'}
             </Text>
             <MultiSelect
@@ -399,12 +403,15 @@ const CompanyInProfile = ({
           </View>
         )}
         <View style={CompanyInProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'Company physical address'}
-          </Text>
-
-          <View style={CompanyInProfileStyle.inputContainer}>
-            <View style={CompanyInProfileStyle.inputContainer}>
+          <View
+            style={[
+              // CompanyInProfileStyle.inputContainer,
+              CompanyInProfileStyle.commontextfield,
+            ]}>
+            <View>
+              <Text style={CompanyInProfileStyle.companycommontext}>
+                {'Company physical address'}
+              </Text>
               <View style={CompanyInProfileStyle.locationConView}>
                 <View style={CompanyInProfileStyle.locationContainer}>
                   <TextInput

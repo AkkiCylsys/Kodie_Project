@@ -197,7 +197,8 @@ const SignUpSteps = props => {
   const validateFirstName = text => {
     if (text === '') {
       setFirstNameError('First name is required');
-    } else if (!/^[A-Za-z]+$/.test(text)) {
+      // } else if (!/^[A-Za-z]+$/.test(text)) {
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
       setFirstNameError('First name should contain only alphabetic characters');
     } else {
       setFirstNameError('');
@@ -209,7 +210,8 @@ const SignUpSteps = props => {
   const validateLastName = text => {
     if (text === '') {
       setLastNameError('Last name is required');
-    } else if (!/^[A-Za-z]+$/.test(text)) {
+      // } else if (!/^[A-Za-z]+$/.test(text)) {
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
       setLastNameError('Last name should contain only alphabetic characters');
     } else {
       setLastNameError('');
@@ -428,6 +430,7 @@ const SignUpSteps = props => {
               style={AccountStyle.input}
               value={firstName}
               onChangeText={validateFirstName}
+              onBlur={() => validateFirstName(firstName)}
               placeholder="Enter your first name"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
@@ -439,6 +442,7 @@ const SignUpSteps = props => {
               style={AccountStyle.input}
               value={lastName}
               onChangeText={validateLastName}
+              onBlur={() => validateLastName(lastName)}
               placeholder="Enter your last name"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
             />
@@ -556,23 +560,6 @@ const SignUpSteps = props => {
               </TouchableOpacity>
             </View>
           </View>
-          {/* <View style={AccountStyle.inputContainer}>
-            <Text style={[LABEL_STYLES._texinputLabel, { marginTop: 16 }]}>
-              Organisation name
-            </Text>
-            <TextInput
-              style={AccountStyle.input}
-              value={organisation}
-              onChangeText={setOrganisation}
-              placeholder="Enter the name of your company"
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-            />
-          </View>
-          <Text style={AccountStyle.org_desc}>
-            {
-              'Your organisation name will be used in emails and SMS correspondence from Kodie.'
-            }
-          </Text> */}
           <View
             style={[AccountStyle.inputContainer, AccountStyle.referralcode]}>
             <Text style={LABEL_STYLES._texinputLabel}>Referral code</Text>
@@ -649,16 +636,12 @@ const SignUpSteps = props => {
           <View
             style={{
               flex: 1,
-              // paddingHorizontal: 10,
               backgroundColor: 'transparent',
             }}>
             <MapScreen
               style={{
                 height: '100%',
                 width: '100%',
-                // borderRadius: 20,
-                // borderWidth: 1,
-                //borderColor: .greenAppColor,
                 alignSelf: 'center',
                 marginBottom: 10,
               }}
@@ -685,27 +668,12 @@ const SignUpSteps = props => {
                   width: '90%',
                   height: 45,
                   alignSelf: 'center',
-                  //marginTop: 10,
                 }}
                 onFocus={() => openMapandClose()}
                 placeholder={'Search Place'}
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-            {/* <TouchableOpacity
-              style={SignUpStepStyle.c_locationBtn}
-              onPress={() => {
-                // Platform.OS == "ios"
-                //   ? CheckIOSMapPermission()
-                //   : checkpermissionlocation();
-              }}
-            >
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity> */}
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}>
@@ -723,7 +691,6 @@ const SignUpSteps = props => {
               setIsSearch(false);
               setIsMap(true);
               setCurrentLocation(details.formatted_address);
-              // setPhysicalAddress(details.formatted_address);
               console.log('physicalAddressSearch....', physicalAddress);
               console.log('details.......', details);
             }}
@@ -753,7 +720,6 @@ const SignUpSteps = props => {
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
                     handleNextBtn();
-                    // props.navigation.navigate("AboutYou");
                   }}
                 />
                 <TouchableOpacity

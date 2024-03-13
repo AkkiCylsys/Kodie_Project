@@ -121,7 +121,9 @@ export default Dashboard = props => {
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
-  const SubscriptionData = useSelector(state => state.subscriptionReducer.data?.data);
+  const SubscriptionData = useSelector(
+    state => state.subscriptionReducer.data?.data,
+  );
   console.log('SubscriptionData.....', SubscriptionData);
   // console.log(
   //   "UAD_FirstName.....",
@@ -130,18 +132,16 @@ export default Dashboard = props => {
   // const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
   //---click back button closing the app
 
-
-
   useEffect(() => {
-    check_subscription()
-    
+    getPersonalDetails();
+    check_subscription();
+
     const handleBackPress = () => {
    
       if (navigation.isFocused()) {
         BackHandler.exitApp();
         return true;
       }
-      
       return false;
     };
     
@@ -223,25 +223,32 @@ export default Dashboard = props => {
   const userProfileImageUri =
     loginData?.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
-  // const getPersonalDetails = () => {
-  //   const url = Config.BASE_URL;
+  const getPersonalDetails = () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
 
-  //   const apiUrl =
-  //     url + `getAccount_details/${loginData.Login_details.user_id}`;
+    const apiUrl =
+      url +
+      `getAccount_details/${
+        loginData.Login_details.user_id ||
+        signUp_account_response.Login_details.user_id
+      }`;
 
-  //   // Make a GET request using Axios
-  //   axios
-  //     .get(apiUrl)
-  //     .then(response => {
-  //       // Handle successful response
-  //       console.log('API Response:', response.data.data[0][0]);
-  //       setAccountDetails(response.data.data[0][0]);
-  //     })
-  //     .catch(error => {
-  //       // Handle error
-  //       console.error('API Error:', error);
-  //     });
-  // };
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+        setIsLoading(false);
+      });
+  };
   // useEffect(() => {
   //   getPersonalDetails();
   // }, []);
@@ -268,12 +275,17 @@ export default Dashboard = props => {
           // statusBarStyle="dark-content"
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <DeshboardNotice ShowUpgradeButton={SubscriptionData?.status=='active'?false:true} onClose={CloseUp} />
+          <DeshboardNotice
+            ShowUpgradeButton={
+              SubscriptionData?.status == 'active' ? false : true
+            }
+            onClose={CloseUp}
+          />
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text style={DashboardStyle.Name_Text}>{`Hi ${
-              // accountDetails?.UAD_FIRST_NAME || null
-              loginData.Account_details[0]?.UAD_FIRST_NAME || null
+              accountDetails?.UAD_FIRST_NAME || ''
+              // loginData.Account_details[0]?.UAD_FIRST_NAME || null
             }! `}</Text>
             <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
             <View

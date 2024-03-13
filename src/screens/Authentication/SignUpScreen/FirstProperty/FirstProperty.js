@@ -1007,7 +1007,7 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={decreaseBedroomCount}>
-                          <AntDesign name="minus" size={20} />
+                          <AntDesign name="minus" size={20} color={_COLORS.Kodie_BlackColor}/>
                         </TouchableOpacity>
                         <Text style={FirstPropertyStyle.countdata}>
                           {CountBedroom}
@@ -1017,7 +1017,7 @@ export default FirstProperty = props => {
                           onPress={() => {
                             increaseBedroomCount();
                           }}>
-                          <AntDesign name="plus" size={20} />
+                          <AntDesign name="plus" size={20} color={_COLORS.Kodie_BlackColor}/>
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </View>
@@ -1034,7 +1034,7 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={decreaseBathroomCount}>
-                          <AntDesign name="minus" size={20} />
+                          <AntDesign name="minus" size={20} color={_COLORS.Kodie_BlackColor}/>
                         </TouchableOpacity>
                         <Text style={FirstPropertyStyle.countdata}>
                           {CountBathroom}
@@ -1042,7 +1042,7 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={increaseBathroomCount}>
-                          <AntDesign name="plus" size={20} />
+                          <AntDesign name="plus" size={20} color={_COLORS.Kodie_BlackColor}/>
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </View>
@@ -1059,7 +1059,7 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={decreaseParkingCount}>
-                          <AntDesign name="minus" size={20} />
+                          <AntDesign name="minus" size={20} color={_COLORS.Kodie_BlackColor}/>
                         </TouchableOpacity>
                         <Text style={FirstPropertyStyle.countdata}>
                           {CountParking}
@@ -1067,7 +1067,7 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={increaseParkingCount}>
-                          <AntDesign name="plus" size={20} />
+                          <AntDesign name="plus" size={20} color={_COLORS.Kodie_BlackColor}/>
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </View>
@@ -1084,7 +1084,7 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={decreaseParkingStreetCount}>
-                          <AntDesign name="minus" size={20} />
+                          <AntDesign name="minus" size={20} color={_COLORS.Kodie_BlackColor}/>
                         </TouchableOpacity>
                         <Text style={FirstPropertyStyle.countdata}>
                           {CountParkingStreet}
@@ -1092,7 +1092,7 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={increaseParkingStreetCount}>
-                          <AntDesign name="plus" size={20} />
+                          <AntDesign name="plus" size={20} color={_COLORS.Kodie_BlackColor}/>
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </View>

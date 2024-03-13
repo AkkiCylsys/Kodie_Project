@@ -1,4 +1,4 @@
-import {View, Text, Image, ScrollView} from 'react-native';
+import {View, Text, Image, ScrollView, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {ManageSubscriptionStyle} from './ManageSubscriptionStyle';
@@ -134,7 +134,15 @@ const ManageSubscription = props => {
       demoSubscription(selectedPriceId);
     };
     return (
-      <View style={[ManageSubscriptionStyle.SubscriptionDataView,{borderWidth:2,borderColor:item.amount==SubscribedPLan?'green':'transparent'}]}>
+      <View
+        style={[
+          ManageSubscriptionStyle.SubscriptionDataView,
+          {
+            borderWidth: 2,
+            borderColor:
+              item.amount == SubscribedPLan ? 'green' : 'transparent',
+          },
+        ]}>
         <Text style={ManageSubscriptionStyle.Heading}>{item.cardHeading}</Text>
         <Text style={ManageSubscriptionStyle.Subscriptionprice}>
           ${item.amount}
@@ -153,17 +161,21 @@ const ManageSubscription = props => {
         <RowsData DataTexts={item.rule_no_4} />
         <RowsData DataTexts={item.rule_no_5} />
         <RowsData DataTexts={item.rule_no_6} />
-        {item.rule_no_7 ==''?<Text style={{marginTop:10}}></Text>:
-        <RowsData DataTexts={item.rule_no_7} />
-       }
-        {item.rule_no_8 ==''?
-        <Text style={{marginTop:10}}></Text>:
-        <RowsData DataTexts={item.rule_no_8} />
-       }
-        {item.rule_no_9 ==''?
-        <Text style={{marginTop:10}}></Text>:
-        <RowsData DataTexts={item.rule_no_9} />
-       }
+        {item.rule_no_7 == '' ? (
+          <Text style={{marginTop: 10}}></Text>
+        ) : (
+          <RowsData DataTexts={item.rule_no_7} />
+        )}
+        {item.rule_no_8 == '' ? (
+          <Text style={{marginTop: 10}}></Text>
+        ) : (
+          <RowsData DataTexts={item.rule_no_8} />
+        )}
+        {item.rule_no_9 == '' ? (
+          <Text style={{marginTop: 10}}></Text>
+        ) : (
+          <RowsData DataTexts={item.rule_no_9} />
+        )}
 
         <View style={{padding: 5}}>
           <RowButtons
@@ -179,7 +191,7 @@ const ManageSubscription = props => {
               // props.navigation.navigate("ContractorProfile")
               alert('Contact us pressed')
             }
-            isShowRightButton={SubscriptionStatus=="active"?false:true}
+            isShowRightButton={SubscriptionStatus == 'active' ? false : true}
             onPressRightButton={handleSubscribePress}
           />
         </View>
@@ -188,20 +200,20 @@ const ManageSubscription = props => {
   };
   useEffect(() => {
     createCustomer();
-    checkSubscribedCustomer()
+    checkSubscribedCustomer();
   }, []);
 
-  const checkSubscribedCustomer = async() => {
-    let check_Subs={
-     // account_id:711
-      account_id:loginData?.Login_details?.user_account_id
-    }
-    const res = await dispatch(userSubscribedCreator(check_Subs))
-    console.log('000000000',JSON.stringify(res?.data?.data?.plan))
+  const checkSubscribedCustomer = async () => {
+    let check_Subs = {
+      // account_id:711
+      account_id: loginData?.Login_details?.user_account_id,
+    };
+    const res = await dispatch(userSubscribedCreator(check_Subs));
+    console.log('000000000', JSON.stringify(res?.data?.data?.plan));
     //alert(JSON.stringify((res?.data?.data?.plan?.amount)/100))
-    setSubscriptionStatus(res?.data?.data?.status)
-    setsetSubscribedPLan(((res?.data?.data?.plan?.amount)/100))
-  }
+    setSubscriptionStatus(res?.data?.data?.status);
+    setsetSubscribedPLan(res?.data?.data?.plan?.amount / 100);
+  };
   const createCustomer = () => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'create_customer';
@@ -238,13 +250,13 @@ const ManageSubscription = props => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'demo';
     console.log('Request URL:', url);
-   // console.log(id);
+    // console.log(id);
     setIsLoading(true);
     const createSubscription_data = {
       customer_id: customerID,
       price_id: priceId,
     };
-    console.log(createSubscription_data);
+    console.log(createSubscription_data, 'createSubscription_data');
     axios
       .post(url, createSubscription_data)
       .then(response => {
@@ -254,9 +266,9 @@ const ManageSubscription = props => {
           setSubscriptionID(response?.data?.data?.id);
 
           Insertdemodata(response?.data?.data?.id);
-          saveSubscriptionData()
+          saveSubscriptionData();
           alert('You have Successfully subscribed .');
-          props.navigation.navigate("Dashboard")
+          props.navigation.navigate('Dashboard');
         } else {
           setIsLoading(false);
         }
@@ -270,14 +282,14 @@ const ManageSubscription = props => {
         setIsLoading(false);
       });
   };
-  const saveSubscriptionData = async() => {
-    let check_Subs={
-      account_id:loginData?.Login_details?.user_account_id
-    }
-    const res = await dispatch(userSubscribedCreator(check_Subs))
-  }
+  const saveSubscriptionData = async () => {
+    let check_Subs = {
+      account_id: loginData?.Login_details?.user_account_id,
+    };
+    const res = await dispatch(userSubscribedCreator(check_Subs));
+  };
 
-  const Insertdemodata = (_Subscrip_id) => {
+  const Insertdemodata = _Subscrip_id => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'insert_subscription';
     console.log('Request URL:', url);
@@ -318,7 +330,11 @@ const ManageSubscription = props => {
       <View style={ManageSubscriptionStyle.Mainview}>
         <TopHeader
           onPressLeftButton={() => _goBack(props)}
-          MiddleText={SubscriptionStatus=="active"?'Your Subscription' :'Manage Subscription'}
+          MiddleText={
+            SubscriptionStatus == 'active'
+              ? 'Your Subscription'
+              : 'Manage Subscription'
+          }
         />
 
         <ScrollView style={{paddingHorizontal: 10}}>
@@ -328,47 +344,46 @@ const ManageSubscription = props => {
             resizeMode="contain"
           />
           <Text style={ManageSubscriptionStyle.MainHeading}>
-            {SubscriptionStatus=="active"?'Your Current Subscription': 'Subscribe to Kodie'}
+            {SubscriptionStatus == 'active'
+              ? 'Your Current Subscription'
+              : 'Subscribe to Kodie'}
           </Text>
-          {SubscriptionStatus=="active"? null:
-          <Text style={ManageSubscriptionStyle.SubHeading}>
-            Go beyond the limits, get{' '}
-            <Text
-              style={[
-                ManageSubscriptionStyle.SubHeading,
-                {color: _COLORS.Kodie_GreenColor},
-              ]}>
-              {' '}
-              exclusive features
-            </Text>{' '}
-            by subscribing to{' '}
-            <Text
-              style={[
-                ManageSubscriptionStyle.SubHeading,
-                {
-                  color: _COLORS.Kodie_GreenColor,
-                  fontFamily: FONTFAMILY.K_Bold,
-                },
-              ]}>
-              Kodie
+          {SubscriptionStatus == 'active' ? null : (
+            <Text style={ManageSubscriptionStyle.SubHeading}>
+              Go beyond the limits, get{' '}
+              <Text
+                style={[
+                  ManageSubscriptionStyle.SubHeading,
+                  {color: _COLORS.Kodie_GreenColor},
+                ]}>
+                {' '}
+                exclusive features
+              </Text>{' '}
+              by subscribing to{' '}
+              <Text
+                style={[
+                  ManageSubscriptionStyle.SubHeading,
+                  {
+                    color: _COLORS.Kodie_GreenColor,
+                    fontFamily: FONTFAMILY.K_Bold,
+                  },
+                ]}>
+                Kodie
+              </Text>
+              .
             </Text>
-            .
-          </Text>
-}
-          {SubscriptionStatus=="active"?null:
-          <Text style={[ManageSubscriptionStyle.SubUnderlineHeading]}>
-            14-days unlimited FREE trial, then only $69 / month
-          </Text>
-}
+          )}
+          {SubscriptionStatus == 'active' ? null : (
+            <Text style={[ManageSubscriptionStyle.SubUnderlineHeading]}>
+              14-days unlimited FREE trial, then only $69 / month
+            </Text>
+          )}
           <View style={ManageSubscriptionStyle.RangeSliderView}>
-          {SubscriptionStatus=="active"?null:
-            <View style={ManageSubscriptionStyle.switchBtn_view}>
-              <SwitchButton
-                leftBtnText={'Monthly'}
-                rightBtnText={'Yearly'}
-              />
-            </View>
-}
+            {SubscriptionStatus == 'active' ? null : (
+              <View style={ManageSubscriptionStyle.switchBtn_view}>
+                <SwitchButton leftBtnText={'Monthly'} rightBtnText={'Yearly'} />
+              </View>
+            )}
 
             {/* <RangeSlider
               from={1}
