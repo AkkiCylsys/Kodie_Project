@@ -98,8 +98,10 @@ export default Dashboard = props => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
+  const [progressPercentage, setProgressPercentage] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
+  const [profileCompletion, setProfileCompletion] = useState('');
   const dispatch = useDispatch();
   // props.onPress(handleClosePopup);
   // alert(handleClosePopup, "close");
@@ -135,7 +137,7 @@ export default Dashboard = props => {
   useEffect(() => {
     getPersonalDetails();
     check_subscription();
-
+    handleprofileCompletion();
     const handleBackPress = () => {
    
       if (navigation.isFocused()) {
@@ -153,6 +155,40 @@ export default Dashboard = props => {
 
   //---click back button closing the app
 
+  const handleprofileCompletion = () => {
+    
+    const url = Config.BASE_URL;
+    const profileCompletion_url = url + 'Profile_Completion';
+    console.log('requested url..', profileCompletion_url);
+    setIsLoading(true);
+    //alert('hi')
+    const profileCompletion_urlBody = {
+       account_id: "569",
+      //account_id: loginData?.Login_details?.user_id,
+    };
+   // alert(loginData?.Login_details?.user_id)
+    axios
+      .post(profileCompletion_url, profileCompletion_urlBody)
+      .then(response => {
+        console.log('profileCompletion response....', response.data);
+        setProfileCompletion(response?.data?.data[0]?.result);
+       let profile_Completion=response?.data?.data[0]?.result
+        console.log('profileCompletion..', response?.data?.data[0]?.result);
+        const profileValueWithoutPercent = profile_Completion.replace('%', '');
+        const progressValue = profileValueWithoutPercent / 100;
+        console.log('progressValue7...', progressValue);
+      //  alert(progressValue)
+        setProgressPercentage(progressValue);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.log('profileCompletion error...', error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   const check_subscription= async()=>{
    // alert('hi')
@@ -276,6 +312,8 @@ export default Dashboard = props => {
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           <DeshboardNotice
+          PerprofileCompletion={profileCompletion}
+          progressPercentage={progressPercentage}
             ShowUpgradeButton={
               SubscriptionData?.status == 'active' ? false : true
             }
