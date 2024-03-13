@@ -346,7 +346,7 @@ export default PropertyReview = props => {
         alert(response.data.error);
       }
       const additionalFeatures_id =
-        response.data.property_details[0].additional_features_id;
+        response.data.property_details[0].additional_features;
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const is_additionalFeaturesid = additionalFeatures_id.split(',');
       setAddtionalFeaturesID(is_additionalFeaturesid);
@@ -625,14 +625,14 @@ export default PropertyReview = props => {
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
                     <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                      {addtionalFeaturesID[0]}
+                      {addtionalFeaturesID[1]}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {addtionalFeaturesID[1]}
+                      {addtionalFeaturesID[0]}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />

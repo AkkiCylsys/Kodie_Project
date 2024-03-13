@@ -91,7 +91,6 @@ export default LandlordProfile = props => {
   const handleClose = () => {
     refRBSheet.current.close();
   };
-
   return (
     <View style={LandlordProfileStyle.mainContainer}>
       <TopHeader
