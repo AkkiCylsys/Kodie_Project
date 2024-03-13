@@ -238,100 +238,93 @@ const CreateJobSecondScreen = (props) => {
   const handleuploadJobFiles = async () => {
     const formData = new FormData();
     formData.append("JM_JOB_ID", job_id);
-    if (MultiImageName && Array.isArray(MultiImageName)) {
-      const imagePaths = MultiImageName.map((image) => image.path);
-      imagePaths.forEach((path, index) => {
-        formData.append("frontImage", {
-          uri: path,
-          name: `image_${index}.jpg`,
-          type: "image/jpeg",
-        });
-      });
-    } else {
-      console.error(
-        "MultiImageName is not defined or not an array:",
-        MultiImageName
-      );
-      return;
-    }
-
-    if (leftImage && Array.isArray(leftImage)) {
-      const leftImagePaths = leftImage.map((image) => image.path);
-      leftImagePaths.forEach((path, index) => {
-        formData.append("leftImage", {
-          uri: path,
-          name: `left_image_${index}.jpg`,
-          type: "image/jpeg",
-        });
-      });
-    } else {
-      console.error("leftImage is not defined or not an array:", leftImage);
-      return;
-    }
-
-    if (rightImage && Array.isArray(rightImage)) {
-      const rightImagePaths = rightImage.map((image) => image.path);
-      rightImagePaths.forEach((path, index) => {
-        formData.append("rightImage", {
-          uri: path,
-          name: `right_image_${index}.jpg`,
-          type: "image/jpeg",
-        });
-      });
-    } else {
-      console.error("rightImage is not defined or not an array:", rightImage);
-      return;
-    }
-    if (selectedVideos && selectedVideos.length > 0) {
-      selectedVideos.forEach((videoInfo, index) => {
-        const { path, mime } = videoInfo;
-        console.log("path..", path);
-        console.log("mime..", mime);
-        const videoName = path.substring(path.lastIndexOf("/") + 1);
-        formData.append("video", {
-          uri: path,
-          name: videoName,
-          type: mime,
-        });
-      });
-    } else {
-      console.log("invalid video");
-    }
-
-    formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
-    console.log("formData", formData);
-    const url = Config.BASE_URL;
-    const uploadFile_url = url + "job/uploadJobFiles";
-    console.log("Request URL:", uploadFile_url);
-    setIsLoading(true);
+  
     try {
+      // Append front images
+      if (MultiImageName && Array.isArray(MultiImageName)) {
+        MultiImageName.forEach((image, index) => {
+          formData.append(`frontImage`, {
+            uri: image.path,
+            name: `image.jpg`,
+            type: "image/jpeg",
+          });
+        });
+      } else {
+        throw new Error("MultiImageName is not defined or not an array");
+      }
+  
+      // Append left images
+      if (leftImage && Array.isArray(leftImage)) {
+        leftImage.forEach((image, index) => {
+          formData.append(`leftImage`, {
+            uri: image.path,
+            name: `left_image.jpg`,
+            type: "image/jpeg",
+          });
+        });
+      } else {
+        throw new Error("leftImage is not defined or not an array");
+      }
+  
+      // Append right images
+      if (rightImage && Array.isArray(rightImage)) {
+        rightImage.forEach((image, index) => {
+          formData.append(`rightImage`, {
+            uri: image.path,
+            name: `right_image.jpg`,
+            type: "image/jpeg",
+          });
+        });
+      } else {
+        throw new Error("rightImage is not defined or not an array");
+      }
+  
+      // Append videos
+      if (selectedVideos && selectedVideos.length > 0) {
+        selectedVideos.forEach((videoInfo, index) => {
+          const { path, mime } = videoInfo;
+          const videoName = path.substring(path.lastIndexOf("/") + 1);
+          formData.append(`video`, {
+            uri: path,
+            name: videoName,
+            type: mime,
+          });
+        });
+      } else {
+        console.log("invalid video");
+      }
+  
+      console.log("formData", formData);
+  
+      const url = Config.BASE_URL;
+      const uploadFile_url = url + "job/uploadJobFiles";
+      console.log("Request URL:", uploadFile_url);
+  
+      setIsLoading(true);
       const response = await axios.post(uploadFile_url, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log("uploadJobFilesData....", response.data);
-      if (response.data.success === true) {
+  
+      console.log("uploadJobFilesData", response.data);
+      if (response.data && response.data.success === true) {
         setIsLoading(false);
         alert(response.data.message);
-        props.navigation.navigate("JobDetails", {
-          job_id: job_id,
-        });
-        console.log("uploadJobFilesDatas", response.data);
+        props.navigation.navigate("JobDetails", { job_id: job_id });
       } else {
-        console.log("uploadJobFilesData", response.data.error);
+        const errorMessage = response.data ? response.data.error : "Unknown error occurred";
+        console.error("uploadJobFilesData", errorMessage);
         alert("Error while saving account details");
       }
     } catch (error) {
-      alert(error);
-      console.log("error...", error);
+      alert(error.message || "An error occurred");
+      console.error("error...", error);
     } finally {
       setIsLoading(false);
     }
   };
-
-  // EditMode api.............
-
+ 
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + "job/get";
@@ -374,7 +367,7 @@ const CreateJobSecondScreen = (props) => {
       imagePaths.forEach((path, index) => {
         formData.append("frontImage", {
           uri: path,
-          name: `image_${index}.jpg`,
+          name: String(path.split('/').pop())||`image.jpg`,
           type: "image/jpeg",
         });
       });
@@ -388,10 +381,11 @@ const CreateJobSecondScreen = (props) => {
 
     if (leftImage && Array.isArray(leftImage)) {
       const leftImagePaths = leftImage.map((image) => image.path);
+
       leftImagePaths.forEach((path, index) => {
         formData.append("leftImage", {
           uri: path,
-          name: `left_image_${index}.jpg`,
+          name: String(path.split('/').pop())||`left_image.jpg`,
           type: "image/jpeg",
         });
       });
@@ -405,7 +399,7 @@ const CreateJobSecondScreen = (props) => {
       rightImagePaths.forEach((path, index) => {
         formData.append("rightImage", {
           uri: path,
-          name: `right_image_${index}.jpg`,
+          name:String(path.split('/').pop())|| `right_image_${index}.jpg`,
           type: "image/jpeg",
         });
       });
@@ -429,7 +423,7 @@ const CreateJobSecondScreen = (props) => {
       console.log("invalid video");
     }
 
-    formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
+    // formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
     console.log("formData", formData);
     const url = Config.BASE_URL;
     const update_uploadFile_url = url + `job/updatejobimages/${JobId}`;
