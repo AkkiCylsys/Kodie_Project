@@ -536,7 +536,7 @@ const ProfileDocuments = props => {
           )}
         </View>
       )}
-      <View style={ProfileDocumentStyle.saveBackButton}>
+      {/* <View style={ProfileDocumentStyle.saveBackButton}>
         <View style={ProfileDocumentStyle.secondview}>
           <CustomSingleButton
             Text_Color={_COLORS.Kodie_WhiteColor}
@@ -546,7 +546,7 @@ const ProfileDocuments = props => {
             disabled={isLoading ? true : false}
           />
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };
