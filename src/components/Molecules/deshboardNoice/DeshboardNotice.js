@@ -149,7 +149,9 @@ const DeshboardNotice = props => {
               Your free trial ends in {profileDay} days.
             </Text>
             {props.ShowUpgradeButton?
-            <TouchableOpacity style={DeshBoardNoticeCss.upgradeView}>
+            <TouchableOpacity onPress={()=>{
+              props.navigation.navigate('ManageSubscription');
+            }} style={DeshBoardNoticeCss.upgradeView}>
               <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
             </TouchableOpacity>
             :null
