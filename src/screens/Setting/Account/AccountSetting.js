@@ -7,10 +7,12 @@ import {IMAGES} from '../../../Themes/index';
 import RowTab from '../../../components/Molecules/RowTab/RowTab';
 
 import {_goBack} from '../../../services/CommonServices/CommonMethods';
-
 const AccountSetting = props => {
   const handleGeneralSettingsPress = () => {
     Alert.alert('Coming soon');
+  };
+  const handlechangecontact = () => {
+    props.navigation.navigate('ChangeContactInput');
   };
   return (
     <>

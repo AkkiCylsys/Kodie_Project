@@ -308,7 +308,7 @@ const ManageSubscription = props => {
     axios
       .post(url, Insert_data)
       .then(response => {
-        console.log('API Response createSubscription_data', response.data);
+        console.log('API Response insert_subscription', response.data);
         if (response.data.success === true) {
           console.log('insertData ....', response.data.message);
         } else {

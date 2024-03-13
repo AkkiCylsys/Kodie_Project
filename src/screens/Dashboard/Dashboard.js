@@ -34,6 +34,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import FloatingActionButton from '../../components/Molecules/FloatingActionButton/FloatingActionButton';
 import {Config} from '../../Config';
 import axios from 'axios';
+import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 const IncomeData = [
   {
@@ -103,6 +104,8 @@ export default Dashboard = props => {
   const [accountDetails, setAccountDetails] = useState(null);
   const [profileCompletion, setProfileCompletion] = useState('');
   const dispatch = useDispatch();
+  const isvisible = useIsFocused();
+
   // props.onPress(handleClosePopup);
   // alert(handleClosePopup, "close");
   // console.log(handleClosePopup, "close");
@@ -113,7 +116,7 @@ export default Dashboard = props => {
   };
   const CloseUp = () => {
     refRBSheet.current.close();
-    refRBSheet2.current.close();
+    // refRBSheet2.current.close();
     setOverlayVisible(false);
   };
 
@@ -135,7 +138,9 @@ export default Dashboard = props => {
   //---click back button closing the app
 
   useEffect(() => {
-    getPersonalDetails();
+    if (isvisible) {
+      getPersonalDetails();
+    }
     check_subscription();
     handleprofileCompletion();
     const handleBackPress = () => {
@@ -151,7 +156,7 @@ export default Dashboard = props => {
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
-  }, [navigation]);
+  }, [navigation, isvisible]);
 
   //---click back button closing the app
 
@@ -264,11 +269,7 @@ export default Dashboard = props => {
     const url = Config.BASE_URL;
 
     const apiUrl =
-      url +
-      `getAccount_details/${
-        loginData.Login_details.user_id ||
-        signUp_account_response.Login_details.user_id
-      }`;
+      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
 
     // Make a GET request using Axios
     axios
@@ -466,38 +467,55 @@ export default Dashboard = props => {
               <View>
                 <View style={DashboardStyle.maintenance_main_menu}>
                   <View style={DashboardStyle.maintenance_menu}>
-                    <AntDesign
-                      name="infocirlce"
-                      size={18}
-                      color={_COLORS.Kodie_yellow}
-                    />
+                    <View>
+                      <AntDesign
+                        name="infocirlce"
+                        size={18}
+                        color={_COLORS.Kodie_yellow}
+                      />
+                      <Text style={DashboardStyle.maintenance_sts_NOText}>
+                        {'0'}
+                      </Text>
+                    </View>
+
                     <Text style={DashboardStyle.request_Text}>
                       {'Requested'}
                     </Text>
                   </View>
+
                   <View style={DashboardStyle.maintenance_menu}>
-                    <AntDesign
-                      name="checkcircle"
-                      size={18}
-                      color={_COLORS.Kodie_GreenColor}
-                    />
+                    <View>
+                      <AntDesign
+                        name="checkcircle"
+                        size={18}
+                        color={_COLORS.Kodie_GreenColor}
+                      />
+                      <Text style={DashboardStyle.maintenance_sts_NOText}>
+                        {'0'}
+                      </Text>
+                    </View>
                     <Text style={DashboardStyle.request_Text}>
                       {'Approved'}
                     </Text>
                   </View>
                   <View style={DashboardStyle.maintenance_menu}>
-                    <Entypo
-                      name="circle-with-cross"
-                      size={18}
-                      color={_COLORS.Kodie_redColor}
-                    />
+                    <View>
+                      <Entypo
+                        name="circle-with-cross"
+                        size={18}
+                        color={_COLORS.Kodie_redColor}
+                      />
+                      <Text style={DashboardStyle.maintenance_sts_NOText}>
+                        {'0'}
+                      </Text>
+                    </View>
 
                     <Text style={DashboardStyle.request_Text}>
                       {'Rejected'}
                     </Text>
                   </View>
                 </View>
-                <View style={DashboardStyle.maintenance_sts_NOView}>
+                {/* <View style={DashboardStyle.maintenance_sts_NOView}>
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
                     {'0'}
                   </Text>
@@ -507,7 +525,7 @@ export default Dashboard = props => {
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
                     {'0'}
                   </Text>
-                </View>
+                </View> */}
                 <CustomSingleButton
                   _ButtonText={'View all jobs'}
                   Text_Color={_COLORS.Kodie_BlackColor}
@@ -556,7 +574,7 @@ export default Dashboard = props => {
         {/* RBSheet define here */}
         <RBSheet
           ref={refRBSheet}
-          height={280}
+          height={250}
           closeOnDragDown={true}
           closeOnPressMask={false}
           customStyles={{

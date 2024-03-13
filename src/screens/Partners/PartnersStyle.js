@@ -1,21 +1,25 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../Themes';
 export const PartnersStyle = StyleSheet.create({
+  container: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    flex: 1,
+  },
   slide: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white",
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
   },
   title: {
     fontSize: 20,
-    marginTop: 30,
+    marginVertical: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
   },
   text: {
     fontSize: 14,
-    textAlign: "center",
+    textAlign: 'center',
     flex: 0.4,
     width: 295,
     color: _COLORS.Kodie_LightGrayColor,
@@ -28,7 +32,7 @@ export const PartnersStyle = StyleSheet.create({
   },
   imgttitlebindview: {
     flex: 0.4,
-    alignItems: "center",
+    alignItems: 'center',
   },
   hrline: {
     width: 400,
