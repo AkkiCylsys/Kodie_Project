@@ -13,44 +13,6 @@ import {Config} from '../../../Config';
 import {useIsFocused} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 
-const CompanyfolderData = [
-  {
-    id: '1',
-    folderHeading: 'Company documents',
-    totalFile: '12 Files',
-    moduleName: 'Company_documents',
-  },
-  {
-    id: '2',
-    folderHeading: 'License documents',
-    totalFile: '13 Files',
-    moduleName: 'License_documents',
-  },
-  {
-    id: '3',
-    folderHeading: 'Certification documents',
-    totalFile: '15 Files',
-    moduleName: 'Certification_documents',
-  },
-  {
-    id: '4',
-    folderHeading: 'Insurance and indemnity',
-    totalFile: '15 Files',
-    moduleName: 'Insurance_and_indemnity',
-  },
-  {
-    id: '5',
-    folderHeading: 'Company references',
-    totalFile: '15 Files',
-    moduleName: 'Company_reference',
-  },
-  {
-    id: '6',
-    folderHeading: 'Other documents',
-    totalFile: '15 Files',
-    moduleName: 'Other_documents',
-  },
-];
 const ProfileDocuments = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTab, setSelectedTab] = useState(false);
@@ -66,11 +28,20 @@ const ProfileDocuments = props => {
   const [employmentDocument, setEmploymentDocument] = useState([]);
   const [employmentDocumentLength, setEmploymentDocumentLength] = useState('');
   const [screeningDocument, setScreeningDocument] = useState([]);
-  const [screeningDocumentLength, setScreeningDocumentLength] = useState([]);
+  const [screeningDocumentLength, setScreeningDocumentLength] = useState('');
   const [otherDocument, setOtherDocument] = useState([]);
-  const [otherDocumentLength, setOtherDocumentLength] = useState([]);
-
+  const [otherDocumentLength, setOtherDocumentLength] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
+  // company document states here  ...
+  const [companyDocument, setCompanyDocument] = useState([]);
+  const [companyDocumentLength, setCompanyDocumentLength] = useState('');
+  const [licenseDocument, setLicenseDocument] = useState([]);
+  const [licenseDocumentLength, setLicenseDocumentLength] = useState('');
+  const [certificationDocument, setCertificationDocument] = useState([]);
+  const [certificationDocumentLength, setCertificationDocumentLength] =
+    useState('');
+  const [insuranceDocument, setInsuranceDocument] = useState([]);
+  const [insuranceDocumentLength, setInsuranceDocumentLength] = useState('');
 
   const isfocused = useIsFocused();
   useEffect(() => {
@@ -80,6 +51,11 @@ const ProfileDocuments = props => {
     getUploadedDocumentsByModule('Employment_documents');
     getUploadedDocumentsByModule('Screening_documents');
     getUploadedDocumentsByModule('Other_documents');
+    getUploadedDocumentsByModule('Company_documents');
+    getUploadedDocumentsByModule('License_documents');
+    getUploadedDocumentsByModule('Certification_documents');
+    getUploadedDocumentsByModule('Insurance_and_indemnity');
+    // getUploadedDocumentsByModule('Other_documents');
   }, [isfocused]);
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
@@ -154,6 +130,54 @@ const ProfileDocuments = props => {
               setOtherDocumentLength(response.data.data.length);
               console.log('otherDocumentLength..', otherDocumentLength);
               break;
+            case 'Company_documents':
+              setCompanyDocument(response.data.data);
+              console.log(
+                'Length for propertyDocByTenant:',
+                response.data.data.length,
+              );
+              setCompanyDocumentLength(response.data.data.length);
+              console.log('companyDocumentLength..', companyDocumentLength);
+              break;
+            case 'License_documents':
+              setLicenseDocument(response.data.data);
+              console.log(
+                'Length for License_documents:',
+                response.data.data.length,
+              );
+              setLicenseDocumentLength(response.data.data.length);
+              console.log('licenseDocumentLength..', licenseDocumentLength);
+              break;
+            case 'Certification_documents':
+              setCertificationDocument(response.data.data);
+              console.log(
+                'Length for propertyDocByTenant:',
+                response.data.data.length,
+              );
+              setCertificationDocumentLength(response.data.data.length);
+              console.log(
+                'certificationDocumentLength..',
+                certificationDocumentLength,
+              );
+              break;
+            case 'Insurance_and_indemnity':
+              setInsuranceDocument(response.data.data);
+              console.log(
+                'Length for propertyDocByTenant:',
+                response.data.data.length,
+              );
+              setInsuranceDocumentLength(response.data.data.length);
+              console.log('insuranceDocumentLength..', insuranceDocumentLength);
+              break;
+            case 'Other_documents_company':
+              setOtherDocument(response.data.data);
+              console.log(
+                'Length for propertyDocByTenant:',
+                response.data.data.length,
+              );
+              setOtherDocumentLength(response.data.data.length);
+              console.log('otherDocumentLength..', otherDocumentLength);
+              break;
             // Add cases for other module names if needed
             default:
               break;
@@ -207,6 +231,44 @@ const ProfileDocuments = props => {
       id: '6',
       folderHeading: 'Other documents',
       // totalFile: '15 Files',
+      totalFile: otherDocumentLength,
+      moduleName: 'Other_documents',
+    },
+  ];
+  const CompanyfolderData = [
+    {
+      id: '1',
+      folderHeading: 'Company documents',
+      totalFile: companyDocumentLength,
+      moduleName: 'Company_documents',
+    },
+    {
+      id: '2',
+      folderHeading: 'License documents',
+      totalFile: '0',
+      moduleName: 'License_documents',
+    },
+    {
+      id: '3',
+      folderHeading: 'Certification documents',
+      totalFile: '0',
+      moduleName: 'Certification_documents',
+    },
+    {
+      id: '4',
+      folderHeading: 'Insurance and indemnity',
+      totalFile: insuranceDocumentLength,
+      moduleName: 'Insurance_and_indemnity',
+    },
+    {
+      id: '5',
+      folderHeading: 'Company references',
+      totalFile: '0',
+      moduleName: 'Company_reference',
+    },
+    {
+      id: '6',
+      folderHeading: 'Other documents',
       totalFile: otherDocumentLength,
       moduleName: 'Other_documents',
     },
@@ -267,7 +329,11 @@ const ProfileDocuments = props => {
           <Text style={ProfileDocumentStyle.propertyDocText}>
             {item?.folderHeading}
           </Text>
-          <Text style={ProfileDocumentStyle.files_text}>{'12 files'}</Text>
+          {/* <Text style={ProfileDocumentStyle.files_text}>{'12 files'}</Text> */}
+          <Text
+            style={
+              ProfileDocumentStyle.files_text
+            }>{`${item.totalFile} Files`}</Text>
         </View>
       </TouchableOpacity>
     );

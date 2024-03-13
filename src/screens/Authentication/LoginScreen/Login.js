@@ -41,7 +41,7 @@ import DeviceInfo from 'react-native-device-info';
 // import CryptoJS from "crypto-js";
 import CryptoJS from 'react-native-crypto-js';
 import messaging from '@react-native-firebase/messaging';
-
+// import {NavigationActions, StackActions} from 'react-navigation';
 import {loginApiActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 export default Login = props => {
   const dispatch = useDispatch();
@@ -317,9 +317,8 @@ export default Login = props => {
         //  else {
 
         // }
-     
 
-       // alert(JSON.stringify(res))
+        // alert(JSON.stringify(res))
         props.navigation.navigate('DrawerNavigatorLeftMenu');
         setEmail('');
         setPassword('');
