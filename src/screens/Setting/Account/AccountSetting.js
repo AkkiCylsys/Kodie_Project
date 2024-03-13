@@ -1,11 +1,11 @@
 //ScreenNo:196
 import {
   View,
+  ScrollView,
   Text,
   Image,
   TouchableOpacity,
   Alert,
-  ScrollView,
 } from 'react-native';
 import React from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -14,7 +14,6 @@ import {IMAGES} from '../../../Themes/index';
 import RowTab from '../../../components/Molecules/RowTab/RowTab';
 
 import {_goBack} from '../../../services/CommonServices/CommonMethods';
-// import {ScrollView} from 'react-native-gesture-handler';
 const AccountSetting = props => {
   const handleGeneralSettingsPress = () => {
     Alert.alert('Coming soon');
@@ -62,8 +61,8 @@ const AccountSetting = props => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={handlechangecontact}>
-            {/* onPress={() => Alert.alert('Coming soon')}> */}
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('ChangeContactInput')}>
             <RowTab
               isSecondRowText={true}
               LeftIconName={'pencil'}

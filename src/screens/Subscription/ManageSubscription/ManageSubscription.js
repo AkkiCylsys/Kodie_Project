@@ -15,8 +15,8 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import {Config} from '../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
-import {colors} from '../../../Themes/CommonColors/CommonColor';
-//ScreenNo:209
+import { colors } from '../../../Themes/CommonColors/CommonColor';
+//ScreenNo:209 
 
 const subscriptionData = [
   {
@@ -52,7 +52,7 @@ const subscriptionData = [
     rule_no_6: 'Dynamic unit inspection checklists',
     rule_no_7: 'Reporting features including report download',
     rule_no_8: 'Unlimited document storage',
-    rule_no_9: '',
+    rule_no_9:'',
   },
   {
     id: 3,
@@ -66,11 +66,10 @@ const subscriptionData = [
     rule_no_3: 'Customisable dashboards with report download',
     rule_no_4: '10% off for all contractors',
     rule_no_5: 'Dedicated customer support',
-    rule_no_6:
-      'Preferential rental property listings on Kodie Property Marketplace',
+    rule_no_6: 'Preferential rental property listings on Kodie Property Marketplace',
     rule_no_7: '',
     rule_no_8: '',
-    rule_no_9: '',
+    rule_no_9:'',
   },
 ];
 const ManageSubscription = props => {
@@ -84,7 +83,7 @@ const ManageSubscription = props => {
   const [SubscriptionID, setSubscriptionID] = useState('');
   const [SubscriptionStatus, setSubscriptionStatus] = useState('');
   const [SubscribedPLan, setsetSubscribedPLan] = useState('');
-
+  
   const dispatch = useDispatch();
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
