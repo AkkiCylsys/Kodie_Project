@@ -30,8 +30,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
-// import Geolocation from "react-native-geolocation-service";
-import Geolocation from '@react-native-community/geolocation';
+ import Geolocation from "react-native-geolocation-service";
+//import Geolocation from '@react-native-community/geolocation';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
