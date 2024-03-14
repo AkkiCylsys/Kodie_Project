@@ -118,23 +118,39 @@ const Chat = props => {
 
   const pickImageOrPdf = async () => {
     try {
-      const result = await ImagePicker.openPicker({
-        multiple: true,
+      const results = await ImagePicker.openPicker({
+        multiple: true, // Enable multiple selection
         mediaType: 'any',
         compressImageQuality: Platform.OS === 'ios' ? 0.8 : 1,
       });
-      const userId = uuid.v4();
-      const storageRef = storage().ref(`images/${userId}`);
-      await storageRef.putFile(result.path);
 
-      const downloadURL = await storageRef.getDownloadURL();
-      if (result.mime && result.mime.startsWith('image')) {
-        onSend([{image: downloadURL}]);
-      } else if (result.mime && result.mime.startsWith('application/pdf')) {
-        onSend([{pdf: result.path}]);
+      const userId = uuid.v4();
+
+      // Loop through each selected file and upload it
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        const storageRef = storage().ref(`files/${userId}`);
+
+        // Determine the file type based on MIME type
+        let messageType = 'image';
+        if (result.mime && result.mime.startsWith('image')) {
+          messageType = 'image';
+        } else if (result.mime && result.mime.startsWith('application/pdf')) {
+          messageType = 'pdf';
+        } else if (result.mime && result.mime.startsWith('video')) {
+          messageType = 'video';
+        }
+
+        // Upload the file to storage
+        await storageRef.putFile(result.path);
+
+        const downloadURL = await storageRef.getDownloadURL();
+
+        // Send the file as a message
+        onSend([{[messageType]: downloadURL}]);
       }
     } catch (error) {
-      console.log('Error picking image or PDF:', error);
+      console.log('Error picking image, PDF, or video:', error);
     }
   };
 
@@ -163,7 +179,7 @@ const Chat = props => {
           flexDirection: 'row',
           alignItems: 'center',
           paddingHorizontal: 6,
-          paddingVertical: 5,
+          // paddingVertical: 10,
         }}>
         <TouchableOpacity onPress={openOptionsModal}>
           <Foundation
@@ -214,8 +230,12 @@ const Chat = props => {
             color: isCurrentUser ? '#ffffff' : '#aaaaaa', // time text color for right side
           },
         }}
+        containerStyle={{
+          marginLeft: isCurrentUser ? 50 : 0, // adjust the left margin for the bubble
+          marginRight: isCurrentUser ? 0 : 50, // adjust the right margin for the bubble
+          marginBottom: 10, // add some bottom margin between messages
+        }}
         // Add other style properties as needed
-
         onLongPress={() => {
           setSelectedMessage(props.currentMessage);
           openDeleteModal();
@@ -255,6 +275,7 @@ const Chat = props => {
       </Bubble>
     );
   };
+
   const renderAvatar = props => () => {
     return (
       <Image
@@ -362,6 +383,12 @@ const Chat = props => {
         renderSend={renderSend}
         renderBubble={renderBubble}
         // renderChatFooter={renderChatFooter}
+        textInputProps={{
+          style: {
+            flex: 1,
+            color: 'black',
+          },
+        }}
       />
       {renderDeleteModal()}
       <Modal

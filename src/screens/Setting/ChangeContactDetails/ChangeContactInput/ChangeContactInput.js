@@ -3,14 +3,14 @@ import React, {useState, useRef, useEffect} from 'react';
 import {ChangeContactInputStyle} from './ChangeContactInputStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import {_COLORS, IMAGES} from '../../../../Themes';
+import {_COLORS, IMAGES, FONTFAMILY} from '../../../../Themes';
 import {_goBack} from '../../../../services/CommonServices';
 
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import { colors } from '../../../../Themes/CommonColors/CommonColor';
+import {colors} from '../../../../Themes/CommonColors/CommonColor';
 //screen number 206
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -87,14 +87,26 @@ const ChangeContactInput = props => {
             Enter your old phone number with country code
           </Text>
 
-          <View style={[ChangeContactInputStyle.simpleinputview,{backgroundColor:colors.Kodie_GrayColor,borderRadius:8}]}>
-          <Text style={[ChangeContactInputStyle.oldnumbertext,{marginLeft:15,width:'15%'}]}>
-           +61
-          </Text>
+          <View
+            style={[
+              ChangeContactInputStyle.simpleinputview,
+              {backgroundColor: colors.Kodie_GrayColor, borderRadius: 8},
+            ]}>
+            <Text
+              style={[
+                ChangeContactInputStyle.oldnumbertext,
+                {marginLeft: 15, width: '15%'},
+              ]}>
+              +61
+            </Text>
 
-          <Text style={[ChangeContactInputStyle.oldnumbertext,{width:'85%',textAlign:'left'}]}>
-          {phoneDataNumber}
-          </Text>
+            <Text
+              style={[
+                ChangeContactInputStyle.oldnumbertext,
+                {width: '85%', textAlign: 'left'},
+              ]}>
+              {phoneDataNumber}
+            </Text>
             {/* <PhoneInput
               ref={phoneInput}
               defaultValue={phoneDataNumber}
@@ -141,33 +153,48 @@ const ChangeContactInput = props => {
             Enter your new phone number with country code
           </Text>
 
-          <View style={[ChangeContactInputStyle.simpleinputNewPhoneview]}>
+          <View
+            style={{
+              height: 50,
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginTop: 8,
+            }}>
             <PhoneInput
-              ref={phoneInput}
+              // ref={phoneInput}
               defaultValue={newPhoneNumber}
-              defaultCode="IN"
+              defaultCode="AU"
               layout="second"
-              onChangeText={text => {
-                validateNewPhoneNumber(text);
-              }}
+              // onChangeText={text => {
+              //   validateNewPhoneNumber(text);
+              // }}
               placeholder={'Enter your phone number'}
               onChangeFormattedText={text => {
                 setNewNumberFormattedValue(text);
               }}
+              textInputProps={{
+                maxLength: 9,
+              }}
               // withDarkTheme
               // withShadow
-              autoFocus
+              // autoFocus
               textContainerStyle={{
                 flex: 1,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
                 paddingVertical: 2,
                 borderRadius: 10,
+                fontFamily: FONTFAMILY.K_Medium,
               }}
               containerStyle={{
                 flex: 1,
                 alignSelf: 'center',
                 alignItems: 'center',
                 justifyContent: 'center',
+                borderWidth: 1,
+                borderColor: _COLORS.Kodie_GrayColor,
+                borderRadius: 10,
+                fontFamily: FONTFAMILY.K_Medium,
               }}
             />
           </View>

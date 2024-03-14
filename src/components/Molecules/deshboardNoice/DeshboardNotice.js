@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity,TouchableWithoutFeedback} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 // import ProgressBar from 'react-native-progress/Bar';
 import {ProgressBar, MD3Colors} from 'react-native-paper';
 import {_COLORS} from '../../../Themes';
@@ -23,7 +28,7 @@ const DeshboardNotice = props => {
   const userID = loginData?.Login_details?.user_id;
   useEffect(() => {
     handleprofileDays();
-   // handleprofileCompletion();
+    // handleprofileCompletion();
   }, []);
 
   const handlePress = () => {
@@ -86,7 +91,6 @@ const DeshboardNotice = props => {
   const handleClosePopup = () => {
     // props.onClose();
     setShow(!show);
-
   };
   const handletextPress = () => {
     // alert('Coming soon')
@@ -101,7 +105,7 @@ const DeshboardNotice = props => {
             <View style={DeshBoardNoticeCss?.PercenView}>
               <View style={DeshBoardNoticeCss?.percentageText}>
                 <Text style={DeshBoardNoticeCss.progressText}>
-                  {props.PerprofileCompletion} Complete, nice work!
+                  {props.PerprofileCompletion} Complete, Nice Work !
                 </Text>
               </View>
               <TouchableOpacity
@@ -132,15 +136,17 @@ const DeshboardNotice = props => {
               borderColor="black"
             /> */}
             <View>
-            <Text style={DeshBoardNoticeCss.profileText}>
-             {"We are happy to have you on board. You have almost completed your profile set up.  "}
- 
-              <TouchableWithoutFeedback  onPress={handletextPress}>
-                <Text style={[DeshBoardNoticeCss.continueText]}>
-                  {'Tap to continue'}
-                </Text>
-              </TouchableWithoutFeedback>
-            </Text>
+              <Text style={DeshBoardNoticeCss.profileText}>
+                {
+                  'We are happy to have you on board. You have almost completed your profile set up.  '
+                }
+
+                <TouchableWithoutFeedback onPress={handletextPress}>
+                  <Text style={[DeshBoardNoticeCss.continueText]}>
+                    {'Tap to continue'}
+                  </Text>
+                </TouchableWithoutFeedback>
+              </Text>
             </View>
           </View>
           <View style={DeshBoardNoticeCss.spaceLine} />
@@ -148,14 +154,15 @@ const DeshboardNotice = props => {
             <Text style={DeshBoardNoticeCss.trialText}>
               Your free trial ends in {profileDay} days.
             </Text>
-            {props.ShowUpgradeButton?
-            <TouchableOpacity onPress={()=>{
-              props.navigation.navigate('ManageSubscription');
-            }} style={DeshBoardNoticeCss.upgradeView}>
-              <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
-            </TouchableOpacity>
-            :null
-}
+            {props.ShowUpgradeButton ? (
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate('ManageSubscription');
+                }}
+                style={DeshBoardNoticeCss.upgradeView}>
+                <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
+              </TouchableOpacity>
+            ) : null}
           </View>
         </View>
       )}

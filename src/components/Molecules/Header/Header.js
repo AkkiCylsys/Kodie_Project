@@ -9,8 +9,6 @@ import {useSelector} from 'react-redux';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
-const imageurl =
-  'http://e3.cylsys.com/upload/photo/AB71AAB8-C137-4561-A883-4417718442AE.jpg';
 
 const TopHeader = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);

@@ -144,7 +144,7 @@ const EditProfile = props => {
   };
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
-
+    setIsLoading(true);
     const apiUrl =
       url + `getAccount_details/${loginData.Login_details.user_id}`;
     console.log(apiUrl, 'apiUrl');
@@ -165,10 +165,12 @@ const EditProfile = props => {
           : [];
         setSelectedServices(initialJobTypeIds);
         console.log(accountDetails.UAD_AUSTR_BUSINESS_NO);
+        setIsLoading(false);
       })
       .catch(error => {
         // Handle error
         console.error('API Error:', error);
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -334,6 +336,7 @@ const EditProfile = props => {
 
     if (!fileUri || !fileName || !fileType) {
       console.error('Invalid image data:', ImageName);
+
       // Handle invalid image data
     } else {
       formData.append('profile_photo', {

@@ -13,8 +13,8 @@ export const DeleteAccountStyle = StyleSheet.create({
     marginTop: 20,
   },
   helpimg: {
-    width: 18,
-    height: 18,
+    width: 38,
+    height: 38,
     borderRadius: 8,
   },
   accounttext: {
@@ -43,8 +43,8 @@ export const DeleteAccountStyle = StyleSheet.create({
     marginHorizontal: 10,
   },
   Logoutimg: {
-    width: 32,
-    height: 32,
+    width: 42,
+    height: 42,
     borderRadius: 8,
   },
   insteadtext: {
