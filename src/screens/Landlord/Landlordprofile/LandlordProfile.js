@@ -23,35 +23,40 @@ import RowTab from '../../../components/Molecules/RowTab/RowTab';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
+import {useIsFocused, CommonActions} from '@react-navigation/native';
 export default LandlordProfile = props => {
   const dispatch = useDispatch();
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
+  const isvisible = useIsFocused();
+
   const [accountDetails, setAccountDetails] = useState(null);
 
-  // const getPersonalDetails = () => {
-  //   const url = Config.BASE_URL;
+  const getPersonalDetails = () => {
+    const url = Config.BASE_URL;
 
-  //   const apiUrl =
-  //     url + `getAccount_details/${loginData.Login_details.user_id}`;
+    const apiUrl =
+      url + `getAccount_details/${loginData.Login_details.user_id}`;
 
-  //   // Make a GET request using Axios
-  //   axios
-  //     .get(apiUrl)
-  //     .then(response => {
-  //       // Handle successful response
-  //       console.log('API Response:', response.data.data[0][0]);
-  //       setAccountDetails(response.data.data[0][0]);
-  //     })
-  //     .catch(error => {
-  //       // Handle error
-  //       console.error('API Error:', error);
-  //     });
-  // };
-  // useEffect(() => {
-  //   getPersonalDetails();
-  // }, []);
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+      });
+  };
+  useEffect(() => {
+    if (isvisible) {
+      getPersonalDetails();
+    }
+  }, [isvisible]);
   console.log('signUp_account_response.....', signUp_account_response);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log(
@@ -61,8 +66,17 @@ export default LandlordProfile = props => {
 
   const LogOut = () => {
     dispatch(logoutActionCreator());
+    props.navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          {name: 'LoginScreen'}, // Replace 'Home' with the name of your initial screen
+        ],
+      }),
+    );
+
     // props.navigation.navigate("DrawerNavigatorLeftMenu");
-    props.navigation.navigate('LoginScreen');
+    // props.navigation.navigate('LoginScreen');
   };
   const searchprofileMenu = () => {};
   const refRBSheet = useRef();
@@ -97,13 +111,14 @@ export default LandlordProfile = props => {
           marginTop={20}
           searchData={searchprofileMenu}
         />
+
         <View style={LandlordProfileStyle.profilemainView}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
             <Image
               // source={IMAGES.Landlordprofile}
               source={{
-                // uri: accountDetails?.image_path[0],
-                uri: loginData.Login_details?.profile_photo_path,
+                uri: accountDetails?.image_path[0],
+                // uri: loginData.Login_details?.profile_photo_path,
               }}
               style={LandlordProfileStyle.usericon}
               resizeMode="cover"
@@ -111,11 +126,11 @@ export default LandlordProfile = props => {
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
-              {/* {accountDetails?.UAD_FIRST_NAME + */}
-              {loginData.Account_details[0]?.UAD_FIRST_NAME +
+              {accountDetails?.UAD_FIRST_NAME +
+                // loginData.Account_details[0]?.UAD_FIRST_NAME +
                 ' ' +
-                // accountDetails?.UAD_LAST_NAME}
-                loginData.Account_details[0]?.UAD_LAST_NAME}
+                accountDetails?.UAD_LAST_NAME}
+              {/* loginData.Account_details[0]?.UAD_LAST_NAME */}
             </Text>
             <Text
               style={LandlordProfileStyle.emailText}
@@ -127,11 +142,13 @@ export default LandlordProfile = props => {
               <AntDesign
                 name="star"
                 size={15}
-                color={_COLORS.Kodie_lightGreenColor}
+                color={_COLORS.Kodie_GrayColor}
                 style={LandlordProfileStyle.star}
               />
-              <Text style={LandlordProfileStyle.ratingText}>{'4.6'}</Text>
-              <Text style={LandlordProfileStyle.subrating}>({'231'})</Text>
+              <Text style={LandlordProfileStyle.ratingText}>{'0'}</Text>
+              <Text style={LandlordProfileStyle.subrating}>
+                ({'Not rating yet'})
+              </Text>
             </View>
           </View>
           <TouchableOpacity
@@ -302,20 +319,16 @@ export default LandlordProfile = props => {
             size={24}
             color="black"
             onPress={handleClose}
-            style={{marginTop:8}}
+            style={{marginTop: 8}}
           />
         </View>
         <View style={LandlordProfileStyle.ViewBtn}>
-          <TouchableOpacity onPress={handleClose} style={{height:58,}}>
-          <Text style={LandlordProfileStyle.CancelBtn} >
-          Cancel
-          </Text>
+          <TouchableOpacity onPress={handleClose} style={{height: 58}}>
+            <Text style={LandlordProfileStyle.CancelBtn}>Cancel</Text>
           </TouchableOpacity>
-          <View style={{margin:5}}/>
-          <TouchableOpacity onPress={LogOut} style={{height:58}}>
-          <Text style={LandlordProfileStyle.LogoutBtn}>
-          Logout
-          </Text>
+          <View style={{margin: 5}} />
+          <TouchableOpacity onPress={LogOut} style={{height: 58}}>
+            <Text style={LandlordProfileStyle.LogoutBtn}>Logout</Text>
           </TouchableOpacity>
         </View>
       </RBSheet>

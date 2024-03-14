@@ -54,7 +54,7 @@ const feedbackData = [
   },
   {
     id: '4',
-    Heading: 'AppInfo',
+    Heading: 'App Info',
     // img: IMAGES.AppInfo,
     icon: (
       <Feather

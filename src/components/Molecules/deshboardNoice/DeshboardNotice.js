@@ -23,7 +23,7 @@ const DeshboardNotice = props => {
   const userID = loginData?.Login_details?.user_id;
   useEffect(() => {
     handleprofileDays();
-    handleprofileCompletion();
+   // handleprofileCompletion();
   }, []);
 
   const handlePress = () => {
@@ -66,12 +66,13 @@ const DeshboardNotice = props => {
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
         console.log('profileCompletion response....', response.data);
-        setProfileCompletion(response.data.data[0].result);
-        console.log('profileCompletion..', response.data.data[0].result);
+        setProfileCompletion(response?.data?.data[0]?.result);
+        console.log('profileCompletion..', response?.data?.data[0]?.result);
         const profileValueWithoutPercent = profileCompletion.replace('%', '');
         const progressValue = profileValueWithoutPercent / 100;
         console.log('progressValue...', progressValue);
         setProgressPercentage(progressValue);
+        setIsLoading(false);
       })
       .catch(error => {
         console.log('profileCompletion error...', error);
@@ -100,7 +101,7 @@ const DeshboardNotice = props => {
             <View style={DeshBoardNoticeCss?.PercenView}>
               <View style={DeshBoardNoticeCss?.percentageText}>
                 <Text style={DeshBoardNoticeCss.progressText}>
-                  {profileCompletion} Complete, nice work!
+                  {props.PerprofileCompletion} Complete, nice work!
                 </Text>
               </View>
               <TouchableOpacity
@@ -117,7 +118,7 @@ const DeshboardNotice = props => {
 
             </View> */}
             <ProgressBar
-              progress={progressPercentage}
+              progress={props.progressPercentage}
               color={_COLORS.Kodie_lightGreenColor}
               style={DeshBoardNoticeCss.progresBar}
             />
@@ -147,9 +148,14 @@ const DeshboardNotice = props => {
             <Text style={DeshBoardNoticeCss.trialText}>
               Your free trial ends in {profileDay} days.
             </Text>
-            <TouchableOpacity style={DeshBoardNoticeCss.upgradeView}>
+            {props.ShowUpgradeButton?
+            <TouchableOpacity onPress={()=>{
+              props.navigation.navigate('ManageSubscription');
+            }} style={DeshBoardNoticeCss.upgradeView}>
               <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
             </TouchableOpacity>
+            :null
+}
           </View>
         </View>
       )}

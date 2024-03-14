@@ -72,8 +72,8 @@ const CustomSidebarMenu = props => {
         break;
       case 'Partners':
         setselectedId('Partners');
-        // props.navigation.navigate("Partners");
-        props.navigation.navigate('ConfirmJobCompletion');
+        props.navigation.navigate('Partners');
+        // props.navigation.navigate('ConfirmJobCompletion');
         break;
       // case 'Logout':
       //   setselectedId('LogOut');
@@ -354,8 +354,10 @@ const CustomSidebarMenu = props => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          // onPress={() => check("Partners")} Navigate To Confirm Job
-          onPress={handleGeneralSettingsPress}>
+          onPress={() => check('Partners')}
+          // Navigate To Confirm Job
+          // onPress={handleGeneralSettingsPress}
+        >
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="seal"

@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   TextInput,
-} from "react-native";
-import { PropertyFeatureStyle } from "./PropertyFeatureStyle";
-import TopHeader from "../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../services/CommonServices";
-import { MultiSelect } from "react-native-element-dropdown";
-import { Dropdown } from "react-native-element-dropdown";
-import { LABEL_STYLES } from "../../../../Themes";
-import { _COLORS } from "../../../../Themes";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import RowButtons from "../../../../components/Molecules/RowButtons/RowButtons";
-import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import StepIndicator from "react-native-step-indicator";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { Config } from "../../../../Config";
-import axios from "axios";
-import { useSelector } from "react-redux";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
+} from 'react-native';
+import {PropertyFeatureStyle} from './PropertyFeatureStyle';
+import TopHeader from '../../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../../services/CommonServices';
+import {MultiSelect} from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
+import {LABEL_STYLES} from '../../../../Themes';
+import {_COLORS} from '../../../../Themes';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import StepIndicator from 'react-native-step-indicator';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Config} from '../../../../Config';
+import axios from 'axios';
+import {useSelector} from 'react-redux';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
-const renderDataItem = (item) => {
+const renderDataItem = item => {
   return (
     <View style={PropertyFeatureStyle.item}>
       <Text style={PropertyFeatureStyle.selectedTextStyle}>
@@ -40,7 +40,7 @@ const renderDataItem = (item) => {
     </View>
   );
 };
-export default PropertyFeature = (props) => {
+export default PropertyFeature = props => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,7 +56,7 @@ export default PropertyFeature = (props) => {
   const country = props?.route?.params?.country;
   const editMode = props?.route?.params?.editMode;
   console.log(
-    "location......",
+    'location......',
     location,
     property_value,
     selectedButtonId,
@@ -67,17 +67,17 @@ export default PropertyFeature = (props) => {
     city,
     state,
     country,
-    editMode
+    editMode,
   );
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
 
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
-    []
+    [],
   );
-  const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData?.Login_details?.user_id);
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginData', loginData?.Login_details?.user_id);
 
-  console.log("key_features_id............", additionalfeatureskeyvalue);
+  console.log('key_features_id............', additionalfeatureskeyvalue);
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState([]);
   const [selectedButton, setSelectedButton] = useState(false);
@@ -90,14 +90,14 @@ export default PropertyFeature = (props) => {
   const [CountBathroom, setCountBathroom] = useState(0);
   const [CountParking, setCountParking] = useState(0);
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
-  const [florSize, setFlorSize] = useState("");
-  const [landArea, setLandArea] = useState("");
+  const [florSize, setFlorSize] = useState('');
+  const [landArea, setLandArea] = useState('');
   const [property_Detail, setProperty_Details] = useState([]);
   // const [furnished, setFurnished] = useState([]);
   // const [preFriendly, setProperty_Details] = useState([]);
   console.log(
-    "propertyDetail....",
-    property_Detail?.additional_key_features_id
+    'propertyDetail....',
+    property_Detail?.additional_key_features_id,
   );
 
   const keyFeaturesString = property_Detail?.key_features;
@@ -115,138 +115,138 @@ export default PropertyFeature = (props) => {
           setCountBedroom(feature.Bedrooms);
         } else if (feature.Bathrooms !== undefined) {
           setCountBathroom(feature.Bathrooms);
-        } else if (feature["Parking Space"] !== undefined) {
-          setCountParking(feature["Parking Space"]);
-        } else if (feature["Garages"] !== undefined) {
-          setCountParkingStreet(feature["Garages"]);
+        } else if (feature['Parking Space'] !== undefined) {
+          setCountParking(feature['Parking Space']);
+        } else if (feature['Garages'] !== undefined) {
+          setCountParkingStreet(feature['Garages']);
         }
       }
     } catch (error) {
-      console.error("Error parsing key_features:", error);
+      console.error('Error parsing key_features:', error);
     }
   }, [keyFeaturesString]);
-  console.log("CountBedroom", CountBedroom, CountBathroom);
+  console.log('CountBedroom', CountBedroom, CountBathroom);
   const DetailsData = () => {
     const detailData = {
       property_id: propertyid,
     };
-    console.log("detailData", detailData);
+    console.log('detailData', detailData);
     const url = Config.BASE_URL;
-    const property_Detailss = url + "get_property_details";
-    console.log("Request URL:", property_Detailss);
+    const property_Detailss = url + 'get_property_details';
+    console.log('Request URL:', property_Detailss);
     setIsLoading(true);
     axios
       .post(property_Detailss, detailData)
-      .then((response) => {
-        console.log("propertyDetail", response.data);
+      .then(response => {
+        console.log('propertyDetail', response.data);
         if (response.data.success === true) {
           setIsLoading(false);
           setProperty_Details(response.data.property_details[0]);
 
           const apiAdditionalFeaturesIds =
             response?.data?.property_details[0]?.additional_features_id
-              .split(",")
+              .split(',')
               .map(Number);
           const furnishedFeatureId = apiAdditionalFeaturesIds.find(
-            (id) => id == 68
+            id => id == 68,
           );
-          const yesFeatureId = apiAdditionalFeaturesIds.find((id) => id == 71);
+          const yesFeatureId = apiAdditionalFeaturesIds.find(id => id == 71);
 
           console.log(
-            "Furnished Feature ID:",
+            'Furnished Feature ID:',
             apiAdditionalFeaturesIds,
-            furnishedFeatureId
+            furnishedFeatureId,
           );
           setSelectedButtonFurnished(furnishedFeatureId);
           setSelectedButtonDeposit(yesFeatureId);
           setFlorSize(response?.data?.property_details[0]?.floor_size);
           setAdditionalFeaturesKeyValue(
-            response?.data?.property_details[0]?.additional_key_features_id
+            response?.data?.property_details[0]?.additional_key_features_id,
           );
           setLandArea(response?.data?.property_details[0]?.land_area);
         } else {
-          console.error("propertyDetail_error:", response.data.error);
+          console.error('propertyDetail_error:', response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("property_type error:", error);
+      .catch(error => {
+        console.error('property_type error:', error);
         // alert(error);
         setIsLoading(false);
       });
   };
   const AllCountsData = [
-    { Bedrooms: CountBedroom },
-    { Bathrooms: CountBathroom },
-    { "Parking Space": CountParking },
-    { Garages: CountParkingStreet },
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Parking Space': CountParking},
+    {Garages: CountParkingStreet},
   ];
 
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
-  console.log(PreFriedly, "pre friedly............");
+  console.log(PreFriedly, 'pre friedly............');
   console.log(AllCountsData);
   const increaseBedroomCount = () => {
-    setCountBedroom((prevCount) => prevCount + 1);
+    setCountBedroom(prevCount => prevCount + 1);
   };
   const decreaseBedroomCount = () => {
     if (CountBedroom > 0) {
-      setCountBedroom((prevCount) => prevCount - 1);
+      setCountBedroom(prevCount => prevCount - 1);
     }
   };
   // key_features count for Bathroom code here------
   const increaseBathroomCount = () => {
-    setCountBathroom((prevCount) => prevCount + 1);
+    setCountBathroom(prevCount => prevCount + 1);
   };
   const decreaseBathroomCount = () => {
     if (CountBathroom > 0) {
-      setCountBathroom((prevCount) => prevCount - 1);
+      setCountBathroom(prevCount => prevCount - 1);
     }
   };
 
   // key_features count for Parking code here------
   const increaseParkingCount = () => {
-    setCountParking((prevCount) => prevCount + 1);
+    setCountParking(prevCount => prevCount + 1);
   };
   const decreaseParkingCount = () => {
     if (CountParking > 0) {
-      setCountParking((prevCount) => prevCount - 1);
+      setCountParking(prevCount => prevCount - 1);
     }
   };
 
   // key_features count for Parking code here------
   const increaseParkingStreetCount = () => {
-    setCountParkingStreet((prevCount) => prevCount + 1);
+    setCountParkingStreet(prevCount => prevCount + 1);
   };
   const decreaseParkingStreetCount = () => {
     if (CountParkingStreet > 0) {
-      setCountParkingStreet((prevCount) => prevCount - 1);
+      setCountParkingStreet(prevCount => prevCount - 1);
     }
   };
 
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
-      name: "feed",
+      name: 'feed',
       // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
-      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+      color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
 
     switch (position) {
       case 0: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 1: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 2: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 3: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
 
@@ -270,32 +270,32 @@ export default PropertyFeature = (props) => {
     currentStepIndicatorLabelFontSize: 15,
     stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
     stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
-    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+    stepIndicatorLabelUnFinishedColor: 'rgba(255,255,255,0.5)',
     labelColor: _COLORS.Kodie_BlackColor,
     labelSize: 14,
-    labelAlign: "center",
+    labelAlign: 'center',
   };
-  const renderStepIndicator = (params) => (
+  const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
-        : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+        : stepStatus === 'finished'
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
-        ? "Details"
+        ? 'Details'
         : position === 1
-        ? "Features"
+        ? 'Features'
         : position === 2
-        ? "Images"
+        ? 'Images'
         : position === 3
-        ? "Review"
-        : "null";
+        ? 'Review'
+        : 'null';
 
     return (
       <View style={{}}>
@@ -305,17 +305,15 @@ export default PropertyFeature = (props) => {
             marginTop: 1,
             marginHorizontal: 10,
             color: iconColor,
-            alignSelf: "center",
-          }}
-        >{`Step ${position + 1}`}</Text>
+            alignSelf: 'center',
+          }}>{`Step ${position + 1}`}</Text>
         <Text
           style={{
             fontSize: 14,
             marginTop: 5,
             marginHorizontal: 10,
             color: iconColor,
-          }}
-        >
+          }}>
           {iconName}
         </Text>
       </View>
@@ -326,8 +324,8 @@ export default PropertyFeature = (props) => {
   };
   const property_details = () => {
     const url = Config.BASE_URL;
-    const additionalApi = url + "add_property_details";
-    console.log("Request URL:", additionalApi);
+    const additionalApi = url + 'add_property_details';
+    console.log('Request URL:', additionalApi);
     setIsLoading(true);
     axios
       .post(additionalApi, {
@@ -350,59 +348,59 @@ export default PropertyFeature = (props) => {
         p_country: country,
       })
 
-      .then((response) => {
-        console.log("property_details", response?.data);
+      .then(response => {
+        console.log('property_details', response?.data);
         if (response.data.success === true) {
           setIsLoading(false);
 
           console.log(
-            "response?.data?.Property_id",
-            response?.data?.Property_id
+            'response?.data?.Property_id',
+            response?.data?.Property_id,
           );
 
           // setCurrentPage(currentPage + 1);
-          props.navigation.navigate("PropertyImages", {
+          props.navigation.navigate('PropertyImages', {
             property_id: response?.data?.Property_id,
           });
-          console.log("property_details....", response.data);
+          console.log('property_details....', response.data);
         } else {
-          console.error("property_details_error:", response.data.error);
+          console.error('property_details_error:', response.data.error);
           // alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("property_details error:", error);
+      .catch(error => {
+        console.error('property_details error:', error);
         // alert(error);
         setIsLoading(false);
       });
   };
   const additional_features = () => {
     const url = Config.BASE_URL;
-    const additionalApi = url + "get_key_features";
-    console.log("Request URL:", additionalApi);
+    const additionalApi = url + 'get_key_features';
+    console.log('Request URL:', additionalApi);
     setIsLoading(true);
     axios
       .get(additionalApi) // Change from .post to .get
-      .then((response) => {
-        console.log("additional_Data", response.data);
+      .then(response => {
+        console.log('additional_Data', response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("additional_features....", response.data);
+          console.log('additional_features....', response.data);
           setAdditionalfeatureskey(response.data.key_features_details);
           // setData_add(response.data.PAF_KEY);
           console.log(
-            "AdditionalFeaturesKey....",
-            response.data.key_features_details
+            'AdditionalFeaturesKey....',
+            response.data.key_features_details,
           );
         } else {
-          console.error("additional_features_error:", response.data.error);
+          console.error('additional_features_error:', response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("additional_features error:", error);
+      .catch(error => {
+        console.error('additional_features error:', error);
         alert(error);
         setIsLoading(false);
       });
@@ -429,31 +427,31 @@ export default PropertyFeature = (props) => {
       p_state: state,
       p_country: country,
     };
-    console.log("updateData", updateData);
+    console.log('updateData', updateData);
     const url = Config.BASE_URL;
-    const update_property_details = url + "update_property_details";
-    console.log("Request URL:", update_property_details);
+    const update_property_details = url + 'update_property_details';
+    console.log('Request URL:', update_property_details);
     setIsLoading(true);
     axios
       .put(update_property_details, updateData)
-      .then((response) => {
-        console.log("update_property_details", response.data);
+      .then(response => {
+        console.log('update_property_details', response.data);
         if (response.data.success === true) {
           setIsLoading(false);
           // alert("update_property_details....", propertyid);
-          props.navigation.navigate("PropertyImages", {
+          props.navigation.navigate('PropertyImages', {
             property_id: propertyid,
             editMode: editMode,
           });
           // setupdateProperty_Details(response.data.property_details);
         } else {
-          console.error("update_property_detailserror:", response.data.error);
+          console.error('update_property_detailserror:', response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("update_property_details error:", error);
+      .catch(error => {
+        console.error('update_property_details error:', error);
         // alert(error);
         setIsLoading(false);
       });
@@ -462,13 +460,12 @@ export default PropertyFeature = (props) => {
     <View style={PropertyFeatureStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={goBack}
-        MiddleText={editMode ? "Edit property" : "Add new property"}
+        MiddleText={editMode ? 'Edit property' : 'Add new property'}
       />
       <View
         style={{
           marginTop: 15,
-        }}
-      >
+        }}>
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
           currentPosition={currentPage}
@@ -483,7 +480,7 @@ export default PropertyFeature = (props) => {
       <ScrollView>
         <View style={PropertyFeatureStyle.headingView}>
           <Text style={PropertyFeatureStyle.heading}>
-            {"Property features"}
+            {'Property features'}
           </Text>
         </View>
         <View style={PropertyFeatureStyle.card}>
@@ -493,15 +490,14 @@ export default PropertyFeature = (props) => {
               <View style={PropertyFeatureStyle.mainfeaturesview}>
                 <View style={PropertyFeatureStyle.key_feature_Text_view}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {"Bedrooms"}
+                    {'Bedrooms'}
                   </Text>
                 </View>
 
                 <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
                   <TouchableOpacity
                     style={PropertyFeatureStyle.menusIconView}
-                    onPress={decreaseBedroomCount}
-                  >
+                    onPress={decreaseBedroomCount}>
                     <AntDesign
                       name="minus"
                       size={20}
@@ -515,8 +511,7 @@ export default PropertyFeature = (props) => {
                     style={PropertyFeatureStyle.menusIconView}
                     onPress={() => {
                       increaseBedroomCount();
-                    }}
-                  >
+                    }}>
                     <AntDesign
                       name="plus"
                       size={20}
@@ -529,15 +524,14 @@ export default PropertyFeature = (props) => {
               <View style={PropertyFeatureStyle.mainfeaturesview}>
                 <View style={PropertyFeatureStyle.key_feature_Text_view}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {"Bathrooms"}
+                    {'Bathrooms'}
                   </Text>
                 </View>
 
                 <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
                   <TouchableOpacity
                     style={PropertyFeatureStyle.menusIconView}
-                    onPress={decreaseBathroomCount}
-                  >
+                    onPress={decreaseBathroomCount}>
                     <AntDesign
                       name="minus"
                       size={20}
@@ -549,8 +543,7 @@ export default PropertyFeature = (props) => {
                   </Text>
                   <TouchableOpacity
                     style={PropertyFeatureStyle.menusIconView}
-                    onPress={increaseBathroomCount}
-                  >
+                    onPress={increaseBathroomCount}>
                     <AntDesign
                       name="plus"
                       size={20}
@@ -563,15 +556,14 @@ export default PropertyFeature = (props) => {
               <View style={PropertyFeatureStyle.mainfeaturesview}>
                 <View style={PropertyFeatureStyle.key_feature_Text_view}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {"Parking spaces"}
+                    {'Parking spaces'}
                   </Text>
                 </View>
 
                 <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
                   <TouchableOpacity
                     style={PropertyFeatureStyle.menusIconView}
-                    onPress={decreaseParkingCount}
-                  >
+                    onPress={decreaseParkingCount}>
                     <AntDesign
                       name="minus"
                       size={20}
@@ -583,8 +575,7 @@ export default PropertyFeature = (props) => {
                   </Text>
                   <TouchableOpacity
                     style={PropertyFeatureStyle.menusIconView}
-                    onPress={increaseParkingCount}
-                  >
+                    onPress={increaseParkingCount}>
                     <AntDesign
                       name="plus"
                       size={20}
@@ -597,15 +588,14 @@ export default PropertyFeature = (props) => {
               <View style={PropertyFeatureStyle.mainfeaturesview}>
                 <View style={PropertyFeatureStyle.key_feature_Text_view}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {"Garages"}
+                    {'Garages'}
                   </Text>
                 </View>
 
                 <TouchableOpacity style={PropertyFeatureStyle.plus_minusview}>
                   <TouchableOpacity
                     style={PropertyFeatureStyle.menusIconView}
-                    onPress={decreaseParkingStreetCount}
-                  >
+                    onPress={decreaseParkingStreetCount}>
                     <AntDesign
                       name="minus"
                       size={20}
@@ -617,8 +607,7 @@ export default PropertyFeature = (props) => {
                   </Text>
                   <TouchableOpacity
                     style={PropertyFeatureStyle.menusIconView}
-                    onPress={increaseParkingStreetCount}
-                  >
+                    onPress={increaseParkingStreetCount}>
                     <AntDesign
                       name="plus"
                       size={20}
@@ -633,7 +622,7 @@ export default PropertyFeature = (props) => {
               <View style={PropertyFeatureStyle.key_feature_mainView}>
                 <View style={PropertyFeatureStyle.key_feature_subView}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {"Building floor size  (optional)"}
+                    {'Building floor size  (optional)'}
                   </Text>
                 </View>
 
@@ -652,7 +641,7 @@ export default PropertyFeature = (props) => {
               <View style={PropertyFeatureStyle.key_feature_mainView}>
                 <View style={PropertyFeatureStyle.key_feature_subView}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {"Land area (optional)"}
+                    {'Land area (optional)'}
                   </Text>
                 </View>
 
@@ -670,14 +659,14 @@ export default PropertyFeature = (props) => {
             </View>
             <View style={PropertyFeatureStyle.addition_featureView}>
               <Text style={PropertyFeatureStyle.additional_Text}>
-                {"Additional features"}
+                {'Additional features'}
               </Text>
               <View style={PropertyFeatureStyle.addition_featureView}>
                 <Text style={PropertyFeatureStyle.Furnished_Text}>
-                  {"Furnished or unfurnished ?"}
+                  {'Furnished or unfurnished ?'}
                 </Text>
                 <RowButtons
-                  LeftButtonText={"Furnished"}
+                  LeftButtonText={'Furnished'}
                   leftButtonbackgroundColor={
                     !selectedButtonFurnished
                       ? _COLORS.Kodie_lightGreenColor
@@ -698,7 +687,7 @@ export default PropertyFeature = (props) => {
                     setSelectedButtonFurnishedId(67);
                     // alert(selectedButtonId)
                   }}
-                  RightButtonText={"Unfurnished"}
+                  RightButtonText={'Unfurnished'}
                   RightButtonbackgroundColor={
                     selectedButtonFurnished
                       ? _COLORS.Kodie_lightGreenColor
@@ -723,10 +712,10 @@ export default PropertyFeature = (props) => {
               </View>
               <View style={PropertyFeatureStyle.addition_featureView}>
                 <Text style={PropertyFeatureStyle.Furnished_Text}>
-                  {"Pet friendly ?"}
+                  {'Pet friendly ?'}
                 </Text>
                 <RowButtons
-                  LeftButtonText={"Yes"}
+                  LeftButtonText={'Yes'}
                   leftButtonbackgroundColor={
                     !selectedButtonDeposit
                       ? _COLORS.Kodie_lightGreenColor
@@ -747,7 +736,7 @@ export default PropertyFeature = (props) => {
                     setSelectedButtonDepositId(70);
                     // alert(selectedButtonId)
                   }}
-                  RightButtonText={"No"}
+                  RightButtonText={'No'}
                   RightButtonbackgroundColor={
                     selectedButtonDeposit
                       ? _COLORS.Kodie_lightGreenColor
@@ -773,11 +762,11 @@ export default PropertyFeature = (props) => {
             </View>
             <View style={PropertyFeatureStyle.additional_key_view}>
               <Text style={PropertyFeatureStyle.Furnished_Text}>
-                {"Additional key features"}
+                {'Additional key features'}
               </Text>
               <MultiSelect
                 style={PropertyFeatureStyle.dropdown}
-                activeColor = {_COLORS.Kodie_MidLightGreenColor}
+                activeColor={_COLORS.Kodie_MidLightGreenColor}
                 placeholderStyle={PropertyFeatureStyle.placeholderStyle}
                 selectedTextStyle={PropertyFeatureStyle.selectedTextStyle}
                 inputSearchStyle={PropertyFeatureStyle.inputSearchStyle}
@@ -789,8 +778,8 @@ export default PropertyFeature = (props) => {
                 value={additionalfeatureskeyvalue}
                 search
                 searchPlaceholder="Search..."
-                onChange={(items) => {
-                  const selectedKeys = items.map((item) => item);
+                onChange={items => {
+                  const selectedKeys = items.map(item => item);
                   const uniqueKeys = [...new Set(selectedKeys)];
                   const cleanedArray = uniqueKeys.reduce((acc, item) => {
                     if (!isNaN(item) && !acc.includes(Number(item))) {
@@ -799,9 +788,9 @@ export default PropertyFeature = (props) => {
                     return acc;
                   }, []);
 
-                  console.log("Unique Keys:", uniqueKeys);
+                  console.log('Unique Keys:', uniqueKeys);
                   setAdditionalFeaturesKeyValue(
-                    cleanedArray.filter((value) => value !== 0)
+                    cleanedArray.filter(value => value !== 0),
                   );
                 }}
                 renderLeftIcon={() => (
@@ -827,7 +816,7 @@ export default PropertyFeature = (props) => {
             </View>
             <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton
-                _ButtonText={"Next"}
+                _ButtonText={'Next'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
                   if (propertyid) {
@@ -843,8 +832,8 @@ export default PropertyFeature = (props) => {
               <CustomSingleButton
                 _ButtonText={
                   editMode
-                    ? "Edit property features later"
-                    : "Add property features later"
+                    ? 'Edit property features later'
+                    : 'Add property features later'
                 }
                 Text_Color={_COLORS.Kodie_BlackColor}
                 backgroundColor={_COLORS.Kodie_WhiteColor}
@@ -855,8 +844,7 @@ export default PropertyFeature = (props) => {
               style={PropertyFeatureStyle.goBack_View}
               onPress={() => {
                 goBack();
-              }}
-            >
+              }}>
               <View style={PropertyFeatureStyle.backIcon}>
                 <Ionicons
                   name="chevron-back"
@@ -864,7 +852,7 @@ export default PropertyFeature = (props) => {
                   color={_COLORS.Kodie_MediumGrayColor}
                 />
               </View>
-              <Text style={PropertyFeatureStyle.goBack_Text}>{"Go back"}</Text>
+              <Text style={PropertyFeatureStyle.goBack_Text}>{'Go back'}</Text>
             </TouchableOpacity>
           </View>
         </View>

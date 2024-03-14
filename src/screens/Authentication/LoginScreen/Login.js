@@ -15,6 +15,7 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
 } from 'react-native';
+import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {logos} from '../../../Themes/CommonVectors/Images';
 import {LoginStyles} from './LoginCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -40,7 +41,7 @@ import DeviceInfo from 'react-native-device-info';
 // import CryptoJS from "crypto-js";
 import CryptoJS from 'react-native-crypto-js';
 import messaging from '@react-native-firebase/messaging';
-
+// import {NavigationActions, StackActions} from 'react-navigation';
 import {loginApiActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 export default Login = props => {
   const dispatch = useDispatch();
@@ -301,12 +302,12 @@ export default Login = props => {
         setPasswordError(
           'Hmm, it seems like the credentials you entered are invalid. Please try again.',
         );
-      } else if (res.LoginStatuscode == 6) {
+      } else if (res?.LoginStatuscode == 6) {
         props.navigation.navigate('SignUpSteps', {
           email: email,
           user_key: res.User_key,
         });
-      } else if (res.data.success == 'true') {
+      } else if (res?.data?.success == 'true') {
         //  alert("Login successful");
         setIsLoading(false);
         // if (res.data.code == 6) {
@@ -316,6 +317,8 @@ export default Login = props => {
         //  else {
 
         // }
+
+        // alert(JSON.stringify(res))
         props.navigation.navigate('DrawerNavigatorLeftMenu');
         setEmail('');
         setPassword('');
