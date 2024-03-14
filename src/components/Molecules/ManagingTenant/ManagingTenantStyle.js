@@ -12,7 +12,19 @@ export const ManagingTenantStyle = StyleSheet.create({
     padding: "1%",
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
-  IcontenantView:{
+  // IcontenantView:{
+  //   borderWidth: 1,
+  //   borderRadius: 8,
+  //   borderColor: _COLORS.Kodie_LightWhiteColor,
+  //   marginLeft: 5,
+  //   width: 35,
+  //   marginTop: 10,
+  //   height: 35,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   textAlign:"center",
+  // },
+  IconView: {
     borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LightWhiteColor,
@@ -22,7 +34,6 @@ export const ManagingTenantStyle = StyleSheet.create({
     height: 35,
     justifyContent: "center",
     alignItems: "center",
-    textAlign:"center",
   },
   closeicon:{
     justifyContent: "flex-end",

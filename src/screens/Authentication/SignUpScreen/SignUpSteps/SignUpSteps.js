@@ -576,7 +576,7 @@ const SignUpSteps = props => {
         {/*----------- first RBSheet of signup first steps ---------*/}
         <RBSheet
           ref={refRBSheet}
-          height={200}
+          height={177}
           customStyles={{
             wrapper: {
               backgroundColor: 'rgba(0, 0, 0, 0.5)',

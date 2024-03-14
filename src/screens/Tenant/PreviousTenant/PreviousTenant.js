@@ -157,8 +157,8 @@ const PreviousTenant = (props) => {
 
       <RBSheet
         ref={refRBSheet}
-        // closeOnDragDown={true}
-        height={330}
+        height={316}
+        closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{
           wrapper: {

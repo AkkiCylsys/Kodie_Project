@@ -5,7 +5,7 @@ export const TenantDataStyle = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    padding: "2%",
     marginHorizontal:10,
     backgroundColor:_COLORS.Kodie_WhiteColor
     
@@ -23,5 +23,15 @@ export const TenantDataStyle = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     elevation: 10,
+  },
+  IconView: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
+    marginLeft: 5,
+    width: 35,
+    height: 35,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

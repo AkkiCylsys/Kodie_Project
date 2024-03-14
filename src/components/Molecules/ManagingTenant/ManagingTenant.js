@@ -73,10 +73,8 @@ const ManagingTenant = (props) => {
             }
           }}
         >
-          {/* <Image source={item.Img} style={ManagingTenantStyle.Icons} /> */}
-          {/* {item.Icon} */}
-          <Text style={ManagingTenantStyle.IcontenantView}>
-            {item.Icon}
+          <Text style={ManagingTenantStyle.IconView}>
+            <View style={ManagingTenantStyle.IconView}>{item.Icon}</View>
             </Text>
           <Text style={ManagingTenantStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
@@ -89,7 +87,7 @@ const ManagingTenant = (props) => {
         style={ManagingTenantStyle.closeicon}
         onPress={handleCloseModal}
       >
-        <Icon name={"close"} size={22} color={_COLORS?.Kodie_BlackColor} />
+        {/* <Icon name={"close"} size={22} color={_COLORS?.Kodie_BlackColor} /> */}
       </TouchableOpacity>
       <FlatList
         data={data}

@@ -32,7 +32,7 @@ export const UploadImageStyle = StyleSheet.create({
   },
   content_View: {
     flexDirection: "row",
-    marginTop: 10,
+    marginTop: 15,
     marginHorizontal: 16,
     marginVertical: 8,
   },
