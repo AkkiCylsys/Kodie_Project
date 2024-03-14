@@ -330,6 +330,7 @@ export default PropertyReview = props => {
       console.log('response_get_property_details...', response.data);
       if (response.data.success === true) {
         setProperty_Details(response.data.property_details[0]);
+        console.log('type of property....', response.data.property_details[0]);
         // Fetch and process key features..........
         if (response.data.property_details[0].key_features) {
           const parsedData = JSON.parse(
@@ -580,7 +581,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {'name'}
+                      {'NA'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
@@ -619,20 +620,21 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {'Name'}
+                      {addtionalFeaturesID[0]}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
                     <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
-                      {addtionalFeaturesID[1]}
+                      {'Furnished'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {addtionalFeaturesID[0]}
+                      {/* {addtionalFeaturesID[0]} */}
+                      {addtionalFeaturesID[1] ? 'No' : 'Yes'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />

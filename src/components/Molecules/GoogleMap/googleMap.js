@@ -11,12 +11,15 @@ import {
   Platform,
   GoogleMapStyleheet,
   PermissionsAndroid,
+  Alert,
+  Linking,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Entypo';
 import {GoogleMapStyle} from './googleMapStyle';
 import SearchPlaces from '../SearchPlaces/SearchPlaces';
 import {useState} from 'react';
 import Geolocation from '@react-native-community/geolocation';
+// import Geolocation from "react-native-geolocation-service";
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
@@ -48,9 +51,6 @@ const MapScreen = props => {
         // setlongitude(longitude);
         // animateToCoordinate(latitude, longitude)
       },
-      error => {
-        console.error('Error fetching location:', error);
-      },
       {
         enableHighAccuracy: true,
         timeout: 20000,
@@ -58,7 +58,6 @@ const MapScreen = props => {
       },
     );
   };
-
   const checkpermissionlocation = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -66,7 +65,7 @@ const MapScreen = props => {
         {
           title: 'Example App',
           message: 'Example App access to your location ',
-        },
+        },    
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the location');
@@ -79,6 +78,7 @@ const MapScreen = props => {
       console.warn(err);
     }
   };
+
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
       .then(result => {

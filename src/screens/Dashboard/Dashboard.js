@@ -500,7 +500,7 @@ export default Dashboard = props => {
                   </View>
                   <View style={DashboardStyle.maintenance_menu}>
                     <View>
-                      <Entypos
+                      <Entypo
                         name="circle-with-cross"
                         size={18}
                         color={_COLORS.Kodie_redColor}
