@@ -40,8 +40,8 @@ import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
 import {useFocusEffect} from '@react-navigation/native';
 import {BackHandler} from 'react-native';
-import Geolocation from '@react-native-community/geolocation';
-
+//import Geolocation from '@react-native-community/geolocation';
+import Geolocation from "react-native-geolocation-service";
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
   const propertyid = props?.route?.params?.propertyid;

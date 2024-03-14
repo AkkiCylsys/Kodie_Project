@@ -44,8 +44,8 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {CreateJobFirstStyle} from '../../../CreateJob/CreateJobFirstScreenCss';
 import {useDispatch, useSelector} from 'react-redux';
 import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
-import Geolocation from '@react-native-community/geolocation';
-
+//import Geolocation from '@react-native-community/geolocation';
+import Geolocation from "react-native-geolocation-service";
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default SearchForJob = props => {
