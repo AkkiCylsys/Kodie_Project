@@ -10,6 +10,8 @@ import {
   Platform,
   Modal,
 } from 'react-native';
+
+import {userSubscribedCreator} from '../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import {DashboardStyle} from './DashboardStyle';
 import TopHeader from '../../components/Molecules/Header/Header';
@@ -32,6 +34,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import FloatingActionButton from '../../components/Molecules/FloatingActionButton/FloatingActionButton';
 import {Config} from '../../Config';
 import axios from 'axios';
+import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 const IncomeData = [
   {
@@ -96,8 +99,12 @@ export default Dashboard = props => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
+  const [progressPercentage, setProgressPercentage] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
+  const [profileCompletion, setProfileCompletion] = useState('');
+  const dispatch = useDispatch();
+  const isvisible = useIsFocused();
 
   // props.onPress(handleClosePopup);
   // alert(handleClosePopup, "close");
@@ -109,7 +116,7 @@ export default Dashboard = props => {
   };
   const CloseUp = () => {
     refRBSheet.current.close();
-    refRBSheet2.current.close();
+    // refRBSheet2.current.close();
     setOverlayVisible(false);
   };
 
@@ -119,28 +126,86 @@ export default Dashboard = props => {
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
+  const SubscriptionData = useSelector(
+    state => state.subscriptionReducer.data?.data,
+  );
+  console.log('SubscriptionData.....', SubscriptionData);
   // console.log(
   //   "UAD_FirstName.....",
   //   loginData?.Account_details[0]?.UAD_FIRST_NAME
   // );
   // const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
   //---click back button closing the app
+
   useEffect(() => {
+    if (isvisible) {
+      getPersonalDetails();
+    }
+    check_subscription();
+    handleprofileCompletion();
     const handleBackPress = () => {
+   
       if (navigation.isFocused()) {
         BackHandler.exitApp();
         return true;
       }
       return false;
     };
-
+    
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
-  }, [navigation]);
+  }, [navigation, isvisible]);
 
   //---click back button closing the app
+
+  const handleprofileCompletion = () => {
+    
+    const url = Config.BASE_URL;
+    const profileCompletion_url = url + 'Profile_Completion';
+    console.log('requested url..', profileCompletion_url);
+    setIsLoading(true);
+    //alert('hi')
+    const profileCompletion_urlBody = {
+       account_id: "569",
+      //account_id: loginData?.Login_details?.user_id,
+    };
+   // alert(loginData?.Login_details?.user_id)
+    axios
+      .post(profileCompletion_url, profileCompletion_urlBody)
+      .then(response => {
+        console.log('profileCompletion response....', response.data);
+        setProfileCompletion(response?.data?.data[0]?.result);
+       let profile_Completion=response?.data?.data[0]?.result
+        console.log('profileCompletion..', response?.data?.data[0]?.result);
+        const profileValueWithoutPercent = profile_Completion.replace('%', '');
+        const progressValue = profileValueWithoutPercent / 100;
+        console.log('progressValue7...', progressValue);
+      //  alert(progressValue)
+        setProgressPercentage(progressValue);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.log('profileCompletion error...', error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  const check_subscription= async()=>{
+   // alert('hi')
+    let check_Subs={
+      account_id:loginData?.Login_details?.user_account_id,
+      
+     // account_id:res?.data?.Login_details?.user_account_id
+    }
+    console.log('checkid99',check_Subs)
+    const res = await dispatch(userSubscribedCreator(check_Subs))
+    //alert(JSON.stringify(res?.data))
+  }
 
   const Income_render = ({item, index}) => {
     return (
@@ -199,25 +264,28 @@ export default Dashboard = props => {
   const userProfileImageUri =
     loginData?.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
-  // const getPersonalDetails = () => {
-  //   const url = Config.BASE_URL;
+  const getPersonalDetails = () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
 
-  //   const apiUrl =
-  //     url + `getAccount_details/${loginData.Login_details.user_id}`;
+    const apiUrl =
+      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
 
-  //   // Make a GET request using Axios
-  //   axios
-  //     .get(apiUrl)
-  //     .then(response => {
-  //       // Handle successful response
-  //       console.log('API Response:', response.data.data[0][0]);
-  //       setAccountDetails(response.data.data[0][0]);
-  //     })
-  //     .catch(error => {
-  //       // Handle error
-  //       console.error('API Error:', error);
-  //     });
-  // };
+    // Make a GET request using Axios
+    axios
+      .get(apiUrl)
+      .then(response => {
+        // Handle successful response
+        console.log('API Response:', response.data.data[0][0]);
+        setAccountDetails(response.data.data[0][0]);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error:', error);
+        setIsLoading(false);
+      });
+  };
   // useEffect(() => {
   //   getPersonalDetails();
   // }, []);
@@ -244,12 +312,19 @@ export default Dashboard = props => {
           // statusBarStyle="dark-content"
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          <DeshboardNotice onClose={CloseUp} />
+          <DeshboardNotice
+          PerprofileCompletion={profileCompletion}
+          progressPercentage={progressPercentage}
+            ShowUpgradeButton={
+              SubscriptionData?.status == 'active' ? false : true
+            }
+            onClose={CloseUp}
+          />
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text style={DashboardStyle.Name_Text}>{`Hi ${
-              // accountDetails?.UAD_FIRST_NAME || null
-              loginData.Account_details[0]?.UAD_FIRST_NAME || null
+              accountDetails?.UAD_FIRST_NAME || ''
+              // loginData.Account_details[0]?.UAD_FIRST_NAME || null
             }! `}</Text>
             <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
             <View
@@ -392,38 +467,55 @@ export default Dashboard = props => {
               <View>
                 <View style={DashboardStyle.maintenance_main_menu}>
                   <View style={DashboardStyle.maintenance_menu}>
-                    <AntDesign
-                      name="infocirlce"
-                      size={18}
-                      color={_COLORS.Kodie_yellow}
-                    />
+                    <View>
+                      <AntDesign
+                        name="infocirlce"
+                        size={18}
+                        color={_COLORS.Kodie_yellow}
+                      />
+                      <Text style={DashboardStyle.maintenance_sts_NOText}>
+                        {'0'}
+                      </Text>
+                    </View>
+
                     <Text style={DashboardStyle.request_Text}>
                       {'Requested'}
                     </Text>
                   </View>
+
                   <View style={DashboardStyle.maintenance_menu}>
-                    <AntDesign
-                      name="checkcircle"
-                      size={18}
-                      color={_COLORS.Kodie_GreenColor}
-                    />
+                    <View>
+                      <AntDesign
+                        name="checkcircle"
+                        size={18}
+                        color={_COLORS.Kodie_GreenColor}
+                      />
+                      <Text style={DashboardStyle.maintenance_sts_NOText}>
+                        {'0'}
+                      </Text>
+                    </View>
                     <Text style={DashboardStyle.request_Text}>
                       {'Approved'}
                     </Text>
                   </View>
                   <View style={DashboardStyle.maintenance_menu}>
-                    <Entypo
-                      name="circle-with-cross"
-                      size={18}
-                      color={_COLORS.Kodie_redColor}
-                    />
+                    <View>
+                      <Entypo
+                        name="circle-with-cross"
+                        size={18}
+                        color={_COLORS.Kodie_redColor}
+                      />
+                      <Text style={DashboardStyle.maintenance_sts_NOText}>
+                        {'0'}
+                      </Text>
+                    </View>
 
                     <Text style={DashboardStyle.request_Text}>
                       {'Rejected'}
                     </Text>
                   </View>
                 </View>
-                <View style={DashboardStyle.maintenance_sts_NOView}>
+                {/* <View style={DashboardStyle.maintenance_sts_NOView}>
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
                     {'0'}
                   </Text>
@@ -433,7 +525,7 @@ export default Dashboard = props => {
                   <Text style={DashboardStyle.maintenance_sts_NOText}>
                     {'0'}
                   </Text>
-                </View>
+                </View> */}
                 <CustomSingleButton
                   _ButtonText={'View all jobs'}
                   Text_Color={_COLORS.Kodie_BlackColor}
@@ -482,7 +574,7 @@ export default Dashboard = props => {
         {/* RBSheet define here */}
         <RBSheet
           ref={refRBSheet}
-          height={280}
+          height={250}
           closeOnDragDown={true}
           closeOnPressMask={false}
           customStyles={{

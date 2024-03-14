@@ -1,12 +1,12 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import React, { useState } from "react";
-import { SelectPropertiesStyle } from "./SelectPropertiesStyle";
-import Entypo from "react-native-vector-icons/Entypo";
-import { _COLORS } from "../../../Themes";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { Divider } from "react-native-paper";
+import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {SelectPropertiesStyle} from './SelectPropertiesStyle';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {_COLORS} from '../../../Themes';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Divider} from 'react-native-paper';
 
-const SelectProperties = (props) => {
+const SelectProperties = props => {
   const [show, setShow] = useState(false);
   const [inglewood, setInglewood] = useState(false);
   const [cir, setCir] = useState(false);
@@ -29,7 +29,7 @@ const SelectProperties = (props) => {
     setQld(!qld);
   };
   const handleClosePopup = () => {
-    props.onClose()
+    props.onClose();
   };
 
   return (
@@ -49,13 +49,13 @@ const SelectProperties = (props) => {
                 <MaterialCommunityIcons
                   size={25}
                   color={_COLORS.Kodie_GrayColor}
-                  name={show ? "checkbox-marked" : "checkbox-blank-outline"}
+                  name={show ? 'checkbox-marked' : 'checkbox-blank-outline'}
                 />
               </View>
             </TouchableOpacity>
             <Text style={SelectPropertiesStyle.textoption}>All</Text>
           </View>
-          <Divider style={SelectPropertiesStyle.Divider} />
+          {/* <Divider style={SelectPropertiesStyle.Divider} /> */}
 
           <View style={SelectPropertiesStyle.optionsview}>
             <TouchableOpacity onPress={toggleinglewood}>
@@ -64,7 +64,7 @@ const SelectProperties = (props) => {
                   size={25}
                   color={_COLORS.Kodie_GrayColor}
                   name={
-                    inglewood ? "checkbox-marked" : "checkbox-blank-outline"
+                    inglewood ? 'checkbox-marked' : 'checkbox-blank-outline'
                   }
                 />
               </View>
@@ -80,7 +80,7 @@ const SelectProperties = (props) => {
                 <MaterialCommunityIcons
                   size={25}
                   color={_COLORS.Kodie_GrayColor}
-                  name={cir ? "checkbox-marked" : "checkbox-blank-outline"}
+                  name={cir ? 'checkbox-marked' : 'checkbox-blank-outline'}
                 />
               </View>
             </TouchableOpacity>
@@ -95,7 +95,7 @@ const SelectProperties = (props) => {
                 <MaterialCommunityIcons
                   size={25}
                   color={_COLORS.Kodie_GrayColor}
-                  name={qld ? "checkbox-marked" : "checkbox-blank-outline"}
+                  name={qld ? 'checkbox-marked' : 'checkbox-blank-outline'}
                 />
               </View>
             </TouchableOpacity>

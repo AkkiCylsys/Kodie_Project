@@ -28,6 +28,19 @@ export default CompanyInProfileStyle = StyleSheet.create({
   inputContainer: {
     marginTop: 15,
   },
+  typescommontext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    letterSpacing: 0.3,
+  },
+  companycommontext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    letterSpacing: 0.3,
+    marginBottom: 12,
+  },
   smstext: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,

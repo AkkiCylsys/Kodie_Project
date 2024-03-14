@@ -436,12 +436,12 @@ const ProfileDocumentDetails = props => {
           inputSearchStyle={ProfileDocumentDetailStyle.inputSearchStyle}
           iconStyle={ProfileDocumentDetailStyle.iconStyle}
           data={documentLookupData}
-          search
+          // search
           maxHeight={300}
           labelField="lookup_description"
           valueField="lookup_key"
-          placeholder="Select item"
-          searchPlaceholder="Search..."
+          placeholder="Select document"
+          // searchPlaceholder="Search..."
           value={documentLookupDataValue}
           onChange={item => {
             setDocumentLookupDataValue(item.lookup_key);

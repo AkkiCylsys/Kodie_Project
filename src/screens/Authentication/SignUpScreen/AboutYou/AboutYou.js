@@ -260,11 +260,12 @@ export default AboutYou = props => {
       }}
     />
   );
+
   useEffect(() => {
-    handle_manage_property(), handle_kodiehelp(), handle_describe_yourself();
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
+    handle_manage_property(), handle_kodiehelp(), handle_describe_yourself();
   }, []);
   const ConfirmAddress = () => {
     setIsMap(false);

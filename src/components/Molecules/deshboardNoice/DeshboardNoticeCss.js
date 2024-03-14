@@ -42,16 +42,19 @@ export const DeshBoardNoticeCss = StyleSheet.create({
     marginTop: 5,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
-    textAlign: 'justify',
-    lineHeight: 18,
     alignSelf: 'center',
     width: '100%',
   },
   continueText: {
     color: _COLORS.Kodie_lightGreenColor,
-    marginTop: 2,
+    alignSelf: 'center',
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
+    marginTop:6
+  },
+  continueContainer: {
+    // alignItems: 'center',
+    // marginTop: 16, // Adjust this value as needed
   },
   spaceLine: {height: 3, backgroundColor: _COLORS.Kodie_lightGreenColor},
   trialView: {

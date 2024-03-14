@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity,TouchableWithoutFeedback} from 'react-native';
 // import ProgressBar from 'react-native-progress/Bar';
 import {ProgressBar, MD3Colors} from 'react-native-paper';
 import {_COLORS} from '../../../Themes';
@@ -17,13 +17,13 @@ const DeshboardNotice = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [profileDay, setProfileDay] = useState('');
   const [profileCompletion, setProfileCompletion] = useState('');
-  const [progressPercentage, setProgressPercentage] = useState('');
+  const [progressPercentage, setProgressPercentage] = useState(0);
   const [show, setShow] = useState(false);
   const [Progresswidth, setProgresswidth] = useState('100%');
   const userID = loginData?.Login_details?.user_id;
   useEffect(() => {
     handleprofileDays();
-    handleprofileCompletion();
+   // handleprofileCompletion();
   }, []);
 
   const handlePress = () => {
@@ -66,12 +66,13 @@ const DeshboardNotice = props => {
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
         console.log('profileCompletion response....', response.data);
-        setProfileCompletion(response.data.data[0].result);
-        console.log('profileCompletion..', response.data.data[0].result);
+        setProfileCompletion(response?.data?.data[0]?.result);
+        console.log('profileCompletion..', response?.data?.data[0]?.result);
         const profileValueWithoutPercent = profileCompletion.replace('%', '');
         const progressValue = profileValueWithoutPercent / 100;
         console.log('progressValue...', progressValue);
         setProgressPercentage(progressValue);
+        setIsLoading(false);
       })
       .catch(error => {
         console.log('profileCompletion error...', error);
@@ -85,6 +86,12 @@ const DeshboardNotice = props => {
   const handleClosePopup = () => {
     // props.onClose();
     setShow(!show);
+
+  };
+  const handletextPress = () => {
+    // alert('Coming soon')
+    // Yaha par aap click event ka logic likh sakte hain
+    console.log('Text clicked!');
   };
   return (
     <>
@@ -94,7 +101,7 @@ const DeshboardNotice = props => {
             <View style={DeshBoardNoticeCss?.PercenView}>
               <View style={DeshBoardNoticeCss?.percentageText}>
                 <Text style={DeshBoardNoticeCss.progressText}>
-                  {profileCompletion} Complete, nice work!
+                  {props.PerprofileCompletion} Complete, nice work!
                 </Text>
               </View>
               <TouchableOpacity
@@ -111,7 +118,7 @@ const DeshboardNotice = props => {
 
             </View> */}
             <ProgressBar
-              progress={progressPercentage}
+              progress={props.progressPercentage}
               color={_COLORS.Kodie_lightGreenColor}
               style={DeshBoardNoticeCss.progresBar}
             />
@@ -124,24 +131,31 @@ const DeshboardNotice = props => {
               style={DeshBoardNoticeCss.progresBar}
               borderColor="black"
             /> */}
+            <View>
             <Text style={DeshBoardNoticeCss.profileText}>
-              We are happy to have you on board. You have almost completed your
-              profile set up.
-              <TouchableOpacity>
-                <Text style={DeshBoardNoticeCss.continueText}>
-                  Tap to continue
+             {"We are happy to have you on board. You have almost completed your profile set up.  "}
+ 
+              <TouchableWithoutFeedback  onPress={handletextPress}>
+                <Text style={[DeshBoardNoticeCss.continueText]}>
+                  {'Tap to continue'}
                 </Text>
-              </TouchableOpacity>
+              </TouchableWithoutFeedback>
             </Text>
+            </View>
           </View>
           <View style={DeshBoardNoticeCss.spaceLine} />
           <View style={DeshBoardNoticeCss.trialView}>
             <Text style={DeshBoardNoticeCss.trialText}>
               Your free trial ends in {profileDay} days.
             </Text>
-            <TouchableOpacity style={DeshBoardNoticeCss.upgradeView}>
+            {props.ShowUpgradeButton?
+            <TouchableOpacity onPress={()=>{
+              props.navigation.navigate('ManageSubscription');
+            }} style={DeshBoardNoticeCss.upgradeView}>
               <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
             </TouchableOpacity>
+            :null
+}
           </View>
         </View>
       )}

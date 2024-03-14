@@ -8,6 +8,7 @@ import {
   ScrollView,
   PermissionsAndroid,
   FlatList,
+  Alert,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -58,7 +59,9 @@ const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
   const [fullName, setFullName] = useState('');
+  const [fullNameError, setFullNameError] = useState('');
   const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
   const [email, setEmail] = useState(loginData?.Login_details?.email);
   const [phoneNumber, setPhoneNumber] = useState(
     String(loginData.Account_details[0]?.UAD_PHONE_NO),
@@ -112,6 +115,32 @@ const EditProfile = props => {
     // console.log("fileUri....", fileUri);
     // console.log("fileName....", fileName);
     // console.log("fileType....", fileType);
+  };
+
+  // Validation for First Name
+  const validateFullName = text => {
+    if (text === '') {
+      setFullNameError('First name is required');
+      // } else if (!/^[A-Za-z]+$/.test(text)) {
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
+      setFullNameError('First name should contain only alphabetic characters');
+    } else {
+      setFullNameError('');
+    }
+    setFullName(text);
+  };
+
+  // Validation for Last Name
+  const validateLastName = text => {
+    if (text === '') {
+      setLastNameError('Last name is required');
+      // } else if (!/^[A-Za-z]+$/.test(text)) {
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
+      setLastNameError('Last name should contain only alphabetic characters');
+    } else {
+      setLastNameError('');
+    }
+    setLastName(text);
   };
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
@@ -335,8 +364,9 @@ const EditProfile = props => {
       });
       console.log('updateprofile....', response.data);
       if (response.data.success === true) {
-        alert(response.data.message);
+        Alert.alert(response.data.message);
         getPersonalDetails();
+        props.navigation.navigate('LandlordProfile');
       }
     } catch (error) {
       alert(error);
@@ -355,7 +385,7 @@ const EditProfile = props => {
         return (
           <ScrollView
             style={EditProfileStyle.mainContainer}
-            contentContainerStyle={{marginBottom: 200}}>
+            contentContainerStyle={{marginBottom: 50}}>
             {IsMap || IsSearch ? null : (
               <>
                 <View style={[EditProfileStyle.profilviewmain, {flex: 1}]}>
@@ -404,11 +434,17 @@ const EditProfile = props => {
                       <TextInput
                         value={fullName}
                         onChangeText={text => setFullName(text)}
+                        onBlur={() => validateFullName(fullName)}
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         style={EditProfileStyle.inputStyle}
                       />
                     </View>
+                    {fullNameError ? (
+                      <Text style={EditProfileStyle.errorText}>
+                        {fullNameError}
+                      </Text>
+                    ) : null}
                   </View>
                   <View style={EditProfileStyle.firstview}>
                     <Text style={EditProfileStyle.oldnumbertext}>
@@ -419,10 +455,16 @@ const EditProfile = props => {
                         style={EditProfileStyle.inputStyle}
                         value={lastName}
                         onChangeText={text => setLastName(text)}
+                        onBlur={() => validateLastName(lastName)}
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />
                     </View>
+                    {lastNameError ? (
+                      <Text style={EditProfileStyle.errorText}>
+                        {lastNameError}
+                      </Text>
+                    ) : null}
                   </View>
                   <View style={EditProfileStyle.firstview}>
                     <Text style={EditProfileStyle.oldnumbertext}>
@@ -504,7 +546,7 @@ const EditProfile = props => {
                   </View>
                   <View style={EditProfileStyle.firstview}>
                     <Text style={EditProfileStyle.oldnumbertext}>
-                      Physical address
+                      Current physical address
                     </Text>
 
                     <View style={EditProfileStyle.locationContainer}>

@@ -19,7 +19,7 @@ import {
   LogBox,
   Image
 } from "react-native";
-import { isConnected } from "./src/errorPages/NoInternet/CheckInternet";
+
 import {
   Colors,
   DebugInstructions,
@@ -31,6 +31,7 @@ import Routes from './src/Navigation/AllRoutes/AllRoutes';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import store, {persistor} from './src/redux/Store/index';
+import withNetworkConnectivity from './src/errorPages/NoInternet/withNetworkConnectivity'; // Import the HOC
 
 const Section = ({children, title}): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -66,16 +67,17 @@ const App = () => {
   useEffect(() => {
     //SplashScreen.hide()
     LogBox.ignoreAllLogs(true);
-    isConnected()
-      .then(() => console.log("has internet connection"))
-      // .then(() => console.log(userInfoJiMunim))
-      .catch(() => console.log('has No internet connection'));
+    // isConnected()
+    //   .then(() => console.log("has internet connection"))
+    //   // .then(() => console.log(userInfoJiMunim))
+    //   .catch(() => console.log('has No internet connection'));
   }, []);
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+      
         <Routes />
       </PersistGate>
     </Provider>
@@ -101,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default withNetworkConnectivity(App);

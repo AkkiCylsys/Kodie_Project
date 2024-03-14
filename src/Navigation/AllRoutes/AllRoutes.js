@@ -89,7 +89,6 @@ import SignUpSteps from '../../screens/Authentication/SignUpScreen/SignUpSteps/S
 import Notices from '../../screens/NotiesList/Notices/Notices';
 import Reports from '../../screens/Reports/Reports';
 import GenerateReport from '../../screens/Reports/GenerateReport/GenerateReport';
-import Partners from '../../screens/Partners/Partners';
 import PropertyListings from '../../screens/PropertyListings/PropertyListings';
 import VacantPropertiesList from '../../screens/VacantProperties/VacantPropertiesList';
 import PrivacySecurity from '../../screens/Authentication/PrivacyAndSecurity/PrivacySecurity';
@@ -136,7 +135,7 @@ import CompanyInProfile from '../../screens/Landlord/Landlordprofile/CompanyDeta
 import IndividualInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Individual/IndividualInProfile';
 import IndividualSignup from '../../screens/Authentication/SignUpScreen/AboutYou/IndividualSignup/IndividualSignup';
 import CompanySignup from '../../screens/Authentication/SignUpScreen/AboutYou/CompanySignup/CompanySignup';
-
+import Partners from '../../screens/Partners/Partners';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -892,12 +891,6 @@ const AllStackRouts = props => {
         />
 
         <Stack.Screen
-          name={'Partners'}
-          component={Partners}
-          options={{headerShown: false}}
-        />
-
-        <Stack.Screen
           name={'PropertyListings'}
           component={PropertyListings}
           options={{headerShown: false}}
@@ -1104,6 +1097,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'SubscriptionScreen'}
           component={SubscriptionScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'Partners'}
+          component={Partners}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

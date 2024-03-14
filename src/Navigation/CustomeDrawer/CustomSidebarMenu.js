@@ -72,14 +72,14 @@ const CustomSidebarMenu = props => {
         break;
       case 'Partners':
         setselectedId('Partners');
-        // props.navigation.navigate("Partners");
-        props.navigation.navigate('ConfirmJobCompletion');
+        props.navigation.navigate('Partners');
+        // props.navigation.navigate('ConfirmJobCompletion');
         break;
-      case 'Logout':
-        setselectedId('LogOut');
-        // props.navigation.navigate("LoginScreen");
-        LogOut();
-        break;
+      // case 'Logout':
+      //   setselectedId('LogOut');
+      //   // props.navigation.navigate("LoginScreen");
+      //   LogOut();
+      //   break;
 
       default:
         setselectedId('Dashboard');
@@ -354,8 +354,10 @@ const CustomSidebarMenu = props => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          // onPress={() => check("Partners")} Navigate To Confirm Job
-          onPress={handleGeneralSettingsPress}>
+          onPress={() => check('Partners')}
+          // Navigate To Confirm Job
+          // onPress={handleGeneralSettingsPress}
+        >
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="seal"
@@ -368,7 +370,7 @@ const CustomSidebarMenu = props => {
           <Text style={DrawerStyle.SubHeading}>{'Partners'}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,
             // {
@@ -389,7 +391,7 @@ const CustomSidebarMenu = props => {
             />
           </View>
           <Text style={DrawerStyle.SubHeading}>{'Logout'}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );
