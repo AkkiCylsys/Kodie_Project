@@ -296,7 +296,7 @@ export default LandlordProfile = props => {
           container: LandlordProfileStyle.bottomModal_container,
         }}>
         <View style={LandlordProfileStyle.popupcantainer}>
-          <Text style={LandlordProfileStyle.popuptext}>Logout from device</Text>
+          <Text style={LandlordProfileStyle.popuptext}>Logout from device ?</Text>
           <MaterialIcons
             name="close"
             size={24}

@@ -2,24 +2,27 @@ import { StyleSheet } from "react-native";
 import { _COLORS,FONTFAMILY } from "../../../Themes/index";
 
 export const ManagingTenantStyle = StyleSheet.create({
-  mainContainer: { flex: 1 },
+  mainContainer: { 
+    flex: 1,
+    marginHorizontal:16
+  },
   container: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 8,
-    marginHorizontal:10,
-    backgroundColor:_COLORS.Kodie_WhiteColor
-    
+    padding: "1%",
+    backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   IcontenantView:{
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_ExtraLiteWhiteColor,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
     marginLeft: 5,
     width: 35,
-    marginTop:10,
+    marginTop: 10,
     height: 35,
     justifyContent: "center",
+    alignItems: "center",
+    textAlign:"center",
   },
   closeicon:{
     justifyContent: "flex-end",

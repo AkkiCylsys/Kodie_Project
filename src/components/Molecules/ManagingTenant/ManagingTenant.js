@@ -12,7 +12,6 @@ const data = [
   {
     id: "1",
     Data: "View / edit tenant details",
-    // Img: IMAGES.View_property,
     Icon:<MaterialIcons
     name="preview"
     size={25}
@@ -22,7 +21,6 @@ const data = [
   {
     id: "2",
     Data: "Rent history",
-    // Img: IMAGES.Documents,
     Icon:<MaterialCommunityIcons
     name="folder-cog-outline"
     size={25}
@@ -32,7 +30,6 @@ const data = [
   {
     id: "3",
     Data: "Manage documents",
-    // Img: IMAGES.Reminder,
     Icon:<MaterialCommunityIcons
     name="folder-cog-outline"
     size={25}
@@ -42,7 +39,6 @@ const data = [
   {
     id: "4",
     Data: "Notices & reminders",
-    // Img: IMAGES.Chat_Tenant,
     Icon:<Ionicons
     name="mail-unread-outline"
     size={25}
@@ -52,7 +48,6 @@ const data = [
   {
     id: "5",
     Data: "Delete tenant",
-    // Img: IMAGES.Delete,
     Icon:<MaterialCommunityIcons
     name="delete-outline"
     size={25}
