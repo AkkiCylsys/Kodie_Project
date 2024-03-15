@@ -58,8 +58,8 @@ const data = [
 const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
-  const [fullName, setFullName] = useState('');
-  const [fullNameError, setFullNameError] = useState('');
+  const [fullName, setFirstName] = useState('');
+  const [fullNameError, setFirstNameError] = useState('');
   const [lastName, setLastName] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [email, setEmail] = useState(loginData?.Login_details?.email);
@@ -118,16 +118,26 @@ const EditProfile = props => {
   };
 
   // Validation for First Name
-  const validateFullName = text => {
+  // const validateFullName = text => {
+  //   if (text === '') {
+  //     setFullNameError('First name is required');
+  //     // } else if (!/^[A-Za-z]+$/.test(text)) {
+  //   } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
+  //     setFullNameError('First name should contain only alphabetic characters');
+  //   } else {
+  //     setFullNameError('');
+  //   }
+  //   setFullName(text);
+  // };
+  const validateFirstName = text => {
     if (text === '') {
-      setFullNameError('First name is required');
-      // } else if (!/^[A-Za-z]+$/.test(text)) {
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
-      setFullNameError('First name should contain only alphabetic characters');
+      setFirstNameError('First name is required');
+    } else if (!/^[A-Za-z]+$/.test(text)) {
+      setFirstNameError('First name should contain only alphabetic characters');
     } else {
-      setFullNameError('');
+      setFirstNameError('');
     }
-    setFullName(text);
+    setFirstName(text);
   };
 
   // Validation for Last Name
@@ -155,7 +165,7 @@ const EditProfile = props => {
         // Handle successful response
         console.log('API Response:', response.data.data[0][0]);
         setAccountDetails(response.data.data[0][0]);
-        setFullName(response.data.data[0][0]?.UAD_FIRST_NAME);
+        setFirstName(response.data.data[0][0]?.UAD_FIRST_NAME);
         setLastName(response.data.data[0][0]?.UAD_LAST_NAME);
         setLocation(response.data.data[0][0]?.UAD_CURR_PHYSICAL_ADD);
         setAbout(response.data.data[0][0]?.UAD_BIO);
@@ -433,8 +443,8 @@ const EditProfile = props => {
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
                         value={fullName}
-                        onChangeText={text => setFullName(text)}
-                        onBlur={() => validateFullName(fullName)}
+                        onChangeText={text => setFirstName(text)}
+                        onBlur={() => validateFirstName(fullName)}
                         placeholder="Jason Stathom"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         style={EditProfileStyle.inputStyle}

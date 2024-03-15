@@ -16,7 +16,7 @@ import RowTab from '../../../components/Molecules/RowTab/RowTab';
 import {_goBack} from '../../../services/CommonServices/CommonMethods';
 const AccountSetting = props => {
   const handleGeneralSettingsPress = () => {
-    Alert.alert('Coming soon');
+    Alert.alert('Alert', 'Coming soon');
   };
   const handlechangecontact = () => {
     props.navigation.navigate('ChangeContactInput');
