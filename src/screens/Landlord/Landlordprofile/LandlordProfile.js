@@ -82,7 +82,7 @@ export default LandlordProfile = props => {
   const refRBSheet = useRef();
   // Alert_____
   const handleGeneralSettingsPress = () => {
-    Alert.alert('Coming soon');
+    Alert.alert('Alert', 'Coming soon');
   };
   const CloseUp = () => {
     refRBSheet.current.close();
@@ -313,7 +313,9 @@ export default LandlordProfile = props => {
           container: LandlordProfileStyle.bottomModal_container,
         }}>
         <View style={LandlordProfileStyle.popupcantainer}>
-          <Text style={LandlordProfileStyle.popuptext}>Logout from device</Text>
+          <Text style={LandlordProfileStyle.popuptext}>
+            Logout from device ?
+          </Text>
           <MaterialIcons
             name="close"
             size={24}

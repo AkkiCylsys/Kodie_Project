@@ -201,17 +201,17 @@ const PropertyListing = () => {
             <View style={PropertyListingCss.flexContainer}>
               <View style={PropertyListingCss.noteStyle}>
                 <TouchableOpacity>
-                  <Image
+                  {/* <Image
                     source={IMAGES.noteBook}
                     style={PropertyListingCss.noteIcon}
                     resizeMode={"contain"}
-                  />
-                  {/* <SimpleLineIcons
+                  /> */}
+                  <SimpleLineIcons
                     name="note"
                     size={25}
                     color={_COLORS.Kodie_LightGrayColor}
                     resizeMode={"contain"}
-                  /> */}
+                  />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
@@ -232,8 +232,8 @@ const PropertyListing = () => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                      ? _COLORS.Kodie_mostLightGreenColor
-                      : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_mostLightGreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}
               >
@@ -244,8 +244,8 @@ const PropertyListing = () => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_LightGrayColor
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -256,8 +256,8 @@ const PropertyListing = () => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_MediumGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
                   onPress={() => {
@@ -306,8 +306,8 @@ const PropertyListing = () => {
         {/* three dot click popup menu */}
         <RBSheet
           ref={refRBSheet1}
-          // closeOnDragDown={true}
-          height={330}
+          closeOnDragDown={true}
+          height={320}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
@@ -315,6 +315,9 @@ const PropertyListing = () => {
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
+              width: 40,
+              height: 4,
+              borderRadius: 2,
             },
             container: PropertyListingCss.bottomModal_container,
           }}
@@ -330,7 +333,8 @@ const PropertyListing = () => {
             isDeletePropertyClicked={isDeleteData_Clicked}
           />
         </RBSheet>
-       
+
+
         {/* AddBiddingDetails popup */}
         <RBSheet
           ref={refRBSheet2}

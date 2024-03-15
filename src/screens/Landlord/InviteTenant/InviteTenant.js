@@ -243,7 +243,7 @@ const searchInviteTenant=()=>{
 
       <RBSheet
         ref={refRBSheet}
-        height={280}
+        height={240}
         closeOnDragDown={true}
         closeOnPressMask={false}
         customStyles={{

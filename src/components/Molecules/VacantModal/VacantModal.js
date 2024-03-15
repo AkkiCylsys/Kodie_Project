@@ -16,7 +16,6 @@ const data = [
   {
     id: "1",
     Data: "View /edit property details",
-    // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons
         name="preview"
@@ -29,8 +28,17 @@ const data = [
   {
     id: "2",
     Data:'List property on kodie property marketplace',
-   
-    // Img: IMAGES.Documents,
+    Icon: (
+      <MaterialCommunityIcons
+        name="alpha-k-box-outline"
+        size={25}
+        color={_COLORS.Kodie_GreenColor}
+      />
+    ),
+  },
+  {
+    id: "3",
+    Data: "Manage documents",
     Icon: (
       <MaterialCommunityIcons
         name="file-download-outline"
@@ -40,9 +48,8 @@ const data = [
     ),
   },
   {
-    id: "3",
-    Data: "Manage documents",
-    // Img: IMAGES.Reminder,
+    id: "4",
+    Data: "Notices & reminders",
     Icon: (
       <Ionicons
         name="mail-unread-outline"
@@ -52,21 +59,8 @@ const data = [
     ),
   },
   {
-    id: "4",
-    Data: "Notices & reminders",
-    // Img: IMAGES.Chat_Tenant,
-    Icon: (
-      <Ionicons
-        name="chatbubbles-outline"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
-  {
     id: "5",
     Data: "Delete property",
-    // Img: IMAGES.Delete,
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -80,7 +74,6 @@ const data1 = [
   {
     id: "1",
     Data: "Confirm delete property",
-    // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -92,7 +85,6 @@ const data1 = [
   {
     id: "2",
     Data: "Archive instead",
-    // Img: IMAGES.Documents,
     Icon: (
       <Ionicons
         name="file-tray-full-outline"
@@ -190,7 +182,7 @@ const VacantModal = (props) => {
         }}
         onPress={handleCloseModal}
       >
-        <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+        {/* <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} /> */}
         {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
       </TouchableOpacity>
       <FlatList

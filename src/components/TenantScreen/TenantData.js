@@ -126,7 +126,7 @@ const TenantData = (props) => {
             }}
           >
             {/* <Image source={item.Img} style={TenantDataStyle.Icons} /> */}
-            {item.Icon}
+            <View style={TenantDataStyle.IconView}>{item.Icon}</View>
             <Text style={TenantDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}
@@ -143,7 +143,7 @@ const TenantData = (props) => {
         }}
         onPress={toggleclose}
       >
-        <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} />
+        {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
       </TouchableOpacity>
       <FlatList
         data={props?.isDeletePropertyClicked ? data1 : data}
