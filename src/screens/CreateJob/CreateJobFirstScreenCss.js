@@ -88,7 +88,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: '#ccc',
-    color: _COLORS.Kodie_LightGrayColor,
+    color: _COLORS.Kodie_BlackColor,
   },
   cardHeight: {marginBottom: 8},
   locationIcon: {

@@ -47,14 +47,14 @@ export const JobDocumentDetailStyle = StyleSheet.create({
   textContainer: {
     // flex:1,
     flexDirection: "column",
-    marginLeft: 5,
+    marginLeft: 10,
   },
 
   pdfInfo: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    padding: 5,
+    padding: 10,
   },
   pdfName: {
     flex: 0.5,

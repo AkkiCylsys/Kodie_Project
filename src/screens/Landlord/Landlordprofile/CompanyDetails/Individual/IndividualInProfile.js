@@ -296,95 +296,98 @@ const IndividualInProfile = ({
   }, [selectJobType, website, selectJobTypeid, servicesValue]);
 
   return (
-    <View style={{flex:1}}>
-      <View style={IndividualProfileStyle.card}>
-        <View>
-          <Text style={IndividualProfileStyle.want_Heading}>
-            {
-              'The category of service you offer (you can select multiple options)'
-            }
-          </Text>
-          <FlatList
-            data={kodieDescribeYourselfData}
-            renderItem={jobType_render}
-            keyExtractor={item => item.lookup_key}
-            numColumns={2}
-          />
-        </View>
-        {selectedselectJobTypesString == '' ? null : (
-          <View style={IndividualProfileStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>
-              {'The type of service you perform'}
+    <View style={{flex: 1}}>
+      {isLoading ? (
+        <CommonLoader />
+      ) : (
+        <View style={IndividualProfileStyle.card}>
+          <View>
+            <Text style={IndividualProfileStyle.want_Heading}>
+              {
+                'The category of service you offer (you can select multiple options)'
+              }
             </Text>
-            <MultiSelect
-              style={[IndividualProfileStyle.dropdown]}
-              placeholderStyle={IndividualProfileStyle.placeholderStyle}
-              selectedTextStyle={IndividualProfileStyle.selectedTextStyle}
-              inputSearchStyle={IndividualProfileStyle.inputSearchStyle}
-              iconStyle={IndividualProfileStyle.iconStyle}
-              search
-              data={servicesData}
-              labelField="lookup_description"
-              valueField="lookup_key"
-              placeholder="Select item"
-              searchPlaceholder="Search..."
-              value={servicesValue}
-              onChange={selectedItems => {
-                setservicesValue(selectedItems);
-              }}
-              selectedStyle={{
-                backgroundColor: _COLORS.Kodie_BlackColor,
-                borderRadius: 20,
-                alignSelf: 'center',
-              }}
+            <FlatList
+              data={kodieDescribeYourselfData}
+              renderItem={jobType_render}
+              keyExtractor={item => item.lookup_key}
+              numColumns={2}
             />
           </View>
-        )}
-        <View style={IndividualProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'Company physical address'}
-          </Text>
-
+          {selectedselectJobTypesString == '' ? null : (
+            <View style={IndividualProfileStyle.inputContainer}>
+              <Text style={LABEL_STYLES.commontext}>
+                {'The type of service you perform'}
+              </Text>
+              <MultiSelect
+                style={[IndividualProfileStyle.dropdown]}
+                placeholderStyle={IndividualProfileStyle.placeholderStyle}
+                selectedTextStyle={IndividualProfileStyle.selectedTextStyle}
+                inputSearchStyle={IndividualProfileStyle.inputSearchStyle}
+                iconStyle={IndividualProfileStyle.iconStyle}
+                search
+                data={servicesData}
+                labelField="lookup_description"
+                valueField="lookup_key"
+                placeholder="Select item"
+                searchPlaceholder="Search..."
+                value={servicesValue}
+                onChange={selectedItems => {
+                  setservicesValue(selectedItems);
+                }}
+                selectedStyle={{
+                  backgroundColor: _COLORS.Kodie_BlackColor,
+                  borderRadius: 20,
+                  alignSelf: 'center',
+                }}
+              />
+            </View>
+          )}
           <View style={IndividualProfileStyle.inputContainer}>
-            <View style={IndividualProfileStyle.locationConView}>
-              <View style={IndividualProfileStyle.locationContainer}>
-                <TextInput
-                  style={IndividualProfileStyle.locationInput}
-                  value={IndividualLocation}
-                  onChangeText={onChangeIndivialLocation}
-                  onFocus={IndividualOnFocus}
-                  placeholder="Search location"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                />
+            <Text style={LABEL_STYLES.commontext}>
+              {'Company physical address'}
+            </Text>
+
+            <View style={IndividualProfileStyle.inputContainer}>
+              <View style={IndividualProfileStyle.locationConView}>
+                <View style={IndividualProfileStyle.locationContainer}>
+                  <TextInput
+                    style={IndividualProfileStyle.locationInput}
+                    value={IndividualLocation}
+                    onChangeText={onChangeIndivialLocation}
+                    onFocus={IndividualOnFocus}
+                    placeholder="Search location"
+                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  />
+                </View>
+                <TouchableOpacity
+                  style={IndividualProfileStyle.locationIconView}
+                  onPress={handleMap}>
+                  <Octicons
+                    name={'location'}
+                    size={22}
+                    color={_COLORS.Kodie_GreenColor}
+                    style={IndividualProfileStyle.locationIcon}
+                  />
+                </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                style={IndividualProfileStyle.locationIconView}
-                onPress={handleMap}>
-                <Octicons
-                  name={'location'}
-                  size={22}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={IndividualProfileStyle.locationIcon}
-                />
-              </TouchableOpacity>
             </View>
           </View>
-        </View>
 
-        <View style={IndividualProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
-          <TextInput
-            style={IndividualProfileStyle.input}
-            value={website}
-            onChangeText={text => {
-              setWebsite(text);
-            }}
-            placeholder="Enter your website address (if you have one)"
-            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-          />
+          <View style={IndividualProfileStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
+            <TextInput
+              style={IndividualProfileStyle.input}
+              value={website}
+              onChangeText={text => {
+                setWebsite(text);
+              }}
+              placeholder="Enter your website address (if you have one)"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+            />
+          </View>
         </View>
-      </View>
-      {isLoading ? <CommonLoader /> : null}
+      )}
     </View>
   );
 };

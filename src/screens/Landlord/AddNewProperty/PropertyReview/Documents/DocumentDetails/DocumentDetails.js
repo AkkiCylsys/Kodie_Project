@@ -21,11 +21,12 @@ import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
-// import RNFS from "react-native-fs";
+import RNFS from 'react-native-fs';
 import RNFetchBlob from 'rn-fetch-blob';
 import {Config} from '../../../../../../Config';
 import Share from 'react-native-share';
 import {useNavigation} from '@react-navigation/native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const DocumentDetails = props => {
   const navigation = useNavigation();
@@ -253,15 +254,21 @@ const DocumentDetails = props => {
     );
   };
   const GetuploadedDocumentrender = ({item, index}) => {
-    setFileKey(item.PDUM_FILE_KEY);
+    // setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
     return (
       <>
         <View style={DocumentDetailStyle.container}>
           <View style={DocumentDetailStyle.pdfInfo}>
-            <Image
+            {/* <Image
               source={IMAGES.document}
               style={DocumentDetailStyle.pdfIcon}
+            /> */}
+            <FontAwesome
+              name="file-pdf-o"
+              size={35}
+              color={_COLORS.Kodie_BlackColor}
+              resizeMode={'contain'}
             />
             <View style={DocumentDetailStyle.textContainer}>
               <Text style={DocumentDetailStyle.pdfName}>
@@ -279,6 +286,7 @@ const DocumentDetails = props => {
               refRBSheet.current.open();
               setFilePath(item.PDUM_FILE_PATH);
               console.log('fileKey....', fileKey);
+              setFileKey(item.PDUM_FILE_KEY);
             }}>
             <Entypo
               name="dots-three-vertical"

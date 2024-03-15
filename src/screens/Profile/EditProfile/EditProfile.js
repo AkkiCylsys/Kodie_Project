@@ -342,7 +342,7 @@ const EditProfile = props => {
         type: fileType,
       });
     }
-    formData.append('uad_key', loginData?.Login_details?.user_id);
+    formData.append('uad_key', loginData?.Login_details?.user_account_id);
     formData.append('first_name', fullName);
     formData.append('last_name', lastName);
     formData.append('phone_number', phoneNumber);
@@ -364,7 +364,7 @@ const EditProfile = props => {
       });
       console.log('updateprofile....', response.data);
       if (response.data.success === true) {
-        Alert.alert(response.data.message);
+        alert(response.data.message);
         getPersonalDetails();
         props.navigation.navigate('LandlordProfile');
       }
@@ -435,7 +435,7 @@ const EditProfile = props => {
                         value={fullName}
                         onChangeText={text => setFullName(text)}
                         onBlur={() => validateFullName(fullName)}
-                        placeholder="Jason Stathom"
+                        placeholder="First name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         style={EditProfileStyle.inputStyle}
                       />
@@ -456,7 +456,7 @@ const EditProfile = props => {
                         value={lastName}
                         onChangeText={text => setLastName(text)}
                         onBlur={() => validateLastName(lastName)}
-                        placeholder="Jason Stathom"
+                        placeholder="last name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       />
                     </View>

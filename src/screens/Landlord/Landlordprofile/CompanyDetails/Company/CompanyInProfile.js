@@ -314,126 +314,135 @@ const CompanyInProfile = ({
   ]);
   return (
     <View>
-      <View style={CompanyInProfileStyle.card}>
-        <View style={CompanyInProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>{'Organisation name'}</Text>
-          <TextInput
-            style={CompanyInProfileStyle.input}
-            value={companyName}
-            onChangeText={setCompanyName}
-            placeholder="Enter the name of your company"
-            placeholderTextColor="#999"
-          />
-          <Text style={CompanyInProfileStyle.smstext}>
-            Your organisation name will be used in emails and SMS correspondence
-            from Kodie.
-          </Text>
-        </View>
-
-        <View style={CompanyInProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'Australian business number'}
-          </Text>
-          <TextInput
-            style={[CompanyInProfileStyle.input]}
-            value={businessNumber}
-            onChangeText={SetBusinessNumber}
-            placeholder="Enter your ABN"
-            placeholderTextColor="#999"
-          />
-        </View>
-
-        <View style={CompanyInProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'Company GST / VAT number'}
-          </Text>
-          <TextInput
-            style={[CompanyInProfileStyle.input]}
-            value={companyGSTNumber}
-            onChangeText={setCompanyGSTNumber}
-            placeholder="1234567890"
-            placeholderTextColor="#999"
-          />
-        </View>
-
-        <View>
-          <Text style={CompanyInProfileStyle.want_Heading}>
-            {
-              'The category of service you offer (you can select multiple options)'
-            }
-          </Text>
-          <FlatList
-            data={kodieDescribeYourselfData}
-            renderItem={jobType_render}
-            keyExtractor={item => item.lookup_key.toString()}
-            numColumns={2}
-          />
-        </View>
-        {selectedselectJobTypesString == '' ? null : (
+      {isLoading ? (
+        <CommonLoader />
+      ) : (
+        <View style={CompanyInProfileStyle.card}>
           <View style={CompanyInProfileStyle.inputContainer}>
-            <Text
-              style={[
-                // CompanyInProfileStyle.companycommontext,
-                CompanyInProfileStyle.typescommontext,
-              ]}>
-              {'The type of service you perform'}
+            <Text style={LABEL_STYLES.commontext}>{'Organisation name'}</Text>
+            <TextInput
+              style={CompanyInProfileStyle.input}
+              value={companyName}
+              onChangeText={setCompanyName}
+              placeholder="Enter the name of your company"
+              placeholderTextColor="#999"
+            />
+            <Text style={CompanyInProfileStyle.smstext}>
+              Your organisation name will be used in emails and SMS
+              correspondence from Kodie.
             </Text>
-            <MultiSelect
-              style={[CompanyInProfileStyle.dropdown]}
-              placeholderStyle={CompanyInProfileStyle.placeholderStyle}
-              selectedTextStyle={CompanyInProfileStyle.selectedTextStyle}
-              inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
-              iconStyle={CompanyInProfileStyle.iconStyle}
-              search
-              data={servicesData}
-              labelField="lookup_description"
-              valueField="lookup_key"
-              placeholder="Select item"
-              searchPlaceholder="Search..."
-              value={servicesValue}
-              onChange={selectedItems => {
-                setservicesValue(selectedItems);
-              }}
-              selectedStyle={{
-                backgroundColor: _COLORS.Kodie_BlackColor,
-                borderRadius: 20,
-                alignSelf: 'center',
-              }}
+          </View>
+
+          <View style={CompanyInProfileStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Australian business number'}
+            </Text>
+            <TextInput
+              style={[CompanyInProfileStyle.input]}
+              value={businessNumber}
+              onChangeText={SetBusinessNumber}
+              placeholder="Enter your ABN"
+              placeholderTextColor="#999"
             />
           </View>
-        )}
-        <View style={CompanyInProfileStyle.inputContainer}>
-          <View
-            style={[
-              // CompanyInProfileStyle.inputContainer,
-              CompanyInProfileStyle.commontextfield,
-            ]}>
-            <View>
-              <Text style={CompanyInProfileStyle.companycommontext}>
-                {'Company physical address'}
+
+          <View style={CompanyInProfileStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Company GST / VAT number'}
+            </Text>
+            <TextInput
+              style={[CompanyInProfileStyle.input]}
+              value={companyGSTNumber}
+              onChangeText={setCompanyGSTNumber}
+              placeholder="1234567890"
+              placeholderTextColor="#999"
+            />
+          </View>
+
+          <View>
+            <Text style={CompanyInProfileStyle.want_Heading}>
+              {
+                'The category of service you offer (you can select multiple options)'
+              }
+            </Text>
+            <FlatList
+              data={kodieDescribeYourselfData}
+              renderItem={jobType_render}
+              keyExtractor={item => item.lookup_key.toString()}
+              numColumns={2}
+            />
+          </View>
+          {selectedselectJobTypesString == '' ? null : (
+            <View style={CompanyInProfileStyle.inputContainer}>
+              <Text
+                style={[
+                  // CompanyInProfileStyle.companycommontext,
+                  CompanyInProfileStyle.typescommontext,
+                ]}>
+                {'The type of service you perform'}
               </Text>
-              <View style={CompanyInProfileStyle.locationConView}>
-                <View style={CompanyInProfileStyle.locationContainer}>
-                  <TextInput
-                    style={CompanyInProfileStyle.locationInput}
-                    // value={location}
-                    value={CompanyLocation}
-                    onChangeText={onChangeCompanyLocation}
-                    onFocus={CompanyOnFocus}
-                    placeholder="Search location"
-                    placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  />
+              <MultiSelect
+                style={[CompanyInProfileStyle.dropdown]}
+                placeholderStyle={CompanyInProfileStyle.placeholderStyle}
+                selectedTextStyle={CompanyInProfileStyle.selectedTextStyle}
+                inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
+                iconStyle={CompanyInProfileStyle.iconStyle}
+                search
+                data={servicesData}
+                labelField="lookup_description"
+                valueField="lookup_key"
+                placeholder="Select item"
+                searchPlaceholder="Search..."
+                value={servicesValue}
+                onChange={selectedItems => {
+                  setservicesValue(selectedItems);
+                }}
+                selectedStyle={{
+                  backgroundColor: _COLORS.Kodie_BlackColor,
+                  borderRadius: 20,
+                  alignSelf: 'center',
+                }}
+              />
+            </View>
+          )}
+          <View style={CompanyInProfileStyle.inputContainer}>
+            <View
+              style={[
+                // CompanyInProfileStyle.inputContainer,
+                CompanyInProfileStyle.commontextfield,
+              ]}>
+              <View>
+                <Text style={CompanyInProfileStyle.companycommontext}>
+                  {'Company physical address'}
+                </Text>
+                <View style={CompanyInProfileStyle.locationConView}>
+                  <View style={CompanyInProfileStyle.locationContainer}>
+                    <TextInput
+                      style={CompanyInProfileStyle.locationInput}
+                      // value={location}
+                      value={CompanyLocation}
+                      onChangeText={onChangeCompanyLocation}
+                      onFocus={CompanyOnFocus}
+                      placeholder="Search location"
+                      placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={CompanyInProfileStyle.locationIconView}
+                    onPress={onPressCompanylocation}>
+                    <Octicons
+                      name={'location'}
+                      size={22}
+                      color={_COLORS.Kodie_GreenColor}
+                      style={CompanyInProfileStyle.locationIcon}
+                    />
+                  </TouchableOpacity>
                 </View>
-                <TouchableOpacity
-                  style={CompanyInProfileStyle.locationIconView}
-                  onPress={onPressCompanylocation}>
-                  <Octicons
-                    name={'location'}
-                    size={22}
-                    color={_COLORS.Kodie_GreenColor}
-                    style={CompanyInProfileStyle.locationIcon}
-                  />
-                </TouchableOpacity>
+                {/* {locationError ? (
+                  <Text style={PropertyDetailsStyle.error_text}>
+                    {locationError}
+                  </Text>
+                ) : null} */}
               </View>
               {/* {locationError ? (
                   <Text style={PropertyDetailsStyle.error_text}>
@@ -441,26 +450,19 @@ const CompanyInProfile = ({
                   </Text>
                 ) : null} */}
             </View>
-            {/* {locationError ? (
-                  <Text style={PropertyDetailsStyle.error_text}>
-                    {locationError}
-                  </Text>
-                ) : null} */}
+          </View>
+          <View style={CompanyInProfileStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
+            <TextInput
+              style={CompanyInProfileStyle.input}
+              value={website}
+              onChangeText={setWebsite}
+              placeholder="Enter your website address (if you have one)"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+            />
           </View>
         </View>
-
-        <View style={CompanyInProfileStyle.inputContainer}>
-          <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
-          <TextInput
-            style={CompanyInProfileStyle.input}
-            value={website}
-            onChangeText={setWebsite}
-            placeholder="Enter your website address (if you have one)"
-            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-          />
-        </View>
-      </View>
-      {isLoading ? <CommonLoader /> : null}
+      )}
     </View>
   );
 };
