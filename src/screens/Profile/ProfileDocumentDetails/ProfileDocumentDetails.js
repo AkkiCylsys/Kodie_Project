@@ -132,9 +132,9 @@ const ProfileDocumentDetails = props => {
   };
   // renderItem....
   const DocumentsData = ({item, index}) => {
-    setFileKey(item.PDUM_FILE_KEY);
+    // setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
-    setFilePath(item.PDUM_FILE_PATH);
+    // setFilePath(item.PDUM_FILE_PATH);
     return (
       <>
         <View style={ProfileDocumentDetailStyle.container}>
@@ -161,6 +161,8 @@ const ProfileDocumentDetails = props => {
             style={ProfileDocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
+              setFileKey(item.PDUM_FILE_KEY);
+              setFilePath(item.PDUM_FILE_PATH);
             }}>
             <Entypo
               name="dots-three-vertical"

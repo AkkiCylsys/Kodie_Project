@@ -16,6 +16,7 @@ import {_goBack} from '../../../../services/CommonServices';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_COLORS, IMAGES} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker from 'react-native-document-picker';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
@@ -220,15 +221,22 @@ const JobDocumentDetails = props => {
     );
   };
   const GetuploadedDocumentrender = ({item, index}) => {
-    setFileKey(item.PDUM_FILE_KEY);
+    // setFileKey(item.PDUM_FILE_KEY);
+    // console.log('file keu for delete...',item.PDUM_FILE_KEY)
     setFileName(item.PDUM_FILE_NAME);
     return (
       <>
         <View style={JobDocumentDetailStyle.container}>
           <View style={JobDocumentDetailStyle.pdfInfo}>
-            <Image
+            {/* <Image
               source={IMAGES.document}
               style={JobDocumentDetailStyle.pdfIcon}
+            /> */}
+              <FontAwesome
+              name="file-pdf-o"
+              size={35}
+              color={_COLORS.Kodie_BlackColor}
+              resizeMode={'contain'}
             />
             <View style={JobDocumentDetailStyle.textContainer}>
               <Text style={JobDocumentDetailStyle.pdfName}>
@@ -246,6 +254,8 @@ const JobDocumentDetails = props => {
               refRBSheet.current.open();
               setFilePath(item.PDUM_FILE_PATH);
               console.log('fileKey....', fileKey);
+              setFileKey(item.PDUM_FILE_KEY);
+              console.log('file keu for delete...', item.PDUM_FILE_KEY);
             }}>
             <Entypo
               name="dots-three-vertical"

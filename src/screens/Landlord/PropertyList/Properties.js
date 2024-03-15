@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, View} from 'react-native';
+import {View, BackHandler} from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import PropertyList from './MyProperty/PropertyList';
@@ -23,6 +23,17 @@ const Properties = props => {
   const navigation = useNavigation();
   useEffect(() => {
     <PropertyList />;
+  }, []);
+  useEffect(() => {
+    const handleBackButton = () => {
+      props.navigation.navigate('Dashboard');
+      // props.navigation.pop()
+      return true; // Prevent default behavior (exiting the app)
+    };
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+    };
   }, []);
   const checkTabs = () => {
     switch (activeTab) {

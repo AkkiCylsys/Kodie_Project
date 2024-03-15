@@ -98,7 +98,7 @@ const CustomSidebarMenu = props => {
     // props.navigation.navigate("LoginScreen");
   };
   const handleGeneralSettingsPress = () => {
-    Alert.alert('Coming soon');
+    Alert.alert('Alert', 'Coming soon');
   };
   return (
     <SafeAreaView style={DrawerStyle.mainContainer}>

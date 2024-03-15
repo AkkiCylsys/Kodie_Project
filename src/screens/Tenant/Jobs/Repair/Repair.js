@@ -459,7 +459,7 @@ export default Repair = props => {
           frontSearchIcon
           height={48}
           marginTop={5}
-          placeholder={'Search  jobs'}
+          placeholder={"Search jobs"}
           searchData={searchJobList}
         />
         <View style={RepairCss.Container}>
@@ -499,9 +499,9 @@ export default Repair = props => {
             position: 'absolute',
             left: -20,
             bottom: -30,
-            width: '100%',
-            height: isDeleteData_Clicked ? '30%' : '35%',
-            backgroundColor: 'white',
+            width: "100%",
+            height: isDeleteData_Clicked ? "30%" : "40%",
+            backgroundColor: "white",
             borderRadius: 10,
             paddingVertical: 8,
           },

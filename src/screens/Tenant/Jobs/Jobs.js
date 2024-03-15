@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
+import { View, Text,BackHandler } from "react-native";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import { _goBack } from "./../../../services/CommonServices/index";
@@ -8,16 +8,28 @@ import { JobsCss } from "./JobsCss";
 import Repair from "./Repair/Repair";
 import SearchForContractor from "./SearchforContractor/SearchForContractor";
 import SearchforJob from "./SearchforJob/SearchforJob";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import Geocoder from "react-native-geocoding";
 import Geolocation from "react-native-geolocation-service";
 const Jobs = (props) => {
+  const navigation = useNavigation()
   const route = useRoute();
   const [job_sub_type, setJobSubType] = useState(1);
   const [activeTab, setActiveTab] = useState("Tab1");
   let myJob_Type = props.route.params?.myJob_Type;
   let job_sub_type_req = props.route.params?.job_sub_type;
   console.log("job_sub_type_req...", job_sub_type_req);
+  useEffect(() => {
+    const handleBackButton = () => {
+      navigation.navigate('Dashboard');
+      // props.navigation.pop()
+      return true; // Prevent default behavior (exiting the app)
+    };
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+    };
+  }, []);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":

@@ -1,53 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
   ScrollView,
   TextInput,
   TouchableOpacity,
-} from "react-native";
-import { AddExpensesDetailsStyle } from "./AddExpensesDetailsStyle";
-import { _COLORS } from "../../../../../../Themes";
-import { LABEL_STYLES } from "../../../../../../Themes";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import CalendarModal from "../../../../../../components/Molecules/CalenderModal/CalenderModal";
-import RowButtons from "../../../../../../components/Molecules/RowButtons/RowButtons";
-import { Dropdown } from "react-native-element-dropdown";
-import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { Config } from "../../../../../../Config";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { color } from "react-native-reanimated";
+} from 'react-native';
+import {AddExpensesDetailsStyle} from './AddExpensesDetailsStyle';
+import {_COLORS} from '../../../../../../Themes';
+import {LABEL_STYLES} from '../../../../../../Themes';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import CalendarModal from '../../../../../../components/Molecules/CalenderModal/CalenderModal';
+import RowButtons from '../../../../../../components/Molecules/RowButtons/RowButtons';
+import {Dropdown} from 'react-native-element-dropdown';
+import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {Config} from '../../../../../../Config';
+import axios from 'axios';
+import {useDispatch, useSelector} from 'react-redux';
+import {color} from 'react-native-reanimated';
 
 const data = [
-  { label: "3-month", value: "1" },
-  { label: "6-month", value: "2" },
-  { label: "12-month", value: "3" },
+  {label: '3-month', value: '1'},
+  {label: '6-month', value: '2'},
+  {label: '12-month', value: '3'},
 ];
-export default AddExpensesDetails = (props) => {
+export default AddExpensesDetails = props => {
   //  alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
-  console.log("property_id in Add details..", property_id);
-  const loginData = useSelector((state) => state.authenticationReducer.data);
-  const [totalAmount, setTotalAmount] = useState("");
-  const [totalAmountError, setTotalAmountError] = useState("");
-  const [accountXcl, setAccountXcl] = useState("");
-  const [tax, setTax] = useState("");
-  const [suplier, setSuplier] = useState("");
-  const [expenseDes, setExpenseDes] = useState("");
+  console.log('property_id in Add details..', property_id);
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const [totalAmount, setTotalAmount] = useState('');
+  const [totalAmountError, setTotalAmountError] = useState('');
+  const [accountXcl, setAccountXcl] = useState('');
+  const [tax, setTax] = useState('');
+  const [suplier, setSuplier] = useState('');
+  const [expenseDes, setExpenseDes] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [isPaidModalVisible, setPaidModalVisible] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedDateError, setSelectedDateError] = useState("");
-  const [selectedPaidDate, setSelectedPaidDate] = useState("");
-  const [selectedPaidDateError, setSelectedPaidDateError] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDateError, setSelectedDateError] = useState('');
+  const [selectedPaidDate, setSelectedPaidDate] = useState('');
+  const [selectedPaidDateError, setSelectedPaidDateError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [ExpenceCategoryValue, setExpenceCategoryValue] = useState("");
+  const [ExpenceCategoryValue, setExpenceCategoryValue] = useState('');
   const [ExpenceCategoryValueError, setExpenceCategoryValueError] =
-    useState("");
+    useState('');
   const [ExpenceCategoryData, setExpenceCategoryData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("Save");
+  const [selectedOption, setSelectedOption] = useState('Save');
   const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(true);
   const [selectedButtonRepeating, setSelectedButtonRepeating] = useState(false);
   const [selectedButtonResponsible, setSelectedButtonResponsible] =
@@ -56,13 +56,13 @@ export default AddExpensesDetails = (props) => {
     useState(0);
   const [selectedResponsibleData, setSelectedResponsibleData] = useState([]);
   const [selectedButtonRepeatingError, setSelectedButtonRepeatingError] =
-    useState("");
+    useState('');
   const [selectedButtonRepeatingId, setSelectedButtonRepeatingId] = useState(0);
   const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
   const [ExpenceResponse, setExpenceResponse] = useState([]);
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState('');
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = option => {
     setSelectedOption(option);
   };
 
@@ -72,10 +72,10 @@ export default AddExpensesDetails = (props) => {
   const togglePaidModal = () => {
     setPaidModalVisible(!isPaidModalVisible);
   };
-  const handleDayPress = (day) => {
+  const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
-  const handlePaidDatePress = (paidDate) => {
+  const handlePaidDatePress = paidDate => {
     setSelectedPaidDate(paidDate.dateString);
   };
 
@@ -84,73 +84,73 @@ export default AddExpensesDetails = (props) => {
   };
 
   // Validation for Total amount........
-  const validateTotalamount = (text) => {
+  const validateTotalamount = text => {
     const mobileReg = /^\d{1,5}$/;
-    if (text === "") {
-      setTotalAmountError("Total amount is required");
+    if (text === '') {
+      setTotalAmountError('Total amount is required');
     } else if (!mobileReg.test(text)) {
-      setTotalAmountError("Invalid amount format");
+      setTotalAmountError('Invalid amount format');
     } else {
-      setTotalAmountError("");
+      setTotalAmountError('');
     }
     setTotalAmount(text);
   };
 
   // Validation for Due date........
-  const handleduedate = (text) => {
+  const handleduedate = text => {
     setSelectedDate(text);
-    if (text.trim() === "") {
-      setSelectedDateError("Due date is required.");
+    if (text.trim() === '') {
+      setSelectedDateError('Due date is required.');
     } else {
-      setSelectedDateError("");
+      setSelectedDateError('');
     }
   };
 
   // Validation for Paid date........
-  const handledpaiddate = (text) => {
+  const handledpaiddate = text => {
     setSelectedPaidDate(text);
-    if (text.trim() === "") {
-      setSelectedPaidDateError("Paid date is required.");
+    if (text.trim() === '') {
+      setSelectedPaidDateError('Paid date is required.');
     } else {
-      setSelectedPaidDateError("");
+      setSelectedPaidDateError('');
     }
   };
 
-  const handleDropdownChange = (item) => {
+  const handleDropdownChange = item => {
     if (item) {
-      setExpenceCategoryValue("");
-      setExpenceCategoryValueError("Please select an expense category.");
+      setExpenceCategoryValue('');
+      setExpenceCategoryValueError('Please select an expense category.');
     } else {
-      setExpenceCategoryValueError("");
+      setExpenceCategoryValueError('');
     }
   };
 
   // API bind Expence Category Lookup key code here........
   const handleExpenceCategory = () => {
     const propertyData = {
-      P_PARENT_CODE: "AEC",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'AEC',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
+    const propertyType = url + 'lookup_details';
+    console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
-      .then((response) => {
-        console.log("property_type", response.data);
+      .then(response => {
+        console.log('property_type', response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("Expence Category....", response.data.lookup_details);
+          console.log('Expence Category....', response.data.lookup_details);
           setExpenceCategoryData(response.data.lookup_details);
           // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
-          console.error("Expence_Category_error:", response.data.error);
+          console.error('Expence_Category_error:', response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("Expence Category error:", error);
+      .catch(error => {
+        console.error('Expence Category error:', error);
         // alert(error);
         setIsLoading(false);
       });
@@ -159,28 +159,28 @@ export default AddExpensesDetails = (props) => {
   // API bind Responsible Lookup key code here.....
   const handleResponsible = () => {
     const propertyData = {
-      P_PARENT_CODE: "RESPONSIBLE FOR PAYING",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'RESPONSIBLE FOR PAYING',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
+    const propertyType = url + 'lookup_details';
+    console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
-      .then((response) => {
-        console.log("property_type", response.data);
+      .then(response => {
+        console.log('property_type', response.data);
         if (response.data.status === true) {
           setIsLoading(false);
-          console.log("Responsible Category....", response.data.lookup_details);
+          console.log('Responsible Category....', response.data.lookup_details);
           setSelectedResponsibleData(response.data.lookup_details);
         } else {
-          console.error("Responsible_Category_error:", response.data.error);
+          console.error('Responsible_Category_error:', response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("Responsible Category error:", error);
+      .catch(error => {
+        console.error('Responsible Category error:', error);
         setIsLoading(false);
       });
   };
@@ -193,7 +193,7 @@ export default AddExpensesDetails = (props) => {
       suplier,
       expenseDes,
       ExpenceCategoryValue,
-      notes
+      notes,
     );
 
     const ExpenceData = {
@@ -210,67 +210,67 @@ export default AddExpensesDetails = (props) => {
       expenses_description: expenseDes,
       note: notes,
       paid: selectedButtonDepositId,
-      start_date: selectedPaidDate?selectedPaidDate:null,
+      start_date: selectedPaidDate ? selectedPaidDate : null,
       is_active: 1,
     };
     const url = Config.BASE_URL;
-    const ExpenceUrl = url + "property_expenses_details/create";
-    console.log("Request URL:", ExpenceUrl);
+    const ExpenceUrl = url + 'property_expenses_details/create';
+    console.log('Request URL:', ExpenceUrl);
     setIsLoading(true);
 
     axios
       .post(ExpenceUrl, ExpenceData)
-      .then((response) => {
+      .then(response => {
         setExpenceResponse(response.data);
-        console.log("Expence Details_data response", response.data);
+        console.log('Expence Details_data response', response.data);
         if (response.data.success === true) {
           alert(response.data.message);
-          setTotalAmount("");
-          setAccountXcl("");
-          setTax("");
-          setSelectedDate("");
-          setSelectedButtonRepeatingId("");
-          setSelectedButtonResponsibleId("");
-          setExpenceCategoryValue("");
-          setSuplier("");
-          setNotes("");
-          setSelectedButtonDepositId("");
-          setSelectedPaidDate("");
-          setExpenseDes("");
+          setTotalAmount('');
+          setAccountXcl('');
+          setTax('');
+          setSelectedDate('');
+          setSelectedButtonRepeatingId('');
+          setSelectedButtonResponsibleId('');
+          setExpenceCategoryValue('');
+          setSuplier('');
+          setNotes('');
+          setSelectedButtonDepositId('');
+          setSelectedPaidDate('');
+          setExpenseDes('');
           setIsLoading(false);
           handlePopUp();
         } else {
           setEmailError(response.data.message);
-          console.error("ExpenceDetail_error:", response.data.error);
+          console.error('ExpenceDetail_error:', response.data.error);
           alert(response.data.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("ExpenceDetail error...:", error);
+      .catch(error => {
+        console.error('ExpenceDetail error...:', error);
         setIsLoading(false);
       });
   };
 
   const handleSaveBtn = () => {
-    if (totalAmount.trim() === "") {
-      setTotalAmountError("Total amount is required.");
-    } else if (selectedDate.trim() === "") {
-      setSelectedDateError("Due date is required.");
+    if (totalAmount.trim() === '') {
+      setTotalAmountError('Total amount is required.');
+    } else if (selectedDate.trim() === '') {
+      setSelectedDateError('Due date is required.');
     } else if (!ExpenceCategoryValue) {
-      setExpenceCategoryValueError("Select Responsible Category.");
+      setExpenceCategoryValueError('Select Responsible Category.');
     }
     // else if (selectedPaidDate.trim() === "") {
     //   setSelectedPaidDateError("Paid date is required.");
     // }
-    else if (!selectedButtonDeposit && selectedPaidDate.trim() === "") {
-      setSelectedPaidDateError("Paid date is required.");
+    else if (!selectedButtonDeposit && selectedPaidDate.trim() === '') {
+      setSelectedPaidDateError('Paid date is required.');
     } else {
       Expencehandle();
-      setSelectedPaidDateError("");
-      setSelectedDateError("");
-      setSelectedPaidDateError("");
-      setExpenceCategoryValueError("");
+      setSelectedPaidDateError('');
+      setSelectedDateError('');
+      setSelectedPaidDateError('');
+      setExpenceCategoryValueError('');
     }
   };
 
@@ -280,7 +280,7 @@ export default AddExpensesDetails = (props) => {
     Expencehandle();
   }, []);
   // dropDownRender
-  const expenseCategory_render = (item) => {
+  const expenseCategory_render = item => {
     return (
       <View
         style={[
@@ -291,18 +291,17 @@ export default AddExpensesDetails = (props) => {
                 ? _COLORS.Kodie_MidLightGreenColor
                 : null,
           },
-        ]}
-      >
+        ]}>
         {item.lookup_key === ExpenceCategoryValue ? (
           <AntDesign
             color={_COLORS.Kodie_GreenColor}
-            name={"checkcircle"}
+            name={'checkcircle'}
             size={20}
           />
         ) : (
           <Fontisto
             color={_COLORS.Kodie_GrayColor}
-            name={"radio-btn-passive"}
+            name={'radio-btn-passive'}
             size={20}
           />
         )}
@@ -316,21 +315,21 @@ export default AddExpensesDetails = (props) => {
     <View style={AddExpensesDetailsStyle.mainContainer}>
       <View style={AddExpensesDetailsStyle.heading_View}>
         <Text style={AddExpensesDetailsStyle.heading_Text}>
-          {"Add expense details"}
+          {'Add expense details'}
         </Text>
         <TouchableOpacity onPress={handlePopUp}>
           <AntDesign
             name="close"
             size={22}
             color={_COLORS.Kodie_BlackColor}
-            style={{ alignSelf: "center" }}
+            style={{alignSelf: 'center'}}
           />
         </TouchableOpacity>
       </View>
       <ScrollView>
         <View style={AddExpensesDetailsStyle.card}>
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Total amount*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Total amount*'}</Text>
             <TextInput
               style={AddExpensesDetailsStyle.input}
               value={totalAmount}
@@ -346,12 +345,12 @@ export default AddExpensesDetails = (props) => {
             </Text>
           </View>
           <View style={AddExpensesDetailsStyle.tax_main_view}>
-            <View style={[AddExpensesDetailsStyle.inputContainer, { flex: 1 }]}>
+            <View style={[AddExpensesDetailsStyle.inputContainer]}>
               <Text style={LABEL_STYLES.commontext}>
-                {"Total amount (excl. tax)"}
+                {'Total amount (excl.tax)'}
               </Text>
               <TextInput
-                style={[AddExpensesDetailsStyle.input, { flex: 1 }]}
+                style={[AddExpensesDetailsStyle.input, {flex: 1}]}
                 value={accountXcl}
                 onChangeText={setAccountXcl}
                 placeholder="Amount excl."
@@ -362,11 +361,10 @@ export default AddExpensesDetails = (props) => {
               style={[
                 AddExpensesDetailsStyle.inputContainer,
                 AddExpensesDetailsStyle.Tax_input_cont,
-              ]}
-            >
-              <Text style={LABEL_STYLES.commontext}>{"Tax (0.000%)"}</Text>
+              ]}>
+              <Text style={LABEL_STYLES.commontext}>{'Tax (0.000%)'}</Text>
               <TextInput
-                style={[AddExpensesDetailsStyle.input, { flex: 1 }]}
+                style={[AddExpensesDetailsStyle.input, {flex: 1}]}
                 value={tax}
                 onChangeText={setTax}
                 placeholder="Enter tax %"
@@ -374,11 +372,12 @@ export default AddExpensesDetails = (props) => {
               />
             </View>
           </View>
-          <View style={[AddExpensesDetailsStyle.inputContainer,{marginTop:14}]}>
-            <Text style={LABEL_STYLES.commontext}>{"Due date*"}</Text>
+          <View
+            style={[AddExpensesDetailsStyle.inputContainer, {marginTop: 14}]}>
+            <Text style={LABEL_STYLES.commontext}>{'Due date*'}</Text>
             <View style={AddExpensesDetailsStyle.datePickerView}>
               <CalendarModal
-                SelectDate={selectedDate ? selectedDate : "Start Date"}
+                SelectDate={selectedDate ? selectedDate : 'Start Date'}
                 _textInputStyle={{
                   color: selectedDate
                     ? _COLORS.Kodie_BlackColor
@@ -386,7 +385,7 @@ export default AddExpensesDetails = (props) => {
                 }}
                 calenderIcon={toggleModal}
                 // onDayPress={handleDayPress}
-                onDayPress={(day) => handleduedate(day.dateString)}
+                onDayPress={day => handleduedate(day.dateString)}
                 onChangeText={() => handleduedate(selectedDate)}
                 Visible={isModalVisible}
                 onRequestClose={toggleModal}
@@ -408,10 +407,10 @@ export default AddExpensesDetails = (props) => {
 
           <View style={AddExpensesDetailsStyle.addition_featureView}>
             <Text style={AddExpensesDetailsStyle.Furnished_Text}>
-              {"Repeating expense?*"}
+              {'Repeating expense?*'}
             </Text>
             <RowButtons
-              LeftButtonText={"Yes"}
+              LeftButtonText={'Yes'}
               leftButtonbackgroundColor={
                 !selectedButtonRepeating
                   ? _COLORS.Kodie_lightGreenColor
@@ -431,7 +430,7 @@ export default AddExpensesDetails = (props) => {
                 setSelectedButtonRepeating(false);
                 setSelectedButtonRepeatingId(1);
               }}
-              RightButtonText={"No"}
+              RightButtonText={'No'}
               RightButtonbackgroundColor={
                 selectedButtonRepeating
                   ? _COLORS.Kodie_lightGreenColor
@@ -459,11 +458,11 @@ export default AddExpensesDetails = (props) => {
 
           <View style={AddExpensesDetailsStyle.additiontext}>
             <Text style={AddExpensesDetailsStyle.Furnished_Text}>
-              {"Who is responsible for paying for this?"}
+              {'Who is responsible for paying for this?'}
             </Text>
             <RowButtons
               LeftButtonText={
-                selectedResponsibleData[0]?.description || "Landlord"
+                selectedResponsibleData[0]?.description || 'Landlord'
               }
               leftButtonbackgroundColor={
                 !selectedButtonResponsible
@@ -483,11 +482,11 @@ export default AddExpensesDetails = (props) => {
               onPressLeftButton={() => {
                 setSelectedButtonResponsible(false);
                 setSelectedButtonResponsibleId(
-                  selectedResponsibleData[0]?.lookup_key
+                  selectedResponsibleData[0]?.lookup_key,
                 );
               }}
               RightButtonText={
-                selectedResponsibleData[1]?.description || "Tenant"
+                selectedResponsibleData[1]?.description || 'Tenant'
               }
               RightButtonbackgroundColor={
                 selectedButtonResponsible
@@ -507,7 +506,7 @@ export default AddExpensesDetails = (props) => {
               onPressRightButton={() => {
                 setSelectedButtonResponsible(true);
                 setSelectedButtonResponsibleId(
-                  selectedResponsibleData[1]?.lookup_key
+                  selectedResponsibleData[1]?.lookup_key,
                 );
               }}
             />
@@ -516,12 +515,12 @@ export default AddExpensesDetails = (props) => {
             </Text>
           </View>
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Expense category*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Expense category*'}</Text>
             <Dropdown
-              style={[AddExpensesDetailsStyle.dropdown,{marginTop:14}]}
+              style={[AddExpensesDetailsStyle.dropdown, {marginTop: 14}]}
               placeholderStyle={[
                 AddExpensesDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
+                {color: _COLORS.Kodie_LightGrayColor},
               ]}
               selectedTextStyle={AddExpensesDetailsStyle.selectedTextStyle}
               inputSearchStyle={AddExpensesDetailsStyle.inputSearchStyle}
@@ -532,7 +531,7 @@ export default AddExpensesDetails = (props) => {
               valueField="lookup_key"
               placeholder="Select expense category"
               value={ExpenceCategoryValue}
-              onChange={(item) => {
+              onChange={item => {
                 setExpenceCategoryValue(item.lookup_key);
                 handleDropdownChange();
               }}
@@ -544,7 +543,7 @@ export default AddExpensesDetails = (props) => {
           </View>
 
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Supplier"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Supplier'}</Text>
             <TextInput
               style={AddExpensesDetailsStyle.input}
               value={suplier}
@@ -554,7 +553,9 @@ export default AddExpensesDetails = (props) => {
             />
           </View>
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={[LABEL_STYLES.commontext,{marginTop:14}]}>{"Expense description"}</Text>
+            <Text style={[LABEL_STYLES.commontext, {marginTop: 14}]}>
+              {'Expense description'}
+            </Text>
             <TextInput
               style={AddExpensesDetailsStyle.input}
               value={expenseDes}
@@ -565,24 +566,27 @@ export default AddExpensesDetails = (props) => {
           </View>
 
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={[LABEL_STYLES.commontext,{marginTop:14}]}>{"Notes"}</Text>
+            <Text style={[LABEL_STYLES.commontext, {marginTop: 14}]}>
+              {'Notes'}
+            </Text>
             <TextInput
-              style={[AddExpensesDetailsStyle.input, { height: 100 }]}
+              style={[AddExpensesDetailsStyle.input, {height: 100}]}
               value={notes}
               onChangeText={setNotes}
               placeholder="Enter any notes about your expense"
               placeholderTextColor="#999"
               multiline
               numberOfLines={5}
-              textAlignVertical={"top"}
+              textAlignVertical={'top'}
             />
           </View>
           <View style={AddExpensesDetailsStyle.addition_featureView}>
-            <Text style={[AddExpensesDetailsStyle.Furnished_Text,{marginTop:14}]}>
-              {"Mark as paid?"}
+            <Text
+              style={[AddExpensesDetailsStyle.Furnished_Text, {marginTop: 14}]}>
+              {'Mark as paid?'}
             </Text>
             <RowButtons
-              LeftButtonText={"Yes"}
+              LeftButtonText={'Yes'}
               leftButtonbackgroundColor={
                 !selectedButtonDeposit
                   ? _COLORS.Kodie_lightGreenColor
@@ -602,7 +606,7 @@ export default AddExpensesDetails = (props) => {
                 setSelectedButtonDeposit(false);
                 setSelectedButtonDepositId(0);
               }}
-              RightButtonText={"No"}
+              RightButtonText={'No'}
               RightButtonbackgroundColor={
                 selectedButtonDeposit
                   ? _COLORS.Kodie_lightGreenColor
@@ -626,11 +630,11 @@ export default AddExpensesDetails = (props) => {
           </View>
           {!selectedButtonDeposit ? (
             <View style={AddExpensesDetailsStyle.inputContainer}>
-              <Text style={LABEL_STYLES.commontext}>{"Paid date*"}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Paid date*'}</Text>
               <View style={AddExpensesDetailsStyle.datePickerView}>
                 <CalendarModal
                   SelectDate={
-                    selectedPaidDate ? selectedPaidDate : "Start Date"
+                    selectedPaidDate ? selectedPaidDate : 'Start Date'
                   }
                   _textInputStyle={{
                     color: selectedPaidDate
@@ -639,9 +643,7 @@ export default AddExpensesDetails = (props) => {
                   }}
                   calenderIcon={togglePaidModal}
                   // onDayPress={handlePaidDatePress}
-                  onDayPress={(paidDate) =>
-                    handledpaiddate(paidDate.dateString)
-                  }
+                  onDayPress={paidDate => handledpaiddate(paidDate.dateString)}
                   onChangeText={() => handledpaiddate(selectedPaidDate)}
                   Visible={isPaidModalVisible}
                   onRequestClose={togglePaidModal}
@@ -669,28 +671,26 @@ export default AddExpensesDetails = (props) => {
                 AddExpensesDetailsStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Cancel"
+                    selectedOption == 'Cancel'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
                 handlePopUp();
-                handleOptionClick("Cancel");
-              }}
-            >
+                handleOptionClick('Cancel');
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "Cancel"
+                      selectedOption == 'Cancel'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {"Cancel"}
+                ]}>
+                {'Cancel'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -698,16 +698,15 @@ export default AddExpensesDetails = (props) => {
                 AddExpensesDetailsStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Save"
+                    selectedOption == 'Save'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
                 handleSaveBtn();
-                handleOptionClick("Save");
-              }}
-            >
+                handleOptionClick('Save');
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
@@ -715,13 +714,12 @@ export default AddExpensesDetails = (props) => {
 
                   {
                     color:
-                      selectedOption == "Save"
+                      selectedOption == 'Save'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {"Save"}
+                ]}>
+                {'Save'}
               </Text>
             </TouchableOpacity>
           </View>

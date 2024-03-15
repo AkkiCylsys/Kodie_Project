@@ -70,7 +70,7 @@ export const AccountStyle = StyleSheet.create({
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
   },
-  crossIconStyle: {alignSelf: 'center', marginRight: 10},
+  crossIconStyle: {alignSelf: 'center', marginRight: 10,marginTop:5},
   bottomModal_container: {
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightGrayColor,

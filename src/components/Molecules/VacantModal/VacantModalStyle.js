@@ -1,12 +1,16 @@
 import { StyleSheet } from "react-native";
 import { FONTFAMILY, _COLORS } from "../../../Themes/index";
 export const VacantModalStyle = StyleSheet.create({
-  mainContainer: { flex: 1 },
+  mainContainer: { 
+    flex: 1,
+    // marginTop:20,
+    marginHorizontal:16
+  },
   container: {
     flexDirection: "row",
     alignItems: "center",
     padding: "1%",
-    marginHorizontal: 10,
+    // marginHorizontal: 16,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   text: {
@@ -16,7 +20,7 @@ export const VacantModalStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
   },
-  // Icons: { width: 40, height: 40, resizeMode: "cover" },
+  Icons: { width: 40, height: 40, resizeMode: "cover" },
   bottomModal_container: {
     borderWidth: 0.5,
     borderColor: _COLORS.Kodie_LightGrayColor,

@@ -235,7 +235,7 @@ export default Documents = props => {
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
   const DocumentsData = ({item, index}) => {
-    setFileKey(item.PDUM_FILE_KEY);
+    // setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
 
     return (
@@ -261,6 +261,7 @@ export default Documents = props => {
               refRBSheet.current.open();
               setFilePath(item.PDUM_FILE_PATH);
               console.log('file Path..', item.PDUM_FILE_PATH);
+              setFileKey(item.PDUM_FILE_KEY);
             }}>
             <Entypo
               name="dots-three-vertical"

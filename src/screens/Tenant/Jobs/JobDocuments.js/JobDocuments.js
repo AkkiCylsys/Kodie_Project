@@ -183,7 +183,7 @@ export default JobDocuments = props => {
   };
 
   const DocumentsData = ({item, index}) => {
-    setFileKey(item.PDUM_FILE_KEY);
+    // setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
     return (
       <>
@@ -209,6 +209,7 @@ export default JobDocuments = props => {
             onPress={() => {
               refRBSheet.current.open();
               setFilePath(item.PDUM_FILE_PATH);
+              setFileKey(item.PDUM_FILE_KEY);
             }}>
             <Entypo
               name="dots-three-vertical"
