@@ -318,7 +318,6 @@ const CreateJobSecondScreen = props => {
       setIsLoading(false);
     }
   };
-
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + 'job/get';

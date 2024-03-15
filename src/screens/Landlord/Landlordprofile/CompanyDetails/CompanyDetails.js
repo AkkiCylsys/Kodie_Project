@@ -38,6 +38,7 @@ import PhoneInput from 'react-native-phone-number-input';
 import CompanyInProfile from './Company/CompanyInProfile';
 import IndividualInProfile from './Individual/IndividualInProfile';
 import TopHeader from '../../../../components/Molecules/Header/Header';
+import { useNavigation } from '@react-navigation/native';
 const data = [
   {label: 'Item 1', value: '1'},
   {label: 'Item 2', value: '2'},
@@ -46,6 +47,7 @@ const data = [
 ];
 const windowHeight = Dimensions.get('window').height;
 export default CompanyDetails = props => {
+  const navigation = useNavigation();
   const maplocation = props.maplocation;
   const company_latitude = props.latitude;
   const comapny_longitude = props.longitude;
@@ -262,6 +264,7 @@ export default CompanyDetails = props => {
       console.log('UpdateCompanyData....', response.data);
       if (response.data.success === true) {
         alert(response.data.message);
+        navigation.navigate('LandlordProfile');
         getPersonalDetails();
         // getComapnyDetails();
       }
@@ -311,7 +314,9 @@ export default CompanyDetails = props => {
     setIsMap(true);
   };
   return (
-    <ScrollView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <ScrollView
+      style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}
+      onScroll={isLoading ? false : true}>
       {IsMap ? (
         <View style={{height: windowHeight - 135, flex: 1}}>
           <View

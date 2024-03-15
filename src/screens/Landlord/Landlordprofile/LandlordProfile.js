@@ -131,8 +131,9 @@ export default LandlordProfile = props => {
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
-              {`${accountDetails?.UAD_FIRST_NAME} ${accountDetails?.UAD_LAST_NAME}`}
-              {/* loginData.Account_details[0]?.UAD_LAST_NAME */}
+              {accountDetails?.UAD_FIRST_NAME || accountDetails?.UAD_LAST_NAME
+                ? `${accountDetails?.UAD_FIRST_NAME} ${accountDetails?.UAD_LAST_NAME}`
+                : ''}
             </Text>
             <Text
               style={LandlordProfileStyle.emailText}

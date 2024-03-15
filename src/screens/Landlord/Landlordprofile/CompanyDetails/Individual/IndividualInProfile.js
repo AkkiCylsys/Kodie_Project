@@ -296,7 +296,7 @@ const IndividualInProfile = ({
   }, [selectJobType, website, selectJobTypeid, servicesValue]);
 
   return (
-    <View>
+    <View style={{flex:1}}>
       <View style={IndividualProfileStyle.card}>
         <View>
           <Text style={IndividualProfileStyle.want_Heading}>

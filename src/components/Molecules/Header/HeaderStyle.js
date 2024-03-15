@@ -48,8 +48,8 @@ export const HeaderStyle = StyleSheet.create({
     marginLeft: 10,
     justifyContent: "center",
     alignSelf: "center",
-    // borderColor: "red",
-    borderWidth: 0.2,
+    borderColor:_COLORS.Kodie_GrayColor,
+    borderWidth:1,
   },
   nullView: { width: "25%", flexDirection: "row", justifyContent: "center" },
   notificationButton: {
