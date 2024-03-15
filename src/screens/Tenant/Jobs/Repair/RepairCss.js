@@ -11,6 +11,7 @@ export const RepairCss = StyleSheet.create({
     fontSize: 12,
     fontFamily: fontFamily.K_Medium,
     color: _COLORS.Kodie_VeryLightGrayColor,
+    marginBottom: 4,
     alignSelf: 'center',
     textAlign: 'center',
   },

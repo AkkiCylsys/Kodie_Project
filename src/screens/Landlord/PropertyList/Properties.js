@@ -66,15 +66,20 @@ const Properties = props => {
         );
       case 'Tab2':
         return (
-          <PropertyList2
-            SearchButton={() => props.navigation.navigate('SearchResult')}
-          />
+          <>{Alert.alert('Coming soon')}</>
+          // <PropertyList2
+          //   SearchButton={() => props.navigation.navigate('SearchResult')}
+          // />
         );
       case 'Tab3':
         return (
-          <RantalOffer
-            ViewApplication={() => props.navigation.navigate('ViewApplication')}
-          />
+          <>{Alert.alert('Coming soon')}</>
+          // <RantalOffer
+          //   ViewApplication={() => {
+          //     Alert.alert('Coming soon');
+          //     //  props.navigation.navigate("ViewApplication")
+          //   }}
+          // />
         );
 
       default:

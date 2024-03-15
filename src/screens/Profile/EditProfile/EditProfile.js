@@ -27,8 +27,8 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import UploadImageData from '../../../components/Molecules/UploadImage/UploadImage';
 import Geocoder from 'react-native-geocoding';
-// import Geolocation from "react-native-geolocation-service";
-import Geolocation from '@react-native-community/geolocation';
+ import Geolocation from "react-native-geolocation-service";
+//import Geolocation from '@react-native-community/geolocation';
 import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -154,7 +154,7 @@ const EditProfile = props => {
   };
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
-
+    setIsLoading(true);
     const apiUrl =
       url + `getAccount_details/${loginData.Login_details.user_id}`;
     console.log(apiUrl, 'apiUrl');
@@ -175,10 +175,12 @@ const EditProfile = props => {
           : [];
         setSelectedServices(initialJobTypeIds);
         console.log(accountDetails.UAD_AUSTR_BUSINESS_NO);
+        setIsLoading(false);
       })
       .catch(error => {
         // Handle error
         console.error('API Error:', error);
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -344,6 +346,7 @@ const EditProfile = props => {
 
     if (!fileUri || !fileName || !fileType) {
       console.error('Invalid image data:', ImageName);
+
       // Handle invalid image data
     } else {
       formData.append('profile_photo', {

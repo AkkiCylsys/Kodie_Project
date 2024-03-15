@@ -500,6 +500,11 @@ const CreateJobSecondScreen = props => {
               />
             ) : null}
           </View>
+          {MultiImageName.length > 0 ? null : (
+            <Text style={CreateJobSecondStyle.error_text}>
+              {MultiImageNameError}
+            </Text>
+          )}
 
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
@@ -521,11 +526,7 @@ const CreateJobSecondScreen = props => {
             />
             {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
           </View>
-          {MultiImageName.length > 0 ? null : (
-            <Text style={CreateJobSecondStyle.error_text}>
-              {MultiImageNameError}
-            </Text>
-          )}
+
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {'Upload clear images of the left side profile'}

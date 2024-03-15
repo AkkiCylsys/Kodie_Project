@@ -24,16 +24,19 @@ import {Config} from '../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 export default LandlordProfile = props => {
   const dispatch = useDispatch();
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
   const isvisible = useIsFocused();
-
+  const [isLoading, setIsLoading] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
 
   const getPersonalDetails = () => {
+    setIsLoading(true);
+
     const url = Config.BASE_URL;
 
     const apiUrl =
@@ -46,10 +49,12 @@ export default LandlordProfile = props => {
         // Handle successful response
         console.log('API Response:', response.data.data[0][0]);
         setAccountDetails(response.data.data[0][0]);
+        setIsLoading(false);
       })
       .catch(error => {
         // Handle error
         console.error('API Error:', error);
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -105,12 +110,12 @@ export default LandlordProfile = props => {
         // }}
       />
       <ScrollView>
-        <SearchBar
+        {/* <SearchBar
           frontSearchIcon={true}
           height={48}
           marginTop={20}
           searchData={searchprofileMenu}
-        />
+        /> */}
 
         <View style={LandlordProfileStyle.profilemainView}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
@@ -126,11 +131,8 @@ export default LandlordProfile = props => {
           </TouchableOpacity>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
-              {accountDetails?.UAD_FIRST_NAME || accountDetails?.UAD_LAST_NAME
-                ? accountDetails?.UAD_FIRST_NAME +
-                  '  ' +
-                  accountDetails?.UAD_LAST_NAME
-                : ''}
+              {`${accountDetails?.UAD_FIRST_NAME} ${accountDetails?.UAD_LAST_NAME}`}
+              {/* loginData.Account_details[0]?.UAD_LAST_NAME */}
             </Text>
             <Text
               style={LandlordProfileStyle.emailText}
@@ -147,7 +149,7 @@ export default LandlordProfile = props => {
               />
               <Text style={LandlordProfileStyle.ratingText}>{'0'}</Text>
               <Text style={LandlordProfileStyle.subrating}>
-                ({'Not rating yet'})
+                ({'No rating yet'})
               </Text>
             </View>
           </View>
@@ -334,6 +336,7 @@ export default LandlordProfile = props => {
           </TouchableOpacity>
         </View>
       </RBSheet>
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

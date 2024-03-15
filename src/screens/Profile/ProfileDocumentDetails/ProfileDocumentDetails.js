@@ -34,7 +34,7 @@ const data = [
     PDUM_Account_id: null,
     PDUM_FILE_NAME: 'teodor-drobota-uyyRJA2an4o-unsplash.jpg',
     PDUM_FILE_PATH:
-      'https://e3.cylsys.com/upload/documents/teodor-drobota-uyyRJA2an4o-unsplash.jpg',
+      'https://kodieapis.cylsys.com/upload/documents/teodor-drobota-uyyRJA2an4o-unsplash.jpg',
     PDUM_FILE_REFERENCE_KEY: 1119,
     PDUM_MODULE_NAME: 'Property',
     PDUM_SUB_MODULE_NAME: null,
@@ -44,7 +44,7 @@ const data = [
     PDUM_Account_id: null,
     PDUM_FILE_NAME: 'teodor-drobota-uyyRJA2an4o-unsplash.jpg',
     PDUM_FILE_PATH:
-      'https://e3.cylsys.com/upload/documents/teodor-drobota-uyyRJA2an4o-unsplash.jpg',
+      'https://kodieapis.cylsys.com/upload/documents/teodor-drobota-uyyRJA2an4o-unsplash.jpg',
     PDUM_FILE_REFERENCE_KEY: 1119,
     PDUM_MODULE_NAME: 'Property',
     PDUM_SUB_MODULE_NAME: null,

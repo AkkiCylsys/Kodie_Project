@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect,useLayoutEffect, useRef} from 'react';
 import MapView, {
   Marker,
   PROVIDER_GOOGLE,
@@ -11,9 +11,7 @@ import {
   Platform,
   GoogleMapStyleheet,
   PermissionsAndroid,
-  Alert,
-  Linking,
-} from 'react-native';
+} from 'react-native'; 
 import Icon from 'react-native-vector-icons/dist/Entypo';
 import {GoogleMapStyle} from './googleMapStyle';
 import SearchPlaces from '../SearchPlaces/SearchPlaces';
@@ -36,8 +34,19 @@ const MapScreen = props => {
     console.log('props?.Maplat........', props?.Maplat);
     console.log('props?.Maplng........', props?.Maplng);
     // fetchCurrentLocation();
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+      language: 'en',
+    });
+   // checkpermissionlocation()
     Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
   }, []);
+
+  useLayoutEffect(() => {
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {language: 'en'});
+    Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
+
+  }, []);
+
   const fetchCurrentLocation = () => {
     Geolocation.getCurrentPosition(
       position => {

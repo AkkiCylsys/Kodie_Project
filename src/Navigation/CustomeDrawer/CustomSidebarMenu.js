@@ -36,7 +36,8 @@ const CustomSidebarMenu = props => {
         break;
       case 'vacantProperties':
         setselectedId('vacantProperties');
-        props.navigation.navigate('VacantPropertiesList');
+        // props.navigation.navigate('VacantPropertiesList');
+        Alert.alert('Coming soon');
         break;
       case 'Inspection':
         setselectedId('Inspection');
@@ -44,8 +45,9 @@ const CustomSidebarMenu = props => {
         break;
       case 'Tetants':
         setselectedId('Tetants');
-        // props.navigation.navigate("TwoStepVerification");
-        props.navigation.navigate('TenantList');
+
+        // props.navigation.navigate('TenantList'); // navigation to tenantList
+        Alert.alert('Coming soon');
         break;
       case 'MaintenanceJobs':
         setselectedId('MaintenanceJobs');
@@ -53,7 +55,8 @@ const CustomSidebarMenu = props => {
         break;
       case 'Contractors':
         setselectedId('Contractors');
-        props.navigation.navigate('Managingcontractors');
+        Alert.alert('Coming soon');
+        // props.navigation.navigate('Managingcontractors'); // navigation to managingContractor
         break;
       case 'Notices':
         setselectedId('Notices');

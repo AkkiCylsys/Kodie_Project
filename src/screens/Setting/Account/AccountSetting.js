@@ -1,12 +1,5 @@
 //ScreenNo:196
-import {
-  View,
-  ScrollView,
-  Text,
-  Image,
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import {View,ScrollView, Text, Image, TouchableOpacity, Alert} from 'react-native';
 import React from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {AccountStyle} from './AccountStyle';
@@ -62,7 +55,8 @@ const AccountSetting = props => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('ChangeContactInput')}>
+             onPress={() => props.navigation.navigate('ChangeContactInput')}>
+
             <RowTab
               isSecondRowText={true}
               LeftIconName={'pencil'}

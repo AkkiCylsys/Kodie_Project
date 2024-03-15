@@ -10,7 +10,8 @@ import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
-
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 const DeleteAccount = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
@@ -116,9 +117,14 @@ const DeleteAccount = props => {
       />
       <ScrollView>
         <View style={DeleteAccountStyle.headingview}>
-          <Image
+          {/* <Image
             style={DeleteAccountStyle.helpimg}
             source={IMAGES.helpCenter}
+          /> */}
+          <Ionicons
+            name={'information-circle-outline'}
+            color={_COLORS.Kodie_GreenColor}
+            size={30}
           />
           <Text style={DeleteAccountStyle.accounttext}>
             If you delete this account
@@ -141,7 +147,13 @@ const DeleteAccount = props => {
         </View>
 
         <View style={DeleteAccountStyle.logoutview}>
-          <Image style={DeleteAccountStyle.Logoutimg} source={IMAGES.Log_Out} />
+          {/* <Image style={DeleteAccountStyle.Logoutimg} source={IMAGES.Log_Out} />
+           */}
+          <MaterialCommunityIcons
+            name={'logout'}
+            color={_COLORS.Kodie_GreenColor}
+            size={30}
+          />
           <Text style={DeleteAccountStyle.insteadtext}>
             Change number instead?
           </Text>
