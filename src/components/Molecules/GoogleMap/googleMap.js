@@ -11,9 +11,7 @@ import {
   Platform,
   GoogleMapStyleheet,
   PermissionsAndroid,
-  Alert,
-  Linking,
-} from 'react-native';
+} from 'react-native'; 
 import Icon from 'react-native-vector-icons/dist/Entypo';
 import {GoogleMapStyle} from './googleMapStyle';
 import SearchPlaces from '../SearchPlaces/SearchPlaces';
