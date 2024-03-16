@@ -105,7 +105,7 @@ const CustomSidebarMenu = props => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={DrawerStyle.Container}>
-        <Text style={[DrawerStyle.HeaderText,{marginTop:10}]}>{'Properties'}</Text>
+        <Text style={[DrawerStyle.HeaderText,{marginVertical:5}]}>{'Properties'}</Text>
         {/* <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
