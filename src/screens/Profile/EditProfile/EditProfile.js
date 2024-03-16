@@ -27,7 +27,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import UploadImageData from '../../../components/Molecules/UploadImage/UploadImage';
 import Geocoder from 'react-native-geocoding';
- import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 //import Geolocation from '@react-native-community/geolocation';
 import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
@@ -152,6 +152,20 @@ const EditProfile = props => {
     }
     setLastName(text);
   };
+
+  const handlevalidUpdation = () => {
+    if (fullName.trim() == '') {
+      setFirstNameError('First name is required');
+    } else if (!/^[A-Za-z]+$/.test(fullName)) {
+      setFirstNameError('First name should contain only alphabetic characters');
+    } else if (lastName.trim() == '') {
+      setLastNameError('Last name is required');
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(lastName)) {
+      setLastNameError('Last name should contain only alphabetic characters');
+    } else {
+      Updateprofile();
+    }
+  };
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
     setIsLoading(true);
@@ -179,7 +193,7 @@ const EditProfile = props => {
       })
       .catch(error => {
         // Handle error
-        console.error('API Error:', error);
+        console.error('API Error PersonalDetails:', error);
         setIsLoading(false);
       });
   };
@@ -505,6 +519,7 @@ const EditProfile = props => {
                         defaultCode="AU"
                         layout="second"
                         Country={false}
+                        countryPickerProps={false}
                         textInputProps={{
                           maxLength: 9,
                         }}
@@ -597,7 +612,8 @@ const EditProfile = props => {
                       backgroundColor={_COLORS.Kodie_BlackColor}
                       disabled={isLoading ? true : false}
                       onPress={() => {
-                        Updateprofile();
+                        // Updateprofile();
+                        handlevalidUpdation();
                       }}
                     />
                   </View>

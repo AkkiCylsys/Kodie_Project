@@ -153,7 +153,7 @@ const JobDocumentDetails = props => {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error('API failed', error);
+      console.error('API failed uploadDocument', error);
       alert(error);
       // Handle network errors more gracefully
       // if (!error.response) {

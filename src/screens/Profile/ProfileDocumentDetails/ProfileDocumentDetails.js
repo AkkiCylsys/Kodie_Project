@@ -233,8 +233,8 @@ const ProfileDocumentDetails = props => {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error('API failed', error);
-      alert(error);
+      console.error('API failed uploadDocument', error);
+      // alert(error);
     } finally {
       setIsLoading(false);
     }

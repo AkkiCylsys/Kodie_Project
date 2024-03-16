@@ -156,9 +156,7 @@ const DeshboardNotice = props => {
             </Text>
             {props.ShowUpgradeButton ? (
               <TouchableOpacity
-                onPress={() => {
-                  props.navigation.navigate('ManageSubscription');
-                }}
+                onPress={props.onPress}
                 style={DeshBoardNoticeCss.upgradeView}>
                 <Text style={DeshBoardNoticeCss.upgradeText}>Upgrade now</Text>
               </TouchableOpacity>

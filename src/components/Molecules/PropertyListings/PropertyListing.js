@@ -137,7 +137,7 @@ const PropertyListing = () => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed Vacant_Details", error);
         setIsLoading(false);
       })
       .finally(() => {
@@ -163,7 +163,7 @@ const PropertyListing = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error("API Error DeleteVacant:", error);
       setIsLoading(false);
     }
   };

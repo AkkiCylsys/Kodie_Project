@@ -274,7 +274,7 @@ const IndividualInProfile = ({
         setIsLoading(false);
       })
       .catch(error => {
-        console.error('API Error:', error);
+        console.error('API Error PersonalDetails:', error);
       });
   };
 

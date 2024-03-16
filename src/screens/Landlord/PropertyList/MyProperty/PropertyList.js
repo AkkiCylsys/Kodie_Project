@@ -181,7 +181,7 @@ const PropertyList = props => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.error('API Error:', error);
+      console.error('API Error DeleteProperty:', error);
     }
   };
 

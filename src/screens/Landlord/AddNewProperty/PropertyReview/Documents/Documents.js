@@ -330,7 +330,7 @@ export default Documents = props => {
         }
       })
       .catch(error => {
-        console.error('API failed', error);
+        console.error('API failed AllDocuments', error);
         setIsLoading(false);
         // alert(error);
       })

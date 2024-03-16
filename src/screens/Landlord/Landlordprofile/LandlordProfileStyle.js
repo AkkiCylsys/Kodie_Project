@@ -68,10 +68,10 @@ export const LandlordProfileStyle = StyleSheet.create({
   },
   contactIcon: { height: 16, width: 16 },
   AllcontactsText: {
-    fontSize: 16,
+    fontSize: 17,
     paddingHorizontal: 16,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_SemiBold,
+    fontFamily: FONTFAMILY.K_Bold,
     marginTop:20
   },
   bottomModal_container: {

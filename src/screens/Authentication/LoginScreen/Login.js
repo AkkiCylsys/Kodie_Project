@@ -498,7 +498,7 @@ export default Login = props => {
       // if (error.response && error.response.status == 500) {
       //   alert("Your password is old. Please enter new password.");
       // }
-      console.error('API failed', error);
+      console.error('API failed create_password', error);
       // Handle errors appropriately
       alert(error.message || 'An error occurred during the API call');
     } finally {

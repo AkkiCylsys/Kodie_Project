@@ -68,7 +68,7 @@ export default SignUpVerification = props => {
         }
       })
       .catch(error => {
-        console.error('API failed', error);
+        console.error('API failed verification_code', error);
         setIsLoading(false);
         // alert(error);
       })

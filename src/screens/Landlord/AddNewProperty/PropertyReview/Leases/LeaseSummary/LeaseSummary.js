@@ -97,7 +97,7 @@ export default LeaseSummary = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed lease_summary", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -125,7 +125,7 @@ export default LeaseSummary = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed retal_receipt", error);
         setIsLoading(false);
         // alert(error);
       })

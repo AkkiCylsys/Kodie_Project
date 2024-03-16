@@ -474,7 +474,7 @@ export default CreateJobTermsScreen = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed handleCreateJob", error);
         setIsLoading(false);
         alert(error);
       })
@@ -519,7 +519,7 @@ export default CreateJobTermsScreen = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed JobDetails", error);
         setIsLoading(false);
         // alert(error);
       })

@@ -75,7 +75,7 @@ const searchInviteTenant=()=>{
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed Tenent_Details", error);
         setIsLoading(false);
       })
       .finally(() => {

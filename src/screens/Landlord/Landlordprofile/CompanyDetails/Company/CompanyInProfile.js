@@ -282,11 +282,15 @@ const CompanyInProfile = ({
       })
       .catch(error => {
         // Handle error
-        console.error('API Error:', error);
+        console.error('API Error PersonalDetails:', error);
       });
   };
   useEffect(() => {
     getPersonalDetails();
+    handle_describe_yourself();
+    if (selectJobType !== null) {
+      handleServices(selectJobType);
+    }
   }, []); // Call this useEffect only once on component mount
   useEffect(() => {
     CompanyData({
@@ -297,10 +301,6 @@ const CompanyInProfile = ({
       website: website,
       CompanyGst: companyGSTNumber,
     });
-    handle_describe_yourself();
-    if (selectJobType !== null) {
-      handleServices(selectJobType);
-    }
   }, [
     selectJobType,
     companyName,
