@@ -192,7 +192,7 @@ const CompanySignup = ({
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -233,11 +233,11 @@ const CompanySignup = ({
         if (response.data.status === true) {
           servicesDatas.push(...response.data.lookup_details);
         } else {
-          console.error('Services_error:', response.data.error);
-          alert(response.data.error);
+          console.error('Company Services_error:', response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
         }
       } catch (error) {
-        console.error('Services error:', error);
+        console.error(' com Services error:', error);
         // alert(error);
       }
     };

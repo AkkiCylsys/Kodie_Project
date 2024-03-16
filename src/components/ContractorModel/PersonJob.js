@@ -129,7 +129,7 @@ export default PersonJob = props => {
           setIsLoading(false);
         } else {
           setEmailError(response.data.message);
-          console.error('personDetail_error:', response.data.error);
+          console.error('personDetail_error:', "Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

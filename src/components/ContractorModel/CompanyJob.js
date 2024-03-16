@@ -131,7 +131,7 @@ export default CompanyJob = props => {
         } else {
           setEmailError(response.data.message);
           console.error('CompanyDetail_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

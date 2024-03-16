@@ -262,10 +262,12 @@ export default AboutYou = props => {
   );
 
   useEffect(() => {
+    handle_manage_property(),
+    handle_kodiehelp(), 
+    handle_describe_yourself();
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    handle_manage_property(), handle_kodiehelp(), handle_describe_yourself();
   }, []);
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -357,7 +359,7 @@ export default AboutYou = props => {
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -387,7 +389,7 @@ export default AboutYou = props => {
           setmanage_property_Data(response.data.lookup_details);
         } else {
           console.error('property_type_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -416,8 +418,8 @@ export default AboutYou = props => {
           console.log('kodie_Data....', response.data.lookup_details);
           setKodiehelpData(response.data.lookup_details);
         } else {
-          console.error('kodie_Data_error:', response.data.lookup_details);
-          alert(response.data.error);
+          console.error('kodie_Data_error:', response.data);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

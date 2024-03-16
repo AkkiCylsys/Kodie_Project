@@ -242,7 +242,7 @@ export default AddExpensesDetails = props => {
         } else {
           setEmailError(response.data.message);
           console.error('ExpenceDetail_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

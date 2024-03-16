@@ -67,7 +67,7 @@ export default PropertyImages = (props) => {
           console.log("propertyDetail....", response.data.property_details);
         } else {
           console.error("propertyDetail_error:", response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -160,7 +160,7 @@ export default PropertyImages = (props) => {
         });
       } else {
         console.error("Save Account Details error:", response.data.error);
-        alert(response.data.error);
+        alert("Oops samthing went wrong! Please try again later.");
       }
     } catch (error) {
       console.error("Account_Details error:", error);
@@ -282,7 +282,8 @@ export default PropertyImages = (props) => {
       return;
     }
 
-    setMultiImageName(multipleImages);
+    // setMultiImageName(multipleImages);
+    setMultiImageName([...MultiImageName, ...multipleImages]);
     console.log("................ImageNAme", multipleImages);
     console.log("................ImageNAme", multipleImages.path);
   };

@@ -346,7 +346,7 @@ export default PropertyReview = props => {
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response.data.error);
-        alert(response.data.error);
+        alert("Oops samthing went wrong! Please try again later.");
       }
       const additionalFeatures_id =
         response.data.property_details[0].additional_features;

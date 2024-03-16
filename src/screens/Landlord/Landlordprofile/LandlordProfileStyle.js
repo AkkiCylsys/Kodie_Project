@@ -104,8 +104,8 @@ export const LandlordProfileStyle = StyleSheet.create({
     borderWidth:0,
     color:_COLORS.Kodie_BlackColor,
     paddingHorizontal:15,
-    paddingVertical:5,
-    borderRadius:4,
+    paddingVertical:10,
+    borderRadius:5,
     fontSize:14,
     fontFamily:FONTFAMILY.K_Medium
 
@@ -113,10 +113,11 @@ export const LandlordProfileStyle = StyleSheet.create({
   LogoutBtn:{
     backgroundColor:_COLORS.Kodie_BlackColor,
     paddingHorizontal:15,
-    paddingVertical:5,
+    paddingVertical:10,
     borderRadius:5,
     color:_COLORS.Kodie_WhiteColor,
     fontSize:14,
-    fontFamily:FONTFAMILY.K_Medium
+    fontFamily:FONTFAMILY.K_Medium,
+    alignSelf:'center'
   }
 });

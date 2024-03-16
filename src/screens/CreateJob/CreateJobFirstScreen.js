@@ -563,7 +563,7 @@ export default CreateJobFirstScreen = props => {
           setSelectedAddreeData(response.data.property_details);
         } else {
           console.error('Selected_Address_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -592,7 +592,7 @@ export default CreateJobFirstScreen = props => {
           setJobPriorityData(response.data.lookup_details);
         } else {
           console.error('Job_priority_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -620,8 +620,8 @@ export default CreateJobFirstScreen = props => {
           console.log('RatingThresholdData....', response.data.lookup_details);
           setRatingThresholdData(response.data.lookup_details);
         } else {
-          console.error('RatingThreshold_error:', response.data.error);
-          alert(response.data.error);
+          console.error('RatingThreshold_error:', "Oops samthing went wrong! Please try again later.");
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -650,7 +650,7 @@ export default CreateJobFirstScreen = props => {
           setJobTypeData(response.data.lookup_details);
         } else {
           console.error('JobType_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -687,13 +687,13 @@ export default CreateJobFirstScreen = props => {
           console.log('ServicesTypeData....', response.data.lookup_details);
           setServicesData(response.data.lookup_details);
         } else {
-          console.error('Services_error:', response.data.error);
-          alert(response.data.error);
+          console.error(' job Services_error:', response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
       .catch(error => {
-        console.error('Services error:', error);
+        console.error(' job Services error:', error);
         // alert(error);
         setIsLoading(false);
       });
@@ -761,7 +761,7 @@ export default CreateJobFirstScreen = props => {
           setProperty_Data(response.data.lookup_details);
         } else {
           console.error('property_type_error:', response.data.error);
-          // alert(response.data.error);
+          // alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

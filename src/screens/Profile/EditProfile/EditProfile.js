@@ -132,7 +132,8 @@ const EditProfile = props => {
   const validateFirstName = text => {
     if (text === '') {
       setFirstNameError('First name is required');
-    } else if (!/^[A-Za-z]+$/.test(text)) {
+      // } else if (!/^[A-Za-z]+$/.test(text)) {
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
       setFirstNameError('First name should contain only alphabetic characters');
     } else {
       setFirstNameError('');
@@ -156,7 +157,7 @@ const EditProfile = props => {
   const handlevalidUpdation = () => {
     if (fullName.trim() == '') {
       setFirstNameError('First name is required');
-    } else if (!/^[A-Za-z]+$/.test(fullName)) {
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(fullName)) {
       setFirstNameError('First name should contain only alphabetic characters');
     } else if (lastName.trim() == '') {
       setLastNameError('Last name is required');
@@ -232,7 +233,7 @@ const EditProfile = props => {
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -460,7 +461,7 @@ const EditProfile = props => {
                     <View style={EditProfileStyle.simpleinputview}>
                       <TextInput
                         value={fullName}
-                        onChangeText={text => setFirstName(text)}
+                        onChangeText={validateFirstName}
                         onBlur={() => validateFirstName(fullName)}
                         placeholder="First Name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -481,7 +482,7 @@ const EditProfile = props => {
                       <TextInput
                         style={EditProfileStyle.inputStyle}
                         value={lastName}
-                        onChangeText={text => setLastName(text)}
+                        onChangeText={validateLastName}
                         onBlur={() => validateLastName(lastName)}
                         placeholder="Last name"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -515,7 +516,7 @@ const EditProfile = props => {
 
                     <View style={[EditProfileStyle.phoneinputview]}>
                       <PhoneInput
-                        defaultValue={phoneNumber.slice(3)}
+                        defaultValue={phoneNumber}
                         defaultCode="AU"
                         layout="second"
                         Country={false}
