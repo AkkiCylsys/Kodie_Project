@@ -158,7 +158,7 @@ export default AddLeaseDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed add_Lease", error);
         setIsLoading(false);
         alert(error);
       })
@@ -189,7 +189,7 @@ export default AddLeaseDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed notification_type", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -219,7 +219,7 @@ export default AddLeaseDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed expiry_reminde", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -249,7 +249,7 @@ export default AddLeaseDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed payment_reminder", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -279,7 +279,7 @@ export default AddLeaseDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed rental_reminder", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -309,7 +309,7 @@ export default AddLeaseDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed lease_term", error);
         setIsLoading(false);
         // alert(error);
       })

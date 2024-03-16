@@ -35,6 +35,7 @@ import FloatingActionButton from '../../components/Molecules/FloatingActionButto
 import {Config} from '../../Config';
 import axios from 'axios';
 import {useIsFocused, CommonActions} from '@react-navigation/native';
+import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 
 const IncomeData = [
   {
@@ -144,14 +145,13 @@ export default Dashboard = props => {
     check_subscription();
     handleprofileCompletion();
     const handleBackPress = () => {
-   
       if (navigation.isFocused()) {
         BackHandler.exitApp();
         return true;
       }
       return false;
     };
-    
+
     BackHandler.addEventListener('hardwareBackPress', handleBackPress);
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
@@ -161,28 +161,27 @@ export default Dashboard = props => {
   //---click back button closing the app
 
   const handleprofileCompletion = () => {
-    
     const url = Config.BASE_URL;
     const profileCompletion_url = url + 'Profile_Completion';
     console.log('requested url..', profileCompletion_url);
     setIsLoading(true);
     //alert('hi')
     const profileCompletion_urlBody = {
-       account_id: "569",
+      account_id: '569',
       //account_id: loginData?.Login_details?.user_id,
     };
-   // alert(loginData?.Login_details?.user_id)
+    // alert(loginData?.Login_details?.user_id)
     axios
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
         console.log('profileCompletion response....', response.data);
         setProfileCompletion(response?.data?.data[0]?.result);
-       let profile_Completion=response?.data?.data[0]?.result
+        let profile_Completion = response?.data?.data[0]?.result;
         console.log('profileCompletion..', response?.data?.data[0]?.result);
         const profileValueWithoutPercent = profile_Completion.replace('%', '');
         const progressValue = profileValueWithoutPercent / 100;
         console.log('progressValue7...', progressValue);
-      //  alert(progressValue)
+        //  alert(progressValue)
         setProgressPercentage(progressValue);
         setIsLoading(false);
       })
@@ -195,17 +194,17 @@ export default Dashboard = props => {
       });
   };
 
-  const check_subscription= async()=>{
-   // alert('hi')
-    let check_Subs={
-      account_id:loginData?.Login_details?.user_account_id,
-      
-     // account_id:res?.data?.Login_details?.user_account_id
-    }
-    console.log('checkid99',check_Subs)
-    const res = await dispatch(userSubscribedCreator(check_Subs))
+  const check_subscription = async () => {
+    // alert('hi')
+    let check_Subs = {
+      account_id: loginData?.Login_details?.user_account_id,
+
+      // account_id:res?.data?.Login_details?.user_account_id
+    };
+    console.log('checkid99', check_Subs);
+    const res = await dispatch(userSubscribedCreator(check_Subs));
     //alert(JSON.stringify(res?.data))
-  }
+  };
 
   const Income_render = ({item, index}) => {
     return (
@@ -282,7 +281,7 @@ export default Dashboard = props => {
       })
       .catch(error => {
         // Handle error
-        console.error('API Error:', error);
+        console.error('API Error PersonalDetails:', error);
         setIsLoading(false);
       });
   };
@@ -313,12 +312,15 @@ export default Dashboard = props => {
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           <DeshboardNotice
-          PerprofileCompletion={profileCompletion}
-          progressPercentage={progressPercentage}
+            PerprofileCompletion={profileCompletion}
+            progressPercentage={progressPercentage}
             ShowUpgradeButton={
               SubscriptionData?.status == 'active' ? false : true
             }
             onClose={CloseUp}
+            onPress={() => {
+              props.navigation.navigate('ManageSubscription');
+            }}
           />
           <View style={DashboardStyle.container}>
             {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}

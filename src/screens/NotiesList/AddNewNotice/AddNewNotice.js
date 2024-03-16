@@ -256,7 +256,7 @@ const AddNewNotice = props => {
         }
       })
       .catch(error => {
-        console.error('API failed', error);
+        console.error('API failed handle_notice', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -286,7 +286,7 @@ const AddNewNotice = props => {
         }
       })
       .catch(error => {
-        console.error('API failed', error);
+        console.error('API failed handle_Repeat', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -317,7 +317,7 @@ const AddNewNotice = props => {
         }
       })
       .catch(error => {
-        console.error('API failed', error);
+        console.error('API failed notification_type', error);
         setIsLoading(false);
         // alert(error);
       })

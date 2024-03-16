@@ -153,7 +153,7 @@ const AddBiddingDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed in add_Bid", error);
         setIsLoading(false);
         alert(error);
       })
@@ -214,7 +214,7 @@ const AddBiddingDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed in notification_type", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -244,7 +244,7 @@ const AddBiddingDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed in Open_reminder", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -274,7 +274,7 @@ const AddBiddingDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed Close_reminder", error);
         setIsLoading(false);
         // alert(error);
       })
@@ -304,7 +304,7 @@ const AddBiddingDetails = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed in NewBid_reminder", error);
         setIsLoading(false);
         // alert(error);
       })

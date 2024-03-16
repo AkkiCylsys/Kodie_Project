@@ -344,7 +344,7 @@ const CreateJobSecondScreen = props => {
         }
       })
       .catch(error => {
-        console.error('API failed', error);
+        console.error('API failed jobDetails', error);
         setIsLoading(false);
         // alert(error);
       })

@@ -30,7 +30,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
- import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 //import Geolocation from '@react-native-community/geolocation';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -264,8 +264,12 @@ const SignUpSteps = props => {
       setImageError('Please select an image before proceeding.');
     } else if (firstName.trim() === '') {
       setFirstNameError('First name is required.');
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(firstName)) {
+      setFirstNameError('First name should contain only alphabetic characters');
     } else if (lastName.trim() === '') {
       setLastNameError('Last name is required.');
+    } else if (!/^[A-Za-z]+(?:\s)?$/.test(lastName)) {
+      setLastNameError('Last name should contain only alphabetic characters');
     } else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required.');
       // } else if (!validMobileNumber(mobileNumber)) {

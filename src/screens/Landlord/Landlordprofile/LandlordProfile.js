@@ -53,7 +53,7 @@ export default LandlordProfile = props => {
       })
       .catch(error => {
         // Handle error
-        console.error('API Error:', error);
+        console.error('API Error PersonalDetails:', error);
         setIsLoading(false);
       });
   };
@@ -117,7 +117,9 @@ export default LandlordProfile = props => {
           searchData={searchprofileMenu}
         /> */}
 
-        <View style={LandlordProfileStyle.profilemainView}>
+        <TouchableOpacity
+          style={LandlordProfileStyle.profilemainView}
+          onPress={() => props.navigation.navigate('EditProfile')}>
           <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
             <Image
               // source={IMAGES.Landlordprofile}
@@ -150,12 +152,12 @@ export default LandlordProfile = props => {
               />
               <Text style={LandlordProfileStyle.ratingText}>{'0'}</Text>
               <Text style={LandlordProfileStyle.subrating}>
-                ({'No rating yet'})
+                ({'No Rating yet'})
               </Text>
             </View>
           </View>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('EditProfile')}
+          <View
+            // onPress={() => props.navigation.navigate('EditProfile')}
             style={LandlordProfileStyle.contactIconView}>
             {/* <Image
               source={IMAGES.contactDetails}
@@ -167,8 +169,8 @@ export default LandlordProfile = props => {
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
         <DividerIcon />
         <Text style={LandlordProfileStyle.AllcontactsText}>Settings</Text>
         <TouchableOpacity

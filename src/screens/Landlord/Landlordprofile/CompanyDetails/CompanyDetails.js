@@ -180,7 +180,7 @@ export default CompanyDetails = props => {
       })
       .catch(error => {
         // Handle error
-        console.error('API Error:', error);
+        console.error('API Error PersonalDetails:', error);
       });
   };
   const UpdateCompanyData = async () => {

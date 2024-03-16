@@ -206,7 +206,7 @@ const Logrentalpayment = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed rental_payment", error);
         setIsLoading(false);
         alert(error);
       })

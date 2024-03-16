@@ -361,6 +361,7 @@ const ProfileDocuments = props => {
           onPressLeftButton={() => {
             setSelectedTab(false);
             setSelectedTabId(0);
+            setFolderId(null);
             // alert(selectedTabId);
           }}
           RightButtonText={'Company documents'}
@@ -382,6 +383,7 @@ const ProfileDocuments = props => {
           onPressRightButton={() => {
             setSelectedTab(true);
             setSelectedTabId(1);
+            setCompanyDocumentId(null);
             // alert(selectedTabId);
           }}
         />

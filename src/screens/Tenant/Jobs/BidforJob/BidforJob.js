@@ -77,7 +77,7 @@ const BidforJob = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed", error);
+        console.error("API failed JobDetails", error);
         setIsLoading(false);
         // alert(error);
       })
