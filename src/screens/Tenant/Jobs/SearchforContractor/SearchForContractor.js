@@ -418,7 +418,7 @@ export default SearchForContractor = props => {
           setProperty_Data(response.data.property_details);
         } else {
           console.error('property_type_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -454,7 +454,7 @@ export default SearchForContractor = props => {
           });
         } else {
           console.error('SearchCotractor_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -483,7 +483,7 @@ export default SearchForContractor = props => {
           setJobPriorityData(response.data.lookup_details);
         } else {
           console.error('Job_priority_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -512,7 +512,7 @@ export default SearchForContractor = props => {
           setRatingThresholdData(response.data.lookup_details);
         } else {
           console.error('RatingThreshold_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -541,7 +541,7 @@ export default SearchForContractor = props => {
           setJobTypeData(response.data.lookup_details);
         } else {
           console.error('JobType_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -580,7 +580,7 @@ export default SearchForContractor = props => {
           setServicesData(response.data.lookup_details);
         } else {
           console.error('Services_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

@@ -81,7 +81,7 @@ export default Details = (props) => {
           setGetPropertyDetail(response?.data?.property_details);
         } else {
           console.error("getPropertyDetails_error:", response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

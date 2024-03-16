@@ -376,7 +376,7 @@ export default SearchForJob = props => {
           setProperty_Data(response.data.property_details);
         } else {
           console.error('property_type_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -416,7 +416,7 @@ export default SearchForJob = props => {
           });
         } else {
           console.error('handleSearch_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -445,7 +445,7 @@ export default SearchForJob = props => {
           setJobPriorityData(response.data.lookup_details);
         } else {
           console.error('Job_priority_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -474,7 +474,7 @@ export default SearchForJob = props => {
           setRatingThresholdData(response.data.lookup_details);
         } else {
           console.error('RatingThreshold_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -503,7 +503,7 @@ export default SearchForJob = props => {
           setJobTypeData(response.data.lookup_details);
         } else {
           console.error('JobType_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -542,7 +542,7 @@ export default SearchForJob = props => {
           setServicesData(response.data.lookup_details);
         } else {
           console.error('Services_error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

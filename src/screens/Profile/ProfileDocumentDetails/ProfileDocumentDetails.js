@@ -262,7 +262,7 @@ const ProfileDocumentDetails = props => {
           setDocumentLookupData(response.data.lookup_details);
         } else {
           console.error('Document dropDown..._error:', response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

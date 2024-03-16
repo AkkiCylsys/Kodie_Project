@@ -158,7 +158,7 @@ const CompanyInProfile = ({
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -199,8 +199,8 @@ const CompanyInProfile = ({
         if (response.data.status === true) {
           servicesDatas.push(...response.data.lookup_details);
         } else {
-          console.error('Services_error:', response.data.error);
-          alert(response.data.error);
+          console.error('company profile Services_error:', response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
         }
       } catch (error) {
         console.error('Services error:', error);

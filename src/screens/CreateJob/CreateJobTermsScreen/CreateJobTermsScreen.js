@@ -331,7 +331,7 @@ export default CreateJobTermsScreen = (props) => {
           setHourlyNeedData(response.data.lookup_details);
         } else {
           console.error("HourlyNeed_error:", response.data.error);
-          alert(response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -359,8 +359,8 @@ export default CreateJobTermsScreen = (props) => {
           console.log("NeedServices....", response.data.lookup_details);
           setNeedServicesData(response.data.lookup_details);
         } else {
-          console.error("NeedServices_error:", response.data.error);
-          alert(response.data.error);
+          console.error("Need Services_error:", response.data.error);
+          alert("Oops samthing went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
