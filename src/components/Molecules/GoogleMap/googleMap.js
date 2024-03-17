@@ -1,4 +1,4 @@
-import React, {useEffect,useLayoutEffect, useRef} from 'react';
+import React, {useEffect, useLayoutEffect, useRef} from 'react';
 import MapView, {
   Marker,
   PROVIDER_GOOGLE,
@@ -11,7 +11,7 @@ import {
   Platform,
   GoogleMapStyleheet,
   PermissionsAndroid,
-} from 'react-native'; 
+} from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Entypo';
 import {GoogleMapStyle} from './googleMapStyle';
 import SearchPlaces from '../SearchPlaces/SearchPlaces';
@@ -21,7 +21,8 @@ import Geolocation from '@react-native-community/geolocation';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
-
+import RNSettings from 'react-native-settings';
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 const MapScreen = props => {
   const mapRef = useRef(null);
   const [lat, setLat] = useState(0);
@@ -37,16 +38,30 @@ const MapScreen = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-   // checkpermissionlocation()
+    // curLocation()
+    // checkpermissionlocation()
     Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
   }, []);
 
-  useLayoutEffect(() => {
-    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {language: 'en'});
-    Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
+  // useLayoutEffect(() => {
+  //   Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {language: 'en'});
+  //   Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
 
-  }, []);
+  // }, []);
 
+  const getLOcation = () => {
+    Geolocation.getCurrentPosition(position => {
+      console.log('you are here.');
+      const {latitude, longitude} = position.coords;
+      console.log('position.coords in map components....', position.coords);
+      // setlatitude(latitude);
+      setLat(latitude);
+      setLong(longitude);
+      setIsLoading(false);
+      // setlongitude(longitude);
+      // animateToCoordinate(latitude, longitude)
+    });
+  };
   const fetchCurrentLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -60,13 +75,37 @@ const MapScreen = props => {
         // setlongitude(longitude);
         // animateToCoordinate(latitude, longitude)
       },
+      error => {
+        RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
+          result => {
+            if (result === RNSettings.ENABLED) {
+              console.log('location is enabled');
+              getLOcation();
+            }
+          },
+        );
+      },
       {
         enableHighAccuracy: true,
-        timeout: 20000,
-        maximumAge: 1000,
+        // timeout: 24000,
+        // maximumAge: 1000,
       },
     );
   };
+
+  const _enableGPS = async () => {
+    try {
+      await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
+        interval: 10000,
+        fastInterval: 5000,
+      });
+
+      // do some action after the gps has been activated by the user
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const checkpermissionlocation = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -74,10 +113,17 @@ const MapScreen = props => {
         {
           title: 'Example App',
           message: 'Example App access to your location ',
-        },    
+        },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         console.log('You can use the location');
+        // RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
+        //   result => {
+        //     if (result === RNSettings.ENABLED) {
+        //       console.log('location is enabled');
+        //     }
+        //   },
+        // );
         fetchCurrentLocation();
       } else {
         console.log('location permission denied');

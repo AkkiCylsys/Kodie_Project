@@ -139,11 +139,15 @@ export default Dashboard = props => {
   //---click back button closing the app
 
   useEffect(() => {
-    if (isvisible) {
-      getPersonalDetails();
-    }
-    check_subscription();
+    // if (isvisible) {
+    //   setTimeout(() => {
+    //     getPersonalDetails();
+    //     handleprofileCompletion()
+    //   }, 2000);
+    // }
+    getPersonalDetails();
     handleprofileCompletion();
+    check_subscription();
     const handleBackPress = () => {
       if (navigation.isFocused()) {
         BackHandler.exitApp();
@@ -167,8 +171,8 @@ export default Dashboard = props => {
     setIsLoading(true);
     //alert('hi')
     const profileCompletion_urlBody = {
-      account_id: '569',
-      //account_id: loginData?.Login_details?.user_id,
+      // account_id: '569',
+      account_id: loginData?.Login_details?.user_id,
     };
     // alert(loginData?.Login_details?.user_id)
     axios
@@ -266,22 +270,20 @@ export default Dashboard = props => {
   const getPersonalDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
-
     const apiUrl =
       url + `getAccount_details/${loginData?.Login_details?.user_id}`;
-
     // Make a GET request using Axios
     axios
       .get(apiUrl)
       .then(response => {
         // Handle successful response
-        console.log('API Response:', response.data.data[0][0]);
-        setAccountDetails(response.data.data[0][0]);
+        console.log('API Response:', response?.data?.data[0][0]);
+        setAccountDetails(response?.data?.data[0][0]);
         setIsLoading(false);
       })
       .catch(error => {
         // Handle error
-        console.error('API Error PersonalDetails:', error);
+        console.error('API Error PersonalDetails D:', error);
         setIsLoading(false);
       });
   };

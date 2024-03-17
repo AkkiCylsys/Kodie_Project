@@ -14,6 +14,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
+  PermissionsAndroid
 } from 'react-native';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {logos} from '../../../Themes/CommonVectors/Images';
@@ -43,6 +44,10 @@ import CryptoJS from 'react-native-crypto-js';
 import messaging from '@react-native-firebase/messaging';
 // import {NavigationActions, StackActions} from 'react-navigation';
 import {loginApiActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import Geolocation from '@react-native-community/geolocation';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import Geocoder from 'react-native-geocoding';
+import RNSettings from 'react-native-settings';
 export default Login = props => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
@@ -68,6 +73,93 @@ export default Login = props => {
   const deviceId = DeviceInfo.getDeviceId();
   const deviceType = DeviceInfo.getDeviceType();
   const [Fcm_token, setFcm_token] = useState('');
+
+  // useEffect(() => {
+  //   Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+  //     language: 'en',
+  //   });
+  //   // checkpermissionlocation()
+  //   Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
+  // }, []);
+  const fetchCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        console.log('you are here.');
+        const {latitude, longitude} = position.coords;
+        console.log('position.coords in map components....', position.coords);
+        // setlatitude(latitude);
+        // setLat(latitude);
+        // setLong(longitude);
+        setIsLoading(false);
+        // setlongitude(longitude);
+        // animateToCoordinate(latitude, longitude)
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 30000,
+        maximumAge: 1000,
+      },
+    );
+  };
+  const checkpermissionlocation = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Example App',
+          message: 'Example App access to your location ',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the location');
+        RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
+          result => {
+            if (result === RNSettings.ENABLED) {
+              console.log('location is enabled');
+            }
+          },
+        );
+        fetchCurrentLocation();
+      } else {
+        console.log('location permission denied');
+        alert('Location permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
+  const CheckIOSMapPermission = () => {
+    request(PERMISSIONS.IOS.LOCATION_ALWAYS)
+      .then(result => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              'This feature is not available (on this device / in this context)',
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log(
+              'The permission has not been requested / is denied but requestable',
+            );
+            break;
+          case RESULTS.LIMITED:
+            console.log('The permission is limited: some actions are possible');
+            break;
+          case RESULTS.GRANTED:
+            console.log('The permission is granted');
+            fetchCurrentLocation();
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            break;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
 
   const handleTogglePassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);

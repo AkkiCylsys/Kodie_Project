@@ -140,9 +140,11 @@ const PropertyList = props => {
   };
 
   useEffect(() => {
-    if (isvisible) {
+    // if (isvisible) {
+    //   getPropertyDetailsByFilter(selectedFilter);
+    // }
       getPropertyDetailsByFilter(selectedFilter);
-    }
+
   }, [selectedFilter, isvisible]);
 
   const handleEndReached = () => {
