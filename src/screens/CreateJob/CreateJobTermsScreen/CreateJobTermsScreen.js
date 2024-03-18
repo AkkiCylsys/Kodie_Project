@@ -456,11 +456,11 @@ export default CreateJobTermsScreen = (props) => {
     axios
       .post(createJob_url, createJob_Data)
       .then((response) => {
-        console.log("API Response jobCreate..:", response.data);
-        if (response.data.success === true) {
-          alert(response.data.message);
+        console.log("API Response jobCreate..:", response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
           props.navigation.navigate("CreateJobSecondScreen", {
-            job_id: response.data.job_id,
+            job_id: response?.data?.job_id,
           });
           setSelectedDate(""),
             setCurrentTime(""),
@@ -468,8 +468,9 @@ export default CreateJobTermsScreen = (props) => {
             setneedServicesValue(""),
             setSelectedButtonResponsibleId("");
           setSelectedButtoBookingInsuranceId("");
+          setIsLoading(false);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -519,7 +520,7 @@ export default CreateJobTermsScreen = (props) => {
         }
       })
       .catch((error) => {
-        console.error("API failed JobDetails", error);
+        console.error("API failed JobDetails in edit mode ", error);
         setIsLoading(false);
         // alert(error);
       })

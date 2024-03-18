@@ -289,8 +289,7 @@ const IndividualInProfile = ({
         setIsLoading(false);
       })
       .catch(error => {
-        console.error('API Error PersonalDetails:', error);
-        setIsLoading(false);
+        console.error('API Error PersonalDetails IIP:', error);
       });
   };
 

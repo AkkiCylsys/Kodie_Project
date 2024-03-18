@@ -15,8 +15,8 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import {Config} from '../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
-import { colors } from '../../../Themes/CommonColors/CommonColor';
-//ScreenNo:209 
+import {colors} from '../../../Themes/CommonColors/CommonColor';
+//ScreenNo:209
 
 const subscriptionData = [
   {
@@ -52,7 +52,7 @@ const subscriptionData = [
     rule_no_6: 'Dynamic unit inspection checklists',
     rule_no_7: 'Reporting features including report download',
     rule_no_8: 'Unlimited document storage',
-    rule_no_9:'',
+    rule_no_9: '',
   },
   {
     id: 3,
@@ -66,10 +66,11 @@ const subscriptionData = [
     rule_no_3: 'Customisable dashboards with report download',
     rule_no_4: '10% off for all contractors',
     rule_no_5: 'Dedicated customer support',
-    rule_no_6: 'Preferential rental property listings on Kodie Property Marketplace',
+    rule_no_6:
+      'Preferential rental property listings on Kodie Property Marketplace',
     rule_no_7: '',
     rule_no_8: '',
-    rule_no_9:'',
+    rule_no_9: '',
   },
 ];
 const ManageSubscription = props => {
@@ -83,7 +84,7 @@ const ManageSubscription = props => {
   const [SubscriptionID, setSubscriptionID] = useState('');
   const [SubscriptionStatus, setSubscriptionStatus] = useState('');
   const [SubscribedPLan, setsetSubscribedPLan] = useState('');
-  
+
   const dispatch = useDispatch();
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
@@ -177,24 +178,45 @@ const ManageSubscription = props => {
           <RowsData DataTexts={item.rule_no_9} />
         )}
 
-        <View style={{padding: 5}}>
-          <RowButtons
-            leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-            RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-            RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-            LeftButtonborderColor={_COLORS.Kodie_TransparentColor}
-            RightButtonborderColor={_COLORS.Kodie_BlackColor}
-            LeftButtonText={'Contact us'}
-            RightButtonText={'Subscribe'}
-            onPressLeftButton={() =>
-              // props.navigation.navigate("ContractorProfile")
-              alert('Contact us pressed')
-            }
-            isShowRightButton={SubscriptionStatus == 'active' ? false : true}
-            onPressRightButton={handleSubscribePress}
-          />
-        </View>
+        {item.id == 3 ? (
+          <View style={{padding: 5, marginTop: 20}}>
+            <RowButtons
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_TransparentColor}
+              RightButtonborderColor={_COLORS.Kodie_BlackColor}
+              LeftButtonText={'Contact us'}
+              RightButtonText={'Subscribe'}
+              onPressLeftButton={() =>
+                // props.navigation.navigate("ContractorProfile")
+                alert('Contact us pressed')
+              }
+              isShowRightButton={SubscriptionStatus == 'active' ? false : true}
+              onPressRightButton={handleSubscribePress}
+            />
+          </View>
+        ) : (
+          <View style={{padding: 5}}>
+            <RowButtons
+              leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
+              RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
+              LeftButtonTextColor={_COLORS.Kodie_BlackColor}
+              RightButtonTextColor={_COLORS.Kodie_WhiteColor}
+              LeftButtonborderColor={_COLORS.Kodie_TransparentColor}
+              RightButtonborderColor={_COLORS.Kodie_BlackColor}
+              LeftButtonText={'Contact us'}
+              RightButtonText={'Subscribe'}
+              onPressLeftButton={() =>
+                // props.navigation.navigate("ContractorProfile")
+                alert('Contact us pressed')
+              }
+              isShowRightButton={SubscriptionStatus == 'active' ? false : true}
+              onPressRightButton={handleSubscribePress}
+            />
+          </View>
+        )}
       </View>
     );
   };
@@ -394,142 +416,6 @@ const ManageSubscription = props => {
               onLowrange={2}
             /> */}
           </View>
-          {/* <ScrollView style={{ width: "100%" }} horizontal={true}>
-            <View style={ManageSubscriptionStyle.SubscriptionDataView}>
-              <Text style={ManageSubscriptionStyle.Heading}>
-                {"Property Essential"}
-              </Text>
-              <Text style={ManageSubscriptionStyle.Subscriptionprice}>
-                $69
-                <Text style={ManageSubscriptionStyle.SubscriptionpriceText}>
-                  /Month
-                </Text>
-              </Text>
-              <Text style={ManageSubscriptionStyle.SubDataText}>
-                The best place to get started
-              </Text>
-              <View style={ManageSubscriptionStyle.ShadowLine} />
-              <Text style={ManageSubscriptionStyle.getText}>You get:</Text>
-              <RowsData DataTexts="Easily manage up to 3 properties" />
-              <RowsData DataTexts="Single user" />
-              <RowsData DataTexts="Standard financial dashboard (revenues & expenses)" />
-              <RowsData DataTexts="Service & maintenance requests with ease" />
-              <RowsData DataTexts="Standard access to contractors" />
-              <RowsData DataTexts="Income & expense tracking" />
-              <RowsData DataTexts="Tenant screening" />
-              <RowsData DataTexts="Standard document management" />
-              <RowsData DataTexts="Standard rental property listings on Kodie Property Marketplace" />
-              <View style={{ padding: 5 }}>
-                <RowButtons
-                  leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                  RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                  RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-                  LeftButtonborderColor={_COLORS.Kodie_TransparentColor}
-                  RightButtonborderColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonText={"Contact us"}
-                  RightButtonText={"Subscribe"}
-                  onPressLeftButton={() =>
-                    props.navigation.navigate("ContractorProfile")
-                  }
-                  onPressRightButton={() => {
-                    props.navigation.navigate("HireContractor");
-                  }}
-                />
-              </View>
-            </View>
-
-            <View
-              style={[
-                ManageSubscriptionStyle.SubscriptionDataView,
-                ManageSubscriptionStyle.secondcard,
-              ]}
-            >
-              <Text style={ManageSubscriptionStyle.Heading}>
-                {"Property Essential"}
-              </Text>
-              <Text style={ManageSubscriptionStyle.Subscriptionprice}>
-                $149
-                <Text style={ManageSubscriptionStyle.SubscriptionpriceText}>
-                  /Month
-                </Text>
-              </Text>
-              <Text style={ManageSubscriptionStyle.SubDataText}>
-                The best place to get started
-              </Text>
-              <View style={ManageSubscriptionStyle.ShadowLine} />
-              <Text style={ManageSubscriptionStyle.getText}>You get:</Text>
-              <RowsData DataTexts="Easily manage up to 3 properties" />
-              <RowsData DataTexts="Single user" />
-              <RowsData DataTexts="Standard financial dashboard (revenues & expenses)" />
-              <RowsData DataTexts="Service & maintenance requests with ease" />
-              <RowsData DataTexts="Standard access to contractors" />
-              <RowsData DataTexts="Income & expense tracking" />
-              <RowsData DataTexts="Tenant screening" />
-              <RowsData DataTexts="Standard document management" />
-              <RowsData DataTexts="Standard rental property listings on Kodie Property Marketplace" />
-              <View style={{ padding: 5 }}>
-                <RowButtons
-                  leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                  RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                  RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-                  LeftButtonborderColor={_COLORS.Kodie_TransparentColor}
-                  RightButtonborderColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonText={"Contact us"}
-                  RightButtonText={"Subscribe"}
-                  onPressLeftButton={() =>
-                    alert("Contact us pressed")
-                  }
-                  onPressRightButton={() => {
-                    alert("Subscribe pressed");
-                  }}
-                />
-              </View>
-            </View>
-
-            <View style={ManageSubscriptionStyle.SubscriptionDataView}>
-              <Text style={ManageSubscriptionStyle.Heading}>
-                {"Property Mogul"}
-              </Text>
-              <Text style={ManageSubscriptionStyle.Subscriptionprice}>
-                Contact Us
-              </Text>
-              <Text style={ManageSubscriptionStyle.SubDataText}>
-                The best place to get started
-              </Text>
-              <View style={ManageSubscriptionStyle.ShadowLine} />
-              <Text style={ManageSubscriptionStyle.getText}>You get:</Text>
-              <RowsData DataTexts="Easily manage up to 3 properties" />
-              <RowsData DataTexts="Single user" />
-              <RowsData DataTexts="Standard financial dashboard (revenues & expenses)" />
-              <RowsData DataTexts="Service & maintenance requests with ease" />
-              <RowsData DataTexts="Standard access to contractors" />
-              <RowsData DataTexts="Income & expense tracking" />
-              <RowsData DataTexts="Tenant screening" />
-              <RowsData DataTexts="Standard document management" />
-              <RowsData DataTexts="Standard rental property listings on Kodie Property Marketplace" />
-              <View style={{ padding: 5 }}>
-                <RowButtons
-                  leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-                  RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-                  RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-                  LeftButtonborderColor={_COLORS.Kodie_TransparentColor}
-                  RightButtonborderColor={_COLORS.Kodie_BlackColor}
-                  LeftButtonText={"Contact us"}
-                  RightButtonText={"Subscribe"}
-                  onPressLeftButton={() =>
-                    props.navigation.navigate("ContractorProfile")
-                  }
-                  onPressRightButton={() => {
-                    props.navigation.navigate("HireContractor");
-                  }}
-                />
-              </View>
-            </View>
-          </ScrollView> */}
-
           <FlatList
             horizontal={true}
             data={subscriptionData}

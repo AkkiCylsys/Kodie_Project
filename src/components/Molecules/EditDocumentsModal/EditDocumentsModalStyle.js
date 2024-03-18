@@ -38,7 +38,7 @@ export const EditDocumentsModalStyle = StyleSheet.create({
   Main_View: {
     flexDirection: "row",
     marginHorizontal: 16,
-    marginTop: 5,
+    marginVertical: 5,
   },
   All_Data_View: {
     // marginTop:15,

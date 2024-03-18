@@ -219,7 +219,7 @@ export default Repair = props => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.error('API Error PersonalDetails:', error);
+      console.error('API Error DeleteProperty :', error);
       setIsLoading(false);
     }
   };

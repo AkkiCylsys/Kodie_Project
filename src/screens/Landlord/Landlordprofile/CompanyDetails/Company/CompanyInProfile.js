@@ -279,8 +279,8 @@ const CompanyInProfile = ({
         setIsLoading(false);
       })
       .catch(error => {
-        console.error('API Error PersonalDetails:', error);
-        setIsLoading(false);
+        // Handle error
+        console.error('API Error PersonalDetails CIP:', error);
       });
   };
 

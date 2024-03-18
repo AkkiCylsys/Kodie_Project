@@ -19,17 +19,6 @@ const Jobs = (props) => {
   let myJob_Type = props.route.params?.myJob_Type;
   let job_sub_type_req = props.route.params?.job_sub_type;
   console.log("job_sub_type_req...", job_sub_type_req);
-  useEffect(() => {
-    const handleBackButton = () => {
-      navigation.navigate('Dashboard');
-      // props.navigation.pop()
-      return true; // Prevent default behavior (exiting the app)
-    };
-    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-    };
-  }, []);
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
@@ -48,7 +37,7 @@ const Jobs = (props) => {
             }}
             create_job_id={(job_id) => {
               // alert(job_id);
-              props.navigation.navigate("JobDetails", {
+              props.navigation.navigate("JobReviewDetails", {
                 JOB_ID: job_id,
                 View_Job_Details: "View_Job_Details",
               });

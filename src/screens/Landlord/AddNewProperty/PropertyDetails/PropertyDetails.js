@@ -38,12 +38,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import {SignUpStepStyle} from '../../../Authentication/SignUpScreen/SignUpSteps/SignUpStepsStyle';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {BackHandler} from 'react-native';
 //import Geolocation from '@react-native-community/geolocation';
-import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
+  const isFocus = useIsFocused();
   const propertyid = props?.route?.params?.propertyid;
   const editMode = props?.route?.params?.editMode;
   console.log('propertyid....', propertyid);
@@ -114,8 +115,11 @@ export default PropertyDetails = props => {
       language: 'en',
     });
     // Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
-    setLocation(property_Detail?.location);
-  }, []);
+    // setLocation(property_Detail?.location);
+    setLocation('');
+    setProperty_value('');
+    setPropertyDesc('');
+  }, [isFocus]);
 
   const DetailsData = () => {
     const detailData = {
@@ -152,7 +156,7 @@ export default PropertyDetails = props => {
           console.log('propertyDetail....', response.data.property_details);
         } else {
           console.error('propertyDetail_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

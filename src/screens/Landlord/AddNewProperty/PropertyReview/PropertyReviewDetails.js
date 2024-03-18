@@ -37,7 +37,7 @@ import Share from 'react-native-share';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import {BackHandler} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 const Detail = [
@@ -82,7 +82,7 @@ const Detail = [
     name: 'WiFi',
   },
 ];
-export default PropertyReview = props => {
+export default PropertyReviewDetails = props => {
   const dispatch = useDispatch();
   const property_id = props?.route?.params?.property_id;
 
@@ -346,7 +346,7 @@ export default PropertyReview = props => {
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response.data.error);
-        alert("Oops samthing went wrong! Please try again later.");
+        alert('Oops samthing went wrong! Please try again later.');
       }
       const additionalFeatures_id =
         response.data.property_details[0].additional_features;
@@ -375,6 +375,56 @@ export default PropertyReview = props => {
 
     return () => clearTimeout(timeout);
   }, [property_id, propertyid, additionalKeyFeaturesString]);
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     // If you want to handle custom back behavior on specific screens
+  //     // Replace 'ScreenName' with the name of the screen where you want to provide specific navigation
+  //     if (props.navigation.isFocused() && props.navigation.canGoBack()) {
+  //       props.navigation.dispatch(CommonActions.goBack());
+  //       return true;
+  //     }
+  //     // If you want to exit the app when the back button is pressed on the home screen
+  //     if (props.navigation.isFocused()) {
+  //       BackHandler.exitApp();
+  //       return true;
+  //     }
+
+  //     return false;
+  //   };
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     'hardwareBackPress',
+  //     backAction,
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, [props.navigation]);
+
+  // Deependra backhandler ....
+  useEffect(() => {
+    const handleBackButton = () => {
+      // Do nothing or handle differently for this particular page
+      // props.navigation.navigate('BottomNav')
+      // props.navigation.dispatch(
+      //   CommonActions.reset({
+      //     index: 0,
+      //     routes: [
+      //       {name: 'Properties'}, // Replace 'Home' with the name of your initial screen
+      //     ],
+      //   }),
+      // );
+      props.navigation.navigate('Properties');
+      // props.navigation.pop()
+      return true; // Prevent default behavior (exiting the app)
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+    };
+  }, []);
+
   // const imagePaths = MultiImageName.map((image) => image.path);
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {

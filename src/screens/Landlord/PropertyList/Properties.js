@@ -24,17 +24,6 @@ const Properties = props => {
   useEffect(() => {
     <PropertyList />;
   }, []);
-  useEffect(() => {
-    const handleBackButton = () => {
-      props.navigation.navigate('Dashboard');
-      // props.navigation.pop()
-      return true; // Prevent default behavior (exiting the app)
-    };
-    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-    };
-  }, []);
   const checkTabs = () => {
     switch (activeTab) {
       case 'Tab1':
@@ -56,8 +45,7 @@ const Properties = props => {
             }}
             onPropertyView={propView => {
               const {propertyid} = propView;
-              // props.navigation.pop(1);
-              props.navigation.navigate('PropertyReview', {
+              props.navigation.navigate('PropertyReviewDetails', {
                 propertyid: propertyid,
                 propertyView: 'propertyView',
               });

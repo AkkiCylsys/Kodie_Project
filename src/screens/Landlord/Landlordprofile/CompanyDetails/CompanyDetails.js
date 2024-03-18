@@ -38,7 +38,7 @@ import PhoneInput from 'react-native-phone-number-input';
 import CompanyInProfile from './Company/CompanyInProfile';
 import IndividualInProfile from './Individual/IndividualInProfile';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 const data = [
   {label: 'Item 1', value: '1'},
   {label: 'Item 2', value: '2'},
@@ -180,7 +180,7 @@ export default CompanyDetails = props => {
       })
       .catch(error => {
         // Handle error
-        console.error('API Error PersonalDetails:', error);
+        console.error('API Error PersonalDetails C:', error);
       });
   };
   const UpdateCompanyData = async () => {
@@ -431,7 +431,7 @@ export default CompanyDetails = props => {
                   <FontAwesome
                     name="edit"
                     color={_COLORS.Kodie_GreenColor}
-                    size={18}
+                    size={14}
                     style={{
                       alignSelf: 'center',
                       justifyContent: 'center',
