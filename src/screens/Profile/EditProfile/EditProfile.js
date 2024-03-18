@@ -194,7 +194,7 @@ const EditProfile = props => {
       })
       .catch(error => {
         // Handle error
-        console.error('API Error PersonalDetails:', error);
+        console.error('API Error PersonalDetails EP:', error);
         setIsLoading(false);
       });
   };
@@ -442,7 +442,7 @@ const EditProfile = props => {
                       <FontAwesome
                         name="edit"
                         color={_COLORS.Kodie_GreenColor}
-                        size={18}
+                        size={14}
                         style={{alignSelf: 'center'}}
                       />
                     </View>

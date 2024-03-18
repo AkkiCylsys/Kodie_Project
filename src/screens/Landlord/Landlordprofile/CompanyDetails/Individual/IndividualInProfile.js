@@ -274,12 +274,16 @@ const IndividualInProfile = ({
         setIsLoading(false);
       })
       .catch(error => {
-        console.error('API Error PersonalDetails:', error);
+        console.error('API Error PersonalDetails IIP:', error);
       });
   };
 
   useEffect(() => {
     getPersonalDetails();
+    handle_describe_yourself();
+    if (selectJobType !== null) {
+      handleServices(selectJobType);
+    }
   }, []); // Call this useEffect only once on component mount
 
   useEffect(() => {
@@ -288,11 +292,6 @@ const IndividualInProfile = ({
       selectJobType: selectJobTypeid.join(','),
       servicesValue: servicesValue,
     });
-
-    handle_describe_yourself();
-    if (selectJobType !== null) {
-      handleServices(selectJobType);
-    }
   }, [selectJobType, website, selectJobTypeid, servicesValue]);
 
   return (

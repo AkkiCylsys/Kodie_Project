@@ -133,5 +133,16 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
+  subContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+    marginTop: 25,
+  },
+  Invite_tenant: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
   error_text: {color: 'red', marginLeft: 10, marginTop: 5},
 });

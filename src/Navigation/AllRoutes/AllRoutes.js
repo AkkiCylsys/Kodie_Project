@@ -136,6 +136,8 @@ import IndividualInProfile from '../../screens/Landlord/Landlordprofile/CompanyD
 import IndividualSignup from '../../screens/Authentication/SignUpScreen/AboutYou/IndividualSignup/IndividualSignup';
 import CompanySignup from '../../screens/Authentication/SignUpScreen/AboutYou/CompanySignup/CompanySignup';
 import Partners from '../../screens/Partners/Partners';
+import PropertyReviewDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReviewDetails';
+import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDetails';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1102,6 +1104,16 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'Partners'}
           component={Partners}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'PropertyReviewDetails'}
+          component={PropertyReviewDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'JobReviewDetails'}
+          component={JobReviewDetails}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

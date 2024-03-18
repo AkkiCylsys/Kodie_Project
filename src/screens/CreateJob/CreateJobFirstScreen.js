@@ -11,6 +11,7 @@ import {
   FlatList,
   Image,
   PermissionsAndroid,
+  BackHandler
 } from 'react-native';
 import {CreateJobFirstStyle} from './CreateJobFirstScreenCss';
 import StepText from '../../components/Molecules/StepText/StepText';
@@ -283,6 +284,17 @@ export default CreateJobFirstScreen = props => {
       </View>
     );
   };
+  useEffect(() => {
+    const handleBackButton = () => {
+      props.navigation.navigate('Jobs');
+      // props.navigation.pop()
+      return true; // Prevent default behavior (exiting the app)
+    };
+    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+    };
+  }, []);
   useEffect(() => {
     handleProperty_Type();
     Selected_Address_Type();
@@ -734,7 +746,7 @@ export default CreateJobFirstScreen = props => {
         }
       })
       .catch(error => {
-        console.error('API failed JobDetails', error);
+        console.error('API failed JobDetails in Edit mode ', error);
         setIsLoading(false);
         // alert(error);
       })

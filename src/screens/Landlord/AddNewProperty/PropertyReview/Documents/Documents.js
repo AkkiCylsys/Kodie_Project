@@ -451,6 +451,17 @@ export default Documents = props => {
             },
             container: DocumentsStyle.bottomModal_container,
           }}>
+          <View style={DocumentsStyle.submodalContainer}>
+            <Text style={DocumentsStyle.Invite_tenant}>
+              {'Edit document'}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                closeModal();
+              }}>
+              <Entypo name="cross" size={25} color={_COLORS.Kodie_BlackColor} />
+            </TouchableOpacity>
+          </View>
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}

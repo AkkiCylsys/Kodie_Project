@@ -5,6 +5,17 @@ export const JobDocumentsStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
+  submodalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+    marginTop: 25,
+  },
+  Invite_tenant: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
   subContainer: {
     marginHorizontal: 16,
   },

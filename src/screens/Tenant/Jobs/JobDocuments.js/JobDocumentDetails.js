@@ -232,7 +232,7 @@ const JobDocumentDetails = props => {
               source={IMAGES.document}
               style={JobDocumentDetailStyle.pdfIcon}
             /> */}
-              <FontAwesome
+            <FontAwesome
               name="file-pdf-o"
               size={35}
               color={_COLORS.Kodie_BlackColor}
@@ -434,6 +434,15 @@ const JobDocumentDetails = props => {
             },
             container: JobDocumentDetailStyle.bottomModal_container,
           }}>
+          <View style={JobDocumentDetailStyle.submodalContainer}>
+            <Text style={JobDocumentDetailStyle.Invite_tenant}>{'Edit document'}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                closeModal();
+              }}>
+              <Entypo name="cross" size={25} color={_COLORS.Kodie_BlackColor} />
+            </TouchableOpacity>
+          </View>
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}

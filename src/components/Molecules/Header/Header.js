@@ -35,7 +35,7 @@ const TopHeader = props => {
       })
       .catch(error => {
         // Handle error
-        console.error('API Error PersonalDetails:', error);
+        console.error('API Error PersonalDetails h:', error);
       });
   };
   useEffect(() => {

@@ -282,7 +282,7 @@ const CompanyInProfile = ({
       })
       .catch(error => {
         // Handle error
-        console.error('API Error PersonalDetails:', error);
+        console.error('API Error PersonalDetails CIP:', error);
       });
   };
   useEffect(() => {

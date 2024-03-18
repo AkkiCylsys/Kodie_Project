@@ -262,7 +262,7 @@ const ProfileDocumentDetails = props => {
           setDocumentLookupData(response.data.lookup_details);
         } else {
           console.error('Document dropDown..._error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -483,6 +483,17 @@ const ProfileDocumentDetails = props => {
           },
           container: ProfileDocumentDetailStyle.bottomModal_container,
         }}>
+        <View style={ProfileDocumentDetailStyle.subContainer}>
+          <Text style={ProfileDocumentDetailStyle.Invite_tenant}>
+            {'Edit document'}
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              closeModal();
+            }}>
+            <Entypo name="cross" size={25} color={_COLORS.Kodie_BlackColor} />
+          </TouchableOpacity>
+        </View>
         <EditDocumentsModal
           closemodal={closeModal}
           deleteHandler={deleteHandler}

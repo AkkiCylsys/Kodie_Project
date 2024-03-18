@@ -11,6 +11,7 @@ import {
   Platform,
   GoogleMapStyleheet,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/dist/Entypo';
 import {GoogleMapStyle} from './googleMapStyle';
@@ -23,8 +24,10 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
 import RNSettings from 'react-native-settings';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import {useNavigation} from '@react-navigation/native';
 const MapScreen = props => {
   const mapRef = useRef(null);
+  const navigation = useNavigation();
   const [lat, setLat] = useState(0);
   const [long, setLong] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,6 +84,35 @@ const MapScreen = props => {
             if (result === RNSettings.ENABLED) {
               console.log('location is enabled');
               getLOcation();
+            } else {
+              // alert(
+              //   'You din`t allowed the location, so you are not able to use location.please on location.',
+              // );
+              Alert.alert(
+                'Location Alert',
+                'You din`t allowed the location, so you are not able to use location.please on location.',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => navigation.pop(),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'OK',
+                    onPress: () => {
+                      RNSettings.openSetting(
+                        RNSettings.ACTION_LOCATION_SOURCE_SETTINGS,
+                      ).then(result => {
+                        if (result === RNSettings.ENABLED) {
+                          console.log('location is enabled');
+                          getLOcation();
+                        }
+                      });
+                    },
+                  },
+                ],
+              );
+              setIsLoading(false);
             }
           },
         );

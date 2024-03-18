@@ -101,7 +101,7 @@ export default EditDocumentsModal = props => {
   );
   return (
     <ScrollView style={EditDocumentsModalStyle.mainContainer}>
-      <View style={EditDocumentsModalStyle.subContainer}>
+      {/* <View style={EditDocumentsModalStyle.subContainer}>
         <Text style={EditDocumentsModalStyle.Invite_tenant}>
           {'Edit document'}
         </Text>
@@ -111,7 +111,7 @@ export default EditDocumentsModal = props => {
           }}>
           <Entypo name="cross" size={25} color={_COLORS.Kodie_BlackColor} />
         </TouchableOpacity>
-      </View>
+      </View> */}
       <View style={EditDocumentsModalStyle.All_Data_View}>
         <FlatList
           data={data}

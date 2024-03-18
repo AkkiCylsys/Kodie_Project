@@ -463,6 +463,17 @@ const DocumentDetails = props => {
             },
             container: DocumentDetailStyle.bottomModal_container,
           }}>
+              <View style={DocumentDetailStyle.submodalContainer}>
+            <Text style={DocumentDetailStyle.Invite_tenant}>
+              {'Edit document'}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                closeModal();
+              }}>
+              <Entypo name="cross" size={25} color={_COLORS.Kodie_BlackColor} />
+            </TouchableOpacity>
+          </View>
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}
