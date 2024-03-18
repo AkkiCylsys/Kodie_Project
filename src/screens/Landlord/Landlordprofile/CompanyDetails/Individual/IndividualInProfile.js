@@ -20,6 +20,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import {Config} from '../../../../../Config';
 import ServicesBox from '../../../../../components/Molecules/ServicesBox/ServicesBox';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {useIsFocused} from '@react-navigation/native';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 const data = [
@@ -43,6 +44,8 @@ const IndividualInProfile = ({
   // accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
   //   ? accountDetails?.UAD_WEBSITE
   //   : '',
+  const isvisible = useIsFocused();
+
   const [servicesValue, setservicesValue] = useState([]);
   const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
     [],
@@ -79,7 +82,6 @@ const IndividualInProfile = ({
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
               ? 'cleaning-services'
@@ -103,45 +105,37 @@ const IndividualInProfile = ({
               : 'MaterialIcons'
           }
           iconColor={
-            // isClick === item.lookup_key
             selectJobTypeid.includes(item.lookup_key)
               ? _COLORS.Kodie_BlackColor
               : _COLORS.Kodie_GrayColor
           }
           BoxStyling={[
-            IndividualProfileStyle.box_style,
+            CompanyInProfileStyle.box_style,
             {
-              backgroundColor:
-                // isClick === item.lookup_key
-                selectJobTypeid.includes(item.lookup_key)
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor,
+              backgroundColor: selectJobTypeid.includes(item.lookup_key)
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor,
             },
           ]}
           textColor={[
-            IndividualProfileStyle.box_Text_Style,
+            CompanyInProfileStyle.box_Text_Style,
             {
-              color:
-                // isClick === item.lookup_key
-                selectJobTypeid.includes(item.lookup_key)
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
+              color: selectJobTypeid.includes(item.lookup_key)
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
-          // onPress={() => setIsClick(!isClick)}
           onPress={() => {
             toggleSelection(item.lookup_key);
             setSelectJobType(item.lookup_key);
-            // alert(item.lookup_key);
           }}
         />
       </View>
     );
   };
-  const selectedselectJobTypesString = selectJobTypeid.join(',');
-  console.log(selectedselectJobTypesString, 'selectedselectJobTypesString');
 
-  // describe your self.....
+  const selectedselectJobTypesString = selectJobTypeid.join(',');
+
   const handle_describe_yourself = () => {
     const describe_yourself_Data = {
       P_PARENT_CODE: 'JOB_TYPE',
@@ -167,7 +161,7 @@ const IndividualInProfile = ({
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -177,7 +171,8 @@ const IndividualInProfile = ({
         setIsLoading(false);
       });
   };
-  const handleServices = selectJobType => {
+
+  const handleServices = async () => {
     const jobTypes = selectedselectJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
     const servicesDatas = [];
@@ -207,13 +202,15 @@ const IndividualInProfile = ({
 
         if (response.data.status === true) {
           servicesDatas.push(...response.data.lookup_details);
+          setIsLoading(false);
         } else {
-          console.error('individual profile Services_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          console.error('company profile Services_error:', response.data.error);
+          alert('Oops samthing went wrong! Please try again later.');
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Services error:', error);
-        // alert(error);
+        setIsLoading(false);
       }
     };
 
@@ -232,10 +229,13 @@ const IndividualInProfile = ({
     };
 
     fetchAllServices();
+    setIsLoading(false);
   };
+
   const getPersonalDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
+
     const apiUrl =
       url + `getAccount_details/${loginData.Login_details.user_id}`;
 
@@ -271,29 +271,48 @@ const IndividualInProfile = ({
             ? response.data.data[0][0]?.UAD_WEBSITE
             : '',
         );
+        setCompanyName(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? response.data.data[0][0]?.UAD_ORGANIZATION_NAME
+            : '',
+        );
+        SetBusinessNumber(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? response.data.data[0][0]?.UAD_AUSTR_BUSINESS_NO
+            : '',
+        );
+        setCompanyGSTNumber(
+          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? response.data.data[0][0]?.UAD_COMPANY_GST_VAT_NO
+            : '',
+        );
         setIsLoading(false);
       })
       .catch(error => {
         console.error('API Error PersonalDetails:', error);
+        setIsLoading(false);
       });
   };
 
   useEffect(() => {
-    getPersonalDetails();
-  }, []); // Call this useEffect only once on component mount
+    if (isvisible) {
+      getPersonalDetails();
+      handle_describe_yourself();
+    }
+  }, [isvisible]);
 
+  useEffect(() => {
+    if (selectJobType !== undefined && selectJobType !== null) {
+      handleServices(selectJobType);
+    }
+  }, [selectJobType]);
   useEffect(() => {
     IndividualData({
       website: website,
       selectJobType: selectJobTypeid.join(','),
       servicesValue: servicesValue,
     });
-
-    handle_describe_yourself();
-    if (selectJobType !== null) {
-      handleServices(selectJobType);
-    }
-  }, [selectJobType, website, selectJobTypeid, servicesValue]);
+  }, [website, selectJobTypeid, servicesValue]);
 
   return (
     <View style={{flex: 1}}>

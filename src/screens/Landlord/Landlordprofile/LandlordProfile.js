@@ -152,7 +152,7 @@ export default LandlordProfile = props => {
               />
               <Text style={LandlordProfileStyle.ratingText}>{'0'}</Text>
               <Text style={LandlordProfileStyle.subrating}>
-                ({'No Rating yet'})
+                ({'No rating yet'})
               </Text>
             </View>
           </View>
@@ -334,7 +334,9 @@ export default LandlordProfile = props => {
             <Text style={LandlordProfileStyle.CancelBtn}>Cancel</Text>
           </TouchableOpacity>
           <View style={{margin: 5}} />
-          <TouchableOpacity onPress={LogOut} style={{height: 68,alignSelf:'center'}}>
+          <TouchableOpacity
+            onPress={LogOut}
+            style={{height: 68, alignSelf: 'center'}}>
             <Text style={LandlordProfileStyle.LogoutBtn}>Logout</Text>
           </TouchableOpacity>
         </View>

@@ -20,6 +20,8 @@ import {Config} from '../../../../../Config';
 import ServicesBox from '../../../../../components/Molecules/ServicesBox/ServicesBox';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
+import {useIsFocused} from '@react-navigation/native';
+
 import {useSelector} from 'react-redux';
 const data = [
   {lookup_key: 1, lookup_description: 'Item 1'},
@@ -54,7 +56,7 @@ const CompanyInProfile = ({
   const [selectJobType, setSelectJobType] = useState();
   const [servicesData, setServicesData] = useState([]);
   const [accountDetails, setAccountDetails] = useState(null);
-
+  const isvisible = useIsFocused();
   const toggleSelection = lookup_key => {
     if (selectJobTypeid.includes(lookup_key)) {
       setSelectJobTypeid(prevSelected =>
@@ -70,7 +72,6 @@ const CompanyInProfile = ({
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
               ? 'cleaning-services'
@@ -94,7 +95,6 @@ const CompanyInProfile = ({
               : 'MaterialIcons'
           }
           iconColor={
-            // isClick === item.lookup_key
             selectJobTypeid.includes(item.lookup_key)
               ? _COLORS.Kodie_BlackColor
               : _COLORS.Kodie_GrayColor
@@ -102,37 +102,30 @@ const CompanyInProfile = ({
           BoxStyling={[
             CompanyInProfileStyle.box_style,
             {
-              backgroundColor:
-                // isClick === item.lookup_key
-                selectJobTypeid.includes(item.lookup_key)
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor,
+              backgroundColor: selectJobTypeid.includes(item.lookup_key)
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor,
             },
           ]}
           textColor={[
             CompanyInProfileStyle.box_Text_Style,
             {
-              color:
-                // isClick === item.lookup_key
-                selectJobTypeid.includes(item.lookup_key)
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor,
+              color: selectJobTypeid.includes(item.lookup_key)
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
-          // onPress={() => setIsClick(!isClick)}
           onPress={() => {
             toggleSelection(item.lookup_key);
             setSelectJobType(item.lookup_key);
-            // alert(item.lookup_key);
           }}
         />
       </View>
     );
   };
-  const selectedselectJobTypesString = selectJobTypeid.join(',');
-  console.log(selectedselectJobTypesString, 'selectedselectJobTypesString');
 
-  // describe your self.....
+  const selectedselectJobTypesString = selectJobTypeid.join(',');
+
   const handle_describe_yourself = () => {
     const describe_yourself_Data = {
       P_PARENT_CODE: 'JOB_TYPE',
@@ -158,7 +151,7 @@ const CompanyInProfile = ({
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -168,7 +161,8 @@ const CompanyInProfile = ({
         setIsLoading(false);
       });
   };
-  const handleServices = selectJobType => {
+
+  const handleServices = async () => {
     const jobTypes = selectedselectJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
     const servicesDatas = [];
@@ -198,13 +192,15 @@ const CompanyInProfile = ({
 
         if (response.data.status === true) {
           servicesDatas.push(...response.data.lookup_details);
+          setIsLoading(false);
         } else {
           console.error('company profile Services_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
+          setIsLoading(false);
         }
       } catch (error) {
         console.error('Services error:', error);
-        // alert(error);
+        setIsLoading(false);
       }
     };
 
@@ -223,18 +219,19 @@ const CompanyInProfile = ({
     };
 
     fetchAllServices();
+    setIsLoading(false);
   };
+
   const getPersonalDetails = () => {
+    setIsLoading(true);
     const url = Config.BASE_URL;
 
     const apiUrl =
       url + `getAccount_details/${loginData.Login_details.user_id}`;
 
-    // Make a GET request using Axios
     axios
       .get(apiUrl)
       .then(response => {
-        // Handle successful response
         console.log('API Response:', response.data.data[0][0]);
         setAccountDetails(response.data.data[0][0]);
         const initialJobTypeIds = response.data.data[0][0]
@@ -279,19 +276,27 @@ const CompanyInProfile = ({
             ? response.data.data[0][0]?.UAD_COMPANY_GST_VAT_NO
             : '',
         );
+        setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error PersonalDetails:', error);
+        setIsLoading(false);
       });
   };
+
   useEffect(() => {
-    getPersonalDetails();
-    handle_describe_yourself();
-    if (selectJobType !== null) {
+    if (isvisible) {
+      getPersonalDetails();
+      handle_describe_yourself();
+    }
+  }, [isvisible]);
+
+  useEffect(() => {
+    if (selectJobType !== undefined && selectJobType !== null) {
       handleServices(selectJobType);
     }
-  }, []); // Call this useEffect only once on component mount
+  }, [selectJobType]);
+
   useEffect(() => {
     CompanyData({
       companyName: companyName,
@@ -302,7 +307,6 @@ const CompanyInProfile = ({
       CompanyGst: companyGSTNumber,
     });
   }, [
-    selectJobType,
     companyName,
     website,
     businessNumber,
@@ -312,6 +316,7 @@ const CompanyInProfile = ({
     p_longitude,
     companyGSTNumber,
   ]);
+
   return (
     <View>
       {isLoading ? (
@@ -374,11 +379,7 @@ const CompanyInProfile = ({
           </View>
           {selectedselectJobTypesString == '' ? null : (
             <View style={CompanyInProfileStyle.inputContainer}>
-              <Text
-                style={[
-                  // CompanyInProfileStyle.companycommontext,
-                  CompanyInProfileStyle.typescommontext,
-                ]}>
+              <Text style={[CompanyInProfileStyle.typescommontext]}>
                 {'The type of service you perform'}
               </Text>
               <MultiSelect
@@ -406,11 +407,7 @@ const CompanyInProfile = ({
             </View>
           )}
           <View style={CompanyInProfileStyle.inputContainer}>
-            <View
-              style={[
-                // CompanyInProfileStyle.inputContainer,
-                CompanyInProfileStyle.commontextfield,
-              ]}>
+            <View style={[CompanyInProfileStyle.commontextfield]}>
               <View>
                 <Text style={CompanyInProfileStyle.companycommontext}>
                   {'Company physical address'}
@@ -419,7 +416,6 @@ const CompanyInProfile = ({
                   <View style={CompanyInProfileStyle.locationContainer}>
                     <TextInput
                       style={CompanyInProfileStyle.locationInput}
-                      // value={location}
                       value={CompanyLocation}
                       onChangeText={onChangeCompanyLocation}
                       onFocus={CompanyOnFocus}
@@ -438,17 +434,7 @@ const CompanyInProfile = ({
                     />
                   </TouchableOpacity>
                 </View>
-                {/* {locationError ? (
-                  <Text style={PropertyDetailsStyle.error_text}>
-                    {locationError}
-                  </Text>
-                ) : null} */}
               </View>
-              {/* {locationError ? (
-                  <Text style={PropertyDetailsStyle.error_text}>
-                    {locationError}
-                  </Text>
-                ) : null} */}
             </View>
           </View>
           <View style={CompanyInProfileStyle.inputContainer}>
