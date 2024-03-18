@@ -1,6 +1,5 @@
 export const logos = {
   mainLogo: require('./../../assets/images/Logo/MainLogo.png'),
-  // KodieSplash: require("./../../assets/images/Logo/KodieSplash.png"),
   KodieSplash: require('./../../assets/images/Logo/kodiebg.png'),
   MainLogoWhite: require('./../../assets/images/Logo/MainLogoWhite.png'),
 };
@@ -15,11 +14,6 @@ export const IMAGES = {
   document: require('../../assets/icons/doc-pdf.png'),
   cleaner: require('../../assets/icons/cleaner.png'),
   lightCleaner: require('../../assets/icons/lightCleaner.png'),
-  outdoor: require('../../assets/icons/outdoor.png'),
-  lightOutdorCleaner: require('../../assets/icons/lightOutdorCleaner.png'),
-  heavyLifting: require('../../assets/icons/heavyLifting.png'),
-  lightHeavylifting: require('../../assets/icons/lightHeavylifting.png'),
-  fixingTool: require('../../assets/icons/fixingTool.png'),
   fixing: require('../../assets/icons/fixing.png'),
   filter: require('../../assets/icons/filter.png'),
   up_down_Arrow: require('../../assets/icons/up_down_Arrow.png'),
@@ -107,12 +101,6 @@ export const IMAGES = {
 
   Done: require('../../assets/images/Common/Done.png'),
   NotificationIcon: require('../../assets/images/Common/NotificationIcon.png'),
-
-  //Rahul
-  // kodie_icon : require("../../assets/icons/kodie_icon.png"),
-  // menuIcon : require("../../assets/icons/menuicon.png"),
-  // star : require("../../assets/icons/star.png"),
-  // RightLeftarrow : require("../../assets/icons/RightLeftArrow.png"),
   adduser: require('../../assets/icons/user.png'),
   notificationbell: require('../../assets/icons/notificationbell.png'),
   Location: require('../../assets/icons/location.png'),
@@ -154,14 +142,8 @@ export const IMAGES = {
   vacantProperties: require('../../assets/icons/vacantProperties.png'),
   Inspections: require('../../assets/icons/Inspections.png'),
   Tenants: require('../../assets/icons/Tenants.png'),
-  Maintenancejobs: require('../../assets/icons/Maintenancejobs.png'),
-  ContractorDrawer: require('../../assets/icons/ContractorDrawer.png'),
-  Noticesreminders: require('../../assets/icons/Notices&reminders.png'),
-  DocumentDrawer: require('../../assets/icons/DocumentDrawer.png'),
   Reports: require('../../assets/icons/Reports.png'),
   Partner: require('../../assets/icons/Partner.png'),
-  view_doc: require('../../assets/icons/view_doc.png'),
-  Download_doc: require('../../assets/icons/Download_doc.png'),
 };
 
 export const BANNERS = {

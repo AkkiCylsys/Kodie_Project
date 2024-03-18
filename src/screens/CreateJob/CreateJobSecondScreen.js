@@ -309,7 +309,7 @@ const CreateJobSecondScreen = props => {
           ? response.data.error
           : 'Unknown error occurred';
         console.error('uploadJobFilesData', errorMessage);
-        alert('Error while saving account details');
+        alert(' saving account details');
       }
     } catch (error) {
       alert(error.message || 'An error occurred');
@@ -439,7 +439,7 @@ const CreateJobSecondScreen = props => {
         console.log('update_uploadJobFilesDatas', response.data);
       } else {
         console.log('update_uploadJobFilesData', response.data.error);
-        alert('Error while saving account details');
+        alert('Oops Somthing went wrong! please try again later.');
       }
     } catch (error) {
       alert(error);
