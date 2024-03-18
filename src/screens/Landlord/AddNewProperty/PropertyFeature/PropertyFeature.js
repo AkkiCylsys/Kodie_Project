@@ -166,7 +166,7 @@ export default PropertyFeature = props => {
           setLandArea(response?.data?.property_details[0]?.land_area);
         } else {
           console.error('propertyDetail_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -327,6 +327,26 @@ export default PropertyFeature = props => {
     const additionalApi = url + 'add_property_details';
     console.log('Request URL:', additionalApi);
     setIsLoading(true);
+    let data = {
+      user: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
+      location: location,
+      location_longitude: longitude,
+      location_latitude: latitude,
+      islocation: 1,
+      property_description: propertyDesc,
+      property_type: property_value,
+      key_features: AllCountsData,
+      additional_features: PreFriedly,
+      additional_key_features: additionalfeatureskeyvalue,
+      autolist: selectedButtonId,
+      UPD_FLOOR_SIZE: florSize,
+      UPD_LAND_AREA: landArea,
+      p_city: city,
+      p_state: state,
+      p_country: country,
+    };
+    console.log('sdfs.', data);
     axios
       .post(additionalApi, {
         user: loginData?.Login_details?.user_id,
@@ -336,7 +356,7 @@ export default PropertyFeature = props => {
         location_latitude: latitude,
         islocation: 1,
         property_description: propertyDesc,
-        property_type: property_value,
+        property_type: property_value > 0 ? property_value : 0,
         key_features: AllCountsData,
         additional_features: PreFriedly,
         additional_key_features: additionalfeatureskeyvalue,
@@ -395,7 +415,7 @@ export default PropertyFeature = props => {
           );
         } else {
           console.error('additional_features_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -432,6 +452,7 @@ export default PropertyFeature = props => {
     const update_property_details = url + 'update_property_details';
     console.log('Request URL:', update_property_details);
     setIsLoading(true);
+    console.log("updated data in edit mode cgheck...",updateData)
     axios
       .put(update_property_details, updateData)
       .then(response => {
@@ -446,7 +467,7 @@ export default PropertyFeature = props => {
           // setupdateProperty_Details(response.data.property_details);
         } else {
           console.error('update_property_detailserror:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

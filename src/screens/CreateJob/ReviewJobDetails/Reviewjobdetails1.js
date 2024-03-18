@@ -43,17 +43,17 @@ const Reviewjobdetails1 = props => {
       getJobDetails();
     }
   }, [F_job_id]);
-  useEffect(() => {
-    const handleBackButton = () => {
-      navigation.navigate('Jobs');
-      // props.navigation.pop()
-      return true; // Prevent default behavior (exiting the app)
-    };
-    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleBackButton = () => {
+  //     navigation.navigate('Jobs');
+  //     // props.navigation.pop()
+  //     return true; // Prevent default behavior (exiting the app)
+  //   };
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+  //   };
+  // }, []);
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + 'job/get';

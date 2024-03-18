@@ -284,17 +284,17 @@ export default CreateJobFirstScreen = props => {
       </View>
     );
   };
-  useEffect(() => {
-    const handleBackButton = () => {
-      props.navigation.navigate('Jobs');
-      // props.navigation.pop()
-      return true; // Prevent default behavior (exiting the app)
-    };
-    BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const handleBackButton = () => {
+  //     props.navigation.navigate('Jobs');
+  //     // props.navigation.pop()
+  //     return true; // Prevent default behavior (exiting the app)
+  //   };
+  //   BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+  //   return () => {
+  //     BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+  //   };
+  // }, []);
   useEffect(() => {
     handleProperty_Type();
     Selected_Address_Type();

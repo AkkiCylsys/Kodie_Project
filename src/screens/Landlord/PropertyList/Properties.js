@@ -11,9 +11,15 @@ import RantalOffer from './RentalOffer/RantalOffer';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useNavigationState,
+} from '@react-navigation/native';
 
 const Properties = props => {
+  const routesLength = useNavigationState(state => state.routes.length);
+
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData', loginData?.Login_details?.user_id);
 
@@ -24,6 +30,19 @@ const Properties = props => {
   useEffect(() => {
     <PropertyList />;
   }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        // BackHandler.exitApp();
+        props.navigation.navigate('Dashboard');
+        return true;
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, []),
+  );
   const checkTabs = () => {
     switch (activeTab) {
       case 'Tab1':

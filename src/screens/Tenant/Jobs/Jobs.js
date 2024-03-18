@@ -8,7 +8,7 @@ import { JobsCss } from "./JobsCss";
 import Repair from "./Repair/Repair";
 import SearchForContractor from "./SearchforContractor/SearchForContractor";
 import SearchforJob from "./SearchforJob/SearchforJob";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import Geocoder from "react-native-geocoding";
 import Geolocation from "react-native-geolocation-service";
 const Jobs = (props) => {
@@ -19,6 +19,19 @@ const Jobs = (props) => {
   let myJob_Type = props.route.params?.myJob_Type;
   let job_sub_type_req = props.route.params?.job_sub_type;
   console.log("job_sub_type_req...", job_sub_type_req);
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        // BackHandler.exitApp();
+        props.navigation.navigate('Dashboard');
+        return true;
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, []),
+  );
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":

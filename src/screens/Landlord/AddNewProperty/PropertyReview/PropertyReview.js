@@ -36,8 +36,12 @@ import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import {BackHandler} from 'react-native';
-import {CommonActions} from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import {
+  CommonActions,
+  useNavigation,
+  useNavigationState,
+} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 const Detail = [
@@ -83,6 +87,7 @@ const Detail = [
   },
 ];
 export default PropertyReview = props => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const property_id = props?.route?.params?.property_id;
 
@@ -346,7 +351,7 @@ export default PropertyReview = props => {
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response.data.error);
-        alert("Oops samthing went wrong! Please try again later.");
+        alert('Oops samthing went wrong! Please try again later.');
       }
       const additionalFeatures_id =
         response.data.property_details[0].additional_features;

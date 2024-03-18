@@ -433,8 +433,8 @@ export default CreateJobTermsScreen = (props) => {
     setIsLoading(true);
     const createJob_Data = {
       user_account_details_id: loginData?.Login_details?.user_account_id,
-      type_of_job: selectJobType,
-      job_service_you_looking: servicesValue,
+      type_of_job: selectJobType >0?selectJobType:0,
+      job_service_you_looking: servicesValue >0 ?servicesValue:0,
       more_about_job: aboutyourNeed,
       job_priority: jobPriorityValue,
       property_type: property_value,
