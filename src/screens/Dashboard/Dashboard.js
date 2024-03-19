@@ -536,6 +536,9 @@ export default Dashboard = props => {
                   backgroundColor={_COLORS.Kodie_lightGreenColor}
                   borderColor={_COLORS.Kodie_GreenColor}
                   height={45}
+                  onPress={() => {
+                    props.navigation.navigate('Jobs');
+                  }}
                 />
               </View>
             </View>

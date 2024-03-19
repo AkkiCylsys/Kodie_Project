@@ -837,7 +837,9 @@ export default CreateJobTermsScreen = (props) => {
               }
             />
           </View>
-          <TouchableOpacity style={CreateJobTermsStyle.goBack_View}>
+          <TouchableOpacity style={CreateJobTermsStyle.goBack_View} onPress={()=>{
+            props.navigation.pop()
+          }}>
             <View style={CreateJobTermsStyle.backIcon}>
               <Ionicons
                 name="chevron-back"

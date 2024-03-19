@@ -95,6 +95,7 @@
     "react-native-settings": "0.2.3",
     "react-native-share": "^9.4.1",
     "react-native-shimmer-placeholder": "^2.0.9",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-star-rating": "^1.1.0",
     "react-native-step-indicator": "^1.0.3",
     "react-native-svg": "^13.13.0",

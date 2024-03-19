@@ -38,8 +38,8 @@ export default JobBiddingDetails = (props) => {
     console.log("Request URL:", ContractorUrl);
     setIsLoading(true);
     const bidRequestData = {
-      // job_id: JOB_ID,
-      job_id: 1,
+      job_id: JOB_ID,
+      // job_id: 1,
       uad_key: userAccountid,
     };
     axios
@@ -117,7 +117,7 @@ export default JobBiddingDetails = (props) => {
 
       <RBSheet
         ref={refRBSheet}
-        height={760}
+        height={600}
         customStyles={{
           wrapper: {
             backgroundColor: "rgba(0, 0, 0, 0.5)",

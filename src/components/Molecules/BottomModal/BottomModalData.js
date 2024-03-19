@@ -197,12 +197,10 @@ const BottomModalData = (props) => {
         style={{
           justifyContent: "flex-end",
           alignSelf: "flex-end",
-          paddingHorizontal: 20,
         }}
         onPress={handleCloseModal}
       >
         <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-        {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
       </TouchableOpacity>
       <FlatList
         data={props?.isDeletePropertyClicked ? data1 : data}

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, BackHandler} from 'react-native';
+import {View, BackHandler,Alert} from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import PropertyList from './MyProperty/PropertyList';

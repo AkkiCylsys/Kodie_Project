@@ -98,7 +98,7 @@ const ProfileDocumentDetails = props => {
           DocumentPicker.types.pdf,
           DocumentPicker.types.doc,
           DocumentPicker.types.docx,
-          DocumentPicker.types.images,
+          // DocumentPicker.types.images,
         ],
         allowMultiSelection: true,
       });
@@ -204,6 +204,12 @@ const ProfileDocumentDetails = props => {
     console.log('type....', doc[0].type);
     // console.log("p_referral_key....");
     // console.log("p_module_name....",);
+    if (doc[0].size === null) {
+      alert(
+        'The selected document size is null. Please select a valid document.',
+      );
+      return;
+    }
     const url = Config.BASE_URL;
     const uploadDoc_url = url + 'uploadDocument';
     console.log('Request URL:', uploadDoc_url);

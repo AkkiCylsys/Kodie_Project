@@ -52,8 +52,8 @@ const ProfileDocuments = props => {
     getUploadedDocumentsByModule('Screening_documents');
     getUploadedDocumentsByModule('Other_documents');
     getUploadedDocumentsByModule('Company_documents');
-    getUploadedDocumentsByModule('License_documents');
-    getUploadedDocumentsByModule('Certification_documents');
+    getUploadedDocumentsByModule('Licenses');
+    getUploadedDocumentsByModule('Certifications');
     getUploadedDocumentsByModule('Insurance_and_indemnity');
     // getUploadedDocumentsByModule('Other_documents');
   }, [isfocused]);
@@ -139,16 +139,16 @@ const ProfileDocuments = props => {
               setCompanyDocumentLength(response.data.data.length);
               console.log('companyDocumentLength..', companyDocumentLength);
               break;
-            case 'License_documents':
+            case 'Licenses':
               setLicenseDocument(response.data.data);
               console.log(
-                'Length for License_documents:',
+                'Length for Licenses:',
                 response.data.data.length,
               );
               setLicenseDocumentLength(response.data.data.length);
               console.log('licenseDocumentLength..', licenseDocumentLength);
               break;
-            case 'Certification_documents':
+            case 'Certifications':
               setCertificationDocument(response.data.data);
               console.log(
                 'Length for propertyDocByTenant:',
@@ -245,14 +245,16 @@ const ProfileDocuments = props => {
     {
       id: '2',
       folderHeading: 'License documents',
-      totalFile: '0',
-      moduleName: 'License_documents',
+      totalFile: licenseDocumentLength,
+      // moduleName: 'License_documents',
+      moduleName: 'Licenses',
     },
     {
       id: '3',
       folderHeading: 'Certification documents',
-      totalFile: '0',
-      moduleName: 'Certification_documents',
+      totalFile: licenseDocumentLength,
+      // moduleName: 'Certification_documents',
+      moduleName: 'Certifications',
     },
     {
       id: '4',
@@ -506,9 +508,9 @@ const ProfileDocuments = props => {
                 companyDocumentId == 1
                   ? 'Company_documents'
                   : companyDocumentId == 2
-                  ? 'License_documents'
+                  ? 'Licenses'
                   : companyDocumentId == 3
-                  ? 'Certification_documents'
+                  ? 'Certifications'
                   : companyDocumentId == 4
                   ? 'Insurance_and_indemnity'
                   : companyDocumentId == 5

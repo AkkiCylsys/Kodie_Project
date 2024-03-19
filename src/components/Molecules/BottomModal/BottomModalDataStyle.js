@@ -9,9 +9,9 @@ export const BottomModalDataStyle = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     // padding: "1%",
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    marginBottom:5
+    marginBottom:8
   },
   text: {
     fontSize: 14,

@@ -266,7 +266,7 @@ import {
           <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
           <ImageBackground>
             {imageFileData.image_file_path &&
-            imageFileData.image_file_path != 0 ? (
+            imageFileData.image_file_path.length != 0 ? (
               <View style={JobDetailsStyle.slider_view}>
                 <SliderBox
                   images={imageFileData?.image_file_path}

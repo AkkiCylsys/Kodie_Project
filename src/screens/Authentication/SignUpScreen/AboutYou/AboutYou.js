@@ -28,7 +28,7 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {launchImageLibrary} from 'react-native-image-picker';
 import IndividualSignup from './IndividualSignup/IndividualSignup';
 import CompanySignup from './CompanySignup/CompanySignup';
-import {useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {FirstPropertyStyle} from '../FirstProperty/FirstPropertyStyle';
@@ -126,6 +126,7 @@ export default AboutYou = props => {
   const [Companylocation, setCompanyLocation] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
 
+  const isFocued = useIsFocused();
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -262,13 +263,13 @@ export default AboutYou = props => {
   );
 
   useEffect(() => {
-    handle_manage_property(),
-    handle_kodiehelp(), 
-    handle_describe_yourself();
+    if (isFocued) {
+      handle_manage_property(), handle_kodiehelp(), handle_describe_yourself();
+    }
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-  }, []);
+  }, [isFocued]);
   const ConfirmAddress = () => {
     setIsMap(false);
     if (tabValue == 'IndividualSignup') {
@@ -359,13 +360,13 @@ export default AboutYou = props => {
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('kodie_describeYouself_Data error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -389,7 +390,7 @@ export default AboutYou = props => {
           setmanage_property_Data(response.data.lookup_details);
         } else {
           console.error('property_type_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -419,7 +420,7 @@ export default AboutYou = props => {
           setKodiehelpData(response.data.lookup_details);
         } else {
           console.error('kodie_Data_error:', response.data);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

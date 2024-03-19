@@ -33,7 +33,7 @@ const Reviewjobdetails1 = props => {
   console.log('JOB_IDfsdfsdfs.....', props.JOB_ID);
   console.log('JOB_IDfsdfsdfs small.....', props.job_id);
   const F_job_id = props.View_Job_Details ? props.JOB_ID : props.job_id;
-
+console.log("F_job_id....",F_job_id)
   // alert(props.job_id)
   // alert(props.update_JOB_ID)
   useEffect(() => {
@@ -43,17 +43,6 @@ const Reviewjobdetails1 = props => {
       getJobDetails();
     }
   }, [F_job_id]);
-  // useEffect(() => {
-  //   const handleBackButton = () => {
-  //     navigation.navigate('Jobs');
-  //     // props.navigation.pop()
-  //     return true; // Prevent default behavior (exiting the app)
-  //   };
-  //   BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-  //   return () => {
-  //     BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-  //   };
-  // }, []);
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + 'job/get';
@@ -90,7 +79,6 @@ const Reviewjobdetails1 = props => {
       });
   };
   // EditMode ........
-
   const getUpdateJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + 'job/get';
@@ -125,7 +113,6 @@ const Reviewjobdetails1 = props => {
         setIsLoading(false);
       });
   };
-
   props?.imagesFilePath(jobDetailsData);
   // alert(JSON.stringify(jobDetailsData.first_name))
   return (
@@ -190,7 +177,9 @@ const Reviewjobdetails1 = props => {
               onPress={props.onPress}
             />
           </View>
-          <TouchableOpacity style={ReviewjobdetailsStyle1.goBack_View}>
+          <TouchableOpacity style={ReviewjobdetailsStyle1.goBack_View} onPress={()=>{
+            navigation.pop()
+          }}>
             <View style={ReviewjobdetailsStyle1.backIcon}>
               <Ionicons
                 name="chevron-back"

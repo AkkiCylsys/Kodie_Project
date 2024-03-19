@@ -90,7 +90,8 @@ const MapScreen = props => {
               // );
               Alert.alert(
                 'Location Alert',
-                'You din`t allowed the location, so you are not able to use location.please on location.',
+
+                "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
                 [
                   {
                     text: 'Cancel',

@@ -304,6 +304,12 @@ const CreateJobSecondScreen = props => {
         setIsLoading(false);
         alert(response.data.message);
         props.navigation.navigate('JobDetails', {job_id: job_id});
+
+      // clear state for image..
+      setMultiImageName([])
+      setLeftImage([])
+      setRightImage([])
+
       } else {
         const errorMessage = response.data
           ? response.data.error
@@ -646,7 +652,9 @@ const CreateJobSecondScreen = props => {
               }}
             />
           </View>
-          <TouchableOpacity style={CreateJobSecondStyle.goBack_View}>
+          <TouchableOpacity style={CreateJobSecondStyle.goBack_View} onPress={()=>{
+            props.navigation.pop()
+          }}>
             <View style={CreateJobSecondStyle.backIcon}>
               <Ionicons
                 name="chevron-back"

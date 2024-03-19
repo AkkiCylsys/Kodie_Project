@@ -772,6 +772,8 @@ const AddBiddingDetails = (props) => {
             height={48}
             borderColor={_COLORS.Kodie_WhiteColor}
             backgroundColor={_COLORS.Kodie_WhiteColor}
+            onPress={sendDataToParent}
+
           />
         </View>
         //   </View>

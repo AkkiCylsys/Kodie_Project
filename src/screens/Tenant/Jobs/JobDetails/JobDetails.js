@@ -7,104 +7,117 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
-} from "react-native";
-import React, { useState, useRef, useEffect } from "react";
-import { JobDetailsStyle } from "./JobDetailsStyle";
-import TopHeader from "../../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../../services/CommonServices";
-import { SliderBox } from "react-native-image-slider-box";
-import { BANNERS, _COLORS, IMAGES, FONTFAMILY } from "../../../../Themes";
-import CustomTabNavigator from "../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
-import { Dropdown } from "react-native-element-dropdown";
-import CustomSingleButton from "../../../../components/Atoms/CustomButton/CustomSingleButton";
-import RBSheet from "react-native-raw-bottom-sheet";
-import UploadImageData from "../../../../components/Molecules/UploadImage/UploadImage";
-import Entypo from "react-native-vector-icons/Entypo";
-import StepIndicator from "react-native-step-indicator";
-import BiddingDetails from "./BiddingDetails/Biddingdetails";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import AddJobDetails from "../AddJobDetails";
-import Reviewjobdetails1 from "../../../CreateJob/ReviewJobDetails/Reviewjobdetails1";
-import JodBiddingDetails from "../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails";
-import JobDocuments from "../JobDocuments.js/JobDocuments";
-import { CommonActions } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
-const stepLabels = ["Step 1", "Step 2", "Step 3", "Step 4"];
+} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {JobDetailsStyle} from './JobDetailsStyle';
+import TopHeader from '../../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../../services/CommonServices';
+import {SliderBox} from 'react-native-image-slider-box';
+import {BANNERS, _COLORS, IMAGES, FONTFAMILY} from '../../../../Themes';
+import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
+import {Dropdown} from 'react-native-element-dropdown';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import UploadImageData from '../../../../components/Molecules/UploadImage/UploadImage';
+import Entypo from 'react-native-vector-icons/Entypo';
+import StepIndicator from 'react-native-step-indicator';
+import BiddingDetails from './BiddingDetails/Biddingdetails';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AddJobDetails from '../AddJobDetails';
+import Reviewjobdetails1 from '../../../CreateJob/ReviewJobDetails/Reviewjobdetails1';
+import JodBiddingDetails from '../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails';
+import JobDocuments from '../JobDocuments.js/JobDocuments';
+import {CommonActions} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
+import {Config} from '../../../../Config';
+import axios from 'axios';
+import Carousel from 'react-native-snap-carousel';
+const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
+// const images = [
+//   BANNERS.previewImage,
+//   BANNERS.Apartment,
+//   BANNERS.BannerSecond,
+//   BANNERS.BannerFirst,
+// ];
 const images = [
-  BANNERS.previewImage,
-  BANNERS.Apartment,
-  BANNERS.BannerSecond,
-  BANNERS.BannerFirst,
+  'https://kodieapis.cylsys.com/upload/images/image.jpg',
+  'https://kodieapis.cylsys.com/upload/images/left_image.jpg',
+  'https://kodieapis.cylsys.com/upload/images/right_image.jpg',
 ];
 const Apartment_data = [
-  { label: "House", value: "1" },
-  { label: "Cottage", value: "2" },
-  { label: "Apartment / Flat", value: "3" },
-  { label: "Townhouse", value: "4" },
-  { label: "ApLand / Vacant Plot", value: "5" },
-  { label: "Farm", value: "6" },
+  {label: 'House', value: '1'},
+  {label: 'Cottage', value: '2'},
+  {label: 'Apartment / Flat', value: '3'},
+  {label: 'Townhouse', value: '4'},
+  {label: 'ApLand / Vacant Plot', value: '5'},
+  {label: 'Farm', value: '6'},
 ];
-const JobDetails = (props) => {
+const JobDetails = props => {
+  const [activeSlide, setActiveSlide] = useState(1);
+
   // const dispatch = useDispatch();
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
   let jobDocTab = props?.route?.params?.jobDocTab;
-  console.log("JOB_ID......", JOB_ID);
-  console.log("job_id......", job_id);
+  console.log('JOB_ID......', JOB_ID);
+  console.log('job_id......', job_id);
   let update_JOB_ID = props?.route?.params?.JobId;
   let View_Job_Details = props?.route?.params?.View_Job_Details;
   let editMode = props?.route?.params?.editMode;
   const SearchJobId = props.route.params.SearchJobId;
   const searchView = props.route.params.searchView;
-  console.log("SearchJobId...", SearchJobId, searchView);
-  const [activeTab, setActiveTab] = useState("Tab1");
+  console.log('SearchJobId...', SearchJobId, searchView);
+  const [activeTab, setActiveTab] = useState('Tab1');
   const [currentPage, setCurrentPage] = useState(3);
   const [visible, setVisible] = useState(false);
   const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [myJobType, setMyJobType] = useState(0);
-  const handleJobDetailsSuccess = (jobTypeMy) => {
-    console.log("jobTypeMy in JobDetails component:", jobTypeMy);
+  const [jobDetailsData, setJobDetailsData] = useState([]);
+  const F_job_id = View_Job_Details ? JOB_ID : job_id;
+  const handleJobDetailsSuccess = jobTypeMy => {
+    console.log('jobTypeMy in JobDetails component:', jobTypeMy);
     setMyJobType(jobTypeMy);
-    console.log("myJobType key....", myJobType);
+    console.log('myJobType key....', myJobType);
   };
 
   useEffect(() => {
-    setActiveTab(jobDocTab ? "Tab4" : "Tab1");
+    setActiveTab(jobDocTab ? 'Tab4' : 'Tab1');
   }, []);
-  const handleImageFilePath = async (imagesFilePath) => {
+
+  const handleImageFilePath = imagesFilePath => {
+    console.log('imagesFilePath in check', imagesFilePath);
     setImageFileData(imagesFilePath);
     // console.log("imagesFilePath....sdfs.", imagesFilePath);
-    console.log("imagesFilePath....sdfs.", imagesFilePath);
-    console.log("images__imageFileData...", imageFileData);
+    console.log('imagesFilePath....sdfs.', imagesFilePath);
+    console.log('images__imageFileData...', imageFileData);
+    console.log('images__imagesurl....', imageFileData?.image_file_path);
     // alert(JSON.stringify(imagesFilePath.length))
-    console.log("length", imagesFilePath.length);
   };
-
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
-      name: "feed",
+      name: 'feed',
       // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
-      color: stepStatus === "finished" ? "#ffffff" : "#fe7013",
+      color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
 
     switch (position) {
       case 0: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 1: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 2: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
       case 3: {
-        iconConfig.name = stepStatus === "finished" ? "check" : null;
+        iconConfig.name = stepStatus === 'finished' ? 'check' : null;
         break;
       }
 
@@ -128,32 +141,32 @@ const JobDetails = (props) => {
     currentStepIndicatorLabelFontSize: 15,
     stepIndicatorLabelCurrentColor: _COLORS.Kodie_BlackColor,
     stepIndicatorLabelFinishedColor: _COLORS.Kodie_BlackColor,
-    stepIndicatorLabelUnFinishedColor: "rgba(255,255,255,0.5)",
+    stepIndicatorLabelUnFinishedColor: 'rgba(255,255,255,0.5)',
     labelColor: _COLORS.Kodie_BlackColor,
     labelSize: 14,
-    labelAlign: "center",
+    labelAlign: 'center',
   };
-  const renderStepIndicator = (params) => (
+  const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
-        : stepStatus === "finished"
-        ? "#000000"
-        : "#808080";
+        : stepStatus === 'finished'
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
-        ? "Details"
+        ? 'Details'
         : position === 1
-        ? "Terms"
+        ? 'Terms'
         : position === 2
-        ? "Images"
+        ? 'Images'
         : position === 3
-        ? "Review"
-        : "null";
+        ? 'Review'
+        : 'null';
 
     return (
       <View style={{}}>
@@ -163,17 +176,15 @@ const JobDetails = (props) => {
             marginTop: 1,
             marginHorizontal: 10,
             color: iconColor,
-            alignSelf: "center",
-          }}
-        >{`Step ${position + 1}`}</Text>
+            alignSelf: 'center',
+          }}>{`Step ${position + 1}`}</Text>
         <Text
           style={{
             fontSize: 14,
             marginTop: 5,
             marginHorizontal: 10,
             color: iconColor,
-          }}
-        >
+          }}>
           {iconName}
         </Text>
       </View>
@@ -181,7 +192,7 @@ const JobDetails = (props) => {
   };
   const checkTabs = () => {
     switch (activeTab) {
-      case "Tab1":
+      case 'Tab1':
         return (
           <Reviewjobdetails1
             SearchJobId={SearchJobId}
@@ -194,32 +205,32 @@ const JobDetails = (props) => {
             imagesFilePath={handleImageFilePath}
             onPress={() => {
               props.navigation.pop(4);
-              props.navigation.navigate("Jobs", {
+              props.navigation.navigate('Jobs', {
                 myJob_Type: myJobType,
               });
             }}
             onJobDetailsSuccess={handleJobDetailsSuccess}
             BidonPress={() => {
-              props.navigation.navigate("BidforJob", {
+              props.navigation.navigate('BidforJob', {
                 SearchJobId: SearchJobId,
               });
             }}
           />
         );
-      case "Tab2":
+      case 'Tab2':
         return <JodBiddingDetails JOB_ID={JOB_ID} />;
-      case "Tab3":
+      case 'Tab3':
         return (
           <View>
             <Text>Milestines</Text>
           </View>
         );
-      case "Tab4":
+      case 'Tab4':
         return (
           <>
             <JobDocuments
               JobDocumentDetails={(folderId, moduleName, propertyid) => {
-                props.navigation.navigate("JobDocumentDetails", {
+                props.navigation.navigate('JobDocumentDetails', {
                   folderId: folderId,
                   moduleName: moduleName,
                   JOB_ID: JOB_ID,
@@ -242,14 +253,14 @@ const JobDetails = (props) => {
         IsNotification
         onPressLeftButton={() =>
           View_Job_Details
-            ? props.navigation.navigate("Jobs", {
+            ? props.navigation.navigate('Jobs', {
                 myJob_Type: myJobType,
               })
             : _goBack(props)
         }
-        MiddleText={"Review job details"}
+        MiddleText={'Review job details'}
       />
-      <View style={{ marginVertical: 10 }}>
+      <View style={{marginVertical: 10}}>
         {View_Job_Details || searchView ? null : (
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
@@ -263,34 +274,34 @@ const JobDetails = (props) => {
         )}
       </View>
       <ScrollView>
-        <Text style={JobDetailsStyle.heading}>{"Review job details"}</Text>
+        <Text style={JobDetailsStyle.heading}>{'Review job details'}</Text>
         <ImageBackground>
           {imageFileData.image_file_path &&
-          imageFileData.image_file_path != 0 ? (
+          imageFileData.image_file_path.length !== 0 ? (
             <View style={JobDetailsStyle.slider_view}>
               <SliderBox
                 images={imageFileData?.image_file_path}
                 // images={images}
                 sliderBoxHeight={200}
-                onCurrentImagePressed={(index) =>
+                onCurrentImagePressed={index =>
                   console.warn(`image ${index} pressed`)
                 }
                 inactiveDotColor={_COLORS.Kodie_GrayColor}
                 dotColor={_COLORS.Kodie_GreenColor}
                 autoplay
                 circleLoop
-                resizeMethod={"resize"}
-                resizeMode={"cover"}
+                resizeMethod={'resize'}
+                resizeMode={'cover'}
                 dotStyle={JobDetailsStyle.dotStyle}
                 ImageComponentStyle={{
                   flex: 1,
-                  resizeMode: "cover",
+                  resizeMode: 'cover',
                 }}
               />
             </View>
           ) : null}
           {imageFileData.image_file_path &&
-          imageFileData.image_file_path != 0 ? (
+          imageFileData.image_file_path.length != 0 ? (
             <View style={JobDetailsStyle.bidsview}>
               <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
             </View>
@@ -310,73 +321,72 @@ const JobDetails = (props) => {
             borderBottomWidth: 3,
             borderColor: _COLORS.Kodie_GrayColor,
             elevation: 1,
-          }}
-        >
+          }}>
           <CustomTabNavigator
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             TAB4
             TAB3
-            Tab1={"Details"}
-            Tab2={View_Job_Details || searchView ? "Bids" : null}
-            Tab3={View_Job_Details || searchView ? "Milestones" : null}
-            Tab4={View_Job_Details || searchView ? "Documents" : null}
-            onPressTab1={() => setActiveTab("Tab1")}
+            Tab1={'Details'}
+            Tab2={View_Job_Details || searchView ? 'Bids' : null}
+            Tab3={View_Job_Details || searchView ? 'Milestones' : null}
+            Tab4={View_Job_Details || searchView ? 'Documents' : null}
+            onPressTab1={() => setActiveTab('Tab1')}
             onPressTab2={() =>
-              View_Job_Details || searchView ? setActiveTab("Tab2") : null
+              View_Job_Details || searchView ? setActiveTab('Tab2') : null
             }
             onPressTab3={() =>
-              View_Job_Details || searchView ? setActiveTab("Tab3") : null
+              View_Job_Details || searchView ? setActiveTab('Tab3') : null
             }
             onPressTab4={() =>
-              View_Job_Details || searchView ? setActiveTab("Tab4") : null
+              View_Job_Details || searchView ? setActiveTab('Tab4') : null
             }
             colorTab1={
-              activeTab === "Tab1"
+              activeTab === 'Tab1'
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab2={
-              activeTab === "Tab2"
+              activeTab === 'Tab2'
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab3={
-              activeTab === "Tab3"
+              activeTab === 'Tab3'
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             colorTab4={
-              activeTab === "Tab4"
+              activeTab === 'Tab4'
                 ? _COLORS.Kodie_BlackColor
                 : _COLORS.Kodie_MediumGrayColor
             }
             FONTFAMILY1={
-              activeTab === "Tab1" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+              activeTab === 'Tab1' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
             }
             FONTFAMILY2={
-              activeTab === "Tab2" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+              activeTab === 'Tab2' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
             }
             FONTFAMILY3={
-              activeTab === "Tab3" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+              activeTab === 'Tab3' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
             }
             FONTFAMILY4={
-              activeTab === "Tab4" ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
+              activeTab === 'Tab4' ? FONTFAMILY.K_Bold : FONTFAMILY.K_SemiBold
             }
-            styleTab1={[activeTab === "Tab1" && JobDetailsStyle.activeTab]}
+            styleTab1={[activeTab === 'Tab1' && JobDetailsStyle.activeTab]}
             styleTab2={
               View_Job_Details || searchView
-                ? activeTab === "Tab2" && JobDetailsStyle.activeTab
+                ? activeTab === 'Tab2' && JobDetailsStyle.activeTab
                 : null
             }
             styleTab3={
               View_Job_Details || searchView
-                ? activeTab === "Tab3" && JobDetailsStyle.activeTab
+                ? activeTab === 'Tab3' && JobDetailsStyle.activeTab
                 : null
             }
             styleTab4={
               View_Job_Details || searchView
-                ? activeTab === "Tab4" && JobDetailsStyle.activeTab
+                ? activeTab === 'Tab4' && JobDetailsStyle.activeTab
                 : null
             }
           />
