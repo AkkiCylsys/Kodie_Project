@@ -16,6 +16,7 @@ import IndividualSignupStyle from './IndividualSignupStyle';
 import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useFocusEffect} from '@react-navigation/native';
+import {SignupLookupDetails} from '../../../../../APIs/AllApi';
 const IndividualSignup = ({
   IndividualData,
   physicalAddress,
@@ -137,40 +138,53 @@ const IndividualSignup = ({
   console.log(selectedselectJobTypesString, 'selectedselectJobTypesString');
 
   // describe your self.....
-  const handle_describe_yourself = () => {
-    const describe_yourself_Data = {
+  // const handle_describe_yourself = () => {
+  //   const describe_yourself_Data = {
+  //     P_PARENT_CODE: 'JOB_TYPE',
+  //     P_TYPE: 'OPTION',
+  //   };
+  //   const url = Config.BASE_URL;
+  //   const describeYourselfApi = url + 'lookup_details';
+  //   console.log('Request URL:', describeYourselfApi);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(describeYourselfApi, describe_yourself_Data)
+  //     .then(response => {
+  //       console.log('kodie_describeYouself_Data', response.data);
+  //       if (response.data.status === true) {
+  //         setIsLoading(false);
+  //         console.log(
+  //           'kodie_describeYouself_Data....',
+  //           response.data.lookup_details,
+  //         );
+  //         setKodieDescribeYourselfData(response.data.lookup_details);
+  //       } else {
+  //         console.error(
+  //           'kodie_describeYouself_Data_error:',
+  //           response.data.error,
+  //         );
+  //         alert("Oops samthing went wrong! Please try again later.");
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('kodie_describeYouself_Data error:', error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
+  const handle_describe_yourself = async () => {
+    setIsLoading(true);
+
+    const res = await SignupLookupDetails({
       P_PARENT_CODE: 'JOB_TYPE',
       P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const describeYourselfApi = url + 'lookup_details';
-    console.log('Request URL:', describeYourselfApi);
-    setIsLoading(true);
-    axios
-      .post(describeYourselfApi, describe_yourself_Data)
-      .then(response => {
-        console.log('kodie_describeYouself_Data', response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log(
-            'kodie_describeYouself_Data....',
-            response.data.lookup_details,
-          );
-          setKodieDescribeYourselfData(response.data.lookup_details);
-        } else {
-          console.error(
-            'kodie_describeYouself_Data_error:',
-            response.data.error,
-          );
-          alert("Oops samthing went wrong! Please try again later.");
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('kodie_describeYouself_Data error:', error);
-        alert(error);
-        setIsLoading(false);
-      });
+    });
+
+    console.log('resDescribe', res);
+
+    setKodieDescribeYourselfData(res.lookup_details);
+    setIsLoading(false);
   };
   const handleServices = selectJobType => {
     const jobTypes = selectedselectJobTypesString.split(',').map(Number);
@@ -193,23 +207,28 @@ const IndividualSignup = ({
             : null,
         P_TYPE: 'OPTION',
       };
+      const res = await SignupLookupDetails(propertyData);
 
-      const url = Config.BASE_URL;
-      const propertyType = url + 'lookup_details';
+      console.log('servicesss indi', res);
 
-      try {
-        const response = await axios.post(propertyType, propertyData);
+      servicesDatas.push(...res.lookup_details);
+      setIsLoading(false);
+      // const url = Config.BASE_URL;
+      // const propertyType = url + 'lookup_details';
 
-        if (response.data.status === true) {
-          servicesDatas.push(...response.data.lookup_details);
-        } else {
-          console.error('Individual Services_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
-        }
-      } catch (error) {
-        console.error(' indi Services error:', error);
-        // alert(error);
-      }
+      // try {
+      //   const response = await axios.post(propertyType, propertyData);
+
+      //   if (response.data.status === true) {
+      //     servicesDatas.push(...response.data.lookup_details);
+      //   } else {
+      //     console.error('Individual Services_error:', response.data.error);
+      //     alert('Oops samthing went wrong! Please try again later.');
+      //   }
+      // } catch (error) {
+      //   console.error(' indi Services error:', error);
+      //   // alert(error);
+      // }
     };
 
     const fetchAllServices = async () => {
@@ -307,7 +326,6 @@ const IndividualSignup = ({
               }}
               // renderItem={lookingServices_render}
             />
-            
           </View>
         )}
 

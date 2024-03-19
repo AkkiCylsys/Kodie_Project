@@ -178,15 +178,15 @@ const EditProfile = props => {
       .get(apiUrl)
       .then(response => {
         // Handle successful response
-        console.log('API Response:', response.data.data[0][0]);
-        setAccountDetails(response.data.data[0][0]);
-        setFirstName(response.data.data[0][0]?.UAD_FIRST_NAME);
-        setLastName(response.data.data[0][0]?.UAD_LAST_NAME);
-        setLocation(response.data.data[0][0]?.UAD_CURR_PHYSICAL_ADD);
-        setAbout(response.data.data[0][0]?.UAD_BIO);
+        console.log('API Response:', response?.data?.data[0]);
+        setAccountDetails(response?.data?.data[0]);
+        setFirstName(response?.data?.data[0]?.UAD_FIRST_NAME);
+        setLastName(response?.data?.data[0]?.UAD_LAST_NAME);
+        setLocation(response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD);
+        setAbout(response?.data?.data[0]?.UAD_BIO);
 
-        const initialJobTypeIds = response.data.data[0][0]?.user_role_id
-          ? response.data.data[0][0]?.user_role_id.split(',').map(Number)
+        const initialJobTypeIds = response?.data?.data[0]?.user_role_id
+          ? response?.data?.data[0]?.user_role_id.split(',').map(Number)
           : [];
         setSelectedServices(initialJobTypeIds);
         console.log(accountDetails.UAD_AUSTR_BUSINESS_NO);
@@ -233,7 +233,7 @@ const EditProfile = props => {
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
