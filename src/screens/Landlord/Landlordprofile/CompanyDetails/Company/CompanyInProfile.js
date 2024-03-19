@@ -66,6 +66,7 @@ const CompanyInProfile = ({
       setSelectJobTypeid(prevSelected => [...prevSelected, lookup_key]);
     }
   };
+
   const jobType_render = ({item}) => {
     return (
       <View style={{flex: 1}}>
@@ -232,48 +233,48 @@ const CompanyInProfile = ({
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response.data.data[0][0]);
-        setAccountDetails(response.data.data[0][0]);
-        const initialJobTypeIds = response.data.data[0][0]
+        console.log('API Response:', response?.data?.data[0]);
+        setAccountDetails(response?.data?.data[0]);
+        const initialJobTypeIds = response?.data?.data[0]
           ?.UAD_CATEGORY_SERVICE_YOU_OFFER
-          ? response.data.data[0][0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
+          ? response?.data?.data[0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
               ',',
             ).map(Number)
           : [];
-        const initialServiceIds = response.data.data[0][0]
+        const initialServiceIds = response?.data?.data[0]
           ?.UAD_SERVICE_YOU_PERFORM
-          ? response.data.data[0][0].UAD_SERVICE_YOU_PERFORM.split(',').map(
+          ? response?.data?.data[0].UAD_SERVICE_YOU_PERFORM.split(',').map(
               Number,
             )
           : [];
         setSelectJobTypeid(
-          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
             ? initialJobTypeIds
             : [],
         );
         setservicesValue(
-          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
             ? initialServiceIds
             : [],
         );
         setWebsite(
-          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response.data.data[0][0]?.UAD_WEBSITE
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response?.data?.data[0]?.UAD_WEBSITE
             : '',
         );
         setCompanyName(
-          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response.data.data[0][0]?.UAD_ORGANIZATION_NAME
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response?.data?.data[0]?.UAD_ORGANIZATION_NAME
             : '',
         );
         SetBusinessNumber(
-          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response.data.data[0][0]?.UAD_AUSTR_BUSINESS_NO
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response?.data?.data[0]?.UAD_AUSTR_BUSINESS_NO
             : '',
         );
         setCompanyGSTNumber(
-          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response.data.data[0][0]?.UAD_COMPANY_GST_VAT_NO
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response?.data?.data[0]?.UAD_COMPANY_GST_VAT_NO
             : '',
         );
         setIsLoading(false);
@@ -290,12 +291,11 @@ const CompanyInProfile = ({
       handle_describe_yourself();
     }
   }, [isvisible]);
-
   useEffect(() => {
-    if (selectJobType !== undefined && selectJobType !== null) {
+    if (isvisible && selectJobType !== undefined && selectJobType !== null) {
       handleServices(selectJobType);
     }
-  }, [selectJobType]);
+  }, [selectJobType, isvisible]);
 
   useEffect(() => {
     CompanyData({
