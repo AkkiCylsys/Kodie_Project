@@ -130,7 +130,7 @@ const PropertyList = props => {
         // alert(error.response.data.message);
         setIsLoading(false);
       } else {
-        alert('An error occurred. Please try again later.');
+        // alert('An error occurred. Please try again later.');
         // alert(error.response.message);
         setIsLoading(false);
       }

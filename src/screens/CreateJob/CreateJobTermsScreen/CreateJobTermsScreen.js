@@ -235,7 +235,9 @@ export default CreateJobTermsScreen = props => {
     handleResponsible();
     handleBookingInsurance();
     setFormattedPriceRanges(`$${priceRanges}`);
-    getJobDetails();
+    {
+      JobId ? getJobDetails() : null;
+    }
   }, [priceRanges]);
   // alert(`Formatted Price Range: ${formattedPriceRanges}`);
   console.log(`Formatted Price Range: ${formattedPriceRanges}`);
@@ -474,10 +476,10 @@ export default CreateJobTermsScreen = props => {
         console.error('API failed handleCreateJob', error);
         setIsLoading(false);
         alert(error);
-      })
-      // .finally(() => {
-      //   setIsLoading(false);
-      // });
+      });
+    // .finally(() => {
+    //   setIsLoading(false);
+    // });
   };
   // EditMode Api.........
   const getJobDetails = () => {

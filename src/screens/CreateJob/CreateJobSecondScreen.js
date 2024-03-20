@@ -1,7 +1,14 @@
 //ScreenNo:126
 //ScreenNo:127
 import React, {useRef, useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, FlatList, Alert} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+  Alert,
+} from 'react-native';
 import StepText from '../../components/Molecules/StepText/StepText';
 import {CreateJobSecondStyle} from './CreateJobSecondScreenCss';
 import {_COLORS, LABEL_STYLES, BANNERS} from '../../Themes/index';
@@ -46,7 +53,7 @@ const CreateJobSecondScreen = props => {
     } else if (MultiImageName.length > 0) {
       handleuploadJobFiles();
     } else {
-      setMultiImageNameError("Front images required.");
+      setMultiImageNameError('Front images required.');
       console.log('err...', MultiImageNameError);
     }
   };
@@ -70,7 +77,9 @@ const CreateJobSecondScreen = props => {
   const [updateAllImage, setUpdateAllImage] = useState([]);
 
   useEffect(() => {
-    getJobDetails();
+    {
+      JobId ? getJobDetails() : null;
+    }
   }, []);
   const CloseUp = () => {
     refRBSheet.current.close();
@@ -200,18 +209,18 @@ const CreateJobSecondScreen = props => {
   };
   const handlefrontImage = multipleImages => {
     // setMultiImageName(multipleImages);
-    setMultiImageName([...MultiImageName,...multipleImages]);
+    setMultiImageName([...MultiImageName, ...multipleImages]);
     console.log('................multiFrontImage', multipleImages);
     // console.log("................ImageNAmepath", multipleImages.path);
   };
   const handleleftImage = leftImages => {
     // setLeftImage(leftImage);
-    setLeftImage([...leftImage,...leftImages]);
+    setLeftImage([...leftImage, ...leftImages]);
     console.log('................leftImage', leftImage);
     // console.log("................ImageNAmepath", multipleImages.path);
   };
   const handleRightImage = rightImages => {
-    setRightImage([...rightImage,...rightImages]);
+    setRightImage([...rightImage, ...rightImages]);
     console.log('................RightImage', rightImage);
     // console.log("................ImageNAmepath", multipleImages.path);
   };
@@ -308,7 +317,7 @@ const CreateJobSecondScreen = props => {
       console.log('uploadJobFilesData', response.data);
       if (response.data && response.data.success === true) {
         setIsLoading(false);
-        Alert.alert("Success !",response.data.message);
+        Alert.alert('Success !', response.data.message);
         props.navigation.navigate('JobDetails', {job_id: job_id});
         // clear state for image..
         setMultiImageName([]);
@@ -323,7 +332,7 @@ const CreateJobSecondScreen = props => {
       }
     } catch (error) {
       // alert(error.message || 'An error occurred');
-      alert("Maximum image length exceeded.");
+      alert('Maximum image length exceeded.');
       console.error('error...', error);
     } finally {
       setIsLoading(false);
@@ -355,7 +364,7 @@ const CreateJobSecondScreen = props => {
         }
       })
       .catch(error => {
-        console.error('API failed jobDetails', error);
+        console.error('API failed jobDetails in edit mode ', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -517,7 +526,6 @@ const CreateJobSecondScreen = props => {
               />
             ) : null}
           </View>
-          
 
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
@@ -632,12 +640,12 @@ const CreateJobSecondScreen = props => {
                         position: 'absolute',
                         top: 15,
                         right: 5,
-                        backgroundColor: "rgba(255,255,255,0.7)",
+                        backgroundColor: 'rgba(255,255,255,0.7)',
                         borderRadius: 15,
                         // padding: 3,
-                        justifyContent:'center',
-                        width:"12%",
-                        height:'20%'
+                        justifyContent: 'center',
+                        width: '12%',
+                        height: '20%',
                       }}
                       onPress={() => removeVideo(index)}>
                       <Entypo
@@ -646,7 +654,7 @@ const CreateJobSecondScreen = props => {
                         color={_COLORS.Kodie_BlackColor}
                         style={{
                           // marginTop: 10,
-                          alignSelf:"center"
+                          alignSelf: 'center',
                         }}
                       />
                     </TouchableOpacity>

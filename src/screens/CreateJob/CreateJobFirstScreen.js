@@ -11,7 +11,7 @@ import {
   FlatList,
   Image,
   PermissionsAndroid,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import {CreateJobFirstStyle} from './CreateJobFirstScreenCss';
 import StepText from '../../components/Molecules/StepText/StepText';
@@ -39,7 +39,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Config} from '../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
- import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 //import Geolocation from '@react-native-community/geolocation';
 import MapScreen from '../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
@@ -301,7 +301,9 @@ export default CreateJobFirstScreen = props => {
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
-    getJobDetails();
+    {
+      JobId ? getJobDetails() : null;  //edit by Deependra..
+    }
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
@@ -575,7 +577,7 @@ export default CreateJobFirstScreen = props => {
           setSelectedAddreeData(response.data.property_details);
         } else {
           console.error('Selected_Address_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -604,7 +606,7 @@ export default CreateJobFirstScreen = props => {
           setJobPriorityData(response.data.lookup_details);
         } else {
           console.error('Job_priority_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -632,8 +634,11 @@ export default CreateJobFirstScreen = props => {
           console.log('RatingThresholdData....', response.data.lookup_details);
           setRatingThresholdData(response.data.lookup_details);
         } else {
-          console.error('RatingThreshold_error:', "Oops something went wrong! Please try again later.");
-          alert("Oops something went wrong! Please try again later.");
+          console.error(
+            'RatingThreshold_error:',
+            'Oops something went wrong! Please try again later.',
+          );
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -662,7 +667,7 @@ export default CreateJobFirstScreen = props => {
           setJobTypeData(response.data.lookup_details);
         } else {
           console.error('JobType_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
