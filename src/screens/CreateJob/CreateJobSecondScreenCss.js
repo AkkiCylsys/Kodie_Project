@@ -71,7 +71,7 @@ export const CreateJobSecondStyle = StyleSheet.create({
   },
   error_text: {
     color: 'red',
-    alignSelf: 'center',
+    // alignSelf: 'center',
     marginTop: 10,
 
     // borderWidth: 1,

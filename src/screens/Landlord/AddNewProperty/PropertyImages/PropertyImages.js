@@ -67,7 +67,7 @@ export default PropertyImages = props => {
           console.log('propertyDetail....', response.data.property_details);
         } else {
           console.error('propertyDetail_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -160,7 +160,7 @@ export default PropertyImages = props => {
         });
       } else {
         console.error('Save Account Details error:', response.data.error);
-        alert('Oops samthing went wrong! Please try again later.');
+        alert('Oops something went wrong! Please try again later.');
       }
     } catch (error) {
       console.error('Account_Details error:', error);
@@ -402,12 +402,11 @@ export default PropertyImages = props => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-              <SliderBox
+              <SliderBox  
                 images={
-                  // property_Detail?.image_path
-                  //   ? property_Detail.image_path
-                  //   :
-                  editMode ? serverimagePath : imagePaths
+                  editMode
+                    ? [...(serverimagePath || []), ...imagePaths]
+                    : [...imagePaths]
                 }
                 sliderBoxHeight={200}
                 onCurrentImagePressed={index =>
@@ -473,8 +472,8 @@ export default PropertyImages = props => {
                         <Video
                           source={{uri: item.path}}
                           style={{
-                            width: 200,
-                            height: 100,
+                            width: 310,
+                            height: 150,
                             borderRadius: 5,
                             marginLeft: 5,
                           }}
@@ -486,8 +485,8 @@ export default PropertyImages = props => {
                             // top: 2,
                             right: 5,
                             backgroundColor: 'rgba(255,255,255,0.7)',
-                            height: '15%',
-                            width: '15%',
+                            height: '20%',
+                            width: '12%',
                             borderRadius: 8,
                             // padding: 3,
                             justifyContent: 'center',

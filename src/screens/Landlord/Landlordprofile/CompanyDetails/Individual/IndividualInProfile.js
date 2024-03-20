@@ -161,7 +161,7 @@ const IndividualInProfile = ({
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -205,7 +205,7 @@ const IndividualInProfile = ({
           setIsLoading(false);
         } else {
           console.error('company profile Services_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       } catch (error) {

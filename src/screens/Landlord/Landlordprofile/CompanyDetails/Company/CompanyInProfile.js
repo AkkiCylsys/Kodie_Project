@@ -152,7 +152,7 @@ const CompanyInProfile = ({
             'kodie_describeYouself_Data_error:',
             response.data.error,
           );
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -196,7 +196,7 @@ const CompanyInProfile = ({
           setIsLoading(false);
         } else {
           console.error('company profile Services_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       } catch (error) {
@@ -425,7 +425,10 @@ const CompanyInProfile = ({
                   </View>
                   <TouchableOpacity
                     style={CompanyInProfileStyle.locationIconView}
-                    onPress={onPressCompanylocation}>
+                    // onPress={onPressCompanylocation}>
+                    onPress={()=>{
+                      alert("dsvjfvsjd")
+                    }}>
                     <Octicons
                       name={'location'}
                       size={22}

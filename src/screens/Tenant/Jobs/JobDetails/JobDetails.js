@@ -27,7 +27,7 @@ import AddJobDetails from '../AddJobDetails';
 import Reviewjobdetails1 from '../../../CreateJob/ReviewJobDetails/Reviewjobdetails1';
 import JodBiddingDetails from '../../../CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails';
 import JobDocuments from '../JobDocuments.js/JobDocuments';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
@@ -52,6 +52,7 @@ const Apartment_data = [
 ];
 const JobDetails = props => {
   // const dispatch = useDispatch();
+  const isFocued = useIsFocused()
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
   let jobDocTab = props?.route?.params?.jobDocTab;
@@ -77,14 +78,13 @@ const JobDetails = props => {
 
   useEffect(() => {
     setActiveTab(jobDocTab ? 'Tab4' : 'Tab1');
-  }, []);
+  }, [imageFileData]);
   const handleImageFilePath = async imagesFilePath => {
     setImageFileData(imagesFilePath);
     // console.log("imagesFilePath....sdfs.", imagesFilePath);
     console.log('imagesFilePath....sdfs.', imagesFilePath);
     console.log('images__imageFileData...', imageFileData);
     // alert(JSON.stringify(imagesFilePath.length))
-    console.log('length', imagesFilePath.length);
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
@@ -267,8 +267,7 @@ const JobDetails = props => {
       </View>
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{'Review job details'}</Text>
-        <ImageBackground>
-          {console.log(imageFileData.image_file_path, 'hjgudghs............')}
+        {/* <ImageBackground> */}
           {imageFileData.image_file_path &&
           imageFileData.image_file_path.length !== 0 ? (
             <View style={JobDetailsStyle.slider_view}>
@@ -293,13 +292,13 @@ const JobDetails = props => {
               />
             </View>
           ) : null}
-          {imageFileData.image_file_path &&
+          {/* {imageFileData.image_file_path &&
           imageFileData.image_file_path.length != 0 ? (
             <View style={JobDetailsStyle.bidsview}>
               <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
             </View>
-          ) : null}
-        </ImageBackground>
+          ) : null} */}
+        {/* </ImageBackground> */}
         <View style={JobDetailsStyle.headingview}>
           <Text style={JobDetailsStyle.fixingtext}>
             {imageFileData.job_type}

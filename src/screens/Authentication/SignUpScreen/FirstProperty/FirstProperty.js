@@ -369,7 +369,7 @@ export default FirstProperty = props => {
           setProperty_Data(response.data.lookup_details);
         } else {
           console.error('property_type_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -398,7 +398,7 @@ export default FirstProperty = props => {
           );
         } else {
           console.error('additional_features_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

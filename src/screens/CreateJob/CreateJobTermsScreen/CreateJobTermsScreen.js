@@ -327,7 +327,7 @@ export default CreateJobTermsScreen = props => {
           setHourlyNeedData(response.data.lookup_details);
         } else {
           console.error('HourlyNeed_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -356,7 +356,7 @@ export default CreateJobTermsScreen = props => {
           setNeedServicesData(response.data.lookup_details);
         } else {
           console.error('Need Services_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -429,8 +429,8 @@ export default CreateJobTermsScreen = props => {
     setIsLoading(true);
     const createJob_Data = {
       user_account_details_id: loginData?.Login_details?.user_account_id,
-      type_of_job: selectJobType >0?selectJobType:0,
-      job_service_you_looking: servicesValue >0 ?servicesValue:0,
+      type_of_job: selectJobType > 0 ? selectJobType : 0,
+      job_service_you_looking: servicesValue > 0 ? servicesValue : 0,
       more_about_job: aboutyourNeed,
       job_priority: jobPriorityValue,
       property_type: property_value,
@@ -458,13 +458,13 @@ export default CreateJobTermsScreen = props => {
           props.navigation.navigate('CreateJobSecondScreen', {
             job_id: response?.data?.job_id,
           });
-          setSelectedDate(''),
-            setCurrentTime(''),
-            setHourlyNeedValue(''),
-            setneedServicesValue(''),
-            setSelectedButtonResponsibleId('');
-          setSelectedButtoBookingInsuranceId('');
-          setIsLoading(false);
+          // setSelectedDate(''),
+          //   setCurrentTime(''),
+          //   setHourlyNeedValue('')
+          //   setneedServicesValue(''),
+          //   setSelectedButtonResponsibleId('');
+          // setSelectedButtoBookingInsuranceId('');
+          // setIsLoading(false);
         } else {
           alert(response?.data?.message);
           setIsLoading(false);
@@ -475,9 +475,9 @@ export default CreateJobTermsScreen = props => {
         setIsLoading(false);
         alert(error);
       })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      // .finally(() => {
+      //   setIsLoading(false);
+      // });
   };
   // EditMode Api.........
   const getJobDetails = () => {
@@ -562,21 +562,21 @@ export default CreateJobTermsScreen = props => {
             JobId: JobId,
             editMode: editMode,
           });
-          setSelectedDate(''),
-            setCurrentTime(''),
-            setHourlyNeedValue(''),
-            setneedServicesValue(''),
-            setSelectedButtonResponsibleId('');
-          setSelectedButtoBookingInsuranceId('');
-          setIsLoading(false);
+          // setSelectedDate(''),
+          //   setCurrentTime(''),
+          //   setHourlyNeedValue(''),
+          //   setneedServicesValue(''),
+          //   setSelectedButtonResponsibleId('');
+          // setSelectedButtoBookingInsuranceId('');
+          // setIsLoading(false);
         } else {
           alert(response.data.message);
-          setIsLoading(false);
+          // setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed updateCreateJob', error);
-        setIsLoading(false);
+        // setIsLoading(false);
         alert(error);
       })
       .finally(() => {
@@ -835,9 +835,11 @@ export default CreateJobTermsScreen = props => {
               }
             />
           </View>
-          <TouchableOpacity style={CreateJobTermsStyle.goBack_View} onPress={()=>{
-            props.navigation.pop()
-          }}>
+          <TouchableOpacity
+            style={CreateJobTermsStyle.goBack_View}
+            onPress={() => {
+              props.navigation.pop();
+            }}>
             <View style={CreateJobTermsStyle.backIcon}>
               <Ionicons
                 name="chevron-back"
