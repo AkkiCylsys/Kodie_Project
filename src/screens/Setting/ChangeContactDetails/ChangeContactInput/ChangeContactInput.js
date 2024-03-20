@@ -36,9 +36,6 @@ const ChangeContactInput = props => {
     if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
       return false;
-    } else if (newPhoneNumber.length !== 9) {
-      setnewPhoneNumberError('Phone number must be 9 digits long');
-      return false;
     } else {
       setnewPhoneNumberError('');
       return true;
@@ -47,7 +44,7 @@ const ChangeContactInput = props => {
 
   const handleSubmit = () => {
     const isValid = validatenewPhoneNumber();
-    if (isValid) {
+    if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
       // Yahan par aapka actual submit logic hoga
       console.log('Phone number is valid:', newnewPhoneNumber);
@@ -61,8 +58,8 @@ const ChangeContactInput = props => {
   };
 
   const handlenewPhoneNumberChange = text => {
+    validatenewPhoneNumber(text);
     setnewPhoneNumber(text);
-    validatenewPhoneNumber();
   };
   // const handleSubmit = async () => {
   //   if (newnewPhoneNumber.trim() === '') {
