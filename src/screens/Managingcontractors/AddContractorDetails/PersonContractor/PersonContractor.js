@@ -183,7 +183,7 @@ export default PersonContractor = (props) => {
           setJobTypeData(response.data.lookup_details);
         } else {
           console.error("JobType_error:", response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -227,7 +227,7 @@ export default PersonContractor = (props) => {
           setServicesData(response.data.lookup_details);
         } else {
           console.error("Services_error:", response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

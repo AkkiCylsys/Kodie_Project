@@ -144,8 +144,8 @@ const MapScreen = props => {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
         {
-          title: 'Example App',
-          message: 'Example App access to your location ',
+          title: 'Allow Location Access?',
+          message:" Allow Kodie to access this device's location?",
         },
       );
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {

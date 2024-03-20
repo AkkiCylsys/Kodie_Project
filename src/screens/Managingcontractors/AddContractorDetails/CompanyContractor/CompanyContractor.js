@@ -151,7 +151,7 @@ export default CompanyContractor = (props) => {
         } else {
           setEmailError(response.data.message);
           console.error("CompanyDetail_error:", response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -258,7 +258,7 @@ export default CompanyContractor = (props) => {
           setJobTypeData(response.data.lookup_details);
         } else {
           console.error("JobType_error:", response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -302,7 +302,7 @@ export default CompanyContractor = (props) => {
           setServicesData(response.data.lookup_details);
         } else {
           console.error("Services_error:", response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

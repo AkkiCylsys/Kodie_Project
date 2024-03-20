@@ -441,7 +441,7 @@ const AddPropertyMainPage = props => {
           setBedRoomData(response.data.data);
         } else {
           console.error('bedRoom_data_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -471,7 +471,7 @@ const AddPropertyMainPage = props => {
           setGaragesData(response.data.data);
         } else {
           console.error('garages_Data_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -502,7 +502,7 @@ const AddPropertyMainPage = props => {
           setBathroomData(response.data.data);
         } else {
           console.error('bathroom_Data_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -530,7 +530,7 @@ const AddPropertyMainPage = props => {
           console.log('AdditionalFeaturesKey....', response.data.PAF_KEY);
         } else {
           console.error('additional_features_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -568,7 +568,7 @@ const AddPropertyMainPage = props => {
           setParkingData(response.data.data);
         } else {
           console.error('parking_Data_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -624,7 +624,7 @@ const AddPropertyMainPage = props => {
           );
         } else {
           console.error('property_details_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -656,7 +656,7 @@ const AddPropertyMainPage = props => {
           setProperty_value(property_Detail[0]?.property_type_id);
         } else {
           console.error('property_type_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -690,7 +690,7 @@ const AddPropertyMainPage = props => {
           );
         } else {
           console.error('propertyDetail_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -735,7 +735,7 @@ const AddPropertyMainPage = props => {
           setupdateProperty_Details(response.data.property_details);
         } else {
           console.error('update_property_detailserror:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -983,7 +983,7 @@ const AddPropertyMainPage = props => {
         // setCurrentPage(0);
       } else {
         console.error('Save Account Details error:', response.data.error);
-        alert("Oops samthing went wrong! Please try again later.");
+        alert("Oops something went wrong! Please try again later.");
       }
     } catch (error) {
       console.error('Account_Details error:', error);
@@ -1050,7 +1050,7 @@ const AddPropertyMainPage = props => {
         // setCurrentPage(0);
       } else {
         console.error('Save Account Details error:', response.data.error);
-        alert("Oops samthing went wrong! Please try again later.");
+        alert("Oops something went wrong! Please try again later.");
       }
     } catch (error) {
       console.error('Account_Details error:', error);

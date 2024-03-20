@@ -163,7 +163,7 @@ const IndividualSignup = ({
   //           'kodie_describeYouself_Data_error:',
   //           response.data.error,
   //         );
-  //         alert("Oops samthing went wrong! Please try again later.");
+  //         alert("Oops something went wrong! Please try again later.");
   //         setIsLoading(false);
   //       }
   //     })
@@ -223,7 +223,7 @@ const IndividualSignup = ({
       //     servicesDatas.push(...response.data.lookup_details);
       //   } else {
       //     console.error('Individual Services_error:', response.data.error);
-      //     alert('Oops samthing went wrong! Please try again later.');
+      //     alert('Oops something went wrong! Please try again later.');
       //   }
       // } catch (error) {
       //   console.error(' indi Services error:', error);

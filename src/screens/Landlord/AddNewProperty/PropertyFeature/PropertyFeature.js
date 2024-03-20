@@ -166,7 +166,7 @@ export default PropertyFeature = props => {
           setLandArea(response?.data?.property_details[0]?.land_area);
         } else {
           console.error('propertyDetail_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -385,7 +385,7 @@ export default PropertyFeature = props => {
           console.log('property_details....', response.data);
         } else {
           console.error('property_details_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -415,7 +415,7 @@ export default PropertyFeature = props => {
           );
         } else {
           console.error('additional_features_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -467,7 +467,7 @@ export default PropertyFeature = props => {
           // setupdateProperty_Details(response.data.property_details);
         } else {
           console.error('update_property_detailserror:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

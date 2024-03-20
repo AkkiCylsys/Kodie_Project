@@ -401,7 +401,7 @@ export default AboutYou = props => {
   //           'kodie_describeYouself_Data_error:',
   //           response.data.error,
   //         );
-  //         alert('Oops samthing went wrong! Please try again later.');
+  //         alert('Oops something went wrong! Please try again later.');
   //         setIsLoading(false);
   //       }
   //     })
@@ -431,7 +431,7 @@ export default AboutYou = props => {
   //         setIsLoading(false);
   //       } else {
   //         console.error('property_type_error:', response.data.error);
-  //         alert('Oops samthing went wrong! Please try again later.');
+  //         alert('Oops something went wrong! Please try again later.');
   //         setIsLoading(false);
   //       }
   //     })
@@ -461,7 +461,7 @@ export default AboutYou = props => {
   //         setIsLoading(false);
   //       } else {
   //         console.error('kodie_Data_error:', response.data);
-  //         alert('Oops samthing went wrong! Please try again later.');
+  //         alert('Oops something went wrong! Please try again later.');
   //         setIsLoading(false);
   //       }
   //     })

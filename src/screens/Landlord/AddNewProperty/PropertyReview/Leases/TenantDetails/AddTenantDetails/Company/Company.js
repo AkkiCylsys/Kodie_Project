@@ -132,7 +132,7 @@ export default Company = props => {
         } else {
           setEmailError(response.data.message);
           console.error('CompanyDetail_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

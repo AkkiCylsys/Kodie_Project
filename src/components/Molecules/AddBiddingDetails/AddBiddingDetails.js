@@ -180,8 +180,8 @@ const AddBiddingDetails = (props) => {
           console.log("kodie_duration_data...", response.data.lookup_details);
           setkodieDurationData(response.data.lookup_details);
         } else {
-          console.error("kodie_duration_data_error:", "Oops samthing went wrong! Please try again later.");
-          alert("Oops samthing went wrong! Please try again later.");
+          console.error("kodie_duration_data_error:", "Oops something went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

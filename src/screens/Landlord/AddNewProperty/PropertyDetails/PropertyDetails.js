@@ -156,7 +156,7 @@ export default PropertyDetails = props => {
           console.log('propertyDetail....', response.data.property_details);
         } else {
           console.error('propertyDetail_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -405,7 +405,7 @@ export default PropertyDetails = props => {
           // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
           console.error('property_type_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

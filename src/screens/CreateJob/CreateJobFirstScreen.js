@@ -575,7 +575,7 @@ export default CreateJobFirstScreen = props => {
           setSelectedAddreeData(response.data.property_details);
         } else {
           console.error('Selected_Address_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -604,7 +604,7 @@ export default CreateJobFirstScreen = props => {
           setJobPriorityData(response.data.lookup_details);
         } else {
           console.error('Job_priority_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -632,8 +632,8 @@ export default CreateJobFirstScreen = props => {
           console.log('RatingThresholdData....', response.data.lookup_details);
           setRatingThresholdData(response.data.lookup_details);
         } else {
-          console.error('RatingThreshold_error:', "Oops samthing went wrong! Please try again later.");
-          alert("Oops samthing went wrong! Please try again later.");
+          console.error('RatingThreshold_error:', "Oops something went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -662,7 +662,7 @@ export default CreateJobFirstScreen = props => {
           setJobTypeData(response.data.lookup_details);
         } else {
           console.error('JobType_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -700,7 +700,7 @@ export default CreateJobFirstScreen = props => {
           setServicesData(response.data.lookup_details);
         } else {
           console.error(' job Services_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -773,7 +773,7 @@ export default CreateJobFirstScreen = props => {
           setProperty_Data(response.data.lookup_details);
         } else {
           console.error('property_type_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

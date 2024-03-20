@@ -313,7 +313,7 @@ export default ViewPropertyDetails = props => {
   //       setAdditionalKeyFeaturesString(additionalKeyFeatures);
   //     } else {
   //       console.error("propertyDetail_error:", response.data.error);
-  //       alert("Oops samthing went wrong! Please try again later.");
+  //       alert("Oops something went wrong! Please try again later.");
   //     }
   //   } catch (error) {
   //     console.error("Error:", error);
@@ -349,7 +349,7 @@ export default ViewPropertyDetails = props => {
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response.data.error);
-        alert("Oops samthing went wrong! Please try again later.");
+        alert("Oops something went wrong! Please try again later.");
       }
     } catch (error) {
       console.error('Error:', error);
