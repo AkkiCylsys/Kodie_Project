@@ -20,6 +20,14 @@ const TopHeader = props => {
   const [accountDetails, setAccountDetails] = useState(null);
   const isvisible = useIsFocused();
   const getPersonalDetails = () => {
+    if (
+      !loginData ||
+      !loginData?.Login_details ||
+      !loginData?.Login_details?.user_id
+    ) {
+      console.log('login data not available');
+      return;
+    }
     const url = Config.BASE_URL;
 
     const apiUrl =
@@ -30,8 +38,8 @@ const TopHeader = props => {
       .get(apiUrl)
       .then(response => {
         // Handle successful response
-        console.log('API Response:', response.data.data[0][0]);
-        setAccountDetails(response.data.data[0][0]);
+        console.log('API Response:', response.data.data[0]);
+        setAccountDetails(response.data.data[0]);
       })
       .catch(error => {
         // Handle error
@@ -42,7 +50,7 @@ const TopHeader = props => {
     if (isvisible) {
       getPersonalDetails();
     }
-  }, [isvisible]);
+  }, [isvisible, loginData]);
   const userProfileImageUri = accountDetails?.image_path[0];
   // loginData.Login_details?.profile_photo_path ||
   // signUp_account_response?.Login_details?.profile_photo_path;

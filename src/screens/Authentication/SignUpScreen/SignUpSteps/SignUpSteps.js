@@ -30,9 +30,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
-//import Geolocation from '@react-native-community/geolocation';
-
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useFocusEffect} from '@react-navigation/native';
 import {BackHandler} from 'react-native';
@@ -141,6 +138,7 @@ const SignUpSteps = props => {
   let user_key = props?.route?.params?.user_key;
   console.log('email...', email);
   console.log('user_key...', user_key);
+  console.log('countryCode...', country_Code_Get);
   const ConfirmAddress = () => {
     setIsMap(false);
     setPhysicalAddress(currentLocation);
@@ -456,19 +454,8 @@ const SignUpSteps = props => {
             <Text style={LABEL_STYLES._texinputLabel}>
               Phone number* (mobile preferred)
             </Text>
-            {/* <TextInput
-              style={AccountStyle.input}
-              value={mobileNumber}
-              onChangeText={setMobileNumber}
-              onBlur={() => validateMobileNumber(mobileNumber)}
-              placeholder="Enter your phone number"
-              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              keyboardType="phone-pad"
-              maxLength={11}
-            /> */}
             <View style={[AccountStyle.phoneinputview]}>
               <PhoneInput
-                // ref={phoneInput}
                 defaultValue={mobileNumber}
                 defaultCode="AU"
                 layout="second"
@@ -476,20 +463,10 @@ const SignUpSteps = props => {
                 textInputProps={{
                   maxLength: 9,
                 }}
-                // disabled
-                // onChangeText={text => {
-                //   // setPhoneNumber(text);
-                //   setMobileNumber(text);
-                // }}
                 placeholder={'Enter your phone number'}
                 onChangeFormattedText={text => {
-                  // setFormattedValue(text);
-                  // validateMobileNumber(text)
                   setMobileNumber(text);
                 }}
-                // onBlur={() => validateMobileNumber(mobileNumber)}
-                // autoFocus
-                // withFlag={false}
                 textContainerStyle={{
                   flex: 1,
                   backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -523,9 +500,6 @@ const SignUpSteps = props => {
               maxLength={1000}
               textAlignVertical={'top'}
             />
-            {/* <Text style={AccountStyle.characterLimit}>
-              {bio.length}/1000
-            </Text> */}
           </View>
 
           <View style={AccountStyle.inputContainer}>
@@ -548,11 +522,6 @@ const SignUpSteps = props => {
               <TouchableOpacity
                 style={AccountStyle.locationIconView}
                 onPress={() => {
-                  // props.navigation.navigate("Location");
-
-                  // Platform.OS == "ios"
-                  //   ? CheckIOSMapPermission
-                  //   : checkpermissionlocation();
                   setIsMap(true);
                 }}>
                 <Entypo

@@ -81,6 +81,7 @@ export default CompanyDetails = props => {
     setImageName(newImageName);
     console.log('................ImageNAme', newImageName);
     console.log('................ImageNAmeDeependra', newImageName.path);
+    refRBSheet.current.close();
   };
 
   const ConfirmAddress = () => {
@@ -165,16 +166,16 @@ export default CompanyDetails = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response.data.data[0][0]);
-        setAccountDetails(response.data.data[0][0]);
+        console.log('API Response:', response?.data?.data[0]);
+        setAccountDetails(response?.data?.data[0]);
         setLocation(
-          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? response.data.data[0][0]?.UAD_CURR_PHYSICAL_ADD
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD
             : '',
         );
         setCompanyLocation(
-          response.data.data[0][0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response.data.data[0][0]?.UAD_CURR_PHYSICAL_ADD
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD
             : '',
         );
       })
@@ -426,7 +427,7 @@ export default CompanyDetails = props => {
                     resizeMode="cover"
                   />
                 )}
-                {ImageName ? refRBSheet.current.close() : null}
+                {/* {ImageName ? refRBSheet.current.close() : null} */}
                 <View style={CompanyDetailsStyle.editlogoview}>
                   <FontAwesome
                     name="edit"

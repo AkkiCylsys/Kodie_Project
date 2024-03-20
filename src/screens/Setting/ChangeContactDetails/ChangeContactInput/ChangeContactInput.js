@@ -14,10 +14,10 @@ import {colors} from '../../../../Themes/CommonColors/CommonColor';
 //screen number 206
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
-  const [oldPhoneNumber, setOldPhoneNumber] = useState('');
-  const [oldPhoneNumberError, setOldPhoneNumberError] = useState('');
-  const [newPhoneNumber, setNewPhoneNumber] = useState('');
-  const [newPhoneNumberError, setNewPhoneNumberError] = useState('');
+  const [oldnewPhoneNumber, setOldnewPhoneNumber] = useState('');
+  const [oldnewPhoneNumberError, setOldnewPhoneNumberError] = useState('');
+  const [newnewPhoneNumber, setnewPhoneNumber] = useState('');
+  const [newnewPhoneNumberError, setnewPhoneNumberError] = useState('');
   const [oldNumberformattedValue, setOldNumberFormattedValue] = useState('');
   const [newNumberformattedValue, setNewNumberFormattedValue] = useState('');
   const phoneInput = useRef(null);
@@ -28,53 +28,60 @@ const ChangeContactInput = props => {
   const navigation = useNavigation();
   useEffect(() => {
     if (phoneDataNumber) {
-      setOldPhoneNumber(phoneDataNumber);
+      setOldnewPhoneNumber(phoneDataNumber);
     }
   }, [phoneDataNumber]);
 
-  const validateOldPhoneNumber = text => {
-    setOldPhoneNumber(text);
-    const mobileReg = /^[6-9]\d{9}$/;
-    if (text === '') {
-      setOldPhoneNumberError('Old phone number is required.');
-    } else if (!mobileReg.test(text)) {
-      setOldPhoneNumberError('Invalid phone number format.');
+  const validatenewPhoneNumber = () => {
+    if (newnewPhoneNumber.trim() === '') {
+      setnewPhoneNumberError('Phone number is required');
+      return false;
+    } else if (newPhoneNumber.length !== 9) {
+      setnewPhoneNumberError('Phone number must be 9 digits long');
+      return false;
     } else {
-      setOldPhoneNumberError('');
-    }
-  };
-  const validateNewPhoneNumber = text => {
-    setNewPhoneNumber(text);
-    const mobileReg = /^[6-9]\d{9}$/;
-    if (text === '') {
-      setNewPhoneNumberError('New phone number is required.');
-    } else if (!mobileReg.test(text)) {
-      setNewPhoneNumberError('Invalid phone number format.');
-    } else {
-      setNewPhoneNumberError('');
+      setnewPhoneNumberError('');
+      return true;
     }
   };
 
-  const handleSubmit = async () => {
-    if (oldPhoneNumber.trim() === '') {
-      setOldPhoneNumberError('Old phone number is required.');
-    } else if (newPhoneNumber.trim() === '') {
-      setNewPhoneNumberError('New phone number is required.');
-    } else if (phoneDataNumber.trim() === newPhoneNumber.trim()) {
-      setNewPhoneNumberError(
-        'New phone number must be different from the old one.',
-      );
-      setOldPhoneNumberError('');
+  const handleSubmit = () => {
+    const isValid = validatenewPhoneNumber();
+    if (isValid) {
+      setnewPhoneNumberError('Phone number is required');
+      // Yahan par aapka actual submit logic hoga
+      console.log('Phone number is valid:', newnewPhoneNumber);
+      // Agar aap form submit karna chahte hain to yahan par kar sakte hain
     } else {
       navigation.navigate('ChangeContactNotify', {
-        oldPhoneNumber: oldNumberformattedValue,
-        newPhoneNumber: newNumberformattedValue,
+        oldnewPhoneNumber: oldNumberformattedValue,
+        newnewPhoneNumber: newNumberformattedValue,
       });
-      setIsLoading(false);
-      // setOldPhoneNumber("");
-      // setNewPhoneNumber("")
     }
   };
+
+  const handlenewPhoneNumberChange = text => {
+    setnewPhoneNumber(text);
+    validatenewPhoneNumber();
+  };
+  // const handleSubmit = async () => {
+  //   if (newnewPhoneNumber.trim() === '') {
+  //     setnewPhoneNumberErrorError('New phone number is required.');
+  //   } else if (phoneDataNumber.trim() === newnewPhoneNumber.trim()) {
+  //     setnewPhoneNumberErrorError(
+  //       'New phone number must be different from the old one.',
+  //     );
+  //     setOldnewPhoneNumberError('');
+  //   } else {
+  //     navigation.navigate('ChangeContactNotify', {
+  //       oldnewPhoneNumber: oldNumberformattedValue,
+  //       newnewPhoneNumber: newNumberformattedValue,
+  //     });
+  //     setIsLoading(false);
+  //     // setOldnewPhoneNumber("");
+  //     // setnewPhoneNumberError("")
+  //   }
+  // };
   return (
     <View style={ChangeContactInputStyle.maincontainer}>
       <TopHeader
@@ -114,7 +121,7 @@ const ChangeContactInput = props => {
              // disabled="false"
               layout="second"
               onChangeText={text => {
-                validateOldPhoneNumber(text);
+                validateOldnewPhoneNumber(text);
               }}
               placeholder={'Enter your phone number'}
               onChangeFormattedText={text => {
@@ -141,9 +148,9 @@ const ChangeContactInput = props => {
             /> */}
           </View>
 
-          {oldPhoneNumberError ? (
+          {oldnewPhoneNumberError ? (
             <Text style={ChangeContactInputStyle.error_text}>
-              {oldPhoneNumberError}
+              {oldnewPhoneNumberError}
             </Text>
           ) : null}
         </View>
@@ -163,16 +170,14 @@ const ChangeContactInput = props => {
             }}>
             <PhoneInput
               // ref={phoneInput}
-              defaultValue={newPhoneNumber}
+              defaultValue={newnewPhoneNumber}
               defaultCode="AU"
               layout="second"
               // onChangeText={text => {
-              //   validateNewPhoneNumber(text);
+              //   validateNewnewPhoneNumber(text);
               // }}
               placeholder={'Enter your phone number'}
-              onChangeFormattedText={text => {
-                setNewNumberFormattedValue(text);
-              }}
+              onChangeFormattedText={text => handlenewPhoneNumberChange(text)}
               textInputProps={{
                 maxLength: 9,
               }}
@@ -198,9 +203,9 @@ const ChangeContactInput = props => {
               }}
             />
           </View>
-          {newPhoneNumberError ? (
+          {newnewPhoneNumberError ? (
             <Text style={ChangeContactInputStyle.error_text}>
-              {newPhoneNumberError}
+              {newnewPhoneNumberError}
             </Text>
           ) : null}
         </View>

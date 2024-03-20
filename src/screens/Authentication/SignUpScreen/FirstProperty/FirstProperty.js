@@ -29,7 +29,7 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
- import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 //import Geolocation from '@react-native-community/geolocation';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
@@ -128,6 +128,7 @@ export default FirstProperty = props => {
   let Companyp_longitude = props?.route?.params?.Companyp_longitude;
   let individualAddress = props?.route?.params?.individualAddress;
   let country_code = props?.route?.params?.country_code;
+  let company_address = props?.route?.params?.company_address;
 
   console.log('firstname..', firstName);
   console.log('lastName..', lastName);
@@ -146,6 +147,7 @@ export default FirstProperty = props => {
   console.log('p_longitude..', p_longitude);
   console.log('user_key..', user_key);
   console.log('country_code.....first', country_code);
+  console.log('company_address', company_address);
   console.log(
     'run_your_business..',
     run_your_business,
@@ -367,7 +369,7 @@ export default FirstProperty = props => {
           setProperty_Data(response.data.lookup_details);
         } else {
           console.error('property_type_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -396,7 +398,7 @@ export default FirstProperty = props => {
           );
         } else {
           console.error('additional_features_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -449,7 +451,8 @@ export default FirstProperty = props => {
         run_your_business === 0 ? Individualp_latitude : Companyp_latitude,
       company_longitude:
         run_your_business === 0 ? Individualp_longitude : Companyp_longitude,
-      company_address: run_your_business === 0 ? individualAddress : '',
+      company_address:
+        run_your_business === 0 ? individualAddress : company_address,
       category_service_perform:
         run_your_business === 0
           ? IndividualservicesValue
@@ -459,6 +462,7 @@ export default FirstProperty = props => {
           ? IndividualselectJobType
           : CompanyselectJobType,
       austrilian_busi_no: BusinessNumber,
+      country_code: country_code,
     };
     if (ImageName?.path) {
       newData = {
@@ -526,6 +530,7 @@ export default FirstProperty = props => {
       'key_additional_features',
       newData?.key_additional_features,
     );
+    formData.append('country_code', newData?.country_code);
 
     console.log('formData.....', JSON.stringify(formData));
 
@@ -631,7 +636,8 @@ export default FirstProperty = props => {
         run_your_business === 0 ? Individualp_latitude : Companyp_latitude,
       company_longitude:
         run_your_business === 0 ? Individualp_longitude : Companyp_longitude,
-      company_address: run_your_business === 0 ? individualAddress : '',
+      company_address:
+        run_your_business === 0 ? individualAddress : company_address,
       category_service_perform:
         run_your_business === 0
           ? IndividualservicesValue
@@ -641,6 +647,7 @@ export default FirstProperty = props => {
           ? IndividualselectJobType
           : CompanyselectJobType,
       austrilian_busi_no: BusinessNumber,
+      country_code: country_code,
     };
     if (ImageName?.path) {
       newData = {
@@ -708,6 +715,7 @@ export default FirstProperty = props => {
       'key_additional_features',
       newData?.key_additional_features,
     );
+    formData.append('country_code', newData?.country_code);
 
     console.log('formData.....', JSON.stringify(formData));
 
@@ -1007,7 +1015,11 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={decreaseBedroomCount}>
-                          <AntDesign name="minus" size={20} color={_COLORS.Kodie_BlackColor}/>
+                          <AntDesign
+                            name="minus"
+                            size={20}
+                            color={_COLORS.Kodie_BlackColor}
+                          />
                         </TouchableOpacity>
                         <Text style={FirstPropertyStyle.countdata}>
                           {CountBedroom}
@@ -1017,7 +1029,11 @@ export default FirstProperty = props => {
                           onPress={() => {
                             increaseBedroomCount();
                           }}>
-                          <AntDesign name="plus" size={20} color={_COLORS.Kodie_BlackColor}/>
+                          <AntDesign
+                            name="plus"
+                            size={20}
+                            color={_COLORS.Kodie_BlackColor}
+                          />
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </View>
@@ -1034,7 +1050,11 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={decreaseBathroomCount}>
-                          <AntDesign name="minus" size={20} color={_COLORS.Kodie_BlackColor}/>
+                          <AntDesign
+                            name="minus"
+                            size={20}
+                            color={_COLORS.Kodie_BlackColor}
+                          />
                         </TouchableOpacity>
                         <Text style={FirstPropertyStyle.countdata}>
                           {CountBathroom}
@@ -1042,7 +1062,11 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={increaseBathroomCount}>
-                          <AntDesign name="plus" size={20} color={_COLORS.Kodie_BlackColor}/>
+                          <AntDesign
+                            name="plus"
+                            size={20}
+                            color={_COLORS.Kodie_BlackColor}
+                          />
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </View>
@@ -1059,7 +1083,11 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={decreaseParkingCount}>
-                          <AntDesign name="minus" size={20} color={_COLORS.Kodie_BlackColor}/>
+                          <AntDesign
+                            name="minus"
+                            size={20}
+                            color={_COLORS.Kodie_BlackColor}
+                          />
                         </TouchableOpacity>
                         <Text style={FirstPropertyStyle.countdata}>
                           {CountParking}
@@ -1067,7 +1095,11 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={increaseParkingCount}>
-                          <AntDesign name="plus" size={20} color={_COLORS.Kodie_BlackColor}/>
+                          <AntDesign
+                            name="plus"
+                            size={20}
+                            color={_COLORS.Kodie_BlackColor}
+                          />
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </View>
@@ -1084,7 +1116,11 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={decreaseParkingStreetCount}>
-                          <AntDesign name="minus" size={20} color={_COLORS.Kodie_BlackColor}/>
+                          <AntDesign
+                            name="minus"
+                            size={20}
+                            color={_COLORS.Kodie_BlackColor}
+                          />
                         </TouchableOpacity>
                         <Text style={FirstPropertyStyle.countdata}>
                           {CountParkingStreet}
@@ -1092,7 +1128,11 @@ export default FirstProperty = props => {
                         <TouchableOpacity
                           style={FirstPropertyStyle.menusIconView}
                           onPress={increaseParkingStreetCount}>
-                          <AntDesign name="plus" size={20} color={_COLORS.Kodie_BlackColor}/>
+                          <AntDesign
+                            name="plus"
+                            size={20}
+                            color={_COLORS.Kodie_BlackColor}
+                          />
                         </TouchableOpacity>
                       </TouchableOpacity>
                     </View>

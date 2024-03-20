@@ -29,9 +29,6 @@ import JodBiddingDetails from '../../../CreateJob/ReviewJobDetails/JobBiddingDet
 import JobDocuments from '../JobDocuments.js/JobDocuments';
 import {CommonActions} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Config} from '../../../../Config';
-import axios from 'axios';
-import Carousel from 'react-native-snap-carousel';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 // const images = [
@@ -54,8 +51,6 @@ const Apartment_data = [
   {label: 'Farm', value: '6'},
 ];
 const JobDetails = props => {
-  const [activeSlide, setActiveSlide] = useState(1);
-
   // const dispatch = useDispatch();
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
@@ -74,8 +69,6 @@ const JobDetails = props => {
   const [imageFileData, setImageFileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [myJobType, setMyJobType] = useState(0);
-  const [jobDetailsData, setJobDetailsData] = useState([]);
-  const F_job_id = View_Job_Details ? JOB_ID : job_id;
   const handleJobDetailsSuccess = jobTypeMy => {
     console.log('jobTypeMy in JobDetails component:', jobTypeMy);
     setMyJobType(jobTypeMy);
@@ -85,16 +78,15 @@ const JobDetails = props => {
   useEffect(() => {
     setActiveTab(jobDocTab ? 'Tab4' : 'Tab1');
   }, []);
-
-  const handleImageFilePath = imagesFilePath => {
-    console.log('imagesFilePath in check', imagesFilePath);
+  const handleImageFilePath = async imagesFilePath => {
     setImageFileData(imagesFilePath);
     // console.log("imagesFilePath....sdfs.", imagesFilePath);
     console.log('imagesFilePath....sdfs.', imagesFilePath);
     console.log('images__imageFileData...', imageFileData);
-    console.log('images__imagesurl....', imageFileData?.image_file_path);
     // alert(JSON.stringify(imagesFilePath.length))
+    console.log('length', imagesFilePath.length);
   };
+
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
@@ -276,6 +268,7 @@ const JobDetails = props => {
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{'Review job details'}</Text>
         <ImageBackground>
+          {console.log(imageFileData.image_file_path, 'hjgudghs............')}
           {imageFileData.image_file_path &&
           imageFileData.image_file_path.length !== 0 ? (
             <View style={JobDetailsStyle.slider_view}>
