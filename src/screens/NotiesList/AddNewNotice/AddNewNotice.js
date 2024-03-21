@@ -247,11 +247,11 @@ const AddNewNotice = props => {
       .post(noticeType_url, notification_data)
       .then(response => {
         console.log('API Response noticeType_url:', response.data);
-        if (response.data.status === true) {
-          setNoticeTypeData(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        if (response?.data?.status === true) {
+          setNoticeTypeData(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -277,11 +277,11 @@ const AddNewNotice = props => {
       .post(Repear_url, notification_data)
       .then(response => {
         console.log('API Response Repear_url:', response.data);
-        if (response.data.status === true) {
-          setRepeatData(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        if (response?.data?.status === true) {
+          setRepeatData(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -308,11 +308,11 @@ const AddNewNotice = props => {
       .post(notification_url, notification_data)
       .then(response => {
         console.log('API Response notification_type:', response.data);
-        if (response.data.status === true) {
-          setNotification_type_Data(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        if (response?.data?.status === true) {
+          setNotification_type_Data(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -383,8 +383,8 @@ const AddNewNotice = props => {
       });
       console.log('hello deependra');
       console.log('createNoticeReminder....', response.data);
-      if (response.data.status === true) {
-        alert(response.data.message);
+      if (response?.data?.status === true) {
+        alert(response?.data?.message);
         props.navigation.navigate('Notices', {
           selectFile: selectFile,
         });
@@ -414,24 +414,24 @@ const AddNewNotice = props => {
           'API Response getNoticesReminderDetailsData...:',
           response.data,
         );
-        if (response.data.status === true) {
-          setNoticeTypeDataValue(parseInt(response.data.data.type_notice_id));
-          setNoticeTittle(response.data.data.title);
-          setRepeatDataValue(parseInt(response.data.data.Repeat_id));
-          setToggleDay(String(response.data.data.notification_notice));
-          setSelectedDate(response.data.data.from_date);
-          setSelectedToDate(response.data.data.to_date);
-          setCurrentfromTime(response.data.data.from_time);
-          setCurrentToTime(response.data.data.to_time);
-          setAddGuest(response.data.data.guests);
-          setLocation(response.data.data.location);
-          setToggleNotification(response.data.data.notifications);
-          setNotification_type_value(parseInt(response.data.data.type_id));
-          setNotes(response.data.data.notes);
-          // setFileName(response.data.data.file_name)
-          setSelectFile(response.data.data.file_name);
+        if (response?.data?.status === true) {
+          setNoticeTypeDataValue(parseInt(response?.data?.data.type_notice_id));
+          setNoticeTittle(response?.data?.data.title);
+          setRepeatDataValue(parseInt(response?.data?.data.Repeat_id));
+          setToggleDay(String(response?.data?.data.notification_notice));
+          setSelectedDate(response?.data?.data.from_date);
+          setSelectedToDate(response?.data?.data.to_date);
+          setCurrentfromTime(response?.data?.data.from_time);
+          setCurrentToTime(response?.data?.data.to_time);
+          setAddGuest(response?.data?.data.guests);
+          setLocation(response?.data?.data.location);
+          setToggleNotification(response?.data?.data.notifications);
+          setNotification_type_value(parseInt(response?.data?.data.type_id));
+          setNotes(response?.data?.data.notes);
+          // setFileName(response?.data?.data.file_name)
+          setSelectFile(response?.data?.data.file_name);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -487,8 +487,8 @@ const AddNewNotice = props => {
         },
       );
       console.log('update_createNoticeReminderResponse....', response.data);
-      if (response.data.status === true) {
-        alert(response.data.message);
+      if (response?.data?.status === true) {
+        alert(response?.data?.message);
         props.navigation.navigate('Notices');
       }
       clearState();

@@ -138,10 +138,10 @@ export default PropertyFeature = props => {
     axios
       .post(property_Detailss, detailData)
       .then(response => {
-        console.log('propertyDetail', response.data);
-        if (response.data.success === true) {
+        console.log('propertyDetail', response?.data);
+        if (response?.data?.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details[0]);
+          setProperty_Details(response?.data?.property_details[0]);
 
           const apiAdditionalFeaturesIds =
             response?.data?.property_details[0]?.additional_features_id
@@ -165,7 +165,7 @@ export default PropertyFeature = props => {
           );
           setLandArea(response?.data?.property_details[0]?.land_area);
         } else {
-          console.error('propertyDetail_error:', response.data.error);
+          console.error('propertyDetail_error:', response?.data?.error);
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
@@ -370,7 +370,7 @@ export default PropertyFeature = props => {
 
       .then(response => {
         console.log('property_details', response?.data);
-        if (response.data.success === true) {
+        if (response?.data?.success === true) {
           setIsLoading(false);
 
           console.log(
@@ -382,9 +382,9 @@ export default PropertyFeature = props => {
           props.navigation.navigate('PropertyImages', {
             property_id: response?.data?.Property_id,
           });
-          console.log('property_details....', response.data);
+          console.log('property_details....', response?.data);
         } else {
-          console.error('property_details_error:', response.data.error);
+          console.error('property_details_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
@@ -403,18 +403,18 @@ export default PropertyFeature = props => {
     axios
       .get(additionalApi) // Change from .post to .get
       .then(response => {
-        console.log('additional_Data', response.data);
-        if (response.data.status === true) {
+        console.log('additional_Data', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('additional_features....', response.data);
-          setAdditionalfeatureskey(response.data.key_features_details);
-          // setData_add(response.data.PAF_KEY);
+          console.log('additional_features....', response?.data);
+          setAdditionalfeatureskey(response?.data?.key_features_details);
+          // setData_add(response?.data?.PAF_KEY);
           console.log(
             'AdditionalFeaturesKey....',
-            response.data.key_features_details,
+            response?.data?.key_features_details,
           );
         } else {
-          console.error('additional_features_error:', response.data.error);
+          console.error('additional_features_error:', response?.data?.error);
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
@@ -452,21 +452,21 @@ export default PropertyFeature = props => {
     const update_property_details = url + 'update_property_details';
     console.log('Request URL:', update_property_details);
     setIsLoading(true);
-    console.log("updated data in edit mode cgheck...",updateData)
+    console.log('updated data in edit mode cgheck...', updateData);
     axios
       .put(update_property_details, updateData)
       .then(response => {
-        console.log('update_property_details', response.data);
-        if (response.data.success === true) {
+        console.log('update_property_details', response?.data);
+        if (response?.data?.success === true) {
           setIsLoading(false);
           // alert("update_property_details....", propertyid);
           props.navigation.navigate('PropertyImages', {
             property_id: propertyid,
             editMode: editMode,
           });
-          // setupdateProperty_Details(response.data.property_details);
+          // setupdateProperty_Details(response?.data?.property_details);
         } else {
-          console.error('update_property_detailserror:', response.data.error);
+          console.error('update_property_detailserror:', response?.data?.error);
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }

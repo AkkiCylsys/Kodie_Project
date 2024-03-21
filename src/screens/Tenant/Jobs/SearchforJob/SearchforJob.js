@@ -45,7 +45,7 @@ import {CreateJobFirstStyle} from '../../../CreateJob/CreateJobFirstScreenCss';
 import {useDispatch, useSelector} from 'react-redux';
 import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
 //import Geolocation from '@react-native-community/geolocation';
-import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default SearchForJob = props => {
@@ -370,13 +370,13 @@ export default SearchForJob = props => {
       .post(propertyType, propertyData)
       .then(response => {
         console.log('property_type', response.data);
-        if (response.data.success === true) {
+        if (response?.data?.success === true) {
           setIsLoading(false);
-          console.log('propertyData....', response.data.property_details);
-          setProperty_Data(response.data.property_details);
+          console.log('propertyData....', response?.data?.property_details);
+          setProperty_Data(response?.data?.property_details);
         } else {
-          console.error('property_type_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          console.error('property_type_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -406,17 +406,17 @@ export default SearchForJob = props => {
       .post(SearchType, SearchData)
       .then(response => {
         console.log('property_type', response.data);
-        if (response.data.success === true) {
+        if (response?.data?.success === true) {
           setIsLoading(false);
-          console.log('handleSearch....', response.data.data);
-          // setSearchTypeData(response.data.data);
+          console.log('handleSearch....', response?.data?.data);
+          // setSearchTypeData(response?.data?.data);
 
           props.SearchResultJob?.({
-            searchTypeData: response.data.data,
+            searchTypeData: response?.data?.data,
           });
         } else {
-          console.error('handleSearch_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          console.error('handleSearch_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -439,13 +439,13 @@ export default SearchForJob = props => {
       .post(propertyType, propertyData)
       .then(response => {
         console.log('Job_priority', response.data);
-        if (response.data.status === true) {
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('Job_priorityData....', response.data.lookup_details);
-          setJobPriorityData(response.data.lookup_details);
+          console.log('Job_priorityData....', response?.data?.lookup_details);
+          setJobPriorityData(response?.data?.lookup_details);
         } else {
-          console.error('Job_priority_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          console.error('Job_priority_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -468,13 +468,16 @@ export default SearchForJob = props => {
       .post(propertyType, propertyData)
       .then(response => {
         console.log('RatingThreshold...', response.data);
-        if (response.data.status === true) {
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('RatingThresholdData....', response.data.lookup_details);
-          setRatingThresholdData(response.data.lookup_details);
+          console.log(
+            'RatingThresholdData....',
+            response?.data?.lookup_details,
+          );
+          setRatingThresholdData(response?.data?.lookup_details);
         } else {
-          console.error('RatingThreshold_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          console.error('RatingThreshold_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -497,13 +500,13 @@ export default SearchForJob = props => {
       .post(propertyType, propertyData)
       .then(response => {
         console.log('JobType...', response.data);
-        if (response.data.status === true) {
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('JobTypeData....', response.data.lookup_details);
-          setJobTypeData(response.data.lookup_details);
+          console.log('JobTypeData....', response?.data?.lookup_details);
+          setJobTypeData(response?.data?.lookup_details);
         } else {
-          console.error('JobType_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          console.error('JobType_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -536,13 +539,13 @@ export default SearchForJob = props => {
       .post(propertyType, propertyData)
       .then(response => {
         console.log('ServicesType...', response.data);
-        if (response.data.status === true) {
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('ServicesTypeData....', response.data.lookup_details);
-          setServicesData(response.data.lookup_details);
+          console.log('ServicesTypeData....', response?.data?.lookup_details);
+          setServicesData(response?.data?.lookup_details);
         } else {
-          console.error('Services_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          console.error('Services_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

@@ -138,14 +138,14 @@ export default AddExpensesDetails = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
-        if (response.data.status === true) {
+        console.log('property_type', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('Expence Category....', response.data.lookup_details);
-          setExpenceCategoryData(response.data.lookup_details);
+          console.log('Expence Category....', response?.data?.lookup_details);
+          setExpenceCategoryData(response?.data?.lookup_details);
           // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
-          console.error('Expence_Category_error:', response.data.error);
+          console.error('Expence_Category_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
@@ -169,13 +169,16 @@ export default AddExpensesDetails = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
-        if (response.data.status === true) {
+        console.log('property_type', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('Responsible Category....', response.data.lookup_details);
-          setSelectedResponsibleData(response.data.lookup_details);
+          console.log(
+            'Responsible Category....',
+            response?.data?.lookup_details,
+          );
+          setSelectedResponsibleData(response?.data?.lookup_details);
         } else {
-          console.error('Responsible_Category_error:', response.data.error);
+          console.error('Responsible_Category_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
@@ -221,10 +224,10 @@ export default AddExpensesDetails = props => {
     axios
       .post(ExpenceUrl, ExpenceData)
       .then(response => {
-        setExpenceResponse(response.data);
-        console.log('Expence Details_data response', response.data);
-        if (response.data.success === true) {
-          alert(response.data.message);
+        setExpenceResponse(response?.data);
+        console.log('Expence Details_data response', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
           setTotalAmount('');
           setAccountXcl('');
           setTax('');
@@ -240,9 +243,9 @@ export default AddExpensesDetails = props => {
           setIsLoading(false);
           handlePopUp();
         } else {
-          setEmailError(response.data.message);
-          console.error('ExpenceDetail_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          setEmailError(response?.data?.message);
+          console.error('ExpenceDetail_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

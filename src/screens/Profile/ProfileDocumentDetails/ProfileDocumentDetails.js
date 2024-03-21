@@ -232,11 +232,11 @@ const ProfileDocumentDetails = props => {
         },
       });
       console.log('API Response uploadDocument:', response.data);
-      if (response.data.success === true) {
-        alert(response.data.message);
+      if (response?.data?.success === true) {
+        alert(response?.data?.message);
         getUploadedDocumentsByModule();
       } else {
-        alert(response.data.message);
+        alert(response?.data?.message);
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
@@ -259,15 +259,15 @@ const ProfileDocumentDetails = props => {
       .post(propertyType, propertyData)
       .then(response => {
         console.log('Document dropDown Type...', response.data);
-        if (response.data.status === true) {
+        if (response?.data?.status === true) {
           setIsLoading(false);
           console.log(
             'Document dropDown Data.......',
-            response.data.lookup_details,
+            response?.data?.lookup_details,
           );
-          setDocumentLookupData(response.data.lookup_details);
+          setDocumentLookupData(response?.data?.lookup_details);
         } else {
-          console.error('Document dropDown..._error:', response.data.error);
+          console.error('Document dropDown..._error:', response?.data?.error);
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
@@ -297,8 +297,8 @@ const ProfileDocumentDetails = props => {
       )
       .then(response => {
         console.log('API Response getDocumentsByModule:', response.data);
-        if (response.data.success == true) {
-          setDocumentdataByModulename(response.data.data);
+        if (response?.data?.success == true) {
+          setDocumentdataByModulename(response?.data?.data);
         }
       })
       .catch(error => {

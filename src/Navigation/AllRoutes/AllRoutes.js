@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {colors, _COLORS} from '../../Themes/CommonColors/CommonColor';
+import {_COLORS} from '../../Themes/CommonColors/CommonColor';
 import {
   NavigationContainer,
   createNavigationContainerRef,
@@ -114,7 +114,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import PreScreening from '../../screens/Tenant/PreScreening/PreScreening';
 import AddJobDetails from '../../screens/Tenant/Jobs/AddJobDetails';
 import TenantList from '../../screens/Tenant/TenantList';
-import {transparent} from 'react-native-paper/lib/typescript/styles/themes/v2/colors';
 import CurrentTenant from '../../screens/Tenant/CurrentTenant/CurrentTenant';
 import PreviousTenant from '../../screens/Tenant/PreviousTenant/PreviousTenant';
 import JodBiddingDetails from '../../screens/CreateJob/ReviewJobDetails/JobBiddingDetails/JodBiddingDetails';
@@ -338,7 +337,7 @@ const BottomNav = props => {
                 }
               /> */}
               {/* <Image
-                source={focused ? IMAGES.greenChat : IMAGES.chat}
+                
                 style={{
                   height: 30,
                   width: 30,
@@ -419,7 +418,7 @@ const DrawerNavigatorLeftMenu = props => {
     <Drawer.Navigator
       initialRouteName="Dashboard"
       drawerStyle={{
-        backgroundColor: colors.white,
+        backgroundColor: _COLORS.Kodie_WhiteColor,
         width: '40%',
       }}
       drawerContent={props => <CustomSidebarMenu {...props} />}>

@@ -10,7 +10,6 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {colors} from '../../../../Themes/CommonColors/CommonColor';
 //screen number 206
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -94,7 +93,7 @@ const ChangeContactInput = props => {
           <View
             style={[
               ChangeContactInputStyle.simpleinputview,
-              {backgroundColor: colors.Kodie_GrayColor, borderRadius: 8},
+              {backgroundColor: _COLORS.Kodie_GrayColor, borderRadius: 8},
             ]}>
             <Text
               style={[

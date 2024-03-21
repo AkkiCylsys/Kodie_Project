@@ -14,7 +14,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from 'react-native';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {logos} from '../../../Themes/CommonVectors/Images';
@@ -159,7 +159,6 @@ export default Login = props => {
         console.log(error);
       });
   };
-
 
   const handleTogglePassword = () => {
     setShowPassword(prevShowPassword => !prevShowPassword);
@@ -452,11 +451,11 @@ export default Login = props => {
         email: resetEmail,
       })
       .then(response => {
-        console.log('API Response send otp:', response.data);
-        // if (response.data.status === true)
-        if (response.data.message === 'OTP sent successfully') {
+        console.log('API Response send otp:', response?.data);
+        // if (response?.data?.status === true)
+        if (response?.data?.message === 'OTP sent successfully') {
           alert(
-            response.data.message || 'The otp has been sent to your email.',
+            response?.data?.message || 'The otp has been sent to your email.',
           );
           if (isClick === 1) {
             setIsTimeron(true);
@@ -467,7 +466,7 @@ export default Login = props => {
             setIsClick(isClick + 1);
           }
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
         }
       })
       .catch(error => {
@@ -499,9 +498,9 @@ export default Login = props => {
         otp: verificationcode,
       })
       .then(response => {
-        console.log('API Response verify otp:', response.data);
-        if (response.data.success === true) {
-          alert(response.data.message);
+        console.log('API Response verify otp:', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
           setIsClick(isClick + 1);
         } else if (verificationcode.length < 6) {
           setVerificationcodeError(
@@ -571,16 +570,16 @@ export default Login = props => {
         password: encryptedPassword,
       });
 
-      console.log('API Response create_password:', response.data);
+      console.log('API Response create_password:', response?.data);
 
-      if (response.data.success === true) {
+      if (response?.data?.success === true) {
         if (
-          response.data.message ==
+          response?.data?.message ==
           'Try again with a password you haven’t used before'
         ) {
-          alert(response.data.message);
+          alert(response?.data?.message);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsClick(isClick + 1);
         }
       } else {

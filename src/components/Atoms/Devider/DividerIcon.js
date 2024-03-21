@@ -1,9 +1,9 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { colors, _COLORS } from "../../../Themes/CommonColors/CommonColor";
-import { Dividerstyles } from "./DividerCss";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-const DividerIcon = (props) => {
+import React from 'react';
+import {View, Text, TouchableOpacity} from 'react-native';
+import {_COLORS} from '../../../Themes/CommonColors/CommonColor';
+import {Dividerstyles} from './DividerCss';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+const DividerIcon = props => {
   return (
     <>
       <View style={Dividerstyles.mainView}>
@@ -13,7 +13,7 @@ const DividerIcon = (props) => {
               ? props.borderBottomWidth
               : 0.8,
             borderColor: props.color ? props.color : _COLORS.Kodie_GrayColor,
-            borderStyle: props.dashed ? "dashed" : "solid",
+            borderStyle: props.dashed ? 'dashed' : 'solid',
             marginTop: props.marginTop ? props.marginTop : 15,
             marginBottom: props.marginBottom ? props.marginBottom : 15,
             flex: 1,
@@ -21,17 +21,14 @@ const DividerIcon = (props) => {
           }}
         />
         {props.DeviderText && (
-          <View
-            style={[Dividerstyles.textView, { marginTop: props.marginTop }]}
-          >
+          <View style={[Dividerstyles.textView, {marginTop: props.marginTop}]}>
             <Text style={Dividerstyles.Divider_Text}>{props.DeviderText}</Text>
           </View>
         )}
         {props.IsShowIcon && (
           <TouchableOpacity
             onPress={props.onPress}
-            style={[Dividerstyles.iconView]}
-          >
+            style={[Dividerstyles.iconView]}>
             <MaterialCommunityIcons
               name={props.iconName}
               size={20}
@@ -45,8 +42,8 @@ const DividerIcon = (props) => {
             borderBottomWidth: props.borderBottomWidth
               ? props.borderBottomWidth
               : 0.8,
-            borderColor: props.color ? props.color : colors.Kodie_GrayColor,
-            borderStyle: props.dashed ? "dashed" : "solid",
+            borderColor: props.color ? props.color : _COLORS.Kodie_GrayColor,
+            borderStyle: props.dashed ? 'dashed' : 'solid',
             marginTop: props.marginTop ? props.marginTop : 15,
             marginBottom: props.marginBottom ? props.marginBottom : 15,
 

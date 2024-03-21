@@ -127,7 +127,7 @@ const PropertyList = props => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status == 500) {
-        // alert(error.response.data.message);
+        // alert(error.response?.data?.message);
         setIsLoading(false);
       } else {
         // alert('An error occurred. Please try again later.');
@@ -143,8 +143,7 @@ const PropertyList = props => {
     // if (isvisible) {
     //   getPropertyDetailsByFilter(selectedFilter);
     // }
-      getPropertyDetailsByFilter(selectedFilter);
-
+    getPropertyDetailsByFilter(selectedFilter);
   }, [selectedFilter, isvisible]);
 
   const handleEndReached = () => {
@@ -172,8 +171,8 @@ const PropertyList = props => {
         },
       );
 
-      console.log('API Response:', response.data);
-      if (response.data.success === true) {
+      console.log('API Response:', response?.data);
+      if (response?.data?.success === true) {
         Alert.alert(
           'Property Deleted',
           'The property was deleted successfully.',

@@ -185,8 +185,8 @@
 //     axios
 //       .get(Details_url)
 //       .then((response) => {
-//         if (response.data && response.data.data.length > 0) {
-//           const updatedList = response.data.data.map((item, index) => ({
+//         if (response?.data && response?.data?.data.length > 0) {
+//           const updatedList = response?.data?.data.map((item, index) => ({
 //             key: index.toString(),
 //             job_id: item.job_id.toString(),
 //             service_looking: item.service_looking,
@@ -623,9 +623,9 @@ const JobRequestArchive = () => {
   //   axios
   //     .get(Details_url)
   //     .then((response) => {
-  //       if (response.data && response.data.data.length > 0) {
-  //         setCatchData(response.data.data.length);
-  //         const updatedList = response.data.data.map((item, index) => ({
+  //       if (response?.data && response?.data?.data.length > 0) {
+  //         setCatchData(response?.data?.data.length);
+  //         const updatedList = response?.data?.data.map((item, index) => ({
   //           key: index.toString(),
   //           job_id: item.job_id.toString(),
   //           service_looking: item.service_looking,
@@ -659,10 +659,10 @@ const JobRequestArchive = () => {
     axios
       .get(Details_url)
       .then(response => {
-        if (response.data && response.data.data.length > 0) {
+        if (response?.data && response?.data?.data.length > 0) {
           // ... (your existing code)
 
-          const updatedList = response.data.data.map((item, index) => ({
+          const updatedList = response?.data?.data.map((item, index) => ({
             key: index.toString(),
             job_id: item.job_id.toString(),
             service_looking: item.service_looking,
@@ -696,11 +696,11 @@ const JobRequestArchive = () => {
   //       p_job_id: jobId,
   //     });
 
-  //     if (response.data && response.data.success) {
+  //     if (response?.data && response?.data?.success) {
   //       console.log("Job archived successfully");
   //       return true;
   //     } else {
-  //       console.error("Failed to archive job:", response.data.message);
+  //       console.error("Failed to archive job:", response?.data?.message);
   //       alert("Error", "Failed to archive job");
   //       return false;
   //     }
@@ -718,14 +718,14 @@ const JobRequestArchive = () => {
         p_job_id: jobId,
       });
 
-      console.log('Archive API Response:', response.data);
+      console.log('Archive API Response:', response?.data);
 
-      if (response.data && response.data.success) {
+      if (response?.data && response?.data?.success) {
         console.log('Job archived successfully');
         setIsLoading(false);
         return true;
       } else {
-        console.error('Failed to archive job:', response.data.message);
+        console.error('Failed to archive job:', response?.data?.message);
         alert('Error', 'Failed to archive job');
         setIsLoading(false);
         return false;

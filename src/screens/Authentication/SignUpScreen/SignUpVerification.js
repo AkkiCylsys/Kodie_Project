@@ -58,12 +58,12 @@ export default SignUpVerification = props => {
         // otp: value,
       })
       .then(response => {
-        console.log('API Response send otp:', response.data);
-        if (response.data.status === true) {
-          alert(response.data.message);
+        console.log('API Response send otp:', response?.data);
+        if (response?.data?.status === true) {
+          alert(response?.data?.message);
           setVerificationCode('');
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -90,9 +90,9 @@ export default SignUpVerification = props => {
     axios
       .post(sign_verification_Api, Signup_verification_Data)
       .then(response => {
-        console.log('sign_verification_Api responce', response.data);
-        if (response.data.success === true) {
-          alert(response.data.message);
+        console.log('sign_verification_Api responce', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
           setValue('');
           props.navigation.navigate('SignUpSteps', {
             email: email,
@@ -100,7 +100,7 @@ export default SignUpVerification = props => {
           });
           setIsLoading(false);
         } else {
-          setValueError(response.data.message);
+          setValueError(response?.data?.message);
           setValue('');
           setIsLoading(false);
         }

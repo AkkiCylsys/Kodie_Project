@@ -434,13 +434,13 @@ const AddPropertyMainPage = props => {
     axios
       .post(bedroomApi, bedRoom_Data)
       .then(response => {
-        console.log('bedRoom_data', response.data);
-        if (response.data.status === true) {
+        console.log('bedRoom_data', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('bedRoom_data....', response.data.data);
-          setBedRoomData(response.data.data);
+          console.log('bedRoom_data....', response?.data?.data);
+          setBedRoomData(response?.data?.data);
         } else {
-          console.error('bedRoom_data_error:', response.data.error);
+          console.error('bedRoom_data_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
@@ -464,13 +464,13 @@ const AddPropertyMainPage = props => {
     axios
       .post(garagesApi, garages_Data)
       .then(response => {
-        console.log('garages_Data', response.data);
-        if (response.data.status === true) {
+        console.log('garages_Data', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('garages_Data....', response.data.data);
-          setGaragesData(response.data.data);
+          console.log('garages_Data....', response?.data?.data);
+          setGaragesData(response?.data?.data);
         } else {
-          console.error('garages_Data_error:', response.data.error);
+          console.error('garages_Data_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
@@ -495,13 +495,13 @@ const AddPropertyMainPage = props => {
     axios
       .post(bathrooApi, Bathroom_Data)
       .then(response => {
-        console.log('bathroom_Data', response.data);
-        if (response.data.status === true) {
+        console.log('bathroom_Data', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('bathroom_Data....', response.data.data);
-          setBathroomData(response.data.data);
+          console.log('bathroom_Data....', response?.data?.data);
+          setBathroomData(response?.data?.data);
         } else {
-          console.error('bathroom_Data_error:', response.data.error);
+          console.error('bathroom_Data_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
@@ -521,15 +521,15 @@ const AddPropertyMainPage = props => {
     axios
       .get(additionalApi) // Change from .post to .get
       .then(response => {
-        console.log('additional_Data', response.data);
-        if (response.data.status === true) {
+        console.log('additional_Data', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('additional_features....', response.data);
-          setAdditionalfeatureskey(response.data.PAF_KEY);
-          setData_add(response.data.PAF_KEY);
-          console.log('AdditionalFeaturesKey....', response.data.PAF_KEY);
+          console.log('additional_features....', response?.data);
+          setAdditionalfeatureskey(response?.data?.PAF_KEY);
+          setData_add(response?.data?.PAF_KEY);
+          console.log('AdditionalFeaturesKey....', response?.data?.PAF_KEY);
         } else {
-          console.error('additional_features_error:', response.data.error);
+          console.error('additional_features_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
@@ -561,13 +561,13 @@ const AddPropertyMainPage = props => {
     axios
       .post(parkingApi, parking_Data)
       .then(response => {
-        console.log('parking_Data', response.data);
-        if (response.data.status === true) {
+        console.log('parking_Data', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('parking_Data....', response.data.data);
-          setParkingData(response.data.data);
+          console.log('parking_Data....', response?.data?.data);
+          setParkingData(response?.data?.data);
         } else {
-          console.error('parking_Data_error:', response.data.error);
+          console.error('parking_Data_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
@@ -603,7 +603,7 @@ const AddPropertyMainPage = props => {
       })
       .then(response => {
         console.log('property_details', response?.data);
-        if (response.data.status === true) {
+        if (response?.data?.status === true) {
           setIsLoading(false);
           setProperty_Data_id(response?.data?.property_id);
 
@@ -614,7 +614,7 @@ const AddPropertyMainPage = props => {
 
           // setCurrentPage(currentPage + 1);
           // props.navigation.navigate("PropertyFeature");
-          console.log('property_details....', response.data);
+          console.log('property_details....', response?.data);
           console.log(
             location,
             propertyDesc,
@@ -623,7 +623,7 @@ const AddPropertyMainPage = props => {
             additionalfeatureskeyvalue,
           );
         } else {
-          console.error('property_details_error:', response.data.error);
+          console.error('property_details_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
@@ -648,14 +648,14 @@ const AddPropertyMainPage = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
-        if (response.data.status === true) {
+        console.log('property_type', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('propertyData....', response.data.data);
-          setProperty_Data(response.data.data);
+          console.log('propertyData....', response?.data?.data);
+          setProperty_Data(response?.data?.data);
           setProperty_value(property_Detail[0]?.property_type_id);
         } else {
-          console.error('property_type_error:', response.data.error);
+          console.error('property_type_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
@@ -678,19 +678,21 @@ const AddPropertyMainPage = props => {
     axios
       .post(property_Detailss, detailData)
       .then(response => {
-        console.log('propertyDetail', response.data);
-        if (response.data.status === true) {
+        console.log('propertyDetail', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('propertyDetail....', response.data.property_details);
-          setProperty_Details(response.data.property_details);
-          setLocation(response.data.property_details[0].location);
-          setProperty_value(response.data.property_details[0].property_type_id);
+          console.log('propertyDetail....', response?.data?.property_details);
+          setProperty_Details(response?.data?.property_details);
+          setLocation(response?.data?.property_details[0].location);
+          setProperty_value(
+            response?.data?.property_details[0].property_type_id,
+          );
           setPropertyDesc(
-            response.data.property_details[0].property_description,
+            response?.data?.property_details[0].property_description,
           );
         } else {
-          console.error('propertyDetail_error:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          console.error('propertyDetail_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -725,17 +727,17 @@ const AddPropertyMainPage = props => {
     axios
       .put(update_property_details, updateData)
       .then(response => {
-        console.log('update_property_details', response.data);
-        if (response.data.status === true) {
+        console.log('update_property_details', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
           console.log(
             'update_property_details....',
-            response.data.property_details,
+            response?.data?.property_details,
           );
-          setupdateProperty_Details(response.data.property_details);
+          setupdateProperty_Details(response?.data?.property_details);
         } else {
-          console.error('update_property_detailserror:', response.data.error);
-          alert("Oops something went wrong! Please try again later.");
+          console.error('update_property_detailserror:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -973,17 +975,17 @@ const AddPropertyMainPage = props => {
         },
       });
 
-      console.log('Save Account Details', response.data);
+      console.log('Save Account Details', response?.data);
 
-      if (response.data.status === true) {
+      if (response?.data?.status === true) {
         setIsLoading(false);
         MultiImageName ? refRBSheet.current.close() : null;
-        // alert(response.data.message);
+        // alert(response?.data?.message);
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         // setCurrentPage(0);
       } else {
-        console.error('Save Account Details error:', response.data.error);
-        alert("Oops something went wrong! Please try again later.");
+        console.error('Save Account Details error:', response?.data?.error);
+        alert('Oops something went wrong! Please try again later.');
       }
     } catch (error) {
       console.error('Account_Details error:', error);
@@ -1041,16 +1043,16 @@ const AddPropertyMainPage = props => {
         },
       });
 
-      console.log('Save Account Details', response.data);
+      console.log('Save Account Details', response?.data);
 
-      if (response.data.status === true) {
+      if (response?.data?.status === true) {
         setIsLoading(false);
-        // alert(response.data.message);
+        // alert(response?.data?.message);
         // props.navigation.navigate("DrawerNavigatorLeftMenu");
         // setCurrentPage(0);
       } else {
-        console.error('Save Account Details error:', response.data.error);
-        alert("Oops something went wrong! Please try again later.");
+        console.error('Save Account Details error:', response?.data?.error);
+        alert('Oops something went wrong! Please try again later.');
       }
     } catch (error) {
       console.error('Account_Details error:', error);

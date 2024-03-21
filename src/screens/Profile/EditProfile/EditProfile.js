@@ -221,17 +221,17 @@ const EditProfile = props => {
       .post(describeYourselfApi, describe_yourself_Data)
       .then(response => {
         console.log('kodie_describeYouself_Data', response.data);
-        if (response.data.status === true) {
+        if (response?.data?.status === true) {
           setIsLoading(false);
           console.log(
             'kodie_describeYouself_Data....',
-            response.data.lookup_details,
+            response?.data?.lookup_details,
           );
-          setKodieDescribeYourselfData(response.data.lookup_details);
+          setKodieDescribeYourselfData(response?.data?.lookup_details);
         } else {
           console.error(
             'kodie_describeYouself_Data_error:',
-            response.data.error,
+            response?.data?.error,
           );
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
@@ -391,8 +391,8 @@ const EditProfile = props => {
         },
       });
       console.log('updateprofile....', response.data);
-      if (response.data.success === true) {
-        alert(response.data.message);
+      if (response?.data?.success === true) {
+        alert(response?.data?.message);
         getPersonalDetails();
         props.navigation.navigate('LandlordProfile');
       }

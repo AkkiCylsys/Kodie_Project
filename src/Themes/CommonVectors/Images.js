@@ -29,7 +29,7 @@ export const IMAGES = {
   repair: require('../../assets/icons/repair.png'),
   greenRepair: require('../../assets/icons/greenRepair.png'),
   chat: require('../../assets/icons/chat.png'),
-  greenChat: require('../../assets/icons/greenChat.png'),
+
   View_property: require('../../assets/icons/View_property.png'),
   Documents: require('../../assets/icons/Documents.png'),
   Reminder: require('../../assets/icons/Reminder.png'),
@@ -62,10 +62,6 @@ export const IMAGES = {
   AddManually: require('../../assets/icons/AddManually.png'),
   InviteTenant: require('../../assets/icons/InviteTenant.png'),
   InviteContact: require('../../assets/icons/InviteContact.png'),
-  // Adduser: require("../../assets/icons/Adduser.png"),
-  // diningRoom: require("../../assets/icons/diningRoom.png"),
-  // Exterior: require("../../assets/icons/Exterior.png"),
-  // Garage: require("../../assets/icons/Garage.png"),
   Garden: require('../../assets/icons/Garden.png'),
   kitchen: require('../../assets/icons/kitchen.png'),
   LivingRoom: require('../../assets/icons/LivingRoom.png'),
@@ -142,8 +138,6 @@ export const IMAGES = {
   vacantProperties: require('../../assets/icons/vacantProperties.png'),
   Inspections: require('../../assets/icons/Inspections.png'),
   Tenants: require('../../assets/icons/Tenants.png'),
-  Reports: require('../../assets/icons/Reports.png'),
-  Partner: require('../../assets/icons/Partner.png'),
 };
 
 export const BANNERS = {

@@ -287,41 +287,20 @@ export default AboutYou = props => {
   const selectedselectJobTypesString = selectJobTypeid.join(',');
   const selectedselectIndiJobTypesString = IndiselectJobTypeid.join(',');
 
-  const handle_ServicesOffer = () => {
-    const describe_yourself_Data = {
+  const handle_ServicesOffer = async () => {
+    setIsLoading(true);
+
+    const res = await SignupLookupDetails({
       P_PARENT_CODE: 'JOB_TYPE',
       P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const describeYourselfApi = url + 'lookup_details';
-    console.log('Request URL:', describeYourselfApi);
-    setIsLoading(true);
-    axios
-      .post(describeYourselfApi, describe_yourself_Data)
-      .then(response => {
-        console.log('kodie_describeYouself_Data', response.data);
-        if (response.data.status === true) {
-          setIsLoading(false);
-          console.log(
-            'kodie_describeYouself_Data....',
-            response.data.lookup_details,
-          );
-          setKodieServicesData(response.data.lookup_details);
-          setIndiKodieServicesData(response.data.lookup_details);
-        } else {
-          console.error(
-            'kodie_describeYouself_Data_error:',
-            response.data.error,
-          );
-          alert('Oops samthing went wrong! Please try again later.');
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('kodie_describeYouself_Data error:', error);
-        alert(error);
-        setIsLoading(false);
-      });
+    });
+
+    console.log('ServicesOffer', res);
+    if (res.status === true) {
+      setKodieServicesData(res.lookup_details);
+      setIndiKodieServicesData(res.lookup_details);
+    }
+    setIsLoading(false);
   };
 
   const handleServices = async () => {
@@ -332,7 +311,7 @@ export default AboutYou = props => {
     setIsLoading(true);
 
     const fetchServiceData = async jobType => {
-      const propertyData = {
+      const res = await SignupLookupDetails({
         P_PARENT_CODE:
           jobType === 166
             ? 'HOME_CLEANING'
@@ -344,26 +323,11 @@ export default AboutYou = props => {
             ? 'FIXING_AND_MAINTENANCE'
             : null,
         P_TYPE: 'OPTION',
-      };
+      });
 
-      const url = Config.BASE_URL;
-      const propertyType = url + 'lookup_details';
-
-      try {
-        const response = await axios.post(propertyType, propertyData);
-
-        if (response.data.status === true) {
-          servicesDatas.push(...response.data.lookup_details);
-          setIsLoading(false);
-        } else {
-          console.error('company profile Services_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Services error:', error);
-        setIsLoading(false);
-      }
+      console.log('ServicesOffer', res);
+      servicesDatas.push(...res.lookup_details);
+      setIsLoading(false);
     };
 
     const fetchAllServices = async () => {
@@ -391,7 +355,7 @@ export default AboutYou = props => {
     setIsLoading(true);
 
     const fetchIndiServiceData = async jobType => {
-      const propertyData = {
+      const res = await SignupLookupDetails({
         P_PARENT_CODE:
           jobType === 166
             ? 'HOME_CLEANING'
@@ -403,26 +367,11 @@ export default AboutYou = props => {
             ? 'FIXING_AND_MAINTENANCE'
             : null,
         P_TYPE: 'OPTION',
-      };
+      });
 
-      const url = Config.BASE_URL;
-      const propertyType = url + 'lookup_details';
-
-      try {
-        const response = await axios.post(propertyType, propertyData);
-
-        if (response.data.status === true) {
-          servicesDatas.push(...response.data.lookup_details);
-          setIsLoading(false);
-        } else {
-          console.error('company profile Services_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
-          setIsLoading(false);
-        }
-      } catch (error) {
-        console.error('Services error:', error);
-        setIsLoading(false);
-      }
+      console.log('ServicesOffer', res);
+      servicesDatas.push(...res.lookup_details);
+      setIsLoading(false);
     };
 
     const fetchIndiAllServices = async () => {

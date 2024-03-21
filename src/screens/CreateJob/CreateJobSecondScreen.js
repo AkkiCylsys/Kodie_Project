@@ -312,18 +312,18 @@ const CreateJobSecondScreen = props => {
         },
       });
 
-      console.log('uploadJobFilesData', response.data);
-      if (response.data && response.data.success === true) {
+      console.log('uploadJobFilesData', response?.data);
+      if (response?.data && response?.data?.success === true) {
         setIsLoading(false);
-        Alert.alert('Success !', response.data.message);
+        Alert.alert('Success !', response?.data?.message);
         props.navigation.navigate('JobDetails', {job_id: job_id});
         // clear state for image..
         setMultiImageName([]);
         setLeftImage([]);
         setRightImage([]);
       } else {
-        const errorMessage = response.data
-          ? response.data.error
+        const errorMessage = response?.data
+          ? response?.data?.error
           : 'Unknown error occurred';
         console.error('uploadJobFilesData', errorMessage);
         alert('There was an error. Please try again.');
@@ -347,17 +347,17 @@ const CreateJobSecondScreen = props => {
     axios
       .post(jobDetails_url, jobDetails_Data)
       .then(response => {
-        console.log('API Response JobDetails for updateImage:', response.data);
-        if (response.data.success === true) {
-          setJobDetailsData(response.data.data);
-          console.log('jobDetailsData_term....', response.data.data);
-          setUpdateAllImage(response.data.data.image_file_path);
+        console.log('API Response JobDetails for updateImage:', response?.data);
+        if (response?.data?.success === true) {
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData_term....', response?.data?.data);
+          setUpdateAllImage(response?.data?.data.image_file_path);
           console.log(
             'updateAllImage.....',
-            response.data.data.image_file_path,
+            response?.data?.data.image_file_path,
           );
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -447,17 +447,17 @@ const CreateJobSecondScreen = props => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('update_uploadJobFilesData....', response.data);
-      if (response.data.success === true) {
+      console.log('update_uploadJobFilesData....', response?.data);
+      if (response?.data?.success === true) {
         setIsLoading(false);
-        alert(response.data.message);
+        alert(response?.data?.message);
         props.navigation.navigate('JobDetails', {
           JobId: JobId,
           editMode: editMode,
         });
-        console.log('update_uploadJobFilesDatas', response.data);
+        console.log('update_uploadJobFilesDatas', response?.data);
       } else {
-        console.log('update_uploadJobFilesData', response.data.error);
+        console.log('update_uploadJobFilesData', response?.data?.error);
         alert('Oops Somthing went wrong! please try again later.');
       }
     } catch (error) {
