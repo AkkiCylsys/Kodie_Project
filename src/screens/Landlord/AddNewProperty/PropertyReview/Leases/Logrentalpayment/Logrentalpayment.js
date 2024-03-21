@@ -4,44 +4,44 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-} from "react-native";
-import React, { useState, useEffect } from "react";
-import { LogrentalPaymentStyle } from "./LogrentalpaymentStyle";
-import { _COLORS, LABEL_STYLES } from "../../../../../../Themes";
-import { Dropdown } from "react-native-element-dropdown";
-import CalendarModal from "../../../../../../components/Molecules/CalenderModal/CalenderModal";
-import RowButtons from "../../../../../../components/Molecules/RowButtons/RowButtons";
-import { CommonLoader } from "../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import axios from "axios";
-import { Config } from "../../../../../../Config";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Fontisto from "react-native-vector-icons/Fontisto";
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {LogrentalPaymentStyle} from './LogrentalpaymentStyle';
+import {_COLORS, LABEL_STYLES} from '../../../../../../Themes';
+import {Dropdown} from 'react-native-element-dropdown';
+import CalendarModal from '../../../../../../components/Molecules/CalenderModal/CalenderModal';
+import RowButtons from '../../../../../../components/Molecules/RowButtons/RowButtons';
+import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import axios from 'axios';
+import {Config} from '../../../../../../Config';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 const data = [
-  { label: "3-month", value: "1" },
-  { label: "6-month", value: "2" },
-  { label: "12-month", value: "3" },
+  {label: '3-month', value: '1'},
+  {label: '6-month', value: '2'},
+  {label: '12-month', value: '3'},
 ];
-const Logrentalpayment = (props) => {
+const Logrentalpayment = props => {
   //   console.log("lease_keys...", props.lease_keys);
   //   alert(JSON.stringify(props.lease_keys));
   const lease_keys = props.lease_keys;
-  console.log("lease_keys in log rental payment...", lease_keys);
+  console.log('lease_keys in log rental payment...', lease_keys);
   const [isLoading, setIsLoading] = useState(false);
-  const [totalAmount, setTotalAmount] = useState("");
-  const [totalAmountError, setTotalAmountError] = useState("");
+  const [totalAmount, setTotalAmount] = useState('');
+  const [totalAmountError, setTotalAmountError] = useState('');
   const [paymentTypeData, setPaymentTypeData] = useState([]);
-  const [paymentTypeValue, setPaymentTypeValue] = useState("");
+  const [paymentTypeValue, setPaymentTypeValue] = useState('');
   const [paymentTypeError, setPaymentTypeError] = useState(false);
-  const [notes, setNotes] = useState("");
+  const [notes, setNotes] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisiblepayment, setModalVisiblepayment] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedDateError, setSelectedDateError] = useState("");
-  const [selectedpaymetPeriod, setSelectedpaymetPeriod] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDateError, setSelectedDateError] = useState('');
+  const [selectedpaymetPeriod, setSelectedpaymetPeriod] = useState('');
   const [selectedpaymetPeriodError, setSelectedpaymetPeriodError] =
-    useState("");
+    useState('');
   const [value, setValue] = useState(null);
-  const [selectedOption, setSelectedOption] = useState("Save");
+  const [selectedOption, setSelectedOption] = useState('Save');
   const [selected_payment_period_Button, setSelected_payment_period_Button] =
     useState(false);
   const [selected_payment_period_Id, setSelected_payment_period_Id] =
@@ -58,7 +58,7 @@ const Logrentalpayment = (props) => {
     handlePaymentType();
   }, []);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = option => {
     setSelectedOption(option);
     handlePopUp();
   };
@@ -70,10 +70,10 @@ const Logrentalpayment = (props) => {
     setModalVisiblepayment(!isModalVisiblepayment);
   };
 
-  const handleDayPress = (day) => {
+  const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
-  const handlepaymentPeriodDate = (payment_period) => {
+  const handlepaymentPeriodDate = payment_period => {
     setSelectedpaymetPeriod(payment_period.dateString);
   };
 
@@ -82,59 +82,59 @@ const Logrentalpayment = (props) => {
   };
 
   const handleSaveBtn = () => {
-    if (totalAmount.trim() === "") {
-      setTotalAmountError("Total amount is required.");
-    } else if (paymentTypeValue == "") {
+    if (totalAmount.trim() === '') {
+      setTotalAmountError('Total amount is required.');
+    } else if (paymentTypeValue == '') {
       setPaymentTypeError(true);
-    } else if (selectedDate.trim() === "") {
-      setSelectedDateError("Payment date is required.");
-    } else if (selectedpaymetPeriod.trim() === "") {
-      setSelectedpaymetPeriodError("Rental payment period is required.");
+    } else if (selectedDate.trim() === '') {
+      setSelectedDateError('Payment date is required.');
+    } else if (selectedpaymetPeriod.trim() === '') {
+      setSelectedpaymetPeriodError('Rental payment period is required.');
     } else {
       //   alert("done");
       handle_rental_payment();
     }
   };
 
-  const handleTotalAmount = (text) => {
+  const handleTotalAmount = text => {
     setTotalAmount(text);
-    if (text.trim() === "") {
-      setTotalAmountError("Total amount is required.");
+    if (text.trim() === '') {
+      setTotalAmountError('Total amount is required.');
     } else {
-      setTotalAmountError("");
+      setTotalAmountError('');
     }
   };
-  const handlePaymentDate = (text) => {
+  const handlePaymentDate = text => {
     setSelectedDate(text);
-    if (text.trim() === "") {
-      setSelectedDateError("Payment date is required.");
+    if (text.trim() === '') {
+      setSelectedDateError('Payment date is required.');
     } else {
-      setSelectedDateError("");
+      setSelectedDateError('');
     }
   };
-  const handlePaymentPeriod = (text) => {
+  const handlePaymentPeriod = text => {
     setSelectedpaymetPeriod(text);
-    if (text.trim() === "") {
-      setSelectedpaymetPeriodError("Payment period is required.");
+    if (text.trim() === '') {
+      setSelectedpaymetPeriodError('Payment period is required.');
     } else {
-      setSelectedpaymetPeriodError("");
+      setSelectedpaymetPeriodError('');
     }
   };
 
   // rendert item..
-  const PaymentTypeRender = (item) => {
+  const PaymentTypeRender = item => {
     return (
       <View style={LogrentalPaymentStyle.itemView}>
         {item.lookup_key === paymentTypeValue ? (
           <AntDesign
             color={_COLORS.Kodie_GreenColor}
-            name={"checkcircle"}
+            name={'checkcircle'}
             size={20}
           />
         ) : (
           <Fontisto
             color={_COLORS.Kodie_GrayColor}
-            name={"radio-btn-passive"}
+            name={'radio-btn-passive'}
             size={20}
           />
         )}
@@ -147,28 +147,31 @@ const Logrentalpayment = (props) => {
 
   const handlePaymentType = () => {
     const url = Config.BASE_URL;
-    const PaymentType__url = url + "lookup_details";
-    console.log("Request URL:", PaymentType__url);
+    const PaymentType__url = url + 'lookup_details';
+    console.log('Request URL:', PaymentType__url);
     setIsLoading(true);
     const PaymentType_data = {
-      P_PARENT_CODE: "Payment_type",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'Payment_type',
+      P_TYPE: 'OPTION',
     };
     axios
       .post(PaymentType__url, PaymentType_data)
-      .then((response) => {
-        console.log("API Response PaymentType", response.data);
-        if (response.data.status === true) {
-          setPaymentTypeData(response.data.lookup_details);
-          console.log("PaymentType data ......", response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+      .then(response => {
+        console.log('API Response PaymentType', response?.data);
+        if (response?.data?.status === true) {
+          setPaymentTypeData(response?.data?.lookup_details);
+          console.log(
+            'PaymentType data ......',
+            response?.data?.lookup_details,
+          );
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed PaymentType", error);
+      .catch(error => {
+        console.error('API failed PaymentType', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -179,8 +182,8 @@ const Logrentalpayment = (props) => {
 
   const handle_rental_payment = () => {
     const url = Config.BASE_URL;
-    const rental_payment_url = url + "property_lease_details/create/paymentlog";
-    console.log("Request URL:", rental_payment_url);
+    const rental_payment_url = url + 'property_lease_details/create/paymentlog';
+    console.log('Request URL:', rental_payment_url);
     setIsLoading(true);
     const rental_payment_Data = {
       lease_key: lease_keys,
@@ -195,18 +198,18 @@ const Logrentalpayment = (props) => {
     };
     axios
       .post(rental_payment_url, rental_payment_Data)
-      .then((response) => {
-        console.log("API Response add_lease:", response.data);
-        if (response.data.success === true) {
-          alert(response.data.message);
+      .then(response => {
+        console.log('API Response add_lease:', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
           handlePopUp();
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed rental_payment", error);
+      .catch(error => {
+        console.error('API failed rental_payment', error);
         setIsLoading(false);
         alert(error);
       })
@@ -220,29 +223,28 @@ const Logrentalpayment = (props) => {
       <ScrollView>
         <View style={LogrentalPaymentStyle.heading_View}>
           <Text style={LogrentalPaymentStyle.heading_Text}>
-            {"Log rental payment"}
+            {'Log rental payment'}
           </Text>
           <TouchableOpacity onPress={handlePopUp}>
             <AntDesign
               name="close"
               size={22}
               color={_COLORS.Kodie_BlackColor}
-              style={{ alignSelf: "center" }}
+              style={{alignSelf: 'center'}}
             />
           </TouchableOpacity>
         </View>
         <View style={LogrentalPaymentStyle.card}>
-        
           <View style={LogrentalPaymentStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Payment type"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Payment type'}</Text>
             <Dropdown
               style={[
                 LogrentalPaymentStyle.dropdown,
-                { flex: 1, borderRadius: 5, height: 45 },
+                {flex: 1, borderRadius: 5, height: 45},
               ]}
               placeholderStyle={[
                 LogrentalPaymentStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
+                {color: _COLORS.Kodie_LightGrayColor},
               ]}
               selectedTextStyle={LogrentalPaymentStyle.selectedTextStyle}
               inputSearchStyle={LogrentalPaymentStyle.inputSearchStyle}
@@ -253,7 +255,7 @@ const Logrentalpayment = (props) => {
               valueField="lookup_key"
               placeholder="Payment Type"
               value={paymentTypeValue}
-              onChange={(item) => {
+              onChange={item => {
                 setPaymentTypeValue(item.lookup_key);
                 // alert(item.lookup_key);
                 setPaymentTypeError(false);
@@ -263,11 +265,11 @@ const Logrentalpayment = (props) => {
           </View>
           {paymentTypeError ? (
             <Text style={LogrentalPaymentStyle.error_text}>
-              {"Payment type is required."}
+              {'Payment type is required.'}
             </Text>
           ) : null}
-            <View style={LogrentalPaymentStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Total amount*"}</Text>
+          <View style={LogrentalPaymentStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{'Total amount*'}</Text>
             <TextInput
               style={LogrentalPaymentStyle.input}
               value={totalAmount}
@@ -285,11 +287,11 @@ const Logrentalpayment = (props) => {
             </Text>
           ) : null}
           <View style={LogrentalPaymentStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Payment date*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Payment date*'}</Text>
             <View style={LogrentalPaymentStyle.datePickerView}>
               <CalendarModal
                 SelectDate={
-                  selectedDate ? selectedDate : "Date of rental payment"
+                  selectedDate ? selectedDate : 'Date of rental payment'
                 }
                 _textInputStyle={{
                   color: selectedDate
@@ -298,7 +300,7 @@ const Logrentalpayment = (props) => {
                 }}
                 calenderIcon={toggleModal}
                 // onDayPress={handleDayPress}
-                onDayPress={(day) => handlePaymentDate(day.dateString)}
+                onDayPress={day => handlePaymentDate(day.dateString)}
                 Visible={isModalVisible}
                 onRequestClose={toggleModal}
                 onChangeText={() => handlePaymentDate(selectedDate)}
@@ -321,12 +323,12 @@ const Logrentalpayment = (props) => {
           ) : null}
           <View style={LogrentalPaymentStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {"Rental payment period*"}
+              {'Rental payment period*'}
             </Text>
             <View style={LogrentalPaymentStyle.datePickerView}>
               <CalendarModal
                 SelectDate={
-                  selectedpaymetPeriod ? selectedpaymetPeriod : "Week 2 August "
+                  selectedpaymetPeriod ? selectedpaymetPeriod : 'Week 2 August '
                 }
                 _textInputStyle={{
                   color: selectedpaymetPeriod
@@ -335,7 +337,7 @@ const Logrentalpayment = (props) => {
                 }}
                 calenderIcon={toggleModalpayment}
                 // onDayPress={handlepaymentPeriodDate}
-                onDayPress={(payment_period) =>
+                onDayPress={payment_period =>
                   handlePaymentPeriod(payment_period.dateString)
                 }
                 onChangeText={() => handlePaymentPeriod(selectedpaymetPeriod)}
@@ -360,10 +362,10 @@ const Logrentalpayment = (props) => {
           </View>
           <View style={LogrentalPaymentStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {"Payment period complete"}
+              {'Payment period complete'}
             </Text>
             <RowButtons
-              LeftButtonText={"Yes"}
+              LeftButtonText={'Yes'}
               leftButtonbackgroundColor={
                 !selected_payment_period_Button
                   ? _COLORS.Kodie_lightGreenColor
@@ -384,7 +386,7 @@ const Logrentalpayment = (props) => {
                 setSelected_payment_period_Id(1);
                 // alert(selected_payment_period_Id);
               }}
-              RightButtonText={"No"}
+              RightButtonText={'No'}
               RightButtonbackgroundColor={
                 selected_payment_period_Button
                   ? _COLORS.Kodie_lightGreenColor
@@ -409,10 +411,10 @@ const Logrentalpayment = (props) => {
           </View>
           <View style={LogrentalPaymentStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {"Payment period skipped"}
+              {'Payment period skipped'}
             </Text>
             <RowButtons
-              LeftButtonText={"Yes"}
+              LeftButtonText={'Yes'}
               leftButtonbackgroundColor={
                 !selected_payment_skipped_Button
                   ? _COLORS.Kodie_lightGreenColor
@@ -433,7 +435,7 @@ const Logrentalpayment = (props) => {
                 setSelected_payment_skipped_Id(1);
                 // alert(selected_payment_skipped_Id);
               }}
-              RightButtonText={"No"}
+              RightButtonText={'No'}
               RightButtonbackgroundColor={
                 selected_payment_skipped_Button
                   ? _COLORS.Kodie_lightGreenColor
@@ -458,10 +460,10 @@ const Logrentalpayment = (props) => {
           </View>
           <View style={LogrentalPaymentStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {"Create rental receipt"}
+              {'Create rental receipt'}
             </Text>
             <RowButtons
-              LeftButtonText={"Yes"}
+              LeftButtonText={'Yes'}
               leftButtonbackgroundColor={
                 !selected_Create_rental_Button
                   ? _COLORS.Kodie_lightGreenColor
@@ -481,7 +483,7 @@ const Logrentalpayment = (props) => {
                 setSelected_Create_rental_Button(false);
                 setSelected_Create_rental_Id(1);
               }}
-              RightButtonText={"No"}
+              RightButtonText={'No'}
               RightButtonbackgroundColor={
                 selected_Create_rental_Button
                   ? _COLORS.Kodie_lightGreenColor
@@ -504,16 +506,16 @@ const Logrentalpayment = (props) => {
             />
           </View>
           <View style={LogrentalPaymentStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
             <TextInput
-              style={[LogrentalPaymentStyle.input, { height: 100 }]}
+              style={[LogrentalPaymentStyle.input, {height: 100}]}
               value={notes}
               onChangeText={setNotes}
               placeholder="Enter any notes about your expense"
               placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               multiline
               numberOfLines={5}
-              textAlignVertical={"top"}
+              textAlignVertical={'top'}
             />
           </View>
 
@@ -524,27 +526,25 @@ const Logrentalpayment = (props) => {
                 LogrentalPaymentStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "cancel"
+                    selectedOption == 'cancel'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("cancel");
-              }}
-            >
+                handleOptionClick('cancel');
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "cancel"
+                      selectedOption == 'cancel'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {"Cancel"}
+                ]}>
+                {'Cancel'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -552,7 +552,7 @@ const Logrentalpayment = (props) => {
                 LogrentalPaymentStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Save"
+                    selectedOption == 'Save'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
@@ -560,21 +560,19 @@ const Logrentalpayment = (props) => {
               onPress={() => {
                 // handleOptionClick("Save");
                 handleSaveBtn();
-              }}
-            >
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   LogrentalPaymentStyle.text,
                   {
                     color:
-                      selectedOption == "Save"
+                      selectedOption == 'Save'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {" Save"}
+                ]}>
+                {' Save'}
               </Text>
             </TouchableOpacity>
           </View>

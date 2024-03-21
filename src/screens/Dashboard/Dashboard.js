@@ -179,7 +179,7 @@ export default Dashboard = props => {
     axios
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
-        console.log('profileCompletion response....', response.data);
+        console.log('profileCompletion response....', response?.data);
         setProfileCompletion(response?.data?.data[0]?.result);
         let profile_Completion = response?.data?.data[0]?.result;
         console.log('profileCompletion..', response?.data?.data[0]?.result);
@@ -280,8 +280,8 @@ export default Dashboard = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response.data.data[0]);
-        setAccountDetails(response.data.data[0]);
+        console.log('API Response:', response?.data?.data[0]);
+        setAccountDetails(response?.data?.data[0]);
         setIsLoading(false);
       })
       .catch(error => {

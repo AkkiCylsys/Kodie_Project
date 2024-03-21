@@ -62,12 +62,12 @@ const CurrentContractor = () => {
       .get(PreferredUrl)
       .then(response => {
         console.log('PreferredData', response.data);
-        if (response.data.success === true) {
+        if (response?.data?.success === true) {
           setIsLoading(false);
-          console.log('PreferredData....', response.data.data);
-          setPreferredData(response.data.data);
+          console.log('PreferredData....', response?.data?.data);
+          setPreferredData(response?.data?.data);
         } else {
-          console.error('PreferredData_error:', response.data.error);
+          console.error('PreferredData_error:', response?.data?.error);
           setIsLoading(false);
         }
       })

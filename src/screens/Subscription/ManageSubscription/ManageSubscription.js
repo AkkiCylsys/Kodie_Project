@@ -249,11 +249,11 @@ const ManageSubscription = props => {
       .post(url, createCustomer_data)
       .then(response => {
         console.log('API Response createCustomer', response.data);
-        if (response.data.success === true) {
-          console.log('customer ID ....', response.data.data.id);
-          setCustomerID(response.data.data.id);
+        if (response?.data?.success === true) {
+          console.log('customer ID ....', response?.data?.data.id);
+          setCustomerID(response?.data?.data.id);
           // props.navigation.navigate('SubscriptionScreen', {
-          //   customerID: response.data.data.id,
+          //   customerID: response?.data?.data.id,
           // });
         } else {
           setIsLoading(false);
@@ -283,8 +283,8 @@ const ManageSubscription = props => {
       .post(url, createSubscription_data)
       .then(response => {
         console.log('API Response createSubscription_data', response.data);
-        if (response.data.success === true) {
-          console.log('Subscription ID ....', response.data.data.id);
+        if (response?.data?.success === true) {
+          console.log('Subscription ID ....', response?.data?.data.id);
           setSubscriptionID(response?.data?.data?.id);
 
           Insertdemodata(response?.data?.data?.id);
@@ -331,8 +331,8 @@ const ManageSubscription = props => {
       .post(url, Insert_data)
       .then(response => {
         console.log('API Response insert_subscription', response.data);
-        if (response.data.success === true) {
-          console.log('insertData ....', response.data.message);
+        if (response?.data?.success === true) {
+          console.log('insertData ....', response?.data?.message);
         } else {
           setIsLoading(false);
         }

@@ -58,15 +58,15 @@ export default PropertyImages = props => {
     axios
       .post(property_Detailss, detailData)
       .then(response => {
-        console.log('propertyDetail', response.data);
-        if (response.data.success === true) {
+        console.log('propertyDetail', response?.data);
+        if (response?.data?.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details[0]);
-          setImagePaths(response.data.property_details[0]?.image_path);
-          // alert(JSON.stringify(response.data.property_details));
-          console.log('propertyDetail....', response.data.property_details);
+          setProperty_Details(response?.data?.property_details[0]);
+          setImagePaths(response?.data?.property_details[0]?.image_path);
+          // alert(JSON.stringify(response?.data?.property_details));
+          console.log('propertyDetail....', response?.data?.property_details);
         } else {
-          console.error('propertyDetail_error:', response.data.error);
+          console.error('propertyDetail_error:', response?.data?.error);
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
@@ -148,9 +148,9 @@ export default PropertyImages = props => {
         },
       });
 
-      console.log('Save Account Details', response.data);
+      console.log('Save Account Details', response?.data);
 
-      if (response.data.success === true) {
+      if (response?.data?.success === true) {
         setIsLoading(false);
         props.navigation.navigate('PropertyReview', {
           property_id: property_id,
@@ -159,7 +159,7 @@ export default PropertyImages = props => {
           editMode: editMode,
         });
       } else {
-        console.error('Save Account Details error:', response.data.error);
+        console.error('Save Account Details error:', response?.data?.error);
         alert('Oops something went wrong! Please try again later.');
       }
     } catch (error) {
@@ -346,9 +346,9 @@ export default PropertyImages = props => {
         },
       });
 
-      console.log('Save Account Details', response.data);
+      console.log('Save Account Details', response?.data);
 
-      if (response.data.success === true) {
+      if (response?.data?.success === true) {
         setIsLoading(false);
         MultiImageName ? refRBSheet.current.close() : null;
         props.navigation.navigate('PropertyReview', {
@@ -356,9 +356,9 @@ export default PropertyImages = props => {
           MultiImageName: MultiImageName,
           selectedVideos: selectedVideos,
         });
-        console.log('Save Account Details', response.data);
+        console.log('Save Account Details', response?.data);
       } else {
-        console.log('Save Account Details error:', response.data.error);
+        console.log('Save Account Details error:', response?.data?.error);
         alert('Oops Somthing went wrong! please try again later.');
       }
     } catch (error) {
@@ -402,7 +402,7 @@ export default PropertyImages = props => {
           </View>
           <View style={PropertyImagesStyle.phototextView}>
             <View style={PropertyImagesStyle.slider_view}>
-              <SliderBox  
+              <SliderBox
                 images={
                   editMode
                     ? [...(serverimagePath || []), ...imagePaths]

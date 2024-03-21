@@ -110,7 +110,7 @@ export default PropertyDetails = props => {
 
   useEffect(() => {
     handleProperty_Type();
-    DetailsData();
+    propertyid > 0 ? DetailsData() : null;
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -133,29 +133,29 @@ export default PropertyDetails = props => {
     axios
       .post(property_Detailss, detailData)
       .then(response => {
-        console.log('propertyDetail', response.data);
-        if (response.data.success === true) {
+        console.log('propertyDetail', response?.data);
+        if (response?.data?.success === true) {
           setIsLoading(false);
-          setProperty_Details(response.data.property_details[0]);
-          setLocation(response.data.property_details[0]?.location);
+          setProperty_Details(response?.data?.property_details[0]);
+          setLocation(response?.data?.property_details[0]?.location);
           setProperty_value(
             // 24
-            parseInt(response.data.property_details[0]?.property_type_id),
-            // response.data.property_details[0]?.property_type_id.replace(
+            parseInt(response?.data?.property_details[0]?.property_type_id),
+            // response?.data?.property_details[0]?.property_type_id.replace(
             //   /\D/g,
             //   ""
             // )
           );
           setSelectedButton(
-            parseInt(response.data.property_details[0]?.auto_list),
+            parseInt(response?.data?.property_details[0]?.auto_list),
           );
           setPropertyDesc(
-            response.data.property_details[0]?.property_description,
+            response?.data?.property_details[0]?.property_description,
           );
 
-          console.log('propertyDetail....', response.data.property_details);
+          console.log('propertyDetail....', response?.data?.property_details);
         } else {
-          console.error('propertyDetail_error:', response.data.error);
+          console.error('propertyDetail_error:', response?.data?.error);
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
@@ -397,14 +397,14 @@ export default PropertyDetails = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
-        if (response.data.status === true) {
+        console.log('property_type', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('propertyData....', response.data.lookup_details);
-          setProperty_Data(response.data.lookup_details);
+          console.log('propertyData....', response?.data?.lookup_details);
+          setProperty_Data(response?.data?.lookup_details);
           // setProperty_value(property_Detail[0]?.property_type_id);
         } else {
-          console.error('property_type_error:', response.data.error);
+          console.error('property_type_error:', response?.data?.error);
           // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }

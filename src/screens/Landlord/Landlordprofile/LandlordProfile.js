@@ -47,8 +47,8 @@ export default LandlordProfile = props => {
       .get(apiUrl)
       .then(response => {
         // Handle successful response
-        console.log('API Response:', response.data.data[0]);
-        setAccountDetails(response.data.data[0]);
+        console.log('API Response:', response?.data?.data[0]);
+        setAccountDetails(response?.data?.data[0]);
         setIsLoading(false);
       })
       .catch(error => {

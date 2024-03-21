@@ -160,20 +160,20 @@ export default SignUp = props => {
 
       const response = await axios.post(signupUrl, SignUpData);
 
-      setSignupResponse(response.data);
-      console.log('SignUp response', response.data);
-      // alert(JSON.stringify(response.data));
-      if (response.data.code === 3) {
-        Alert.alert('Success !', response.data.message);
+      setSignupResponse(response?.data);
+      console.log('SignUp response', response?.data);
+      // alert(JSON.stringify(response?.data));
+      if (response?.data?.code === 3) {
+        Alert.alert('Success !', response?.data?.message);
         props.navigation.navigate('SignUpVerification', {
           email: email,
           password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
-          user_key: response.data.User_Key,
+          user_key: response?.data?.User_Key,
         });
-      } else if (response.data.code === 1) {
-        Alert.alert('Success !', response.data.message);
+      } else if (response?.data?.code === 1) {
+        Alert.alert('Success !', response?.data?.message);
         setEmail('');
         setPassword('');
         setTerm(false);
@@ -184,13 +184,13 @@ export default SignUp = props => {
           password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
-          user_key: response.data.User_Key,
+          user_key: response?.data?.User_Key,
         });
-      } else if (response.data.code === 2) {
-        Alert.alert('Success !', response.data.message);
+      } else if (response?.data?.code === 2) {
+        Alert.alert('Success !', response?.data?.message);
         props.navigation.navigate('LoginScreen');
       } else {
-        Alert.alert('Success !', response.data.message);
+        Alert.alert('Success !', response?.data?.message);
       }
     } catch (error) {
       if (error.response || error.response.status === 400) {

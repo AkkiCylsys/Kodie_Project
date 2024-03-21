@@ -247,18 +247,18 @@ export default CompanyDetails = props => {
       .post(describeYourselfApi, describe_yourself_Data)
       .then(response => {
         console.log('kodie_describeYouself_Data', response.data);
-        if (response.data.status === true) {
+        if (response?.data?.status === true) {
           setIsLoading(false);
           console.log(
             'kodie_describeYouself_Data....',
-            response.data.lookup_details,
+            response?.data?.lookup_details,
           );
-          setKodieDescribeYourselfData(response.data.lookup_details);
-          setIndiKodieDescribeYourselfData(response.data.lookup_details);
+          setKodieDescribeYourselfData(response?.data?.lookup_details);
+          setIndiKodieDescribeYourselfData(response?.data?.lookup_details);
         } else {
           console.error(
             'kodie_describeYouself_Data_error:',
-            response.data.error,
+            response?.data?.error,
           );
           alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
@@ -299,11 +299,14 @@ export default CompanyDetails = props => {
       try {
         const response = await axios.post(propertyType, propertyData);
 
-        if (response.data.status === true) {
-          servicesDatas.push(...response.data.lookup_details);
+        if (response?.data?.status === true) {
+          servicesDatas.push(...response?.data?.lookup_details);
           setIsLoading(false);
         } else {
-          console.error('company profile Services_error:', response.data.error);
+          console.error(
+            'company profile Services_error:',
+            response?.data?.error,
+          );
           alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
@@ -358,11 +361,14 @@ export default CompanyDetails = props => {
       try {
         const response = await axios.post(propertyType, propertyData);
 
-        if (response.data.status === true) {
-          servicesDatas.push(...response.data.lookup_details);
+        if (response?.data?.status === true) {
+          servicesDatas.push(...response?.data?.lookup_details);
           setIsLoading(false);
         } else {
-          console.error('company profile Services_error:', response.data.error);
+          console.error(
+            'company profile Services_error:',
+            response?.data?.error,
+          );
           alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
@@ -645,8 +651,8 @@ export default CompanyDetails = props => {
         },
       });
       console.log('UpdateCompanyData....', response.data);
-      if (response.data.success === true) {
-        alert(response.data.message);
+      if (response?.data?.success === true) {
+        alert(response?.data?.message);
         navigation.navigate('LandlordProfile');
         getPersonalDetails();
         // getComapnyDetails();

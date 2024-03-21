@@ -32,35 +32,40 @@ const CustomSidebarMenu = props => {
         break;
       case 'RentalOffers':
         setselectedId('RentalOffers');
-        props.navigation.navigate('RantalOffer');
+        // props.navigation.navigate('RantalOffer');
+        Alert.alert('Rental Offers!', 'Coming soon');
         break;
       case 'vacantProperties':
         setselectedId('vacantProperties');
         // props.navigation.navigate('VacantPropertiesList');
-        Alert.alert('Coming soon');
+        Alert.alert('Vacant Properties!', 'Coming soon');
         break;
       case 'Inspection':
         setselectedId('Inspection');
-        props.navigation.navigate('NewInspection');
+        // props.navigation.navigate('NewInspection');
+        Alert.alert('Inspection!', 'Coming soon');
+
         break;
       case 'Tetants':
         setselectedId('Tetants');
 
         // props.navigation.navigate('TenantList'); // navigation to tenantList
-        Alert.alert('Coming soon');
+        Alert.alert('Tetants!', 'Coming soon');
         break;
       case 'MaintenanceJobs':
         setselectedId('MaintenanceJobs');
-        props.navigation.navigate('Jobs');
+        // props.navigation.navigate('Jobs');
+        Alert.alert('Maintenance Jobs!', 'Coming soon');
         break;
       case 'Contractors':
         setselectedId('Contractors');
-        Alert.alert('Coming soon');
+        Alert.alert('Contractors!', 'Coming soon');
         // props.navigation.navigate('Managingcontractors'); // navigation to managingContractor
         break;
       case 'Notices':
         setselectedId('Notices');
-        props.navigation.navigate('Notices');
+        Alert.alert('Notices!', 'Coming soon');
+        // props.navigation.navigate('Notices');
         break;
       case 'Documents':
         setselectedId('Documents');
@@ -71,7 +76,8 @@ const CustomSidebarMenu = props => {
         break;
       case 'Reports':
         setselectedId('Reports');
-        props.navigation.navigate('Reports');
+        // props.navigation.navigate('Reports');
+        Alert.alert('Reports!', 'Coming soon');
         break;
       case 'Partners':
         setselectedId('Partners');
@@ -105,7 +111,9 @@ const CustomSidebarMenu = props => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={DrawerStyle.Container}>
-        <Text style={[DrawerStyle.HeaderText,{marginVertical:5}]}>{'Properties'}</Text>
+        <Text style={[DrawerStyle.HeaderText, {marginVertical: 5}]}>
+          {'Properties'}
+        </Text>
         {/* <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
@@ -139,8 +147,7 @@ const CustomSidebarMenu = props => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          // onPress={() => check("RentalOffers")} Navigate To Rental Offers
-          onPress={handleGeneralSettingsPress}>
+          onPress={() => check('RentalOffers')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-arrow-left"
@@ -187,8 +194,7 @@ const CustomSidebarMenu = props => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          // onPress={() => check("Inspection")} Navigate To Inspections
-          onPress={handleGeneralSettingsPress}>
+          onPress={() => check('Inspection')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-search"
@@ -236,8 +242,9 @@ const CustomSidebarMenu = props => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          // onPress={() => check("MaintenanceJobs")} Navigate To Jobs
-          onPress={handleGeneralSettingsPress}>
+          onPress={() => check('MaintenanceJobs')}
+          // onPress={handleGeneralSettingsPress}
+        >
           <View style={DrawerStyle.IconView}>
             <Feather
               name="list"
@@ -284,8 +291,9 @@ const CustomSidebarMenu = props => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          // onPress={() => check("Notices")} Navigate To Notices & riminders
-          onPress={handleGeneralSettingsPress}>
+          onPress={() => check('Notices')}
+          // onPress={handleGeneralSettingsPress}
+        >
           <View style={DrawerStyle.IconView}>
             <Ionicons
               name="mail-unread-outline"
@@ -333,8 +341,9 @@ const CustomSidebarMenu = props => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          // onPress={() => check("Reports")} Navigate To Reports
-          onPress={handleGeneralSettingsPress}>
+          onPress={() => check('Reports')}
+          // onPress={handleGeneralSettingsPress}
+        >
           <View style={DrawerStyle.IconView}>
             <MaterialIcons
               name="bar-chart"

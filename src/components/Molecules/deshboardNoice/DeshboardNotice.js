@@ -47,8 +47,8 @@ const DeshboardNotice = props => {
       .post(profileDay_url, profileDayBody)
       .then(response => {
         console.log('profileDays response....', response?.data);
-        setProfileDay(response?.dataaa.data[0].datediff_res);
-        console.log('profileDay..', response.data.data[0].datediff_res);
+        setProfileDay(response?.data?.data[0].datediff_res);
+        console.log('profileDay..', response?.data?.data[0].datediff_res);
       })
       .catch(error => {
         console.log('profileDays error...', error);
@@ -70,7 +70,7 @@ const DeshboardNotice = props => {
     axios
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
-        console.log('profileCompletion response....', response.data);
+        console.log('profileCompletion response....', response?.data);
         setProfileCompletion(response?.data?.data[0]?.result);
         console.log('profileCompletion..', response?.data?.data[0]?.result);
         const profileValueWithoutPercent = profileCompletion.replace('%', '');

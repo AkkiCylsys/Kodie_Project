@@ -172,7 +172,7 @@ const AddBiddingDetails = props => {
 
     console.log('kodie_duration_data', res);
 
-    setkodieDurationData(res.lookup_details);
+    setkodieDurationData(res?.lookup_details);
     setIsLoading(false);
   };
   const handle_notification_type = async () => {
@@ -185,7 +185,7 @@ const AddBiddingDetails = props => {
 
     console.log('notification_type', res);
 
-    setNotification_type_Data(res.lookup_details);
+    setNotification_type_Data(res?.lookup_details);
     setIsLoading(false);
   };
   const handle_Open_reminder = async () => {
@@ -198,7 +198,7 @@ const AddBiddingDetails = props => {
 
     console.log('Response expiry reminder', res);
 
-    setopen_reminder_Data(res.lookup_details);
+    setopen_reminder_Data(res?.lookup_details);
     setIsLoading(false);
   };
   const handle_Close_reminder = async () => {
@@ -211,7 +211,7 @@ const AddBiddingDetails = props => {
 
     console.log('Response payment reminder', res);
 
-    setClose_reminder_Data(res.lookup_details);
+    setClose_reminder_Data(res?.lookup_details);
     setIsLoading(false);
   };
   const handle_NewBid_reminder = async () => {
@@ -224,7 +224,7 @@ const AddBiddingDetails = props => {
 
     console.log('Response rental reminder', res);
 
-    setNewbid(res.lookup_details);
+    setNewbid(res?.lookup_details);
     setIsLoading(false);
   };
 

@@ -365,13 +365,13 @@ export default FirstProperty = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
-        if (response.data.status === true) {
+        console.log('property_type', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('propertyData....', response.data.lookup_details);
-          setProperty_Data(response.data.lookup_details);
+          console.log('propertyData....', response?.data?.lookup_details);
+          setProperty_Data(response?.data?.lookup_details);
         } else {
-          console.error('property_type_error:', response.data.error);
+          console.error('property_type_error:', response?.data?.error);
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
@@ -390,17 +390,17 @@ export default FirstProperty = props => {
     axios
       .get(additionalApi)
       .then(response => {
-        console.log('additional_Data', response.data);
-        if (response.data.status === true) {
+        console.log('additional_Data', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('additional_features....', response.data);
-          setAdditionalfeatureskey(response.data.key_features_details);
+          console.log('additional_features....', response?.data);
+          setAdditionalfeatureskey(response?.data?.key_features_details);
           console.log(
             'AdditionalFeaturesKey....',
-            response.data.key_features_details,
+            response?.data?.key_features_details,
           );
         } else {
-          console.error('additional_features_error:', response.data.error);
+          console.error('additional_features_error:', response?.data?.error);
           alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }

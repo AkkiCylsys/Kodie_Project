@@ -145,12 +145,12 @@ const JobDocumentDetails = props => {
       });
       console.log('API Response uploadDocument:', response.data);
 
-      if (response.data.success === true) {
-        alert(response.data.message);
+      if (response?.data?.success === true) {
+        alert(response?.data?.message);
         // props.navigation.pop();
         getUploadedDocumentsByModule();
       } else {
-        alert(response.data.message);
+        alert(response?.data?.message);
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
@@ -159,7 +159,7 @@ const JobDocumentDetails = props => {
       // if (!error.response) {
       //   alert("Network error. Please check your internet connection.");
       // } else {
-      //   alert(error.response.data.message);
+      //   alert(error.response?.data?.message);
       // }
     } finally {
       setIsLoading(false);
@@ -178,8 +178,8 @@ const JobDocumentDetails = props => {
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log('API Response getDocumentsByModule:', response.data);
-        if (response.data.success == true) {
-          setJobDocByModulename(response.data.data);
+        if (response?.data?.success == true) {
+          setJobDocByModulename(response?.data?.data);
         }
       })
       .catch(error => {
@@ -435,7 +435,9 @@ const JobDocumentDetails = props => {
             container: JobDocumentDetailStyle.bottomModal_container,
           }}>
           <View style={JobDocumentDetailStyle.submodalContainer}>
-            <Text style={JobDocumentDetailStyle.Invite_tenant}>{'Edit document'}</Text>
+            <Text style={JobDocumentDetailStyle.Invite_tenant}>
+              {'Edit document'}
+            </Text>
             <TouchableOpacity
               onPress={() => {
                 closeModal();

@@ -269,12 +269,12 @@ export default JobDocuments = props => {
       .get(getDocument_url)
       .then(response => {
         console.log('API Response getDocuments:', response.data);
-        if (response.data.success === true) {
-          // alert(response.data.message);
-          setUploadDocData(response.data.data);
-          console.log('getAlluploadDocData..', response.data.data);
+        if (response?.data?.success === true) {
+          // alert(response?.data?.message);
+          setUploadDocData(response?.data?.data);
+          console.log('getAlluploadDocData..', response?.data?.data);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -301,16 +301,16 @@ export default JobDocuments = props => {
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response.data);
-        if (response.data.success == true) {
+        if (response?.data?.success == true) {
           switch (moduleName) {
             case 'Job_proposal':
-              setJobDocByModulename(response.data.data);
+              setJobDocByModulename(response?.data?.data);
               console.log('jobDocByModulename....', jobDocByModulename);
               console.log(
                 'Length for Job_proposal:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setJobDocByModulenamelength(response.data.data.length);
+              setJobDocByModulenamelength(response?.data?.data.length);
               console.log(
                 'setJobDocByModulenamelength..',
                 jobDocByModulenamelength,
@@ -318,26 +318,26 @@ export default JobDocuments = props => {
 
               break;
             case 'Job_Invoice':
-              setJobDocByjobInvoice(response.data.data);
+              setJobDocByjobInvoice(response?.data?.data);
               console.log('jobDocByjobInvoice...', jobDocByjobInvoice);
               console.log(
                 'Length for jobDocByjobInvoice:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setJobDocByjobInvoicelength(response.data.data.length);
+              setJobDocByjobInvoicelength(response?.data?.data.length);
               console.log(
                 'jobDocByjobInvoicelength...',
                 jobDocByjobInvoicelength,
               );
               break;
             case 'Job_Completed':
-              setJobDocByjobcomplete(response.data.data);
+              setJobDocByjobcomplete(response?.data?.data);
               console.log('jobDocByjobcomplete....', jobDocByjobcomplete);
               console.log(
                 'Length for jobDocByjobcomplete:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setJobDocByjobcompletelength(response.data.data.length);
+              setJobDocByjobcompletelength(response?.data?.data.length);
               console.log(
                 'jobDocByjobcompletelength..',
                 jobDocByjobcompletelength,

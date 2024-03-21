@@ -70,12 +70,12 @@ const ProfileDocuments = props => {
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response.data);
-        if (response.data.success == true) {
+        if (response?.data?.success == true) {
           switch (moduleName) {
             case 'Identity_documents':
-              setIdentifyDocumentId(response.data.data);
-              console.log('Length for property:', response.data.data.length);
-              setIdentifyDocumentIdLength(response.data.data.length);
+              setIdentifyDocumentId(response?.data?.data);
+              console.log('Length for property:', response?.data?.data.length);
+              setIdentifyDocumentIdLength(response?.data?.data.length);
               console.log(
                 'setIdentifyDocumentIdLength..',
                 identifyDocumentIdLength,
@@ -83,99 +83,96 @@ const ProfileDocuments = props => {
 
               break;
             case 'Proof_of_address':
-              setProofIdAddress(response.data.data);
+              setProofIdAddress(response?.data?.data);
               console.log(
                 'Length for proofIdAddressLength:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setProofIdAddressLength(response.data.data.length);
+              setProofIdAddressLength(response?.data?.data.length);
               console.log('proofIdAddressLength...', proofIdAddressLength);
               break;
             case 'Banking_documents':
-              setBankingDocument(response.data.data);
+              setBankingDocument(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setBankingDocumentLength(response.data.data.length);
+              setBankingDocumentLength(response?.data?.data.length);
               console.log('bankingDocumentLength..', bankingDocumentLength);
               break;
             case 'Employment_documents':
-              setEmploymentDocument(response.data.data);
+              setEmploymentDocument(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setEmploymentDocumentLength(response.data.data.length);
+              setEmploymentDocumentLength(response?.data?.data.length);
               console.log(
                 'employmentDocumentLength..',
                 employmentDocumentLength,
               );
               break;
             case 'Screening_documents':
-              setScreeningDocument(response.data.data);
+              setScreeningDocument(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setScreeningDocumentLength(response.data.data.length);
+              setScreeningDocumentLength(response?.data?.data.length);
               console.log('screeningDocumentLength..', screeningDocumentLength);
               break;
             case 'Other_documents':
-              setOtherDocument(response.data.data);
+              setOtherDocument(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setOtherDocumentLength(response.data.data.length);
+              setOtherDocumentLength(response?.data?.data.length);
               console.log('otherDocumentLength..', otherDocumentLength);
               break;
             case 'Company_documents':
-              setCompanyDocument(response.data.data);
+              setCompanyDocument(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setCompanyDocumentLength(response.data.data.length);
+              setCompanyDocumentLength(response?.data?.data.length);
               console.log('companyDocumentLength..', companyDocumentLength);
               break;
             case 'Licenses':
-              setLicenseDocument(response.data.data);
-              console.log(
-                'Length for Licenses:',
-                response.data.data.length,
-              );
-              setLicenseDocumentLength(response.data.data.length);
+              setLicenseDocument(response?.data?.data);
+              console.log('Length for Licenses:', response?.data?.data.length);
+              setLicenseDocumentLength(response?.data?.data.length);
               console.log('licenseDocumentLength..', licenseDocumentLength);
               break;
             case 'Certifications':
-              setCertificationDocument(response.data.data);
+              setCertificationDocument(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setCertificationDocumentLength(response.data.data.length);
+              setCertificationDocumentLength(response?.data?.data.length);
               console.log(
                 'certificationDocumentLength..',
                 certificationDocumentLength,
               );
               break;
             case 'Insurance_and_indemnity':
-              setInsuranceDocument(response.data.data);
+              setInsuranceDocument(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setInsuranceDocumentLength(response.data.data.length);
+              setInsuranceDocumentLength(response?.data?.data.length);
               console.log('insuranceDocumentLength..', insuranceDocumentLength);
               break;
             case 'Other_documents_company':
-              setOtherDocument(response.data.data);
+              setOtherDocument(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setOtherDocumentLength(response.data.data.length);
+              setOtherDocumentLength(response?.data?.data.length);
               console.log('otherDocumentLength..', otherDocumentLength);
               break;
             // Add cases for other module names if needed

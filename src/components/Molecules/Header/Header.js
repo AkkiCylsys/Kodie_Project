@@ -38,8 +38,8 @@ const TopHeader = props => {
       .get(apiUrl)
       .then(response => {
         // Handle successful response
-        console.log('API Response:', response.data.data[0]);
-        setAccountDetails(response.data.data[0]);
+        console.log('API Response:', response?.data?.data[0]);
+        setAccountDetails(response?.data?.data[0]);
       })
       .catch(error => {
         // Handle error

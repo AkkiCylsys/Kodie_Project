@@ -311,13 +311,13 @@ export default Documents = props => {
     axios
       .get(getDocument_url)
       .then(response => {
-        console.log('API Response getDocuments:', response.data);
-        if (response.data.success === true) {
-          // alert(response.data.message);
-          setUploadDocData(response.data.data);
-          console.log('getAlluploadDocData..', response.data.data);
+        console.log('API Response getDocuments:', response?.data);
+        if (response?.data?.success === true) {
+          // alert(response?.data?.message);
+          setUploadDocData(response?.data?.data);
+          console.log('getAlluploadDocData..', response?.data?.data);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -342,13 +342,13 @@ export default Documents = props => {
     axios
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
-        console.log(`API Response for ${moduleName}:`, response.data);
-        if (response.data.success == true) {
+        console.log(`API Response for ${moduleName}:`, response?.data);
+        if (response?.data?.success == true) {
           switch (moduleName) {
             case 'Property':
-              setpropertyDocByproperty(response.data.data);
-              console.log('Length for property:', response.data.data.length);
-              setpropertyDocBypropertylength(response.data.data.length);
+              setpropertyDocByproperty(response?.data?.data);
+              console.log('Length for property:', response?.data?.data.length);
+              setpropertyDocBypropertylength(response?.data?.data.length);
               console.log(
                 'setpropertyDocBypropertylength..',
                 propertyDocBypropertylength,
@@ -356,24 +356,24 @@ export default Documents = props => {
 
               break;
             case 'Lease':
-              setpropertyDocByLease(response.data.data);
+              setpropertyDocByLease(response?.data?.data);
               console.log(
                 'Length for propertyDocByLease:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setpropertyDocByLeaselength(response.data.data.length);
+              setpropertyDocByLeaselength(response?.data?.data.length);
               console.log(
                 'propertyDocByLeaselength...',
                 propertyDocByLeaselength,
               );
               break;
             case 'Tenant':
-              setpropertyDocByTenant(response.data.data);
+              setpropertyDocByTenant(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setpropertyDocByTenantlength(response.data.data.length);
+              setpropertyDocByTenantlength(response?.data?.data.length);
               console.log(
                 'propertyDocByTenantlength..',
                 propertyDocByTenantlength,
