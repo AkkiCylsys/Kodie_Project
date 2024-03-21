@@ -121,7 +121,7 @@ export default PropertyDetails = props => {
     setPropertyDesc('');
   }, [isFocus]);
 
-  const DetailsData = () => {
+  const DetailsData = async () => {
     const detailData = {
       property_id: propertyid,
     };
@@ -130,41 +130,36 @@ export default PropertyDetails = props => {
     const property_Detailss = url + 'get_property_details';
     console.log('Request URL:', property_Detailss);
     setIsLoading(true);
-    axios
-      .post(property_Detailss, detailData)
-      .then(response => {
-        console.log('propertyDetail', response?.data);
-        if (response?.data?.success === true) {
-          setIsLoading(false);
-          setProperty_Details(response?.data?.property_details[0]);
-          setLocation(response?.data?.property_details[0]?.location);
-          setProperty_value(
-            // 24
-            parseInt(response?.data?.property_details[0]?.property_type_id),
-            // response?.data?.property_details[0]?.property_type_id.replace(
-            //   /\D/g,
-            //   ""
-            // )
-          );
-          setSelectedButton(
-            parseInt(response?.data?.property_details[0]?.auto_list),
-          );
-          setPropertyDesc(
-            response?.data?.property_details[0]?.property_description,
-          );
 
-          console.log('propertyDetail....', response?.data?.property_details);
-        } else {
-          console.error('propertyDetail_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('property_type error in get data:', error);
-        // alert(error);
+    try {
+      const response = await axios.post(property_Detailss, detailData);
+      console.log('propertyDetail', response?.data);
+
+      if (response?.data?.success === true) {
         setIsLoading(false);
-      });
+        setProperty_Details(response?.data?.property_details[0]);
+        setLocation(response?.data?.property_details[0]?.location);
+        setProperty_value(
+          parseInt(response?.data?.property_details[0]?.property_type_id),
+        );
+        setSelectedButton(
+          parseInt(response?.data?.property_details[0]?.auto_list),
+        );
+        setPropertyDesc(
+          response?.data?.property_details[0]?.property_description,
+        );
+
+        console.log('propertyDetail....', response?.data?.property_details);
+      } else {
+        console.error('propertyDetail_error:', response?.data?.error);
+        alert('Oops something went wrong! Please try again later.');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('property_type error in get data:', error);
+      // alert(error);
+      setIsLoading(false);
+    }
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
@@ -262,57 +257,7 @@ export default PropertyDetails = props => {
       </View>
     );
   };
-  // const CheckIOSMapPermission = () => {
-  //   request(PERMISSIONS.IOS.LOCATION_ALWAYS)
-  //     .then((result) => {
-  //       switch (result) {
-  //         case RESULTS.UNAVAILABLE:
-  //           console.log(
-  //             "This feature is not available (on this device / in this context)"
-  //           );
-  //           break;
-  //         case RESULTS.DENIED:
-  //           console.log(
-  //             "The permission has not been requested / is denied but requestable"
-  //           );
-  //           break;
-  //         case RESULTS.LIMITED:
-  //           console.log("The permission is limited: some actions are possible");
-  //           break;
-  //         case RESULTS.GRANTED:
-  //           console.log("The permission is granted");
-  //           fetchCurrentLocation();
-  //           break;
-  //         case RESULTS.BLOCKED:
-  //           console.log("The permission is denied and not requestable anymore");
-  //           break;
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
-  // const checkpermissionlocation = async () => {
-  //   try {
-  //     const granted = await PermissionsAndroid.request(
-  //       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-  //       {
-  //         title: "Example App",
-  //         message: "Example App access to your location ",
-  //       }
-  //     );
-  //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-  //       console.log("You can use the location");
-  //       // alert("You can use the location");
-  //       fetchCurrentLocation();
-  //     } else {
-  //       console.log("location permission denied");
-  //       alert("Location permission denied");
-  //     }
-  //   } catch (err) {
-  //     console.warn(err);
-  //   }
-  // };
+
   const ConfirmAddress = () => {
     setIsMap(false);
     setLocation(currentLocation);
@@ -364,28 +309,8 @@ export default PropertyDetails = props => {
       })
       .catch(error => console.warn(error));
   };
-  // const fetchCurrentLocation = () => {
-  //   Geolocation.getCurrentPosition(
-  //     (position) => {
-  //       console.log("This is your current location.");
-  //       const { latitude, longitude } = position.coords;
-  //       console.log("position.coords....", position.coords);
-  //       setlatitude(latitude);
-  //       setlongitude(longitude);
-  //       getAddress(latitude, longitude);
-  //     },
-  //     (error) => {
-  //       console.error("Error fetching location:", error);
-  //     },
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 20000,
-  //       maximumAge: 1000,
-  //     }
-  //   );
-  // };
 
-  const handleProperty_Type = () => {
+  const handleProperty_Type = async () => {
     const propertyData = {
       P_PARENT_CODE: 'PROP_TYPE',
       P_TYPE: 'OPTION',
@@ -394,26 +319,26 @@ export default PropertyDetails = props => {
     const propertyType = url + 'lookup_details';
     console.log('Request URL:', propertyType);
     setIsLoading(true);
-    axios
-      .post(propertyType, propertyData)
-      .then(response => {
-        console.log('property_type', response?.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          console.log('propertyData....', response?.data?.lookup_details);
-          setProperty_Data(response?.data?.lookup_details);
-          // setProperty_value(property_Detail[0]?.property_type_id);
-        } else {
-          console.error('property_type_error:', response?.data?.error);
-          // alert("Oops something went wrong! Please try again later.");
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('property_type error:', error);
-        // alert(error);
+
+    try {
+      const response = await axios.post(propertyType, propertyData);
+      console.log('property_type', response?.data);
+
+      if (response?.data?.status === true) {
         setIsLoading(false);
-      });
+        console.log('propertyData....', response?.data?.lookup_details);
+        setProperty_Data(response?.data?.lookup_details);
+        // setProperty_value(property_Detail[0]?.property_type_id);
+      } else {
+        console.error('property_type_error:', response?.data?.error);
+        // alert("Oops something went wrong! Please try again later.");
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('property_type error:', error);
+      // alert(error);
+      setIsLoading(false);
+    }
   };
 
   //dropDown render Item....
@@ -449,28 +374,6 @@ export default PropertyDetails = props => {
     );
   };
   const goBack = () => {
-    // Alert.alert(
-    //   "Save or Discard Changes?",
-    //   "Do you want to save or discard your changes?",
-    //   [
-    //     {
-    //       text: "Save",
-    //       onPress: () => {
-    //         handleSave();
-    //         props.navigation.pop();
-    //         console.log("save presed");
-    //       },
-    //     },
-    //     {
-    //       text: "Discard",
-    //       onPress: () => {
-    //         handleDiscard();
-    //         props.navigation.pop();
-    //         console.log("save presed");
-    //       },
-    //     },
-    //   ]
-    // );
     props.navigation.pop();
   };
   return (
@@ -556,20 +459,7 @@ export default PropertyDetails = props => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-            {/* <TouchableOpacity
-              style={PropertyDetailsStyle.c_locationBtn}
-              onPress={() => {
-                // Platform.OS == "ios"
-                //   ? CheckIOSMapPermission()
-                //   : checkpermissionlocation();
-              }}
-            >
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity> */}
+
             <TouchableOpacity
               style={SignUpStepStyle.BtnContainer}
               onPress={ConfirmAddress}>
@@ -618,7 +508,6 @@ export default PropertyDetails = props => {
                       onChangeText={setLocation}
                       onFocus={() => {
                         setIsSearch(true);
-                        // setlocationError("");
                       }}
                       placeholder="Search location"
                       placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -627,10 +516,6 @@ export default PropertyDetails = props => {
                   <TouchableOpacity
                     style={PropertyDetailsStyle.locationIconView}
                     onPress={() => {
-                      // props.navigation.navigate("Location");
-                      // Platform.OS == "ios"
-                      //   ? CheckIOSMapPermission
-                      //   : checkpermissionlocation();
                       setIsMap(true);
                     }}>
                     <Octicons
@@ -641,11 +526,6 @@ export default PropertyDetails = props => {
                     />
                   </TouchableOpacity>
                 </View>
-                {/* {locationError ? (
-                  <Text style={PropertyDetailsStyle.error_text}>
-                    {locationError}
-                  </Text>
-                ) : null} */}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
