@@ -201,7 +201,7 @@ export default SignUp = props => {
       } else if (error.response || error.response.status === 401) {
         Alert.alert('Warning !', 'Your Password is Wrong.');
       } else {
-        Alert.alert('Warning !', 'An error occurred. Please try again later.');
+        // alert('An error occurred. Please try again later.');
       }
       console.error('Signup error:', error);
     } finally {

@@ -397,7 +397,7 @@ const EditProfile = props => {
         props.navigation.navigate('LandlordProfile');
       }
     } catch (error) {
-      alert(error);
+      // alert(error);
       console.log('update_error...', error);
     } finally {
       setIsLoading(false);

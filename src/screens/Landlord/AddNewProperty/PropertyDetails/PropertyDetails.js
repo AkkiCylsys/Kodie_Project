@@ -161,7 +161,7 @@ export default PropertyDetails = props => {
         }
       })
       .catch(error => {
-        console.error('property_type error:', error);
+        console.error('property_type error in get data:', error);
         // alert(error);
         setIsLoading(false);
       });

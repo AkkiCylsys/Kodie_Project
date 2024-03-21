@@ -220,7 +220,7 @@ const Notices = props => {
         alert(error.response.message);
         setIsLoading(false);
       } else {
-        alert('An error occurred. Please try again later.');
+        // alert("An error occurred. Please try again later.");
         setIsLoading(false);
       }
       console.error('API Error NoticesReminderDeatilsByFilter_Data:', error);

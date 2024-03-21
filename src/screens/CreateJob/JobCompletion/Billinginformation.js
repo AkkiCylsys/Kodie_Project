@@ -34,7 +34,7 @@ const Billinginformation = props => {
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetailsData = {
-      jm_job_id: 72,
+      jm_job_id: 72,  //will change when work on this..
     };
     axios
       .post(jobDetails_url, jobDetailsData)

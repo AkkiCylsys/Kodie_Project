@@ -84,7 +84,7 @@ export default Repair = props => {
     useState([]);
 
   const myJob_Type = props.myJob_Type;
-  console.log('myJob_Type in job module', myJob_Type);
+  // console.log('myJob_Type in job module', myJob_Type);
   const job_sub_type_req = props.job_sub_type_req;
   console.log('job_sub_type_ser_req....', job_sub_type_req);
   const handleCloseModal = () => {
@@ -133,7 +133,7 @@ export default Repair = props => {
       console.log('filter_apiUrl...', filter_apiUrl);
       const response = await axios.post(filter_apiUrl, {
         job_filter: filter,
-        user_account_id: account_id,
+        user_account_id: loginData?.Login_details?.user_account_idd,
         page_no: 1,
         limit: filter == 'Recent' ? 5 : 10,
         order_col: '8',
@@ -147,7 +147,7 @@ export default Repair = props => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        alert(error.response.message);
+        // alert(error.response.message);
         setIsLoading(false);
       } else {
         setIsLoading(false);
@@ -165,7 +165,7 @@ export default Repair = props => {
       console.log('Filter_Service_url...', Filter_Service_url);
       const response = await axios.post(Filter_Service_url, {
         job_filter: filter,
-        user_account_id: account_id,
+        user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
         limit: filter == 'Recent' ? 5 : 10,
         order_col: '8',
@@ -180,10 +180,10 @@ export default Repair = props => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        alert(error.response.message);
+        // alert(error.response.message);
         setIsLoading(false);
       } else {
-        alert('An error occurred. Please try again later.');
+        // alert('An error occurred. Please try again later.');
         setIsLoading(false);
       }
       console.error('API Error JobDetails_Filter_Service:', error);

@@ -96,8 +96,8 @@ const ProfileDocumentDetails = props => {
       const doc = await DocumentPicker.pick({
         type: [
           DocumentPicker.types.pdf,
-          DocumentPicker.types.doc,
-          DocumentPicker.types.docx,
+          // DocumentPicker.types.doc,
+          // DocumentPicker.types.docx,
           // DocumentPicker.types.images,
         ],
         allowMultiSelection: true,
