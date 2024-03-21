@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  Alert,
 } from 'react-native';
 import {BANNERS} from '../../../Themes/CommonVectors/Images';
 import {SignUpStyles} from './SignUpStyle';
@@ -163,7 +164,7 @@ export default SignUp = props => {
       console.log('SignUp response', response.data);
       // alert(JSON.stringify(response.data));
       if (response.data.code === 3) {
-        alert(response.data.message);
+        Alert.alert('Success !', response.data.message);
         props.navigation.navigate('SignUpVerification', {
           email: email,
           password: encStr,
@@ -172,7 +173,7 @@ export default SignUp = props => {
           user_key: response.data.User_Key,
         });
       } else if (response.data.code === 1) {
-        alert(response.data.message);
+        Alert.alert('Success !', response.data.message);
         setEmail('');
         setPassword('');
         setTerm(false);
@@ -186,18 +187,21 @@ export default SignUp = props => {
           user_key: response.data.User_Key,
         });
       } else if (response.data.code === 2) {
-        alert(response.data.message);
+        Alert.alert('Success !', response.data.message);
         props.navigation.navigate('LoginScreen');
       } else {
-        alert(response.data.message);
+        Alert.alert('Success !', response.data.message);
       }
     } catch (error) {
       if (error.response || error.response.status === 400) {
-        alert('Failed to send OTP via email. Please try again later.');
+        Alert.alert(
+          'Warning !',
+          'Failed to send OTP via email. Please try again later.',
+        );
       } else if (error.response || error.response.status === 401) {
-        alert('Your Password is Wrong.');
+        Alert.alert('Warning !', 'Your Password is Wrong.');
       } else {
-        alert('An error occurred. Please try again later.');
+        Alert.alert('Warning !', 'An error occurred. Please try again later.');
       }
       console.error('Signup error:', error);
     } finally {

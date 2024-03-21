@@ -11,8 +11,8 @@ export const SignupLookupDetails = data => {
     .then(response => {
       // Check if response status is successful (2xx range)
       if (response.status >= 200 && response.status < 300) {
-        console.log(response.data, 'response.data');
-        return response.data; // Return data if response is successful
+        console.log(response?.data, 'response?.data');
+        return response?.data; // Return data if response is successful
       } else {
         // Throw specific error for non-successful HTTP status codes
         throw new Error('Unexpected response status: ' + response.status);
@@ -22,8 +22,8 @@ export const SignupLookupDetails = data => {
       // Check if error is due to network failure or server error
       if (error.response) {
         // The request was made and the server responded with a non-2xx status code
-        console.error('Server responded with error:', error.response.data);
-        throw new Error('Server responded with error: ' + error.response.data);
+        console.error('Server responded with error:', error.response?.data);
+        throw new Error('Server responded with error: ' + error.response?.data);
       } else if (error.request) {
         // The request was made but no response was received
         console.error('Request made but no response received:', error.request);

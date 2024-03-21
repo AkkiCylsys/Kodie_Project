@@ -15,7 +15,7 @@ import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoa
 import {Config} from '../../../Config';
 import {useDispatch, useSelector} from 'react-redux';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
-import {colors} from '../../../Themes/CommonColors/CommonColor';
+
 //ScreenNo:209
 
 const subscriptionData = [

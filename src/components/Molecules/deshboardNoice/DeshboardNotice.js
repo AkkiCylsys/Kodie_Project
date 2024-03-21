@@ -46,8 +46,8 @@ const DeshboardNotice = props => {
     axios
       .post(profileDay_url, profileDayBody)
       .then(response => {
-        console.log('profileDays response....', response.data);
-        setProfileDay(response.data.data[0].datediff_res);
+        console.log('profileDays response....', response?.data);
+        setProfileDay(response?.dataaa.data[0].datediff_res);
         console.log('profileDay..', response.data.data[0].datediff_res);
       })
       .catch(error => {

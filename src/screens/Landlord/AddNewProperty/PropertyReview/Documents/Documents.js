@@ -9,17 +9,9 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import {DocumentsStyle} from './DocumentsStyle';
-import {FONTFAMILY, LABEL_STYLES} from '../../../../../Themes';
 import {_COLORS, IMAGES} from '../../../../../Themes';
-import {Dropdown} from 'react-native-element-dropdown';
-import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import UploadImageData from '../../../../../components/Molecules/UploadImage/UploadImage';
 import Entypo from 'react-native-vector-icons/Entypo';
-import CustomDropdown from '../../../../../components/Molecules/CustomDropdown/CustomDropdown';
-import {colors} from '../../../../../Themes/CommonColors/CommonColor';
-import {fontFamily} from '../../../../../Themes/FontStyle/FontStyle';
-import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
@@ -452,9 +444,7 @@ export default Documents = props => {
             container: DocumentsStyle.bottomModal_container,
           }}>
           <View style={DocumentsStyle.submodalContainer}>
-            <Text style={DocumentsStyle.Invite_tenant}>
-              {'Edit document'}
-            </Text>
+            <Text style={DocumentsStyle.Invite_tenant}>{'Edit document'}</Text>
             <TouchableOpacity
               onPress={() => {
                 closeModal();
