@@ -103,8 +103,11 @@ export default PropertyFeature = props => {
   const keyFeaturesString = property_Detail?.key_features;
 
   useEffect(() => {
+    console.log('step 1');
     additional_features();
-    DetailsData();
+    console.log('step 2');
+
+    propertyid > 0 ? DetailsData() : null;
     try {
       // Parsing the JSON string to an array of objects
       const keyFeaturesArray = JSON.parse(keyFeaturesString);
@@ -126,7 +129,7 @@ export default PropertyFeature = props => {
     }
   }, [keyFeaturesString]);
   console.log('CountBedroom', CountBedroom, CountBathroom);
-  const DetailsData = () => {
+  const DetailsData = async () => {
     const detailData = {
       property_id: propertyid,
     };
@@ -135,47 +138,48 @@ export default PropertyFeature = props => {
     const property_Detailss = url + 'get_property_details';
     console.log('Request URL:', property_Detailss);
     setIsLoading(true);
-    axios
-      .post(property_Detailss, detailData)
-      .then(response => {
-        console.log('propertyDetail', response?.data);
-        if (response?.data?.success === true) {
-          setIsLoading(false);
-          setProperty_Details(response?.data?.property_details[0]);
+    try {
+      const response = await axios.post(property_Detailss, detailData);
+      console.log('step 2.1');
 
-          const apiAdditionalFeaturesIds =
-            response?.data?.property_details[0]?.additional_features_id
-              .split(',')
-              .map(Number);
-          const furnishedFeatureId = apiAdditionalFeaturesIds.find(
-            id => id == 68,
-          );
-          const yesFeatureId = apiAdditionalFeaturesIds.find(id => id == 71);
-
-          console.log(
-            'Furnished Feature ID:',
-            apiAdditionalFeaturesIds,
-            furnishedFeatureId,
-          );
-          setSelectedButtonFurnished(furnishedFeatureId);
-          setSelectedButtonDeposit(yesFeatureId);
-          setFlorSize(response?.data?.property_details[0]?.floor_size);
-          setAdditionalFeaturesKeyValue(
-            response?.data?.property_details[0]?.additional_key_features_id,
-          );
-          setLandArea(response?.data?.property_details[0]?.land_area);
-        } else {
-          console.error('propertyDetail_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('property_type error:', error);
-        // alert(error);
+      console.log('propertyDetail', response?.data);
+      if (response?.data?.success === true) {
         setIsLoading(false);
-      });
+        setProperty_Details(response?.data?.property_details[0]);
+
+        const apiAdditionalFeaturesIds =
+          response?.data?.property_details[0]?.additional_features_id
+            .split(',')
+            .map(Number);
+        const furnishedFeatureId = apiAdditionalFeaturesIds.find(
+          id => id == 68,
+        );
+        const yesFeatureId = apiAdditionalFeaturesIds.find(id => id == 71);
+
+        console.log(
+          'Furnished Feature ID:',
+          apiAdditionalFeaturesIds,
+          furnishedFeatureId,
+        );
+        setSelectedButtonFurnished(furnishedFeatureId);
+        setSelectedButtonDeposit(yesFeatureId);
+        setFlorSize(response?.data?.property_details[0]?.floor_size);
+        setAdditionalFeaturesKeyValue(
+          response?.data?.property_details[0]?.additional_key_features_id,
+        );
+        setLandArea(response?.data?.property_details[0]?.land_area);
+      } else {
+        console.error('propertyDetail_error:', response?.data?.error);
+        // alert('Oops something went wrong! Please try again later.');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('property_type error:', error);
+      // alert(error);
+      setIsLoading(false);
+    }
   };
+
   const AllCountsData = [
     {Bedrooms: CountBedroom},
     {Bathrooms: CountBathroom},
@@ -395,35 +399,34 @@ export default PropertyFeature = props => {
         setIsLoading(false);
       });
   };
-  const additional_features = () => {
+  const additional_features = async () => {
     const url = Config.BASE_URL;
     const additionalApi = url + 'get_key_features';
     console.log('Request URL:', additionalApi);
     setIsLoading(true);
-    axios
-      .get(additionalApi) // Change from .post to .get
-      .then(response => {
-        console.log('additional_Data', response?.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          console.log('additional_features....', response?.data);
-          setAdditionalfeatureskey(response?.data?.key_features_details);
-          // setData_add(response?.data?.PAF_KEY);
-          console.log(
-            'AdditionalFeaturesKey....',
-            response?.data?.key_features_details,
-          );
-        } else {
-          console.error('additional_features_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('additional_features error:', error);
-        alert(error);
+    try {
+      const response = await axios.get(additionalApi);
+      console.log('additional_Data', response?.data);
+      console.log('step 1.1');
+
+      if (response?.data?.status === true) {
         setIsLoading(false);
-      });
+        console.log('additional_features....', response?.data);
+        setAdditionalfeatureskey(response?.data?.key_features_details);
+        console.log(
+          'AdditionalFeaturesKey....',
+          response?.data?.key_features_details,
+        );
+      } else {
+        console.error('additional_features_error:', response?.data?.error);
+        alert('Oops something went wrong! Please try again later.');
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('additional_features error:', error);
+      alert(error);
+      setIsLoading(false);
+    }
   };
 
   const updatePropertyDetails = () => {
