@@ -128,6 +128,7 @@ const PropertyList = props => {
     } catch (error) {
       if (error.response && error.response.status == 500) {
         // alert(error.response?.data?.message);
+        console.log("PropertyDetailsByFilter.......",error.response?.data?.message)
         setIsLoading(false);
       } else {
         // alert('An error occurred. Please try again later.');

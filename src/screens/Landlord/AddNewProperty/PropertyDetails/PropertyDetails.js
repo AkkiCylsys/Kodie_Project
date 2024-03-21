@@ -152,7 +152,7 @@ export default PropertyDetails = props => {
         console.log('propertyDetail....', response?.data?.property_details);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        alert('Oops something went wrong! Please try again later.');
+        // alert('Oops something went wrong! Please try again later.');
         setIsLoading(false);
       }
     } catch (error) {
