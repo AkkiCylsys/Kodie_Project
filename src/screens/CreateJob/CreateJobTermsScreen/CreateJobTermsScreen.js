@@ -101,8 +101,10 @@ export default CreateJobTermsScreen = props => {
   const [bookingInsuranceData, setBookingInsuranceData] = useState([]);
   const [selectedButtonBookingInsurance, setSelectedButtonBookingInsurance] =
     useState(false);
+  // const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
+  //   useState(262);
   const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
-    useState(262);
+    useState(null);
   const [jobDetailsData, setJobDetailsData] = useState([]);
 
   const toggleModal = () => {
@@ -234,11 +236,11 @@ export default CreateJobTermsScreen = props => {
     handleNeedServices();
     handleResponsible();
     handleBookingInsurance();
-    setFormattedPriceRanges(`$${priceRanges}`);
-    {
-      JobId ? getJobDetails() : null;
+    if (priceRanges) {
+      setFormattedPriceRanges(`$${priceRanges}`);
     }
-  }, [priceRanges]);
+    JobId > 0 ? getJobDetails() : null;
+  }, []); // if facing some priceRanges related issue please priceRanges in array depandency.
   // alert(`Formatted Price Range: ${formattedPriceRanges}`);
   console.log(`Formatted Price Range: ${formattedPriceRanges}`);
 
@@ -439,15 +441,17 @@ export default CreateJobTermsScreen = props => {
       job_location: location,
       location_latitude: latitude,
       location_longitude: longitude,
-      job_rating: ratingThresholdValue,
+      job_rating: ratingThresholdValue > 0 ? ratingThresholdValue : 0,
       job_date: selectedDate,
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
       job_min_budget: `$${min}`,
       job_max_budget: `$${max}`,
-      job_payment_by: selectedButtonResponsibleId,
-      job_booking_insurance: selectedButtonBookingInsuranceId,
+      job_payment_by:
+        selectedButtonResponsibleId > 0 ? selectedButtonResponsibleId : 0,
+      // job_booking_insurance: selectedButtonBookingInsuranceId,
+      job_booking_insurance: null,
       job_sub_type: myJob == 'requested' ? 1 : 0,
     };
     console.log('createJob_Data....', createJob_Data);
@@ -469,7 +473,7 @@ export default CreateJobTermsScreen = props => {
           // setIsLoading(false);
         } else {
           alert(response?.data?.message);
-          setIsLoading(false);
+          // setIsLoading(false);
         }
       })
       .catch(error => {
@@ -493,11 +497,11 @@ export default CreateJobTermsScreen = props => {
     axios
       .post(jobDetails_url, jobDetails_Data)
       .then(response => {
-        console.log('API Response JobDetails:', response.data);
+        console.log('API Response JobDetails:', response?.data);
         if (response.data.success === true) {
-          setJobDetailsData(response.data.data);
-          console.log('jobDetailsData_term....', response.data.data);
-          setSelectedDate(response.data.data.job_date.substring(0, 10));
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData_term....', response?.data?.data);
+          setSelectedDate(response?.data?.data?.job_date.substring(0, 10));
           setCurrentTime(response.data.data.job_time);
           setHourlyNeedValue(parseInt(response.data.data.job_hourly_key));
           setneedServicesValue(parseInt(response.data.data.job_how_often_key));
@@ -557,9 +561,9 @@ export default CreateJobTermsScreen = props => {
     axios
       .put(update_createJob_url, update_createJob_Data)
       .then(response => {
-        console.log('API Response updateCreateJob..:', response.data);
+        console.log('API Response updateCreateJob..:', response?.data);
         if (response.data.success === true) {
-          alert(response.data.message);
+          alert(response?.data?.message);
           props.navigation.navigate('CreateJobSecondScreen', {
             JobId: JobId,
             editMode: editMode,
@@ -572,7 +576,7 @@ export default CreateJobTermsScreen = props => {
           // setSelectedButtoBookingInsuranceId('');
           // setIsLoading(false);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           // setIsLoading(false);
         }
       })
@@ -827,7 +831,7 @@ export default CreateJobTermsScreen = props => {
             <CustomSingleButton
               _ButtonText={'Next'}
               Text_Color={_COLORS.Kodie_WhiteColor}
-              disabled={isLoading ? true : false}
+              disabled={isLoading}
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
                 // handleCreateJob()

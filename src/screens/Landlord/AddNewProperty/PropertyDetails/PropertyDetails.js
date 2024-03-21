@@ -110,7 +110,7 @@ export default PropertyDetails = props => {
 
   useEffect(() => {
     handleProperty_Type();
-    DetailsData();
+    propertyid > 0 ? DetailsData() : null;
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -161,7 +161,7 @@ export default PropertyDetails = props => {
         }
       })
       .catch(error => {
-        console.error('property_type error:', error);
+        console.error('property_type error in get data:', error);
         // alert(error);
         setIsLoading(false);
       });

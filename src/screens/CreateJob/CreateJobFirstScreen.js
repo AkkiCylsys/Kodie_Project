@@ -284,26 +284,13 @@ export default CreateJobFirstScreen = props => {
       </View>
     );
   };
-  // useEffect(() => {
-  //   const handleBackButton = () => {
-  //     props.navigation.navigate('Jobs');
-  //     // props.navigation.pop()
-  //     return true; // Prevent default behavior (exiting the app)
-  //   };
-  //   BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-  //   return () => {
-  //     BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-  //   };
-  // }, []);
   useEffect(() => {
     handleProperty_Type();
     Selected_Address_Type();
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
-    {
-      JobId ? getJobDetails() : null;  //edit by Deependra..
-    }
+      JobId > 0 ? getJobDetails() : null;  //edit by Deependra..
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
@@ -577,7 +564,7 @@ export default CreateJobFirstScreen = props => {
           setSelectedAddreeData(response.data.property_details);
         } else {
           console.error('Selected_Address_error:', response.data.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -612,7 +599,7 @@ export default CreateJobFirstScreen = props => {
       })
       .catch(error => {
         console.error('Job_priority error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -638,13 +625,13 @@ export default CreateJobFirstScreen = props => {
             'RatingThreshold_error:',
             'Oops something went wrong! Please try again later.',
           );
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('RatingThreshold error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -667,13 +654,13 @@ export default CreateJobFirstScreen = props => {
           setJobTypeData(response.data.lookup_details);
         } else {
           console.error('JobType_error:', response.data.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('JobType error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };

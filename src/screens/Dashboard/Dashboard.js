@@ -139,12 +139,6 @@ export default Dashboard = props => {
   //---click back button closing the app
 
   useEffect(() => {
-    // if (isvisible) {
-    //   setTimeout(() => {
-    //     getPersonalDetails();
-    //     handleprofileCompletion()
-    //   }, 2000);
-    // }
     getPersonalDetails();
     handleprofileCompletion();
     check_subscription();
@@ -287,10 +281,6 @@ export default Dashboard = props => {
         setIsLoading(false);
       });
   };
-  // useEffect(() => {
-  //   getPersonalDetails();
-  // }, []);
-
   return (
     <>
       <View style={DashboardStyle.mainContainer}>

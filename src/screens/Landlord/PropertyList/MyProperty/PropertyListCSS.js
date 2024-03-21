@@ -58,8 +58,10 @@ export const PropertyListCSS = StyleSheet.create({
   apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
   locationText: {
     flex: 1,
-    fontSize: 10,
+    fontSize: 12,
     color: _COLORS.Kodie_MediumGrayColor,
+    marginHorizontal: 5,
+    fontFamily: FONTFAMILY.K_Bold,
   },
   imageStyle: {
     flex: 0.5,

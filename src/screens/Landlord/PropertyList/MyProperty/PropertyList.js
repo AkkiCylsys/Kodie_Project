@@ -266,6 +266,7 @@ const PropertyList = props => {
               <Image
                 source={{uri: item?.image_path[0]}}
                 style={PropertyListCSS.imageStyle}
+                resizeMode='cover'
               />
             ) : (
               <View

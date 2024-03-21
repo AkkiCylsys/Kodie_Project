@@ -111,7 +111,7 @@ export default SignUpVerification = props => {
         } else if (error.response && error.response.status === 422) {
           alert('Time up. Please try again.');
         } else {
-          alert('An error occurred. Please try again later.');
+          // alert('An error occurred. Please try again later.');
         }
         console.error('signup Verification error:', error);
         setIsLoading(false);

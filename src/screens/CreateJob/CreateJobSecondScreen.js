@@ -77,9 +77,7 @@ const CreateJobSecondScreen = props => {
   const [updateAllImage, setUpdateAllImage] = useState([]);
 
   useEffect(() => {
-    {
-      JobId ? getJobDetails() : null;
-    }
+    JobId > 0 ? getJobDetails() : null;
   }, []);
   const CloseUp = () => {
     refRBSheet.current.close();
