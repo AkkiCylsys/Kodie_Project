@@ -5,97 +5,97 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-} from "react-native";
-import React, { useRef, useState, useEffect } from "react";
-import RBSheet from "react-native-raw-bottom-sheet";
-import DividerIcon from "../../Atoms/Devider/DividerIcon";
-import BottomModalData from "../BottomModal/BottomModalData";
-import { PropertyListingCss } from "./PropertyListingCss";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { _COLORS, IMAGES, BANNERS } from "../../../Themes";
-import AddBiddingDetails from "../AddBiddingDetails/AddBiddingDetails";
-import InviteTenant from "../InviteTenant/InviteTenant";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import VacantModal from "../VacantModal/VacantModal";
-import { Config } from "../../../Config";
-import { CommonLoader } from "../ActiveLoader/ActiveLoader";
-import axios from "axios";
+} from 'react-native';
+import React, {useRef, useState, useEffect} from 'react';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import DividerIcon from '../../Atoms/Devider/DividerIcon';
+import BottomModalData from '../BottomModal/BottomModalData';
+import {PropertyListingCss} from './PropertyListingCss';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {_COLORS, IMAGES, BANNERS} from '../../../Themes';
+import AddBiddingDetails from '../AddBiddingDetails/AddBiddingDetails';
+import InviteTenant from '../InviteTenant/InviteTenant';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import VacantModal from '../VacantModal/VacantModal';
+import {Config} from '../../../Config';
+import {CommonLoader} from '../ActiveLoader/ActiveLoader';
+import axios from 'axios';
 const property_List1 = [
   {
-    id: "1",
-    propertyName: "Apartment",
-    name: "Melbourne",
-    location: "8502 Preston Rd. Inglewood",
+    id: '1',
+    propertyName: 'Apartment',
+    name: 'Melbourne',
+    location: '8502 Preston Rd. Inglewood',
     image: BANNERS.apartment,
-    buttonName: "+ Invite Tenant",
-    tanentDay: "27 Days",
-    rent: "$850",
+    buttonName: '+ Invite Tenant',
+    tanentDay: '27 Days',
+    rent: '$850',
     isRentPanding: true,
     isRentReceived: false,
     isinviteTenants: false,
   },
 
   {
-    id: "2",
-    propertyName: "House",
-    name: "Sydney",
-    location: "2118 Thornridge Cir. Syracuse",
+    id: '2',
+    propertyName: 'House',
+    name: 'Sydney',
+    location: '2118 Thornridge Cir. Syracuse',
     image: BANNERS.house,
-    buttonName: "+ Invite Tenant",
-    tanentDay: "27 Days",
-    rent: "$850",
+    buttonName: '+ Invite Tenant',
+    tanentDay: '27 Days',
+    rent: '$850',
     isRentPanding: false,
     isRentReceived: true,
     isinviteTenants: false,
   },
   {
-    id: "3",
-    propertyName: "Cottage",
-    name: "Brisbane",
-    location: "1729 Sickle St, QLD, 4010, Australia ",
+    id: '3',
+    propertyName: 'Cottage',
+    name: 'Brisbane',
+    location: '1729 Sickle St, QLD, 4010, Australia ',
     image: BANNERS.cottage,
-    buttonName: "+ Invite Tenant",
-    tanentDay: "27 Days",
-    rent: "$850",
+    buttonName: '+ Invite Tenant',
+    tanentDay: '27 Days',
+    rent: '$850',
     isRentPanding: false,
     isRentReceived: false,
     isinviteTenants: true,
   },
   {
-    id: "4",
-    propertyName: "Apartment",
-    name: "Melbourne",
-    location: "8502 Preston Rd. Inglewood",
+    id: '4',
+    propertyName: 'Apartment',
+    name: 'Melbourne',
+    location: '8502 Preston Rd. Inglewood',
     image: BANNERS.apartment,
-    buttonName: "+ Invite Tenant",
-    tanentDay: "27 Days",
-    rent: "$850",
+    buttonName: '+ Invite Tenant',
+    tanentDay: '27 Days',
+    rent: '$850',
     isRentPanding: true,
     isRentReceived: false,
     isinviteTenants: false,
   },
   {
-    id: "5",
-    propertyName: "House",
-    name: "Sydney",
-    location: "2118 Thornridge Cir. Syracuse",
+    id: '5',
+    propertyName: 'House',
+    name: 'Sydney',
+    location: '2118 Thornridge Cir. Syracuse',
     image: BANNERS.house,
-    buttonName: "+ Invite Tenant",
-    tanentDay: "27 Days",
-    rent: "$850",
+    buttonName: '+ Invite Tenant',
+    tanentDay: '27 Days',
+    rent: '$850',
     isRentPanding: false,
     isRentReceived: true,
     isinviteTenants: false,
   },
   {
-    id: "6",
-    propertyName: "Cottage",
-    name: "Brisbane",
-    location: "1729 Sickle St, QLD, 4010, Australia ",
+    id: '6',
+    propertyName: 'Cottage',
+    name: 'Brisbane',
+    location: '1729 Sickle St, QLD, 4010, Australia ',
     image: BANNERS.cottage,
-    buttonName: "+ Invite Tenant",
-    tanentDay: "27 Days",
-    rent: "$850",
+    buttonName: '+ Invite Tenant',
+    tanentDay: '27 Days',
+    rent: '$850',
     isRentPanding: false,
     isRentReceived: false,
     isinviteTenants: true,
@@ -119,25 +119,25 @@ const PropertyListing = () => {
   // Get Api Bind here...
   const get_Vacant_Details = () => {
     const url = Config.BASE_URL;
-    const Vacant_Details_url = url + "/get_vacant_property_list";
+    const Vacant_Details_url = url + '/get_vacant_property_list';
     setIsLoading(true);
-    console.log("Request URL:", Vacant_Details_url);
+    console.log('Request URL:', Vacant_Details_url);
     // setIsLoading(true);
     axios
       .get(Vacant_Details_url)
-      .then((response) => {
-        console.log("API Response Vacant_Details_url:", response.data);
-        if (response.data.success === true) {
-          setVacantData(response.data.property_details);
-          // console.log("Vacent Details Data..", response.data.data);
+      .then(response => {
+        console.log('API Response Vacant_Details_url:', response?.data);
+        if (response?.data?.success === true) {
+          setVacantData(response?.data?.property_details);
+          // console.log("Vacent Details Data..", response?.data?.data);
           setIsLoading(false);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed Vacant_Details", error);
+      .catch(error => {
+        console.error('API failed Vacant_Details', error);
         setIsLoading(false);
       })
       .finally(() => {
@@ -153,17 +153,17 @@ const PropertyListing = () => {
     setIsDeleteData_Clicked(false);
     CloseUp();
     const url = Config.BASE_URL;
-    const vacantdelete = url + "delete_property_by_id";
-    console.log("vacantdelete", vacantdelete);
+    const vacantdelete = url + 'delete_property_by_id';
+    console.log('vacantdelete', vacantdelete);
     try {
       const response = await axios.delete(vacantdelete);
-      console.log("API Response:", response.data);
-      if (response.data.success === true) {
-        alert(response.data.message);
+      console.log('API Response:', response?.data);
+      if (response?.data?.success === true) {
+        alert(response?.data?.message);
         setIsLoading(false);
       }
     } catch (error) {
-      console.error("API Error DeleteVacant:", error);
+      console.error('API Error DeleteVacant:', error);
       setIsLoading(false);
     }
   };
@@ -171,7 +171,7 @@ const PropertyListing = () => {
   useEffect(() => {
     get_Vacant_Details();
   }, []);
-  const propertyData1_render = ({ item }) => {
+  const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.id);
     setPropId(item.property_id);
     return (
@@ -185,7 +185,7 @@ const PropertyListing = () => {
               <Text style={PropertyListingCss.commontext}>{item.name}</Text>
               <View style={PropertyListingCss.flat_MainView}>
                 <MaterialCommunityIcons
-                  name={"map-marker"}
+                  name={'map-marker'}
                   size={12}
                   color={_COLORS.Kodie_GreenColor}
                 />
@@ -195,7 +195,7 @@ const PropertyListing = () => {
               </View>
             </View>
             <Image
-              source={{ uri: item.image_path[0] }}
+              source={{uri: item.image_path[0]}}
               style={PropertyListingCss.imageStyle}
             />
             <View style={PropertyListingCss.flexContainer}>
@@ -210,16 +210,15 @@ const PropertyListing = () => {
                     name="note"
                     size={25}
                     color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={"contain"}
+                    resizeMode={'contain'}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     refRBSheet1.current.open();
-                  }}
-                >
+                  }}>
                   <MaterialCommunityIcons
-                    name={"dots-horizontal"}
+                    name={'dots-horizontal'}
                     size={25}
                     color={_COLORS.Kodie_LightGrayColor}
                   />
@@ -232,11 +231,10 @@ const PropertyListing = () => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                        ? _COLORS.Kodie_mostLightGreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                      ? _COLORS.Kodie_mostLightGreenColor
+                      : _COLORS.Kodie_LightGrayColor,
                   },
-                ]}
-              >
+                ]}>
                 <View
                   style={[
                     PropertyListingCss.roundButton,
@@ -244,8 +242,8 @@ const PropertyListing = () => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_LightGrayColor
                         : item.isRentReceived
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -256,14 +254,13 @@ const PropertyListing = () => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_MediumGrayColor,
+                        ? _COLORS.Kodie_GreenColor
+                        : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}
                   onPress={() => {
                     refRBSheet3.current.open();
-                  }}
-                >
+                  }}>
                   {/* {item.buttonName} */}
                   "+ invite"
                 </Text>
@@ -272,10 +269,10 @@ const PropertyListing = () => {
           </View>
           <DividerIcon
             IsShowIcon
-            iconName={isExpanded ? "chevron-up" : "chevron-down"}
+            iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
             onPress={() => {
               if (isExpanded) {
-                setExpandedItems(expandedItems.filter((id) => id !== item.id));
+                setExpandedItems(expandedItems.filter(id => id !== item.id));
               } else {
                 setExpandedItems([...expandedItems, item.id]);
               }
@@ -311,7 +308,7 @@ const PropertyListing = () => {
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
@@ -320,8 +317,7 @@ const PropertyListing = () => {
               borderRadius: 2,
             },
             container: PropertyListingCss.bottomModal_container,
-          }}
-        >
+          }}>
           <VacantModal
             onPress={() => {
               refRBSheet2.current.open();
@@ -334,7 +330,6 @@ const PropertyListing = () => {
           />
         </RBSheet>
 
-
         {/* AddBiddingDetails popup */}
         <RBSheet
           ref={refRBSheet2}
@@ -343,14 +338,13 @@ const PropertyListing = () => {
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
             container: PropertyListingCss.bottomModal_container,
-          }}
-        >
+          }}>
           <AddBiddingDetails />
         </RBSheet>
 
@@ -362,14 +356,13 @@ const PropertyListing = () => {
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
             },
             draggableIcon: {
               backgroundColor: _COLORS.Kodie_LightGrayColor,
             },
             container: PropertyListingCss.bottomModal_container,
-          }}
-        >
+          }}>
           <InviteTenant />
         </RBSheet>
       </>

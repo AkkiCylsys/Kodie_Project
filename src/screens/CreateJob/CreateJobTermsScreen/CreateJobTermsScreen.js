@@ -101,8 +101,10 @@ export default CreateJobTermsScreen = props => {
   const [bookingInsuranceData, setBookingInsuranceData] = useState([]);
   const [selectedButtonBookingInsurance, setSelectedButtonBookingInsurance] =
     useState(false);
+  // const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
+  //   useState(262);
   const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
-    useState(262);
+    useState(null);
   const [jobDetailsData, setJobDetailsData] = useState([]);
 
   const toggleModal = () => {
@@ -234,9 +236,11 @@ export default CreateJobTermsScreen = props => {
     handleNeedServices();
     handleResponsible();
     handleBookingInsurance();
-    setFormattedPriceRanges(`$${priceRanges}`);
-    getJobDetails();
-  }, [priceRanges]);
+    if (priceRanges) {
+      setFormattedPriceRanges(`$${priceRanges}`);
+    }
+    JobId > 0 ? getJobDetails() : null;
+  }, []); // if facing some priceRanges related issue please priceRanges in array depandency.
   // alert(`Formatted Price Range: ${formattedPriceRanges}`);
   console.log(`Formatted Price Range: ${formattedPriceRanges}`);
 
@@ -320,14 +324,14 @@ export default CreateJobTermsScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('HourlyNeed....', response.data);
-        if (response.data.status === true) {
+        console.log('HourlyNeed....', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('HourlyNeedData....', response.data.lookup_details);
-          setHourlyNeedData(response.data.lookup_details);
+          console.log('HourlyNeedData....', response?.data?.lookup_details);
+          setHourlyNeedData(response?.data?.lookup_details);
         } else {
-          console.error('HourlyNeed_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          console.error('HourlyNeed_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -349,14 +353,14 @@ export default CreateJobTermsScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('NeedServices....', response.data);
-        if (response.data.status === true) {
+        console.log('NeedServices....', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('NeedServices....', response.data.lookup_details);
-          setNeedServicesData(response.data.lookup_details);
+          console.log('NeedServices....', response?.data?.lookup_details);
+          setNeedServicesData(response?.data?.lookup_details);
         } else {
-          console.error('Need Services_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          console.error('Need Services_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -378,13 +382,16 @@ export default CreateJobTermsScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
-        if (response.data.status === true) {
+        console.log('property_type', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('Responsible Category....', response.data.lookup_details);
-          setSelectedResponsibleData(response.data.lookup_details);
+          console.log(
+            'Responsible Category....',
+            response?.data?.lookup_details,
+          );
+          setSelectedResponsibleData(response?.data?.lookup_details);
         } else {
-          console.error('Responsible_Category_error:', response.data.error);
+          console.error('Responsible_Category_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
@@ -405,13 +412,13 @@ export default CreateJobTermsScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('BookingInsurance...', response.data);
-        if (response.data.status === true) {
+        console.log('BookingInsurance...', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('BookingInsurance....', response.data.lookup_details);
-          setBookingInsuranceData(response.data.lookup_details);
+          console.log('BookingInsurance....', response?.data?.lookup_details);
+          setBookingInsuranceData(response?.data?.lookup_details);
         } else {
-          console.error('BookingInsurance_error:', response.data.error);
+          console.error('BookingInsurance_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
@@ -429,23 +436,25 @@ export default CreateJobTermsScreen = props => {
     setIsLoading(true);
     const createJob_Data = {
       user_account_details_id: loginData?.Login_details?.user_account_id,
-      type_of_job: selectJobType >0?selectJobType:0,
-      job_service_you_looking: servicesValue >0 ?servicesValue:0,
+      type_of_job: selectJobType > 0 ? selectJobType : 0,
+      job_service_you_looking: servicesValue > 0 ? servicesValue : 0,
       more_about_job: aboutyourNeed,
       job_priority: jobPriorityValue,
       property_type: property_value,
       job_location: location,
       location_latitude: latitude,
       location_longitude: longitude,
-      job_rating: ratingThresholdValue,
+      job_rating: ratingThresholdValue > 0 ? ratingThresholdValue : 0,
       job_date: selectedDate,
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
       job_min_budget: `$${min}`,
       job_max_budget: `$${max}`,
-      job_payment_by: selectedButtonResponsibleId,
-      job_booking_insurance: selectedButtonBookingInsuranceId,
+      job_payment_by:
+        selectedButtonResponsibleId > 0 ? selectedButtonResponsibleId : 0,
+      // job_booking_insurance: selectedButtonBookingInsuranceId,
+      job_booking_insurance: null,
       job_sub_type: myJob == 'requested' ? 1 : 0,
     };
     console.log('createJob_Data....', createJob_Data);
@@ -458,26 +467,26 @@ export default CreateJobTermsScreen = props => {
           props.navigation.navigate('CreateJobSecondScreen', {
             job_id: response?.data?.job_id,
           });
-          setSelectedDate(''),
-            setCurrentTime(''),
-            setHourlyNeedValue(''),
-            setneedServicesValue(''),
-            setSelectedButtonResponsibleId('');
-          setSelectedButtoBookingInsuranceId('');
-          setIsLoading(false);
+          // setSelectedDate(''),
+          //   setCurrentTime(''),
+          //   setHourlyNeedValue('')
+          //   setneedServicesValue(''),
+          //   setSelectedButtonResponsibleId('');
+          // setSelectedButtoBookingInsuranceId('');
+          // setIsLoading(false);
         } else {
           alert(response?.data?.message);
-          setIsLoading(false);
+          // setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed handleCreateJob', error);
         setIsLoading(false);
         alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
+    // .finally(() => {
+    //   setIsLoading(false);
+    // });
   };
   // EditMode Api.........
   const getJobDetails = () => {
@@ -491,28 +500,30 @@ export default CreateJobTermsScreen = props => {
     axios
       .post(jobDetails_url, jobDetails_Data)
       .then(response => {
-        console.log('API Response JobDetails:', response.data);
-        if (response.data.success === true) {
-          setJobDetailsData(response.data.data);
-          console.log('jobDetailsData_term....', response.data.data);
-          setSelectedDate(response.data.data.job_date.substring(0, 10));
-          setCurrentTime(response.data.data.job_time);
-          setHourlyNeedValue(parseInt(response.data.data.job_hourly_key));
-          setneedServicesValue(parseInt(response.data.data.job_how_often_key));
-          setFormattedPriceRanges(response.data.data.job_budget);
+        console.log('API Response JobDetails:', response?.data);
+        if (response?.data?.success === true) {
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData_term....', response?.data?.data);
+          setSelectedDate(response?.data?.data.job_date.substring(0, 10));
+          setCurrentTime(response?.data?.data.job_time);
+          setHourlyNeedValue(parseInt(response?.data?.data.job_hourly_key));
+          setneedServicesValue(
+            parseInt(response?.data?.data.job_how_often_key),
+          );
+          setFormattedPriceRanges(response?.data?.data.job_budget);
           setSelectedButtonResponsible(
-            parseInt(response.data.data.job_payment_by_key),
+            parseInt(response?.data?.data.job_payment_by_key),
           );
           setSelectedButtonBookingInsurance(
-            parseInt(response.data.data.job_insurence_key),
+            parseInt(response?.data?.data.job_insurence_key),
           );
-          setMaxBudget(response.data.data.job_max_budget);
-          setMinBudget(response.data.data.job_min_budget);
+          setMaxBudget(response?.data?.data.job_max_budget);
+          setMinBudget(response?.data?.data.job_min_budget);
           console.log('max budget..', maxBudget);
           console.log('min budget..', minBudget);
           setIsLoading(false);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -555,28 +566,28 @@ export default CreateJobTermsScreen = props => {
     axios
       .put(update_createJob_url, update_createJob_Data)
       .then(response => {
-        console.log('API Response updateCreateJob..:', response.data);
-        if (response.data.success === true) {
-          alert(response.data.message);
+        console.log('API Response updateCreateJob..:', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
           props.navigation.navigate('CreateJobSecondScreen', {
             JobId: JobId,
             editMode: editMode,
           });
-          setSelectedDate(''),
-            setCurrentTime(''),
-            setHourlyNeedValue(''),
-            setneedServicesValue(''),
-            setSelectedButtonResponsibleId('');
-          setSelectedButtoBookingInsuranceId('');
-          setIsLoading(false);
+          // setSelectedDate(''),
+          //   setCurrentTime(''),
+          //   setHourlyNeedValue(''),
+          //   setneedServicesValue(''),
+          //   setSelectedButtonResponsibleId('');
+          // setSelectedButtoBookingInsuranceId('');
+          // setIsLoading(false);
         } else {
-          alert(response.data.message);
-          setIsLoading(false);
+          alert(response?.data?.message);
+          // setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed updateCreateJob', error);
-        setIsLoading(false);
+        // setIsLoading(false);
         alert(error);
       })
       .finally(() => {
@@ -825,7 +836,7 @@ export default CreateJobTermsScreen = props => {
             <CustomSingleButton
               _ButtonText={'Next'}
               Text_Color={_COLORS.Kodie_WhiteColor}
-              disabled={isLoading ? true : false}
+              disabled={isLoading}
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
                 // handleCreateJob()
@@ -835,9 +846,11 @@ export default CreateJobTermsScreen = props => {
               }
             />
           </View>
-          <TouchableOpacity style={CreateJobTermsStyle.goBack_View} onPress={()=>{
-            props.navigation.pop()
-          }}>
+          <TouchableOpacity
+            style={CreateJobTermsStyle.goBack_View}
+            onPress={() => {
+              props.navigation.pop();
+            }}>
             <View style={CreateJobTermsStyle.backIcon}>
               <Ionicons
                 name="chevron-back"

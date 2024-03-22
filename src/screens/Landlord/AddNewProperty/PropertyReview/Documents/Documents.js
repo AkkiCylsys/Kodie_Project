@@ -9,17 +9,9 @@ import {
   PermissionsAndroid,
 } from 'react-native';
 import {DocumentsStyle} from './DocumentsStyle';
-import {FONTFAMILY, LABEL_STYLES} from '../../../../../Themes';
 import {_COLORS, IMAGES} from '../../../../../Themes';
-import {Dropdown} from 'react-native-element-dropdown';
-import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import UploadImageData from '../../../../../components/Molecules/UploadImage/UploadImage';
 import Entypo from 'react-native-vector-icons/Entypo';
-import CustomDropdown from '../../../../../components/Molecules/CustomDropdown/CustomDropdown';
-import {colors} from '../../../../../Themes/CommonColors/CommonColor';
-import {fontFamily} from '../../../../../Themes/FontStyle/FontStyle';
-import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
@@ -319,13 +311,13 @@ export default Documents = props => {
     axios
       .get(getDocument_url)
       .then(response => {
-        console.log('API Response getDocuments:', response.data);
-        if (response.data.success === true) {
-          // alert(response.data.message);
-          setUploadDocData(response.data.data);
-          console.log('getAlluploadDocData..', response.data.data);
+        console.log('API Response getDocuments:', response?.data);
+        if (response?.data?.success === true) {
+          // alert(response?.data?.message);
+          setUploadDocData(response?.data?.data);
+          console.log('getAlluploadDocData..', response?.data?.data);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -350,13 +342,13 @@ export default Documents = props => {
     axios
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
-        console.log(`API Response for ${moduleName}:`, response.data);
-        if (response.data.success == true) {
+        console.log(`API Response for ${moduleName}:`, response?.data);
+        if (response?.data?.success == true) {
           switch (moduleName) {
             case 'Property':
-              setpropertyDocByproperty(response.data.data);
-              console.log('Length for property:', response.data.data.length);
-              setpropertyDocBypropertylength(response.data.data.length);
+              setpropertyDocByproperty(response?.data?.data);
+              console.log('Length for property:', response?.data?.data.length);
+              setpropertyDocBypropertylength(response?.data?.data.length);
               console.log(
                 'setpropertyDocBypropertylength..',
                 propertyDocBypropertylength,
@@ -364,24 +356,24 @@ export default Documents = props => {
 
               break;
             case 'Lease':
-              setpropertyDocByLease(response.data.data);
+              setpropertyDocByLease(response?.data?.data);
               console.log(
                 'Length for propertyDocByLease:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setpropertyDocByLeaselength(response.data.data.length);
+              setpropertyDocByLeaselength(response?.data?.data.length);
               console.log(
                 'propertyDocByLeaselength...',
                 propertyDocByLeaselength,
               );
               break;
             case 'Tenant':
-              setpropertyDocByTenant(response.data.data);
+              setpropertyDocByTenant(response?.data?.data);
               console.log(
                 'Length for propertyDocByTenant:',
-                response.data.data.length,
+                response?.data?.data.length,
               );
-              setpropertyDocByTenantlength(response.data.data.length);
+              setpropertyDocByTenantlength(response?.data?.data.length);
               console.log(
                 'propertyDocByTenantlength..',
                 propertyDocByTenantlength,
@@ -452,9 +444,7 @@ export default Documents = props => {
             container: DocumentsStyle.bottomModal_container,
           }}>
           <View style={DocumentsStyle.submodalContainer}>
-            <Text style={DocumentsStyle.Invite_tenant}>
-              {'Edit document'}
-            </Text>
+            <Text style={DocumentsStyle.Invite_tenant}>{'Edit document'}</Text>
             <TouchableOpacity
               onPress={() => {
                 closeModal();

@@ -117,11 +117,11 @@ export default Company = props => {
     axios
       .post(CompanyUrl, CompanyDetailsData)
       .then(response => {
-        setCompanyResponse(response.data);
-        console.log('Company Details_data response', response.data);
-        if (response.data.success === true) {
+        setCompanyResponse(response?.data);
+        console.log('Company Details_data response', response?.data);
+        if (response?.data?.success === true) {
           // props.navigation.navigate("LeaseSummary");
-          alert(response.data.message);
+          alert(response?.data?.message);
           // setIsLoading(false);
           setCompanyName('');
           setEmail('');
@@ -130,9 +130,9 @@ export default Company = props => {
           setNote('');
           setIsLoading(false);
         } else {
-          setEmailError(response.data.message);
-          console.error('CompanyDetail_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          setEmailError(response?.data?.message);
+          console.error('CompanyDetail_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

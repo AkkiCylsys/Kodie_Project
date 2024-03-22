@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   Modal,
+  Alert,
 } from 'react-native';
 
 import {userSubscribedCreator} from '../../redux/Actions/Subscription/SubscriptionApiCreator';
@@ -139,12 +140,6 @@ export default Dashboard = props => {
   //---click back button closing the app
 
   useEffect(() => {
-    // if (isvisible) {
-    //   setTimeout(() => {
-    //     getPersonalDetails();
-    //     handleprofileCompletion()
-    //   }, 2000);
-    // }
     getPersonalDetails();
     handleprofileCompletion();
     check_subscription();
@@ -178,7 +173,7 @@ export default Dashboard = props => {
     axios
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
-        console.log('profileCompletion response....', response.data);
+        console.log('profileCompletion response....', response?.data);
         setProfileCompletion(response?.data?.data[0]?.result);
         let profile_Completion = response?.data?.data[0]?.result;
         console.log('profileCompletion..', response?.data?.data[0]?.result);
@@ -267,30 +262,27 @@ export default Dashboard = props => {
   const userProfileImageUri =
     loginData?.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
+
   const getPersonalDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
       url + `getAccount_details/${loginData?.Login_details?.user_id}`;
-    // Make a GET request using Axios
+
+    console.log(apiUrl, 'apiUrlapiUrlapiUrl');
+
     axios
       .get(apiUrl)
       .then(response => {
-        // Handle successful response
         console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error PersonalDetails D:', error);
         setIsLoading(false);
       });
   };
-  // useEffect(() => {
-  //   getPersonalDetails();
-  // }, []);
-
   return (
     <>
       <View style={DashboardStyle.mainContainer}>
@@ -572,6 +564,9 @@ export default Dashboard = props => {
                   backgroundColor={_COLORS.Kodie_lightGreenColor}
                   Text_Color={_COLORS.Kodie_BlackColor}
                   borderColor={_COLORS.Kodie_GreenColor}
+                  onPress={() => {
+                    Alert.alert('Notices !', 'Coming soon');
+                  }}
                 />
               </View>
             </View>

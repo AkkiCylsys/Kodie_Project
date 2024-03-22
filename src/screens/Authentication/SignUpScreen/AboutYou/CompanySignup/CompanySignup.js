@@ -180,20 +180,20 @@ const CompanySignup = ({
   //   axios
   //     .post(describeYourselfApi, describe_yourself_Data)
   //     .then(response => {
-  //       console.log('kodie_describeYouself_Data', response.data);
-  //       if (response.data.status === true) {
+  //       console.log('kodie_describeYouself_Data', response?.data);
+  //       if (response?.data?.status === true) {
   //         setIsLoading(false);
   //         console.log(
   //           'kodie_describeYouself_Data....',
-  //           response.data.lookup_details,
+  //           response?.data?.lookup_details,
   //         );
-  //         setKodieDescribeYourselfData(response.data.lookup_details);
+  //         setKodieDescribeYourselfData(response?.data?.lookup_details);
   //       } else {
   //         console.error(
   //           'kodie_describeYouself_Data_error:',
-  //           response.data.error,
+  //           response?.data?.error,
   //         );
-  //         alert("Oops samthing went wrong! Please try again later.");
+  //         alert("Oops something went wrong! Please try again later.");
   //         setIsLoading(false);
   //       }
   //     })
@@ -250,11 +250,11 @@ const CompanySignup = ({
       // try {
       //   const response = await axios.post(propertyType, propertyData);
 
-      //   if (response.data.status === true) {
-      //     servicesDatas.push(...response.data.lookup_details);
+      //   if (response?.data?.status === true) {
+      //     servicesDatas.push(...response?.data?.lookup_details);
       //   } else {
-      //     console.error('Company Services_error:', response.data.error);
-      //     alert('Oops samthing went wrong! Please try again later.');
+      //     console.error('Company Services_error:', response?.data?.error);
+      //     alert('Oops something went wrong! Please try again later.');
       //   }
       // } catch (error) {
       //   console.error(' com Services error:', error);

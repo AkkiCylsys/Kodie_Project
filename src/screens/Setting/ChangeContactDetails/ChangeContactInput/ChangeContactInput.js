@@ -10,7 +10,6 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {colors} from '../../../../Themes/CommonColors/CommonColor';
 //screen number 206
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -36,9 +35,6 @@ const ChangeContactInput = props => {
     if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
       return false;
-    } else if (newPhoneNumber.length !== 9) {
-      setnewPhoneNumberError('Phone number must be 9 digits long');
-      return false;
     } else {
       setnewPhoneNumberError('');
       return true;
@@ -47,7 +43,7 @@ const ChangeContactInput = props => {
 
   const handleSubmit = () => {
     const isValid = validatenewPhoneNumber();
-    if (isValid) {
+    if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
       // Yahan par aapka actual submit logic hoga
       console.log('Phone number is valid:', newnewPhoneNumber);
@@ -61,8 +57,8 @@ const ChangeContactInput = props => {
   };
 
   const handlenewPhoneNumberChange = text => {
+    validatenewPhoneNumber(text);
     setnewPhoneNumber(text);
-    validatenewPhoneNumber();
   };
   // const handleSubmit = async () => {
   //   if (newnewPhoneNumber.trim() === '') {
@@ -97,7 +93,7 @@ const ChangeContactInput = props => {
           <View
             style={[
               ChangeContactInputStyle.simpleinputview,
-              {backgroundColor: colors.Kodie_GrayColor, borderRadius: 8},
+              {backgroundColor: _COLORS.Kodie_GrayColor, borderRadius: 8},
             ]}>
             <Text
               style={[

@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   Platform,
+  Alert,
 } from 'react-native';
 import {BANNERS} from '../../../Themes/CommonVectors/Images';
 import {SignUpStyles} from './SignUpStyle';
@@ -159,20 +160,20 @@ export default SignUp = props => {
 
       const response = await axios.post(signupUrl, SignUpData);
 
-      setSignupResponse(response.data);
-      console.log('SignUp response', response.data);
-      // alert(JSON.stringify(response.data));
-      if (response.data.code === 3) {
-        alert(response.data.message);
+      setSignupResponse(response?.data);
+      console.log('SignUp response', response?.data);
+      // alert(JSON.stringify(response?.data));
+      if (response?.data?.code === 3) {
+        Alert.alert('Success !', response?.data?.message);
         props.navigation.navigate('SignUpVerification', {
           email: email,
           password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
-          user_key: response.data.User_Key,
+          user_key: response?.data?.User_Key,
         });
-      } else if (response.data.code === 1) {
-        alert(response.data.message);
+      } else if (response?.data?.code === 1) {
+        Alert.alert('Success !', response?.data?.message);
         setEmail('');
         setPassword('');
         setTerm(false);
@@ -183,21 +184,24 @@ export default SignUp = props => {
           password: encStr,
           is_term_condition: term,
           is_privacy_policy: privacy,
-          user_key: response.data.User_Key,
+          user_key: response?.data?.User_Key,
         });
-      } else if (response.data.code === 2) {
-        alert(response.data.message);
+      } else if (response?.data?.code === 2) {
+        Alert.alert('Success !', response?.data?.message);
         props.navigation.navigate('LoginScreen');
       } else {
-        alert(response.data.message);
+        Alert.alert('Success !', response?.data?.message);
       }
     } catch (error) {
       if (error.response || error.response.status === 400) {
-        alert('Failed to send OTP via email. Please try again later.');
+        Alert.alert(
+          'Warning !',
+          'Failed to send OTP via email. Please try again later.',
+        );
       } else if (error.response || error.response.status === 401) {
-        alert('Your Password is Wrong.');
+        Alert.alert('Warning !', 'Your Password is Wrong.');
       } else {
-        alert('An error occurred. Please try again later.');
+        // alert('An error occurred. Please try again later.');
       }
       console.error('Signup error:', error);
     } finally {

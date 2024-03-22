@@ -146,12 +146,12 @@ export default AddLeaseDetails = props => {
     axios
       .post(add_Lease_url, lease_Data)
       .then(response => {
-        console.log('API Response add_lease:', response.data);
-        if (response.data.success === true) {
-          alert(response.data.message);
+        console.log('API Response add_lease:', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
           handlePopUp();
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -177,12 +177,12 @@ export default AddLeaseDetails = props => {
     axios
       .post(notification_url, notification_data)
       .then(response => {
-        console.log('API Response notification_type:', response.data);
-        if (response.data.status === true) {
-          setNotification_type_Data(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        console.log('API Response notification_type:', response?.data);
+        if (response?.data?.status === true) {
+          setNotification_type_Data(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -207,12 +207,12 @@ export default AddLeaseDetails = props => {
     axios
       .post(expiry_url, notification_data)
       .then(response => {
-        console.log('API Response expiry reminder:', response.data);
-        if (response.data.status === true) {
-          setExpiry_reminder_Data(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        console.log('API Response expiry reminder:', response?.data);
+        if (response?.data?.status === true) {
+          setExpiry_reminder_Data(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -237,12 +237,12 @@ export default AddLeaseDetails = props => {
     axios
       .post(payment_url, notification_data)
       .then(response => {
-        console.log('API Response payment reminder:', response.data);
-        if (response.data.status === true) {
-          setPayment_reminder_Data(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        console.log('API Response payment reminder:', response?.data);
+        if (response?.data?.status === true) {
+          setPayment_reminder_Data(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -267,12 +267,12 @@ export default AddLeaseDetails = props => {
     axios
       .post(rental_url, notification_data)
       .then(response => {
-        console.log('API Response rental reminder:', response.data);
-        if (response.data.status === true) {
-          setrental_reminder_Data(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        console.log('API Response rental reminder:', response?.data);
+        if (response?.data?.status === true) {
+          setrental_reminder_Data(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -297,12 +297,12 @@ export default AddLeaseDetails = props => {
     axios
       .post(lease_term__url, lease_term_data)
       .then(response => {
-        console.log('API Response rental lease terms:', response.data);
-        if (response.data.status === true) {
-          setLease_term_Data(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        console.log('API Response rental lease terms:', response?.data);
+        if (response?.data?.status === true) {
+          setLease_term_Data(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -327,12 +327,12 @@ export default AddLeaseDetails = props => {
     axios
       .post(lease_end__url, lease_end_data)
       .then(response => {
-        console.log('API Response rental lease terms:', response.data);
-        if (response.data.status === true) {
-          setLease_end_Data(response.data.lookup_details);
-          // alert(JSON.stringify(response.data.lookup_details));
+        console.log('API Response rental lease terms:', response?.data);
+        if (response?.data?.status === true) {
+          setLease_end_Data(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })

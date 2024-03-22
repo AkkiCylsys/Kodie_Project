@@ -14,7 +14,7 @@ import {
 import Geocoder from 'react-native-geocoding';
 import {AboutYouStyle} from './AboutYouStyle';
 import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBox';
-import {IMAGES, _COLORS} from '../../../../Themes';
+import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -33,6 +33,12 @@ import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {FirstPropertyStyle} from '../FirstProperty/FirstPropertyStyle';
 import {SignupLookupDetails} from '../../../../APIs/AllApi';
+import IndividualSignupStyle from './IndividualSignup/IndividualSignupStyle';
+import Octicons from 'react-native-vector-icons/Octicons';
+import {MultiSelect} from 'react-native-element-dropdown';
+import CompanySignupStyle from './CompanySignup/CompanySignupStyle';
+import {set} from 'lodash';
+
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -103,9 +109,6 @@ export default AboutYou = props => {
   const [selectManageProperty, setSelectManageProperty] = useState('');
   const [selected, setSelected] = useState([]);
   const [kodiehelpData, setKodiehelpData] = useState([]);
-  const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
-    [],
-  );
   const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
     useState('');
   const [manage_property_Data, setmanage_property_Data] = useState([]);
@@ -121,11 +124,296 @@ export default AboutYou = props => {
   const [IsSearch, setIsSearch] = useState(false);
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
-  const [location, setLocation] = useState('');
   const [Companylatitude, setCompanylatitude] = useState('');
   const [Companylongitude, setCompanylongitude] = useState('');
   const [Companylocation, setCompanyLocation] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
+  const [companyName, setCompanyName] = useState('');
+  const [website, setWebsite] = useState('');
+  const [Indiwebsite, setIndiWebsite] = useState('');
+  const [companyGSTNumber, setCompanyGSTNumber] = useState('');
+  const [location, setLocation] = useState('');
+  const [IndiservicesValue, setIndiservicesValue] = useState([]);
+  const [servicesValue, setservicesValue] = useState([]);
+  const [businessNumber, SetBusinessNumber] = useState('');
+  const [kodieDescribeYourselfData, setKodieDescribeYourselfData] = useState(
+    [],
+  );
+  const [kodieServicesData, setKodieServicesData] = useState([]);
+  const [IndikodieServicesData, setIndiKodieServicesData] = useState([]);
+  const [selectJobTypeid, setSelectJobTypeid] = useState([]);
+  const [IndiselectJobTypeid, setIndiSelectJobTypeid] = useState([]);
+  const [selectJobType, setSelectJobType] = useState('');
+  const [IndiselectJobType, setIndiSelectJobType] = useState();
+  const [servicesData, setServicesData] = useState([]);
+  const [IndiservicesData, setIndiServicesData] = useState([]);
+  const isvisible = useIsFocused();
+
+  const toggleServicesSelection = lookup_key => {
+    if (selectJobTypeid.includes(lookup_key)) {
+      setSelectJobTypeid(prevSelected =>
+        prevSelected.filter(item => item !== lookup_key),
+      );
+    } else {
+      setSelectJobTypeid(prevSelected => [...prevSelected, lookup_key]);
+    }
+  };
+  const toggleServicesSelection1 = lookup_key => {
+    if (IndiselectJobTypeid.includes(lookup_key)) {
+      setIndiSelectJobTypeid(prevSelected =>
+        prevSelected.filter(item => item !== lookup_key),
+      );
+    } else {
+      setIndiSelectJobTypeid(prevSelected => [...prevSelected, lookup_key]);
+    }
+  };
+
+  const jobType_render = ({item}) => {
+    return (
+      <View style={{flex: 1}}>
+        <ServicesBox
+          images
+          Services_Name={item.lookup_description}
+          Services_Icon={
+            item.lookup_key === 166
+              ? 'cleaning-services'
+              : item.lookup_key === 167
+              ? 'mower-bag'
+              : item.lookup_key === 168
+              ? 'forklift'
+              : item.lookup_key === 169
+              ? 'tools'
+              : 'MaterialIcons'
+          }
+          iconLibrary={
+            item.lookup_key === 166
+              ? 'MaterialIcons'
+              : item.lookup_key === 167
+              ? 'MaterialCommunityIcons'
+              : item.lookup_key === 168
+              ? 'MaterialCommunityIcons'
+              : item.lookup_key === 169
+              ? 'Entypo'
+              : 'MaterialIcons'
+          }
+          iconColor={
+            selectJobTypeid.includes(item.lookup_key)
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_GrayColor
+          }
+          BoxStyling={[
+            CompanySignupStyle.box_style,
+            {
+              backgroundColor: selectJobTypeid.includes(item.lookup_key)
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          textColor={[
+            CompanySignupStyle.box_Text_Style,
+            {
+              color: selectJobTypeid.includes(item.lookup_key)
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor,
+            },
+          ]}
+          onPress={() => {
+            toggleServicesSelection(item.lookup_key);
+            setSelectJobType(item.lookup_key);
+          }}
+        />
+      </View>
+    );
+  };
+  const jobIndiType_render = ({item}) => {
+    return (
+      <View style={{flex: 1}}>
+        <ServicesBox
+          images
+          Services_Name={item.lookup_description}
+          Services_Icon={
+            item.lookup_key === 166
+              ? 'cleaning-services'
+              : item.lookup_key === 167
+              ? 'mower-bag'
+              : item.lookup_key === 168
+              ? 'forklift'
+              : item.lookup_key === 169
+              ? 'tools'
+              : 'MaterialIcons'
+          }
+          iconLibrary={
+            item.lookup_key === 166
+              ? 'MaterialIcons'
+              : item.lookup_key === 167
+              ? 'MaterialCommunityIcons'
+              : item.lookup_key === 168
+              ? 'MaterialCommunityIcons'
+              : item.lookup_key === 169
+              ? 'Entypo'
+              : 'MaterialIcons'
+          }
+          iconColor={
+            IndiselectJobTypeid.includes(item.lookup_key)
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_GrayColor
+          }
+          BoxStyling={[
+            CompanySignupStyle.box_style,
+            {
+              backgroundColor: IndiselectJobTypeid.includes(item.lookup_key)
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor,
+            },
+          ]}
+          textColor={[
+            CompanySignupStyle.box_Text_Style,
+            {
+              color: IndiselectJobTypeid.includes(item.lookup_key)
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor,
+            },
+          ]}
+          onPress={() => {
+            toggleServicesSelection1(item.lookup_key);
+            setIndiSelectJobType(item.lookup_key);
+          }}
+        />
+      </View>
+    );
+  };
+
+  const selectedselectJobTypesString = selectJobTypeid.join(',');
+  const selectedselectIndiJobTypesString = IndiselectJobTypeid.join(',');
+
+  const handle_ServicesOffer = async () => {
+    setIsLoading(true);
+
+    const res = await SignupLookupDetails({
+      P_PARENT_CODE: 'JOB_TYPE',
+      P_TYPE: 'OPTION',
+    });
+
+    console.log('ServicesOffer', res);
+    if (res.status === true) {
+      setKodieServicesData(res.lookup_details);
+      setIndiKodieServicesData(res.lookup_details);
+    }
+    setIsLoading(false);
+  };
+
+  const handleServices = async () => {
+    const jobTypes = selectedselectJobTypesString.split(',').map(Number);
+    console.log(jobTypes, 'klhfudssdkjfhdsjk');
+    const servicesDatas = [];
+
+    setIsLoading(true);
+
+    const fetchServiceData = async jobType => {
+      const res = await SignupLookupDetails({
+        P_PARENT_CODE:
+          jobType === 166
+            ? 'HOME_CLEANING'
+            : jobType === 167
+            ? 'OUTDOOR_CLEANING'
+            : jobType === 168
+            ? 'HEAVY_LIFTING'
+            : jobType === 169
+            ? 'FIXING_AND_MAINTENANCE'
+            : null,
+        P_TYPE: 'OPTION',
+      });
+
+      console.log('ServicesOffer', res);
+      servicesDatas.push(...res.lookup_details);
+      setIsLoading(false);
+    };
+
+    const fetchAllServices = async () => {
+      try {
+        const promises = jobTypes.map(jobType => fetchServiceData(jobType));
+        await Promise.all(promises);
+
+        setIsLoading(false);
+        console.log('All Services Data:', servicesDatas);
+        setServicesData(servicesDatas);
+      } catch (error) {
+        setIsLoading(false);
+        console.error('Error fetching services:', error);
+      }
+    };
+
+    fetchAllServices();
+    setIsLoading(false);
+  };
+  const handleIndiServices = async () => {
+    const jobTypes = selectedselectIndiJobTypesString.split(',').map(Number);
+    console.log(jobTypes, 'klhfudssdkjfhdsjk');
+    const servicesDatas = [];
+
+    setIsLoading(true);
+
+    const fetchIndiServiceData = async jobType => {
+      const res = await SignupLookupDetails({
+        P_PARENT_CODE:
+          jobType === 166
+            ? 'HOME_CLEANING'
+            : jobType === 167
+            ? 'OUTDOOR_CLEANING'
+            : jobType === 168
+            ? 'HEAVY_LIFTING'
+            : jobType === 169
+            ? 'FIXING_AND_MAINTENANCE'
+            : null,
+        P_TYPE: 'OPTION',
+      });
+
+      console.log('ServicesOffer', res);
+      servicesDatas.push(...res.lookup_details);
+      setIsLoading(false);
+    };
+
+    const fetchIndiAllServices = async () => {
+      try {
+        const promises = jobTypes.map(jobType => fetchIndiServiceData(jobType));
+        await Promise.all(promises);
+
+        setIsLoading(false);
+        console.log('All Services Data:', servicesDatas);
+
+        setIndiServicesData(servicesDatas);
+      } catch (error) {
+        setIsLoading(false);
+        console.error('Error fetching services:', error);
+      }
+    };
+
+    fetchIndiAllServices();
+    setIsLoading(false);
+  };
+  useEffect(() => {
+    if (isvisible && selectJobType !== undefined && selectJobType !== null) {
+      handleServices(selectJobType);
+    }
+  }, [selectJobType, isvisible]);
+  useEffect(() => {
+    if (
+      isvisible &&
+      IndiselectJobType !== undefined &&
+      IndiselectJobType !== null
+    ) {
+      handleIndiServices(IndiselectJobType);
+    }
+  }, [isvisible, IndiselectJobType]);
+  useEffect(() => {
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+      language: 'en',
+    });
+  }, []);
+  const handleChecked = () => {
+    setIsChecked(!isChecked);
+  };
   const isVisible = useIsFocused();
   useFocusEffect(
     React.useCallback(() => {
@@ -145,12 +433,6 @@ export default AboutYou = props => {
       };
     }, [IsMap, IsSearch]),
   );
-  const handleIndividualData = e => {
-    setIndividual(e);
-  };
-  const handleCompanyData = e => {
-    setCompanyCome(e);
-  };
   console.log('Individual', Individual);
   console.log('CompanyCome', CompanyCome);
   const refRBSheet = useRef();
@@ -266,14 +548,10 @@ export default AboutYou = props => {
       handle_manage_property();
       handle_kodiehelp();
       handle_describe_yourself();
+      handle_ServicesOffer();
     }
   }, [isVisible]);
 
-  useEffect(() => {
-    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
-      language: 'en',
-    });
-  }, []);
   const ConfirmAddress = () => {
     setIsMap(false);
     if (tabValue == 'IndividualSignup') {
@@ -520,33 +798,294 @@ export default AboutYou = props => {
 
   // tab code here .....
   const [tabValue, setTabValue] = useState('IndividualSignup');
-  const website = dataa => {
-    console.log('data', dataa);
-  };
+
   const checkTabs = () => {
     switch (tabValue) {
       case 'IndividualSignup':
         return (
-          <IndividualSignup
-            IndividualData={handleIndividualData}
-            physicalAddress={physicalAddress}
-            Individualp_latitude={p_latitude}
-            Individualp_longitude={p_longitude}
-            onPresslocation={openMapCom}
-            IndividualLocation={location}
-            onChangeIndivialLocation={setLocation}
-            IndividualOnFocus={() => setIsSearch(true)}
-          />
+          // <IndividualSignup
+          //   IndividualData={handleIndividualData}
+          //   physicalAddress={physicalAddress}
+          //   Individualp_latitude={p_latitude}
+          //   Individualp_longitude={p_longitude}
+          //   onPresslocation={openMapCom}
+          //   IndividualLocation={location}
+          //   onChangeIndivialLocation={setLocation}
+          //   IndividualOnFocus={() => setIsSearch(true)}
+          // />
+
+          <View style={{flex: 1}}>
+            <View style={IndividualSignupStyle.card}>
+              <View>
+                <Text style={IndividualSignupStyle.want_Heading}>
+                  {
+                    'The category of service you offer (you can select multiple options)'
+                  }
+                </Text>
+                <FlatList
+                  data={IndikodieServicesData}
+                  renderItem={jobIndiType_render}
+                  keyExtractor={item => item.lookup_key}
+                  numColumns={2}
+                />
+              </View>
+              {selectedselectIndiJobTypesString == '' ? null : (
+                <View style={IndividualSignupStyle.inputContainer}>
+                  <Text style={LABEL_STYLES.commontext}>
+                    {'The type of service you perform'}
+                  </Text>
+                  <MultiSelect
+                    style={[IndividualSignupStyle.dropdown]}
+                    placeholderStyle={IndividualSignupStyle.placeholderStyle}
+                    selectedTextStyle={IndividualSignupStyle.selectedTextStyle}
+                    inputSearchStyle={IndividualSignupStyle.inputSearchStyle}
+                    iconStyle={IndividualSignupStyle.iconStyle}
+                    search
+                    data={IndiservicesData}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="Select item"
+                    searchPlaceholder="Search..."
+                    value={IndiservicesValue}
+                    onChange={selectedItems => {
+                      setIndiservicesValue(selectedItems);
+                    }}
+                    selectedStyle={{
+                      backgroundColor: _COLORS.Kodie_BlackColor,
+                      borderRadius: 20,
+                      alignSelf: 'center',
+                    }}
+                  />
+                </View>
+              )}
+              <View style={IndividualSignupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {'Company / professional physical address'}
+                </Text>
+
+                <View style={IndividualSignupStyle.inputContainer}>
+                  <View style={IndividualSignupStyle.chekboxview}>
+                    <TouchableOpacity onPress={handleChecked}>
+                      {/* {isChecked ? ( */}
+                      <MaterialIcons
+                        name={
+                          !isChecked ? 'check-box-outline-blank' : 'check-box'
+                        }
+                        size={24}
+                        color={
+                          !isChecked
+                            ? _COLORS.Kodie_GrayColor
+                            : _COLORS.Kodie_GreenColor
+                        }
+                        style={IndividualSignupStyle.Check_Icon}
+                      />
+                      {/* ) : null} */}
+                    </TouchableOpacity>
+
+                    <Text style={IndividualSignupStyle.commonaddresstext}>
+                      {'Same as personal physical address'}
+                    </Text>
+                  </View>
+                  <View style={IndividualSignupStyle.locationConView}>
+                    <View style={IndividualSignupStyle.locationContainer}>
+                      {isChecked ? (
+                        <TextInput
+                          style={IndividualSignupStyle.locationInput}
+                          value={isChecked ? physicalAddress : ''}
+                          placeholder="Search location"
+                          placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        />
+                      ) : (
+                        <TextInput
+                          style={IndividualSignupStyle.locationInput}
+                          // value={location}
+                          value={location}
+                          onChangeText={setLocation}
+                          onFocus={() => setIsSearch(true)}
+                          placeholder="Search location"
+                          placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        />
+                      )}
+                    </View>
+                    <TouchableOpacity
+                      style={IndividualSignupStyle.locationIconView}
+                      onPress={openMapCom}>
+                      <Octicons
+                        name={'location'}
+                        size={22}
+                        color={_COLORS.Kodie_GreenColor}
+                        style={IndividualSignupStyle.locationIcon}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  {/* {locationError ? (
+                  <Text style={PropertyDetailsStyle.error_text}>
+                    {locationError}
+                  </Text>
+                ) : null} */}
+                </View>
+              </View>
+
+              <View style={IndividualSignupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
+                <TextInput
+                  style={IndividualSignupStyle.input}
+                  value={Indiwebsite}
+                  onChangeText={text => {
+                    setIndiWebsite(text);
+                  }}
+                  placeholder="Enter your website address (if you have one)"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+              </View>
+            </View>
+            {isLoading ? <CommonLoader /> : null}
+          </View>
         );
       case 'CompanySignup':
         return (
-          <CompanySignup
-            CompanyData={handleCompanyData}
-            onPressCompanylocation={openMapCom}
-            CompanyLocation={Companylocation}
-            onChangeCompanyLocation={setCompanyLocation}
-            CompanyOnFocus={() => setIsSearch(true)}
-          />
+          // <CompanySignup
+          //   CompanyData={handleCompanyData}
+          //   onPressCompanylocation={openMapCom}
+          //   CompanyLocation={Companylocation}
+          //   onChangeCompanyLocation={setCompanyLocation}
+          //   CompanyOnFocus={() => setIsSearch(true)}
+          // />
+          <View>
+            <View style={CompanySignupStyle.card}>
+              <View style={CompanySignupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {'Organisation name'}
+                </Text>
+                <TextInput
+                  style={CompanySignupStyle.input}
+                  value={companyName}
+                  onChangeText={setCompanyName}
+                  placeholder="Enter the name of your company"
+                  placeholderTextColor="#999"
+                />
+                <Text style={CompanySignupStyle.smstext}>
+                  Your organisation name will be used in emails and SMS
+                  correspondence from Kodie.
+                </Text>
+              </View>
+
+              <View style={CompanySignupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {'Australian business number'}
+                </Text>
+                <TextInput
+                  style={[CompanySignupStyle.input]}
+                  value={businessNumber}
+                  onChangeText={SetBusinessNumber}
+                  placeholder="Enter your ABN"
+                  placeholderTextColor="#999"
+                />
+              </View>
+
+              <View style={CompanySignupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {'Company GST / VAT number'}
+                </Text>
+                <TextInput
+                  style={[CompanySignupStyle.input]}
+                  value={companyGSTNumber}
+                  onChangeText={setCompanyGSTNumber}
+                  placeholder="1234567890"
+                  placeholderTextColor="#999"
+                />
+              </View>
+
+              <View>
+                <Text style={CompanySignupStyle.want_Heading}>
+                  {
+                    'The category of service you offer (you can select multiple options)'
+                  }
+                </Text>
+                <FlatList
+                  data={kodieServicesData}
+                  renderItem={jobType_render}
+                  keyExtractor={item => item.lookup_key.toString()}
+                  numColumns={2}
+                />
+              </View>
+              {selectedselectJobTypesString == '' ? null : (
+                <View style={CompanySignupStyle.inputContainer}>
+                  <Text style={[CompanySignupStyle.typescommontext]}>
+                    {'The type of service you perform'}
+                  </Text>
+                  <MultiSelect
+                    style={[CompanySignupStyle.dropdown]}
+                    placeholderStyle={CompanySignupStyle.placeholderStyle}
+                    selectedTextStyle={CompanySignupStyle.selectedTextStyle}
+                    inputSearchStyle={CompanySignupStyle.inputSearchStyle}
+                    iconStyle={CompanySignupStyle.iconStyle}
+                    search
+                    data={servicesData}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="Select item"
+                    searchPlaceholder="Search..."
+                    value={servicesValue}
+                    onChange={selectedItems => {
+                      setservicesValue(selectedItems);
+                    }}
+                    selectedStyle={{
+                      backgroundColor: _COLORS.Kodie_BlackColor,
+                      borderRadius: 20,
+                      alignSelf: 'center',
+                    }}
+                  />
+                </View>
+              )}
+              <View style={CompanySignupStyle.inputContainer}>
+                <View style={[CompanySignupStyle.commontextfield]}>
+                  <View>
+                    <Text style={CompanySignupStyle.companycommontext}>
+                      {'Company physical address'}
+                    </Text>
+                    <View style={CompanySignupStyle.locationConView}>
+                      <View style={CompanySignupStyle.locationContainer}>
+                        <TextInput
+                          style={CompanySignupStyle.locationInput}
+                          value={Companylocation}
+                          onChangeText={setCompanyLocation}
+                          onFocus={() => {
+                            setIsSearch(true);
+                          }}
+                          placeholder="Search location"
+                          placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                        />
+                      </View>
+                      <TouchableOpacity
+                        style={CompanySignupStyle.locationIconView}
+                        onPress={() => {
+                          setIsMap(true);
+                        }}>
+                        <Octicons
+                          name={'location'}
+                          size={22}
+                          color={_COLORS.Kodie_GreenColor}
+                          style={CompanySignupStyle.locationIcon}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+              <View style={CompanySignupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
+                <TextInput
+                  style={CompanySignupStyle.input}
+                  value={website}
+                  onChangeText={setWebsite}
+                  placeholder="Enter your website address (if you have one)"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+              </View>
+            </View>
+            {isLoading ? <CommonLoader /> : null}
+          </View>
         );
       default:
         return <IndividualSignup />;
@@ -699,6 +1238,19 @@ export default AboutYou = props => {
                     ]}
                     onPress={() => {
                       setTabValue('IndividualSignup');
+                      setKodieServicesData('');
+                      setCompanyGSTNumber('');
+                      setCompanyName('');
+                      SetBusinessNumber('');
+                      setCompanyLocation('');
+                      setSelectJobType('');
+                      setWebsite('');
+                      setservicesValue([]);
+                      setSelectJobTypeid([]);
+                      setservicesValue([]);
+                      // api...
+                      handle_ServicesOffer();
+                      handleIndiServices();
                     }}>
                     <Text
                       style={[
@@ -725,6 +1277,15 @@ export default AboutYou = props => {
                     ]}
                     onPress={() => {
                       setTabValue('CompanySignup');
+                      setIndiKodieServicesData('');
+                      setIndiSelectJobTypeid([]);
+                      setIndiSelectJobType('');
+                      setIndiWebsite('');
+                      setLocation('');
+                      setIsChecked(false);
+                      setIndiservicesValue([]);
+                      handle_ServicesOffer();
+                      handleServices();
                     }}>
                     <Text
                       style={[
@@ -781,19 +1342,19 @@ export default AboutYou = props => {
                     p_latitude: p_latitude,
                     p_longitude: p_longitude,
                     user_key: user_key,
-                    BusinessNumber: CompanyCome.businessNumber,
-                    companyName: CompanyCome.companyName,
-                    CompanyselectJobType: CompanyCome.selectJobType,
-                    CompanyservicesValue: CompanyCome.servicesValue,
-                    CompanyWebSide: CompanyCome.website,
-                    Individualp_latitude: Individual.p_latitude || latitude,
-                    Individualp_longitude: Individual.p_longitude || longitude,
-                    individualAddress: Individual.physicalAddress || location,
-                    Companyp_latitude: CompanyCome.p_latitude,
-                    Companyp_longitude: CompanyCome.p_longitude,
-                    IndividualselectJobType: Individual.selectJobType,
-                    IndividualservicesValue: Individual.servicesValue,
-                    IndividualWebSide: Individual.website,
+                    BusinessNumber: businessNumber,
+                    companyName: companyName,
+                    CompanyselectJobType: selectedselectJobTypesString,
+                    CompanyservicesValue: servicesValue,
+                    CompanyWebSide: website,
+                    Individualp_latitude: p_latitude || latitude,
+                    Individualp_longitude: p_longitude || longitude,
+                    individualAddress: physicalAddress || location,
+                    Companyp_latitude: Companylatitude,
+                    Companyp_longitude: Companylongitude,
+                    IndividualselectJobType: selectedselectIndiJobTypesString,
+                    IndividualservicesValue: IndiservicesValue,
+                    IndividualWebSide: Indiwebsite,
                     run_your_business: tabValue == 'IndividualSignup' ? 0 : 1,
                     company_address: Companylocation,
                     country_code: country_code,
@@ -827,7 +1388,7 @@ export default AboutYou = props => {
           </ScrollView>
         </>
       )}
-      {isLoading ? <CommonLoader /> : null}
+      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

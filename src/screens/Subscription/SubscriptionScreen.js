@@ -62,13 +62,13 @@ const SubscriptionScreen = props => {
       .post(url, client_data)
       .then(response => {
         console.log('API Response client_data', response.data);
-        if (response.data.success === true) {
+        if (response?.data?.success === true) {
           console.log(
             'client secret key ....',
-            response.data.message?.client_secret,
+            response?.data?.message?.client_secret,
           );
-          setClientSecretKey(response.data.message?.client_secret);
-          // alert(JSON.stringify(response.data.lookup_details));
+          setClientSecretKey(response?.data?.message?.client_secret);
+          // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
           setIsLoading(false);
         }
@@ -128,7 +128,7 @@ const SubscriptionScreen = props => {
       .post(url, subscribeCustomer_data)
       .then(response => {
         console.log('API Response subscribeCustomer', response.data);
-        if (response.data.success === true) {
+        if (response?.data?.success === true) {
           console.log('subscribeCustomer success');
         } else {
           console.log('subscribeCustomer failed');

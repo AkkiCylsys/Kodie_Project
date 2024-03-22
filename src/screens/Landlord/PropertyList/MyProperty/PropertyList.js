@@ -127,10 +127,10 @@ const PropertyList = props => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status == 500) {
-        // alert(error.response.data.message);
+        // alert(error.response?.data?.message);
         setIsLoading(false);
       } else {
-        alert('An error occurred. Please try again later.');
+        // alert('An error occurred. Please try again later.');
         // alert(error.response.message);
         setIsLoading(false);
       }
@@ -143,8 +143,7 @@ const PropertyList = props => {
     // if (isvisible) {
     //   getPropertyDetailsByFilter(selectedFilter);
     // }
-      getPropertyDetailsByFilter(selectedFilter);
-
+    getPropertyDetailsByFilter(selectedFilter);
   }, [selectedFilter, isvisible]);
 
   const handleEndReached = () => {
@@ -172,8 +171,8 @@ const PropertyList = props => {
         },
       );
 
-      console.log('API Response:', response.data);
-      if (response.data.success === true) {
+      console.log('API Response:', response?.data);
+      if (response?.data?.success === true) {
         Alert.alert(
           'Property Deleted',
           'The property was deleted successfully.',
@@ -266,6 +265,7 @@ const PropertyList = props => {
               <Image
                 source={{uri: item?.image_path[0]}}
                 style={PropertyListCSS.imageStyle}
+                resizeMode='cover'
               />
             ) : (
               <View

@@ -345,7 +345,10 @@ export default FirstProperty = props => {
     handlemessage();
     requestUserPermission();
     handleProperty_Type();
-    additional_features();
+    setTimeout(() => {
+      additional_features();
+    }, 3000);
+
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -362,14 +365,14 @@ export default FirstProperty = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
-        if (response.data.status === true) {
+        console.log('property_type', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('propertyData....', response.data.lookup_details);
-          setProperty_Data(response.data.lookup_details);
+          console.log('propertyData....', response?.data?.lookup_details);
+          setProperty_Data(response?.data?.lookup_details);
         } else {
-          console.error('property_type_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          console.error('property_type_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -387,18 +390,18 @@ export default FirstProperty = props => {
     axios
       .get(additionalApi)
       .then(response => {
-        console.log('additional_Data', response.data);
-        if (response.data.status === true) {
+        console.log('additional_Data', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('additional_features....', response.data);
-          setAdditionalfeatureskey(response.data.key_features_details);
+          console.log('additional_features....', response?.data);
+          setAdditionalfeatureskey(response?.data?.key_features_details);
           console.log(
             'AdditionalFeaturesKey....',
-            response.data.key_features_details,
+            response?.data?.key_features_details,
           );
         } else {
-          console.error('additional_features_error:', response.data.error);
-          alert('Oops samthing went wrong! Please try again later.');
+          console.error('additional_features_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -567,11 +570,6 @@ export default FirstProperty = props => {
           userId: userId,
           user_key: String(user_key),
           image: downloadURL,
-          // image: {
-          //   uri: ImageName?.path || '',
-          //   type: ImageName?.mime || 'image/jpeg',
-          //   name: String(ImageName?.path.split('/').pop()),
-          // },
         });
       console.log('User created');
 
@@ -1330,63 +1328,6 @@ export default FirstProperty = props => {
                     />
                   </View>
                 </View>
-                {/* we comment auto list market place for json requirment for now.... */}
-                {/* <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={FirstPropertyStyle.AutoList_text}>
-                    {"Auto-list property on Kodie property marketplace "}
-                  </Text>
-                  <TouchableOpacity style={FirstPropertyStyle.questionmark}>
-                    <AntDesign name="question" size={20} color="#8AFBA5" />
-                  </TouchableOpacity>
-                </View> */}
-                {/* <RowButtons
-                  LeftButtonText={"Yes"}
-                  leftButtonbackgroundColor={
-                    !selectedButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selectedButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selectedButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelectedButton(false);
-                    setSelectedButtonId(0);
-                  }}
-                  RightButtonText={"No"}
-                  RightButtonbackgroundColor={
-                    selectedButton
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selectedButton
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selectedButton
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelectedButton(true);
-                    setSelectedButtonId(1);
-                  }}
-                /> */}
               </View>
               <View style={{marginHorizontal: 16}}>
                 <CustomSingleButton

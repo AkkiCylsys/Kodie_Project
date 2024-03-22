@@ -11,7 +11,7 @@ import {
   FlatList,
   Image,
   PermissionsAndroid,
-  BackHandler
+  BackHandler,
 } from 'react-native';
 import {CreateJobFirstStyle} from './CreateJobFirstScreenCss';
 import StepText from '../../components/Molecules/StepText/StepText';
@@ -39,7 +39,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Config} from '../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
- import Geolocation from "react-native-geolocation-service";
+import Geolocation from 'react-native-geolocation-service';
 //import Geolocation from '@react-native-community/geolocation';
 import MapScreen from '../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
@@ -284,24 +284,13 @@ export default CreateJobFirstScreen = props => {
       </View>
     );
   };
-  // useEffect(() => {
-  //   const handleBackButton = () => {
-  //     props.navigation.navigate('Jobs');
-  //     // props.navigation.pop()
-  //     return true; // Prevent default behavior (exiting the app)
-  //   };
-  //   BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-  //   return () => {
-  //     BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
-  //   };
-  // }, []);
   useEffect(() => {
     handleProperty_Type();
     Selected_Address_Type();
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
-    getJobDetails();
+    JobId > 0 ? getJobDetails() : null; //edit by Deependra..
     if (selectJobType !== null) {
       handleServices(selectJobType);
     }
@@ -568,14 +557,14 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(Selected_AddressType, Selected_Address)
       .then(response => {
-        console.log('Selected_Address', response.data);
-        if (response.data.success === true) {
+        console.log('Selected_Address', response?.data);
+        if (response?.data?.success === true) {
           setIsLoading(false);
-          console.log('Selected_Address....', response.data.property_details);
-          setSelectedAddreeData(response.data.property_details);
+          console.log('Selected_Address....', response?.data?.property_details);
+          setSelectedAddreeData(response?.data?.property_details);
         } else {
-          console.error('Selected_Address_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          console.error('Selected_Address_error:', response?.data?.error);
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -597,20 +586,20 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('Job_priority', response.data);
-        if (response.data.status === true) {
+        console.log('Job_priority', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('Job_priorityData....', response.data.lookup_details);
-          setJobPriorityData(response.data.lookup_details);
+          console.log('Job_priorityData....', response?.data?.lookup_details);
+          setJobPriorityData(response?.data?.lookup_details);
         } else {
-          console.error('Job_priority_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          console.error('Job_priority_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('Job_priority error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -626,20 +615,26 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('RatingThreshold...', response.data);
-        if (response.data.status === true) {
+        console.log('RatingThreshold...', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('RatingThresholdData....', response.data.lookup_details);
-          setRatingThresholdData(response.data.lookup_details);
+          console.log(
+            'RatingThresholdData....',
+            response?.data?.lookup_details,
+          );
+          setRatingThresholdData(response?.data?.lookup_details);
         } else {
-          console.error('RatingThreshold_error:', "Oops samthing went wrong! Please try again later.");
-          alert("Oops samthing went wrong! Please try again later.");
+          console.error(
+            'RatingThreshold_error:',
+            'Oops something went wrong! Please try again later.',
+          );
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('RatingThreshold error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -655,20 +650,20 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('JobType...', response.data);
-        if (response.data.status === true) {
+        console.log('JobType...', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('JobTypeData....', response.data.lookup_details);
-          setJobTypeData(response.data.lookup_details);
+          console.log('JobTypeData....', response?.data?.lookup_details);
+          setJobTypeData(response?.data?.lookup_details);
         } else {
-          console.error('JobType_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          console.error('JobType_error:', response?.data?.error);
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('JobType error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -693,14 +688,14 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('ServicesType...', response.data);
-        if (response.data.status === true) {
+        console.log('ServicesType...', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('ServicesTypeData....', response.data.lookup_details);
-          setServicesData(response.data.lookup_details);
+          console.log('ServicesTypeData....', response?.data?.lookup_details);
+          setServicesData(response?.data?.lookup_details);
         } else {
-          console.error(' job Services_error:', response.data.error);
-          alert("Oops samthing went wrong! Please try again later.");
+          console.error(' job Services_error:', response?.data?.error);
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
@@ -722,26 +717,28 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(jobDetails_url, jobDetails_Data)
       .then(response => {
-        console.log('API Response JobDetails:', response.data);
-        if (response.data.success === true) {
-          setJobDetailsData(response.data.data);
-          console.log('jobDetailsData....', response.data.data);
-          // setSelectJobTypeid(response.data.data.job_type_key);
-          // alert(response.data.data.job_type_key);
-          setIsClick(parseInt(response.data.data.job_type_key));
-          setAboutyourNeed(response.data.data.job_description);
+        console.log('API Response JobDetails:', response?.data);
+        if (response?.data?.success === true) {
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData....', response?.data?.data);
+          // setSelectJobTypeid(response?.data?.data.job_type_key);
+          // alert(response?.data?.data.job_type_key);
+          setIsClick(parseInt(response?.data?.data.job_type_key));
+          setAboutyourNeed(response?.data?.data.job_description);
           setservicesValue(
-            parseInt(response.data.data?.job_service_you_looking_key),
+            parseInt(response?.data?.data?.job_service_you_looking_key),
           );
-          setJobPriorityValue(parseInt(response.data.data?.job_priority_key));
-          setProperty_value(parseInt(response.data.data?.property_type_key));
-          setLocation(response.data.data?.job_location);
-          setRatingThresholdValue(parseInt(response.data.data?.job_rating_key));
-          setlatitude(response.data.data?.location_latitude);
-          setlongitude(response.data.data?.location_longitude);
-          handleServices(response.data.data.job_type_key);
+          setJobPriorityValue(parseInt(response?.data?.data?.job_priority_key));
+          setProperty_value(parseInt(response?.data?.data?.property_type_key));
+          setLocation(response?.data?.data?.job_location);
+          setRatingThresholdValue(
+            parseInt(response?.data?.data?.job_rating_key),
+          );
+          setlatitude(response?.data?.data?.location_latitude);
+          setlongitude(response?.data?.data?.location_longitude);
+          handleServices(response?.data?.data.job_type_key);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -766,14 +763,14 @@ export default CreateJobFirstScreen = props => {
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
-        if (response.data.status === true) {
+        console.log('property_type', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('propertyData....', response.data.lookup_details);
-          setProperty_Data(response.data.lookup_details);
+          console.log('propertyData....', response?.data?.lookup_details);
+          setProperty_Data(response?.data?.lookup_details);
         } else {
-          console.error('property_type_error:', response.data.error);
-          // alert("Oops samthing went wrong! Please try again later.");
+          console.error('property_type_error:', response?.data?.error);
+          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })

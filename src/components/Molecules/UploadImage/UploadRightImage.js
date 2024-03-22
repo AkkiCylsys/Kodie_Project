@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { View, Text, Image, FlatList, TouchableOpacity } from "react-native";
-import { IMAGES, _COLORS } from "../../../Themes";
-import { UploadImageStyle } from "./UploadImageStyle";
-import Entypo from "react-native-vector-icons/Entypo";
-import ImagePicker from "react-native-image-crop-picker";
+import React, {useState} from 'react';
+import {View, Text, Image, FlatList, TouchableOpacity,Alert} from 'react-native';
+import {IMAGES, _COLORS} from '../../../Themes';
+import {UploadImageStyle} from './UploadImageStyle';
+import Entypo from 'react-native-vector-icons/Entypo';
+import ImagePicker from 'react-native-image-crop-picker';
 const data = [
   {
-    id: "1",
-    Data: "Take photo",
+    id: '1',
+    Data: 'Take photo',
     Img: IMAGES.camera,
   },
   {
-    id: "2",
-    Data: "Choose photo from library",
+    id: '2',
+    Data: 'Choose photo from library',
     Img: IMAGES.gallery,
   },
   // {
@@ -22,7 +22,7 @@ const data = [
   // },
 ];
 
-const UploadRightImage = (props) => {
+const UploadRightImage = props => {
   const [multipleImage, setMultipleImage] = useState([]);
   const [leftImage, setLeftImage] = useState([]);
   const [rightImage, setRightImage] = useState([]);
@@ -32,13 +32,25 @@ const UploadRightImage = (props) => {
     props.onClose();
   };
 
-  const UploadImageContent = ({ item, index }) => {
+  const handleRightImageSelection = images => {
+    if (rightImage.length + images.length <= 4) {
+      setRightImage([...rightImage, ...images]);
+      props.rightImage([...rightImage, ...images]);
+    } else {
+      Alert.alert(
+        'Maximum Image Limit Exceeded',
+        'Oops! You can add up to 4 images per card only.',
+      );
+    }
+  };
+
+  const UploadImageContent = ({item, index}) => {
     return (
       <>
         <TouchableOpacity
           style={UploadImageStyle.content_View}
           onPress={() => {
-            if (item.id === "1") {
+            if (item.id === '1') {
               ImagePicker.openCamera({
                 width: 300,
                 height: 400,
@@ -46,18 +58,18 @@ const UploadRightImage = (props) => {
                 compressImageQuality: 0.5,
                 multiple: true,
               })
-                .then((image) => {
+                .then(image => {
                   // console.log("image....", image);
                   setImage(image);
                   setRightImage(Array.isArray(image) ? image : [image]);
                   props?.rightImage(Array.isArray(image) ? image : [image]);
-                  console.log("ImagePathleftimage..", rightImage);
+                  console.log('ImagePathleftimage..', rightImage);
                 })
-                .catch((err) => {
-                  console.log("err...", err);
+                .catch(err => {
+                  console.log('err...', err);
                 });
             }
-            if (item.id === "2") {
+            if (item.id === '2') {
               // Navigate to Choose photo from library when Contact Us is clicked.......
               ImagePicker.openPicker({
                 width: 300,
@@ -66,26 +78,20 @@ const UploadRightImage = (props) => {
                 compressImageQuality: 0.5,
                 multiple: true,
               })
-                .then((image) => {
-                  // console.log(image);
-                  // setImage(image);
-                  // setImageName(JSON.stringify(image?.path));
-                  // props?.ImageName(image?.path);
-                  // console.log("ImagePath..", imageName);
-                  // ...
-                  if (image.length > 0) {
-                    setImage(image);
-                    setRightImage(image);
-                    props.rightImage(image);
-                    console.log("Navigating to RightImage photos with", image);
-                  }
+                .then(image => {
+                  // if (image.length > 0) {
+                  //   setImage(image);
+                  //   setRightImage(image);
+                  //   props.rightImage(image);
+                  //   console.log("Navigating to RightImage photos with", image);
+                  // }
+                  handleRightImageSelection(image);
                 })
-                .catch((err) => {
-                  console.log("err...", err);
+                .catch(err => {
+                  console.log('err...', err);
                 });
             }
-          }}
-        >
+          }}>
           {console.log(typeof item.Img, item.Img)}
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
             <Image source={item.Img} style={UploadImageStyle.Icons} />
@@ -95,18 +101,18 @@ const UploadRightImage = (props) => {
       </>
     );
   };
-  const navigateToViewPhotos = (image) => {
+  const navigateToViewPhotos = image => {
     // Implement your navigation logic here
     setImage(image);
     setMultipleImage(image?.path);
     props?.multipleImage(image);
-    console.log("Navigating to view photos with", image);
+    console.log('Navigating to view photos with', image);
   };
   return (
     <View style={UploadImageStyle.mainContainer}>
       <View style={UploadImageStyle.upload_View}>
         <Text style={UploadImageStyle.uploadImgText}>
-          {props.heading_Text || "Upload image"}
+          {props.heading_Text || 'Upload image'}
         </Text>
         <TouchableOpacity onPress={handleClosePopup}>
           <Entypo
@@ -123,7 +129,7 @@ const UploadRightImage = (props) => {
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
-        keyExtractor={(item) => item?.id}
+        keyExtractor={item => item?.id}
         renderItem={UploadImageContent}
       />
     </View>

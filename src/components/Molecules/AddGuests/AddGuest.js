@@ -1,12 +1,12 @@
-import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
-import { AddGuestStyle } from "./AddGuestStyle";
-import { _COLORS, IMAGES } from "../../../Themes";
-import AddguestsComponent from "../AddguestsComponent/AddguestsComponent";
+import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {AddGuestStyle} from './AddGuestStyle';
+import {_COLORS, IMAGES} from '../../../Themes';
+import AddguestsComponent from '../AddguestsComponent/AddguestsComponent';
 
 const AddGuest = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState('');
 
   const toggleModal = () => {
     setIsVisible(!isVisible);
@@ -23,7 +23,7 @@ const AddGuest = () => {
             onChangeText={setLocation}
             placeholder="Add guests"
           />
-          <Image source={IMAGES.Adduser} style={AddGuestStyle.adduserimg} />
+          <Image source={IMAGES.userIcons} style={AddGuestStyle.adduserimg} />
         </View>
 
         <View style={AddGuestStyle.vecentview}>
@@ -33,10 +33,7 @@ const AddGuest = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <AddguestsComponent
-        Visible={isVisible}
-        onRequestClose={toggleModal}
-      />
+      <AddguestsComponent Visible={isVisible} onRequestClose={toggleModal} />
     </View>
   );
 };

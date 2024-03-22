@@ -1,7 +1,14 @@
 //ScreenNo:126
 //ScreenNo:127
 import React, {useRef, useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  FlatList,
+  Alert,
+} from 'react-native';
 import StepText from '../../components/Molecules/StepText/StepText';
 import {CreateJobSecondStyle} from './CreateJobSecondScreenCss';
 import {_COLORS, LABEL_STYLES, BANNERS} from '../../Themes/index';
@@ -46,7 +53,7 @@ const CreateJobSecondScreen = props => {
     } else if (MultiImageName.length > 0) {
       handleuploadJobFiles();
     } else {
-      setMultiImageNameError('Please select front image before proceeding');
+      setMultiImageNameError('Front images required.');
       console.log('err...', MultiImageNameError);
     }
   };
@@ -70,7 +77,7 @@ const CreateJobSecondScreen = props => {
   const [updateAllImage, setUpdateAllImage] = useState([]);
 
   useEffect(() => {
-    getJobDetails();
+    JobId > 0 ? getJobDetails() : null;
   }, []);
   const CloseUp = () => {
     refRBSheet.current.close();
@@ -199,17 +206,19 @@ const CreateJobSecondScreen = props => {
       });
   };
   const handlefrontImage = multipleImages => {
-    setMultiImageName(multipleImages);
+    // setMultiImageName(multipleImages);
+    setMultiImageName([...MultiImageName, ...multipleImages]);
     console.log('................multiFrontImage', multipleImages);
     // console.log("................ImageNAmepath", multipleImages.path);
   };
-  const handleleftImage = leftImage => {
-    setLeftImage(leftImage);
+  const handleleftImage = leftImages => {
+    // setLeftImage(leftImage);
+    setLeftImage([...leftImage, ...leftImages]);
     console.log('................leftImage', leftImage);
     // console.log("................ImageNAmepath", multipleImages.path);
   };
-  const handleRightImage = rightImage => {
-    setRightImage(rightImage);
+  const handleRightImage = rightImages => {
+    setRightImage([...rightImage, ...rightImages]);
     console.log('................RightImage', rightImage);
     // console.log("................ImageNAmepath", multipleImages.path);
   };
@@ -235,9 +244,12 @@ const CreateJobSecondScreen = props => {
       // Append front images
       if (MultiImageName && Array.isArray(MultiImageName)) {
         MultiImageName.forEach((image, index) => {
+          console.log('images for path for multiname image ....', image);
+
           formData.append(`frontImage`, {
             uri: image.path,
-            name: `image.jpg`,
+            // name: `image.jpg`,
+            name: image.path,
             type: 'image/jpeg',
           });
         });
@@ -248,9 +260,11 @@ const CreateJobSecondScreen = props => {
       // Append left images
       if (leftImage && Array.isArray(leftImage)) {
         leftImage.forEach((image, index) => {
+          console.log('images for path ....', image);
           formData.append(`leftImage`, {
             uri: image.path,
-            name: `left_image.jpg`,
+            // name: `left_image.jpg`,
+            name: image.path,
             type: 'image/jpeg',
           });
         });
@@ -261,16 +275,17 @@ const CreateJobSecondScreen = props => {
       // Append right images
       if (rightImage && Array.isArray(rightImage)) {
         rightImage.forEach((image, index) => {
+          console.log('images for path for right image ....', image);
           formData.append(`rightImage`, {
             uri: image.path,
-            name: `right_image.jpg`,
+            // name: `right_image.jpg`,
+            name: image.path,
             type: 'image/jpeg',
           });
         });
       } else {
         throw new Error('rightImage is not defined or not an array');
       }
-
       // Append videos
       if (selectedVideos && selectedVideos.length > 0) {
         selectedVideos.forEach((videoInfo, index) => {
@@ -285,9 +300,7 @@ const CreateJobSecondScreen = props => {
       } else {
         console.log('invalid video');
       }
-
       console.log('formData', formData);
-
       const url = Config.BASE_URL;
       const uploadFile_url = url + 'job/uploadJobFiles';
       console.log('Request URL:', uploadFile_url);
@@ -299,26 +312,25 @@ const CreateJobSecondScreen = props => {
         },
       });
 
-      console.log('uploadJobFilesData', response.data);
-      if (response.data && response.data.success === true) {
+      console.log('uploadJobFilesData', response?.data);
+      if (response?.data && response?.data?.success === true) {
         setIsLoading(false);
-        alert(response.data.message);
+        Alert.alert('Success !', response?.data?.message);
         props.navigation.navigate('JobDetails', {job_id: job_id});
-
-      // clear state for image..
-      setMultiImageName([])
-      setLeftImage([])
-      setRightImage([])
-
+        // clear state for image..
+        setMultiImageName([]);
+        setLeftImage([]);
+        setRightImage([]);
       } else {
-        const errorMessage = response.data
-          ? response.data.error
+        const errorMessage = response?.data
+          ? response?.data?.error
           : 'Unknown error occurred';
         console.error('uploadJobFilesData', errorMessage);
-        alert(' saving account details');
+        alert('There was an error. Please try again.');
       }
     } catch (error) {
-      alert(error.message || 'An error occurred');
+      // alert(error.message || 'An error occurred');
+      alert('Maximum image length exceeded.');
       console.error('error...', error);
     } finally {
       setIsLoading(false);
@@ -335,22 +347,22 @@ const CreateJobSecondScreen = props => {
     axios
       .post(jobDetails_url, jobDetails_Data)
       .then(response => {
-        console.log('API Response JobDetails for updateImage:', response.data);
-        if (response.data.success === true) {
-          setJobDetailsData(response.data.data);
-          console.log('jobDetailsData_term....', response.data.data);
-          setUpdateAllImage(response.data.data.image_file_path);
+        console.log('API Response JobDetails for updateImage:', response?.data);
+        if (response?.data?.success === true) {
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData_term....', response?.data?.data);
+          setUpdateAllImage(response?.data?.data.image_file_path);
           console.log(
             'updateAllImage.....',
-            response.data.data.image_file_path,
+            response?.data?.data.image_file_path,
           );
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
       .catch(error => {
-        console.error('API failed jobDetails', error);
+        console.error('API failed jobDetails in edit mode ', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -364,6 +376,7 @@ const CreateJobSecondScreen = props => {
     if (MultiImageName && Array.isArray(MultiImageName)) {
       const imagePaths = MultiImageName.map(image => image.path);
       imagePaths.forEach((path, index) => {
+        console.log('update time image path..', path);
         formData.append('frontImage', {
           uri: path,
           name: String(path.split('/').pop()) || `image.jpg`,
@@ -434,17 +447,17 @@ const CreateJobSecondScreen = props => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('update_uploadJobFilesData....', response.data);
-      if (response.data.success === true) {
+      console.log('update_uploadJobFilesData....', response?.data);
+      if (response?.data?.success === true) {
         setIsLoading(false);
-        alert(response.data.message);
+        alert(response?.data?.message);
         props.navigation.navigate('JobDetails', {
           JobId: JobId,
           editMode: editMode,
         });
-        console.log('update_uploadJobFilesDatas', response.data);
+        console.log('update_uploadJobFilesDatas', response?.data);
       } else {
-        console.log('update_uploadJobFilesData', response.data.error);
+        console.log('update_uploadJobFilesData', response?.data?.error);
         alert('Oops Somthing went wrong! please try again later.');
       }
     } catch (error) {
@@ -485,7 +498,12 @@ const CreateJobSecondScreen = props => {
             (rightImagePaths && rightImagePaths.length > 0) ||
             (updateAllImage && updateAllImage != 0) ? (
               <SliderBox
-                images={editMode ? updateAllImage : allImagePaths}
+                // images={editMode ? updateAllImage : allImagePaths}
+                images={
+                  editMode
+                    ? [...(updateAllImage || []), ...allImagePaths]
+                    : [...allImagePaths]
+                }
                 sliderBoxHeight={200}
                 onCurrentImagePressed={index =>
                   console.warn(`image ${index} pressed`)
@@ -506,15 +524,10 @@ const CreateJobSecondScreen = props => {
               />
             ) : null}
           </View>
-          {MultiImageName.length > 0 ? null : (
-            <Text style={CreateJobSecondStyle.error_text}>
-              {MultiImageNameError}
-            </Text>
-          )}
 
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
-              {'Upload clear images of the front profile'}
+              {'Upload clear images of the front profile *'}
             </Text>
             <AntDesign
               name="questioncircle"
@@ -533,6 +546,11 @@ const CreateJobSecondScreen = props => {
             {MultiImageName.length > 0 ? refRBSheet.current.close() : null}
           </View>
 
+          {MultiImageName.length > 0 ? null : (
+            <Text style={CreateJobSecondStyle.error_text}>
+              {MultiImageNameError}
+            </Text>
+          )}
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
               {'Upload clear images of the left side profile'}
@@ -618,11 +636,14 @@ const CreateJobSecondScreen = props => {
                     <TouchableOpacity
                       style={{
                         position: 'absolute',
-                        // top: 2,
+                        top: 15,
                         right: 5,
-                        // backgroundColor: "rgba(255,255,255,0.7)",
+                        backgroundColor: 'rgba(255,255,255,0.7)',
                         borderRadius: 15,
-                        padding: 3,
+                        // padding: 3,
+                        justifyContent: 'center',
+                        width: '12%',
+                        height: '20%',
                       }}
                       onPress={() => removeVideo(index)}>
                       <Entypo
@@ -630,7 +651,8 @@ const CreateJobSecondScreen = props => {
                         size={20}
                         color={_COLORS.Kodie_BlackColor}
                         style={{
-                          marginTop: 10,
+                          // marginTop: 10,
+                          alignSelf: 'center',
                         }}
                       />
                     </TouchableOpacity>
@@ -652,9 +674,11 @@ const CreateJobSecondScreen = props => {
               }}
             />
           </View>
-          <TouchableOpacity style={CreateJobSecondStyle.goBack_View} onPress={()=>{
-            props.navigation.pop()
-          }}>
+          <TouchableOpacity
+            style={CreateJobSecondStyle.goBack_View}
+            onPress={() => {
+              props.navigation.pop();
+            }}>
             <View style={CreateJobSecondStyle.backIcon}>
               <Ionicons
                 name="chevron-back"

@@ -114,10 +114,10 @@ export default Person = props => {
     axios
       .post(PersonUrl, PersonDetailsData)
       .then(response => {
-        setpersonResponse(response.data);
-        console.log('Person Details_data response', response.data);
-        if (response.data.success == true || response.data.error == false) {
-          alert(response.data.message);
+        setpersonResponse(response?.data);
+        console.log('Person Details_data response', response?.data);
+        if (response?.data?.success == true || response?.data?.error == false) {
+          alert(response?.data?.message);
           setIsLoading(false);
           setFirstName('');
           setLastName('');
@@ -128,8 +128,8 @@ export default Person = props => {
           setIsLoading(false);
           handleClosePopup();
         } else {
-          setEmailError(response.data.message);
-          console.error('personDetail_error:', response.data.error);
+          setEmailError(response?.data?.message);
+          console.error('personDetail_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
@@ -139,7 +139,7 @@ export default Person = props => {
         setIsLoading(false);
       });
   };
-  // setEmailError(response.data.message);
+  // setEmailError(response?.data?.message);
   // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
     if (firstName.trim() === '') {

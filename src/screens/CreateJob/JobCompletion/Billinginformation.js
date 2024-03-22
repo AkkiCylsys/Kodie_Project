@@ -6,21 +6,21 @@ import {
   ImageBackground,
   ScrollView,
   TouchableOpacity,
-} from "react-native";
-import React, { useState, useEffect } from "react";
-import TopHeader from "../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../services/CommonServices";
-import { BillinginformationStyle } from "./BillinginformationStyle";
-import { _COLORS, IMAGES, BANNERS } from "../../../Themes";
-import { Divider } from "react-native-paper";
-import Entypo from "react-native-vector-icons/Entypo";
-import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import { normalizeUnits } from "moment";
-import { Config } from "../../../Config";
-import axios from "axios";
-const Billinginformation = (props) => {
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import TopHeader from '../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../services/CommonServices';
+import {BillinginformationStyle} from './BillinginformationStyle';
+import {_COLORS, IMAGES, BANNERS} from '../../../Themes';
+import {Divider} from 'react-native-paper';
+import Entypo from 'react-native-vector-icons/Entypo';
+import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {normalizeUnits} from 'moment';
+import {Config} from '../../../Config';
+import axios from 'axios';
+const Billinginformation = props => {
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
@@ -30,27 +30,27 @@ const Billinginformation = (props) => {
   }, []);
   const getJobDetails = () => {
     const url = Config.BASE_URL;
-    const jobDetails_url = url + "job/get";
-    console.log("Request URL:", jobDetails_url);
+    const jobDetails_url = url + 'job/get';
+    console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetailsData = {
-      jm_job_id: 72,
+      jm_job_id: 72,  //will change when work on this..
     };
     axios
       .post(jobDetails_url, jobDetailsData)
-      .then((response) => {
-        console.log("API Response JobDetails:", response.data);
-        if (response.data.success === true) {
-          setJobDetailsData(response.data.data);
-          console.log("jobDetailsData....", response.data.data);
-          console.log("job_type_my..", response.data.data.job_type_my);
+      .then(response => {
+        console.log('API Response JobDetails:', response?.data);
+        if (response?.data?.success === true) {
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData....', response?.data?.data);
+          console.log('job_type_my..', response?.data?.data.job_type_my);
         } else {
-          alert(response.data.message);
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed JobDetails ", error);
+      .catch(error => {
+        console.error('API failed JobDetails ', error);
         setIsLoading(false);
         // alert(error);
       })
@@ -66,7 +66,7 @@ const Billinginformation = (props) => {
     <View>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Billing information"}
+        MiddleText={'Billing information'}
       />
       <ScrollView>
         <View style={BillinginformationStyle.maincontainer}>
@@ -85,7 +85,7 @@ const Billinginformation = (props) => {
                   style={BillinginformationStyle.starimg}
                 /> */}
                 <AntDesign
-                  name={"star"}
+                  name={'star'}
                   size={15}
                   color={_COLORS.Kodie_lightGreenColor}
                 />
@@ -111,8 +111,7 @@ const Billinginformation = (props) => {
               </Text>
               <TouchableOpacity
                 style={BillinginformationStyle.moreinfoview}
-                onPress={toggleView}
-              >
+                onPress={toggleView}>
                 <Text style={BillinginformationStyle.moreinfotext}>
                   More info
                 </Text>
@@ -204,8 +203,7 @@ const Billinginformation = (props) => {
               style={[
                 BillinginformationStyle.totalcosttext,
                 BillinginformationStyle.jobinvoicetext,
-              ]}
-            >
+              ]}>
               Job invoice
             </Text>
             <View style={BillinginformationStyle.textContainer}>
@@ -213,10 +211,10 @@ const Billinginformation = (props) => {
                 <Image source={IMAGES.document} />
                 <View>
                   <Text style={BillinginformationStyle.pdfName}>
-                    {"Invoice.pdf"}
+                    {'Invoice.pdf'}
                   </Text>
                   <Text style={BillinginformationStyle.pdfSize}>
-                    {"4.8 MB"}
+                    {'4.8 MB'}
                   </Text>
                 </View>
               </View>
@@ -234,20 +232,19 @@ const Billinginformation = (props) => {
               isLeftImage={true}
               Text_Color={_COLORS.Kodie_WhiteColor}
               borderColor={_COLORS.Kodie_TransparentColor}
-              _ButtonText={"Pay $173.25 now"}
+              _ButtonText={'Pay $173.25 now'}
               backgroundColor={_COLORS.Kodie_BlackColor}
               disabled={isLoading ? true : false}
               onPress={() => {
-                props.navigation.navigate("PaymentMethod");
+                props.navigation.navigate('PaymentMethod');
                 // props.navigation.navigate('PaymentDetailsScreen')
               }}
             />
             <TouchableOpacity
               style={BillinginformationStyle.goBack_View}
               onPress={() => {
-                props.navigation.navigate("PaymentDetailsScreen");
-              }}
-            >
+                props.navigation.navigate('PaymentDetailsScreen');
+              }}>
               <View style={BillinginformationStyle.backIcon}>
                 <Ionicons
                   name="chevron-back"
@@ -256,7 +253,7 @@ const Billinginformation = (props) => {
                 />
               </View>
               <Text style={BillinginformationStyle.goBack_Text}>
-                {"Go back"}
+                {'Go back'}
               </Text>
             </TouchableOpacity>
           </View>

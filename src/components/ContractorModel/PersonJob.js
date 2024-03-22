@@ -115,10 +115,10 @@ export default PersonJob = props => {
     axios
       .post(PersonUrl, PersonDetailsData)
       .then(response => {
-        setpersonResponse(response.data);
-        console.log('Person Details_data response', response.data);
-        if (response.data.success == true || response.data.error == false) {
-          alert(response.data.message);
+        setpersonResponse(response?.data);
+        console.log('Person Details_data response', response?.data);
+        if (response?.data.success == true || response?.data.error == false) {
+          alert(response?.data.message);
           setIsLoading(false);
           setFirstName('');
           setLastName('');
@@ -128,8 +128,11 @@ export default PersonJob = props => {
           setNote('');
           setIsLoading(false);
         } else {
-          setEmailError(response.data.message);
-          console.error('personDetail_error:', "Oops samthing went wrong! Please try again later.");
+          setEmailError(response?.data.message);
+          console.error(
+            'personDetail_error:',
+            'Oops something went wrong! Please try again later.',
+          );
           setIsLoading(false);
         }
       })
@@ -139,7 +142,7 @@ export default PersonJob = props => {
         setIsLoading(false);
       });
   };
-  // setEmailError(response.data.message);
+  // setEmailError(response?.data.message);
   // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
     if (firstName.trim() === '') {

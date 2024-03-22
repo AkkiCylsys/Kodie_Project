@@ -297,23 +297,23 @@ export default ViewPropertyDetails = props => {
   //     const response = await axios.post(property_Detailss, detailData);
   //     setIsLoading(false);
 
-  //     if (response.data.status === true) {
-  //       setProperty_Details(response.data.data[0]);
-  //       console.log(response.data.data[0])
+  //     if (response?.data?.status === true) {
+  //       setProperty_Details(response?.data?.data[0]);
+  //       console.log(response?.data?.data[0])
   //       console.log(object);
   //       // Fetch and process key features..........
-  //       if (response.data.data[0]?.key_features) {
+  //       if (response?.data?.data[0]?.key_features) {
   //         const parsedData = JSON.parse(
-  //           response.data.data[0].key_features.replace(/\\/g, "")
+  //           response?.data?.data[0].key_features.replace(/\\/g, "")
   //         );
   //         setDetail(parsedData);
   //       }
   //       const additionalKeyFeatures =
-  //         response.data.data[0].additional_key_features[0];
+  //         response?.data?.data[0].additional_key_features[0];
   //       setAdditionalKeyFeaturesString(additionalKeyFeatures);
   //     } else {
-  //       console.error("propertyDetail_error:", response.data.error);
-  //       alert("Oops samthing went wrong! Please try again later.");
+  //       console.error("propertyDetail_error:", response?.data?.error);
+  //       alert("Oops something went wrong! Please try again later.");
   //     }
   //   } catch (error) {
   //     console.error("Error:", error);
@@ -334,22 +334,22 @@ export default ViewPropertyDetails = props => {
       setIsLoading(true);
       const response = await axios.post(property_Detailss, detailData);
       setIsLoading(false);
-      console.log('response_get_property_details...', response.data);
-      if (response.data.success === true) {
-        setProperty_Details(response.data.property_details[0]);
+      console.log('response_get_property_details...', response?.data);
+      if (response?.data?.success === true) {
+        setProperty_Details(response?.data?.property_details[0]);
         // Fetch and process key features..........
-        if (response.data.property_details[0].key_features) {
+        if (response?.data?.property_details[0].key_features) {
           const parsedData = JSON.parse(
-            response.data.property_details[0].key_features.replace(/\\/g, ''),
+            response?.data?.property_details[0].key_features.replace(/\\/g, ''),
           );
           setDetail(parsedData);
         }
         const additionalKeyFeatures =
-          response.data.property_details[0].additional_key_features[0];
+          response?.data?.property_details[0].additional_key_features[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
-        console.error('propertyDetail_error:', response.data.error);
-        alert("Oops samthing went wrong! Please try again later.");
+        console.error('propertyDetail_error:', response?.data?.error);
+        alert('Oops something went wrong! Please try again later.');
       }
     } catch (error) {
       console.error('Error:', error);
