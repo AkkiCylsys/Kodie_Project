@@ -51,7 +51,7 @@ export default CreateJobTermsScreen = props => {
   };
 
   let JobId = props?.route?.params?.JobId;
-  console.log('JobId....', JobId);
+  console.log('JobId p j....', JobId);
   let editMode = props?.route?.params?.editMode;
   // alert(JobId)
   let selectJobType = props?.route?.params?.selectJobType;
@@ -540,8 +540,9 @@ export default CreateJobTermsScreen = props => {
   const updateCreateJob = () => {
     const url = Config.BASE_URL;
     const update_createJob_url = url + `job/updateJob/${JobId}`;
+    // const update_createJob_url = url + `job/updateJob/308`;
     // const update_createJob_url = url + "job/updateJob/1";
-    console.log('Request URL:', update_createJob_url);
+    console.log('Request URL u:', update_createJob_url);
     setIsLoading(true);
     const update_createJob_Data = {
       type_of_job: selectJobType,
@@ -550,17 +551,17 @@ export default CreateJobTermsScreen = props => {
       job_priority: jobPriorityValue,
       property_type: property_value,
       job_location: location,
-      location_latitude: latitude,
       location_longitude: longitude,
+      location_latitude: latitude,
       job_rating: ratingThresholdValue,
       job_date: selectedDate,
       job_time: currentTime,
       job_hourly: hourlyNeedValue,
       job_often_need_service: needServicesValue,
-      job_max_budget: jobDetailsData?.job_max_budget,
       job_min_budget: jobDetailsData?.job_min_budget,
+      job_max_budget: jobDetailsData?.job_max_budget,
       job_payment_by: selectedButtonResponsibleId,
-      job_booking_insurance: selectedButtonBookingInsuranceId,
+      job_booking_insurance: null,
     };
     console.log('updatedBody.....', update_createJob_Data);
     axios
