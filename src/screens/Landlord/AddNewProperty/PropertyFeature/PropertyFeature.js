@@ -419,7 +419,7 @@ export default PropertyFeature = props => {
         );
       } else {
         console.error('additional_features_error:', response?.data?.error);
-        alert('Oops something went wrong! Please try again later.');
+        // alert('Oops something went wrong! Please try again later.');
         setIsLoading(false);
       }
     } catch (error) {

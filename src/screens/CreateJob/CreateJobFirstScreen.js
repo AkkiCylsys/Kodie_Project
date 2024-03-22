@@ -63,6 +63,7 @@ export default CreateJobFirstScreen = props => {
   console.log('myJob.......', myJob);
   console.log('editMode.......', editMode);
   console.log('job_sub_type.......', job_sub_type);
+  console.log('JobId for test .....', JobId);
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState('');
@@ -291,9 +292,9 @@ export default CreateJobFirstScreen = props => {
     handleRatingThreshold();
     handleJobType();
     JobId > 0 ? getJobDetails() : null; //edit by Deependra..
-    if (selectJobType !== null) {
-      handleServices(selectJobType);
-    }
+    // if (selectJobType !== null) {
+    //   handleServices(selectJobType);
+    // }
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -307,6 +308,11 @@ export default CreateJobFirstScreen = props => {
     setRatingThresholdValue('');
     // map...
     // Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
+  }, []); //pass the selectJobType in the depandency.
+  useEffect(() => {
+    if (selectJobType !== null) {
+      handleServices(selectJobType);
+    }
   }, [selectJobType]);
   const Selected_Time_render = item => {
     const isSelected =
@@ -721,7 +727,7 @@ export default CreateJobFirstScreen = props => {
         if (response?.data?.success === true) {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData....', response?.data?.data);
-          // setSelectJobTypeid(response?.data?.data.job_type_key);
+          setSelectJobTypeid(response?.data?.data.job_type_key);
           // alert(response?.data?.data.job_type_key);
           setIsClick(parseInt(response?.data?.data.job_type_key));
           setAboutyourNeed(response?.data?.data.job_description);

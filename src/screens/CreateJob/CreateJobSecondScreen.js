@@ -49,7 +49,14 @@ const CreateJobSecondScreen = props => {
   // validation...
   const handleValidate = () => {
     if (editMode) {
-      handleUpdateJobFiles();
+      if (allImagePaths.length === 0) {
+        props.navigation.navigate('JobDetails', {
+          JobId: JobId,
+          editMode: editMode,
+        });
+      } else {
+        handleUpdateJobFiles();
+      }
     } else if (MultiImageName.length > 0) {
       handleuploadJobFiles();
     } else {
@@ -61,7 +68,7 @@ const CreateJobSecondScreen = props => {
   let job_id = props?.route?.params?.job_id;
   let editMode = props?.route?.params?.editMode;
   let JobId = props?.route?.params?.JobId;
-  console.log('job_id.....', job_id);
+  // console.log('job_id time for create job.....', job_id);
   // alert(editMode);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
@@ -235,6 +242,7 @@ const CreateJobSecondScreen = props => {
   const allImagePaths = [
     ...new Set([...imagePaths, ...leftImagePaths, ...rightImagePaths]),
   ];
+  console.log('allImagePaths....', allImagePaths.length);
   // Api intrigation......
   const handleuploadJobFiles = async () => {
     const formData = new FormData();
@@ -437,9 +445,10 @@ const CreateJobSecondScreen = props => {
 
     // formData.append("uad_user_key", loginData?.Login_details?.user_account_id);
     console.log('formData', formData);
+    console.log('length data ...', formData.length);
     const url = Config.BASE_URL;
     const update_uploadFile_url = url + `job/updatejobimages/${JobId}`;
-    console.log('Request URL:', update_uploadFile_url);
+    console.log('Request URL image:', update_uploadFile_url);
     setIsLoading(true);
     try {
       const response = await axios.put(update_uploadFile_url, formData, {

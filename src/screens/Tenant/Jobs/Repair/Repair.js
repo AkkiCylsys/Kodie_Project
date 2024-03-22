@@ -133,7 +133,7 @@ export default Repair = props => {
       console.log('filter_apiUrl...', filter_apiUrl);
       const response = await axios.post(filter_apiUrl, {
         job_filter: filter,
-        user_account_id: loginData?.Login_details?.user_account_idd,
+        user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
         limit: filter == 'Recent' ? 5 : 10,
         order_col: '8',

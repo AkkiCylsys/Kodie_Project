@@ -44,7 +44,7 @@ export default PropertyImages = props => {
   const [property_Detail, setProperty_Details] = useState([]);
   const [serverimagePath, setImagePaths] = useState([]);
   useEffect(() => {
-    DetailsData();
+    property_id > 0 ? DetailsData() : null;
   }, []);
   const DetailsData = () => {
     const detailData = {
@@ -67,7 +67,7 @@ export default PropertyImages = props => {
           console.log('propertyDetail....', response?.data?.property_details);
         } else {
           console.error('propertyDetail_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
