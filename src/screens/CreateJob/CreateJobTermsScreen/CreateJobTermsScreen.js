@@ -475,14 +475,14 @@ export default CreateJobTermsScreen = props => {
           // setSelectedButtoBookingInsuranceId('');
           // setIsLoading(false);
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           // setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('API failed handleCreateJob', error);
         setIsLoading(false);
-        alert(error);
+        // alert(error);
       });
     // .finally(() => {
     //   setIsLoading(false);
