@@ -1004,7 +1004,7 @@ export default CompanyDetails = props => {
         <SearchPlaces
           onPress={(data, details = null) => {
             console.log('LocationData....', details);
-            if (tabValue == 'IndividualInProfile') {
+            if (tabValue === 'IndividualInProfile') {
               setlatitude(details.geometry.location.lat);
               setlongitude(details.geometry.location.lng);
             } else {
