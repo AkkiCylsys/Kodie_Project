@@ -292,9 +292,7 @@ export default Dashboard = props => {
     const url = Config.BASE_URL;
     const apiUrl =
       url + `getAccount_details/${loginData?.Login_details?.user_id}`;
-
-    console.log(apiUrl, 'apiUrlapiUrlapiUrl');
-
+    console.log('PersonalDetails_url..',apiUrl);
     await axios
       .get(apiUrl)
       .then(response => {
