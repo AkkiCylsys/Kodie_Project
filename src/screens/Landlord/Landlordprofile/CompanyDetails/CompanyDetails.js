@@ -9,67 +9,50 @@ import {
   Platform,
   ScrollView,
   Dimensions,
+  BackHandler,
 } from 'react-native';
 import {CompanyDetailsStyle} from './CompanyDetailsStyle';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Octicons from 'react-native-vector-icons/Octicons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {IMAGES} from '../../../../Themes';
 import {Divider} from 'react-native-paper';
 import {_COLORS, LABEL_STYLES} from '../../../../Themes';
 import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBox';
 import axios from 'axios';
 import {Config} from '../../../../Config';
-import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
+import {MultiSelect} from 'react-native-element-dropdown';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-
 import Geocoder from 'react-native-geocoding';
-import Geolocation from 'react-native-geolocation-service';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import UploadImageData from '../../../../components/Molecules/UploadImage/UploadImage';
-import {useDispatch, useSelector} from 'react-redux';
-import PhoneInput from 'react-native-phone-number-input';
-import CompanyInProfile from './Company/CompanyInProfile';
+import {useSelector} from 'react-redux';
 import IndividualInProfile from './Individual/IndividualInProfile';
-import TopHeader from '../../../../components/Molecules/Header/Header';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
 import CompanyInProfileStyle from './Company/CompanyInProfileStyle';
 import IndividualProfileStyle from './Individual/IndividualProfileStyle';
-const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-];
+
 const windowHeight = Dimensions.get('window').height;
 export default CompanyDetails = props => {
   const navigation = useNavigation();
-  const maplocation = props.maplocation;
-  const company_latitude = props.latitude;
-  const comapny_longitude = props.longitude;
-
-  console.log('maplocation....', maplocation);
-  console.log('latitude_company....', company_latitude);
-  console.log('longitude company....', comapny_longitude);
-
-  // isSearch = props.isSearch;
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
+  const [tabValue, setTabValue] = useState('IndividualInProfile');
   const [isLoading, setIsLoading] = useState(false);
   const [ImageName, setImageName] = useState('');
-  const [Individual, setIndividual] = useState({});
-  const [CompanyCome, setCompanyCome] = useState({});
   const [UserCurrentCity, setUserCurrentCity] = useState('');
   const [UserZip_Code, setUserZip_Code] = useState('');
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
+  const [location, setLocation] = useState('');
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const [Companylatitude, setCompanylatitude] = useState('');
@@ -81,7 +64,6 @@ export default CompanyDetails = props => {
   const [website, setWebsite] = useState('');
   const [Indiwebsite, setIndiWebsite] = useState('');
   const [companyGSTNumber, setCompanyGSTNumber] = useState('');
-  const [location, setLocation] = useState('');
   const [IndiservicesValue, setIndiservicesValue] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
   const [businessNumber, SetBusinessNumber] = useState('');
@@ -97,6 +79,82 @@ export default CompanyDetails = props => {
   const [servicesData, setServicesData] = useState([]);
   const [IndiservicesData, setIndiServicesData] = useState([]);
   const isvisible = useIsFocused();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, [IsMap, IsSearch]),
+  );
+  useEffect(() => {
+    if (isvisible) {
+      getPersonalDetails();
+      handle_describe_yourself();
+    }
+  }, [isvisible]);
+  useEffect(() => {
+    if (selectJobType !== undefined && selectJobType !== null) {
+      handleServices(selectJobType);
+    }
+  }, [selectJobType]);
+  useEffect(() => {
+    if (IndiselectJobType !== undefined && IndiselectJobType !== null) {
+      handleIndiServices(IndiselectJobType);
+    }
+  }, [IndiselectJobType]);
+  useEffect(() => {
+    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
+      language: 'en',
+    });
+  }, []);
+  const handle_describe_yourself = () => {
+    const describe_yourself_Data = {
+      P_PARENT_CODE: 'JOB_TYPE',
+      P_TYPE: 'OPTION',
+    };
+    const url = Config.BASE_URL;
+    const describeYourselfApi = url + 'lookup_details';
+    console.log('Request URL:', describeYourselfApi);
+    setIsLoading(true);
+    axios
+      .post(describeYourselfApi, describe_yourself_Data)
+      .then(response => {
+        console.log('kodie_describeYouself_Data', response.data);
+        if (response?.data?.status === true) {
+          setIsLoading(false);
+          console.log(
+            'kodie_describeYouself_Data....',
+            response?.data?.lookup_details,
+          );
+          setKodieDescribeYourselfData(response?.data?.lookup_details);
+          setIndiKodieDescribeYourselfData(response?.data?.lookup_details);
+        } else {
+          console.error(
+            'kodie_describeYouself_Data_error:',
+            response?.data?.error,
+          );
+          alert('Oops samthing went wrong! Please try again later.');
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('kodie_describeYouself_Data error:', error);
+        alert(error);
+        setIsLoading(false);
+      });
+  };
   const toggleServicesSelection = lookup_key => {
     if (selectJobTypeid.includes(lookup_key)) {
       setSelectJobTypeid(prevSelected =>
@@ -230,47 +288,6 @@ export default CompanyDetails = props => {
       </View>
     );
   };
-
-  const selectedselectJobTypesString = selectJobTypeid.join(',');
-  const selectedselectIndiJobTypesString = IndiselectJobTypeid.join(',');
-
-  const handle_describe_yourself = () => {
-    const describe_yourself_Data = {
-      P_PARENT_CODE: 'JOB_TYPE',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const describeYourselfApi = url + 'lookup_details';
-    console.log('Request URL:', describeYourselfApi);
-    setIsLoading(true);
-    axios
-      .post(describeYourselfApi, describe_yourself_Data)
-      .then(response => {
-        console.log('kodie_describeYouself_Data', response.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          console.log(
-            'kodie_describeYouself_Data....',
-            response?.data?.lookup_details,
-          );
-          setKodieDescribeYourselfData(response?.data?.lookup_details);
-          setIndiKodieDescribeYourselfData(response?.data?.lookup_details);
-        } else {
-          console.error(
-            'kodie_describeYouself_Data_error:',
-            response?.data?.error,
-          );
-          alert('Oops samthing went wrong! Please try again later.');
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('kodie_describeYouself_Data error:', error);
-        alert(error);
-        setIsLoading(false);
-      });
-  };
-
   const handleServices = async () => {
     const jobTypes = selectedselectJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
@@ -396,7 +413,9 @@ export default CompanyDetails = props => {
     fetchIndiAllServices();
     setIsLoading(false);
   };
-  console.log('formattedValue....', CompanyCome);
+  const selectedselectJobTypesString = selectJobTypeid.join(',');
+  const selectedselectIndiJobTypesString = IndiselectJobTypeid.join(',');
+
   const handleImageNameChange = async newImageName => {
     setImageName(newImageName);
     console.log('................ImageNAme', newImageName);
@@ -405,8 +424,9 @@ export default CompanyDetails = props => {
   };
 
   const ConfirmAddress = () => {
+    // alert(tabValue);
     setIsMap(false);
-    if (tabValue == 'IndividualSignup') {
+    if (tabValue == 'IndividualInProfile') {
       setLocation(currentLocation);
     } else {
       setCompanyLocation(currentLocation);
@@ -417,7 +437,7 @@ export default CompanyDetails = props => {
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    if (tabValue == 'IndividualSignup') {
+    if (tabValue == 'IndividualInProfile') {
       setlatitude(Region.latitude);
       setlongitude(Region.longitude);
     } else {
@@ -456,7 +476,7 @@ export default CompanyDetails = props => {
         var addressComponent2 = json.results[0].address_components[1];
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        if (tabValue == 'IndividualSignup') {
+        if (tabValue == 'IndividualInProfile') {
           setLocation(MainFullAddress);
         } else {
           setCompanyLocation(MainFullAddress);
@@ -464,31 +484,6 @@ export default CompanyDetails = props => {
       })
       .catch(error => console.warn(error));
   };
-  useEffect(() => {
-    if (isvisible) {
-      getPersonalDetails();
-      handle_describe_yourself();
-    }
-  }, [isvisible]);
-  useEffect(() => {
-    if (isvisible && selectJobType !== undefined && selectJobType !== null) {
-      handleServices(selectJobType);
-    }
-  }, [selectJobType, isvisible]);
-  useEffect(() => {
-    if (
-      isvisible &&
-      IndiselectJobType !== undefined &&
-      IndiselectJobType !== null
-    ) {
-      handleIndiServices(IndiselectJobType);
-    }
-  }, [isvisible, IndiselectJobType]);
-  useEffect(() => {
-    Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
-      language: 'en',
-    });
-  }, []);
 
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
@@ -531,6 +526,16 @@ export default CompanyDetails = props => {
         );
         setIndiSelectJobTypeid(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
+            ? initialJobTypeIds
+            : [],
+        );
+        setSelectJobType(
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+            ? initialJobTypeIds
+            : [],
+        );
+        setIndiSelectJobType(
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
             ? initialJobTypeIds
             : [],
         );
@@ -664,7 +669,7 @@ export default CompanyDetails = props => {
       setIsLoading(false);
     }
   };
-  const [tabValue, setTabValue] = useState('IndividualInProfile');
+
   const checkTabs = () => {
     switch (tabValue) {
       case 'IndividualInProfile':
@@ -724,7 +729,7 @@ export default CompanyDetails = props => {
                       <TextInput
                         style={IndividualProfileStyle.locationInput}
                         value={location}
-                        onChangeText={text => setLocation(text)}
+                        onChangeText={setLocation}
                         onFocus={() => setIsSearch(true)}
                         placeholder="Search location"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -732,7 +737,9 @@ export default CompanyDetails = props => {
                     </View>
                     <TouchableOpacity
                       style={IndividualProfileStyle.locationIconView}
-                      onPress={handleMapIndividualDetails}>
+                      onPress={() => {
+                        setIsMap(true);
+                      }}>
                       <Octicons
                         name={'location'}
                         size={22}
@@ -943,10 +950,10 @@ export default CompanyDetails = props => {
               }}
               onRegionChange={onRegionChange}
               Maplat={
-                tabValue == 'IndividualSignup' ? latitude : Companylatitude
+                tabValue == 'IndividualInProfile' ? latitude : Companylatitude
               }
               Maplng={
-                tabValue == 'IndividualSignup' ? longitude : Companylongitude
+                tabValue == 'IndividualInProfile' ? longitude : Companylongitude
               }
             />
             <View
@@ -996,10 +1003,12 @@ export default CompanyDetails = props => {
         <SearchPlaces
           onPress={(data, details = null) => {
             console.log('LocationData....', details);
-            if (tabValue == 'IndividualSignup') {
+            if (tabValue == 'IndividualInProfile') {
               setlatitude(details.geometry.location.lat);
+              setlongitude(details.geometry.location.lng);
             } else {
               setCompanylatitude(details.geometry.location.lat);
+              setCompanylongitude(details.geometry.location.lat);
             }
 
             setIsSearch(false);

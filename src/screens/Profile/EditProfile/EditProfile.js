@@ -626,7 +626,7 @@ const EditProfile = props => {
       case 'Tab2':
         return (
           <>
-            {IsMap ? (
+            {/* {IsMap ? (
               <View
                 style={{
                   flex: 1,
@@ -697,14 +697,9 @@ const EditProfile = props => {
                   setCompanyPhysicaladdress(details.formatted_address);
                 }}
               />
-            ) : (
-              <CompanyDetails
-                openMap={openMap}
-                maplocation={companyPhysicaladdress}
-                latitude={company_latitude}
-                longitude={company_longitude}
-              />
-            )}
+            ) : ( */}
+
+            <CompanyDetails />
           </>
         );
       case 'Tab3':
@@ -778,6 +773,7 @@ const EditProfile = props => {
             console.log('LocationData....', details);
             setlatitude(details.geometry.location.lat);
             setlongitude(details.geometry.location.lng);
+
             setIsSearch(false);
             setIsMap(true);
             if (activeTab === 'Tab1') {
