@@ -1008,7 +1008,7 @@ export default CompanyDetails = props => {
               setlongitude(details.geometry.location.lng);
             } else {
               setCompanylatitude(details.geometry.location.lat);
-              setCompanylongitude(details.geometry.location.lat);
+              setCompanylongitude(details.geometry.location.lng);
             }
 
             setIsSearch(false);
