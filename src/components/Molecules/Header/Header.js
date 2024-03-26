@@ -19,7 +19,7 @@ const TopHeader = props => {
 
   const [accountDetails, setAccountDetails] = useState(null);
   const isvisible = useIsFocused();
-  const getPersonalDetails = () => {
+  const getPersonalDetails = async () => {
     if (
       !loginData ||
       !loginData?.Login_details ||
@@ -34,7 +34,7 @@ const TopHeader = props => {
       url + `getAccount_details/${loginData?.Login_details?.user_id}`;
 
     // Make a GET request using Axios
-    axios
+    await axios
       .get(apiUrl)
       .then(response => {
         // Handle successful response
@@ -47,10 +47,17 @@ const TopHeader = props => {
       });
   };
   useEffect(() => {
+    // if (isvisible) {
+    //   getPersonalDetails();
+    // }
     if (isvisible) {
-      getPersonalDetails();
+      fetch_PersonalDetails();
     }
   }, [isvisible, loginData]);
+
+  const fetch_PersonalDetails = async () => {
+    await getPersonalDetails();
+  };
   const userProfileImageUri = accountDetails?.image_path[0];
   // loginData.Login_details?.profile_photo_path ||
   // signUp_account_response?.Login_details?.profile_photo_path;

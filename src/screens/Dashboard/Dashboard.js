@@ -140,9 +140,7 @@ export default Dashboard = props => {
   //---click back button closing the app
 
   useEffect(() => {
-    getPersonalDetails();
-    handleprofileCompletion();
-    check_subscription();
+    fetchData()
     const handleBackPress = () => {
       if (navigation.isFocused()) {
         BackHandler.exitApp();
@@ -156,10 +154,16 @@ export default Dashboard = props => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
     };
   }, [navigation, isvisible]);
-
+  const fetchData = async () => {
+    if (loginData?.Login_details?.user_id || loginData?.Login_details?.user_account_id) {
+      await getPersonalDetails();
+      await handleprofileCompletion();
+      await check_subscription();
+    }
+  };
   //---click back button closing the app
 
-  const handleprofileCompletion = () => {
+  const handleprofileCompletion =async () => {
     const url = Config.BASE_URL;
     const profileCompletion_url = url + 'Profile_Completion';
     console.log('requested url..', profileCompletion_url);
@@ -170,7 +174,7 @@ export default Dashboard = props => {
       account_id: loginData?.Login_details?.user_id,
     };
     // alert(loginData?.Login_details?.user_id)
-    axios
+   await axios
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
         console.log('profileCompletion response....', response?.data);
@@ -263,26 +267,53 @@ export default Dashboard = props => {
     loginData?.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
 
-  const getPersonalDetails = () => {
+  // const getPersonalDetails =() => {
+  //   setIsLoading(true);
+  //   const url = Config.BASE_URL;
+  //   const apiUrl =
+  //     url + `getAccount_details/${loginData?.Login_details?.user_id}`;
+
+  //   console.log(apiUrl, 'apiUrlapiUrlapiUrl');
+
+  //   axios
+  //     .get(apiUrl)
+  //     .then(response => {
+  //       console.log('API Response:', response?.data?.data[0]);
+  //       setAccountDetails(response?.data?.data[0]);
+  //       setIsLoading(false);
+  //     })
+  //     .catch(error => {
+  //       console.error('API Error PersonalDetails D:', error);
+  //       setIsLoading(false);
+  //     });
+  // };
+  const getPersonalDetails = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
       url + `getAccount_details/${loginData?.Login_details?.user_id}`;
-
-    console.log(apiUrl, 'apiUrlapiUrlapiUrl');
-
-    axios
+    console.log('PersonalDetails_url..',apiUrl);
+    await axios
       .get(apiUrl)
       .then(response => {
         console.log('API Response:', response?.data?.data[0]);
-        setAccountDetails(response?.data?.data[0]);
+        if (
+          response?.data?.data &&
+          Array.isArray(response.data.data) &&
+          response.data.data.length > 0
+        ) {
+          setAccountDetails(response?.data?.data[0]);
+        } else {
+          console.error('Invalid response data format:', response?.data);
+        }
         setIsLoading(false);
       })
       .catch(error => {
-        console.error('API Error PersonalDetails D:', error);
+        console.error('API Error PersonalDetails Dash:', error);
         setIsLoading(false);
       });
   };
+
   return (
     <>
       <View style={DashboardStyle.mainContainer}>
