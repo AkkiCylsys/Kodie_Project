@@ -6,6 +6,17 @@
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Kodie</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>MKDirectionsRequest</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.apple.maps.directionsrequest</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,6 +35,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MKDirectionsApplicationSupportedModes</key>
+	<array>
+		<string>MKDirectionsModeOther</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -35,8 +50,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSContactsUsageDescription</key>
-<string>We need access to your contacts to provide XYZ feature.</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Kodie requires Apple Music access to allows you quick and secure access.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
@@ -51,7 +64,6 @@
 	<string>Kodie requires Contacts access to allows you quick and secure access.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Kodie requires FaceID access to allows you quick and secure access.</string>
-
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -63,7 +75,6 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
-
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Kodie requires Microphone access to allows you quick and secure access.</string>
 	<key>NSMotionUsageDescription</key>
@@ -78,7 +89,6 @@
 	<string>Kodie requires  access to allows you quick and secure access.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Kodie requires SpeechRecognition access to allows you quick and secure access.</string>
-
 	<key>UIAppFonts</key>
 	<array>
 		<string>NunitoSans-Black.ttf</string>
