@@ -167,14 +167,14 @@ const EditProfile = props => {
       Updateprofile();
     }
   };
-  const getPersonalDetails = () => {
+  const getPersonalDetails = async () => {
     const url = Config.BASE_URL;
     setIsLoading(true);
     const apiUrl =
       url + `getAccount_details/${loginData.Login_details.user_id}`;
     console.log(apiUrl, 'apiUrl');
     // Make a GET request using Axios
-    axios
+    await axios
       .get(apiUrl)
       .then(response => {
         // Handle successful response
@@ -189,7 +189,7 @@ const EditProfile = props => {
           ? response?.data?.data[0]?.user_role_id.split(',').map(Number)
           : [];
         setSelectedServices(initialJobTypeIds);
-        console.log(accountDetails.UAD_AUSTR_BUSINESS_NO);
+        // console.log(accountDetails.UAD_AUSTR_BUSINESS_NO);
         setIsLoading(false);
       })
       .catch(error => {
@@ -202,11 +202,14 @@ const EditProfile = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    getPersonalDetails();
+    fetchPersonalDetails()
     console.log('companyPhysicaladdress', companyPhysicaladdress);
     setActiveTab(profileDoc ? 'Tab3' : 'Tab1');
     handle_describe_yourself();
   }, []);
+  const fetchPersonalDetails = async () => {
+   await getPersonalDetails();
+  };
   // describe your self Api call code here .....
   const handle_describe_yourself = () => {
     const describe_yourself_Data = {
@@ -221,7 +224,7 @@ const EditProfile = props => {
       .post(describeYourselfApi, describe_yourself_Data)
       .then(response => {
         console.log('kodie_describeYouself_Data', response.data);
-        if (response?.data?.status === true) {
+        if (response?.data?.success === true) {
           setIsLoading(false);
           console.log(
             'kodie_describeYouself_Data....',
@@ -233,7 +236,7 @@ const EditProfile = props => {
             'kodie_describeYouself_Data_error:',
             response?.data?.error,
           );
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

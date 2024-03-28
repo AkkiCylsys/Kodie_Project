@@ -139,8 +139,9 @@ export default SignUp = props => {
   };
 
   const Signuphandle = async () => {
+    const signup_url = Config.BASE_URL
     // const url = "https://e3.cylsys.com/api/v1/register";
-    const url = 'https://kodieapis.cylsys.com/api/v1/register';
+    const url = signup_url + "register";
     const signupUrl = url;
     console.log('Request URL:', signupUrl);
     setIsLoading(true);

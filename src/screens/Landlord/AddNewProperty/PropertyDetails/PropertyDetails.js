@@ -136,6 +136,7 @@ export default PropertyDetails = props => {
       console.log('propertyDetail', response?.data);
 
       if (response?.data?.success === true) {
+        console.log("alertahdsjh...",response?.data?.message)
         setIsLoading(false);
         setProperty_Details(response?.data?.property_details[0]);
         setLocation(response?.data?.property_details[0]?.location);
@@ -152,6 +153,7 @@ export default PropertyDetails = props => {
         console.log('propertyDetail....', response?.data?.property_details);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
+        alert(response?.data?.message)
         // alert('Oops something went wrong! Please try again later.');
         setIsLoading(false);
       }
@@ -324,7 +326,7 @@ export default PropertyDetails = props => {
       const response = await axios.post(propertyType, propertyData);
       console.log('property_type', response?.data);
 
-      if (response?.data?.status === true) {
+      if (response?.data?.success === true) {
         setIsLoading(false);
         console.log('propertyData....', response?.data?.lookup_details);
         setProperty_Data(response?.data?.lookup_details);

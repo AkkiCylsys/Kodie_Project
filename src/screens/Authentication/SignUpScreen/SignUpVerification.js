@@ -46,7 +46,7 @@ export default SignUpVerification = props => {
     // const sennd_verification_code_url = url + "user_signup";
     // const sennd_verification_code_url = "https://e3.cylsys.com/api/v1/register";
     const sennd_verification_code_url =
-      'https://kodieapis.cylsys.com/api/v1/register';
+    url + register;
     console.log('Request URL:', sennd_verification_code_url);
     setIsLoading(true);
     axios
@@ -79,8 +79,9 @@ export default SignUpVerification = props => {
 
   const handle_Signup_verification = () => {
     // const url = "https://e3.cylsys.com/api/v1/verifyotp";
-    const url = 'https://kodieapis.cylsys.com/api/v1/verifyotp';
-    const sign_verification_Api = url;
+    const url = Config.BASE_URL
+    // const url = 'https://kodieapis.cylsys.com/api/v1/verifyotp';
+    const sign_verification_Api = url + "verifyotp";
     console.log('Request URL:', sign_verification_Api);
     const Signup_verification_Data = {
       email: email,

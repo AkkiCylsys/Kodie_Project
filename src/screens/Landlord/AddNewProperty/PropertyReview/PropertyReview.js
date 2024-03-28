@@ -355,6 +355,7 @@ export default PropertyReview = props => {
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
         // alert('Oops something went wrong! Please try again later.');
+        alert(response?.data?.message)
       }
       const additionalFeatures_id =
         response?.data?.property_details[0].additional_features;
@@ -363,7 +364,7 @@ export default PropertyReview = props => {
       setAddtionalFeaturesID(is_additionalFeaturesid);
     } catch (error) {
       console.error('Error:', error);
-      alert(error);
+      // alert(error);
       setIsLoading(false);
     }
   };

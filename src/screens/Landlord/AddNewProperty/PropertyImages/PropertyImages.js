@@ -68,6 +68,7 @@ export default PropertyImages = props => {
         } else {
           console.error('propertyDetail_error:', response?.data?.error);
           // alert('Oops something went wrong! Please try again later.');
+          alert(response?.data?.message);
           setIsLoading(false);
         }
       })

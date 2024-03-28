@@ -122,13 +122,20 @@ const PropertyList = props => {
         order_wise: 'DESC',
       });
       //alert(JSON.stringify(response))
-      setPropertyData(response?.data?.property_details);
-      console.log('property Data....', response?.data?.property_details);
-      setIsLoading(false);
+      if (response?.data?.success === true) {
+        setPropertyData(response?.data?.property_details);
+        console.log('property Data....', response?.data?.property_details);
+        setIsLoading(false);
+      } else {
+        alert(response?.data?.message);
+      }
     } catch (error) {
       if (error.response && error.response.status == 500) {
         // alert(error.response?.data?.message);
-        console.log("PropertyDetailsByFilter.......",error.response?.data?.message)
+        console.log(
+          'PropertyDetailsByFilter.......',
+          error.response?.data?.message,
+        );
         setIsLoading(false);
       } else {
         // alert('An error occurred. Please try again later.');
@@ -266,7 +273,7 @@ const PropertyList = props => {
               <Image
                 source={{uri: item?.image_path[0]}}
                 style={PropertyListCSS.imageStyle}
-                resizeMode='cover'
+                resizeMode="cover"
               />
             ) : (
               <View
