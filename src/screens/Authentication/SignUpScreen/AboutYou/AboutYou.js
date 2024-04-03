@@ -38,6 +38,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import {MultiSelect} from 'react-native-element-dropdown';
 import CompanySignupStyle from './CompanySignup/CompanySignupStyle';
 import {set} from 'lodash';
+import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
@@ -983,19 +984,6 @@ export default AboutYou = props => {
                 />
               </View>
 
-              <View style={CompanySignupStyle.inputContainer}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'Company GST / VAT number'}
-                </Text>
-                <TextInput
-                  style={[CompanySignupStyle.input]}
-                  value={companyGSTNumber}
-                  onChangeText={setCompanyGSTNumber}
-                  placeholder="1234567890"
-                  placeholderTextColor="#999"
-                />
-              </View>
-
               <View>
                 <Text style={CompanySignupStyle.want_Heading}>
                   {
@@ -1052,6 +1040,7 @@ export default AboutYou = props => {
                           onChangeText={setCompanyLocation}
                           onFocus={() => {
                             setIsSearch(true);
+                            props.IsSearch();
                           }}
                           placeholder="Search location"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}

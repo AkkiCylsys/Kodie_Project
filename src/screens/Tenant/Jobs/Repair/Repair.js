@@ -133,7 +133,7 @@ export default Repair = props => {
       console.log('filter_apiUrl...', filter_apiUrl);
       const response = await axios.post(filter_apiUrl, {
         job_filter: filter,
-        user_account_id: loginData?.Login_details?.user_account_idd,
+        user_account_id: loginData?.Login_details?.user_account_id,
         page_no: 1,
         limit: filter == 'Recent' ? 5 : 10,
         order_col: '8',
@@ -191,12 +191,20 @@ export default Repair = props => {
     }
   };
   useEffect(() => {
+    // if (isvisible) {
+    //   getJobDetailsByFilter(selectedFilter);
+    //   getJobDetails_Filter_Service(selectedFilter);
+    // }
     if (isvisible) {
-      getJobDetailsByFilter(selectedFilter);
-      getJobDetails_Filter_Service(selectedFilter);
+      fetch_filterData();
     }
     setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1 ? true : false);
   }, [selectedFilter, isvisible]);
+  const fetch_filterData = async () => {
+    await getJobDetailsByFilter(selectedFilter);
+    await getJobDetails_Filter_Service(selectedFilter);
+  };
+
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
   };
@@ -276,6 +284,7 @@ export default Repair = props => {
           <TouchableOpacity
             onPress={() => {
               props.create_job_id?.(item.job_id);
+              console.log('check job id in view mode...', item.job_id);
             }}>
             <View style={RepairCss.Container}>
               <View style={RepairCss.flat_MainView}>

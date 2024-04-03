@@ -56,14 +56,14 @@ console.log("F_job_id....",F_job_id)
     axios
       .post(jobDetails_url, jobDetailsData)
       .then(response => {
-        console.log('API Response JobDetails:', response.data);
+        console.log('API Response JobDetails:', response?.data);
         if (response.data.success === true) {
-          setJobDetailsData(response.data.data);
-          console.log('jobDetailsData....', response.data.data);
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData....', response?.data?.data);
           // alert(JSON.stringify(response.data.data))
           // alert(response.data.message);
-          console.log('job_type_my..', response.data.data.job_type_my);
-          props.onJobDetailsSuccess(response.data.data.job_type_my);
+          console.log('job_type_my..', response?.data?.data?.job_type_my);
+          props.onJobDetailsSuccess(response?.data?.data?.job_type_my);
         } else {
           alert(response.data.message);
           setIsLoading(false);
@@ -92,13 +92,15 @@ console.log("F_job_id....",F_job_id)
       .then(response => {
         console.log('API Response JobDetails for updateImage:', response.data);
         if (response.data.success === true) {
-          setJobDetailsData(response.data.data);
-          console.log('jobDetailsData_term....', response.data.data);
-          setUpdateAllImage(response.data.data.image_file_path);
+          setJobDetailsData(response?.data?.data);
+          console.log('jobDetailsData_term....', response?.data?.data);
+          // setUpdateAllImage(response.data.data.image_file_path);
           console.log(
             'updateAllImage.....',
-            response.data.data.image_file_path,
+            response?.data?.data?.image_file_path,
           );
+          console.log('job_type_my..', response?.data?.data?.job_type_my);
+          props.onJobDetailsSuccess(response?.data?.data?.job_type_my);
         } else {
           alert(response.data.message);
           setIsLoading(false);
