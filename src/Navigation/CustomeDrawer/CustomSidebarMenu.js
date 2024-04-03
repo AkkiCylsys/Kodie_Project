@@ -30,6 +30,10 @@ const CustomSidebarMenu = props => {
         setselectedId('PropertyLinking');
         props.navigation.navigate('Properties');
         break;
+      case 'MarketplacePropertyListing':
+        setselectedId('MarketplacePropertyListing');
+        props.navigation.navigate('MarketplacePropertyListing');
+        break;
       case 'RentalOffers':
         setselectedId('RentalOffers');
         // props.navigation.navigate('RantalOffer');
@@ -37,8 +41,8 @@ const CustomSidebarMenu = props => {
         break;
       case 'vacantProperties':
         setselectedId('vacantProperties');
-        // props.navigation.navigate('VacantPropertiesList');
-        Alert.alert('Vacant Properties!', 'Coming soon');
+        props.navigation.navigate('VacantPropertiesList');
+        // Alert.alert('Vacant Properties!', 'Coming soon');
         break;
       case 'Inspection':
         setselectedId('Inspection');
@@ -114,7 +118,7 @@ const CustomSidebarMenu = props => {
         <Text style={[DrawerStyle.HeaderText, {marginVertical: 5}]}>
           {'Properties'}
         </Text>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={[
             DrawerStyle.SubHeadingView,
             // {
@@ -124,7 +128,7 @@ const CustomSidebarMenu = props => {
             //       : _COLORS.Kodie_WhiteColor,
             // },
           ]}
-          onPress={() => check('PropertyLinking')}>
+          onPress={() => check('MarketplacePropertyListing')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="calendar-text-outline"
@@ -135,8 +139,8 @@ const CustomSidebarMenu = props => {
             />
           </View>
           <Text style={DrawerStyle.SubHeading}>{"Property listings"}</Text>
-        </TouchableOpacity> */}
-        {/* <DividerIcon marginBottom={3} marginTop={5} /> */}
+        </TouchableOpacity>
+        <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
           style={[
             DrawerStyle.rowFlex,

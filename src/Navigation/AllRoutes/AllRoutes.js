@@ -137,6 +137,7 @@ import CompanySignup from '../../screens/Authentication/SignUpScreen/AboutYou/Co
 import Partners from '../../screens/Partners/Partners';
 import PropertyReviewDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReviewDetails';
 import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDetails';
+import MarketplacePropertyListing from '../../MarketplacePropertyListing/MarketplacePropertyListing';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1113,6 +1114,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'JobReviewDetails'}
           component={JobReviewDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'MarketplacePropertyListing'}
+          component={MarketplacePropertyListing}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
