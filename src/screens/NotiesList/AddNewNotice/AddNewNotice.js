@@ -431,7 +431,7 @@ const AddNewNotice = props => {
           // setFileName(response?.data?.data.file_name)
           setSelectFile(response?.data?.data.file_name);
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
