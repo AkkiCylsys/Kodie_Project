@@ -12,6 +12,7 @@ import {
   Image,
   PermissionsAndroid,
   BackHandler,
+  SafeAreaView,
 } from 'react-native';
 import {CreateJobFirstStyle} from './CreateJobFirstScreenCss';
 import StepText from '../../components/Molecules/StepText/StepText';
@@ -787,7 +788,7 @@ export default CreateJobFirstScreen = props => {
       });
   };
   return (
-    <View style={CreateJobFirstStyle.container}>
+    <SafeAreaView style={CreateJobFirstStyle.container}>
       <TopHeader
         isprofileImage
         IsNotification
@@ -1147,6 +1148,6 @@ export default CreateJobFirstScreen = props => {
         </ScrollView>
       )}
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

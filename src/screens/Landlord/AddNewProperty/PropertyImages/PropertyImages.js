@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import {PropertyImagesStyle} from './PropertyImagesStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -376,7 +377,7 @@ export default PropertyImages = props => {
   };
 
   return (
-    <View style={PropertyImagesStyle.mainContainer}>
+    <SafeAreaView style={PropertyImagesStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={goBack}
         MiddleText={editMode ? 'Edit property' : 'Add new property'}
@@ -581,6 +582,6 @@ export default PropertyImages = props => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

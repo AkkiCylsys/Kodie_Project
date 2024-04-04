@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {JobDetailsStyle} from './JobDetailsStyle';
@@ -239,7 +240,7 @@ const JobDetails = props => {
     setVisible(!visible);
   };
   return (
-    <View style={JobDetailsStyle.container}>
+    <SafeAreaView style={JobDetailsStyle.container}>
       <TopHeader
         isprofileImage
         IsNotification
@@ -540,7 +541,7 @@ const JobDetails = props => {
           />
         </RBSheet> */}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

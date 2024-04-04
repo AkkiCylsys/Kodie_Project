@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   PermissionsAndroid,
+  SafeAreaView
 } from 'react-native';
 import TopHeader from '../../components/Molecules/Header/Header';
 import {_goBack} from '../../services/CommonServices/CommonMethods';
@@ -237,7 +238,7 @@ export default Invitefriend = props => {
   };
 
   return (
-    <View style={InviteStyles.mainContainer}>
+    <SafeAreaView style={InviteStyles.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Invite a friend'}
@@ -273,6 +274,6 @@ export default Invitefriend = props => {
         renderItem={UserList_renderItem}
       />
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

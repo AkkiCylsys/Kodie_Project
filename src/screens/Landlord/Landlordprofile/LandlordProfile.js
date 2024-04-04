@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../services/CommonServices';
@@ -91,7 +92,7 @@ export default LandlordProfile = props => {
     refRBSheet.current.close();
   };
   return (
-    <View style={LandlordProfileStyle.mainContainer}>
+    <SafeAreaView style={LandlordProfileStyle.mainContainer}>
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
         // isprofileImage
@@ -336,6 +337,6 @@ export default LandlordProfile = props => {
         </View>
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

@@ -8,6 +8,7 @@ import {
   ScrollView,
   FlatList,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import StepText from '../../components/Molecules/StepText/StepText';
 import {CreateJobSecondStyle} from './CreateJobSecondScreenCss';
@@ -478,7 +479,7 @@ const CreateJobSecondScreen = props => {
   };
 
   return (
-    <View style={CreateJobSecondStyle.container}>
+    <SafeAreaView style={CreateJobSecondStyle.container}>
       <TopHeader
         isprofileImage
         IsNotification
@@ -761,7 +762,7 @@ const CreateJobSecondScreen = props => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

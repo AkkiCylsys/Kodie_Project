@@ -1,19 +1,46 @@
 import React, {useState} from 'react';
-import {View, Text, Image, FlatList, TouchableOpacity,Alert} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import {IMAGES, _COLORS} from '../../../Themes';
 import {UploadImageStyle} from './UploadImageStyle';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ImagePicker from 'react-native-image-crop-picker';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const data = [
   {
     id: '1',
     Data: 'Take photo',
-    Img: IMAGES.camera,
+    // Img: IMAGES.camera,
+    Img: (
+      <Feather
+        name="camera"
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+        resizeMode={'contain'}
+        style={{alignSelf: 'center'}}
+      />
+    ),
   },
   {
     id: '2',
     Data: 'Choose photo from library',
-    Img: IMAGES.gallery,
+    // Img: IMAGES.gallery,
+    Img: (
+      <MaterialIcons
+        name="add-photo-alternate"
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+        resizeMode={'contain'}
+        style={{alignSelf: 'center'}}
+      />
+    ),
   },
   // {
   //   id: "3",
@@ -91,7 +118,7 @@ const UploadLeftImage = props => {
                   //   props.leftImage(image);
                   //   console.log('Navigating to leftImage photos with', image);
                   // }
-                  handleLeftImageSelection(image)
+                  handleLeftImageSelection(image);
                 })
                 .catch(err => {
                   console.log('err...', err);
@@ -100,7 +127,8 @@ const UploadLeftImage = props => {
           }}>
           {console.log(typeof item.Img, item.Img)}
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
-            <Image source={item.Img} style={UploadImageStyle.Icons} />
+            {/* <Image source={item.Img} style={UploadImageStyle.Icons} /> */}
+            <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>
           <Text style={UploadImageStyle.text}>{item.Data}</Text>
         </TouchableOpacity>

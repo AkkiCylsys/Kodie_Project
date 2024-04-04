@@ -12,6 +12,7 @@ import {
   Platform,
   Alert,
   PermissionsAndroid,
+  SafeAreaView,
 } from 'react-native';
 import {PropertyDetailsStyle} from './PropertyDetailsStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -377,7 +378,7 @@ export default PropertyDetails = props => {
     props.navigation.pop();
   };
   return (
-    <View style={PropertyDetailsStyle.mainContainer}>
+    <SafeAreaView style={PropertyDetailsStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => {
           if (IsMap) {
@@ -691,6 +692,6 @@ export default PropertyDetails = props => {
         )}
       </KeyboardAvoidingView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

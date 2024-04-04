@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -998,7 +999,7 @@ export default PropertyReviewDetails = props => {
   };
   //alert(JSON.stringify(property_Detail))
   return (
-    <View style={PropertyReviewStyle.mainContainer}>
+    <SafeAreaView style={PropertyReviewStyle.mainContainer}>
       <TopHeader
         // isprofileImage
         onPressLeftButton={
@@ -1195,6 +1196,6 @@ export default PropertyReviewDetails = props => {
         {checkTabs()}
         {isLoading ? <CommonLoader /> : null}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Modal,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat, Actions, Send, Bubble} from 'react-native-gifted-chat';
@@ -364,7 +365,7 @@ const Chat = props => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         MiddleText={
           route.params.chatname ? route.params.name : `${userData.name}`
@@ -445,7 +446,7 @@ const Chat = props => {
           {/* Add more options as needed */}
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

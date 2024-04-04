@@ -1,4 +1,4 @@
-import {View, Text, Image, TextInput, ScrollView} from 'react-native';
+import {View, Text, Image, TextInput, ScrollView, SafeAreaView} from 'react-native';
 import React, {useState, useRef} from 'react';
 import {DeleteAccountStyle} from './DeleteAccountStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -20,7 +20,7 @@ const DeleteAccount = props => {
   const [phoneNumberError, setPhoneNumberError] = useState('');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-
+ 
   const [formattedValue, setFormattedValue] = useState('');
   const phoneInput = useRef(null);
   const validateAccountEmail = email => {
@@ -70,7 +70,7 @@ const DeleteAccount = props => {
       }
     }
   };
-
+ 
   // Api intrigation..
   const DeleteAccount = () => {
     const dataToSend = {
@@ -81,13 +81,13 @@ const DeleteAccount = props => {
       // phone_number: "8965656565",
       phone_number: phoneNumber,
     };
-
+ 
     const url = Config.BASE_URL;
     const deleteAccount_url = `${url}profile/deleteuseraccount`;
     console.log('url...', deleteAccount_url);
-
+ 
     setIsLoading(true);
-
+ 
     axios
       .delete(deleteAccount_url, {data: dataToSend})
       .then(res => {
@@ -108,9 +108,9 @@ const DeleteAccount = props => {
         setIsLoading(false);
       });
   };
-
+ 
   return (
-    <View style={DeleteAccountStyle.container}>
+    <SafeAreaView style={DeleteAccountStyle.container}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Delete this account'}
@@ -130,7 +130,7 @@ const DeleteAccount = props => {
             If you delete this account
           </Text>
         </View>
-
+ 
         <View style={DeleteAccountStyle.Pointsview}>
           <Text style={DeleteAccountStyle.textpoint}>
             • The account will be deleted from Kodie and all your devices
@@ -145,7 +145,7 @@ const DeleteAccount = props => {
             • Property data will also be deleted
           </Text>
         </View>
-
+ 
         <View style={DeleteAccountStyle.logoutview}>
           {/* <Image style={DeleteAccountStyle.Logoutimg} source={IMAGES.Log_Out} />
            */}
@@ -158,7 +158,7 @@ const DeleteAccount = props => {
             Change number instead?
           </Text>
         </View>
-
+ 
         <View style={DeleteAccountStyle.buttonview}>
           <CustomSingleButton
             disabled={isLoading ? true : false}
@@ -170,7 +170,7 @@ const DeleteAccount = props => {
             }}
           />
         </View>
-
+ 
         <View style={DeleteAccountStyle.toconfirmview}>
           <Text style={DeleteAccountStyle.toconfirmtext}>
             To delete your account, confirm your country code and enter your
@@ -263,7 +263,8 @@ const DeleteAccount = props => {
                 flex: 1,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
                 paddingVertical: 2,
-                borderRadius: 10,
+                height:50,
+                borderRadius: Platform.OS=='ios'? 10:10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
               containerStyle={{
@@ -273,7 +274,7 @@ const DeleteAccount = props => {
                 justifyContent: 'center',
                 borderWidth: 1,
                 borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: 10,
+                borderRadius: Platform.OS=='ios'? 10:10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
             />
@@ -315,8 +316,8 @@ const DeleteAccount = props => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
-
+ 
 export default DeleteAccount;

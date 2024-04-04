@@ -1,11 +1,11 @@
-import {View, Text, TextInput, Image} from 'react-native';
+import {View, Text,Platform, TextInput, Image, SafeAreaView} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {ChangeContactInputStyle} from './ChangeContactInputStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_COLORS, IMAGES, FONTFAMILY} from '../../../../Themes';
 import {_goBack} from '../../../../services/CommonServices';
-
+ 
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
@@ -30,7 +30,7 @@ const ChangeContactInput = props => {
       setOldnewPhoneNumber(phoneDataNumber);
     }
   }, [phoneDataNumber]);
-
+ 
   const validatenewPhoneNumber = () => {
     if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
@@ -40,7 +40,7 @@ const ChangeContactInput = props => {
       return true;
     }
   };
-
+ 
   const handleSubmit = () => {
     const isValid = validatenewPhoneNumber();
     if (newnewPhoneNumber.trim() === '') {
@@ -55,7 +55,7 @@ const ChangeContactInput = props => {
       });
     }
   };
-
+ 
   const handlenewPhoneNumberChange = text => {
     validatenewPhoneNumber(text);
     setnewPhoneNumber(text);
@@ -79,7 +79,7 @@ const ChangeContactInput = props => {
   //   }
   // };
   return (
-    <View style={ChangeContactInputStyle.maincontainer}>
+    <SafeAreaView style={ChangeContactInputStyle.maincontainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Change contact details'}
@@ -89,7 +89,7 @@ const ChangeContactInput = props => {
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your old phone number with country code
           </Text>
-
+ 
           <View
             style={[
               ChangeContactInputStyle.simpleinputview,
@@ -102,7 +102,7 @@ const ChangeContactInput = props => {
               ]}>
               +61
             </Text>
-
+ 
             <Text
               style={[
                 ChangeContactInputStyle.oldnumbertext,
@@ -143,19 +143,19 @@ const ChangeContactInput = props => {
               }}
             /> */}
           </View>
-
+ 
           {oldnewPhoneNumberError ? (
             <Text style={ChangeContactInputStyle.error_text}>
               {oldnewPhoneNumberError}
             </Text>
           ) : null}
         </View>
-
+ 
         <View style={ChangeContactInputStyle.secondview}>
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your new phone number with country code
           </Text>
-
+ 
           <View
             style={{
               height: 50,
@@ -182,9 +182,10 @@ const ChangeContactInput = props => {
               // autoFocus
               textContainerStyle={{
                 flex: 1,
+                height:50,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
                 paddingVertical: 2,
-                borderRadius: 10,
+                borderRadius: Platform.OS=='ios'?6: 10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
               containerStyle={{
@@ -194,7 +195,7 @@ const ChangeContactInput = props => {
                 justifyContent: 'center',
                 borderWidth: 1,
                 borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: 10,
+                borderRadius: Platform.OS=='ios'?6:10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
             />
@@ -205,7 +206,7 @@ const ChangeContactInput = props => {
             </Text>
           ) : null}
         </View>
-
+ 
         <View style={{marginTop: 45, marginLeft: 15, marginRight: 15}}>
           <CustomSingleButton
             _ButtonText={'Next'}
@@ -219,8 +220,8 @@ const ChangeContactInput = props => {
         </View>
       </View>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
-
+ 
 export default ChangeContactInput;
