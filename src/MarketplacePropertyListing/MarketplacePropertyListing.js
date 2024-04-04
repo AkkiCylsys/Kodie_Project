@@ -22,6 +22,20 @@ import BottomModalData from '../components/Molecules/BottomModal/BottomModalData
 import {CommonLoader} from '../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import {useSelector, useDispatch} from 'react-redux';
+import SearchBar from '../components/Molecules/SearchBar/SearchBar';
+
+
+const HorizontalData = [
+  'All',
+  'Recent',
+  'Occupied',
+  'Vacant',
+  'Rent Pending',
+  'Rent Received',
+  'Archive',
+];
+
+
 
 const property_List1 = [
   {
@@ -121,7 +135,54 @@ const MarketplacePropertyListing = () => {
   const [propId, setPropId] = useState(0);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const dispatch = useDispatch();
+  const [selectedFilter, setSelectedFilter] = useState('All');
 
+
+
+
+  const horizontal_render = ({item}) => {
+    return (
+      <TouchableOpacity
+        style={[
+          MarketplacePropertyListingStyle.flatlistView,
+          {
+            backgroundColor:
+              selectedFilter === item
+                ? _COLORS?.Kodie_BlackColor
+                : _COLORS?.Kodie_WhiteColor,
+          },
+        ]}
+        onPress={() => setSelectedFilter(item)}>
+        {selectedFilter === item ? null : (
+          <View
+            style={[
+              MarketplacePropertyListingStyle.round,
+              {
+                backgroundColor:
+                  selectedFilter === item
+                    ? _COLORS?.Kodie_WhiteColor
+                    : _COLORS?.Kodie_BlackColor,
+              },
+            ]}
+          />
+        )}
+        <Text
+          style={[
+            MarketplacePropertyListingStyle.item_style,
+            {color: selectedFilter === item ? 'white' : 'black'},
+          ]}>
+          {item}
+        </Text>
+        {selectedFilter === item ? (
+          <MaterialCommunityIcons
+            name={'check'}
+            size={18}
+            color={_COLORS.Kodie_WhiteColor}
+          />
+        ) : null}
+      </TouchableOpacity>
+    );
+  };
   // Get Api Bind here...
   const get_MarketplacePropertyListing = () => {
     const url = Config.BASE_URL;
@@ -185,25 +246,15 @@ const MarketplacePropertyListing = () => {
     const isExpanded = expandedItems.includes(item.id);
     setPropId(item.property_id);
     return (
-      <>
-      <TopHeader
-          MiddleText={'Kodie'}
-        //   Text_Color={_COLORS.Kodie_BlackColor}
-        //   onPressLeftButton={() => props.navigation.openDrawer()}
-        //   onPressRightImgProfile={() =>
-        //     props.navigation.navigate('LandlordProfile')
-        //   }
-          // statusBarColor="red"
-          // statusBarStyle="dark-content"
-        />
+      <View>
         <View style={MarketplacePropertyListingStyle.flatListContainer}>
           <View style={MarketplacePropertyListingStyle.flat_MainView}>
             <View style={MarketplacePropertyListingStyle.flexContainer}>
               <Text style={MarketplacePropertyListingStyle.apartmentText}>
-                {item.property_type}
+                {item.property_type_text}
               </Text>
               <Text style={MarketplacePropertyListingStyle.commontext}>
-                {item.name}
+                {item.city}
               </Text>
               <View style={MarketplacePropertyListingStyle.flat_MainView}>
                 <MaterialCommunityIcons
@@ -391,14 +442,42 @@ const MarketplacePropertyListing = () => {
           }}>
           <InviteTenant />
         </RBSheet>
-      </>
+      </View>
     );
   };
   return (
     <View>
-      {/* <FlatList data={property_List1} renderItem={propertyData1_render} /> */}
-      <FlatList data={PropertyListing_data} renderItem={propertyData1_render} />
-      {isLoading ? <CommonLoader /> : null}
+      <TopHeader MiddleText={'Propery listings'} />
+      <View>
+        <View>
+          <SearchBar
+            filterImage={IMAGES.filter}
+            frontSearchIcon
+            marginTop={16}
+            placeholder={'Search properties'}
+          />
+        </View>
+        <View style={MarketplacePropertyListingStyle.Container}>
+              <View style={MarketplacePropertyListingStyle.flat_MainView}>
+                <FlatList
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  data={HorizontalData}
+                  renderItem={horizontal_render}
+                />
+              </View>
+            </View>
+        
+      </View>
+      <DividerIcon />
+      <View>
+        {/* <FlatList data={property_List1} renderItem={propertyData1_render} /> */}
+        <FlatList
+          data={PropertyListing_data}
+          renderItem={propertyData1_render}
+        />
+        {isLoading ? <CommonLoader /> : null}
+      </View>
     </View>
   );
 };
