@@ -62,19 +62,24 @@ export default LandlordProfile = props => {
     // if (isvisible) {
     //   getPersonalDetails();
     // }
-      user_id ? getPersonalDetails() : null;
+    user_id ? getPersonalDetails() : null;
   }, [isvisible]);
   const LogOut = () => {
-    dispatch(logoutActionCreator());
-    props.navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [
-          {name: 'LoginScreen'}, // Replace 'Home' with the name of your initial screen
-        ],
-      }),
-    );
+    refRBSheet.current.close();
+    setTimeout(() => {
+      dispatch(logoutActionCreator());
+      props.navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {name: 'LoginScreen'}, // Replace 'Home' with the name of your initial screen
+          ],
+        }),
+      );
+    }, 500);
 
+    // refRBSheet.current.close();
+    //setOverlayVisible(false);
     // props.navigation.navigate("DrawerNavigatorLeftMenu");
     // props.navigation.navigate('LoginScreen');
   };

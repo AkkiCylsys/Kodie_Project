@@ -1,15 +1,24 @@
-import {View, Text,Platform, TextInput, Image, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  Platform,
+  TextInput,
+  Image,
+  SafeAreaView,
+} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {ChangeContactInputStyle} from './ChangeContactInputStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_COLORS, IMAGES, FONTFAMILY} from '../../../../Themes';
 import {_goBack} from '../../../../services/CommonServices';
- 
+
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import {Config} from '../../../../Config';
 //screen number 206
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,18 +28,53 @@ const ChangeContactInput = props => {
   const [newnewPhoneNumberError, setnewPhoneNumberError] = useState('');
   const [oldNumberformattedValue, setOldNumberFormattedValue] = useState('');
   const [newNumberformattedValue, setNewNumberFormattedValue] = useState('');
+  const [accountDetails, setAccountDetails] = useState(null);
+
   const phoneInput = useRef(null);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponseContact.....', loginData);
-  const phoneDataNumber = loginData?.Account_details[0]?.UAD_PHONE_NO;
-  console.log('phoneDataNumber..', phoneDataNumber);
+  // const phoneDataNumber = loginData?.Account_details[0]?.UAD_PHONE_NO;
+  // console.log('phoneDataNumber..', phoneDataNumber);
   const navigation = useNavigation();
   useEffect(() => {
-    if (phoneDataNumber) {
-      setOldnewPhoneNumber(phoneDataNumber);
+    // if (phoneDataNumber) {
+    //   setOldnewPhoneNumber(phoneDataNumber);
+    // }
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    if (loginData?.Login_details?.user_id) {
+      await getPersonalDetails();
     }
-  }, [phoneDataNumber]);
- 
+  };
+  const getPersonalDetails = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const apiUrl =
+      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
+    console.log('PersonalDetails_url..', apiUrl);
+    await axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response:', response?.data?.data[0]);
+        if (
+          response?.data?.data &&
+          Array.isArray(response.data.data) &&
+          response.data.data.length > 0
+        ) {
+          setAccountDetails(response?.data?.data[0]);
+          setOldnewPhoneNumber(response?.data?.data[0].UAD_PHONE_NO);
+        } else {
+          console.error('Invalid response data format:', response?.data);
+        }
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error PersonalDetails contact:', error);
+        setIsLoading(false);
+      });
+  };
   const validatenewPhoneNumber = () => {
     if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
@@ -40,7 +84,7 @@ const ChangeContactInput = props => {
       return true;
     }
   };
- 
+
   const handleSubmit = () => {
     const isValid = validatenewPhoneNumber();
     if (newnewPhoneNumber.trim() === '') {
@@ -50,12 +94,12 @@ const ChangeContactInput = props => {
       // Agar aap form submit karna chahte hain to yahan par kar sakte hain
     } else {
       navigation.navigate('ChangeContactNotify', {
-        oldnewPhoneNumber: oldNumberformattedValue,
-        newnewPhoneNumber: newNumberformattedValue,
+        oldnewPhoneNumber: oldnewPhoneNumber,
+        newnewPhoneNumber: newnewPhoneNumber,
       });
     }
   };
- 
+
   const handlenewPhoneNumberChange = text => {
     validatenewPhoneNumber(text);
     setnewPhoneNumber(text);
@@ -89,7 +133,7 @@ const ChangeContactInput = props => {
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your old phone number with country code
           </Text>
- 
+
           <View
             style={[
               ChangeContactInputStyle.simpleinputview,
@@ -102,13 +146,13 @@ const ChangeContactInput = props => {
               ]}>
               +61
             </Text>
- 
+
             <Text
               style={[
                 ChangeContactInputStyle.oldnumbertext,
                 {width: '85%', textAlign: 'left'},
               ]}>
-              {phoneDataNumber}
+              {oldnewPhoneNumber}
             </Text>
             {/* <PhoneInput
               ref={phoneInput}
@@ -143,19 +187,19 @@ const ChangeContactInput = props => {
               }}
             /> */}
           </View>
- 
+
           {oldnewPhoneNumberError ? (
             <Text style={ChangeContactInputStyle.error_text}>
               {oldnewPhoneNumberError}
             </Text>
           ) : null}
         </View>
- 
+
         <View style={ChangeContactInputStyle.secondview}>
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your new phone number with country code
           </Text>
- 
+
           <View
             style={{
               height: 50,
@@ -182,10 +226,10 @@ const ChangeContactInput = props => {
               // autoFocus
               textContainerStyle={{
                 flex: 1,
-                height:50,
+                height: 50,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
                 paddingVertical: 2,
-                borderRadius: Platform.OS=='ios'?6: 10,
+                borderRadius: Platform.OS == 'ios' ? 6 : 10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
               containerStyle={{
@@ -195,7 +239,7 @@ const ChangeContactInput = props => {
                 justifyContent: 'center',
                 borderWidth: 1,
                 borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: Platform.OS=='ios'?6:10,
+                borderRadius: Platform.OS == 'ios' ? 6 : 10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
             />
@@ -206,7 +250,7 @@ const ChangeContactInput = props => {
             </Text>
           ) : null}
         </View>
- 
+
         <View style={{marginTop: 45, marginLeft: 15, marginRight: 15}}>
           <CustomSingleButton
             _ButtonText={'Next'}
@@ -223,5 +267,5 @@ const ChangeContactInput = props => {
     </SafeAreaView>
   );
 };
- 
+
 export default ChangeContactInput;

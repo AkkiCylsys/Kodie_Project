@@ -1,5 +1,5 @@
 //ScreenNo:226
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, SafeAreaView } from "react-native";
 import React, { useState } from "react";
 import { AppInfoStyle } from "./AppInfoStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -20,7 +20,7 @@ const AppInfo = (props) => {
   const previousYear = currentYear - 1;
   console.log("Previous Year:", previousYear);
   return (
-    <View style={{flex:1,backgroundColor:_COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex:1,backgroundColor:_COLORS.Kodie_WhiteColor}}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"App info"}
@@ -53,7 +53,7 @@ const AppInfo = (props) => {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

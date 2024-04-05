@@ -10,6 +10,7 @@ import {
   FlatList,
   BackHandler,
   TextInput,
+  SafeAreaView,
 } from 'react-native';
 import Geocoder from 'react-native-geocoding';
 import {AboutYouStyle} from './AboutYouStyle';
@@ -746,6 +747,7 @@ export default AboutYou = props => {
                     inputSearchStyle={IndividualSignupStyle.inputSearchStyle}
                     iconStyle={IndividualSignupStyle.iconStyle}
                     search
+                    activeColor={_COLORS.Kodie_MidLightGreenColor}
                     data={IndiservicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"
@@ -985,7 +987,7 @@ export default AboutYou = props => {
     }
   };
   return (
-    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
         onPressLeftButton={() => {
@@ -1282,6 +1284,6 @@ export default AboutYou = props => {
         </>
       )}
       {/* {isLoading ? <CommonLoader /> : null} */}
-    </View>
+    </SafeAreaView>
   );
 };

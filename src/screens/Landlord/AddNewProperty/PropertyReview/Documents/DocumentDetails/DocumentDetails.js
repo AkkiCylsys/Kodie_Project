@@ -8,6 +8,7 @@ import {
   FlatList,
   PermissionsAndroid,
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {DocumentDetailStyle} from './DocumentDetailStyle';
@@ -304,7 +305,7 @@ const DocumentDetails = props => {
   const checkPermission = async () => {
     setIsLoading(true);
     if (Platform.OS === 'ios') {
-      downloadImage();
+      downloadDocuments();
     } else {
       try {
         const granted = await PermissionsAndroid.request(
@@ -317,7 +318,7 @@ const DocumentDetails = props => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           // Once user grant the permission start downloading
           console.log('Storage Permission Granted.');
-          downloadImage();
+          downloadDocuments();
         } else {
           // If permission denied then show alert
           alert('Storage Permission Not Granted');
@@ -328,7 +329,7 @@ const DocumentDetails = props => {
       }
     }
   };
-  const downloadImage = () => {
+  const downloadDocuments = () => {
     setIsLoading(true);
     let date = new Date();
     let image_URL = REMOTE_PATH;
@@ -367,7 +368,7 @@ const DocumentDetails = props => {
   };
 
   return (
-    <View style={DocumentDetailStyle.mainContainer}>
+    <SafeAreaView style={DocumentDetailStyle.mainContainer}>
       <TopHeader
         MiddleText={
           folderId == 1
@@ -491,7 +492,7 @@ const DocumentDetails = props => {
         </RBSheet>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

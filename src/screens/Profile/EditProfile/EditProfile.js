@@ -10,7 +10,7 @@ import {
   FlatList,
   Alert,
   Platform,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -56,7 +56,7 @@ const data = [
   {label: 'West Bengal', value: '4'},
   {label: 'Pune', value: '5'},
 ];
- 
+
 const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
@@ -65,9 +65,7 @@ const EditProfile = props => {
   const [lastName, setLastName] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [email, setEmail] = useState(loginData?.Login_details?.email);
-  const [phoneNumber, setPhoneNumber] = useState(
-    String(loginData.Account_details[0]?.UAD_PHONE_NO),
-  );
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [location, setLocation] = useState(
     accountDetails?.UAD_CURR_PHYSICAL_ADD,
   );
@@ -96,11 +94,11 @@ const EditProfile = props => {
   );
   const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
     useState('');
- 
+
   const [selectedServices, setSelectedServices] = useState([]);
   const [currentLocation, setCurrentLocation] = useState('');
   const [accountDetails, setAccountDetails] = useState(null);
- 
+
   const [Individuallatitude, setIndividuallatitude] = useState('');
   const [Individuallongitude, setIndividuallongitude] = useState('');
   const phoneInput = useRef(null);
@@ -118,7 +116,7 @@ const EditProfile = props => {
     // console.log("fileName....", fileName);
     // console.log("fileType....", fileType);
   };
- 
+
   // Validation for First Name
   // const validateFullName = text => {
   //   if (text === '') {
@@ -142,7 +140,7 @@ const EditProfile = props => {
     }
     setFirstName(text);
   };
- 
+
   // Validation for Last Name
   const validateLastName = text => {
     if (text === '') {
@@ -155,7 +153,7 @@ const EditProfile = props => {
     }
     setLastName(text);
   };
- 
+
   const handlevalidUpdation = () => {
     if (fullName.trim() == '') {
       setFirstNameError('First name is required');
@@ -186,7 +184,7 @@ const EditProfile = props => {
         setLastName(response?.data?.data[0]?.UAD_LAST_NAME);
         setLocation(response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD);
         setAbout(response?.data?.data[0]?.UAD_BIO);
- 
+        setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO.substring(3, 10));
         const initialJobTypeIds = response?.data?.data[0]?.user_role_id
           ? response?.data?.data[0]?.user_role_id.split(',').map(Number)
           : [];
@@ -235,7 +233,7 @@ const EditProfile = props => {
             'kodie_describeYouself_Data_error:',
             response?.data?.error,
           );
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -256,7 +254,7 @@ const EditProfile = props => {
       setSelectedServices(prevSelected => [...prevSelected, lookup_key]);
     }
   };
- 
+
   const renderItemDescribeYourself = ({item}) => (
     <ServicesBox
       Services_Name={item?.lookup_description}
@@ -277,7 +275,7 @@ const EditProfile = props => {
       }}
     />
   );
- 
+
   const goBack = () => {
     props.navigation.pop();
   };
@@ -335,7 +333,7 @@ const EditProfile = props => {
           json.results[0].address_components[7].long_name +
           ', ' +
           json.results[0].address_components[8].long_name;
- 
+
         var addressComponent2 = json.results[0].address_components[1];
         // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
@@ -347,7 +345,7 @@ const EditProfile = props => {
   const toggleView = () => {
     setVisible(!visible);
   };
- 
+
   // Api intrrigation......
   const Updateprofile = async () => {
     const formData = new FormData();
@@ -356,14 +354,14 @@ const EditProfile = props => {
       ? fileUri.substring(fileUri.lastIndexOf('/') + 1)
       : null;
     const fileType = ImageName?.mime;
- 
+
     console.log('fileUri....', fileUri);
     console.log('fileName....', fileName);
     console.log('fileType....', fileType);
- 
+
     if (!fileUri || !fileName || !fileType) {
       console.error('Invalid image data:', ImageName);
- 
+
       // Handle invalid image data
     } else {
       formData.append('profile_photo', {
@@ -405,7 +403,7 @@ const EditProfile = props => {
       setIsLoading(false);
     }
   };
- 
+
   const openMap = () => {
     setIsMap(true);
   };
@@ -438,7 +436,7 @@ const EditProfile = props => {
                         resizeMode="cover"
                       />
                     )}
- 
+
                     {ImageName ? refRBSheet.current.close() : null}
                     <View style={EditProfileStyle.editlogoview}>
                       <FontAwesome
@@ -453,7 +451,7 @@ const EditProfile = props => {
                     Edit profile photo
                   </Text>
                 </View>
- 
+
                 <Divider style={EditProfileStyle.firstdivider} />
                 <View style={EditProfileStyle.inputmainview}>
                   <View style={EditProfileStyle.firstview}>
@@ -515,7 +513,7 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Phone number
                     </Text>
- 
+
                     <View style={[EditProfileStyle.phoneinputview]}>
                       <PhoneInput
                         defaultValue={phoneNumber}
@@ -532,11 +530,11 @@ const EditProfile = props => {
                         }}
                         textContainerStyle={{
                           flex: 1,
- 
+
                           backgroundColor: _COLORS.Kodie_WhiteColor,
                           paddingVertical: 2,
-                          height:50,
-                          borderRadius: Platform.OS=='ios'? 6:10,
+                          height: 50,
+                          borderRadius: Platform.OS == 'ios' ? 6 : 10,
                         }}
                         containerStyle={{
                           flex: 1,
@@ -545,12 +543,12 @@ const EditProfile = props => {
                           justifyContent: 'center',
                           borderWidth: 1,
                           borderColor: _COLORS.Kodie_GrayColor,
-                          borderRadius: Platform.OS=='ios'?6:12,
+                          borderRadius: Platform.OS == 'ios' ? 6 : 12,
                         }}
                       />
                     </View>
                   </View>
- 
+
                   <View style={EditProfileStyle.inputContainer}>
                     <Text style={LABEL_STYLES.commontext}>{'Bio'}</Text>
                     <TextInput
@@ -581,7 +579,7 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Current physical address
                     </Text>
- 
+
                     <View style={EditProfileStyle.locationContainer}>
                       <TextInput
                         style={EditProfileStyle.locationInput}
@@ -702,7 +700,7 @@ const EditProfile = props => {
                 }}
               />
             ) : ( */}
- 
+
             <CompanyDetails />
           </>
         );
@@ -777,7 +775,7 @@ const EditProfile = props => {
             console.log('LocationData....', details);
             setlatitude(details.geometry.location.lat);
             setlongitude(details.geometry.location.lng);
- 
+
             setIsSearch(false);
             setIsMap(true);
             if (activeTab === 'Tab1') {
@@ -875,5 +873,5 @@ const EditProfile = props => {
     </SafeAreaView>
   );
 };
- 
+
 export default EditProfile;

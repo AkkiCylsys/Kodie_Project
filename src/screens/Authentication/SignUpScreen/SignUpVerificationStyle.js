@@ -9,6 +9,7 @@ export const SignUpVerificationStyle = StyleSheet.create({
   container: {
     marginHorizontal: 16,
     flex: 1,
+    marginBottom:10
   },
   checkEmail_Text: {
     color: _COLORS.Kodie_BlackColor,
