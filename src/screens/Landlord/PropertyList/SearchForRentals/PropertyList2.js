@@ -266,6 +266,7 @@ const PropertyList2 = (props) => {
             labelField="label"
             valueField="value"
             placeholder="Search features "
+            activeColor={"#a1fe68"}
             value={selected}
             search
             searchPlaceholder="Search..."

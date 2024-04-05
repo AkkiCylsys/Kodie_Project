@@ -392,6 +392,7 @@ const CompanyInProfile = ({
                 inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
                 iconStyle={CompanyInProfileStyle.iconStyle}
                 search
+                activeColor={"#a1fe68"}
                 data={servicesData}
                 labelField="lookup_description"
                 valueField="lookup_key"

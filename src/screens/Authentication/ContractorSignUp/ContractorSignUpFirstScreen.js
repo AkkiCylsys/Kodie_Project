@@ -187,6 +187,7 @@ export default ContractorSignUpFirstScreen = (props) => {
                 selectedTextStyle={ContractorSignUpStyle.selectedTextStyle}
                 inputSearchStyle={ContractorSignUpStyle.inputSearchStyle}
                 iconStyle={ContractorSignUpStyle.iconStyle}
+                activeColor={"#a1fe68"}
                 data={DATA}
                 labelField="label"
                 valueField="value"
