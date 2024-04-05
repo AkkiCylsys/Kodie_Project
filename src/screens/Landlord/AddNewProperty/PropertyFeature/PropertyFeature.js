@@ -790,7 +790,8 @@ export default PropertyFeature = props => {
               </Text>
               <MultiSelect
                 style={PropertyFeatureStyle.dropdown}
-                activeColor={_COLORS.Kodie_MidLightGreenColor}
+                // activeColor={_COLORS.Kodie_MidLightGreenColor}
+                activeColor={"#a1fe68"}
                 placeholderStyle={PropertyFeatureStyle.placeholderStyle}
                 selectedTextStyle={PropertyFeatureStyle.selectedTextStyle}
                 inputSearchStyle={PropertyFeatureStyle.inputSearchStyle}
