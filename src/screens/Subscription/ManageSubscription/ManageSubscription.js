@@ -1,4 +1,4 @@
-import {View, Text, Image, ScrollView, Alert} from 'react-native';
+import {View, Text, Image, ScrollView, Alert, SafeAreaView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {ManageSubscriptionStyle} from './ManageSubscriptionStyle';
@@ -349,7 +349,7 @@ const ManageSubscription = props => {
 
   return (
     <>
-      <View style={ManageSubscriptionStyle.Mainview}>
+      <SafeAreaView style={ManageSubscriptionStyle.Mainview}>
         <TopHeader
           onPressLeftButton={() => _goBack(props)}
           MiddleText={
@@ -432,7 +432,7 @@ const ManageSubscription = props => {
           </View> */}
         </ScrollView>
         {isLoading ? <CommonLoader /> : null}
-      </View>
+      </SafeAreaView>
     </>
   );
 };

@@ -9,9 +9,11 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Platform,
   PermissionsAndroid,
   Image,
   FlatList,
+  SafeAreaView,
   // Platform
 } from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -462,6 +464,7 @@ const SignUpSteps = props => {
                 Country={false}
                 textInputProps={{
                   maxLength: 9,
+                  keyboardType: 'number-pad',
                 }}
                 placeholder={'Enter your phone number'}
                 onChangeFormattedText={text => {
@@ -471,7 +474,8 @@ const SignUpSteps = props => {
                   flex: 1,
                   backgroundColor: _COLORS.Kodie_WhiteColor,
                   paddingVertical: 2,
-                  borderRadius: 10,
+                  borderRadius: Platform.OS == 'ios' ? 6 : 10,
+                  height: 50,
                 }}
                 containerStyle={{
                   flex: 1,
@@ -480,7 +484,7 @@ const SignUpSteps = props => {
                   justifyContent: 'center',
                   borderWidth: 1,
                   borderColor: _COLORS.Kodie_GrayColor,
-                  borderRadius: 12,
+                  borderRadius: Platform.OS == 'ios' ? 6 : 10,
                 }}
               />
             </View>
@@ -585,7 +589,7 @@ const SignUpSteps = props => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
         onPressLeftButton={() => {
@@ -713,7 +717,7 @@ const SignUpSteps = props => {
         )}
         {isLoading ? <CommonLoader /> : null}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

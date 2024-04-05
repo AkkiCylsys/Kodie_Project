@@ -101,7 +101,7 @@ export const ManageSubscriptionStyle = StyleSheet.create({
     //backgroundColor:_COLORS.Kodie_MediumGrayColor,
     shadowOffset: { width: -2, height: 4 },
     shadowColor: _COLORS.Kodie_BlackColor,
-    shadowOpacity: Platform.OS == "android" ? 0.7 : null,
+    shadowOpacity: Platform.OS == "android" ? 0.7 : 0.3,
     shadowRadius: 8,
     elevation: 20,
   },

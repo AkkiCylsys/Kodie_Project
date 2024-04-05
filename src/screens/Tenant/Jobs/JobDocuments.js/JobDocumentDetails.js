@@ -8,6 +8,7 @@ import {
   FlatList,
   PermissionsAndroid,
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {JobDocumentDetailStyle} from './JobDocumentDetailStyle';
@@ -336,7 +337,7 @@ const JobDocumentDetails = props => {
   };
 
   return (
-    <View style={JobDocumentDetailStyle.mainContainer}>
+    <SafeAreaView style={JobDocumentDetailStyle.mainContainer}>
       <TopHeader
         isprofileImage
         IsNotification
@@ -462,7 +463,7 @@ const JobDocumentDetails = props => {
         </RBSheet>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

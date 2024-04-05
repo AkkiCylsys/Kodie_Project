@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Linking,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -126,7 +127,7 @@ const SocialMedia = props => {
 
   return (
     <>
-      <View style={SocialMediaStyle.Mainview}>
+      <SafeAreaView style={SocialMediaStyle.Mainview}>
         <TopHeader
           onPressLeftButton={() => _goBack(props)}
           MiddleText={'Follow us on social media'}
@@ -137,7 +138,7 @@ const SocialMedia = props => {
           keyExtractor={(index, item) => index.toString()}
           renderItem={socialMediaRender}
         />
-      </View>
+      </SafeAreaView>
       {isLoading ? <CommonLoader /> : null}
     </>
   );

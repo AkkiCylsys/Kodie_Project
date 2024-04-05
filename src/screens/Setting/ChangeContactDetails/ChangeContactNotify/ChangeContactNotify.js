@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import React, {useState} from 'react';
 import {ChangeNotifyStyle} from './ChangeNotifyStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -17,8 +17,8 @@ const ChangeContactNotify = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [notify, setNotify] = useState(false);
   console.log('loginResponse.....', loginData);
-  let oldPhoneNumber = props?.route?.params?.oldPhoneNumber;
-  let newPhoneNumber = props?.route?.params?.newPhoneNumber;
+  let oldPhoneNumber = props?.route?.params?.oldnewPhoneNumber;
+  let newPhoneNumber = props?.route?.params?.newnewPhoneNumber;
   console.log('oldPhoneNumber....', oldPhoneNumber);
   console.log('newPhoneNumber....', newPhoneNumber);
   console.log('first');
@@ -58,7 +58,7 @@ const ChangeContactNotify = props => {
       });
   };
   return (
-    <View style={ChangeNotifyStyle.maincontainer}>
+    <SafeAreaView style={ChangeNotifyStyle.maincontainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Change contact details'}
@@ -88,8 +88,8 @@ const ChangeContactNotify = props => {
               onPress={() => {
                 setNotify(!notify);
               }}
-              circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-              circleColorOn={_COLORS.Kodie_BlackColor}
+              circleColorOff={_COLORS.Kodie_BlackColor}
+              circleColorOn={_COLORS.Kodie_GreenColor}
               backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
               backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
               containerStyle={ChangeNotifyStyle.toggle_con}
@@ -112,7 +112,7 @@ const ChangeContactNotify = props => {
         </View>
       </View>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

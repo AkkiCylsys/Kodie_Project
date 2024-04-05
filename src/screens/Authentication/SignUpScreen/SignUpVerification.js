@@ -1,6 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 //ScreenNo:8
-import {View, Text, TextInput, TouchableOpacity, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+} from 'react-native';
 import {SignUpVerificationStyle} from './SignUpVerificationStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../services/CommonServices';
@@ -39,7 +47,6 @@ export default SignUpVerification = props => {
   let is_privacy_policy = props?.route?.params?.is_privacy_policy;
   let user_key = props?.route?.params?.user_key;
   console.log('email..........', password);
-
   // send_verification_code OTP  Api code here....
   const send_verification_code = () => {
     const url = Config.API_URL;
@@ -58,10 +65,11 @@ export default SignUpVerification = props => {
         // otp: value,
       })
       .then(response => {
-        console.log('API Response send otp:', response?.data);
-        if (response?.data?.status === true) {
+        // console.log('API Response send otp:', response?.data);
+        if (response?.data?.success === true) {
           alert(response?.data?.message);
           setVerificationCode('');
+          setIsTimerActive(true);
         } else {
           alert(response?.data?.message);
           setIsLoading(false);
@@ -108,8 +116,10 @@ export default SignUpVerification = props => {
       .catch(error => {
         if (error.response && error.response.status === 404) {
           alert('Incorrect OTP. Please try again.');
+          setValue('');
         } else if (error.response && error.response.status === 422) {
           alert('Time up. Please try again.');
+          setValue('');
         } else {
           // alert('An error occurred. Please try again later.');
         }
@@ -126,7 +136,7 @@ export default SignUpVerification = props => {
       setValueError('');
     }
     // Reset the timer when the value changes
-    setIsTimerActive(true);
+    // setIsTimerActive(true);
   };
   //.......... Handle button define here
   const handleSubmit = () => {
@@ -147,13 +157,14 @@ export default SignUpVerification = props => {
   };
 
   return (
-    <View style={SignUpVerificationStyle.mainContainer}>
+    <SafeAreaView style={SignUpVerificationStyle.mainContainer}>
       <TopHeader
         MiddleText={'Verify your email'}
         Text_Color={_COLORS.Kodie_BlackColor}
         onPressLeftButton={() => _goBack(props)}
       />
-      <View style={SignUpVerificationStyle.container}>
+      <ScrollView style={SignUpVerificationStyle.container} showsVerticalScrollIndicator={false
+      }>
         <Text style={SignUpVerificationStyle.checkEmail_Text}>
           {'Check your email'}
         </Text>
@@ -202,9 +213,10 @@ export default SignUpVerification = props => {
         {/* resend otp or timer buton code here................ */}
         <View style={SignUpVerificationStyle.getBindButtonView}>
           <View style={SignUpVerificationStyle.getButtonView}>
-            {isLoading ? (
-              <Text style={{color: _COLORS.Kodie_WhiteColor}}>Resend</Text>
-            ) : isTimerActive ? (
+            {/* {isLoading ? ( */}
+            {/* <Text style={{color: _COLORS.Kodie_WhiteColor}}>Resend</Text> */}
+            {/* ) : */}
+            {isTimerActive ? (
               <CountdownCircleTimer
                 isPlaying
                 trailColor={_COLORS.Kodie_lightGreenColor}
@@ -224,7 +236,7 @@ export default SignUpVerification = props => {
               <TouchableOpacity
                 onPress={() => {
                   send_verification_code();
-                  setIsTimerActive(true); // Start the timer
+                  // setIsTimerActive(true); // Start the timer
                 }}>
                 <Text style={SignUpVerificationStyle.getButton}>
                   {'Resend'}
@@ -236,7 +248,7 @@ export default SignUpVerification = props => {
 
         <View style={SignUpVerificationStyle.customBtn}>
           <CustomSingleButton
-            disabled={isLoading ? true : false}
+            // disabled={isLoading ? true : false}
             _ButtonText={'Verify email'}
             Text_Color={_COLORS.Kodie_WhiteColor}
             onPress={handleSubmit}
@@ -256,8 +268,8 @@ export default SignUpVerification = props => {
           </View>
           <Text style={SignUpVerificationStyle.goBack_Text}>{'Go back'}</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

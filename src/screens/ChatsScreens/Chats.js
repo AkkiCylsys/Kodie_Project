@@ -5,6 +5,7 @@ import {
   ScrollView,
   FlatList,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import TopHeader from '../../components/Molecules/Header/Header';
@@ -63,7 +64,7 @@ const Chats = props => {
 
   return (
     <>
-      <View style={ChatsStyle.container}>
+      <SafeAreaView style={ChatsStyle.container}>
         <TopHeader
           // onPressLeftButton={() => _goBack(props)}
           onPressLeftButton={() => props.navigation.navigate('Dashboard')}
@@ -167,7 +168,7 @@ const Chats = props => {
             }}
           />
         </ScrollView>
-      </View>
+      </SafeAreaView>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text,BackHandler } from "react-native";
+import { View, Text,BackHandler, SafeAreaView } from "react-native";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
 import { _goBack } from "./../../../services/CommonServices/index";
@@ -90,7 +90,7 @@ const Jobs = (props) => {
     }
   };
   return (
-    <View style={JobsCss.Container}>
+    <SafeAreaView style={JobsCss.Container}>
       <TopHeader
         onPressLeftButton={() => props.navigation.navigate("Dashboard")}
         MiddleText={"Jobs"}
@@ -128,7 +128,7 @@ const Jobs = (props) => {
       />
       <View style={JobsCss.Line} />
       {checkTabs()}
-    </View>
+    </SafeAreaView>
   );
 };
 

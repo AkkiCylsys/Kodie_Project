@@ -15,6 +15,7 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   PermissionsAndroid,
+  Alert,
 } from 'react-native';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {logos} from '../../../Themes/CommonVectors/Images';
@@ -691,6 +692,7 @@ export default Login = props => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
                 // props.navigation.navigate("SignUpSteps");
                 // props.navigation.navigate("Account");
+                Alert.alert('Login with Google', 'Coming soon');
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
@@ -699,10 +701,11 @@ export default Login = props => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              // onPress={() =>
-              //   // props.navigation.navigate("ManageSubscription")
-              //   // props.navigation.navigate("DrawerNavigatorLeftMenu")
-              // }
+              onPress={() =>
+                // props.navigation.navigate("ManageSubscription")
+                // props.navigation.navigate("DrawerNavigatorLeftMenu")
+                Alert.alert('Login with Facebook', 'Coming soon')
+              }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={'Login with Facebook'}
@@ -964,6 +967,11 @@ export default Login = props => {
                   resizeMode={'contain'}
                 />
               </View>
+              <CustomSingleButton
+                _ButtonText={'Back to login'}
+                Text_Color={_COLORS.Kodie_WhiteColor}
+                onPress={() => refRBSheet.current.close()}
+              />
             </>
           )}
 

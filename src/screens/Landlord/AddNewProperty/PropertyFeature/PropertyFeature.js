@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  SafeAreaView,
 } from 'react-native';
 import {PropertyFeatureStyle} from './PropertyFeatureStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -481,7 +482,7 @@ export default PropertyFeature = props => {
       });
   };
   return (
-    <View style={PropertyFeatureStyle.mainContainer}>
+    <SafeAreaView style={PropertyFeatureStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={goBack}
         MiddleText={editMode ? 'Edit property' : 'Add new property'}
@@ -883,6 +884,6 @@ export default PropertyFeature = props => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
