@@ -944,7 +944,7 @@ const PreScreening = props => {
                     inputSearchStyle={PreScreeningStyle.inputSearchStyle}
                     iconStyle={PreScreeningStyle.iconStyle}
                     data={petsData}
-                    activeColor={"#a1fe68"}
+                    activeColor={_COLORS.Kodie_MidLightGreenColor}
                     labelField="lookup_description"
                     valueField="lookup_key"
                     placeholder="Search"

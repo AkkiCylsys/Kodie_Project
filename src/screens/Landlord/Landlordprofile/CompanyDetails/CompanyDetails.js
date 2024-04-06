@@ -701,7 +701,7 @@ export default CompanyDetails = props => {
                     inputSearchStyle={IndividualProfileStyle.inputSearchStyle}
                     iconStyle={IndividualProfileStyle.iconStyle}
                     search
-                    activeColor={"#a1fe68"}
+                    activeColor={_COLORS.Kodie_MidLightGreenColor}
                     data={IndiservicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"
@@ -847,7 +847,7 @@ export default CompanyDetails = props => {
                     inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
                     iconStyle={CompanyInProfileStyle.iconStyle}
                     search
-                    activeColor={"#a1fe68"}
+                    activeColor={_COLORS.Kodie_MidLightGreenColor}
                     data={servicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"

@@ -1,5 +1,5 @@
 //ScreenNo:13
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -11,34 +11,34 @@ import {
   PermissionsAndroid,
   SafeAreaView,
 } from 'react-native';
-import { FirstPropertyStyle } from './FirstPropertyStyle';
+import {FirstPropertyStyle} from './FirstPropertyStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../../services/CommonServices';
+import {_goBack} from '../../../../services/CommonServices';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { _COLORS, FONTFAMILY } from '../../../../Themes';
-import { LABEL_STYLES, IMAGES } from '../../../../Themes';
-import { Dropdown } from 'react-native-element-dropdown';
-import { MultiSelect } from 'react-native-element-dropdown';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
+import {LABEL_STYLES, IMAGES} from '../../../../Themes';
+import {Dropdown} from 'react-native-element-dropdown';
+import {MultiSelect} from 'react-native-element-dropdown';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import { Config } from '../../../../Config';
+import {Config} from '../../../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
 import Geolocation from 'react-native-geolocation-service';
 //import Geolocation from '@react-native-community/geolocation';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
-import { BackHandler } from 'react-native';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {useDispatch, useSelector} from 'react-redux';
+import {useFocusEffect} from '@react-navigation/native';
+import {BackHandler} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
-import { signupAccountApiActionCreator } from '../../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import {signupAccountApiActionCreator} from '../../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import mime from 'mime';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
@@ -66,7 +66,7 @@ const firstIndicatorSignUpStepStyle = {
   labelAlign: 'center',
 };
 
-const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+const getStepIndicatorIconConfig = ({position, stepStatus}) => {
   const iconConfig = {
     name: 'feed',
     // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
@@ -264,10 +264,10 @@ export default FirstProperty = props => {
   console.log('p_city:', p_city);
 
   const AllCountsData = [
-    { Bedrooms: CountBedroom },
-    { Bathrooms: CountBathroom },
-    { 'Parking Space': CountParking },
-    { 'On-StreetParking': CountParkingStreet },
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Parking Space': CountParking},
+    {'On-StreetParking': CountParkingStreet},
   ];
   const increaseBedroomCount = () => {
     setCountBedroom(prevCount => prevCount + 1);
@@ -336,21 +336,21 @@ export default FirstProperty = props => {
       </View>
     );
   };
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-          ? '#000000'
-          : '#808080';
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
         ? 'Account'
         : position === 1
-          ? 'About you'
-          : position === 2
-            ? 'First property'
-            : 'circle';
+        ? 'About you'
+        : position === 2
+        ? 'First property'
+        : 'circle';
 
     return (
       <View style={{}}>
@@ -858,7 +858,7 @@ export default FirstProperty = props => {
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
   console.log(PreFriedly, 'pre friedly............');
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
         onPressLeftButton={() => {
@@ -922,7 +922,7 @@ export default FirstProperty = props => {
             <TouchableOpacity
               style={FirstPropertyStyle.BtnContainer}
               onPress={ConfirmAddress}>
-              <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+              <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
             </TouchableOpacity>
           </View>
         ) : IsSearch ? (
@@ -1028,7 +1028,7 @@ export default FirstProperty = props => {
                     style={FirstPropertyStyle.dropdown}
                     placeholderStyle={[
                       FirstPropertyStyle.placeholderStyle,
-                      { color: _COLORS.Kodie_LightGrayColor },
+                      {color: _COLORS.Kodie_LightGrayColor},
                     ]}
                     selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                     inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
@@ -1038,12 +1038,9 @@ export default FirstProperty = props => {
                     labelField="lookup_description"
                     valueField="lookup_key"
                     placeholder="Select property type"
-                    value={
-                      property_value
-                    }
+                    value={property_value}
                     onChange={item => {
                       setProperty_value(item.lookup_key);
-
                     }}
                     renderItem={propertyType_render}
                   />
@@ -1352,9 +1349,9 @@ export default FirstProperty = props => {
                       style={FirstPropertyStyle.dropdown}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
-                        { color: _COLORS.Kodie_LightGrayColor },
+                        {color: _COLORS.Kodie_LightGrayColor},
                       ]}
-                      activeColor={"#a1fe68"}
+                      activeColor={_COLORS.Kodie_MidLightGreenColor}
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
@@ -1385,7 +1382,7 @@ export default FirstProperty = props => {
                   </View>
                 </View>
               </View>
-              <View style={{ marginHorizontal: 16 }}>
+              <View style={{marginHorizontal: 16}}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
                   _ButtonText={'Save'}
@@ -1396,7 +1393,7 @@ export default FirstProperty = props => {
                   }}
                 />
               </View>
-              <View style={{ marginHorizontal: 16 }}>
+              <View style={{marginHorizontal: 16}}>
                 <CustomSingleButton
                   disabled={isLoading ? true : false}
                   _ButtonText={'Fill these details out later'}

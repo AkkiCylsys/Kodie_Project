@@ -304,7 +304,7 @@ const IndividualSignup = ({
                 //   backgroundColor: _COLORS.Kodie_LightGrayLineColor,
                 // },
               ]}
-              activeColor={"#a1fe68"}
+              activeColor={_COLORS.Kodie_MidLightGreenColor}
               placeholderStyle={IndividualSignupStyle.placeholderStyle}
               selectedTextStyle={IndividualSignupStyle.selectedTextStyle}
               inputSearchStyle={IndividualSignupStyle.inputSearchStyle}
