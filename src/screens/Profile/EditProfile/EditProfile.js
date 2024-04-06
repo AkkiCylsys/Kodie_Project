@@ -516,7 +516,10 @@ const EditProfile = props => {
 
                     <View style={[EditProfileStyle.phoneinputview]}>
                       <PhoneInput
+                        ref={phoneInput}
                         defaultValue={phoneNumber}
+                        disabled={true}
+                        editable={false}
                         defaultCode="AU"
                         layout="second"
                         Country={false}

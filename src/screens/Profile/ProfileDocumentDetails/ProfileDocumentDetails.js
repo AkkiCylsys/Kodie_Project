@@ -27,6 +27,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 // import RNFetchBlob from 'rn-fetch-blob';
 import {useNavigation} from '@react-navigation/native';
+import Share from 'react-native-share';
 
 const data = [
   {
@@ -395,7 +396,14 @@ const ProfileDocumentDetails = props => {
         closeModal();
       });
   };
-
+// share doc....
+const shareDocFile = async () => {
+  try {
+    await Share.open({url: filePath});
+  } catch (error) {
+    console.error('Error sharing PDF file:', error);
+  }
+};
   const getExtention = fileName => {
     // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
@@ -504,6 +512,7 @@ const ProfileDocumentDetails = props => {
           closemodal={closeModal}
           deleteHandler={deleteHandler}
           downloadFile={checkPermission}
+          shareDocFile={shareDocFile}
           fileKey={fileKey}
           onpress={() => {
             navigation.navigate('ViewDocument', {

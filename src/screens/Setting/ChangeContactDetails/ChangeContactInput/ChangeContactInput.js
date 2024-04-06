@@ -144,7 +144,7 @@ const ChangeContactInput = props => {
                 ChangeContactInputStyle.oldnumbertext,
                 {marginLeft: 15, width: '15%'},
               ]}>
-              +61
+              {accountDetails?.UAD_COUNTRY_CODE}
             </Text>
 
             <Text
@@ -154,38 +154,6 @@ const ChangeContactInput = props => {
               ]}>
               {oldnewPhoneNumber}
             </Text>
-            {/* <PhoneInput
-              ref={phoneInput}
-              defaultValue={phoneDataNumber}
-              defaultCode="IN"
-             // disabled="false"
-              layout="second"
-              onChangeText={text => {
-                validateOldnewPhoneNumber(text);
-              }}
-              placeholder={'Enter your phone number'}
-              onChangeFormattedText={text => {
-                setOldNumberFormattedValue(text);
-              }}
-              autoFocus
-              textContainerStyle={{
-                flex: 1,
-                backgroundColor: _COLORS.Kodie_WhiteColor,
-                paddingVertical: 2,
-                backgroundColor: _COLORS.Kodie_GrayColor,
-                borderRadius: 10,
-              }}
-              containerStyle={{
-                flex: 1,
-                alignSelf: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: 12,
-                borderWidth: 1,
-                backgroundColor: _COLORS.Kodie_GrayColor,
-              }}
-            /> */}
           </View>
 
           {oldnewPhoneNumberError ? (
@@ -199,7 +167,6 @@ const ChangeContactInput = props => {
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your new phone number with country code
           </Text>
-
           <View
             style={{
               height: 50,

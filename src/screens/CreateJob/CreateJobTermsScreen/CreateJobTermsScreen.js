@@ -467,6 +467,7 @@ export default CreateJobTermsScreen = props => {
           props.navigation.navigate('CreateJobSecondScreen', {
             job_id: response?.data?.job_id,
           });
+          setIsLoading(false);
           // setSelectedDate(''),
           //   setCurrentTime(''),
           //   setHourlyNeedValue('')
@@ -476,7 +477,7 @@ export default CreateJobTermsScreen = props => {
           // setIsLoading(false);
         } else {
           // alert(response?.data?.message);
-          // setIsLoading(false);
+          setIsLoading(false);
         }
       })
       .catch(error => {

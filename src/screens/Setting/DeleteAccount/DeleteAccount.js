@@ -1,5 +1,12 @@
-import {View, Text, Image, TextInput, ScrollView, SafeAreaView} from 'react-native';
-import React, {useState, useRef} from 'react';
+import {
+  View,
+  Text,
+  Image,
+  TextInput,
+  ScrollView,
+  SafeAreaView,
+} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
 import {DeleteAccountStyle} from './DeleteAccountStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -20,14 +27,19 @@ const DeleteAccount = props => {
   const [phoneNumberError, setPhoneNumberError] = useState('');
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
- 
+  const [valid, setValid] = useState(false);
   const [formattedValue, setFormattedValue] = useState('');
+  const [accountDetails, setAccountDetails] = useState(null);
+
   const phoneInput = useRef(null);
   const validateAccountEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
+  useEffect(() => {
+    fetchData();
+  }, []);
   const handleAccountEmail = text => {
     setEmail(text);
     if (text.trim() === '') {
@@ -70,7 +82,7 @@ const DeleteAccount = props => {
       }
     }
   };
- 
+
   // Api intrigation..
   const DeleteAccount = () => {
     const dataToSend = {
@@ -81,13 +93,13 @@ const DeleteAccount = props => {
       // phone_number: "8965656565",
       phone_number: phoneNumber,
     };
- 
+
     const url = Config.BASE_URL;
     const deleteAccount_url = `${url}profile/deleteuseraccount`;
     console.log('url...', deleteAccount_url);
- 
+
     setIsLoading(true);
- 
+
     axios
       .delete(deleteAccount_url, {data: dataToSend})
       .then(res => {
@@ -108,7 +120,39 @@ const DeleteAccount = props => {
         setIsLoading(false);
       });
   };
- 
+
+  const fetchData = async () => {
+    if (loginData?.Login_details?.user_id) {
+      await getPersonalDetails();
+    }
+  };
+  const getPersonalDetails = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const apiUrl =
+      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
+    console.log('PersonalDetails_url..', apiUrl);
+    await axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response:', response?.data?.data[0]);
+        if (
+          response?.data?.data &&
+          Array.isArray(response.data.data) &&
+          response.data.data.length > 0
+        ) {
+          setAccountDetails(response?.data?.data[0]);
+          setPhoneNumber(response?.data?.data[0].UAD_PHONE_NO);
+        } else {
+          console.error('Invalid response data format:', response?.data);
+        }
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error PersonalDetails contact:', error);
+        setIsLoading(false);
+      });
+  };
   return (
     <SafeAreaView style={DeleteAccountStyle.container}>
       <TopHeader
@@ -130,7 +174,7 @@ const DeleteAccount = props => {
             If you delete this account
           </Text>
         </View>
- 
+
         <View style={DeleteAccountStyle.Pointsview}>
           <Text style={DeleteAccountStyle.textpoint}>
             • The account will be deleted from Kodie and all your devices
@@ -145,7 +189,7 @@ const DeleteAccount = props => {
             • Property data will also be deleted
           </Text>
         </View>
- 
+
         <View style={DeleteAccountStyle.logoutview}>
           {/* <Image style={DeleteAccountStyle.Logoutimg} source={IMAGES.Log_Out} />
            */}
@@ -158,7 +202,7 @@ const DeleteAccount = props => {
             Change number instead?
           </Text>
         </View>
- 
+
         <View style={DeleteAccountStyle.buttonview}>
           <CustomSingleButton
             disabled={isLoading ? true : false}
@@ -170,7 +214,7 @@ const DeleteAccount = props => {
             }}
           />
         </View>
- 
+
         <View style={DeleteAccountStyle.toconfirmview}>
           <Text style={DeleteAccountStyle.toconfirmtext}>
             To delete your account, confirm your country code and enter your
@@ -207,64 +251,49 @@ const DeleteAccount = props => {
           <View
             style={{
               height: 50,
-              flexDirection: 'row',
+              // flexDirection: 'row',
               alignItems: 'center',
-              justifyContent: 'space-between',
+              // justifyContent: 'space-between',
               marginTop: 8,
+              marginHorizontal: 16,
             }}>
             {/* <PhoneInput
               ref={phoneInput}
               defaultValue={phoneNumber}
-              defaultCode="IN"
-              layout="first"
-              // onBlur={() => validateMobileNumber(phoneNumber)}
-              // onChangeText={(text) => {
-              //   setPhoneNumber(text);
-              // }}
-              onChangeText={(text) => {
-                validateMobileNumber(text);
-              }}
-              placeholder={"Enter your phone number"}
-              onChangeFormattedText={(text) => {
-                setFormattedValue(text);
-              }}
-              // withDarkTheme
-              // withShadow
-              autoFocus
-              textContainerStyle={{
-                flex: 1,
-                backgroundColor: _COLORS.Kodie_WhiteColor,
-              }}
-              containerStyle={{
-                flex: 1,
-                alignSelf: "center",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            /> */}
-            <PhoneInput
-              // ref={phoneInput}
-              defaultValue={phoneNumber}
               defaultCode="AU"
               layout="second"
               Country={false}
-              // onChangeText={text => {
-              //   validateMobileNumber(text);
-              // }}
+              onChangeText={text => {
+                // validateMobileNumber(text);
+                const checkValid = phoneInput.current?.isValidNumber(text);
+                if (text === '') {
+                  setPhoneNumberError('Phone number is required');
+                  setPhoneNumber(text);
+                } else if (checkValid == false) {
+                  setPhoneNumberError('Invalid phone number format');
+                  setPhoneNumber(text);
+                } else {
+                  setPhoneNumberError('');
+                  const numberOnly = text.substring(3);
+                  setPhoneNumber(numberOnly);
+                }
+              }}
               textInputProps={{
                 maxLength: 9,
               }}
               placeholder={'Enter your phone number'}
               onChangeFormattedText={text => {
-                setFormattedValue(text);
+                // setFormattedValue(text);
+                const numberOnly = text.substring(3);
+                setPhoneNumber(numberOnly);
               }}
               // autoFocus
               textContainerStyle={{
                 flex: 1,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
                 paddingVertical: 2,
-                height:50,
-                borderRadius: Platform.OS=='ios'? 10:10,
+                height: 50,
+                borderRadius: Platform.OS == 'ios' ? 10 : 10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
               containerStyle={{
@@ -274,10 +303,30 @@ const DeleteAccount = props => {
                 justifyContent: 'center',
                 borderWidth: 1,
                 borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: Platform.OS=='ios'? 10:10,
+                borderRadius: Platform.OS == 'ios' ? 10 : 10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
-            />
+            /> */}
+            <View
+              style={[
+                DeleteAccountStyle.simpleinputview,
+                {backgroundColor: _COLORS.Kodie_GrayColor, borderRadius: 8},
+              ]}>
+              <Text
+                style={[
+                  DeleteAccountStyle.oldnumbertext,
+                  {marginLeft: 15, width: '15%'},
+                ]}>
+                {accountDetails?.UAD_COUNTRY_CODE}
+              </Text>
+              <Text
+                style={[
+                  DeleteAccountStyle.oldnumbertext,
+                  {width: '85%', textAlign: 'left'},
+                ]}>
+                {phoneNumber}
+              </Text>
+            </View>
           </View>
           {phoneNumberError ? (
             <Text style={DeleteAccountStyle.error_text}>
@@ -319,5 +368,5 @@ const DeleteAccount = props => {
     </SafeAreaView>
   );
 };
- 
+
 export default DeleteAccount;
