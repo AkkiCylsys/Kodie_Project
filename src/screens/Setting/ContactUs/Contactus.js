@@ -1,4 +1,4 @@
-import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
+import {View, Text, TextInput, Image, TouchableOpacity, SafeAreaView} from 'react-native';
 import React, {useState} from 'react';
 import {ContactusStyle} from './ContactusStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -79,7 +79,7 @@ const Contactus = props => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Contact us'}
@@ -144,7 +144,7 @@ const Contactus = props => {
         />
       </View>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 export default Contactus;

@@ -9,6 +9,8 @@ import {
   PermissionsAndroid,
   FlatList,
   Alert,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -63,9 +65,7 @@ const EditProfile = props => {
   const [lastName, setLastName] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [email, setEmail] = useState(loginData?.Login_details?.email);
-  const [phoneNumber, setPhoneNumber] = useState(
-    String(loginData.Account_details[0]?.UAD_PHONE_NO),
-  );
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [location, setLocation] = useState(
     accountDetails?.UAD_CURR_PHYSICAL_ADD,
   );
@@ -184,7 +184,7 @@ const EditProfile = props => {
         setLastName(response?.data?.data[0]?.UAD_LAST_NAME);
         setLocation(response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD);
         setAbout(response?.data?.data[0]?.UAD_BIO);
-
+        setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO.substring(3, 10));
         const initialJobTypeIds = response?.data?.data[0]?.user_role_id
           ? response?.data?.data[0]?.user_role_id.split(',').map(Number)
           : [];
@@ -233,7 +233,7 @@ const EditProfile = props => {
             'kodie_describeYouself_Data_error:',
             response?.data?.error,
           );
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -530,9 +530,11 @@ const EditProfile = props => {
                         }}
                         textContainerStyle={{
                           flex: 1,
+
                           backgroundColor: _COLORS.Kodie_WhiteColor,
                           paddingVertical: 2,
-                          borderRadius: 10,
+                          height: 50,
+                          borderRadius: Platform.OS == 'ios' ? 6 : 10,
                         }}
                         containerStyle={{
                           flex: 1,
@@ -541,7 +543,7 @@ const EditProfile = props => {
                           justifyContent: 'center',
                           borderWidth: 1,
                           borderColor: _COLORS.Kodie_GrayColor,
-                          borderRadius: 12,
+                          borderRadius: Platform.OS == 'ios' ? 6 : 12,
                         }}
                       />
                     </View>
@@ -659,7 +661,7 @@ const EditProfile = props => {
                   <TextInput
                     style={{
                       backgroundColor: 'transparent',
-
+ 
                       width: '90%',
                       height: 45,
                       alignSelf: 'center',
@@ -707,7 +709,7 @@ const EditProfile = props => {
     }
   };
   return (
-    <View
+    <SafeAreaView
       style={{
         backgroundColor: _COLORS.Kodie_WhiteColor,
         flex: 1,
@@ -868,7 +870,7 @@ const EditProfile = props => {
         />
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

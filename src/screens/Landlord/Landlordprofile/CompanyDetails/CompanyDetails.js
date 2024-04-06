@@ -145,13 +145,13 @@ export default CompanyDetails = props => {
             'kodie_describeYouself_Data_error:',
             response?.data?.error,
           );
-          alert('Oops samthing went wrong! Please try again later.');
+          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('kodie_describeYouself_Data error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -324,7 +324,7 @@ export default CompanyDetails = props => {
             'company profile Services_error:',
             response?.data?.error,
           );
-          alert('Oops samthing went wrong! Please try again later.');
+          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       } catch (error) {
@@ -386,7 +386,7 @@ export default CompanyDetails = props => {
             'company profile Services_error:',
             response?.data?.error,
           );
-          alert('Oops samthing went wrong! Please try again later.');
+          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       } catch (error) {
@@ -663,7 +663,7 @@ export default CompanyDetails = props => {
         // getComapnyDetails();
       }
     } catch (error) {
-      alert(error);
+      // alert(error);
       console.log('update_error UpdateCompanyData...', error);
     } finally {
       setIsLoading(false);
@@ -701,6 +701,7 @@ export default CompanyDetails = props => {
                     inputSearchStyle={IndividualProfileStyle.inputSearchStyle}
                     iconStyle={IndividualProfileStyle.iconStyle}
                     search
+                    activeColor={"#a1fe68"}
                     data={IndiservicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"
@@ -846,6 +847,7 @@ export default CompanyDetails = props => {
                     inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
                     iconStyle={CompanyInProfileStyle.iconStyle}
                     search
+                    activeColor={"#a1fe68"}
                     data={servicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"

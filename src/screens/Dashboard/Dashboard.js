@@ -10,6 +10,7 @@ import {
   Platform,
   Modal,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 
 import {userSubscribedCreator} from '../../redux/Actions/Subscription/SubscriptionApiCreator';
@@ -316,7 +317,7 @@ export default Dashboard = props => {
 
   return (
     <>
-      <View style={DashboardStyle.mainContainer}>
+      <SafeAreaView style={DashboardStyle.mainContainer}>
         <TopHeader
           isMiddleImage={true}
           IsNotification={true}
@@ -673,7 +674,7 @@ export default Dashboard = props => {
             />
           </ScrollView>
         </Modal>
-      </View>
+      </SafeAreaView>
 
       <FloatingActionButton />
     </>

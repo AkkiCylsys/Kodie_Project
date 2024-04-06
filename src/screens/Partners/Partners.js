@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, SafeAreaView} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import {_COLORS, IMAGES} from '../../Themes';
 import TopHeader from '../../components/Molecules/Header/Header';
@@ -73,7 +73,7 @@ const Partners = props => {
     return <App />;
   } else {
     return (
-      <View style={PartnersStyle.container}>
+      <SafeAreaView style={PartnersStyle.container}>
         <TopHeader
           onPressLeftButton={() => _goBack(props)}
           MiddleText={'Partners'}
@@ -87,7 +87,7 @@ const Partners = props => {
           dotStyle={PartnersStyle.dotStyle} // Customize the inactive dot style
           activeDotStyle={PartnersStyle.activeDotStyle}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 };

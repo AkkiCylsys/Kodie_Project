@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, BackHandler, Alert} from 'react-native';
+import {View, BackHandler, Alert,SafeAreaView} from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import PropertyList from './MyProperty/PropertyList';
@@ -115,7 +115,7 @@ const Properties = props => {
   };
 
   return (
-    <View style={PropertiesCSS.Container}>
+    <SafeAreaView style={PropertiesCSS.Container}>
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
 
@@ -160,7 +160,7 @@ const Properties = props => {
       )}
       {activeTab === "Tab2" && <PropertyList2 />}
       {activeTab === "Tab3" && <PropertyList3 />} */}
-    </View>
+    </SafeAreaView>
   );
 };
 

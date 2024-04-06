@@ -496,6 +496,7 @@ const CompanySignup = ({
                 //   backgroundColor: _COLORS.Kodie_LightGrayLineColor,
                 // },
               ]}
+              activeColor={"#a1fe68"}
               placeholderStyle={CompanySignupStyle.placeholderStyle}
               selectedTextStyle={CompanySignupStyle.selectedTextStyle}
               inputSearchStyle={CompanySignupStyle.inputSearchStyle}

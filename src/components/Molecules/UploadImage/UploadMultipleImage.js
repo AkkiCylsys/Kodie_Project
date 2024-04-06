@@ -11,16 +11,36 @@ import {IMAGES, _COLORS} from '../../../Themes';
 import {UploadImageStyle} from './UploadImageStyle';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ImagePicker from 'react-native-image-crop-picker';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const data = [
   {
     id: '1',
     Data: 'Take photo',
-    Img: IMAGES.camera,
+    // Img: IMAGES.camera,
+    Img: (
+      <Feather
+        name="camera"
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+        resizeMode={'contain'}
+        style={{alignSelf: 'center'}}
+      />
+    ),
   },
   {
     id: '2',
     Data: 'Choose photo from library',
-    Img: IMAGES.gallery,
+    // Img: IMAGES.gallery,
+    Img: (
+      <MaterialIcons
+        name="add-photo-alternate"
+        size={20}
+        color={_COLORS.Kodie_GreenColor}
+        resizeMode={'contain'}
+        style={{alignSelf: 'center'}}
+      />
+    ),
   },
   // {
   //   id: "3",
@@ -62,7 +82,7 @@ const UploadMultipleImage = props => {
                 compressImageQuality: 0.5,
                 multiple: true,
               })
-                .then((image) => {
+                .then(image => {
                   // console.log("image....", image);
                   setImage(image);
                   // setMultipleImage(image);
@@ -70,7 +90,7 @@ const UploadMultipleImage = props => {
                   // props?.multipleImage(image);
                   setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
                   props?.multipleImage(Array.isArray(image) ? image : [image]);
-                  console.log("ImagePath..", multipleImage);
+                  console.log('ImagePath..', multipleImage);
                 })
                 // .then(() => {
                 //   setMultipleImage(Array.isArray(image) ? image : [image]);
@@ -111,7 +131,8 @@ const UploadMultipleImage = props => {
           }}>
           {console.log(typeof item.Img, item.Img)}
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
-            <Image source={item.Img} style={UploadImageStyle.Icons} />
+            {/* <Image source={item.Img} style={UploadImageStyle.Icons} /> */}
+            <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>
           <Text style={UploadImageStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
