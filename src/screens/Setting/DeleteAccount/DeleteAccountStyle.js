@@ -164,5 +164,21 @@ export const DeleteAccountStyle = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: 15,
   },
+  simpleinputview: {
+    height: 60,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 5,
+  },
+  oldnumbertext: {
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 20,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal: 8,
+    marginVertical:11,
+  },
   error_text: {color: 'red', marginLeft: 10, marginTop: 5},
 });
