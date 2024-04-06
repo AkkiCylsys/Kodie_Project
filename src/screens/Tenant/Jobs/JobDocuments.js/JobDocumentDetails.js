@@ -23,7 +23,7 @@ import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 // import RNFS from "react-native-fs";
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import {Config} from '../../../../Config';
 import Share from 'react-native-share';
 
@@ -303,7 +303,7 @@ const JobDocumentDetails = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    const {config, fs} = RNFetchBlob;
+    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,

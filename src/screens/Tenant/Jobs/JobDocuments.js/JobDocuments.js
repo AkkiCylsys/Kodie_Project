@@ -19,7 +19,7 @@ import {_COLORS} from '../../../../Themes';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import Share from 'react-native-share';
 import {useIsFocused} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
@@ -150,7 +150,7 @@ export default JobDocuments = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    const {config, fs} = RNFetchBlob;
+    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,

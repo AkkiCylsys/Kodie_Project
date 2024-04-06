@@ -25,7 +25,7 @@ import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import {useNavigation} from '@react-navigation/native';
 
 const data = [
@@ -369,7 +369,7 @@ const ProfileDocumentDetails = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    const {config, fs} = RNFetchBlob;
+    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,

@@ -35,7 +35,7 @@ import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlace
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {useDispatch, useSelector} from 'react-redux';
 
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
