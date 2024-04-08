@@ -466,6 +466,9 @@ const CreateJobSecondScreen = props => {
           editMode: editMode,
         });
         console.log('update_uploadJobFilesDatas', response?.data);
+        setMultiImageName([]);
+        setLeftImage([]);
+        setRightImage([]);
       } else {
         console.log('update_uploadJobFilesData', response?.data?.error);
         alert('Oops Somthing went wrong! please try again later.');

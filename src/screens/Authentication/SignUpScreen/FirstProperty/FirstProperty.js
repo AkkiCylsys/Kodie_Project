@@ -17,6 +17,7 @@ import {_goBack} from '../../../../services/CommonServices';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import {_COLORS, FONTFAMILY} from '../../../../Themes';
 import {LABEL_STYLES, IMAGES} from '../../../../Themes';
 import {Dropdown} from 'react-native-element-dropdown';

@@ -60,12 +60,14 @@ const data = [
 const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
+  const [valid, setValid] = useState(false);
   const [fullName, setFirstName] = useState('');
   const [fullNameError, setFirstNameError] = useState('');
   const [lastName, setLastName] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [email, setEmail] = useState(loginData?.Login_details?.email);
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
   const [location, setLocation] = useState(
     accountDetails?.UAD_CURR_PHYSICAL_ADD,
   );
@@ -101,6 +103,8 @@ const EditProfile = props => {
 
   const [Individuallatitude, setIndividuallatitude] = useState('');
   const [Individuallongitude, setIndividuallongitude] = useState('');
+  const [country_Code_Get, setCountry_Code_Get] = useState('');
+
   const phoneInput = useRef(null);
   console.log('latitude....', latitude);
   console.log('longitude....', longitude);
@@ -167,6 +171,21 @@ const EditProfile = props => {
       Updateprofile();
     }
   };
+  const formatNumber = phoneNumber;
+  const phoneNumberParts = formatNumber.match(/^(\+\d{1,2})(\d+)$/);
+
+  if (phoneNumberParts) {
+    const countryCode = phoneNumberParts[1]; // Extracted country code
+    const remainingNumber = phoneNumberParts[2]; // Remaining part of the number
+
+    console.log('CountryCode:', countryCode);
+    setCountry_Code_Get(countryCode);
+    console.log('RemainingsNumber:', remainingNumber);
+    setPhoneNumber(remainingNumber);
+    console.log(country_Code_Get, 'country_Code_Get');
+  } else {
+    console.error('Invalid phone number format');
+  }
   const getPersonalDetails = () => {
     const url = Config.BASE_URL;
     setIsLoading(true);
@@ -184,7 +203,7 @@ const EditProfile = props => {
         setLastName(response?.data?.data[0]?.UAD_LAST_NAME);
         setLocation(response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD);
         setAbout(response?.data?.data[0]?.UAD_BIO);
-        setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO.substring(3, 10));
+        setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO);
         const initialJobTypeIds = response?.data?.data[0]?.user_role_id
           ? response?.data?.data[0]?.user_role_id.split(',').map(Number)
           : [];
@@ -374,12 +393,13 @@ const EditProfile = props => {
     formData.append('first_name', fullName);
     formData.append('last_name', lastName);
     formData.append('phone_number', phoneNumber);
+    formData.append('country_code', accountDetails?.UAD_COUNTRY_CODE);
     formData.append('bio', about);
     formData.append('describe_yourself', selectedServices);
     formData.append('physical_address', location);
     formData.append('longitude', longitude);
     formData.append('latitude', latitude);
-    console.log('formData', formData);
+    console.log('formData in editmode...', formData);
     const url = Config.BASE_URL;
     const updateProfile_url = url + 'profile/updateProfile';
     console.log('Request URL:', updateProfile_url);
@@ -513,12 +533,31 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Phone number
                     </Text>
-
+                    <View
+                      style={[
+                        EditProfileStyle.simpleinputview,
+                        {backgroundColor: _COLORS.Kodie_GrayColor},
+                      ]}>
+                      <TextInput
+                        style={EditProfileStyle.inputStyle}
+                        value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                          phoneNumber || ''
+                        }`}
+                        onChangeText={text => setEmail(text)}
+                        editable={false}
+                      />
+                    </View>
+                  </View>
+                  {/* <View style={EditProfileStyle.firstview}>
+                    <Text style={EditProfileStyle.oldnumbertext}>
+                      Phone number
+                    </Text>
                     <View style={[EditProfileStyle.phoneinputview]}>
                       <PhoneInput
                         ref={phoneInput}
                         defaultValue={phoneNumber}
                         // disabled={true}
+                        
                         editable={false}
                         defaultCode="AU"
                         layout="second"
@@ -528,12 +567,27 @@ const EditProfile = props => {
                           maxLength: 9,
                         }}
                         placeholder={'Enter your phone number'}
+                        onChangeText={text => {
+                          // validateMobileNumber(text);
+                          const checkValid =
+                            phoneInput.current?.isValidNumber(text);
+                          if (text === '') {
+                            setPhoneNumberError('Phone number is required');
+                            setPhoneNumber(text);
+                          } else if (checkValid == false) {
+                            setPhoneNumberError('Invalid phone number format');
+                            setPhoneNumber(text);
+                          } else {
+                            setPhoneNumberError('');
+                            // const numberOnly = text.substring(3);
+                            // setPhoneNumber(numberOnly);
+                          }
+                        }}
                         onChangeFormattedText={text => {
                           setPhoneNumber(text);
                         }}
                         textContainerStyle={{
                           flex: 1,
-
                           backgroundColor: _COLORS.Kodie_WhiteColor,
                           paddingVertical: 2,
                           height: 50,
@@ -550,8 +604,12 @@ const EditProfile = props => {
                         }}
                       />
                     </View>
-                  </View>
-
+                  </View> */}
+                  {/* {phoneNumberError ? (
+                    <Text style={EditProfileStyle.errorText}>
+                      {phoneNumberError}
+                    </Text>
+                  ) : null} */}
                   <View style={EditProfileStyle.inputContainer}>
                     <Text style={LABEL_STYLES.commontext}>{'Bio'}</Text>
                     <TextInput

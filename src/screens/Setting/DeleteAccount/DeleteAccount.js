@@ -86,11 +86,8 @@ const DeleteAccount = props => {
   // Api intrigation..
   const DeleteAccount = () => {
     const dataToSend = {
-      // uad_key: 644,
       uad_key: loginData?.Login_details?.user_account_id,
-      // email: "Rupesh1@gmail.com",
       email: email,
-      // phone_number: "8965656565",
       phone_number: phoneNumber,
     };
 
@@ -222,118 +219,19 @@ const DeleteAccount = props => {
           </Text>
         </View>
         <View style={DeleteAccountStyle.card}>
-          <Text style={LABEL_STYLES.commontext}>{'Phone number'}</Text>
-          {/* <View style={DeleteAccountStyle.phoneinputbindview}> */}
-          {/* <View style={DeleteAccountStyle.phoneinput}>
-              <View style={DeleteAccountStyle.bindnumberview}>
-                <Text style={DeleteAccountStyle.numbercode}>+61</Text>
-                <Ionicons
-                  name="chevron-down-outline"
-                  size={20}
-                  color={_COLORS.Kodie_LightGrayColor}
-                  resizeMode={"contain"}
-                />
-                <Image
-                  style={DeleteAccountStyle.lineimg}
-                  source={IMAGES.verticalLine}
-                />
-                <TextInput
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
-                  keyboardType="numeric"
-                  placeholder="Phone number"
-                  onBlur={() => validateMobileNumber(phoneNumber)}
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                  maxLength={10}
-                />
-              </View>
-            </View> */}
-          <View
-            style={{
-              height: 50,
-              // flexDirection: 'row',
-              alignItems: 'center',
-              // justifyContent: 'space-between',
-              marginTop: 8,
-              marginHorizontal: 16,
-            }}>
-            {/* <PhoneInput
-              ref={phoneInput}
-              defaultValue={phoneNumber}
-              defaultCode="AU"
-              layout="second"
-              Country={false}
-              onChangeText={text => {
-                // validateMobileNumber(text);
-                const checkValid = phoneInput.current?.isValidNumber(text);
-                if (text === '') {
-                  setPhoneNumberError('Phone number is required');
-                  setPhoneNumber(text);
-                } else if (checkValid == false) {
-                  setPhoneNumberError('Invalid phone number format');
-                  setPhoneNumber(text);
-                } else {
-                  setPhoneNumberError('');
-                  const numberOnly = text.substring(3);
-                  setPhoneNumber(numberOnly);
-                }
-              }}
-              textInputProps={{
-                maxLength: 9,
-              }}
-              placeholder={'Enter your phone number'}
-              onChangeFormattedText={text => {
-                // setFormattedValue(text);
-                const numberOnly = text.substring(3);
-                setPhoneNumber(numberOnly);
-              }}
-              // autoFocus
-              textContainerStyle={{
-                flex: 1,
-                backgroundColor: _COLORS.Kodie_WhiteColor,
-                paddingVertical: 2,
-                height: 50,
-                borderRadius: Platform.OS == 'ios' ? 10 : 10,
-                fontFamily: FONTFAMILY.K_Medium,
-              }}
-              containerStyle={{
-                flex: 1,
-                alignSelf: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderWidth: 1,
-                borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: Platform.OS == 'ios' ? 10 : 10,
-                fontFamily: FONTFAMILY.K_Medium,
-              }}
-            /> */}
-            <View
+          <View style={DeleteAccountStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{'Phone number'}</Text>
+            <TextInput
               style={[
-                DeleteAccountStyle.simpleinputview,
-                {backgroundColor: _COLORS.Kodie_GrayColor, borderRadius: 8},
-              ]}>
-              <Text
-                style={[
-                  DeleteAccountStyle.oldnumbertext,
-                  {marginLeft: 15, width: '15%'},
-                ]}>
-                {accountDetails?.UAD_COUNTRY_CODE}
-              </Text>
-              <Text
-                style={[
-                  DeleteAccountStyle.oldnumbertext,
-                  {width: '85%', textAlign: 'left'},
-                ]}>
-                {phoneNumber}
-              </Text>
-            </View>
+                DeleteAccountStyle.input,
+                {backgroundColor: _COLORS.Kodie_GrayColor},
+              ]}
+              value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                phoneNumber || ''
+              }`}
+              editable={false}
+            />
           </View>
-          {phoneNumberError ? (
-            <Text style={DeleteAccountStyle.error_text}>
-              {phoneNumberError}
-            </Text>
-          ) : null}
-          {/* </View> */}
           <View style={DeleteAccountStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
               {'Enter your email address'}
