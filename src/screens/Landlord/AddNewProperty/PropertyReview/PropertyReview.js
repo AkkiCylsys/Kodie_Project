@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -534,7 +534,11 @@ export default PropertyReview = props => {
             )}
 
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              <TouchableOpacity
+                style={DetailsStyle.propety_details_view}
+                onPress={() => {
+                  setPropertyDetailsClp(!propertyDetailsClp);
+                }}>
                 <Text style={DetailsStyle.propery_det}>
                   {'Property details'}
                 </Text>
@@ -554,7 +558,7 @@ export default PropertyReview = props => {
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
               <DividerIcon marginTop={8} />
               {propertyDetailsClp ? (
                 <>
@@ -643,7 +647,11 @@ export default PropertyReview = props => {
               {/* <DividerIcon marginTop={8} /> */}
             </View>
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              <TouchableOpacity
+                style={DetailsStyle.propety_details_view}
+                onPress={() => {
+                  setRoomClp(!roomClp);
+                }}>
                 <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
                 <TouchableOpacity
                   style={DetailsStyle.down_Arrow_icon}
@@ -656,7 +664,7 @@ export default PropertyReview = props => {
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             </View>
             <DividerIcon marginTop={8} />
             {roomClp ? (
@@ -742,7 +750,11 @@ export default PropertyReview = props => {
               </>
             ) : null}
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              <TouchableOpacity
+                style={DetailsStyle.propety_details_view}
+                onPress={() => {
+                  setExternalfeaturesClp(!externalfeaturesClp);
+                }}>
                 <Text style={DetailsStyle.propery_det}>
                   {'External featuress'}
                 </Text>
@@ -762,7 +774,7 @@ export default PropertyReview = props => {
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             </View>
             <DividerIcon marginTop={8} />
             {externalfeaturesClp ? (
@@ -848,7 +860,11 @@ export default PropertyReview = props => {
               </>
             ) : null}
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              <TouchableOpacity
+                style={DetailsStyle.propety_details_view}
+                onPress={() => {
+                  setPointOfInterest(!pointOfInterest);
+                }}>
                 <Text style={DetailsStyle.propery_det}>
                   {'Points of interest'}
                 </Text>
@@ -867,7 +883,7 @@ export default PropertyReview = props => {
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
               <DividerIcon marginTop={8} />
 
               <View style={PropertyReviewStyle.btnView}>
