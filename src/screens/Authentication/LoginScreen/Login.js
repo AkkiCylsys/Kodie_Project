@@ -399,10 +399,9 @@ export default Login = props => {
           email: email,
           user_key: res.User_key,
         });
-      } else if(res?.data?.message === "Account Has Been Susupended"){
-        Alert.alert("Account Susupension",res?.data?.message)
-      }
-      else if (res?.data?.success == 'true') {
+      } else if (res?.data?.message === 'Account Has Been Susupended') {
+        Alert.alert('Account Susupension', res?.data?.message);
+      } else if (res?.data?.success == 'true') {
         //  alert("Login successful");
         setIsLoading(false);
         // if (res.data.code == 6) {
@@ -631,6 +630,7 @@ export default Login = props => {
                 placeholderTextColor="#999"
                 maxLength={30}
                 autoCapitalize={'none'}
+                keyboardType={'email-address'}
               />
             </View>
             {emailError ? (
