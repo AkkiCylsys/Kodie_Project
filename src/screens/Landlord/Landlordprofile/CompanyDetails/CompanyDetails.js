@@ -79,7 +79,7 @@ export default CompanyDetails = props => {
   const [servicesData, setServicesData] = useState([]);
   const [IndiservicesData, setIndiServicesData] = useState([]);
   const isvisible = useIsFocused();
-
+  const [IsHeeight, SetIsHeeight] = useState(false);
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -760,6 +760,8 @@ export default CompanyDetails = props => {
                   onChangeText={text => {
                     setIndiWebsite(text);
                   }}
+                  onFocus={() => SetIsHeeight(true)}
+                  onBlur={() => SetIsHeeight(false)}
                   placeholder="Enter your website address (if you have one)"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
@@ -906,6 +908,8 @@ export default CompanyDetails = props => {
                   style={CompanyInProfileStyle.input}
                   value={website}
                   onChangeText={setWebsite}
+                  onFocus={() => SetIsHeeight(true)}
+                  onBlur={() => SetIsHeeight(false)}
                   placeholder="Enter your website address (if you have one)"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
@@ -1124,6 +1128,9 @@ export default CompanyDetails = props => {
             </View>
 
             {checkTabs()}
+            {Platform.OS == 'ios' ? (
+              <View style={{height: IsHeeight ? 120 : 0}}></View>
+            ) : null}
             <View style={CompanyDetailsStyle.saveBackButton}>
               <View style={CompanyDetailsStyle.secondview}>
                 <CustomSingleButton

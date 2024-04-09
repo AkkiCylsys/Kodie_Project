@@ -723,7 +723,7 @@ const PropertyList = props => {
           {
             position: 'absolute',
             left: -20,
-            bottom: -30,
+            bottom: -40,
             width: '100%',
             height: isDeleteData_Clicked ? '30%' : '35%',
             backgroundColor: 'white',
