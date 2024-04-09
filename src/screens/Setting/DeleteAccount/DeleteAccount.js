@@ -5,6 +5,7 @@ import {
   TextInput,
   ScrollView,
   SafeAreaView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {DeleteAccountStyle} from './DeleteAccountStyle';
@@ -18,7 +19,9 @@ import {useSelector} from 'react-redux';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import PhoneInput from 'react-native-phone-number-input';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const DeleteAccount = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
@@ -152,117 +155,123 @@ const DeleteAccount = props => {
   };
   return (
     <SafeAreaView style={DeleteAccountStyle.container}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={'Delete this account'}
-      />
-      <ScrollView>
-        <View style={DeleteAccountStyle.headingview}>
-          {/* <Image
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={DeleteAccountStyle.container}>
+        <TopHeader
+          onPressLeftButton={() => _goBack(props)}
+          MiddleText={'Delete this account'}
+        />
+        <ScrollView>
+          <View style={DeleteAccountStyle.headingview}>
+            {/* <Image
             style={DeleteAccountStyle.helpimg}
             source={IMAGES.helpCenter}
           /> */}
-          <Ionicons
-            name={'information-circle-outline'}
-            color={_COLORS.Kodie_GreenColor}
-            size={30}
-          />
-          <Text style={DeleteAccountStyle.accounttext}>
-            If you delete this account
-          </Text>
-        </View>
-
-        <View style={DeleteAccountStyle.Pointsview}>
-          <Text style={DeleteAccountStyle.textpoint}>
-            • The account will be deleted from Kodie and all your devices
-          </Text>
-          <Text style={DeleteAccountStyle.textpoint}>
-            • Your message history will be erased
-          </Text>
-          <Text style={DeleteAccountStyle.textpoint}>
-            • Delete your payments info
-          </Text>
-          <Text style={DeleteAccountStyle.textpoint}>
-            • Property data will also be deleted
-          </Text>
-        </View>
-
-        <View style={DeleteAccountStyle.logoutview}>
-          {/* <Image style={DeleteAccountStyle.Logoutimg} source={IMAGES.Log_Out} />
-           */}
-          <MaterialCommunityIcons
-            name={'logout'}
-            color={_COLORS.Kodie_GreenColor}
-            size={30}
-          />
-          <Text style={DeleteAccountStyle.insteadtext}>
-            Change number instead?
-          </Text>
-        </View>
-
-        <View style={DeleteAccountStyle.buttonview}>
-          <CustomSingleButton
-            disabled={isLoading ? true : false}
-            _ButtonText={'Change number instead'}
-            backgroundColor={_COLORS.Kodie_lightGreenColor}
-            Text_Color={_COLORS.Kodie_BlackColor}
-            onPress={() => {
-              props.navigation.navigate('ChangeContactInput');
-            }}
-          />
-        </View>
-
-        <View style={DeleteAccountStyle.toconfirmview}>
-          <Text style={DeleteAccountStyle.toconfirmtext}>
-            To delete your account, confirm your country code and enter your
-            phone or email address
-          </Text>
-        </View>
-        <View style={DeleteAccountStyle.card}>
-          <View style={DeleteAccountStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Phone number'}</Text>
-            <TextInput
-              style={[
-                DeleteAccountStyle.input,
-                {backgroundColor: _COLORS.Kodie_GrayColor},
-              ]}
-              value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
-                phoneNumber || ''
-              }`}
-              editable={false}
+            <EvilIcons
+              name={'question'}
+              color={_COLORS.Kodie_GreenColor}
+              size={30}
             />
-          </View>
-          <View style={DeleteAccountStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>
-              {'Enter your email address'}
+            <Text style={DeleteAccountStyle.accounttext}>
+              If you delete this account
             </Text>
-            <TextInput
-              style={DeleteAccountStyle.input}
-              value={email}
-              onChangeText={setEmail}
-              onBlur={() => handleAccountEmail(email)}
-              placeholder="Email"
-              placeholderTextColor="#999"
+          </View>
+
+          <View style={DeleteAccountStyle.Pointsview}>
+            <Text style={DeleteAccountStyle.textpoint}>
+              • The account will be deleted from Kodie and all your devices
+            </Text>
+            <Text style={DeleteAccountStyle.textpoint}>
+              • Your message history will be erased
+            </Text>
+            <Text style={DeleteAccountStyle.textpoint}>
+              • Delete your payments info
+            </Text>
+            <Text style={DeleteAccountStyle.textpoint}>
+              • Property data will also be deleted
+            </Text>
+          </View>
+
+          <View style={DeleteAccountStyle.logoutview}>
+            {/* <Image style={DeleteAccountStyle.Logoutimg} source={IMAGES.Log_Out} />
+             */}
+            <View style={DeleteAccountStyle.IconView}>
+              <MaterialIcons
+                name={'logout'}
+                color={_COLORS.Kodie_GreenColor}
+                size={22}
+              />
+            </View>
+            <Text style={DeleteAccountStyle.insteadtext}>
+              Change number instead?
+            </Text>
+          </View>
+
+          <View style={DeleteAccountStyle.buttonview}>
+            <CustomSingleButton
+              disabled={isLoading ? true : false}
+              _ButtonText={'Change number instead'}
+              backgroundColor={_COLORS.Kodie_lightGreenColor}
+              Text_Color={_COLORS.Kodie_BlackColor}
+              onPress={() => {
+                props.navigation.navigate('ChangeContactInput');
+              }}
             />
           </View>
-          {emailError ? (
-            <Text style={DeleteAccountStyle.error_text}>{emailError}</Text>
-          ) : null}
-        </View>
-        <View style={DeleteAccountStyle.buttonblackview}>
-          <CustomSingleButton
-            _ButtonText={'Delete account'}
-            backgroundColor={_COLORS.Kodie_BlackColor}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            disabled={isLoading ? true : false}
-            onPress={() => {
-              handleSubmit();
-              // DeleteAccount()
-            }}
-          />
-        </View>
-      </ScrollView>
-      {isLoading ? <CommonLoader /> : null}
+
+          <View style={DeleteAccountStyle.toconfirmview}>
+            <Text style={DeleteAccountStyle.toconfirmtext}>
+              To delete your account, confirm your country code and enter your
+              phone or email address
+            </Text>
+          </View>
+          <View style={DeleteAccountStyle.card}>
+            <View style={DeleteAccountStyle.inputContainer}>
+              <Text style={LABEL_STYLES.commontext}>{'Phone number'}</Text>
+              <TextInput
+                style={[
+                  DeleteAccountStyle.input,
+                  {backgroundColor: _COLORS.Kodie_GrayColor},
+                ]}
+                value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                  phoneNumber || ''
+                }`}
+                editable={false}
+              />
+            </View>
+            <View style={DeleteAccountStyle.inputContainer}>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Enter your email address'}
+              </Text>
+              <TextInput
+                style={DeleteAccountStyle.input}
+                value={email}
+                onChangeText={setEmail}
+                onBlur={() => handleAccountEmail(email)}
+                placeholder="Email"
+                placeholderTextColor="#999"
+              />
+            </View>
+            {emailError ? (
+              <Text style={DeleteAccountStyle.error_text}>{emailError}</Text>
+            ) : null}
+          </View>
+          <View style={DeleteAccountStyle.buttonblackview}>
+            <CustomSingleButton
+              _ButtonText={'Delete account'}
+              backgroundColor={_COLORS.Kodie_BlackColor}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
+              onPress={() => {
+                handleSubmit();
+                // DeleteAccount()
+              }}
+            />
+          </View>
+        </ScrollView>
+        {isLoading ? <CommonLoader /> : null}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
