@@ -395,7 +395,7 @@ export default SignUp = props => {
             backgroundColor={_COLORS.Kodie_WhiteColor}
             disabled={isLoading ? true : false}
             onPress={() => {
-              // props.navigation.navigate("SignUpSteps");
+              Alert.alert('Sign with Google', 'Coming soon');
             }}
           />
           <CustomSingleButton
@@ -404,6 +404,9 @@ export default SignUp = props => {
             isLeftImage={true}
             _ButtonText={'Sign up with Facebook'}
             backgroundColor={_COLORS.Kodie_WhiteColor}
+            onPress={() => {
+              Alert.alert('Sign with Facebook', 'Coming soon');
+            }}
           />
           <View style={SignUpStyles.already_account_login}>
             <BottomTextsButton

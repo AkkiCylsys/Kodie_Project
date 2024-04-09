@@ -25,7 +25,7 @@ import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
-// import RNFetchBlob from 'rn-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import {useNavigation} from '@react-navigation/native';
 import Share from 'react-native-share';
 
@@ -340,7 +340,11 @@ const ProfileDocumentDetails = props => {
   const checkPermission = async () => {
     setIsLoading(true);
     if (Platform.OS === 'ios') {
-      downloadImage();
+      // downloadImage();
+      // downloadDocumentIOs();
+      downloadFile(REMOTE_PATH).then(res => {
+        RNFetchBlob.ios.previewDocument(res.path());
+      });
     } else {
       try {
         const granted = await PermissionsAndroid.request(
@@ -370,7 +374,7 @@ const ProfileDocumentDetails = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    // const {config, fs} = RNFetchBlob;
+    const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -396,14 +400,72 @@ const ProfileDocumentDetails = props => {
         closeModal();
       });
   };
-// share doc....
-const shareDocFile = async () => {
-  try {
-    await Share.open({url: filePath});
-  } catch (error) {
-    console.error('Error sharing PDF file:', error);
-  }
-};
+  const downloadDocumentIOs = () => {
+    setIsLoading(true);
+    const REMOTE_PATH_URl = REMOTE_PATH;
+    const PictureDir = RNFetchBlob.fs.dirs.DocumentDir;
+    const fileName = `document_${Date.now()}.pdf`;
+    const filePath = `${PictureDir}/${fileName}`;
+
+    let options = {
+      fileCache: true,
+      notification: true,
+      path: filePath,
+      description: 'Document',
+    };
+
+    RNFetchBlob.config(options)
+      .fetch('GET', REMOTE_PATH_URl)
+      .then(res => {
+        console.log('File downloaded successfully');
+        setIsLoading(false);
+        alert('Document Downloaded Successfully.');
+        closeModal();
+      })
+      .catch(error => {
+        console.error('Error downloading file:', error);
+        setIsLoading(false);
+        alert('Failed to download document.');
+      });
+  };
+  const downloadFile = async url => {
+    // Get the app's cache directory
+    console.log('start. doc....');
+    const {config, fs} = RNFetchBlob;
+    const cacheDir = fs.dirs.DownloadDir;
+    // Generate a unique filename for the downloaded image
+    const filename = url.split('/').pop();
+    const imagePath = `${cacheDir}/${filename}`;
+
+    try {
+      // Download the file and save it to the cache directory
+      const configOptions = Platform.select({
+        ios: {
+          fileCache: true,
+          path: imagePath,
+          appendExt: filename.split('.').pop(),
+        },
+      });
+      const response = await RNFetchBlob.config(configOptions).fetch(
+        'GET',
+        url,
+      );
+
+      // Return the path to the downloaded file
+      return response;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  // share doc....
+  const shareDocFile = async () => {
+    try {
+      await Share.open({url: filePath});
+    } catch (error) {
+      console.error('Error sharing PDF file:', error);
+    }
+  };
   const getExtention = fileName => {
     // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
