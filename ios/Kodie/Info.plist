@@ -93,6 +93,10 @@
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Kodie requires SpeechRecognition access to allows you quick and secure access.</string>
 	<key>UIAppFonts</key>
+	<key>NSDocumentsFolderUsageDescription</key> 
+	<string></string> 
+	<key>NSDownloadsFolderUsageDescription</key> 
+	<string></string>
 	<array>
 		<string>NunitoSans-Black.ttf</string>
 		<string>NunitoSans-BlackItalic.ttf</string>
