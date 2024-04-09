@@ -37,7 +37,15 @@ export const MarketplacePropertyListingStyle = StyleSheet.create({
         height: 65,
         width: 65,
         borderRadius: 10,
-        alignSelf: "center",
+        alignSelf: 'center',
+        borderWidth: 1,
+        borderColor: _COLORS?.Kodie_GrayColor,
+      },
+      Img_found: {
+        fontSize: 12,
+        color: _COLORS?.Kodie_BlackColor,
+        textAlign: 'center',
+        alignSelf: 'center',
       },
       noteStyle: {
         flexDirection: "row",

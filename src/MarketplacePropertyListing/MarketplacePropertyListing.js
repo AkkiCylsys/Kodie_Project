@@ -16,13 +16,14 @@ import {_COLORS, IMAGES, BANNERS} from '../Themes';
 import AddBiddingDetails from '../components/Molecules/AddBiddingDetails/AddBiddingDetails';
 import InviteTenant from '../screens/Landlord/InviteTenant/InviteTenant';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import VacantModal from '../components/Molecules/VacantModal/VacantModal';
 import {Config} from '../Config';
-import BottomModalData from '../components/Molecules/BottomModal/BottomModalData';
 import {CommonLoader} from '../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
+import PropertyPopup from '../components/PropertyModal/PropertyPopup';
+import PropertyModal from '../components/PropertyModal/PropertyModal';
 import {useSelector, useDispatch} from 'react-redux';
 import SearchBar from '../components/Molecules/SearchBar/SearchBar';
+import { _goBack } from '../services/CommonServices';
 
 
 const HorizontalData = [
@@ -119,7 +120,7 @@ const property_List1 = [
   },
 ];
 
-const MarketplacePropertyListing = () => {
+const MarketplacePropertyListing = (props) => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
   const refRBSheet1 = useRef();
@@ -187,17 +188,17 @@ const MarketplacePropertyListing = () => {
   const get_MarketplacePropertyListing = () => {
     const url = Config.BASE_URL;
     const PropertyListing_url =
-      ' https://kodietestapi.cylsys.com/api/v1/property_market_by_account_id';
+      url+'property_market_by_account_id';
     setIsLoading(true);
     console.log('Request URL:', PropertyListing_url);
     // setIsLoading(true);
     const PropertyListing_data = {
-      account_id: 595,
+      account_id: loginData?.Login_details?.user_account_id,
     };
     axios
       .post(PropertyListing_url, PropertyListing_data)
       .then(response => {
-        console.log('API Response PropertyListing_url:', response?.data);
+        console.log('Property Market Details Retrieve Successfully:', JSON.stringify(response?.data));
         if (response?.data?.success === true) {
           setPropertyListingData(response?.data?.property_details);
           // console.log("Vacent Details Data..", response?.data?.data);
@@ -267,10 +268,24 @@ const MarketplacePropertyListing = () => {
                 </Text>
               </View>
             </View>
-            {/* <Image
-              source={{uri: item.image_path[0]}}
-              style={MarketplacePropertyListingStyle.imageStyle}
-            /> */}
+            {item?.image_path && item?.image_path.length > 0 ? (
+              <Image
+                source={{uri: item?.image_path[0]}}
+                style={MarketplacePropertyListingStyle.imageStyle}
+                resizeMode='cover'
+              />
+            ) : 
+            (
+              <View
+                style={[
+                  MarketplacePropertyListingStyle.imageStyle,
+                  {justifyContent: 'center'},
+                ]}>
+                <Text style={MarketplacePropertyListingStyle.Img_found}>
+                  {'Image not found'}
+                </Text>
+              </View>
+            )}
             <View style={MarketplacePropertyListingStyle.flexContainer}>
               <View style={MarketplacePropertyListingStyle.noteStyle}>
                 <TouchableOpacity>
@@ -335,7 +350,7 @@ const MarketplacePropertyListing = () => {
                     refRBSheet3.current.open();
                   }}>
                   {/* {item.buttonName} */}
-                  "+ invite"
+                  {"+ invite"}
                 </Text>
               </View>
             </View>
@@ -395,7 +410,7 @@ const MarketplacePropertyListing = () => {
             },
             container: MarketplacePropertyListingStyle.bottomModal_container,
           }}>
-          <VacantModal
+          <PropertyPopup
             onPress={() => {
               refRBSheet2.current.open();
             }}
@@ -446,17 +461,18 @@ const MarketplacePropertyListing = () => {
     );
   };
   return (
-    <View>
-      <TopHeader MiddleText={'Propery listings'} />
-      <View>
-        <View>
+    <View style={{flex:1,backgroundColor:_COLORS.Kodie_WhiteColor}}>
+      <TopHeader 
+      onPressLeftButton={()=>props.navigation.navigate("Dashboard")}
+      MiddleText={'Propery listings'} />
+     
           <SearchBar
             filterImage={IMAGES.filter}
             frontSearchIcon
             marginTop={16}
             placeholder={'Search properties'}
           />
-        </View>
+   
         <View style={MarketplacePropertyListingStyle.Container}>
               <View style={MarketplacePropertyListingStyle.flat_MainView}>
                 <FlatList
@@ -468,16 +484,16 @@ const MarketplacePropertyListing = () => {
               </View>
             </View>
         
-      </View>
+     
       <DividerIcon />
-      <View>
+      
         {/* <FlatList data={property_List1} renderItem={propertyData1_render} /> */}
         <FlatList
           data={PropertyListing_data}
           renderItem={propertyData1_render}
         />
         {isLoading ? <CommonLoader /> : null}
-      </View>
+    
     </View>
   );
 };

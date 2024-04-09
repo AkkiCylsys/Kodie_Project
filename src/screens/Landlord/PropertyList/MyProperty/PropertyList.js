@@ -268,7 +268,8 @@ const PropertyList = props => {
                 style={PropertyListCSS.imageStyle}
                 resizeMode='cover'
               />
-            ) : (
+            ) : 
+            (
               <View
                 style={[
                   PropertyListCSS.imageStyle,
