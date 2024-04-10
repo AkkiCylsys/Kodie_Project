@@ -790,8 +790,8 @@ export default CreateJobFirstScreen = props => {
   return (
     <SafeAreaView style={CreateJobFirstStyle.container}>
       <TopHeader
-        isprofileImage
-        IsNotification
+        // isprofileImage
+        // IsNotification
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}

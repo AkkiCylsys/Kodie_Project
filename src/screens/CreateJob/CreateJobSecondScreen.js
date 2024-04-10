@@ -484,8 +484,8 @@ const CreateJobSecondScreen = props => {
   return (
     <SafeAreaView style={CreateJobSecondStyle.container}>
       <TopHeader
-        isprofileImage
-        IsNotification
+        // isprofileImage
+        // IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? 'Edit job' : 'Create new job request'}
       />
