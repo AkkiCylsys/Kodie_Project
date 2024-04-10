@@ -661,22 +661,25 @@ export default Login = props => {
             {passwordError ? (
               <Text style={LoginStyles.error_text}>{passwordError}</Text>
             ) : null}
-            <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.open();
-                setIsClick(0);
-                setResetEmail('');
-                setVerificationcode('');
-                setVerificationcodeError('');
-                setNewPassword('');
-                setPasswordError('');
-                setConfirmPassword('');
-                setConfirmPasswordError('');
-                setResetEmailError('');
-              }}>
-              <Text style={LoginStyles.forgot}>Forgot password?</Text>
-            </TouchableOpacity>
-
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet.current.open();
+                  setIsClick(0);
+                  setResetEmail('');
+                  setVerificationcode('');
+                  setVerificationcodeError('');
+                  setNewPassword('');
+                  setPasswordError('');
+                  setConfirmPassword('');
+                  setConfirmPasswordError('');
+                  setResetEmailError('');
+                }}
+                style={{flex: 0.5}}>
+                <Text style={LoginStyles.forgot}>Forgot password?</Text>
+              </TouchableOpacity>
+              <View style={{flex: 0.9}} />
+            </View>
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={handleSubmit}

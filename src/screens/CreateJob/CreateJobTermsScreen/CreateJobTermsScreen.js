@@ -2,7 +2,13 @@
 //ScreenNo:124
 //ScreenNo:125
 import React, {useState, useEffect} from 'react';
-import {View, Text, ScrollView, TouchableOpacity, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+} from 'react-native';
 import {CreateJobTermsStyle} from './CreateJobTermsStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../services/CommonServices';
@@ -599,8 +605,8 @@ export default CreateJobTermsScreen = props => {
   return (
     <SafeAreaView style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
-        isprofileImage
-        IsNotification
+        // isprofileImage
+        // IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? 'Edit job' : 'Create new job request'}
       />

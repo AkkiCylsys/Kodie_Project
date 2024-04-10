@@ -284,11 +284,11 @@ export default Documents = props => {
             size={30}
             color={_COLORS.Kodie_GrayColor}
           />
-          <Entypo
+          {/* <Entypo
             name="dots-three-vertical"
             size={25}
             color={_COLORS.Kodie_GrayColor}
-          />
+          /> */}
         </View>
         <View>
           <Text style={DocumentsStyle.propertyDocText}>

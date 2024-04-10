@@ -67,6 +67,11 @@ const Chats = props => {
       <SafeAreaView style={ChatsStyle.container}>
         <TopHeader
           // onPressLeftButton={() => _goBack(props)}
+          IsNotification={true}
+          isprofileImage
+          onPressRightImgProfile={() =>
+            props.navigation.navigate('LandlordProfile')
+          }
           onPressLeftButton={() => props.navigation.navigate('Dashboard')}
           MiddleText={'Chats'}
         />
