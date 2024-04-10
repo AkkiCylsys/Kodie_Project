@@ -99,6 +99,9 @@ const Jobs = props => {
         MiddleText={'Jobs'}
         isprofileImage
         IsNotification={true}
+        onPressRightImgProfile={() =>
+          props.navigation.navigate('LandlordProfile')
+        }
       />
       <CustomTabNavigator
         activeTab={activeTab}
