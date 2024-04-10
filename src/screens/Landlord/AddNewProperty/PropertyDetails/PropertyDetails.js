@@ -108,7 +108,6 @@ export default PropertyDetails = props => {
       };
     }, [IsMap, IsSearch]),
   );
-
   useEffect(() => {
     handleProperty_Type();
     propertyid > 0 ? DetailsData() : null;
@@ -121,7 +120,6 @@ export default PropertyDetails = props => {
     setProperty_value('');
     setPropertyDesc('');
   }, [isFocus]);
-
   const DetailsData = async () => {
     const detailData = {
       property_id: propertyid,
