@@ -396,7 +396,7 @@ const MarketplacePropertyListing = (props) => {
         <RBSheet
           ref={refRBSheet1}
           closeOnDragDown={true}
-          height={320}
+          height={774}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {

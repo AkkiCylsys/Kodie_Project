@@ -1,128 +1,275 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   View,
   Text,
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Modal,
+  Image,
+  Alert,
 } from 'react-native';
-import { PropertyModalStyle } from './PropertyModalStyle';
+import {PropertyPopupStyle} from './PropertyPopupStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import { _COLORS, FONTFAMILY } from '../../Themes';
-import { LABEL_STYLES } from '../../Themes';
-import CalendarModal from '../Molecules/CalenderModal/CalenderModal';
 import {Dropdown} from 'react-native-element-dropdown';
 import SwitchToggle from 'react-native-switch-toggle';
-import DividerIcon from '../Atoms/Devider/DividerIcon';
-
+import RowButtons from '../Molecules/RowButtons/RowButtons';
+import CalendarModal from '../Molecules/CalenderModal/CalenderModal';
+import {LABEL_STYLES} from '../../Themes';
+import {_COLORS} from '../../Themes';
+import CustomSingleButton from '../Atoms/CustomButton/CustomSingleButton';
+import {CommonLoader} from '../Molecules/ActiveLoader/ActiveLoader';
+import {useSelector} from 'react-redux';
+import {Config} from '../../Config';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import axios from 'axios';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import {SignupLookupDetails} from '../../APIs/AllApi';
 const data = [
-  {value: 0, label: 'Weekly'},
-  {value: 1, label: 'Monthly'},
+  {label: '3-month', value: '1'},
+  {label: '6-month', value: '2'},
+  {label: '12-month', value: '3'},
 ];
- const PropertyPopup = props => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+const notification_data = [
+  {label: 'Notification', value: '1'},
+  {label: 'Email', value: '2'},
+];
+const reminder_data = [
+  {label: '30-day', value: '1'},
+  {label: '2-day', value: '2'},
+  {label: '2-day', value: '3'},
+];
+const PropertyPopup = props => {
+  const [value, setValue] = useState(null);
+  const [selectedCommDate, setselectedCommDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [selectedEndDate, setSelectedEndDate] = useState(null);
-  const [rentalAmount, setRentalAmount] = useState(null);
-  const [lease_term_value, setlLease_term_value] = useState('');
-  const [lease_end_value, setlLease_end_value] = useState('');
-  const [toggle_expiry, setToggle_expiry] = useState(false);
-  const [toggle_payment, setToggle_payment] = useState(false);
+  const [listPrice, setListPrice] = useState(0);
+  const [rentalBond, setRentalBond] = useState('');
+  const [paymentDueDay, setPaymentDueDay] = useState('');
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [on, setOn] = useState(true);
+  const [Visible, setVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [kodieDurationData, setkodieDurationData] = useState([]);
+  const [duration_value, setDuration_value] = useState(null);
+  const [notification_type_Data, setNotification_type_Data] = useState([]);
+  const [notification_type_value, setNotification_type_value] = useState(null);
+  const [Toggle_open, setToggle_open] = useState(false);
+  const [toggle_Bid_Open, settoggle_Bid_Open] = useState(0);
+  const [open_reminder_Data, setopen_reminder_Data] = useState([]);
+  const [open_reminder_Value, setopen_reminder_Value] = useState(null);
+  const [Close_reminder_Data, setClose_reminder_Data] = useState([]);
+  const [Close_reminder_Value, setClose_reminder_Value] = useState(null);
+  const [Newbid, setNewbid] = useState([]);
+  const [Newbid_Value, setNewbid_Value] = useState(null);
+  const [toggle_close, settoggle_close] = useState(false);
+  const [toggle_Bid_Close, settoggle_Bid_Close] = useState(0);
   const [toggle_rental, setToggle_rental] = useState(false);
-  const [showNotificationData, setShowNotificationData] = useState(false);
-  const [showLeaseDetailsData, setLeaseDetailsData] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('Save');
-  const [isModalVisibleEndDate, setModalVisibleEndDate] = useState(false);
-  const handlePopUp = () => {
-    // Implement your logic to handle popup close
-  };
+  const [toggle_New_bid, settoggle_New_bid] = useState(0);
+  const [selected_payment_Button, setselected_payment_Button] = useState(false);
+  const [selected_payment_id, setselected_payment_id] = useState(319);
+  const [BidData, setBidData] = useState([]);
+  const [isSaveClicked, setIsSaveClicked] = useState(false);
 
-  const handleDayPress = day => {
-    // Implement your logic for handling day press
+  const JOB_ID = props.JOB_ID;
+  console.log('sheet JOB_ID', JOB_ID);
+  const refRBSheet = useRef();
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log(
+    'loginresponse_jobdetails..',
+    loginData?.Login_details?.user_account_id,
+  );
+  <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
+  useEffect(() => {
+    handle_notification_type();
+    handle_Open_reminder();
+    handle_Close_reminder();
+    handle_NewBid_reminder();
+    handle_duration();
+  }, []);
+  const handleOptionClick = option => {
+    setSelectedOption(option);
+    handleclosepopUp();
   };
-
-  const handleEndDayPress = day => {
-    // Implement your logic for handling end day press
+  const sendDataToParent = () => {
+    const data = 'Hello from child!';
+    props.continueOnPress(BidData);
   };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const toggleModalEndDate = () => {
-    setModalVisibleEndDate(!isModalVisibleEndDate);
-  };
-  const handleShowLeaseDetailsData = () => {
-    setLeaseDetailsData(!showLeaseDetailsData);
+  const handleDayPress = day => {
+    setselectedCommDate(day.dateString);
   };
 
-  const handleShowNotificationData = () => {
-    setShowNotificationData(!showNotificationData);
+  const toggleview = () => {
+    setVisible(!Visible);
+  };
+  const handleSaveClick = () => {
+    setIsSaveClicked(true);
+  };
+  const handleclosepopUp = () => {
+    props.onclose();
+  };
+  const handle_addlease_Bid = () => {
+    const url = Config.BASE_URL;
+    const add_Bid_url = url + 'property_market_place_enable_bidding';
+    console.log('Request URL:', add_Bid_url);
+
+    setIsLoading(true);
+    const Bid_Data = {
+      account_id: loginData?.Login_details?.user_account_id,
+      property_id: 0,
+      commencement_date: selectedCommDate,
+      duration: duration_value,
+      list_price: listPrice,
+      auto_threshold: rentalBond,
+      notif_type: notification_type_value,
+      bid_open_reminder: open_reminder_Value,
+      bid_open_day: 0,
+      bid_open_before: 0,
+      bid_close_reminder: Close_reminder_Value,
+      bid_close_day: 'string',
+      bid_close_before: 'string',
+      new_bid: Newbid_Value,
+      new_bid_days: 'string',
+      new_bid_before: 'string',
+    };
+    console.log('Bid_Data', Bid_Data);
+    axios
+      .post(add_Bid_url, Bid_Data)
+      .then(response => {
+        console.log('API Response add_bid:', response?.data);
+        setBidData(response?.data);
+
+        if (response?.data.success === true) {
+          Alert.alert('Success !', response?.data.message);
+          handleSaveClick();
+        } else {
+          Alert.alert('Error !', response?.data.message);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('API failed in add_Bid', error);
+        setIsLoading(false);
+        alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
-  const handleOptionClick = option => {
-    setSelectedOption(option);
-  };
+  const handle_duration = async () => {
+    setIsLoading(true);
 
-  const handle_add_Lease = () => {
-    // Implement your logic for adding lease details
-  };
+    const res = await SignupLookupDetails({
+      P_PARENT_CODE: 'BID_DURATION',
+      P_TYPE: 'OPTION',
+    });
 
-  const lease_end_render = item => {
-    return (
-      <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
-        <View style={PropertyModalStyle.itemView}>
-          {item.lookup_key === lease_end_value ? (
-            <AntDesign
-              color={_COLORS.Kodie_GreenColor}
-              name={'checkcircle'}
-              size={20}
-            />
-          ) : (
-            <Fontisto
-              color={_COLORS.Kodie_GrayColor}
-              name={'radio-btn-passive'}
-              size={20}
-            />
-          )}
-          <Text style={PropertyModalStyle.textItem}>
-            {item.lookup_description}
-          </Text>
-        </View>
-      </ScrollView>
-    );
-  };
+    console.log('kodie_duration_data', res);
 
-  const lease_term_render = item => {
-    return (
-      <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
-        <View style={PropertyModalStyle.itemView}>
-          {item.lookup_key === lease_term_value ? (
-            <AntDesign
-              color={_COLORS.Kodie_GreenColor}
-              name={'checkcircle'}
-              size={20}
-            />
-          ) : (
-            <Fontisto
-              color={_COLORS.Kodie_GrayColor}
-              name={'radio-btn-passive'}
-              size={20}
-            />
-          )}
-          <Text style={PropertyModalStyle.textItem}>
-            {item.lookup_description}
-          </Text>
-        </View>
-      </ScrollView>
-    );
+    setkodieDurationData(res?.lookup_details);
+    setIsLoading(false);
+  };
+  const handle_notification_type = async () => {
+    setIsLoading(true);
+
+    const res = await SignupLookupDetails({
+      P_PARENT_CODE: 'SNT',
+      P_TYPE: 'OPTION',
+    });
+
+    console.log('notification_type', res);
+
+    setNotification_type_Data(res?.lookup_details);
+    setIsLoading(false);
+  };
+  const handle_Open_reminder = async () => {
+    setIsLoading(true);
+
+    const res = await SignupLookupDetails({
+      P_PARENT_CODE: 'LER',
+      P_TYPE: 'OPTION',
+    });
+
+    console.log('Response expiry reminder', res);
+
+    setopen_reminder_Data(res?.lookup_details);
+    setIsLoading(false);
+  };
+  const handle_Close_reminder = async () => {
+    setIsLoading(true);
+
+    const res = await SignupLookupDetails({
+      P_PARENT_CODE: 'RPR',
+      P_TYPE: 'OPTION',
+    });
+
+    console.log('Response payment reminder', res);
+
+    setClose_reminder_Data(res?.lookup_details);
+    setIsLoading(false);
+  };
+  const handle_NewBid_reminder = async () => {
+    setIsLoading(true);
+
+    const res = await SignupLookupDetails({
+      P_PARENT_CODE: 'NEW_BID',
+      P_TYPE: 'OPTION',
+    });
+
+    console.log('Response rental reminder', res);
+
+    setNewbid(res?.lookup_details);
+    setIsLoading(false);
   };
 
   const notification_render = item => {
     return (
-      <View style={PropertyModalStyle.itemView}>
+      <View
+        style={[
+          PropertyPopupStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === notification_type_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
         {item.lookup_key === notification_type_value ? (
+          <Fontisto
+            color={_COLORS.Kodie_GreenColor}
+            name={'radio-btn-active'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={PropertyPopupStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
+  const Durantion_render = item => {
+    return (
+      <View
+        style={[
+          PropertyPopupStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === duration_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item.lookup_key === duration_value ? (
           <AntDesign
             color={_COLORS.Kodie_GreenColor}
             name={'checkcircle'}
@@ -135,7 +282,7 @@ const data = [
             size={20}
           />
         )}
-        <Text style={PropertyModalStyle.textItem}>
+        <Text style={PropertyPopupStyle.textItem}>
           {item.lookup_description}
         </Text>
       </View>
@@ -143,265 +290,169 @@ const data = [
   };
 
   return (
-    <View style={PropertyModalStyle.mainContainer}>
-      <View style={PropertyModalStyle.heading_View}>
-        <Text style={PropertyModalStyle.heading_Text}>
-          {'Add lease details'}
-        </Text>
-        <View style={{alignSelf: 'center', marginTop: 5}}>
-          <TouchableOpacity onPress={handlePopUp}>
-            <AntDesign
-              name="close"
-              size={22}
-              color={_COLORS.Kodie_BlackColor}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <ScrollView>
-        <View style={PropertyModalStyle.card}>
-          <Text style={[LABEL_STYLES.commontext]}>{'Commencement date*'}</Text>
-          <View style={PropertyModalStyle.datePickerView}>
-            <CalendarModal
-              SelectDate={
-                selectedDate ? selectedDate : 'Start date of the lease'
-              }
-              _textInputStyle={{
-                color: selectedDate
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_GrayColor,
-              }}
-              calenderIcon={toggleModal}
-              onDayPress={handleDayPress}
-              Visible={isModalVisible}
-              onRequestClose={toggleModal}
-              markedDates={{
-                [selectedDate]: {
-                  selected: true,
-                  selectedColor: _COLORS.Kodie_lightGreenColor,
-                  selectedTextColor: _COLORS.Kodie_BlackColor,
-                },
-              }}
-              _closeButton={toggleModal}
-              _ApplyButton={toggleModal}
-            />
-          </View>
-          <View style={PropertyModalStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Rental lease term*'}</Text>
-            <Dropdown
-              style={[
-                PropertyModalStyle.dropdown,
-                {flex: 1, borderRadius: 5, height: 45},
-              ]}
-              placeholderStyle={[
-                PropertyModalStyle.placeholderStyle,
-                {color: _COLORS.Kodie_LightGrayColor},
-              ]}
-              selectedTextStyle={PropertyModalStyle.selectedTextStyle}
-              inputSearchStyle={PropertyModalStyle.inputSearchStyle}
-              iconStyle={PropertyModalStyle.iconStyle}
-              // data={lease_term_Data}
-              maxHeight={300}
-              labelField="lookup_description"
-              valueField="lookup_key"
-              placeholder="Select length of lease"
-              value={lease_term_value}
-              onChange={item => {
-                setlLease_term_value(item.lookup_key);
-                // alert(item.lookup_key);
-              }}
-              renderItem={lease_term_render}
-            />
-          </View>
-          <Text style={[LABEL_STYLES.commontext, {marginTop: 12}]}>
-            {'Lease end date*'}
-          </Text>
-          <View style={PropertyModalStyle.datePickerView}>
-            <CalendarModal
-              SelectDate={
-                selectedEndDate ? selectedEndDate : 'End date of the lease'
-              }
-              _textInputStyle={{
-                color: selectedEndDate
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_GrayColor,
-              }}
-              calenderIcon={toggleModalEndDate}
-              onDayPress={handleEndDayPress}
-              Visible={isModalVisibleEndDate}
-              onRequestClose={toggleModalEndDate}
-              markedDates={{
-                [selectedEndDate]: {
-                  selected: true,
-                  selectedColor: _COLORS.Kodie_lightGreenColor,
-                  selectedTextColor: _COLORS.Kodie_BlackColor,
-                },
-              }}
-              _closeButton={toggleModalEndDate}
-              _ApplyButton={toggleModalEndDate}
-            />
-          </View>
-          <View style={PropertyModalStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Payment frequency*'}</Text>
-            <Dropdown
-              style={[
-                PropertyModalStyle.dropdown,
-                {flex: 1, borderRadius: 5, height: 45},
-              ]}
-              placeholderStyle={[
-                PropertyModalStyle.placeholderStyle,
-                {color: _COLORS.Kodie_LightGrayColor},
-              ]}
-              selectedTextStyle={PropertyModalStyle.selectedTextStyle}
-              inputSearchStyle={PropertyModalStyle.inputSearchStyle}
-              iconStyle={PropertyModalStyle.iconStyle}
-              data={lease_end_Data}
-              maxHeight={300}
-              labelField="lookup_description"
-              valueField="lookup_key"
-              placeholder="How often is rent paid"
-              value={lease_end_value}
-              onChange={item => {
-                setlLease_end_value(item.value);
-                // alert(item.lookup_key);
-              }}
-              renderItem={lease_end_render}
-            />
-          </View>
-          <View style={PropertyModalStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Rental amount*'}</Text>
-            <TextInput
-              style={PropertyModalStyle.input}
-              value={rentalAmount}
-              onChangeText={setRentalAmount}
-              placeholder="Enter the rental amount"
-              placeholderTextColor="#999"
-              keyboardType="number-pad"
-              maxLength={5}
-            />
-          </View>
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
-          <View>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontFamily: FONTFAMILY.K_Bold,
-                  color: _COLORS.Kodie_BlackColor,
-                }}>
-                Other lease details
-              </Text>
-              <TouchableOpacity
-                style={PropertyModalStyle.down_Arrow_icon}
-                onPress={handleShowLeaseDetailsData}>
-                <Entypo
-                  name={
-                    showLeaseDetailsData
-                      ? 'chevron-small-up'
-                      : 'chevron-small-down'
-                  }
-                  size={22}
-                  color={_COLORS.Kodie_BlackColor}
-                />
-              </TouchableOpacity>
-            </View>
-            <Text style={{fontSize: 12}}>
-              Enter extra information about your lease
+    <>
+      {!isSaveClicked ? (
+        <View style={PropertyPopupStyle.mainContainer}>
+          <View style={PropertyPopupStyle.heading_View}>
+            <Text style={PropertyPopupStyle.heading_Text}>
+              {'Add lease bidding details'}
             </Text>
+            <TouchableOpacity onPress={handleclosepopUp}>
+              <AntDesign
+                name="close"
+                size={22}
+                color={_COLORS.Kodie_BlackColor}
+                style={{alignSelf: 'center'}}
+              />
+            </TouchableOpacity>
           </View>
-          {showLeaseDetailsData ? (
-            <View>
-              <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
-              <View style={PropertyModalStyle.inputContainer}>
-                <Text style={LABEL_STYLES.commontext}>{'Rental bond'}</Text>
-                <TextInput
-                  style={PropertyModalStyle.input}
-                  value={paymentDueDay}
-                  onChangeText={setPaymentDueDay}
-                  placeholder="Enter the rental bond amount"
+          <ScrollView>
+            <View style={PropertyPopupStyle.card}>
+              <Text style={LABEL_STYLES.commontext}>{'Commencement date'}</Text>
+              <View style={PropertyPopupStyle.datePickerView}>
+                <CalendarModal
+                  SelectDate={
+                    selectedCommDate ? selectedCommDate : 'Start Date'
+                  }
+                  _textInputStyle={{
+                    color: selectedCommDate
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_GrayColor,
+                  }}
+                  calenderIcon={toggleModal}
+                  onDayPress={handleDayPress}
+                  Visible={isModalVisible}
+                  onRequestClose={toggleModal}
+                  markedDates={{
+                    [selectedCommDate]: {
+                      selected: true,
+                      selectedColor: _COLORS.Kodie_lightGreenColor,
+                      selectedTextColor: _COLORS.Kodie_BlackColor,
+                    },
+                  }}
+                  _closeButton={toggleModal}
+                  _ApplyButton={toggleModal}
                 />
               </View>
-              <View style={PropertyModalStyle.inputContainer}>
-                <Text style={LABEL_STYLES.commontext}>{'Rental deposit'}</Text>
-                <TextInput
-                  style={PropertyModalStyle.input}
-                  value={paymentDueDay}
-                  onChangeText={setPaymentDueDay}
-                  placeholder="Enter the rental deposit amount"
+              <View style={PropertyPopupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>{'Duration'}</Text>
+                <Dropdown
+                  style={PropertyPopupStyle.dropdown}
+                  placeholderStyle={[
+                    PropertyPopupStyle.placeholderStyle,
+                    {color: _COLORS.Kodie_LightGrayColor},
+                  ]}
+                  selectedTextStyle={PropertyPopupStyle.selectedTextStyle}
+                  inputSearchStyle={PropertyPopupStyle.inputSearchStyle}
+                  iconStyle={PropertyPopupStyle.iconStyle}
+                  data={kodieDurationData}
+                  maxHeight={300}
+                  labelField="lookup_description"
+                  valueField="lookup_key"
+                  placeholder="3 days"
+                  value={duration_value}
+                  onChange={item => {
+                    setDuration_value(item.lookup_key);
+                  }}
+                  renderItem={Durantion_render}
                 />
               </View>
-              <View style={PropertyModalStyle.inputContainer}>
+              <View style={PropertyPopupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>{'List price'}</Text>
+                <TextInput
+                  style={PropertyPopupStyle.input}
+                  value={listPrice}
+                  onChangeText={setListPrice}
+                  placeholder="Enter the starting bid amount"
+                  placeholderTextColor="#999"
+                  keyboardType="number-pad"
+                />
+              </View>
+              <View style={PropertyPopupStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
-                  {'Rental escalation %'}
+                  {'Auto-accept threshold'}
                 </Text>
                 <TextInput
-                  style={PropertyModalStyle.input}
-                  value={paymentDueDay}
-                  onChangeText={setPaymentDueDay}
-                  placeholder="Period rent escalation %"
+                  style={PropertyPopupStyle.input}
+                  value={rentalBond}
+                  onChangeText={setRentalBond}
+                  placeholder="The amount which you are prepared to accept"
+                  placeholderTextColor="#999"
                 />
               </View>
-            </View>
-          ) : null}
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
-          <View>
-            <View
-              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-              <Text
-                style={{
-                  fontSize: 18,
-                  fontFamily: FONTFAMILY.K_Bold,
-                  color: _COLORS.Kodie_BlackColor,
-                }}>
-                Set property notifications
-              </Text>
-              <TouchableOpacity
-                style={PropertyModalStyle.down_Arrow_icon}
-                onPress={handleShowNotificationData}>
-                <Entypo
-                  name={
-                    showNotificationData
-                      ? 'chevron-small-up'
-                      : 'chevron-small-down'
+              {/* <View style={PropertyPopupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {'Rental payment frequency'}
+                </Text>
+                <RowButtons
+                  LeftButtonText={'Upfront'}
+                  leftButtonbackgroundColor={
+                    !selected_payment_Button
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
                   }
-                  size={22}
-                  color={_COLORS.Kodie_BlackColor}
+                  LeftButtonTextColor={
+                    !selected_payment_Button
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selected_payment_Button
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setselected_payment_Button(false);
+                    setselected_payment_id(319);
+                    // alert(selectedButtonId)
+                  }}
+                  RightButtonText={'After completion'}
+                  RightButtonbackgroundColor={
+                    selected_payment_Button
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selected_payment_Button
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selected_payment_Button
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setselected_payment_Button(true);
+                    setselected_payment_id(319);
+                  }}
                 />
-              </TouchableOpacity>
-            </View>
-            <Text style={{fontSize: 12}}>
-              Select the automatic notifications you would like sent
-            </Text>
-          </View>
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
-        
-          {showNotificationData ? (
-            <View>
-              <View style={PropertyModalStyle.inputContainer}>
-                {/* <Text style={LABEL_STYLES.commontext}>
-              {"Set property notifications"}
-            </Text> */}
-                <View style={PropertyModalStyle.notification_view}>
+              </View> */}
+
+              <View style={PropertyPopupStyle.inputContainer}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {'Set bid notifications'}
+                </Text>
+                <View style={PropertyPopupStyle.notification_view}>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      PropertyModalStyle.notification_text,
+                      PropertyPopupStyle.notification_text,
                     ]}>
                     {'Set notification type'}
                   </Text>
                   <Dropdown
                     style={[
-                      PropertyModalStyle.dropdown,
-                      {flex: 1, borderRadius: 8, marginLeft: 45},
+                      PropertyPopupStyle.dropdown,
+                      {flex: 1, borderRadius: 8, marginLeft: 6},
                     ]}
                     placeholderStyle={[
-                      PropertyModalStyle.placeholderStyle,
+                      PropertyPopupStyle.placeholderStyle,
                       {color: _COLORS.Kodie_LightGrayColor},
                     ]}
-                    selectedTextStyle={PropertyModalStyle.selectedTextStyle}
-                    inputSearchStyle={PropertyModalStyle.inputSearchStyle}
-                    iconStyle={PropertyModalStyle.iconStyle}
+                    selectedTextStyle={PropertyPopupStyle.selectedTextStyle}
+                    inputSearchStyle={PropertyPopupStyle.inputSearchStyle}
+                    iconStyle={PropertyPopupStyle.iconStyle}
                     data={notification_type_Data}
                     maxHeight={300}
                     labelField="lookup_description"
@@ -415,205 +466,224 @@ const data = [
                     renderItem={notification_render}
                   />
                 </View>
-              </View>
-              <View style={PropertyModalStyle.reminder_m_view}>
-                <SwitchToggle
-                  switchOn={toggle_expiry}
-                  onPress={() => {
-                    setToggle_expiry(!toggle_expiry);
-                    setToggle_lease_expire(toggle_expiry ? 0 : 1);
-                    // alert(toggle_lease_expire);
-                  }}
-                  circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-                  circleColorOn={_COLORS.Kodie_GreenColor}
-                  backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-                  backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-                  containerStyle={PropertyModalStyle.toggle_con}
-                  circleStyle={PropertyModalStyle.toggle_circle}
-                />
-                <View style={{margin: 5}} />
-                <Text style={PropertyModalStyle.exp_reminder_text}>
-                  {'Lease expiry reminder'}
-                </Text>
-                <View style={PropertyModalStyle.reminder_dropdown}>
-                  <Dropdown
-                    style={[
-                      PropertyModalStyle.dropdown,
-                      PropertyModalStyle.reminder_dropdown_sty,
-                    ]}
-                    placeholderStyle={[
-                      PropertyModalStyle.placeholderStyle,
-                      {color: _COLORS.Kodie_LightGrayColor},
-                    ]}
-                    selectedTextStyle={PropertyModalStyle.selectedTextStyle}
-                    inputSearchStyle={PropertyModalStyle.inputSearchStyle}
-                    iconStyle={PropertyModalStyle.iconStyle}
-                    data={expiry_reminder_Data}
-                    maxHeight={300}
-                    labelField="lookup_description"
-                    valueField="lookup_key"
-                    placeholder="30 days"
-                    value={expiry_reminder_value}
-                    onChange={item => {
-                      setExpiry_reminder_value(item.lookup_key);
-                      // alert(item.lookup_key)
+
+                <View style={PropertyPopupStyle.reminder_m_view}>
+                  <SwitchToggle
+                    switchOn={Toggle_open}
+                    onPress={() => {
+                      setToggle_open(!Toggle_open);
+                      settoggle_Bid_Open(Toggle_open ? 0 : 1);
+                      // alert(toggle_Bid_Open);
                     }}
+                    circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                    circleColorOn={_COLORS.Kodie_GreenColor}
+                    backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                    backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                    containerStyle={PropertyPopupStyle.toggle_con}
+                    circleStyle={PropertyPopupStyle.toggle_circle}
                   />
-                  <Text style={PropertyModalStyle.before}>{'before'}</Text>
+                  {/* <View style={{ margin: 5 }} /> */}
+                  <Text style={PropertyPopupStyle.exp_reminder_text}>
+                    {'Bidding open reminder'}
+                  </Text>
+                  <View style={PropertyPopupStyle.reminder_dropdown}>
+                    <Dropdown
+                      style={[
+                        PropertyPopupStyle.dropdown,
+                        PropertyPopupStyle.reminder_dropdown_sty,
+                      ]}
+                      placeholderStyle={[
+                        PropertyPopupStyle.placeholderStyle,
+                        {color: _COLORS.Kodie_LightGrayColor},
+                      ]}
+                      selectedTextStyle={PropertyPopupStyle.selectedTextStyle}
+                      inputSearchStyle={PropertyPopupStyle.inputSearchStyle}
+                      iconStyle={PropertyPopupStyle.iconStyle}
+                      data={open_reminder_Data}
+                      maxHeight={300}
+                      labelField="lookup_description"
+                      valueField="lookup_key"
+                      placeholder="30 days"
+                      value={open_reminder_Value}
+                      onChange={item => {
+                        setopen_reminder_Value(item.lookup_key);
+                        // alert(item.lookup_key)
+                      }}
+                    />
+                    <Text style={PropertyPopupStyle.before}>{'before'}</Text>
+                  </View>
+                </View>
+                <View style={PropertyPopupStyle.reminder_m_view}>
+                  <SwitchToggle
+                    switchOn={toggle_close}
+                    onPress={() => {
+                      settoggle_close(!toggle_close);
+                      settoggle_Bid_Close(toggle_close ? 0 : 1);
+                    }}
+                    circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                    circleColorOn={_COLORS.Kodie_GreenColor}
+                    backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                    backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                    containerStyle={PropertyPopupStyle.toggle_con}
+                    circleStyle={PropertyPopupStyle.toggle_circle}
+                  />
+                  {/* <View style={{ margin: 5 }} /> */}
+                  <Text style={PropertyPopupStyle.exp_reminder_text}>
+                    {'Bidding close reminder'}
+                  </Text>
+                  <View style={PropertyPopupStyle.reminder_dropdown}>
+                    <Dropdown
+                      style={[
+                        PropertyPopupStyle.dropdown,
+                        PropertyPopupStyle.reminder_dropdown_sty,
+                      ]}
+                      placeholderStyle={[
+                        PropertyPopupStyle.placeholderStyle,
+                        {color: _COLORS.Kodie_LightGrayColor},
+                      ]}
+                      selectedTextStyle={PropertyPopupStyle.selectedTextStyle}
+                      inputSearchStyle={PropertyPopupStyle.inputSearchStyle}
+                      iconStyle={PropertyPopupStyle.iconStyle}
+                      data={Close_reminder_Data}
+                      maxHeight={300}
+                      labelField="lookup_description"
+                      valueField="lookup_key"
+                      placeholder="2 days"
+                      value={Close_reminder_Value}
+                      onChange={item => {
+                        setClose_reminder_Value(item.lookup_key);
+                      }}
+                    />
+                    <Text style={PropertyPopupStyle.before}>{'before'}</Text>
+                  </View>
+                </View>
+                <View style={PropertyPopupStyle.reminder_m_view}>
+                  <SwitchToggle
+                    switchOn={toggle_rental}
+                    onPress={() => {
+                      setToggle_rental(!toggle_rental);
+                      settoggle_New_bid(toggle_rental ? 0 : 1);
+                    }}
+                    circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
+                    circleColorOn={_COLORS.Kodie_GreenColor}
+                    backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
+                    backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
+                    containerStyle={PropertyPopupStyle.toggle_con}
+                    circleStyle={PropertyPopupStyle.toggle_circle}
+                  />
+                  {/* <View style={{ margin: 5 }} /> */}
+                  <Text style={PropertyPopupStyle.exp_reminder_text}>
+                    {'New bid'}
+                  </Text>
+                  <View style={PropertyPopupStyle.reminder_dropdown}>
+                    <Dropdown
+                      style={[
+                        PropertyPopupStyle.dropdown,
+                        PropertyPopupStyle.reminder_dropdown_sty,
+                      ]}
+                      placeholderStyle={[
+                        PropertyPopupStyle.placeholderStyle,
+                        {color: _COLORS.Kodie_LightGrayColor},
+                      ]}
+                      selectedTextStyle={PropertyPopupStyle.selectedTextStyle}
+                      inputSearchStyle={PropertyPopupStyle.inputSearchStyle}
+                      iconStyle={PropertyPopupStyle.iconStyle}
+                      data={Newbid}
+                      maxHeight={300}
+                      labelField="lookup_description"
+                      valueField="lookup_key"
+                      placeholder="2 mins"
+                      value={Newbid_Value}
+                      onChange={item => {
+                        setNewbid_Value(item.lookup_key);
+                      }}
+                    />
+                    <Text style={PropertyPopupStyle.after}>{'after'}</Text>
+                  </View>
                 </View>
               </View>
-              <View style={PropertyModalStyle.reminder_m_view}>
-                <SwitchToggle
-                  switchOn={toggle_payment}
+
+              {/* Button section here */}
+              <View style={PropertyPopupStyle.ButtonView}>
+                <TouchableOpacity
+                  style={[
+                    PropertyPopupStyle.closeText,
+                    PropertyPopupStyle.applyText,
+                    {
+                      backgroundColor: _COLORS.Kodie_WhiteColor,
+                    },
+                  ]}
                   onPress={() => {
-                    setToggle_payment(!toggle_payment);
-                    setToggle_rent_payment(toggle_payment ? 0 : 1);
-                  }}
-                  circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-                  circleColorOn={_COLORS.Kodie_GreenColor}
-                  backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-                  backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-                  containerStyle={PropertyModalStyle.toggle_con}
-                  circleStyle={PropertyModalStyle.toggle_circle}
-                />
-                <View style={{margin: 5}} />
-                <Text style={PropertyModalStyle.exp_reminder_text}>
-                  {'Rent payment reminder'}
-                </Text>
-                <View style={PropertyModalStyle.reminder_dropdown}>
-                  <Dropdown
+                    handleOptionClick('cancel');
+                  }}>
+                  <Text
                     style={[
-                      PropertyModalStyle.dropdown,
-                      PropertyModalStyle.reminder_dropdown_sty,
-                    ]}
-                    placeholderStyle={[
-                      PropertyModalStyle.placeholderStyle,
-                      {color: _COLORS.Kodie_LightGrayColor},
-                    ]}
-                    selectedTextStyle={PropertyModalStyle.selectedTextStyle}
-                    inputSearchStyle={PropertyModalStyle.inputSearchStyle}
-                    iconStyle={PropertyModalStyle.iconStyle}
-                    data={payment_reminder_Data}
-                    maxHeight={300}
-                    labelField="lookup_description"
-                    valueField="lookup_key"
-                    placeholder="2 days"
-                    value={payment_reminder_value}
-                    onChange={item => {
-                      setPayment_reminder_value(item.lookup_key);
-                    }}
-                  />
-                  <Text style={PropertyModalStyle.before}>{'before'}</Text>
-                </View>
-              </View>
-              <View style={PropertyModalStyle.reminder_m_view}>
-                <SwitchToggle
-                  switchOn={toggle_rental}
+                      LABEL_STYLES.commontext,
+                      {
+                        color: _COLORS.Kodie_BlackColor,
+                      },
+                    ]}>
+                    {'Cancel'}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    PropertyPopupStyle.applyText,
+                    {
+                      backgroundColor: _COLORS.Kodie_BlackColor,
+                    },
+                  ]}
                   onPress={() => {
-                    setToggle_rental(!toggle_rental);
-                    setToggle_late_rental(toggle_rental ? 0 : 1);
-                  }}
-                  circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
-                  circleColorOn={_COLORS.Kodie_GreenColor}
-                  backgroundColorOn={_COLORS.Kodie_LiteWhiteColor}
-                  backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
-                  containerStyle={PropertyModalStyle.toggle_con}
-                  circleStyle={PropertyModalStyle.toggle_circle}
-                />
-                <View style={{margin: 5}} />
-                <Text style={PropertyModalStyle.exp_reminder_text}>
-                  {'Late rental reminder'}
-                </Text>
-                <View style={PropertyModalStyle.reminder_dropdown}>
-                  <Dropdown
+                    // toggleview("Save");
+
+                    handle_addlease_Bid();
+                  }}>
+                  <Text
                     style={[
-                      PropertyModalStyle.dropdown,
-                      PropertyModalStyle.reminder_dropdown_sty,
-                    ]}
-                    placeholderStyle={[
-                      PropertyModalStyle.placeholderStyle,
-                      {color: _COLORS.Kodie_LightGrayColor},
-                    ]}
-                    selectedTextStyle={PropertyModalStyle.selectedTextStyle}
-                    inputSearchStyle={PropertyModalStyle.inputSearchStyle}
-                    iconStyle={PropertyModalStyle.iconStyle}
-                    data={rental_reminder_Data}
-                    maxHeight={300}
-                    labelField="lookup_description"
-                    valueField="lookup_key"
-                    placeholder="2 days"
-                    value={rental_reminder_value}
-                    onChange={item => {
-                      setrental_reminder_value(item.lookup_key);
-                    }}
-                  />
-                  <Text style={PropertyModalStyle.after}>{'after'}</Text>
-                </View>
+                      LABEL_STYLES.commontext,
+                      PropertyPopupStyle.text,
+                      {
+                        color: _COLORS.Kodie_WhiteColor,
+                      },
+                    ]}>
+                    {' Save'}
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
-          ) : null}
-          <View style={PropertyModalStyle.ButtonView}>
-            <TouchableOpacity
-              style={[
-                PropertyModalStyle.closeText,
-                PropertyModalStyle.applyText,
-                {
-                  backgroundColor:
-                    selectedOption == 'Cancel'
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              onPress={() => {
-                handleOptionClick('Cancel');
-                handlePopUp();
-              }}>
-              <Text
-                style={[
-                  LABEL_STYLES.commontext,
-                  {
-                    color:
-                      selectedOption == 'Cancel'
-                        ? _COLORS.Kodie_WhiteColor
-                        : null,
-                  },
-                ]}>
-                {'Cancel'}
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                PropertyModalStyle.applyText,
-                {
-                  backgroundColor:
-                    selectedOption == 'Save'
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_WhiteColor,
-                },
-              ]}
-              onPress={() => {
-                handleOptionClick('Save');
-                handle_add_Lease();
-              }}>
-              <Text
-                style={[
-                  LABEL_STYLES.commontext,
-                  PropertyModalStyle.text,
-                  {
-                    color:
-                      selectedOption == 'Save'
-                        ? _COLORS.Kodie_WhiteColor
-                        : null,
-                  },
-                ]}>
-                {' Save'}
-              </Text>
-            </TouchableOpacity>
-          </View>
+          </ScrollView>
+          {isLoading ? <CommonLoader /> : null}
         </View>
-      </ScrollView>
-      {isLoading ? <CommonLoader /> : null}
-    </View>
+      ) : (
+        <View style={PropertyPopupStyle.modalContainer}>
+          <Text style={PropertyPopupStyle.modalMainText}>Bidding enabled</Text>
+          <Text style={PropertyPopupStyle.modalSubText}>
+            {BidData?.message}
+          </Text>
+          <Image
+            source={IMAGES.CheckIcon}
+            resizeMode={'cover'}
+            style={PropertyPopupStyle.checkStl}
+          />
+          <CustomSingleButton
+            _ButtonText={'Continue'}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            height={48}
+            onPress={sendDataToParent}
+          />
+          <CustomSingleButton
+            disabled={isLoading ? true : false}
+            _ButtonText={'Return'}
+            Text_Color={_COLORS.Kodie_BlackColor}
+            height={48}
+            borderColor={_COLORS.Kodie_WhiteColor}
+            backgroundColor={_COLORS.Kodie_WhiteColor}
+            onPress={sendDataToParent}
+          />
+        </View>
+      )}
+    </>
   );
 };
+
 export default PropertyPopup;
