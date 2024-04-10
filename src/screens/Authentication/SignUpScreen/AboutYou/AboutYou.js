@@ -11,6 +11,7 @@ import {
   BackHandler,
   TextInput,
   SafeAreaView,
+  KeyboardAvoidingView
 } from 'react-native';
 import Geocoder from 'react-native-geocoding';
 import {AboutYouStyle} from './AboutYouStyle';
@@ -989,6 +990,10 @@ export default AboutYou = props => {
   };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
       <TopHeader
         MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
         onPressLeftButton={() => {
@@ -1284,6 +1289,7 @@ export default AboutYou = props => {
           </ScrollView>
         </>
       )}
+      </KeyboardAvoidingView>
       {/* {isLoading ? <CommonLoader /> : null} */}
     </SafeAreaView>
   );

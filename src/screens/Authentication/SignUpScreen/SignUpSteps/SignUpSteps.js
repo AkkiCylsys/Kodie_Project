@@ -14,7 +14,7 @@ import {
   Image,
   FlatList,
   SafeAreaView,
-  // Platform
+  KeyboardAvoidingView,
 } from 'react-native';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
@@ -75,7 +75,7 @@ const SignUpSteps = props => {
   //   (state) => state?.authenticationReducer?.data
   // );
   // console.log("signup_response.....", signup_response);
-
+  const phoneInput = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const ref = React.useRef(null);
   const refRBSheet = useRef();
@@ -458,6 +458,7 @@ const SignUpSteps = props => {
             </Text>
             <View style={[AccountStyle.phoneinputview]}>
               <PhoneInput
+                ref={phoneInput}
                 defaultValue={mobileNumber}
                 defaultCode="AU"
                 layout="second"
@@ -467,6 +468,17 @@ const SignUpSteps = props => {
                   keyboardType: 'number-pad',
                 }}
                 placeholder={'Enter your phone number'}
+                onChangeText={text => {
+                  // validateMobileNumber(text);
+                  const checkValid = phoneInput.current?.isValidNumber(text);
+                  if (text === '') {
+                    setMobileNumberError('Phone number is required');
+                  } else if (checkValid == false) {
+                    setMobileNumberError('Invalid phone number format');
+                  } else {
+                    setMobileNumberError('');
+                  }
+                }}
                 onChangeFormattedText={text => {
                   setMobileNumber(text);
                 }}
@@ -488,7 +500,9 @@ const SignUpSteps = props => {
                 }}
               />
             </View>
-            <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
+            {mobileNumberError ? (
+              <Text style={AccountStyle.errorText}>{mobileNumberError}</Text>
+            ) : null}
           </View>
 
           <View style={AccountStyle.inputContainerbio}>
@@ -590,133 +604,138 @@ const SignUpSteps = props => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
-      <TopHeader
-        MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
-        onPressLeftButton={() => {
-          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
-        }}
-      />
-      <View style={SignUpStepStyle.container}>
-        {IsMap || IsSearch ? null : (
-          <View style={SignUpStepStyle.stepIndicator}>
-            <StepIndicator
-              customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-              currentPosition={0}
-              renderStepIndicator={renderStepIndicator}
-              labels={labels}
-              stepCount={3}
-              renderLabel={renderLabel}
-            />
-          </View>
-        )}
-        {IsMap ? (
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-            }}>
-            <MapScreen
-              style={{
-                height: '100%',
-                width: '100%',
-                alignSelf: 'center',
-                marginBottom: 10,
-              }}
-              onRegionChange={onRegionChange}
-              Maplat={p_latitude}
-              Maplng={p_longitude}
-            />
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignSelf: 'center',
-                width: '96%',
-                borderWidth: 1,
-                borderRadius: 8,
-                backgroundColor: 'white',
-                borderColor: '#E5E4E2',
-                marginTop: 10,
-                position: 'absolute',
-              }}>
-              <TextInput
-                style={{
-                  backgroundColor: 'transparent',
-                  width: '90%',
-                  height: 45,
-                  alignSelf: 'center',
-                }}
-                onFocus={() => openMapandClose()}
-                placeholder={'Search Place'}
-                placeholderTextColor={_COLORS.Kodie_BlackColor}
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+        <TopHeader
+          MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
+          onPressLeftButton={() => {
+            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+          }}
+        />
+        <View style={SignUpStepStyle.container}>
+          {IsMap || IsSearch ? null : (
+            <View style={SignUpStepStyle.stepIndicator}>
+              <StepIndicator
+                customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+                currentPosition={0}
+                renderStepIndicator={renderStepIndicator}
+                labels={labels}
+                stepCount={3}
+                renderLabel={renderLabel}
               />
             </View>
-            <TouchableOpacity
-              style={SignUpStepStyle.BtnContainer}
-              onPress={ConfirmAddress}>
-              {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
-              <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
-            </TouchableOpacity>
-          </View>
-        ) : IsSearch ? (
-          <SearchPlaces
-            onPress={(data, details = null) => {
-              setP_latitude(details.geometry.location.lat);
-              console.log('p_latitude...', p_latitude);
-              setP_longitude(details.geometry.location.lng);
-              console.log('p_longitude...', p_longitude);
-              setIsSearch(false);
-              setIsMap(true);
-              setCurrentLocation(details.formatted_address);
-              console.log('physicalAddressSearch....', physicalAddress);
-              console.log('details.......', details);
-            }}
-          />
-        ) : (
-          <ScrollView
-            contentContainerStyle={{marginBottom: 50}}
-            showsVerticalScrollIndicator={false}>
-            <View style={SignUpStepStyle.stepIndicator}>
-              {renderPageContent()}
-            </View>
-
+          )}
+          {IsMap ? (
             <View
               style={{
-                marginHorizontal: 16,
-                backgroundColor: _COLORS.Kodie_WhiteColor,
-                marginBottom: 10,
+                flex: 1,
+                backgroundColor: 'transparent',
               }}>
+              <MapScreen
+                style={{
+                  height: '100%',
+                  width: '100%',
+                  alignSelf: 'center',
+                  marginBottom: 10,
+                }}
+                onRegionChange={onRegionChange}
+                Maplat={p_latitude}
+                Maplng={p_longitude}
+              />
               <View
                 style={{
-                  justifyContent: 'flex-end',
-                  marginBottom: 30,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignSelf: 'center',
+                  width: '96%',
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  backgroundColor: 'white',
+                  borderColor: '#E5E4E2',
+                  marginTop: 10,
+                  position: 'absolute',
                 }}>
-                <CustomSingleButton
-                  disabled={isLoading ? true : false}
-                  _ButtonText={'Next'}
-                  Text_Color={_COLORS.Kodie_WhiteColor}
-                  onPress={() => {
-                    handleNextBtn();
+                <TextInput
+                  style={{
+                    backgroundColor: 'transparent',
+                    width: '90%',
+                    height: 45,
+                    alignSelf: 'center',
                   }}
+                  onFocus={() => openMapandClose()}
+                  placeholder={'Search Place'}
+                  placeholderTextColor={_COLORS.Kodie_BlackColor}
                 />
-                <TouchableOpacity
-                  style={SignUpStepStyle.goBack_View}
-                  onPress={goBack}>
-                  <View style={SignUpStepStyle.backIcon}>
-                    <Ionicons
-                      name="chevron-back"
-                      size={22}
-                      color={_COLORS.Kodie_MediumGrayColor}
-                    />
-                  </View>
-                  <Text style={SignUpStepStyle.goBack_Text}>{'Go back'}</Text>
-                </TouchableOpacity>
               </View>
+              <TouchableOpacity
+                style={SignUpStepStyle.BtnContainer}
+                onPress={ConfirmAddress}>
+                {/* <Text style={SignUpStepStyle.labeltxt}>Confirm</Text> */}
+                <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+              </TouchableOpacity>
             </View>
-          </ScrollView>
-        )}
-        {isLoading ? <CommonLoader /> : null}
-      </View>
+          ) : IsSearch ? (
+            <SearchPlaces
+              onPress={(data, details = null) => {
+                setP_latitude(details.geometry.location.lat);
+                console.log('p_latitude...', p_latitude);
+                setP_longitude(details.geometry.location.lng);
+                console.log('p_longitude...', p_longitude);
+                setIsSearch(false);
+                setIsMap(true);
+                setCurrentLocation(details.formatted_address);
+                console.log('physicalAddressSearch....', physicalAddress);
+                console.log('details.......', details);
+              }}
+            />
+          ) : (
+            <ScrollView
+              contentContainerStyle={{marginBottom: 50}}
+              showsVerticalScrollIndicator={false}>
+              <View style={SignUpStepStyle.stepIndicator}>
+                {renderPageContent()}
+              </View>
+
+              <View
+                style={{
+                  marginHorizontal: 16,
+                  backgroundColor: _COLORS.Kodie_WhiteColor,
+                  marginBottom: 10,
+                }}>
+                <View
+                  style={{
+                    justifyContent: 'flex-end',
+                    marginBottom: 30,
+                  }}>
+                  <CustomSingleButton
+                    disabled={isLoading ? true : false}
+                    _ButtonText={'Next'}
+                    Text_Color={_COLORS.Kodie_WhiteColor}
+                    onPress={() => {
+                      handleNextBtn();
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={SignUpStepStyle.goBack_View}
+                    onPress={goBack}>
+                    <View style={SignUpStepStyle.backIcon}>
+                      <Ionicons
+                        name="chevron-back"
+                        size={22}
+                        color={_COLORS.Kodie_MediumGrayColor}
+                      />
+                    </View>
+                    <Text style={SignUpStepStyle.goBack_Text}>{'Go back'}</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ScrollView>
+          )}
+          {isLoading ? <CommonLoader /> : null}
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

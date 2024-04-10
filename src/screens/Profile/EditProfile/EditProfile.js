@@ -543,7 +543,6 @@ const EditProfile = props => {
                         value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
                           phoneNumber || ''
                         }`}
-                        onChangeText={text => setEmail(text)}
                         editable={false}
                       />
                     </View>

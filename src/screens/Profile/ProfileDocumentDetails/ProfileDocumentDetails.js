@@ -28,7 +28,8 @@ import EditDocumentsModal from '../../../components/Molecules/EditDocumentsModal
 import RNFetchBlob from 'rn-fetch-blob';
 import {useNavigation} from '@react-navigation/native';
 import Share from 'react-native-share';
-
+import FileViewer from 'react-native-file-viewer';
+import RNFS from 'react-native-fs';
 const data = [
   {
     PDUM_FILE_KEY: 155,
@@ -471,6 +472,36 @@ const ProfileDocumentDetails = props => {
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
   };
 
+  const dest = `${RNFS.DocumentDirectoryPath}/${filePath}`;
+
+  const viewPdf = async () => {
+    // console.log("path..",filePath)
+
+    // try {
+    //   await RNFileViewer.open(filePath);
+    // } catch (error) {
+    //   console.error('Error viewing PDF:', error);
+    // }
+
+    // RNFS.copyFileAssets(filePath, dest)
+    //   .then(() => FileViewer.open(dest))
+    //   .then(() => {
+    //     // success
+    //   })
+    //   .catch(error => {
+    //     /* */
+    //     console.log("error doc....",error)
+    //   });
+    const path = FileViewer.open(filePath, {showOpenWithDialog: true}) // absolute-path-to-my-local-file.
+      .then(() => {
+        // success
+      })
+      .catch(error => {
+        // error
+        console.log("error doc....",error)
+      });
+  };
+
   return (
     <View style={ProfileDocumentDetailStyle.mainContainer}>
       <View style={{flexDirection: 'row'}}>
@@ -577,10 +608,11 @@ const ProfileDocumentDetails = props => {
           shareDocFile={shareDocFile}
           fileKey={fileKey}
           onpress={() => {
-            navigation.navigate('ViewDocument', {
-              filePath: filePath,
-            });
+            // navigation.navigate('ViewDocument', {
+            //   filePath: filePath,
+            // });
             // alert('hello profile');
+            viewPdf();
           }}
         />
       </RBSheet>

@@ -84,6 +84,23 @@ export const ChangeContactInputStyle = StyleSheet.create({
     justifyContent: "space-between",
     marginHorizontal: 5,
   },
+  old_inputview: {
+    height: 50,
+    borderWidth: 1,
+    // borderColor: _COLORS.Kodie_DarkGreenColor,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 8,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // width: "90%",
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+  },
+  inputStyle: {
+    flex: 1,
+    color: _COLORS.Kodie_BlackColor,
+  },
   error_text: { color: "red", marginLeft: 10,marginTop:5 },
 
 });

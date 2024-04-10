@@ -10,6 +10,7 @@ import {
   Platform,
   PermissionsAndroid,
   SafeAreaView,
+  KeyboardAvoidingView
 } from 'react-native';
 import {FirstPropertyStyle} from './FirstPropertyStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -860,6 +861,10 @@ export default FirstProperty = props => {
   console.log(PreFriedly, 'pre friedly............');
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+       <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
       <TopHeader
         MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
         onPressLeftButton={() => {
@@ -1423,6 +1428,7 @@ export default FirstProperty = props => {
         )}
       </View>
       {isLoading ? <CommonLoader /> : null}
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

@@ -89,9 +89,7 @@ const ChangeContactInput = props => {
     const isValid = validatenewPhoneNumber();
     if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
-      // Yahan par aapka actual submit logic hoga
       console.log('Phone number is valid:', newnewPhoneNumber);
-      // Agar aap form submit karna chahte hain to yahan par kar sakte hain
     } else {
       navigation.navigate('ChangeContactNotify', {
         oldnewPhoneNumber: oldnewPhoneNumber,
@@ -104,24 +102,6 @@ const ChangeContactInput = props => {
     validatenewPhoneNumber(text);
     setnewPhoneNumber(text);
   };
-  // const handleSubmit = async () => {
-  //   if (newnewPhoneNumber.trim() === '') {
-  //     setnewPhoneNumberErrorError('New phone number is required.');
-  //   } else if (phoneDataNumber.trim() === newnewPhoneNumber.trim()) {
-  //     setnewPhoneNumberErrorError(
-  //       'New phone number must be different from the old one.',
-  //     );
-  //     setOldnewPhoneNumberError('');
-  //   } else {
-  //     navigation.navigate('ChangeContactNotify', {
-  //       oldnewPhoneNumber: oldNumberformattedValue,
-  //       newnewPhoneNumber: newNumberformattedValue,
-  //     });
-  //     setIsLoading(false);
-  //     // setOldnewPhoneNumber("");
-  //     // setnewPhoneNumberError("")
-  //   }
-  // };
   return (
     <SafeAreaView style={ChangeContactInputStyle.maincontainer}>
       <TopHeader
@@ -133,34 +113,19 @@ const ChangeContactInput = props => {
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your old phone number with country code
           </Text>
-
           <View
             style={[
-              ChangeContactInputStyle.simpleinputview,
-              {backgroundColor: _COLORS.Kodie_GrayColor, borderRadius: 8},
+              ChangeContactInputStyle.old_inputview,
+              {backgroundColor: _COLORS.Kodie_GrayColor},
             ]}>
-            <Text
-              style={[
-                ChangeContactInputStyle.oldnumbertext,
-                {marginLeft: 15, width: '15%'},
-              ]}>
-              {accountDetails?.UAD_COUNTRY_CODE}
-            </Text>
-
-            <Text
-              style={[
-                ChangeContactInputStyle.oldnumbertext,
-                {width: '85%', textAlign: 'left'},
-              ]}>
-              {oldnewPhoneNumber}
-            </Text>
+            <TextInput
+              style={ChangeContactInputStyle.inputStyle}
+              value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                accountDetails?.UAD_PHONE_NO || ''
+              }`}
+              editable={false}
+            />
           </View>
-
-          {oldnewPhoneNumberError ? (
-            <Text style={ChangeContactInputStyle.error_text}>
-              {oldnewPhoneNumberError}
-            </Text>
-          ) : null}
         </View>
 
         <View style={ChangeContactInputStyle.secondview}>

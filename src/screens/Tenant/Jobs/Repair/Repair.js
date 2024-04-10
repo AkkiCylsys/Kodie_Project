@@ -198,13 +198,15 @@ export default Repair = props => {
     if (isvisible) {
       fetch_filterData();
     }
-    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1 ? true : false);
   }, [selectedFilter, isvisible]);
   const fetch_filterData = async () => {
     await getJobDetailsByFilter(selectedFilter);
     await getJobDetails_Filter_Service(selectedFilter);
   };
 
+  useEffect(() => {
+    setActiveScreen(myJob_Type == 1 || job_sub_type_req == 1 ? true : false);
+  }, []);
   const jobDelete = async () => {
     setIsDeleteData_Clicked(true);
   };
@@ -242,7 +244,14 @@ export default Repair = props => {
                 : _COLORS?.Kodie_WhiteColor,
           },
         ]}
-        onPress={() => setSelectedFilter(item)}>
+        // onPress={() => setSelectedFilter(item)}>
+        onPress={() => {
+          if (activeScreen) {
+            setSelectedFilter(item);
+          } else {
+            setSelectedFilter(item);
+          }
+        }}>
         {selectedFilter === item ? null : (
           <View
             style={[
@@ -428,8 +437,14 @@ export default Repair = props => {
                   : _COLORS.Kodie_GrayColor
               }
               RightButtonHeight={40}
-              onPressLeftButton={() => setActiveScreen(false)}
-              onPressRightButton={() => setActiveScreen(true)}
+              onPressLeftButton={() => {
+                setActiveScreen(false);
+                setSelectedFilter('All');
+              }}
+              onPressRightButton={() => {
+                setActiveScreen(true);
+                setSelectedFilter('All');
+              }}
             />
           </View>
           <DividerIcon
