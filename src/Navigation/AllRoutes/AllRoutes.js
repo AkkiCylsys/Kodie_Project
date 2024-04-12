@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {_COLORS} from '../../Themes/CommonColors/CommonColor';
 import {
   NavigationContainer,
   createNavigationContainerRef,
@@ -30,7 +31,8 @@ import Properties from '../../screens/Landlord/PropertyList/Properties';
 import Jobs from '../../screens/Tenant/Jobs/Jobs';
 import Dashboard from '../../screens/Dashboard/Dashboard';
 import LandlordProfile from '../../screens/Landlord/Landlordprofile/LandlordProfile';
-import {IMAGES, LABEL_STYLES,FONTFAMILY,_COLORS} from '../../Themes';
+import {IMAGES, LABEL_STYLES} from '../../Themes';
+import {fontFamily} from '../../Themes/FontStyle/FontStyle';
 import Help_FeedBack from '../../screens/Landlord/Help&FeedBack/Help_FeedBack';
 import Language from '../../screens/Landlord/Language/Language';
 import SignUp from '../../screens/Authentication/SignUpScreen/SignUp';
@@ -122,11 +124,11 @@ import ProfileDocumentDetails from '../../screens/Profile/ProfileDocumentDetails
 import SearchDetail from '../../screens/Tenant/Jobs/SearchforContractor/SearchDetail';
 import SearchJobResult from '../../screens/Tenant/Jobs/SearchforJob/SearchJobResult';
 import BidforJob from '../../screens/Tenant/Jobs/BidforJob/BidforJob';
-import PaymentScreen from '../../screens/PaymentMethod/PaymentScreen';
+//import PaymentScreen from '../../screens/PaymentMethod/PaymentScreen';
 import paymentdetails from '../../screens/PaymentMethod/paymentdetails';
 import ApplePay from '../../screens/PaymentMethod/ApplePay/ApplePay';
 import CreditCard from '../../screens/PaymentMethod/CreditCard/CreditCard';
-import SubscriptionScreen from '../../screens/Subscription/SubscriptionScreen';
+//import SubscriptionScreen from '../../screens/Subscription/SubscriptionScreen';
 import Chat from '../../screens/ChatsScreens/Chat';
 import CompanyInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Company/CompanyInProfile';
 import IndividualInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Individual/IndividualInProfile';
@@ -141,6 +143,7 @@ const BottomNav = props => {
     <Tab.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
+        gestureEnabled: false,
         tabBarStyle: {
           backgroundColor: _COLORS.Kodie_WhiteColor,
           height: Platform.OS == 'android' ? 65 : 80,
@@ -192,7 +195,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: FONTFAMILY.K_Medium,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -204,7 +207,7 @@ const BottomNav = props => {
           ),
         }}
       />
-      <Tab.Screen
+      <Tab.Screen 
         name="Properties"
         component={Properties}
         options={{
@@ -246,7 +249,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: FONTFAMILY.K_Medium,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -300,7 +303,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: FONTFAMILY.K_Medium,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -355,7 +358,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: FONTFAMILY.K_Medium,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -394,7 +397,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: FONTFAMILY.K_Medium,
+                    fontFamily: fontFamily.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -482,22 +485,22 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'AuthStackRouts'}
           component={AuthStackRouts}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false,}}
         />
         <Stack.Screen
           name={'BottomNav'}
           component={BottomNav}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false,}}
         />
         <Stack.Screen
           name={'DrawerNavigatorLeftMenu'}
           component={DrawerNavigatorLeftMenu}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false,}}
         />
         <Stack.Screen
           name={'LoginScreen'}
           component={LoginScreen}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false,}}
         />
         <Stack.Screen
           name={'UserTypeScreen'}
@@ -1073,11 +1076,11 @@ const AllStackRouts = props => {
           component={BidforJob}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'PaymentScreen'}
           component={PaymentScreen}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name={'paymentdetails'}
           component={paymentdetails}
@@ -1093,11 +1096,11 @@ const AllStackRouts = props => {
           component={ApplePay}
           options={{headerShown: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'SubscriptionScreen'}
           component={SubscriptionScreen}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name={'Partners'}
           component={Partners}
