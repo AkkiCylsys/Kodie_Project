@@ -15,7 +15,7 @@ import {Dropdown} from 'react-native-element-dropdown';
 import SwitchToggle from 'react-native-switch-toggle';
 import RowButtons from '../Molecules/RowButtons/RowButtons';
 import CalendarModal from '../Molecules/CalenderModal/CalenderModal';
-import {LABEL_STYLES} from '../../Themes';
+import {IMAGES, LABEL_STYLES} from '../../Themes';
 import {_COLORS} from '../../Themes';
 import CustomSingleButton from '../Atoms/CustomButton/CustomSingleButton';
 import {CommonLoader} from '../Molecules/ActiveLoader/ActiveLoader';
@@ -71,8 +71,8 @@ const PropertyPopup = props => {
   const [BidData, setBidData] = useState([]);
   const [isSaveClicked, setIsSaveClicked] = useState(false);
 
-  const JOB_ID = props.JOB_ID;
-  console.log('sheet JOB_ID', JOB_ID);
+  const propertyId = props.propertyId;
+  console.log('sheet propertyId', propertyId);
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log(
@@ -80,16 +80,17 @@ const PropertyPopup = props => {
     loginData?.Login_details?.user_account_id,
   );
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
-  useEffect(() => {
+ 
+  useEffect(()=>{
     handle_notification_type();
     handle_Open_reminder();
     handle_Close_reminder();
     handle_NewBid_reminder();
     handle_duration();
-  }, []);
+  },[])
   const handleOptionClick = option => {
     setSelectedOption(option);
-    handleclosepopUp();
+    // handleclosepopUp();
   };
   const sendDataToParent = () => {
     const data = 'Hello from child!';
@@ -108,8 +109,8 @@ const PropertyPopup = props => {
   const handleSaveClick = () => {
     setIsSaveClicked(true);
   };
-  const handleclosepopUp = () => {
-    props.onclose();
+  const handleClosePopup = () => {
+    props.onClose();
   };
   const handle_addlease_Bid = () => {
     const url = Config.BASE_URL;
@@ -119,21 +120,21 @@ const PropertyPopup = props => {
     setIsLoading(true);
     const Bid_Data = {
       account_id: loginData?.Login_details?.user_account_id,
-      property_id: 0,
+      property_id:propertyId ,
       commencement_date: selectedCommDate,
       duration: duration_value,
       list_price: listPrice,
       auto_threshold: rentalBond,
       notif_type: notification_type_value,
-      bid_open_reminder: open_reminder_Value,
-      bid_open_day: 0,
-      bid_open_before: 0,
-      bid_close_reminder: Close_reminder_Value,
-      bid_close_day: 'string',
-      bid_close_before: 'string',
-      new_bid: Newbid_Value,
-      new_bid_days: 'string',
-      new_bid_before: 'string',
+      bid_open_reminder: toggle_Bid_Open,
+      bid_open_day: open_reminder_Value,
+      bid_open_before: '1',
+      bid_close_reminder: toggle_Bid_Close,
+      bid_close_day: Close_reminder_Value,
+      bid_close_before: '0',
+      new_bid: toggle_New_bid,
+      new_bid_days: Newbid_Value,
+      new_bid_before: '12',
     };
     console.log('Bid_Data', Bid_Data);
     axios
@@ -297,12 +298,12 @@ const PropertyPopup = props => {
             <Text style={PropertyPopupStyle.heading_Text}>
               {'Add lease bidding details'}
             </Text>
-            <TouchableOpacity onPress={handleclosepopUp}>
+            <TouchableOpacity onPress={handleClosePopup}>
               <AntDesign
                 name="close"
                 size={22}
                 color={_COLORS.Kodie_BlackColor}
-                style={{alignSelf: 'center'}}
+                style={{alignSelf: 'center',marginTop:8}}
               />
             </TouchableOpacity>
           </View>
@@ -337,7 +338,7 @@ const PropertyPopup = props => {
               <View style={PropertyPopupStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>{'Duration'}</Text>
                 <Dropdown
-                  style={PropertyPopupStyle.dropdown}
+                  style={PropertyPopupStyle.dropdown1}
                   placeholderStyle={[
                     PropertyPopupStyle.placeholderStyle,
                     {color: _COLORS.Kodie_LightGrayColor},
@@ -364,7 +365,7 @@ const PropertyPopup = props => {
                   value={listPrice}
                   onChangeText={setListPrice}
                   placeholder="Enter the starting bid amount"
-                  placeholderTextColor="#999"
+                  placeholderTextColor="#D9D9D9"
                   keyboardType="number-pad"
                 />
               </View>
@@ -377,7 +378,7 @@ const PropertyPopup = props => {
                   value={rentalBond}
                   onChangeText={setRentalBond}
                   placeholder="The amount which you are prepared to accept"
-                  placeholderTextColor="#999"
+                  placeholderTextColor="#D9D9D9"
                 />
               </View>
               {/* <View style={PropertyPopupStyle.inputContainer}>

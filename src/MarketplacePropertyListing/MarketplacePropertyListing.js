@@ -304,6 +304,7 @@ const MarketplacePropertyListing = (props) => {
                 <TouchableOpacity
                   onPress={() => {
                     refRBSheet1.current.open();
+                    setPropId(item?.property_id);
                   }}>
                   <MaterialCommunityIcons
                     name={'dots-horizontal'}

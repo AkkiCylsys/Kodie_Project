@@ -39,10 +39,19 @@ export const PropertyPopupStyle = StyleSheet.create({
     flexDirection: "row",
   },
 
+  dropdown1: {
+    flex: 1,
+    borderWidth: 1,
+    height: 45,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 10,
+    borderRadius: 8,
+    color: _COLORS.Kodie_BlackColor,
+  },
   dropdown: {
     flex: 1,
     borderWidth: 1,
-    height: 35,
+    height: 27,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 10,
     borderRadius: 8,
@@ -108,7 +117,8 @@ export const PropertyPopupStyle = StyleSheet.create({
   },
   exp_reminder_text: {
     flex: 1,
-    // marginLeft: 10,
+    marginTop:10,
+    marginLeft: 10,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
     fontSize: 11.2,
@@ -184,5 +194,28 @@ export const PropertyPopupStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
   },
- 
+  modalContainer: {marginHorizontal: 16, marginVertical: 16},
+  checkStl: {
+    height: 120,
+    width: '50%',
+    alignSelf: 'center',
+    marginVertical: 50,
+    resizeMode: 'contain',
+  },
+  modalMainText: {
+    fontFamily: FONTFAMILY.K_Medium,
+    fontSize: 21,
+    color: _COLORS.Kodie_BlackColor,
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
+  modalSubText: {
+    fontFamily: FONTFAMILY.K_Regular,
+    fontSize: 14,
+    color: _COLORS.Kodie_MediumGrayColor,
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginTop: 19,
+  },
 });
