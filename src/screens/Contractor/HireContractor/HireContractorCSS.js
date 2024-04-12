@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../Themes";
-import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
 export const HireContractorCSS = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -37,7 +36,7 @@ export const HireContractorCSS = StyleSheet.create({
   terms: {
     fontSize: 20,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     marginTop: 20,
   },
   calenderView: {
@@ -58,7 +57,7 @@ export const HireContractorCSS = StyleSheet.create({
     paddingLeft: 10,
     flex: 1,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
   },
   datePickerView: { flex: 1, flexDirection: "row" },
   spaceView: { margin: 5 },

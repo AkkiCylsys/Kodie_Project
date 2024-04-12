@@ -140,7 +140,6 @@ export const ViewApplicationCss = StyleSheet.create({
     marginVertical: 10,
   },
   inspections: {
-    fontFamily: 14,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
     marginBottom: 10,

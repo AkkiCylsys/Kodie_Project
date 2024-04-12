@@ -12,7 +12,7 @@ import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {SliderBox} from 'react-native-image-slider-box';
-import {_COLORS, BANNERS, IMAGES, LABEL_STYLES} from '../../../../Themes';
+import {_COLORS, BANNERS, IMAGES, LABEL_STYLES,FONTFAMILY} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Leases from './Leases/Leases';
 import Details from './Details/Details';
@@ -32,7 +32,6 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {DetailsStyle} from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';

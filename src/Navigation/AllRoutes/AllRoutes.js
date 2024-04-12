@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {_COLORS} from '../../Themes/CommonColors/CommonColor';
 import {
   NavigationContainer,
   createNavigationContainerRef,
@@ -31,8 +30,7 @@ import Properties from '../../screens/Landlord/PropertyList/Properties';
 import Jobs from '../../screens/Tenant/Jobs/Jobs';
 import Dashboard from '../../screens/Dashboard/Dashboard';
 import LandlordProfile from '../../screens/Landlord/Landlordprofile/LandlordProfile';
-import {IMAGES, LABEL_STYLES} from '../../Themes';
-import {fontFamily} from '../../Themes/FontStyle/FontStyle';
+import {IMAGES, LABEL_STYLES,FONTFAMILY,_COLORS} from '../../Themes';
 import Help_FeedBack from '../../screens/Landlord/Help&FeedBack/Help_FeedBack';
 import Language from '../../screens/Landlord/Language/Language';
 import SignUp from '../../screens/Authentication/SignUpScreen/SignUp';
@@ -194,7 +192,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: fontFamily.K_Medium,
+                    fontFamily: FONTFAMILY.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -248,7 +246,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: fontFamily.K_Medium,
+                    fontFamily: FONTFAMILY.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -302,7 +300,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: fontFamily.K_Medium,
+                    fontFamily: FONTFAMILY.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -357,7 +355,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: fontFamily.K_Medium,
+                    fontFamily: FONTFAMILY.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
@@ -396,7 +394,7 @@ const BottomNav = props => {
                 style={[
                   {
                     fontSize: 10,
-                    fontFamily: fontFamily.K_Medium,
+                    fontFamily: FONTFAMILY.K_Medium,
                     color: focused
                       ? _COLORS.Kodie_GreenColor
                       : _COLORS.Kodie_MediumGrayColor,
