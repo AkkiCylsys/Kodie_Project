@@ -24,8 +24,8 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Share from 'react-native-share';
 import {Config} from '../../Config';
 import axios from 'axios';
-import {request, PERMISSIONS,RESULTS, check} from 'react-native-permissions';
- 
+import {request, PERMISSIONS, RESULTS, check} from 'react-native-permissions';
+
 const LandlordData = [
   {
     id: '1',
@@ -88,7 +88,7 @@ const LandlordData = [
     img: IMAGES.Logout,
   },
 ];
- 
+
 export default Invitefriend = props => {
   const [contacts, setContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -97,18 +97,29 @@ export default Invitefriend = props => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredContacts, setFilteredContacts] = useState([]);
   useEffect(() => {
-  Platform.OS=='ios'?requestContactsPermissionIOS():  requestContactsPermission(); // Request permission when component mounts
+    Platform.OS == 'ios'
+      ? requestContactsPermissionIOS()
+      : requestContactsPermission(); // Request permission when component mounts
     inviteFriend();
   }, []);
- 
+
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: inviteFriendPath});
-    } catch (error) {
-      console.error('Error sharing PDF file:', error);
-    }
+    setTimeout(() => {
+      Share.open({url: inviteFriendPath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: inviteFriendPath});
+    // } catch (error) {
+    //   console.error('Error sharing PDF file:', error);
+    // }
   };
- 
+
   const inviteFriend = () => {
     const url = Config.BASE_URL;
     const invite_url = url + 'lookup_details';
@@ -118,7 +129,7 @@ export default Invitefriend = props => {
       P_PARENT_CODE: 'INVITE',
       P_TYPE: 'QUESTION',
     };
- 
+
     axios
       .post(invite_url, notification_data)
       .then(response => {
@@ -168,38 +179,34 @@ export default Invitefriend = props => {
     }
   };
   const requestContactsPermissionIOS = async () => {
-  
     request(PERMISSIONS.IOS.CONTACTS)
-    .then(result => {
-     // alert(JSON.stringify(result))
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log(
-            'This feature is not available (on this device / in this context)',
-          );
-          break;
-        case RESULTS.DENIED:
-          console.log(
-            'Contacts permission denied',
-          );
-          break;
-      
-        case RESULTS.GRANTED:
-          console.log('Contacts permission granted');
-          fetchContacts();
-          break;
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          break;
-      }
-    })
-    .catch(error => {
-      alert(error)
-      console.log(error);
-    });
- 
+      .then(result => {
+        // alert(JSON.stringify(result))
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              'This feature is not available (on this device / in this context)',
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log('Contacts permission denied');
+            break;
+
+          case RESULTS.GRANTED:
+            console.log('Contacts permission granted');
+            fetchContacts();
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            break;
+        }
+      })
+      .catch(error => {
+        alert(error);
+        console.log(error);
+      });
   };
- 
+
   const fetchContacts = async () => {
     try {
       const data = await Contacts.getAll();
@@ -221,7 +228,7 @@ export default Invitefriend = props => {
     );
     setFilteredContacts(filtered);
   };
- 
+
   const UserList_renderItem = ({item, index}) => {
     return (
       <>
@@ -253,7 +260,7 @@ export default Invitefriend = props => {
               </Text>
             </View>
           </View>
- 
+
           <TouchableOpacity
             style={InviteStyles.ArrowIcon}
             onPress={shareDocFile}>
@@ -263,7 +270,7 @@ export default Invitefriend = props => {
       </>
     );
   };
- 
+
   const ListHeader = () => {
     return (
       <View style={InviteStyles.shareMainView}>
@@ -271,7 +278,7 @@ export default Invitefriend = props => {
       </View>
     );
   };
- 
+
   return (
     <SafeAreaView style={InviteStyles.mainContainer}>
       <TopHeader

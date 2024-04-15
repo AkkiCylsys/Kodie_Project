@@ -143,6 +143,7 @@ const BottomNav = props => {
     <Tab.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
+        gestureEnabled: false,
         tabBarStyle: {
           backgroundColor: _COLORS.Kodie_WhiteColor,
           height: Platform.OS == 'android' ? 65 : 80,
@@ -484,22 +485,22 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'AuthStackRouts'}
           component={AuthStackRouts}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'BottomNav'}
           component={BottomNav}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'DrawerNavigatorLeftMenu'}
           component={DrawerNavigatorLeftMenu}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'LoginScreen'}
           component={LoginScreen}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'UserTypeScreen'}
@@ -585,12 +586,12 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'Properties'}
           component={Properties}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Jobs'}
           component={Jobs}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Help_FeedBack'}

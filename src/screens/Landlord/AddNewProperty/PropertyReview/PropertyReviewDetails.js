@@ -115,11 +115,20 @@ export default PropertyReviewDetails = props => {
   const [pointOfInterest, setPointOfInterest] = useState(false);
 
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: inviteFriendPath});
-    } catch (error) {
-      console.error('Error sharing property ', error);
-    }
+    setTimeout(() => {
+      Share.open({url: inviteFriendPath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: inviteFriendPath});
+    // } catch (error) {
+    //   console.error('Error sharing property ', error);
+    // }
   };
   const Detail_rander = ({item, index}) => {
     return (
@@ -350,7 +359,7 @@ export default PropertyReviewDetails = props => {
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        alert('Oops something went wrong! Please try again later.');
+        // alert('Oops something went wrong! Please try again later.');
       }
       const additionalFeatures_id =
         response?.data?.property_details[0].additional_features;
@@ -359,7 +368,7 @@ export default PropertyReviewDetails = props => {
       setAddtionalFeaturesID(is_additionalFeaturesid);
     } catch (error) {
       console.error('Error:', error);
-      alert(error);
+      // alert(error);
       setIsLoading(false);
     }
   };

@@ -126,11 +126,20 @@ export default Documents = props => {
   };
   // share doc....
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: filePath});
-    } catch (error) {
-      console.error('Error sharing PDF file:', error);
-    }
+    setTimeout(() => {
+      Share.open({url: filePath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: filePath});
+    // } catch (error) {
+    //   console.error('Error sharing PDF file:', error);
+    // }
   };
   // delete Document...
   const deleteHandler = fileKey => {

@@ -119,7 +119,7 @@ export default PropertyDetails = props => {
     setLocation('');
     setProperty_value('');
     setPropertyDesc('');
-  }, [isFocus]);
+  }, []);
   const DetailsData = async () => {
     const detailData = {
       property_id: propertyid,
