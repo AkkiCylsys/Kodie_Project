@@ -397,7 +397,7 @@ const MarketplacePropertyListing = (props) => {
         <RBSheet
           ref={refRBSheet1}
           closeOnDragDown={true}
-          height={774}
+          height={280}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
@@ -411,7 +411,7 @@ const MarketplacePropertyListing = (props) => {
             },
             container: MarketplacePropertyListingStyle.bottomModal_container,
           }}>
-          <PropertyPopup
+          <PropertyModal
             onPress={() => {
               refRBSheet2.current.open();
             }}
@@ -424,7 +424,7 @@ const MarketplacePropertyListing = (props) => {
         </RBSheet>
 
         {/* AddBiddingDetails popup */}
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet2}
           // closeOnDragDown={true}
           height={760}
@@ -439,10 +439,10 @@ const MarketplacePropertyListing = (props) => {
             container: MarketplacePropertyListingStyle.bottomModal_container,
           }}>
           <AddBiddingDetails />
-        </RBSheet>
+        </RBSheet> */}
 
         {/* invite tenent popup */}
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet3}
           // closeOnDragDown={true}
           height={230}
@@ -457,7 +457,7 @@ const MarketplacePropertyListing = (props) => {
             container: MarketplacePropertyListingStyle.bottomModal_container,
           }}>
           <InviteTenant />
-        </RBSheet>
+        </RBSheet> */}
       </View>
     );
   };
