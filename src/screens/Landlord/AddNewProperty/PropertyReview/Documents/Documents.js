@@ -254,7 +254,7 @@ export default Documents = props => {
             <View style={DocumentsStyle.textContainer}>
               <Text style={DocumentsStyle.pdfName}>{item.PDUM_FILE_NAME}</Text>
               {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text>
+              {/* <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text> */}
             </View>
           </View>
           <TouchableOpacity

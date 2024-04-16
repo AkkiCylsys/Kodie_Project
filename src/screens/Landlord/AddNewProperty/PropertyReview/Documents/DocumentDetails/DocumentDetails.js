@@ -348,10 +348,9 @@ const DocumentDetails = props => {
               <Text style={DocumentDetailStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              <Text style={DocumentDetailStyle.pdfSize}>
-                {/* {(item.size / (1024 * 1024)).toFixed(2)} MB */}
+              {/* <Text style={DocumentDetailStyle.pdfSize}>
                 {'4.5 MB'}
-              </Text>
+              </Text> */}
             </View>
           </View>
           <TouchableOpacity

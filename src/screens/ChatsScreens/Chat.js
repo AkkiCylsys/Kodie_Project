@@ -196,14 +196,13 @@ const Chat = props => {
     return (
       <View
         style={{
+          // flex: 0.5,
           flexDirection: 'row',
           alignItems: 'center',
           alignSelf: 'center',
-          // position: 'absolute',
-          bottom: 0,
-          paddingHorizontal: 6,
+          paddingHorizontal: 10,
+          marginTop:10,
           justifyContent: 'center', // Center-align the send box
-          marginTop: Platform.OS === 'ios' ? 10 : 0, // Adjust position for iOS
         }}>
         <TouchableOpacity
           onPress={openOptionsModal}
@@ -227,7 +226,6 @@ const Chat = props => {
               alignItems: 'center',
               justifyContent: 'center',
               alignSelf: 'center',
-
               marginLeft: Platform.OS ? 20 : 18,
               marginBottom: 8,
             }}>
@@ -421,6 +419,14 @@ const Chat = props => {
           style: {
             flex: 1,
             color: 'black',
+            // borderWidth: 1, // Add border width
+            // borderColor: 'grey', // Add border color
+            // borderRadius: 20, // Add border radius for rounded corners
+            paddingHorizontal: 10, // Add padding horizontally
+            paddingVertical: 8,
+            justifyContent: 'center',
+            alignSelf:'center',
+            marginTop:10
           },
         }}
       />

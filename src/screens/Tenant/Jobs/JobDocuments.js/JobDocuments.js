@@ -273,7 +273,7 @@ export default JobDocuments = props => {
                 {item.PDUM_FILE_NAME}
               </Text>
               {/* <Text style={JobDocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              <Text style={JobDocumentsStyle.pdfSize}> {'4.5 MB'}</Text>
+              {/* <Text style={JobDocumentsStyle.pdfSize}> {'4.5 MB'}</Text> */}
             </View>
           </View>
           <TouchableOpacity
