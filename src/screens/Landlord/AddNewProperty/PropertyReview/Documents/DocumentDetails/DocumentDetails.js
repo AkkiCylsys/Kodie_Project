@@ -9,6 +9,7 @@ import {
   PermissionsAndroid,
   Platform,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {DocumentDetailStyle} from './DocumentDetailStyle';
@@ -28,6 +29,8 @@ import {Config} from '../../../../../../Config';
 import Share from 'react-native-share';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import RNFetchBlob from 'rn-fetch-blob';
+import FileViewer from 'react-native-file-viewer';
 
 const DocumentDetails = props => {
   const navigation = useNavigation();
@@ -116,7 +119,7 @@ const DocumentDetails = props => {
   const uploadDocument = async doc => {
     // alert("upload");
     console.log('uri....', doc[0].uri);
-    console.log('name....', doc[0].name);
+    console.log('name....', doc[0].name.replace(/\s/g, ''));
     console.log('type....', doc[0].type);
     console.log('p_referral_key....', property_id);
     console.log('p_module_name....', moduleName);
@@ -128,7 +131,7 @@ const DocumentDetails = props => {
       const formData = new FormData();
       formData.append('documents', {
         uri: doc[0].uri,
-        name: doc[0].name,
+        name: doc[0].name.replace(/\s/g, ''),
         type: doc[0].type,
       });
       formData.append('p_referral_key', property_id);
@@ -179,6 +182,67 @@ const DocumentDetails = props => {
     // } catch (error) {
     //   console.error('Error sharing PDF file:', error);
     // }
+  };
+  const downloadviewFile = async () => {
+    setIsLoading(true);
+    const date = new Date();
+    const {
+      dirs: {DownloadDir, DocumentDir},
+    } = RNFetchBlob.fs;
+    const isIOS = Platform.OS === 'ios';
+    const aPath = Platform.select({ios: DocumentDir, android: DownloadDir});
+    const fPath =
+      aPath + '/' + Math.floor(date.getTime() + date.getSeconds() / 2) + '.pdf';
+
+    const configOptions = Platform.select({
+      ios: {
+        fileCache: true,
+        path: fPath,
+        notification: true,
+      },
+      android: {
+        fileCache: false,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path: fPath,
+          description: 'Downloading pdf...',
+        },
+      },
+    });
+
+    try {
+      closeModal();
+      const res = await RNFetchBlob.config(configOptions).fetch(
+        'GET',
+        filePath.trim(),
+      );
+      if (isIOS) {
+        FileViewer.open(res.data, {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+          });
+      } else {
+        FileViewer.open(res.path(), {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+            setIsLoading(false);
+          });
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      Alert.alert('Error', 'Failed to download file');
+    }
   };
   const getuploadedDocuments = () => {
     const url = Config.BASE_URL;
@@ -488,14 +552,16 @@ const DocumentDetails = props => {
             closemodal={closeModal}
             deleteHandler={deleteHandler}
             // downloadFile={downloadFile}
-            downloadFile={checkPermission}
+            // downloadFile={checkPermission}
+            downloadFile={downloadviewFile}
             fileKey={fileKey}
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              navigation.navigate('ViewDocument', {
-                filePath: filePath,
-              });
+              // navigation.navigate('ViewDocument', {
+              //   filePath: filePath,
+              // });
+              downloadviewFile();
             }}
           />
         </RBSheet>
