@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { FONTFAMILY, IMAGES, _COLORS } from "./../../../Themes/index";
-import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
 
 export const RowTabStyle = StyleSheet.create({
 

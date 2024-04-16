@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../Themes";
 
-import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
 export const RejectConfirmCss = StyleSheet.create({
   mainContainer: {
     flex: 1,

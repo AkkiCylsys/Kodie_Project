@@ -22,7 +22,7 @@ import TopHeader from '../../components/Molecules/Header/Header';
 import {_goBack} from '../../services/CommonServices';
 import {IMAGES, _COLORS} from '../../Themes';
 import {useSelector} from 'react-redux';
-import {fontFamily} from '../../Themes/FontStyle/FontStyle';
+import {FONTFAMILY} from '../../Themes/FontStyle/FontStyle';
 import storage from '@react-native-firebase/storage';
 const Chat = props => {
   const [messageList, setMessageList] = useState([]);
@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
   },
   modalOptionText: {
     fontSize: 16,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     color: 'black',
     marginHorizontal: 10,
     marginBottom: 10,

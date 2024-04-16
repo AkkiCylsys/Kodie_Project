@@ -124,11 +124,11 @@ import ProfileDocumentDetails from '../../screens/Profile/ProfileDocumentDetails
 import SearchDetail from '../../screens/Tenant/Jobs/SearchforContractor/SearchDetail';
 import SearchJobResult from '../../screens/Tenant/Jobs/SearchforJob/SearchJobResult';
 import BidforJob from '../../screens/Tenant/Jobs/BidforJob/BidforJob';
-import PaymentScreen from '../../screens/PaymentMethod/PaymentScreen';
+//import PaymentScreen from '../../screens/PaymentMethod/PaymentScreen';
 import paymentdetails from '../../screens/PaymentMethod/paymentdetails';
 import ApplePay from '../../screens/PaymentMethod/ApplePay/ApplePay';
 import CreditCard from '../../screens/PaymentMethod/CreditCard/CreditCard';
-import SubscriptionScreen from '../../screens/Subscription/SubscriptionScreen';
+//import SubscriptionScreen from '../../screens/Subscription/SubscriptionScreen';
 import Chat from '../../screens/ChatsScreens/Chat';
 import CompanyInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Company/CompanyInProfile';
 import IndividualInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Individual/IndividualInProfile';
@@ -1076,11 +1076,11 @@ const AllStackRouts = props => {
           component={BidforJob}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'PaymentScreen'}
           component={PaymentScreen}
-          options={{headerShown: false, gestureEnabled: false}}
-        />
+          options={{headerShown: false}}
+        /> */}
         <Stack.Screen
           name={'paymentdetails'}
           component={paymentdetails}
@@ -1096,11 +1096,11 @@ const AllStackRouts = props => {
           component={ApplePay}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'SubscriptionScreen'}
           component={SubscriptionScreen}
-          options={{headerShown: false, gestureEnabled: false}}
-        />
+          options={{headerShown: false}}
+        /> */}
         <Stack.Screen
           name={'Partners'}
           component={Partners}
