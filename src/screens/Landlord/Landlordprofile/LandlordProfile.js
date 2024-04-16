@@ -128,7 +128,7 @@ export default LandlordProfile = props => {
         <TouchableOpacity
           style={LandlordProfileStyle.profilemainView}
           onPress={() => props.navigation.navigate('EditProfile')}>
-          <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
+          <View style={LandlordProfileStyle.ProfileView}>
             <Image
               // source={IMAGES.Landlordprofile}
               source={{
@@ -138,7 +138,7 @@ export default LandlordProfile = props => {
               style={LandlordProfileStyle.usericon}
               resizeMode="cover"
             />
-          </TouchableOpacity>
+          </View>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
               {accountDetails?.UAD_FIRST_NAME || accountDetails?.UAD_LAST_NAME
