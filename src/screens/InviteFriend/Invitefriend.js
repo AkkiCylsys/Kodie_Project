@@ -253,7 +253,7 @@ export default Invitefriend = props => {
             )}
             <View style={InviteStyles.textContainer}>
               <Text style={InviteStyles.profile_Heading}>
-                {item.displayName}
+                {Platform.OS == 'ios' ? item?.givenName : item.displayName}
               </Text>
               <Text style={InviteStyles.profile_SubHeading}>
                 {item.phoneNumbers?.[0]?.number || 'No phone number available'}
