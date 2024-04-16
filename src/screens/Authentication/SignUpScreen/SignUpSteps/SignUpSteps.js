@@ -196,10 +196,10 @@ const SignUpSteps = props => {
   // Validation for First Name
   const validateFirstName = text => {
     if (text === '') {
-      setFirstNameError('First name is required');
+      setFirstNameError('First name is required.');
       // } else if (!/^[A-Za-z]+$/.test(text)) {
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
-      setFirstNameError('First name should contain only alphabetic characters');
+      setFirstNameError('First name should contain only alphabetic characters.');
     } else {
       setFirstNameError('');
     }
@@ -209,10 +209,10 @@ const SignUpSteps = props => {
   // Validation for Last Name
   const validateLastName = text => {
     if (text === '') {
-      setLastNameError('Last name is required');
+      setLastNameError('Last name is required.');
       // } else if (!/^[A-Za-z]+$/.test(text)) {
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
-      setLastNameError('Last name should contain only alphabetic characters');
+      setLastNameError('Last name should contain only alphabetic characters.');
     } else {
       setLastNameError('');
     }
@@ -274,6 +274,8 @@ const SignUpSteps = props => {
       setMobileNumberError('Phone number is required.');
       // } else if (!validMobileNumber(mobileNumber)) {
       //   setMobileNumberError('Invalid phone number format.');
+    } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
+      setMobileNumberError('Invalid phone number format.');
     } else {
       // ImageName ? refRBSheet.current.close() : null;
 
@@ -472,9 +474,9 @@ const SignUpSteps = props => {
                   // validateMobileNumber(text);
                   const checkValid = phoneInput.current?.isValidNumber(text);
                   if (text === '') {
-                    setMobileNumberError('Phone number is required');
+                    setMobileNumberError('Phone number is required.');
                   } else if (checkValid == false) {
-                    setMobileNumberError('Invalid phone number format');
+                    setMobileNumberError('Invalid phone number format.');
                   } else {
                     setMobileNumberError('');
                   }

@@ -118,7 +118,8 @@ export const AccountStyle = StyleSheet.create({
     marginBottom: 20,
   },
   inputContainer: {
-    // marginBottom:5,
+    marginBottom:3,
+    
   },
   referralcode: {
     marginTop: 15,
@@ -233,7 +234,7 @@ export const AccountStyle = StyleSheet.create({
     alignSelf: 'center',
     borderColor: _COLORS.Kodie_GrayColor,
   },
-  errorText: {color: 'red', marginLeft: 10},
+  errorText: {color: 'red', marginLeft: 10,marginTop:5},
   BtnContainer: {
     backgroundColor: _COLORS.Kodie_lightGreenColor,
     flexDirection: 'row',

@@ -170,6 +170,7 @@ const ProfileDocumentDetails = props => {
               name="dots-three-vertical"
               size={20}
               color={_COLORS.Kodie_GrayColor}
+              style={{alignSelf:"center"}}
             />
           </TouchableOpacity>
         </View>

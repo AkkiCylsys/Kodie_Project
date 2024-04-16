@@ -69,7 +69,7 @@ export default ProfileDocumentDetailStyle = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     position: 'absolute',
-    top: 25,
+    top: 20,
     right: 20,
     zIndex: 1,
   },
