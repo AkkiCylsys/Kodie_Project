@@ -24,13 +24,18 @@ import RowTab from '../../../components/Molecules/RowTab/RowTab';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {useIsFocused, CommonActions} from '@react-navigation/native';
+import {
+  useIsFocused,
+  CommonActions,
+  useNavigation,
+} from '@react-navigation/native';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 export default LandlordProfile = props => {
   const dispatch = useDispatch();
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
+  const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
   const isvisible = useIsFocused();
@@ -101,7 +106,10 @@ export default LandlordProfile = props => {
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
         // isprofileImage
-        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        onPressLeftButton={() =>
+          // props.navigation.navigate('Dashboard')
+          navigation.goBack()
+        }
         MiddleText={'Profile'}
         // RightUserProfile={{
         //   uri:

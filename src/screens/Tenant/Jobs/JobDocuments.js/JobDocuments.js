@@ -19,10 +19,11 @@ import {_COLORS} from '../../../../Themes';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-// import RNFetchBlob from 'rn-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 import Share from 'react-native-share';
 import {useIsFocused} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
+import FileViewer from 'react-native-file-viewer';
 
 export default JobDocuments = props => {
   const navigation = useNavigation();
@@ -81,11 +82,20 @@ export default JobDocuments = props => {
   };
   // share doc....
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: filePath});
-    } catch (error) {
-      console.error('Error sharing PDF file:', error);
-    }
+    setTimeout(() => {
+      Share.open({url: filePath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: filePath});
+    // } catch (error) {
+    //   console.error('Error sharing PDF file:', error);
+    // }
   };
   // delete Document...
   const deleteHandler = fileKey => {
@@ -177,6 +187,68 @@ export default JobDocuments = props => {
       });
   };
 
+  //  dowonload for Ios And Android....
+  const downloadviewFile = async () => {
+    setIsLoading(true);
+    const date = new Date();
+    const {
+      dirs: {DownloadDir, DocumentDir},
+    } = RNFetchBlob.fs;
+    const isIOS = Platform.OS === 'ios';
+    const aPath = Platform.select({ios: DocumentDir, android: DownloadDir});
+    const fPath =
+      aPath + '/' + Math.floor(date.getTime() + date.getSeconds() / 2) + '.pdf';
+
+    const configOptions = Platform.select({
+      ios: {
+        fileCache: true,
+        path: fPath,
+        notification: true,
+      },
+      android: {
+        fileCache: false,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path: fPath,
+          description: 'Downloading pdf...',
+        },
+      },
+    });
+
+    try {
+      closeModal();
+      const res = await RNFetchBlob.config(configOptions).fetch(
+        'GET',
+        filePath.trim(),
+      );
+      if (isIOS) {
+        FileViewer.open(res.data, {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+          });
+      } else {
+        FileViewer.open(res.path(), {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+            setIsLoading(false);
+          });
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      Alert.alert('Error', 'Failed to download file');
+    }
+  };
   const getExtention = fileName => {
     // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
@@ -421,15 +493,16 @@ export default JobDocuments = props => {
           <EditDocumentsModal
             closemodal={closeModal}
             deleteHandler={deleteHandler}
-            // // downloadFile={downloadFile}
-            downloadFile={checkPermission}
+            // downloadFile={downloadFile}
+            downloadFile={downloadviewFile}
             fileKey={fileKey}
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              navigation.navigate('ViewDocument', {
-                filePath: filePath,
-              });
+              // navigation.navigate('ViewDocument', {
+              //   filePath: filePath,
+              // });
+              downloadviewFile();
             }}
           />
         </RBSheet>

@@ -119,11 +119,20 @@ export default PropertyReview = props => {
   const [pointOfInterest, setPointOfInterest] = useState(false);
 
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: inviteFriendPath});
-    } catch (error) {
-      console.error('Error sharing property ', error);
-    }
+    setTimeout(() => {
+      Share.open({url: inviteFriendPath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: inviteFriendPath});
+    // } catch (error) {
+    //   console.error('Error sharing property ', error);
+    // }
   };
   const Detail_rander = ({item, index}) => {
     return (
@@ -904,6 +913,7 @@ export default PropertyReview = props => {
                         editMode: 'editMode',
                       });
                     } else {
+                      props.navigation.pop(4);
                       props?.navigation?.navigate('Properties');
                     }
                   }}

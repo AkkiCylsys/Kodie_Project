@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import TopHeader from '../../components/Molecules/Header/Header';
@@ -23,6 +24,7 @@ import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 const Chats = props => {
   const refRBSheet = useRef();
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -75,104 +77,109 @@ const Chats = props => {
           onPressLeftButton={() => props.navigation.navigate('Dashboard')}
           MiddleText={'Chats'}
         />
-        <View style={ChatsStyle.searchview}>
-          <SearchBar
-            filterImage={IMAGES.filter}
-            frontSearchIcon
-            marginTop={3}
-            searchData={searchPropertyList}
-            textvalue={searchQuery}
-          />
-        </View>
-        <ScrollView>
-          <FlatList
-            data={searchQuery ? filteredUsers : users}
-            renderItem={({item, index}) => {
-              return (
-                <View style={{flex: 1, marginHorizontal: 16}}>
-                  <TouchableOpacity
-                    style={[
-                      {
-                        flex: 1,
-                        width: '100%',
-                        alignSelf: 'center',
-                        marginTop: 20,
-                        flexDirection: 'row',
+        <KeyboardAvoidingView
+          style={{flex: 1}}
+          behavior={Platform.OS === 'ios' ? 'padding' : null}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}>
+          <View style={ChatsStyle.searchview}>
+            <SearchBar
+              filterImage={IMAGES.filter}
+              frontSearchIcon
+              marginTop={3}
+              searchData={searchPropertyList}
+              textvalue={searchQuery}
+            />
+          </View>
+          <ScrollView>
+            <FlatList
+              data={searchQuery ? filteredUsers : users}
+              renderItem={({item, index}) => {
+                return (
+                  <View style={{flex: 1, marginHorizontal: 16}}>
+                    <TouchableOpacity
+                      style={[
+                        {
+                          flex: 1,
+                          width: '100%',
+                          alignSelf: 'center',
+                          marginTop: 20,
+                          flexDirection: 'row',
 
-                        borderRadius: 10,
-                        paddingHorizontal: 8,
-                        paddingVertical: 3,
-                        alignItems: 'center',
-                        backgroundColor: 'white',
-                      },
-                    ]}
-                    onPress={() => {
-                      navigation.navigate('Chat', {
-                        data: item,
-                        userid: item.user_key,
-                      });
-                    }}>
-                    {item.image ? (
-                      <View
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 50 / 2,
-                          borderWidth: 1,
-                          borderColor: _COLORS.Kodie_ExtraLightGrayColor,
-                        }}>
-                        <Image
-                          source={{uri: item.image}}
-                          // source={IMAGES.adduser}
+                          borderRadius: 10,
+                          paddingHorizontal: 8,
+                          paddingVertical: 3,
+                          alignItems: 'center',
+                          backgroundColor: 'white',
+                        },
+                      ]}
+                      onPress={() => {
+                        navigation.navigate('Chat', {
+                          data: item,
+                          userid: item.user_key,
+                        });
+                      }}>
+                      {item.image ? (
+                        <View
                           style={{
                             width: 50,
                             height: 50,
                             borderRadius: 50 / 2,
-                          }}
-                          resizeMode={'cover'}
+                            borderWidth: 1,
+                            borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+                          }}>
+                          <Image
+                            source={{uri: item.image}}
+                            // source={IMAGES.adduser}
+                            style={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: 50 / 2,
+                            }}
+                            resizeMode={'cover'}
+                          />
+                        </View>
+                      ) : (
+                        <FontAwesome
+                          name="user-circle-o"
+                          size={50}
+                          color={_COLORS.Kodie_ExtraLightGrayColor}
                         />
-                      </View>
-                    ) : (
-                      <FontAwesome
+                      )}
+                      {/* <FontAwesome
                         name="user-circle-o"
                         size={50}
                         color={_COLORS.Kodie_ExtraLightGrayColor}
-                      />
-                    )}
-                    {/* <FontAwesome
-                      name="user-circle-o"
-                      size={50}
-                      color={_COLORS.Kodie_ExtraLightGrayColor}
-                    /> */}
+                      /> */}
 
-                    <View>
-                      <Text
-                        style={{
-                          flex: 1,
-                          color: 'black',
-                          marginLeft: 10,
-                          fontSize: 18,
-                        }}>
-                        {/* {`${item.firstName} ${item.lastName}`} */}
-                        {item.name}
-                      </Text>
-                      <Text
-                        style={{
-                          flex: 1,
-                          color: _COLORS.Kodie_BlackColor,
-                          marginLeft: 10,
-                          fontSize: 14,
-                        }}>
-                        {/* {`${item.firstName} ${item.lastName}`} */}
-                        {item.email}
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              );
-            }}
-          />
-        </ScrollView>
+                      <View>
+                        <Text
+                          style={{
+                            flex: 1,
+                            color: 'black',
+                            marginLeft: 10,
+                            fontSize: 18,
+                          }}>
+                          {/* {`${item.firstName} ${item.lastName}`} */}
+                          {item.name}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            color: _COLORS.Kodie_BlackColor,
+                            marginLeft: 10,
+                            fontSize: 14,
+                          }}>
+                          {/* {`${item.firstName} ${item.lastName}`} */}
+                          {item.email}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                );
+              }}
+            />
+          </ScrollView>
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </>
   );

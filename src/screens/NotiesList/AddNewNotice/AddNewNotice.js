@@ -521,8 +521,8 @@ const AddNewNotice = props => {
       //   });
       console.log('doc......', doc);
       setSelectFile(doc);
-      setFileName(doc[0].name);
-      console.log('filename...', doc[0].name);
+      setFileName(doc[0].name.replace(/\s/g, ''));
+      console.log('filename...', doc[0].name.replace(/\s/g, ''));
       // await uploadDocument(doc);
       // console.log("Documents.....", doc);
       // console.log("selectFile.....", selectFile);

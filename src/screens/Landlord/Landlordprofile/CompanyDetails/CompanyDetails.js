@@ -499,12 +499,12 @@ export default CompanyDetails = props => {
         setAccountDetails(response?.data?.data[0]);
         setLocation(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD
+            ? response?.data?.data[0]?.UAD_COMPANY_ADDRESS
             : '',
         );
         setCompanyLocation(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD
+            ? response?.data?.data[0]?.UAD_COMPANY_ADDRESS
             : '',
         );
         const initialJobTypeIds = response?.data?.data[0]
@@ -942,11 +942,9 @@ export default CompanyDetails = props => {
     setIsMap(true);
   };
   return (
-    <ScrollView
-      style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}
-      onScroll={isLoading ? false : true}>
+    <>
       {IsMap ? (
-        <View style={{height: windowHeight - 135, flex: 1}}>
+        <View style={{height: windowHeight - 200, flex: 1}}>
           <View
             style={{
               // flex: 1,
@@ -1033,131 +1031,138 @@ export default CompanyDetails = props => {
         />
       ) : (
         <>
-          <View style={CompanyDetailsStyle.mainContaier}>
-            <View style={[CompanyDetailsStyle.profilviewmain, {flex: 1}]}>
-              <TouchableOpacity
-                style={CompanyDetailsStyle.ProfileView}
-                onPress={() => {
-                  refRBSheet.current.open();
-                }}>
-                {ImageName ? (
-                  <Image
-                    source={{uri: ImageName.path || ImageName}}
-                    style={[CompanyDetailsStyle.logo, {borderRadius: 110 / 2}]}
-                  />
-                ) : (
-                  <Image
-                    style={CompanyDetailsStyle.profilelogo}
-                    source={{
-                      uri: `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.UAD_Company_logo}`,
-                    }}
-                    resizeMode="cover"
-                  />
-                )}
-                {/* {ImageName ? refRBSheet.current.close() : null} */}
-                <View style={CompanyDetailsStyle.editlogoview}>
-                  <FontAwesome
-                    name="edit"
-                    color={_COLORS.Kodie_GreenColor}
-                    size={14}
-                    style={{
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                      alignItems: 'center',
+          <ScrollView
+            style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}
+            onScroll={isLoading ? false : true}>
+            <View style={CompanyDetailsStyle.mainContaier}>
+              <View style={[CompanyDetailsStyle.profilviewmain, {flex: 1}]}>
+                <TouchableOpacity
+                  style={CompanyDetailsStyle.ProfileView}
+                  onPress={() => {
+                    refRBSheet.current.open();
+                  }}>
+                  {ImageName ? (
+                    <Image
+                      source={{uri: ImageName.path || ImageName}}
+                      style={[
+                        CompanyDetailsStyle.logo,
+                        {borderRadius: 110 / 2},
+                      ]}
+                    />
+                  ) : (
+                    <Image
+                      style={CompanyDetailsStyle.profilelogo}
+                      source={{
+                        uri: `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.UAD_Company_logo}`,
+                      }}
+                      resizeMode="cover"
+                    />
+                  )}
+                  {/* {ImageName ? refRBSheet.current.close() : null} */}
+                  <View style={CompanyDetailsStyle.editlogoview}>
+                    <FontAwesome
+                      name="edit"
+                      color={_COLORS.Kodie_GreenColor}
+                      size={14}
+                      style={{
+                        alignSelf: 'center',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+                <Text style={CompanyDetailsStyle.edittext}>
+                  Edit company logo
+                </Text>
+              </View>
+              <Divider style={CompanyDetailsStyle.firstdivider} />
+
+              {/* Tab component code here...... */}
+              <View style={CompanyDetailsStyle.tabmainview}>
+                <Text style={CompanyDetailsStyle.tabheadingtext}>
+                  How do you run your business?
+                </Text>
+                <View style={CompanyDetailsStyle.btn_main_view}>
+                  <TouchableOpacity
+                    style={[
+                      CompanyDetailsStyle.person_view,
+                      {
+                        backgroundColor:
+                          tabValue === 'IndividualInProfile'
+                            ? _COLORS.Kodie_GreenColor
+                            : _COLORS.Kodie_WhiteColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
+                        setTabValue('IndividualInProfile');
+                      }
+                    }}>
+                    <Text
+                      style={[
+                        CompanyDetailsStyle.person_text,
+                        {
+                          color:
+                            tabValue === 'IndividualInProfile'
+                              ? _COLORS.Kodie_WhiteColor
+                              : _COLORS.Kodie_BlackColor,
+                        },
+                      ]}>
+                      {'Individual'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      CompanyDetailsStyle.person_view,
+                      {
+                        backgroundColor:
+                          tabValue === 'CompanyInProfile'
+                            ? _COLORS.Kodie_GreenColor
+                            : _COLORS.Kodie_WhiteColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
+                        setTabValue('CompanyInProfile');
+                      }
+                    }}>
+                    <Text
+                      style={[
+                        CompanyDetailsStyle.company_text,
+                        {
+                          color:
+                            tabValue === 'CompanyInProfile'
+                              ? _COLORS.Kodie_WhiteColor
+                              : _COLORS.Kodie_BlackColor,
+                        },
+                      ]}>
+                      {'Company'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {checkTabs()}
+              {Platform.OS == 'ios' ? (
+                <View style={{height: IsHeeight ? 120 : 0}}></View>
+              ) : null}
+              <View style={CompanyDetailsStyle.saveBackButton}>
+                <View style={CompanyDetailsStyle.secondview}>
+                  <CustomSingleButton
+                    Text_Color={_COLORS.Kodie_WhiteColor}
+                    borderColor={_COLORS.Kodie_TransparentColor}
+                    _ButtonText={'Save and back'}
+                    backgroundColor={_COLORS.Kodie_BlackColor}
+                    disabled={isLoading ? true : false}
+                    onPress={() => {
+                      UpdateCompanyData();
                     }}
                   />
                 </View>
-              </TouchableOpacity>
-              <Text style={CompanyDetailsStyle.edittext}>
-                Edit company logo
-              </Text>
-            </View>
-            <Divider style={CompanyDetailsStyle.firstdivider} />
-
-            {/* Tab component code here...... */}
-            <View style={CompanyDetailsStyle.tabmainview}>
-              <Text style={CompanyDetailsStyle.tabheadingtext}>
-                How do you run your business?
-              </Text>
-              <View style={CompanyDetailsStyle.btn_main_view}>
-                <TouchableOpacity
-                  style={[
-                    CompanyDetailsStyle.person_view,
-                    {
-                      backgroundColor:
-                        tabValue === 'IndividualInProfile'
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  onPress={() => {
-                    if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
-                      setTabValue('IndividualInProfile');
-                    }
-                  }}>
-                  <Text
-                    style={[
-                      CompanyDetailsStyle.person_text,
-                      {
-                        color:
-                          tabValue === 'IndividualInProfile'
-                            ? _COLORS.Kodie_WhiteColor
-                            : _COLORS.Kodie_BlackColor,
-                      },
-                    ]}>
-                    {'Individual'}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    CompanyDetailsStyle.person_view,
-                    {
-                      backgroundColor:
-                        tabValue === 'CompanyInProfile'
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  onPress={() => {
-                    if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
-                      setTabValue('CompanyInProfile');
-                    }
-                  }}>
-                  <Text
-                    style={[
-                      CompanyDetailsStyle.company_text,
-                      {
-                        color:
-                          tabValue === 'CompanyInProfile'
-                            ? _COLORS.Kodie_WhiteColor
-                            : _COLORS.Kodie_BlackColor,
-                      },
-                    ]}>
-                    {'Company'}
-                  </Text>
-                </TouchableOpacity>
               </View>
             </View>
-
-            {checkTabs()}
-            {Platform.OS == 'ios' ? (
-              <View style={{height: IsHeeight ? 120 : 0}}></View>
-            ) : null}
-            <View style={CompanyDetailsStyle.saveBackButton}>
-              <View style={CompanyDetailsStyle.secondview}>
-                <CustomSingleButton
-                  Text_Color={_COLORS.Kodie_WhiteColor}
-                  borderColor={_COLORS.Kodie_TransparentColor}
-                  _ButtonText={'Save and back'}
-                  backgroundColor={_COLORS.Kodie_BlackColor}
-                  disabled={isLoading ? true : false}
-                  onPress={() => {
-                    UpdateCompanyData();
-                  }}
-                />
-              </View>
-            </View>
-          </View>
+          </ScrollView>
           <RBSheet
             ref={refRBSheet}
             height={200}
@@ -1193,6 +1198,6 @@ export default CompanyDetails = props => {
           </RBSheet>
         </>
       )}
-    </ScrollView>
+    </>
   );
 };
