@@ -115,7 +115,8 @@ const ChangeContactNotify = props => {
             </Text>
             <Text style={ChangeNotifyStyle.totext}> to </Text>
             <Text style={ChangeNotifyStyle.secondnumbertext}>
-              {`${accountDetails?.UAD_COUNTRY_CODE || ""}${newPhoneNumber}`}
+              {/* {`${accountDetails?.UAD_COUNTRY_CODE || ""}${newPhoneNumber}`} */}
+              {PhoneNumber}
             </Text>
           </View>
         </View>

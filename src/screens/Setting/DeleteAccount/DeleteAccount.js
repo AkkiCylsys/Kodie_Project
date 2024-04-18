@@ -68,39 +68,39 @@ const DeleteAccount = props => {
     setPhoneNumber(text);
   };
   const handleSubmit = async () => {
-    if (phoneNumber.trim() === '' && email.trim() === '') {
-      setPhoneNumberError('Phone number is required');
-      setEmailError('Email is required!');
-    } else if (phoneNumber.trim() !== '' && email.trim() !== '') {
+    if (email.trim() === '') {
+      setEmailError('Email is required.');
+    }
+    //  else if (email.trim() !== '') {
+    //   if (!validateAccountEmail(email)) {
+    //     setEmailError(
+    //       'Hold on, this email appears to be invalid. Please enter a valid email address.',
+    //     );
+    //   } else {
+    //     DeleteAccount();
+    //   }
+    // }
+    else if (!validateAccountEmail(email)) {
+      setEmailError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
       DeleteAccount();
-    } else if (phoneNumber.trim() !== '') {
-      DeleteAccount();
-    } else if (email.trim() !== '') {
-      if (!validateAccountEmail(email)) {
-        setEmailError(
-          'Hold on, this email appears to be invalid. Please enter a valid email address.',
-        );
-      } else {
-        DeleteAccount();
-      }
     }
   };
 
   // Api intrigation..
-  const DeleteAccount = () => {
+  const DeleteAccount = async () => {
     const dataToSend = {
       uad_key: loginData?.Login_details?.user_account_id,
       email: email,
       phone_number: phoneNumber,
     };
-
     const url = Config.BASE_URL;
     const deleteAccount_url = `${url}profile/deleteuseraccount`;
     console.log('url...', deleteAccount_url);
-
     setIsLoading(true);
-
-    axios
+    await axios
       .delete(deleteAccount_url, {data: dataToSend})
       .then(res => {
         console.log('res delete Account......', res);
@@ -111,10 +111,13 @@ const DeleteAccount = props => {
       })
       .catch(error => {
         if (error.response) {
-          console.error('Response data:', error.response.data);
-          alert(error.response.data.message);
+          console.error('Response data:', error?.response?.data);
+          alert(error?.response?.data?.message);
         }
         console.error('Error deleting:', error);
+        setEmailError(
+          'Hold on, this email appears to be invalid. Please enter a valid email address.',
+        );
       })
       .finally(() => {
         setIsLoading(false);
@@ -247,7 +250,8 @@ const DeleteAccount = props => {
               <TextInput
                 style={DeleteAccountStyle.input}
                 value={email}
-                onChangeText={setEmail}
+                // onChangeText={setEmail}
+                onChangeText={handleAccountEmail}
                 onBlur={() => handleAccountEmail(email)}
                 placeholder="Email"
                 placeholderTextColor="#999"
