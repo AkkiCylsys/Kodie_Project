@@ -114,10 +114,10 @@ export default SignUpVerification = props => {
         }
       })
       .catch(error => {
-        if (error.response && error.response.status === 404) {
+        if (error?.response && error?.response?.status === 404) {
           alert('Incorrect OTP. Please try again.');
           setValue('');
-        } else if (error.response && error.response.status === 422) {
+        } else if (error?.response && error?.response?.status === 422) {
           alert('Time up. Please try again.');
           setValue('');
         } else {

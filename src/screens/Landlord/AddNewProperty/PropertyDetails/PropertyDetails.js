@@ -348,12 +348,12 @@ export default PropertyDetails = props => {
           PropertyDetailsStyle.itemView,
           {
             backgroundColor:
-              item.lookup_key === property_value
+              item?.lookup_key === property_value
                 ? _COLORS.Kodie_MidLightGreenColor
                 : null,
           },
         ]}>
-        {item.lookup_key === property_value ? (
+        {item?.lookup_key === property_value ? (
           <AntDesign
             color={_COLORS.Kodie_GreenColor}
             name={'checkcircle'}
@@ -367,7 +367,7 @@ export default PropertyDetails = props => {
           />
         )}
         <Text style={PropertyDetailsStyle.textItem}>
-          {item.lookup_description}
+          {item?.lookup_description}
         </Text>
       </View>
     );

@@ -314,12 +314,12 @@ export default FirstProperty = props => {
           FirstPropertyStyle.itemView,
           {
             backgroundColor:
-              item.lookup_key === property_value
+              item?.lookup_key === property_value
                 ? _COLORS.Kodie_MidLightGreenColor
                 : null,
           },
         ]}>
-        {item.lookup_key === property_value ? (
+        {item?.lookup_key === property_value ? (
           <AntDesign
             color={_COLORS.Kodie_GreenColor}
             name={'checkcircle'}
@@ -333,7 +333,7 @@ export default FirstProperty = props => {
           />
         )}
         <Text style={FirstPropertyStyle.textItem}>
-          {item.lookup_description}
+          {item?.lookup_description}
         </Text>
       </View>
     );
@@ -407,13 +407,13 @@ export default FirstProperty = props => {
           setProperty_Data(response?.data?.lookup_details);
         } else {
           console.error('property_type_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('property_type error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -436,13 +436,13 @@ export default FirstProperty = props => {
           );
         } else {
           console.error('additional_features_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('additional_features error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -583,8 +583,8 @@ export default FirstProperty = props => {
       setAdditionalFeaturesKeyValue('');
     } else {
       setIsLoading(false);
-      console.error('Save Account Details error:', res.data.error);
-      alert(res.data.error);
+      console.error('Save Account Details error:', res?.data?.error);
+      // alert(res.data.error);
     }
   };
   const registerUser = async () => {
@@ -762,8 +762,8 @@ export default FirstProperty = props => {
       setAdditionalFeaturesKeyValue('');
     } else {
       setIsLoading(false);
-      console.error('Save Account Details error:', res.data.error);
-      alert(res.data.error);
+      console.error('Save Account Details error:', res?.data?.error);
+      // alert(res.data.error);
     }
   };
   const registerUserfill = async () => {

@@ -16,6 +16,7 @@ import {
   KeyboardAvoidingView,
   PermissionsAndroid,
   Alert,
+  StatusBar,
 } from 'react-native';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {logos} from '../../../Themes/CommonVectors/Images';
@@ -397,7 +398,7 @@ export default Login = props => {
       } else if (res?.LoginStatuscode == 6) {
         props.navigation.navigate('SignUpSteps', {
           email: email,
-          user_key: res.User_key,
+          user_key: res?.User_key,
         });
       } else if (res?.data?.message === 'Account has been Suspended') {
         Alert.alert('Account suspension', res?.data?.message);
@@ -473,7 +474,7 @@ export default Login = props => {
         }
       })
       .catch(error => {
-        if (error.response || error.response.status === 400) {
+        if (error?.response || error?.response?.status === 400) {
           alert('Failed to send OTP via email. Please try again later.');
         } else {
           // alert('An error occurred. Please try again later.');
@@ -516,10 +517,10 @@ export default Login = props => {
         }
       })
       .catch(error => {
-        if (error.response && error.response.status === 404) {
+        if (error?.response && error?.response?.status === 404) {
           alert('Incorrect OTP. Please try again.');
-        } else if (error.response && error.response.status === 401) {
-          alert(error.response.message || 'User Unauthorized');
+        } else if (error?.response && error?.response?.status === 401) {
+          alert(error?.response?.message || 'User Unauthorized');
         } else {
           alert('An error occurred. Please try again later.');
         }
@@ -594,9 +595,9 @@ export default Login = props => {
       // }
       console.error('API failed create_password', error);
       // Handle errors appropriately
-      alert(error.message || 'An error occurred during the API call');
+      alert(error?.message || 'An error occurred during the API call');
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); 
     }
   };
 
@@ -604,6 +605,10 @@ export default Login = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={LoginStyles.container}>
+         <StatusBar
+        backgroundColor={_COLORS.Kodie_WhiteColor}
+        barStyle={'dark-content'}
+      />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />

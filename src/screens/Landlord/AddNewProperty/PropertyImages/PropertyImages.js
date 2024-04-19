@@ -367,9 +367,9 @@ export default PropertyImages = props => {
       }
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log('Request canceled:', error.message);
+        console.log('Request canceled:', error?.message);
       } else {
-        console.log('saving account details', error.message);
+        console.log('saving account details', error?.message);
         alert(
           error.message || 'An error occurred while saving account details',
         );
