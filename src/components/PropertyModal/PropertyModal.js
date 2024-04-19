@@ -95,7 +95,7 @@
 // ];
 
 // const PropertyModal = (props) => {
-//   const propertyId = props?.propertyId;
+  // const propertyId = props?.propertyId;
 
 //   const navigation = useNavigation(); // Hook to get navigation
 //   const refRBSheet = useRef();
@@ -145,31 +145,31 @@
 //             </TouchableOpacity>
 //           </>
 //         ) : (
-          // <TouchableOpacity
-          //   style={PropertyModalStyle.container}
-          //   onPress={() => {
-          //     if (item.id === "1") {
-          //       navigation.navigate("ViewPropertyDetails", {
-          //         propertyId: propertyId,
-          //       });
-          //       handleCloseModal();
-          //     }
-          //     if (item.id === "2") {
+//           <TouchableOpacity
+//             style={PropertyModalStyle.container}
+//             onPress={() => {
+//               if (item.id === "1") {
+//                 navigation.navigate("ViewPropertyDetails", {
+//                   propertyId: propertyId,
+//                 });
+//                 handleCloseModal();
+//               }
+//               if (item.id === "2") {
                 
-          //       handleCloseModal();
-          //     }
-          //     if (item.id === "5") {
-          //       // navigation.navigate("ViewPropertyDetails");
-          //       handleDeleteProperty();
+//                 handleCloseModal();
+//               }
+//               if (item.id === "5") {
+//                 // navigation.navigate("ViewPropertyDetails");
+//                 handleDeleteProperty();
              
-          //       // console.log("Property ID:", item.property_id);
-          //     }
-          //   }}
-          // >
-          //   {/* <Image source={item.Img} style={PropertyModalStyle.Icons} /> */}
-          //   <View style={PropertyModalStyle.IconView}>{item.Icon}</View>
-          //   <Text style={PropertyModalStyle.text}>{item.Data}</Text>
-          // </TouchableOpacity>
+//                 // console.log("Property ID:", item.property_id);
+//               }
+//             }}
+//           >
+//             {/* <Image source={item.Img} style={PropertyModalStyle.Icons} /> */}
+//             <View style={PropertyModalStyle.IconView}>{item.Icon}</View>
+//             <Text style={PropertyModalStyle.text}>{item.Data}</Text>
+//           </TouchableOpacity>
 //         )}
 //       </>
 //     );
@@ -226,19 +226,18 @@
 //   );
 // };
 // export default PropertyModal;
+// // Import necessary modules
 import React, { useRef } from "react";
-import { View, Text, Image, FlatList } from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { PropertyModalStyle } from "./PropertyModalStyle";
-import { _COLORS,IMAGES } from "../../Themes";
-import { TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { _COLORS } from "../../Themes";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import RBSheet from "react-native-raw-bottom-sheet";
 import PropertyPopup from "./PropertyPopup";
 
+// Define data for FlatList
 const data = [
   {
     id: "1",
@@ -254,7 +253,7 @@ const data = [
   },
   {
     id: "2",
-    Data: "Make property available for rental bidding",
+    Data: 'Make property available for rental bidding',
     Icon: (
       <MaterialCommunityIcons
         name="alpha-k-box-outline"
@@ -289,7 +288,7 @@ const data = [
     id: "5",
     Data: "Delete property",
     Icon: (
-      <MaterialCommunityIcons
+      <MaterialIcons
         name="delete-outline"
         size={25}
         color={_COLORS.Kodie_GreenColor}
@@ -297,6 +296,7 @@ const data = [
     ),
   },
 ];
+
 const data1 = [
   {
     id: "1",
@@ -323,14 +323,15 @@ const data1 = [
 ];
 
 const PropertyModal = (props) => {
+  const propertyId = props?.propertyId;
+
   const refRBSheet = useRef();
 
   const handleCloseModal = () => {
-    props.onClose();
+    props.onClose(); 
   };
 
   const handleMakePropertyAvailable = () => {
-    // Open the new RBSheet for making property available for rental bidding
     refRBSheet.current.open();
   };
 
@@ -381,26 +382,27 @@ const PropertyModal = (props) => {
           );
         }}
       />
-     <RBSheet
-  ref={refRBSheet}
-  height={590}
-  closeOnDragDown={true}
-  customStyles={{
-    wrapper: {
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-    },
-    container: {
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
-    },
-    draggableIcon: {
-      backgroundColor: _COLORS.Kodie_LightGrayColor,
-    },
-  }}
->
-  <PropertyPopup />
-</RBSheet>
-
+      {/* RBSheet for additional actions */}
+      <RBSheet
+        ref={refRBSheet}
+        height={590}
+        closeOnDragDown={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          container: {
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+        }}
+      >
+        {/* Pass propertyId to PropertyPopup */}
+        <PropertyPopup propertyId={propertyId} onClose={handleCloseModal} />
+      </RBSheet>
     </View>
   );
 };

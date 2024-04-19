@@ -381,55 +381,6 @@ const PropertyPopup = props => {
                   placeholderTextColor="#D9D9D9"
                 />
               </View>
-              {/* <View style={PropertyPopupStyle.inputContainer}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'Rental payment frequency'}
-                </Text>
-                <RowButtons
-                  LeftButtonText={'Upfront'}
-                  leftButtonbackgroundColor={
-                    !selected_payment_Button
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selected_payment_Button
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selected_payment_Button
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setselected_payment_Button(false);
-                    setselected_payment_id(319);
-                    // alert(selectedButtonId)
-                  }}
-                  RightButtonText={'After completion'}
-                  RightButtonbackgroundColor={
-                    selected_payment_Button
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selected_payment_Button
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selected_payment_Button
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setselected_payment_Button(true);
-                    setselected_payment_id(319);
-                  }}
-                />
-              </View> */}
-
               <View style={PropertyPopupStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>
                   {'Set bid notifications'}
@@ -682,6 +633,7 @@ const PropertyPopup = props => {
             onPress={sendDataToParent}
           />
         </View>
+        
       )}
     </>
   );

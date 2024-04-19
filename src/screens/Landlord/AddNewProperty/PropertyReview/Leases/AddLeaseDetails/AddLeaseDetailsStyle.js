@@ -185,5 +185,62 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
   },
- 
+ probtn:{
+  flexDirection: 'row',
+  flex: 1,
+  marginTop:15,
+  justifyContent:'space-between'
+},
+Twobtn:{
+  flex: 1, 
+  flexDirection: 'row',
+  justifyContent:'space-between'
+},
+Amountinput:{
+  height: 38,
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: _COLORS.Kodie_GrayColor,
+  color: "#333",
+  fontFamily: FONTFAMILY.K_Medium,
+  marginTop: 12,
+  paddingHorizontal: 35,
+},
+btn_main_view: {
+  flexDirection: "row",
+  justifyContent: "center",
+  // marginLeft: 10,
+  marginVertical: 10,
+  borderWidth: 1,
+  paddingHorizontal: 17,
+  paddingVertical: 5,
+  borderRadius: 10,
+  borderColor: _COLORS.Kodie_GrayColor,
+},
+yes_view: {
+  backgroundColor: _COLORS.Kodie_GreenColor,
+  paddingHorizontal: 25,
+  paddingVertical: 5,
+  borderRadius: 5,
+},
+no_view: {
+  // backgroundColor: _COLORS.Kodie_GreenColor,
+  paddingHorizontal: 20,
+  paddingVertical: 5,
+  borderRadius: 5,
+},
+no_text: {
+  color: _COLORS.Kodie_BlackColor,
+  fontSize: 12,
+  fontFamily: FONTFAMILY.K_Regular,
+  alignSelf: "center",
+},
+yes_text: {
+  color: _COLORS.Kodie_WhiteColor,
+  fontSize: 12,
+  fontFamily: FONTFAMILY.K_Regular,
+  alignSelf: "center",
+  marginLeft: 5,
+},
+
 });

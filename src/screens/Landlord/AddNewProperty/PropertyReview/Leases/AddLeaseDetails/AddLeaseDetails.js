@@ -601,6 +601,56 @@ export default AddLeaseDetails = props => {
               maxLength={5}
             />
           </View>
+          <View style={AddLeaseDetailsStyle.inputContainer}>
+            <Text style={LABEL_STYLES.commontext}>{'Payment due day*'}</Text>
+            <Dropdown
+              style={[
+                AddLeaseDetailsStyle.dropdown,
+                {flex: 1, borderRadius: 5, height: 45},
+              ]}
+              placeholderStyle={[
+                AddLeaseDetailsStyle.placeholderStyle,
+                {color: _COLORS.Kodie_LightGrayColor},
+              ]}
+              selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+              inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+              iconStyle={AddLeaseDetailsStyle.iconStyle}
+              data={lease_end_Data}
+              maxHeight={300}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              placeholder="Select day in each period rent is paid"
+              value={lease_end_value}
+              onChange={item => {
+                setlLease_end_value(item.value);
+                // alert(item.lookup_key);
+              }}
+              renderItem={lease_end_render}
+            />
+          </View>
+          <View style={AddLeaseDetailsStyle.probtn}>
+            <Text style={LABEL_STYLES.commontext}>Pro rata first payment*</Text>
+            <Text style={LABEL_STYLES.commontext}>Pro rata amount</Text>
+          </View>
+          <View style={AddLeaseDetailsStyle.Twobtn}>
+            <View style={AddLeaseDetailsStyle.btn_main_view}>
+              <TouchableOpacity style={[AddLeaseDetailsStyle.no_view]}>
+                <Text style={[AddLeaseDetailsStyle.no_text]}>{'No'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[AddLeaseDetailsStyle.yes_view]}>
+                <Text style={[AddLeaseDetailsStyle.yes_text]}>{'Yes'}</Text>
+              </TouchableOpacity>
+            </View>
+            <View>
+              <TextInput
+                style={AddLeaseDetailsStyle.Amountinput}
+                placeholder="Amount"
+                placeholderTextColor="#999"
+                keyboardType="number-pad"
+                maxLength={5}
+              />
+            </View>
+          </View>
           {/* <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{'Payment due day*'}</Text>
             <Dropdown
