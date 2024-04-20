@@ -57,8 +57,8 @@ const ChangeContactInput = props => {
         console.log('API Response:', response?.data?.data[0]);
         if (
           response?.data?.data &&
-          Array.isArray(response.data.data) &&
-          response.data.data.length > 0
+          Array.isArray(response?.data?.data) &&
+          response?.data?.data?.length > 0
         ) {
           setAccountDetails(response?.data?.data[0]);
           setOldnewPhoneNumber(response?.data?.data[0].UAD_PHONE_NO);
