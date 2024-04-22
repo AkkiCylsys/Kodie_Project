@@ -52,7 +52,7 @@ export default CompanyDetails = props => {
   const [UserZip_Code, setUserZip_Code] = useState('');
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState();
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const [Companylatitude, setCompanylatitude] = useState('');
@@ -887,9 +887,7 @@ export default CompanyDetails = props => {
                           style={CompanyInProfileStyle.locationInput}
                           value={Companylocation}
                           onChangeText={setCompanyLocation}
-                          onFocus={() => {
-                            setIsSearch(true);
-                          }}
+                          onFocus={() => setIsSearch(true)}
                           placeholder="Search location"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />

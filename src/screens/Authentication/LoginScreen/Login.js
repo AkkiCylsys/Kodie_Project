@@ -813,6 +813,7 @@ export default Login = props => {
                   placeholder="Your Email Address"
                   placeholderTextColor="#999"
                   editable={false}
+                  keyboardType={'email-address'}
                 />
               </View>
               <View style={LoginStyles.varifycode}>
@@ -992,9 +993,9 @@ export default Login = props => {
           <View
             style={[
               {
-                marginBottom: 500,
+                marginBottom: -150,
                 marginTop:
-                  isClick === 1 || isClick === 2 || isClick === 3 ? 90 : 180,
+                  isClick === 1 || isClick === 2 || isClick === 90 ? 10 : 180,
               },
             ]}>
             <CustomSingleButton

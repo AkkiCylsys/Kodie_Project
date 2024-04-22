@@ -137,6 +137,8 @@ import CompanySignup from '../../screens/Authentication/SignUpScreen/AboutYou/Co
 import Partners from '../../screens/Partners/Partners';
 import PropertyReviewDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReviewDetails';
 import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDetails';
+import {withIAPContext} from 'react-native-iap';
+import {Subscriptions} from '../../screens/Subscription/Subscription';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -207,7 +209,7 @@ const BottomNav = props => {
           ),
         }}
       />
-      <Tab.Screen 
+      <Tab.Screen
         name="Properties"
         component={Properties}
         options={{
@@ -1115,6 +1117,11 @@ const AllStackRouts = props => {
           name={'JobReviewDetails'}
           component={JobReviewDetails}
           options={{headerShown: false, gestureEnabled: false}}
+        />
+        <Stack.Screen
+          name={'Subscriptions'}
+          component={withIAPContext(Subscriptions)}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>
