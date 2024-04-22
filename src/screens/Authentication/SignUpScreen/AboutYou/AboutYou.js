@@ -300,8 +300,8 @@ export default AboutYou = props => {
 
     console.log('ServicesOffer', res);
     if (res.status === true) {
-      setKodieServicesData(res.lookup_details);
-      setIndiKodieServicesData(res.lookup_details);
+      setKodieServicesData(res?.lookup_details);
+      setIndiKodieServicesData(res?.lookup_details);
     }
     setIsLoading(false);
   };
@@ -502,15 +502,15 @@ export default AboutYou = props => {
         {
           margin: 4,
           backgroundColor:
-            isClick === item.lookup_key
+            isClick === item?.lookup_key
               ? _COLORS.Kodie_lightGreenColor
               : _COLORS.Kodie_WhiteColor,
         },
       ]}
       textColor={[AboutYouStyle.box_Text_Style]}
       onPress={() => {
-        handleBoxPress(item.lookup_key),
-          setSelectManageProperty(item.lookup_key);
+        handleBoxPress(item?.lookup_key),
+          setSelectManageProperty(item?.lookup_key);
       }}
     />
   );
@@ -534,15 +534,15 @@ export default AboutYou = props => {
         AboutYouStyle.box_style,
         {
           margin: 4,
-          backgroundColor: selectedServices.includes(item.lookup_key)
+          backgroundColor: selectedServices.includes(item?.lookup_key)
             ? _COLORS.Kodie_lightGreenColor
             : _COLORS.Kodie_WhiteColor,
         },
       ]}
       textColor={[AboutYouStyle.box_Text_Style]}
       onPress={() => {
-        toggleSelection(item.lookup_key);
-        setKodieDescribeYourselfDataId(item.lookup_key);
+        toggleSelection(item?.lookup_key);
+        setKodieDescribeYourselfDataId(item?.lookup_key);
       }}
     />
   );

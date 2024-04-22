@@ -339,7 +339,7 @@ const CreateJobSecondScreen = props => {
       }
     } catch (error) {
       // alert(error.message || 'An error occurred');
-      alert('Maximum image length exceeded.');
+      // alert('Maximum image length exceeded.');
       console.error('error...', error);
     } finally {
       setIsLoading(false);
@@ -360,13 +360,13 @@ const CreateJobSecondScreen = props => {
         if (response?.data?.success === true) {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData_term....', response?.data?.data);
-          setUpdateAllImage(response?.data?.data.image_file_path);
+          setUpdateAllImage(response?.data?.data?.image_file_path);
           console.log(
             'updateAllImage.....',
-            response?.data?.data.image_file_path,
+            response?.data?.data?.image_file_path,
           );
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -471,10 +471,10 @@ const CreateJobSecondScreen = props => {
         setRightImage([]);
       } else {
         console.log('update_uploadJobFilesData', response?.data?.error);
-        alert('Oops Somthing went wrong! please try again later.');
+        // alert('Oops Somthing went wrong! please try again later.');
       }
     } catch (error) {
-      alert(error);
+      // alert(error);
       console.log('update_error...', error);
     } finally {
       setIsLoading(false);

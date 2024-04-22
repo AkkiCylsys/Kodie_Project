@@ -48,8 +48,8 @@ const ChangeContactNotify = props => {
         console.log('API Response in notify:', response?.data?.data[0]);
         if (
           response?.data?.data &&
-          Array.isArray(response.data.data) &&
-          response.data.data.length > 0
+          Array.isArray(response?.data?.data) &&
+          response?.data?.data?.length > 0
         ) {
           setAccountDetails(response?.data?.data[0]);
           console.log('AccountDetails....', accountDetails);
@@ -78,19 +78,19 @@ const ChangeContactNotify = props => {
     axios
       .put(updateContactDetailUrl, dataToSend)
       .then(res => {
-        console.log('res UpdateContactDetails......', res.data);
+        console.log('res UpdateContactDetails......', res?.data);
         if (res?.data?.success === true) {
           alert(res?.data?.message);
           props.navigation.navigate('AccountSetting');
         }
       })
       .catch(error => {
-        if (error.response) {
+        if (error?.response) {
           console.error(
             'Response data UpdateContactDetails error',
             error.response.data,
           );
-          alert(error.response?.data?.message);
+          alert(error?.response?.data?.message);
         }
         console.error('Error Update ContactDetails:', error);
       })
@@ -115,7 +115,8 @@ const ChangeContactNotify = props => {
             </Text>
             <Text style={ChangeNotifyStyle.totext}> to </Text>
             <Text style={ChangeNotifyStyle.secondnumbertext}>
-              {`${accountDetails?.UAD_COUNTRY_CODE || ""}${newPhoneNumber}`}
+              {/* {`${accountDetails?.UAD_COUNTRY_CODE || ""}${newPhoneNumber}`} */}
+              {PhoneNumber}
             </Text>
           </View>
         </View>

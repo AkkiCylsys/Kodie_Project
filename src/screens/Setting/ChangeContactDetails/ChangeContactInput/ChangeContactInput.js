@@ -23,11 +23,8 @@ import {Config} from '../../../../Config';
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [oldnewPhoneNumber, setOldnewPhoneNumber] = useState('');
-  const [oldnewPhoneNumberError, setOldnewPhoneNumberError] = useState('');
   const [newnewPhoneNumber, setnewPhoneNumber] = useState('');
   const [newnewPhoneNumberError, setnewPhoneNumberError] = useState('');
-  const [oldNumberformattedValue, setOldNumberFormattedValue] = useState('');
-  const [newNumberformattedValue, setNewNumberFormattedValue] = useState('');
   const [accountDetails, setAccountDetails] = useState(null);
 
   const phoneInput = useRef(null);
@@ -60,8 +57,8 @@ const ChangeContactInput = props => {
         console.log('API Response:', response?.data?.data[0]);
         if (
           response?.data?.data &&
-          Array.isArray(response.data.data) &&
-          response.data.data.length > 0
+          Array.isArray(response?.data?.data) &&
+          response?.data?.data?.length > 0
         ) {
           setAccountDetails(response?.data?.data[0]);
           setOldnewPhoneNumber(response?.data?.data[0].UAD_PHONE_NO);
@@ -90,17 +87,14 @@ const ChangeContactInput = props => {
     if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
       console.log('Phone number is valid:', newnewPhoneNumber);
+    } else if (!phoneInput.current?.isValidNumber(newnewPhoneNumber)) {
+      setnewPhoneNumberError('Invalid phone number format.');
     } else {
       navigation.navigate('ChangeContactNotify', {
         oldnewPhoneNumber: oldnewPhoneNumber,
         newnewPhoneNumber: newnewPhoneNumber,
       });
     }
-  };
-
-  const handlenewPhoneNumberChange = text => {
-    validatenewPhoneNumber(text);
-    setnewPhoneNumber(text);
   };
   return (
     <SafeAreaView style={ChangeContactInputStyle.maincontainer}>
@@ -141,15 +135,22 @@ const ChangeContactInput = props => {
               marginTop: 8,
             }}>
             <PhoneInput
-              // ref={phoneInput}
+              ref={phoneInput}
               defaultValue={newnewPhoneNumber}
               defaultCode="AU"
               layout="second"
-              // onChangeText={text => {
-              //   validateNewnewPhoneNumber(text);
-              // }}
+              onChangeText={text => {
+                const checkValid = phoneInput.current?.isValidNumber(text);
+                if (text === '') {
+                  setnewPhoneNumberError('Phone number is required.');
+                } else if (checkValid == false) {
+                  setnewPhoneNumberError('Invalid phone number format.');
+                } else {
+                  setnewPhoneNumberError('');
+                }
+              }}
               placeholder={'Enter your phone number'}
-              onChangeFormattedText={text => handlenewPhoneNumberChange(text)}
+              onChangeFormattedText={text => setnewPhoneNumber(text)}
               textInputProps={{
                 maxLength: 9,
               }}

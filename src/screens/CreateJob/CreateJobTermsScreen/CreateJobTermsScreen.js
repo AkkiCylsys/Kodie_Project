@@ -259,12 +259,12 @@ export default CreateJobTermsScreen = props => {
             CreateJobTermsStyle.itemView,
             {
               backgroundColor:
-                item.lookup_key === hourlyNeedValue
+                item?.lookup_key === hourlyNeedValue
                   ? _COLORS.Kodie_MidLightGreenColor
                   : null,
             },
           ]}>
-          {item.lookup_key === hourlyNeedValue ? (
+          {item?.lookup_key === hourlyNeedValue ? (
             <Ionicons
               color={_COLORS.Kodie_GreenColor}
               name={'checkmark-circle'}
@@ -278,7 +278,7 @@ export default CreateJobTermsScreen = props => {
             />
           )}
           <Text style={CreateJobTermsStyle.textItem}>
-            {item.lookup_description}
+            {item?.lookup_description}
           </Text>
         </View>
       </ScrollView>
@@ -292,12 +292,12 @@ export default CreateJobTermsScreen = props => {
             CreateJobTermsStyle.itemView,
             {
               backgroundColor:
-                item.lookup_key === needServicesValue
+                item?.lookup_key === needServicesValue
                   ? _COLORS.Kodie_MidLightGreenColor
                   : null,
             },
           ]}>
-          {item.lookup_key === needServicesValue ? (
+          {item?.lookup_key === needServicesValue ? (
             <Ionicons
               color={_COLORS.Kodie_GreenColor}
               name={'checkmark-circle'}
@@ -311,7 +311,7 @@ export default CreateJobTermsScreen = props => {
             />
           )}
           <Text style={CreateJobTermsStyle.textItem}>
-            {item.lookup_description}
+            {item?.lookup_description}
           </Text>
         </View>
       </ScrollView>
@@ -343,7 +343,7 @@ export default CreateJobTermsScreen = props => {
       })
       .catch(error => {
         console.error('HourlyNeed error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -511,21 +511,21 @@ export default CreateJobTermsScreen = props => {
         if (response?.data?.success === true) {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData_term....', response?.data?.data);
-          setSelectedDate(response?.data?.data.job_date.substring(0, 10));
-          setCurrentTime(response?.data?.data.job_time);
-          setHourlyNeedValue(parseInt(response?.data?.data.job_hourly_key));
+          setSelectedDate(response?.data?.data?.job_date.substring(0, 10));
+          setCurrentTime(response?.data?.data?.job_time);
+          setHourlyNeedValue(parseInt(response?.data?.data?.job_hourly_key));
           setneedServicesValue(
-            parseInt(response?.data?.data.job_how_often_key),
+            parseInt(response?.data?.data?.job_how_often_key),
           );
-          setFormattedPriceRanges(response?.data?.data.job_budget);
+          setFormattedPriceRanges(response?.data?.data?.job_budget);
           setSelectedButtonResponsible(
-            parseInt(response?.data?.data.job_payment_by_key),
+            parseInt(response?.data?.data?.job_payment_by_key),
           );
           setSelectedButtonBookingInsurance(
-            parseInt(response?.data?.data.job_insurence_key),
+            parseInt(response?.data?.data?.job_insurence_key),
           );
-          setMaxBudget(response?.data?.data.job_max_budget);
-          setMinBudget(response?.data?.data.job_min_budget);
+          setMaxBudget(response?.data?.data?.job_max_budget);
+          setMinBudget(response?.data?.data?.job_min_budget);
           console.log('max budget..', maxBudget);
           console.log('min budget..', minBudget);
           setIsLoading(false);
@@ -692,7 +692,7 @@ export default CreateJobTermsScreen = props => {
             searchPlaceholder="Search..."
             value={hourlyNeedValue}
             onChange={item => {
-              setHourlyNeedValue(item.lookup_key);
+              setHourlyNeedValue(item?.lookup_key);
               // alert(item.lookup_key);
             }}
             renderItem={NeedHour_render}
@@ -715,7 +715,7 @@ export default CreateJobTermsScreen = props => {
             searchPlaceholder="Search..."
             value={needServicesValue}
             onChange={item => {
-              setneedServicesValue(item.lookup_key);
+              setneedServicesValue(item?.lookup_key);
               // alert(item.lookup_key)
             }}
             renderItem={NeedService_render}

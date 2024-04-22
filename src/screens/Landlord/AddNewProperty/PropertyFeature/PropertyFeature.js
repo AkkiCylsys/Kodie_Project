@@ -475,7 +475,7 @@ export default PropertyFeature = props => {
           // setupdateProperty_Details(response?.data?.property_details);
         } else {
           console.error('update_property_detailserror:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })

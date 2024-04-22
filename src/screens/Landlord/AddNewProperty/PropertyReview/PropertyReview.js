@@ -351,28 +351,28 @@ export default PropertyReview = props => {
           response?.data?.property_details[0],
         );
         // Fetch and process key features..........
-        if (response?.data?.property_details[0].key_features) {
+        if (response?.data?.property_details[0]?.key_features) {
           const parsedData = JSON.parse(
-            response?.data?.property_details[0].key_features.replace(/\\/g, ''),
+            response?.data?.property_details[0]?.key_features.replace(/\\/g, ''),
           );
           setDetail(parsedData);
           console.log('parsedData....', parsedData);
         }
         const additionalKeyFeatures =
-          response?.data?.property_details[0].additional_key_features[0];
+          response?.data?.property_details[0]?.additional_key_features[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
         // alert('Oops something went wrong! Please try again later.');
       }
       const additionalFeatures_id =
-        response?.data?.property_details[0].additional_features;
+        response?.data?.property_details[0]?.additional_features;
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const is_additionalFeaturesid = additionalFeatures_id.split(',');
       setAddtionalFeaturesID(is_additionalFeaturesid);
     } catch (error) {
       console.error('Error:', error);
-      alert(error);
+      // alert(error);
       setIsLoading(false);
     }
   };
