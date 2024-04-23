@@ -113,4 +113,24 @@ export const PropertyList2Css = StyleSheet.create({
     fontSize: 12,
     color:_COLORS.Kodie_WhiteColor
   },
+  select_item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  key_selectedStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    shadowColor: '#000',
+    marginTop: 8,
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
 });
