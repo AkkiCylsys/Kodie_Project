@@ -34,10 +34,10 @@ export const PropertyList2Css = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   inputText: {
-    fontSize: 12,
-    fontFamily: FONTFAMILY.K_Bold,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
-    marginTop: 6,
+    marginTop: 15,
   },
   rowView: {
     flex: 1,
@@ -132,5 +132,57 @@ export const PropertyList2Css = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 12,
     paddingVertical: 8,
+  },
+  // 
+  mainfeaturesview: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 12,
+  },
+  key_feature_mainView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  key_feature_subView: {flex: 1},
+  floorsizeview: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+  },
+  flor_input_field: {
+    borderWidth: 0.5,
+    borderRadius: 6,
+    borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
+    color: '#333',
+    fontFamily: FONTFAMILY.K_Medium,
+    textAlign: 'center',
+    alignItems: 'center',
+    width: 105,
+    height: 36,
+  },
+  key_feature_Text: {
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  key_feature_Text_view: {
+    flex: 1,
+  },
+  plus_minusview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 0.7,
+  },
+  menusIconView: {
+    borderWidth: 0.5,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

@@ -9,6 +9,7 @@ import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {SignupLookupDetails} from '../../../../APIs/AllApi';
+import RangeSlider from '../../../../components/Molecules/RangeSlider/RangeSlider';
 import {Config} from '../../../../Config';
 import axios from 'axios';
 const data = [
@@ -47,11 +48,32 @@ const PropertyList2 = props => {
   const [selectPetFriendlyBtnId, setSelectPetFriendlyBtnId] = useState(0);
   const [secureByDepositBtn, setSecureByDepositBtn] = useState(false);
   const [secureByDepositBtnId, setSecureByDepositBtnId] = useState(0);
-
+  const [priceRanges, setPriceRanges] = useState(0);
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
+  const [CountBedroom, setCountBedroom] = useState(0);
+  const [CountBathroom, setCountBathroom] = useState(0);
+  const [CountParking, setCountParking] = useState(0);
+  const [CountParkingStreet, setCountParkingStreet] = useState(0);
   useEffect(() => {
     handle_property_Type();
     additional_key_features();
   }, []);
+
+  const handlePriceRangeChange = priceRange => {
+    console.log('Price Range in Parent Component:', priceRange);
+    setPriceRanges(priceRange);
+    // Do something with the price range in the parent component
+  };
+  const handlemaxRange = high => {
+    console.log('High Range in Parent Component:', high);
+    setMax(high);
+  };
+  const handleminRange = low => {
+    console.log('Low Range in Parent Component:', low);
+    setMin(low);
+  };
+
   // renderItem....
   const additional_key_feature_render = item => {
     return (
@@ -149,6 +171,44 @@ const PropertyList2 = props => {
       });
   };
 
+  const AllCountsData = [
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Parking Space': CountParking},
+    {'On-StreetParking': CountParkingStreet},
+  ];
+  const increaseBedroomCount = () => {
+    setCountBedroom(prevCount => prevCount + 1);
+  };
+  const decreaseBedroomCount = () => {
+    if (CountBedroom > 0) {
+      setCountBedroom(prevCount => prevCount - 1);
+    }
+  };
+  const increaseBathroomCount = () => {
+    setCountBathroom(prevCount => prevCount + 1);
+  };
+  const decreaseBathroomCount = () => {
+    if (CountBathroom > 0) {
+      setCountBathroom(prevCount => prevCount - 1);
+    }
+  };
+  const increaseParkingStreetCount = () => {
+    setCountParkingStreet(prevCount => prevCount + 1);
+  };
+  const decreaseParkingStreetCount = () => {
+    if (CountParkingStreet > 0) {
+      setCountParkingStreet(prevCount => prevCount - 1);
+    }
+  };
+  const increaseParkingCount = () => {
+    setCountParking(prevCount => prevCount + 1);
+  };
+  const decreaseParkingCount = () => {
+    if (CountParking > 0) {
+      setCountParking(prevCount => prevCount - 1);
+    }
+  };
   return (
     <>
       <ScrollView contentContainerStyle={PropertyList2Css.scrollViewStl}>
@@ -179,145 +239,150 @@ const PropertyList2 = props => {
             }}
           />
           <View style={PropertyList2Css.rowView}>
-            <View style={PropertyList2Css.flexContainer}>
-              <Text style={PropertyList2Css.inputText}>Min Price:</Text>
-              <Dropdown
-                style={PropertyList2Css.dropdown}
-                placeholderStyle={PropertyList2Css.placeholderStyle}
-                selectedTextStyle={PropertyList2Css.selectedTextStyle}
-                inputSearchStyle={PropertyList2Css.inputSearchStyle}
-                iconStyle={PropertyList2Css.iconStyle}
-                data={proteryTypeData}
-                search
-                maxHeight={300}
-                labelField="lookup_description"
-                valueField="lookup_key"
-                placeholder="$300 per week"
-                searchPlaceholder="Search..."
-                value={value}
-                onChange={item => {
-                  setProteryTypeValue(item.lookup_key);
-                }}
-              />
-            </View>
-            <View style={PropertyList2Css.spaceView} />
+            <Text style={PropertyList2Css.inputText}>Min Price:</Text>
+            <Text style={PropertyList2Css.inputText}>Max Price:</Text>
+          </View>
+          <RangeSlider
+            from={1}
+            to={5000}
+            // from={minBudget !== null ? minBudget : 1}
+            // to={maxBudget !== null ? maxBudget : 2000}
+            onPriceRangeChange={handlePriceRangeChange}
+            onHighRange={handlemaxRange}
+            onLowRange={handleminRange}
+            onLowrange={2}
+          />
+          <View>
+            <View style={PropertyList2Css.mainfeaturesview}>
+              <View style={PropertyList2Css.key_feature_Text_view}>
+                <Text style={PropertyList2Css.key_feature_Text}>
+                  {'Bedrooms'}
+                </Text>
+              </View>
 
-            <View style={PropertyList2Css.flexContainer}>
-              <Text style={PropertyList2Css.inputText}>Max Price:</Text>
-              <Dropdown
-                style={PropertyList2Css.dropdown}
-                placeholderStyle={PropertyList2Css.placeholderStyle}
-                selectedTextStyle={PropertyList2Css.selectedTextStyle}
-                inputSearchStyle={PropertyList2Css.inputSearchStyle}
-                iconStyle={PropertyList2Css.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="$1000 per week"
-                searchPlaceholder="Search..."
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
-              />
+              <TouchableOpacity style={PropertyList2Css.plus_minusview}>
+                <TouchableOpacity
+                  style={PropertyList2Css.menusIconView}
+                  onPress={decreaseBedroomCount}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={PropertyList2Css.countdata}>{CountBedroom}</Text>
+                <TouchableOpacity
+                  style={PropertyList2Css.menusIconView}
+                  onPress={() => {
+                    increaseBedroomCount();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+
+            <View style={PropertyList2Css.mainfeaturesview}>
+              <View style={PropertyList2Css.key_feature_Text_view}>
+                <Text style={PropertyList2Css.key_feature_Text}>
+                  {'Bathrooms'}
+                </Text>
+              </View>
+
+              <TouchableOpacity style={PropertyList2Css.plus_minusview}>
+                <TouchableOpacity
+                  style={PropertyList2Css.menusIconView}
+                  onPress={decreaseBathroomCount}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={PropertyList2Css.countdata}>
+                  {CountBathroom}
+                </Text>
+                <TouchableOpacity
+                  style={PropertyList2Css.menusIconView}
+                  onPress={increaseBathroomCount}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+
+            <View style={PropertyList2Css.mainfeaturesview}>
+              <View style={PropertyList2Css.key_feature_Text_view}>
+                <Text style={PropertyList2Css.key_feature_Text}>
+                  {'Parking spaces'}
+                </Text>
+              </View>
+
+              <TouchableOpacity style={PropertyList2Css.plus_minusview}>
+                <TouchableOpacity
+                  style={PropertyList2Css.menusIconView}
+                  onPress={decreaseParkingCount}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={PropertyList2Css.countdata}>{CountParking}</Text>
+                <TouchableOpacity
+                  style={PropertyList2Css.menusIconView}
+                  onPress={increaseParkingCount}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+
+            <View style={PropertyList2Css.mainfeaturesview}>
+              <View style={PropertyList2Css.key_feature_Text_view}>
+                <Text style={PropertyList2Css.key_feature_Text}>
+                  {'On-street parking'}
+                </Text>
+              </View>
+
+              <TouchableOpacity style={PropertyList2Css.plus_minusview}>
+                <TouchableOpacity
+                  style={PropertyList2Css.menusIconView}
+                  onPress={decreaseParkingStreetCount}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={PropertyList2Css.countdata}>
+                  {CountParkingStreet}
+                </Text>
+                <TouchableOpacity
+                  style={PropertyList2Css.menusIconView}
+                  onPress={increaseParkingStreetCount}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
             </View>
           </View>
-          <View style={PropertyList2Css.rowView}>
-            <View style={PropertyList2Css.flexContainer}>
-              <Text style={PropertyList2Css.inputText}>Bedrooms:</Text>
-              <Dropdown
-                style={PropertyList2Css.dropdown}
-                placeholderStyle={PropertyList2Css.placeholderStyle}
-                selectedTextStyle={PropertyList2Css.selectedTextStyle}
-                inputSearchStyle={PropertyList2Css.inputSearchStyle}
-                iconStyle={PropertyList2Css.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="3+"
-                searchPlaceholder="Search..."
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
-              />
-            </View>
-            <View style={PropertyList2Css.spaceView} />
 
-            <View style={PropertyList2Css.flexContainer}>
-              <Text style={PropertyList2Css.inputText}>Bathrooms:</Text>
-              <Dropdown
-                style={PropertyList2Css.dropdown}
-                placeholderStyle={PropertyList2Css.placeholderStyle}
-                selectedTextStyle={PropertyList2Css.selectedTextStyle}
-                inputSearchStyle={PropertyList2Css.inputSearchStyle}
-                iconStyle={PropertyList2Css.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="2+"
-                searchPlaceholder="Search..."
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
-              />
-            </View>
-          </View>
-          <View style={PropertyList2Css.rowView}>
-            <View style={PropertyList2Css.flexContainer}>
-              <Text style={PropertyList2Css.inputText}>Car spaces:</Text>
-              <Dropdown
-                style={PropertyList2Css.dropdown}
-                placeholderStyle={PropertyList2Css.placeholderStyle}
-                selectedTextStyle={PropertyList2Css.selectedTextStyle}
-                inputSearchStyle={PropertyList2Css.inputSearchStyle}
-                iconStyle={PropertyList2Css.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="1+"
-                searchPlaceholder="Search..."
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
-              />
-            </View>
-            <View style={PropertyList2Css.spaceView} />
-
-            <View style={PropertyList2Css.flexContainer}>
-              <Text style={PropertyList2Css.inputText}>
-                On-street parking spaces:
-              </Text>
-              <Dropdown
-                style={PropertyList2Css.dropdown}
-                placeholderStyle={PropertyList2Css.placeholderStyle}
-                selectedTextStyle={PropertyList2Css.selectedTextStyle}
-                inputSearchStyle={PropertyList2Css.inputSearchStyle}
-                iconStyle={PropertyList2Css.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="1+"
-                searchPlaceholder="Search..."
-                value={value}
-                onChange={item => {
-                  setValue(item.value);
-                }}
-              />
-            </View>
-          </View>
+          <Text style={[PropertyList2Css.inputText, {marginVertical: 23}]}>
+            {'Additional features'}
+          </Text>
           <Text style={PropertyList2Css.inputText}>
             {'Furnished or unfurnished? '}
           </Text>
