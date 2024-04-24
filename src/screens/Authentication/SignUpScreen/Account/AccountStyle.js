@@ -44,13 +44,13 @@ export const AccountStyle = StyleSheet.create({
     top: 100,
     right: 10,
     backgroundColor: '#F5F5F5',
-    borderRadius: 12,
-    padding: 5,
+    // padding: 9,
     width: 35,
     height: 35,
     // borderWidth:1,
     borderRadius: 35 / 2,
-    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent:"center"
   },
   edittext: {
     marginTop: 24,
