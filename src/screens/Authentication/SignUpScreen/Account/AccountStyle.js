@@ -86,7 +86,8 @@ export const AccountStyle = StyleSheet.create({
     // marginHorizontal: 15,
   },
   inputContainerbio: {
-    marginBottom: 15,
+    // marginBottom: 15,
+    marginTop:15
   },
   _texinputLabel: {
     fontSize: 16,
@@ -118,7 +119,7 @@ export const AccountStyle = StyleSheet.create({
     marginBottom: 20,
   },
   inputContainer: {
-    marginBottom:3,
+    // marginBottom:3,
     
   },
   referralcode: {

@@ -413,16 +413,6 @@ const PropertyList2 = props => {
           <Text style={PropertyList2Css.inputText}>
             {'Exclude properties secured by deposit?'}
           </Text>
-          {/* <RowButtons
-            LeftButtonText={'Yes'}
-            leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-            LeftButtonborderColor={_COLORS.Kodie_GrayColor}
-            RightButtonText={'No'}
-            RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-            RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-            RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
-          /> */}
           <RowButtons
             LeftButtonText={'Yes'}
             leftButtonbackgroundColor={
