@@ -199,7 +199,9 @@ const SignUpSteps = props => {
       setFirstNameError('First name is required.');
       // } else if (!/^[A-Za-z]+$/.test(text)) {
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
-      setFirstNameError('First name should contain only alphabetic characters.');
+      setFirstNameError(
+        'First name should contain only alphabetic characters.',
+      );
     } else {
       setFirstNameError('');
     }
@@ -417,7 +419,7 @@ const SignUpSteps = props => {
               <FontAwesome
                 name="edit"
                 color={_COLORS.Kodie_GreenColor}
-                size={18}
+                size={15}
                 style={{alignSelf: 'center'}}
               />
             </View>
@@ -522,7 +524,7 @@ const SignUpSteps = props => {
             />
           </View>
 
-          <View style={AccountStyle.inputContainer}>
+          <View style={[AccountStyle.inputContainer, {marginTop: 15}]}>
             <Text style={LABEL_STYLES._texinputLabel}>
               Current physical address
             </Text>

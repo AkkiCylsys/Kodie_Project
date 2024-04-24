@@ -11,7 +11,7 @@ import {
   BackHandler,
   TextInput,
   SafeAreaView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from 'react-native';
 import Geocoder from 'react-native-geocoding';
 import {AboutYouStyle} from './AboutYouStyle';
@@ -151,8 +151,8 @@ export default AboutYou = props => {
   const [IndiselectJobType, setIndiSelectJobType] = useState();
   const [servicesData, setServicesData] = useState([]);
   const [IndiservicesData, setIndiServicesData] = useState([]);
+  const [showProperties, setShowProperties] = useState(true);
   const isvisible = useIsFocused();
-
   const toggleServicesSelection = lookup_key => {
     if (selectJobTypeid.includes(lookup_key)) {
       setSelectJobTypeid(prevSelected =>
@@ -542,7 +542,21 @@ export default AboutYou = props => {
       textColor={[AboutYouStyle.box_Text_Style]}
       onPress={() => {
         toggleSelection(item?.lookup_key);
-        setKodieDescribeYourselfDataId(item?.lookup_key);
+        setKodieDescribeYourselfDataId(prevIds => {
+          const index = prevIds.indexOf(item?.lookup_key);
+          if (index !== -1) {
+            const newIds = [
+              ...prevIds.slice(0, index),
+              ...prevIds.slice(index + 1),
+            ];
+            console.log('kodieDescribeYourselfId removed.... ', newIds);
+            return newIds;
+          } else {
+            const newIds = [...prevIds, item?.lookup_key];
+            console.log('kodieDescribeYourselfId added.... ', newIds);
+            return newIds;
+          }
+        });
       }}
     />
   );
@@ -994,58 +1008,60 @@ export default AboutYou = props => {
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
-      <TopHeader
-        MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
-        onPressLeftButton={() => {
-          IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
-        }}
-      />
-      {IsMap ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-          }}>
-          <MapScreen
-            style={{
-              height: '100%',
-              width: '100%',
-              alignSelf: 'center',
-              marginBottom: 10,
-            }}
-            onRegionChange={onRegionChange}
-            Maplat={tabValue == 'IndividualSignup' ? latitude : Companylatitude}
-            Maplng={
-              tabValue == 'IndividualSignup' ? longitude : Companylongitude
-            }
-          />
+        <TopHeader
+          MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
+          onPressLeftButton={() => {
+            IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
+          }}
+        />
+        {IsMap ? (
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              width: '96%',
-              borderWidth: 1,
-              borderRadius: 8,
-              backgroundColor: 'white',
-              borderColor: '#E5E4E2',
-              marginTop: 10,
-              position: 'absolute',
+              flex: 1,
+              backgroundColor: 'transparent',
             }}>
-            <TextInput
+            <MapScreen
               style={{
-                backgroundColor: 'transparent',
-
-                width: '90%',
-                height: 45,
+                height: '100%',
+                width: '100%',
                 alignSelf: 'center',
+                marginBottom: 10,
               }}
-              onFocus={() => openMapandClose()}
-              placeholder={'Search Place'}
-              placeholderTextColor={_COLORS.Kodie_BlackColor}
+              onRegionChange={onRegionChange}
+              Maplat={
+                tabValue == 'IndividualSignup' ? latitude : Companylatitude
+              }
+              Maplng={
+                tabValue == 'IndividualSignup' ? longitude : Companylongitude
+              }
             />
-          </View>
-          {/* <TouchableOpacity
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignSelf: 'center',
+                width: '96%',
+                borderWidth: 1,
+                borderRadius: 8,
+                backgroundColor: 'white',
+                borderColor: '#E5E4E2',
+                marginTop: 10,
+                position: 'absolute',
+              }}>
+              <TextInput
+                style={{
+                  backgroundColor: 'transparent',
+
+                  width: '90%',
+                  height: 45,
+                  alignSelf: 'center',
+                }}
+                onFocus={() => openMapandClose()}
+                placeholder={'Search Place'}
+                placeholderTextColor={_COLORS.Kodie_BlackColor}
+              />
+            </View>
+            {/* <TouchableOpacity
               style={FirstPropertyStyle.c_locationBtn}
               onPress={() => {}}
             >
@@ -1055,240 +1071,241 @@ export default AboutYou = props => {
                 color={_COLORS.Kodie_lightGreenColor}
               />
             </TouchableOpacity> */}
-          <TouchableOpacity
-            style={FirstPropertyStyle.BtnContainer}
-            onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
-          </TouchableOpacity>
-        </View>
-      ) : IsSearch ? (
-        <SearchPlaces
-          onPress={(data, details = null) => {
-            console.log('LocationData....', details);
-            if (tabValue == 'IndividualSignup') {
-              setlatitude(details.geometry.location.lat);
-              setlongitude(details.geometry.location.lng);
-            } else {
-              setCompanylatitude(details.geometry.location.lat);
-              setCompanylongitude(details.geometry.location.lng);
-            }
-
-            setIsSearch(false);
-            setIsMap(true);
-            // setLocation(details.formatted_address);
-            setCurrentLocation(details.formatted_address);
-          }}
-        />
-      ) : (
-        <>
-          <View style={AboutYouStyle.stepIndicator}>
-            <StepIndicator
-              customSignUpStepStyle={firstIndicatorSignUpStepStyle}
-              currentPosition={currentPage}
-              renderStepIndicator={renderStepIndicator}
-              labels={labels}
-              stepCount={3}
-              renderLabel={renderLabel}
-            />
-          </View>
-          <ScrollView>
-            <View style={AboutYouStyle.Container}>
-              <Text style={AboutYouStyle.heading_Text}>
-                {'Tell us more about you'}
-              </Text>
-              <Text style={AboutYouStyle.want_Heading}>
-                {
-                  'How would you describe yourself? (you can select multiple options)'
-                }
-              </Text>
-              <FlatList
-                data={kodieDescribeYourselfData}
-                renderItem={renderItemDescribeYourself}
-                keyExtractor={item => item.lookup_key.toString()}
-                numColumns={2}
-              />
-              {kodieDescribeYourselfId === 2 ||
-              kodieDescribeYourselfId === 4 ? null : (
-                <View>
-                  <Text style={AboutYouStyle.want_Heading}>
-                    {'How many properties do you own, manage or rent?'}
-                  </Text>
-                  <FlatList
-                    data={manage_property_Data}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.lookup_key.toString()}
-                    numColumns={2}
-                  />
-                </View>
-              )}
-
-              <View style={AboutYouStyle.tabmainview}>
-                <Text style={AboutYouStyle.tabheadingtext}>
-                  How do you run your business?
-                </Text>
-                <View style={AboutYouStyle.btn_main_view}>
-                  <TouchableOpacity
-                    style={[
-                      AboutYouStyle.person_view,
-                      {
-                        backgroundColor:
-                          tabValue === 'IndividualSignup'
-                            ? _COLORS.Kodie_GreenColor
-                            : _COLORS.Kodie_WhiteColor,
-                      },
-                    ]}
-                    onPress={() => {
-                      setTabValue('IndividualSignup');
-                      setKodieServicesData('');
-                      setCompanyGSTNumber('');
-                      setCompanyName('');
-                      SetBusinessNumber('');
-                      setCompanyLocation('');
-                      setSelectJobType('');
-                      setWebsite('');
-                      setservicesValue([]);
-                      setSelectJobTypeid([]);
-                      setservicesValue([]);
-                      // api...
-                      handle_ServicesOffer();
-                      handleIndiServices();
-                    }}>
-                    <Text
-                      style={[
-                        AboutYouStyle.person_text,
-                        {
-                          color:
-                            tabValue === 'IndividualSignup'
-                              ? _COLORS.Kodie_WhiteColor
-                              : _COLORS.Kodie_BlackColor,
-                        },
-                      ]}>
-                      {'Individual'}
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[
-                      AboutYouStyle.person_view,
-                      {
-                        backgroundColor:
-                          tabValue === 'CompanySignup'
-                            ? _COLORS.Kodie_GreenColor
-                            : _COLORS.Kodie_WhiteColor,
-                      },
-                    ]}
-                    onPress={() => {
-                      setTabValue('CompanySignup');
-                      setIndiKodieServicesData('');
-                      setIndiSelectJobTypeid([]);
-                      setIndiSelectJobType('');
-                      setIndiWebsite('');
-                      setLocation('');
-                      setIsChecked(false);
-                      setIndiservicesValue([]);
-                      handle_ServicesOffer();
-                      handleServices();
-                    }}>
-                    <Text
-                      style={[
-                        AboutYouStyle.company_text,
-                        {
-                          color:
-                            tabValue === 'CompanySignup'
-                              ? _COLORS.Kodie_WhiteColor
-                              : _COLORS.Kodie_BlackColor,
-                        },
-                      ]}>
-                      {'Company'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-              {checkTabs()}
-
-              <Text style={AboutYouStyle.want_Heading}>
-                {'What do you want to do first with Kodie'}
-              </Text>
-
-              <FlatList
-                data={kodiehelpData}
-                scrollEnabled
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{}}
-                keyExtractor={item => item?.id}
-                renderItem={wantList}
-              />
-            </View>
-            <View style={{marginHorizontal: 16}}>
-              <CustomSingleButton
-                disabled={isLoading ? true : false}
-                _ButtonText={'Next'}
-                Text_Color={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  props.navigation.navigate('FirstProperty', {
-                    firstName: firstName,
-                    lastName: lastName,
-                    mobileNumber: mobileNumber,
-                    physicalAddress: physicalAddress,
-                    referral: referral,
-                    selectManageProperty: selectManageProperty,
-                    selectedServiceKeysString: selectedServiceKeysString,
-                    kodieHelpValue: kodieHelpValue,
-                    ImageName: image,
-                    Bio: Bio,
-                    email: email,
-                    country: country,
-                    state: state,
-                    city: city,
-                    p_latitude: p_latitude,
-                    p_longitude: p_longitude,
-                    user_key: user_key,
-                    BusinessNumber: businessNumber,
-                    companyName: companyName,
-                    CompanyselectJobType: selectedselectJobTypesString,
-                    CompanyservicesValue: servicesValue,
-                    CompanyWebSide: website,
-                    Individualp_latitude: p_latitude || latitude,
-                    Individualp_longitude: p_longitude || longitude,
-                    individualAddress: physicalAddress || location,
-                    Companyp_latitude: Companylatitude,
-                    Companyp_longitude: Companylongitude,
-                    IndividualselectJobType: selectedselectIndiJobTypesString,
-                    IndividualservicesValue: IndiservicesValue,
-                    IndividualWebSide: Indiwebsite,
-                    run_your_business: tabValue == 'IndividualSignup' ? 0 : 1,
-                    company_address: Companylocation,
-                    country_code: country_code,
-                  });
-                }}
-              />
-            </View>
-            <View style={{marginHorizontal: 16, marginBottom: 10}}>
-              <CustomSingleButton
-                disabled={isLoading ? true : false}
-                _ButtonText={'Fill these details out later'}
-                Text_Color={_COLORS.Kodie_BlackColor}
-                backgroundColor={_COLORS.Kodie_WhiteColor}
-                onPress={() => {
-                  props.navigation.navigate('FirstProperty');
-                }}
-              />
-            </View>
             <TouchableOpacity
-              style={AboutYouStyle.goBack_View}
-              onPress={goBack}>
-              <View style={AboutYouStyle.backIcon}>
-                <Ionicons
-                  name="chevron-back"
-                  size={22}
-                  color={_COLORS.Kodie_MediumGrayColor}
+              style={FirstPropertyStyle.BtnContainer}
+              onPress={ConfirmAddress}>
+              <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+            </TouchableOpacity>
+          </View>
+        ) : IsSearch ? (
+          <SearchPlaces
+            onPress={(data, details = null) => {
+              console.log('LocationData....', details);
+              if (tabValue == 'IndividualSignup') {
+                setlatitude(details.geometry.location.lat);
+                setlongitude(details.geometry.location.lng);
+              } else {
+                setCompanylatitude(details.geometry.location.lat);
+                setCompanylongitude(details.geometry.location.lng);
+              }
+
+              setIsSearch(false);
+              setIsMap(true);
+              // setLocation(details.formatted_address);
+              setCurrentLocation(details.formatted_address);
+            }}
+          />
+        ) : (
+          <>
+            <View style={AboutYouStyle.stepIndicator}>
+              <StepIndicator
+                customSignUpStepStyle={firstIndicatorSignUpStepStyle}
+                currentPosition={currentPage}
+                renderStepIndicator={renderStepIndicator}
+                labels={labels}
+                stepCount={3}
+                renderLabel={renderLabel}
+              />
+            </View>
+            <ScrollView>
+              <View style={AboutYouStyle.Container}>
+                <Text style={AboutYouStyle.heading_Text}>
+                  {'Tell us more about you'}
+                </Text>
+                <Text style={AboutYouStyle.want_Heading}>
+                  {
+                    'How would you describe yourself? (you can select multiple options)'
+                  }
+                </Text>
+                <FlatList
+                  data={kodieDescribeYourselfData}
+                  renderItem={renderItemDescribeYourself}
+                  keyExtractor={item => item.lookup_key.toString()}
+                  numColumns={2}
+                />
+                {kodieDescribeYourselfId.includes(3) ||
+                kodieDescribeYourselfId.includes(10) ||
+                kodieDescribeYourselfId.length > 2 ? (
+                  <View>
+                    <Text style={AboutYouStyle.want_Heading}>
+                      {'How many properties do you own, manage or rent?'}
+                    </Text>
+                    <FlatList
+                      data={manage_property_Data}
+                      renderItem={renderItem}
+                      keyExtractor={item => item.lookup_key.toString()}
+                      numColumns={2}
+                    />
+                  </View>
+                ) : null}
+
+                {kodieDescribeYourselfId.includes(4) ? (
+                  <View style={AboutYouStyle.tabmainview}>
+                    <Text style={AboutYouStyle.tabheadingtext}>
+                      How do you run your business?
+                    </Text>
+                    <View style={AboutYouStyle.btn_main_view}>
+                      <TouchableOpacity
+                        style={[
+                          AboutYouStyle.person_view,
+                          {
+                            backgroundColor:
+                              tabValue === 'IndividualSignup'
+                                ? _COLORS.Kodie_GreenColor
+                                : _COLORS.Kodie_WhiteColor,
+                          },
+                        ]}
+                        onPress={() => {
+                          setTabValue('IndividualSignup');
+                          setKodieServicesData('');
+                          setCompanyGSTNumber('');
+                          setCompanyName('');
+                          SetBusinessNumber('');
+                          setCompanyLocation('');
+                          setSelectJobType('');
+                          setWebsite('');
+                          setservicesValue([]);
+                          setSelectJobTypeid([]);
+                          setservicesValue([]);
+                          // api...
+                          handle_ServicesOffer();
+                          handleIndiServices();
+                        }}>
+                        <Text
+                          style={[
+                            AboutYouStyle.person_text,
+                            {
+                              color:
+                                tabValue === 'IndividualSignup'
+                                  ? _COLORS.Kodie_WhiteColor
+                                  : _COLORS.Kodie_BlackColor,
+                            },
+                          ]}>
+                          {'Individual'}
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[
+                          AboutYouStyle.person_view,
+                          {
+                            backgroundColor:
+                              tabValue === 'CompanySignup'
+                                ? _COLORS.Kodie_GreenColor
+                                : _COLORS.Kodie_WhiteColor,
+                          },
+                        ]}
+                        onPress={() => {
+                          setTabValue('CompanySignup');
+                          setIndiKodieServicesData('');
+                          setIndiSelectJobTypeid([]);
+                          setIndiSelectJobType('');
+                          setIndiWebsite('');
+                          setLocation('');
+                          setIsChecked(false);
+                          setIndiservicesValue([]);
+                          handle_ServicesOffer();
+                          handleServices();
+                        }}>
+                        <Text
+                          style={[
+                            AboutYouStyle.company_text,
+                            {
+                              color:
+                                tabValue === 'CompanySignup'
+                                  ? _COLORS.Kodie_WhiteColor
+                                  : _COLORS.Kodie_BlackColor,
+                            },
+                          ]}>
+                          {'Company'}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ) : null}
+
+                {kodieDescribeYourselfId.includes(4) ? checkTabs() : null}
+                <Text style={AboutYouStyle.want_Heading}>
+                  {'What do you want to do first with Kodie'}
+                </Text>
+                <FlatList
+                  data={kodiehelpData}
+                  scrollEnabled
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={{}}
+                  keyExtractor={item => item?.id}
+                  renderItem={wantList}
                 />
               </View>
-              <Text style={AboutYouStyle.goBack_Text}>{'Go back'}</Text>
-            </TouchableOpacity>
-          </ScrollView>
-        </>
-      )}
+              <View style={{marginHorizontal: 16}}>
+                <CustomSingleButton
+                  disabled={isLoading ? true : false}
+                  _ButtonText={'Next'}
+                  Text_Color={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    props.navigation.navigate('FirstProperty', {
+                      firstName: firstName,
+                      lastName: lastName,
+                      mobileNumber: mobileNumber,
+                      physicalAddress: physicalAddress,
+                      referral: referral,
+                      selectManageProperty: selectManageProperty,
+                      selectedServiceKeysString: selectedServiceKeysString,
+                      kodieHelpValue: kodieHelpValue,
+                      ImageName: image,
+                      Bio: Bio,
+                      email: email,
+                      country: country,
+                      state: state,
+                      city: city,
+                      p_latitude: p_latitude,
+                      p_longitude: p_longitude,
+                      user_key: user_key,
+                      BusinessNumber: businessNumber,
+                      companyName: companyName,
+                      CompanyselectJobType: selectedselectJobTypesString,
+                      CompanyservicesValue: servicesValue,
+                      CompanyWebSide: website,
+                      Individualp_latitude: p_latitude || latitude,
+                      Individualp_longitude: p_longitude || longitude,
+                      individualAddress: physicalAddress || location,
+                      Companyp_latitude: Companylatitude,
+                      Companyp_longitude: Companylongitude,
+                      IndividualselectJobType: selectedselectIndiJobTypesString,
+                      IndividualservicesValue: IndiservicesValue,
+                      IndividualWebSide: Indiwebsite,
+                      run_your_business: tabValue == 'IndividualSignup' ? 0 : 1,
+                      company_address: Companylocation,
+                      country_code: country_code,
+                    });
+                  }}
+                />
+              </View>
+              <View style={{marginHorizontal: 16, marginBottom: 10}}>
+                <CustomSingleButton
+                  disabled={isLoading ? true : false}
+                  _ButtonText={'Fill these details out later'}
+                  Text_Color={_COLORS.Kodie_BlackColor}
+                  backgroundColor={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    props.navigation.navigate('FirstProperty');
+                  }}
+                />
+              </View>
+              <TouchableOpacity
+                style={AboutYouStyle.goBack_View}
+                onPress={goBack}>
+                <View style={AboutYouStyle.backIcon}>
+                  <Ionicons
+                    name="chevron-back"
+                    size={22}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                  />
+                </View>
+                <Text style={AboutYouStyle.goBack_Text}>{'Go back'}</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </>
+        )}
       </KeyboardAvoidingView>
       {/* {isLoading ? <CommonLoader /> : null} */}
     </SafeAreaView>
