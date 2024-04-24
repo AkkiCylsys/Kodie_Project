@@ -214,7 +214,7 @@ const PropertyList2 = props => {
       <ScrollView contentContainerStyle={PropertyList2Css.scrollViewStl}>
         <SearchBar
           frontSearchIcon
-          placeholder="Start typing"
+          placeholder="Search address, suburb, postcode, state"
           height={48}
           mapIcon
         />
