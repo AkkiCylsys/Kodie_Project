@@ -115,7 +115,7 @@ export default SignUp = props => {
   const handleSignUpPassword = text => {
     setPassword(text);
     if (text.trim() === '') {
-      setPasswordError('Password is required !');
+      setPasswordError('Password is required!');
     } else {
       setPasswordError('');
     }
@@ -218,7 +218,7 @@ export default SignUp = props => {
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else if (password.trim() === '') {
-      setPasswordError('Password is required !');
+      setPasswordError('Password is required!');
     } else if (!term && !privacy) {
       alert(
         'Please read and accept both Terms & Conditions and Privacy Policy.',
@@ -279,7 +279,15 @@ export default SignUp = props => {
               style={[LABEL_STYLES._texinputLabel, SignUpStyles.cardHeight]}>
               Password*
             </Text>
-            <View style={SignUpStyles.passwordContainer}>
+            <View
+              style={[
+                SignUpStyles.passwordContainer,
+                {
+                  borderColor: passwordError
+                    ? _COLORS.Kodie_lightRedColor
+                    : _COLORS.Kodie_GrayColor,
+                },
+              ]}>
               <TextInput
                 style={SignUpStyles.passwordInput}
                 value={password}
@@ -293,7 +301,11 @@ export default SignUp = props => {
                 <MaterialCommunityIcons
                   name={showPassword ? 'eye-outline' : 'eye-off-outline'}
                   size={20}
-                  color={_COLORS.Kodie_BlackColor}
+                  color={
+                    passwordError
+                      ? _COLORS.Kodie_lightRedColor
+                      : _COLORS.Kodie_BlackColor
+                  }
                   style={SignUpStyles.eyeIcon}
                 />
               </TouchableOpacity>

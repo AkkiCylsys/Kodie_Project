@@ -338,7 +338,7 @@ export default Login = props => {
   const handlePasswordChange = text => {
     setPassword(text);
     if (text.trim() === '') {
-      setPasswordError('Password is required.');
+      setPasswordError('Password is required!.');
     } else {
       setPasswordError('');
     }
@@ -348,7 +348,7 @@ export default Login = props => {
   const handleNewPassword = text => {
     setNewPassword(text);
     if (text.trim() === '') {
-      setNewPasswordError('New Password is required.');
+      setNewPasswordError('New Password is required!.');
     } else {
       setNewPasswordError('');
     }
@@ -375,7 +375,7 @@ export default Login = props => {
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else if (password.trim() === '') {
-      setPasswordError('Password is required.');
+      setPasswordError('Password is required!.');
     } else {
       Keyboard.dismiss();
       setIsLoading(true);
@@ -552,7 +552,7 @@ export default Login = props => {
   const handleLoginPassword = text => {
     setPassword(text);
     if (text.trim() === '') {
-      setPasswordError('Password is required !');
+      setPasswordError('Password is required!');
     } else {
       setPasswordError('');
     }
@@ -597,7 +597,7 @@ export default Login = props => {
       // Handle errors appropriately
       alert(error?.message || 'An error occurred during the API call');
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -605,7 +605,7 @@ export default Login = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={LoginStyles.container}>
-         <StatusBar
+      <StatusBar
         backgroundColor={_COLORS.Kodie_WhiteColor}
         barStyle={'dark-content'}
       />
@@ -643,9 +643,24 @@ export default Login = props => {
             ) : null}
             <View style={LoginStyles.inputContainer}>
               <Text style={LABEL_STYLES._texinputLabel}>Password</Text>
-              <View style={LoginStyles.passwordContainer}>
+              <View
+                style={[
+                  LoginStyles.passwordContainer,
+                  {
+                    borderColor: passwordError
+                      ? _COLORS.Kodie_lightRedColor
+                      : _COLORS.Kodie_GrayColor,
+                  },
+                ]}>
                 <TextInput
-                  style={LoginStyles.passwordInput}
+                  style={[
+                    LoginStyles.passwordInput,
+                    {
+                      borderColor: passwordError
+                        ? _COLORS.Kodie_lightRedColor
+                        : _COLORS.Kodie_GrayColor,
+                    },
+                  ]}
                   value={password}
                   onChangeText={setPassword}
                   onBlur={() => handleLoginPassword(password)}
@@ -657,7 +672,11 @@ export default Login = props => {
                   <MaterialCommunityIcons
                     name={showPassword ? 'eye-outline' : 'eye-off-outline'}
                     size={20}
-                    color={_COLORS.Kodie_BlackColor}
+                    color={
+                      passwordError
+                        ? _COLORS.Kodie_lightRedColor
+                        : _COLORS.Kodie_BlackColor
+                    }
                     style={LoginStyles.eyeIcon}
                   />
                 </TouchableOpacity>

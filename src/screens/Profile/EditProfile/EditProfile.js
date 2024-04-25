@@ -462,8 +462,9 @@ const EditProfile = props => {
                       <FontAwesome
                         name="edit"
                         color={_COLORS.Kodie_GreenColor}
-                        size={14}
-                        style={{alignSelf: 'center'}}
+                        size={15}
+                        style={{alignItems: 'center'}}
+                        // resizeMode="center"
                       />
                     </View>
                   </TouchableOpacity>

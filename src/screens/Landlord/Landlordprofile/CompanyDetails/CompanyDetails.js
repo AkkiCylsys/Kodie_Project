@@ -581,14 +581,14 @@ export default CompanyDetails = props => {
         console.error('API Error PersonalDetails C:', error);
       });
   };
-  useEffect(() => {
-    // Set initial tab value based on accountDetails
-    if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
-      setTabValue('IndividualInProfile');
-    } else if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
-      setTabValue('CompanyInProfile');
-    }
-  }, [accountDetails]);
+  // useEffect(() => {
+  //   // Set initial tab value based on accountDetails
+  //   if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
+  //     setTabValue('IndividualInProfile');
+  //   } else if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
+  //     setTabValue('CompanyInProfile');
+  //   }
+  // }, [accountDetails]);
   const UpdateCompanyData = async () => {
     const formData = new FormData();
 
@@ -1093,9 +1093,9 @@ export default CompanyDetails = props => {
                       },
                     ]}
                     onPress={() => {
-                      if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
-                        setTabValue('IndividualInProfile');
-                      }
+                      // if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
+                      setTabValue('IndividualInProfile');
+                      // }
                     }}>
                     <Text
                       style={[
@@ -1121,9 +1121,9 @@ export default CompanyDetails = props => {
                       },
                     ]}
                     onPress={() => {
-                      if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
-                        setTabValue('CompanyInProfile');
-                      }
+                      // if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
+                      setTabValue('CompanyInProfile');
+                      // }
                     }}>
                     <Text
                       style={[
