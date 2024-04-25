@@ -8,6 +8,8 @@ import {
   Image,
   ScrollView,
   PermissionsAndroid,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import TopHeader from '../../components/Molecules/Header/Header';
 import {_goBack} from '../../services/CommonServices/CommonMethods';
@@ -22,6 +24,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Share from 'react-native-share';
 import {Config} from '../../Config';
 import axios from 'axios';
+import {request, PERMISSIONS, RESULTS, check} from 'react-native-permissions';
 
 const LandlordData = [
   {
@@ -94,16 +97,27 @@ export default Invitefriend = props => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredContacts, setFilteredContacts] = useState([]);
   useEffect(() => {
-    requestContactsPermission(); // Request permission when component mounts
+    Platform.OS == 'ios'
+      ? requestContactsPermissionIOS()
+      : requestContactsPermission(); // Request permission when component mounts
     inviteFriend();
   }, []);
 
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: inviteFriendPath});
-    } catch (error) {
-      console.error('Error sharing PDF file:', error);
-    }
+    setTimeout(() => {
+      Share.open({url: inviteFriendPath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: inviteFriendPath});
+    // } catch (error) {
+    //   console.error('Error sharing PDF file:', error);
+    // }
   };
 
   const inviteFriend = () => {
@@ -164,6 +178,35 @@ export default Invitefriend = props => {
       console.error('Error requesting contacts permission:', error);
     }
   };
+  const requestContactsPermissionIOS = async () => {
+    request(PERMISSIONS.IOS.CONTACTS)
+      .then(result => {
+        // alert(JSON.stringify(result))
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              'This feature is not available (on this device / in this context)',
+            );
+            break;
+          case RESULTS.DENIED:
+            console.log('Contacts permission denied');
+            break;
+
+          case RESULTS.GRANTED:
+            console.log('Contacts permission granted');
+            fetchContacts();
+            break;
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            break;
+        }
+      })
+      .catch(error => {
+        alert(error);
+        console.log(error);
+      });
+  };
+
   const fetchContacts = async () => {
     try {
       const data = await Contacts.getAll();
@@ -210,7 +253,7 @@ export default Invitefriend = props => {
             )}
             <View style={InviteStyles.textContainer}>
               <Text style={InviteStyles.profile_Heading}>
-                {item.displayName}
+                {Platform.OS == 'ios' ? item?.givenName : item.displayName}
               </Text>
               <Text style={InviteStyles.profile_SubHeading}>
                 {item.phoneNumbers?.[0]?.number || 'No phone number available'}
@@ -237,7 +280,7 @@ export default Invitefriend = props => {
   };
 
   return (
-    <View style={InviteStyles.mainContainer}>
+    <SafeAreaView style={InviteStyles.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Invite a friend'}
@@ -273,6 +316,6 @@ export default Invitefriend = props => {
         renderItem={UserList_renderItem}
       />
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

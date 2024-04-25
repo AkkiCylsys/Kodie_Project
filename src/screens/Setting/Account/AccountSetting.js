@@ -1,5 +1,5 @@
 //ScreenNo:196
-import {View,ScrollView, Text, Image, TouchableOpacity, Alert} from 'react-native';
+import {View,ScrollView, Text, Image, TouchableOpacity, Alert, SafeAreaView} from 'react-native';
 import React from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {AccountStyle} from './AccountStyle';
@@ -16,7 +16,7 @@ const AccountSetting = props => {
   };
   return (
     <>
-      <View style={AccountStyle.Mainview}>
+      <SafeAreaView style={AccountStyle.Mainview}>
         <TopHeader
           onPressLeftButton={() => _goBack(props)}
           MiddleText={'Account'}
@@ -79,7 +79,7 @@ const AccountSetting = props => {
             />
           </TouchableOpacity>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     </>
   );
 };

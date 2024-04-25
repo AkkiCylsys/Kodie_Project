@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Modal,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat, Actions, Send, Bubble} from 'react-native-gifted-chat';
@@ -21,7 +22,7 @@ import TopHeader from '../../components/Molecules/Header/Header';
 import {_goBack} from '../../services/CommonServices';
 import {IMAGES, _COLORS} from '../../Themes';
 import {useSelector} from 'react-redux';
-import {fontFamily} from '../../Themes/FontStyle/FontStyle';
+import {FONTFAMILY} from '../../Themes/FontStyle/FontStyle';
 import storage from '@react-native-firebase/storage';
 const Chat = props => {
   const [messageList, setMessageList] = useState([]);
@@ -86,14 +87,14 @@ const Chat = props => {
     };
   }, []);
 
-  const onSend = messageArray => {
+  const onSend = async messageArray => {
     const msg = messageArray[0];
-    const {type, text, uri, video, pdf, ...otherProps} = msg;
-    const mymsg = {
-      ...msg,
-      sentBy: loginData.Login_details.user_id,
-      sentTo: route.params.userid,
+    const {type, text, uri, video, pdf, image, ...otherProps} = msg;
 
+    // Define the message object according to the format expected by Gifted Chat
+    let message = {
+      _id: uuid.v4(), // Generate a unique ID for the message
+      text: text || '', // Ensure text is always present
       createdAt: new Date(),
       user: {
         _id: loginData.Login_details.user_id,
@@ -101,19 +102,31 @@ const Chat = props => {
       },
     };
 
+    if (image) {
+      // If it's an image message, add the image URI to the message object
+      message.image = image;
+    }
+
+    // Add the message to the message list
     setMessageList(previousMessages =>
-      GiftedChat.append(previousMessages, mymsg),
+      GiftedChat.append(previousMessages, message),
     );
+
     const docid =
       route.params.userid > loginData.Login_details.user_id
         ? loginData.Login_details.user_id + '-' + route.params.userid
         : route.params.userid + '-' + loginData.Login_details.user_id;
 
-    firestore()
-      .collection('chatrooms')
-      .doc(docid)
-      .collection('messages')
-      .add({...mymsg, createdAt: firestore.FieldValue.serverTimestamp()});
+    // Save the message to Firestore
+    try {
+      await firestore()
+        .collection('chatrooms')
+        .doc(docid)
+        .collection('messages')
+        .add({...message, createdAt: firestore.FieldValue.serverTimestamp()});
+    } catch (error) {
+      console.error('Error adding message to Firestore:', error);
+    }
   };
 
   const pickImageOrPdf = async () => {
@@ -123,12 +136,13 @@ const Chat = props => {
         mediaType: 'any',
         compressImageQuality: Platform.OS === 'ios' ? 0.8 : 1,
       });
-
-      const userId = uuid.v4();
-
+      closeOptionsModal();
+      var randomNumber = Math.floor(Math.random() * 100) + 1;
       // Loop through each selected file and upload it
       for (let i = 0; i < results.length; i++) {
         const result = results[i];
+        console.log('dlkfhdslkhfdshfsd', result);
+        const userId = uuid.v4();
         const storageRef = storage().ref(`files/${userId}`);
 
         // Determine the file type based on MIME type
@@ -145,9 +159,14 @@ const Chat = props => {
         await storageRef.putFile(result.path);
 
         const downloadURL = await storageRef.getDownloadURL();
+        console.log('downloadURL', downloadURL);
+        // Create a new message object for each image and send it
+        const newMessage = {
+          [messageType]: downloadURL,
+        };
 
-        // Send the file as a message
-        onSend([{[messageType]: downloadURL}]);
+        console.log('newMessage', newMessage);
+        onSend([newMessage]);
       }
     } catch (error) {
       console.log('Error picking image, PDF, or video:', error);
@@ -159,6 +178,7 @@ const Chat = props => {
       const result = await ImagePicker.openCamera({
         compressImageQuality: Platform.OS === 'ios' ? 0.8 : 1,
       });
+      closeOptionsModal();
       const userId = uuid.v4();
       const storageRef = storage().ref(`images/${userId}`);
       await storageRef.putFile(result.path);
@@ -176,25 +196,37 @@ const Chat = props => {
     return (
       <View
         style={{
+          // flex: 0.5,
           flexDirection: 'row',
           alignItems: 'center',
-          paddingHorizontal: 6,
-          // paddingVertical: 10,
+          alignSelf: 'center',
+          paddingHorizontal: 10,
+          marginTop:10,
+          justifyContent: 'center', // Center-align the send box
         }}>
-        <TouchableOpacity onPress={openOptionsModal}>
+        <TouchableOpacity
+          onPress={openOptionsModal}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center',
+
+            marginLeft: Platform.OS ? 20 : 18,
+            // marginBottom: 8,
+          }}>
           <Foundation
             name="paperclip"
             size={25}
             color={_COLORS.Kodie_ExtraLightGrayColor}
-            // style={{marginHorizontal: 20}}
           />
         </TouchableOpacity>
         <Send {...props}>
           <View
             style={{
               alignItems: 'center',
-              justifyContent: 'space-between',
-              marginLeft: 18,
+              justifyContent: 'center',
+              alignSelf: 'center',
+              marginLeft: Platform.OS ? 20 : 18,
               marginBottom: 8,
             }}>
             <Ionicons
@@ -207,6 +239,7 @@ const Chat = props => {
       </View>
     );
   };
+
   const renderBubble = props => {
     const isCurrentUser =
       props.currentMessage?.user?._id === loginData.Login_details.user_id;
@@ -216,26 +249,25 @@ const Chat = props => {
         {...props}
         textStyle={{
           left: {
-            color: isCurrentUser ? '#ffffff' : '#000000', // text color for left side
+            color: isCurrentUser ? '#ffffff' : '#000000',
           },
           right: {
-            color: isCurrentUser ? '#ffffff' : '#000000', // text color for right side
+            color: isCurrentUser ? '#ffffff' : '#000000',
           },
         }}
         timeTextStyle={{
           left: {
-            color: isCurrentUser ? '#ffffff' : '#aaaaaa', // time text color for left side
+            color: isCurrentUser ? '#ffffff' : '#aaaaaa',
           },
           right: {
-            color: isCurrentUser ? '#ffffff' : '#aaaaaa', // time text color for right side
+            color: isCurrentUser ? '#ffffff' : '#aaaaaa',
           },
         }}
         containerStyle={{
-          marginLeft: isCurrentUser ? 50 : 0, // adjust the left margin for the bubble
-          marginRight: isCurrentUser ? 0 : 50, // adjust the right margin for the bubble
-          marginBottom: 10, // add some bottom margin between messages
+          marginLeft: isCurrentUser ? 50 : 0,
+          marginRight: isCurrentUser ? 0 : 50,
+          marginBottom: 10,
         }}
-        // Add other style properties as needed
         onLongPress={() => {
           setSelectedMessage(props.currentMessage);
           openDeleteModal();
@@ -250,7 +282,7 @@ const Chat = props => {
               marginLeft: isCurrentUser ? 0 : 8,
             }}>
             <Image
-              source={IMAGES.userImage} // Replace with the appropriate image source
+              source={IMAGES.userImage}
               style={{
                 width: 24,
                 height: 24,
@@ -364,7 +396,7 @@ const Chat = props => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         MiddleText={
           route.params.chatname ? route.params.name : `${userData.name}`
@@ -379,7 +411,7 @@ const Chat = props => {
           avatar: loginData.Login_details.profile_photo_path,
         }}
         // renderActions={renderActions}
-        alwaysShowSend
+        // alwaysShowSend
         renderSend={renderSend}
         renderBubble={renderBubble}
         // renderChatFooter={renderChatFooter}
@@ -387,6 +419,14 @@ const Chat = props => {
           style: {
             flex: 1,
             color: 'black',
+            // borderWidth: 1, // Add border width
+            // borderColor: 'grey', // Add border color
+            // borderRadius: 20, // Add border radius for rounded corners
+            paddingHorizontal: 10, // Add padding horizontally
+            paddingVertical: 8,
+            justifyContent: 'center',
+            alignSelf:'center',
+            marginTop:10
           },
         }}
       />
@@ -397,23 +437,28 @@ const Chat = props => {
         visible={optionsModalVisible}
         onRequestClose={closeOptionsModal}>
         <View style={styles.modalContainer}>
-          <TouchableOpacity
-            style={styles.modalCloseButton}
-            onPress={closeOptionsModal}>
-            <Icon
-              name="close"
-              size={20}
-              color={_COLORS.Kodie_BlackColor}
-              style={{
-                alignItems: 'flex-end',
-                alignSelf: 'flex-end',
-              }}
-            />
-          </TouchableOpacity>
+          <View style={{flexDirection: 'row', backgroundColor: 'white'}}>
+            <View style={{flex: 1, backgroundColor: 'white'}} />
+            <TouchableOpacity
+              style={styles.modalCloseButton}
+              onPress={closeOptionsModal}>
+              <Icon
+                name="close"
+                size={20}
+                color={_COLORS.Kodie_BlackColor}
+                style={{
+                  alignItems: 'flex-end',
+                  alignSelf: 'flex-end',
+                  backgroundColor: 'white',
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+
           <TouchableOpacity
             onPress={() => {
               pickImageOrPdf();
-              closeOptionsModal();
+              // closeOptionsModal();
             }}
             style={styles.modalOption}>
             <Icon
@@ -431,7 +476,7 @@ const Chat = props => {
           <TouchableOpacity
             onPress={() => {
               pickImageFromCamera();
-              closeOptionsModal();
+              // closeOptionsModal();
             }}
             style={styles.modalOption}>
             <Icon
@@ -445,7 +490,7 @@ const Chat = props => {
           {/* Add more options as needed */}
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
@@ -468,7 +513,7 @@ const styles = StyleSheet.create({
   },
   modalOptionText: {
     fontSize: 16,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     color: 'black',
     marginHorizontal: 10,
     marginBottom: 10,

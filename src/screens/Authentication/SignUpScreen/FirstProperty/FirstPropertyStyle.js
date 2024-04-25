@@ -307,4 +307,14 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginBottom: 30,
     position: "absolute",
   },
+  itemView: {
+    flex: 1,
+    flexDirection: "row",
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
 });

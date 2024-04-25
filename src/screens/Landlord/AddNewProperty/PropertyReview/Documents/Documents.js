@@ -22,6 +22,7 @@ import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/Act
 import {useIsFocused} from '@react-navigation/native';
 import Share from 'react-native-share';
 import {useNavigation} from '@react-navigation/native';
+import FileViewer from 'react-native-file-viewer';
 
 const Property_documents = [
   'All',
@@ -126,11 +127,20 @@ export default Documents = props => {
   };
   // share doc....
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: filePath});
-    } catch (error) {
-      console.error('Error sharing PDF file:', error);
-    }
+    setTimeout(() => {
+      Share.open({url: filePath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: filePath});
+    // } catch (error) {
+    //   console.error('Error sharing PDF file:', error);
+    // }
   };
   // delete Document...
   const deleteHandler = fileKey => {
@@ -195,7 +205,7 @@ export default Documents = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    const {config, fs} = RNFetchBlob;
+    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -244,7 +254,7 @@ export default Documents = props => {
             <View style={DocumentsStyle.textContainer}>
               <Text style={DocumentsStyle.pdfName}>{item.PDUM_FILE_NAME}</Text>
               {/* <Text style={DocumentsStyle.pdfSize}>{item.pdfSize}</Text> */}
-              <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text>
+              {/* <Text style={DocumentsStyle.pdfSize}> {'4.5 MB'}</Text> */}
             </View>
           </View>
           <TouchableOpacity
@@ -284,11 +294,11 @@ export default Documents = props => {
             size={30}
             color={_COLORS.Kodie_GrayColor}
           />
-          <Entypo
+          {/* <Entypo
             name="dots-three-vertical"
             size={25}
             color={_COLORS.Kodie_GrayColor}
-          />
+          /> */}
         </View>
         <View>
           <Text style={DocumentsStyle.propertyDocText}>
@@ -392,6 +402,67 @@ export default Documents = props => {
         setIsLoading(false);
       });
   };
+  const downloadviewFile = async () => {
+    setIsLoading(true);
+    const date = new Date();
+    const {
+      dirs: {DownloadDir, DocumentDir},
+    } = RNFetchBlob.fs;
+    const isIOS = Platform.OS === 'ios';
+    const aPath = Platform.select({ios: DocumentDir, android: DownloadDir});
+    const fPath =
+      aPath + '/' + Math.floor(date.getTime() + date.getSeconds() / 2) + '.pdf';
+
+    const configOptions = Platform.select({
+      ios: {
+        fileCache: true,
+        path: fPath,
+        notification: true,
+      },
+      android: {
+        fileCache: false,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path: fPath,
+          description: 'Downloading pdf...',
+        },
+      },
+    });
+
+    try {
+      closeModal();
+      const res = await RNFetchBlob.config(configOptions).fetch(
+        'GET',
+        filePath.trim(),
+      );
+      if (isIOS) {
+        FileViewer.open(res.data, {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+          });
+      } else {
+        FileViewer.open(res.path(), {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+            setIsLoading(false);
+          });
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      Alert.alert('Error', 'Failed to download file');
+    }
+  };
 
   return (
     <View style={DocumentsStyle.mainContainer}>
@@ -456,14 +527,15 @@ export default Documents = props => {
             closemodal={closeModal}
             deleteHandler={deleteHandler}
             // // downloadFile={downloadFile}
-            downloadFile={checkPermission}
+            downloadFile={downloadviewFile}
             fileKey={fileKey}
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              navigation.navigate('ViewDocument', {
-                filePath: filePath,
-              });
+              // navigation.navigate('ViewDocument', {
+              //   filePath: filePath,
+              // });
+              downloadviewFile();
             }}
           />
         </RBSheet>

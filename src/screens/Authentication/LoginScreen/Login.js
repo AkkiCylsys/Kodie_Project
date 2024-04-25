@@ -15,6 +15,8 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   PermissionsAndroid,
+  Alert,
+  StatusBar,
 } from 'react-native';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {logos} from '../../../Themes/CommonVectors/Images';
@@ -396,8 +398,10 @@ export default Login = props => {
       } else if (res?.LoginStatuscode == 6) {
         props.navigation.navigate('SignUpSteps', {
           email: email,
-          user_key: res.User_key,
+          user_key: res?.User_key,
         });
+      } else if (res?.data?.message === 'Account has been Suspended') {
+        Alert.alert('Account suspension', res?.data?.message);
       } else if (res?.data?.success == 'true') {
         //  alert("Login successful");
         setIsLoading(false);
@@ -470,7 +474,7 @@ export default Login = props => {
         }
       })
       .catch(error => {
-        if (error.response || error.response.status === 400) {
+        if (error?.response || error?.response?.status === 400) {
           alert('Failed to send OTP via email. Please try again later.');
         } else {
           // alert('An error occurred. Please try again later.');
@@ -513,10 +517,10 @@ export default Login = props => {
         }
       })
       .catch(error => {
-        if (error.response && error.response.status === 404) {
+        if (error?.response && error?.response?.status === 404) {
           alert('Incorrect OTP. Please try again.');
-        } else if (error.response && error.response.status === 401) {
-          alert(error.response.message || 'User Unauthorized');
+        } else if (error?.response && error?.response?.status === 401) {
+          alert(error?.response?.message || 'User Unauthorized');
         } else {
           alert('An error occurred. Please try again later.');
         }
@@ -591,9 +595,9 @@ export default Login = props => {
       // }
       console.error('API failed create_password', error);
       // Handle errors appropriately
-      alert(error.message || 'An error occurred during the API call');
+      alert(error?.message || 'An error occurred during the API call');
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); 
     }
   };
 
@@ -601,6 +605,10 @@ export default Login = props => {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={LoginStyles.container}>
+         <StatusBar
+        backgroundColor={_COLORS.Kodie_WhiteColor}
+        barStyle={'dark-content'}
+      />
       <ScrollView keyboardShouldPersistTaps="handled">
         <View style={LoginStyles.logoContainer}>
           <Image source={logos.mainLogo} style={LoginStyles.logo} />
@@ -627,6 +635,7 @@ export default Login = props => {
                 placeholderTextColor="#999"
                 maxLength={30}
                 autoCapitalize={'none'}
+                keyboardType={'email-address'}
               />
             </View>
             {emailError ? (
@@ -657,22 +666,25 @@ export default Login = props => {
             {passwordError ? (
               <Text style={LoginStyles.error_text}>{passwordError}</Text>
             ) : null}
-            <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.open();
-                setIsClick(0);
-                setResetEmail('');
-                setVerificationcode('');
-                setVerificationcodeError('');
-                setNewPassword('');
-                setPasswordError('');
-                setConfirmPassword('');
-                setConfirmPasswordError('');
-                setResetEmailError('');
-              }}>
-              <Text style={LoginStyles.forgot}>Forgot password?</Text>
-            </TouchableOpacity>
-
+            <View style={{flexDirection: 'row'}}>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet.current.open();
+                  setIsClick(0);
+                  setResetEmail('');
+                  setVerificationcode('');
+                  setVerificationcodeError('');
+                  setNewPassword('');
+                  setPasswordError('');
+                  setConfirmPassword('');
+                  setConfirmPasswordError('');
+                  setResetEmailError('');
+                }}
+                style={{flex: 0.5}}>
+                <Text style={LoginStyles.forgot}>Forgot password?</Text>
+              </TouchableOpacity>
+              <View style={{flex: 0.9}} />
+            </View>
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={handleSubmit}
@@ -691,6 +703,7 @@ export default Login = props => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
                 // props.navigation.navigate("SignUpSteps");
                 // props.navigation.navigate("Account");
+                Alert.alert('Login with Google', 'Coming soon');
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
@@ -699,10 +712,11 @@ export default Login = props => {
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
-              // onPress={() =>
-              //   // props.navigation.navigate("ManageSubscription")
-              //   // props.navigation.navigate("DrawerNavigatorLeftMenu")
-              // }
+              onPress={() =>
+                // props.navigation.navigate("ManageSubscription")
+                // props.navigation.navigate("DrawerNavigatorLeftMenu")
+                Alert.alert('Login with Facebook', 'Coming soon')
+              }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}
               _ButtonText={'Login with Facebook'}
@@ -964,6 +978,11 @@ export default Login = props => {
                   resizeMode={'contain'}
                 />
               </View>
+              <CustomSingleButton
+                _ButtonText={'Back to login'}
+                Text_Color={_COLORS.Kodie_WhiteColor}
+                onPress={() => refRBSheet.current.close()}
+              />
             </>
           )}
 

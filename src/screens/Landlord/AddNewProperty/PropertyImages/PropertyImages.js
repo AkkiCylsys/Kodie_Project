@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import {PropertyImagesStyle} from './PropertyImagesStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -158,6 +159,7 @@ export default PropertyImages = props => {
           selectedVideos: selectedVideos,
           editMode: editMode,
         });
+        setMultiImageName([])
       } else {
         console.error('Save Account Details error:', response?.data?.error);
         alert('Oops something went wrong! Please try again later.');
@@ -357,15 +359,17 @@ export default PropertyImages = props => {
           selectedVideos: selectedVideos,
         });
         console.log('Save Account Details', response?.data);
+        setMultiImageName([])
+
       } else {
         console.log('Save Account Details error:', response?.data?.error);
         alert('Oops Somthing went wrong! please try again later.');
       }
     } catch (error) {
       if (axios.isCancel(error)) {
-        console.log('Request canceled:', error.message);
+        console.log('Request canceled:', error?.message);
       } else {
-        console.log('saving account details', error.message);
+        console.log('saving account details', error?.message);
         alert(
           error.message || 'An error occurred while saving account details',
         );
@@ -376,7 +380,7 @@ export default PropertyImages = props => {
   };
 
   return (
-    <View style={PropertyImagesStyle.mainContainer}>
+    <SafeAreaView style={PropertyImagesStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={goBack}
         MiddleText={editMode ? 'Edit property' : 'Add new property'}
@@ -581,6 +585,6 @@ export default PropertyImages = props => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

@@ -8,6 +8,7 @@ import {
   FlatList,
   PermissionsAndroid,
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {JobDocumentDetailStyle} from './JobDocumentDetailStyle';
@@ -26,6 +27,7 @@ import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsMo
 import RNFetchBlob from 'rn-fetch-blob';
 import {Config} from '../../../../Config';
 import Share from 'react-native-share';
+import FileViewer from 'react-native-file-viewer';
 
 const JobDocumentDetails = props => {
   const refRBSheet = useRef();
@@ -51,11 +53,20 @@ const JobDocumentDetails = props => {
   }, []);
   // share doc....
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: filePath});
-    } catch (error) {
-      console.error('Error sharing PDF file:', error);
-    }
+    setTimeout(() => {
+      Share.open({url: filePath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: filePath});
+    // } catch (error) {
+    //   console.error('Error sharing PDF file:', error);
+    // }
   };
   const closeModal = () => {
     refRBSheet.current.close();
@@ -119,7 +130,7 @@ const JobDocumentDetails = props => {
   const uploadDocument = async doc => {
     // alert("upload");
     console.log('uri....', doc[0].uri);
-    console.log('name....', doc[0].name);
+    console.log('name....', doc[0].name.replace(/\s/g, ''));
     console.log('type....', doc[0].type);
     console.log('p_referral_key....', JOB_ID);
     console.log('p_module_name....', moduleName);
@@ -131,7 +142,7 @@ const JobDocumentDetails = props => {
       const formData = new FormData();
       formData.append('documents', {
         uri: doc[0].uri,
-        name: doc[0].name,
+        name: doc[0].name.replace(/\s/g, ''),
         type: doc[0].type,
       });
       formData.append('p_referral_key', JOB_ID);
@@ -189,6 +200,69 @@ const JobDocumentDetails = props => {
         setIsLoading(false);
       });
   };
+
+  //  dowonload for Ios And Android....
+  const downloadviewFile = async () => {
+    setIsLoading(true);
+    const date = new Date();
+    const {
+      dirs: {DownloadDir, DocumentDir},
+    } = RNFetchBlob.fs;
+    const isIOS = Platform.OS === 'ios';
+    const aPath = Platform.select({ios: DocumentDir, android: DownloadDir});
+    const fPath =
+      aPath + '/' + Math.floor(date.getTime() + date.getSeconds() / 2) + '.pdf';
+
+    const configOptions = Platform.select({
+      ios: {
+        fileCache: true,
+        path: fPath,
+        notification: true,
+      },
+      android: {
+        fileCache: false,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path: fPath,
+          description: 'Downloading pdf...',
+        },
+      },
+    });
+
+    try {
+      closeModal();
+      const res = await RNFetchBlob.config(configOptions).fetch(
+        'GET',
+        filePath.trim(),
+      );
+      if (isIOS) {
+        FileViewer.open(res.data, {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+          });
+      } else {
+        FileViewer.open(res.path(), {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+            setIsLoading(false);
+          });
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      Alert.alert('Error', 'Failed to download file');
+    }
+  };
   const DocumentsData = ({item, index}) => {
     return (
       <>
@@ -242,10 +316,9 @@ const JobDocumentDetails = props => {
               <Text style={JobDocumentDetailStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              <Text style={JobDocumentDetailStyle.pdfSize}>
-                {/* {(item.size / (1024 * 1024)).toFixed(2)} MB */}
+              {/* <Text style={JobDocumentDetailStyle.pdfSize}>
                 {'4.5 MB'}
-              </Text>
+              </Text> */}
             </View>
           </View>
           <TouchableOpacity
@@ -303,7 +376,7 @@ const JobDocumentDetails = props => {
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    const {config, fs} = RNFetchBlob;
+    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -336,7 +409,7 @@ const JobDocumentDetails = props => {
   };
 
   return (
-    <View style={JobDocumentDetailStyle.mainContainer}>
+    <SafeAreaView style={JobDocumentDetailStyle.mainContainer}>
       <TopHeader
         isprofileImage
         IsNotification
@@ -449,20 +522,21 @@ const JobDocumentDetails = props => {
             closemodal={closeModal}
             deleteHandler={deleteHandler}
             // downloadFile={downloadFile}
-            downloadFile={checkPermission}
+            downloadFile={downloadviewFile}
             fileKey={fileKey}
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              props.navigation.navigate('ViewDocument', {
-                filePath: filePath,
-              });
+              // props.navigation.navigate('ViewDocument', {
+              //   filePath: filePath,
+              // });
+              downloadviewFile();
             }}
           />
         </RBSheet>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

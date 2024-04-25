@@ -6,6 +6,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../services/CommonServices';
@@ -23,13 +24,18 @@ import RowTab from '../../../components/Molecules/RowTab/RowTab';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {useIsFocused, CommonActions} from '@react-navigation/native';
+import {
+  useIsFocused,
+  CommonActions,
+  useNavigation,
+} from '@react-navigation/native';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 export default LandlordProfile = props => {
   const dispatch = useDispatch();
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
+  const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
   const isvisible = useIsFocused();
@@ -61,19 +67,24 @@ export default LandlordProfile = props => {
     // if (isvisible) {
     //   getPersonalDetails();
     // }
-      user_id ? getPersonalDetails() : null;
+    user_id ? getPersonalDetails() : null;
   }, [isvisible]);
   const LogOut = () => {
-    dispatch(logoutActionCreator());
-    props.navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [
-          {name: 'LoginScreen'}, // Replace 'Home' with the name of your initial screen
-        ],
-      }),
-    );
+    refRBSheet.current.close();
+    setTimeout(() => {
+      dispatch(logoutActionCreator());
+      props.navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {name: 'LoginScreen'}, // Replace 'Home' with the name of your initial screen
+          ],
+        }),
+      );
+    }, 500);
 
+    // refRBSheet.current.close();
+    //setOverlayVisible(false);
     // props.navigation.navigate("DrawerNavigatorLeftMenu");
     // props.navigation.navigate('LoginScreen');
   };
@@ -91,11 +102,14 @@ export default LandlordProfile = props => {
     refRBSheet.current.close();
   };
   return (
-    <View style={LandlordProfileStyle.mainContainer}>
+    <SafeAreaView style={LandlordProfileStyle.mainContainer}>
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
         // isprofileImage
-        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        onPressLeftButton={() =>
+          // props.navigation.navigate('Dashboard')
+          navigation.goBack()
+        }
         MiddleText={'Profile'}
         // RightUserProfile={{
         //   uri:
@@ -114,7 +128,7 @@ export default LandlordProfile = props => {
         <TouchableOpacity
           style={LandlordProfileStyle.profilemainView}
           onPress={() => props.navigation.navigate('EditProfile')}>
-          <TouchableOpacity style={LandlordProfileStyle.ProfileView}>
+          <View style={LandlordProfileStyle.ProfileView}>
             <Image
               // source={IMAGES.Landlordprofile}
               source={{
@@ -124,7 +138,7 @@ export default LandlordProfile = props => {
               style={LandlordProfileStyle.usericon}
               resizeMode="cover"
             />
-          </TouchableOpacity>
+          </View>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
               {accountDetails?.UAD_FIRST_NAME || accountDetails?.UAD_LAST_NAME
@@ -336,6 +350,6 @@ export default LandlordProfile = props => {
         </View>
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

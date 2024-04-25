@@ -79,7 +79,7 @@ export default CompanyDetails = props => {
   const [servicesData, setServicesData] = useState([]);
   const [IndiservicesData, setIndiServicesData] = useState([]);
   const isvisible = useIsFocused();
-
+  const [IsHeeight, SetIsHeeight] = useState(false);
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -145,13 +145,13 @@ export default CompanyDetails = props => {
             'kodie_describeYouself_Data_error:',
             response?.data?.error,
           );
-          alert('Oops samthing went wrong! Please try again later.');
+          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('kodie_describeYouself_Data error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -324,7 +324,7 @@ export default CompanyDetails = props => {
             'company profile Services_error:',
             response?.data?.error,
           );
-          alert('Oops samthing went wrong! Please try again later.');
+          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       } catch (error) {
@@ -386,7 +386,7 @@ export default CompanyDetails = props => {
             'company profile Services_error:',
             response?.data?.error,
           );
-          alert('Oops samthing went wrong! Please try again later.');
+          // alert('Oops samthing went wrong! Please try again later.');
           setIsLoading(false);
         }
       } catch (error) {
@@ -499,12 +499,12 @@ export default CompanyDetails = props => {
         setAccountDetails(response?.data?.data[0]);
         setLocation(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD
+            ? response?.data?.data[0]?.UAD_COMPANY_ADDRESS
             : '',
         );
         setCompanyLocation(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD
+            ? response?.data?.data[0]?.UAD_COMPANY_ADDRESS
             : '',
         );
         const initialJobTypeIds = response?.data?.data[0]
@@ -581,6 +581,14 @@ export default CompanyDetails = props => {
         console.error('API Error PersonalDetails C:', error);
       });
   };
+  useEffect(() => {
+    // Set initial tab value based on accountDetails
+    if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
+      setTabValue('IndividualInProfile');
+    } else if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
+      setTabValue('CompanyInProfile');
+    }
+  }, [accountDetails]);
   const UpdateCompanyData = async () => {
     const formData = new FormData();
 
@@ -663,7 +671,7 @@ export default CompanyDetails = props => {
         // getComapnyDetails();
       }
     } catch (error) {
-      alert(error);
+      // alert(error);
       console.log('update_error UpdateCompanyData...', error);
     } finally {
       setIsLoading(false);
@@ -701,6 +709,7 @@ export default CompanyDetails = props => {
                     inputSearchStyle={IndividualProfileStyle.inputSearchStyle}
                     iconStyle={IndividualProfileStyle.iconStyle}
                     search
+                    activeColor={_COLORS.Kodie_MidLightGreenColor}
                     data={IndiservicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"
@@ -759,6 +768,8 @@ export default CompanyDetails = props => {
                   onChangeText={text => {
                     setIndiWebsite(text);
                   }}
+                  onFocus={() => SetIsHeeight(true)}
+                  onBlur={() => SetIsHeeight(false)}
                   placeholder="Enter your website address (if you have one)"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
@@ -846,6 +857,7 @@ export default CompanyDetails = props => {
                     inputSearchStyle={CompanyInProfileStyle.inputSearchStyle}
                     iconStyle={CompanyInProfileStyle.iconStyle}
                     search
+                    activeColor={_COLORS.Kodie_MidLightGreenColor}
                     data={servicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"
@@ -904,6 +916,8 @@ export default CompanyDetails = props => {
                   style={CompanyInProfileStyle.input}
                   value={website}
                   onChangeText={setWebsite}
+                  onFocus={() => SetIsHeeight(true)}
+                  onBlur={() => SetIsHeeight(false)}
                   placeholder="Enter your website address (if you have one)"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
@@ -928,11 +942,9 @@ export default CompanyDetails = props => {
     setIsMap(true);
   };
   return (
-    <ScrollView
-      style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}
-      onScroll={isLoading ? false : true}>
+    <>
       {IsMap ? (
-        <View style={{height: windowHeight - 135, flex: 1}}>
+        <View style={{height: windowHeight - 200, flex: 1}}>
           <View
             style={{
               // flex: 1,
@@ -1008,7 +1020,7 @@ export default CompanyDetails = props => {
               setlongitude(details.geometry.location.lng);
             } else {
               setCompanylatitude(details.geometry.location.lat);
-              setCompanylongitude(details.geometry.location.lat);
+              setCompanylongitude(details.geometry.location.lng);
             }
 
             setIsSearch(false);
@@ -1019,124 +1031,138 @@ export default CompanyDetails = props => {
         />
       ) : (
         <>
-          <View style={CompanyDetailsStyle.mainContaier}>
-            <View style={[CompanyDetailsStyle.profilviewmain, {flex: 1}]}>
-              <TouchableOpacity
-                style={CompanyDetailsStyle.ProfileView}
-                onPress={() => {
-                  refRBSheet.current.open();
-                }}>
-                {ImageName ? (
-                  <Image
-                    source={{uri: ImageName.path || ImageName}}
-                    style={[CompanyDetailsStyle.logo, {borderRadius: 110 / 2}]}
-                  />
-                ) : (
-                  <Image
-                    style={CompanyDetailsStyle.profilelogo}
-                    source={{
-                      uri: `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.UAD_Company_logo}`,
-                    }}
-                    resizeMode="cover"
-                  />
-                )}
-                {/* {ImageName ? refRBSheet.current.close() : null} */}
-                <View style={CompanyDetailsStyle.editlogoview}>
-                  <FontAwesome
-                    name="edit"
-                    color={_COLORS.Kodie_GreenColor}
-                    size={14}
-                    style={{
-                      alignSelf: 'center',
-                      justifyContent: 'center',
-                      alignItems: 'center',
+          <ScrollView
+            style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}
+            onScroll={isLoading ? false : true}>
+            <View style={CompanyDetailsStyle.mainContaier}>
+              <View style={[CompanyDetailsStyle.profilviewmain, {flex: 1}]}>
+                <TouchableOpacity
+                  style={CompanyDetailsStyle.ProfileView}
+                  onPress={() => {
+                    refRBSheet.current.open();
+                  }}>
+                  {ImageName ? (
+                    <Image
+                      source={{uri: ImageName.path || ImageName}}
+                      style={[
+                        CompanyDetailsStyle.logo,
+                        {borderRadius: 110 / 2},
+                      ]}
+                    />
+                  ) : (
+                    <Image
+                      style={CompanyDetailsStyle.profilelogo}
+                      source={{
+                        uri: `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.UAD_Company_logo}`,
+                      }}
+                      resizeMode="cover"
+                    />
+                  )}
+                  {/* {ImageName ? refRBSheet.current.close() : null} */}
+                  <View style={CompanyDetailsStyle.editlogoview}>
+                    <FontAwesome
+                      name="edit"
+                      color={_COLORS.Kodie_GreenColor}
+                      size={14}
+                      style={{
+                        alignSelf: 'center',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+                <Text style={CompanyDetailsStyle.edittext}>
+                  Edit company logo
+                </Text>
+              </View>
+              <Divider style={CompanyDetailsStyle.firstdivider} />
+
+              {/* Tab component code here...... */}
+              <View style={CompanyDetailsStyle.tabmainview}>
+                <Text style={CompanyDetailsStyle.tabheadingtext}>
+                  How do you run your business?
+                </Text>
+                <View style={CompanyDetailsStyle.btn_main_view}>
+                  <TouchableOpacity
+                    style={[
+                      CompanyDetailsStyle.person_view,
+                      {
+                        backgroundColor:
+                          tabValue === 'IndividualInProfile'
+                            ? _COLORS.Kodie_GreenColor
+                            : _COLORS.Kodie_WhiteColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
+                        setTabValue('IndividualInProfile');
+                      }
+                    }}>
+                    <Text
+                      style={[
+                        CompanyDetailsStyle.person_text,
+                        {
+                          color:
+                            tabValue === 'IndividualInProfile'
+                              ? _COLORS.Kodie_WhiteColor
+                              : _COLORS.Kodie_BlackColor,
+                        },
+                      ]}>
+                      {'Individual'}
+                    </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={[
+                      CompanyDetailsStyle.person_view,
+                      {
+                        backgroundColor:
+                          tabValue === 'CompanyInProfile'
+                            ? _COLORS.Kodie_GreenColor
+                            : _COLORS.Kodie_WhiteColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
+                        setTabValue('CompanyInProfile');
+                      }
+                    }}>
+                    <Text
+                      style={[
+                        CompanyDetailsStyle.company_text,
+                        {
+                          color:
+                            tabValue === 'CompanyInProfile'
+                              ? _COLORS.Kodie_WhiteColor
+                              : _COLORS.Kodie_BlackColor,
+                        },
+                      ]}>
+                      {'Company'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {checkTabs()}
+              {Platform.OS == 'ios' ? (
+                <View style={{height: IsHeeight ? 120 : 0}}></View>
+              ) : null}
+              <View style={CompanyDetailsStyle.saveBackButton}>
+                <View style={CompanyDetailsStyle.secondview}>
+                  <CustomSingleButton
+                    Text_Color={_COLORS.Kodie_WhiteColor}
+                    borderColor={_COLORS.Kodie_TransparentColor}
+                    _ButtonText={'Save and back'}
+                    backgroundColor={_COLORS.Kodie_BlackColor}
+                    disabled={isLoading ? true : false}
+                    onPress={() => {
+                      UpdateCompanyData();
                     }}
                   />
                 </View>
-              </TouchableOpacity>
-              <Text style={CompanyDetailsStyle.edittext}>
-                Edit company logo
-              </Text>
-            </View>
-            <Divider style={CompanyDetailsStyle.firstdivider} />
-
-            {/* Tab component code here...... */}
-            <View style={CompanyDetailsStyle.tabmainview}>
-              <Text style={CompanyDetailsStyle.tabheadingtext}>
-                How do you run your business?
-              </Text>
-              <View style={CompanyDetailsStyle.btn_main_view}>
-                <TouchableOpacity
-                  style={[
-                    CompanyDetailsStyle.person_view,
-                    {
-                      backgroundColor:
-                        tabValue === 'IndividualInProfile'
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  onPress={() => {
-                    setTabValue('IndividualInProfile');
-                  }}>
-                  <Text
-                    style={[
-                      CompanyDetailsStyle.person_text,
-                      {
-                        color:
-                          tabValue === 'IndividualInProfile'
-                            ? _COLORS.Kodie_WhiteColor
-                            : _COLORS.Kodie_BlackColor,
-                      },
-                    ]}>
-                    {'Individual'}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    CompanyDetailsStyle.person_view,
-                    {
-                      backgroundColor:
-                        tabValue === 'CompanyInProfile'
-                          ? _COLORS.Kodie_GreenColor
-                          : _COLORS.Kodie_WhiteColor,
-                    },
-                  ]}
-                  onPress={() => {
-                    setTabValue('CompanyInProfile');
-                  }}>
-                  <Text
-                    style={[
-                      CompanyDetailsStyle.company_text,
-                      {
-                        color:
-                          tabValue === 'CompanyInProfile'
-                            ? _COLORS.Kodie_WhiteColor
-                            : _COLORS.Kodie_BlackColor,
-                      },
-                    ]}>
-                    {'Company'}
-                  </Text>
-                </TouchableOpacity>
               </View>
             </View>
-
-            {checkTabs()}
-            <View style={CompanyDetailsStyle.saveBackButton}>
-              <View style={CompanyDetailsStyle.secondview}>
-                <CustomSingleButton
-                  Text_Color={_COLORS.Kodie_WhiteColor}
-                  borderColor={_COLORS.Kodie_TransparentColor}
-                  _ButtonText={'Save and back'}
-                  backgroundColor={_COLORS.Kodie_BlackColor}
-                  disabled={isLoading ? true : false}
-                  onPress={() => {
-                    UpdateCompanyData();
-                  }}
-                />
-              </View>
-            </View>
-          </View>
+          </ScrollView>
           <RBSheet
             ref={refRBSheet}
             height={200}
@@ -1172,6 +1198,6 @@ export default CompanyDetails = props => {
           </RBSheet>
         </>
       )}
-    </ScrollView>
+    </>
   );
 };

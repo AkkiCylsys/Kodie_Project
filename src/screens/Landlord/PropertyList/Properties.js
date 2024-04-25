@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, BackHandler, Alert} from 'react-native';
+import {View, BackHandler, Alert, SafeAreaView} from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import PropertyList from './MyProperty/PropertyList';
@@ -73,20 +73,20 @@ const Properties = props => {
         );
       case 'Tab2':
         return (
-          <>
-            {Alert.alert('Search for rentals', 'Coming soon', [
-              {
-                text: 'OK',
-                onPress: () => {
-                  console.log('OK Pressed');
-                  setActiveTab('Tab1');
-                },
-              },
-            ])}
-          </>
-          // <PropertyList2
-          //   SearchButton={() => props.navigation.navigate('SearchResult')}
-          // />
+          // <>
+          //   {Alert.alert('Search for rentals', 'Coming soon', [
+          //     {
+          //       text: 'OK',
+          //       onPress: () => {
+          //         console.log('OK Pressed');
+          //         setActiveTab('Tab1');
+          //       },
+          //     },
+          //   ])}
+          // </>
+          <PropertyList2
+            SearchButton={() => props.navigation.navigate('SearchResult')}
+          />
         );
       case 'Tab3':
         return (
@@ -115,11 +115,15 @@ const Properties = props => {
   };
 
   return (
-    <View style={PropertiesCSS.Container}>
+    <SafeAreaView style={PropertiesCSS.Container}>
       <TopHeader
         // onPressLeftButton={() => _goBack(props)}
-
+        IsNotification
+        isprofileImage
         onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        onPressRightImgProfile={() =>
+          props.navigation.navigate('LandlordProfile')
+        }
         MiddleText={'Properties'}
       />
       <CustomTabNavigator
@@ -160,7 +164,7 @@ const Properties = props => {
       )}
       {activeTab === "Tab2" && <PropertyList2 />}
       {activeTab === "Tab3" && <PropertyList3 />} */}
-    </View>
+    </SafeAreaView>
   );
 };
 

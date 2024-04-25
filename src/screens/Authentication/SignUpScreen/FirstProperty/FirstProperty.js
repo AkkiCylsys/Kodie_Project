@@ -9,6 +9,8 @@ import {
   Image,
   Platform,
   PermissionsAndroid,
+  SafeAreaView,
+  KeyboardAvoidingView
 } from 'react-native';
 import {FirstPropertyStyle} from './FirstPropertyStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -16,6 +18,7 @@ import {_goBack} from '../../../../services/CommonServices';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import {_COLORS, FONTFAMILY} from '../../../../Themes';
 import {LABEL_STYLES, IMAGES} from '../../../../Themes';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -303,6 +306,38 @@ export default FirstProperty = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
+  //dropDown render Item....
+  const propertyType_render = item => {
+    return (
+      <View
+        style={[
+          FirstPropertyStyle.itemView,
+          {
+            backgroundColor:
+              item?.lookup_key === property_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item?.lookup_key === property_value ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={FirstPropertyStyle.textItem}>
+          {item?.lookup_description}
+        </Text>
+      </View>
+    );
+  };
   const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
@@ -372,13 +407,13 @@ export default FirstProperty = props => {
           setProperty_Data(response?.data?.lookup_details);
         } else {
           console.error('property_type_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('property_type error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -401,13 +436,13 @@ export default FirstProperty = props => {
           );
         } else {
           console.error('additional_features_error:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('additional_features error:', error);
-        alert(error);
+        // alert(error);
         setIsLoading(false);
       });
   };
@@ -548,8 +583,8 @@ export default FirstProperty = props => {
       setAdditionalFeaturesKeyValue('');
     } else {
       setIsLoading(false);
-      console.error('Save Account Details error:', res.data.error);
-      alert(res.data.error);
+      console.error('Save Account Details error:', res?.data?.error);
+      // alert(res.data.error);
     }
   };
   const registerUser = async () => {
@@ -727,8 +762,8 @@ export default FirstProperty = props => {
       setAdditionalFeaturesKeyValue('');
     } else {
       setIsLoading(false);
-      console.error('Save Account Details error:', res.data.error);
-      alert(res.data.error);
+      console.error('Save Account Details error:', res?.data?.error);
+      // alert(res.data.error);
     }
   };
   const registerUserfill = async () => {
@@ -825,7 +860,11 @@ export default FirstProperty = props => {
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
   console.log(PreFriedly, 'pre friedly............');
   return (
-    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+       <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
       <TopHeader
         MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
         onPressLeftButton={() => {
@@ -972,7 +1011,7 @@ export default FirstProperty = props => {
                 </View>
                 <View style={FirstPropertyStyle.inputContainer}>
                   <Text style={LABEL_STYLES._texinputLabel}>Property type</Text>
-                  <Dropdown
+                  {/* <Dropdown
                     style={FirstPropertyStyle.dropdown}
                     placeholderStyle={[
                       FirstPropertyStyle.placeholderStyle,
@@ -990,6 +1029,26 @@ export default FirstProperty = props => {
                     onChange={item => {
                       setProperty_value(item.lookup_key);
                     }}
+                  /> */}
+                  <Dropdown
+                    style={FirstPropertyStyle.dropdown}
+                    placeholderStyle={[
+                      FirstPropertyStyle.placeholderStyle,
+                      {color: _COLORS.Kodie_LightGrayColor},
+                    ]}
+                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
+                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
+                    iconStyle={FirstPropertyStyle.iconStyle}
+                    data={property_Data}
+                    maxHeight={300}
+                    labelField="lookup_description"
+                    valueField="lookup_key"
+                    placeholder="Select property type"
+                    value={property_value}
+                    onChange={item => {
+                      setProperty_value(item.lookup_key);
+                    }}
+                    renderItem={propertyType_render}
                   />
                 </View>
                 <Text
@@ -1294,11 +1353,11 @@ export default FirstProperty = props => {
                     </Text>
                     <MultiSelect
                       style={FirstPropertyStyle.dropdown}
-                      activeColor={_COLORS.Kodie_MidLightGreenColor}
                       placeholderStyle={[
                         FirstPropertyStyle.placeholderStyle,
                         {color: _COLORS.Kodie_LightGrayColor},
                       ]}
+                      activeColor={_COLORS.Kodie_MidLightGreenColor}
                       selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
@@ -1369,6 +1428,7 @@ export default FirstProperty = props => {
         )}
       </View>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };

@@ -22,8 +22,8 @@ import Geolocation from '@react-native-community/geolocation';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
-import RNSettings from 'react-native-settings';
-import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+//import RNSettings from 'react-native-settings';
+ 
 import {useNavigation} from '@react-navigation/native';
 const MapScreen = props => {
   const mapRef = useRef(null);
@@ -45,13 +45,13 @@ const MapScreen = props => {
     // checkpermissionlocation()
     Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
   }, []);
-
+ 
   // useLayoutEffect(() => {
   //   Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {language: 'en'});
   //   Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
-
+ 
   // }, []);
-
+ 
   const getLOcation = () => {
     Geolocation.getCurrentPosition(position => {
       console.log('you are here.');
@@ -90,7 +90,7 @@ const MapScreen = props => {
               // );
               Alert.alert(
                 'Location Alert',
-
+ 
                 "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
                 [
                   {
@@ -125,20 +125,9 @@ const MapScreen = props => {
       },
     );
   };
-
-  const _enableGPS = async () => {
-    try {
-      await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-        interval: 10000,
-        fastInterval: 5000,
-      });
-
-      // do some action after the gps has been activated by the user
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+ 
+ 
+ 
   const checkpermissionlocation = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -166,7 +155,7 @@ const MapScreen = props => {
       console.warn(err);
     }
   };
-
+ 
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
       .then(result => {
@@ -197,7 +186,7 @@ const MapScreen = props => {
         console.log(error);
       });
   };
-
+ 
   return (
     <>
       {isLoading ? (
@@ -227,7 +216,7 @@ const MapScreen = props => {
             }}
             onPress={props?.onPress}>
             <Icon name="location-pin" size={30} color={'red'} />
-
+ 
             <Callout tooltip onPress={props?.onPressTooltip}>
               {/* <View style={GoogleMapStyle.tooltipView}>
       <Text style={GoogleMapStyle.tooltipText}>
@@ -241,5 +230,5 @@ const MapScreen = props => {
     </>
   );
 };
-
-export default MapScreen;
+ 
+export default MapScreen

@@ -124,11 +124,11 @@ import ProfileDocumentDetails from '../../screens/Profile/ProfileDocumentDetails
 import SearchDetail from '../../screens/Tenant/Jobs/SearchforContractor/SearchDetail';
 import SearchJobResult from '../../screens/Tenant/Jobs/SearchforJob/SearchJobResult';
 import BidforJob from '../../screens/Tenant/Jobs/BidforJob/BidforJob';
-import PaymentScreen from '../../screens/PaymentMethod/PaymentScreen';
+//import PaymentScreen from '../../screens/PaymentMethod/PaymentScreen';
 import paymentdetails from '../../screens/PaymentMethod/paymentdetails';
 import ApplePay from '../../screens/PaymentMethod/ApplePay/ApplePay';
 import CreditCard from '../../screens/PaymentMethod/CreditCard/CreditCard';
-import SubscriptionScreen from '../../screens/Subscription/SubscriptionScreen';
+//import SubscriptionScreen from '../../screens/Subscription/SubscriptionScreen';
 import Chat from '../../screens/ChatsScreens/Chat';
 import CompanyInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Company/CompanyInProfile';
 import IndividualInProfile from '../../screens/Landlord/Landlordprofile/CompanyDetails/Individual/IndividualInProfile';
@@ -144,6 +144,7 @@ const BottomNav = props => {
     <Tab.Navigator
       initialRouteName="Dashboard"
       screenOptions={{
+        gestureEnabled: false,
         tabBarStyle: {
           backgroundColor: _COLORS.Kodie_WhiteColor,
           height: Platform.OS == 'android' ? 65 : 80,
@@ -207,7 +208,7 @@ const BottomNav = props => {
           ),
         }}
       />
-      <Tab.Screen
+      <Tab.Screen 
         name="Properties"
         component={Properties}
         options={{
@@ -485,22 +486,22 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'AuthStackRouts'}
           component={AuthStackRouts}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'BottomNav'}
           component={BottomNav}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'DrawerNavigatorLeftMenu'}
           component={DrawerNavigatorLeftMenu}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'LoginScreen'}
           component={LoginScreen}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'UserTypeScreen'}
@@ -586,141 +587,141 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'Properties'}
           component={Properties}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Jobs'}
           component={Jobs}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Help_FeedBack'}
           component={Help_FeedBack}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Language'}
           component={Language}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'SignUp'}
           component={SignUp}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'SignUpVerification'}
           component={SignUpVerification}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Location'}
           component={Location}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'AboutYou'}
           component={AboutYou}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'IndividualSignup'}
           component={IndividualSignup}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'CompanySignup'}
           component={CompanySignup}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'CreateJobTermsScreen'}
           component={CreateJobTermsScreen}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'ConfirmJobCompletion'}
           component={ConfirmJobCompletion}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'SignUpSteps'}
           component={SignUpSteps}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'FirstProperty'}
           component={FirstProperty}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'AddPropertyMainPage'}
           component={AddPropertyMainPage}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PropertyFeature'}
           component={PropertyFeature}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PropertyImages'}
           component={PropertyImages}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PropertyReview'}
           component={PropertyReview}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'SearchResult'}
           component={SearchResult}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'ViewPropertyDetails'}
           component={ViewPropertyDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PropertyDetails'}
           component={PropertyDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'SubmitApplication'}
           component={SubmitApplication}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'AddTenantDetails'}
           component={AddTenantDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Invitefriend'}
           component={Invitefriend}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'HelpOrFeedback'}
           component={HelpOrFeedback}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'Contactus'}
           component={Contactus}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'AppInfo'}
           component={AppInfo}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
@@ -731,390 +732,390 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'NewInspection'}
           component={NewInspection}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PropertyExpenses'}
           component={PropertyExpenses}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'SocialMedia'}
           component={SocialMedia}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'SearchUser'}
           component={SearchUser}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'AccountSetting'}
           component={AccountSetting}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'ManageSubscription'}
           component={ManageSubscription}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'BlockedUser'}
           component={BlockedUser}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'ViewApplication'}
           component={ViewApplication}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PropertyInspection'}
           component={PropertyInspection}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'CreateNewInspection'}
           component={CreateNewInspection}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Bedroom'}
           component={Bedroom}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'ChangeContactNotify'}
           component={ChangeContactNotify}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'DeleteAccount'}
           component={DeleteAccount}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'EditProfile'}
           component={EditProfile}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'Notifications'}
           component={Notifications}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'AddNewNotice'}
           component={AddNewNotice}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'AccountStep'}
           component={AccountStep}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'Billinginformation'}
           component={Billinginformation}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'GeneralSettings'}
           component={GeneralSettings}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'GeneralSetting'}
           component={GeneralSetting}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Chats'}
           component={Chats}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Chat'}
           component={Chat}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'ScheduleMeeting'}
           component={ScheduleMeeting}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'JobDetails'}
           component={JobDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'StorageSettings'}
           component={StorageSettings}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'PaymentMethod'}
           component={PaymentMethod}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'Notices'}
           component={Notices}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'Reports'}
           component={Reports}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'GenerateReport'}
           component={GenerateReport}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'PropertyListings'}
           component={PropertyListings}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'VacantPropertiesList'}
           component={VacantPropertiesList}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'TwoStepVerification'}
           component={TwoStepVerification}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PrivacySecurity'}
           component={PrivacySecurity}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Managingcontractors'}
           component={Managingcontractors}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Contractors1'}
           component={Contractors1}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Contractors2'}
           component={Contractors2}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Contractors3'}
           component={Contractors3}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Reviewjobdetails1'}
           component={Reviewjobdetails1}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Reviewjobdetails2'}
           component={Reviewjobdetails2}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Reviewjobdetails3'}
           component={Reviewjobdetails3}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'CompletedJobs'}
           component={CompletedJobs}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Ratingandfeedback'}
           component={Ratingandfeedback}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'EditDashboard'}
           component={EditDashboard}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'Account'}
           component={Account}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'ContractorDashboard'}
           component={ContractorDashboard}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'LinkedDevice'}
           component={LinkedDevice}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'RantalOffer'}
           component={RantalOffer}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'SearchPlaces'}
           component={SearchPlaces}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'DocumentDetails'}
           component={DocumentDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'JobDocumentDetails'}
           component={JobDocumentDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'ViewDocument'}
           component={ViewDocument}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PreScreening'}
           component={PreScreening}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'TenantList'}
           component={TenantList}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'CurrentTenant'}
           component={CurrentTenant}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
 
         <Stack.Screen
           name={'PreviousTenant'}
           component={PreviousTenant}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'JodBiddingDetails'}
           component={JodBiddingDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'BiddingDetails'}
           component={BiddingDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'CompanyDetails'}
           component={CompanyDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'CompanyInProfile'}
           component={CompanyInProfile}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'IndividualInProfile'}
           component={IndividualInProfile}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'AddContractorDetails'}
           component={AddContractorDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'ProfileDocumentDetails'}
           component={ProfileDocumentDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'SearchDetail'}
           component={SearchDetail}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'SearchJobResult'}
           component={SearchJobResult}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'BidforJob'}
           component={BidforJob}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'PaymentScreen'}
           component={PaymentScreen}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name={'paymentdetails'}
           component={paymentdetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'CreditCard'}
           component={CreditCard}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'ApplePay'}
           component={ApplePay}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'SubscriptionScreen'}
           component={SubscriptionScreen}
           options={{headerShown: false}}
-        />
+        /> */}
         <Stack.Screen
           name={'Partners'}
           component={Partners}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'PropertyReviewDetails'}
           component={PropertyReviewDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'JobReviewDetails'}
           component={JobReviewDetails}
-          options={{headerShown: false}}
+          options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen
           name={'MarketplacePropertyListing'}

@@ -44,13 +44,13 @@ export const AccountStyle = StyleSheet.create({
     top: 100,
     right: 10,
     backgroundColor: '#F5F5F5',
-    borderRadius: 12,
-    padding: 5,
+    // padding: 9,
     width: 35,
     height: 35,
     // borderWidth:1,
     borderRadius: 35 / 2,
-    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent:"center"
   },
   edittext: {
     marginTop: 24,
@@ -86,7 +86,8 @@ export const AccountStyle = StyleSheet.create({
     // marginHorizontal: 15,
   },
   inputContainerbio: {
-    marginBottom: 15,
+    // marginBottom: 15,
+    marginTop:15
   },
   _texinputLabel: {
     fontSize: 16,
@@ -118,7 +119,8 @@ export const AccountStyle = StyleSheet.create({
     marginBottom: 20,
   },
   inputContainer: {
-    // marginBottom:5,
+    // marginBottom:3,
+    
   },
   referralcode: {
     marginTop: 15,
@@ -233,7 +235,7 @@ export const AccountStyle = StyleSheet.create({
     alignSelf: 'center',
     borderColor: _COLORS.Kodie_GrayColor,
   },
-  errorText: {color: 'red', marginLeft: 10},
+  errorText: {color: 'red', marginLeft: 10,marginTop:5},
   BtnContainer: {
     backgroundColor: _COLORS.Kodie_lightGreenColor,
     flexDirection: 'row',

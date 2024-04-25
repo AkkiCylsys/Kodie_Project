@@ -1,7 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../../../../Themes';
 
-import {fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 export const RepairCss = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -9,7 +8,7 @@ export const RepairCss = StyleSheet.create({
   },
   item_style: {
     fontSize: 12,
-    fontFamily: fontFamily.K_Medium,
+    fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_VeryLightGrayColor,
     marginBottom: 4,
     alignSelf: 'center',
@@ -65,13 +64,13 @@ export const RepairCss = StyleSheet.create({
   },
   tom: {
     fontSize: 12,
-    fontFamily: fontFamily.K_Medium,
+    fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_MediumGrayColor,
   },
   locationView: {flex: 1, flexDirection: 'row'},
   locationText: {
     fontSize: 12,
-    fontFamily: fontFamily.K_Medium,
+    fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_BlackColor,
     alignSelf: 'center',
     marginLeft: 5,
@@ -99,21 +98,21 @@ export const RepairCss = StyleSheet.create({
   },
   buttonText: {
     fontSize: 12,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
 
     textAlign: 'center',
   },
   spend: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     textAlign: 'right',
     marginTop: 5,
   },
   bugetText: {
     fontSize: 12,
     color: _COLORS.Kodie_GrayColor,
-    fontFamily: fontFamily.K_Medium,
+    fontFamily: FONTFAMILY.K_Medium,
     textAlign: 'right',
   },
   readMore: {

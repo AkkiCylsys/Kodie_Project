@@ -35,7 +35,7 @@ import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlace
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {useDispatch, useSelector} from 'react-redux';
 
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
@@ -521,8 +521,8 @@ const AddNewNotice = props => {
       //   });
       console.log('doc......', doc);
       setSelectFile(doc);
-      setFileName(doc[0].name);
-      console.log('filename...', doc[0].name);
+      setFileName(doc[0].name.replace(/\s/g, ''));
+      console.log('filename...', doc[0].name.replace(/\s/g, ''));
       // await uploadDocument(doc);
       // console.log("Documents.....", doc);
       // console.log("selectFile.....", selectFile);

@@ -6,12 +6,13 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {SliderBox} from 'react-native-image-slider-box';
-import {_COLORS, BANNERS, IMAGES, LABEL_STYLES} from '../../../../Themes';
+import {_COLORS, BANNERS, IMAGES, LABEL_STYLES,FONTFAMILY} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Leases from './Leases/Leases';
 import Details from './Details/Details';
@@ -31,7 +32,6 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {DetailsStyle} from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
@@ -119,11 +119,20 @@ export default PropertyReview = props => {
   const [pointOfInterest, setPointOfInterest] = useState(false);
 
   const shareDocFile = async () => {
-    try {
-      await Share.open({url: inviteFriendPath});
-    } catch (error) {
-      console.error('Error sharing property ', error);
-    }
+    setTimeout(() => {
+      Share.open({url: inviteFriendPath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: inviteFriendPath});
+    // } catch (error) {
+    //   console.error('Error sharing property ', error);
+    // }
   };
   const Detail_rander = ({item, index}) => {
     return (
@@ -342,28 +351,28 @@ export default PropertyReview = props => {
           response?.data?.property_details[0],
         );
         // Fetch and process key features..........
-        if (response?.data?.property_details[0].key_features) {
+        if (response?.data?.property_details[0]?.key_features) {
           const parsedData = JSON.parse(
-            response?.data?.property_details[0].key_features.replace(/\\/g, ''),
+            response?.data?.property_details[0]?.key_features.replace(/\\/g, ''),
           );
           setDetail(parsedData);
           console.log('parsedData....', parsedData);
         }
         const additionalKeyFeatures =
-          response?.data?.property_details[0].additional_key_features[0];
+          response?.data?.property_details[0]?.additional_key_features[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
         // alert('Oops something went wrong! Please try again later.');
       }
       const additionalFeatures_id =
-        response?.data?.property_details[0].additional_features;
+        response?.data?.property_details[0]?.additional_features;
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const is_additionalFeaturesid = additionalFeatures_id.split(',');
       setAddtionalFeaturesID(is_additionalFeaturesid);
     } catch (error) {
       console.error('Error:', error);
-      alert(error);
+      // alert(error);
       setIsLoading(false);
     }
   };
@@ -533,7 +542,11 @@ export default PropertyReview = props => {
             )}
 
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              <TouchableOpacity
+                style={DetailsStyle.propety_details_view}
+                onPress={() => {
+                  setPropertyDetailsClp(!propertyDetailsClp);
+                }}>
                 <Text style={DetailsStyle.propery_det}>
                   {'Property details'}
                 </Text>
@@ -553,7 +566,7 @@ export default PropertyReview = props => {
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
               <DividerIcon marginTop={8} />
               {propertyDetailsClp ? (
                 <>
@@ -642,7 +655,11 @@ export default PropertyReview = props => {
               {/* <DividerIcon marginTop={8} /> */}
             </View>
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              <TouchableOpacity
+                style={DetailsStyle.propety_details_view}
+                onPress={() => {
+                  setRoomClp(!roomClp);
+                }}>
                 <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
                 <TouchableOpacity
                   style={DetailsStyle.down_Arrow_icon}
@@ -655,7 +672,7 @@ export default PropertyReview = props => {
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             </View>
             <DividerIcon marginTop={8} />
             {roomClp ? (
@@ -741,7 +758,11 @@ export default PropertyReview = props => {
               </>
             ) : null}
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              <TouchableOpacity
+                style={DetailsStyle.propety_details_view}
+                onPress={() => {
+                  setExternalfeaturesClp(!externalfeaturesClp);
+                }}>
                 <Text style={DetailsStyle.propery_det}>
                   {'External featuress'}
                 </Text>
@@ -761,7 +782,7 @@ export default PropertyReview = props => {
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
             </View>
             <DividerIcon marginTop={8} />
             {externalfeaturesClp ? (
@@ -847,7 +868,11 @@ export default PropertyReview = props => {
               </>
             ) : null}
             <View style={DetailsStyle.subContainer}>
-              <View style={DetailsStyle.propety_details_view}>
+              <TouchableOpacity
+                style={DetailsStyle.propety_details_view}
+                onPress={() => {
+                  setPointOfInterest(!pointOfInterest);
+                }}>
                 <Text style={DetailsStyle.propery_det}>
                   {'Points of interest'}
                 </Text>
@@ -866,7 +891,7 @@ export default PropertyReview = props => {
                     color={_COLORS.Kodie_GrayColor}
                   />
                 </TouchableOpacity>
-              </View>
+              </TouchableOpacity>
               <DividerIcon marginTop={8} />
 
               <View style={PropertyReviewStyle.btnView}>
@@ -888,6 +913,7 @@ export default PropertyReview = props => {
                         editMode: 'editMode',
                       });
                     } else {
+                      props.navigation.pop(4);
                       props?.navigation?.navigate('Properties');
                     }
                   }}
@@ -953,7 +979,7 @@ export default PropertyReview = props => {
   };
   //alert(JSON.stringify(property_Detail))
   return (
-    <View style={PropertyReviewStyle.mainContainer}>
+    <SafeAreaView style={PropertyReviewStyle.mainContainer}>
       <TopHeader
         // isprofileImage
         onPressLeftButton={
@@ -1150,6 +1176,6 @@ export default PropertyReview = props => {
         {checkTabs()}
         {isLoading ? <CommonLoader /> : null}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };

@@ -193,12 +193,12 @@ export default SignUp = props => {
         Alert.alert('Success !', response?.data?.message);
       }
     } catch (error) {
-      if (error.response || error.response.status === 400) {
+      if (error?.response || error?.response?.status === 400) {
         Alert.alert(
           'Warning !',
           'Failed to send OTP via email. Please try again later.',
         );
-      } else if (error.response || error.response.status === 401) {
+      } else if (error?.response || error?.response?.status === 401) {
         Alert.alert('Warning !', 'Your Password is Wrong.');
       } else {
         // alert('An error occurred. Please try again later.');
@@ -395,7 +395,7 @@ export default SignUp = props => {
             backgroundColor={_COLORS.Kodie_WhiteColor}
             disabled={isLoading ? true : false}
             onPress={() => {
-              // props.navigation.navigate("SignUpSteps");
+              Alert.alert('Sign with Google', 'Coming soon');
             }}
           />
           <CustomSingleButton
@@ -404,6 +404,9 @@ export default SignUp = props => {
             isLeftImage={true}
             _ButtonText={'Sign up with Facebook'}
             backgroundColor={_COLORS.Kodie_WhiteColor}
+            onPress={() => {
+              Alert.alert('Sign with Facebook', 'Coming soon');
+            }}
           />
           <View style={SignUpStyles.already_account_login}>
             <BottomTextsButton

@@ -1,4 +1,11 @@
-import {View, Text, TextInput, Image} from 'react-native';
+import {
+  View,
+  Text,
+  Platform,
+  TextInput,
+  Image,
+  SafeAreaView,
+} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {ChangeContactInputStyle} from './ChangeContactInputStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -10,27 +17,61 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import PhoneInput from 'react-native-phone-number-input';
 import {useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import {Config} from '../../../../Config';
 //screen number 206
 const ChangeContactInput = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [oldnewPhoneNumber, setOldnewPhoneNumber] = useState('');
-  const [oldnewPhoneNumberError, setOldnewPhoneNumberError] = useState('');
   const [newnewPhoneNumber, setnewPhoneNumber] = useState('');
   const [newnewPhoneNumberError, setnewPhoneNumberError] = useState('');
-  const [oldNumberformattedValue, setOldNumberFormattedValue] = useState('');
-  const [newNumberformattedValue, setNewNumberFormattedValue] = useState('');
+  const [accountDetails, setAccountDetails] = useState(null);
+
   const phoneInput = useRef(null);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponseContact.....', loginData);
-  const phoneDataNumber = loginData?.Account_details[0]?.UAD_PHONE_NO;
-  console.log('phoneDataNumber..', phoneDataNumber);
+  // const phoneDataNumber = loginData?.Account_details[0]?.UAD_PHONE_NO;
+  // console.log('phoneDataNumber..', phoneDataNumber);
   const navigation = useNavigation();
   useEffect(() => {
-    if (phoneDataNumber) {
-      setOldnewPhoneNumber(phoneDataNumber);
-    }
-  }, [phoneDataNumber]);
+    // if (phoneDataNumber) {
+    //   setOldnewPhoneNumber(phoneDataNumber);
+    // }
+    fetchData();
+  }, []);
 
+  const fetchData = async () => {
+    if (loginData?.Login_details?.user_id) {
+      await getPersonalDetails();
+    }
+  };
+  const getPersonalDetails = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const apiUrl =
+      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
+    console.log('PersonalDetails_url..', apiUrl);
+    await axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response:', response?.data?.data[0]);
+        if (
+          response?.data?.data &&
+          Array.isArray(response?.data?.data) &&
+          response?.data?.data?.length > 0
+        ) {
+          setAccountDetails(response?.data?.data[0]);
+          setOldnewPhoneNumber(response?.data?.data[0].UAD_PHONE_NO);
+        } else {
+          console.error('Invalid response data format:', response?.data);
+        }
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error PersonalDetails contact:', error);
+        setIsLoading(false);
+      });
+  };
   const validatenewPhoneNumber = () => {
     if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
@@ -45,41 +86,18 @@ const ChangeContactInput = props => {
     const isValid = validatenewPhoneNumber();
     if (newnewPhoneNumber.trim() === '') {
       setnewPhoneNumberError('Phone number is required');
-      // Yahan par aapka actual submit logic hoga
       console.log('Phone number is valid:', newnewPhoneNumber);
-      // Agar aap form submit karna chahte hain to yahan par kar sakte hain
+    } else if (!phoneInput.current?.isValidNumber(newnewPhoneNumber)) {
+      setnewPhoneNumberError('Invalid phone number format.');
     } else {
       navigation.navigate('ChangeContactNotify', {
-        oldnewPhoneNumber: oldNumberformattedValue,
-        newnewPhoneNumber: newNumberformattedValue,
+        oldnewPhoneNumber: oldnewPhoneNumber,
+        newnewPhoneNumber: newnewPhoneNumber,
       });
     }
   };
-
-  const handlenewPhoneNumberChange = text => {
-    validatenewPhoneNumber(text);
-    setnewPhoneNumber(text);
-  };
-  // const handleSubmit = async () => {
-  //   if (newnewPhoneNumber.trim() === '') {
-  //     setnewPhoneNumberErrorError('New phone number is required.');
-  //   } else if (phoneDataNumber.trim() === newnewPhoneNumber.trim()) {
-  //     setnewPhoneNumberErrorError(
-  //       'New phone number must be different from the old one.',
-  //     );
-  //     setOldnewPhoneNumberError('');
-  //   } else {
-  //     navigation.navigate('ChangeContactNotify', {
-  //       oldnewPhoneNumber: oldNumberformattedValue,
-  //       newnewPhoneNumber: newNumberformattedValue,
-  //     });
-  //     setIsLoading(false);
-  //     // setOldnewPhoneNumber("");
-  //     // setnewPhoneNumberError("")
-  //   }
-  // };
   return (
-    <View style={ChangeContactInputStyle.maincontainer}>
+    <SafeAreaView style={ChangeContactInputStyle.maincontainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Change contact details'}
@@ -89,73 +107,25 @@ const ChangeContactInput = props => {
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your old phone number with country code
           </Text>
-
           <View
             style={[
-              ChangeContactInputStyle.simpleinputview,
-              {backgroundColor: _COLORS.Kodie_GrayColor, borderRadius: 8},
+              ChangeContactInputStyle.old_inputview,
+              {backgroundColor: _COLORS.Kodie_GrayColor},
             ]}>
-            <Text
-              style={[
-                ChangeContactInputStyle.oldnumbertext,
-                {marginLeft: 15, width: '15%'},
-              ]}>
-              +61
-            </Text>
-
-            <Text
-              style={[
-                ChangeContactInputStyle.oldnumbertext,
-                {width: '85%', textAlign: 'left'},
-              ]}>
-              {phoneDataNumber}
-            </Text>
-            {/* <PhoneInput
-              ref={phoneInput}
-              defaultValue={phoneDataNumber}
-              defaultCode="IN"
-             // disabled="false"
-              layout="second"
-              onChangeText={text => {
-                validateOldnewPhoneNumber(text);
-              }}
-              placeholder={'Enter your phone number'}
-              onChangeFormattedText={text => {
-                setOldNumberFormattedValue(text);
-              }}
-              autoFocus
-              textContainerStyle={{
-                flex: 1,
-                backgroundColor: _COLORS.Kodie_WhiteColor,
-                paddingVertical: 2,
-                backgroundColor: _COLORS.Kodie_GrayColor,
-                borderRadius: 10,
-              }}
-              containerStyle={{
-                flex: 1,
-                alignSelf: 'center',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: 12,
-                borderWidth: 1,
-                backgroundColor: _COLORS.Kodie_GrayColor,
-              }}
-            /> */}
+            <TextInput
+              style={ChangeContactInputStyle.inputStyle}
+              value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                accountDetails?.UAD_PHONE_NO || ''
+              }`}
+              editable={false}
+            />
           </View>
-
-          {oldnewPhoneNumberError ? (
-            <Text style={ChangeContactInputStyle.error_text}>
-              {oldnewPhoneNumberError}
-            </Text>
-          ) : null}
         </View>
 
         <View style={ChangeContactInputStyle.secondview}>
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your new phone number with country code
           </Text>
-
           <View
             style={{
               height: 50,
@@ -165,15 +135,22 @@ const ChangeContactInput = props => {
               marginTop: 8,
             }}>
             <PhoneInput
-              // ref={phoneInput}
+              ref={phoneInput}
               defaultValue={newnewPhoneNumber}
               defaultCode="AU"
               layout="second"
-              // onChangeText={text => {
-              //   validateNewnewPhoneNumber(text);
-              // }}
+              onChangeText={text => {
+                const checkValid = phoneInput.current?.isValidNumber(text);
+                if (text === '') {
+                  setnewPhoneNumberError('Phone number is required.');
+                } else if (checkValid == false) {
+                  setnewPhoneNumberError('Invalid phone number format.');
+                } else {
+                  setnewPhoneNumberError('');
+                }
+              }}
               placeholder={'Enter your phone number'}
-              onChangeFormattedText={text => handlenewPhoneNumberChange(text)}
+              onChangeFormattedText={text => setnewPhoneNumber(text)}
               textInputProps={{
                 maxLength: 9,
               }}
@@ -182,9 +159,10 @@ const ChangeContactInput = props => {
               // autoFocus
               textContainerStyle={{
                 flex: 1,
+                height: 50,
                 backgroundColor: _COLORS.Kodie_WhiteColor,
                 paddingVertical: 2,
-                borderRadius: 10,
+                borderRadius: Platform.OS == 'ios' ? 6 : 10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
               containerStyle={{
@@ -194,7 +172,7 @@ const ChangeContactInput = props => {
                 justifyContent: 'center',
                 borderWidth: 1,
                 borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: 10,
+                borderRadius: Platform.OS == 'ios' ? 6 : 10,
                 fontFamily: FONTFAMILY.K_Medium,
               }}
             />
@@ -219,7 +197,7 @@ const ChangeContactInput = props => {
         </View>
       </View>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

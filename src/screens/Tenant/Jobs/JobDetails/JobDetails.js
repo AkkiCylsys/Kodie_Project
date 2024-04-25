@@ -7,6 +7,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {JobDetailsStyle} from './JobDetailsStyle';
@@ -52,7 +53,7 @@ const Apartment_data = [
 ];
 const JobDetails = props => {
   // const dispatch = useDispatch();
-  const isFocued = useIsFocused()
+  const isFocued = useIsFocused();
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
   let jobDocTab = props?.route?.params?.jobDocTab;
@@ -240,10 +241,10 @@ const JobDetails = props => {
     setVisible(!visible);
   };
   return (
-    <View style={JobDetailsStyle.container}>
+    <SafeAreaView style={JobDetailsStyle.container}>
       <TopHeader
-        isprofileImage
-        IsNotification
+        // isprofileImage
+        // IsNotification
         onPressLeftButton={() =>
           View_Job_Details
             ? props.navigation.navigate('Jobs', {
@@ -269,31 +270,31 @@ const JobDetails = props => {
       <ScrollView>
         <Text style={JobDetailsStyle.heading}>{'Review job details'}</Text>
         {/* <ImageBackground> */}
-          {imageFileData.image_file_path &&
-          imageFileData.image_file_path.length !== 0 ? (
-            <View style={JobDetailsStyle.slider_view}>
-              <SliderBox
-                images={imageFileData?.image_file_path}
-                // images={images}
-                sliderBoxHeight={200}
-                onCurrentImagePressed={index =>
-                  console.warn(`image ${index} pressed`)
-                }
-                inactiveDotColor={_COLORS.Kodie_GrayColor}
-                dotColor={_COLORS.Kodie_GreenColor}
-                autoplay
-                circleLoop
-                resizeMethod={'resize'}
-                resizeMode={'cover'}
-                dotStyle={JobDetailsStyle.dotStyle}
-                ImageComponentStyle={{
-                  flex: 1,
-                  resizeMode: 'cover',
-                }}
-              />
-            </View>
-          ) : null}
-          {/* {imageFileData.image_file_path &&
+        {imageFileData.image_file_path &&
+        imageFileData.image_file_path.length !== 0 ? (
+          <View style={JobDetailsStyle.slider_view}>
+            <SliderBox
+              images={imageFileData?.image_file_path}
+              // images={images}
+              sliderBoxHeight={200}
+              onCurrentImagePressed={index =>
+                console.warn(`image ${index} pressed`)
+              }
+              inactiveDotColor={_COLORS.Kodie_GrayColor}
+              dotColor={_COLORS.Kodie_GreenColor}
+              autoplay
+              circleLoop
+              resizeMethod={'resize'}
+              resizeMode={'cover'}
+              dotStyle={JobDetailsStyle.dotStyle}
+              ImageComponentStyle={{
+                flex: 1,
+                resizeMode: 'cover',
+              }}
+            />
+          </View>
+        ) : null}
+        {/* {imageFileData.image_file_path &&
           imageFileData.image_file_path.length != 0 ? (
             <View style={JobDetailsStyle.bidsview}>
               <Text style={JobDetailsStyle.bidstext}>Accepting bids</Text>
@@ -541,7 +542,7 @@ const JobDetails = props => {
           />
         </RBSheet> */}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

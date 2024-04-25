@@ -8,6 +8,8 @@ import {
   FlatList,
   PermissionsAndroid,
   Platform,
+  SafeAreaView,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {DocumentDetailStyle} from './DocumentDetailStyle';
@@ -22,11 +24,13 @@ import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 import RNFS from 'react-native-fs';
-import RNFetchBlob from 'rn-fetch-blob';
+// import RNFetchBlob from 'rn-fetch-blob';
 import {Config} from '../../../../../../Config';
 import Share from 'react-native-share';
 import {useNavigation} from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import RNFetchBlob from 'rn-fetch-blob';
+import FileViewer from 'react-native-file-viewer';
 
 const DocumentDetails = props => {
   const navigation = useNavigation();
@@ -115,7 +119,7 @@ const DocumentDetails = props => {
   const uploadDocument = async doc => {
     // alert("upload");
     console.log('uri....', doc[0].uri);
-    console.log('name....', doc[0].name);
+    console.log('name....', doc[0].name.replace(/\s/g, ''));
     console.log('type....', doc[0].type);
     console.log('p_referral_key....', property_id);
     console.log('p_module_name....', moduleName);
@@ -127,7 +131,7 @@ const DocumentDetails = props => {
       const formData = new FormData();
       formData.append('documents', {
         uri: doc[0].uri,
-        name: doc[0].name,
+        name: doc[0].name.replace(/\s/g, ''),
         type: doc[0].type,
       });
       formData.append('p_referral_key', property_id);
@@ -164,10 +168,80 @@ const DocumentDetails = props => {
   };
   // share doc....
   const shareDocFile = async () => {
+    setTimeout(() => {
+      Share.open({url: filePath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+    // try {
+    //   await Share.open({url: filePath});
+    // } catch (error) {
+    //   console.error('Error sharing PDF file:', error);
+    // }
+  };
+  const downloadviewFile = async () => {
+    setIsLoading(true);
+    const date = new Date();
+    const {
+      dirs: {DownloadDir, DocumentDir},
+    } = RNFetchBlob.fs;
+    const isIOS = Platform.OS === 'ios';
+    const aPath = Platform.select({ios: DocumentDir, android: DownloadDir});
+    const fPath =
+      aPath + '/' + Math.floor(date.getTime() + date.getSeconds() / 2) + '.pdf';
+
+    const configOptions = Platform.select({
+      ios: {
+        fileCache: true,
+        path: fPath,
+        notification: true,
+      },
+      android: {
+        fileCache: false,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path: fPath,
+          description: 'Downloading pdf...',
+        },
+      },
+    });
+
     try {
-      await Share.open({url: filePath});
+      closeModal();
+      const res = await RNFetchBlob.config(configOptions).fetch(
+        'GET',
+        filePath.trim(),
+      );
+      if (isIOS) {
+        FileViewer.open(res.data, {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+          });
+      } else {
+        FileViewer.open(res.path(), {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+            setIsLoading(false);
+          });
+      }
     } catch (error) {
-      console.error('Error sharing PDF file:', error);
+      console.error('Error downloading file:', error);
+      Alert.alert('Error', 'Failed to download file');
     }
   };
   const getuploadedDocuments = () => {
@@ -274,10 +348,9 @@ const DocumentDetails = props => {
               <Text style={DocumentDetailStyle.pdfName}>
                 {item.PDUM_FILE_NAME}
               </Text>
-              <Text style={DocumentDetailStyle.pdfSize}>
-                {/* {(item.size / (1024 * 1024)).toFixed(2)} MB */}
+              {/* <Text style={DocumentDetailStyle.pdfSize}>
                 {'4.5 MB'}
-              </Text>
+              </Text> */}
             </View>
           </View>
           <TouchableOpacity
@@ -304,7 +377,7 @@ const DocumentDetails = props => {
   const checkPermission = async () => {
     setIsLoading(true);
     if (Platform.OS === 'ios') {
-      downloadImage();
+      downloadDocuments();
     } else {
       try {
         const granted = await PermissionsAndroid.request(
@@ -317,7 +390,7 @@ const DocumentDetails = props => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           // Once user grant the permission start downloading
           console.log('Storage Permission Granted.');
-          downloadImage();
+          downloadDocuments();
         } else {
           // If permission denied then show alert
           alert('Storage Permission Not Granted');
@@ -328,13 +401,13 @@ const DocumentDetails = props => {
       }
     }
   };
-  const downloadImage = () => {
+  const downloadDocuments = () => {
     setIsLoading(true);
     let date = new Date();
     let image_URL = REMOTE_PATH;
     let ext = getExtention(image_URL);
     ext = '.' + ext[0];
-    const {config, fs} = RNFetchBlob;
+    // const {config, fs} = RNFetchBlob;
     let PictureDir = fs.dirs.PictureDir;
     let options = {
       fileCache: true,
@@ -367,7 +440,7 @@ const DocumentDetails = props => {
   };
 
   return (
-    <View style={DocumentDetailStyle.mainContainer}>
+    <SafeAreaView style={DocumentDetailStyle.mainContainer}>
       <TopHeader
         MiddleText={
           folderId == 1
@@ -478,20 +551,22 @@ const DocumentDetails = props => {
             closemodal={closeModal}
             deleteHandler={deleteHandler}
             // downloadFile={downloadFile}
-            downloadFile={checkPermission}
+            // downloadFile={checkPermission}
+            downloadFile={downloadviewFile}
             fileKey={fileKey}
             filePath={filePath}
             shareDocFile={shareDocFile}
             onpress={() => {
-              navigation.navigate('ViewDocument', {
-                filePath: filePath,
-              });
+              // navigation.navigate('ViewDocument', {
+              //   filePath: filePath,
+              // });
+              downloadviewFile();
             }}
           />
         </RBSheet>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

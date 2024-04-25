@@ -55,7 +55,7 @@ export const DetailsStyle = StyleSheet.create({
     marginHorizontal: 16,
   },
   propery_det: {
-    fontSize: 12,
+    fontSize: 13,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
   },

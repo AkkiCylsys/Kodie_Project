@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image, TouchableOpacity, FlatList} from 'react-native';
+import {Text, View, Image, TouchableOpacity, FlatList, SafeAreaView} from 'react-native';
 import {Help_FeedBackCss} from './Help_FeedBackCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {IMAGES, _COLORS} from '../../../Themes/index';
@@ -113,7 +113,7 @@ const Help_FeedBack = props => {
     );
   };
   return (
-    <View style={Help_FeedBackCss.mainContainer}>
+    <SafeAreaView style={Help_FeedBackCss.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Help & Feedback'}
@@ -128,7 +128,7 @@ const Help_FeedBack = props => {
           renderItem={HelpFeedback_render}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 export default Help_FeedBack;

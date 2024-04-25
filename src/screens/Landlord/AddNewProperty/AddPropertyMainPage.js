@@ -1689,6 +1689,7 @@ const AddPropertyMainPage = props => {
                       inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
                       iconStyle={FirstPropertyStyle.iconStyle}
                       data={DATA}
+                      activeColor={_COLORS.Kodie_MidLightGreenColor}
                       labelField="label"
                       valueField="value"
                       placeholder="Add features such as pool,aircon,balcony etc."

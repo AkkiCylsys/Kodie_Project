@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  SafeAreaView,
 } from 'react-native';
 import {PropertyFeatureStyle} from './PropertyFeatureStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -93,6 +94,10 @@ export default PropertyFeature = props => {
   const [florSize, setFlorSize] = useState('');
   const [landArea, setLandArea] = useState('');
   const [property_Detail, setProperty_Details] = useState([]);
+  const [activeColor, setActiveColor] = useState(
+    _COLORS.Kodie_MidLightGreenColor,
+  ); // Initial active color
+
   // const [furnished, setFurnished] = useState([]);
   // const [preFriendly, setProperty_Details] = useState([]);
   console.log(
@@ -106,7 +111,7 @@ export default PropertyFeature = props => {
     console.log('step 1');
     additional_features();
     console.log('step 2');
-
+    setActiveColor(_COLORS.Kodie_MidLightGreenColor);
     propertyid > 0 ? DetailsData() : null;
     try {
       // Parsing the JSON string to an array of objects
@@ -470,7 +475,7 @@ export default PropertyFeature = props => {
           // setupdateProperty_Details(response?.data?.property_details);
         } else {
           console.error('update_property_detailserror:', response?.data?.error);
-          alert('Oops something went wrong! Please try again later.');
+          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -481,7 +486,7 @@ export default PropertyFeature = props => {
       });
   };
   return (
-    <View style={PropertyFeatureStyle.mainContainer}>
+    <SafeAreaView style={PropertyFeatureStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={goBack}
         MiddleText={editMode ? 'Edit property' : 'Add new property'}
@@ -790,7 +795,8 @@ export default PropertyFeature = props => {
               </Text>
               <MultiSelect
                 style={PropertyFeatureStyle.dropdown}
-                activeColor={_COLORS.Kodie_MidLightGreenColor}
+                activeColor={activeColor}
+                // activeColor={'#a1fe68'}
                 placeholderStyle={PropertyFeatureStyle.placeholderStyle}
                 selectedTextStyle={PropertyFeatureStyle.selectedTextStyle}
                 inputSearchStyle={PropertyFeatureStyle.inputSearchStyle}
@@ -816,6 +822,7 @@ export default PropertyFeature = props => {
                   setAdditionalFeaturesKeyValue(
                     cleanedArray.filter(value => value !== 0),
                   );
+                  setActiveColor(_COLORS.Kodie_MidLightGreenColor);
                 }}
                 renderLeftIcon={() => (
                   <AntDesign
@@ -852,7 +859,7 @@ export default PropertyFeature = props => {
                 disabled={isLoading ? true : false}
               />
             </View>
-            <View style={PropertyFeatureStyle.btnView}>
+            {/* <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton
                 _ButtonText={
                   editMode
@@ -863,7 +870,7 @@ export default PropertyFeature = props => {
                 backgroundColor={_COLORS.Kodie_WhiteColor}
                 disabled={isLoading ? true : false}
               />
-            </View>
+            </View> */}
             <TouchableOpacity
               style={PropertyFeatureStyle.goBack_View}
               onPress={() => {
@@ -882,6 +889,6 @@ export default PropertyFeature = props => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   PermissionsAndroid,
   Platform,
+  Alert,
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import ProfileDocumentDetailStyle from './ProfileDocumentDetailStyle';
@@ -27,7 +28,9 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import EditDocumentsModal from '../../../components/Molecules/EditDocumentsModal/EditDocumentsModal';
 import RNFetchBlob from 'rn-fetch-blob';
 import {useNavigation} from '@react-navigation/native';
-
+import Share from 'react-native-share';
+import FileViewer from 'react-native-file-viewer';
+import RNFS from 'react-native-fs';
 const data = [
   {
     PDUM_FILE_KEY: 155,
@@ -153,7 +156,7 @@ const ProfileDocumentDetails = props => {
               {/* <Text style={ProfileDocumentDetailStyle.pdfSize}>{item.pdfSize}</Text> */}
               <Text style={ProfileDocumentDetailStyle.pdfSize}>
                 {' '}
-                {'4.5 MB'}
+                {/* {'4.5 MB'} */}
               </Text>
             </View>
           </View>
@@ -168,6 +171,7 @@ const ProfileDocumentDetails = props => {
               name="dots-three-vertical"
               size={20}
               color={_COLORS.Kodie_GrayColor}
+              style={{alignSelf: 'center'}}
             />
           </TouchableOpacity>
         </View>
@@ -200,7 +204,7 @@ const ProfileDocumentDetails = props => {
   const uploadDocument = async doc => {
     // alert("upload");
     console.log('uri....', doc[0].uri);
-    console.log('name....', doc[0].name);
+    console.log('name....', doc[0].name.replace(/\s/g, ''));
     console.log('type....', doc[0].type);
     // console.log("p_referral_key....");
     // console.log("p_module_name....",);
@@ -214,11 +218,12 @@ const ProfileDocumentDetails = props => {
     const uploadDoc_url = url + 'uploadDocument';
     console.log('Request URL:', uploadDoc_url);
     setIsLoading(true);
+
     try {
       const formData = new FormData();
       formData.append('documents', {
         uri: doc[0].uri,
-        name: doc[0].name,
+        name: doc[0].name.replace(/\s/g, ''),
         type: doc[0].type,
       });
       formData.append('p_referral_key', user_account_id);
@@ -339,7 +344,11 @@ const ProfileDocumentDetails = props => {
   const checkPermission = async () => {
     setIsLoading(true);
     if (Platform.OS === 'ios') {
-      downloadImage();
+      // downloadImage();
+      // downloadDocumentIOs();
+      downloadFile(REMOTE_PATH).then(res => {
+        RNFetchBlob.ios.previewDocument(res.path());
+      });
     } else {
       try {
         const granted = await PermissionsAndroid.request(
@@ -395,10 +404,171 @@ const ProfileDocumentDetails = props => {
         closeModal();
       });
   };
+  const downloadDocumentIOs = () => {
+    setIsLoading(true);
+    const REMOTE_PATH_URl = REMOTE_PATH;
+    const PictureDir = RNFetchBlob.fs.dirs.DocumentDir;
+    const fileName = `document_${Date.now()}.pdf`;
+    const filePath = `${PictureDir}/${fileName}`;
 
+    let options = {
+      fileCache: true,
+      notification: true,
+      path: filePath,
+      description: 'Document',
+    };
+
+    RNFetchBlob.config(options)
+      .fetch('GET', REMOTE_PATH_URl)
+      .then(res => {
+        console.log('File downloaded successfully');
+        setIsLoading(false);
+        alert('Document Downloaded Successfully.');
+        closeModal();
+      })
+      .catch(error => {
+        console.error('Error downloading file:', error);
+        setIsLoading(false);
+        alert('Failed to download document.');
+      });
+  };
+  const downloadFile = async url => {
+    // Get the app's cache directory
+    console.log('start. doc....');
+    const {config, fs} = RNFetchBlob;
+    const cacheDir = fs.dirs.DownloadDir;
+    // Generate a unique filename for the downloaded image
+    const filename = url.split('/').pop();
+    const imagePath = `${cacheDir}/${filename}`;
+
+    try {
+      // Download the file and save it to the cache directory
+      const configOptions = Platform.select({
+        ios: {
+          fileCache: true,
+          path: imagePath,
+          appendExt: filename.split('.').pop(),
+        },
+      });
+      const response = await RNFetchBlob.config(configOptions).fetch(
+        'GET',
+        url,
+      );
+
+      // Return the path to the downloaded file
+      return response;
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  // share doc....
+  const shareDocFile = async () => {
+    setTimeout(() => {
+      Share.open({url: filePath})
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          err && console.log(err);
+        });
+    }, 300);
+  };
   const getExtention = fileName => {
     // To get the file extension
     return /[.]/.exec(fileName) ? /[^.]+$/.exec(fileName) : undefined;
+  };
+
+  const dest = `${RNFS.DocumentDirectoryPath}/${filePath}`;
+
+  const viewPdf = async () => {
+    // console.log("path..",filePath)
+
+    // try {
+    //   await RNFileViewer.open(filePath);
+    // } catch (error) {
+    //   console.error('Error viewing PDF:', error);
+    // }
+
+    // RNFS.copyFileAssets(filePath, dest)
+    //   .then(() => FileViewer.open(dest))
+    //   .then(() => {
+    //     // success
+    //   })
+    //   .catch(error => {
+    //     /* */
+    //     console.log("error doc....",error)
+    //   });
+    const path = FileViewer.open(filePath, {showOpenWithDialog: true}) // absolute-path-to-my-local-file.
+      .then(() => {
+        // success
+      })
+      .catch(error => {
+        // error
+        console.log('error doc....', error);
+      });
+  };
+
+  const downloadviewFile = async () => {
+    setIsLoading(true);
+    const date = new Date();
+    const {
+      dirs: {DownloadDir, DocumentDir},
+    } = RNFetchBlob.fs;
+    const isIOS = Platform.OS === 'ios';
+    const aPath = Platform.select({ios: DocumentDir, android: DownloadDir});
+    const fPath =
+      aPath + '/' + Math.floor(date.getTime() + date.getSeconds() / 2) + '.pdf';
+
+    const configOptions = Platform.select({
+      ios: {
+        fileCache: true,
+        path: fPath,
+        notification: true,
+      },
+      android: {
+        fileCache: false,
+        addAndroidDownloads: {
+          useDownloadManager: true,
+          notification: true,
+          path: fPath,
+          description: 'Downloading pdf...',
+        },
+      },
+    });
+
+    try {
+      closeModal();
+      const res = await RNFetchBlob.config(configOptions).fetch(
+        'GET',
+        filePath.trim(),
+      );
+      if (isIOS) {
+        FileViewer.open(res.data, {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+          });
+      } else {
+        FileViewer.open(res.path(), {showOpenWithDialog: true})
+          .then(() => {
+            // Alert.alert('Success', 'File downloaded and viewed successfully');
+            setIsLoading(false);
+          })
+          .catch(error => {
+            console.error('Error opening file:', error);
+            Alert.alert('Error', 'Failed to view file');
+            setIsLoading(false);
+          });
+      }
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      Alert.alert('Error', 'Failed to download file');
+    }
   };
 
   return (
@@ -503,13 +673,16 @@ const ProfileDocumentDetails = props => {
         <EditDocumentsModal
           closemodal={closeModal}
           deleteHandler={deleteHandler}
-          downloadFile={checkPermission}
+          downloadFile={downloadviewFile}
+          shareDocFile={shareDocFile}
           fileKey={fileKey}
           onpress={() => {
-            navigation.navigate('ViewDocument', {
-              filePath: filePath,
-            });
+            // navigation.navigate('ViewDocument', {
+            //   filePath: filePath,
+            // });
             // alert('hello profile');
+            // downloadviewFile();
+            downloadviewFile();
           }}
         />
       </RBSheet>

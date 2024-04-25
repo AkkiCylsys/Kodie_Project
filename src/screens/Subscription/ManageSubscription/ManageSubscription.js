@@ -1,4 +1,4 @@
-import {View, Text, Image, ScrollView, Alert} from 'react-native';
+import {View, Text, Image, ScrollView, Alert, SafeAreaView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {ManageSubscriptionStyle} from './ManageSubscriptionStyle';
@@ -222,6 +222,10 @@ const ManageSubscription = props => {
   };
   useEffect(() => {
     createCustomer();
+    // checkSubscribedCustomer();
+  }, []);
+  useEffect(() => {
+    // createCustomer();
     checkSubscribedCustomer();
   }, []);
 
@@ -239,7 +243,7 @@ const ManageSubscription = props => {
   const createCustomer = () => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'create_customer';
-    console.log('Request URL:', url);
+    console.log('Request URL:', loginData?.Login_details?.email);
     setIsLoading(true);
     const createCustomer_data = {
       name: loginData?.Account_details[0]?.UAD_FIRST_NAME,
@@ -272,7 +276,7 @@ const ManageSubscription = props => {
     const baseUrl = Config.BASE_URL;
     const url = baseUrl + 'demo';
     console.log('Request URL:', url);
-    // console.log(id);
+    console.log(customerID);
     setIsLoading(true);
     const createSubscription_data = {
       customer_id: customerID,
@@ -349,7 +353,7 @@ const ManageSubscription = props => {
 
   return (
     <>
-      <View style={ManageSubscriptionStyle.Mainview}>
+      <SafeAreaView style={ManageSubscriptionStyle.Mainview}>
         <TopHeader
           onPressLeftButton={() => _goBack(props)}
           MiddleText={
@@ -432,7 +436,7 @@ const ManageSubscription = props => {
           </View> */}
         </ScrollView>
         {isLoading ? <CommonLoader /> : null}
-      </View>
+      </SafeAreaView>
     </>
   );
 };

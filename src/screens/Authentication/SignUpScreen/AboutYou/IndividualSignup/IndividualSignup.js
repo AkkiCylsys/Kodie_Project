@@ -304,6 +304,7 @@ const IndividualSignup = ({
                 //   backgroundColor: _COLORS.Kodie_LightGrayLineColor,
                 // },
               ]}
+              activeColor={_COLORS.Kodie_MidLightGreenColor}
               placeholderStyle={IndividualSignupStyle.placeholderStyle}
               selectedTextStyle={IndividualSignupStyle.selectedTextStyle}
               inputSearchStyle={IndividualSignupStyle.inputSearchStyle}
@@ -335,8 +336,8 @@ const IndividualSignup = ({
           </Text>
 
           <View style={IndividualSignupStyle.inputContainer}>
-            <View style={IndividualSignupStyle.chekboxview}>
-              <TouchableOpacity onPress={handleChecked}>
+            <TouchableOpacity onPress={handleChecked}>
+              <View style={IndividualSignupStyle.chekboxview}>
                 {/* {isChecked ? ( */}
                 <MaterialIcons
                   name={!isChecked ? 'check-box-outline-blank' : 'check-box'}
@@ -348,13 +349,13 @@ const IndividualSignup = ({
                   }
                   style={IndividualSignupStyle.Check_Icon}
                 />
+                <Text style={IndividualSignupStyle.commonaddresstext}>
+                  {'Same as personal physical address'}
+                </Text>
                 {/* ) : null} */}
-              </TouchableOpacity>
-
-              <Text style={IndividualSignupStyle.commonaddresstext}>
-                {'Same as personal physical address'}
-              </Text>
-            </View>
+              </View>
+            </TouchableOpacity>
+            ß
             <View style={IndividualSignupStyle.locationConView}>
               <View style={IndividualSignupStyle.locationContainer}>
                 {isChecked ? (

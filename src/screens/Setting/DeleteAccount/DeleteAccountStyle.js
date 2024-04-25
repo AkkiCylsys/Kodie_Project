@@ -26,6 +26,7 @@ export const DeleteAccountStyle = StyleSheet.create({
   },
   Pointsview: {
     marginTop: 15,
+    marginHorizontal:16
   },
   textpoint: {
     fontSize: 10,
@@ -34,7 +35,7 @@ export const DeleteAccountStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_ExtraLightGrayColor,
     opacity: 0.7,
-    marginHorizontal: 30,
+    marginLeft:30
   },
   logoutview: {
     flexDirection: 'row',
@@ -60,13 +61,13 @@ export const DeleteAccountStyle = StyleSheet.create({
   },
   toconfirmview: {
     marginTop: 25,
-    marginHorizontal: 5,
+    marginHorizontal: 16,
   },
   toconfirmtext: {
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
     fontSize: 15,
-    textAlign: 'center',
+    // textAlign: 'center',
   },
   downarrowimg: {
     width: 12,
@@ -163,6 +164,34 @@ export const DeleteAccountStyle = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
     marginTop: 15,
+  },
+  simpleinputview: {
+    height: 60,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginHorizontal: 5,
+  },
+  oldnumbertext: {
+    fontSize: 14,
+    fontWeight: "600",
+    lineHeight: 20,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginHorizontal: 8,
+    marginVertical:11,
+  },
+  IconView: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
+    marginLeft: 5,
+    width: 32,
+    // marginTop: 10,
+    height: 35,
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   error_text: {color: 'red', marginLeft: 10, marginTop: 5},
 });

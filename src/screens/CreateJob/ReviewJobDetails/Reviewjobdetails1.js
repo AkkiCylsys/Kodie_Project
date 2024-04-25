@@ -65,7 +65,7 @@ console.log("F_job_id....",F_job_id)
           console.log('job_type_my..', response?.data?.data?.job_type_my);
           props.onJobDetailsSuccess(response?.data?.data?.job_type_my);
         } else {
-          alert(response.data.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -102,7 +102,7 @@ console.log("F_job_id....",F_job_id)
           console.log('job_type_my..', response?.data?.data?.job_type_my);
           props.onJobDetailsSuccess(response?.data?.data?.job_type_my);
         } else {
-          alert(response.data.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })

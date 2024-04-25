@@ -12,6 +12,7 @@ import {
   Platform,
   Alert,
   PermissionsAndroid,
+  SafeAreaView,
 } from 'react-native';
 import {PropertyDetailsStyle} from './PropertyDetailsStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -107,7 +108,6 @@ export default PropertyDetails = props => {
       };
     }, [IsMap, IsSearch]),
   );
-
   useEffect(() => {
     handleProperty_Type();
     propertyid > 0 ? DetailsData() : null;
@@ -119,8 +119,7 @@ export default PropertyDetails = props => {
     setLocation('');
     setProperty_value('');
     setPropertyDesc('');
-  }, [isFocus]);
-
+  }, []);
   const DetailsData = async () => {
     const detailData = {
       property_id: propertyid,
@@ -349,12 +348,12 @@ export default PropertyDetails = props => {
           PropertyDetailsStyle.itemView,
           {
             backgroundColor:
-              item.lookup_key === property_value
+              item?.lookup_key === property_value
                 ? _COLORS.Kodie_MidLightGreenColor
                 : null,
           },
         ]}>
-        {item.lookup_key === property_value ? (
+        {item?.lookup_key === property_value ? (
           <AntDesign
             color={_COLORS.Kodie_GreenColor}
             name={'checkcircle'}
@@ -368,7 +367,7 @@ export default PropertyDetails = props => {
           />
         )}
         <Text style={PropertyDetailsStyle.textItem}>
-          {item.lookup_description}
+          {item?.lookup_description}
         </Text>
       </View>
     );
@@ -377,7 +376,7 @@ export default PropertyDetails = props => {
     props.navigation.pop();
   };
   return (
-    <View style={PropertyDetailsStyle.mainContainer}>
+    <SafeAreaView style={PropertyDetailsStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => {
           if (IsMap) {
@@ -691,6 +690,6 @@ export default PropertyDetails = props => {
         )}
       </KeyboardAvoidingView>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };

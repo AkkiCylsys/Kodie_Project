@@ -347,6 +347,7 @@ const IndividualInProfile = ({
                 inputSearchStyle={IndividualProfileStyle.inputSearchStyle}
                 iconStyle={IndividualProfileStyle.iconStyle}
                 search
+                activeColor={_COLORS.Kodie_MidLightGreenColor}
                 data={servicesData}
                 labelField="lookup_description"
                 valueField="lookup_key"

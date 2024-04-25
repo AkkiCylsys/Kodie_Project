@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Dimensions, View} from 'react-native';
-import Pdf from 'react-native-pdf';
+// import Pdf from 'react-native-pdf';
+import FileViewer from 'react-native-file-viewer';
 const ViewDocument = props => {
   const filePath = props.route.params.filePath;
   // const JObfilePath = props.route.params.JObfilePath;
@@ -33,9 +34,17 @@ const ViewDocument = props => {
     console.log(`Link pressed: ${uri}`);
   };
 
+  const viewPdf = async () => {
+    try {
+      await FileViewer.open('path/to/your/file.pdf');
+    } catch (error) {
+      console.error('Error viewing PDF:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Pdf
+      {/* <Pdf
         maxScale={3.0}
         trustAllCerts={false}
         source={{
@@ -48,7 +57,7 @@ const ViewDocument = props => {
         onError={onError}
         onPressLink={onPressLink}
         style={styles.pdf}
-      />
+      /> */}
     </View>
   );
 };

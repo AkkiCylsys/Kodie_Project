@@ -24,6 +24,11 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+			
+<key> UIFileSharingEnabled</key>
+<true/>
+<key>LSSupportsOpeningDocumentsInPlace</key>
+<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -36,7 +41,7 @@
 		</dict>
 	</dict>
 	<key>NSContactsUsageDescription</key>
-<string>We need access to your contacts to provide XYZ feature.</string>
+	<string>Kodie requires Contacts access to allows you quick and secure access.</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Kodie requires Apple Music access to allows you quick and secure access.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
@@ -47,11 +52,8 @@
 	<string>Kodie requires Calender access to allows you quick and secure access.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Kodie requires Camera access to allows you quick and secure access.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Kodie requires Contacts access to allows you quick and secure access.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Kodie requires FaceID access to allows you quick and secure access.</string>
-
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
@@ -63,7 +65,6 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Kodie App requires access to your maps to allow you to get current location to save your Current Address.</string>
-
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Kodie requires Microphone access to allows you quick and secure access.</string>
 	<key>NSMotionUsageDescription</key>
@@ -78,7 +79,6 @@
 	<string>Kodie requires  access to allows you quick and secure access.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Kodie requires SpeechRecognition access to allows you quick and secure access.</string>
-
 	<key>UIAppFonts</key>
 	<array>
 		<string>NunitoSans-Black.ttf</string>

@@ -38,115 +38,115 @@ const LabelStyles = StyleSheet.create({
   minTextLight: {
     fontSize: 9,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   minText: {
     fontSize: 9,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   minTextBold: {
     fontSize: 9,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   smallTextLight: {
     fontSize: 10,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   smallText: {
     fontSize: 10,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   smallTextBold: {
     fontSize: 10,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   commTextLight: {
     fontSize: 12,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   commText: {
     fontSize: 12,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   commTextBold: {
     fontSize: 12,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   commonTitleTextLight: {
     fontSize: 14,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   commonTitleText: {
     fontSize: 14,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   commonTitleTextBold: {
     fontSize: 14,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   errorText: {
     marginLeft: 2,
     fontSize: 14,
     color: colors?.red,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
 
   midLightText: {
     fontSize: 16,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   midText: {
     fontSize: 16,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   midTextBold: {
     fontSize: 16,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   largeTextLight: {
     fontSize: 20,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   largeText: {
     fontSize: 20,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   largeTextBold: {
     fontSize: 20,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   ExtralargeTextLight: {
     fontSize: 30,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
   ExtralargeTextBold: {
     fontSize: 30,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: fontFamily?.K_Bold,
   },
 });
 

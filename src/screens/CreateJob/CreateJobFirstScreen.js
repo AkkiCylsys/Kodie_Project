@@ -12,6 +12,7 @@ import {
   Image,
   PermissionsAndroid,
   BackHandler,
+  SafeAreaView,
 } from 'react-native';
 import {CreateJobFirstStyle} from './CreateJobFirstScreenCss';
 import StepText from '../../components/Molecules/StepText/StepText';
@@ -316,8 +317,8 @@ export default CreateJobFirstScreen = props => {
   }, [selectJobType]);
   const Selected_Time_render = item => {
     const isSelected =
-      item.longitude === selectedAddress.longitude &&
-      item.latitude === selectedAddress.latitude;
+      item?.longitude === selectedAddress.longitude &&
+      item?.latitude === selectedAddress.latitude;
 
     return (
       <View contentContainerStyle={{flex: 1, height: '100%'}}>
@@ -357,7 +358,7 @@ export default CreateJobFirstScreen = props => {
             CreateJobFirstStyle.itemView,
             {
               backgroundColor:
-                item.lookup_key === jobPriorityValue
+                item?.lookup_key === jobPriorityValue
                   ? _COLORS.Kodie_MidLightGreenColor
                   : null,
             },
@@ -376,7 +377,7 @@ export default CreateJobFirstScreen = props => {
             />
           )}
           <Text style={CreateJobFirstStyle.textItem}>
-            {item.lookup_description}
+            {item?.lookup_description}
           </Text>
         </View>
       </View>
@@ -390,12 +391,12 @@ export default CreateJobFirstScreen = props => {
             CreateJobFirstStyle.itemView,
             {
               backgroundColor:
-                item.lookup_key === property_value
+                item?.lookup_key === property_value
                   ? _COLORS.Kodie_MidLightGreenColor
                   : null,
             },
           ]}>
-          {item.lookup_key === property_value ? (
+          {item?.lookup_key === property_value ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
               name={'checkcircle'}
@@ -409,7 +410,7 @@ export default CreateJobFirstScreen = props => {
             />
           )}
           <Text style={CreateJobFirstStyle.textItem}>
-            {item.lookup_description}
+            {item?.lookup_description}
           </Text>
         </View>
       </View>
@@ -424,12 +425,12 @@ export default CreateJobFirstScreen = props => {
             CreateJobFirstStyle.itemView,
             {
               backgroundColor:
-                item.lookup_key === servicesValue
+                item?.lookup_key === servicesValue
                   ? _COLORS.Kodie_MidLightGreenColor
                   : null,
             },
           ]}>
-          {item.lookup_key === servicesValue ? (
+          {item?.lookup_key === servicesValue ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
               name={'checkcircle'}
@@ -443,7 +444,7 @@ export default CreateJobFirstScreen = props => {
             />
           )}
           <Text style={CreateJobFirstStyle.textItem}>
-            {item.lookup_description}
+            {item?.lookup_description}
           </Text>
         </View>
       </View>
@@ -457,12 +458,12 @@ export default CreateJobFirstScreen = props => {
             CreateJobFirstStyle.itemView,
             {
               backgroundColor:
-                item.lookup_key === ratingThresholdValue
+                item?.lookup_key === ratingThresholdValue
                   ? _COLORS.Kodie_MidLightGreenColor
                   : null,
             },
           ]}>
-          {item.lookup_key === ratingThresholdValue ? (
+          {item?.lookup_key === ratingThresholdValue ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
               name={'checkcircle'}
@@ -482,7 +483,7 @@ export default CreateJobFirstScreen = props => {
             size={20}
           />
           <Text style={CreateJobFirstStyle.textItem}>
-            {item.lookup_description}
+            {item?.lookup_description}
           </Text>
         </View>
       </View>
@@ -496,29 +497,29 @@ export default CreateJobFirstScreen = props => {
           Services_Name={item.lookup_description}
           // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
-            item.lookup_key === 166
+            item?.lookup_key === 166
               ? 'cleaning-services'
-              : item.lookup_key === 167
+              : item?.lookup_key === 167
               ? 'mower-bag'
-              : item.lookup_key === 168
+              : item?.lookup_key === 168
               ? 'forklift'
-              : item.lookup_key === 169
+              : item?.lookup_key === 169
               ? 'tools'
               : 'MaterialIcons'
           }
           iconLibrary={
-            item.lookup_key === 166
+            item?.lookup_key === 166
               ? 'MaterialIcons'
-              : item.lookup_key === 167
+              : item?.lookup_key === 167
               ? 'MaterialCommunityIcons'
-              : item.lookup_key === 168
+              : item?.lookup_key === 168
               ? 'MaterialCommunityIcons'
-              : item.lookup_key === 169
+              : item?.lookup_key === 169
               ? 'Entypo'
               : 'MaterialIcons'
           }
           iconColor={
-            isClick === item.lookup_key
+            isClick === item?.lookup_key
               ? _COLORS.Kodie_BlackColor
               : _COLORS.Kodie_GrayColor
           }
@@ -526,7 +527,7 @@ export default CreateJobFirstScreen = props => {
             CreateJobFirstStyle.box_style,
             {
               backgroundColor:
-                isClick === item.lookup_key
+                isClick === item?.lookup_key
                   ? _COLORS.Kodie_lightGreenColor
                   : _COLORS.Kodie_WhiteColor,
             },
@@ -535,15 +536,15 @@ export default CreateJobFirstScreen = props => {
             CreateJobFirstStyle.box_Text_Style,
             {
               color:
-                isClick === item.lookup_key
+                isClick === item?.lookup_key
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
           // onPress={() => setIsClick(!isClick)}
           onPress={() => {
-            handleBoxPress(item.lookup_key);
-            setSelectJobType(item.lookup_key);
+            handleBoxPress(item?.lookup_key);
+            setSelectJobType(item?.lookup_key);
             // alert(item.lookup_key);
           }}
         />
@@ -727,10 +728,10 @@ export default CreateJobFirstScreen = props => {
         if (response?.data?.success === true) {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData....', response?.data?.data);
-          setSelectJobTypeid(response?.data?.data.job_type_key);
+          setSelectJobTypeid(response?.data?.data?.job_type_key);
           // alert(response?.data?.data.job_type_key);
-          setIsClick(parseInt(response?.data?.data.job_type_key));
-          setAboutyourNeed(response?.data?.data.job_description);
+          setIsClick(parseInt(response?.data?.data?.job_type_key));
+          setAboutyourNeed(response?.data?.data?.job_description);
           setservicesValue(
             parseInt(response?.data?.data?.job_service_you_looking_key),
           );
@@ -787,10 +788,10 @@ export default CreateJobFirstScreen = props => {
       });
   };
   return (
-    <View style={CreateJobFirstStyle.container}>
+    <SafeAreaView style={CreateJobFirstStyle.container}>
       <TopHeader
-        isprofileImage
-        IsNotification
+        // isprofileImage
+        // IsNotification
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}
@@ -1147,6 +1148,6 @@ export default CreateJobFirstScreen = props => {
         </ScrollView>
       )}
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
