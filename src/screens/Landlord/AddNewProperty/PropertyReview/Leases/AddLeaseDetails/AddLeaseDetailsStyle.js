@@ -242,5 +242,50 @@ yes_text: {
   alignSelf: "center",
   marginLeft: 5,
 },
-
+container: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+twoButtonContainer: {
+  flexDirection: 'row',
+  marginBottom: 20,
+},
+button: {
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 5,
+  marginHorizontal: 5,
+},
+noButton: {
+  backgroundColor: 'white',
+  borderColor: 'black',
+  borderWidth: 1,
+},
+yesButton: {
+  backgroundColor: 'white',
+  borderColor: 'black',
+  borderWidth: 1,
+},
+selectedButton: {
+  backgroundColor: 'green',
+},
+buttonText: {
+  fontSize: 16,
+},
+selectedButtonText: {
+  color: 'white',
+},
+amountInputContainer: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
+amountInput: {
+  borderWidth: 1,
+  borderColor: 'black',
+  borderRadius: 5,
+  paddingHorizontal: 10,
+  paddingVertical: 8,
+  width: 150,
+},
 });
