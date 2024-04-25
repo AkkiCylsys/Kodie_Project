@@ -73,20 +73,20 @@ const Properties = props => {
         );
       case 'Tab2':
         return (
-          <>
-            {Alert.alert('Search for rentals', 'Coming soon', [
-              {
-                text: 'OK',
-                onPress: () => {
-                  console.log('OK Pressed');
-                  setActiveTab('Tab1');
-                },
-              },
-            ])}
-          </>
-          // <PropertyList2
-          //   SearchButton={() => props.navigation.navigate('SearchResult')}
-          // />
+          // <>
+          //   {Alert.alert('Search for rentals', 'Coming soon', [
+          //     {
+          //       text: 'OK',
+          //       onPress: () => {
+          //         console.log('OK Pressed');
+          //         setActiveTab('Tab1');
+          //       },
+          //     },
+          //   ])}
+          // </>
+          <PropertyList2
+            SearchButton={() => props.navigation.navigate('SearchResult')}
+          />
         );
       case 'Tab3':
         return (

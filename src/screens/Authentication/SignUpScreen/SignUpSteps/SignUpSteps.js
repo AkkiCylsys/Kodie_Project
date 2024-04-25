@@ -419,7 +419,7 @@ const SignUpSteps = props => {
               <FontAwesome
                 name="edit"
                 color={_COLORS.Kodie_GreenColor}
-                size={18}
+                size={15}
                 style={{alignSelf: 'center'}}
               />
             </View>
@@ -526,7 +526,7 @@ const SignUpSteps = props => {
             />
           </View>
 
-          <View style={AccountStyle.inputContainer}>
+          <View style={[AccountStyle.inputContainer, {marginTop: 15}]}>
             <Text style={LABEL_STYLES._texinputLabel}>
               Current physical address
             </Text>
