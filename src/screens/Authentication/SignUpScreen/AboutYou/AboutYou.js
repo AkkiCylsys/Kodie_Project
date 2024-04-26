@@ -670,6 +670,102 @@ export default AboutYou = props => {
     setKodiehelpData(res?.lookup_details);
     setIsLoading(false);
   };
+  // describe your self.....
+  // const handle_describe_yourself = () => {
+  //   const describe_yourself_Data = {
+  //     P_PARENT_CODE: 'TEN_DESC',
+  //     P_TYPE: 'OPTION',
+  //   };
+  //   const url = Config.BASE_URL;
+  //   const describeYourselfApi = url + 'lookup_details';
+  //   console.log('Request URL:', describeYourselfApi);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(describeYourselfApi, describe_yourself_Data)
+  //     .then(response => {
+  //       console.log('kodie_describeYouself_Data', response.data);
+  //       if (response.data.status === true) {
+  //         console.log(
+  //           'kodie_describeYouself_Data....',
+  //           response.data.lookup_details,
+  //         );
+  //         setKodieDescribeYourselfData(response.data.lookup_details);
+  //         setIsLoading(false);
+  //       } else {
+  //         console.error(
+  //           'kodie_describeYouself_Data_error:',
+  //           response.data.error,
+  //         );
+  //         alert('Oops samthing went wrong! Please try again later.');
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('kodie_describeYouself_Data error:', error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
+  // manage property API with lookup key...
+  // const handle_manage_property = () => {
+  //   const propertyData = {
+  //     P_PARENT_CODE: 'TEN_PROPERTY',
+  //     P_TYPE: 'OPTION',
+  //   };
+  //   const url = Config.BASE_URL;
+  //   const propertyType = url + 'lookup_details';
+  //   console.log('Request URL:', propertyType);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(propertyType, propertyData)
+  //     .then(response => {
+  //       console.log('maneg_property_type', response.data);
+  //       if (response.data.status === true) {
+  //         console.log('maneg_property_type....', response.data.lookup_details);
+  //         setmanage_property_Data(response.data.lookup_details);
+  //         setIsLoading(false);
+  //       } else {
+  //         console.error('property_type_error:', response.data.error);
+  //         alert('Oops samthing went wrong! Please try again later.');
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('property_type error:', error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
+  // kodie help api...
+  // const handle_kodiehelp = () => {
+  //   const kodiehelp_Data = {
+  //     P_PARENT_CODE: 'KODIE_HELP',
+  //     P_TYPE: 'OPTION',
+  //   };
+  //   const url = Config.BASE_URL;
+  //   const kodiehelpApi = url + 'lookup_details';
+  //   console.log('Request URL:', kodiehelp_Data);
+  //   setIsLoading(true);
+  //   axios
+  //     .post(kodiehelpApi, kodiehelp_Data)
+  //     .then(response => {
+  //       console.log('kodie_Data', response.data);
+  //       if (response.data.status === true) {
+  //         console.log('kodie_Data....', response.data.lookup_details);
+  //         setKodiehelpData(response.data.lookup_details);
+  //         setIsLoading(false);
+  //       } else {
+  //         console.error('kodie_Data_error:', response.data);
+  //         alert('Oops samthing went wrong! Please try again later.');
+  //         setIsLoading(false);
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('kodie_Data error:', error);
+  //       alert(error);
+  //       setIsLoading(false);
+  //     });
+  // };
   const openMapCom = () => {
     setIsMap(true);
     console.log('Location pressed');

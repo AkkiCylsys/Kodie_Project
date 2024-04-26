@@ -119,7 +119,7 @@ export const AccountStyle = StyleSheet.create({
     marginBottom: 20,
   },
   inputContainer: {
-    marginBottom:3,
+    // marginBottom:3,
     
   },
   referralcode: {

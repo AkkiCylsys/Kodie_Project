@@ -299,7 +299,7 @@ const Notices = props => {
         </View>
         <DividerIcon />
         {/* .....calender */}
-        <View style={{flex: 1, backgroundColor: '#FFFFFF', marginTop: 100}}>
+        {/* <View style={{flex: 1, backgroundColor: '#FFFFFF', marginTop: 100}}>
           <Calendar
             onDayPress={onDayPress}
             markedDates={{[selectedDate]: {selected: true}}}
@@ -307,7 +307,7 @@ const Notices = props => {
           <View>
             <Text>Selected Date: {selectedDate}</Text>
           </View>
-        </View>
+        </View> */}
         {/* ..... */}
         {/* <View style={NoticesStyle.calenderview}>
           <MaterialCommunityIcons

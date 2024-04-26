@@ -1,8 +1,7 @@
 import { StyleSheet } from "react-native";
-import { View, Text } from "react-native";
-import { FONTFAMILY, _COLORS } from "../../../../../../Themes";
+import { _COLORS, FONTFAMILY } from "../../Themes";
 
-export const AddLeaseDetailsStyle = StyleSheet.create({
+export const PropertyPopupStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -31,7 +30,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 250,
+    // marginBottom: 250,
   },
   inputContainer: {
     marginBottom: 15,
@@ -40,10 +39,19 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     flexDirection: "row",
   },
 
+  dropdown1: {
+    flex: 1,
+    borderWidth: 1,
+    height: 45,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 10,
+    borderRadius: 8,
+    color: _COLORS.Kodie_BlackColor,
+  },
   dropdown: {
     flex: 1,
     borderWidth: 1,
-    height: 35,
+    height: 27,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 10,
     borderRadius: 8,
@@ -109,7 +117,8 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   },
   exp_reminder_text: {
     flex: 1,
-    // marginLeft: 10,
+    marginTop:10,
+    marginLeft: 10,
     alignSelf: "center",
     color: _COLORS.Kodie_BlackColor,
     fontSize: 11.2,
@@ -185,107 +194,28 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
   },
- probtn:{
-  flexDirection: 'row',
-  flex: 1,
-  marginTop:15,
-  justifyContent:'space-between'
-},
-Twobtn:{
-  flex: 1, 
-  flexDirection: 'row',
-  justifyContent:'space-between'
-},
-Amountinput:{
-  height: 38,
-  borderRadius: 5,
-  borderWidth: 1,
-  borderColor: _COLORS.Kodie_GrayColor,
-  color: "#333",
-  fontFamily: FONTFAMILY.K_Medium,
-  marginTop: 12,
-  paddingHorizontal: 35,
-},
-btn_main_view: {
-  flexDirection: "row",
-  justifyContent: "center",
-  // marginLeft: 10,
-  marginVertical: 10,
-  borderWidth: 1,
-  paddingHorizontal: 17,
-  paddingVertical: 5,
-  borderRadius: 10,
-  borderColor: _COLORS.Kodie_GrayColor,
-},
-yes_view: {
-  backgroundColor: _COLORS.Kodie_GreenColor,
-  paddingHorizontal: 25,
-  paddingVertical: 5,
-  borderRadius: 5,
-},
-no_view: {
-  // backgroundColor: _COLORS.Kodie_GreenColor,
-  paddingHorizontal: 20,
-  paddingVertical: 5,
-  borderRadius: 5,
-},
-no_text: {
-  color: _COLORS.Kodie_BlackColor,
-  fontSize: 12,
-  fontFamily: FONTFAMILY.K_Regular,
-  alignSelf: "center",
-},
-yes_text: {
-  color: _COLORS.Kodie_WhiteColor,
-  fontSize: 12,
-  fontFamily: FONTFAMILY.K_Regular,
-  alignSelf: "center",
-  marginLeft: 5,
-},
-container: {
-  flex: 1,
-  justifyContent: 'center',
-  alignItems: 'center',
-},
-twoButtonContainer: {
-  flexDirection: 'row',
-  marginBottom: 20,
-},
-button: {
-  paddingVertical: 10,
-  paddingHorizontal: 20,
-  borderRadius: 5,
-  marginHorizontal: 5,
-},
-noButton: {
-  backgroundColor: 'white',
-  borderColor: 'black',
-  borderWidth: 1,
-},
-yesButton: {
-  backgroundColor: 'white',
-  borderColor: 'black',
-  borderWidth: 1,
-},
-selectedButton: {
-  backgroundColor: 'green',
-},
-buttonText: {
-  fontSize: 16,
-},
-selectedButtonText: {
-  color: 'white',
-},
-amountInputContainer: {
-  flexDirection: 'row',
-  alignItems: 'center',
-},
-amountInput: {
-  borderWidth: 1,
-  borderColor: 'black',
-  borderRadius: 5,
-  paddingHorizontal: 10,
-  paddingVertical: 8,
-  width: 150,
-},
+  modalContainer: {marginHorizontal: 16, marginVertical: 16},
+  checkStl: {
+    height: 120,
+    width: '50%',
+    alignSelf: 'center',
+    marginVertical: 50,
+    resizeMode: 'contain',
+  },
+  modalMainText: {
+    fontFamily: FONTFAMILY.K_Medium,
+    fontSize: 21,
+    color: _COLORS.Kodie_BlackColor,
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
+  modalSubText: {
+    fontFamily: FONTFAMILY.K_Regular,
+    fontSize: 14,
+    color: _COLORS.Kodie_MediumGrayColor,
+    textAlign: 'center',
+    alignSelf: 'center',
+    marginTop: 19,
+  },
 });

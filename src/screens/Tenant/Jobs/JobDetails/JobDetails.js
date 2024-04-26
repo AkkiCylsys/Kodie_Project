@@ -86,6 +86,7 @@ const JobDetails = props => {
     console.log('imagesFilePath....sdfs.', imagesFilePath);
     console.log('images__imageFileData...', imageFileData);
     // alert(JSON.stringify(imagesFilePath.length))
+    console.log('length', imagesFilePath.length);
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {

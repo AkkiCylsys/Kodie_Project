@@ -19,31 +19,65 @@ const TopHeader = props => {
 
   const [accountDetails, setAccountDetails] = useState(null);
   const isvisible = useIsFocused();
-  const getPersonalDetails = async () => {
-    if (
-      !loginData ||
-      !loginData?.Login_details ||
-      !loginData?.Login_details?.user_id
-    ) {
-      console.log('login data not available');
-      return;
-    }
-    const url = Config.BASE_URL;
+  // const getPersonalDetails = async () => {
+  // if (
+  //   !loginData ||
+  //   !loginData?.Login_details ||
+  //   !loginData?.Login_details?.user_id
+  // ) {
+  //   console.log('login data not available');
+  //   return;
+  // }
+  //   const url = Config.BASE_URL;
 
+  //   const apiUrl =
+  //     url + `getAccount_details/${loginData?.Login_details?.user_id}`;
+
+  //   // Make a GET request using Axios
+  //   await axios
+  //     .get(apiUrl)
+  //     .then(response => {
+  //       // Handle successful response
+  //       console.log('API Response:', response?.data?.data[0]);
+  //       setAccountDetails(response?.data?.data[0]);
+  //     })
+  //     .catch(error => {
+  //       // Handle error
+  //       console.error('API Error PersonalDetails h:', error);
+  //     });
+  // };
+  const fetchData = async () => {
+    if (
+      loginData?.Login_details?.user_id ||
+      loginData?.Login_details?.user_account_id
+    ) {
+      await getPersonalDetails();
+    }
+  };
+  const getPersonalDetails = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
     const apiUrl =
       url + `getAccount_details/${loginData?.Login_details?.user_id}`;
-
-    // Make a GET request using Axios
+    console.log('PersonalDetails_url..', apiUrl);
     await axios
       .get(apiUrl)
       .then(response => {
-        // Handle successful response
         console.log('API Response:', response?.data?.data[0]);
-        setAccountDetails(response?.data?.data[0]);
+        if (
+          response?.data?.data &&
+          Array.isArray(response.data.data) &&
+          response.data.data.length > 0
+        ) {
+          setAccountDetails(response?.data?.data[0]);
+        } else {
+          console.error('Invalid response data format:', response?.data);
+        }
+        setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
-        console.error('API Error PersonalDetails h:', error);
+        console.error('API Error PersonalDetails Dash:', error);
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -51,13 +85,10 @@ const TopHeader = props => {
     //   getPersonalDetails();
     // }
     if (isvisible) {
-      fetch_PersonalDetails();
+      fetchData();
     }
   }, [isvisible, loginData]);
 
-  const fetch_PersonalDetails = async () => {
-    await getPersonalDetails();
-  };
   const userProfileImageUri = accountDetails?.image_path[0];
   // loginData.Login_details?.profile_photo_path ||
   // signUp_account_response?.Login_details?.profile_photo_path;

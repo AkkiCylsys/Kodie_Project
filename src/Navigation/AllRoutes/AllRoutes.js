@@ -137,8 +137,9 @@ import CompanySignup from '../../screens/Authentication/SignUpScreen/AboutYou/Co
 import Partners from '../../screens/Partners/Partners';
 import PropertyReviewDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/PropertyReviewDetails';
 import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDetails';
-import {withIAPContext} from 'react-native-iap';
-import {Subscriptions} from '../../screens/Subscription/Subscription';
+// import {withIAPContext} from 'react-native-iap';
+// import {Subscriptions} from '../../screens/Subscription/Subscription';
+import MarketplacePropertyListing from '../../MarketplacePropertyListing/MarketplacePropertyListing';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1118,9 +1119,14 @@ const AllStackRouts = props => {
           component={JobReviewDetails}
           options={{headerShown: false, gestureEnabled: false}}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name={'Subscriptions'}
           component={withIAPContext(Subscriptions)}
+          options={{headerShown: false, gestureEnabled: false}}
+        /> */}
+        <Stack.Screen
+          name={'MarketplacePropertyListing'}
+          component={MarketplacePropertyListing}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
