@@ -76,6 +76,7 @@ export const FirstPropertyStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 10,
     borderRadius: 8,
+    // paddingHorizontal: -5,
   },
 
   placeholderStyle: {
@@ -98,7 +99,7 @@ export const FirstPropertyStyle = StyleSheet.create({
   inputSearchStyle: {
     height: 40,
     fontSize: 16,
-    color:_COLORS.Kodie_BlackColor
+    color: _COLORS.Kodie_BlackColor,
   },
   key_feature_Dropdownstyle: {flex: 1, height: 40},
   additional: {flex: 0.85},
@@ -291,25 +292,25 @@ export const FirstPropertyStyle = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  c_locationBtn:{
+  c_locationBtn: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     // alignSelf: "flex-end",
     paddingVertical: 3,
     borderRadius: 10,
-    width: "25%",
+    width: '25%',
     height: 60,
     bottom: 0,
     // right: 20,
     left: 20,
     marginBottom: 30,
-    position: "absolute",
+    position: 'absolute',
   },
   itemView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 10,
     marginHorizontal: 10,
   },

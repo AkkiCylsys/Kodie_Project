@@ -435,7 +435,14 @@ const SignUpSteps = props => {
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>
             <TextInput
-              style={AccountStyle.input}
+              style={[
+                AccountStyle.input,
+                {
+                  borderColor: firstNameError
+                    ? _COLORS.Kodie_lightRedColor
+                    : _COLORS.Kodie_GrayColor,
+                },
+              ]}
               value={firstName}
               onChangeText={validateFirstName}
               onBlur={() => validateFirstName(firstName)}
@@ -447,7 +454,14 @@ const SignUpSteps = props => {
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>Last name*</Text>
             <TextInput
-              style={AccountStyle.input}
+              style={[
+                AccountStyle.input,
+                {
+                  borderColor: lastNameError
+                    ? _COLORS.Kodie_lightRedColor
+                    : _COLORS.Kodie_GrayColor,
+                },
+              ]}
               value={lastName}
               onChangeText={validateLastName}
               onBlur={() => validateLastName(lastName)}
