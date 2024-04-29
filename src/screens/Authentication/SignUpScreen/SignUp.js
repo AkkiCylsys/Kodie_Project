@@ -140,7 +140,8 @@ export default SignUp = props => {
 
   const Signuphandle = async () => {
     // const url = "https://e3.cylsys.com/api/v1/register";
-    const url = 'https://kodieapis.cylsys.com/api/v1/register';
+    // const url = 'https://kodieapis.cylsys.com/api/v1/register';
+    const url = 'https://kodietestapi.cylsys.com/api/v1/register';
     const signupUrl = url;
     console.log('Request URL:', signupUrl);
     setIsLoading(true);

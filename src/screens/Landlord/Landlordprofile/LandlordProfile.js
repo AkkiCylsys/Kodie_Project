@@ -60,6 +60,7 @@ export default LandlordProfile = props => {
       .catch(error => {
         // Handle error
         console.error('API Error PersonalDetails L:', error);
+        Alert.alert('Worning', error?.response?.data?.message);
         setIsLoading(false);
       });
   };

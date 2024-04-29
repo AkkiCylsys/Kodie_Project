@@ -1,258 +1,32 @@
-// import React, { useRef } from "react";
-// import { View, Text, Image, FlatList } from "react-native";
-// import { PropertyModalStyle } from "./PropertyModalStyle";
-// import { _COLORS,IMAGES } from "../../Themes";
-// import { TouchableOpacity } from "react-native";
-// import { useNavigation } from "@react-navigation/native";
-// import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-// import Ionicons from "react-native-vector-icons/Ionicons";
-// import Entypo from "react-native-vector-icons/Entypo";
-// import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-// import RBSheet from "react-native-raw-bottom-sheet";
-// import PropertyPopup from "./PropertyPopup";
-
-// const data = [
-//   {
-//     id: "1",
-//     Data: "View /edit property details",
-//     Icon: (
-//       <MaterialIcons
-//         name="preview"
-//         size={25}
-//         color={_COLORS.Kodie_GreenColor}
-//         style={{ alignSelf: "center" }}
-//       />
-//     ),
-//   },
-//   {
-//     id: "2",
-//     Data:'Make property available for rental bidding',
-//     Icon: (
-//       <MaterialCommunityIcons
-//         name="alpha-k-box-outline"
-//         size={25}
-//         color={_COLORS.Kodie_GreenColor}
-//       />
-//     ),
-//   },
-//   {
-//     id: "3",
-//     Data: "Manage documents",
-//     Icon: (
-//       <MaterialCommunityIcons
-//         name="file-download-outline"
-//         size={25}
-//         color={_COLORS.Kodie_GreenColor}
-//       />
-//     ),
-//   },
-//   {
-//     id: "4",
-//     Data: "Notices & reminders",
-//     Icon: (
-//       <Ionicons
-//         name="mail-unread-outline"
-//         size={25}
-//         color={_COLORS.Kodie_GreenColor}
-//       />
-//     ),
-//   },
-//   {
-//     id: "5",
-//     Data: "Delete property",
-//     Icon: (
-//       <MaterialIcons
-//         name="delete-outline"
-//         size={25}
-//         color={_COLORS.Kodie_GreenColor}
-//       />
-//     ),
-//   },
-// ];
-// const data1 = [
-//   {
-//     id: "1",
-//     Data: "Confirm delete property",
-//     Icon: (
-//       <MaterialIcons
-//         name="delete-outline"
-//         size={25}
-//         color={_COLORS.Kodie_GreenColor}
-//       />
-//     ),
-//   },
-//   {
-//     id: "2",
-//     Data: "Archive instead",
-//     Icon: (
-//       <Ionicons
-//         name="file-tray-full-outline"
-//         size={25}
-//         color={_COLORS.Kodie_GreenColor}
-//       />
-//     ),
-//   },
-// ];
-
-// const PropertyModal = (props) => {
-  // const propertyId = props?.propertyId;
-
-//   const navigation = useNavigation(); // Hook to get navigation
-//   const refRBSheet = useRef();
-//   const handleCloseModal = () => {
-//     props.onClose(); 
-//     //alert('hi')
-//   };
-//   const handleDeleteProperty = (propertyDelId) => {
-//     console.log(propertyDelId, "catch data");
-//     props.onDeleteData(propertyDelId);
-//     console.log("Vacent data cath........... ", props.onDeleteData(propertyDelId));
-//     // alert(propertyDelId);
-//   };
-//   const FinalDeleteProperty = (propertyDelId, Address) => {
-//     console.log(propertyDelId, Address, "catch data");
-//     props.onDeleteData(propertyDelId, Address);
-//     console.log("come data...........", propertyDelId);
-//     console.log(
-//       "Vacent data cath........... ",
-//       props.onDeleteData(propertyDelId, Address)
-//     );
-//     // alert(propertyDelId);
-//   };
-//   const BottomData = ({ item, index }) => {
-//     return (
-//       <>
-//         {props?.isDeletePropertyClicked ? (
-//           <>
-//             <TouchableOpacity
-//               style={PropertyModalStyle.container}
-//               onPress={() => {
-//                 if (item.id === "1") {
-//                   FinalDeleteProperty();
-//                   // navigation.navigate("ViewPropertyDetails");
-//                 }
-//                 if (item.id === "2") {
-//                 //   refRBSheet.current.open()
-//                 //   navigation.navigate("ViewPropertyDetails");
-//                   // console.log("Property ID:", item.property_id);
-//                 }
-//               }}
-//             >
-//               {/* <Image source={item.Img} style={PropertyModalStyle.Icons} /> */}
-//               {/* //{item.Icon} */}
-//               <View style={PropertyModalStyle.IconView}>{item.Icon}</View>
-//               <Text style={PropertyModalStyle.text}>{item.Data}</Text>
-//             </TouchableOpacity>
-//           </>
-//         ) : (
-//           <TouchableOpacity
-//             style={PropertyModalStyle.container}
-//             onPress={() => {
-//               if (item.id === "1") {
-//                 navigation.navigate("ViewPropertyDetails", {
-//                   propertyId: propertyId,
-//                 });
-//                 handleCloseModal();
-//               }
-//               if (item.id === "2") {
-                
-//                 handleCloseModal();
-//               }
-//               if (item.id === "5") {
-//                 // navigation.navigate("ViewPropertyDetails");
-//                 handleDeleteProperty();
-             
-//                 // console.log("Property ID:", item.property_id);
-//               }
-//             }}
-//           >
-//             {/* <Image source={item.Img} style={PropertyModalStyle.Icons} /> */}
-//             <View style={PropertyModalStyle.IconView}>{item.Icon}</View>
-//             <Text style={PropertyModalStyle.text}>{item.Data}</Text>
-//           </TouchableOpacity>
-//         )}
-//       </>
-//     );
-//   };
-//   return (
-//     <View style={PropertyModalStyle.mainContainer}>
-//       <TouchableOpacity
-//         style={{
-//           justifyContent: "flex-end",
-//           alignSelf: "flex-end",
-//           paddingHorizontal: 20,
-//         }}
-//         onPress={handleCloseModal}
-//       >
-//         {/* <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} /> */}
-//         {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
-//       </TouchableOpacity>
-//       <FlatList
-//         data={props?.isDeletePropertyClicked ? data1 : data}
-//         scrollEnabled
-//         showsVerticalScrollIndicator={false}
-//         contentContainerStyle={{}}
-//         keyExtractor={(item) => item?.id}
-//         renderItem={BottomData}
-//         ListHeaderComponent={() => {
-//           return (
-//             <>
-//               {props?.isDeletePropertyClicked ? (
-//                 <Text
-//                   style={PropertyModalStyle.text}
-//                 >{`Delete property: ${props?.Address} ?`}</Text>
-//               ) : null}
-//             </>
-//           );
-//         }}
-//       />
-//         <RBSheet 
-//                     ref={refRBSheet}
-//                     height={750}
-//                     closeOnDragDown={true}
-//                     customStyles={{
-//                       wrapper: {
-//                         backgroundColor: "rgba(0, 0, 0, 0.5)",
-//                       },
-//                       draggableIcon: {
-//                         backgroundColor: _COLORS.Kodie_LightGrayColor,
-//                       },
-//                     //   container: AddContractorModalStyle.bottomModal_container,
-//                     }}
-//                   >
-//                    <PropertyPopup/>
-//                   </RBSheet>
-//     </View>
-//   );
-// };
-// export default PropertyModal;
-// // Import necessary modules
-import React, { useRef } from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { PropertyModalStyle } from "./PropertyModalStyle";
-import { _COLORS } from "../../Themes";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import RBSheet from "react-native-raw-bottom-sheet";
-import PropertyPopup from "./PropertyPopup";
+import React, {useRef} from 'react';
+import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {PropertyModalStyle} from './PropertyModalStyle';
+import {_COLORS} from '../../Themes';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import PropertyPopup from './PropertyPopup';
+import PropertyDeletePopup from '../Molecules/PropertyListings/PropertyDeletePopUp';
+import {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 // Define data for FlatList
 const data = [
   {
-    id: "1",
-    Data: "View /edit property details",
+    id: '1',
+    Data: 'View /edit property details',
     Icon: (
       <MaterialIcons
         name="preview"
         size={25}
         color={_COLORS.Kodie_GreenColor}
-        style={{ alignSelf: "center" }}
+        style={{alignSelf: 'center'}}
       />
     ),
   },
   {
-    id: "2",
+    id: '2',
     Data: 'Make property available for rental bidding',
     Icon: (
       <MaterialCommunityIcons
@@ -263,8 +37,8 @@ const data = [
     ),
   },
   {
-    id: "3",
-    Data: "Manage documents",
+    id: '3',
+    Data: 'Manage documents',
     Icon: (
       <MaterialCommunityIcons
         name="file-download-outline"
@@ -274,8 +48,8 @@ const data = [
     ),
   },
   {
-    id: "4",
-    Data: "Notices & reminders",
+    id: '4',
+    Data: 'Notices & reminders',
     Icon: (
       <Ionicons
         name="mail-unread-outline"
@@ -285,8 +59,8 @@ const data = [
     ),
   },
   {
-    id: "5",
-    Data: "Delete property",
+    id: '5',
+    Data: 'Delete property',
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -299,8 +73,8 @@ const data = [
 
 const data1 = [
   {
-    id: "1",
-    Data: "Confirm delete property",
+    id: '1',
+    Data: 'Confirm delete property',
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -310,8 +84,8 @@ const data1 = [
     ),
   },
   {
-    id: "2",
-    Data: "Archive instead",
+    id: '2',
+    Data: 'Archive instead',
     Icon: (
       <Ionicons
         name="file-tray-full-outline"
@@ -322,31 +96,68 @@ const data1 = [
   },
 ];
 
-const PropertyModal = (props) => {
+const PropertyModal = props => {
   const propertyId = props?.propertyId;
-
+  const Address = props.Address;
+  const OnPopupclose = props.OnPopupclose;
+  const [isClick, setIsclick] = useState(false);
   const refRBSheet = useRef();
+  const refRBSheet1 = useRef();
+  const navigation = useNavigation();
 
   const handleCloseModal = () => {
-    props.onClose(); 
+    props.onClose();
+  };
+  const handleRefreshData = () => {
+    props.RefreshListingData();
   };
 
   const handleMakePropertyAvailable = () => {
     refRBSheet.current.open();
   };
+  const handleDeleteProperty = () => {
+    refRBSheet1.current.open();
+  };
 
-  const BottomData = ({ item }) => {
+  const BottomData = ({item}) => {
     return (
       <TouchableOpacity
         style={PropertyModalStyle.container}
         onPress={() => {
-          if (item.id === "2") {
-            handleMakePropertyAvailable();
-          } else {
+          if (item.id === '1') {
+            navigation.navigate('PropertyReview', {
+              // propertyId: propertyId,
+              // propertyView: "propertyView",
+              propertyid: propertyId,
+              propertyView: 'propertyView',
+            });
             handleCloseModal();
           }
-        }}
-      >
+          if (item.id === '2') {
+            handleMakePropertyAvailable();
+          }
+          if (item.id === '3') {
+            navigation.navigate('PropertyReview', {
+              // propertyId: propertyId,
+              // propertyView: "propertyView",
+              propertyid: propertyId,
+              propertyView: 'propertyView',
+              DocTab: 'DocTab',
+            });
+            handleCloseModal();
+          }
+          if (item.id === '4') {
+            navigation.navigate('Notices');
+            handleCloseModal();
+          }
+
+          if (item.id === '5') {
+            OnPopupclose?.current?.close();
+            handleDeleteProperty();
+          } else {
+            props.OnPopupclose();
+          }
+        }}>
         <View style={PropertyModalStyle.IconView}>{item.Icon}</View>
         <Text style={PropertyModalStyle.text}>{item.Data}</Text>
       </TouchableOpacity>
@@ -357,8 +168,8 @@ const PropertyModal = (props) => {
     <View style={PropertyModalStyle.mainContainer}>
       <TouchableOpacity
         style={{
-          justifyContent: "flex-end",
-          alignSelf: "flex-end",
+          justifyContent: 'flex-end',
+          alignSelf: 'flex-end',
           paddingHorizontal: 20,
         }}
         onPress={handleCloseModal}
@@ -368,15 +179,16 @@ const PropertyModal = (props) => {
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
-        keyExtractor={(item) => item?.id}
+        keyExtractor={item => item?.id}
         renderItem={BottomData}
         ListHeaderComponent={() => {
           return (
             <>
               {props?.isDeletePropertyClicked ? (
                 <Text
-                  style={PropertyModalStyle.text}
-                >{`Delete property: ${props?.Address} ?`}</Text>
+                  style={
+                    PropertyModalStyle.text
+                  }>{`Delete property: ${props?.Address} ?`}</Text>
               ) : null}
             </>
           );
@@ -389,7 +201,7 @@ const PropertyModal = (props) => {
         closeOnDragDown={true}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           container: {
             borderTopLeftRadius: 20,
@@ -398,10 +210,33 @@ const PropertyModal = (props) => {
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
-        }}
-      >
+        }}>
         {/* Pass propertyId to PropertyPopup */}
         <PropertyPopup propertyId={propertyId} onClose={handleCloseModal} />
+      </RBSheet>
+      <RBSheet
+        ref={refRBSheet1}
+        height={190}
+        closeOnDragDown={true}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          container: {
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+        }}>
+        {/* Pass propertyId to PropertyPopup */}
+        <PropertyDeletePopup
+          propertyId={propertyId}
+          Address={Address}
+          onClose={handleCloseModal}
+          RefreshListingData={handleRefreshData}
+        />
       </RBSheet>
     </View>
   );

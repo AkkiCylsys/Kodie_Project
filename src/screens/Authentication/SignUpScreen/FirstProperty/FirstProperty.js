@@ -394,6 +394,7 @@ export default FirstProperty = props => {
       P_PARENT_CODE: 'PROP_TYPE',
       P_TYPE: 'OPTION',
     };
+    console.log(propertyData, 'propertyDatapropertyData');
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
     console.log('Request URL:', propertyType);
@@ -427,7 +428,7 @@ export default FirstProperty = props => {
       .get(additionalApi)
       .then(response => {
         console.log('additional_Data', response?.data);
-        if (response?.data?.status === true) {
+        if (response?.data?.success === true) {
           setIsLoading(false);
           console.log('additional_features....', response?.data);
           setAdditionalfeatureskey(response?.data?.key_features_details);
@@ -482,7 +483,7 @@ export default FirstProperty = props => {
       deviceType: deviceType,
       additional_features: additionalfeatureskeyvalue,
       key_additional_features: PreFriedly,
-
+      selectManageProperty: selectManageProperty,
       auto_list: selectedButtonId,
       fcm_token: Fcm_token,
       run_your_business: run_your_business,
@@ -647,6 +648,7 @@ export default FirstProperty = props => {
       referral: referral,
       selectedServiceKeysString: selectedServiceKeysString,
       kodieHelpValue: kodieHelpValue,
+      selectManageProperty: selectManageProperty,
       location: null,
       longitude: longitude,
       latitude: latitude,

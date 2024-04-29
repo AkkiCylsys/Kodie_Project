@@ -285,7 +285,11 @@ const PropertyList = props => {
                   </View>
                 )}
 
-                <View style={PropertyListCSS.flexContainer}>
+                <View
+                  style={[
+                    PropertyListCSS.flexContainer,
+                    {alignSelf: 'center'},
+                  ]}>
                   <View style={PropertyListCSS.noteStyle}>
                     <TouchableOpacity
                       onPress={() => {

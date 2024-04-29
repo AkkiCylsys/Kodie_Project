@@ -298,58 +298,27 @@ export default AboutYou = props => {
       P_TYPE: 'OPTION',
     });
 
-    console.log('ServicesOffer', res);
+    console.log('IndiServicesOffer', res);
     if (res.status === true) {
-      setKodieServicesData(res?.lookup_details);
       setIndiKodieServicesData(res?.lookup_details);
     }
     setIsLoading(false);
   };
-
-  const handleServices = async () => {
-    const jobTypes = selectedselectJobTypesString.split(',').map(Number);
-    console.log(jobTypes, 'klhfudssdkjfhdsjk');
-    const servicesDatas = [];
-
+  const handle_CompanyServicesOffer = async () => {
     setIsLoading(true);
 
-    const fetchServiceData = async jobType => {
-      const res = await SignupLookupDetails({
-        P_PARENT_CODE:
-          jobType === 166
-            ? 'HOME_CLEANING'
-            : jobType === 167
-            ? 'OUTDOOR_CLEANING'
-            : jobType === 168
-            ? 'HEAVY_LIFTING'
-            : jobType === 169
-            ? 'FIXING_AND_MAINTENANCE'
-            : null,
-        P_TYPE: 'OPTION',
-      });
+    const res = await SignupLookupDetails({
+      P_PARENT_CODE: 'JOB_TYPE',
+      P_TYPE: 'OPTION',
+    });
 
-      console.log('ServicesOffer', res);
-      servicesDatas.push(...res.lookup_details);
-      setIsLoading(false);
-    };
-
-    const fetchAllServices = async () => {
-      try {
-        const promises = jobTypes.map(jobType => fetchServiceData(jobType));
-        await Promise.all(promises);
-
-        setIsLoading(false);
-        console.log('All Services Data:', servicesDatas);
-        setServicesData(servicesDatas);
-      } catch (error) {
-        setIsLoading(false);
-        console.error('Error fetching services:', error);
-      }
-    };
-
-    fetchAllServices();
+    console.log('ComapanyServicesOffer', res);
+    if (res.status === true) {
+      setKodieServicesData(res?.lookup_details);
+    }
     setIsLoading(false);
   };
+  console.log(kodieServicesData, '{{{kodieServicesData');
   const handleIndiServices = async () => {
     const jobTypes = selectedselectIndiJobTypesString.split(',').map(Number);
     console.log(jobTypes, 'klhfudssdkjfhdsjk');
@@ -358,6 +327,7 @@ export default AboutYou = props => {
     setIsLoading(true);
 
     const fetchIndiServiceData = async jobType => {
+      console.log(jobType, '{{jobType}}');
       const res = await SignupLookupDetails({
         P_PARENT_CODE:
           jobType === 166
@@ -372,7 +342,7 @@ export default AboutYou = props => {
         P_TYPE: 'OPTION',
       });
 
-      console.log('ServicesOffer', res);
+      console.log('INdidi', res);
       servicesDatas.push(...res.lookup_details);
       setIsLoading(false);
     };
@@ -395,11 +365,75 @@ export default AboutYou = props => {
     fetchIndiAllServices();
     setIsLoading(false);
   };
-  useEffect(() => {
-    if (isvisible && selectJobType !== undefined && selectJobType !== null) {
-      handleServices(selectJobType);
-    }
-  }, [selectJobType, isvisible]);
+  const handleServices = async () => {
+    const CompanyjobTypes = selectedselectJobTypesString.split(',').map(Number);
+    console.log(CompanyjobTypes, 'CompanyjobTypes');
+    const CompanyservicesDatas = [];
+
+    setIsLoading(true);
+
+    const fetchServiceData = async CompanyjobType => {
+      console.log(CompanyjobType, 'CompanyjobTypeCompanyjobType');
+      let P_PARENT_CODE = null;
+
+      // Map CompanyjobType to P_PARENT_CODE
+      switch (CompanyjobType) {
+        case 166:
+          P_PARENT_CODE = 'HOME_CLEANING';
+          break;
+        case 167:
+          P_PARENT_CODE = 'OUTDOOR_CLEANING';
+          break;
+        case 168:
+          P_PARENT_CODE = 'HEAVY_LIFTING';
+          break;
+        case 169:
+          P_PARENT_CODE = 'FIXING_AND_MAINTENANCE';
+          break;
+        default:
+          console.error('Unknown CompanyjobType:', CompanyjobType);
+          break;
+      }
+
+      console.log('P_PARENT_CODE:', P_PARENT_CODE);
+
+      if (P_PARENT_CODE !== null) {
+        const Companydata = {
+          P_PARENT_CODE: P_PARENT_CODE,
+          P_TYPE: 'OPTION',
+        };
+
+        console.log('Companydata', Companydata);
+
+        try {
+          const res = await SignupLookupDetails(Companydata);
+          console.log('ServicesOffer', res);
+          CompanyservicesDatas.push(...res.lookup_details);
+        } catch (error) {
+          console.error('Error fetching services:', error);
+        }
+      }
+    };
+
+    const fetchAllServices = async () => {
+      try {
+        const promises = CompanyjobTypes.map(CompanyjobType =>
+          fetchServiceData(CompanyjobType),
+        );
+        await Promise.all(promises);
+
+        console.log('All Services Data:', CompanyservicesDatas);
+        setServicesData(CompanyservicesDatas);
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      } finally {
+        setIsLoading(false); // Set loading state to false after all operations are completed
+      }
+    };
+
+    await fetchAllServices(); // Wait for all services to be fetched
+  };
+
   useEffect(() => {
     if (
       isvisible &&
@@ -409,6 +443,7 @@ export default AboutYou = props => {
       handleIndiServices(IndiselectJobType);
     }
   }, [isvisible, IndiselectJobType]);
+
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
@@ -436,6 +471,11 @@ export default AboutYou = props => {
       };
     }, [IsMap, IsSearch]),
   );
+  useEffect(() => {
+    if (isvisible && selectJobType !== undefined && selectJobType !== null) {
+      handleServices(selectJobType);
+    }
+  }, [isvisible, selectJobType]);
   console.log('Individual', Individual);
   console.log('CompanyCome', CompanyCome);
   const refRBSheet = useRef();
@@ -444,6 +484,7 @@ export default AboutYou = props => {
     setIsClick(lookupID);
     setSelectManageProperty(lookupID);
   };
+
   const toggleCheckbox = lookupKey => {
     if (selectedLookupKeys.includes(lookupKey)) {
       setSelectedLookupKeys(
@@ -566,6 +607,7 @@ export default AboutYou = props => {
       handle_kodiehelp();
       handle_describe_yourself();
       handle_ServicesOffer();
+      handle_CompanyServicesOffer();
     }
   }, [isVisible]);
 
@@ -670,102 +712,6 @@ export default AboutYou = props => {
     setKodiehelpData(res?.lookup_details);
     setIsLoading(false);
   };
-  // describe your self.....
-  // const handle_describe_yourself = () => {
-  //   const describe_yourself_Data = {
-  //     P_PARENT_CODE: 'TEN_DESC',
-  //     P_TYPE: 'OPTION',
-  //   };
-  //   const url = Config.BASE_URL;
-  //   const describeYourselfApi = url + 'lookup_details';
-  //   console.log('Request URL:', describeYourselfApi);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(describeYourselfApi, describe_yourself_Data)
-  //     .then(response => {
-  //       console.log('kodie_describeYouself_Data', response.data);
-  //       if (response.data.status === true) {
-  //         console.log(
-  //           'kodie_describeYouself_Data....',
-  //           response.data.lookup_details,
-  //         );
-  //         setKodieDescribeYourselfData(response.data.lookup_details);
-  //         setIsLoading(false);
-  //       } else {
-  //         console.error(
-  //           'kodie_describeYouself_Data_error:',
-  //           response.data.error,
-  //         );
-  //         alert('Oops samthing went wrong! Please try again later.');
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('kodie_describeYouself_Data error:', error);
-  //       alert(error);
-  //       setIsLoading(false);
-  //     });
-  // };
-  // manage property API with lookup key...
-  // const handle_manage_property = () => {
-  //   const propertyData = {
-  //     P_PARENT_CODE: 'TEN_PROPERTY',
-  //     P_TYPE: 'OPTION',
-  //   };
-  //   const url = Config.BASE_URL;
-  //   const propertyType = url + 'lookup_details';
-  //   console.log('Request URL:', propertyType);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(propertyType, propertyData)
-  //     .then(response => {
-  //       console.log('maneg_property_type', response.data);
-  //       if (response.data.status === true) {
-  //         console.log('maneg_property_type....', response.data.lookup_details);
-  //         setmanage_property_Data(response.data.lookup_details);
-  //         setIsLoading(false);
-  //       } else {
-  //         console.error('property_type_error:', response.data.error);
-  //         alert('Oops samthing went wrong! Please try again later.');
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('property_type error:', error);
-  //       alert(error);
-  //       setIsLoading(false);
-  //     });
-  // };
-  // kodie help api...
-  // const handle_kodiehelp = () => {
-  //   const kodiehelp_Data = {
-  //     P_PARENT_CODE: 'KODIE_HELP',
-  //     P_TYPE: 'OPTION',
-  //   };
-  //   const url = Config.BASE_URL;
-  //   const kodiehelpApi = url + 'lookup_details';
-  //   console.log('Request URL:', kodiehelp_Data);
-  //   setIsLoading(true);
-  //   axios
-  //     .post(kodiehelpApi, kodiehelp_Data)
-  //     .then(response => {
-  //       console.log('kodie_Data', response.data);
-  //       if (response.data.status === true) {
-  //         console.log('kodie_Data....', response.data.lookup_details);
-  //         setKodiehelpData(response.data.lookup_details);
-  //         setIsLoading(false);
-  //       } else {
-  //         console.error('kodie_Data_error:', response.data);
-  //         alert('Oops samthing went wrong! Please try again later.');
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('kodie_Data error:', error);
-  //       alert(error);
-  //       setIsLoading(false);
-  //     });
-  // };
   const openMapCom = () => {
     setIsMap(true);
     console.log('Location pressed');
@@ -1299,7 +1245,7 @@ export default AboutYou = props => {
                           setLocation('');
                           setIsChecked(false);
                           setIndiservicesValue([]);
-                          handle_ServicesOffer();
+                          handle_CompanyServicesOffer();
                           handleServices();
                         }}>
                         <Text
@@ -1403,7 +1349,7 @@ export default AboutYou = props => {
           </>
         )}
       </KeyboardAvoidingView>
-      {/* {isLoading ? <CommonLoader /> : null} */}
+      {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
 };

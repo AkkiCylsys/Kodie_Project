@@ -61,8 +61,8 @@ export default PropertyDetails = props => {
   const [UserCurrentCity, setUserCurrentCity] = useState('');
   const [UserZip_Code, setUserZip_Code] = useState('');
   const [property_value, setProperty_value] = useState(0);
-  const [selectedButton, setSelectedButton] = useState(true);
-  const [selectedButtonId, setSelectedButtonId] = useState(0);
+  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButtonId, setSelectedButtonId] = useState(1);
   const [selectedProperty, setSelectedProperty] = useState(null);
   const [propertyTypeData, setPropertyTypeData] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
@@ -583,22 +583,21 @@ export default PropertyDetails = props => {
                   {propertyDesc.length}/1000
                 </Text>
               </View>
-              {/* <View
+              <View
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}>
                 <Text style={PropertyDetailsStyle.AutoList_text}>
-                  {"Auto-list property on Kodie property marketplace "}
+                  {'Auto-list property on Kodie property marketplace '}
                 </Text>
                 <TouchableOpacity style={PropertyDetailsStyle.questionmark}>
                   <AntDesign name="question" size={20} color="#8AFBA5" />
                 </TouchableOpacity>
               </View>
               <RowButtons
-                LeftButtonText={"Yes"}
+                LeftButtonText={'Yes'}
                 leftButtonbackgroundColor={
                   !selectedButton
                     ? _COLORS.Kodie_lightGreenColor
@@ -616,10 +615,10 @@ export default PropertyDetails = props => {
                 }
                 onPressLeftButton={() => {
                   setSelectedButton(false);
-                  setSelectedButtonId(0);
+                  setSelectedButtonId(1);
                   // alert(selectedButtonId)
                 }}
-                RightButtonText={"No"}
+                RightButtonText={'No'}
                 RightButtonbackgroundColor={
                   selectedButton
                     ? _COLORS.Kodie_lightGreenColor
@@ -637,9 +636,9 @@ export default PropertyDetails = props => {
                 }
                 onPressRightButton={() => {
                   setSelectedButton(true);
-                  setSelectedButtonId(1);
+                  setSelectedButtonId(0);
                 }}
-              /> */}
+              />
               <View style={PropertyDetailsStyle.btnView}>
                 <CustomSingleButton
                   _ButtonText={'Next'}

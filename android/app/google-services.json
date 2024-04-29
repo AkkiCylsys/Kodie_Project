@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "300728899224",
-    "project_id": "kodie-cc948",
-    "storage_bucket": "kodie-cc948.appspot.com"
+    "project_number": "1095041111738",
+    "project_id": "kodiedemo",
+    "storage_bucket": "kodiedemo.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:300728899224:android:3c73eafc8d31d9346922ed",
+        "mobilesdk_app_id": "1:1095041111738:android:2b2f4d18466898fe0ad483",
         "android_client_info": {
           "package_name": "com.kodie"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBcHcsOjrzyBGRPxSlrnCQj4w6LB5WVxXo"
+          "current_key": "AIzaSyBtZn35PtCrPf8L76kPiORE1SlLuFRj7eg"
         }
       ],
       "services": {
