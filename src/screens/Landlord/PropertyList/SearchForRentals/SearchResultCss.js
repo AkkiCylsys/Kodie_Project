@@ -1,14 +1,19 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 
 export const SearchResultCss = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
-  flat_MainView: { flex: 1, flexDirection: "row", alignItems: "center" },
-  flexContainer: { flex: 1 },
-  apartmentText: { fontSize: 12, color: _COLORS.Kodie_BlackColor },
+  flat_MainView: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  flexContainer: {flex: 1},
+  apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
   locationText: {
     flex: 1,
     fontSize: 10,
@@ -19,13 +24,13 @@ export const SearchResultCss = StyleSheet.create({
     height: 65,
     width: 65,
     borderRadius: 10,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   buttonView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     backgroundColor: _COLORS.Kodie_LightOrange,
@@ -38,26 +43,26 @@ export const SearchResultCss = StyleSheet.create({
     height: 6,
     width: 6,
     borderRadius: 6 / 2,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginRight: 5,
   },
   buttonText: {
     fontSize: 10,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
-  flatListContainer: { marginHorizontal: 30 ,flex:1},
+  flatListContainer: {marginHorizontal: 30, flex: 1},
   expandedContent: {
     marginHorizontal: 30,
     flex: 1,
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
   },
   noteStyle: {
-    flex:1,
-    flexDirection: "row",
-    alignSelf: "flex-end",
+    flex: 1,
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
     marginBottom: 15,
   },
   bottomModal_container: {
@@ -68,17 +73,17 @@ export const SearchResultCss = StyleSheet.create({
     elevation: 10,
   },
   propertyRentMainView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
-    marginTop:10
+    marginTop: 10,
   },
-  payButtonMainView: { justifyContent: "flex-end" },
+  payButtonMainView: {justifyContent: 'flex-end'},
   payButtonView: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    borderWidth:1,
-    borderColor:_COLORS.Kodie_GrayColor,
-    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    justifyContent: 'center',
     paddingHorizontal: 10,
     paddingVertical: 10,
     borderRadius: 5,
@@ -87,41 +92,134 @@ export const SearchResultCss = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_WhiteColor,
-    alignSelf: "center",
-    textAlign: "center",
+    alignSelf: 'center',
+    textAlign: 'center',
   },
   LeftTextView: {
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
     flex: 1,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   LeftText: {
-    fontSize: 10,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
   },
   LeftTextRentText: {
-    fontSize: 10,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
   },
   leftIconsView: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignSelf: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
   },
-  ImagesStyle: { height: 25, width: 25 },
+  ImagesStyle: {height: 25, width: 25},
   bedroomStl: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginLeft: -10,
   },
-  weeklyRent: { flex: 0.5, alignItems: "flex-end" },
-  share_sty: { marginRight: 17, },
-  bidsButton:{borderWidth:1,borderColor:_COLORS.Kodie_GreenColor,backgroundColor:_COLORS.Kodie_GreenColor,paddingHorizontal:5,paddingVertical:1,borderBottomLeftRadius:4,borderBottomRightRadius:4},
-  bidsButtonText:{fontSize:11,fontFamily:FONTFAMILY.K_Regular,color:_COLORS.Kodie_WhiteColor},
-  biddingText:{ fontSize: 10, fontFamily: FONTFAMILY.K_Regular, color: _COLORS.Kodie_BlackColor, marginLeft: 3 },
-  daysViewStl:{borderWidth:1,borderRadius:8,borderColor:_COLORS.Kodie_GrayColor,marginLeft:3,paddingHorizontal:2}
+  weeklyRent: {flex: 0.5, alignItems: 'flex-end'},
+  share_sty: {marginRight: 17},
+  bidsButton: {
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GreenColor,
+    backgroundColor: _COLORS.Kodie_GreenColor,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+    borderBottomLeftRadius: 4,
+    borderBottomRightRadius: 4,
+  },
+  bidsButtonText: {
+    fontSize: 11,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_WhiteColor,
+  },
+  biddingText: {
+    fontSize: 10,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_BlackColor,
+    marginLeft: 3,
+  },
+  daysViewStl: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginLeft: 3,
+    paddingHorizontal: 2,
+  },
+  dotStyle: {
+    width: 10,
+    height: 10,
+    borderRadius: 10,
+    // marginHorizontal: 1,
+    padding: 0,
+    margin: 0,
+  },
+  propertyHeading: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
+  shareIcon: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignSelf: 'center',
+  },
+  apartmentmainView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 28,
+    marginTop: 19,
+  },
+  location: {
+    fontSize: 14,
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    fontFamily: FONTFAMILY.K_Regular,
+    alignSelf:"center"
+  },
+  locationView: {
+    flexDirection: 'row',
+    marginTop: 5,
+    marginLeft: 23,
+  },
+  availabletext: {
+    fontSize: 10,
+    color: _COLORS.Kodie_DarkOrange,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    alignSelf:"center"
+  },
+  availableBtn:{
+    marginHorizontal: 25,
+    marginRight: 250,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LightOrange,
+    borderRadius: 15,
+    flex: 1,
+    backgroundColor: _COLORS.Kodie_LightOrange,
+    padding: 8,
+    marginTop:10
+  },
+  bedcont: {
+    fontSize: 14,
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    fontFamily: FONTFAMILY.K_Regular,
+    alignSelf:"center",
+    marginLeft:5
+  },
+  bedCountView:{
+    flexDirection:"row",
+    marginHorizontal:8,
+    marginTop:5
+  },
+  bedIconView:{
+      borderWidth:1,
+      padding:5,
+      borderRadius:10,
+      borderColor:_COLORS.Kodie_GrayColor
+  }
 });

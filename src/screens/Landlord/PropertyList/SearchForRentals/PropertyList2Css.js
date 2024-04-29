@@ -65,7 +65,7 @@ export const PropertyList2Css = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
-    color:_COLORS.Kodie_GrayColor
+    color:_COLORS.Kodie_BlackColor
 
   },
   iconStyle: {
@@ -184,5 +184,55 @@ export const PropertyList2Css = StyleSheet.create({
     alignContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  locationConView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  locationContainer: {
+    // flexDirection: "row",
+    // alignItems: "center",
+    flex: 1,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 6,
+    shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 2,
+  },
+  locationInput: {
+    flex: 1,
+    height: 48,
+    paddingHorizontal: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#ccc',
+    marginLeft: 5,
+    width: '15%',
+    justifyContent: 'center',
+    height: 50,
+  },
+  locationIcon: {
+    alignSelf: 'center',
+  },
+  BtnContainer: {
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    paddingVertical: 3,
+    borderRadius: 10,
+    width: '30%',
+    height: 50,
+    bottom: 0,
+    right: 20,
+    marginBottom: 30,
+    position: 'absolute',
   },
 });
