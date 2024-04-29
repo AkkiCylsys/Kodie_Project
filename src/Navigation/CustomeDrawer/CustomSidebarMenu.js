@@ -63,8 +63,8 @@ const CustomSidebarMenu = props => {
         break;
       case 'Contractors':
         setselectedId('Contractors');
-        Alert.alert('Contractors!', 'Coming soon');
-        // props.navigation.navigate('Managingcontractors'); // navigation to managingContractor
+        // Alert.alert('Contractors!', 'Coming soon');
+        props.navigation.navigate('Managingcontractors'); // navigation to managingContractor
         break;
       case 'Notices':
         setselectedId('Notices');
@@ -138,7 +138,7 @@ const CustomSidebarMenu = props => {
               style={{alignSelf: 'center'}}
             />
           </View>
-          <Text style={DrawerStyle.SubHeading}>{"Property listings"}</Text>
+          <Text style={DrawerStyle.SubHeading}>{'Property listings'}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity

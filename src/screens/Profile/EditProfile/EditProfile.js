@@ -190,7 +190,7 @@ const EditProfile = props => {
     const url = Config.BASE_URL;
     setIsLoading(true);
     const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_id}`;
+      url + `getAccount_details/${loginData.Login_details.user_account_id}`;
     console.log(apiUrl, 'apiUrl');
     // Make a GET request using Axios
     axios
@@ -204,8 +204,12 @@ const EditProfile = props => {
         setLocation(response?.data?.data[0]?.UAD_CURR_PHYSICAL_ADD);
         setAbout(response?.data?.data[0]?.UAD_BIO);
         setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO);
-        const initialJobTypeIds = response?.data?.data[0]?.user_role_id
-          ? response?.data?.data[0]?.user_role_id.split(',').map(Number)
+
+        const initialJobTypeIds = response?.data?.data[0]
+          ?.UAD_HOW_WOULD_YOU_DES_YOUR_SELF
+          ? response?.data?.data[0]?.UAD_HOW_WOULD_YOU_DES_YOUR_SELF.split(
+              ',',
+            ).map(Number)
           : [];
         setSelectedServices(initialJobTypeIds);
         console.log(accountDetails.UAD_AUSTR_BUSINESS_NO);

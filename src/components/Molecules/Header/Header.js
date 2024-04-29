@@ -16,7 +16,7 @@ const TopHeader = props => {
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
-
+  const [isLoading, setIsLoading] = useState(true);
   const [accountDetails, setAccountDetails] = useState(null);
   const isvisible = useIsFocused();
   // const getPersonalDetails = async () => {
@@ -58,12 +58,12 @@ const TopHeader = props => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
+      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
     await axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        console.log('API Response:', response?.data?.data[0]?.image_path[0]);
         if (
           response?.data?.data &&
           Array.isArray(response.data.data) &&
@@ -90,11 +90,7 @@ const TopHeader = props => {
   }, [isvisible, loginData]);
 
   const userProfileImageUri = accountDetails?.image_path[0];
-  // loginData.Login_details?.profile_photo_path ||
-  // signUp_account_response?.Login_details?.profile_photo_path;
-  const HandleProfileNavigation = () => {
-    props.navigation.navigate('EditProfile');
-  };
+
   return (
     <>
       <StatusBar

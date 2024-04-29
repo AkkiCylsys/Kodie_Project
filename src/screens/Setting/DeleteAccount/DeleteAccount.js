@@ -133,7 +133,7 @@ const DeleteAccount = props => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
+      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
     await axios
       .get(apiUrl)

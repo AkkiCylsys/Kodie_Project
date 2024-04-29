@@ -674,44 +674,66 @@ export default CreateJobFirstScreen = props => {
         setIsLoading(false);
       });
   };
+
   const handleServices = selectJobType => {
-    const propertyData = {
-      P_PARENT_CODE:
-        selectJobType === 166
-          ? 'HOME_CLEANING'
-          : selectJobType === 167
-          ? 'OUTDOOR_CLEANING'
-          : selectJobType === 168
-          ? 'HEAVY_LIFTING'
-          : selectJobType === 169
-          ? 'FIXING_AND_MAINTENANCE'
-          : null,
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
-    setIsLoading(true);
-    axios
-      .post(propertyType, propertyData)
-      .then(response => {
-        console.log('ServicesType...', response?.data);
-        if (response?.data?.status === true) {
+    // Check the value of selectJobType
+    let P_PARENT_CODE = null;
+
+    // Map CompanyjobType to P_PARENT_CODE
+    switch (selectJobType) {
+      case 166:
+        P_PARENT_CODE = 'HOME_CLEANING';
+        break;
+      case 167:
+        P_PARENT_CODE = 'OUTDOOR_CLEANING';
+        break;
+      case 168:
+        P_PARENT_CODE = 'HEAVY_LIFTING';
+        break;
+      case 169:
+        P_PARENT_CODE = 'FIXING_AND_MAINTENANCE';
+        break;
+      default:
+        console.error('Unknown CompanyjobType:', selectJobType);
+        return; // Exit the function if selectJobType is unknown
+    }
+
+    console.log('P_PARENT_CODE:', P_PARENT_CODE);
+
+    if (P_PARENT_CODE !== null) {
+      const propertyData = {
+        P_PARENT_CODE: P_PARENT_CODE,
+        P_TYPE: 'OPTION',
+      };
+
+      console.log('Companydata', propertyData);
+
+      const url = Config.BASE_URL;
+      const propertyType = url + 'lookup_details';
+      console.log('Request URL:', propertyType);
+      setIsLoading(true);
+
+      // Make POST request with axios
+      axios
+        .post(propertyType, propertyData)
+        .then(response => {
+          console.log('ServicesType...', response?.data);
+          if (response?.data?.status === true) {
+            setIsLoading(false);
+            console.log('ServicesTypeData....', response?.data?.lookup_details);
+            setServicesData(response?.data?.lookup_details);
+          } else {
+            console.error('Job Services Error:', response?.data?.error);
+            setIsLoading(false);
+          }
+        })
+        .catch(error => {
+          console.error('Job Services Error:', error);
           setIsLoading(false);
-          console.log('ServicesTypeData....', response?.data?.lookup_details);
-          setServicesData(response?.data?.lookup_details);
-        } else {
-          console.error(' job Services_error:', response?.data?.error);
-          // alert("Oops something went wrong! Please try again later.");
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error(' job Services error:', error);
-        // alert(error);
-        setIsLoading(false);
-      });
+        });
+    }
   };
+
   // EditMode ..................
   const getJobDetails = () => {
     const url = Config.BASE_URL;

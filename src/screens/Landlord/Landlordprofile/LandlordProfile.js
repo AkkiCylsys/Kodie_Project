@@ -42,7 +42,7 @@ export default LandlordProfile = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
   console.log('signUp_account_response...', signUp_account_response);
-  const user_id = loginData?.Login_details?.user_id;
+  const user_id = loginData?.Login_details?.user_account_id;
   // console.log('user_id in profile...', user_id);
   const getPersonalDetails = () => {
     setIsLoading(true);
