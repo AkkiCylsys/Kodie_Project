@@ -214,12 +214,14 @@ export const SearchResultCss = StyleSheet.create({
   bedCountView:{
     flexDirection:"row",
     marginHorizontal:8,
-    marginTop:5
+    marginTop:5,
+    marginBottom:5
   },
   bedIconView:{
       borderWidth:1,
       padding:5,
       borderRadius:10,
-      borderColor:_COLORS.Kodie_GrayColor
+      borderColor:_COLORS.Kodie_GrayColor,
+      alignSelf:"center"
   }
 });

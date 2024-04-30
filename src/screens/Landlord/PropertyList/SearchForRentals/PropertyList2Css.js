@@ -235,4 +235,6 @@ export const PropertyList2Css = StyleSheet.create({
     marginBottom: 30,
     position: 'absolute',
   },
+  error_text: {color: 'red', marginLeft: 10, marginTop: 5},
+
 });

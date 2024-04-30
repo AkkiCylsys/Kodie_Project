@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -23,82 +23,79 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomModalData from '../../../../components/Molecules/BottomModal/BottomModalData';
 import {SliderBox} from 'react-native-image-slider-box';
 import styles from 'rn-range-slider/styles';
-
-const property_List2 = [
-  {
-    id: '1',
-    propertyName: 'Apartment',
-    name: 'Melbourne',
-    location: '8502 Preston Rd. Inglewood',
-    image: BANNERS.apartment,
-    buttonName: 'AVAILABLE: 1 OCT',
-    tanentname: 'Jason Stathom',
-    rent: '$870.00',
-    badroom: '3',
-    bathroom: '2',
-    parking: '1',
-    day: '0 days',
-    hours: '6 hrs',
-    mint: '10 mins',
-    aspact_ratio: '86m2',
-    availableDate: true,
-    availablenow: false,
-  },
-  {
-    id: '2',
-    propertyName: 'Apartment',
-    name: 'Melbourne',
-    location: '8502 Preston Rd. Inglewood',
-    image: BANNERS.apartment,
-    buttonName: 'AVAILABLE: NOW',
-    tanentname: 'Jason Stathom',
-    rent: '$660.00',
-    badroom: '3',
-    bathroom: '2',
-    parking: '1',
-    day: '4 days',
-    hours: '6 hrs',
-    mint: '10 mins',
-    aspact_ratio: '86m2',
-    availableDate: false,
-    availablenow: true,
-  },
-  {
-    id: '3',
-    propertyName: 'Apartment',
-    name: 'Melbourne',
-    location: '8502 Preston Rd. Inglewood',
-    image: BANNERS.apartment,
-    buttonName: 'AVAILABLE: NOW',
-    tanentname: 'Jason Stathom',
-    rent: '$850.00',
-    badroom: '3',
-    bathroom: '2',
-    parking: '1',
-    day: '4 days',
-    hours: '20 hrs',
-    mint: '5 mins',
-    aspact_ratio: '86m2',
-    availableDate: false,
-    availablenow: true,
-  },
-];
-
+import {Config} from '../../../../Config';
+import axios from 'axios';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 export default SearchResult = props => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchRentalData, setSearchRentalData] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
-  const refRBSheet = useRef();
+  const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
 
+  const refRBSheet = useRef();
+  const searchRentalResponse = props?.route?.params?.searchRentalResponse;
+  console.log('searchRentalResponse.....', searchRentalResponse);
+  const searchInputData = props?.route?.params?.searchInputData;
+  console.log('searchInputData....', searchInputData);
+  const propertyType = searchInputData?.input_PropertyType;
+  const AllCountsData = props?.route?.params?.AllCountsData;
+  console.log('AllCountsData...in result', AllCountsData);
+  const keyFeatureMapping = {};
+  additionalfeatureskey.forEach(detail => {
+    keyFeatureMapping[detail.paf_key] = detail.features_name;
+  });
+
+  const addtional_keyFeature = searchInputData?.input_addtional_keyFeature;
+  const additionalKeyFeaturesString = addtional_keyFeature.map(
+    key => keyFeatureMapping[key],
+  );
+  console.log('additionalKeyFeaturesString.....', additionalKeyFeaturesString);
+  // useEffect....
+  useEffect(() => {
+    additional_key_features();
+  }, []);
   const images = [
     BANNERS.wallImage,
     BANNERS.BannerFirst,
     BANNERS.BannerSecond,
     BANNERS.previewImage,
   ];
-  const propertyData2_render = ({item}) => {
+  // Api intrigation...
+  const additional_key_features = () => {
+    const url = Config.BASE_URL;
+    const additionalApi = url + 'get_key_features';
+    console.log('Request URL:', additionalApi);
+    setIsLoading(true);
+    axios
+      .get(additionalApi)
+      .then(response => {
+        console.log('additional_Data', response?.data);
+        if (response?.data?.success === true) {
+          setIsLoading(false);
+          console.log('additional key_features....', response?.data);
+          setAdditionalfeatureskey(response?.data?.key_features_details);
+          console.log(
+            'AdditionalFeaturesKey....',
+            response?.data?.key_features_details,
+          );
+        } else {
+          console.error('additional_features_error:', response?.data?.error);
+          // alert('Oops something went wrong! Please try again later.');
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('additional_features error:', error);
+        // alert(error);
+        setIsLoading(false);
+      });
+  };
+  const propertyData2_render = ({item, index}) => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
-        <View style={SearchResultCss.flatListContainer}>
+        {/* <View style={SearchResultCss.flatListContainer}>
           <View style={[SearchResultCss.flat_MainView, {marginBottom: 10}]}>
             <TouchableOpacity style={SearchResultCss.bidsButton}>
               <Text style={SearchResultCss.bidsButtonText}>Accepting bids</Text>
@@ -249,6 +246,145 @@ export default SearchResult = props => {
           <BottomModalData
             onPress={() => props.navigation.navigate('ViewPropertyDetails')}
           />
+        </RBSheet> */}
+        <View style={{marginTop: 10}}>
+          <SliderBox
+            // images={editMode ? updateAllImage : allImagePaths}
+            images={images}
+            sliderBoxHeight={200}
+            onCurrentImagePressed={index =>
+              console.warn(`image ${index} pressed`)
+            }
+            inactiveDotColor={_COLORS.Kodie_GrayColor}
+            dotColor={_COLORS.Kodie_GreenColor}
+            autoplay
+            circleLoop
+            resizeMethod={'resize'}
+            resizeMode={'cover'}
+            dotStyle={SearchResultCss.dotStyle}
+            ImageComponentStyle={{
+              flex: 1,
+              resizeMode: 'cover',
+              // borderRadius: 15,
+              // width: '90%',
+            }}
+          />
+        </View>
+        <View style={SearchResultCss.apartmentmainView}>
+          <View>
+            <Text
+              style={[
+                SearchResultCss.propertyHeading,
+                {fontFamily: FONTFAMILY.K_Regular},
+              ]}>
+              {'Apartment'}
+            </Text>
+            <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
+              {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null}
+            </Text>
+          </View>
+          <View style={SearchResultCss.shareIcon}>
+            <TouchableOpacity>
+              <Entypo
+                color={_COLORS.Kodie_ExtraminLiteGrayColor}
+                name="share"
+                size={25}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <AntDesign
+                color={_COLORS.Kodie_ExtraminLiteGrayColor}
+                name="hearto"
+                size={25}
+                style={{marginHorizontal: 20}}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                refRBSheet.current.open();
+              }}>
+              <Entypo
+                color={_COLORS.Kodie_ExtraminLiteGrayColor}
+                name="dots-three-horizontal"
+                size={25}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={SearchResultCss.locationView}>
+          <Entypo
+            color={_COLORS.Kodie_GreenColor}
+            name="location-pin"
+            size={20}
+          />
+          <Text style={SearchResultCss.location}>{item?.location || ''}</Text>
+        </View>
+        <View style={SearchResultCss.availableBtn}>
+          <Text style={SearchResultCss.availabletext}>
+            {'AVAILABLE: 1 OCT'}
+          </Text>
+        </View>
+        <View style={SearchResultCss.bedCountView}>
+          <View style={SearchResultCss.locationView}>
+            <Ionicons
+              color={_COLORS.Kodie_GreenColor}
+              name="bed-outline"
+              size={20}
+              style={SearchResultCss.bedIconView}
+            />
+            <Text style={SearchResultCss.bedcont}>{'5'}</Text>
+          </View>
+          <View style={SearchResultCss.locationView}>
+            <MaterialCommunityIcons
+              color={_COLORS.Kodie_GreenColor}
+              name="shower-head"
+              size={20}
+              style={SearchResultCss.bedIconView}
+            />
+            <Text style={SearchResultCss.bedcont}>{'2'}</Text>
+          </View>
+          <View style={SearchResultCss.locationView}>
+            <Ionicons
+              color={_COLORS.Kodie_GreenColor}
+              name="car"
+              size={20}
+              style={SearchResultCss.bedIconView}
+            />
+            <Text style={SearchResultCss.bedcont}>{'5'}</Text>
+          </View>
+          <View style={SearchResultCss.locationView}>
+            <EvilIcons
+              color={_COLORS.Kodie_GreenColor}
+              name="image"
+              size={20}
+              style={SearchResultCss.bedIconView}
+            />
+            <Text style={SearchResultCss.bedcont}>{'86m2'}</Text>
+          </View>
+        </View>
+        <DividerIcon
+          borderBottomWidth={3}
+          color={_COLORS.Kodie_LiteWhiteColor}
+        />
+        <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: SearchResultCss.bottomModal_container,
+          }}>
+          <BottomModalData
+            onPress={() => props.navigation.navigate('ViewPropertyDetails')}
+            onClose={() => {
+              refRBSheet.current.close();
+            }}
+          />
         </RBSheet>
       </>
     );
@@ -265,7 +401,27 @@ export default SearchResult = props => {
           <View style={SearchResultCss.LeftTextView}>
             <Text style={SearchResultCss.LeftText}>Melbourne</Text>
             <Text style={SearchResultCss.LeftTextRentText}>
-              Apartment; $300 to $1000; 3 Beds; 2 Baths; Garden; Pool ...
+              {`${
+                propertyType === 22
+                  ? 'House'
+                  : propertyType === 23
+                  ? 'Cottage'
+                  : propertyType === 24
+                  ? 'Apartment/Flat'
+                  : propertyType === 25
+                  ? 'Townhouse'
+                  : propertyType === 26
+                  ? 'Land/Vacant Plot'
+                  : propertyType === 27
+                  ? 'Farm'
+                  : ''
+              } ; $${searchInputData?.input_minRange} ; $${
+                searchInputData?.input_maxRange
+              } ; ${AllCountsData[0]?.Bedrooms} Beds ${
+                AllCountsData[1]?.Bathrooms
+              } Baths ; ${AllCountsData[2]?.Parking_Space} parking space ; ${
+                AllCountsData[3]?.StreetParking
+              } on Streetparking ; ${additionalKeyFeaturesString}`}
             </Text>
           </View>
           <View style={SearchResultCss.payButtonMainView}>
@@ -279,8 +435,7 @@ export default SearchResult = props => {
           color={_COLORS.Kodie_LiteWhiteColor}
         />
 
-        {/* <FlatList data={property_List2} renderItem={propertyData2_render} /> */}
-        <View style={[SearchResultCss.flat_MainView, {marginBottom: 10}]}>
+        <View style={[SearchResultCss.flat_MainView]}>
           <TouchableOpacity style={SearchResultCss.bidsButton}>
             <Text style={SearchResultCss.bidsButtonText}>Accepting bids</Text>
           </TouchableOpacity>
@@ -295,112 +450,13 @@ export default SearchResult = props => {
             <Text style={SearchResultCss.biddingText}>{'5 m'}</Text>
           </View>
         </View>
-        <SliderBox
-          // images={editMode ? updateAllImage : allImagePaths}
-          images={images}
-          sliderBoxHeight={200}
-          onCurrentImagePressed={index =>
-            console.warn(`image ${index} pressed`)
-          }
-          inactiveDotColor={_COLORS.Kodie_GrayColor}
-          dotColor={_COLORS.Kodie_GreenColor}
-          autoplay
-          circleLoop
-          resizeMethod={'resize'}
-          resizeMode={'cover'}
-          dotStyle={SearchResultCss.dotStyle}
-          ImageComponentStyle={{
-            flex: 1,
-            resizeMode: 'cover',
-            // borderRadius: 15,
-            // width: '90%',
-          }}
+        <FlatList
+          data={searchRentalResponse?.data}
+          keyExtractor={(item, index) => index}
+          renderItem={propertyData2_render}
         />
-        <View style={SearchResultCss.apartmentmainView}>
-          <View>
-            <Text style={SearchResultCss.propertyHeading}>{'Apartment'}</Text>
-            <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
-              {'$870.00/wk'}
-            </Text>
-          </View>
-          <View style={SearchResultCss.shareIcon}>
-            <TouchableOpacity>
-              <Entypo color={_COLORS.Kodie_BlackColor} name="share" size={25} />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <AntDesign
-                color={_COLORS.Kodie_BlackColor}
-                name="hearto"
-                size={25}
-                style={{marginHorizontal: 20}}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Entypo
-                color={_COLORS.Kodie_BlackColor}
-                name="dots-three-horizontal"
-                size={25}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        <View style={SearchResultCss.locationView}>
-          <Entypo
-            color={_COLORS.Kodie_GreenColor}
-            name="location-pin"
-            size={20}
-          />
-          <Text style={SearchResultCss.location}>
-            {'5 Aspen Villas, Maroubra, NSW'}
-          </Text>
-        </View>
-        <View style={SearchResultCss.availableBtn}>
-          <Text style={SearchResultCss.availabletext}>
-            {'AVAILABLE: 1 OCT'}
-          </Text>
-        </View>
-        <View style={SearchResultCss.bedCountView}>
-          <View style={SearchResultCss.locationView}>
-            <Ionicons
-              color={_COLORS.Kodie_GreenColor}
-              name="bed-outline"
-              size={20}
-              style={SearchResultCss.bedIconView}
-
-            />
-            <Text style={SearchResultCss.bedcont}>{'5'}</Text>
-          </View>
-          <View style={SearchResultCss.locationView}>
-            <MaterialCommunityIcons
-              color={_COLORS.Kodie_GreenColor}
-              name="shower-head"
-              size={20}
-              style={SearchResultCss.bedIconView}
-
-            />
-            <Text style={SearchResultCss.bedcont}>{'2'}</Text>
-          </View>
-          <View style={SearchResultCss.locationView}>
-            <Ionicons
-              color={_COLORS.Kodie_GreenColor}
-              name="car"
-              size={20}
-              style={SearchResultCss.bedIconView}
-
-            />
-            <Text style={SearchResultCss.bedcont}>{'5'}</Text>
-          </View>
-          <View style={SearchResultCss.locationView}>
-            <EvilIcons
-              color={_COLORS.Kodie_GreenColor}
-              name="image"
-              size={20}
-              style={SearchResultCss.bedIconView}
-            />
-            <Text style={SearchResultCss.bedcont}>{'86m2'}</Text>
-          </View>
-        </View>
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
 };

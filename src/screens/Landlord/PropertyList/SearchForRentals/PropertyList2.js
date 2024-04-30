@@ -26,7 +26,7 @@ import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPl
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 const data = [
   {label: 'Bharat', value: '1'},
   {label: 'Australia', value: '2'},
@@ -52,6 +52,7 @@ const PropertyList2 = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [proteryTypeData, setProteryTypeData] = useState([]);
   const [proteryTypeValue, setProteryTypeValue] = useState([]);
+  const [proteryTypeValueError, setProteryTypeValueError] = useState(false);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
     [],
@@ -71,6 +72,7 @@ const PropertyList2 = props => {
   const [CountParking, setCountParking] = useState(0);
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [location, setLocation] = useState('');
+  const [locationError, setLocationError] = useState('');
   const [UserCurrentCity, setUserCurrentCity] = useState('');
   const [UserZip_Code, setUserZip_Code] = useState('');
   const [IsMap, setIsMap] = useState(false);
@@ -79,12 +81,29 @@ const PropertyList2 = props => {
   const [longitude, setlongitude] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   useEffect(() => {
     handle_property_Type();
     additional_key_features();
   }, []);
-
+  // const goBack = () => {
+  //   navigation.pop();
+  // };
+  // props.backHandleData(
+  //   IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack(),
+  // );
+  const dataToSend = {
+    input_Location: location,
+    input_PropertyType: proteryTypeValue,
+    input_minRange: min,
+    input_maxRange: max,
+    input_KeyFeature: AllCountsData,
+    input_Fur_unFurnished: selectedButtonFurnishedId,
+    input_petFrendly: selectPetFriendlyBtnId,
+    input_secureDeposit: secureByDepositBtnId,
+    input_addtional_keyFeature: additionalfeatureskeyvalue,
+  };
+  console.log('AllCountsData....', AllCountsData);
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -101,6 +120,7 @@ const PropertyList2 = props => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
+    setLocationError('');
     // getAddress();
   };
   const getAddress = (latitude, longitude) => {
@@ -132,6 +152,7 @@ const PropertyList2 = props => {
         var addressComponent2 = json.results[0].address_components[1];
         console.log('addressComponent2.....', addressComponent2);
         setUserCurrentCity(addressComponent2.long_name);
+        console.log('UserCurrentCity....', UserCurrentCity);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         // setLocation(MainFullAddress);
         console.log('mainFullAddress....', MainFullAddress);
@@ -214,6 +235,25 @@ const PropertyList2 = props => {
         setIsLoading(false);
       });
   };
+  // Validation ...
+  const handleLocation = text => {
+    if (text === '') {
+      setLocationError('Location is require.');
+    } else {
+      setLocationError('');
+    }
+    setLocation(text);
+  };
+
+  const handleSearchForRental = () => {
+    if (location == '') {
+      setLocationError('Location is requireb.');
+    } else if (proteryTypeValue == '') {
+      setProteryTypeValueError(true);
+    } else {
+      searchForRental();
+    }
+  };
 
   const searchForRental = () => {
     const url = Config.BASE_URL;
@@ -240,7 +280,11 @@ const PropertyList2 = props => {
       .then(response => {
         console.log('API Response searchForRental..', response?.data);
         if (response?.data?.success === true) {
-        navigation.navigate('SearchResult');
+          navigation.navigate('SearchResult', {
+            searchRentalResponse: response?.data,
+            searchInputData: dataToSend,
+            AllCountsData: AllCountsData,
+          });
         } else {
           setIsLoading(false);
         }
@@ -257,9 +301,10 @@ const PropertyList2 = props => {
   const AllCountsData = [
     {Bedrooms: CountBedroom},
     {Bathrooms: CountBathroom},
-    {'Parking Space': CountParking},
-    {'On-StreetParking': CountParkingStreet},
+    {Parking_Space: CountParking},
+    {StreetParking: CountParkingStreet},
   ];
+  console.log('AllCountsData....', AllCountsData);
   const increaseBedroomCount = () => {
     setCountBedroom(prevCount => prevCount + 1);
   };
@@ -379,9 +424,11 @@ const PropertyList2 = props => {
                 <TextInput
                   style={PropertyList2Css.locationInput}
                   value={location}
-                  onChangeText={setLocation}
+                  // onChangeText={setLocation}
+                  onChangeText={handleLocation}
                   onFocus={() => {
                     setIsSearch(true);
+                    handleLocation();
                   }}
                   placeholder="Search location"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -400,6 +447,9 @@ const PropertyList2 = props => {
                 />
               </TouchableOpacity>
             </View>
+            {locationError ? (
+              <Text style={PropertyList2Css.error_text}>{locationError}</Text>
+            ) : null}
             <Text style={PropertyList2Css.inputText}>Property Type:</Text>
             <Dropdown
               style={PropertyList2Css.dropdown}
@@ -417,8 +467,14 @@ const PropertyList2 = props => {
               value={value}
               onChange={item => {
                 setProteryTypeValue(item.lookup_key);
+                setProteryTypeValueError(false);
               }}
             />
+            {proteryTypeValueError ? (
+              <Text style={PropertyList2Css.error_text}>
+                {'Property type is require.'}
+              </Text>
+            ) : null}
             <View style={PropertyList2Css.rowView}>
               <Text style={PropertyList2Css.inputText}>Min Price:</Text>
               <Text style={PropertyList2Css.inputText}>Max Price:</Text>
@@ -754,7 +810,8 @@ const PropertyList2 = props => {
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
                 // searchForRental();
-                navigation.navigate('SearchResult');
+                handleSearchForRental();
+                // navigation.navigate('SearchResult');
               }}
               disabled={isLoading ? true : false}
             />
