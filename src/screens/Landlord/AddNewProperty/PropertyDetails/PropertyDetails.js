@@ -63,33 +63,28 @@ export default PropertyDetails = props => {
   const [property_value, setProperty_value] = useState(0);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(1);
-  const [selectedProperty, setSelectedProperty] = useState(null);
-  const [propertyTypeData, setPropertyTypeData] = useState([]);
   const [property_Data, setProperty_Data] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
-  const [updateProperty_Details, setupdateProperty_Details] = useState([]);
-  const [property_Data_id, setProperty_Data_id] = useState({});
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
+  const [error, setError] = useState('');
 
-  const [getLat, setGetLat] = useState('');
-  const [getLong, setGetLong] = useState('');
+  const handleTextInputFocus = () => {
+    if (error) {
+      setError(''); // Clear error message when TextInput receives focus
+    }
+  };
 
-  // const [locationError, setlocationError] = useState("");
-  // const [propertytypeError, setpropertytypeError] = useState("");
-  // const validateFields = () => {
-  //   if (!location) {
-  //     // alert('Please enter a location.');
-  //     setlocationError("Please enter a location.");
-  //   } else if (!property_value) {
-  //     setpropertytypeError("Please select a property type.");
-  //   } else {
-  //     null;
-  //   }
-  // };
-
+  const handleLocationSearch = () => {
+    if (!location) {
+      setError('Please enter a location.'); // Show error if location is empty
+    } else {
+      setError(''); // Clear error message if location is filled
+      // Perform location search logic
+    }
+  };
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -114,8 +109,6 @@ export default PropertyDetails = props => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    // Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
-    // setLocation(property_Detail?.location);
     setLocation('');
     setProperty_value('');
     setPropertyDesc('');
@@ -151,12 +144,12 @@ export default PropertyDetails = props => {
         console.log('propertyDetail....', response?.data?.property_details);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        // alert('Oops something went wrong! Please try again later.');
+        Alert.alert('Worning', error?.response?.data?.message);
         setIsLoading(false);
       }
     } catch (error) {
       console.error('property_type error in get data:', error);
-      // alert(error);
+      Alert.alert('Worning', error?.response?.data?.message);
       setIsLoading(false);
     }
   };
@@ -164,7 +157,6 @@ export default PropertyDetails = props => {
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
-      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
@@ -216,10 +208,9 @@ export default PropertyDetails = props => {
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderLabel = ({position, stepStatus}) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
         : '#808080';
@@ -260,17 +251,16 @@ export default PropertyDetails = props => {
   const ConfirmAddress = () => {
     setIsMap(false);
     setLocation(currentLocation);
+    setError('');
   };
   const openMapandClose = text => {
     setIsMap(false);
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    // alert(JSON.stringify(Region))
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
@@ -279,7 +269,6 @@ export default PropertyDetails = props => {
         console.log('current address...', json.results[0].formatted_address);
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
-        // setLocation(json.results[0].formatted_address);
         let MainFullAddress =
           json.results[0].address_components[1].long_name +
           ', ' +
@@ -504,8 +493,13 @@ export default PropertyDetails = props => {
                     <TextInput
                       style={PropertyDetailsStyle.locationInput}
                       value={location}
-                      onChangeText={setLocation}
+                      onChangeText={text => {
+                        setLocation(text);
+                        if (text && error) setError('');
+                        handleTextInputFocus(); // Clear error message if location is being filled
+                      }}
                       onFocus={() => {
+                        handleTextInputFocus();
                         setIsSearch(true);
                       }}
                       placeholder="Search location"
@@ -516,6 +510,7 @@ export default PropertyDetails = props => {
                     style={PropertyDetailsStyle.locationIconView}
                     onPress={() => {
                       setIsMap(true);
+                      handleTextInputFocus();
                     }}>
                     <Octicons
                       name={'location'}
@@ -525,6 +520,9 @@ export default PropertyDetails = props => {
                     />
                   </TouchableOpacity>
                 </View>
+                {error ? (
+                  <Text style={PropertyDetailsStyle.errorText}>{error}</Text>
+                ) : null}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
@@ -647,19 +645,24 @@ export default PropertyDetails = props => {
                     // handleLocation(location);
                     // handlePropertyValue(property_value);
                     // if (handleLocation() ||handlePropertyValue()) {
-                    props.navigation.navigate('PropertyFeature', {
-                      location: location,
-                      property_value: property_value,
-                      propertyDesc: propertyDesc,
-                      selectedButtonId: selectedButtonId,
-                      latitude: latitude,
-                      longitude: longitude,
-                      propertyid: propertyid,
-                      city: city,
-                      state: state,
-                      country: country,
-                      editMode: editMode,
-                    });
+                    if (!location) {
+                      setError('Please enter a location.'); // Show error if location is empty
+                      return;
+                    } else {
+                      props.navigation.navigate('PropertyFeature', {
+                        location: location,
+                        property_value: property_value,
+                        propertyDesc: propertyDesc,
+                        selectedButtonId: selectedButtonId,
+                        latitude: latitude,
+                        longitude: longitude,
+                        propertyid: propertyid,
+                        city: city,
+                        state: state,
+                        country: country,
+                        editMode: editMode,
+                      });
+                    }
                     // setLocation("");
                     // setPropertyDesc("");
                     // setProperty_value("");
