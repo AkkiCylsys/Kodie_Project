@@ -51,7 +51,8 @@ const SubscriptionScreen = props => {
   };
 
   const getClientSecret = () => {
-    const url = 'https://kodieapis.cylsys.com/api/v1/payment_intent';
+    // const url = 'https://kodieapis.cylsys.com/api/v1/payment_intent';
+    const url = 'https://kodietestapi.cylsys.com/api/v1/payment_intent';
     console.log('Request URL:', url);
     setIsLoading(true);
     const client_data = {
@@ -115,7 +116,8 @@ const SubscriptionScreen = props => {
     }
   };
   const subscribeCustomer = () => {
-    const url = 'https://kodieapis.cylsys.com/api/v1/create_subscription';
+    // const url = 'https://kodieapis.cylsys.com/api/v1/create_subscription';
+    const url = 'https://kodietestapi.cylsys.com/api/v1/create_subscription';
     console.log('Request URL:', url);
     setIsLoading(true);
     console.log('customer id inside..', customerID);

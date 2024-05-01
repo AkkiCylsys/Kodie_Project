@@ -1,4 +1,12 @@
-import {View, Text, Image, ScrollView, Alert, SafeAreaView} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  Alert,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {ManageSubscriptionStyle} from './ManageSubscriptionStyle';
@@ -131,8 +139,16 @@ const ManageSubscription = props => {
         selectedPriceId = 'price_1Ot4ufKIJa7H9ZVBM0ihuIVb';
       }
       // Add any other conditions as needed
-
-      demoSubscription(selectedPriceId);
+      {
+        Platform.OS == 'ios'
+          ? props.navigation.navigate(
+              'Subscriptions',
+              // , {
+              //     productId: selectedPriceId,
+              //   }
+            )
+          : demoSubscription(selectedPriceId);
+      }
     };
     return (
       <View

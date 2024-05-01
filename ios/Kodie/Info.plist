@@ -2,10 +2,23 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key> UIFileSharingEnabled</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
 	<string>Kodie</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>MKDirectionsRequest</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.apple.maps.directionsrequest</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,11 +37,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-			
-<key> UIFileSharingEnabled</key>
-<true/>
-<key>LSSupportsOpeningDocumentsInPlace</key>
-<true/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<true/>
+	<key>MKDirectionsApplicationSupportedModes</key>
+	<array>
+		<string>MKDirectionsModeOther</string>
+	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -40,8 +54,6 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSContactsUsageDescription</key>
-	<string>Kodie requires Contacts access to allows you quick and secure access.</string>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Kodie requires Apple Music access to allows you quick and secure access.</string>
 	<key>NSBluetoothAlwaysUsageDescription</key>
@@ -52,6 +64,8 @@
 	<string>Kodie requires Calender access to allows you quick and secure access.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Kodie requires Camera access to allows you quick and secure access.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Kodie requires Contacts access to allows you quick and secure access.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Kodie requires FaceID access to allows you quick and secure access.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>

@@ -52,7 +52,7 @@ export default CompanyDetails = props => {
   const [UserZip_Code, setUserZip_Code] = useState('');
   const [IsMap, setIsMap] = useState(false);
   const [IsSearch, setIsSearch] = useState(false);
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState();
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const [Companylatitude, setCompanylatitude] = useState('');
@@ -489,7 +489,7 @@ export default CompanyDetails = props => {
     const url = Config.BASE_URL;
     setIsLoading(true);
     const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_id}`;
+      url + `getAccount_details/${loginData.Login_details.user_account_id}`;
 
     // Make a GET request using Axios
     axios
@@ -499,25 +499,25 @@ export default CompanyDetails = props => {
         setAccountDetails(response?.data?.data[0]);
         setLocation(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
-            ? response?.data?.data[0]?.UAD_COMPANY_ADDRESS
+            ? response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS
             : '',
         );
         setCompanyLocation(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.UAD_COMPANY_ADDRESS
+            ? response?.data?.data[0]?.business_data?.UAD_COMPANY_ADDRESS
             : '',
         );
-        const initialJobTypeIds = response?.data?.data[0]
-          ?.UAD_CATEGORY_SERVICE_YOU_OFFER
-          ? response?.data?.data[0].UAD_CATEGORY_SERVICE_YOU_OFFER.split(
-              ',',
-            ).map(Number)
+        const initialJobTypeIds = response?.data?.data[0]?.business_data
+          ?.service_offer
+          ? response?.data?.data[0].business_data?.service_offer
+              .split(',')
+              .map(Number)
           : [];
-        const initialServiceIds = response?.data?.data[0]
-          ?.UAD_SERVICE_YOU_PERFORM
-          ? response?.data?.data[0].UAD_SERVICE_YOU_PERFORM.split(',').map(
-              Number,
-            )
+        const initialServiceIds = response?.data?.data[0]?.business_data
+          ?.service_perform
+          ? response?.data?.data[0].business_data?.service_perform
+              .split(',')
+              .map(Number)
           : [];
         setSelectJobTypeid(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
@@ -535,7 +535,7 @@ export default CompanyDetails = props => {
             : [],
         );
         setIndiSelectJobType(
-          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
+          response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
             ? initialJobTypeIds
             : [],
         );
@@ -561,17 +561,17 @@ export default CompanyDetails = props => {
         );
         setCompanyName(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.UAD_ORGANIZATION_NAME
+            ? response?.data?.data[0]?.business_data?.organization_name
             : '',
         );
         SetBusinessNumber(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.UAD_AUSTR_BUSINESS_NO
+            ? response?.data?.data[0]?.business_data?.Austrilian_business_no
             : '',
         );
         setCompanyGSTNumber(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
-            ? response?.data?.data[0]?.UAD_COMPANY_GST_VAT_NO
+            ? response?.data?.data[0]?.business_data?.gst
             : '',
         );
         setIsLoading(false);
@@ -581,14 +581,14 @@ export default CompanyDetails = props => {
         console.error('API Error PersonalDetails C:', error);
       });
   };
-  useEffect(() => {
-    // Set initial tab value based on accountDetails
-    if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
-      setTabValue('IndividualInProfile');
-    } else if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
-      setTabValue('CompanyInProfile');
-    }
-  }, [accountDetails]);
+  // useEffect(() => {
+  //   // Set initial tab value based on accountDetails
+  //   if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
+  //     setTabValue('IndividualInProfile');
+  //   } else if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
+  //     setTabValue('CompanyInProfile');
+  //   }
+  // }, [accountDetails]);
   const UpdateCompanyData = async () => {
     const formData = new FormData();
 
@@ -887,9 +887,7 @@ export default CompanyDetails = props => {
                           style={CompanyInProfileStyle.locationInput}
                           value={Companylocation}
                           onChangeText={setCompanyLocation}
-                          onFocus={() => {
-                            setIsSearch(true);
-                          }}
+                          onFocus={() => setIsSearch(true)}
                           placeholder="Search location"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                         />
@@ -1095,9 +1093,9 @@ export default CompanyDetails = props => {
                       },
                     ]}
                     onPress={() => {
-                      if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
-                        setTabValue('IndividualInProfile');
-                      }
+                      // if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
+                      setTabValue('IndividualInProfile');
+                      // }
                     }}>
                     <Text
                       style={[
@@ -1123,9 +1121,9 @@ export default CompanyDetails = props => {
                       },
                     ]}
                     onPress={() => {
-                      if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
-                        setTabValue('CompanyInProfile');
-                      }
+                      // if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
+                      setTabValue('CompanyInProfile');
+                      // }
                     }}>
                     <Text
                       style={[

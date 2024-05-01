@@ -141,7 +141,7 @@ export default Dashboard = props => {
   //---click back button closing the app
 
   useEffect(() => {
-    fetchData()
+    fetchData();
     const handleBackPress = () => {
       if (navigation.isFocused()) {
         BackHandler.exitApp();
@@ -156,7 +156,10 @@ export default Dashboard = props => {
     };
   }, [navigation, isvisible]);
   const fetchData = async () => {
-    if (loginData?.Login_details?.user_id || loginData?.Login_details?.user_account_id) {
+    if (
+      loginData?.Login_details?.user_id ||
+      loginData?.Login_details?.user_account_id
+    ) {
       await getPersonalDetails();
       await handleprofileCompletion();
       await check_subscription();
@@ -164,7 +167,7 @@ export default Dashboard = props => {
   };
   //---click back button closing the app
 
-  const handleprofileCompletion =async () => {
+  const handleprofileCompletion = async () => {
     const url = Config.BASE_URL;
     const profileCompletion_url = url + 'Profile_Completion';
     console.log('requested url..', profileCompletion_url);
@@ -172,10 +175,10 @@ export default Dashboard = props => {
     //alert('hi')
     const profileCompletion_urlBody = {
       // account_id: '569',
-      account_id: loginData?.Login_details?.user_id,
+      user_id: loginData?.Login_details?.user_id,
     };
     // alert(loginData?.Login_details?.user_id)
-   await axios
+    await axios
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
         console.log('profileCompletion response....', response?.data);
@@ -292,8 +295,8 @@ export default Dashboard = props => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
-    console.log('PersonalDetails_url..',apiUrl);
+      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+    console.log('PersonalDetails_url..', apiUrl);
     await axios
       .get(apiUrl)
       .then(response => {

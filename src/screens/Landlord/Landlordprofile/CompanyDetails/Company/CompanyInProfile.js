@@ -231,7 +231,7 @@ const CompanyInProfile = ({
     const url = Config.BASE_URL;
 
     const apiUrl =
-      url + `getAccount_details/${loginData.Login_details.user_id}`;
+      url + `getAccount_details/${loginData.Login_details.user_account_id}`;
 
     axios
       .get(apiUrl)
