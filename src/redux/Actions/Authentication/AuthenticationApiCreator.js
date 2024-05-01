@@ -66,7 +66,8 @@ export const signupAccountApiActionCreator = data => async dispatch => {
     const res = await axios.post(
       // url + "user_save_signup_account_details",
       // url + "signup_step_one",
-      'https://kodieapis.cylsys.com/api/v1/signup_step_one',
+      // 'https://kodieapis.cylsys.com/api/v1/signup_step_one',
+      'https://kodietestapi.cylsys.com/api/v1/signup_step_one',
       data,
       {
         headers: {

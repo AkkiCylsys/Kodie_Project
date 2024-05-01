@@ -23,8 +23,8 @@ import PropertyPopup from '../components/PropertyModal/PropertyPopup';
 import PropertyModal from '../components/PropertyModal/PropertyModal';
 import {useSelector, useDispatch} from 'react-redux';
 import SearchBar from '../components/Molecules/SearchBar/SearchBar';
-import { _goBack } from '../services/CommonServices';
-
+import {_goBack} from '../services/CommonServices';
+import {useIsFocused} from '@react-navigation/native';
 
 const HorizontalData = [
   'All',
@@ -35,8 +35,6 @@ const HorizontalData = [
   'Rent Received',
   'Archive',
 ];
-
-
 
 const property_List1 = [
   {
@@ -120,7 +118,7 @@ const property_List1 = [
   },
 ];
 
-const MarketplacePropertyListing = (props) => {
+const MarketplacePropertyListing = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
   const refRBSheet1 = useRef();
@@ -128,19 +126,18 @@ const MarketplacePropertyListing = (props) => {
   const refRBSheet3 = useRef();
   const CloseUp = () => {
     refRBSheet1.current.close();
-    setIsDeleteData_Clicked(false);
   };
   const [expandedItems, setExpandedItems] = useState([]);
   const [PropertyListing_data, setPropertyListingData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [propId, setPropId] = useState(0);
-  const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
-  const dispatch = useDispatch();
+
   const [selectedFilter, setSelectedFilter] = useState('All');
-
-
-
-
+  const [Address, setAddress] = useState();
+  const isvisible = useIsFocused();
+  const handleonClose = () => {
+    refRBSheet1.current.close();
+  };
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
@@ -187,8 +184,7 @@ const MarketplacePropertyListing = (props) => {
   // Get Api Bind here...
   const get_MarketplacePropertyListing = () => {
     const url = Config.BASE_URL;
-    const PropertyListing_url =
-      url+'property_market_by_account_id';
+    const PropertyListing_url = url + 'property_market_by_account_id';
     setIsLoading(true);
     console.log('Request URL:', PropertyListing_url);
     // setIsLoading(true);
@@ -198,17 +194,28 @@ const MarketplacePropertyListing = (props) => {
     axios
       .post(PropertyListing_url, PropertyListing_data)
       .then(response => {
-        console.log('Property Market Details Retrieve Successfully:', JSON.stringify(response?.data));
+        console.log(
+          'Property Market Details Retrieve Successfully:',
+          JSON.stringify(response?.data),
+        );
         if (response?.data?.success === true) {
           setPropertyListingData(response?.data?.property_details);
           // console.log("Vacent Details Data..", response?.data?.data);
           setIsLoading(false);
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
       .catch(error => {
+        if (error?.response?.status === 400) {
+          setPropertyListingData([]);
+          // console.log("Vacent Details Data..", response?.data?.data);
+          setIsLoading(false);
+        } else {
+          // alert(response?.data?.message);
+          setIsLoading(false);
+        }
         console.error('API failed PropertyListing', error);
         setIsLoading(false);
       })
@@ -216,33 +223,12 @@ const MarketplacePropertyListing = (props) => {
         setIsLoading(false);
       });
   };
-  const vacantDelete = async () => {
-    setIsDeleteData_Clicked(true);
-  };
-
-  const FinalDeleteVacant = async () => {
-    setIsLoading(true);
-    setIsDeleteData_Clicked(false);
-    CloseUp();
-    const url = Config.BASE_URL;
-    const vacantdelete = url + 'delete_property_by_id';
-    console.log('vacantdelete', vacantdelete);
-    try {
-      const response = await axios.delete(vacantdelete);
-      console.log('API Response:', response?.data);
-      if (response?.data?.success === true) {
-        alert(response?.data?.message);
-        setIsLoading(false);
-      }
-    } catch (error) {
-      console.error('API Error DeleteVacant:', error);
-      setIsLoading(false);
-    }
-  };
 
   useEffect(() => {
-    get_MarketplacePropertyListing();
-  }, []);
+    if (isvisible) {
+      get_MarketplacePropertyListing();
+    }
+  }, [isvisible]);
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.id);
     setPropId(item.property_id);
@@ -272,10 +258,9 @@ const MarketplacePropertyListing = (props) => {
               <Image
                 source={{uri: item?.image_path[0]}}
                 style={MarketplacePropertyListingStyle.imageStyle}
-                resizeMode='cover'
+                resizeMode="cover"
               />
-            ) : 
-            (
+            ) : (
               <View
                 style={[
                   MarketplacePropertyListingStyle.imageStyle,
@@ -289,11 +274,6 @@ const MarketplacePropertyListing = (props) => {
             <View style={MarketplacePropertyListingStyle.flexContainer}>
               <View style={MarketplacePropertyListingStyle.noteStyle}>
                 <TouchableOpacity>
-                  {/* <Image
-                      source={IMAGES.noteBook}
-                      style={MarketplacePropertyListingStyle.noteIcon}
-                      resizeMode={"contain"}
-                    /> */}
                   <SimpleLineIcons
                     name="note"
                     size={25}
@@ -305,6 +285,7 @@ const MarketplacePropertyListing = (props) => {
                   onPress={() => {
                     refRBSheet1.current.open();
                     setPropId(item?.property_id);
+                    setAddress(item?.location);
                   }}>
                   <MaterialCommunityIcons
                     name={'dots-horizontal'}
@@ -351,7 +332,7 @@ const MarketplacePropertyListing = (props) => {
                     refRBSheet3.current.open();
                   }}>
                   {/* {item.buttonName} */}
-                  {"+ invite"}
+                  {'+ invite Tenant'}
                 </Text>
               </View>
             </View>
@@ -412,89 +393,44 @@ const MarketplacePropertyListing = (props) => {
             container: MarketplacePropertyListingStyle.bottomModal_container,
           }}>
           <PropertyModal
-            onPress={() => {
-              refRBSheet2.current.open();
-            }}
             onClose={CloseUp}
-            onDeleteData={FinalDeleteVacant}
             propertyId={propId}
-            onDelete={vacantDelete}
-            isDeletePropertyClicked={isDeleteData_Clicked}
+            Address={Address}
+            OnPopupclose={refRBSheet1}
+            RefreshListingData={get_MarketplacePropertyListing}
           />
         </RBSheet>
-
-        {/* AddBiddingDetails popup */}
-        {/* <RBSheet
-          ref={refRBSheet2}
-          // closeOnDragDown={true}
-          height={760}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: MarketplacePropertyListingStyle.bottomModal_container,
-          }}>
-          <AddBiddingDetails />
-        </RBSheet> */}
-
-        {/* invite tenent popup */}
-        {/* <RBSheet
-          ref={refRBSheet3}
-          // closeOnDragDown={true}
-          height={230}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: MarketplacePropertyListingStyle.bottomModal_container,
-          }}>
-          <InviteTenant />
-        </RBSheet> */}
       </View>
     );
   };
   return (
-    <View style={{flex:1,backgroundColor:_COLORS.Kodie_WhiteColor}}>
-      <TopHeader 
-      onPressLeftButton={()=>props.navigation.navigate("Dashboard")}
-      MiddleText={'Propery listings'} />
-     
-          <SearchBar
-            filterImage={IMAGES.filter}
-            frontSearchIcon
-            marginTop={16}
-            placeholder={'Search properties'}
+    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+      <TopHeader
+        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        MiddleText={'Propery listings'}
+      />
+
+      <SearchBar
+        filterImage={IMAGES.filter}
+        frontSearchIcon
+        marginTop={16}
+        placeholder={'Search properties'}
+      />
+
+      <View style={MarketplacePropertyListingStyle.Container}>
+        <View style={MarketplacePropertyListingStyle.flat_MainView}>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={HorizontalData}
+            renderItem={horizontal_render}
           />
-   
-        <View style={MarketplacePropertyListingStyle.Container}>
-              <View style={MarketplacePropertyListingStyle.flat_MainView}>
-                <FlatList
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  data={HorizontalData}
-                  renderItem={horizontal_render}
-                />
-              </View>
-            </View>
-        
-     
+        </View>
+      </View>
+
       <DividerIcon />
-      
-        {/* <FlatList data={property_List1} renderItem={propertyData1_render} /> */}
-        <FlatList
-          data={PropertyListing_data}
-          renderItem={propertyData1_render}
-        />
-        {isLoading ? <CommonLoader /> : null}
-    
+      <FlatList data={PropertyListing_data} renderItem={propertyData1_render} />
+      {isLoading ? <CommonLoader /> : null}
     </View>
   );
 };

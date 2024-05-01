@@ -24,7 +24,7 @@ const ChangeContactNotify = props => {
   const newPhoneNumber = PhoneNumber.substring(3);
   console.log('oldPhoneNumber....', oldPhoneNumber);
   console.log('newPhoneNumber....', newPhoneNumber);
-  console.log('PhoneNumber...',PhoneNumber);
+  console.log('PhoneNumber...', PhoneNumber);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const ChangeContactNotify = props => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const apiUrl =
-      url + `getAccount_details/${loginData?.Login_details?.user_id}`;
+      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
     console.log('PersonalDetails_url..', apiUrl);
     await axios
       .get(apiUrl)
@@ -111,7 +111,7 @@ const ChangeContactNotify = props => {
           </Text>
           <View style={ChangeNotifyStyle.numberview}>
             <Text style={ChangeNotifyStyle.firstnumbertext}>
-              {`${accountDetails?.UAD_COUNTRY_CODE || ""}${oldPhoneNumber}`}
+              {`${accountDetails?.UAD_COUNTRY_CODE || ''}${oldPhoneNumber}`}
             </Text>
             <Text style={ChangeNotifyStyle.totext}> to </Text>
             <Text style={ChangeNotifyStyle.secondnumbertext}>

@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDyzAobKoM-24DqZEvJFeDie31lIkH73bM</string>
+	<string>AIzaSyD87pdsJO8hwDqTE7Y25y6Fyqsl-aCLceI</string>
 	<key>GCM_SENDER_ID</key>
-	<string>300728899224</string>
+	<string>1095041111738</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>org.reactjs.native.kodie</string>
 	<key>PROJECT_ID</key>
-	<string>kodie-cc948</string>
+	<string>kodiedemo</string>
 	<key>STORAGE_BUCKET</key>
-	<string>kodie-cc948.appspot.com</string>
+	<string>kodiedemo.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,8 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:300728899224:ios:a5b5c0d9b5bf81826922ed</string>
-	<key>DATABASE_URL</key>
-	<string>https://kodie-cc948-default-rtdb.firebaseio.com</string>
+	<string>1:1095041111738:ios:047f55d6585ba3840ad483</string>
 </dict>
 </plist>

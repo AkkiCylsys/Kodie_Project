@@ -41,7 +41,7 @@ const DeshboardNotice = props => {
     console.log('requested url..', profileDay_url);
     setIsLoading(true);
     const profileDayBody = {
-      account_id: userID,
+      user_id: userID,
     };
     axios
       .post(profileDay_url, profileDayBody)
@@ -65,7 +65,7 @@ const DeshboardNotice = props => {
     setIsLoading(true);
     const profileCompletion_urlBody = {
       // account_id: "531",
-      account_id: userID,
+      user_id: userID,
     };
     axios
       .post(profileCompletion_url, profileCompletion_urlBody)

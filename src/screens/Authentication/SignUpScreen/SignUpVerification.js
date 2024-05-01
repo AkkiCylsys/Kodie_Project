@@ -52,8 +52,10 @@ export default SignUpVerification = props => {
     const url = Config.API_URL;
     // const sennd_verification_code_url = url + "user_signup";
     // const sennd_verification_code_url = "https://e3.cylsys.com/api/v1/register";
+    // const sennd_verification_code_url =
+    //   'https://kodieapis.cylsys.com/api/v1/register';
     const sennd_verification_code_url =
-      'https://kodieapis.cylsys.com/api/v1/register';
+      'https://kodietestapi.cylsys.com/api/v1/register';
     console.log('Request URL:', sennd_verification_code_url);
     setIsLoading(true);
     axios
@@ -86,8 +88,8 @@ export default SignUpVerification = props => {
   };
 
   const handle_Signup_verification = () => {
-    // const url = "https://e3.cylsys.com/api/v1/verifyotp";
-    const url = 'https://kodieapis.cylsys.com/api/v1/verifyotp';
+    // const url = 'https://kodieapis.cylsys.com/api/v1/verifyotp';
+    const url = 'https://kodietestapi.cylsys.com/api/v1/verifyotp';
     const sign_verification_Api = url;
     console.log('Request URL:', sign_verification_Api);
     const Signup_verification_Data = {
@@ -163,8 +165,9 @@ export default SignUpVerification = props => {
         Text_Color={_COLORS.Kodie_BlackColor}
         onPressLeftButton={() => _goBack(props)}
       />
-      <ScrollView style={SignUpVerificationStyle.container} showsVerticalScrollIndicator={false
-      }>
+      <ScrollView
+        style={SignUpVerificationStyle.container}
+        showsVerticalScrollIndicator={false}>
         <Text style={SignUpVerificationStyle.checkEmail_Text}>
           {'Check your email'}
         </Text>

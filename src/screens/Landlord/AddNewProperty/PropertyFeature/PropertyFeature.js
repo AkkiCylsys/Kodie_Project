@@ -414,7 +414,7 @@ export default PropertyFeature = props => {
       console.log('additional_Data', response?.data);
       console.log('step 1.1');
 
-      if (response?.data?.status === true) {
+      if (response?.data?.success === true) {
         setIsLoading(false);
         console.log('additional_features....', response?.data);
         setAdditionalfeatureskey(response?.data?.key_features_details);

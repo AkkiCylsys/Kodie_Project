@@ -44,29 +44,9 @@ const HorizontalData = [
   'Rent Received',
   'Archive',
 ];
-const property_List2 = [
-  {
-    id: '1',
-    propertyName: 'Apartment',
-    name: 'Melbourne',
-    location: '8502 Preston Rd. Inglewood',
-    image: BANNERS.apartment,
-    buttonName: 'Late Payment',
-    tanentname: 'Jason Stathom',
-    rent: '$850.00',
-    badroom: '3',
-    bathroom: '2',
-    parking: '1',
-    aspact_ratio: '86m2',
-    isRentPanding: true,
-    isRentReceived: false,
-    isinviteTenants: false,
-  },
-];
 const PropertyList = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData', loginData);
-
   const isvisible = useIsFocused();
   const [activeScreen, setActiveScreen] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -92,7 +72,7 @@ const PropertyList = props => {
     setIsDeleteBottomSheetVisible(false);
     setIsDeleteData_Clicked(false);
   };
-  // Extract property_id values
+
   // search propertyList....
   const searchPropertyList = query => {
     setSearchQuery(query);
@@ -126,27 +106,12 @@ const PropertyList = props => {
       console.log('property Data....', response?.data?.property_details);
       setIsLoading(false);
     } catch (error) {
-      if (error.response && error.response.status == 500) {
-        // alert(error.response?.data?.message);
-        console.log(
-          'PropertyDetailsByFilter.......',
-          error.response?.data?.message,
-        );
-        setIsLoading(false);
-      } else {
-        // alert('An error occurred. Please try again later.');
-        // alert(error.response.message);
-        setIsLoading(false);
-      }
-      // alert(error.response.message);
+      Alert.alert('Worning', error?.response?.data?.message);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // if (isvisible) {
-    //   getPropertyDetailsByFilter(selectedFilter);
-    // }
     getPropertyDetailsByFilter(selectedFilter);
   }, [selectedFilter, isvisible]);
 
@@ -164,22 +129,18 @@ const PropertyList = props => {
     setIsDeleteBottomSheetVisible(false);
     try {
       const url = Config.BASE_URL;
-      const response = await axios.delete(
-        // "https://cylsys-kodie-api-01-e3fa986bbe83.herokuapp.com/api/v1/delete_property_by_id",
-        url + 'delete_property_by_id',
-        {
-          data: JSON.stringify({property_id: propertyDelId}),
-          headers: {
-            'Content-Type': 'application/json',
-          },
+      const response = await axios.delete(url + 'delete_property_by_id', {
+        data: JSON.stringify({property_id: propertyDelId}),
+        headers: {
+          'Content-Type': 'application/json',
         },
-      );
+      });
 
       console.log('API Response:', response?.data);
       if (response?.data?.success === true) {
         Alert.alert(
           'Property Deleted',
-          'The property was deleted successfully.',
+          response?.data?.message || 'The property was deleted successfully.',
         );
 
         getPropertyDetailsByFilter(selectedFilter);
@@ -187,6 +148,7 @@ const PropertyList = props => {
       }
     } catch (error) {
       console.error('API Error DeleteProperty:', error);
+      Alert.alert('Worning', error?.response?.data?.message);
     }
   };
 
@@ -285,7 +247,11 @@ const PropertyList = props => {
                   </View>
                 )}
 
-                <View style={PropertyListCSS.flexContainer}>
+                <View
+                  style={[
+                    PropertyListCSS.flexContainer,
+                    {alignSelf: 'center'},
+                  ]}>
                   <View style={PropertyListCSS.noteStyle}>
                     <TouchableOpacity
                       onPress={() => {

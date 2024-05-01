@@ -80,14 +80,14 @@ const PropertyPopup = props => {
     loginData?.Login_details?.user_account_id,
   );
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
- 
-  useEffect(()=>{
+
+  useEffect(() => {
     handle_notification_type();
     handle_Open_reminder();
     handle_Close_reminder();
     handle_NewBid_reminder();
     handle_duration();
-  },[])
+  }, []);
   const handleOptionClick = option => {
     setSelectedOption(option);
     // handleclosepopUp();
@@ -120,7 +120,7 @@ const PropertyPopup = props => {
     setIsLoading(true);
     const Bid_Data = {
       account_id: loginData?.Login_details?.user_account_id,
-      property_id:propertyId ,
+      property_id: propertyId,
       commencement_date: selectedCommDate,
       duration: duration_value,
       list_price: listPrice,
@@ -303,7 +303,7 @@ const PropertyPopup = props => {
                 name="close"
                 size={22}
                 color={_COLORS.Kodie_BlackColor}
-                style={{alignSelf: 'center',marginTop:8}}
+                style={{alignSelf: 'center', marginTop: 8}}
               />
             </TouchableOpacity>
           </View>
@@ -621,7 +621,8 @@ const PropertyPopup = props => {
             _ButtonText={'Continue'}
             Text_Color={_COLORS.Kodie_WhiteColor}
             height={48}
-            onPress={sendDataToParent}
+            // onPress={sendDataToParent}
+            onPress={handleClosePopup}
           />
           <CustomSingleButton
             disabled={isLoading ? true : false}
@@ -630,10 +631,10 @@ const PropertyPopup = props => {
             height={48}
             borderColor={_COLORS.Kodie_WhiteColor}
             backgroundColor={_COLORS.Kodie_WhiteColor}
-            onPress={sendDataToParent}
+            // onPress={sendDataToParent}
+            onPress={handleClosePopup}
           />
         </View>
-        
       )}
     </>
   );
