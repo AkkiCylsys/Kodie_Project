@@ -809,9 +809,8 @@ const PropertyList2 = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
-                // searchForRental();
-                handleSearchForRental();
-                // navigation.navigate('SearchResult');
+                // handleSearchForRental();
+                navigation.navigate('ViewRentalDetails');
               }}
               disabled={isLoading ? true : false}
             />

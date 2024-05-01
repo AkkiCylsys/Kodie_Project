@@ -27,6 +27,7 @@ import {Config} from '../../../../Config';
 import axios from 'axios';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
+import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
 export default SearchResult = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchRentalData, setSearchRentalData] = useState([]);
@@ -61,6 +62,9 @@ export default SearchResult = props => {
     BANNERS.BannerSecond,
     BANNERS.previewImage,
   ];
+  const onClose = () => {
+    refRBSheet.current.close();
+  };
   // Api intrigation...
   const additional_key_features = () => {
     const url = Config.BASE_URL;
@@ -227,12 +231,18 @@ export default SearchResult = props => {
             },
             container: SearchResultCss.bottomModal_container,
           }}>
-          <BottomModalData
-            onPress={() => props.navigation.navigate('ViewRentalList')}
-            onClose={() => {
-              refRBSheet.current.close();
+          <TouchableOpacity
+            style={{
+              justifyContent: 'flex-end',
+              alignSelf: 'flex-end',
+              marginHorizontal: 10,
             }}
-          />
+            onPress={() => {
+              refRBSheet.current.close();
+            }}>
+            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+          </TouchableOpacity>
+          <BottomModalSearchRental onClose={onClose} />
         </RBSheet>
       </>
     );
