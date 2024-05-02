@@ -141,6 +141,7 @@ import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDeta
 // import {Subscriptions} from '../../screens/Subscription/Subscription';
 import MarketplacePropertyListing from '../../MarketplacePropertyListing/MarketplacePropertyListing';
 import ViewRentalDetails from '../../screens/Landlord/PropertyList/SearchForRentals/ViewRentalDetails';
+import RentalOffer from '../../screens/Landlord/PropertyList/SearchForRentals/RentalOffer/RentalOffer';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1133,6 +1134,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'ViewRentalDetails'}
           component={ViewRentalDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'RentalOffer'}
+          component={RentalOffer}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

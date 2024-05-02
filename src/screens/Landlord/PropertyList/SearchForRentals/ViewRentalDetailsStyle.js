@@ -105,4 +105,18 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: 'center',
   },
+  submitApplicationbtn:{
+    marginHorizontal: 16,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: _COLORS.Kodie_GrayColor,
+    shadowOffset: {width: 1, height: 5}, // iOS shadow
+    shadowOpacity: 2, // iOS shadow
+    shadowRadius: 3,
+    elevation: 1,
+    marginBottom:20,
+    backgroundColor:_COLORS.Kodie_WhiteColor
+  }
 });

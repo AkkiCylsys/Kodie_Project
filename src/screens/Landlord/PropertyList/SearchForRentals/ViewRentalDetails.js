@@ -236,7 +236,7 @@ const ViewRentalDetails = props => {
     <SafeAreaView style={ViewRentalDetailsStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={'Search results'}
+        MiddleText={property_Detail?.location || ''}
       />
       <ScrollView>
         <View>
@@ -390,7 +390,7 @@ const ViewRentalDetails = props => {
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
                 // handleSearchForRental();
-                // navigation.navigate('ViewRentalDetails');
+                props.navigation.navigate('RentalOffer');
               }}
               disabled={isLoading ? true : false}
             />
@@ -749,19 +749,7 @@ const ViewRentalDetails = props => {
               </TouchableOpacity>
             </TouchableOpacity>
             <DividerIcon marginTop={8} />
-            <View
-              style={{
-                marginHorizontal: 16,
-                borderWidth: 1,
-                borderColor: _COLORS.Kodie_GrayColor,
-                borderRadius: 10,
-                padding: 20,
-                shadowColor: _COLORS.Kodie_GrayColor,
-                shadowOffset: {width: 1, height: 5}, // iOS shadow
-                shadowOpacity: 2, // iOS shadow
-                shadowRadius: 3,
-                elevation: 1,
-              }}>
+            <View style={ViewRentalDetailsStyle.submitApplicationbtn}>
               <RowButtons
                 LeftButtonText={'Submit application'}
                 leftButtonbackgroundColor={
@@ -777,7 +765,7 @@ const ViewRentalDetails = props => {
                 LeftButtonborderColor={
                   !submitApplicationBtn
                     ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_WhiteColor
+                    : _COLORS.Kodie_BlackColor
                 }
                 onPressLeftButton={() => {
                   setSubmitApplicationBtn(false);
@@ -798,7 +786,7 @@ const ViewRentalDetails = props => {
                 RightButtonborderColor={
                   submitApplicationBtn
                     ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_WhiteColor
+                    : _COLORS.Kodie_BlackColor
                 }
                 onPressRightButton={() => {
                   setSubmitApplicationBtn(true);
