@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  FlatList,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../../../Themes';
@@ -15,6 +16,7 @@ import {RentalOfferStyle} from './RentalOfferStyle';
 import {_goBack} from '../../../../../services/CommonServices';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import CalendarModal from '../../../../../components/Molecules/CalenderModal/CalenderModal';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -25,9 +27,17 @@ import {Config} from '../../../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import TenantScreeningReportModal from '../../../../../components/Molecules/TenantScreeningReportModal/TenantScreeningReportModal';
+import ApplicationSubmitModal from '../../../../../components/Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
+
+const DocumentData = [
+  {
+    id: 1,
+    fileName: 'Tenant  screening report.pdf',
+  },
+];
 const RentalOffer = props => {
   const refRBSheet = useRef();
-  const [rating, setRating] = useState(0);
+  const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [RentalDetails, setRentalDetails] = useState(false);
   const [RentalHistory, setRentalHistory] = useState(false);
@@ -43,9 +53,6 @@ const RentalOffer = props => {
   const [rentalBudget, setRentalBudget] = useState('');
   const [longEmployee, setLongEmployee] = useState('');
   const [lookingmove, setLookingmove] = useState('');
-  const [jobDetails, setJobDetails] = useState(0);
-  const [roomnumberOfYear, setRoomNumberOfYear] = useState('');
-  const [numberOfYear, setNumberOfYear] = useState('');
   const [weeklyIncome, setWeeklyIncome] = useState(0);
   const [selected_Paying_Button, setSelected_Paying_Button] = useState(false);
   const [selected_Paying_Id, setSelected_Paying_Id] = useState(1);
@@ -62,14 +69,18 @@ const RentalOffer = props => {
   const [pets, setPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
   const [Preferences, setPreferences] = useState(false);
-  const [preScreening, setPreScreening] = useState([]);
-
+  const [submitApplicationBtn, setSubmitApplicationBtn] = useState(false);
+  const [submitApplicationBtnId, setSubmitApplicationBtnId] = useState(0);
+  const [fileKey, setFileKey] = useState(0);
+  const [fileName, setFileName] = useState('');
+  const [filePath, setFilePath] = useState('');
   useEffect(() => {
     handleLeaseTerm();
     handleStyingProperty();
     handleDescribeStatus();
     handleTypesPets();
   }, []);
+
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
@@ -89,6 +100,14 @@ const RentalOffer = props => {
     setPreferences(!Preferences);
   };
 
+  const onClose = () => {
+    refRBSheet.current.close();
+  };
+  const onClose1 = () => {
+    refRBSheet1.current.close();
+  };
+
+  // renderItem......
   const renderDataItem = item => {
     return (
       <View style={RentalOfferStyle.item}>
@@ -102,6 +121,45 @@ const RentalOffer = props => {
             size={20}
           /> */}
       </View>
+    );
+  };
+  const DocumentsData = ({item, index}) => {
+    // setFileKey(item.PDUM_FILE_KEY);
+    // setFileName(item.PDUM_FILE_NAME);
+    return (
+      <>
+        <View style={RentalOfferStyle.Doc_container}>
+          <View style={RentalOfferStyle.pdfInfo}>
+            <FontAwesome
+              name="file-pdf-o"
+              size={35}
+              color={_COLORS.Kodie_BlackColor}
+              resizeMode={'contain'}
+            />
+            <View style={RentalOfferStyle.textContainer}>
+              <Text style={RentalOfferStyle.pdfName}>
+                {item.fileName}
+                {/* {'Tenant  screening report.pdf'} */}
+              </Text>
+              <Text style={RentalOfferStyle.pdfSize}> {'4.8 MB'}</Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            style={RentalOfferStyle.crossIcon}
+            onPress={() => {
+              refRBSheet.current.open();
+              // setFilePath(item.PDUM_FILE_PATH);
+              // console.log('file Path..', item.PDUM_FILE_PATH);
+              // setFileKey(item.PDUM_FILE_KEY);
+            }}>
+            <Entypo
+              name="dots-three-vertical"
+              size={20}
+              color={_COLORS.Kodie_GrayColor}
+            />
+          </TouchableOpacity>
+        </View>
+      </>
     );
   };
   // Api intrigation....
@@ -869,6 +927,66 @@ const RentalOffer = props => {
               refRBSheet.current.open();
             }}
           />
+          {/* .... */}
+          {/* <View style={RentalOfferStyle.card}>
+            <FlatList
+              data={DocumentData}
+              scrollEnabled
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{}}
+              keyExtractor={item => item?.id}
+              renderItem={DocumentsData}
+            />
+          </View> */}
+        </View>
+        <DividerIcon marginTop={5} />
+
+        <View style={RentalOfferStyle.submitApplicationbtn}>
+          <RowButtons
+            LeftButtonText={'Cancel'}
+            leftButtonbackgroundColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            LeftButtonTextColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_BlackColor
+            }
+            LeftButtonborderColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_BlackColor
+            }
+            onPressLeftButton={() => {
+              setSubmitApplicationBtn(false);
+              setSubmitApplicationBtnId(0);
+              // alert(selectPetFriendlyBtnId)
+            }}
+            RightButtonText={'Submit'}
+            RightButtonbackgroundColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonTextColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_BlackColor
+            }
+            RightButtonborderColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_BlackColor
+            }
+            onPressRightButton={() => {
+              setSubmitApplicationBtn(true);
+              setSubmitApplicationBtnId(1);
+              // alert(selectPetFriendlyBtnId)
+              refRBSheet1.current.open();
+            }}
+          />
         </View>
         <RBSheet
           height={500}
@@ -893,7 +1011,7 @@ const RentalOffer = props => {
               justifyContent: 'space-between',
             }}
             onPress={() => {
-              refRBSheet.current.close();
+              onClose();
             }}>
             <Text style={RentalOfferStyle.tenantScreenText}>
               {'Tenant screening report'}
@@ -901,7 +1019,37 @@ const RentalOffer = props => {
             <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
           </TouchableOpacity>
           {/* <BottomModalSearchRental onClose={onClose} /> */}
-          <TenantScreeningReportModal />
+          <TenantScreeningReportModal onClose={onClose} />
+        </RBSheet>
+        <RBSheet
+          height={400}
+          ref={refRBSheet1}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: RentalOfferStyle.bottomModal_container,
+          }}>
+          <TouchableOpacity
+            style={{
+              justifyContent: 'flex-end',
+              alignSelf: 'flex-end',
+              marginHorizontal: 10,
+              // flexDirection: 'row',
+              // justifyContent: 'space-between',
+            }}
+            onPress={() => {
+              onClose1();
+            }}>
+            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+          </TouchableOpacity>
+          {/* <TenantScreeningReportModal onClose={onClose} /> */}
+          <ApplicationSubmitModal onClose={onClose1} />
         </RBSheet>
       </ScrollView>
     </SafeAreaView>

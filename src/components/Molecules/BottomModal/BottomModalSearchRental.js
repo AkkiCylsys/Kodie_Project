@@ -63,6 +63,8 @@ const data = [
 ];
 const BottomModalSearchRental = props => {
   const navigation = useNavigation();
+  const propertyId = props.propertyId;
+  console.log('propertyId.....', propertyId);
   const handleClose = () => {
     props.onClose();
   };
@@ -72,7 +74,13 @@ const BottomModalSearchRental = props => {
         style={BottomModalSearchRentalStyle.container}
         onPress={() => {
           if (item?.id == '1') {
-            navigation.navigate('ViewRentalDetails');
+            navigation.navigate('ViewRentalDetails', {
+              propertyId: propertyId,
+            });
+            handleClose();
+          }
+          if (item?.id == '2') {
+            navigation.navigate('RentalOffer');
             handleClose();
           }
         }}>

@@ -26,7 +26,7 @@ import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPl
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 const data = [
   {label: 'Bharat', value: '1'},
   {label: 'Australia', value: '2'},
@@ -80,12 +80,13 @@ const PropertyList2 = props => {
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
-
+  const [keyFeature, setKeyFeature] = useState('');
+  const isFocus = useIsFocused();
   const navigation = useNavigation();
   useEffect(() => {
     handle_property_Type();
     additional_key_features();
-  }, []);
+  }, [isFocus]);
   // const goBack = () => {
   //   navigation.pop();
   // };
@@ -284,7 +285,7 @@ const PropertyList2 = props => {
             searchRentalResponse: response?.data,
             searchInputData: dataToSend,
             AllCountsData: AllCountsData,
-          });
+          });         
         } else {
           setIsLoading(false);
         }
@@ -809,8 +810,8 @@ const PropertyList2 = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
-                // handleSearchForRental();
-                navigation.navigate('ViewRentalDetails');
+                handleSearchForRental();
+                // navigation.navigate('ViewRentalDetails');
               }}
               disabled={isLoading ? true : false}
             />

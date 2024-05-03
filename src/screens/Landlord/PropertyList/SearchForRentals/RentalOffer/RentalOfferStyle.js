@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {_COLORS, FONTFAMILY,LABEL_STYLES} from '../../../../../Themes';
+import {_COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../../Themes';
 export const RentalOfferStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -59,14 +59,14 @@ export const RentalOfferStyle = StyleSheet.create({
     marginHorizontal: 32,
   },
   apartment_View: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   dividerstyle: {},
   share_View: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
   },
   propety_details_view_Heading: {
     fontSize: 18,
@@ -74,7 +74,7 @@ export const RentalOfferStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     marginBottom: 10,
   },
-  share_sty: { marginRight: 10 },
+  share_sty: {marginRight: 10},
   apartment_text: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
@@ -89,8 +89,8 @@ export const RentalOfferStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf: "center",
-    textAlign: "center",
+    alignSelf: 'center',
+    textAlign: 'center',
   },
   rentalleaseview: {
     marginTop: 15,
@@ -104,8 +104,8 @@ export const RentalOfferStyle = StyleSheet.create({
     marginVertical: 10,
   },
   propety_details_view: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
   },
   down_Arrow_icon: {
@@ -116,8 +116,8 @@ export const RentalOfferStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
   },
   goBack_Text: {
@@ -151,7 +151,7 @@ export const RentalOfferStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
-  datePickerView: { flexDirection: "row" },
+  datePickerView: {flexDirection: 'row'},
   availableButtonText: {
     fontSize: 11,
     fontFamily: FONTFAMILY.K_Regular,
@@ -211,16 +211,16 @@ export const RentalOfferStyle = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
   },
-  jobD_: { height: 50 },
-  locationView: { flexDirection: "row" },
+  jobD_: {height: 50},
+  locationView: {flexDirection: 'row'},
   LocationText: {
     fontSize: 12,
-    alignSelf: "center",
+    alignSelf: 'center',
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_MediumGrayColor,
   },
@@ -229,7 +229,7 @@ export const RentalOfferStyle = StyleSheet.create({
   },
   DetailsView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 5,
     marginLeft: 15,
   },
@@ -241,17 +241,17 @@ export const RentalOfferStyle = StyleSheet.create({
   },
   item: {
     padding: 17,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   selectedStyle: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 20,
     backgroundColor: _COLORS.Kodie_BlackColor,
-    shadowColor: "#000",
+    shadowColor: '#000',
     marginTop: 8,
     marginRight: 12,
     borderWidth: 1,
@@ -262,7 +262,7 @@ export const RentalOfferStyle = StyleSheet.create({
       width: 0,
       height: 1,
     },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 1.41,
 
     elevation: 2,
@@ -276,17 +276,17 @@ export const RentalOfferStyle = StyleSheet.create({
   dividericonpreferance: {
     marginVertical: 10,
   },
-  DetailsIcon: { height: 30, width: 30 },
+  DetailsIcon: {height: 30, width: 30},
   details_text: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginLeft: 5,
   },
   Details_Tab: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
     marginVertical: 10,
   },
@@ -301,9 +301,72 @@ export const RentalOfferStyle = StyleSheet.create({
     borderTopRightRadius: 30,
     elevation: 10,
   },
-  tenantScreenText:{
+  tenantScreenText: {
     fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
-  }
+  },
+  submitApplicationbtn: {
+    marginHorizontal: 16,
+    marginBottom: 30,
+  },
+  card: {
+    width: "100%",
+    backgroundColor: _COLORS.Kodie_TransparentColor,
+    borderRadius: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowRadius: 2,
+    marginBottom: 20,
+  },
+  Doc_container: {
+    flex: 1,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 4,
+    marginVertical: 5,
+    marginTop:10
+  },
+
+  textContainer: {
+    // flex:1,
+    flexDirection: "column",
+    marginLeft: 10,
+    // borderWidth:1
+  },
+
+  pdfInfo: {
+    flex:1,
+    flexDirection: "row",
+    alignItems: "center",
+    padding:10,
+  },
+  pdfName: {
+    flex: 0.5,
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    width: 250,
+  },
+  pdfSize: {
+    fontSize: 12,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  pdfIcon: {
+    width: 45,
+    height: 45,
+    resizeMode: "cover",
+  },
+  crossIcon: {
+    flex: 1,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    position: "absolute",
+    top: 20,
+    right: 5,
+    zIndex: 1,
+  },
 });

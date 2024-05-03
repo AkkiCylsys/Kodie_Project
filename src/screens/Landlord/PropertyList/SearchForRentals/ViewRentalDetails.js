@@ -7,7 +7,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {ViewRentalDetailsStyle} from './ViewRentalDetailsStyle';
@@ -23,10 +23,11 @@ import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import {Config} from '../../../../Config';
 import axios from 'axios';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useEffect} from 'react';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 const ViewRentalDetails = props => {
+  const propertyId = props?.route?.params?.propertyId;
+  console.log('propertyId in view...', propertyId);
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
   const [Detail, setDetail] = useState([]);
@@ -49,13 +50,22 @@ const ViewRentalDetails = props => {
   ];
   useEffect(() => {
     fetchData();
+    // try {
+    //   const keyFeaturesArray = additionalKeyFeaturesString.split(',');
+    //   setAdditionalKeyFeatures(keyFeaturesArray);
+    // } catch (error) {
+    //   console.error('Error parsing additional_key_features:', error);
+    // }
+    // if (additionalKeyFeaturesString) {
+    //   keyFeature();
+    // }
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(',');
       setAdditionalKeyFeatures(keyFeaturesArray);
     } catch (error) {
       console.error('Error parsing additional_key_features:', error);
     }
-  }, [additionalKeyFeaturesString]);
+  }, [additionalKeyFeaturesString, propertyId]);
   const Detail_rander = ({item, index}) => {
     return (
       <>
@@ -191,7 +201,8 @@ const ViewRentalDetails = props => {
     try {
       // Fetch property details
       const detailData = {
-        property_id: 1542,
+        // property_id: 1542,
+        property_id: propertyId,
       };
       const url = Config.BASE_URL;
       const property_Detailss = url + 'get_property_details';
@@ -390,7 +401,7 @@ const ViewRentalDetails = props => {
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
                 // handleSearchForRental();
-                props.navigation.navigate('RentalOffer');
+                // props.navigation.navigate('RentalOffer');
               }}
               disabled={isLoading ? true : false}
             />
@@ -772,7 +783,7 @@ const ViewRentalDetails = props => {
                   setSubmitApplicationBtnId(0);
                   // alert(selectPetFriendlyBtnId)
                 }}
-                RightButtonText={'Message'}
+                RightButtonText={'Message owner'}
                 RightButtonbackgroundColor={
                   submitApplicationBtn
                     ? _COLORS.Kodie_BlackColor

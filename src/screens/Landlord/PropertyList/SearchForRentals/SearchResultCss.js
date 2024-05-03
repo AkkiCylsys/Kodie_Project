@@ -195,7 +195,7 @@ export const SearchResultCss = StyleSheet.create({
   },
   availableBtn:{
     marginHorizontal: 25,
-    marginRight: 250,
+    marginRight: 260,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
@@ -223,5 +223,18 @@ export const SearchResultCss = StyleSheet.create({
       borderRadius:10,
       borderColor:_COLORS.Kodie_GrayColor,
       alignSelf:"center"
-  }
+  },
+  DetailsView: {
+    flex: 1,
+    flexDirection: 'row',
+    marginVertical: 5,
+    marginLeft: 15,
+  },
+  details_text: {
+    fontSize: 12,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Regular,
+    alignSelf: 'center',
+    marginLeft: 5,
+  },
 });

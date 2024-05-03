@@ -29,6 +29,8 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
 export default SearchResult = props => {
+  // console.log("keyfatirejdsflkgldkfhjkldfh....",searchRentalResponse?.data?.key_features)
+  // console.log("keyfativalue....",searchRentalResponse?.data?.key_features[0]?.Bedrooms)
   const [isLoading, setIsLoading] = useState(false);
   const [searchRentalData, setSearchRentalData] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -51,6 +53,7 @@ export default SearchResult = props => {
   const additionalKeyFeaturesString = addtional_keyFeature.map(
     key => keyFeatureMapping[key],
   );
+  const [propertyId, setPropertyId] = useState('');
   console.log('additionalKeyFeaturesString.....', additionalKeyFeaturesString);
   // useEffect....
   useEffect(() => {
@@ -99,6 +102,7 @@ export default SearchResult = props => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
+      {/* {console.log("bed count in result ..",item?.key_features[0]?.Bedrooms )} */}
         <View style={{marginTop: 10}}>
           <SliderBox
             // images={editMode ? updateAllImage : allImagePaths}
@@ -129,7 +133,7 @@ export default SearchResult = props => {
                 SearchResultCss.propertyHeading,
                 {fontFamily: FONTFAMILY.K_Regular},
               ]}>
-              {'Apartment'}
+              {item?.property_type || ''}
             </Text>
             <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
               {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null}
@@ -154,6 +158,7 @@ export default SearchResult = props => {
             <TouchableOpacity
               onPress={() => {
                 refRBSheet.current.open();
+                setPropertyId(item?.property_id);
               }}>
               <Entypo
                 color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -176,6 +181,7 @@ export default SearchResult = props => {
             {'AVAILABLE: 1 OCT'}
           </Text>
         </View>
+
         <View style={SearchResultCss.bedCountView}>
           <View style={SearchResultCss.locationView}>
             <Ionicons
@@ -185,6 +191,12 @@ export default SearchResult = props => {
               style={SearchResultCss.bedIconView}
             />
             <Text style={SearchResultCss.bedcont}>{'5'}</Text>
+            {/* <Text style={SearchResultCss.bedcont}>
+              {item?.key_features[0]?.Bedrooms || ""}
+            </Text> */}
+            {/* {
+              console.log("reponse of keyfeature....",item?.searchRentalResponse?.data?.key_features[0]?.Bedrooms)
+            } */}
           </View>
           <View style={SearchResultCss.locationView}>
             <MaterialCommunityIcons
@@ -193,7 +205,8 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            <Text style={SearchResultCss.bedcont}>{'2'}</Text>
+            {/* <Text style={SearchResultCss.bedcont}>{item?.key_features[1]?.Bathrooms}</Text> */}
+            <Text style={SearchResultCss.bedcont}>{"2"}</Text>
           </View>
           <View style={SearchResultCss.locationView}>
             <Ionicons
@@ -202,7 +215,8 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            <Text style={SearchResultCss.bedcont}>{'5'}</Text>
+            {/* <Text style={SearchResultCss.bedcont}>{item?.key_features[1]?.Bathrooms|| ""}</Text> */}
+            <Text style={SearchResultCss.bedcont}>{"5"}</Text>
           </View>
           <View style={SearchResultCss.locationView}>
             <EvilIcons
@@ -242,12 +256,52 @@ export default SearchResult = props => {
             }}>
             <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
           </TouchableOpacity>
-          <BottomModalSearchRental onClose={onClose} />
+          <BottomModalSearchRental onClose={onClose} propertyId={propertyId} />
         </RBSheet>
       </>
     );
   };
 
+  const Detail_rander = ({item, index}) => {
+    return (
+      <>
+        <View style={SearchResultCss.DetailsView}>
+          {Object.keys(item)[0] == 'Bedrooms' ? (
+            <MaterialCommunityIcons
+              name="bed-double-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={'contain'}
+            />
+          ) : Object.keys(item)[0] == 'Bathrooms' ? (
+            <MaterialCommunityIcons
+              name="shower-head"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={'contain'}
+            />
+          ) : Object.keys(item)[0] == 'Parking Space' ? (
+            <Ionicons
+              name="car-outline"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={'contain'}
+            />
+          ) : (
+            <MaterialCommunityIcons
+              name="garage"
+              size={25}
+              color={_COLORS.Kodie_GreenColor}
+              resizeMode={'contain'}
+            />
+          )}
+          <Text style={SearchResultCss.details_text}>
+            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}
+          </Text>
+        </View>
+      </>
+    );
+  };
   return (
     <SafeAreaView style={SearchResultCss.mainContainer}>
       <TopHeader
@@ -310,7 +364,9 @@ export default SearchResult = props => {
         </View>
         <FlatList
           data={searchRentalResponse?.data}
-          keyExtractor={(item, index) => index}
+          // keyExtractor={(item, index) => item.property_id}
+          // keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => `item_${index}`}
           renderItem={propertyData2_render}
         />
       </ScrollView>
