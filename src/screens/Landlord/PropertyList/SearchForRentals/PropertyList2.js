@@ -285,7 +285,17 @@ const PropertyList2 = props => {
             searchRentalResponse: response?.data,
             searchInputData: dataToSend,
             AllCountsData: AllCountsData,
-          });         
+          });
+          // response?.data.key_features.map(item => {
+          //   console.log('keyfeature.....', item);
+          // });
+          // if (response?.data?.key_features) {
+          //   const parsedData = JSON.parse(
+          //     response?.data?.key_features.replace(/\\/g, ''),
+          //   );
+          //   setKeyFeature(parsedData);
+          //   console.log('parsedData....', parsedData);
+          // }
         } else {
           setIsLoading(false);
         }

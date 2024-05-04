@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {_COLORS, FONTFAMILY} from '../../../../Themes';
 
 export const SearchResultCss = StyleSheet.create({
@@ -180,7 +180,7 @@ export const SearchResultCss = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf:"center"
+    alignSelf: 'center',
   },
   locationView: {
     flexDirection: 'row',
@@ -191,38 +191,38 @@ export const SearchResultCss = StyleSheet.create({
     fontSize: 10,
     color: _COLORS.Kodie_DarkOrange,
     fontFamily: FONTFAMILY.K_SemiBold,
-    alignSelf:"center"
+    alignSelf: 'center',
   },
-  availableBtn:{
+  availableBtn: {
     marginHorizontal: 25,
-    marginRight: 260,
+    marginRight: Platform.OS == 'ios' ? 500 : 200,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,
     flex: 1,
     backgroundColor: _COLORS.Kodie_LightOrange,
     padding: 8,
-    marginTop:10
+    marginTop: 10,
   },
   bedcont: {
     fontSize: 14,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf:"center",
-    marginLeft:5
+    alignSelf: 'center',
+    marginLeft: 5,
   },
-  bedCountView:{
-    flexDirection:"row",
-    marginHorizontal:8,
-    marginTop:5,
-    marginBottom:5
+  bedCountView: {
+    flexDirection: 'row',
+    marginHorizontal: 8,
+    marginTop: 5,
+    marginBottom: 5,
   },
-  bedIconView:{
-      borderWidth:1,
-      padding:5,
-      borderRadius:10,
-      borderColor:_COLORS.Kodie_GrayColor,
-      alignSelf:"center"
+  bedIconView: {
+    borderWidth: 1,
+    padding: 5,
+    borderRadius: 10,
+    borderColor: _COLORS.Kodie_GrayColor,
+    alignSelf: 'center',
   },
   DetailsView: {
     flex: 1,

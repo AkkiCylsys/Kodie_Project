@@ -28,14 +28,15 @@ import axios from 'axios';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
+import {color} from 'react-native-reanimated';
 export default SearchResult = props => {
   // console.log("keyfatirejdsflkgldkfhjkldfh....",searchRentalResponse?.data?.key_features)
   // console.log("keyfativalue....",searchRentalResponse?.data?.key_features[0]?.Bedrooms)
   const [isLoading, setIsLoading] = useState(false);
   const [searchRentalData, setSearchRentalData] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
+  const [favRental, setFavRental] = useState(false);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
-
   const refRBSheet = useRef();
   const searchRentalResponse = props?.route?.params?.searchRentalResponse;
   console.log('searchRentalResponse.....', searchRentalResponse);
@@ -54,7 +55,11 @@ export default SearchResult = props => {
     key => keyFeatureMapping[key],
   );
   const [propertyId, setPropertyId] = useState('');
+  const [keyFeature, setKeyFeature] = useState([]);
+  console.log('keyFeature......', keyFeature);
+  // console.log('keyFeature in ......', keyFeature[0]?.Bedrooms);
   console.log('additionalKeyFeaturesString.....', additionalKeyFeaturesString);
+
   // useEffect....
   useEffect(() => {
     additional_key_features();
@@ -102,7 +107,10 @@ export default SearchResult = props => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
-      {/* {console.log("bed count in result ..",item?.key_features[0]?.Bedrooms )} */}
+        {/* {
+          // console.log('bed count in result ..', item?.key_features)
+          setKeyFeature(item?.key_features)
+        } */}
         <View style={{marginTop: 10}}>
           <SliderBox
             // images={editMode ? updateAllImage : allImagePaths}
@@ -113,7 +121,7 @@ export default SearchResult = props => {
             }
             inactiveDotColor={_COLORS.Kodie_GrayColor}
             dotColor={_COLORS.Kodie_GreenColor}
-            autoplay
+            autoplay={false}
             circleLoop
             resizeMethod={'resize'}
             resizeMode={'cover'}
@@ -147,10 +155,17 @@ export default SearchResult = props => {
                 size={25}
               />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setFavRental(!favRental);
+              }}>
               <AntDesign
-                color={_COLORS.Kodie_ExtraminLiteGrayColor}
-                name="hearto"
+                color={
+                  favRental
+                    ? _COLORS.Kodie_GreenColor
+                    : _COLORS.Kodie_ExtraminLiteGrayColor
+                }
+                name={favRental ? "heart" : 'hearto'}
                 size={25}
                 style={{marginHorizontal: 20}}
               />
@@ -181,7 +196,6 @@ export default SearchResult = props => {
             {'AVAILABLE: 1 OCT'}
           </Text>
         </View>
-
         <View style={SearchResultCss.bedCountView}>
           <View style={SearchResultCss.locationView}>
             <Ionicons
@@ -190,13 +204,7 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            <Text style={SearchResultCss.bedcont}>{'5'}</Text>
-            {/* <Text style={SearchResultCss.bedcont}>
-              {item?.key_features[0]?.Bedrooms || ""}
-            </Text> */}
-            {/* {
-              console.log("reponse of keyfeature....",item?.searchRentalResponse?.data?.key_features[0]?.Bedrooms)
-            } */}
+            <Text style={SearchResultCss.bedcont}>{'6'}</Text>
           </View>
           <View style={SearchResultCss.locationView}>
             <MaterialCommunityIcons
@@ -205,8 +213,7 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            {/* <Text style={SearchResultCss.bedcont}>{item?.key_features[1]?.Bathrooms}</Text> */}
-            <Text style={SearchResultCss.bedcont}>{"2"}</Text>
+            <Text style={SearchResultCss.bedcont}>{'2'}</Text>
           </View>
           <View style={SearchResultCss.locationView}>
             <Ionicons
@@ -215,8 +222,7 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            {/* <Text style={SearchResultCss.bedcont}>{item?.key_features[1]?.Bathrooms|| ""}</Text> */}
-            <Text style={SearchResultCss.bedcont}>{"5"}</Text>
+            <Text style={SearchResultCss.bedcont}>{'5'}</Text>
           </View>
           <View style={SearchResultCss.locationView}>
             <EvilIcons
@@ -369,6 +375,16 @@ export default SearchResult = props => {
           keyExtractor={(item, index) => `item_${index}`}
           renderItem={propertyData2_render}
         />
+        {/* <FlatList
+          data={keyFeature}
+          scrollEnabled
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{}}
+          // numColumns={numColumns}
+          keyExtractor={item => item?.id}
+          // keyExtractor={(item, index) => index.toString()}
+          renderItem={Detail_rander}
+        /> */}
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
