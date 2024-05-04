@@ -11,13 +11,14 @@ import {NoticesStyle} from './NoticesStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../services/CommonServices';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import {_COLORS, IMAGES} from '../../../Themes';
+import {_COLORS, IMAGES, FONTFAMILY} from '../../../Themes';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import Notice from '../../../components/Molecules/Notice/Notice';
 import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import NoticeBottomModal from '../../../components/Molecules/Select/NoticeBottomModal';
 import {Config} from '../../../Config';
@@ -79,6 +80,24 @@ const Notices = props => {
   const [selectedFilter, setSelectedFilter] = useState(['All']);
   const [noticeReminderid, setNoticeReminderid] = useState('');
   const refRBSheet = useRef();
+  const [_MONTHS, set_MONTHS] = useState([
+    {id: 1, name: 'January'},
+    {id: 2, name: 'February'},
+    {id: 3, name: 'March'},
+    {id: 4, name: 'April'},
+    {id: 5, name: 'May'},
+    {id: 6, name: 'June'},
+    {id: 7, name: 'July'},
+    {id: 8, name: 'August'},
+    {id: 9, name: 'September'},
+    {id: 10, name: 'October'},
+    {id: 11, name: 'November'},
+    {id: 12, name: 'December'},
+  ]);
+  const [_selectedMonthId, set_selectedMonthId] = useState(
+    new Date().getMonth() + 1,
+  ); // Initialize with current month ID
+  const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear()); // Initialize with current year
 
   const searchNoticesList = () => {};
   const onDayPress = day => {
@@ -186,7 +205,7 @@ const Notices = props => {
   };
 
   // Api intrigation...
-  const getNoticesReminderDeatilsByFilter = async filter => {
+  const getNoticesReminderDeatilsByFilter = async ({monthId, year}) => {
     setIsLoading(true);
     try {
       const url = Config.BASE_URL;
@@ -196,14 +215,24 @@ const Notices = props => {
         'NoticesReminderDeatilsByFilter...',
         NoticesReminderDeatilsByFilter_url,
       );
-      const response = await axios.post(NoticesReminderDeatilsByFilter_url, {
-        notices_filter: filter,
-        // notices_filter: "All",
+      const data = {
+        // notices_filter: filter,
+        notices_filter: 'All',
         account_id: loginData?.Login_details?.user_account_id,
         limit: 10,
         order_wise: 'DESC',
-        months: '02',
-        year: '2024',
+        months: monthId,
+        year: year,
+      };
+      console.log('monthdatae', data);
+      const response = await axios.post(NoticesReminderDeatilsByFilter_url, {
+        // notices_filter: filter,
+        notices_filter: 'All',
+        account_id: loginData?.Login_details?.user_account_id,
+        limit: 10,
+        order_wise: 'DESC',
+        months: _selectedMonthId,
+        year: _selectedYear,
       });
       console.log(
         'NoticesReminderDeatilsByFilter_Data response...',
@@ -252,6 +281,37 @@ const Notices = props => {
       setIsLoading(false);
     }
   };
+
+  const navigateToPreviousMonth = async () => {
+    let newMonthId = _selectedMonthId - 1;
+    let newYear = _selectedYear;
+    if (newMonthId < 1) {
+      newMonthId = 12; // Set to December
+      newYear -= 1; // Decrement year
+    }
+    set_selectedMonthId(newMonthId);
+    set_selectedYear(newYear);
+    await getNoticesReminderDeatilsByFilter({
+      monthId: newMonthId,
+      year: newYear,
+    });
+  };
+
+  const navigateToNextMonth = async () => {
+    let newMonthId = _selectedMonthId + 1;
+    let newYear = _selectedYear;
+    if (newMonthId > 12) {
+      newMonthId = 1; // Set to January
+      newYear += 1; // Increment year
+    }
+    set_selectedMonthId(newMonthId);
+    set_selectedYear(newYear);
+    await getNoticesReminderDeatilsByFilter({
+      monthId: newMonthId,
+      year: newYear,
+    });
+  };
+
   return (
     <View style={NoticesStyle.mainview}>
       <TopHeader
@@ -322,6 +382,46 @@ const Notices = props => {
             color={_COLORS.Kodie_BlackColor}
           />
         </View> */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginHorizontal: 16,
+            borderWidth: 1,
+            marginVertical: 10,
+          }}>
+          <TouchableOpacity
+            onPress={navigateToPreviousMonth}
+            style={{
+              flex: 1,
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+            }}>
+            <Entypo name={'chevron-left'} size={22} color={'black'} />
+          </TouchableOpacity>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontSize: 18,
+                alignSelf: 'center',
+                fontFamily: FONTFAMILY?.K_Bold,
+                color: _COLORS.Kodie_BlackColor,
+              }}>
+              {_MONTHS.find(month => month.id === _selectedMonthId)?.name}{' '}
+              {_selectedYear}
+            </Text>
+          </View>
+          <TouchableOpacity
+            onPress={navigateToNextMonth}
+            style={{
+              flex: 1,
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+            }}>
+            <Entypo name={'chevron-right'} size={22} color={'black'} />
+          </TouchableOpacity>
+        </View>
         <View style={{marginTop: 20, alignSelf: 'center'}}>
           <FlatList
             showsHorizontalScrollIndicator={false}
