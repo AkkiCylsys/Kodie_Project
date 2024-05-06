@@ -83,6 +83,13 @@ const PropertyList2 = props => {
   const [keyFeature, setKeyFeature] = useState('');
   const isFocus = useIsFocused();
   const navigation = useNavigation();
+  const addressParts = location.split(', ');
+  const country = addressParts.pop();
+  const state = addressParts.pop();
+  const city = addressParts.join(', ');
+  console.log("city....",city)
+  console.log("country....",country)
+  console.log("state....",state)
   useEffect(() => {
     handle_property_Type();
     additional_key_features();
@@ -103,6 +110,7 @@ const PropertyList2 = props => {
     input_petFrendly: selectPetFriendlyBtnId,
     input_secureDeposit: secureByDepositBtnId,
     input_addtional_keyFeature: additionalfeatureskeyvalue,
+    city:city
   };
   console.log('AllCountsData....', AllCountsData);
   // ...Location

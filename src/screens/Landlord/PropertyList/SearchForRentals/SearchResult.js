@@ -29,9 +29,14 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
 import {color} from 'react-native-reanimated';
+
+const key_feature_Data = [
+  {Bedrooms: 0},
+  {Bathrooms: 0},
+  {Parking_Space: 0},
+  {StreetParking: 0},
+];
 export default SearchResult = props => {
-  // console.log("keyfatirejdsflkgldkfhjkldfh....",searchRentalResponse?.data?.key_features)
-  // console.log("keyfativalue....",searchRentalResponse?.data?.key_features[0]?.Bedrooms)
   const [isLoading, setIsLoading] = useState(false);
   const [searchRentalData, setSearchRentalData] = useState([]);
   const [expandedItems, setExpandedItems] = useState([]);
@@ -107,10 +112,10 @@ export default SearchResult = props => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
-        {/* {
+        {
           // console.log('bed count in result ..', item?.key_features)
           setKeyFeature(item?.key_features)
-        } */}
+        }
         <View style={{marginTop: 10}}>
           <SliderBox
             // images={editMode ? updateAllImage : allImagePaths}
@@ -165,7 +170,7 @@ export default SearchResult = props => {
                     ? _COLORS.Kodie_GreenColor
                     : _COLORS.Kodie_ExtraminLiteGrayColor
                 }
-                name={favRental ? "heart" : 'hearto'}
+                name={favRental ? 'heart' : 'hearto'}
                 size={25}
                 style={{marginHorizontal: 20}}
               />
@@ -308,6 +313,22 @@ export default SearchResult = props => {
       </>
     );
   };
+
+  const keyDatarender = ({item,index}) => {
+    return (
+      <View style={SearchResultCss.bedCountView}>
+        <View style={SearchResultCss.locationView}>
+          <Ionicons
+            color={_COLORS.Kodie_GreenColor}
+            name="bed-outline"
+            size={20}
+            style={SearchResultCss.bedIconView}
+          />
+          <Text style={SearchResultCss.bedcont}>{item["Bedrooms"]}</Text>
+        </View>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={SearchResultCss.mainContainer}>
       <TopHeader
@@ -317,7 +338,7 @@ export default SearchResult = props => {
       <ScrollView showsHorizontalScrollIndicator={false}>
         <View style={SearchResultCss.propertyRentMainView}>
           <View style={SearchResultCss.LeftTextView}>
-            <Text style={SearchResultCss.LeftText}>Melbourne</Text>
+            <Text style={SearchResultCss.LeftText}>{searchInputData?.city || ''}</Text>
             <Text style={SearchResultCss.LeftTextRentText}>
               {`${
                 propertyType === 22
@@ -368,13 +389,6 @@ export default SearchResult = props => {
             <Text style={SearchResultCss.biddingText}>{'5 m'}</Text>
           </View>
         </View>
-        <FlatList
-          data={searchRentalResponse?.data}
-          // keyExtractor={(item, index) => item.property_id}
-          // keyExtractor={(item, index) => index}
-          keyExtractor={(item, index) => `item_${index}`}
-          renderItem={propertyData2_render}
-        />
         {/* <FlatList
           data={keyFeature}
           scrollEnabled
@@ -385,6 +399,13 @@ export default SearchResult = props => {
           // keyExtractor={(item, index) => index.toString()}
           renderItem={Detail_rander}
         /> */}
+        <FlatList
+          data={searchRentalResponse?.data}
+          // keyExtractor={(item, index) => item.property_id}
+          // keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => `item_${index}`}
+          renderItem={propertyData2_render}
+        />
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
