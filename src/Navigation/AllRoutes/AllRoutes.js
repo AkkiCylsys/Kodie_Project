@@ -140,6 +140,7 @@ import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDeta
 // import {withIAPContext} from 'react-native-iap';
 // import {Subscriptions} from '../../screens/Subscription/Subscription';
 import MarketplacePropertyListing from '../../MarketplacePropertyListing/MarketplacePropertyListing';
+import Inspection from '../../screens/Inspection/PropertyInspection/Inspection/Inspection';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1127,6 +1128,11 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'MarketplacePropertyListing'}
           component={MarketplacePropertyListing}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'Inspection'}
+          component={Inspection}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
