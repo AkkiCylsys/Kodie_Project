@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Image,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -16,8 +17,8 @@ import {BANNERS, _COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import {Config} from '../../../../Config';
@@ -54,7 +55,9 @@ const ViewRentalDetails = props => {
     BANNERS.previewImage,
   ];
   useEffect(() => {
-    fetchData();
+    {
+      propertyId ? fetchData() : null;
+    }
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(',');
       setAdditionalKeyFeatures(keyFeaturesArray);
@@ -195,9 +198,7 @@ const ViewRentalDetails = props => {
   // Api intrigation...
   const fetchData = async () => {
     try {
-      // Fetch property details
       const detailData = {
-        // property_id: 1542,
         property_id: propertyId,
       };
       const url = Config.BASE_URL;
@@ -249,29 +250,36 @@ const ViewRentalDetails = props => {
         MiddleText={property_Detail?.location || ''}
       />
       <ScrollView>
-        <View>
-          <SliderBox
-            // images={editMode ? updateAllImage : allImagePaths}
-            images={property_Detail?.image_path}
-            sliderBoxHeight={200}
-            onCurrentImagePressed={index =>
-              console.warn(`image ${index} pressed`)
-            }
-            inactiveDotColor={_COLORS.Kodie_GrayColor}
-            dotColor={_COLORS.Kodie_GreenColor}
-            autoplay={false}
-            circleLoop
-            resizeMethod={'resize'}
-            resizeMode={'cover'}
-            dotStyle={ViewRentalDetailsStyle.dotStyle}
-            ImageComponentStyle={{
-              // flex: 1,
-              resizeMode: 'cover',
-              // borderRadius: 15,
-              // width: '90%',
-            }}
-          />
-        </View>
+        {property_Detail?.image_path &&
+        property_Detail?.image_path.length != 0 ? (
+          <View>
+            <SliderBox
+              images={property_Detail?.image_path}
+              sliderBoxHeight={200}
+              onCurrentImagePressed={index =>
+                console.warn(`image ${index} pressed`)
+              }
+              inactiveDotColor={_COLORS.Kodie_GrayColor}
+              dotColor={_COLORS.Kodie_GreenColor}
+              autoplay={false}
+              circleLoop
+              resizeMethod={'resize'}
+              resizeMode={'cover'}
+              dotStyle={ViewRentalDetailsStyle.dotStyle}
+              ImageComponentStyle={{
+                resizeMode: 'cover',
+              }}
+            />
+          </View>
+        ) : (
+          <View>
+            <Image
+              source={BANNERS?.imageNotFound}
+              style={{width: '100%', height: 200, resizeMode: 'cover'}}
+            />
+          </View>
+        )}
+
         <View style={ViewRentalDetailsStyle.apartmentmainView}>
           <View>
             <Text
@@ -283,7 +291,6 @@ const ViewRentalDetails = props => {
             </Text>
             <Text
               style={[ViewRentalDetailsStyle.propertyHeading, {marginTop: 5}]}>
-              {/* {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null} */}
               {property_Detail?.city || ''}
             </Text>
           </View>
@@ -312,19 +319,9 @@ const ViewRentalDetails = props => {
                 }
                 name={favRental ? 'heart' : 'hearto'}
                 size={25}
-                style={{marginHorizontal: 20}}
+                style={{marginLeft: 20}}
               />
             </TouchableOpacity>
-            {/* <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.open();
-              }}>
-              <Entypo
-                color={_COLORS.Kodie_ExtraminLiteGrayColor}
-                name="dots-three-horizontal"
-                size={25}
-              />
-            </TouchableOpacity> */}
           </View>
         </View>
         <View style={ViewRentalDetailsStyle.locationView}>
@@ -342,8 +339,7 @@ const ViewRentalDetails = props => {
             ViewRentalDetailsStyle.propertyHeading,
             {marginTop: 5, marginHorizontal: 28},
           ]}>
-          {/* {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null} */}
-          {rentalAmount || ''}
+          {`$${rentalAmount || ''}`}
         </Text>
         <DividerIcon
           borderBottomWidth={3}
@@ -377,7 +373,6 @@ const ViewRentalDetails = props => {
             contentContainerStyle={{}}
             numColumns={numColumns}
             keyExtractor={item => item?.id}
-            // keyExtractor={(item, index) => index.toString()}
             renderItem={Detail_rander}
           />
           {property_Detail?.additional_key_features_id === '[]' ? null : (
@@ -412,7 +407,6 @@ const ViewRentalDetails = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               backgroundColor={_COLORS.Kodie_BlackColor}
               onPress={() => {
-                // handleSearchForRental();
                 // props.navigation.navigate('RentalOffer');
               }}
               disabled={isLoading ? true : false}
@@ -512,7 +506,6 @@ const ViewRentalDetails = props => {
                       LABEL_STYLES.commontext,
                       {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
-                    {/* {addtionalFeaturesID[0]} */}
                     {addtionalFeaturesID[1] ? 'No' : 'Yes'}
                   </Text>
                 </View>
@@ -532,8 +525,6 @@ const ViewRentalDetails = props => {
                 <DividerIcon marginTop={8} />
               </>
             ) : null}
-
-            {/* <DividerIcon marginTop={8} /> */}
           </View>
           <View style={ViewRentalDetailsStyle.subContainer}>
             <TouchableOpacity

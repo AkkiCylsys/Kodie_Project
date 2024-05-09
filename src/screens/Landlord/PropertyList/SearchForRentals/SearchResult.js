@@ -14,7 +14,6 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Fontisto from 'react-native-vector-icons/Fontisto';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from './../../../../services/CommonServices/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -22,30 +21,32 @@ import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomModalData from '../../../../components/Molecules/BottomModal/BottomModalData';
 import {SliderBox} from 'react-native-image-slider-box';
-import styles from 'rn-range-slider/styles';
 import {Config} from '../../../../Config';
 import axios from 'axios';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
-import {color} from 'react-native-reanimated';
 import {useNavigation} from '@react-navigation/native';
-
-const key_feature_Data = [
-  {Bedrooms: 0},
-  {Bathrooms: 0},
-  {Parking_Space: 0},
-  {StreetParking: 0},
+const staticimage = [
+  // 'https://kodietestapi.cylsys.com/upload/photo/b654ad06-522d-4d46-8a37-951b15845721.jpg',
+  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
+  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
 ];
-
 export default SearchResult = props => {
+  const refRBSheet = useRef();
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [searchRentalData, setSearchRentalData] = useState([]);
   const [favRental, setFavRental] = useState(false);
   const [rentalAmount, setRentalAmount] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
-  const refRBSheet = useRef();
+  const keyFeatureMapping = {};
+  additionalfeatureskey.forEach(detail => {
+    keyFeatureMapping[detail.paf_key] = detail.features_name;
+  });
+  const [propertyId, setPropertyId] = useState('');
+  const [keyFeature, setKeyFeature] = useState([]);
+  console.log('keyFeature......', keyFeature);
   const searchRentalResponse = props?.route?.params?.searchRentalResponse;
   console.log('searchRentalResponse.....', searchRentalResponse);
   const searchInputData = props?.route?.params?.searchInputData;
@@ -53,21 +54,11 @@ export default SearchResult = props => {
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
   console.log('AllCountsData...in result', AllCountsData);
-  const keyFeatureMapping = {};
-  additionalfeatureskey.forEach(detail => {
-    keyFeatureMapping[detail.paf_key] = detail.features_name;
-  });
-
   const addtional_keyFeature = searchInputData?.input_addtional_keyFeature;
   const additionalKeyFeaturesString = addtional_keyFeature.map(
     key => keyFeatureMapping[key],
   );
-  const [propertyId, setPropertyId] = useState('');
-  const [keyFeature, setKeyFeature] = useState([]);
-  console.log('keyFeature......', keyFeature);
-  // console.log('keyFeature in ......', keyFeature[0]?.Bedrooms);
   console.log('additionalKeyFeaturesString.....', additionalKeyFeaturesString);
-
   // useEffect....
   useEffect(() => {
     additional_key_features();
@@ -108,34 +99,39 @@ export default SearchResult = props => {
   const propertyData2_render = ({item, index}) => {
     return (
       <>
-        {
-          // console.log('bed count in result ..', item?.key_features)
-          setKeyFeature(item?.key_features)
-        }
-        <View style={{marginTop: 10}}>
-          <SliderBox
-            // images={editMode ? updateAllImage : allImagePaths}
-            // images={staticimage}
-            images={item?.image_path}
-            sliderBoxHeight={200}
-            onCurrentImagePressed={index =>
-              console.warn(`image ${index} pressed`)
-            }
-            inactiveDotColor={_COLORS.Kodie_GrayColor}
-            dotColor={_COLORS.Kodie_GreenColor}
-            // autoplay={false}
-            circleLoop
-            resizeMethod={'resize'}
-            resizeMode={'cover'}
-            dotStyle={SearchResultCss.dotStyle}
-            ImageComponentStyle={{
-              flex: 1,
-              resizeMode: 'cover',
-              // borderRadius: 15,
-              // width: '90%',
-            }}
-          />
-        </View>
+        {setKeyFeature(item?.key_features)}
+        {item?.image_path && item?.image_path.length != 0 ? (
+          <View style={{marginTop: 10}}>
+            <SliderBox
+              // images={staticimage}
+              images={item?.image_path}
+              sliderBoxHeight={200}
+              onCurrentImagePressed={index =>
+                console.warn(`image ${index} pressed`)
+              }
+              inactiveDotColor={_COLORS.Kodie_GrayColor}
+              dotColor={_COLORS.Kodie_GreenColor}
+              // autoplay={false}
+              circleLoop
+              resizeMethod={'resize'}
+              resizeMode={'cover'}
+              dotStyle={SearchResultCss.dotStyle}
+              ImageComponentStyle={{
+                flex: 1,
+                resizeMode: 'cover',
+                // borderRadius: 15,
+                // width: '90%',
+              }}
+            />
+          </View>
+        ) : (
+          <View>
+            <Image
+              source={BANNERS?.imageNotFound} // Set your default image path
+              style={{width: '100%', height: 200, resizeMode: 'cover'}}
+            />
+          </View>
+        )}
         <View style={SearchResultCss.apartmentmainView}>
           <View>
             <Text
@@ -199,6 +195,7 @@ export default SearchResult = props => {
             {'AVAILABLE: 1 OCT'}
           </Text>
         </View>
+
         <View style={SearchResultCss.bedCountView}>
           <View style={SearchResultCss.locationView}>
             <Ionicons
@@ -237,6 +234,7 @@ export default SearchResult = props => {
             <Text style={SearchResultCss.bedcont}>{'86m2'}</Text>
           </View>
         </View>
+
         <DividerIcon
           borderBottomWidth={3}
           color={_COLORS.Kodie_LiteWhiteColor}
@@ -331,13 +329,13 @@ export default SearchResult = props => {
           </TouchableOpacity>
           <Text style={SearchResultCss.biddingText}>Bidding closes in:</Text>
           <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{"'4 days'"}</Text>
+            <Text style={SearchResultCss.biddingText}>{'o days'}</Text>
           </View>
           <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'20 hrs'}</Text>
+            <Text style={SearchResultCss.biddingText}>{'6 hrs'}</Text>
           </View>
           <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'5 m'}</Text>
+            <Text style={SearchResultCss.biddingText}>{'10 mins'}</Text>
           </View>
         </View>
         <FlatList

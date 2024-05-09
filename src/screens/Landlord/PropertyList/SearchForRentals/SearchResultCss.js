@@ -11,6 +11,7 @@ export const SearchResultCss = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom:5
   },
   flexContainer: {flex: 1},
   apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
@@ -150,7 +151,9 @@ export const SearchResultCss = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
     marginLeft: 3,
-    paddingHorizontal: 2,
+    paddingHorizontal: 5,
+    paddingVertical:5
+
   },
   dotStyle: {
     width: 10,
