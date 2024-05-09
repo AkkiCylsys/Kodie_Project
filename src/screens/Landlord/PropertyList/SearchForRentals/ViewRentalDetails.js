@@ -6,13 +6,14 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Image
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../../services/CommonServices';
-import {ViewRentalDetailsStyle} from './ViewRentalDetailsStyle';
-import {SliderBox} from 'react-native-image-slider-box';
-import {BANNERS, _COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
+import { _goBack } from '../../../../services/CommonServices';
+import { ViewRentalDetailsStyle } from './ViewRentalDetailsStyle';
+import { SliderBox } from 'react-native-image-slider-box';
+import { BANNERS, _COLORS, FONTFAMILY, LABEL_STYLES } from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -20,9 +21,9 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
-import {Config} from '../../../../Config';
+import { Config } from '../../../../Config';
 import axios from 'axios';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import ReadMore from '@fawazahmed/react-native-read-more';
@@ -62,7 +63,7 @@ const ViewRentalDetails = props => {
       console.error('Error parsing additional_key_features:', error);
     }
   }, [additionalKeyFeaturesString, propertyId]);
-  const Detail_rander = ({item, index}) => {
+  const Detail_rander = ({ item, index }) => {
     return (
       <>
         <View style={ViewRentalDetailsStyle.DetailsView}>
@@ -102,7 +103,7 @@ const ViewRentalDetails = props => {
       </>
     );
   };
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <View style={ViewRentalDetailsStyle.DetailsView}>
       {item === 'Pool' ? (
         <MaterialIcons
@@ -249,40 +250,50 @@ const ViewRentalDetails = props => {
         MiddleText={property_Detail?.location || ''}
       />
       <ScrollView>
-        <View>
-          <SliderBox
-            // images={editMode ? updateAllImage : allImagePaths}
-            images={property_Detail?.image_path}
-            sliderBoxHeight={200}
-            onCurrentImagePressed={index =>
-              console.warn(`image ${index} pressed`)
-            }
-            inactiveDotColor={_COLORS.Kodie_GrayColor}
-            dotColor={_COLORS.Kodie_GreenColor}
-            autoplay={false}
-            circleLoop
-            resizeMethod={'resize'}
-            resizeMode={'cover'}
-            dotStyle={ViewRentalDetailsStyle.dotStyle}
-            ImageComponentStyle={{
-              // flex: 1,
-              resizeMode: 'cover',
-              // borderRadius: 15,
-              // width: '90%',
-            }}
-          />
-        </View>
+        {
+          property_Detail?.image_path && property_Detail?.image_path.length != 0 ? (
+            <View>
+              <SliderBox
+                images={property_Detail?.image_path}
+                // images={images}
+                sliderBoxHeight={200}
+                onCurrentImagePressed={index =>
+                  console.warn(`image ${index} pressed`)
+                }
+                inactiveDotColor={_COLORS.Kodie_GrayColor}
+                dotColor={_COLORS.Kodie_GreenColor}
+                autoplay={false}
+                circleLoop
+                resizeMethod={'resize'}
+                resizeMode={'cover'}
+                dotStyle={ViewRentalDetailsStyle.dotStyle}
+                ImageComponentStyle={{
+                  // flex: 1,
+                  resizeMode: 'cover',
+                  // borderRadius: 15,
+                  // width: '90%',
+                }}
+              />
+            </View>
+          ) : <View>
+            <Image
+              source={BANNERS?.imageNotFound} // Set your default image path
+              style={{ width: '100%', height: 200, resizeMode: 'cover' }}
+            />
+          </View>
+        }
+
         <View style={ViewRentalDetailsStyle.apartmentmainView}>
           <View>
             <Text
               style={[
                 ViewRentalDetailsStyle.propertyHeading,
-                {fontFamily: FONTFAMILY.K_Regular},
+                { fontFamily: FONTFAMILY.K_Regular },
               ]}>
               {property_Detail?.property_type || ''}
             </Text>
             <Text
-              style={[ViewRentalDetailsStyle.propertyHeading, {marginTop: 5}]}>
+              style={[ViewRentalDetailsStyle.propertyHeading, { marginTop: 5 }]}>
               {/* {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null} */}
               {property_Detail?.city || ''}
             </Text>
@@ -312,7 +323,7 @@ const ViewRentalDetails = props => {
                 }
                 name={favRental ? 'heart' : 'hearto'}
                 size={25}
-                style={{marginHorizontal: 20}}
+                style={{ marginLeft: 20 }}
               />
             </TouchableOpacity>
             {/* <TouchableOpacity
@@ -340,7 +351,7 @@ const ViewRentalDetails = props => {
         <Text
           style={[
             ViewRentalDetailsStyle.propertyHeading,
-            {marginTop: 5, marginHorizontal: 28},
+            { marginTop: 5, marginHorizontal: 28 },
           ]}>
           {/* {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null} */}
           {rentalAmount || ''}
@@ -349,7 +360,7 @@ const ViewRentalDetails = props => {
           borderBottomWidth={3}
           color={_COLORS.Kodie_LiteWhiteColor}
         />
-        <View style={{marginHorizontal: 16}}>
+        <View style={{ marginHorizontal: 16 }}>
           <ReadMore
             seeMoreStyle={ViewRentalDetailsStyle.readMore}
             seeLessStyle={ViewRentalDetailsStyle.readMore}
@@ -366,7 +377,7 @@ const ViewRentalDetails = props => {
           <Text
             style={[
               ViewRentalDetailsStyle.propery_det,
-              {marginHorizontal: 16},
+              { marginHorizontal: 16 },
             ]}>
             {'Key features'}
           </Text>
@@ -384,7 +395,7 @@ const ViewRentalDetails = props => {
             <Text
               style={[
                 ViewRentalDetailsStyle.propery_det,
-                {marginHorizontal: 16},
+                { marginHorizontal: 16 },
               ]}>
               {'Additional key features'}
             </Text>
@@ -402,11 +413,11 @@ const ViewRentalDetails = props => {
           <Text
             style={[
               ViewRentalDetailsStyle.propertyHeading,
-              {marginTop: 5, marginHorizontal: 16},
+              { marginTop: 5, marginHorizontal: 16 },
             ]}>
             {'Inspections'}
           </Text>
-          <View style={{marginHorizontal: 16}}>
+          <View style={{ marginHorizontal: 16 }}>
             <CustomSingleButton
               _ButtonText={'Request an inspection'}
               Text_Color={_COLORS.Kodie_WhiteColor}
@@ -452,65 +463,65 @@ const ViewRentalDetails = props => {
             {propertyDetailsClp ? (
               <>
                 <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Listing Number'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'NA'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Type of Property'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {property_Detail?.property_type}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Floor Size'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {property_Detail?.floor_size}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Pets Allowed'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {addtionalFeaturesID[0]}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Furnished'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {/* {addtionalFeaturesID[0]} */}
                     {addtionalFeaturesID[1] ? 'No' : 'Yes'}
@@ -518,13 +529,13 @@ const ViewRentalDetails = props => {
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                     {'Smoking'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      {fontFamily: FONTFAMILY.K_Medium},
+                      { fontFamily: FONTFAMILY.K_Medium },
                     ]}>
                     {'No'}
                   </Text>
@@ -559,78 +570,78 @@ const ViewRentalDetails = props => {
           {roomClp ? (
             <>
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Bedrooms'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {Detail[0]?.Bedrooms}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Bathrooms'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {Detail[1]?.Bathrooms}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Kitchen'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Lounge'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Dining Room'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Other'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>
@@ -669,78 +680,78 @@ const ViewRentalDetails = props => {
           {externalfeaturesClp ? (
             <>
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Car Spaces'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {Detail[0]?.Bedrooms}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'On-Street Parking Spaces'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Garden'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Pool'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Outdoor Patio'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>
               </View>
               <DividerIcon marginTop={8} />
               <View style={ViewRentalDetailsStyle.p_rowTextView}>
-                <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
+                <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
                   {'Other'}
                 </Text>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
-                    {fontFamily: FONTFAMILY.K_Medium},
+                    { fontFamily: FONTFAMILY.K_Medium },
                   ]}>
                   {'0'}
                 </Text>

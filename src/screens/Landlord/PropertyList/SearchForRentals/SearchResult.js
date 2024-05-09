@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,36 +8,41 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import {_COLORS, LABEL_STYLES, BANNERS, IMAGES} from '../../../../Themes';
-import {SearchResultCss} from './SearchResultCss';
+import { _COLORS, LABEL_STYLES, BANNERS, IMAGES } from '../../../../Themes';
+import { SearchResultCss } from './SearchResultCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import {_goBack} from './../../../../services/CommonServices/index';
+import { _goBack } from './../../../../services/CommonServices/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomModalData from '../../../../components/Molecules/BottomModal/BottomModalData';
-import {SliderBox} from 'react-native-image-slider-box';
+import { SliderBox } from 'react-native-image-slider-box';
 import styles from 'rn-range-slider/styles';
-import {Config} from '../../../../Config';
+import { Config } from '../../../../Config';
 import axios from 'axios';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { FONTFAMILY, fontFamily } from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
-import {color} from 'react-native-reanimated';
-import {useNavigation} from '@react-navigation/native';
+import { color } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 const key_feature_Data = [
-  {Bedrooms: 0},
-  {Bathrooms: 0},
-  {Parking_Space: 0},
-  {StreetParking: 0},
+  { Bedrooms: 0 },
+  { Bathrooms: 0 },
+  { Parking_Space: 0 },
+  { StreetParking: 0 },
 ];
 
+const staticimage = [
+  // 'https://kodietestapi.cylsys.com/upload/photo/b654ad06-522d-4d46-8a37-951b15845721.jpg',
+  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
+  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
+];
 export default SearchResult = props => {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
@@ -105,47 +110,56 @@ export default SearchResult = props => {
         setIsLoading(false);
       });
   };
-  const propertyData2_render = ({item, index}) => {
+  const propertyData2_render = ({ item, index }) => {
     return (
       <>
         {
           // console.log('bed count in result ..', item?.key_features)
           setKeyFeature(item?.key_features)
         }
-        <View style={{marginTop: 10}}>
-          <SliderBox
-            // images={editMode ? updateAllImage : allImagePaths}
-            // images={staticimage}
-            images={item?.image_path}
-            sliderBoxHeight={200}
-            onCurrentImagePressed={index =>
-              console.warn(`image ${index} pressed`)
-            }
-            inactiveDotColor={_COLORS.Kodie_GrayColor}
-            dotColor={_COLORS.Kodie_GreenColor}
-            // autoplay={false}
-            circleLoop
-            resizeMethod={'resize'}
-            resizeMode={'cover'}
-            dotStyle={SearchResultCss.dotStyle}
-            ImageComponentStyle={{
-              flex: 1,
-              resizeMode: 'cover',
-              // borderRadius: 15,
-              // width: '90%',
-            }}
-          />
-        </View>
+        {
+          item?.image_path && item?.image_path.length != 0 ? (
+            <View style={{ marginTop: 10 }}>
+              <SliderBox
+                // images={staticimage}
+                images={item?.image_path}
+                sliderBoxHeight={200}
+                onCurrentImagePressed={index =>
+                  console.warn(`image ${index} pressed`)
+                }
+                inactiveDotColor={_COLORS.Kodie_GrayColor}
+                dotColor={_COLORS.Kodie_GreenColor}
+                // autoplay={false}
+                circleLoop
+                resizeMethod={'resize'}
+                resizeMode={'cover'}
+                dotStyle={SearchResultCss.dotStyle}
+                ImageComponentStyle={{
+                  flex: 1,
+                  resizeMode: 'cover',
+                  // borderRadius: 15,
+                  // width: '90%',
+                }}
+              />
+            </View>
+          ) : <View>
+            <Image
+              source={BANNERS?.imageNotFound} // Set your default image path
+              style={{ width: '100%', height: 200, resizeMode: 'cover' }}
+            />
+          </View>
+        }
+
         <View style={SearchResultCss.apartmentmainView}>
           <View>
             <Text
               style={[
                 SearchResultCss.propertyHeading,
-                {fontFamily: FONTFAMILY.K_Regular},
+                { fontFamily: FONTFAMILY.K_Regular },
               ]}>
               {item?.property_type || ''}
             </Text>
-            <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
+            <Text style={[SearchResultCss.propertyHeading, { marginTop: 5 }]}>
               {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null}
             </Text>
           </View>
@@ -169,7 +183,7 @@ export default SearchResult = props => {
                 }
                 name={favRental ? 'heart' : 'hearto'}
                 size={25}
-                style={{marginHorizontal: 20}}
+                style={{ marginHorizontal: 20 }}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -287,27 +301,23 @@ export default SearchResult = props => {
               {searchInputData?.city || ''}
             </Text>
             <Text style={SearchResultCss.LeftTextRentText}>
-              {`${
-                propertyType === 22
-                  ? 'House'
-                  : propertyType === 23
+              {`${propertyType === 22
+                ? 'House'
+                : propertyType === 23
                   ? 'Cottage'
                   : propertyType === 24
-                  ? 'Apartment/Flat'
-                  : propertyType === 25
-                  ? 'Townhouse'
-                  : propertyType === 26
-                  ? 'Land/Vacant Plot'
-                  : propertyType === 27
-                  ? 'Farm'
-                  : ''
-              } ; $${searchInputData?.input_minRange} ; $${
-                searchInputData?.input_maxRange
-              } ; ${AllCountsData[0]?.Bedrooms} Beds ${
-                AllCountsData[1]?.Bathrooms
-              } Baths ; ${AllCountsData[2]?.Parking_Space} parking space ; ${
-                AllCountsData[3]?.StreetParking
-              } on Streetparking ; ${additionalKeyFeaturesString}`}
+                    ? 'Apartment/Flat'
+                    : propertyType === 25
+                      ? 'Townhouse'
+                      : propertyType === 26
+                        ? 'Land/Vacant Plot'
+                        : propertyType === 27
+                          ? 'Farm'
+                          : ''
+                } ; $${searchInputData?.input_minRange} ; $${searchInputData?.input_maxRange
+                } ; ${AllCountsData[0]?.Bedrooms} Beds ${AllCountsData[1]?.Bathrooms
+                } Baths ; ${AllCountsData[2]?.Parking_Space} parking space ; ${AllCountsData[3]?.StreetParking
+                } on Streetparking ; ${additionalKeyFeaturesString}`}
             </Text>
           </View>
           <View style={SearchResultCss.payButtonMainView}>
@@ -331,13 +341,13 @@ export default SearchResult = props => {
           </TouchableOpacity>
           <Text style={SearchResultCss.biddingText}>Bidding closes in:</Text>
           <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{"'4 days'"}</Text>
+            <Text style={SearchResultCss.biddingText}>{"o days"}</Text>
           </View>
           <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'20 hrs'}</Text>
+            <Text style={SearchResultCss.biddingText}>{'6 hrs'}</Text>
           </View>
           <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'5 m'}</Text>
+            <Text style={SearchResultCss.biddingText}>{'10 mins'}</Text>
           </View>
         </View>
         <FlatList

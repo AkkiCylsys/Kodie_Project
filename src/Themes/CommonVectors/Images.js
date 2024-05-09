@@ -149,4 +149,5 @@ export const BANNERS = {
   apartment: require('../../assets/images/Banners/Apartment.png'),
   house: require('../../assets/images/Banners/House.png'),
   cottage: require('../../assets/images/Banners/Cottage.png'),
+  imageNotFound: require('../../assets/images/Banners/ImageNotFound.jpg'),
 };
