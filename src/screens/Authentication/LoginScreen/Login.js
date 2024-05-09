@@ -220,6 +220,33 @@ export default Login = props => {
     handlemessage();
     requestUserPermission();
   }, []);
+  // Activate account Api  ...
+  const handleActivateAccount =async() => {
+    const url = Config.BASE_URL;
+    const activateAccount = url + 'sendMail';
+    console.log('Request URL:', activateAccount);
+    setIsLoading(true);
+    const activateAccount_Data = {
+      email: email,
+    };
+   await axios
+      .post(activateAccount, activateAccount_Data)
+      .then(response => {
+        console.log('API Response activateAccount..', response?.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('API failed activateAccount', error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   useFocusEffect(
     React.useCallback(() => {
       const onBackPress = () => {
@@ -400,8 +427,22 @@ export default Login = props => {
           email: email,
           user_key: res?.User_key,
         });
-      } else if (res?.data?.message === 'Account has been Suspended') {
-        Alert.alert('Account suspension', res?.data?.message);
+      } else if (res?.data?.code === 2) {
+        // Alert.alert('Account suspension', res?.data?.message);
+        Alert.alert('Account suspension', res?.data?.message, [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Activate account',
+            onPress: () => {
+              console.log('activate account');
+              handleActivateAccount();
+            },
+          },
+        ]);
       } else if (res?.data?.success == 'true') {
         //  alert("Login successful");
         setIsLoading(false);

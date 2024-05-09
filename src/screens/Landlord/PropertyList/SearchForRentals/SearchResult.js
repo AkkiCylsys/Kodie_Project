@@ -29,6 +29,7 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
 import {color} from 'react-native-reanimated';
+import {useNavigation} from '@react-navigation/native';
 
 const key_feature_Data = [
   {Bedrooms: 0},
@@ -36,11 +37,13 @@ const key_feature_Data = [
   {Parking_Space: 0},
   {StreetParking: 0},
 ];
+
 export default SearchResult = props => {
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [searchRentalData, setSearchRentalData] = useState([]);
-  const [expandedItems, setExpandedItems] = useState([]);
   const [favRental, setFavRental] = useState(false);
+  const [rentalAmount, setRentalAmount] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const refRBSheet = useRef();
   const searchRentalResponse = props?.route?.params?.searchRentalResponse;
@@ -69,12 +72,6 @@ export default SearchResult = props => {
   useEffect(() => {
     additional_key_features();
   }, []);
-  const images = [
-    BANNERS.wallImage,
-    BANNERS.BannerFirst,
-    BANNERS.BannerSecond,
-    BANNERS.previewImage,
-  ];
   const onClose = () => {
     refRBSheet.current.close();
   };
@@ -109,7 +106,6 @@ export default SearchResult = props => {
       });
   };
   const propertyData2_render = ({item, index}) => {
-    const isExpanded = expandedItems.includes(item.id);
     return (
       <>
         {
@@ -119,14 +115,15 @@ export default SearchResult = props => {
         <View style={{marginTop: 10}}>
           <SliderBox
             // images={editMode ? updateAllImage : allImagePaths}
-            images={images}
+            // images={staticimage}
+            images={item?.image_path}
             sliderBoxHeight={200}
             onCurrentImagePressed={index =>
               console.warn(`image ${index} pressed`)
             }
             inactiveDotColor={_COLORS.Kodie_GrayColor}
             dotColor={_COLORS.Kodie_GreenColor}
-            autoplay={false}
+            // autoplay={false}
             circleLoop
             resizeMethod={'resize'}
             resizeMode={'cover'}
@@ -179,6 +176,7 @@ export default SearchResult = props => {
               onPress={() => {
                 refRBSheet.current.open();
                 setPropertyId(item?.property_id);
+                setRentalAmount(item?.rental_amount);
               }}>
               <Entypo
                 color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -267,66 +265,13 @@ export default SearchResult = props => {
             }}>
             <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
           </TouchableOpacity>
-          <BottomModalSearchRental onClose={onClose} propertyId={propertyId} />
+          <BottomModalSearchRental
+            onClose={onClose}
+            propertyId={propertyId}
+            rentalAmount={rentalAmount}
+          />
         </RBSheet>
       </>
-    );
-  };
-
-  const Detail_rander = ({item, index}) => {
-    return (
-      <>
-        <View style={SearchResultCss.DetailsView}>
-          {Object.keys(item)[0] == 'Bedrooms' ? (
-            <MaterialCommunityIcons
-              name="bed-double-outline"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : Object.keys(item)[0] == 'Bathrooms' ? (
-            <MaterialCommunityIcons
-              name="shower-head"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : Object.keys(item)[0] == 'Parking Space' ? (
-            <Ionicons
-              name="car-outline"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          ) : (
-            <MaterialCommunityIcons
-              name="garage"
-              size={25}
-              color={_COLORS.Kodie_GreenColor}
-              resizeMode={'contain'}
-            />
-          )}
-          <Text style={SearchResultCss.details_text}>
-            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}
-          </Text>
-        </View>
-      </>
-    );
-  };
-
-  const keyDatarender = ({item,index}) => {
-    return (
-      <View style={SearchResultCss.bedCountView}>
-        <View style={SearchResultCss.locationView}>
-          <Ionicons
-            color={_COLORS.Kodie_GreenColor}
-            name="bed-outline"
-            size={20}
-            style={SearchResultCss.bedIconView}
-          />
-          <Text style={SearchResultCss.bedcont}>{item["Bedrooms"]}</Text>
-        </View>
-      </View>
     );
   };
   return (
@@ -338,7 +283,9 @@ export default SearchResult = props => {
       <ScrollView showsHorizontalScrollIndicator={false}>
         <View style={SearchResultCss.propertyRentMainView}>
           <View style={SearchResultCss.LeftTextView}>
-            <Text style={SearchResultCss.LeftText}>{searchInputData?.city || ''}</Text>
+            <Text style={SearchResultCss.LeftText}>
+              {searchInputData?.city || ''}
+            </Text>
             <Text style={SearchResultCss.LeftTextRentText}>
               {`${
                 propertyType === 22
@@ -364,7 +311,11 @@ export default SearchResult = props => {
             </Text>
           </View>
           <View style={SearchResultCss.payButtonMainView}>
-            <TouchableOpacity style={SearchResultCss.payButtonView}>
+            <TouchableOpacity
+              style={SearchResultCss.payButtonView}
+              onPress={() => {
+                _goBack(props);
+              }}>
               <Image source={IMAGES.filter} />
             </TouchableOpacity>
           </View>
@@ -389,20 +340,8 @@ export default SearchResult = props => {
             <Text style={SearchResultCss.biddingText}>{'5 m'}</Text>
           </View>
         </View>
-        {/* <FlatList
-          data={keyFeature}
-          scrollEnabled
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{}}
-          // numColumns={numColumns}
-          keyExtractor={item => item?.id}
-          // keyExtractor={(item, index) => index.toString()}
-          renderItem={Detail_rander}
-        /> */}
         <FlatList
           data={searchRentalResponse?.data}
-          // keyExtractor={(item, index) => item.property_id}
-          // keyExtractor={(item, index) => index}
           keyExtractor={(item, index) => `item_${index}`}
           renderItem={propertyData2_render}
         />

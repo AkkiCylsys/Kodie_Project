@@ -51,7 +51,7 @@ const PropertyList2 = props => {
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [proteryTypeData, setProteryTypeData] = useState([]);
-  const [proteryTypeValue, setProteryTypeValue] = useState([]);
+  const [proteryTypeValue, setProteryTypeValue] = useState("");
   const [proteryTypeValueError, setProteryTypeValueError] = useState(false);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
@@ -83,13 +83,14 @@ const PropertyList2 = props => {
   const [keyFeature, setKeyFeature] = useState('');
   const isFocus = useIsFocused();
   const navigation = useNavigation();
-  const addressParts = location.split(', ');
+  const addressParts = location ? location.split(', ') : [];
   const country = addressParts.pop();
   const state = addressParts.pop();
   const city = addressParts.join(', ');
-  console.log("city....",city)
-  console.log("country....",country)
-  console.log("state....",state)
+
+  console.log('city....', city);
+  console.log('country....', country);
+  console.log('state....', state);
   useEffect(() => {
     handle_property_Type();
     additional_key_features();
@@ -110,7 +111,7 @@ const PropertyList2 = props => {
     input_petFrendly: selectPetFriendlyBtnId,
     input_secureDeposit: secureByDepositBtnId,
     input_addtional_keyFeature: additionalfeatureskeyvalue,
-    city:city
+    city: city,
   };
   console.log('AllCountsData....', AllCountsData);
   // ...Location
@@ -294,16 +295,6 @@ const PropertyList2 = props => {
             searchInputData: dataToSend,
             AllCountsData: AllCountsData,
           });
-          // response?.data.key_features.map(item => {
-          //   console.log('keyfeature.....', item);
-          // });
-          // if (response?.data?.key_features) {
-          //   const parsedData = JSON.parse(
-          //     response?.data?.key_features.replace(/\\/g, ''),
-          //   );
-          //   setKeyFeature(parsedData);
-          //   console.log('parsedData....', parsedData);
-          // }
         } else {
           setIsLoading(false);
         }
@@ -425,25 +416,16 @@ const PropertyList2 = props => {
             setIsSearch(false);
             setIsMap(true);
             setCurrentLocation(details.formatted_address);
-            // setLocation(details.formatted_address);
           }}
         />
       ) : (
         <ScrollView contentContainerStyle={PropertyList2Css.scrollViewStl}>
-          {/* <SearchBar
-            frontSearchIcon
-            placeholder="Search address, suburb, postcode, state"
-            height={48}
-            mapIcon
-          /> */}
-
           <View style={PropertyList2Css.Container}>
             <View style={[PropertyList2Css.locationConView, {marginTop: 10}]}>
               <View style={PropertyList2Css.locationContainer}>
                 <TextInput
                   style={PropertyList2Css.locationInput}
                   value={location}
-                  // onChangeText={setLocation}
                   onChangeText={handleLocation}
                   onFocus={() => {
                     setIsSearch(true);
@@ -501,8 +483,6 @@ const PropertyList2 = props => {
             <RangeSlider
               from={1}
               to={5000}
-              // from={minBudget !== null ? minBudget : 1}
-              // to={maxBudget !== null ? maxBudget : 2000}
               onPriceRangeChange={handlePriceRangeChange}
               onHighRange={handlemaxRange}
               onLowRange={handleminRange}
@@ -662,7 +642,6 @@ const PropertyList2 = props => {
               onPressLeftButton={() => {
                 setSelectedButtonFurnished(false);
                 setSelectedButtonFurnishedId(67);
-                // alert(selectedButtonFurnishedId)
               }}
               RightButtonText={'Unfurnished'}
               RightButtonbackgroundColor={
@@ -683,7 +662,6 @@ const PropertyList2 = props => {
               onPressRightButton={() => {
                 setSelectedButtonFurnished(true);
                 setSelectedButtonFurnishedId(68);
-                // alert(selectedButtonFurnishedId)
               }}
             />
             <Text style={PropertyList2Css.inputText}>{'Pet friendly?'}</Text>
@@ -707,7 +685,6 @@ const PropertyList2 = props => {
               onPressLeftButton={() => {
                 setSelectPetFriendlyBtn(false);
                 setSelectPetFriendlyBtnId(0);
-                // alert(selectPetFriendlyBtnId)
               }}
               RightButtonText={'No'}
               RightButtonbackgroundColor={
@@ -728,7 +705,6 @@ const PropertyList2 = props => {
               onPressRightButton={() => {
                 setSelectPetFriendlyBtn(true);
                 setSelectPetFriendlyBtnId(1);
-                // alert(selectPetFriendlyBtnId)
               }}
             />
             <Text style={PropertyList2Css.inputText}>

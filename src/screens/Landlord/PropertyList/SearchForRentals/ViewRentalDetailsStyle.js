@@ -45,7 +45,7 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
-    marginVertical: 10,
+    // marginVertical: 10,
     alignSelf: 'center',
     marginHorizontal: 16,
   },
@@ -118,5 +118,15 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     elevation: 1,
     marginBottom:20,
     backgroundColor:_COLORS.Kodie_WhiteColor
-  }
+  },
+  readMore: {
+    color: _COLORS.Kodie_GreenColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Bold,
+  },
+  textStyle: {
+    fontSize: 12,
+    color: _COLORS.Kodie_GrayColor,
+    fontFamily: FONTFAMILY.K_Regular,
+  },
 });

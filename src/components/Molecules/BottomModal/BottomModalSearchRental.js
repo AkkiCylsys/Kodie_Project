@@ -64,6 +64,7 @@ const data = [
 const BottomModalSearchRental = props => {
   const navigation = useNavigation();
   const propertyId = props.propertyId;
+  const rentalAmount = props.rentalAmount;
   console.log('propertyId.....', propertyId);
   const handleClose = () => {
     props.onClose();
@@ -76,6 +77,7 @@ const BottomModalSearchRental = props => {
           if (item?.id == '1') {
             navigation.navigate('ViewRentalDetails', {
               propertyId: propertyId,
+              rentalAmount: rentalAmount,
             });
             handleClose();
           }

@@ -25,8 +25,11 @@ import axios from 'axios';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
+import ReadMore from '@fawazahmed/react-native-read-more';
+
 const ViewRentalDetails = props => {
   const propertyId = props?.route?.params?.propertyId;
+  const rentalAmount = props?.route?.params?.rentalAmount;
   console.log('propertyId in view...', propertyId);
   const [isLoading, setIsLoading] = useState([]);
   const [property_Detail, setProperty_Details] = useState([]);
@@ -42,6 +45,8 @@ const ViewRentalDetails = props => {
   const [pointOfInterest, setPointOfInterest] = useState(false);
   const [submitApplicationBtn, setSubmitApplicationBtn] = useState(false);
   const [submitApplicationBtnId, setSubmitApplicationBtnId] = useState(0);
+  const [favRental, setFavRental] = useState(false);
+
   const images = [
     BANNERS.wallImage,
     BANNERS.BannerFirst,
@@ -50,15 +55,6 @@ const ViewRentalDetails = props => {
   ];
   useEffect(() => {
     fetchData();
-    // try {
-    //   const keyFeaturesArray = additionalKeyFeaturesString.split(',');
-    //   setAdditionalKeyFeatures(keyFeaturesArray);
-    // } catch (error) {
-    //   console.error('Error parsing additional_key_features:', error);
-    // }
-    // if (additionalKeyFeaturesString) {
-    //   keyFeature();
-    // }
     try {
       const keyFeaturesArray = additionalKeyFeaturesString.split(',');
       setAdditionalKeyFeatures(keyFeaturesArray);
@@ -218,22 +214,25 @@ const ViewRentalDetails = props => {
           response?.data?.property_details[0],
         );
         // Fetch and process key features..........
-        if (response?.data?.property_details[0].key_features) {
+        if (response?.data?.property_details[0]?.key_features) {
           const parsedData = JSON.parse(
-            response?.data?.property_details[0].key_features.replace(/\\/g, ''),
+            response?.data?.property_details[0]?.key_features.replace(
+              /\\/g,
+              '',
+            ),
           );
           setDetail(parsedData);
           console.log('parsedData....', parsedData);
         }
         const additionalKeyFeatures =
-          response?.data?.property_details[0].additional_key_features[0];
+          response?.data?.property_details[0]?.additional_key_features[0];
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
         // alert('Oops something went wrong! Please try again later.');
       }
       const additionalFeatures_id =
-        response?.data?.property_details[0].additional_features;
+        response?.data?.property_details[0]?.additional_features;
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const is_additionalFeaturesid = additionalFeatures_id.split(',');
       setAddtionalFeaturesID(is_additionalFeaturesid);
@@ -253,14 +252,14 @@ const ViewRentalDetails = props => {
         <View>
           <SliderBox
             // images={editMode ? updateAllImage : allImagePaths}
-            images={images}
+            images={property_Detail?.image_path}
             sliderBoxHeight={200}
             onCurrentImagePressed={index =>
               console.warn(`image ${index} pressed`)
             }
             inactiveDotColor={_COLORS.Kodie_GrayColor}
             dotColor={_COLORS.Kodie_GreenColor}
-            autoplay
+            autoplay={false}
             circleLoop
             resizeMethod={'resize'}
             resizeMode={'cover'}
@@ -301,10 +300,17 @@ const ViewRentalDetails = props => {
                 size={25}
               />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setFavRental(!favRental);
+              }}>
               <AntDesign
-                color={_COLORS.Kodie_ExtraminLiteGrayColor}
-                name="hearto"
+                color={
+                  favRental
+                    ? _COLORS.Kodie_GreenColor
+                    : _COLORS.Kodie_ExtraminLiteGrayColor
+                }
+                name={favRental ? 'heart' : 'hearto'}
                 size={25}
                 style={{marginHorizontal: 20}}
               />
@@ -337,16 +343,22 @@ const ViewRentalDetails = props => {
             {marginTop: 5, marginHorizontal: 28},
           ]}>
           {/* {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null} */}
-          {'$850.00'}
+          {rentalAmount || ''}
         </Text>
         <DividerIcon
           borderBottomWidth={3}
           color={_COLORS.Kodie_LiteWhiteColor}
         />
-        <View>
-          <Text style={ViewRentalDetailsStyle.welcome_Text}>
+        <View style={{marginHorizontal: 16}}>
+          <ReadMore
+            seeMoreStyle={ViewRentalDetailsStyle.readMore}
+            seeLessStyle={ViewRentalDetailsStyle.readMore}
+            seeMoreText={'read more'}
+            seeLessText={'read Less'}
+            numberOfLines={2}
+            style={ViewRentalDetailsStyle.textStyle}>
             {property_Detail?.property_description || ''}
-          </Text>
+          </ReadMore>
           <DividerIcon
             borderBottomWidth={3}
             color={_COLORS.Kodie_LiteWhiteColor}
