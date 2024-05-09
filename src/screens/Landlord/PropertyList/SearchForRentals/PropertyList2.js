@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 import {IMAGES} from '../../../../Themes';
-import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
 import {FONTFAMILY, _COLORS} from '../../../../Themes';
 import {PropertyList2Css} from './PropertyList2Css';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
@@ -72,10 +71,12 @@ const PropertyList2 = props => {
   console.log('city....', city);
   console.log('country....', country);
   console.log('state....', state);
+
   useEffect(() => {
-    handle_property_Type();
-    additional_key_features();
-  }, [isFocus]);
+      handle_property_Type();
+      additional_key_features();
+  }, []);
+
   const dataToSend = {
     input_Location: location,
     input_PropertyType: proteryTypeValue,
@@ -88,7 +89,6 @@ const PropertyList2 = props => {
     input_addtional_keyFeature: additionalfeatureskeyvalue,
     city: city,
   };
-  console.log('AllCountsData....', AllCountsData);
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
