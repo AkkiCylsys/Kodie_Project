@@ -31,6 +31,7 @@ import moment from 'moment/moment';
 import {useDispatch, useSelector} from 'react-redux';
 import {useIsFocused} from '@react-navigation/native';
 import {Calendar} from 'react-native-calendars'; //calender
+import {debounce} from 'lodash';
 const HorizontalData = [
   {filtername: 'All', filterId: 'All'},
   {filtername: 'General', filterId: '367'},
@@ -145,16 +146,16 @@ const Notices = props => {
   const onClose = () => {
     refRBSheet.current.close();
   };
-  // useEffect(() => {
-  //   getNoticesReminderDeatilsByFilter(selectedFilter);
-  // }, [selectedFilter,]);
 
   useEffect(() => {
     if (isFocused) {
-      getNoticesReminderDeatilsByFilter(selectedFilter);
+      getNoticesReminderDeatilsByFilter({
+        monthId: _selectedMonthId,
+        year: _selectedYear,
+        selectedFilter: selectedFilter,
+      });
     }
   }, [isFocused, selectedFilter]);
-  // RenderItems......
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
@@ -166,7 +167,14 @@ const Notices = props => {
               : _COLORS?.Kodie_WhiteColor,
           },
         ]}
-        onPress={() => setSelectedFilter([item.filterId])}>
+        onPress={() => {
+          setSelectedFilter([item.filterId]);
+          getNoticesReminderDeatilsByFilter({
+            monthId: _selectedMonthId,
+            year: _selectedYear,
+            selectedFilter: item.filterId,
+          });
+        }}>
         {selectedFilter.includes(item.filterId) ? null : (
           <View
             style={[
@@ -253,7 +261,7 @@ const Notices = props => {
         NoticesReminderDeatilsByFilter_url,
       );
       const data = {
-        notices_filter: 'All',
+        notices_filter: selectedFilter,
         account_id: loginData?.Login_details?.user_account_id,
         limit: 10,
         order_wise: 'DESC',
@@ -395,7 +403,6 @@ const Notices = props => {
             justifyContent: 'center',
             alignItems: 'center',
             marginHorizontal: 16,
-            borderWidth: 1,
             marginVertical: 10,
           }}>
           <TouchableOpacity

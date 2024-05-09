@@ -89,7 +89,8 @@ const AddNewNotice = props => {
     handle_notice();
     handle_Repeat();
     handle_notification_type();
-    getNoticesReminderDetails();
+    noticeReminderid ? getNoticesReminderDetails() : null;
+
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -408,6 +409,7 @@ const AddNewNotice = props => {
     const notification_data = {
       notices_reminder_id: noticeReminderid,
     };
+    console.log(notification_data, 'notification_datakhds');
     axios
       .post(getNoticesReminderDetails_url, notification_data)
       .then(response => {
