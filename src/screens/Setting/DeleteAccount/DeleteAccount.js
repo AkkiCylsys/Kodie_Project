@@ -273,6 +273,7 @@ const DeleteAccount = props => {
               }}
             />
           </View>
+          <View style={{marginBottom:110}}></View>
         </ScrollView>
         {isLoading ? <CommonLoader /> : null}
       </KeyboardAvoidingView>

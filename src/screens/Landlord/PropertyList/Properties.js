@@ -16,6 +16,7 @@ import {
   useNavigation,
   useNavigationState,
 } from '@react-navigation/native';
+import ViewRentalDetails from './SearchForRentals/ViewRentalDetails';
 
 const Properties = props => {
   const routesLength = useNavigationState(state => state.routes.length);
@@ -85,7 +86,9 @@ const Properties = props => {
           //   ])}
           // </>
           <PropertyList2
-            SearchButton={() => props.navigation.navigate('SearchResult')}
+            SearchButton={() => {
+              props.navigation.navigate('SearchResult')
+            }}
           />
         );
       case 'Tab3':
