@@ -23,6 +23,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import {Dropdown} from 'react-native-element-dropdown';
 import Bedroom from './Bedroom/Bedroom';
+import { ScrollView } from 'react-native-gesture-handler';
 const Data = [
   {
     id: 1,
@@ -152,6 +153,7 @@ const Inspection = () => {
     );
   };
   return (
+    <ScrollView>    
     <View style={InspectionCss.MainContainer}>
       <View style={InspectionCss.Container}>
         <View style={InspectionCss.mainView}>
@@ -332,6 +334,7 @@ const Inspection = () => {
         </View>
       </RBSheet>
     </View>
+    </ScrollView>
   );
 };
 export default Inspection;
