@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -194,18 +195,27 @@ const PropertyListing = () => {
                 </Text>
               </View>
             </View>
-            <Image
-              source={{uri: item.image_path[0]}}
-              style={PropertyListingCss.imageStyle}
-            />
+            {item.image_path && item.image_path.length > 0 ? (
+              <Image
+                source={{uri: item?.image_path[0]}}
+                style={PropertyListingCss.imageStyle}
+                resizeMode="cover"
+              />
+            ) : (
+              <View
+                style={[
+                  PropertyListingCss.imageStyle,
+                  {justifyContent: 'center'},
+                ]}>
+                <Text style={PropertyListingCss.Img_found}>
+                  {'Image not found'}
+                </Text>
+              </View>
+            )}
+
             <View style={PropertyListingCss.flexContainer}>
               <View style={PropertyListingCss.noteStyle}>
                 <TouchableOpacity>
-                  {/* <Image
-                    source={IMAGES.noteBook}
-                    style={PropertyListingCss.noteIcon}
-                    resizeMode={"contain"}
-                  /> */}
                   <SimpleLineIcons
                     name="note"
                     size={25}
@@ -224,7 +234,7 @@ const PropertyListing = () => {
                   />
                 </TouchableOpacity>
               </View>
-              <View
+              <TouchableOpacity
                 style={[
                   PropertyListingCss.buttonView,
                   {
@@ -234,19 +244,10 @@ const PropertyListing = () => {
                       ? _COLORS.Kodie_mostLightGreenColor
                       : _COLORS.Kodie_LightGrayColor,
                   },
-                ]}>
-                <View
-                  style={[
-                    PropertyListingCss.roundButton,
-                    {
-                      backgroundColor: item.isRentPanding
-                        ? _COLORS.Kodie_LightGrayColor
-                        : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
-                    },
-                  ]}
-                />
+                ]}
+                onPress={() => {
+                  refRBSheet3.current.open();
+                }}>
                 <Text
                   style={[
                     PropertyListingCss.buttonText,
@@ -261,10 +262,9 @@ const PropertyListing = () => {
                   onPress={() => {
                     refRBSheet3.current.open();
                   }}>
-                  {/* {item.buttonName} */}
-                  "+ invite"
+                  {'+ invite Tenant'}
                 </Text>
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
           <DividerIcon
@@ -300,7 +300,7 @@ const PropertyListing = () => {
           </View>
         )}
         <DividerIcon />
-        {/* three dot click popup menu */}
+
         <RBSheet
           ref={refRBSheet1}
           closeOnDragDown={true}
@@ -369,11 +369,11 @@ const PropertyListing = () => {
     );
   };
   return (
-    <View>
+    <SafeAreaView>
       {/* <FlatList data={property_List1} renderItem={propertyData1_render} /> */}
       <FlatList data={Vacant_data} renderItem={propertyData1_render} />
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 
