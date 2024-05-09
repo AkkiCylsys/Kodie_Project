@@ -27,25 +27,6 @@ import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-const data = [
-  {label: 'Bharat', value: '1'},
-  {label: 'Australia', value: '2'},
-  {label: 'America', value: '3'},
-];
-const AdditionalKeyFeatures = [
-  {label: 'Pool', value: '1'},
-  {label: 'Garage', value: '2'},
-  {label: 'Balcony', value: '3'},
-  {label: 'Ensuite', value: '4'},
-  {label: 'Dishwasher', value: '5'},
-  {label: 'Study', value: '6'},
-  {label: 'Built in robes', value: '7'},
-  {label: 'Climate Control & energy', value: '8'},
-  {label: 'Air conditioning', value: '8'},
-  {label: 'Solar panels', value: '8'},
-  {label: 'Heating', value: '8'},
-  {label: 'High energy efficiency', value: '8'},
-];
 const PropertyList2 = props => {
   const [value, setValue] = useState(null);
   const [selected, setSelected] = useState([]);
@@ -95,12 +76,6 @@ const PropertyList2 = props => {
     handle_property_Type();
     additional_key_features();
   }, [isFocus]);
-  // const goBack = () => {
-  //   navigation.pop();
-  // };
-  // props.backHandleData(
-  //   IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack(),
-  // );
   const dataToSend = {
     input_Location: location,
     input_PropertyType: proteryTypeValue,
@@ -117,7 +92,6 @@ const PropertyList2 = props => {
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
-    // setLocation(currentLocation);
     setLocation(currentLocation);
   };
   const openMapandClose = text => {
@@ -131,7 +105,6 @@ const PropertyList2 = props => {
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
     setLocationError('');
-    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
@@ -353,16 +326,12 @@ const PropertyList2 = props => {
         <View
           style={{
             flex: 1,
-            // paddingHorizontal: 10,
             backgroundColor: 'transparent',
           }}>
           <MapScreen
             style={{
               height: '100%',
               width: '100%',
-              // borderRadius: 20,
-              // borderWidth: 1,
-              //borderColor: .greenAppColor,
               alignSelf: 'center',
               marginBottom: 10,
             }}
