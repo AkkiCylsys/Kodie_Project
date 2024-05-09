@@ -145,7 +145,15 @@ const Notices = props => {
 
   const onClose = () => {
     refRBSheet.current.close();
+    
   };
+  const reloadDuplicateData=()=>{
+    getNoticesReminderDeatilsByFilter({
+      monthId: _selectedMonthId,
+      year: _selectedYear,
+      selectedFilter: selectedFilter,
+    });
+  }
 
   useEffect(() => {
     if (isFocused) {
@@ -156,6 +164,7 @@ const Notices = props => {
       });
     }
   }, [isFocused, selectedFilter]);
+ 
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
@@ -187,6 +196,7 @@ const Notices = props => {
             ]}
           />
         )}
+        <View style={{justifyContent:'center',alignItems:'center',flex:1}}></View>
         <Text
           style={[
             NoticesStyle.item_style,
@@ -294,7 +304,7 @@ const Notices = props => {
       setIsLoading(false);
     }
   };
-
+  
   const FinalDeleteProperty = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -311,7 +321,11 @@ const Notices = props => {
       if (response?.data?.status === true) {
         // Alert.alert("notice Deleted", response?.data?.message);
         alert(response?.data?.data);
-        getNoticesReminderDeatilsByFilter(selectedFilter);
+        getNoticesReminderDeatilsByFilter({
+          monthId: _selectedMonthId,
+          year: _selectedYear,
+          selectedFilter: selectedFilter,
+        });
         setIsLoading(false);
       }
     } catch (error) {
@@ -480,6 +494,7 @@ const Notices = props => {
           container: NoticesStyle.bottomModal_container,
         }}>
         <NoticeBottomModal
+        onchange={reloadDuplicateData}
           onClose={onClose}
           noticeReminderid={noticeReminderid}
           FinalDeleteProperty={FinalDeleteProperty}

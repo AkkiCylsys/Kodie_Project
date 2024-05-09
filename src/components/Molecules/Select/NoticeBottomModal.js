@@ -72,16 +72,16 @@ const NoticeBottomModal = props => {
     formData.append('account_id', loginData?.Login_details?.user_account_id);
     formData.append('notice_type', noticeRemiderDetails.type_notice_id);
     formData.append('notice_title', noticeRemiderDetails.title);
-    formData.append('notice_repeat', noticeRemiderDetails.notification_notice);
-    formData.append('notice_notifications', noticeRemiderDetails.from_date);
-    formData.append('notice_from_date', noticeRemiderDetails.from_time);
-    formData.append('notice_from_time', noticeRemiderDetails.to_date);
-    formData.append('notice_to_date', noticeRemiderDetails.to_time);
-    formData.append('notice_to_time', noticeRemiderDetails.guests);
-    formData.append('guests', noticeRemiderDetails.location);
-    formData.append('location', noticeRemiderDetails.longitude);
-    formData.append('longitude', noticeRemiderDetails.latitude);
-    formData.append('latitude', noticeRemiderDetails.notifications);
+    formData.append('notice_repeat', noticeRemiderDetails.Repeat_id);
+    formData.append('notice_notifications', noticeRemiderDetails.notification_notice);
+    formData.append('notice_from_date', noticeRemiderDetails.from_date);
+    formData.append('notice_from_time', noticeRemiderDetails.from_time);
+    formData.append('notice_to_date', noticeRemiderDetails.to_date);
+    formData.append('notice_to_time', noticeRemiderDetails.to_time);
+    formData.append('guests', noticeRemiderDetails.guests);
+    formData.append('location', noticeRemiderDetails.location);
+    formData.append('longitude', noticeRemiderDetails.longitude);
+    formData.append('latitude', noticeRemiderDetails.latitude);
     formData.append('notification', noticeRemiderDetails.type_id);
     formData.append(
       'notification_type',
@@ -89,14 +89,15 @@ const NoticeBottomModal = props => {
     );
     formData.append('custom', noticeRemiderDetails.custom);
     formData.append('notes', noticeRemiderDetails.notes);
-    // formData.append("file_name", fileName);
+    // formData.append("file_name", "fileName");
     if (selectFile.length > 0 && selectFile[0]) {
       formData.append('file_name', {
-        uri: selectFile[0].uri || null,
-        name: selectFile[0].name || null,
-        type: selectFile[0].type || null,
+        uri: null,
+        name: null,
+        type:null,
       });
     }
+  
     console.log('formData', formData);
     const url = Config.BASE_URL;
     const createNoticeReminder_url = url + 'create_notices_reminder';
@@ -111,7 +112,7 @@ const NoticeBottomModal = props => {
       console.log('createNoticeReminder....', response?.data);
       if (response?.data?.status === true) {
         alert(response?.data?.message);
-        // props.navigation.navigate("Notices");
+       props.onchange()
       }
       // clearState();
       setIsLoading(false);
@@ -218,11 +219,14 @@ const NoticeBottomModal = props => {
             if (item.id == 1) {
               navigation.navigate('AddNewNotice', {
                 noticeReminderid: props.noticeReminderid,
+                editNotice:'editNotice'
               });
               onClosemodal();
             }
             if (item.id == 2) {
               createNoticeReminder();
+              onClosemodal();
+
               // alert("create Notice");
             }
             if (item.id == 4) {

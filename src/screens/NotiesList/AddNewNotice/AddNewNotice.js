@@ -49,6 +49,7 @@ const data = [
 ];
 const AddNewNotice = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
+  const editNotice = props.route.params?.editNotice;
   console.log('noticeReminderid in addNewNotice...', noticeReminderid);
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
@@ -345,6 +346,7 @@ const AddNewNotice = props => {
       setCurrentfromTime(''),
       setCurrentToTime('');
   };
+  // alert(selectFile[0].name)
   const createNoticeReminder = async () => {
     const formData = new FormData();
     formData.append('account_id', loginData?.Login_details?.user_account_id);
@@ -539,7 +541,7 @@ const AddNewNotice = props => {
     <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={'Add new notice'}
+        MiddleText={editNotice?"Edit notice":'Add new notice'}
       />
       {IsMap ? (
         <View
@@ -986,7 +988,7 @@ const AddNewNotice = props => {
               />
               <Divider style={AddNewNoticeStyle.dividerfourth} />
               <CustomSingleButton
-                _ButtonText={'Add notice'}
+                _ButtonText={editNotice? "Edit notice":'Add notice'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 disabled={isLoading ? true : false}
                 onPress={() => {
