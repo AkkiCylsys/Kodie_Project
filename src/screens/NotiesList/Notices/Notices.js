@@ -5,6 +5,9 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Modal,
+  Button,
+  SafeAreaView,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import {NoticesStyle} from './NoticesStyle';
@@ -94,11 +97,45 @@ const Notices = props => {
     {id: 11, name: 'November'},
     {id: 12, name: 'December'},
   ]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisibleYear, setIsModalVisibleyear] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const [_selectedMonthId, set_selectedMonthId] = useState(
     new Date().getMonth() + 1,
   ); // Initialize with current month ID
   const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear()); // Initialize with current year
 
+  const generateYears = startYear => {
+    return Array.from({length: 12}, (_, index) => startYear - index);
+  };
+
+  const generatetopYears = selectedYear => {
+    const startYear = selectedYear - 11;
+    const endYear = selectedYear;
+    return `${startYear} - ${endYear}`;
+  };
+  const handleNextYears = () => {
+    set_selectedYear(_selectedYear + 12); // Move to the previous 12 years
+  };
+
+  const handlePrevYears = () => {
+    set_selectedYear(_selectedYear - 12); // Move to the next 12 years
+  };
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+  const toggleYearModal = () => {
+    setIsModalVisibleyear(!isModalVisibleYear);
+  };
+
+  const selectMonth = month => {
+    set_selectedMonthId(month);
+    toggleModal(); // Close the modal after selecting a month
+  };
+  const selectYear = year => {
+    set_selectedYear(year);
+    toggleYearModal(); // Close the modal after selecting a month
+  };
   const searchNoticesList = () => {};
   const onDayPress = day => {
     //......
@@ -216,7 +253,6 @@ const Notices = props => {
         NoticesReminderDeatilsByFilter_url,
       );
       const data = {
-        // notices_filter: filter,
         notices_filter: 'All',
         account_id: loginData?.Login_details?.user_account_id,
         limit: 10,
@@ -225,15 +261,10 @@ const Notices = props => {
         year: year,
       };
       console.log('monthdatae', data);
-      const response = await axios.post(NoticesReminderDeatilsByFilter_url, {
-        // notices_filter: filter,
-        notices_filter: 'All',
-        account_id: loginData?.Login_details?.user_account_id,
-        limit: 10,
-        order_wise: 'DESC',
-        months: _selectedMonthId,
-        year: _selectedYear,
-      });
+      const response = await axios.post(
+        NoticesReminderDeatilsByFilter_url,
+        data,
+      ); // Use monthId and year received as parameters
       console.log(
         'NoticesReminderDeatilsByFilter_Data response...',
         response?.data,
@@ -249,7 +280,6 @@ const Notices = props => {
         alert(error.response.message);
         setIsLoading(false);
       } else {
-        // alert("An error occurred. Please try again later.");
         setIsLoading(false);
       }
       console.error('API Error NoticesReminderDeatilsByFilter_Data:', error);
@@ -292,8 +322,8 @@ const Notices = props => {
     set_selectedMonthId(newMonthId);
     set_selectedYear(newYear);
     await getNoticesReminderDeatilsByFilter({
-      monthId: newMonthId,
-      year: newYear,
+      monthId: newMonthId, // Pass newMonthId instead of _selectedMonthId
+      year: newYear, // Pass newYear instead of _selectedYear
     });
   };
 
@@ -307,13 +337,13 @@ const Notices = props => {
     set_selectedMonthId(newMonthId);
     set_selectedYear(newYear);
     await getNoticesReminderDeatilsByFilter({
-      monthId: newMonthId,
-      year: newYear,
+      monthId: newMonthId, // Pass newMonthId instead of _selectedMonthId
+      year: newYear, // Pass newYear instead of _selectedYear
     });
   };
 
   return (
-    <View style={NoticesStyle.mainview}>
+    <SafeAreaView style={NoticesStyle.mainview}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Notices'}
@@ -358,30 +388,7 @@ const Notices = props => {
           </View>
         </View>
         <DividerIcon />
-        {/* .....calender */}
-        {/* <View style={{flex: 1, backgroundColor: '#FFFFFF', marginTop: 100}}>
-          <Calendar
-            onDayPress={onDayPress}
-            markedDates={{[selectedDate]: {selected: true}}}
-          />
-          <View>
-            <Text>Selected Date: {selectedDate}</Text>
-          </View>
-        </View> */}
-        {/* ..... */}
-        {/* <View style={NoticesStyle.calenderview}>
-          <MaterialCommunityIcons
-            name={"chevron-left"}
-            size={25}
-            color={_COLORS.Kodie_BlackColor}
-          />
-          <Text style={NoticesStyle.monthtext}>September 2023</Text>
-          <MaterialCommunityIcons
-            name={"chevron-right"}
-            size={25}
-            color={_COLORS.Kodie_BlackColor}
-          />
-        </View> */}
+
         <View
           style={{
             flexDirection: 'row',
@@ -394,28 +401,48 @@ const Notices = props => {
           <TouchableOpacity
             onPress={navigateToPreviousMonth}
             style={{
-              flex: 1,
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
             }}>
             <Entypo name={'chevron-left'} size={22} color={'black'} />
           </TouchableOpacity>
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
-            <Text
-              style={{
-                fontSize: 18,
-                alignSelf: 'center',
-                fontFamily: FONTFAMILY?.K_Bold,
-                color: _COLORS.Kodie_BlackColor,
-              }}>
-              {_MONTHS.find(month => month.id === _selectedMonthId)?.name}{' '}
-              {_selectedYear}
-            </Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
+              // onPress={toggleModal}
+              style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  alignSelf: 'center',
+                  fontFamily: FONTFAMILY?.K_Bold,
+                  color: _COLORS.Kodie_BlackColor,
+                }}>
+                {_MONTHS.find(month => month.id === _selectedMonthId)?.name}{' '}
+              </Text>
+            </View>
+            <View
+              // onPress={toggleYearModal}
+              style={{justifyContent: 'center', alignItems: 'center'}}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  alignSelf: 'center',
+                  fontFamily: FONTFAMILY?.K_Bold,
+                  color: _COLORS.Kodie_BlackColor,
+                }}>
+                {_selectedYear}
+              </Text>
+            </View>
           </View>
           <TouchableOpacity
             onPress={navigateToNextMonth}
             style={{
-              flex: 1,
               justifyContent: 'flex-end',
               alignItems: 'flex-end',
             }}>
@@ -452,8 +479,175 @@ const Notices = props => {
           selectFile={null}
         />
       </RBSheet>
+      {/* <Modal
+        visible={isModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={toggleModal}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <View
+            style={{backgroundColor: 'white', padding: 20, borderRadius: 10}}>
+            <FlatList
+              data={_MONTHS}
+              keyExtractor={item => item.id.toString()}
+              numColumns={3}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    backgroundColor:
+                      item.id === _selectedMonthId
+                        ? _COLORS?.Kodie_GreenColor
+                        : _COLORS?.Kodie_WhiteColor,
+                    paddingHorizontal: 7,
+                    paddingVertical: 8,
+                    borderRadius: 8,
+                    justifyContent: 'center',
+                    borderWidth: 1,
+                    borderColor:
+                      item.id === _selectedMonthId
+                        ? _COLORS?.Kodie_GreenColor
+                        : _COLORS?.Kodie_GrayColor,
+                    margin: 5,
+                  }}
+                  onPress={() => selectMonth(item.id)}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color:
+                        item.id === _selectedMonthId
+                          ? _COLORS?.Kodie_WhiteColor
+                          : _COLORS?.Kodie_BlackColor,
+                      fontFamily: FONTFAMILY?.K_Bold,
+                      alignSelf: 'center',
+                    }}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            /> */}
+      {/* <TouchableOpacity
+              onPress={toggleModal}
+              style={{
+                backgroundColor: _COLORS?.Kodie_GreenColor,
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                paddingHorizontal: 10,
+                paddingVertical: 8,
+                marginHorizontal: '30%',
+                borderRadius: 8,
+              }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: _COLORS?.Kodie_WhiteColor,
+                  fontFamily: FONTFAMILY?.K_Bold,
+                  alignSelf: 'center',
+                }}>
+                {'Done'}
+              </Text>
+            </TouchableOpacity> */}
+      {/* </View>
+        </View>
+      </Modal> */}
+      {/* <Modal
+        visible={isModalVisibleYear}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={toggleYearModal}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <View
+            style={{backgroundColor: 'white', padding: 20, borderRadius: 10}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginBottom: 10,
+              }}>
+              {_selectedYear > 1803 && (
+                <TouchableOpacity onPress={handlePrevYears}>
+                  <Entypo name={'chevron-left'} size={22} color={'black'} />
+                </TouchableOpacity>
+              )}
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: _COLORS?.Kodie_BlackColor,
+                    fontFamily: FONTFAMILY?.K_Bold,
+                    alignSelf: 'center',
+                  }}>
+                  {generatetopYears(_selectedYear)}
+                </Text>
+              </View>
+              <TouchableOpacity onPress={handleNextYears}>
+                <Entypo name={'chevron-right'} size={22} color={'black'} />
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={generateYears(_selectedYear)}
+              keyExtractor={item => item}
+              numColumns={3}
+              renderItem={({item}) => (
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    backgroundColor:
+                      item === _selectedYear
+                        ? _COLORS?.Kodie_GreenColor
+                        : _COLORS?.Kodie_WhiteColor,
+                    paddingHorizontal: 7,
+                    paddingVertical: 8,
+                    borderRadius: 8,
+                    justifyContent: 'center',
+                    borderWidth: 1,
+                    borderColor:
+                      item === _selectedYear
+                        ? _COLORS?.Kodie_GreenColor
+                        : _COLORS?.Kodie_GrayColor,
+                    margin: 5,
+                  }}
+                  onPress={() => {
+                    selectYear(item);
+                    getNoticesReminderDeatilsByFilter(item);
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color:
+                        item === _selectedYear
+                          ? _COLORS?.Kodie_WhiteColor
+                          : _COLORS?.Kodie_BlackColor,
+                      fontFamily: FONTFAMILY?.K_Bold,
+                      alignSelf: 'center',
+                    }}>
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </View>
+      </Modal> */}
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

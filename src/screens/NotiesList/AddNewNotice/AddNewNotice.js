@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 import {AddNewNoticeStyle} from './AddNewNoticeStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -251,7 +252,7 @@ const AddNewNotice = props => {
           setNoticeTypeData(response?.data?.lookup_details);
           // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -281,7 +282,7 @@ const AddNewNotice = props => {
           setRepeatData(response?.data?.lookup_details);
           // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -312,7 +313,7 @@ const AddNewNotice = props => {
           setNotification_type_Data(response?.data?.lookup_details);
           // alert(JSON.stringify(response?.data?.lookup_details));
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -392,7 +393,7 @@ const AddNewNotice = props => {
       clearState();
       setIsLoading(false);
     } catch (error) {
-      alert(error);
+      // alert(error);
       console.log('createNoticeReminder_error...', error);
     } finally {
       setIsLoading(false);
@@ -494,7 +495,7 @@ const AddNewNotice = props => {
       clearState();
       setIsLoading(false);
     } catch (error) {
-      alert(error);
+      // alert(error);
       console.log('update_createNoticeReminder_url...', error);
     } finally {
       setIsLoading(false);
@@ -533,7 +534,7 @@ const AddNewNotice = props => {
     }
   };
   return (
-    <View style={AddNewNoticeStyle.MainContainer}>
+    <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Add new notice'}
@@ -997,7 +998,7 @@ const AddNewNotice = props => {
         </ScrollView>
       )}
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -145,7 +145,7 @@ const DeleteAccount = props => {
           response?.data?.data?.length > 0
         ) {
           setAccountDetails(response?.data?.data[0]);
-          setPhoneNumber(response?.data?.data[0].UAD_PHONE_NO);
+          setPhoneNumber(response?.data?.data[0]?.UAD_PHONE_NO);
         } else {
           console.error('Invalid response data format:', response?.data);
         }

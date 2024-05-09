@@ -1,22 +1,19 @@
-import { View, Text, ScrollView } from "react-native";
-import React from "react";
-import { VacantPropertiesListStyle } from "./VacantPropertiesListStyle";
-import TopHeader from "../../components/Molecules/Header/Header";
-import { _goBack } from "../../services/CommonServices";
-import SearchBar from "../../components/Molecules/SearchBar/SearchBar";
-import { _COLORS, IMAGES } from "../../Themes";
-import DividerIcon from "../../components/Atoms/Devider/DividerIcon";
-import PropertyListing from "../../components/Molecules/PropertyListings/PropertyListing";
-const VacantPropertiesList = (props) => {
-
-  const searchVacantProperty =()=>{
-    
-  }
+import {View, Text, ScrollView, SafeAreaView} from 'react-native';
+import React from 'react';
+import {VacantPropertiesListStyle} from './VacantPropertiesListStyle';
+import TopHeader from '../../components/Molecules/Header/Header';
+import {_goBack} from '../../services/CommonServices';
+import SearchBar from '../../components/Molecules/SearchBar/SearchBar';
+import {_COLORS, IMAGES} from '../../Themes';
+import DividerIcon from '../../components/Atoms/Devider/DividerIcon';
+import PropertyListing from '../../components/Molecules/PropertyListings/PropertyListing';
+const VacantPropertiesList = props => {
+  const searchVacantProperty = () => {};
   return (
-    <View style={VacantPropertiesListStyle.maincontainer}>
+    <SafeAreaView style={VacantPropertiesListStyle.maincontainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Vacant"}
+        MiddleText={'Vacant'}
       />
       <ScrollView>
         <View style={VacantPropertiesListStyle.searchview}>
@@ -26,8 +23,7 @@ const VacantPropertiesList = (props) => {
             isFilterImage
             filterImage={IMAGES.filter}
             height={48}
-        searchData={searchVacantProperty}
-
+            searchData={searchVacantProperty}
           />
         </View>
         <DividerIcon style={VacantPropertiesListStyle.divider} />
@@ -36,7 +32,7 @@ const VacantPropertiesList = (props) => {
           <PropertyListing />
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
