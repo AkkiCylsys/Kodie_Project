@@ -12,7 +12,7 @@ const data = [
   {
     id: "1",
     key: "InviteFriend",
-    title: "Invite tenant from contacts",
+    title: "Invite tenant from contact",
     Icon: (
       <Ionicons
         name={"person-add-outline"}

@@ -148,9 +148,12 @@ const VacantModal = (props) => {
           <TouchableOpacity
             style={VacantModalStyle.container}
             onPress={() => {
-              if (item.id === "1") {
-                navigation.navigate("PropertyReview", {
+              if (item.id === '1') {
+                navigation.navigate('PropertyReview', {
                   propertyId: propertyId,
+                  propertyView: "propertyView",
+                  // propertyid: propertyId,
+                  // propertyView: 'propertyView',
                 });
                 handleCloseModal();
               }
@@ -160,9 +163,17 @@ const VacantModal = (props) => {
                 });
                 handleCloseModal();
               }
-              if (item.id === "3") {
-                navigation.navigate("Documents", {
-                  propertyId: propertyId,
+              // if (item.id === "3") {
+              //   navigation.navigate("PropertyReview", {
+              //     propertyId: propertyId,
+              //   });
+              //   handleCloseModal();
+              // }
+              if (item.id === '3') {
+                navigation.navigate('PropertyReview', {
+                  propertyid: propertyId,
+                  propertyView: 'propertyView',
+                  DocTab: 'DocTab',
                 });
                 handleCloseModal();
               }
