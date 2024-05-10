@@ -27,7 +27,7 @@ import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsMo
 import RNFetchBlob from 'rn-fetch-blob';
 import {Config} from '../../../../Config';
 import Share from 'react-native-share';
-import FileViewer from 'react-native-file-viewer';
+import FileViewer from 'react-native-file-viewer'
 
 const JobDocumentDetails = props => {
   const refRBSheet = useRef();
