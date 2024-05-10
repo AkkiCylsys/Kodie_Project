@@ -11,7 +11,7 @@ export const SearchResultCss = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom:5
+    marginBottom: 5,
   },
   flexContainer: {flex: 1},
   apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
@@ -85,8 +85,7 @@ export const SearchResultCss = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     justifyContent: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    padding: 8,
     borderRadius: 5,
   },
   payButtonText: {
@@ -107,6 +106,7 @@ export const SearchResultCss = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   LeftTextRentText: {
+    // flex:1,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
@@ -152,8 +152,7 @@ export const SearchResultCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     marginLeft: 3,
     paddingHorizontal: 5,
-    paddingVertical:5
-
+    paddingVertical: 5,
   },
   dotStyle: {
     width: 10,
@@ -180,6 +179,7 @@ export const SearchResultCss = StyleSheet.create({
     marginTop: 19,
   },
   location: {
+    flex:1,
     fontSize: 14,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,

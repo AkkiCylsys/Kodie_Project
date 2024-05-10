@@ -73,7 +73,10 @@ const NoticeBottomModal = props => {
     formData.append('notice_type', noticeRemiderDetails.type_notice_id);
     formData.append('notice_title', noticeRemiderDetails.title);
     formData.append('notice_repeat', noticeRemiderDetails.Repeat_id);
-    formData.append('notice_notifications', noticeRemiderDetails.notification_notice);
+    formData.append(
+      'notice_notifications',
+      noticeRemiderDetails.notification_notice,
+    );
     formData.append('notice_from_date', noticeRemiderDetails.from_date);
     formData.append('notice_from_time', noticeRemiderDetails.from_time);
     formData.append('notice_to_date', noticeRemiderDetails.to_date);
@@ -94,10 +97,10 @@ const NoticeBottomModal = props => {
       formData.append('file_name', {
         uri: null,
         name: null,
-        type:null,
+        type: null,
       });
     }
-  
+
     console.log('formData', formData);
     const url = Config.BASE_URL;
     const createNoticeReminder_url = url + 'create_notices_reminder';
@@ -112,7 +115,7 @@ const NoticeBottomModal = props => {
       console.log('createNoticeReminder....', response?.data);
       if (response?.data?.status === true) {
         alert(response?.data?.message);
-       props.onchange()
+        props.onchange();
       }
       // clearState();
       setIsLoading(false);
@@ -176,7 +179,7 @@ const NoticeBottomModal = props => {
   const delete_data = [
     {
       id: 4,
-      Data: 'Confirm delete job',
+      Data: 'Confirm delete notice',
       icon: (
         <AntDesign size={18} color={_COLORS.Kodie_GreenColor} name="delete" />
       ),
@@ -219,7 +222,7 @@ const NoticeBottomModal = props => {
             if (item.id == 1) {
               navigation.navigate('AddNewNotice', {
                 noticeReminderid: props.noticeReminderid,
-                editNotice:'editNotice'
+                editNotice: 'editNotice',
               });
               onClosemodal();
             }

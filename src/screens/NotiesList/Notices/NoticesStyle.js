@@ -92,7 +92,7 @@ export const NoticesStyle = StyleSheet.create({
   // noticestyle...
 
   mainContainer: {
-    // flex: 1,
+    flex: 1,
     flexDirection: "row",
     marginTop: 10,
     // marginHorizontal:16,

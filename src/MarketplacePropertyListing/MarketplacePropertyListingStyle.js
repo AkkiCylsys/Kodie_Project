@@ -136,4 +136,8 @@ export const MarketplacePropertyListingStyle = StyleSheet.create({
     textAlign: 'center',
     color: _COLORS.Kodie_VeryLightGrayColor,
   },
+  crossIcon:{
+    alignSelf: 'flex-end',
+    marginHorizontal: 10,
+  }
 });

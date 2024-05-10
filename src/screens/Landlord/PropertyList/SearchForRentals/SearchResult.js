@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,24 +8,25 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import { _COLORS, LABEL_STYLES, BANNERS, IMAGES } from '../../../../Themes';
-import { SearchResultCss } from './SearchResultCss';
+import {_COLORS, LABEL_STYLES, BANNERS, IMAGES} from '../../../../Themes';
+import {SearchResultCss} from './SearchResultCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from './../../../../services/CommonServices/index';
+import {_goBack} from './../../../../services/CommonServices/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { SliderBox } from 'react-native-image-slider-box';
-import { Config } from '../../../../Config';
+import {SliderBox} from 'react-native-image-slider-box';
+import {Config} from '../../../../Config';
 import axios from 'axios';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { FONTFAMILY, fontFamily } from '../../../../Themes/FontStyle/FontStyle';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 const staticimage = [
   // 'https://kodietestapi.cylsys.com/upload/photo/b654ad06-522d-4d46-8a37-951b15845721.jpg',
   // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
@@ -51,11 +52,12 @@ export default SearchResult = props => {
   console.log('searchRentalResponse.....', searchRentalResponse);
   const searchInputData = props?.route?.params?.searchInputData;
   console.log('searchInputData....', searchInputData);
+  console.log('searchInputData....', searchInputData?.input_Fur_unFurnished);
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
   console.log('AllCountsData...in result', AllCountsData);
   const addtional_keyFeature = searchInputData?.input_addtional_keyFeature;
-  console.log("addtional_keyFeature.....", addtional_keyFeature)
+  console.log('addtional_keyFeature.....', addtional_keyFeature);
   // const additionalKeyFeaturesString = addtional_keyFeature.map(
   //   key => keyFeatureMapping[key],
   // );
@@ -97,12 +99,12 @@ export default SearchResult = props => {
         setIsLoading(false);
       });
   };
-  const propertyData2_render = ({ item, index }) => {
+  const propertyData2_render = ({item, index}) => {
     return (
       <>
         {setKeyFeature(item?.key_features)}
         {item?.image_path && item?.image_path.length != 0 ? (
-          <View style={{ marginTop: 10 }}>
+          <View style={{marginTop: 10}}>
             <SliderBox
               // images={staticimage}
               images={item?.image_path}
@@ -120,16 +122,14 @@ export default SearchResult = props => {
               ImageComponentStyle={{
                 flex: 1,
                 resizeMode: 'cover',
-                // borderRadius: 15,
-                // width: '90%',
               }}
             />
           </View>
         ) : (
           <View>
             <Image
-              source={BANNERS?.imageNotFound} // Set your default image path
-              style={{ width: '100%', height: 200, resizeMode: 'cover' }}
+              source={BANNERS?.imageNotFound}
+              style={{width: '100%', height: 200, resizeMode: 'cover'}}
             />
           </View>
         )}
@@ -138,12 +138,12 @@ export default SearchResult = props => {
             <Text
               style={[
                 SearchResultCss.propertyHeading,
-                { fontFamily: FONTFAMILY.K_Regular },
+                {fontFamily: FONTFAMILY.K_Regular},
               ]}>
               {item?.property_type || ''}
             </Text>
-            <Text style={[SearchResultCss.propertyHeading, { marginTop: 5 }]}>
-              {item?.rental_amount ? `$ ${item?.rental_amount || ''}` : null}
+            <Text style={[SearchResultCss.propertyHeading, {marginTop: 5}]}>
+              {`$ ${item?.rental_amount || '0'}`}
             </Text>
           </View>
           <View style={SearchResultCss.shareIcon}>
@@ -166,7 +166,7 @@ export default SearchResult = props => {
                 }
                 name={favRental ? 'heart' : 'hearto'}
                 size={25}
-                style={{ marginHorizontal: 20 }}
+                style={{marginHorizontal: 20}}
               />
             </TouchableOpacity>
             <TouchableOpacity
@@ -286,24 +286,33 @@ export default SearchResult = props => {
               {searchInputData?.city || ''}
             </Text>
             <Text style={SearchResultCss.LeftTextRentText}>
-              {`${propertyType === 22
-                ? 'House'
-                : propertyType === 23
+              {`${
+                propertyType === 22
+                  ? 'House'
+                  : propertyType === 23
                   ? 'Cottage'
                   : propertyType === 24
-                    ? 'Apartment/Flat'
-                    : propertyType === 25
-                      ? 'Townhouse'
-                      : propertyType === 26
-                        ? 'Land/Vacant Plot'
-                        : propertyType === 27
-                          ? 'Farm'
-                          : ''
-                } ; $${searchInputData?.input_minRange} ; $${searchInputData?.input_maxRange
-                } ; ${AllCountsData[0]?.Bedrooms} Beds ${AllCountsData[1]?.Bathrooms
-                } Baths ; ${AllCountsData[2]?.Parking_Space} parking space ; ${AllCountsData[3]?.StreetParking 
-                } on-street parking`
-              }
+                  ? 'Apartment/Flat'
+                  : propertyType === 25
+                  ? 'Townhouse'
+                  : propertyType === 26
+                  ? 'Land/Vacant Plot'
+                  : propertyType === 27
+                  ? 'Farm'
+                  : ''
+              } ; $${searchInputData?.input_minRange} ; $${
+                searchInputData?.input_maxRange
+              } ; ${AllCountsData[0]?.Bedrooms} Beds ${
+                AllCountsData[1]?.Bathrooms
+              } Baths ; ${AllCountsData[2]?.Parking_Space} parking space ; ${
+                AllCountsData[3]?.StreetParking
+              } on-street parking ; ${
+                searchInputData?.input_Fur_unFurnished == 67
+                  ? 'Furnished'
+                  : 'unfurnished'
+              },${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'},${
+                searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
+              }`}
             </Text>
           </View>
           <View style={SearchResultCss.payButtonMainView}>
@@ -312,7 +321,11 @@ export default SearchResult = props => {
               onPress={() => {
                 _goBack(props);
               }}>
-              <Image source={IMAGES.filter} />
+              <Feather
+                name="filter"
+                color={_COLORS.Kodie_GrayColor}
+                size={20}
+              />
             </TouchableOpacity>
           </View>
         </View>

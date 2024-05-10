@@ -25,7 +25,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import SearchBar from '../components/Molecules/SearchBar/SearchBar';
 import {_goBack} from '../services/CommonServices';
 import {useIsFocused} from '@react-navigation/native';
-
+import Entypo from 'react-native-vector-icons/Entypo';
 const HorizontalData = [
   'All',
   'Recent',
@@ -122,8 +122,6 @@ const MarketplacePropertyListing = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginResponse.....', loginData);
   const refRBSheet1 = useRef();
-  const refRBSheet2 = useRef();
-  const refRBSheet3 = useRef();
   const CloseUp = () => {
     refRBSheet1.current.close();
   };
@@ -131,13 +129,12 @@ const MarketplacePropertyListing = props => {
   const [PropertyListing_data, setPropertyListingData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [propId, setPropId] = useState(0);
-
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [Address, setAddress] = useState();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredMarketPlace, setFilteredMarketPlace] = useState([]);
+
   const isvisible = useIsFocused();
-  const handleonClose = () => {
-    refRBSheet1.current.close();
-  };
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
@@ -181,6 +178,19 @@ const MarketplacePropertyListing = props => {
       </TouchableOpacity>
     );
   };
+  // search propertyList....
+  const searchaMarketPlaceList = query => {
+    setSearchQuery(query);
+    const filtered = query
+      ? PropertyListing_data.filter(
+          item =>
+            item.property_type_text &&
+            item.property_type_text.toLowerCase().includes(query.toLowerCase()),
+        )
+      : PropertyListing_data;
+    console.log('filtered.........', filtered);
+    setFilteredMarketPlace(filtered);
+  };
   // Get Api Bind here...
   const get_MarketplacePropertyListing = () => {
     const url = Config.BASE_URL;
@@ -188,11 +198,11 @@ const MarketplacePropertyListing = props => {
     setIsLoading(true);
     console.log('Request URL:', PropertyListing_url);
     // setIsLoading(true);
-    const PropertyListing_data = {
+    const PropertyListing_id = {
       account_id: loginData?.Login_details?.user_account_id,
     };
     axios
-      .post(PropertyListing_url, PropertyListing_data)
+      .post(PropertyListing_url, PropertyListing_id)
       .then(response => {
         console.log(
           'Property Market Details Retrieve Successfully:',
@@ -223,7 +233,27 @@ const MarketplacePropertyListing = props => {
         setIsLoading(false);
       });
   };
-
+  // delete marketplace list
+  const FinalDeleteVacant = async () => {
+    setIsLoading(true);
+    try {
+      const url = Config.BASE_URL;
+      const response = await axios.delete(url + 'delete_property_by_id', {
+        data: JSON.stringify({property_id: propId}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log('API Response:', response?.data);
+      if (response?.data?.success === true) {
+        Alert.alert('Property Deleted', response?.data?.message);
+        get_MarketplacePropertyListing();
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('API Error DeleteProperty:', error);
+    }
+  };
   useEffect(() => {
     if (isvisible) {
       get_MarketplacePropertyListing();
@@ -231,7 +261,6 @@ const MarketplacePropertyListing = props => {
   }, [isvisible]);
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.id);
-    setPropId(item.property_id);
     return (
       <View>
         <View style={MarketplacePropertyListingStyle.flatListContainer}>
@@ -273,7 +302,12 @@ const MarketplacePropertyListing = props => {
             )}
             <View style={MarketplacePropertyListingStyle.flexContainer}>
               <View style={MarketplacePropertyListingStyle.noteStyle}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    props.navigation.navigate('PropertyDetails', {
+                      propertyid: item?.property_id,
+                    });
+                  }}>
                   <SimpleLineIcons
                     name="note"
                     size={25}
@@ -329,7 +363,7 @@ const MarketplacePropertyListing = props => {
                     },
                   ]}
                   onPress={() => {
-                    refRBSheet3.current.open();
+                    props.navigation.navigate('Invitefriend');
                   }}>
                   {'+ invite Tenant'}
                 </Text>
@@ -391,12 +425,22 @@ const MarketplacePropertyListing = props => {
             },
             container: MarketplacePropertyListingStyle.bottomModal_container,
           }}>
+          <TouchableOpacity
+            style={MarketplacePropertyListingStyle.crossIcon}
+            onPress={() => {
+              refRBSheet1.current.close();
+            }}>
+            <Entypo
+              name="cross"
+              size={24}
+              color={_COLORS.Kodie_BlackColor}
+            />
+          </TouchableOpacity>
           <PropertyModal
             onClose={CloseUp}
             propertyId={propId}
             Address={Address}
-            // OnPopupclose={refRBSheet1}
-            RefreshListingData={get_MarketplacePropertyListing}
+            deletelist={FinalDeleteVacant}
           />
         </RBSheet>
       </View>
@@ -414,6 +458,7 @@ const MarketplacePropertyListing = props => {
         frontSearchIcon
         marginTop={16}
         placeholder={'Search properties'}
+        searchData={searchaMarketPlaceList}
       />
 
       <View style={MarketplacePropertyListingStyle.Container}>
@@ -428,7 +473,10 @@ const MarketplacePropertyListing = props => {
       </View>
 
       <DividerIcon />
-      <FlatList data={PropertyListing_data} renderItem={propertyData1_render} />
+      <FlatList
+        data={searchQuery ? filteredMarketPlace : PropertyListing_data}
+        renderItem={propertyData1_render}
+      />
       {isLoading ? <CommonLoader /> : null}
     </View>
   );

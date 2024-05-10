@@ -230,7 +230,7 @@ const PropertyList2 = props => {
 
   const handleSearchForRental = () => {
     if (location == '') {
-      setLocationError('Location is requireb.');
+      setLocationError('Location is require.');
     } else if (proteryTypeValue == '') {
       setProteryTypeValueError(true);
     } else {
