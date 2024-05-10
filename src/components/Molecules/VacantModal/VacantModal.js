@@ -155,7 +155,7 @@ const VacantModal = (props) => {
                   // propertyid: propertyId,
                   // propertyView: 'propertyView',
                 });
-                handleCloseModal();
+                // handleCloseModal();
               }
               if (item.id === "2") {
                 navigation.navigate("MarketplacePropertyListing", {

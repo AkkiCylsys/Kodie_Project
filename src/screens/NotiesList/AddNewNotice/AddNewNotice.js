@@ -22,8 +22,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import ToggleSwitch from 'toggle-switch-react-native';
-import AddGuest from '../../../components/Molecules/AddGuests/AddGuest';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_goBack} from '../../../services/CommonServices';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -36,18 +34,11 @@ import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {useDispatch, useSelector} from 'react-redux';
-
-// import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
 import moment from 'moment/moment';
 
-const data = [
-  {label: 'Bharat', value: '1'},
-  {label: 'Australia', value: '2'},
-  {label: 'America', value: '3'},
-];
 const AddNewNotice = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
   const editNotice = props.route.params?.editNotice;

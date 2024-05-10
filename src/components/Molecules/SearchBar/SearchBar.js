@@ -66,8 +66,8 @@ const SearchBar = (props) => {
           ]}
         >
           <EvilIcons
-            // name="location"
-            name={props?.SearchIcon}
+            name="location"
+            // name={props?.SearchIcon}
             size={28}
             color={_COLORS.Kodie_MediumGrayColor}
           />
@@ -130,7 +130,7 @@ const SearchBar = (props) => {
 };
 SearchBar.defaultProps = {
   placeholder: "Search",
-  SearchIcon:"location"
+  // SearchIcon:"location"
   //  RightImage: IMAGES.rightarrow,
 };
 export default SearchBar;
