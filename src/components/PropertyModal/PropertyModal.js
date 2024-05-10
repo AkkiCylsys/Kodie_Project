@@ -126,8 +126,6 @@ const PropertyModal = props => {
         onPress={() => {
           if (item.id === '1') {
             navigation.navigate('PropertyReview', {
-              // propertyId: propertyId,
-              // propertyView: "propertyView",
               propertyid: propertyId,
               propertyView: 'propertyView',
             });
@@ -152,10 +150,11 @@ const PropertyModal = props => {
           }
 
           if (item.id === '5') {
-            OnPopupclose?.current?.close();
+            // OnPopupclose?.current?.close();
             handleDeleteProperty();
+            // handleCloseModal();
           } else {
-            props.OnPopupclose();
+            // props.OnPopupclose();
           }
         }}>
         <View style={PropertyModalStyle.IconView}>{item.Icon}</View>
