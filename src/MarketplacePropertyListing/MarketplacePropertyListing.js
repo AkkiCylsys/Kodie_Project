@@ -331,7 +331,6 @@ const MarketplacePropertyListing = props => {
                   onPress={() => {
                     refRBSheet3.current.open();
                   }}>
-                  {/* {item.buttonName} */}
                   {'+ invite Tenant'}
                 </Text>
               </View>
@@ -396,7 +395,7 @@ const MarketplacePropertyListing = props => {
             onClose={CloseUp}
             propertyId={propId}
             Address={Address}
-            OnPopupclose={refRBSheet1}
+            // OnPopupclose={refRBSheet1}
             RefreshListingData={get_MarketplacePropertyListing}
           />
         </RBSheet>
