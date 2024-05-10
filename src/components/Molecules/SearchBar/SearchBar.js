@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
 import { SearchBarStyle } from "./SearchBarStyle";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Icon from "react-native-vector-icons/Ionicons";
 import { _COLORS, IMAGES } from "../../../Themes/index";
 const SearchBar = (props) => {
@@ -65,10 +66,37 @@ const SearchBar = (props) => {
           ]}
         >
           <EvilIcons
-            name="location"
+            // name="location"
+            name={props?.SearchIcon}
             size={28}
             color={_COLORS.Kodie_MediumGrayColor}
           />
+        </TouchableOpacity>
+      ) : null}
+      {props.updownSearch ? (
+        <TouchableOpacity
+          style={[
+            SearchBarStyle.filterView,
+            {
+              flexDirection:'row',
+              height: props.height,
+              marginTop: props.marginTop ? props.marginTop : 20,
+            },
+          ]}
+        >
+           <FontAwesome
+            // name="location"
+            name={'long-arrow-up'}
+            size={20}
+            color={_COLORS.Kodie_MediumGrayColor}
+          />
+          <FontAwesome
+            // name="location"
+            name={'long-arrow-down'}
+            size={20}
+            color={_COLORS.Kodie_MediumGrayColor}
+          />
+         
         </TouchableOpacity>
       ) : null}
       {props.mapIcon ? (
@@ -102,6 +130,7 @@ const SearchBar = (props) => {
 };
 SearchBar.defaultProps = {
   placeholder: "Search",
+  SearchIcon:"location"
   //  RightImage: IMAGES.rightarrow,
 };
 export default SearchBar;

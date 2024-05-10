@@ -21,6 +21,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import ToggleSwitch from 'toggle-switch-react-native';
 import AddGuest from '../../../components/Molecules/AddGuests/AddGuest';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -537,6 +538,99 @@ const AddNewNotice = props => {
       else console.log(err);
     }
   };
+  const TypeOfNotices = item => {
+    return (
+      <View
+        style={[
+          AddNewNoticeStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === noticeTypeDataValue
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item.lookup_key === noticeTypeDataValue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={AddNewNoticeStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
+  const repeatRender = item => {
+    return (
+      <View
+        style={[
+          AddNewNoticeStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === repeatDataValue
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item.lookup_key === repeatDataValue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={AddNewNoticeStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
+  const NotificationRender = item => {
+    return (
+      <View
+        style={[
+          AddNewNoticeStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === notification_type_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item.lookup_key === notification_type_value ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={AddNewNoticeStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
@@ -633,6 +727,7 @@ const AddNewNotice = props => {
                   setNoticeTypeDataValue(item.lookup_key);
                   // alert(item.lookup_key)
                 }}
+                renderItem={TypeOfNotices}
               />
             </View>
             <View style={AddNewNoticeStyle.jobDetailsView}>
@@ -677,6 +772,7 @@ const AddNewNotice = props => {
                     setRepeatDataValue(item.lookup_key);
                     // alert(item.lookup_key)
                   }}
+                  renderItem={repeatRender}
                 />
               </View>
             </View>
@@ -941,6 +1037,7 @@ const AddNewNotice = props => {
                     setNotification_type_value(item.lookup_key);
                     // alert(item.lookup_key)
                   }}
+                  renderItem={NotificationRender}
                 />
               </View>
               {/*nine part start here */}
