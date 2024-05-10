@@ -140,7 +140,8 @@ import JobReviewDetails from '../../screens/Tenant/Jobs/JobDetails/JobReviewDeta
 // import {withIAPContext} from 'react-native-iap';
 // import {Subscriptions} from '../../screens/Subscription/Subscription';
 import MarketplacePropertyListing from '../../MarketplacePropertyListing/MarketplacePropertyListing';
-import Inspection from '../../screens/Inspection/PropertyInspection/Inspection/Inspection';
+import ViewRentalDetails from '../../screens/Landlord/PropertyList/SearchForRentals/ViewRentalDetails';
+import RentalOffer from '../../screens/Landlord/PropertyList/SearchForRentals/RentalOffer/RentalOffer';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1131,8 +1132,13 @@ const AllStackRouts = props => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name={'Inspection'}
-          component={Inspection}
+          name={'ViewRentalDetails'}
+          component={ViewRentalDetails}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'RentalOffer'}
+          component={RentalOffer}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

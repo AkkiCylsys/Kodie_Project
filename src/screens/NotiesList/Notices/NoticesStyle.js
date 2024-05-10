@@ -63,12 +63,14 @@ export const NoticesStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     backgroundColor: _COLORS.Kodie_GrayColor,
     alignSelf: "center",
+    alignItems:'center',
     marginRight: 5,
   },
   item_style: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_VeryLightGrayColor,
+    alignSelf:'center'
   },
   calenderview: {
     flexDirection: "row",
@@ -90,10 +92,10 @@ export const NoticesStyle = StyleSheet.create({
   // noticestyle...
 
   mainContainer: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "row",
     marginTop: 10,
-    marginHorizontal:16,
+    // marginHorizontal:16,
   },
   dateDayview: {
     alignItems: "center",
@@ -120,8 +122,9 @@ export const NoticesStyle = StyleSheet.create({
     // height: 90,
     borderRadius: 4,
     paddingHorizontal: 10,
+    paddingVertical:10,
     borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
-    padding: 15,
+    // padding: 15,
   },
   bindview: {
     flexDirection: "row",
@@ -169,7 +172,7 @@ export const NoticesStyle = StyleSheet.create({
   flatlistView: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "center",
+    // alignItems: "center",
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 10,
@@ -192,5 +195,7 @@ export const NoticesStyle = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_VeryLightGrayColor,
+    alignSelf:'center',
+    alignItems:'center'
   },
 });
