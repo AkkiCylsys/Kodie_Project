@@ -1,5 +1,5 @@
-import {Platform, StyleSheet} from 'react-native';
-import {_COLORS, FONTFAMILY} from '../../../../Themes';
+import { Platform, StyleSheet } from 'react-native';
+import { _COLORS, FONTFAMILY } from '../../../../Themes';
 
 export const SearchResultCss = StyleSheet.create({
   mainContainer: {
@@ -11,10 +11,10 @@ export const SearchResultCss = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom:5
+    marginBottom: 5
   },
-  flexContainer: {flex: 1},
-  apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
+  flexContainer: { flex: 1 },
+  apartmentText: { fontSize: 12, color: _COLORS.Kodie_BlackColor },
   locationText: {
     flex: 1,
     fontSize: 10,
@@ -53,7 +53,7 @@ export const SearchResultCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: 'center',
   },
-  flatListContainer: {marginHorizontal: 30, flex: 1},
+  flatListContainer: { marginHorizontal: 30, flex: 1 },
   expandedContent: {
     marginHorizontal: 30,
     flex: 1,
@@ -79,7 +79,7 @@ export const SearchResultCss = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 10,
   },
-  payButtonMainView: {justifyContent: 'flex-end'},
+  payButtonMainView: { justifyContent: 'flex-end' },
   payButtonView: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderWidth: 1,
@@ -117,15 +117,15 @@ export const SearchResultCss = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
   },
-  ImagesStyle: {height: 25, width: 25},
+  ImagesStyle: { height: 25, width: 25 },
   bedroomStl: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: 'center',
     marginLeft: -10,
   },
-  weeklyRent: {flex: 0.5, alignItems: 'flex-end'},
-  share_sty: {marginRight: 17},
+  weeklyRent: { flex: 0.5, alignItems: 'flex-end' },
+  share_sty: { marginRight: 17 },
   bidsButton: {
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GreenColor,
@@ -152,7 +152,7 @@ export const SearchResultCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     marginLeft: 3,
     paddingHorizontal: 5,
-    paddingVertical:5
+    paddingVertical: 5
 
   },
   dotStyle: {
@@ -198,7 +198,7 @@ export const SearchResultCss = StyleSheet.create({
   },
   availableBtn: {
     marginHorizontal: 25,
-    marginRight: Platform.OS == 'ios' ? 500 : 200,
+    marginRight: Platform.OS == 'ios' ? 240 : 200,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightOrange,
     borderRadius: 15,

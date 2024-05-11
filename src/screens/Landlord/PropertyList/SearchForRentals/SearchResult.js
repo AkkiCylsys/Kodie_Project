@@ -244,9 +244,9 @@ export default SearchResult = props => {
             </Text>
           </View>
           <View style={SearchResultCss.locationView}>
-            <EvilIcons
+            <MaterialCommunityIcons
               color={_COLORS.Kodie_GreenColor}
-              name="image"
+              name="floor-plan"
               size={20}
               style={SearchResultCss.bedIconView}
             />

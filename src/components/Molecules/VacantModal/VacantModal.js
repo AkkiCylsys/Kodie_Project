@@ -97,28 +97,26 @@ const data1 = [
 
 const VacantModal = (props) => {
   const propertyId = props?.propertyId;
-//   const isDeletePropertyClicked= props?.isDeletePropertyClicked
-//   console.log("isDeletePropertyClicked....",isDeletePropertyClicked)
-//   console.log("propertyId VAcant...", propertyId);
+  console.log('propertyId...', propertyId);
   const navigation = useNavigation(); // Hook to get navigation
   const refRBSheet = useRef();
   const handleCloseModal = () => {
     props.onClose(); // Call this function when you want to close the modal without performing delete action
     //alert('hi')
   };
-  const handleDeleteProperty = (propertyDelId) => {
-    console.log(propertyDelId, "catch data");
-    props.onDeleteData(propertyDelId);
-    console.log("Vacent data cath........... ", props.onDeleteData(propertyDelId));
+  const handleDeleteProperty = propertyDelId => {
+    console.log(propertyDelId, 'catch data');
+    props.onDelete(propertyDelId);
+    console.log('Raul data cath........... ', props.onDelete(propertyDelId));
     // alert(propertyDelId);
   };
   const FinalDeleteProperty = (propertyDelId, Address) => {
-    console.log(propertyDelId, Address, "catch data");
-    props.onDeleteData(propertyDelId, Address);
-    console.log("come data...........", propertyDelId);
+    console.log(propertyDelId, Address, 'catch data');
+    props.onDelete(propertyDelId, Address);
+    console.log('come data...........', propertyDelId);
     console.log(
-      "Vacent data cath........... ",
-      props.onDeleteData(propertyDelId, Address)
+      'Raul data cath........... ',
+      props.onDeleteData(propertyDelId, Address),
     );
     // alert(propertyDelId);
   };
@@ -150,8 +148,37 @@ const VacantModal = (props) => {
           <TouchableOpacity
             style={VacantModalStyle.container}
             onPress={() => {
-              if (item.id === "1") {
-                navigation.navigate("ViewPropertyDetails", {
+              if (item.id === '1') {
+                navigation.navigate('PropertyReview', {
+                  propertyId: propertyId,
+                  propertyView: "propertyView",
+                  // propertyid: propertyId,
+                  // propertyView: 'propertyView',
+                });
+                // handleCloseModal();
+              }
+              if (item.id === "2") {
+                navigation.navigate("MarketplacePropertyListing", {
+                  propertyId: propertyId,
+                });
+                handleCloseModal();
+              }
+              // if (item.id === "3") {
+              //   navigation.navigate("PropertyReview", {
+              //     propertyId: propertyId,
+              //   });
+              //   handleCloseModal();
+              // }
+              if (item.id === '3') {
+                navigation.navigate('PropertyReview', {
+                  propertyid: propertyId,
+                  propertyView: 'propertyView',
+                  DocTab: 'DocTab',
+                });
+                handleCloseModal();
+              }
+              if (item.id === "4") {
+                navigation.navigate("Notices", {
                   propertyId: propertyId,
                 });
                 handleCloseModal();

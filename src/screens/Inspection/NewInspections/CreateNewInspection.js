@@ -169,20 +169,21 @@ const CreateNewInspection = props => {
           />
 
           <View style={CreateNewInspectionStyle.spaceView} />
-          <View style={[CreateNewInspectionStyle.calenderView]}>
-            <Text style={CreateNewInspectionStyle.textInputStyle}>
-              {currentTime && currentTime != ''
-                ? String(currentTime)
-                : 'Select time'}
-            </Text>
 
-            <TimePicker
-              data={new Date()}
-              getData={date => {
-                setCurrentTime(moment(date).format('hh:mm '));
-              }}
-            />
-          </View>
+          <TimePicker
+            selectedTime={
+              currentTime && currentTime != ''
+                ? String(currentTime)
+                : 'Select time'
+            }
+            _TextTimeColor={
+              currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+            }
+            data={new Date()}
+            getData={date => {
+              setCurrentTime(moment(date).format('hh:mm A'));
+            }}
+          />
         </View>
         <Text style={LABEL_STYLES.commontext}>
           {'Where is the inspection taking place?'}
@@ -277,7 +278,7 @@ const CreateNewInspection = props => {
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}
           disabled={isLoading ? true : false}
-          onPress={() => props.navigation.navigate('Inspection')}
+          onPress={() => props.navigation.navigate('PropertyInspection')}
         />
       </ScrollView>
     </View>

@@ -46,8 +46,8 @@ const CustomSidebarMenu = props => {
         break;
       case 'Inspection':
         setselectedId('Inspection');
-        // props.navigation.navigate('NewInspection');
-        Alert.alert('Inspection!', 'Coming soon');
+        props.navigation.navigate('NewInspection');
+        // Alert.alert('Inspection!', 'Coming soon');
 
         break;
       case 'Tetants':

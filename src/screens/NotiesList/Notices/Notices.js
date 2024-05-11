@@ -105,7 +105,19 @@ const Notices = props => {
     new Date().getMonth() + 1,
   ); // Initialize with current month ID
   const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear()); // Initialize with current year
-
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchNoticesList = query => {
+    setSearchQuery(query);
+    const filtered = query
+      ? noticeRemiderDetails.filter(
+          item =>
+            item.type_notice && item.type_notice.toLowerCase().includes(query.toLowerCase()),
+        )
+      : noticeRemiderDetails;
+    console.log('filtered.........', filtered);
+    setFilteredUsers(filtered);
+  };
   const generateYears = startYear => {
     return Array.from({length: 12}, (_, index) => startYear - index);
   };
@@ -137,7 +149,7 @@ const Notices = props => {
     set_selectedYear(year);
     toggleYearModal(); // Close the modal after selecting a month
   };
-  const searchNoticesList = () => {};
+  
   const onDayPress = day => {
     //......
     setSelectedDate(day.dateString);
@@ -381,6 +393,7 @@ const Notices = props => {
             onPress={() => {
               props.navigation.navigate('AddNewNotice');
             }}
+            height={48}
           />
         </View>
 
@@ -390,8 +403,8 @@ const Notices = props => {
           <SearchBar
             marginTop={1}
             frontSearchIcon
-            isFilterImage
-            filterImage={IMAGES.up_down_Arrow}
+            // isFilterImage
+            updownSearch
             height={40}
             placeholder="Search notices"
             searchData={searchNoticesList}
@@ -473,34 +486,13 @@ const Notices = props => {
         <View style={{marginTop: 20, alignSelf: 'center'}}>
           <FlatList
             showsHorizontalScrollIndicator={false}
-            data={noticeRemiderDetails}
+            data={searchQuery? filteredUsers : noticeRemiderDetails}
             keyExtractor={(index, item) => index.toString()}
             renderItem={noticeRenderData}
           />
         </View>
       </ScrollView>
-      <RBSheet
-        ref={refRBSheet}
-        height={220}
-        closeOnDragDown={true}
-        // closeOnPressMask={false}
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
-          container: NoticesStyle.bottomModal_container,
-        }}>
-        <NoticeBottomModal
-        onchange={reloadDuplicateData}
-          onClose={onClose}
-          noticeReminderid={noticeReminderid}
-          FinalDeleteProperty={FinalDeleteProperty}
-          selectFile={null}
-        />
-      </RBSheet>
+ 
       {/* <Modal
         visible={isModalVisible}
         animationType="slide"
@@ -669,6 +661,28 @@ const Notices = props => {
         </View>
       </Modal> */}
       {isLoading ? <CommonLoader /> : null}
+      <RBSheet
+        ref={refRBSheet}
+        height={250}
+        // closeOnDragDown={true}
+        // closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: NoticesStyle.bottomModal_container,
+        }}>
+        <NoticeBottomModal
+        onchange={reloadDuplicateData}
+          onClose={onClose}
+          noticeReminderid={noticeReminderid}
+          FinalDeleteProperty={FinalDeleteProperty}
+          selectFile={null}
+        />
+      </RBSheet>
     </SafeAreaView>
   );
 };

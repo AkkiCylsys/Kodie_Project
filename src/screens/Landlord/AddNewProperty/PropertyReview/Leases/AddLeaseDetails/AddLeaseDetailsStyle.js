@@ -197,7 +197,7 @@ Twobtn:{
   justifyContent:'space-between'
 },
 Amountinput:{
-  height: 38,
+  height: 39,
   borderRadius: 5,
   borderWidth: 1,
   borderColor: _COLORS.Kodie_GrayColor,
