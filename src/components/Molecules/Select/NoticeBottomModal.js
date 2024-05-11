@@ -3,10 +3,9 @@ import React, {useEffect, useState} from 'react';
 import {NoticeBottomModalStyle} from './NoticeBottomModalStyle';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {_COLORS} from '../../../Themes';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {FlatList} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
@@ -156,10 +155,10 @@ const NoticeBottomModal = props => {
       id: 1,
       Data: 'View/edit notice',
       icon: (
-        <MaterialCommunityIcons
+        <MaterialIcons
           size={18}
           color={_COLORS.Kodie_GreenColor}
-          name="alarm-snooze"
+          name="preview"
         />
       ),
     },
@@ -200,6 +199,7 @@ const NoticeBottomModal = props => {
   const modalRenderData = ({item}) => {
     return item.id == 3 ? (
       <View style={NoticeBottomModalStyle.optionsmainview}>
+        
         <TouchableOpacity
           style={NoticeBottomModalStyle.optionsview}
           onPress={() => {
@@ -246,12 +246,23 @@ const NoticeBottomModal = props => {
   };
   return (
     <View>
+       <TouchableOpacity
+        style={{
+          justifyContent: "flex-end",
+          alignSelf: "flex-end",
+          paddingHorizontal: 20,
+          marginTop:10
+        }}
+        onPress={onClosemodal}
+      >
+        <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+      </TouchableOpacity>
       <FlatList
         data={deleteData ? delete_data : modalData}
         keyExtractor={item => item.id.toString()}
         renderItem={modalRenderData}
       />
-      {isLoading ? <CommonLoader /> : null}
+      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

@@ -21,6 +21,7 @@ import VacantModal from '../VacantModal/VacantModal';
 import {Config} from '../../../Config';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import axios from 'axios';
+import InviteTenantModal from '../InviteTenantModal/InviteTenantModal';
 const property_List1 = [
   {
     id: '1',
@@ -110,6 +111,9 @@ const PropertyListing = () => {
   const CloseUp = () => {
     refRBSheet1.current.close();
     setIsDeleteData_Clicked(false);
+  };
+  const Closemodal = () => {
+    refRBSheet3.current.close();
   };
   const [expandedItems, setExpandedItems] = useState([]);
   const [Vacant_data, setVacantData] = useState([]);
@@ -363,7 +367,7 @@ const PropertyListing = () => {
             },
             container: PropertyListingCss.bottomModal_container,
           }}>
-          <InviteTenant />
+          <InviteTenantModal  onClose={Closemodal}/>
         </RBSheet>
       </>
     );

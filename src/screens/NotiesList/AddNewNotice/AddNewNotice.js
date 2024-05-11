@@ -21,8 +21,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
-import ToggleSwitch from 'toggle-switch-react-native';
-import AddGuest from '../../../components/Molecules/AddGuests/AddGuest';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_goBack} from '../../../services/CommonServices';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -35,18 +34,11 @@ import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {useDispatch, useSelector} from 'react-redux';
-
-// import RNFetchBlob from 'rn-fetch-blob';
 import DocumentPicker from 'react-native-document-picker';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
 import moment from 'moment/moment';
 
-const data = [
-  {label: 'Bharat', value: '1'},
-  {label: 'Australia', value: '2'},
-  {label: 'America', value: '3'},
-];
 const AddNewNotice = props => {
   const noticeReminderid = props.route.params?.noticeReminderid;
   const editNotice = props.route.params?.editNotice;
@@ -537,6 +529,99 @@ const AddNewNotice = props => {
       else console.log(err);
     }
   };
+  const TypeOfNotices = item => {
+    return (
+      <View
+        style={[
+          AddNewNoticeStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === noticeTypeDataValue
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item.lookup_key === noticeTypeDataValue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={AddNewNoticeStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
+  const repeatRender = item => {
+    return (
+      <View
+        style={[
+          AddNewNoticeStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === repeatDataValue
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item.lookup_key === repeatDataValue ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={AddNewNoticeStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
+  const NotificationRender = item => {
+    return (
+      <View
+        style={[
+          AddNewNoticeStyle.itemView,
+          {
+            backgroundColor:
+              item.lookup_key === notification_type_value
+                ? _COLORS.Kodie_MidLightGreenColor
+                : null,
+          },
+        ]}>
+        {item.lookup_key === notification_type_value ? (
+          <AntDesign
+            color={_COLORS.Kodie_GreenColor}
+            name={'checkcircle'}
+            size={20}
+          />
+        ) : (
+          <Fontisto
+            color={_COLORS.Kodie_GrayColor}
+            name={'radio-btn-passive'}
+            size={20}
+          />
+        )}
+        <Text style={AddNewNoticeStyle.textItem}>
+          {item.lookup_description}
+        </Text>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
@@ -633,6 +718,7 @@ const AddNewNotice = props => {
                   setNoticeTypeDataValue(item.lookup_key);
                   // alert(item.lookup_key)
                 }}
+                renderItem={TypeOfNotices}
               />
             </View>
             <View style={AddNewNoticeStyle.jobDetailsView}>
@@ -677,6 +763,7 @@ const AddNewNotice = props => {
                     setRepeatDataValue(item.lookup_key);
                     // alert(item.lookup_key)
                   }}
+                  renderItem={repeatRender}
                 />
               </View>
             </View>
@@ -941,6 +1028,7 @@ const AddNewNotice = props => {
                     setNotification_type_value(item.lookup_key);
                     // alert(item.lookup_key)
                   }}
+                  renderItem={NotificationRender}
                 />
               </View>
               {/*nine part start here */}
