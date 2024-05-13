@@ -100,6 +100,8 @@ export default SearchResult = props => {
       });
   };
   const propertyData2_render = ({item, index}) => {
+    const keyFeatures = JSON.parse(item.key_features);
+    // console.log(keyFeatures);
     return (
       <>
         {setKeyFeature(item?.key_features)}
@@ -128,7 +130,7 @@ export default SearchResult = props => {
         ) : (
           <View>
             <Image
-              source={BANNERS?.imageNotFound}
+              source={BANNERS?.imageNotFound} // Set your default image path
               style={{width: '100%', height: 200, resizeMode: 'cover'}}
             />
           </View>
@@ -205,7 +207,12 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            <Text style={SearchResultCss.bedcont}>{'6'}</Text>
+            <Text style={SearchResultCss.bedcont}>
+              {
+                keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
+                  ?.Bedrooms
+              }
+            </Text>
           </View>
           <View style={SearchResultCss.locationView}>
             <MaterialCommunityIcons
@@ -214,7 +221,13 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            <Text style={SearchResultCss.bedcont}>{'2'}</Text>
+            <Text style={SearchResultCss.bedcont}>
+              {
+                keyFeatures.find(obj => obj.hasOwnProperty('Parking Space'))?.[
+                  'Parking Space'
+                ]
+              }
+            </Text>
           </View>
           <View style={SearchResultCss.locationView}>
             <Ionicons
@@ -223,7 +236,12 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            <Text style={SearchResultCss.bedcont}>{'5'}</Text>
+            <Text style={SearchResultCss.bedcont}>
+              {
+                keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
+                  ?.Bathrooms
+              }
+            </Text>
           </View>
           <View style={SearchResultCss.locationView}>
             <MaterialCommunityIcons
@@ -232,7 +250,7 @@ export default SearchResult = props => {
               size={20}
               style={SearchResultCss.bedIconView}
             />
-            <Text style={SearchResultCss.bedcont}>{'86m2'}</Text>
+            <Text style={SearchResultCss.bedcont}>{item?.floor_size}</Text>
           </View>
         </View>
 
