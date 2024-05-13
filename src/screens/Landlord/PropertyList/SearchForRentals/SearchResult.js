@@ -56,8 +56,8 @@ export default SearchResult = props => {
   const propertyType = searchInputData?.input_PropertyType;
   const AllCountsData = props?.route?.params?.AllCountsData;
   console.log('AllCountsData...in result', AllCountsData);
-  const addtional_keyFeature = searchInputData?.input_addtional_keyFeature;
-  console.log('addtional_keyFeature.....', addtional_keyFeature);
+  // const addtional_keyFeature = searchInputData?.input_addtional_keyFeature;
+  // console.log('addtional_keyFeature.....', addtional_keyFeature);
   // const additionalKeyFeaturesString = addtional_keyFeature.map(
   //   key => keyFeatureMapping[key],
   // );
@@ -70,12 +70,12 @@ export default SearchResult = props => {
     refRBSheet.current.close();
   };
   // Api intrigation...
-  const additional_key_features = () => {
+  const additional_key_features = async() => {
     const url = Config.BASE_URL;
     const additionalApi = url + 'get_key_features';
     console.log('Request URL:', additionalApi);
     setIsLoading(true);
-    axios
+   await axios
       .get(additionalApi)
       .then(response => {
         console.log('additional_Data', response?.data);
