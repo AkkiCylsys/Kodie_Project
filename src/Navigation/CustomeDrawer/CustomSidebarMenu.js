@@ -52,9 +52,8 @@ const CustomSidebarMenu = props => {
         break;
       case 'Tetants':
         setselectedId('Tetants');
-
-        // props.navigation.navigate('TenantList'); // navigation to tenantList
-        Alert.alert('Tetants!', 'Coming soon');
+        props.navigation.navigate('TenantList'); // navigation to tenantList
+        // Alert.alert('Tetants!', 'Coming soon');
         break;
       case 'MaintenanceJobs':
         setselectedId('MaintenanceJobs');
