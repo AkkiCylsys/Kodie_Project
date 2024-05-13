@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -403,7 +404,7 @@ const MarketplacePropertyListing = props => {
     );
   };
   return (
-    <View style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
         onPressLeftButton={() => props.navigation.navigate('Dashboard')}
         MiddleText={'Propery listings'}
@@ -430,7 +431,7 @@ const MarketplacePropertyListing = props => {
       <DividerIcon />
       <FlatList data={PropertyListing_data} renderItem={propertyData1_render} />
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

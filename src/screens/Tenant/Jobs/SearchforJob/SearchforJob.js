@@ -11,6 +11,7 @@ import {
   FlatList,
   Image,
   PermissionsAndroid,
+  SafeAreaView
 } from 'react-native';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {
@@ -78,7 +79,7 @@ export default SearchForJob = props => {
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [max, setMax] = useState(0);
   const [min, setMin] = useState(0);
   const [priceRanges, setPriceRanges] = useState(0);
@@ -88,16 +89,16 @@ export default SearchForJob = props => {
   const [getLat, setGetLat] = useState('');
   const [getLong, setGetLong] = useState('');
   const handlePriceRangeChange = priceRange => {
-    console.log('Price Range in Parent Component:', priceRange);
+    // console.log('Price Range in Parent Component:', priceRange);
     setPriceRanges(priceRange);
     // Do something with the price range in the parent component
   };
   const handlemaxRange = high => {
-    console.log('High Range in Parent Component:', high);
+    // console.log('High Range in Parent Component:', high);
     setMax(high);
   };
   const handleminRange = low => {
-    console.log('Low Range in Parent Component:', low);
+    // console.log('Low Range in Parent Component:', low);
     setMin(low);
   };
   const searchForjob = () => {};
@@ -121,8 +122,8 @@ export default SearchForJob = props => {
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then(json => {
-        console.log('json location.......', json);
-        console.log('current address...', json.results[0].formatted_address);
+        // console.log('json location.......', json);
+        // console.log('current address...', json.results[0].formatted_address);
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
         // setLocation(json.results[0].formatted_address)
@@ -356,7 +357,7 @@ export default SearchForJob = props => {
       </View>
     );
   };
-  console.log('longitude,latitude', longitude, latitude);
+  // console.log('longitude,latitude', longitude, latitude);
   // api intrigation.......
   const handleProperty_Type = () => {
     const propertyData = {
@@ -364,15 +365,15 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'get_property_details_my_acc_id';
-    console.log('Request URL:', propertyType);
+    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('property_type', response.data);
+        // console.log('property_type', response.data);
         if (response?.data?.success === true) {
           setIsLoading(false);
-          console.log('propertyData....', response?.data?.property_details);
+          // console.log('propertyData....', response?.data?.property_details);
           setProperty_Data(response?.data?.property_details);
         } else {
           console.error('property_type_error:', response?.data?.error);
@@ -387,7 +388,7 @@ export default SearchForJob = props => {
       });
   };
   const handleSearch = () => {
-    console.log('jobPriorityValue', jobPriorityValue);
+    // console.log('jobPriorityValue', jobPriorityValue);
     const SearchData = {
       job_type: selectJobTypeid,
       job_perform: servicesValue,
@@ -400,12 +401,12 @@ export default SearchForJob = props => {
     const url = Config.BASE_URL;
     const SearchType = url + 'job/searchJobs';
     console.log('property_Datadfvhdhfsffddf', SearchData);
-    console.log('Request URL:', SearchType);
+    // console.log('Request URL:', SearchType);
     setIsLoading(true);
     axios
       .post(SearchType, SearchData)
       .then(response => {
-        console.log('property_type', response.data);
+        // console.log('property_type', response.data);
         if (response?.data?.success === true) {
           setIsLoading(false);
           console.log('handleSearch....', response?.data?.data);
@@ -433,15 +434,15 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
+    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('Job_priority', response.data);
+        // console.log('Job_priority', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('Job_priorityData....', response?.data?.lookup_details);
+          // console.log('Job_priorityData....', response?.data?.lookup_details);
           setJobPriorityData(response?.data?.lookup_details);
         } else {
           console.error('Job_priority_error:', response?.data?.error);
@@ -462,18 +463,18 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
+    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('RatingThreshold...', response.data);
+        // console.log('RatingThreshold...', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log(
-            'RatingThresholdData....',
-            response?.data?.lookup_details,
-          );
+          // console.log(
+          //   'RatingThresholdData....',
+          //   response?.data?.lookup_details,
+          // );
           setRatingThresholdData(response?.data?.lookup_details);
         } else {
           console.error('RatingThreshold_error:', response?.data?.error);
@@ -494,15 +495,15 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
+    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('JobType...', response.data);
+        // console.log('JobType...', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('JobTypeData....', response?.data?.lookup_details);
+          // console.log('JobTypeData....', response?.data?.lookup_details);
           setJobTypeData(response?.data?.lookup_details);
         } else {
           console.error('JobType_error:', response?.data?.error);
@@ -533,15 +534,15 @@ export default SearchForJob = props => {
     };
     const url = Config.BASE_URL;
     const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
+    // console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
       .then(response => {
-        console.log('ServicesType...', response.data);
+        // console.log('ServicesType...', response.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log('ServicesTypeData....', response?.data?.lookup_details);
+          // console.log('ServicesTypeData....', response?.data?.lookup_details);
           setServicesData(response?.data?.lookup_details);
         } else {
           console.error('Services_error:', response?.data?.error);
@@ -558,7 +559,7 @@ export default SearchForJob = props => {
 
   const top4Items = servicesData.slice(0, 4);
   return (
-    <View style={CreateJobFirstStyle.container}>
+    <SafeAreaView style={CreateJobFirstStyle.container}>
       {IsMap ? (
         <View
           style={{
@@ -788,6 +789,6 @@ export default SearchForJob = props => {
         </ScrollView>
       )}
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
