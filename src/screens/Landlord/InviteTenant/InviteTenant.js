@@ -15,6 +15,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import axios from 'axios';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {Config} from '../../../Config';
+import {useNavigation} from '@react-navigation/native';
 const data = [
   {
     id: '1',
@@ -45,6 +46,7 @@ const data = [
 ];
 
 export default InviteTenant = props => {
+  const navigation = useNavigation();
   const [rating, setRating] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [inviteTenant, setInviteTenant] = useState([]);
@@ -53,12 +55,15 @@ export default InviteTenant = props => {
   // Get APi bind first user show bydefault showing here....
   const searchInviteTenant = () => {};
 
-  const get_Tenent_Details = () => {
+  useEffect(() => {
+    get_Tenent_Details();
+  }, []);
+  const get_Tenent_Details = async () => {
     const url = Config.BASE_URL;
     const Invite_Tenant_url = url + `tanant_details/getAll/tanant`;
     setIsLoading(true);
     console.log('Request URL:', Invite_Tenant_url);
-    axios
+    await axios
       .get(Invite_Tenant_url)
       .then(response => {
         console.log('API Response InviteTenant_url:', response?.data);
@@ -83,38 +88,7 @@ export default InviteTenant = props => {
   const CloseUp = () => {
     refRBSheet.current.close();
   };
-  // Get APi bind after fill user pre-screening then showing here....
-  // const get_Invite_Tenent_Details = () => {
-  //   const url = Config.BASE_URL;
-  //   const Invite_Tenant_url = url + `add_tenant_questionarie/getAll/4`;
-  //   setIsLoading(true);
-  //   console.log("Request URL:", Invite_Tenant_url);
-  //   axios
-  //     .get(Invite_Tenant_url)
-  //     .then((response) => {
-  //       console.log("API Response InviteTenant_url_get_All..:", response?.data);
-  //       if (response?.data?.success === true) {
-  //         setInviteTenantAll(response?.data?.data);
-  //         console.log("Invite Tenant Data_All..", response?.data?.data);
-  //         setIsLoading(false);
-  //       } else {
-  //         alert(response?.data?.message);
-  //         setIsLoading(false);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error("API failed", error);
-  //       setIsLoading(false);
-  //     })
-  //     .finally(() => {
-  //       setIsLoading(false);
-  //     });
-  // };
 
-  useEffect(() => {
-    get_Tenent_Details();
-    // get_Invite_Tenent_Details();
-  }, []);
   const tenantData = ({item, index}) => {
     return (
       <>
@@ -202,13 +176,13 @@ export default InviteTenant = props => {
             leftButtonHeight={50}
             RightButtonHeight={50}
             LeftButtonText="View Profile"
-            onPressLeftButton={props?.ViewButton}
+            onPressLeftButton={() => navigation.navigate('LandlordProfile')}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonborderColor={_COLORS.Kodie_BlackColor}
             RightButtonText="Add to property"
             RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
-            onPressRightButton={() => props.navigation.navigate('Language')}
+            onPressRightButton={() => navigation.navigate('PropertyDetails')}
           />
         </View>
         <DividerIcon />

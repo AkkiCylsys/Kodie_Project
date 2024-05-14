@@ -28,10 +28,11 @@ import axios from 'axios';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 const PropertyList2 = props => {
   const [value, setValue] = useState(null);
+  const [openMap, setOpenMap] = useState(false);
   const [selected, setSelected] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [proteryTypeData, setProteryTypeData] = useState([]);
-  const [proteryTypeValue, setProteryTypeValue] = useState("");
+  const [proteryTypeValue, setProteryTypeValue] = useState('');
   const [proteryTypeValueError, setProteryTypeValueError] = useState(false);
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
@@ -67,15 +68,16 @@ const PropertyList2 = props => {
   const country = addressParts.pop();
   const state = addressParts.pop();
   const city = addressParts.join(', ');
-
+  const closemapdata = props.closeMap;
   console.log('city....', city);
   console.log('country....', country);
   console.log('state....', state);
 
   useEffect(() => {
-      handle_property_Type();
-      additional_key_features();
-  }, []);
+    handle_property_Type();
+    additional_key_features();
+    closemapdata == false ? setIsMap(closemapdata) : null;
+  }, [props?.closeMap]);
 
   const dataToSend = {
     input_Location: location,
@@ -221,7 +223,7 @@ const PropertyList2 = props => {
   // Validation ...
   const handleLocation = text => {
     if (text === '') {
-      setLocationError('Location is require.');
+      setLocationError('Location is required.');
     } else {
       setLocationError('');
     }
@@ -230,7 +232,7 @@ const PropertyList2 = props => {
 
   const handleSearchForRental = () => {
     if (location == '') {
-      setLocationError('Location is requireb.');
+      setLocationError('Location is required.');
     } else if (proteryTypeValue == '') {
       setProteryTypeValueError(true);
     } else {
@@ -408,6 +410,7 @@ const PropertyList2 = props => {
                 style={PropertyList2Css.locationIconView}
                 onPress={() => {
                   setIsMap(true);
+                  props.setOpenMap && props.setOpenMap(true);
                 }}>
                 <Octicons
                   name={'location'}
@@ -442,7 +445,7 @@ const PropertyList2 = props => {
             />
             {proteryTypeValueError ? (
               <Text style={PropertyList2Css.error_text}>
-                {'Property type is require.'}
+                {'Property type is required.'}
               </Text>
             ) : null}
             <View style={PropertyList2Css.rowView}>

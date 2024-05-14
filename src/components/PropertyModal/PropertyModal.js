@@ -7,10 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import PropertyPopup from './PropertyPopup';
-import PropertyDeletePopup from '../Molecules/PropertyListings/PropertyDeletePopUp';
-import {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-
 // Define data for FlatList
 const data = [
   {
@@ -73,7 +70,7 @@ const data = [
 
 const data1 = [
   {
-    id: '1',
+    id: '6',
     Data: 'Confirm delete property',
     Icon: (
       <MaterialIcons
@@ -84,7 +81,7 @@ const data1 = [
     ),
   },
   {
-    id: '2',
+    id: '7',
     Data: 'Archive instead',
     Icon: (
       <Ionicons
@@ -98,27 +95,14 @@ const data1 = [
 
 const PropertyModal = props => {
   const propertyId = props?.propertyId;
-  const Address = props.Address;
-  const OnPopupclose = props.OnPopupclose;
-  const [isClick, setIsclick] = useState(false);
   const refRBSheet = useRef();
-  const refRBSheet1 = useRef();
   const navigation = useNavigation();
-
   const handleCloseModal = () => {
     props.onClose();
   };
-  const handleRefreshData = () => {
-    props.RefreshListingData();
+  const deleteMarketplace = () => {
+    props?.deletelist();
   };
-
-  const handleMakePropertyAvailable = () => {
-    refRBSheet.current.open();
-  };
-  const handleDeleteProperty = () => {
-    refRBSheet1.current.open();
-  };
-
   const BottomData = ({item}) => {
     return (
       <TouchableOpacity
@@ -132,12 +116,10 @@ const PropertyModal = props => {
             handleCloseModal();
           }
           if (item.id === '2') {
-            handleMakePropertyAvailable();
+            refRBSheet.current.open();
           }
           if (item.id === '3') {
             navigation.navigate('PropertyReview', {
-              // propertyId: propertyId,
-              // propertyView: "propertyView",
               propertyid: propertyId,
               propertyView: 'propertyView',
               DocTab: 'DocTab',
@@ -148,17 +130,13 @@ const PropertyModal = props => {
             navigation.navigate('Notices');
             handleCloseModal();
           }
-
-          if (item.id === '5') {
-            // OnPopupclose?.current?.close();
-            handleDeleteProperty();
-            // handleCloseModal();
-          } else {
-            // props.OnPopupclose();
+          if (item.id == '5') {
+            deleteMarketplace();
+            handleCloseModal();
           }
         }}>
         <View style={PropertyModalStyle.IconView}>{item.Icon}</View>
-        <Text style={PropertyModalStyle.text}>{item.Data}</Text>
+        <Text style={[PropertyModalStyle.text, {flex: 1}]}>{item.Data}</Text>
       </TouchableOpacity>
     );
   };
@@ -174,24 +152,13 @@ const PropertyModal = props => {
         onPress={handleCloseModal}
       />
       <FlatList
-        data={props?.isDeletePropertyClicked ? data1 : data}
+        // data={props?.isDeletePropertyClicked ? data1 : data}
+        data={data}
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
         keyExtractor={item => item?.id}
         renderItem={BottomData}
-        ListHeaderComponent={() => {
-          return (
-            <>
-              {props?.isDeletePropertyClicked ? (
-                <Text
-                  style={
-                    PropertyModalStyle.text
-                  }>{`Delete property: ${props?.Address} ?`}</Text>
-              ) : null}
-            </>
-          );
-        }}
       />
       {/* RBSheet for additional actions */}
       <RBSheet
@@ -212,30 +179,6 @@ const PropertyModal = props => {
         }}>
         {/* Pass propertyId to PropertyPopup */}
         <PropertyPopup propertyId={propertyId} onClose={handleCloseModal} />
-      </RBSheet>
-      <RBSheet
-        ref={refRBSheet1}
-        height={190}
-        closeOnDragDown={true}
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          container: {
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
-        }}>
-        {/* Pass propertyId to PropertyPopup */}
-        <PropertyDeletePopup
-          propertyId={propertyId}
-          Address={Address}
-          onClose={handleCloseModal}
-          RefreshListingData={handleRefreshData}
-        />
       </RBSheet>
     </View>
   );

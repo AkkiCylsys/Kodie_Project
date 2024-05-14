@@ -20,7 +20,8 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
     marginTop: 19,
   },
   propertyHeading: {
-    fontSize: 14,
+    flex:1,
+    fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
   },
@@ -126,7 +127,7 @@ export const ViewRentalDetailsStyle = StyleSheet.create({
   },
   textStyle: {
     fontSize: 12,
-    color: _COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
   },
 });

@@ -290,7 +290,10 @@ const ViewRentalDetails = props => {
               {property_Detail?.property_type || ''}
             </Text>
             <Text
-              style={[ViewRentalDetailsStyle.propertyHeading, {marginTop: 5}]}>
+              style={[
+                ViewRentalDetailsStyle.propertyHeading,
+                {marginTop: 5, width: 100},
+              ]}>
               {property_Detail?.city || ''}
             </Text>
           </View>
@@ -339,7 +342,7 @@ const ViewRentalDetails = props => {
             ViewRentalDetailsStyle.propertyHeading,
             {marginTop: 5, marginHorizontal: 28},
           ]}>
-          {`$${rentalAmount || ''}`}
+          {`$${rentalAmount || '0'}`}
         </Text>
         <DividerIcon
           borderBottomWidth={3}

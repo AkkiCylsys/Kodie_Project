@@ -1,5 +1,5 @@
-import { Platform, StyleSheet } from 'react-native';
-import { _COLORS, FONTFAMILY } from '../../../../Themes';
+import {Platform, StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 
 export const SearchResultCss = StyleSheet.create({
   mainContainer: {
@@ -7,14 +7,14 @@ export const SearchResultCss = StyleSheet.create({
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   flat_MainView: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 5
+    marginBottom: 5,
   },
-  flexContainer: { flex: 1 },
-  apartmentText: { fontSize: 12, color: _COLORS.Kodie_BlackColor },
+  flexContainer: {flex: 1},
+  apartmentText: {fontSize: 12, color: _COLORS.Kodie_BlackColor},
   locationText: {
     flex: 1,
     fontSize: 10,
@@ -53,7 +53,7 @@ export const SearchResultCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: 'center',
   },
-  flatListContainer: { marginHorizontal: 30, flex: 1 },
+  flatListContainer: {marginHorizontal: 30, flex: 1},
   expandedContent: {
     marginHorizontal: 30,
     flex: 1,
@@ -79,14 +79,13 @@ export const SearchResultCss = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 10,
   },
-  payButtonMainView: { justifyContent: 'flex-end' },
+  payButtonMainView: {justifyContent: 'flex-end'},
   payButtonView: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     justifyContent: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 10,
+    padding: 8,
     borderRadius: 5,
   },
   payButtonText: {
@@ -107,6 +106,7 @@ export const SearchResultCss = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   LeftTextRentText: {
+    // flex:1,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
@@ -117,15 +117,15 @@ export const SearchResultCss = StyleSheet.create({
     justifyContent: 'space-between',
     alignSelf: 'center',
   },
-  ImagesStyle: { height: 25, width: 25 },
+  ImagesStyle: {height: 25, width: 25},
   bedroomStl: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: 'center',
     marginLeft: -10,
   },
-  weeklyRent: { flex: 0.5, alignItems: 'flex-end' },
-  share_sty: { marginRight: 17 },
+  weeklyRent: {flex: 0.5, alignItems: 'flex-end'},
+  share_sty: {marginRight: 17},
   bidsButton: {
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GreenColor,
@@ -152,8 +152,7 @@ export const SearchResultCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     marginLeft: 3,
     paddingHorizontal: 5,
-    paddingVertical: 5
-
+    paddingVertical: 5,
   },
   dotStyle: {
     width: 10,
@@ -180,6 +179,7 @@ export const SearchResultCss = StyleSheet.create({
     marginTop: 19,
   },
   location: {
+    flex: 1,
     fontSize: 14,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
@@ -239,5 +239,22 @@ export const SearchResultCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     alignSelf: 'center',
     marginLeft: 5,
+  },
+  noResultView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  noResultText: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+    textAlign: 'center',
+  },
+  noResultSubtext: {
+    fontSize: 11,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,
+    textAlign: 'center',
   },
 });
