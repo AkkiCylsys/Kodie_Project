@@ -23,10 +23,10 @@ const Properties = props => {
 
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData', loginData?.Login_details?.user_id);
-
   const [activeTab, setActiveTab] = useState('Tab1');
   const [Property_Data_List, setProperty_Data_List] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [openMap, setOpenMap] = useState(false);
   const navigation = useNavigation();
   useEffect(() => {
     <PropertyList />;
@@ -44,6 +44,12 @@ const Properties = props => {
       };
     }, []),
   );
+  const handleOpenMap = value => {
+    console.log('Opening map:', value);
+    setOpenMap(value);
+    // Do something with the value, such as updating state
+  };
+
   const checkTabs = () => {
     switch (activeTab) {
       case 'Tab1':
@@ -74,21 +80,12 @@ const Properties = props => {
         );
       case 'Tab2':
         return (
-          // <>
-          //   {Alert.alert('Search for rentals', 'Coming soon', [
-          //     {
-          //       text: 'OK',
-          //       onPress: () => {
-          //         console.log('OK Pressed');
-          //         setActiveTab('Tab1');
-          //       },
-          //     },
-          //   ])}
-          // </>
           <PropertyList2
             SearchButton={() => {
-              props.navigation.navigate('SearchResult')
+              props.navigation.navigate('SearchResult');
             }}
+            setOpenMap={handleOpenMap}
+            closeMap={openMap}
           />
         );
       case 'Tab3':
@@ -120,53 +117,51 @@ const Properties = props => {
   return (
     <SafeAreaView style={PropertiesCSS.Container}>
       <TopHeader
-        // onPressLeftButton={() => _goBack(props)}
         IsNotification
         isprofileImage
-        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        onPressLeftButton={() => {
+          openMap == true
+            ? setOpenMap(false)
+            : props.navigation.navigate('Dashboard');
+        }}
         onPressRightImgProfile={() =>
           props.navigation.navigate('LandlordProfile')
         }
         MiddleText={'Properties'}
       />
-      <CustomTabNavigator
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        TAB3
-        Tab1={'My properties'}
-        Tab2={'Search for rentals'}
-        Tab3={'Rental offers'}
-        onPressTab1={() => setActiveTab('Tab1')}
-        onPressTab2={() => setActiveTab('Tab2')}
-        onPressTab3={() => setActiveTab('Tab3')}
-        colorTab1={
-          activeTab === 'Tab1'
-            ? _COLORS.Kodie_BlackColor
-            : _COLORS.Kodie_MediumGrayColor
-        }
-        colorTab2={
-          activeTab === 'Tab2'
-            ? _COLORS.Kodie_BlackColor
-            : _COLORS.Kodie_MediumGrayColor
-        }
-        colorTab3={
-          activeTab === 'Tab3'
-            ? _COLORS.Kodie_BlackColor
-            : _COLORS.Kodie_MediumGrayColor
-        }
-        styleTab1={activeTab === 'Tab1' && PropertiesCSS.activeTab}
-        styleTab2={activeTab === 'Tab2' && PropertiesCSS.activeTab}
-        styleTab3={activeTab === 'Tab3' && PropertiesCSS.activeTab}
-      />
-      <View style={PropertiesCSS.Line} />
-      {checkTabs()}
-      {/* {activeTab === "Tab1" && (
-        <PropertyList
-          propertyDetail={() => props.navigation.navigate("PropertyDetails")}
+      <>
+        <CustomTabNavigator
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          TAB3
+          Tab1={'My properties'}
+          Tab2={'Search for rentals'}
+          Tab3={'Rental offers'}
+          onPressTab1={() => setActiveTab('Tab1')}
+          onPressTab2={() => setActiveTab('Tab2')}
+          onPressTab3={() => setActiveTab('Tab3')}
+          colorTab1={
+            activeTab === 'Tab1'
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_MediumGrayColor
+          }
+          colorTab2={
+            activeTab === 'Tab2'
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_MediumGrayColor
+          }
+          colorTab3={
+            activeTab === 'Tab3'
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_MediumGrayColor
+          }
+          styleTab1={activeTab === 'Tab1' && PropertiesCSS.activeTab}
+          styleTab2={activeTab === 'Tab2' && PropertiesCSS.activeTab}
+          styleTab3={activeTab === 'Tab3' && PropertiesCSS.activeTab}
         />
-      )}
-      {activeTab === "Tab2" && <PropertyList2 />}
-      {activeTab === "Tab3" && <PropertyList3 />} */}
+        <View style={PropertiesCSS.Line} />
+      </>
+      {checkTabs()}
     </SafeAreaView>
   );
 };

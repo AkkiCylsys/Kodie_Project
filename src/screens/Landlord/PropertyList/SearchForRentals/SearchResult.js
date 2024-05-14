@@ -70,12 +70,12 @@ export default SearchResult = props => {
     refRBSheet.current.close();
   };
   // Api intrigation...
-  const additional_key_features = async() => {
+  const additional_key_features = async () => {
     const url = Config.BASE_URL;
     const additionalApi = url + 'get_key_features';
     console.log('Request URL:', additionalApi);
     setIsLoading(true);
-   await axios
+    await axios
       .get(additionalApi)
       .then(response => {
         console.log('additional_Data', response?.data);
@@ -297,82 +297,87 @@ export default SearchResult = props => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Search results'}
       />
-      <ScrollView showsHorizontalScrollIndicator={false}>
-        <View style={SearchResultCss.propertyRentMainView}>
-          <View style={SearchResultCss.LeftTextView}>
-            <Text style={SearchResultCss.LeftText}>
-              {searchInputData?.city || ''}
-            </Text>
-            <Text style={SearchResultCss.LeftTextRentText}>
-              {`${
-                propertyType === 22
-                  ? 'House'
-                  : propertyType === 23
-                  ? 'Cottage'
-                  : propertyType === 24
-                  ? 'Apartment/Flat'
-                  : propertyType === 25
-                  ? 'Townhouse'
-                  : propertyType === 26
-                  ? 'Land/Vacant Plot'
-                  : propertyType === 27
-                  ? 'Farm'
-                  : ''
-              } ; $${searchInputData?.input_minRange} ; $${
-                searchInputData?.input_maxRange
-              } ; ${AllCountsData[0]?.Bedrooms} Beds ${
-                AllCountsData[1]?.Bathrooms
-              } Baths ; ${AllCountsData[2]?.Parking_Space} parking space ; ${
-                AllCountsData[3]?.StreetParking
-              } on-street parking ; ${
-                searchInputData?.input_Fur_unFurnished == 67
-                  ? 'Furnished'
-                  : 'unfurnished'
-              },${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'},${
-                searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
-              }`}
-            </Text>
-          </View>
-          <View style={SearchResultCss.payButtonMainView}>
-            <TouchableOpacity
-              style={SearchResultCss.payButtonView}
-              onPress={() => {
-                _goBack(props);
-              }}>
-              <Feather
-                name="filter"
-                color={_COLORS.Kodie_GrayColor}
-                size={20}
-              />
-            </TouchableOpacity>
-          </View>
+      {/* <ScrollView showsHorizontalScrollIndicator={false}> */}
+      <View style={SearchResultCss.propertyRentMainView}>
+        <View style={SearchResultCss.LeftTextView}>
+          <Text style={SearchResultCss.LeftText}>
+            {searchInputData?.city || ''}
+          </Text>
+          <Text style={SearchResultCss.LeftTextRentText}>
+            {`${
+              propertyType === 22
+                ? 'House'
+                : propertyType === 23
+                ? 'Cottage'
+                : propertyType === 24
+                ? 'Apartment/Flat'
+                : propertyType === 25
+                ? 'Townhouse'
+                : propertyType === 26
+                ? 'Land/Vacant Plot'
+                : propertyType === 27
+                ? 'Farm'
+                : ''
+            };$${searchInputData?.input_minRange} to $${
+              searchInputData?.input_maxRange
+            };${AllCountsData[0]?.Bedrooms}Beds;${
+              AllCountsData[1]?.Bathrooms
+            }Baths;${AllCountsData[2]?.Parking_Space}parking space;${
+              AllCountsData[3]?.StreetParking
+            } on-street parking;${
+              searchInputData?.input_Fur_unFurnished == 67
+                ? 'Furnished'
+                : 'unfurnished'
+            };${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'};${
+              searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
+            }`}
+          </Text>
         </View>
-        <DividerIcon
-          borderBottomWidth={4}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-
-        <View style={[SearchResultCss.flat_MainView]}>
-          <TouchableOpacity style={SearchResultCss.bidsButton}>
-            <Text style={SearchResultCss.bidsButtonText}>Accepting bids</Text>
+        <View style={SearchResultCss.payButtonMainView}>
+          <TouchableOpacity
+            style={SearchResultCss.payButtonView}
+            onPress={() => {
+              _goBack(props);
+            }}>
+            <Feather name="filter" color={_COLORS.Kodie_GrayColor} size={20} />
           </TouchableOpacity>
-          <Text style={SearchResultCss.biddingText}>Bidding closes in:</Text>
-          <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'o days'}</Text>
-          </View>
-          <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'6 hrs'}</Text>
-          </View>
-          <View style={SearchResultCss.daysViewStl}>
-            <Text style={SearchResultCss.biddingText}>{'10 mins'}</Text>
-          </View>
         </View>
-        <FlatList
-          data={searchRentalResponse?.data}
-          keyExtractor={(item, index) => `item_${index}`}
-          renderItem={propertyData2_render}
-        />
-      </ScrollView>
+      </View>
+      <DividerIcon borderBottomWidth={4} color={_COLORS.Kodie_LiteWhiteColor} />
+      <View style={[SearchResultCss.flat_MainView]}>
+        <TouchableOpacity style={SearchResultCss.bidsButton}>
+          <Text style={SearchResultCss.bidsButtonText}>Accepting bids</Text>
+        </TouchableOpacity>
+        <Text style={SearchResultCss.biddingText}>Bidding closes in:</Text>
+        <View style={SearchResultCss.daysViewStl}>
+          <Text style={SearchResultCss.biddingText}>{'o days'}</Text>
+        </View>
+        <View style={SearchResultCss.daysViewStl}>
+          <Text style={SearchResultCss.biddingText}>{'6 hrs'}</Text>
+        </View>
+        <View style={SearchResultCss.daysViewStl}>
+          <Text style={SearchResultCss.biddingText}>{'10 mins'}</Text>
+        </View>
+      </View>
+      <View style={{flex: 1}}>
+        {searchRentalResponse?.data && searchRentalResponse.data.length > 0 ? (
+          <FlatList
+            data={searchRentalResponse.data}
+            keyExtractor={(item, index) => `item_${index}`}
+            renderItem={propertyData2_render}
+          />
+        ) : (
+          <View style={SearchResultCss.noResultView}>
+            <Text style={SearchResultCss.noResultText}>
+              {'No results found'}
+            </Text>
+            <Text style={SearchResultCss.noResultSubtext}>
+              {'We couldn`t find any exact matches for your search'}{' '}
+            </Text>
+          </View>
+        )}
+      </View>
+      {/* </ScrollView> */}
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
