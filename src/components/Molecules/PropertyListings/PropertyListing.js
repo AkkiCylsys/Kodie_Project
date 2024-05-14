@@ -6,8 +6,10 @@ import {
   Image,
   Alert,
   SafeAreaView,
+
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
+import Modal from 'react-native-modal';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import DividerIcon from '../../Atoms/Devider/DividerIcon';
 import BottomModalData from '../BottomModal/BottomModalData';
@@ -22,96 +24,11 @@ import {Config} from '../../../Config';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import InviteTenantModal from '../InviteTenantModal/InviteTenantModal';
-const property_List1 = [
-  {
-    id: '1',
-    propertyName: 'Apartment',
-    name: 'Melbourne',
-    location: '8502 Preston Rd. Inglewood',
-    image: BANNERS.apartment,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: true,
-    isRentReceived: false,
-    isinviteTenants: false,
-  },
-
-  {
-    id: '2',
-    propertyName: 'House',
-    name: 'Sydney',
-    location: '2118 Thornridge Cir. Syracuse',
-    image: BANNERS.house,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: false,
-    isRentReceived: true,
-    isinviteTenants: false,
-  },
-  {
-    id: '3',
-    propertyName: 'Cottage',
-    name: 'Brisbane',
-    location: '1729 Sickle St, QLD, 4010, Australia ',
-    image: BANNERS.cottage,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: false,
-    isRentReceived: false,
-    isinviteTenants: true,
-  },
-  {
-    id: '4',
-    propertyName: 'Apartment',
-    name: 'Melbourne',
-    location: '8502 Preston Rd. Inglewood',
-    image: BANNERS.apartment,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: true,
-    isRentReceived: false,
-    isinviteTenants: false,
-  },
-  {
-    id: '5',
-    propertyName: 'House',
-    name: 'Sydney',
-    location: '2118 Thornridge Cir. Syracuse',
-    image: BANNERS.house,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: false,
-    isRentReceived: true,
-    isinviteTenants: false,
-  },
-  {
-    id: '6',
-    propertyName: 'Cottage',
-    name: 'Brisbane',
-    location: '1729 Sickle St, QLD, 4010, Australia ',
-    image: BANNERS.cottage,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: false,
-    isRentReceived: false,
-    isinviteTenants: true,
-  },
-];
-
+import { useIsFocused } from '@react-navigation/native';
 const PropertyListing = () => {
-  const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
-  const CloseUp = () => {
-    refRBSheet1.current.close();
-    setIsDeleteData_Clicked(false);
-  };
+ const isvisible = useIsFocused()
   const Closemodal = () => {
     refRBSheet3.current.close();
   };
@@ -120,62 +37,81 @@ const PropertyListing = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [propId, setPropId] = useState(0);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
-
-  // Get Api Bind here...
-  const get_Vacant_Details = () => {
-    const url = Config.BASE_URL;
-    const Vacant_Details_url = url + '/get_vacant_property_list';
-    setIsLoading(true);
-    console.log('Request URL:', Vacant_Details_url);
-    // setIsLoading(true);
-    axios
-      .get(Vacant_Details_url)
-      .then(response => {
-        console.log('API Response Vacant_Details_url:', response?.data);
-        if (response?.data?.success === true) {
-          setVacantData(response?.data?.property_details);
-          // console.log("Vacent Details Data..", response?.data?.data);
-          setIsLoading(false);
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed Vacant_Details', error);
-        setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
+  useState(false);
+  const [propertyDelId, setPropertyDelId] = useState();
+  const [Address, setAddress] = useState();
+ 
+  const handleCloseModal = () => {
+    setIsDeleteData_Clicked(false);
+    setIsDeleteBottomSheetVisible(false);
   };
-  const vacantDelete = async () => {
+  const CloseUp = () => {
+    setIsDeleteBottomSheetVisible(false);
+    setIsDeleteData_Clicked(false);
+  };
+  // Get Api Bind here...
+  const get_Vacant_Details = async () => {
+    try {
+        const url = Config.BASE_URL;
+        const Vacant_Details_url = url + '/get_vacant_property_list';
+        setIsLoading(true);
+        console.log('Request URL:', Vacant_Details_url);
+
+        const response = await axios.get(Vacant_Details_url);
+
+        console.log('API Response Vacant_Details_url:', response?.data);
+        
+        if (response?.data?.success === true) {
+            setVacantData(response?.data?.property_details);
+        } else {
+            alert(response?.data?.message);
+        }
+    } catch (error) {
+        console.error('API failed Vacant_Details', error);
+        alert('An error occurred while fetching vacant details');
+    } finally {
+        setIsLoading(false);
+    }
+};
+
+  const propertyDelete = async () => {
     setIsDeleteData_Clicked(true);
   };
-
-  const FinalDeleteVacant = async () => {
+  const FinalDeleteProperty = async () => {
     setIsLoading(true);
     setIsDeleteData_Clicked(false);
-    CloseUp();
-    const url = Config.BASE_URL;
-    const vacantdelete = url + 'delete_property_by_id';
-    console.log('vacantdelete', vacantdelete);
+    setIsDeleteBottomSheetVisible(false);
     try {
-      const response = await axios.delete(vacantdelete);
+      const url = Config.BASE_URL;
+      const response = await axios.delete(url + 'delete_property_by_id', {
+        data: JSON.stringify({property_id: propertyDelId}),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
       console.log('API Response:', response?.data);
       if (response?.data?.success === true) {
-        alert(response?.data?.message);
+        Alert.alert(
+          'Property Deleted',
+          response?.data?.message || 'The property was deleted successfully.',
+        );
+        get_Vacant_Details();
+
         setIsLoading(false);
       }
     } catch (error) {
-      console.error('API Error DeleteVacant:', error);
-      setIsLoading(false);
+      console.error('API Error DeleteProperty:', error);
+      Alert.alert('Worning', error?.response?.data?.message);
     }
   };
 
   useEffect(() => {
+    if(isvisible){
     get_Vacant_Details();
-  }, []);
+    }
+  }, [isvisible]);
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.id);
     setPropId(item.property_id);
@@ -229,7 +165,12 @@ const PropertyListing = () => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    refRBSheet1.current.open();
+                    setIsDeleteBottomSheetVisible(true);
+                    setPropertyDelId(item.property_id);
+                    // alert(propertyDelId);
+                    setAddress(item?.location);
+                    setPropId(item?.property_id);
+                    console.log('property id..', item.property_id);
                   }}>
                   <MaterialCommunityIcons
                     name={'dots-horizontal'}
@@ -305,7 +246,7 @@ const PropertyListing = () => {
         )}
         <DividerIcon />
 
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet1}
           closeOnDragDown={true}
           height={320}
@@ -332,8 +273,8 @@ const PropertyListing = () => {
             onDelete={vacantDelete}
             isDeletePropertyClicked={isDeleteData_Clicked}
           />
-        </RBSheet>
-
+        </RBSheet> */}
+     
         {/* AddBiddingDetails popup */}
         <RBSheet
           ref={refRBSheet2}
@@ -369,15 +310,47 @@ const PropertyListing = () => {
           }}>
           <InviteTenantModal  onClose={Closemodal}/>
         </RBSheet>
+        <Modal
+        isVisible={isDeleteBottomSheetVisible}
+        onBackdropPress={() => setIsDeleteBottomSheetVisible(true)}
+        style={[
+          PropertyListingCss.bottomModal_container,
+          {
+            position: 'absolute',
+            left: -20,
+            bottom: -10,
+            width: '100%',
+            height: isDeleteData_Clicked ? '30%' : '35%',
+            backgroundColor: 'white',
+            borderRadius: 10,
+            paddingVertical: 8,
+          },
+        ]}>
+        <VacantModal
+          // onViewProperty={() =>
+          //   props?.navigation?.navigate("ViewPropertyDetails", {
+          //     propertyDelId: propertyDelId,
+          //   })
+          // }
+          propertyId={propId}
+          onDelete={propertyDelete}
+          onCloseModal={handleCloseModal}
+          isDeletePropertyClicked={isDeleteData_Clicked}
+          onDeleteData={FinalDeleteProperty}
+          Address={Address}
+          onClose={CloseUp}
+        />
+      </Modal>
       </>
     );
   };
   return (
-    <SafeAreaView>
-      {/* <FlatList data={property_List1} renderItem={propertyData1_render} /> */}
+  
+        <SafeAreaView>
       <FlatList data={Vacant_data} renderItem={propertyData1_render} />
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
+
   );
 };
 

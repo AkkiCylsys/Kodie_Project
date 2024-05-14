@@ -255,9 +255,9 @@ const PropertyList = props => {
                   <View style={PropertyListCSS.noteStyle}>
                     <TouchableOpacity
                       onPress={() => {
-                        props?.onEdit?.({
+                        props.navigation.navigate('PropertyDetails', {
                           propertyid: item?.property_id,
-                        });
+                          editMode: 'editMode',})
                       }}>
                       <SimpleLineIcons
                         name="note"

@@ -1,33 +1,268 @@
-import React, { useRef } from "react";
-import { View, Text, Image, FlatList } from "react-native";
-import { VacantModalStyle } from "./VacantModalStyle";
-import { IMAGES, _COLORS } from "../../../Themes";
-import { TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import RBSheet from "react-native-raw-bottom-sheet";
-import { PropertyListCSS } from "../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+// import React, { useRef } from "react";
+// import { View, Text, Image, FlatList } from "react-native";
+// import { VacantModalStyle } from "./VacantModalStyle";
+// import { IMAGES, _COLORS } from "../../../Themes";
+// import { TouchableOpacity } from "react-native";
+// import { useNavigation } from "@react-navigation/native";
+// import RBSheet from "react-native-raw-bottom-sheet";
+// import { PropertyListCSS } from "../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS";
+// import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+// import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+// import Ionicons from "react-native-vector-icons/Ionicons";
+// import Entypo from "react-native-vector-icons/Entypo";
+// import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+
+// const data = [
+//   {
+//     id: "1",
+//     Data: "View /edit property details",
+//     Icon: (
+//       <MaterialIcons
+//         name="preview"
+//         size={25}
+//         color={_COLORS.Kodie_GreenColor}
+//         style={{ alignSelf: "center" }}
+//       />
+//     ),
+//   },
+//   {
+//     id: "2",
+//     Data:'List property on kodie property marketplace',
+//     Icon: (
+//       <MaterialCommunityIcons
+//         name="alpha-k-box-outline"
+//         size={25}
+//         color={_COLORS.Kodie_GreenColor}
+//       />
+//     ),
+//   },
+//   {
+//     id: "3",
+//     Data: "Manage documents",
+//     Icon: (
+//       <MaterialCommunityIcons
+//         name="file-download-outline"
+//         size={25}
+//         color={_COLORS.Kodie_GreenColor}
+//       />
+//     ),
+//   },
+//   {
+//     id: "4",
+//     Data: "Notices & reminders",
+//     Icon: (
+//       <Ionicons
+//         name="mail-unread-outline"
+//         size={25}
+//         color={_COLORS.Kodie_GreenColor}
+//       />
+//     ),
+//   },
+//   {
+//     id: "5",
+//     Data: "Delete property",
+//     Icon: (
+//       <MaterialIcons
+//         name="delete-outline"
+//         size={25}
+//         color={_COLORS.Kodie_GreenColor}
+//       />
+//     ),
+//   },
+// ];
+// const data1 = [
+//   {
+//     id: "1",
+//     Data: "Confirm delete property",
+//     Icon: (
+//       <MaterialIcons
+//         name="delete-outline"
+//         size={25}
+//         color={_COLORS.Kodie_GreenColor}
+//       />
+//     ),
+//   },
+//   {
+//     id: "2",
+//     Data: "Archive instead",
+//     Icon: (
+//       <Ionicons
+//         name="file-tray-full-outline"
+//         size={25}
+//         color={_COLORS.Kodie_GreenColor}
+//       />
+//     ),
+//   },
+// ];
+
+// const VacantModal = (props) => {
+//   const propertyId = props?.propertyId;
+//   console.log('propertyId...', propertyId);
+//   const navigation = useNavigation(); // Hook to get navigation
+//   const refRBSheet = useRef();
+//   const handleCloseModal = () => {
+//     props.onClose(); // Call this function when you want to close the modal without performing delete action
+//     //alert('hi')
+//   };
+//   const handleDeleteProperty = propertyDelId => {
+//     console.log(propertyDelId, 'catch data');
+//     props.onDelete(propertyDelId);
+//     console.log('Raul data cath........... ', props.onDelete(propertyDelId));
+//     // alert(propertyDelId);
+//   };
+//   const FinalDeleteProperty = (propertyDelId, Address) => {
+//     console.log(propertyDelId, Address, 'catch data');
+//     props.onDelete(propertyDelId, Address);
+//     console.log('come data...........', propertyDelId);
+//     console.log(
+//       'Raul data cath........... ',
+//       props.onDeleteData(propertyDelId, Address),
+//     );
+//     // alert(propertyDelId);
+//   };
+//   const BottomData = ({ item, index }) => {
+//     return (
+//       <>
+//         {props?.isDeletePropertyClicked ? (
+//           <>
+//             <TouchableOpacity
+//               style={VacantModalStyle.container}
+//               onPress={() => {
+//                 if (item.id === "1") {
+//                   FinalDeleteProperty();
+//                   // navigation.navigate("ViewPropertyDetails");
+//                 }
+//                 if (item.id === "2") {
+//                   // navigation.navigate("ViewPropertyDetails");
+//                   // console.log("Property ID:", item.property_id);
+//                 }
+//               }}
+//             >
+//               {/* <Image source={item.Img} style={VacantModalStyle.Icons} /> */}
+//               {/* //{item.Icon} */}
+//               <View style={VacantModalStyle.IconView}>{item.Icon}</View>
+//               <Text style={VacantModalStyle.text}>{item.Data}</Text>
+//             </TouchableOpacity>
+//           </>
+//         ) : (
+//           <TouchableOpacity
+//             style={VacantModalStyle.container}
+//             onPress={() => {
+//               if (item.id === '1') {
+//                 navigation.navigate('PropertyReview', {
+//                   propertyId: propertyId,
+//                   propertyView: "propertyView",
+//                   // propertyid: propertyId,
+//                   // propertyView: 'propertyView',
+//                 });
+//                 handleCloseModal();
+//               }
+//               if (item.id === "2") {
+//                 navigation.navigate("MarketplacePropertyListing", {
+//                   propertyId: propertyId,
+//                 });
+//                 handleCloseModal();
+//               }
+//               // if (item.id === "3") {
+//               //   navigation.navigate("PropertyReview", {
+//               //     propertyId: propertyId,
+//               //   });
+//               //   handleCloseModal();
+//               // }
+//               if (item.id === '3') {
+//                 navigation.navigate('PropertyReview', {
+//                   propertyid: propertyId,
+//                   propertyView: 'propertyView',
+//                   DocTab: 'DocTab',
+//                 });
+//                 handleCloseModal();
+//               }
+//               if (item.id === "4") {
+//                 navigation.navigate("Notices", {
+//                   propertyId: propertyId,
+//                 });
+//                 handleCloseModal();
+//               }
+//               if (item.id === "5") {
+//                 // navigation.navigate("ViewPropertyDetails");
+//                 handleDeleteProperty();
+
+//                 // console.log("Property ID:", item.property_id);
+//               }
+//             }}
+//           >
+//             {/* <Image source={item.Img} style={VacantModalStyle.Icons} /> */}
+//             <View style={VacantModalStyle.IconView}>{item.Icon}</View>
+//             <Text style={VacantModalStyle.text}>{item.Data}</Text>
+//           </TouchableOpacity>
+//         )}
+//       </>
+//     );
+//   };
+//   return (
+//     <View style={VacantModalStyle.mainContainer}>
+//       <TouchableOpacity
+//         style={{
+//           justifyContent: "flex-end",
+//           alignSelf: "flex-end",
+//           paddingHorizontal: 20,
+//         }}
+//         onPress={handleCloseModal}
+//       >
+//         {/* <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} /> */}
+//         {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
+//       </TouchableOpacity>
+//       <FlatList
+//         data={props?.isDeletePropertyClicked ? data1 : data}
+//         scrollEnabled
+//         showsVerticalScrollIndicator={false}
+//         contentContainerStyle={{}}
+//         keyExtractor={(item) => item?.id}
+//         renderItem={BottomData}
+//         ListHeaderComponent={() => {
+//           return (
+//             <>
+//               {props?.isDeletePropertyClicked ? (
+//                 <Text
+//                   style={VacantModalStyle.text}
+//                 >{`Delete property: ${props?.Address} ?`}</Text>
+//               ) : null}
+//             </>
+//           );
+//         }}
+//       />
+//     </View>
+//   );
+// };
+// export default VacantModal;
+import React, { useRef } from 'react';
+import { View, Text, Image, FlatList } from 'react-native';
+import { IMAGES, _COLORS } from '../../../Themes';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { BottomModalDataStyle } from '../BottomModal/BottomModalDataStyle';
 
 const data = [
   {
-    id: "1",
-    Data: "View /edit property details",
+    id: '1',
+    Data: 'View property details',
+    // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons
         name="preview"
         size={25}
         color={_COLORS.Kodie_GreenColor}
-        style={{ alignSelf: "center" }}
+        style={{ alignSelf: 'center' }}
       />
     ),
   },
   {
     id: "2",
-    Data:'List property on kodie property marketplace',
+    Data: 'List property on kodie property marketplace',
     Icon: (
       <MaterialCommunityIcons
         name="alpha-k-box-outline"
@@ -72,8 +307,9 @@ const data = [
 ];
 const data1 = [
   {
-    id: "1",
-    Data: "Confirm delete property",
+    id: '1',
+    Data: 'Confirm delete property',
+    // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -83,8 +319,9 @@ const data1 = [
     ),
   },
   {
-    id: "2",
-    Data: "Archive instead",
+    id: '2',
+    Data: 'Archive instead',
+    // Img: IMAGES.Documents,
     Icon: (
       <Ionicons
         name="file-tray-full-outline"
@@ -95,7 +332,7 @@ const data1 = [
   },
 ];
 
-const VacantModal = (props) => {
+const VacantModal = props => {
   const propertyId = props?.propertyId;
   console.log('propertyId...', propertyId);
   const navigation = useNavigation(); // Hook to get navigation
@@ -126,51 +363,47 @@ const VacantModal = (props) => {
         {props?.isDeletePropertyClicked ? (
           <>
             <TouchableOpacity
-              style={VacantModalStyle.container}
+              style={BottomModalDataStyle.container}
               onPress={() => {
-                if (item.id === "1") {
+                if (item.id === '1') {
                   FinalDeleteProperty();
                   // navigation.navigate("ViewPropertyDetails");
                 }
-                if (item.id === "2") {
+                if (item.id === '2') {
                   // navigation.navigate("ViewPropertyDetails");
                   // console.log("Property ID:", item.property_id);
                 }
-              }}
-            >
-              {/* <Image source={item.Img} style={VacantModalStyle.Icons} /> */}
+              }}>
+              {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
               {/* //{item.Icon} */}
-              <View style={VacantModalStyle.IconView}>{item.Icon}</View>
-              <Text style={VacantModalStyle.text}>{item.Data}</Text>
+              <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
+              <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
             </TouchableOpacity>
           </>
         ) : (
           <TouchableOpacity
-            style={VacantModalStyle.container}
+            style={BottomModalDataStyle.container}
             onPress={() => {
               if (item.id === '1') {
                 navigation.navigate('PropertyReview', {
-                  propertyId: propertyId,
-                  propertyView: "propertyView",
-                  // propertyid: propertyId,
+                  propertyid: propertyId,
                   // propertyView: 'propertyView',
-                });
-                // handleCloseModal();
-              }
-              if (item.id === "2") {
-                navigation.navigate("MarketplacePropertyListing", {
-                  propertyId: propertyId,
+                  propertyListing:"propertyListing"
                 });
                 handleCloseModal();
               }
-              // if (item.id === "3") {
-              //   navigation.navigate("PropertyReview", {
-              //     propertyId: propertyId,
-              //   });
-              //   handleCloseModal();
-              // }
+              if (item.id === '2') {
+                navigation.navigate('MarketplacePropertyListing', {
+               
+                  propertyid: propertyId,
+                
+                });
+                handleCloseModal();
+              }
               if (item.id === '3') {
                 navigation.navigate('PropertyReview', {
+                  // propertyId: propertyId,
+                  // propertyView: "propertyView",
                   propertyid: propertyId,
                   propertyView: 'propertyView',
                   DocTab: 'DocTab',
@@ -178,54 +411,49 @@ const VacantModal = (props) => {
                 handleCloseModal();
               }
               if (item.id === "4") {
-                navigation.navigate("Notices", {
-                  propertyId: propertyId,
-                });
-                handleCloseModal();
-              }
-              if (item.id === "5") {
+                                navigation.navigate("Notices");
+                                handleCloseModal();
+                              }
+              if (item.id === '5') {
                 // navigation.navigate("ViewPropertyDetails");
                 handleDeleteProperty();
 
                 // console.log("Property ID:", item.property_id);
               }
-            }}
-          >
-            {/* <Image source={item.Img} style={VacantModalStyle.Icons} /> */}
-            <View style={VacantModalStyle.IconView}>{item.Icon}</View>
-            <Text style={VacantModalStyle.text}>{item.Data}</Text>
+            }}>
+            {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
+            <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
+            <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
         )}
       </>
     );
   };
   return (
-    <View style={VacantModalStyle.mainContainer}>
+    <View style={BottomModalDataStyle.mainContainer}>
       <TouchableOpacity
         style={{
-          justifyContent: "flex-end",
-          alignSelf: "flex-end",
-          paddingHorizontal: 20,
+          justifyContent: 'flex-end',
+          alignSelf: 'flex-end',
         }}
-        onPress={handleCloseModal}
-      >
-        {/* <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} /> */}
-        {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
+        onPress={handleCloseModal}>
+        <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
       </TouchableOpacity>
       <FlatList
         data={props?.isDeletePropertyClicked ? data1 : data}
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
-        keyExtractor={(item) => item?.id}
+        keyExtractor={item => item?.id}
         renderItem={BottomData}
         ListHeaderComponent={() => {
           return (
             <>
               {props?.isDeletePropertyClicked ? (
                 <Text
-                  style={VacantModalStyle.text}
-                >{`Delete property: ${props?.Address} ?`}</Text>
+                  style={
+                    BottomModalDataStyle.text
+                  }>{`Delete property: ${props?.Address} ?`}</Text>
               ) : null}
             </>
           );
@@ -235,3 +463,4 @@ const VacantModal = (props) => {
   );
 };
 export default VacantModal;
+
