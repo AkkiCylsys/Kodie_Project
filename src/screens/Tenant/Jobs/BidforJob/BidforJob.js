@@ -1,4 +1,4 @@
-import {View, Text, TextInput, Image} from 'react-native';
+import {View, Text, TextInput, Image, SafeAreaView} from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {_COLORS, LABEL_STYLES, FONTFAMILY, IMAGES} from '../../../../Themes';
 import {_goBack} from '../../../../services/CommonServices';
@@ -43,7 +43,13 @@ const BidforJob = props => {
       setSelectedDateError('');
     }
   };
-
+  const handleValidatiomtionBid = () => {
+    if (selectedDate.trim() === '') {
+      setSelectedDateError('Payment date is required.');
+    } else {
+      BidSubmitDetails();
+    }
+  };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
     setSelectedDate('');
@@ -127,7 +133,7 @@ const BidforJob = props => {
       });
   };
   return (
-    <View style={BidforJobStyle.mainContainer}>
+    <SafeAreaView style={BidforJobStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Submit bid for job'}
@@ -251,28 +257,20 @@ const BidforJob = props => {
               />
 
               <View style={BidforJobStyle.spaceView} />
-              <View style={[BidforJobStyle.calenderView]}>
-                <Text
-                  style={[
-                    BidforJobStyle.textInputStyle,
-                    {
-                      color: currentTime
-                        ? _COLORS.Kodie_BlackColor
-                        : _COLORS.Kodie_GrayColor,
-                    },
-                  ]}>
-                  {currentTime && currentTime != ''
-                    ? String(currentTime)
-                    : 'Select time'}
-                </Text>
-
-                <TimePicker
-                  data={new Date()}
-                  getData={date => {
-                    setCurrentTime(moment(date).format('hh:mm A'));
-                  }}
-                />
-              </View>
+              <TimePicker
+              selectedTime={
+                currentTime && currentTime != ''
+                  ? String(currentTime)
+                  : 'Select time'
+              }
+              _TextTimeColor={
+                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+              }
+              data={new Date()}
+              getData={date => {
+                setCurrentTime(moment(date).format('hh:mm A'));
+              }}
+            />
             </View>
           </View>
           {selectedDateError ? (
@@ -324,7 +322,7 @@ const BidforJob = props => {
           RightButtonTextColor={_COLORS.Kodie_WhiteColor}
           RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
           onPressRightButton={() => {
-            BidSubmitDetails();
+            handleValidatiomtionBid();
             setSelectedDate('');
             setCurrentTime('');
             setAmount('');
@@ -377,7 +375,7 @@ const BidforJob = props => {
       </RBSheet>
 
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </SafeAreaView>
   );
 };
 

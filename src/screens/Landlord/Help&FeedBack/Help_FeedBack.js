@@ -90,7 +90,7 @@ const Help_FeedBack = props => {
           if (item.id === '4') {
             //----- Navigate to OtherScreen when AppInfo is clicked
             navigation.navigate('AppInfo');
-            // alert('Coming soon')
+            // alert('')
           }
         }}>
         <View style={Help_FeedBackCss.container}>

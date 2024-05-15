@@ -33,12 +33,7 @@ export default Person = props => {
   const [selectedOption, setSelectedOption] = useState('Save');
   const [isLoading, setIsLoading] = useState(false);
   const [personResponse, setpersonResponse] = useState('');
-  const handleOptionClick = option => {
-    setSelectedOption(option);
-    handleClosePopup();
-  };
-
-  //... Regex signup email validation
+ 
   const validatePersonEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
@@ -235,22 +230,18 @@ export default Person = props => {
                 PersonStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == 'Cancel'
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_WhiteColor,
+                      _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick('Cancel');
+                handleClosePopup()
               }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
-                    color:
-                      selectedOption == 'Cancel'
-                        ? _COLORS.Kodie_WhiteColor
-                        : null,
+                    color: _COLORS.Kodie_BlackColor
+                       
                   },
                 ]}>
                 {'Cancel'}
@@ -260,10 +251,7 @@ export default Person = props => {
               style={[
                 PersonStyle.applyText,
                 {
-                  backgroundColor:
-                    selectedOption == 'Save'
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_WhiteColor,
+                  backgroundColor:_COLORS.Kodie_BlackColor,
                 },
               ]}
               onPress={() => {
@@ -276,9 +264,8 @@ export default Person = props => {
                   PersonStyle.text,
                   {
                     color:
-                      selectedOption == 'Save'
-                        ? _COLORS.Kodie_WhiteColor
-                        : null,
+                      _COLORS.Kodie_WhiteColor
+                       
                   },
                 ]}>
                 {' Save'}

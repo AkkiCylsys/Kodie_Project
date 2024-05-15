@@ -95,10 +95,10 @@ export const PropertyListingCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
   },
   bottomModal_container: {
-    borderWidth: 0.5,
-    borderColor: _COLORS.Kodie_LightGrayColor,
+    // borderWidth: 0.5,
+
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    elevation: 10,
+    // elevation: 10,
   },
 });

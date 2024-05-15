@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, BackHandler, SafeAreaView} from 'react-native';
+import {View, Text, BackHandler, SafeAreaView, Alert} from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
 import {_goBack} from './../../../services/CommonServices/index';
@@ -64,14 +64,25 @@ const Jobs = props => {
         );
       case 'Tab2':
         return (
-          <SearchForContractor
-            Search={SearchData => {
-              alert('dfgdsgddgdsdfd', JSON.stringify(SearchData));
-              props.navigation.navigate('SearchDetail', {
-                SearchDataDetail: SearchData,
-              });
-            }}
-          />
+          <>
+          {Alert.alert('Search For Contractor', 'Coming soon', [
+            {
+              text: 'OK',
+              onPress: () => {
+                console.log('OK Pressed');
+                setActiveTab('Tab1');
+              },
+            },
+          ])}
+        </>
+          // <SearchForContractor
+          //   Search={SearchData => {
+          //     alert('dfgdsgddgdsdfd', JSON.stringify(SearchData));
+          //     props.navigation.navigate('SearchDetail', {
+          //       SearchDataDetail: SearchData,
+          //     });
+          //   }}
+          // />
         );
 
       case 'Tab3':
