@@ -77,6 +77,7 @@ const PropertyList2 = props => {
     handle_property_Type();
     additional_key_features();
     closemapdata == false ? setIsMap(closemapdata) : null;
+    closemapdata == false ? setIsSearch(closemapdata) : null;
   }, [props?.closeMap]);
 
   const dataToSend = {
@@ -401,6 +402,7 @@ const PropertyList2 = props => {
                   onFocus={() => {
                     setIsSearch(true);
                     handleLocation();
+                    props.setOpenMap && props.setOpenMap(true);
                   }}
                   placeholder="Search location"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
