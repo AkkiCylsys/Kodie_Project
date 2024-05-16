@@ -77,6 +77,8 @@ const RentalOffer = props => {
   const [questionCode, setQuestionCode] = useState('');
   const [expandedItems, setExpandedItems] = useState({});
   const [question, setQuestion] = useState([]);
+  const [inputValues, setInputValues] = useState({});
+
   useEffect(() => {
     handleLeaseTerm();
     handleStyingProperty();
@@ -304,7 +306,7 @@ const RentalOffer = props => {
     return (
       <View
         style={{
-          marginTop: 10,
+          marginTop: 5,
         }}>
         <View style={RentalOfferStyle.propety_details_view}>
           <Text style={RentalOfferStyle.propery_det}>
@@ -313,7 +315,6 @@ const RentalOffer = props => {
           <TouchableOpacity
             style={RentalOfferStyle.down_Arrow_icon}
             onPress={() => {
-              // toggleRentalDetails();
               setQuestionCode(item?.tqm_Question_code);
               handleQuesCode(item?.tqm_Question_code);
               toggleItem(item?.tqm_Question_code);
@@ -325,45 +326,110 @@ const RentalOffer = props => {
             />
           </TouchableOpacity>
         </View>
-        <DividerIcon marginTop={5} />
+        <DividerIcon />
         {expandedItems[item?.tqm_Question_code] && (
           <FlatList
             data={question}
-            keyExtractor={(item, index) =>  index.toString()}
+            keyExtractor={(item, index) => index.toString()}
             renderItem={QuestionCodeRender}
           />
         )}
       </View>
     );
   };
+  const handleInputChange = (questionCode, value) => {
+    setInputValues(prevInputValues => {
+      const updatedInputValues = {
+        ...prevInputValues,
+        [questionCode]: value,
+      };
+      console.log('Updated Input Values:', updatedInputValues);
+      return updatedInputValues;
+    });
+  };
+  const renderQuestionComponent = question => {
+    switch (question.tqm_Question_type) {
+      case 'Text':
+        return (
+          <View>
+            <TextInput
+              style={RentalOfferStyle.input}
+              placeholder={`Enter your ${question.tqm_Question_description}`}
+              onChangeText={text =>
+                handleInputChange(question.tqm_Question_code, text)
+              }
+              value={inputValues[question.tqm_Question_code]}
+            />
+          </View>
+        );
+      case 'Calendar':
+        return (
+          <View style={RentalOfferStyle.datePickerView}>
+            <CalendarModal
+              SelectDate={
+                inputValues[question.tqm_Question_code]
+                  ? inputValues[question.tqm_Question_code]
+                  : 'Start Date'
+              }
+              _textInputStyle={{
+                color: selectedDate
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor,
+              }}
+              calenderIcon={toggleModal}
+              onDayPress={day => {
+                setSelectedDate(day.dateString);
+                handleInputChange(question.tqm_Question_code, day.dateString);
+              }}
+              Visible={isModalVisible}
+              onRequestClose={toggleModal}
+              markedDates={{
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: _COLORS.Kodie_lightGreenColor,
+                  selectedTextColor: _COLORS.Kodie_BlackColor,
+                },
+              }}
+              _closeButton={toggleModal}
+              _ApplyButton={toggleModal}
+            />
+          </View>
+        );
+      // case 'Dropdown':
+      //   return (
+      //     <View>
+      //       <Dropdown
+      //         style={RentalOfferStyle.dropdown}
+      //         placeholderStyle={RentalOfferStyle.placeholderStyle}
+      //         selectedTextStyle={RentalOfferStyle.selectedTextStyle}
+      //         inputSearchStyle={RentalOfferStyle.inputSearchStyle}
+      //         iconStyle={RentalOfferStyle.iconStyle}
+      //         data={}
+      //         search
+      //         maxHeight={300}
+      //         labelField="lookup_description"
+      //         valueField="lookup_key"
+      //         placeholder="6-month"
+      //         searchPlaceholder="Search..."
+      //         value={inputValues[question.tqm_Question_code]}
+      //         onChange={item => {
+      //           handleInputChange(question.tqm_Question_code, text)
+      //         }}
+      //       />
+      //     </View>
+      //   );
+      default:
+        return null;
+    }
+  };
   const QuestionCodeRender = ({item}) => {
     return (
-      <View style={{marginHorizontal: 16}}>
-        <Text style={LABEL_STYLES.commontext}>
-          {item?.tqm_Question_description}
-        </Text>
-        <View style={RentalOfferStyle.datePickerView}>
-          <CalendarModal
-            SelectDate={selectedDate ? selectedDate : 'Start Date'}
-            _textInputStyle={{
-              color: selectedDate
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_GrayColor,
-            }}
-            calenderIcon={toggleModal}
-            onDayPress={handleDayPress}
-            Visible={isModalVisible}
-            onRequestClose={toggleModal}
-            markedDates={{
-              [selectedDate]: {
-                selected: true,
-                selectedColor: _COLORS.Kodie_lightGreenColor,
-                selectedTextColor: _COLORS.Kodie_BlackColor,
-              },
-            }}
-            _closeButton={toggleModal}
-            _ApplyButton={toggleModal}
-          />
+      <View style={{marginHorizontal: 16, marginTop: 5}}>
+        <View key={question.id}>
+          <Text style={LABEL_STYLES.commontext}>
+            {item.tqm_Question_description}
+          </Text>
+          {renderQuestionComponent(item)}
         </View>
         {/* <View style={RentalOfferStyle.rentalleaseview}>
           <Text style={LABEL_STYLES.commontext}>
@@ -474,7 +540,7 @@ const RentalOffer = props => {
             }}
           />
         </View> */}
-        <DividerIcon marginTop={5} />
+        {/* <DividerIcon marginTop={5} /> */}
       </View>
     );
   };

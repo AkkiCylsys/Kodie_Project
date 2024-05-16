@@ -38,7 +38,7 @@ export default SearchResult = props => {
   const isFocus = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
   const [searchRentalData, setSearchRentalData] = useState([]);
-  const [favRental, setFavRental] = useState(false);
+  const [likedItems, setLikedItems] = useState({});
   const [rentalAmount, setRentalAmount] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const keyFeatureMapping = {};
@@ -66,6 +66,14 @@ export default SearchResult = props => {
   useEffect(() => {
     additional_key_features();
   }, []);
+
+  const toggleLike = propertyId => {
+    setLikedItems(prevState => ({
+      ...prevState,
+      [propertyId]: !prevState[propertyId],
+    }));
+  };
+
   const onClose = () => {
     refRBSheet.current.close();
   };
@@ -158,15 +166,15 @@ export default SearchResult = props => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                setFavRental(!favRental);
+                toggleLike(item.property_id);
               }}>
               <AntDesign
                 color={
-                  favRental
+                  likedItems[item.property_id]
                     ? _COLORS.Kodie_GreenColor
                     : _COLORS.Kodie_ExtraminLiteGrayColor
                 }
-                name={favRental ? 'heart' : 'hearto'}
+                name={likedItems[item.property_id] ? 'heart' : 'hearto'}
                 size={25}
                 style={{marginHorizontal: 20}}
               />
@@ -348,35 +356,35 @@ export default SearchResult = props => {
         )}
       </View>
       <RBSheet
-          ref={refRBSheet}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: SearchResultCss.bottomModal_container,
+        ref={refRBSheet}
+        closeOnDragDown={true}
+        closeOnPressMask={false}
+        customStyles={{
+          wrapper: {
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: SearchResultCss.bottomModal_container,
+        }}>
+        <TouchableOpacity
+          style={{
+            justifyContent: 'flex-end',
+            alignSelf: 'flex-end',
+            marginHorizontal: 10,
+          }}
+          onPress={() => {
+            refRBSheet.current.close();
           }}>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'flex-end',
-              alignSelf: 'flex-end',
-              marginHorizontal: 10,
-            }}
-            onPress={() => {
-              refRBSheet.current.close();
-            }}>
-            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-          </TouchableOpacity>
-          <BottomModalSearchRental
-            onClose={onClose}
-            propertyId={propertyId}
-            rentalAmount={rentalAmount}
-          />
-        </RBSheet>
+          <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+        </TouchableOpacity>
+        <BottomModalSearchRental
+          onClose={onClose}
+          propertyId={propertyId}
+          rentalAmount={rentalAmount}
+        />
+      </RBSheet>
       {/* </ScrollView> */}
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
