@@ -22,6 +22,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_goBack} from '../../../services/CommonServices';
 import SwitchToggle from 'react-native-switch-toggle';
@@ -711,7 +712,7 @@ const AddNewNotice = props => {
                 maxHeight={300}
                 labelField="lookup_description"
                 valueField="lookup_key"
-                placeholder="Inspection reminder"
+                placeholder="Select notice type"
                 searchPlaceholder="Search..."
                 value={noticeTypeDataValue}
                 onChange={item => {
@@ -727,25 +728,25 @@ const AddNewNotice = props => {
                 style={[AddNewNoticeStyle.input]}
                 value={noticeTittle}
                 onChangeText={setNoticeTittle}
-                placeholder="Pre move inspection due"
+                placeholder="Notice title"
                 placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               />
             </View>
 
             <Divider style={AddNewNoticeStyle.divider} />
             <View style={AddNewNoticeStyle.mainreapeatview}>
-              <Fontisto
-                name="arrow-swap"
-                size={30}
+              <MaterialCommunityIcons
+                name="repeat"
+                size={35}
                 color={_COLORS.Kodie_ExtraLiteGrayColor}
-                style={{marginTop: 10}}
+                style={{alignSelf:'center'}}
               />
               <Text style={AddNewNoticeStyle.repeattext}>Repeat</Text>
               <View style={AddNewNoticeStyle.noticedropdownview}>
                 <Dropdown
                   style={[
                     AddNewNoticeStyle.dropdown,
-                    {borderRadius: 8, height: 25},
+                    {borderRadius: 8, height: 28,alignItems:'center',marginTop:0},
                   ]}
                   placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                   selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
@@ -756,7 +757,7 @@ const AddNewNotice = props => {
                   maxHeight={300}
                   labelField="lookup_description"
                   valueField="lookup_key"
-                  placeholder="Every weekday (Mon-Fri)"
+                  placeholder="select"
                   searchPlaceholder="Search..."
                   value={repeatDataValue}
                   onChange={item => {
@@ -771,7 +772,9 @@ const AddNewNotice = props => {
             {/* fourth part start here */}
             <View style={AddNewNoticeStyle.alldayviewmain}>
               <View style={AddNewNoticeStyle.alldayview}>
-                <MaterialCommunityIcons name="alarm-plus" size={30} />
+                <MaterialCommunityIcons name="alarm-plus" size={35} 
+                color={_COLORS.Kodie_ExtraLiteGrayColor}
+                />
                 <Text style={AddNewNoticeStyle.alldaytext}>All Day</Text>
               </View>
               <SwitchToggle
@@ -787,11 +790,12 @@ const AddNewNotice = props => {
                 backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
                 containerStyle={AddNewNoticeStyle.toggle_con}
                 circleStyle={AddNewNoticeStyle.toggle_circle}
+                
               />
             </View>
             <View style={AddNewNoticeStyle.datetimeview}>
               <View style={AddNewNoticeStyle.dateview}>
-                <View style={{flex: 1}}>
+               
                   <CalendarModal
                     // SelectDate={selectedDate ? selectedDate : "Select Date"}
                     SelectDate={
@@ -827,7 +831,8 @@ const AddNewNotice = props => {
                     _closeButton={toggleModal}
                     _ApplyButton={apply_toggleModal}
                   />
-                </View>
+                
+               
                 <TimePicker
                   selectedTime={
                     currentfromTime && currentfromTime != ''
@@ -849,6 +854,8 @@ const AddNewNotice = props => {
                     setCurrentfromTime(moment(date).format('hh:mm A'));
                   }}
                 />
+                
+               
               </View>
               <View style={AddNewNoticeStyle.dateview}>
                 <View style={{flex: 1}}>
@@ -987,7 +994,9 @@ const AddNewNotice = props => {
               {/*seven part start here */}
               <View style={AddNewNoticeStyle.setnotificationview}>
                 <View style={AddNewNoticeStyle.notificationbind}>
-                  <SimpleLineIcons name="bell" size={25} />
+                  <FontAwesome name="bell-o" size={35} 
+                color={_COLORS.Kodie_ExtraLiteGrayColor}
+                />
                   <Text style={AddNewNoticeStyle.settext}>
                     Set notification{' '}
                   </Text>
