@@ -42,7 +42,10 @@ export default AddLeaseDetails = props => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisibleEndDate, setModalVisibleEndDate] = useState(false);
   const [rentalAmount, setRentalAmount] = useState(null);
-  const [rentalBond, setRentalBond] = useState(null);
+  // const [rentalBond, setRentalBond] = useState(null);
+  const [rentalBond, setRentalBond] = useState('');
+  const [rentalDeposit, setRentalDeposit] = useState('');
+  const [rentalEscalation, setRentalEscalation] = useState('');
   const [paymentDueDay, setPaymentDueDay] = useState('');
   const [selectedOption, setSelectedOption] = useState('Save');
   const [selected_frequency_Button, setSelected_frequency_Button] =
@@ -71,6 +74,11 @@ export default AddLeaseDetails = props => {
   const [toggle_late_rental, setToggle_late_rental] = useState(0);
   const [showNotificationData, setShowNotificationData] = useState(false);
   const [showLeaseDetailsData, setLeaseDetailsData] = useState(false);
+  const [isYesSelected, setIsYesSelected] = useState(false);
+
+  const handleButtonClick = isYes => {
+    setIsYesSelected(isYes);
+  };
   // <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
 
   useEffect(() => {
@@ -535,60 +543,12 @@ export default AddLeaseDetails = props => {
               placeholder="How often is rent paid"
               value={lease_end_value}
               onChange={item => {
-                setlLease_end_value(item.value);
+                setlLease_end_value(item.lookup_key);
                 // alert(item.lookup_key);
               }}
               renderItem={lease_end_render}
             />
           </View>
-          {/* <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>
-              {"Rental payment frequency"}
-            </Text>
-            <RowButtons
-              LeftButtonText={"Weekly"}
-              leftButtonbackgroundColor={
-                !selected_frequency_Button
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !selected_frequency_Button
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              LeftButtonborderColor={
-                !selected_frequency_Button
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressLeftButton={() => {
-                setSelected_frequency_Button(false);
-                setSelected_frequency_Id(1);
-                // alert(selectedButtonId)
-              }}
-              RightButtonText={"Monthly"}
-              RightButtonbackgroundColor={
-                selected_frequency_Button
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                selected_frequency_Button
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              RightButtonborderColor={
-                selected_frequency_Button
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressRightButton={() => {
-                setSelected_frequency_Button(true);
-                setSelected_frequency_Id(0);
-              }}
-            />
-          </View> */}
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{'Rental amount*'}</Text>
             <TextInput
@@ -629,15 +589,25 @@ export default AddLeaseDetails = props => {
             />
           </View>
           <View style={AddLeaseDetailsStyle.probtn}>
-            <Text style={LABEL_STYLES.commontext}>Pro rata first payment*</Text>
-            <Text style={LABEL_STYLES.commontext}>Pro rata amount</Text>
+            <Text style={AddLeaseDetailsStyle.Protext}>Pro rata first payment*</Text>
+            <Text style={AddLeaseDetailsStyle.Protext1}>Pro rata amount</Text>
           </View>
           <View style={AddLeaseDetailsStyle.Twobtn}>
             <View style={AddLeaseDetailsStyle.btn_main_view}>
-              <TouchableOpacity style={[AddLeaseDetailsStyle.no_view]}>
+              <TouchableOpacity
+                style={[
+                  AddLeaseDetailsStyle.no_view,
+                  !isYesSelected && AddLeaseDetailsStyle.selectedBtn,
+                ]}
+                onPress={() => handleButtonClick(false)}>
                 <Text style={[AddLeaseDetailsStyle.no_text]}>{'No'}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[AddLeaseDetailsStyle.yes_view]}>
+              <TouchableOpacity
+                style={[
+                  AddLeaseDetailsStyle.yes_view,
+                  isYesSelected && AddLeaseDetailsStyle.selectedBtn,
+                ]}
+                onPress={() => handleButtonClick(true)}>
                 <Text style={[AddLeaseDetailsStyle.yes_text]}>{'Yes'}</Text>
               </TouchableOpacity>
             </View>
@@ -651,34 +621,7 @@ export default AddLeaseDetails = props => {
               />
             </View>
           </View>
-          {/* <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Payment due day*'}</Text>
-            <Dropdown
-              style={[
-                AddLeaseDetailsStyle.dropdown,
-                {flex: 1, borderRadius: 5, height: 45},
-              ]}
-              placeholderStyle={[
-                AddLeaseDetailsStyle.placeholderStyle,
-                {color: _COLORS.Kodie_LightGrayColor},
-              ]}
-              selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
-              inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
-              iconStyle={AddLeaseDetailsStyle.iconStyle}
-              data={lease_term_Data}
-              maxHeight={300}
-              labelField="lookup_description"
-              valueField="lookup_key"
-              placeholder="Select day in each period rent is paid"
-              value={lease_term_value}
-              onChange={item => {
-                setlLease_term_value(item.lookup_key);
-                // alert(item.lookup_key);
-              }}
-              renderItem={lease_term_render}
-            />
-          </View> */}
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
           <View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -710,13 +653,12 @@ export default AddLeaseDetails = props => {
           </View>
           {showLeaseDetailsData ? (
             <View>
-              <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
               <View style={AddLeaseDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES.commontext}>{'Rental bond'}</Text>
                 <TextInput
                   style={AddLeaseDetailsStyle.input}
-                  value={paymentDueDay}
-                  onChangeText={setPaymentDueDay}
+                  value={rentalBond}
+                  onChangeText={setRentalBond}
                   placeholder="Enter the rental bond amount"
                 />
               </View>
@@ -724,8 +666,8 @@ export default AddLeaseDetails = props => {
                 <Text style={LABEL_STYLES.commontext}>{'Rental deposit'}</Text>
                 <TextInput
                   style={AddLeaseDetailsStyle.input}
-                  value={paymentDueDay}
-                  onChangeText={setPaymentDueDay}
+                  value={rentalDeposit}
+                  onChangeText={setRentalDeposit}
                   placeholder="Enter the rental deposit amount"
                 />
               </View>
@@ -735,8 +677,8 @@ export default AddLeaseDetails = props => {
                 </Text>
                 <TextInput
                   style={AddLeaseDetailsStyle.input}
-                  value={paymentDueDay}
-                  onChangeText={setPaymentDueDay}
+                  value={rentalEscalation}
+                  onChangeText={setRentalEscalation}
                   placeholder="Period rent escalation %"
                 />
               </View>
@@ -773,54 +715,6 @@ export default AddLeaseDetails = props => {
             </Text>
           </View>
           <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
-          {/* <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>
-              {"Pro rata first rental payment"}
-            </Text>
-            <RowButtons
-              LeftButtonText={"Yes"}
-              leftButtonbackgroundColor={
-                !selected_payment_Button
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !selected_payment_Button
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              LeftButtonborderColor={
-                !selected_payment_Button
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressLeftButton={() => {
-                setSelected_payment_Button(false);
-                setSelected_payment_Id(1);
-                // alert(selectedButtonId)
-              }}
-              RightButtonText={"No"}
-              RightButtonbackgroundColor={
-                selected_payment_Button
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                selected_payment_Button
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              RightButtonborderColor={
-                selected_payment_Button
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressRightButton={() => {
-                setSelected_payment_Button(true);
-                setSelected_payment_Id(0);
-              }}
-            />
-          </View> */}
           {showNotificationData ? (
             <View>
               <View style={AddLeaseDetailsStyle.inputContainer}>
