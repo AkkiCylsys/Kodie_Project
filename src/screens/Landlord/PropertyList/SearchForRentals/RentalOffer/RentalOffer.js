@@ -29,6 +29,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import TenantScreeningReportModal from '../../../../../components/Molecules/TenantScreeningReportModal/TenantScreeningReportModal';
 import ApplicationSubmitModal from '../../../../../components/Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { SignupLookupDetails } from '../../../../../APIs/AllApi';
 
 const DocumentData = [
   {
@@ -76,9 +77,19 @@ const RentalOffer = props => {
   const [quesHeading, setQuesHeading] = useState([]);
   const [questionCode, setQuestionCode] = useState('');
   const [expandedItems, setExpandedItems] = useState({});
-  const [question, setQuestion] = useState([]);
   const [inputValues, setInputValues] = useState({});
-
+  const [question, setQuestion] = useState([]);
+  const [employeeQues, setEmployeeQues] = useState([]);
+  const [earnIncome, setEarnIncome] = useState([]);
+  const [rentailDetails, setRentailDetails] = useState([]);
+  const [peopalStay, setPeopalStay] = useState([]);
+  const [rental_History, setRental_History] = useState([]);
+  const [preference, setPreference] = useState([]);
+  const [personalDetails, setPersonalDetails] = useState({});
+  const [employmentStatus, setEmploymentStatus] = useState({});
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [income, setIncome] = useState('');
   useEffect(() => {
     handleLeaseTerm();
     handleStyingProperty();
@@ -236,7 +247,6 @@ const RentalOffer = props => {
     console.log('Request URL:', tenantQues_url);
     setIsLoading(true);
     const tenantQuesData = {
-      // p_question_code: questionCode ? questionCode : 'All',
       p_question_code: 'All',
       p_type: 'OPTION',
     };
@@ -272,7 +282,22 @@ const RentalOffer = props => {
       .then(response => {
         console.log('API Response QuesCode..', response?.data);
         if (response?.data?.success === true) {
-          setQuestion(response?.data?.data);
+          const data = response?.data?.data;
+          if (questionCode === 'PERSONAL_DETAILS') {
+            setQuestion(data);
+          } else if (questionCode === 'Employment_Status') {
+            setEmployeeQues(data);
+          } else if (questionCode === 'EARN_INCOME') {
+            setEarnIncome(data);
+          } else if (questionCode === 'RENTAL_DETAILS') {
+            setRentailDetails(data);
+          } else if (questionCode === 'PEOPLE_STAY') {
+            setPeopalStay(data);
+          } else if (questionCode === 'RENTAL_HISTORY') {
+            setRental_History(data);
+          } else if (questionCode === 'PREFERENCES') {
+            setPreference(data);
+          }
         } else {
           setIsLoading(false);
         }
@@ -284,6 +309,20 @@ const RentalOffer = props => {
       .finally(() => {
         setIsLoading(false);
       });
+  };
+
+  const handle_Income = async () => {
+    setIsLoading(true);
+    const res = await SignupLookupDetails({
+      P_PARENT_CODE: 'JOB_TYPE',
+      P_TYPE: 'OPTION',
+    });
+
+    console.log('IndiServicesOffer', res);
+    if (res.status === true) {
+      setIncome(res?.lookup_details);
+    }
+    setIsLoading(false);
   };
 
   // renderItem......
@@ -329,7 +368,23 @@ const RentalOffer = props => {
         <DividerIcon />
         {expandedItems[item?.tqm_Question_code] && (
           <FlatList
-            data={question}
+            data={
+              item?.tqm_Question_code === 'PERSONAL_DETAILS'
+                ? question
+                : item?.tqm_Question_code === 'Employment_Status'
+                ? employeeQues
+                : item?.tqm_Question_code === 'EARN_INCOME'
+                ? earnIncome
+                : item?.tqm_Question_code === 'PEOPLE_STAY'
+                ? peopalStay
+                : item?.tqm_Question_code === 'RENTAL_DETAILS'
+                ? rentailDetails
+                : item?.tqm_Question_code === 'RENTAL_HISTORY'
+                ? rental_History
+                : item?.tqm_Question_code === 'PREFERENCES'
+                ? preference
+                : question
+            }
             keyExtractor={(item, index) => index.toString()}
             renderItem={QuestionCodeRender}
           />
@@ -338,15 +393,44 @@ const RentalOffer = props => {
     );
   };
   const handleInputChange = (questionCode, value) => {
-    setInputValues(prevInputValues => {
-      const updatedInputValues = {
-        ...prevInputValues,
+    const updateCategoryState = (stateSetter, prevState) => {
+      const updatedState = {
+        ...prevState,
         [questionCode]: value,
       };
-      console.log('Updated Input Values:', updatedInputValues);
-      return updatedInputValues;
-    });
+      stateSetter(updatedState);
+      console.log(`Updated ${questionCode} Values:`, updatedState);
+      return updatedState;
+    };
+
+    switch (questionCode) {
+      case 'PERSONAL_DETAILS':
+        setPersonalDetails(prevState => {
+          const newState = updateCategoryState(setPersonalDetails, prevState);
+          return newState;
+        });
+        break;
+      case 'Employment_Status':
+        setEmploymentStatus(prevState => {
+          const newState = updateCategoryState(setEmploymentStatus, prevState);
+          return newState;
+        });
+        break;
+      default:
+        setInputValues(prevValues => ({
+          ...prevValues,
+          [questionCode]: value,
+        }));
+    }
   };
+
+  const handleSubmit = () => {
+    console.log('Submitting JSON data:');
+    console.log('Personal Details:', personalDetails);
+    console.log('Employment Status:', employmentStatus);
+    console.log('Input Values:', inputValues);
+  };
+
   const renderQuestionComponent = question => {
     switch (question.tqm_Question_type) {
       case 'Text':
@@ -355,10 +439,15 @@ const RentalOffer = props => {
             <TextInput
               style={RentalOfferStyle.input}
               placeholder={`Enter your ${question.tqm_Question_description}`}
-              onChangeText={text =>
-                handleInputChange(question.tqm_Question_code, text)
-              }
-              value={inputValues[question.tqm_Question_code]}
+              onChangeText={text => {
+                handleInputChange(question.tqm_Question_code, text);
+                // if (question.tqm_Question_code == 'First_name') {
+                //   setFirstName(text);
+                // } else {
+                //   setLastName(text);
+                // }
+              }}
+              value={inputValues[question.tqm_Question_code] || ''}
             />
           </View>
         );
@@ -372,7 +461,7 @@ const RentalOffer = props => {
                   : 'Start Date'
               }
               _textInputStyle={{
-                color: selectedDate
+                color: inputValues[question.tqm_Question_code]
                   ? _COLORS.Kodie_BlackColor
                   : _COLORS.Kodie_GrayColor,
               }}
@@ -384,7 +473,7 @@ const RentalOffer = props => {
               Visible={isModalVisible}
               onRequestClose={toggleModal}
               markedDates={{
-                [selectedDate]: {
+                [inputValues[question.tqm_Question_code]]: {
                   selected: true,
                   selectedColor: _COLORS.Kodie_lightGreenColor,
                   selectedTextColor: _COLORS.Kodie_BlackColor,
@@ -395,29 +484,29 @@ const RentalOffer = props => {
             />
           </View>
         );
-      // case 'Dropdown':
-      //   return (
-      //     <View>
-      //       <Dropdown
-      //         style={RentalOfferStyle.dropdown}
-      //         placeholderStyle={RentalOfferStyle.placeholderStyle}
-      //         selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-      //         inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-      //         iconStyle={RentalOfferStyle.iconStyle}
-      //         data={}
-      //         search
-      //         maxHeight={300}
-      //         labelField="lookup_description"
-      //         valueField="lookup_key"
-      //         placeholder="6-month"
-      //         searchPlaceholder="Search..."
-      //         value={inputValues[question.tqm_Question_code]}
-      //         onChange={item => {
-      //           handleInputChange(question.tqm_Question_code, text)
-      //         }}
-      //       />
-      //     </View>
-      //   );
+      case 'Dropdown':
+        return (
+          <View>
+            <Dropdown
+              style={RentalOfferStyle.dropdown}
+              placeholderStyle={RentalOfferStyle.placeholderStyle}
+              selectedTextStyle={RentalOfferStyle.selectedTextStyle}
+              inputSearchStyle={RentalOfferStyle.inputSearchStyle}
+              iconStyle={RentalOfferStyle.iconStyle}
+              data={EmployeeValueData}
+              search
+              maxHeight={300}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              placeholder="Full-time employed"
+              searchPlaceholder="Search..."
+              value={inputValues[question.tqm_Question_code] || ''}
+              onChange={item =>
+                handleInputChange(question.tqm_Question_code, item.lookup_key)
+              }
+            />
+          </View>
+        );
       default:
         return null;
     }
@@ -1072,6 +1161,7 @@ const RentalOffer = props => {
             onPressLeftButton={() => {
               setSubmitApplicationBtn(false);
               setSubmitApplicationBtnId(0);
+              handleSubmit();
               // alert(selectPetFriendlyBtnId)
             }}
             RightButtonText={'Submit'}
