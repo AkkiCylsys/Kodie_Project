@@ -677,7 +677,7 @@ export default PropertyReviewDetails = props => {
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
                       {/* {addtionalFeaturesID[0]} */}
-                      {addtionalFeaturesID[1] ? 'No' : 'Yes'}
+                      {addtionalFeaturesID[1] ? 'Yes' : 'No'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />

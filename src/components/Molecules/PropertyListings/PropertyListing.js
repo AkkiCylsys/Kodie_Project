@@ -42,6 +42,40 @@ const PropertyListing = (props) => {
   useState(false);
   const [propertyDelId, setPropertyDelId] = useState();
   const [Address, setAddress] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const itemsPerPage = 10;
+
+  const totalPages = Math.ceil(Vacant_data.length / itemsPerPage);
+
+  // Slice data based on current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = Vacant_data.slice(startIndex, endIndex);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const loadMoreData = () => {
+    if (!loading && currentPage < totalPages) {
+      setLoading(true);
+      setTimeout(() => {
+        setCurrentPage(currentPage + 1);
+        setLoading(false);
+      }, 1000); // Simulating a delay, replace with your actual data fetching logic
+    }
+  };
+
+
  
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
@@ -360,6 +394,15 @@ const PropertyListing = (props) => {
   
         <SafeAreaView>
       <FlatList data={Vacant_data} renderItem={propertyData1_render} />
+      {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)}>
+          <MaterialCommunityIcons name="chevron-left" size={30} />
+        </TouchableOpacity>
+        <Text>{`${currentPage} of ${totalPages}`}</Text>
+        <TouchableOpacity onPress={() => setCurrentPage(currentPage + 1)}>
+          <MaterialCommunityIcons name="chevron-right" size={30} />
+        </TouchableOpacity>
+      </View> */}
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
 

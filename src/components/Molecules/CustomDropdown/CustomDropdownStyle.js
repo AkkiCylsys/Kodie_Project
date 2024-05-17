@@ -8,7 +8,7 @@ export const CustomDropdownStyle = StyleSheet.create({
     height: 50,
     justifyContent: "center",
     borderRadius: 10,
-    marginVertical: 10,
+    marginVertical: 12,
     backgroundColor:_COLORS.Kodie_WhiteColor
   },
   dropmenu: {

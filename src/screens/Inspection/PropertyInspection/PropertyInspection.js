@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, Image, ScrollView } from "react-native";
+import { View, Text, Image, ScrollView, SafeAreaView } from "react-native";
 import { SliderBox } from "react-native-image-slider-box";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
@@ -42,7 +42,7 @@ const PropertyInspection = (props) => {
   };
 
   return (
-    <View style={PropertyInspectionCSS.MainContainer}>
+    <SafeAreaView style={PropertyInspectionCSS.MainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"8502 Preston Rd. Inglewood..."}
@@ -120,7 +120,7 @@ const PropertyInspection = (props) => {
         <View style={PropertyInspectionCSS.Line} />
         {checkTabs()}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 

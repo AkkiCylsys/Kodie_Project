@@ -61,10 +61,7 @@ export default CreateJobFirstScreen = props => {
   const editMode = props.route.params?.editMode;
   const myJob = props.route.params?.myJob;
   const job_sub_type = props.route.params?.job_sub_type;
-  console.log('myJob.......', myJob);
-  console.log('editMode.......', editMode);
-  console.log('job_sub_type.......', job_sub_type);
-  console.log('JobId for test .....', JobId);
+
   const [currentPage, setCurrentPage] = useState(0);
   const [value, setValue] = useState(null);
   const [aboutyourNeed, setAboutyourNeed] = useState('');
