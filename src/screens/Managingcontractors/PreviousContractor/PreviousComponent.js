@@ -1,21 +1,21 @@
 import {View, Text, Image, ScrollView,TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import { ContractorsComponentStyle } from './ContractorsComponentStyle';
+import { PreviousComponentStyle } from './PreviousComponentStyle';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import StarRating from 'react-native-star-rating';
-import RowButtons from '../../Molecules/RowButtons/RowButtons';
+import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import { _COLORS,IMAGES } from '../../../Themes';
 import ReadMore from '@fawazahmed/react-native-read-more';
 
-const ContractorsComponent = props => {
+const PreviousComponent = props => {
   const [rating, setRating] = useState(4);
   return (
     <>
-    <View style={ContractorsComponentStyle.mainview}>
-      <View style={ContractorsComponentStyle.Container}>
+    <View style={PreviousComponentStyle.mainview}>
+      <View style={PreviousComponentStyle.Container}>
         {/* <View></View> */}
-        <View style={ContractorsComponentStyle.imageview}>
+        <View style={PreviousComponentStyle.imageview}>
           <View
             style={{
               height: 60,
@@ -36,26 +36,26 @@ const ContractorsComponent = props => {
             />
           </View>
           <View style={{ flex: 1, marginHorizontal: 15 }}>
-            <View style={ContractorsComponentStyle.namebindview}>
-              <Text style={ContractorsComponentStyle.Jasontext}>{props.name}</Text>
+            <View style={PreviousComponentStyle.namebindview}>
+              <Text style={PreviousComponentStyle.Jasontext}>{props.name}</Text>
               {props.verified ? (
-                <View style={ContractorsComponentStyle.verifirdview}>
+                <View style={PreviousComponentStyle.verifirdview}>
                   <AntDesign
                     name="checkcircle"
                     size={15}
                     color={_COLORS.Kodie_GreenColor}
                   />
-                  <Text style={ContractorsComponentStyle.verifiedtext}>verified</Text>
+                  <Text style={PreviousComponentStyle.verifiedtext}>verified</Text>
                 </View>
               ) : null}
-              <Text style={ContractorsComponentStyle.Nottext}>
+              <Text style={PreviousComponentStyle.Nottext}>
                 {props.notverified}
               </Text>
             </View>
 
             <View>
-              <Text style={ContractorsComponentStyle.userName}>{props.filedname}</Text>
-              <View style={ContractorsComponentStyle.ratingbindview}>
+              <Text style={PreviousComponentStyle.userName}>{props.filedname}</Text>
+              <View style={PreviousComponentStyle.ratingbindview}>
                 <StarRating
                   disabled={false}
                   maxStars={1}
@@ -64,24 +64,24 @@ const ContractorsComponent = props => {
                   emptyStarColor={_COLORS.Kodie_LightGrayColor}
                   starSize={20}
                   selectedStar={(rating) => setRating(rating)}
-                  starStyle={ContractorsComponentStyle.startRating}
+                  starStyle={PreviousComponentStyle.startRating}
                 />
-                <Text style={ContractorsComponentStyle.starView}>
+                <Text style={PreviousComponentStyle.starView}>
                   {props.startRating} (
-                  <Text style={ContractorsComponentStyle.text231}>
+                  <Text style={PreviousComponentStyle.text231}>
                     {props.ratingnumber}
                   </Text>
                   )
                 </Text>
               </View>
-              <View style={ContractorsComponentStyle.iconbindview}>
+              <View style={PreviousComponentStyle.iconbindview}>
                 <Entypo
                   name="location-pin"
                   size={15}
                   color={_COLORS.Kodie_GreenColor}
-                  style={ContractorsComponentStyle.closeIcon}
+                  style={PreviousComponentStyle.closeIcon}
                 />
-                <Text style={ContractorsComponentStyle.text1234}>{props.address}</Text>
+                <Text style={PreviousComponentStyle.text1234}>{props.address}</Text>
               </View>
             </View>
           </View>
@@ -90,14 +90,14 @@ const ContractorsComponent = props => {
               name="hearto"
               size={25}
               color={_COLORS.Kodie_GrayColor}
-              style={ContractorsComponentStyle.heartimg}
+              style={PreviousComponentStyle.heartimg}
             />
             <TouchableOpacity onPress={props.onPress}>
               <Entypo
                 name="dots-three-horizontal"
                 size={20}
                 color={_COLORS.Kodie_GrayColor}
-                style={ContractorsComponentStyle.closeIcon}
+                style={PreviousComponentStyle.closeIcon}
               />
             </TouchableOpacity>
           </View>
@@ -121,7 +121,7 @@ const ContractorsComponent = props => {
   );
 };
 
-ContractorsComponent.defaultProps = {
-  verified: false,
-};
-export default ContractorsComponent;
+// ContractorsComponent.defaultProps = {
+//   verified: false,
+// };
+export default PreviousComponent;
