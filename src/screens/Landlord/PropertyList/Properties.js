@@ -7,7 +7,6 @@ import PropertyList2 from './SearchForRentals/PropertyList2';
 import {_goBack} from './../../../services/CommonServices/index';
 import {_COLORS} from '../../../Themes';
 import {PropertiesCSS} from './PropertiesCss';
-import RantalOffer from './RentalOffer/RantalOffer';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import {useSelector} from 'react-redux';

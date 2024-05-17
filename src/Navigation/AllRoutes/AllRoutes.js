@@ -65,7 +65,6 @@ import BlockedUser from './../../screens/Authentication/BlockUser/BlockedUser';
 import CustomSidebarMenu from './../CustomeDrawer/CustomSidebarMenu';
 import AddTenantDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails';
 import SocialMedia from './../../screens/Setting/SocielMedia/SocialMedia';
-import ViewApplication from '../../screens/Landlord/PropertyList/RentalOffer/ViewApplication';
 import PropertyInspection from '../../screens/Inspection/PropertyInspection/PropertyInspection';
 import CreateNewInspection from '../../screens/Inspection/NewInspections/CreateNewInspection';
 import NewInspection from '../../screens/Inspection/NewInspections/NewInspection';
@@ -102,7 +101,6 @@ import Reviewjobdetails3 from '../../screens/CreateJob/ReviewJobDetails/Reviewjo
 import CompletedJobs from '../../screens/CreateJob/ReviewJobDetails/CompletedJobs';
 import Ratingandfeedback from '../../screens/CreateJob/ReviewJobDetails/Ratingandfeedback';
 import EditDashboard from '../../screens/Dashboard/EditDashboard';
-import RantalOffer from '../../screens/Landlord/PropertyList/RentalOffer/RantalOffer';
 import AddPropertyMainPage from '../../screens/Landlord/AddNewProperty/AddPropertyMainPage';
 import SearchPlaces from '../../components/Molecules/SearchPlaces/SearchPlaces';
 import DocumentDetails from '../../screens/Landlord/AddNewProperty/PropertyReview/Documents/DocumentDetails/DocumentDetails';
@@ -770,12 +768,6 @@ const AllStackRouts = props => {
           component={BlockedUser}
           options={{headerShown: false, gestureEnabled: false}}
         />
-
-        <Stack.Screen
-          name={'ViewApplication'}
-          component={ViewApplication}
-          options={{headerShown: false, gestureEnabled: false}}
-        />
         <Stack.Screen
           name={'PropertyInspection'}
           component={PropertyInspection}
@@ -981,11 +973,6 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'LinkedDevice'}
           component={LinkedDevice}
-          options={{headerShown: false, gestureEnabled: false}}
-        />
-        <Stack.Screen
-          name={'RantalOffer'}
-          component={RantalOffer}
           options={{headerShown: false, gestureEnabled: false}}
         />
         <Stack.Screen

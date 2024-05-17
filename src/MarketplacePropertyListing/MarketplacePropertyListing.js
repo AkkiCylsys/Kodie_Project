@@ -264,6 +264,7 @@ const MarketplacePropertyListing = props => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <View>
+      {item.result ? null : (
         <View style={MarketplacePropertyListingStyle.flatListContainer}>
           <View style={MarketplacePropertyListingStyle.flat_MainView}>
             <View style={MarketplacePropertyListingStyle.flexContainer}>
@@ -271,7 +272,7 @@ const MarketplacePropertyListing = props => {
                 {item.property_type_text}
               </Text>
               <Text style={MarketplacePropertyListingStyle.commontext}>
-                {item.city}
+                {item?.state ? item?.state : item?.city}
               </Text>
               <View style={MarketplacePropertyListingStyle.flat_MainView}>
                 <MaterialCommunityIcons
@@ -383,6 +384,7 @@ const MarketplacePropertyListing = props => {
             }}
           />
         </View>
+      )}
         {isExpanded && (
           <View style={MarketplacePropertyListingStyle.expandedContent}>
             <View style={MarketplacePropertyListingStyle.flexContainer}>

@@ -258,36 +258,6 @@ export default SearchResult = props => {
           borderBottomWidth={3}
           color={_COLORS.Kodie_LiteWhiteColor}
         />
-        <RBSheet
-          ref={refRBSheet}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: SearchResultCss.bottomModal_container,
-          }}>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'flex-end',
-              alignSelf: 'flex-end',
-              marginHorizontal: 10,
-            }}
-            onPress={() => {
-              refRBSheet.current.close();
-            }}>
-            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-          </TouchableOpacity>
-          <BottomModalSearchRental
-            onClose={onClose}
-            propertyId={propertyId}
-            rentalAmount={rentalAmount}
-          />
-        </RBSheet>
       </>
     );
   };
@@ -377,6 +347,36 @@ export default SearchResult = props => {
           </View>
         )}
       </View>
+      <RBSheet
+          ref={refRBSheet}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: SearchResultCss.bottomModal_container,
+          }}>
+          <TouchableOpacity
+            style={{
+              justifyContent: 'flex-end',
+              alignSelf: 'flex-end',
+              marginHorizontal: 10,
+            }}
+            onPress={() => {
+              refRBSheet.current.close();
+            }}>
+            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+          </TouchableOpacity>
+          <BottomModalSearchRental
+            onClose={onClose}
+            propertyId={propertyId}
+            rentalAmount={rentalAmount}
+          />
+        </RBSheet>
       {/* </ScrollView> */}
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>

@@ -34,7 +34,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: "center",
-    marginTop: 10,
+  
   },
   iconStyle: {
     width: 20,
@@ -56,7 +56,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     marginTop: 15,
   },
   alldayview: {
@@ -67,15 +67,17 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 15,
+    alignSelf:'center'
   },
   datetimeview: {
     // marginHorizontal: 10,
   },
   dateview: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical:10,
-    marginLeft:45
+    alignItems: "center",
+    marginLeft:37
   },
   datetext: {
     color: _COLORS.Kodie_BlackColor,
@@ -111,8 +113,8 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginHorizontal: 5,
-    padding: 5,
+    // marginHorizontal: 5,
+    // padding: 5,
     flex: 1,
     marginTop: 15,
   },
@@ -144,6 +146,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
+    alignSelf:"center"
   },
   setnotificationdrop: {
     borderWidth: 0.5,
@@ -158,7 +161,8 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
-    marginHorizontal: 15,
+    marginLeft:8,
+    // marginHorizontal: 15,
   },
   setcustometext: {
     fontSize: 14,
@@ -249,17 +253,18 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginTop: 20,
   },
   toggle_con: {
-    width: 45,
-    height: 20,
+    width: 50,
+    height: 25,
     borderRadius: 20,
     padding: 5,
     // marginTop: 18,
     alignItems: "center",
+    alignSelf:'center'
   },
   toggle_circle: {
-    width: 15,
-    height: 15,
-    borderRadius: 15 / 2,
+    width: 18,
+    height: 18,
+    borderRadius: 18 / 2,
   },
   input_guest:{
     flex: 1,

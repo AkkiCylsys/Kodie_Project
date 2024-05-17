@@ -24,11 +24,12 @@ import {Config} from '../../../Config';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import InviteTenantModal from '../InviteTenantModal/InviteTenantModal';
-import { useIsFocused } from '@react-navigation/native';
-const PropertyListing = () => {
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+const PropertyListing = (props) => {
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
  const isvisible = useIsFocused()
+ const navigation=useNavigation()
   const Closemodal = () => {
     refRBSheet3.current.close();
   };
@@ -117,13 +118,15 @@ const PropertyListing = () => {
     setPropId(item.property_id);
     return (
       <>
+      {item.result ? null : (
+    
         <View style={PropertyListingCss.flatListContainer}>
           <View style={PropertyListingCss.flat_MainView}>
             <View style={PropertyListingCss.flexContainer}>
               <Text style={PropertyListingCss.apartmentText}>
                 {item.property_type}
               </Text>
-              <Text style={PropertyListingCss.commontext}>{item.name}</Text>
+              <Text style={PropertyListingCss.commontext}>{item.state ? item.state : item.city}</Text>
               <View style={PropertyListingCss.flat_MainView}>
                 <MaterialCommunityIcons
                   name={'map-marker'}
@@ -155,7 +158,13 @@ const PropertyListing = () => {
 
             <View style={PropertyListingCss.flexContainer}>
               <View style={PropertyListingCss.noteStyle}>
-                <TouchableOpacity>
+                <TouchableOpacity  
+                onPress={() => {navigation?.navigate('PropertyDetails', {
+                  propertyid: item.property_id,
+                  editMode: 'editMode',
+                });
+              }}
+                        >
                   <SimpleLineIcons
                     name="note"
                     size={25}
@@ -224,6 +233,7 @@ const PropertyListing = () => {
             }}
           />
         </View>
+        )}
         {isExpanded && (
           <View style={PropertyListingCss.expandedContent}>
             <View style={PropertyListingCss.flexContainer}>
@@ -245,6 +255,7 @@ const PropertyListing = () => {
           </View>
         )}
         <DividerIcon />
+      
 
         {/* <RBSheet
           ref={refRBSheet1}
@@ -341,6 +352,7 @@ const PropertyListing = () => {
           onClose={CloseUp}
         />
       </Modal>
+    
       </>
     );
   };
