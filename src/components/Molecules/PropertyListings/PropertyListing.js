@@ -154,7 +154,7 @@ const PropertyListing = (props) => {
       <>
       {item.result ? null : (
     
-        <View style={PropertyListingCss.flatListContainer}>
+        <View style={PropertyListingCss.flatListContainer} key={item.property_id}>
           <View style={PropertyListingCss.flat_MainView}>
             <View style={PropertyListingCss.flexContainer}>
               <Text style={PropertyListingCss.apartmentText}>
@@ -393,7 +393,7 @@ const PropertyListing = (props) => {
   return (
   
         <SafeAreaView>
-      <FlatList data={Vacant_data} renderItem={propertyData1_render} />
+      <FlatList data={Vacant_data} renderItem={propertyData1_render}  keyExtractor={(item) => item.property_id}/>
       {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)}>
           <MaterialCommunityIcons name="chevron-left" size={30} />

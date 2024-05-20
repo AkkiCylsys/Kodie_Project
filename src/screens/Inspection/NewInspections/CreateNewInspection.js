@@ -2,7 +2,7 @@
 //ScreenNo:89
 //ScreenNo:90
 //ScreenNo:92
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,23 +12,24 @@ import {
   ScrollView,
   FlatList,
   SafeAreaView,
+  Button,
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import { Dropdown } from 'react-native-element-dropdown';
 import { CreateNewInspectionStyle } from './CreateNewInspectionCss';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
-import { LABEL_STYLES, _COLORS, IMAGES } from '../../../Themes';
+import { LABEL_STYLES, _COLORS, IMAGES, FONTFAMILY } from '../../../Themes';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import { _goBack } from '../../../services/CommonServices';
 import CustomDropdown from '../../../components/Molecules/CustomDropdown/CustomDropdown';
-import { useEffect } from 'react';
 import { Config } from '../../../Config';
 import axios from 'axios';
 import moment from 'moment'
@@ -37,78 +38,59 @@ import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlace
 import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
 import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-
-const select_property = [
-  'All',
-  '2118 Thornridge Cir. Syracuse',
-  '8502 Preston Rd. Inglewood',
-  '1729 Sickle St, QLD',
-  '5 Aspen Villas',
-];
-const Detail = [
-  {
-    id: '1',
-    name: 'Bathroom',
-  },
-  {
-    id: '2',
-    name: 'Garden',
-  },
-  {
-    id: '3',
-    name: 'Bedroom',
-  },
-  {
-    id: '4',
-    name: 'Kitchen',
-  },
-  {
-    id: '5',
-    name: 'Dining Room',
-  },
-  {
-    id: '6',
-    name: 'Living Room',
-  },
-  {
-    id: '7',
-    name: 'Exterior',
-  },
-  {
-    id: '8',
-    name: 'Roof ',
-  },
-  {
-    id: '9',
-    name: 'Garage',
-  },
-];
+import debounce from 'lodash/debounce';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [inspectionType, setInspectionType] = useState([]);
   const [Inspection_value, setInspection_value] = useState(0);
   const [currentTime, setCurrentTime] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
-  const [location, setLocation] = useState('');
-  const [UserCurrentCity, setUserCurrentCity] = useState('');
-  const [UserZip_Code, setUserZip_Code] = useState('');
-  const [IsMap, setIsMap] = useState(false);
-  const [IsSearch, setIsSearch] = useState(false);
-  const [latitude, setlatitude] = useState('');
-  const [longitude, setlongitude] = useState('');
-  const [currentLocation, setCurrentLocation] = useState('');
-  const [AddInspection, setAddInspection] = useState('');
   const [Notes, setNotes] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAddressData, setSelectedAddreeData] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState([]);
+  const [AreaKey, setAreaKey] = useState([]);
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
     useState(67);
   const [checkedItems, setCheckedItems] = useState({});
+  const [TIM_key, setTIM_key] = useState([]);
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [selectedValues, setSelectedValues] = useState([]);
+  const [tempSelectedValues, setTempSelectedValues] = useState([]);
+  const [showError, setShowError] = useState(false);
+  const refRBSheet = useRef();
+  const Area_key = () => {
+    const url = Config.BASE_URL;
+    const AreaGetUrl = url + 'get_inspection_area';
+    console.log('Request URL:', AreaGetUrl);
+    setIsLoading(true);
+    axios
+      .get(AreaGetUrl)
+      .then(response => {
+        console.log('Selected_Address', response?.data);
+        if (response?.data?.success === true) {
+          setIsLoading(false);
+          console.log('Selected_Address....', response?.data?.data);
+          setAreaKey(response?.data?.data);
+        } else {
+          console.error('Selected_Address_error:', response?.data?.error);
+          // alert('Oops something went wrong! Please try again later.');
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('Selected_Address error:', error);
+        // alert(error);
+        setIsLoading(false);
+      });
+  };
 
   const toggleCheckBox = (itemId) => {
     setCheckedItems((prevCheckedItems) => ({
@@ -123,7 +105,7 @@ const CreateNewInspection = props => {
   };
   const checkedItemIds = getCheckedItemIds();
   console.log(checkedItemIds);
-  
+
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -133,58 +115,9 @@ const CreateNewInspection = props => {
   useEffect(() => {
     handleInspection_Type();
     Selected_Address_Type();
+    Area_key();
   }, [])
-  const ConfirmAddress = () => {
-    setIsMap(false);
-    setLocation(currentLocation);
-  };
-  const openMapandClose = text => {
-    setIsMap(false);
-    setIsSearch(true);
-  };
-  const onRegionChange = Region => {
-    // alert(JSON.stringify(Region));
-    console.log('Region....', JSON.stringify(Region));
-    setlatitude(Region.latitude);
-    setlongitude(Region.longitude);
-    getAddress(Region.latitude, Region.longitude);
-    // getAddress();
-  };
-  const getAddress = (latitude, longitude) => {
-    Geocoder.from(latitude, longitude)
-      .then(json => {
-        console.log('json location.......', json);
-        console.log('current address...', json.results[0].formatted_address);
-        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
-        const formatedAddress = json.results[0].formatted_address;
-        setCurrentLocation(formatedAddress);
-        // setLocation(json.results[0].formatted_address);
-        let MainFullAddress =
-          json.results[0].address_components[1].long_name +
-          ', ' +
-          json.results[0].address_components[2].long_name +
-          ', ' +
-          json.results[0].address_components[3].long_name +
-          ', ' +
-          json.results[0].address_components[4].long_name +
-          ', ' +
-          json.results[0].address_components[5].long_name +
-          ', ' +
-          json.results[0].address_components[6].long_name +
-          ', ' +
-          json.results[0].address_components[7].long_name +
-          ', ' +
-          json.results[0].address_components[8].long_name;
-
-        var addressComponent2 = json.results[0].address_components[1];
-        console.log('addressComponent2.....', addressComponent2);
-        setUserCurrentCity(addressComponent2.long_name);
-        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // setLocation(MainFullAddress);
-        console.log('mainFullAddress....', MainFullAddress);
-      })
-      .catch(error => console.warn(error));
-  };
+ 
   const Selected_Address_Type = () => {
     const Selected_Address = {
       account_id: loginData?.Login_details?.user_account_id,
@@ -213,6 +146,7 @@ const CreateNewInspection = props => {
         setIsLoading(false);
       });
   };
+  
   const handleInspection_Type = async () => {
     const InspectionData = {
       P_PARENT_CODE: 'INSPECTION_TYPE',
@@ -306,32 +240,33 @@ const CreateNewInspection = props => {
     );
   };
   const Detail_render = ({ item, index }) => {
-    const isChecked = checkedItems[item.id]; // Use a unique identifier for each item
+    const isChecked = checkedItems[item.TAM_AREA_KEY]; // Use a unique identifier for each item
     return (
       <View style={CreateNewInspectionStyle.DetailsView}>
-        <TouchableOpacity onPress={() => toggleCheckBox(item.id)}>
+        <TouchableOpacity onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}>
           <MaterialIcons
             name={isChecked ? 'check-box' : 'check-box-outline-blank'}
             size={25}
-            color={isChecked? _COLORS?.Kodie_GreenColor:_COLORS.Kodie_MediumGrayColor}
+            color={isChecked ? _COLORS?.Kodie_GreenColor : _COLORS.Kodie_MediumGrayColor}
           />
         </TouchableOpacity>
-        <Text style={CreateNewInspectionStyle.details_text}>{item.name}</Text>
+        <Text style={CreateNewInspectionStyle.details_text}>{item.TAM_AREA_NAME}</Text>
       </View>
     );
   };
-  const SubmitInspection = async() =>{
+  const SubmitInspection = async () => {
+    // alert(selectedAddress?.property_id)
     setIsLoading(true);
-    try{
+    try {
       const Inspectiondata = {
-        UPD_KEY: 1562,
+        UPD_KEY: selectedAddress?.property_id,
         TIM_INSPECTION_TYPE: Inspection_value,
-        TIM_SCHEDULE_TIME:currentTime ,
+        TIM_SCHEDULE_TIME: currentTime,
         TIM_SCHEDULE_DATE: selectedDate,
-        TIM_LOCATION: location || selectedAddress.location,
-        TIM_LOCATION_LONGITUDE: longitude || selectedAddress.longitude,
-        TIM_LOCATION_LATITUDE: latitude || selectedAddress.latitude,
-        TIM_ADD_ATTENDENCE: " ",
+        TIM_LOCATION: selectedAddress.location,
+        TIM_LOCATION_LONGITUDE:parseFloat(selectedAddress.longitude),
+        TIM_LOCATION_LATITUDE: parseFloat(selectedAddress.latitude),
+        TIM_ADD_ATTENDENCE: displaySelectedValues,
         TIM_IS_FURNISHED: selectedButtonFurnishedId,
         TIM_DESCRIPTION: Notes,
         TAM_AREA_KEYS: checkedItemIds.toString(),
@@ -340,94 +275,110 @@ const CreateNewInspection = props => {
       console.log("inspec", Inspectiondata);
       const Url = Config.BASE_URL
       const Inspection_Url = Url + "inspection_details/save"
-      console.log("Inspection_Url",Inspection_Url);
-      const res = await axios.post(Inspection_Url,Inspectiondata)
+      console.log("Inspection_Url", Inspection_Url);
+      const res = await axios.post(Inspection_Url, Inspectiondata)
       console.log(res?.data);
-      if(res?.data?.success == true){
+      if (res?.data?.success == true) {
+        setTIM_key(res?.data?.data);
+        console.log("TIM_KEY",res?.data?.data?.TIM_KEY);
         alert(res?.data?.message)
+        props?.navigation?.navigate('PropertyInspection',{
+          TIM_KEY:res?.data?.data?.TIM_KEY,
+          PropertyId:selectedAddress?.property_id,
+          account_id:selectedAddress?.user_Id
+        })
         setIsLoading(false);
+        setInspection_value();
+        setCurrentTime('');
+        setSelectedDate('')
+        setSelectedAddress([]);
+        setTempSelectedValues([]);
+        setSelectedValues([]);
+        setSelectedButtonFurnishedId();
+        setSelectedButtonFurnished([])
+        setNotes('')
+        setCheckedItems({})
       }
-    }catch(error){
-      if(error?.response && error?.response?.status === 404){
+    } catch (error) {
+      if (error?.response && error?.response?.status === 404) {
         alert(error?.response?.data?.message)
         setIsLoading(false)
-      }else{
+      } else {
         alert(error?.response?.data?.message)
         setIsLoading(false);
       }
       console.log(error);
-    }finally{
+    } finally {
       setIsLoading(false);
     }
   }
+  const handleSubmit = () => {
+    if (selectedAddress == '') {
+      setShowError(true);
+    } else {
+      SubmitInspection()
+    }
+  };
+  const fetchResults = async (searchQuery) => {
+    // alert(searchQuery)
+    setIsLoading(true);
+
+    try {
+      const Url = Config.BASE_URL
+      const search_Url = Url + "add_attendees/search"
+      console.log("Inspection_Url", search_Url);
+      const response = await axios.post(search_Url, {
+        search: searchQuery,
+      });
+      if (response?.data?.success == true) {
+        setResults(response?.data?.data);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Error fetching results:', error);
+    }
+  };
+
+  const debouncedFetchResults = debounce((searchQuery) => {
+    if (searchQuery) {
+      fetchResults(searchQuery);
+    } else {
+      setResults([]);
+    }
+  }, 100); // Delay in milliseconds
+
+  useEffect(() => {
+    debouncedFetchResults(query);
+    return () => {
+      debouncedFetchResults.cancel();
+    };
+  }, [query]);
+
+  const handleSelect = (user) => {
+    setTempSelectedValues((prevSelectedUsers) => {
+      const isSelected = prevSelectedUsers.find(selectedUser => selectedUser.UAD_KEY === user.UAD_KEY);
+    if (isSelected) {
+      return prevSelectedUsers.filter((selectedUser) => selectedUser.UAD_KEY !== user.UAD_KEY);
+    } else {
+      return [...prevSelectedUsers, user];
+    }
+    });
+  };
+  const applySelection = () => {
+    setSelectedValues(tempSelectedValues);
+    refRBSheet.current.close();
+  };
+  const handleClosePopup = () => {
+    refRBSheet.current.close();
+  };
+  const displaySelectedValues = selectedValues.map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`).join(', ');;
   return (
     <SafeAreaView style={CreateNewInspectionStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() => IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : _goBack(props)}
-        MiddleText={IsMap || IsSearch
-          ? 'Location'
-          : 'Create New Inspections'}
+        onPressLeftButton={() =>  _goBack(props)}
+        MiddleText={ 'Create New Inspections'}
       />
-      {IsMap ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-          }}>
-          <MapScreen
-            style={{
-              height: '100%',
-              width: '100%',
-              alignSelf: 'center',
-              marginBottom: 10,
-            }}
-            onRegionChange={onRegionChange}
-            Maplat={latitude}
-            Maplng={longitude}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              width: '96%',
-              borderWidth: 1,
-              borderRadius: 8,
-              backgroundColor: 'white',
-              borderColor: '#E5E4E2',
-              marginTop: 10,
-              position: 'absolute',
-            }}>
-            <TextInput
-              style={{
-                backgroundColor: 'transparent',
-                width: '90%',
-                height: 45,
-                alignSelf: 'center',
-              }}
-              onFocus={() => openMapandClose()}
-              placeholder={'Search Place'}
-              placeholderTextColor={_COLORS.Kodie_BlackColor}
-            />
-          </View>
-          <TouchableOpacity
-            style={CreateNewInspectionStyle.BtnContainer}
-            onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
-          </TouchableOpacity>
-        </View>
-      ) : IsSearch ? (
-        <SearchPlaces
-          onPress={(data, details = null) => {
-            console.log('LocationData....', details);
-            setlatitude(details.geometry.location.lat);
-            setlongitude(details.geometry.location.lng);
-            setIsSearch(false);
-            setIsMap(true);
-            setCurrentLocation(details.formatted_address);
-          }}
-        />
-      ) : (
+     
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={CreateNewInspectionStyle.Container}>
@@ -528,52 +479,46 @@ const CreateNewInspection = props => {
               value={selectedAddress}
               onChange={item => {
                 setSelectedAddress({
-                  latitude: item.latitude,
-                  longitude: item.longitude,
-                  location: item.location,
+                  latitude: item?.latitude,
+                  longitude: item?.longitude,
+                  location: item?.location,
+                  property_id:item?.property_id,
+                  user_Id:item?.account_id,
                 });
+                setShowError(false); 
               }}
               renderItem={Selected_Time_render}
             />
           </View>
-          {!selectedAddress ? (
             <View style={CreateNewInspectionStyle.locationContainer}>
+            <Octicons
+                  name={'location'}
+                  size={22}
+                  color={_COLORS.Kodie_ExtraLightGrayColor}
+                  style={CreateNewInspectionStyle.locationIcon}
+                />
               <TextInput
                 style={CreateNewInspectionStyle.locationInput}
-                value={location}
-                onChangeText={setLocation}
-                onFocus={() => {
-                  setIsSearch(true);
-                }}
-                // editable={false}
+                value={selectedAddress?.location}
+                editable={false}
                 placeholder="Enter new location"
                 placeholderTextColor={_COLORS.Kodie_LightGrayColor}
               />
-              <TouchableOpacity
-                style={CreateNewInspectionStyle.locationIconView}
-                onPress={() => {
-                  setIsMap(true);
-                 
-                }}>
-                <Octicons
-                  name={'location'}
-                  size={22}
-                  color={_COLORS.Kodie_GreenColor}
-                  style={CreateNewInspectionStyle.locationIcon}
-                />
-              </TouchableOpacity>
             </View>
-          ) : null}
-          <View style={{ marginBottom: 15 }}>
+          {showError? <Text style={CreateNewInspectionStyle.errorText}>{"Please select a property."}</Text> : null}
+
+          <View style={{ marginBottom: 15 ,marginTop:15}}>
             <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
-            <TouchableOpacity>
-              <View style={CreateNewInspectionStyle.TextInputView}>
+           
+              <TouchableOpacity style={CreateNewInspectionStyle.TextInputView}
+               onPress={() => refRBSheet.current.open()}>
                 <TextInput
-                  value={AddInspection}
+                  value={displaySelectedValues}
                   placeholder={'Add people attending the inspection'}
                   style={CreateNewInspectionStyle.input}
-                  onChange={text => setAddInspection(text)}
                   palceholderColor={_COLORS.Kodie_MediumGrayColor}
+                  editable={false}
+
                 />
                 <Feather
                   name={'user-plus'}
@@ -581,7 +526,7 @@ const CreateNewInspection = props => {
                   color={_COLORS.Kodie_GrayColor}
                   style={{ marginRight: 10 }}
                 />
-              </View>
+              
             </TouchableOpacity>
           </View>
           <Text style={LABEL_STYLES.commontext}>
@@ -633,27 +578,27 @@ const CreateNewInspection = props => {
               }}
             />
           </View>
-          <View style={{marginBottom:15}}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'Select the areas you would like to include:'}
-          </Text>
-          <View style={{marginTop:10}}>
-          <FlatList
-            data={Detail}
-            scrollEnabled
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{}}
-            numColumns={2}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={Detail_render}
-          />
-          </View>
+          <View style={{ marginBottom: 15 }}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Select the areas you would like to include:'}
+            </Text>
+            <View style={{ marginTop: 10 }}>
+              <FlatList
+                data={AreaKey}
+                scrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{}}
+                numColumns={2}
+                keyExtractor={(item) => item.TAM_AREA_KEY.toString()}
+                renderItem={Detail_render}
+              />
+            </View>
           </View>
           <Text style={LABEL_STYLES.commontext}>{'Notes:'}</Text>
           <TextInput
             style={CreateNewInspectionStyle.NotesInput}
             value={Notes}
-            onChangeText={text => setNotes(text)}
+            onChangeText={setNotes}
             placeholder="Enter any notes about this item"
             placeholderTextColor="#999"
             multiline
@@ -665,12 +610,42 @@ const CreateNewInspection = props => {
             Text_Color={_COLORS.Kodie_WhiteColor}
             backgroundColor={_COLORS.Kodie_BlackColor}
             disabled={isLoading ? true : false}
-            onPress={SubmitInspection}
+            onPress={handleSubmit}
           />
         </ScrollView>
-      )}
+      
+      <RBSheet
+        ref={refRBSheet}
+        height={500}
+        openDuration={250}
+        customStyles={{
+          wrapper: {
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          },
+          draggableIcon: {
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
+          },
+          container: CreateNewInspectionStyle.bottomModal_container,
+        }}
+      >
+         <GuestSelectionContent
+    query={query}
+    setQuery={setQuery}
+    results={results}
+    handleSelect={handleSelect}
+    tempSelectedValues={tempSelectedValues}
+    selectedValues={selectedValues}
+    refRBSheet={refRBSheet}
+    applySelection={applySelection}
+    handleClosePopup={handleClosePopup}
+  />
+       {
+        isLoading ? <CommonLoader /> : null
+      }
+    
+      </RBSheet>
       {
-        isLoading ? <CommonLoader/> : null 
+        isLoading ? <CommonLoader /> : null
       }
     </SafeAreaView>
   );

@@ -40,7 +40,7 @@ const data = [
 ];
 export default CreateJobTermsScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
 
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);

@@ -97,7 +97,7 @@ export default FirstProperty = props => {
   console.log('Device ID:', deviceId);
   console.log('Device type:', deviceType);
 
-  console.log('signUp_account_response.....', signUp_account_response);
+  // console.log('signUp_account_response.....', signUp_account_response);
 
   let firstName = props?.route?.params?.firstName;
   let lastName = props?.route?.params?.lastName;

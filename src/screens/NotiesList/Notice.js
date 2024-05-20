@@ -32,7 +32,7 @@ export default Notice = (props) => {
   const NoticeData = ({ item, index }) => {
     return (
       <>
-        <View style={Noticecss.container}>
+        <View style={Noticecss.container} key={item?.id}>
           <View style={Noticecss.pdfInfo}>
             <Image source={item.image} style={Noticecss.lines} />
             <View style={Noticecss.textContainer}>

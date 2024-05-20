@@ -67,6 +67,7 @@ const AddContractorModal = (props) => {
     return (
       <>
         <TouchableOpacity
+        key={item?.id}
           style={AddContractorModalStyle.content_View}
           onPress={() => {
             if (item.id === "1") {
@@ -99,7 +100,7 @@ const AddContractorModal = (props) => {
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
-        keyExtractor={(item) => item?.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={ContractorsImageContent}
       />
       <RBSheet

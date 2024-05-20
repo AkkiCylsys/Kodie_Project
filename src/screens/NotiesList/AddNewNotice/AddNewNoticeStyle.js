@@ -18,6 +18,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
   },
+  errorText: {color: 'red', marginTop: 3},
   mainreapeatview: {
     flex: 1,
     flexDirection: "row",
@@ -25,7 +26,13 @@ export const AddNewNoticeStyle = StyleSheet.create({
     alignItems: "center",
     marginTop: 15,
   },
-
+  bottomModal_container:{
+    borderTopLeftRadius:35,
+    borderTopRightRadius:35,
+    paddingHorizontal:20,
+    paddingVertical:20,
+    paddingBottom:30
+  },
   noticedropdownview: {
     width: 215,
   },
@@ -318,12 +325,12 @@ export const AddNewNoticeStyle = StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_LightGrayColor,
   },
   locationIconView: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_LightGrayColor,
     marginLeft: 10,
     width: "15%",
     height: 48,

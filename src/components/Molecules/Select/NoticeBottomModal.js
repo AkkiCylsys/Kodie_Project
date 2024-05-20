@@ -21,7 +21,7 @@ const NoticeBottomModal = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [selectFile, setSelectFile] = useState([]);
 
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const notices_reminderId = props.noticeReminderid;
   console.log('notices_reminderId....', notices_reminderId);
 
@@ -183,24 +183,14 @@ const NoticeBottomModal = props => {
         <AntDesign size={18} color={_COLORS.Kodie_GreenColor} name="delete" />
       ),
     },
-    {
-      id: 5,
-      Data: 'Archive instead',
-      icon: (
-        <Ionicons
-          name="file-tray-full-outline"
-          size={18}
-          color={_COLORS.Kodie_GreenColor}
-        />
-      ),
-    },
+   
   ];
 
   const modalRenderData = ({item}) => {
     return item.id == 3 ? (
       <View style={NoticeBottomModalStyle.optionsmainview}>
         
-        <TouchableOpacity
+        <TouchableOpacity key={item?.id}
           style={NoticeBottomModalStyle.optionsview}
           onPress={() => {
             if (item.id == 3) {

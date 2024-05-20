@@ -121,8 +121,8 @@ export const NoticesStyle = StyleSheet.create({
     // width: 300,
     // height: 90,
     borderRadius: 4,
-    paddingHorizontal: 10,
-    paddingVertical:10,
+    paddingHorizontal: 15,
+    paddingVertical:5,
     borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
     // padding: 15,
   },
@@ -132,6 +132,8 @@ export const NoticesStyle = StyleSheet.create({
   headinglineview: {
     // flexDirection:'row'
     marginHorizontal: 15,
+    alignSelf:'center',
+    justifyContent:'center'
   },
   lineimg: {
     width: 6,
@@ -144,10 +146,13 @@ export const NoticesStyle = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
+    alignItems:'center'
   },
   addressviewbind: {
     flexDirection: "row",
     marginTop: 3,
+    alignSelf:'center',
+    alignItems:'center'
   },
   addresstext: {
     fontSize: 12,
@@ -155,6 +160,7 @@ export const NoticesStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 3,
     width: 200,
+    alignSelf:'center'
   },
   locationimg: {},
   dotsview: {

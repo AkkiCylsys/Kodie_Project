@@ -23,7 +23,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     marginVertical: 12,
     borderRadius: 8,
   },
-
+  errorText:{color:'red'},
   placeholderStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_GrayColor,
@@ -71,16 +71,21 @@ export const CreateNewInspectionStyle = StyleSheet.create({
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  marginBottom:15
+  // marginBottom:15,
+  backgroundColor:_COLORS?.Kodie_GrayColor,
+  borderWidth: 1,
+  borderRadius: 8,
+  flex: 1,
+  height: 48,
+  paddingHorizontal: 6,
+  borderColor: '#ccc'
   },
   locationInput: {
-    flex: 1,
-    height: 48,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderRadius: 8,
-    borderColor: '#ccc',
+   fontSize:14,
+   fontFamily:FONTFAMILY?.K_Medium,
     color: _COLORS.Kodie_BlackColor,
+    alignSelf:'center',
+    marginLeft:5
   },
   locationIcon: {
     alignSelf:'center'
@@ -123,8 +128,9 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     height: 40,
     padding: 8,
     fontSize: 14,
-    color: _COLORS.Kodie_MediumGrayColor,
+    color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
+  
   },
   userStyle: { height: 20, width: 20, marginHorizontal: 10 },
   margin: { marginBottom: 15 },
@@ -191,4 +197,11 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
   },
+  bottomModal_container:{
+    borderTopLeftRadius:35,
+    borderTopRightRadius:35,
+    paddingHorizontal:20,
+    paddingVertical:20,
+    paddingBottom:30
+  }
 });

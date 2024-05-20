@@ -44,7 +44,7 @@ export default CompanyDetails = props => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [tabValue, setTabValue] = useState('IndividualInProfile');
   const [isLoading, setIsLoading] = useState(false);
   const [ImageName, setImageName] = useState('');

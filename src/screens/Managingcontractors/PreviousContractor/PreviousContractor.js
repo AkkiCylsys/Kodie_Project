@@ -116,7 +116,7 @@ const PreviousContractor = () => {
       <FlatList
         data={PreferredData}
         renderItem={renderItem}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => index}
       />
       {isLoading ? <CommonLoader /> : null}
     </>

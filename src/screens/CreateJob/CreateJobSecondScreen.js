@@ -44,7 +44,7 @@ const images = [
 ];
 const CreateJobSecondScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   // alert(loginData?.Login_details?.user_account_id);
 
   // validation...

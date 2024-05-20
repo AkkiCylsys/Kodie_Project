@@ -131,7 +131,7 @@ export default AddLeaseDetails = props => {
       lease_end_date:selectedEndDate,
       rental_amount: rentalAmount,
       rental_bond_amount: rentalBond,
-      rental_payment_frequency: selected_frequency_Id,
+      rental_payment_frequency: lease_end_value,
       payment_due_day: paymentDueDay,
       pro_rata_amount:25,
       first_rental_payment: selected_payment_Id,

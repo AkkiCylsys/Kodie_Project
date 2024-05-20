@@ -18,7 +18,7 @@ const ChangeContactNotify = props => {
   const [notify, setNotify] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
 
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   let oldPhoneNumber = props?.route?.params?.oldnewPhoneNumber;
   let PhoneNumber = props?.route?.params?.newnewPhoneNumber;
   const newPhoneNumber = PhoneNumber.substring(3);

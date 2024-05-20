@@ -93,7 +93,7 @@ export default Dashboard = props => {
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
-  console.log('signUp_account_response.....', signUp_account_response);
+  // console.log('signUp_account_response.....', signUp_account_response);
   const singup_Data = signUp_account_response;
   const [isOverlayVisible, setOverlayVisible] = useState(false);
   const [value, setValue] = useState(null);
@@ -128,7 +128,7 @@ export default Dashboard = props => {
   // );
   // console.log("Login_response.....", Login_response);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const SubscriptionData = useSelector(
     state => state.subscriptionReducer.data?.data,
   );

@@ -31,7 +31,7 @@ const Chat = props => {
   const userData = route.params.data;
   console.log(route.params.data, 'datadatadatadatadata');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);

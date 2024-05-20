@@ -121,7 +121,7 @@ const property_List1 = [
 
 const MarketplacePropertyListing = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const refRBSheet1 = useRef();
   const CloseUp = () => {
     refRBSheet1.current.close();

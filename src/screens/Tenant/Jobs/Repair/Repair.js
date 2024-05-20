@@ -55,7 +55,7 @@ const property_List1 = [
 export default Repair = props => {
   const isvisible = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   console.log(
     'loginresponse_jobdetails..',
     loginData?.Login_details?.user_account_id,

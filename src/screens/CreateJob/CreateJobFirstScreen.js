@@ -97,7 +97,7 @@ export default CreateJobFirstScreen = props => {
   const [currentLocation, setCurrentLocation] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
 
   // validation.....
   const handleNextbtn = () => {

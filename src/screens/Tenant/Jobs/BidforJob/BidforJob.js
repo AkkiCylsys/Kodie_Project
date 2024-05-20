@@ -32,7 +32,7 @@ const BidforJob = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const refRBSheet = useRef();
   console.log(SearchJobId, BidJobId);
   const handleRequestDate = text => {

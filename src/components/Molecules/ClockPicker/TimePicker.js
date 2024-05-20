@@ -100,6 +100,7 @@ const TimePicker = (props) => {
           display={"spinner"}
           mode={"time"}
           is24Hour={false}
+          onChange={props?.onChange}
           onConfirm={(date) => {
             handleConfirm(date);
           }}

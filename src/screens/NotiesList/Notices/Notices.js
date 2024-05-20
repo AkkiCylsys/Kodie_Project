@@ -78,7 +78,7 @@ const Notices = props => {
   const [selectedDate, setSelectedDate] = useState(''); // calender state
   const isFocused = useIsFocused();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [noticeRemiderDetails, setNoticeRemiderDetails] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(['All']);
@@ -107,6 +107,17 @@ const Notices = props => {
   const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear()); // Initialize with current year
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState('desc'); // Default sorting order is descending
+
+  const sortByDate = () => {
+    const sortedData = [...noticeRemiderDetails].sort((a, b) => {
+      const dateA = new Date(a.from_date);
+      const dateB = new Date(b.from_date);
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+    setNoticeRemiderDetails(sortedData);
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc'); // Toggle sorting order
+  };
   const searchNoticesList = query => {
     setSearchQuery(query);
     const filtered = query
@@ -180,6 +191,7 @@ const Notices = props => {
   const horizontal_render = ({item}) => {
     return (
       <TouchableOpacity
+      key={item.filterId}
         style={[
           NoticesStyle.flatlistView,
           {
@@ -230,11 +242,12 @@ const Notices = props => {
   };
 
   const noticeRenderData = ({item, index}) => {
+   
     return (
-      <View style={NoticesStyle.mainContainer}>
+      <View style={NoticesStyle.mainContainer} key={item?.id}>
         <View style={NoticesStyle.dateDayview}>
           <Text style={NoticesStyle.datetext}>
-            {moment(item.to_date).format('M/D ddd')}
+            {moment(item.from_date).format('M/D ddd')}
           </Text>
         </View>
         <View style={NoticesStyle.middatabindview}>
@@ -408,6 +421,7 @@ const Notices = props => {
             height={40}
             placeholder="Search notices"
             searchData={searchNoticesList}
+            SortedData={sortByDate}
           />
         </View>
 
@@ -417,7 +431,7 @@ const Notices = props => {
               horizontal
               showsHorizontalScrollIndicator={false}
               data={HorizontalData}
-              keyExtractor={(index, item) => item}
+              keyExtractor={(index, item) => item.filterId}
               renderItem={horizontal_render}
             />
           </View>
@@ -487,7 +501,7 @@ const Notices = props => {
           <FlatList
             showsHorizontalScrollIndicator={false}
             data={searchQuery? filteredUsers : noticeRemiderDetails}
-            keyExtractor={(index, item) => index.toString()}
+            keyExtractor={(index, item) => item?.id}
             renderItem={noticeRenderData}
           />
         </View>

@@ -26,6 +26,7 @@ const SearchBar = (props) => {
           {
             height: props.height ? props.height : 45,
             marginTop: props.marginTop ? props.marginTop : 20,
+            marginHorizontal:props?.marginHorizontal? props?.marginHorizontal : 16,
           },
         ]}
       >
@@ -83,6 +84,7 @@ const SearchBar = (props) => {
               marginTop: props.marginTop ? props.marginTop : 20,
             },
           ]}
+          onPress={props?.SortedData}
         >
            <FontAwesome
             // name="location"

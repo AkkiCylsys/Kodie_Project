@@ -16,7 +16,7 @@ import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {useSelector} from 'react-redux';
 const DeshboardNotice = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   console.log('user id..', loginData?.Login_details?.user_id);
   const [progress, setProgress] = useState(0.4);
   const [isLoading, setIsLoading] = useState(false);

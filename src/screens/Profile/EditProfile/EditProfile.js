@@ -59,7 +59,7 @@ const data = [
 
 const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [valid, setValid] = useState(false);
   const [fullName, setFirstName] = useState('');
   const [fullNameError, setFirstNameError] = useState('');
