@@ -29,7 +29,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import TenantScreeningReportModal from '../../../../../components/Molecules/TenantScreeningReportModal/TenantScreeningReportModal';
 import ApplicationSubmitModal from '../../../../../components/Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { SignupLookupDetails } from '../../../../../APIs/AllApi';
+import {SignupLookupDetails} from '../../../../../APIs/AllApi';
 
 const DocumentData = [
   {
@@ -90,6 +90,7 @@ const RentalOffer = props => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [income, setIncome] = useState('');
+  const [dropdownData, setDropdownData] = useState({});
   useEffect(() => {
     handleLeaseTerm();
     handleStyingProperty();
@@ -325,6 +326,55 @@ const RentalOffer = props => {
     setIsLoading(false);
   };
 
+  // const handleDropdown = async questionCode => {
+  //   setIsLoading(true);
+  //   const res = await SignupLookupDetails({
+  //     P_PARENT_CODE: questionCode, // Use the dynamic question code here
+  //     P_TYPE: 'OPTION',
+  //   });
+
+  //   console.log('Dropdown data...', res);
+  //   if (res.status === true) {
+  //     // Update the dropdown data state with the fetched data
+  //     setDropdownData(prevData => ({
+  //       ...prevData,
+  //       [questionCode]: res?.lookup_details,
+  //     }));
+  //   } else {
+  //     alert("false")
+  //     setIsLoading(false);
+  //   }
+  // };
+  const handleDropdown = async questionCode => {
+    setIsLoading(true);
+    try {
+      const res = await SignupLookupDetails({
+        P_PARENT_CODE: questionCode,
+        P_TYPE: 'OPTION',
+      });
+
+      console.log('Dropdown data...', res);
+      if (res.status === true) {
+        setDropdownData(prevData => ({
+          ...prevData,
+          [questionCode]: res?.lookup_details,
+        }));
+      } else {
+        console.error(
+          'Error: Unable to fetch dropdown data',
+          JSON.stringify(res),
+        );
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.log('error.....', error);
+      alert('Lookup Code Miss Match');
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // renderItem......
   const renderDataItem = item => {
     return (
@@ -441,13 +491,22 @@ const RentalOffer = props => {
               placeholder={`Enter your ${question.tqm_Question_description}`}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text);
-                // if (question.tqm_Question_code == 'First_name') {
-                //   setFirstName(text);
-                // } else {
-                //   setLastName(text);
-                // }
               }}
               value={inputValues[question.tqm_Question_code] || ''}
+            />
+          </View>
+        );
+      case 'Number':
+        return (
+          <View>
+            <TextInput
+              style={RentalOfferStyle.input}
+              placeholder={`Enter your ${question.tqm_Question_description}`}
+              onChangeText={text => {
+                handleInputChange(question.tqm_Question_code, text);
+              }}
+              value={inputValues[question.tqm_Question_code] || ''}
+              keyboardType="number-pad"
             />
           </View>
         );
@@ -493,7 +552,7 @@ const RentalOffer = props => {
               selectedTextStyle={RentalOfferStyle.selectedTextStyle}
               inputSearchStyle={RentalOfferStyle.inputSearchStyle}
               iconStyle={RentalOfferStyle.iconStyle}
-              data={EmployeeValueData}
+              data={dropdownData[question.tqm_Question_code] || []} // Use the dynamic data
               search
               maxHeight={300}
               labelField="lookup_description"
@@ -501,6 +560,7 @@ const RentalOffer = props => {
               placeholder="Full-time employed"
               searchPlaceholder="Search..."
               value={inputValues[question.tqm_Question_code] || ''}
+              onFocus={() => handleDropdown(question.tqm_Question_code)} // Trigger the dropdown loading here
               onChange={item =>
                 handleInputChange(question.tqm_Question_code, item.lookup_key)
               }
