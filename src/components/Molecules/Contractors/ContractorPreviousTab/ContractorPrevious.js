@@ -6,6 +6,8 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
+import Feather from "react-native-vector-icons/Feather";
+import { useNavigation } from "@react-navigation/native";
 
 const data = [
   {
@@ -51,8 +53,8 @@ const data = [
     id: "4",
     Data: "Message contractor",
     Icon: (
-        <Ionicons
-        name="mail-unread-outline"
+      <Feather
+        name="message-circle"
         size={30}
         color={_COLORS.Kodie_GreenColor}
         resizeMode={"contain"}
@@ -89,6 +91,8 @@ const data = [
 ];
 
 const ContractorPrevious = (props) => {
+  const navigation = useNavigation();
+
   const handleDeleteContractor = (ContractorId) => {
     console.log(ContractorId, "catch data");
     props.onDelete(ContractorId);
@@ -99,8 +103,10 @@ const ContractorPrevious = (props) => {
       <TouchableOpacity
         style={ContractorPreviousStyle.content_View}
         onPress={() => {
-          if (item.id == "4") {
-            handleDeleteContractor();
+          if (item.id === "3") {
+            navigation.navigate("Notices");
+          } else if (item.id === "5") {
+            navigation.navigate("CompletedJobs");
           }
         }}
       >
