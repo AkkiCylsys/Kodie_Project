@@ -149,8 +149,15 @@ console.log(allData);
   useEffect(() => {
     if(isvisible){
     get_Vacant_Details();
+   
     }
   }, [isvisible]);
+  useEffect(() => {
+    if (allData) {
+      // Update Vacant_data or any other logic with allData if needed
+      setVacantData(allData);
+    }
+  }, [allData]);
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
     setPropId(item.property_id);
@@ -361,7 +368,7 @@ console.log(allData);
   return (
   
         <SafeAreaView>
-      <FlatList data={searchQuery?filteredUsers:allData} renderItem={propertyData1_render}  keyExtractor={(item) => item.property_id}/>
+      <FlatList data={searchQuery?filteredUsers:Vacant_data} renderItem={propertyData1_render}  keyExtractor={(item) => item.property_id}/>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
 

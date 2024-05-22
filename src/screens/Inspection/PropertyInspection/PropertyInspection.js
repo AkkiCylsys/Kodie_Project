@@ -65,7 +65,7 @@ useEffect(()=>{
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
-        return <Schedule TIM_KEY={TIM_KEY} account_id={account_id}/>;
+        return <Schedule TIM_KEY={TIM_KEY} account_id={account_id} rescheduleInspection={()=>{props?.navigation?.navigate('CreateNewInspection',{TIM_KEY:TIM_KEY,InspectionView:'InspectionView'})}}/>;
       case "Tab2":
         return <Inspection />;
       case "Tab3":

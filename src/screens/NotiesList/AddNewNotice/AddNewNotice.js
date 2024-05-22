@@ -519,9 +519,10 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
           setToggleNotification(response?.data?.data.notifications);
           setNotification_type_value(parseInt(response?.data?.data.type_id));
           setNotes(response?.data?.data.notes);
-          set(response?.data?.data?.custom)
+          setSelectedCustemValue(response?.data?.data?.custom)
           // setFileName(response?.data?.data.file_name)
           setSelectFile(response?.data?.data.file_name);
+          setTempSelectedValues(response?.data?.data?.guests)
         } else {
           // alert(response?.data?.message);
           setIsLoading(false);

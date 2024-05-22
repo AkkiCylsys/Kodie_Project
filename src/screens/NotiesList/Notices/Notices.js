@@ -426,6 +426,9 @@ const Notices = props => {
             placeholder="Search notices"
             searchData={searchNoticesList}
             SortedData={sortByDate}
+            upArrow={sortOrder == 'asc'?'long-arrow-up':'long-arrow-down'}
+            downArrow={sortOrder == 'asc'? 'long-arrow-down':'long-arrow-up'}
+         
           />
         </View>
 

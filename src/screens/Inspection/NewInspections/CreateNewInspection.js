@@ -41,10 +41,12 @@ import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveL
 import debounce from 'lodash/debounce';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
+  const isVisible = useNavigation();
   const [inspectionType, setInspectionType] = useState([]);
   const [Inspection_value, setInspection_value] = useState(0);
   const [currentTime, setCurrentTime] = useState('');
@@ -65,7 +67,12 @@ const CreateNewInspection = props => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [tempSelectedValues, setTempSelectedValues] = useState([]);
   const [showError, setShowError] = useState(false);
+  const [Inspection_Detail, setInspection_Details] = useState([]);
+
   const refRBSheet = useRef();
+  const TIM_KEY = props?.route?.params?.TIM_KEY;
+  const InspectionView = props?.route?.params?.InspectionView;
+  console.log(InspectionView);
   const Area_key = () => {
     const url = Config.BASE_URL;
     const AreaGetUrl = url + 'get_inspection_area';
@@ -112,12 +119,47 @@ const CreateNewInspection = props => {
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
+  const getInspectionDetails = () => {
+    // alert(TIM_KEY)
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+
+    const apiUrl =
+      url + `get_inspection_details/${TIM_KEY}`;
+
+    axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response:', response?.data?.data[0]);
+        setInspection_Details(response?.data?.data[0]);
+        setInspection_value(response?.data?.data[0]?.v_TIM_INSPECTION_TYPE)
+        setSelectedDate(moment(response?.data?.data[0]?.v_TIM_SCHEDULE_DATE).format('YYYY-MM-DD'))
+        setCurrentTime(response?.data?.data[0]?.v_TIM_SCHEDULE_TIME)
+        setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY)
+        setSelectedAddress({
+          latitude: response?.data?.data[0]?.v_TIM_LOCATION_LATITUDE,
+          longitude: response?.data?.data[0]?.v_TIM_LOCATION_LONGITUDE,
+          location: response?.data?.data[0]?.v_TIM_LOCATION,
+        })
+        setNotes(response?.data?.data[0]?.v_TIM_DESCRIPTION)
+        setSelectedButtonFurnishedId(response?.data?.data[0]?.v_TIM_IS_FURNISHED)
+        setIsLoading(false);
+      })
+      .catch(error => {
+        // Handle error
+        console.error('API Error PersonalDetails CIP:', error);
+      });
+  };
   useEffect(() => {
-    handleInspection_Type();
+    
+    if(isVisible){
+      handleInspection_Type();
     Selected_Address_Type();
-    Area_key();
-  }, [])
- 
+    Area_key(); 
+    getInspectionDetails();
+    }
+  }, [isVisible])
+
   const Selected_Address_Type = () => {
     const Selected_Address = {
       account_id: loginData?.Login_details?.user_account_id,
@@ -146,7 +188,7 @@ const CreateNewInspection = props => {
         setIsLoading(false);
       });
   };
-  
+
   const handleInspection_Type = async () => {
     const InspectionData = {
       P_PARENT_CODE: 'INSPECTION_TYPE',
@@ -264,7 +306,7 @@ const CreateNewInspection = props => {
         TIM_SCHEDULE_TIME: currentTime,
         TIM_SCHEDULE_DATE: selectedDate,
         TIM_LOCATION: selectedAddress.location,
-        TIM_LOCATION_LONGITUDE:parseFloat(selectedAddress.longitude),
+        TIM_LOCATION_LONGITUDE: parseFloat(selectedAddress.longitude),
         TIM_LOCATION_LATITUDE: parseFloat(selectedAddress.latitude),
         TIM_ADD_ATTENDENCE: displaySelectedValues,
         TIM_IS_FURNISHED: selectedButtonFurnishedId,
@@ -280,12 +322,71 @@ const CreateNewInspection = props => {
       console.log(res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
-        console.log("TIM_KEY",res?.data?.data?.TIM_KEY);
+        console.log("TIM_KEY", res?.data?.data?.TIM_KEY);
         alert(res?.data?.message)
-        props?.navigation?.navigate('PropertyInspection',{
-          TIM_KEY:res?.data?.data?.TIM_KEY,
-          PropertyId:selectedAddress?.property_id,
-          account_id:selectedAddress?.user_Id
+        props?.navigation?.navigate('PropertyInspection', {
+          TIM_KEY: res?.data?.data?.TIM_KEY,
+          PropertyId: selectedAddress?.property_id,
+          account_id: selectedAddress?.user_Id
+        })
+        setIsLoading(false);
+        setInspection_value();
+        setCurrentTime('');
+        setSelectedDate('')
+        setSelectedAddress([]);
+        setTempSelectedValues([]);
+        setSelectedValues([]);
+        setSelectedButtonFurnishedId();
+        setSelectedButtonFurnished([])
+        setNotes('')
+        setCheckedItems({})
+      }
+    } catch (error) {
+      if (error?.response && error?.response?.status === 404) {
+        alert(error?.response?.data?.message)
+        setIsLoading(false)
+      } else {
+        alert(error?.response?.data?.message)
+        setIsLoading(false);
+      }
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  const UpdateInspection = async () => {
+    // alert(selectedAddress?.property_id)
+    setIsLoading(true);
+    try {
+      const Inspectiondata = {
+        TIM_KEY:TIM_KEY,
+        UPD_KEY: selectedAddress?.property_id,
+        TIM_INSPECTION_TYPE: Inspection_value,
+        TIM_SCHEDULE_TIME: currentTime,
+        TIM_SCHEDULE_DATE: selectedDate,
+        TIM_LOCATION: selectedAddress.location,
+        TIM_LOCATION_LONGITUDE: parseFloat(selectedAddress.longitude),
+        TIM_LOCATION_LATITUDE: parseFloat(selectedAddress.latitude),
+        TIM_ADD_ATTENDENCE: displaySelectedValues,
+        TIM_IS_FURNISHED: selectedButtonFurnishedId,
+        TIM_DESCRIPTION: Notes,
+        TAM_AREA_KEYS: checkedItemIds.toString(),
+        CREATED_BY: loginData?.Login_details?.user_account_id.toString()
+      }
+      console.log("inspec", Inspectiondata);
+      const Url = Config.BASE_URL
+      const Inspection_Url = Url + "inspection_details/save"
+      console.log("Inspection_Url", Inspection_Url);
+      const res = await axios.post(Inspection_Url, Inspectiondata)
+      console.log(res?.data);
+      if (res?.data?.success == true) {
+        setTIM_key(res?.data?.data);
+        console.log("TIM_KEY", res?.data?.data?.TIM_KEY);
+        alert(res?.data?.message)
+        props?.navigation?.navigate('PropertyInspection', {
+          TIM_KEY: res?.data?.data?.TIM_KEY,
+          PropertyId: selectedAddress?.property_id,
+          account_id: selectedAddress?.user_Id
         })
         setIsLoading(false);
         setInspection_value();
@@ -316,6 +417,7 @@ const CreateNewInspection = props => {
     if (selectedAddress == '') {
       setShowError(true);
     } else {
+    InspectionView? UpdateInspection():
       SubmitInspection()
     }
   };
@@ -357,11 +459,11 @@ const CreateNewInspection = props => {
   const handleSelect = (user) => {
     setTempSelectedValues((prevSelectedUsers) => {
       const isSelected = prevSelectedUsers.find(selectedUser => selectedUser.UAD_KEY === user.UAD_KEY);
-    if (isSelected) {
-      return prevSelectedUsers.filter((selectedUser) => selectedUser.UAD_KEY !== user.UAD_KEY);
-    } else {
-      return [...prevSelectedUsers, user];
-    }
+      if (isSelected) {
+        return prevSelectedUsers.filter((selectedUser) => selectedUser.UAD_KEY !== user.UAD_KEY);
+      } else {
+        return [...prevSelectedUsers, user];
+      }
     });
   };
   const applySelection = () => {
@@ -375,245 +477,245 @@ const CreateNewInspection = props => {
   return (
     <SafeAreaView style={CreateNewInspectionStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() =>  _goBack(props)}
-        MiddleText={ 'Create New Inspections'}
+        onPressLeftButton={() => _goBack(props)}
+        MiddleText={InspectionView?'Reschedule Inspections': 'Create New Inspections'}
       />
-     
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={CreateNewInspectionStyle.Container}>
-          <Text style={CreateNewInspectionStyle.HeadingText}>
-            {'Tell us about your inspection'}
-          </Text>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={CreateNewInspectionStyle.Container}>
+        <Text style={CreateNewInspectionStyle.HeadingText}>
+          {'Tell us about your inspection'}
+        </Text>
 
 
-          <View style={{ marginBottom: 15 }}>
-            <Text style={LABEL_STYLES.commontext}>
-              {'What type if inspection is this?'}
-            </Text>
-            <Dropdown
-              style={CreateNewInspectionStyle.dropdown}
-              placeholderStyle={[
-                CreateNewInspectionStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
-              ]}
-              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-              iconStyle={CreateNewInspectionStyle.iconStyle}
-              data={inspectionType}
-              maxHeight={300}
-              labelField="lookup_description"
-              valueField="lookup_key"
-              placeholder="Select inspection type"
-              value={
-                Inspection_value
-              }
-              onChange={item => {
-                setInspection_value(item.lookup_key);
-              }}
-              renderItem={InspectionType_render}
-            />
-          </View>
+        <View style={{ marginBottom: 15 }}>
           <Text style={LABEL_STYLES.commontext}>
-            {'Schedule time and date of inspection'}
+            {'What type if inspection is this?'}
           </Text>
-          <View style={CreateNewInspectionStyle.datePickerView}>
-            <CalendarModal
-              SelectDate={selectedDate ? selectedDate : 'Select Date'}
-              _textInputStyle={{
-                color: selectedDate
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_GrayColor,
-              }}
-              calenderIcon={toggleModal}
-              onDayPress={handleDayPress}
-              Visible={isModalVisible}
-              onRequestClose={toggleModal}
-              markedDates={{
-                [selectedDate]: {
-                  selected: true,
-                  selectedColor: _COLORS.Kodie_lightGreenColor,
-                  selectedTextColor: _COLORS.Kodie_BlackColor,
-                },
-              }}
-              _closeButton={toggleModal}
-              _ApplyButton={toggleModal}
-            />
+          <Dropdown
+            style={CreateNewInspectionStyle.dropdown}
+            placeholderStyle={[
+              CreateNewInspectionStyle.placeholderStyle,
+              { color: _COLORS.Kodie_LightGrayColor },
+            ]}
+            selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+            inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+            iconStyle={CreateNewInspectionStyle.iconStyle}
+            data={inspectionType}
+            maxHeight={300}
+            labelField="lookup_description"
+            valueField="lookup_key"
+            placeholder="Select inspection type"
+            value={
+              Inspection_value
+            }
+            onChange={item => {
+              setInspection_value(item.lookup_key);
+            }}
+            renderItem={InspectionType_render}
+          />
+        </View>
+        <Text style={LABEL_STYLES.commontext}>
+          {'Schedule time and date of inspection'}
+        </Text>
+        <View style={CreateNewInspectionStyle.datePickerView}>
+          <CalendarModal
+            SelectDate={selectedDate ? selectedDate : 'Select Date'}
+            _textInputStyle={{
+              color: selectedDate
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_GrayColor,
+            }}
+            calenderIcon={toggleModal}
+            onDayPress={handleDayPress}
+            Visible={isModalVisible}
+            onRequestClose={toggleModal}
+            markedDates={{
+              [selectedDate]: {
+                selected: true,
+                selectedColor: _COLORS.Kodie_lightGreenColor,
+                selectedTextColor: _COLORS.Kodie_BlackColor,
+              },
+            }}
+            _closeButton={toggleModal}
+            _ApplyButton={toggleModal}
+          />
 
-            <View style={CreateNewInspectionStyle.spaceView} />
+          <View style={CreateNewInspectionStyle.spaceView} />
 
-            <TimePicker
-              selectedTime={
-                currentTime && currentTime != ''
-                  ? String(currentTime)
-                  : 'Select time'
-              }
-              _TextTimeColor={
-                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
-              }
-              data={new Date()}
-              getData={date => {
-                setCurrentTime(moment(date).format('hh:mm A'));
-              }}
-            />
-          </View>
+          <TimePicker
+            selectedTime={
+              currentTime && currentTime != ''
+                ? String(currentTime)
+                : 'Select time'
+            }
+            _TextTimeColor={
+              currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+            }
+            data={new Date()}
+            getData={date => {
+              setCurrentTime(moment(date).format('hh:mm A'));
+            }}
+          />
+        </View>
 
 
-          <View style={{ marginBottom: 15 }}>
-            <Text style={LABEL_STYLES.commontext}>
-              {'Where is the inspection taking place?'}
-            </Text>
-            <Dropdown
-              style={CreateNewInspectionStyle.dropdown}
-              placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
-              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-              iconStyle={CreateNewInspectionStyle.iconStyle}
-              data={selectedAddressData}
-              search
-              maxHeight={300}
-              labelField="location"
-              valueField="longitude"
-              placeholder="Select property"
-              searchPlaceholder="Search..."
-              value={selectedAddress}
-              onChange={item => {
-                setSelectedAddress({
-                  latitude: item?.latitude,
-                  longitude: item?.longitude,
-                  location: item?.location,
-                  property_id:item?.property_id,
-                  user_Id:item?.account_id,
-                });
-                setShowError(false); 
-              }}
-              renderItem={Selected_Time_render}
-            />
-          </View>
-            <View style={CreateNewInspectionStyle.locationContainer}>
-            <Octicons
-                  name={'location'}
-                  size={22}
-                  color={_COLORS.Kodie_ExtraLightGrayColor}
-                  style={CreateNewInspectionStyle.locationIcon}
-                />
-              <TextInput
-                style={CreateNewInspectionStyle.locationInput}
-                value={selectedAddress?.location}
-                editable={false}
-                placeholder="Enter new location"
-                placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-              />
-            </View>
-          {showError? <Text style={CreateNewInspectionStyle.errorText}>{"Please select a property."}</Text> : null}
-
-          <View style={{ marginBottom: 15 ,marginTop:15}}>
-            <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
-           
-              <TouchableOpacity style={CreateNewInspectionStyle.TextInputView}
-               onPress={() => refRBSheet.current.open()}>
-                <TextInput
-                  value={displaySelectedValues}
-                  placeholder={'Add people attending the inspection'}
-                  style={CreateNewInspectionStyle.input}
-                  palceholderColor={_COLORS.Kodie_MediumGrayColor}
-                  editable={false}
-
-                />
-                <Feather
-                  name={'user-plus'}
-                  size={22}
-                  color={_COLORS.Kodie_GrayColor}
-                  style={{ marginRight: 10 }}
-                />
-              
-            </TouchableOpacity>
-          </View>
+        <View style={{ marginBottom: 15 }}>
           <Text style={LABEL_STYLES.commontext}>
-            {'Is the place furnished or unfurnished?'}
+            {'Where is the inspection taking place?'}
           </Text>
-          <View style={CreateNewInspectionStyle.margin}>
-            <RowButtons
-              LeftButtonText={'Furnished'}
-              leftButtonbackgroundColor={
-                !selectedButtonFurnished
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !selectedButtonFurnished
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              LeftButtonborderColor={
-                !selectedButtonFurnished
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressLeftButton={() => {
-                setSelectedButtonFurnished(false);
-                setSelectedButtonFurnishedId(67);
-                // alert(selectedButtonId)
-              }}
-              RightButtonText={'Unfurnished'}
-              RightButtonbackgroundColor={
-                selectedButtonFurnished
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                selectedButtonFurnished
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              RightButtonborderColor={
-                selectedButtonFurnished
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressRightButton={() => {
-                setSelectedButtonFurnished(true);
-                setSelectedButtonFurnishedId(68);
-                // alert(selectedButtonId)
-              }}
-            />
-          </View>
-          <View style={{ marginBottom: 15 }}>
-            <Text style={LABEL_STYLES.commontext}>
-              {'Select the areas you would like to include:'}
-            </Text>
-            <View style={{ marginTop: 10 }}>
-              <FlatList
-                data={AreaKey}
-                scrollEnabled
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{}}
-                numColumns={2}
-                keyExtractor={(item) => item.TAM_AREA_KEY.toString()}
-                renderItem={Detail_render}
-              />
-            </View>
-          </View>
-          <Text style={LABEL_STYLES.commontext}>{'Notes:'}</Text>
+          <Dropdown
+            style={CreateNewInspectionStyle.dropdown}
+            placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
+            selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+            inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+            iconStyle={CreateNewInspectionStyle.iconStyle}
+            data={selectedAddressData}
+            search
+            maxHeight={300}
+            labelField="location"
+            valueField="longitude"
+            placeholder="Select property"
+            searchPlaceholder="Search..."
+            value={selectedAddress}
+            onChange={item => {
+              setSelectedAddress({
+                latitude: item?.latitude,
+                longitude: item?.longitude,
+                location: item?.location,
+                property_id: item?.property_id,
+                user_Id: item?.account_id,
+              });
+              setShowError(false);
+            }}
+            renderItem={Selected_Time_render}
+          />
+        </View>
+        <View style={CreateNewInspectionStyle.locationContainer}>
+          <Octicons
+            name={'location'}
+            size={22}
+            color={_COLORS.Kodie_ExtraLightGrayColor}
+            style={CreateNewInspectionStyle.locationIcon}
+          />
           <TextInput
-            style={CreateNewInspectionStyle.NotesInput}
-            value={Notes}
-            onChangeText={setNotes}
-            placeholder="Enter any notes about this item"
-            placeholderTextColor="#999"
-            multiline
-            numberOfLines={5}
-            textAlignVertical={'top'}
+            style={CreateNewInspectionStyle.locationInput}
+            value={selectedAddress?.location}
+            editable={false}
+            placeholder="Enter new location"
+            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
           />
-          <CustomSingleButton
-            _ButtonText={'Schedule inspection'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            backgroundColor={_COLORS.Kodie_BlackColor}
-            disabled={isLoading ? true : false}
-            onPress={handleSubmit}
+        </View>
+        {showError ? <Text style={CreateNewInspectionStyle.errorText}>{"Please select a property."}</Text> : null}
+
+        <View style={{ marginBottom: 15, marginTop: 15 }}>
+          <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
+
+          <TouchableOpacity style={CreateNewInspectionStyle.TextInputView}
+            onPress={() => refRBSheet.current.open()}>
+            <TextInput
+              value={displaySelectedValues}
+              placeholder={'Add people attending the inspection'}
+              style={CreateNewInspectionStyle.input}
+              palceholderColor={_COLORS.Kodie_MediumGrayColor}
+              editable={false}
+
+            />
+            <Feather
+              name={'user-plus'}
+              size={22}
+              color={_COLORS.Kodie_GrayColor}
+              style={{ marginRight: 10 }}
+            />
+
+          </TouchableOpacity>
+        </View>
+        <Text style={LABEL_STYLES.commontext}>
+          {'Is the place furnished or unfurnished?'}
+        </Text>
+        <View style={CreateNewInspectionStyle.margin}>
+          <RowButtons
+            LeftButtonText={'Furnished'}
+            leftButtonbackgroundColor={
+              !selectedButtonFurnished
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            LeftButtonTextColor={
+              !selectedButtonFurnished
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            LeftButtonborderColor={
+              !selectedButtonFurnished
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_LightWhiteColor
+            }
+            onPressLeftButton={() => {
+              setSelectedButtonFurnished(false);
+              setSelectedButtonFurnishedId(67);
+              // alert(selectedButtonId)
+            }}
+            RightButtonText={'Unfurnished'}
+            RightButtonbackgroundColor={
+              selectedButtonFurnished
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonTextColor={
+              selectedButtonFurnished
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            RightButtonborderColor={
+              selectedButtonFurnished
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_LightWhiteColor
+            }
+            onPressRightButton={() => {
+              setSelectedButtonFurnished(true);
+              setSelectedButtonFurnishedId(68);
+              // alert(selectedButtonId)
+            }}
           />
-        </ScrollView>
-      
+        </View>
+        <View style={{ marginBottom: 15 }}>
+          <Text style={LABEL_STYLES.commontext}>
+            {'Select the areas you would like to include:'}
+          </Text>
+          <View style={{ marginTop: 10 }}>
+            <FlatList
+              data={AreaKey}
+              scrollEnabled
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{}}
+              numColumns={2}
+              keyExtractor={(item) => item.TAM_AREA_KEY.toString()}
+              renderItem={Detail_render}
+            />
+          </View>
+        </View>
+        <Text style={LABEL_STYLES.commontext}>{'Notes:'}</Text>
+        <TextInput
+          style={CreateNewInspectionStyle.NotesInput}
+          value={Notes}
+          onChangeText={setNotes}
+          placeholder="Enter any notes about this item"
+          placeholderTextColor="#999"
+          multiline
+          numberOfLines={5}
+          textAlignVertical={'top'}
+        />
+        <CustomSingleButton
+          _ButtonText={InspectionView?'Reschedule Inspection':'Schedule inspection'}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+          backgroundColor={_COLORS.Kodie_BlackColor}
+          disabled={isLoading ? true : false}
+          onPress={handleSubmit}
+        />
+      </ScrollView>
+
       <RBSheet
         ref={refRBSheet}
         height={500}
@@ -628,21 +730,21 @@ const CreateNewInspection = props => {
           container: CreateNewInspectionStyle.bottomModal_container,
         }}
       >
-         <GuestSelectionContent
-    query={query}
-    setQuery={setQuery}
-    results={results}
-    handleSelect={handleSelect}
-    tempSelectedValues={tempSelectedValues}
-    selectedValues={selectedValues}
-    refRBSheet={refRBSheet}
-    applySelection={applySelection}
-    handleClosePopup={handleClosePopup}
-  />
-       {
-        isLoading ? <CommonLoader /> : null
-      }
-    
+        <GuestSelectionContent
+          query={query}
+          setQuery={setQuery}
+          results={results}
+          handleSelect={handleSelect}
+          tempSelectedValues={tempSelectedValues}
+          selectedValues={selectedValues}
+          refRBSheet={refRBSheet}
+          applySelection={applySelection}
+          handleClosePopup={handleClosePopup}
+        />
+        {
+          isLoading ? <CommonLoader /> : null
+        }
+
       </RBSheet>
       {
         isLoading ? <CommonLoader /> : null

@@ -71,35 +71,34 @@ const account_id = props?.account_id;
 console.log("account_id",account_id);
   const refRBSheet = useRef();
   useEffect(()=>{getInspectionDetails();
-    getPersonalDetails();
     Area_key();
   },[])
-  const getPersonalDetails = async () => {
-    setIsLoading(true);
-    const url = Config.BASE_URL;
-    const apiUrl =
-      url + `getAccount_details/${account_id}`;
-    console.log('PersonalDetails_url..', apiUrl);
-    await axios
-      .get(apiUrl)
-      .then(response => {
-        console.log('API getAccount_details:', response?.data?.data[0]);
-        if (
-          response?.data?.data &&
-          Array.isArray(response.data.data) &&
-          response.data.data.length > 0
-        ) {
-          setAccountDetails(response?.data?.data[0]);
-        } else {
-          console.error('Invalid response data format:', response?.data);
-        }
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error('API Error PersonalDetails Dash:', error);
-        setIsLoading(false);
-      });
-  };
+  // const getPersonalDetails = async () => {
+  //   setIsLoading(true);
+  //   const url = Config.BASE_URL;
+  //   const apiUrl =
+  //     url + `getAccount_details/${account_id}`;
+  //   console.log('PersonalDetails_url..', apiUrl);
+  //   await axios
+  //     .get(apiUrl)
+  //     .then(response => {
+  //       console.log('API getAccount_details:', response?.data?.data[0]);
+  //       if (
+  //         response?.data?.data &&
+  //         Array.isArray(response.data.data) &&
+  //         response.data.data.length > 0
+  //       ) {
+  //         setAccountDetails(response?.data?.data[0]);
+  //       } else {
+  //         console.error('Invalid response data format:', response?.data);
+  //       }
+  //       setIsLoading(false);
+  //     })
+  //     .catch(error => {
+  //       console.error('API Error PersonalDetails Dash:', error);
+  //       setIsLoading(false);
+  //     });
+  // };
   const getInspectionDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -197,6 +196,7 @@ console.log("account_id",account_id);
             RightButtonbackgroundColor={_COLORS.Kodie_BlackColor}
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             RightButtonborderColor={_COLORS.Kodie_BlackColor}
+            onPressRightButton={props?.rescheduleInspection}
           />
         </View>
         <DividerIcon />
