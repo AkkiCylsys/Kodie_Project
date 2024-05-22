@@ -87,7 +87,7 @@ export default AddExpensesDetails = props => {
   const validateTotalamount = text => {
     const mobileReg = /^\d{1,5}$/;
     if (text === '') {
-      setTotalAmountError('Total amount is required');
+      setTotalAmountError('Total amount is required!');
     } else if (!mobileReg.test(text)) {
       setTotalAmountError('Invalid amount format');
     } else {
@@ -100,7 +100,7 @@ export default AddExpensesDetails = props => {
   const handleduedate = text => {
     setSelectedDate(text);
     if (text.trim() === '') {
-      setSelectedDateError('Due date is required.');
+      setSelectedDateError('Due date is required!');
     } else {
       setSelectedDateError('');
     }
@@ -110,7 +110,7 @@ export default AddExpensesDetails = props => {
   const handledpaiddate = text => {
     setSelectedPaidDate(text);
     if (text.trim() === '') {
-      setSelectedPaidDateError('Paid date is required.');
+      setSelectedPaidDateError('Paid date is required!');
     } else {
       setSelectedPaidDateError('');
     }
@@ -259,15 +259,15 @@ export default AddExpensesDetails = props => {
     if (totalAmount.trim() === '') {
       setTotalAmountError('Total amount is required.');
     } else if (selectedDate.trim() === '') {
-      setSelectedDateError('Due date is required.');
+      setSelectedDateError('Due date is required!');
     } else if (!ExpenceCategoryValue) {
       setExpenceCategoryValueError('Select Responsible Category.');
     }
     // else if (selectedPaidDate.trim() === "") {
-    //   setSelectedPaidDateError("Paid date is required.");
+    //   setSelectedPaidDateError("Paid date is required!");
     // }
     else if (!selectedButtonDeposit && selectedPaidDate.trim() === '') {
-      setSelectedPaidDateError('Paid date is required.');
+      setSelectedPaidDateError('Paid date is required!');
     } else {
       Expencehandle();
       setSelectedPaidDateError('');

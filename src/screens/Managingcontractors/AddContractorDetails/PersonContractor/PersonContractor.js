@@ -48,7 +48,7 @@ export default PersonContractor = props => {
   // Validation for First Name....
   const validateFirstName = text => {
     if (text === '') {
-      setFirstNameError('First name is required');
+      setFirstNameError('First name is required!!');
     } else if (!/^[A-Za-z]+$/.test(text)) {
       setFirstNameError('First name should contain only alphabetic characters');
     } else {
@@ -60,7 +60,7 @@ export default PersonContractor = props => {
   // Validation for Last Name....
   const validateLastName = text => {
     if (text === '') {
-      setLastNameError('Last name is required');
+      setLastNameError('Last name is required!');
     } else if (!/^[A-Za-z]+$/.test(text)) {
       setLastNameError('Last name should contain only alphabetic characters');
     } else {
@@ -73,7 +73,7 @@ export default PersonContractor = props => {
   const handlePersonEmail = text => {
     setEmail(text);
     if (text.trim() === '') {
-      setEmailError('Email is required');
+      setEmailError('Email is required!');
     } else if (!validatePersonEmail(text)) {
       setEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
@@ -87,7 +87,7 @@ export default PersonContractor = props => {
   const validatePhoneNumber = text => {
     const mobileReg = /^\d{10}$/;
     if (text === '') {
-      setPhoneNumberError('Phone number is required');
+      setPhoneNumberError('Phone number is required!');
     } else if (!mobileReg.test(text)) {
       setPhoneNumberError('Invalid phone number format');
     } else {
@@ -314,11 +314,11 @@ export default PersonContractor = props => {
   // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
     if (firstName.trim() === '') {
-      setFirstNameError('First name is required.');
+      setFirstNameError('First name is required!');
     } else if (lastName.trim() === '') {
-      setLastNameError('Last name is required.');
+      setLastNameError('Last name is required!');
     } else if (email.trim() == '') {
-      setEmailError('Email is required.');
+      setEmailError('Email is required!');
     } else {
       Personhandle();
     }

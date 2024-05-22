@@ -332,7 +332,7 @@ export default AddLeaseDetails = props => {
     console.log('Request URL:', lease_end__url);
     setIsLoading(true);
     const lease_end_data = {
-      P_PARENT_CODE: 'RENTAL_PAYMENT_FREQUENCY',
+      P_PARENT_CODE: 'GET_PAID',
       P_TYPE: 'OPTION',
     };
     axios

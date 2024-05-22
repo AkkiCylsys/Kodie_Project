@@ -123,7 +123,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   const handleToDate = text => {
     setSelectedToDate(text);
     if (text.trim() === '') {
-      setSelectedToDateError('End date is required.');
+      setSelectedToDateError('End date is required!');
     } else {
       const startDate = moment(selectedDate, 'YYYY-MM-DD');
       const endDate = moment(text, 'YYYY-MM-DD');
@@ -139,7 +139,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   const handleToTime = text => {
     setCurrentToTime(text);
     if (text.trim() === '') {
-      setSelectedToTimeError('End time is required.');
+      setSelectedToTimeError('End time is required!');
     } else {
       const startDateTime = moment(`${selectedDate} ${currentfromTime}`, 'YYYY-MM-DD HH:mm');
       const endDateTime = moment(`${selectedToDate} ${text}`, 'YYYY-MM-DD HH:mm');
@@ -154,7 +154,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   const handleFromTime = text => {
     setCurrentfromTime(text);
     if (text.trim() === '') {
-      setSelectedFromTimeError('Start Time is required.');
+      setSelectedFromTimeError('Start Time is required!');
     } else {
       setSelectedFromTimeError('');
     }
@@ -162,14 +162,14 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   const handleRequestDate = text => {
     setSelectedDate(text);
     if (text.trim() === '') {
-      setSelectedDateError('Start date is required.');
+      setSelectedDateError('Start date is required!');
     } else {
       setSelectedDateError('');
     }
   };
   const validateTitle = text => {
     if (text === '') {
-      setTitleError('Notice title is required');
+      setTitleError('Notice title is required!');
       // } else if (!/^[A-Za-z]+$/.test(text)) {
     } else {
       setTitleError('');
@@ -788,13 +788,13 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
       setShowNoticeTypeError(true)
     } else
       if (noticeTittle.trim() == '') {
-        setTitleError('Notice title is required');
+        setTitleError('Notice title is required!');
       } else if (selectedDate.trim() === '' || currentfromTime.trim() === '') {
-        setSelectedDateError('Select start date is required.');
-        setSelectedFromTimeError('Select start time is required.');
+        setSelectedDateError('Select start date is required!');
+        setSelectedFromTimeError('Select start time is required!');
       } else if (selectedToDate.trim() === '' || currentToTime.trim() === '') {
-        setSelectedToDateError('Select end date is required.');
-        setSelectedToTimeError('Select end time is required.');
+        setSelectedToDateError('Select end date is required!');
+        setSelectedToTimeError('Select end time is required!');
       } else if (selectedValues.length == 0) {
         setguestError('At least one guest can be added in this field.');
       } else {

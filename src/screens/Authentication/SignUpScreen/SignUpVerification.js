@@ -133,7 +133,7 @@ export default SignUpVerification = props => {
   const handleverification_code = text => {
     setValue(text);
     if (text.trim() === '') {
-      setValueError('OTP is required.');
+      setValueError('OTP is required!');
     } else {
       setValueError('');
     }
@@ -144,7 +144,7 @@ export default SignUpVerification = props => {
   const handleSubmit = () => {
     const regex = /^[0-9]+$/;
     if (value.trim() === '') {
-      setValueError('OTP is required.');
+      setValueError('OTP is required!');
     } else if (value.trim().length < 6) {
       setValueError('incomplete OTP. Please enter a valid OTP.');
     } else if (!regex.test(value.trim())) {

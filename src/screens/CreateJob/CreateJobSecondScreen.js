@@ -61,7 +61,7 @@ const CreateJobSecondScreen = props => {
     } else if (MultiImageName.length > 0) {
       handleuploadJobFiles();
     } else {
-      setMultiImageNameError('Front images required.');
+      setMultiImageNameError('Front images required!');
       console.log('err...', MultiImageNameError);
     }
   };

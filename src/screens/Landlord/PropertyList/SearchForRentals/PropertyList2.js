@@ -224,7 +224,7 @@ const PropertyList2 = props => {
   // Validation ...
   const handleLocation = text => {
     if (text === '') {
-      setLocationError('Location is required.');
+      setLocationError('Location is required!');
     } else {
       setLocationError('');
     }
@@ -233,7 +233,7 @@ const PropertyList2 = props => {
 
   const handleSearchForRental = () => {
     if (location == '') {
-      setLocationError('Location is required.');
+      setLocationError('Location is required!');
     } else if (proteryTypeValue == '') {
       setProteryTypeValueError(true);
     } else {
@@ -447,7 +447,7 @@ const PropertyList2 = props => {
             />
             {proteryTypeValueError ? (
               <Text style={PropertyList2Css.error_text}>
-                {'Property type is required.'}
+                {'Property type is required!!.'}
               </Text>
             ) : null}
             <View style={PropertyList2Css.rowView}>

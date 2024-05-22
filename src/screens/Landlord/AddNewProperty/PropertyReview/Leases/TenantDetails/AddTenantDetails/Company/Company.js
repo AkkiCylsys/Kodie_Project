@@ -45,7 +45,7 @@ export default Company = props => {
   // Validation for First Name....
   const validateCompanyName = text => {
     if (text === '') {
-      setCompanyNameError('Organisation name is required');
+      setCompanyNameError('Organisation name is required!');
     } else if (!/^[A-Za-z]+$/.test(text)) {
       setCompanyNameError(
         'Organisation name should contain only alphabetic characters',
@@ -60,7 +60,7 @@ export default Company = props => {
   const handleCompanyEmail = text => {
     setEmail(text);
     if (text.trim() === '') {
-      setEmailError('Email is required');
+      setEmailError('Email is required!');
     } else if (!validateCompanyEmail(text)) {
       setEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
@@ -74,7 +74,7 @@ export default Company = props => {
   const validatePhoneNumber = text => {
     const mobileReg = /^\d{6}$/;
     if (text === '') {
-      setPhoneNumberError('Phone number is required');
+      setPhoneNumberError('Phone number is required!!');
     } else if (!mobileReg.test(text)) {
       setPhoneNumberError('Invalid phone number format');
     } else {
@@ -87,7 +87,7 @@ export default Company = props => {
     // const mobileReg = /^\d{10}$/;
     const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === '') {
-      setMobileNumberError('Phone number is required');
+      setMobileNumberError('Phone number is required!');
     } else if (!mobileReg.test(text)) {
       setMobileNumberError('Invalid phone number format');
     } else {
@@ -144,9 +144,9 @@ export default Company = props => {
 
   const handleSaveBtn = () => {
     if (companyName.trim() === '') {
-      setCompanyNameError('Organisation name is required.');
+      setCompanyNameError('Organisation name is required!');
     } else if (email.trim() == '') {
-      setEmailError('Email is required.');
+      setEmailError('Email is required!');
     } else {
       Companyhandle();
     }
