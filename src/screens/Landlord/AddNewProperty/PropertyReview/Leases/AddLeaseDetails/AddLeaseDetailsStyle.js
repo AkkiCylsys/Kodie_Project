@@ -31,7 +31,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     shadowOpacity: Platform.OS == "android" ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 250,
+    marginBottom: 150,
   },
   inputContainer: {
     marginBottom: 15,
@@ -191,90 +191,10 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   marginTop:15,
   justifyContent:'space-between'
 },
-Twobtn:{
-  flex: 1, 
-  flexDirection: 'row',
-  justifyContent:'space-between'
-},
-Amountinput:{
-  height: 39,
-  borderRadius: 5,
-  borderWidth: 1,
-  borderColor: _COLORS.Kodie_GrayColor,
-  color: "#333",
-  fontFamily: FONTFAMILY.K_Medium,
-  marginTop: 12,
-  paddingHorizontal: 35,
-},
-btn_main_view: {
-  flexDirection: "row",
-  justifyContent: "center",
-  // marginLeft: 10,
-  marginVertical: 10,
-  borderWidth: 1,
-  paddingHorizontal: 17,
-  paddingVertical: 5,
-  borderRadius: 10,
-  borderColor: _COLORS.Kodie_GrayColor,
-},
-yes_view: {
-  backgroundColor: _COLORS.Kodie_GreenColor,
-  paddingHorizontal: 25,
-  paddingVertical: 5,
-  borderRadius: 5,
-},
-no_view: {
-  // backgroundColor: _COLORS.Kodie_GreenColor,
-  paddingHorizontal: 20,
-  paddingVertical: 5,
-  borderRadius: 5,
-},
-no_text: {
-  color: _COLORS.Kodie_BlackColor,
-  fontSize: 12,
-  fontFamily: FONTFAMILY.K_Regular,
-  alignSelf: "center",
-},
-yes_text: {
-  color: _COLORS.Kodie_WhiteColor,
-  fontSize: 12,
-  fontFamily: FONTFAMILY.K_Regular,
-  alignSelf: "center",
-  marginLeft: 5,
-},
 container: {
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
-},
-twoButtonContainer: {
-  flexDirection: 'row',
-  marginBottom: 20,
-},
-button: {
-  paddingVertical: 10,
-  paddingHorizontal: 20,
-  borderRadius: 5,
-  marginHorizontal: 5,
-},
-noButton: {
-  backgroundColor: 'white',
-  borderColor: 'black',
-  borderWidth: 1,
-},
-yesButton: {
-  backgroundColor: 'white',
-  borderColor: 'black',
-  borderWidth: 1,
-},
-selectedButton: {
-  backgroundColor: 'green',
-},
-buttonText: {
-  fontSize: 16,
-},
-selectedButtonText: {
-  color: 'white',
 },
 amountInputContainer: {
   flexDirection: 'row',
@@ -287,5 +207,73 @@ amountInput: {
   paddingHorizontal: 10,
   paddingVertical: 8,
   width: 150,
+},
+Protext:{
+  fontSize: 14,
+  color: _COLORS.Kodie_BlackColor,
+  fontFamily: FONTFAMILY.K_SemiBold,
+  letterSpacing: 0.3,
+},
+Protext1:{
+  fontSize: 14,
+  color: _COLORS.Kodie_BlackColor,
+  fontFamily: FONTFAMILY.K_SemiBold,
+  letterSpacing: 0.3,
+  marginRight:20
+},
+Twobtn: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  // marginBottom: 20,
+},
+btn_main_view: {
+  padding:4,
+  width:159,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: "center",
+  flex: 1,
+  overflow: 'hidden',
+  borderWidth:1,
+  borderRadius: 8,
+  borderColor: _COLORS.Kodie_GrayColor,
+  marginTop:10,
+  marginRight:20
+},
+no_view: {
+  backgroundColor: _COLORS.Kodie_WhiteColor,
+  borderRadius: 4,
+  paddingHorizontal: 8,
+  paddingVertical: 5,
+  flex: 1,
+  marginRight: 10,
+},
+yes_view: {
+  backgroundColor: _COLORS.Kodie_WhiteColor,
+  borderRadius: 4,
+  paddingHorizontal: 8,
+  paddingVertical: 5,
+  flex: 1,
+},
+selectedBtn: {
+  backgroundColor: _COLORS.Kodie_lightGreenColor,
+},
+no_text: {
+  color: _COLORS.Kodie_BlackColor,
+  textAlign: 'center',
+},
+yes_text: {
+  color: _COLORS.Kodie_BlackColor,
+  textAlign: 'center',
+},
+Amountinput:{
+  height: 39,
+  borderRadius: 5,
+  borderWidth: 1,
+  borderColor: _COLORS.Kodie_GrayColor,
+  color: _COLORS.Kodie_GrayColor,
+  fontFamily: FONTFAMILY.K_Medium,
+  marginTop: 12,
+  paddingHorizontal: 40,
 },
 });

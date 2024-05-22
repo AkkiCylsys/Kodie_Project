@@ -1,11 +1,13 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import { _COLORS, IMAGES } from "../../../../Themes";
-import { ContractorsImageStyle } from "./ContractorsImageStyle";
+import { _COLORS } from "../../../../Themes";
+import { ContractorPreviousStyle } from "./ContractorPreviousStyle";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { useNavigation } from "@react-navigation/native"; // Import the hook
+import Entypo from "react-native-vector-icons/Entypo";
+import Feather from "react-native-vector-icons/Feather";
+import { useNavigation } from "@react-navigation/native";
 
 const data = [
   {
@@ -49,12 +51,38 @@ const data = [
   },
   {
     id: "4",
-    Data: "Remove contractor from preferred",
+    Data: "Message contractor",
+    Icon: (
+      <Feather
+        name="message-circle"
+        size={30}
+        color={_COLORS.Kodie_GreenColor}
+        resizeMode={"contain"}
+        style={{ alignSelf: "center" }}
+      />
+    ),
+  },
+  {
+    id: "5",
+    Data: "View completed jobs",
+    Icon: (
+      <Entypo
+        name="tools"
+        size={30}
+        color={_COLORS.Kodie_GreenColor}
+        resizeMode={"contain"}
+        style={{ alignSelf: "center" }}
+      />
+    ),
+  },
+  {
+    id: "6",
+    Data: "Ratings & feedback",
     Icon: (
       <MaterialCommunityIcons
-        name="delete-outline"
+        name="star-box-outline"
         size={30}
-        color={ _COLORS.Kodie_GreenColor }
+        color={_COLORS.Kodie_GreenColor}
         resizeMode={"contain"}
         style={{ alignSelf: "center" }}
       />
@@ -62,31 +90,36 @@ const data = [
   },
 ];
 
-const ContractorsImage = (props) => {
-  const navigation = useNavigation(); // Get the navigation instance
+const ContractorPrevious = (props) => {
+  const navigation = useNavigation();
 
+  const handleDeleteContractor = (ContractorId) => {
+    console.log(ContractorId, "catch data");
+    props.onDelete(ContractorId);
+  };
 
   const ContractorsImageContent = ({ item }) => {
     return (
       <TouchableOpacity
-        style={ContractorsImageStyle.content_View}
+        style={ContractorPreviousStyle.content_View}
         onPress={() => {
           if (item.id === "3") {
-            navigation.navigate("Notices"); // Navigate to Notices screen when id is "3"
-          } 
+            navigation.navigate("Notices");
+          } else if (item.id === "5") {
+            navigation.navigate("CompletedJobs");
+          }
         }}
       >
-        <View style={ContractorsImageStyle.Bottomcontainer}>
-          <Text style={ContractorsImageStyle.IconView}>{item.Icon}</Text>
+        <View style={ContractorPreviousStyle.Bottomcontainer}>
+          <Text style={ContractorPreviousStyle.IconView}>{item.Icon}</Text>
         </View>
-        <Text style={ContractorsImageStyle.text}>{item.Data}</Text>
+        <Text style={ContractorPreviousStyle.text}>{item.Data}</Text>
       </TouchableOpacity>
     );
   };
 
   return (
-    <View style={ContractorsImageStyle.mainContainer}>
-      <View style={ContractorsImageStyle.upload_View}></View>
+    <View style={ContractorPreviousStyle.mainContainer}>
       <FlatList
         data={data}
         scrollEnabled
@@ -99,4 +132,4 @@ const ContractorsImage = (props) => {
   );
 };
 
-export default ContractorsImage;
+export default ContractorPrevious;

@@ -116,13 +116,13 @@ const Managingcontractors = props => {
       <RBSheet
         ref={refRBSheet1}
         closeOnDragDown={true}
-        height={280}
+        height={250}
         customStyles={{
           wrapper: {
             backgroundColor: 'rgba(0, 0, 0, 0.20)',
           },
           draggableIcon: {
-            backgroundColor: _COLORS.Kodie_BlackColor,
+            backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: ManagingcontractorsStyle.bottomModal_container,
         }}>
