@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { _COLORS } from "../../../Themes";
 import RBSheet from "react-native-raw-bottom-sheet";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import AntDesign from "react-native-vector-icons/AntDesign";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AddTenantDetails from "../../../screens/Landlord/AddNewProperty/PropertyReview/Leases/TenantDetails/AddTenantDetails/AddTenantDetails";
 const data = [
@@ -65,14 +66,13 @@ export default InviteTenantModal = (props) => {
         if (item.id === "1") {
           //---- Navigate to OtherScreen when Contact Us is clicked
           navigation.navigate("Invitefriend");
-          CloseUp()
+          handleClosePopup()
         }
         if (item.id === "3") {
           refRBSheet.current.open();
         }
       }}
     >
-      {/* <Image source={item.image} style={InviteTenantModalStyle.Icons} /> */}
       <View
         style={{
           borderWidth: 1,
@@ -96,6 +96,13 @@ export default InviteTenantModal = (props) => {
         <Text style={InviteTenantModalStyle.Invite_tenant}>
           {"Invite tenant"}
         </Text>
+        <TouchableOpacity onPress={handleClosePopup}>
+          <AntDesign
+            color={_COLORS.Kodie_BlackColor}
+            name={'close'}
+            size={25}
+          />
+        </TouchableOpacity>
       </View>
       <View style={InviteTenantModalStyle.All_Data_View}>
         <FlatList

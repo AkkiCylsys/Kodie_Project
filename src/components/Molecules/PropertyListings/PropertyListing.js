@@ -45,7 +45,10 @@ const PropertyListing = (props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const itemsPerPage = 10;
-
+const filteredUsers= props?.filteredUsers;
+const searchQuery= props?.searchQuery;
+const allData= props?.allData;
+console.log(allData);
   const totalPages = Math.ceil(Vacant_data.length / itemsPerPage);
 
   // Slice data based on current page
@@ -99,6 +102,7 @@ const PropertyListing = (props) => {
         
         if (response?.data?.success === true) {
             setVacantData(response?.data?.property_details);
+            props?.onVacantDataFetch(response?.data?.property_details);
         } else {
             alert(response?.data?.message);
         }
@@ -148,7 +152,7 @@ const PropertyListing = (props) => {
     }
   }, [isvisible]);
   const propertyData1_render = ({item}) => {
-    const isExpanded = expandedItems.includes(item.id);
+    const isExpanded = expandedItems.includes(item.property_id);
     setPropId(item.property_id);
     return (
       <>
@@ -213,6 +217,7 @@ const PropertyListing = (props) => {
                     // alert(propertyDelId);
                     setAddress(item?.location);
                     setPropId(item?.property_id);
+                  
                     console.log('property id..', item.property_id);
                   }}>
                   <MaterialCommunityIcons
@@ -260,9 +265,9 @@ const PropertyListing = (props) => {
             iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
             onPress={() => {
               if (isExpanded) {
-                setExpandedItems(expandedItems.filter(id => id !== item.id));
+                setExpandedItems(expandedItems.filter(property_id => property_id !== item.property_id));
               } else {
-                setExpandedItems([...expandedItems, item.id]);
+                setExpandedItems([...expandedItems, item.property_id]);
               }
             }}
           />
@@ -274,7 +279,7 @@ const PropertyListing = (props) => {
               <Text style={PropertyListingCss.commonMidtext}>
                 Number of days listed:
               </Text>
-              <Text style={PropertyListingCss.commonDay}>{item.tanentDay}</Text>
+              <Text style={PropertyListingCss.commonDay}>{'0'}</Text>
             </View>
 
             <View style={[PropertyListingCss.rentView]}>
@@ -283,7 +288,7 @@ const PropertyListing = (props) => {
               </Text>
 
               <View style={PropertyListingCss.commonRentview}>
-                <Text style={PropertyListingCss.commonRent}>{item.rent}</Text>
+                <Text style={PropertyListingCss.commonRent}>{'0'}</Text>
               </View>
             </View>
           </View>
@@ -291,39 +296,9 @@ const PropertyListing = (props) => {
         <DividerIcon />
       
 
-        {/* <RBSheet
-          ref={refRBSheet1}
-          closeOnDragDown={true}
-          height={320}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-              width: 40,
-              height: 4,
-              borderRadius: 2,
-            },
-            container: PropertyListingCss.bottomModal_container,
-          }}>
-          <VacantModal
-            onPress={() => {
-              refRBSheet2.current.open();
-            }}
-            onClose={CloseUp}
-            onDeleteData={FinalDeleteVacant}
-            propertyId={propId}
-            onDelete={vacantDelete}
-            isDeletePropertyClicked={isDeleteData_Clicked}
-          />
-        </RBSheet> */}
      
-        {/* AddBiddingDetails popup */}
         <RBSheet
           ref={refRBSheet2}
-          // closeOnDragDown={true}
           height={760}
           closeOnPressMask={false}
           customStyles={{
@@ -338,10 +313,8 @@ const PropertyListing = (props) => {
           <AddBiddingDetails />
         </RBSheet>
 
-        {/* invite tenent popup */}
         <RBSheet
           ref={refRBSheet3}
-          // closeOnDragDown={true}
           height={230}
           closeOnPressMask={false}
           customStyles={{
@@ -372,11 +345,6 @@ const PropertyListing = (props) => {
           },
         ]}>
         <VacantModal
-          // onViewProperty={() =>
-          //   props?.navigation?.navigate("ViewPropertyDetails", {
-          //     propertyDelId: propertyDelId,
-          //   })
-          // }
           propertyId={propId}
           onDelete={propertyDelete}
           onCloseModal={handleCloseModal}
@@ -393,16 +361,7 @@ const PropertyListing = (props) => {
   return (
   
         <SafeAreaView>
-      <FlatList data={Vacant_data} renderItem={propertyData1_render}  keyExtractor={(item) => item.property_id}/>
-      {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <TouchableOpacity onPress={() => setCurrentPage(currentPage - 1)}>
-          <MaterialCommunityIcons name="chevron-left" size={30} />
-        </TouchableOpacity>
-        <Text>{`${currentPage} of ${totalPages}`}</Text>
-        <TouchableOpacity onPress={() => setCurrentPage(currentPage + 1)}>
-          <MaterialCommunityIcons name="chevron-right" size={30} />
-        </TouchableOpacity>
-      </View> */}
+      <FlatList data={searchQuery?filteredUsers:allData} renderItem={propertyData1_render}  keyExtractor={(item) => item.property_id}/>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
 

@@ -7,18 +7,20 @@ export const InviteTenantModalStyle = StyleSheet.create({
   },
   subContainer: {
     marginHorizontal: 16,
+    flexDirection:'row',
+    justifyContent:'space-between'
     // marginTop: 25,
   },
   Invite_tenant: {
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 14,
+    fontSize: 20,
     fontFamily: FONTFAMILY.K_Bold,
   },
   content_View: { flexDirection: "row", marginTop: 10, marginHorizontal: 16 },
   Icons: { width: 40, height: 40, resizeMode: "cover" },
   Invite_Data_Text: {
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 14,
+    fontSize: 16,
     // fontStyle: "500",
     fontWeight: "500",
     marginLeft: 10,

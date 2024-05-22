@@ -56,8 +56,8 @@ const CustomNotificationPicker = (props) => {
           itemHeight={35}
           highlightColor="#d8d8d8"
           highlightBorderWidth={2}
-          itemTextStyle={{ fontSize: 16, fontFamily: FONTFAMILY?.K_Medium }}
-          activeItemTextStyle={{ fontSize: 16, fontFamily: FONTFAMILY?.K_Bold }}
+          itemTextStyle={{ fontSize: 16, fontFamily: FONTFAMILY?.K_Medium, }}
+          activeItemTextStyle={{ fontSize: 16, fontFamily: FONTFAMILY?.K_Bold, }}
         />
       </View>
       <View style={styles.buttonContainer}>

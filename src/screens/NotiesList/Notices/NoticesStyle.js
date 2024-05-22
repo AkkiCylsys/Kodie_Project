@@ -95,7 +95,8 @@ export const NoticesStyle = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     marginTop: 10,
-    // marginHorizontal:16,
+    // width:'100%',
+    marginHorizontal:16,
   },
   dateDayview: {
     alignItems: "center",
@@ -113,12 +114,13 @@ export const NoticesStyle = StyleSheet.create({
     width: 40,
   },
   middatabindview: {
+   
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginLeft:10,
     borderWidth: 0.4,
-    // width: 300,
+    width: "85%",
     // height: 90,
     borderRadius: 4,
     paddingHorizontal: 15,
@@ -130,35 +132,38 @@ export const NoticesStyle = StyleSheet.create({
     flexDirection: "row",
   },
   headinglineview: {
-    // flexDirection:'row'
-    marginHorizontal: 15,
+    // flexDirection:'row',
+    marginHorizontal: 10,
     alignSelf:'center',
     justifyContent:'center'
   },
   lineimg: {
-    width: 6,
+    width: 4,
     height: 40,
     alignItems: "center",
+    alignSelf:'center',
     justifyContent: "center",
-    marginTop: 10,
+    // marginTop: 10,
   },
   headintext: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    alignItems:'center'
+    alignItem:'center',
+    justifyContent:'center'
   },
   addressviewbind: {
     flexDirection: "row",
     marginTop: 3,
     alignSelf:'center',
     alignItems:'center'
+  
   },
   addresstext: {
     fontSize: 12,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
-    marginLeft: 3,
+    // marginLeft: 2,
     width: 200,
     alignSelf:'center'
   },

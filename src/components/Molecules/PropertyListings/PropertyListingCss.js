@@ -99,6 +99,7 @@ export const PropertyListingCss = StyleSheet.create({
 
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    paddingHorizontal:10,paddingVertical:15
     // elevation: 10,
   },
 });

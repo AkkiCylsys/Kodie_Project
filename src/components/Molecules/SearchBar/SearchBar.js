@@ -91,12 +91,15 @@ const SearchBar = (props) => {
             name={'long-arrow-up'}
             size={20}
             color={_COLORS.Kodie_MediumGrayColor}
+            style={{alignSelf:'center'}}
           />
           <FontAwesome
             // name="location"
             name={'long-arrow-down'}
             size={20}
             color={_COLORS.Kodie_MediumGrayColor}
+            style={{alignSelf:'center'}}
+
           />
          
         </TouchableOpacity>

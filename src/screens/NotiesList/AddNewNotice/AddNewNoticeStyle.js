@@ -364,4 +364,85 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
   },
+  uploadedImagesContainer: {
+    marginTop: 20,
+    height: 130,
+  },
+  uploadedImageContainer: {
+    marginRight: 10,
+  },
+  uploadedImage: {
+    width: 120,
+    height: 120,
+    borderRadius:10,
+    resizeMode: 'cover',
+  },
+  uploadedDocumentsContainer: {
+    marginTop: 10,
+    width: '100%',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 4,
+    marginVertical: 5,
+  },
+
+  textContainer: {
+    // flex:1,
+    flexDirection: "column",
+    marginLeft: 10,
+  },
+
+  pdfInfo: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+  },
+  pdfName: {
+    flex: 0.5,
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    // width: 250,
+  },
+  pdfSize: {
+    fontSize: 12,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  pdfIcon: {
+    width: 45,
+    height: 45,
+    resizeMode: "cover",
+  },
+  crossIcon: {
+    flex: 1,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    position: "absolute",
+    top: 20,
+    right: 5,
+    zIndex: 1,
+  },
+  property_doc_text: {
+    fontSize: 18,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  upload_doc_text: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  upload_doc_sub: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_GrayColor,
+  },
 });

@@ -256,12 +256,16 @@ const Notices = props => {
             <View style={NoticesStyle.headinglineview}>
               <Text style={NoticesStyle.headintext}>{item.type_notice}</Text>
               <View style={NoticesStyle.addressviewbind}>
-                <EvilIcons
+              
+                {item.location? (
+                <><EvilIcons
                   name="location"
                   size={25}
                   color={_COLORS.Kodie_GrayColor}
+                  style={{alignSelf:'center'}}
                 />
-                <Text style={NoticesStyle.addresstext}>{item.location}</Text>
+               
+                <Text style={NoticesStyle.addresstext}>{item.location}</Text></>):null}
               </View>
             </View>
           </View>
