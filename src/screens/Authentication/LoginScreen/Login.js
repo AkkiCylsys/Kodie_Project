@@ -365,7 +365,7 @@ export default Login = props => {
   const handlePasswordChange = text => {
     setPassword(text);
     if (text.trim() === '') {
-      setPasswordError('Password is required!');
+      setPasswordError('Password is required!.');
     } else {
       setPasswordError('');
     }
@@ -375,7 +375,7 @@ export default Login = props => {
   const handleNewPassword = text => {
     setNewPassword(text);
     if (text.trim() === '') {
-      setNewPasswordError('New Password is required!');
+      setNewPasswordError('New Password is required!.');
     } else {
       setNewPasswordError('');
     }
@@ -402,7 +402,7 @@ export default Login = props => {
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else if (password.trim() === '') {
-      setPasswordError('Password is required!');
+      setPasswordError('Password is required!.');
     } else {
       Keyboard.dismiss();
       setIsLoading(true);
@@ -474,7 +474,7 @@ export default Login = props => {
     const regex = /^[0-9]+$/;
     setVerificationcode(text);
     if (text.trim() === '') {
-      setVerificationcodeError('Verification code is required!');
+      setVerificationcodeError('Verification code is required!.');
     } else if (!regex.test(text)) {
       setVerificationcodeError('Verification code must contain only numbers.');
     } else {
@@ -761,9 +761,9 @@ export default Login = props => {
               disabled={isLoading ? true : false}
               onPress={() => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
-                props.navigation.navigate("SetupForm");
+                // props.navigation.navigate("SignUpSteps");
                 // props.navigation.navigate("Account");
-                // Alert.alert('Login with Google', 'Coming soon');
+                Alert.alert('Login with Google', 'Coming soon');
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
