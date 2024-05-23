@@ -25,7 +25,7 @@ import JobCompletion from '../../screens/Contractor/JobCompletion/JobCompletion'
 import ContractorProfile from '../../screens/Contractor/ContractorProfile/ContractorProfile';
 import DocumentList from '../../screens/DocumentList/DocumentList';
 import RejectConfirm from '../../screens/Landlord/RejectConfirm/RejectConfirm';
-import InviteTenant from '../../screens/Landlord/InviteTenant/InviteTenant';
+import ProspectsTenant from '../../screens/Landlord/ProspectsTenant/ProspectsTenant';
 import Notice from '../../screens/NotiesList/Notice';
 import Properties from '../../screens/Landlord/PropertyList/Properties';
 import Jobs from '../../screens/Tenant/Jobs/Jobs';
@@ -577,8 +577,8 @@ const AllStackRouts = props => {
           options={{headerShown: false}}
         />
         <Stack.Screen
-          name={'InviteTenant'}
-          component={InviteTenant}
+          name={'ProspectsTenant'}
+          component={ProspectsTenant}
           options={{headerShown: false}}
         />
         <Stack.Screen

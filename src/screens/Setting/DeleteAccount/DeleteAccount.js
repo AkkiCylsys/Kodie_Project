@@ -112,12 +112,9 @@ const DeleteAccount = props => {
       .catch(error => {
         if (error.response) {
           console.error('Response data:', error?.response?.data);
-          alert(error?.response?.data?.message);
         }
         console.error('Error deleting:', error);
-        setEmailError(
-          'Hold on, this email appears to be invalid. Please enter a valid email address.',
-        );
+        setEmailError(error?.response?.data?.message);
       })
       .finally(() => {
         setIsLoading(false);
@@ -273,7 +270,7 @@ const DeleteAccount = props => {
               }}
             />
           </View>
-          <View style={{marginBottom:110}}></View>
+          <View style={{marginBottom: 110}}></View>
         </ScrollView>
         {isLoading ? <CommonLoader /> : null}
       </KeyboardAvoidingView>

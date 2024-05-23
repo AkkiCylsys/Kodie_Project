@@ -1,9 +1,9 @@
-import React from "react";
-import { Text, Image, TouchableOpacity } from "react-native";
-import { CustomButtonstyles } from "./CustomButtonCss";
-import { FONTFAMILY, IMAGES, _COLORS } from "./../../../Themes/index";
+import React from 'react';
+import {Text, Image, TouchableOpacity} from 'react-native';
+import {CustomButtonstyles} from './CustomButtonCss';
+import {FONTFAMILY, IMAGES, _COLORS} from './../../../Themes/index';
 
-const CustomSingleButton = (props) => {
+const CustomSingleButton = props => {
   return (
     <TouchableOpacity
       onPress={props?.onPress}
@@ -16,22 +16,20 @@ const CustomSingleButton = (props) => {
           height: props.height,
           marginBottom: props.marginBottom,
           marginHorizontal: props.marginHorizontal,
-          width: props.width ? props.width : "100%",
+          width: props.width ? props.width : '100%',
         },
       ]}
-      disabled={props?.disabled}
-    >
+      disabled={props?.disabled}>
       {props.isLeftImage ? (
         <Image source={props.leftImage} style={CustomButtonstyles.leftIcon} />
       ) : null}
       <Text
         style={[
           CustomButtonstyles.buttonText,
-          { color: props.Text_Color, fontSize: props.text_Size },
+          {color: props.Text_Color, fontSize: props.text_Size},
         ]}
         numberOfLines={1}
-                ellipsizeMode="tail"
-      >
+        ellipsizeMode="tail">
         {props._ButtonText}
       </Text>
     </TouchableOpacity>

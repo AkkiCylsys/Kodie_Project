@@ -165,7 +165,7 @@ export default SignUp = props => {
       console.log('SignUp response', response?.data);
       // alert(JSON.stringify(response?.data));
       if (response?.data?.code === 3) {
-        Alert.alert('Success !', response?.data?.message);
+        Alert.alert('Success!', response?.data?.message);
         props.navigation.navigate('SignUpVerification', {
           email: email,
           password: encStr,
@@ -174,7 +174,7 @@ export default SignUp = props => {
           user_key: response?.data?.User_Key,
         });
       } else if (response?.data?.code === 1) {
-        Alert.alert('Success !', response?.data?.message);
+        Alert.alert('Success!', response?.data?.message);
         setEmail('');
         setPassword('');
         setTerm(false);
@@ -188,10 +188,10 @@ export default SignUp = props => {
           user_key: response?.data?.User_Key,
         });
       } else if (response?.data?.code === 2) {
-        Alert.alert('Success !', response?.data?.message);
+        Alert.alert('Success!', response?.data?.message);
         props.navigation.navigate('LoginScreen');
       } else {
-        Alert.alert('Success !', response?.data?.message);
+        Alert.alert('Success!', response?.data?.message);
       }
     } catch (error) {
       if (error?.response || error?.response?.status === 400) {
