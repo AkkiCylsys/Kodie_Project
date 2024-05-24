@@ -1,7 +1,7 @@
 //ScreenNo:105
 //ScreenNo:106
 import React, {useState, useRef} from 'react';
-import {View, Text, TouchableOpacity, TextInput, Image} from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, Image, SafeAreaView} from 'react-native';
 import {ReviewInspectionCss} from './ReviewInspectionCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -17,7 +17,7 @@ const ReviewInspection = () => {
   const refRBSheet = useRef();
 
   return (
-    <View style={ReviewInspectionCss.MainContainer}>
+    <SafeAreaView style={ReviewInspectionCss.MainContainer}>
       <View style={ReviewInspectionCss.Container}>
         <Text style={ReviewInspectionCss.inspections}>{'Review results'}</Text>
         <View style={ReviewInspectionCss.PdfContainer}>
@@ -148,7 +148,7 @@ const ReviewInspection = () => {
           </View>
         </RBSheet>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 export default ReviewInspection;

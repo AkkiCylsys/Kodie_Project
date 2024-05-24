@@ -120,7 +120,7 @@ const property_List1 = [
 
 const MarketplacePropertyListing = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const refRBSheet1 = useRef();
   const CloseUp = () => {
     refRBSheet1.current.close();
@@ -263,6 +263,7 @@ const MarketplacePropertyListing = props => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <View>
+      {item.result ? null : (
         <View style={MarketplacePropertyListingStyle.flatListContainer}>
           <View style={MarketplacePropertyListingStyle.flat_MainView}>
             <View style={MarketplacePropertyListingStyle.flexContainer}>
@@ -270,7 +271,7 @@ const MarketplacePropertyListing = props => {
                 {item.property_type_text}
               </Text>
               <Text style={MarketplacePropertyListingStyle.commontext}>
-                {item.city}
+                {item?.state ? item?.state : item?.city}
               </Text>
               <View style={MarketplacePropertyListingStyle.flat_MainView}>
                 <MaterialCommunityIcons
@@ -382,6 +383,7 @@ const MarketplacePropertyListing = props => {
             }}
           />
         </View>
+      )}
         {isExpanded && (
           <View style={MarketplacePropertyListingStyle.expandedContent}>
             <View style={MarketplacePropertyListingStyle.flexContainer}>

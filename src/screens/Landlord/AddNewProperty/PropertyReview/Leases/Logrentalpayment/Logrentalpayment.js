@@ -83,13 +83,13 @@ const Logrentalpayment = props => {
 
   const handleSaveBtn = () => {
     if (totalAmount.trim() === '') {
-      setTotalAmountError('Total amount is required.');
+      setTotalAmountError('Total amount is required!');
     } else if (paymentTypeValue == '') {
       setPaymentTypeError(true);
     } else if (selectedDate.trim() === '') {
-      setSelectedDateError('Payment date is required.');
+      setSelectedDateError('Payment date is required!');
     } else if (selectedpaymetPeriod.trim() === '') {
-      setSelectedpaymetPeriodError('Rental payment period is required.');
+      setSelectedpaymetPeriodError('Rental payment period is required!');
     } else {
       //   alert("done");
       handle_rental_payment();
@@ -99,7 +99,7 @@ const Logrentalpayment = props => {
   const handleTotalAmount = text => {
     setTotalAmount(text);
     if (text.trim() === '') {
-      setTotalAmountError('Total amount is required.');
+      setTotalAmountError('Total amount is required!');
     } else {
       setTotalAmountError('');
     }
@@ -115,7 +115,7 @@ const Logrentalpayment = props => {
   const handlePaymentPeriod = text => {
     setSelectedpaymetPeriod(text);
     if (text.trim() === '') {
-      setSelectedpaymetPeriodError('Payment period is required.');
+      setSelectedpaymetPeriodError('Payment period is required!');
     } else {
       setSelectedpaymetPeriodError('');
     }
@@ -265,7 +265,7 @@ const Logrentalpayment = props => {
           </View>
           {paymentTypeError ? (
             <Text style={LogrentalPaymentStyle.error_text}>
-              {'Payment type is required.'}
+              {'Payment type is required!'}
             </Text>
           ) : null}
           <View style={LogrentalPaymentStyle.inputContainer}>

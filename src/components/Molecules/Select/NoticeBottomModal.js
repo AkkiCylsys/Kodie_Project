@@ -1,4 +1,4 @@
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, Alert} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {NoticeBottomModalStyle} from './NoticeBottomModalStyle';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -21,7 +21,7 @@ const NoticeBottomModal = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [selectFile, setSelectFile] = useState([]);
 
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const notices_reminderId = props.noticeReminderid;
   console.log('notices_reminderId....', notices_reminderId);
 
@@ -125,31 +125,6 @@ const NoticeBottomModal = props => {
       setIsLoading(false);
     }
   };
-  // const FinalDeleteProperty = async (notices_reminderId) => {
-  //   setIsLoading(true);
-  //   const url = Config.BASE_URL;
-  //   const noticedelete = url + `delete_notices_reminder_details`;
-  //   console.log("noticedelete", noticedelete);
-  //   const noticesDeleteData = {
-  //     notices_reminder_id: notices_reminderId,
-  //   };
-  //   try {
-  //     const response = await axios.post(noticedelete, {
-  //       data: noticesDeleteData,
-  //     });
-
-  //     console.log("API Response:", response?.data);
-  //     if (response?.data?.status === true) {
-  //       // Alert.alert("notice Deleted", response?.data?.message);
-  //       alert(response?.data?.data);
-  //       setIsLoading(false);
-  //       onClosemodal();
-  //     }
-  //   } catch (error) {
-  //     console.error("API Error noticedelete:", error);
-  //     setIsLoading(false);
-  //   }
-  // };
   const modalData = [
     {
       id: 1,
@@ -183,38 +158,11 @@ const NoticeBottomModal = props => {
         <AntDesign size={18} color={_COLORS.Kodie_GreenColor} name="delete" />
       ),
     },
-    {
-      id: 5,
-      Data: 'Archive instead',
-      icon: (
-        <Ionicons
-          name="file-tray-full-outline"
-          size={18}
-          color={_COLORS.Kodie_GreenColor}
-        />
-      ),
-    },
+   
   ];
 
   const modalRenderData = ({item}) => {
-    return item.id == 3 ? (
-      <View style={NoticeBottomModalStyle.optionsmainview}>
-        
-        <TouchableOpacity
-          style={NoticeBottomModalStyle.optionsview}
-          onPress={() => {
-            if (item.id == 3) {
-              // alert("delete");
-              setDeleteData(item.id == 3);
-            }
-          }}>
-          <View style={NoticeBottomModalStyle.optionsiconview}>
-            {item.icon}
-          </View>
-          <Text style={NoticeBottomModalStyle.textoption}>{item.Data}</Text>
-        </TouchableOpacity>
-      </View>
-    ) : (
+   return(
       <View style={NoticeBottomModalStyle.optionsmainview}>
         <TouchableOpacity
           style={NoticeBottomModalStyle.optionsview}
@@ -229,11 +177,26 @@ const NoticeBottomModal = props => {
             if (item.id == 2) {
               createNoticeReminder();
               onClosemodal();
-
-              // alert("create Notice");
             }
-            if (item.id == 4) {
-              FinalDeleteProperty(props.noticeReminderid);
+            if (item.id == 3) {
+              Alert.alert(
+                "Confirmation",
+                "Are you sure you want to delete the notice?",
+                [
+                  {
+                    text: "Cancel",
+                    style: "cancel"
+                  },
+                  {
+                    text: "OK",
+                    onPress: () => {
+                      props?.FinalDeleteProperty(props.noticeReminderid);
+                      onClosemodal();
+                    }
+                  }
+                ]
+              );
+
             }
           }}>
           <View style={NoticeBottomModalStyle.optionsiconview}>
@@ -242,7 +205,8 @@ const NoticeBottomModal = props => {
           <Text style={NoticeBottomModalStyle.textoption}>{item.Data}</Text>
         </TouchableOpacity>
       </View>
-    );
+   )
+    
   };
   return (
     <View>
@@ -258,7 +222,7 @@ const NoticeBottomModal = props => {
         <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
       </TouchableOpacity>
       <FlatList
-        data={deleteData ? delete_data : modalData}
+        data={modalData}
         keyExtractor={item => item.id.toString()}
         renderItem={modalRenderData}
       />

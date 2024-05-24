@@ -26,7 +26,7 @@ export const PersonContractorStyle = StyleSheet.create({
     justifyContent: "flex-end",
     marginRight: 10,
     marginTop: 15,
-    marginBottom: 200,
+    marginBottom: 250,
   },
   closeText: {
     paddingHorizontal: 25,

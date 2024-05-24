@@ -59,7 +59,7 @@ const data = [
 
 const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [valid, setValid] = useState(false);
   const [fullName, setFirstName] = useState('');
   const [fullNameError, setFirstNameError] = useState('');
@@ -124,7 +124,7 @@ const EditProfile = props => {
   // Validation for First Name
   // const validateFullName = text => {
   //   if (text === '') {
-  //     setFullNameError('First name is required');
+  //     setFullNameError('First name is required!');
   //     // } else if (!/^[A-Za-z]+$/.test(text)) {
   //   } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
   //     setFullNameError('First name should contain only alphabetic characters');
@@ -148,7 +148,7 @@ const EditProfile = props => {
   // Validation for Last Name
   const validateLastName = text => {
     if (text === '') {
-      setLastNameError('Last name is required');
+      setLastNameError('Last name is required!');
       // } else if (!/^[A-Za-z]+$/.test(text)) {
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
       setLastNameError('Last name should contain only alphabetic characters');
@@ -160,11 +160,11 @@ const EditProfile = props => {
 
   const handlevalidUpdation = () => {
     if (fullName.trim() == '') {
-      setFirstNameError('First name is required');
+      setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(fullName)) {
       setFirstNameError('First name should contain only alphabetic characters');
     } else if (lastName.trim() == '') {
-      setLastNameError('Last name is required');
+      setLastNameError('Last name is required!');
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(lastName)) {
       setLastNameError('Last name should contain only alphabetic characters');
     } else {
@@ -576,7 +576,7 @@ const EditProfile = props => {
                           const checkValid =
                             phoneInput.current?.isValidNumber(text);
                           if (text === '') {
-                            setPhoneNumberError('Phone number is required');
+                            setPhoneNumberError('Phone number is required!');
                             setPhoneNumber(text);
                           } else if (checkValid == false) {
                             setPhoneNumberError('Invalid phone number format');

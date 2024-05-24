@@ -24,11 +24,12 @@ import {Config} from '../../../Config';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import InviteTenantModal from '../InviteTenantModal/InviteTenantModal';
-import { useIsFocused } from '@react-navigation/native';
-const PropertyListing = () => {
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+const PropertyListing = (props) => {
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
  const isvisible = useIsFocused()
+ const navigation=useNavigation()
   const Closemodal = () => {
     refRBSheet3.current.close();
   };
@@ -41,6 +42,43 @@ const PropertyListing = () => {
   useState(false);
   const [propertyDelId, setPropertyDelId] = useState();
   const [Address, setAddress] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const itemsPerPage = 10;
+const filteredUsers= props?.filteredUsers;
+const searchQuery= props?.searchQuery;
+const allData= props?.allData;
+console.log(allData);
+  const totalPages = Math.ceil(Vacant_data.length / itemsPerPage);
+
+  // Slice data based on current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentData = Vacant_data.slice(startIndex, endIndex);
+
+  const nextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const loadMoreData = () => {
+    if (!loading && currentPage < totalPages) {
+      setLoading(true);
+      setTimeout(() => {
+        setCurrentPage(currentPage + 1);
+        setLoading(false);
+      }, 1000); // Simulating a delay, replace with your actual data fetching logic
+    }
+  };
+
+
  
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
@@ -64,6 +102,7 @@ const PropertyListing = () => {
         
         if (response?.data?.success === true) {
             setVacantData(response?.data?.property_details);
+            props?.onVacantDataFetch(response?.data?.property_details);
         } else {
             alert(response?.data?.message);
         }
@@ -110,20 +149,29 @@ const PropertyListing = () => {
   useEffect(() => {
     if(isvisible){
     get_Vacant_Details();
+   
     }
   }, [isvisible]);
+  useEffect(() => {
+    if (allData) {
+      // Update Vacant_data or any other logic with allData if needed
+      setVacantData(allData);
+    }
+  }, [allData]);
   const propertyData1_render = ({item}) => {
-    const isExpanded = expandedItems.includes(item.id);
+    const isExpanded = expandedItems.includes(item.property_id);
     setPropId(item.property_id);
     return (
       <>
-        <View style={PropertyListingCss.flatListContainer}>
+      {item.result ? null : (
+    
+        <View style={PropertyListingCss.flatListContainer} key={item.property_id}>
           <View style={PropertyListingCss.flat_MainView}>
             <View style={PropertyListingCss.flexContainer}>
               <Text style={PropertyListingCss.apartmentText}>
                 {item.property_type}
               </Text>
-              <Text style={PropertyListingCss.commontext}>{item.name}</Text>
+              <Text style={PropertyListingCss.commontext}>{item.state ? item.state : item.city}</Text>
               <View style={PropertyListingCss.flat_MainView}>
                 <MaterialCommunityIcons
                   name={'map-marker'}
@@ -155,7 +203,13 @@ const PropertyListing = () => {
 
             <View style={PropertyListingCss.flexContainer}>
               <View style={PropertyListingCss.noteStyle}>
-                <TouchableOpacity>
+                <TouchableOpacity  
+                onPress={() => {navigation?.navigate('PropertyDetails', {
+                  propertyid: item.property_id,
+                  editMode: 'editMode',
+                });
+              }}
+                        >
                   <SimpleLineIcons
                     name="note"
                     size={25}
@@ -170,6 +224,7 @@ const PropertyListing = () => {
                     // alert(propertyDelId);
                     setAddress(item?.location);
                     setPropId(item?.property_id);
+                  
                     console.log('property id..', item.property_id);
                   }}>
                   <MaterialCommunityIcons
@@ -217,20 +272,21 @@ const PropertyListing = () => {
             iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
             onPress={() => {
               if (isExpanded) {
-                setExpandedItems(expandedItems.filter(id => id !== item.id));
+                setExpandedItems(expandedItems.filter(property_id => property_id !== item.property_id));
               } else {
-                setExpandedItems([...expandedItems, item.id]);
+                setExpandedItems([...expandedItems, item.property_id]);
               }
             }}
           />
         </View>
+        )}
         {isExpanded && (
           <View style={PropertyListingCss.expandedContent}>
             <View style={PropertyListingCss.flexContainer}>
               <Text style={PropertyListingCss.commonMidtext}>
                 Number of days listed:
               </Text>
-              <Text style={PropertyListingCss.commonDay}>{item.tanentDay}</Text>
+              <Text style={PropertyListingCss.commonDay}>{'0'}</Text>
             </View>
 
             <View style={[PropertyListingCss.rentView]}>
@@ -239,46 +295,17 @@ const PropertyListing = () => {
               </Text>
 
               <View style={PropertyListingCss.commonRentview}>
-                <Text style={PropertyListingCss.commonRent}>{item.rent}</Text>
+                <Text style={PropertyListingCss.commonRent}>{'0'}</Text>
               </View>
             </View>
           </View>
         )}
         <DividerIcon />
+      
 
-        {/* <RBSheet
-          ref={refRBSheet1}
-          closeOnDragDown={true}
-          height={320}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-              width: 40,
-              height: 4,
-              borderRadius: 2,
-            },
-            container: PropertyListingCss.bottomModal_container,
-          }}>
-          <VacantModal
-            onPress={() => {
-              refRBSheet2.current.open();
-            }}
-            onClose={CloseUp}
-            onDeleteData={FinalDeleteVacant}
-            propertyId={propId}
-            onDelete={vacantDelete}
-            isDeletePropertyClicked={isDeleteData_Clicked}
-          />
-        </RBSheet> */}
      
-        {/* AddBiddingDetails popup */}
         <RBSheet
           ref={refRBSheet2}
-          // closeOnDragDown={true}
           height={760}
           closeOnPressMask={false}
           customStyles={{
@@ -293,10 +320,8 @@ const PropertyListing = () => {
           <AddBiddingDetails />
         </RBSheet>
 
-        {/* invite tenent popup */}
         <RBSheet
           ref={refRBSheet3}
-          // closeOnDragDown={true}
           height={230}
           closeOnPressMask={false}
           customStyles={{
@@ -327,11 +352,6 @@ const PropertyListing = () => {
           },
         ]}>
         <VacantModal
-          // onViewProperty={() =>
-          //   props?.navigation?.navigate("ViewPropertyDetails", {
-          //     propertyDelId: propertyDelId,
-          //   })
-          // }
           propertyId={propId}
           onDelete={propertyDelete}
           onCloseModal={handleCloseModal}
@@ -341,13 +361,14 @@ const PropertyListing = () => {
           onClose={CloseUp}
         />
       </Modal>
+    
       </>
     );
   };
   return (
   
         <SafeAreaView>
-      <FlatList data={Vacant_data} renderItem={propertyData1_render} />
+      <FlatList data={searchQuery?filteredUsers:Vacant_data} renderItem={propertyData1_render}  keyExtractor={(item) => item.property_id}/>
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
 

@@ -38,6 +38,9 @@ const SearchBar = props => {
           {
             height: props.height ? props.height : 45,
             marginTop: props.marginTop ? props.marginTop : 20,
+            marginHorizontal: props?.marginHorizontal
+              ? props?.marginHorizontal
+              : 16,
           },
         ]}>
         {props.frontSearchIcon ? (
@@ -91,18 +94,23 @@ const SearchBar = props => {
               height: props.height,
               marginTop: props.marginTop ? props.marginTop : 20,
             },
-          ]}>
+          ]}
+          onPress={props?.SortedData}>
           <FontAwesome
             // name="location"
-            name={'long-arrow-up'}
+            // name={'long-arrow-up'}
+            name={props?.upArrow}
             size={20}
             color={_COLORS.Kodie_MediumGrayColor}
+            style={{alignSelf: 'center'}}
           />
           <FontAwesome
             // name="location"
-            name={'long-arrow-down'}
+            // name={'long-arrow-down'}
+            name={props?.downArrow}
             size={20}
             color={_COLORS.Kodie_MediumGrayColor}
+            style={{alignSelf: 'center'}}
           />
         </TouchableOpacity>
       ) : null}
@@ -136,7 +144,7 @@ const SearchBar = props => {
 };
 SearchBar.defaultProps = {
   placeholder: 'Search',
-  // SearchIcon:"location"
-  //  RightImage: IMAGES.rightarrow,
+  upArrow: 'long-arrow-up',
+  downArrow: 'long-arrow-down',
 };
 export default SearchBar;

@@ -24,7 +24,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const DeleteAccount = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
@@ -46,7 +46,7 @@ const DeleteAccount = props => {
   const handleAccountEmail = text => {
     setEmail(text);
     if (text.trim() === '') {
-      setEmailError('Email is required !');
+      setEmailError('Email is required!!');
     } else if (!validateAccountEmail(text)) {
       setEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
@@ -59,7 +59,7 @@ const DeleteAccount = props => {
     // const mobileReg = /^[6-9]\d{9}$/;
     const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === '') {
-      setPhoneNumberError('Phone number is required');
+      setPhoneNumberError('Phone number is required!');
     } else if (!mobileReg.test(text)) {
       setPhoneNumberError('Invalid phone number format');
     } else {
@@ -69,7 +69,7 @@ const DeleteAccount = props => {
   };
   const handleSubmit = async () => {
     if (email.trim() === '') {
-      setEmailError('Email is required.');
+      setEmailError('Email is required!');
     }
     //  else if (email.trim() !== '') {
     //   if (!validateAccountEmail(email)) {

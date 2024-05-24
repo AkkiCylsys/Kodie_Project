@@ -74,7 +74,7 @@ const ChangeContactInput = props => {
   };
   const validatenewPhoneNumber = () => {
     if (newnewPhoneNumber.trim() === '') {
-      setnewPhoneNumberError('Phone number is required');
+      setnewPhoneNumberError('Phone number is required!');
       return false;
     } else {
       setnewPhoneNumberError('');
@@ -85,7 +85,7 @@ const ChangeContactInput = props => {
   const handleSubmit = () => {
     const isValid = validatenewPhoneNumber();
     if (newnewPhoneNumber.trim() === '') {
-      setnewPhoneNumberError('Phone number is required');
+      setnewPhoneNumberError('Phone number is required!');
       console.log('Phone number is valid:', newnewPhoneNumber);
     } else if (!phoneInput.current?.isValidNumber(newnewPhoneNumber)) {
       setnewPhoneNumberError('Invalid phone number format.');
@@ -142,7 +142,7 @@ const ChangeContactInput = props => {
               onChangeText={text => {
                 const checkValid = phoneInput.current?.isValidNumber(text);
                 if (text === '') {
-                  setnewPhoneNumberError('Phone number is required.');
+                  setnewPhoneNumberError('Phone number is required!');
                 } else if (checkValid == false) {
                   setnewPhoneNumberError('Invalid phone number format.');
                 } else {

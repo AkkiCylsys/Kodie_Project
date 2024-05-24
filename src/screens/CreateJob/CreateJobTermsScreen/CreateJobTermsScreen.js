@@ -40,7 +40,7 @@ const data = [
 ];
 export default CreateJobTermsScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
 
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
@@ -223,7 +223,7 @@ export default CreateJobTermsScreen = props => {
   const handleRequestDate = text => {
     setSelectedDate(text);
     if (text.trim() === '') {
-      setSelectedDateError('Request date is required.');
+      setSelectedDateError('Request date is required!');
     } else {
       setSelectedDateError('');
     }
@@ -231,7 +231,7 @@ export default CreateJobTermsScreen = props => {
 
   const handleValidatiomtionCreateJob = () => {
     if (selectedDate.trim() === '') {
-      setSelectedDateError('Payment date is required.');
+      setSelectedDateError('Payment date is required!');
     } else {
       handleCreateJob();
     }
@@ -738,7 +738,7 @@ export default CreateJobTermsScreen = props => {
               {'Who is responsible for paying for this?'}
             </Text>
             <Text style={CreateJobTermsStyle.sub_des_Text}>
-              {'If you select “Landlord”, authorisation will be required'}
+              {'If you select “Landlord”, authorisation will be required!'}
             </Text>
 
             <RowButtons

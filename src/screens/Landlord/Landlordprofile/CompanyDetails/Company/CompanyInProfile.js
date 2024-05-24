@@ -38,7 +38,7 @@ const CompanyInProfile = ({
   onChangeCompanyLocation,
 }) => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [companyName, setCompanyName] = useState('');
   const [website, setWebsite] = useState('');
   const [companyGSTNumber, setCompanyGSTNumber] = useState('');

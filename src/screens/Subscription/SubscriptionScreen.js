@@ -15,7 +15,7 @@ import {_goBack} from '../../services/CommonServices';
 import axios from 'axios';
 const SubscriptionScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
 
   const customerID = props.route.params.customerID;
   console.log('customerID in subscription screen...', customerID);

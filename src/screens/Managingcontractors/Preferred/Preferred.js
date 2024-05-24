@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState, useRef} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
+import { PreferredStyle } from './PreferredStyle';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import Contractors from '../../../components/Molecules/Contractors/Contractors';
@@ -140,7 +141,7 @@ const Preferred = () => {
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={false}
-        height={300}
+        height={250}
         customStyles={{
           wrapper: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -148,6 +149,7 @@ const Preferred = () => {
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
+          container: PreferredStyle.bottomModal_container,
         }}>
         <ContractorsImage onDelete={() => handleDelete()} />
       </RBSheet>

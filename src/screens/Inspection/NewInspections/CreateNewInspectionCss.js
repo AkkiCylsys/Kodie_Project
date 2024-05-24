@@ -14,7 +14,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
-    marginBottom: 16,
+    marginBottom: 26,
   },
   dropdown: {
     borderWidth: 1,
@@ -23,7 +23,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     marginVertical: 12,
     borderRadius: 8,
   },
-
+  errorText:{color:'red'},
   placeholderStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_GrayColor,
@@ -46,7 +46,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  datePickerView: { flexDirection: "row", marginBottom: 12 },
+  datePickerView: { flexDirection: "row", marginBottom: 15 },
   calenderView: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderRadius: 5,
@@ -69,24 +69,50 @@ export const CreateNewInspectionStyle = StyleSheet.create({
   },
   spaceView: { margin: 5 },
   locationContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 6,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
-    shadowRadius: 2,
-    marginBottom: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+  // marginBottom:15,
+  backgroundColor:_COLORS?.Kodie_GrayColor,
+  borderWidth: 1,
+  borderRadius: 8,
+  flex: 1,
+  height: 48,
+  paddingHorizontal: 6,
+  borderColor: '#ccc'
   },
   locationInput: {
-    flex: 1,
-    height: 48,
-    paddingHorizontal: 10,
+   fontSize:14,
+   fontFamily:FONTFAMILY?.K_Medium,
+    color: _COLORS.Kodie_BlackColor,
+    alignSelf:'center',
+    marginLeft:5
   },
   locationIcon: {
-    marginLeft: 15,
+    alignSelf:'center'
+  },
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: '#ccc',
+    marginLeft: 10,
+    width: '15%',
+    height: 48,
+    justifyContent: 'center',
+  },
+  BtnContainer: {
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    paddingVertical: 3,
+    borderRadius: 10,
+    width: '30%',
+    height: 50,
+    bottom: 0,
+    right: 20,
+    marginBottom: 30,
+    position: 'absolute',
   },
   TextInputView: {
     flexDirection: "row",
@@ -94,22 +120,24 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginVertical: 12,
+    marginTop: 12,
+    height:48
   },
   input: {
     flex: 1,
     height: 40,
     padding: 8,
     fontSize: 14,
-    color: _COLORS.Kodie_MediumGrayColor,
+    color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
+  
   },
   userStyle: { height: 20, width: 20, marginHorizontal: 10 },
-  margin: { marginBottom: 12 },
+  margin: { marginBottom: 15 },
   DetailsView: {
     flex: 1,
     flexDirection: "row",
-    marginVertical: 5,
+    marginVertical: 2,
     marginLeft: 15,
   },
   DetailsIcon: { height: 30, width: 30 },
@@ -130,4 +158,50 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     marginVertical: 12,
   },
+  dropdown: {
+    borderWidth: 1,
+    height: 50,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 10,
+    borderRadius: 8,
+  },
+
+  placeholderStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_GrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  selectedTextStyle: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginLeft: 10,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+    marginRight: 16,
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+  },
+  itemView: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  bottomModal_container:{
+    borderTopLeftRadius:35,
+    borderTopRightRadius:35,
+    paddingHorizontal:20,
+    paddingVertical:20,
+    paddingBottom:30
+  }
 });

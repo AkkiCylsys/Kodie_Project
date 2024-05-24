@@ -352,7 +352,7 @@ const JobDocumentDetails = props => {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: 'Storage Permission Required',
+            title: 'Storage Permission required!!!',
             message: 'App needs access to your storage to download Photos',
           },
         );

@@ -99,7 +99,6 @@ export default PropertyReview = props => {
   const editMode = props?.route?.params?.editMode;
   const DocTab = props?.route?.params?.DocTab;
   console.log('DocTab..', DocTab);
-  console.log(propertyView, propertyid);
   console.log('propertyid...', propertyid);
   console.log('propertyView.....', propertyView);
   const [activeTab, setActiveTab] = useState('Tab4');
@@ -335,8 +334,9 @@ export default PropertyReview = props => {
     try {
       // Fetch property details
       const detailData = {
-        property_id: propertyView ? propertyid : property_id,
+        property_id: propertyView || propertyListing ? propertyid : property_id,
       };
+      console.log("detailData.............",detailData);
       const url = Config.BASE_URL;
       const property_Detailss = url + 'get_property_details';
 
@@ -990,7 +990,7 @@ export default PropertyReview = props => {
         }
         MiddleText={
           editMode
-            ? 'Edit property'
+            ? 'Edit property':propertyListing? 'View vacant property'
             : propertyView
               ? property_Detail?.location
               : 'Add new property'

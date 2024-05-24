@@ -64,7 +64,7 @@ const ProfileDocumentDetails = props => {
 
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   // console.log("user_account_id..", loginData?.Login_details?.user_account_id);
   const user_account_id = loginData?.Login_details?.user_account_id;
   console.log('Documents lookupId ....', props.documentLookUpType);

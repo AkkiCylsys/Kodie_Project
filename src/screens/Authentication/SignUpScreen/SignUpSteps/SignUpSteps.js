@@ -196,7 +196,7 @@ const SignUpSteps = props => {
   // Validation for First Name
   const validateFirstName = text => {
     if (text === '') {
-      setFirstNameError('First name is required.');
+      setFirstNameError('First name is required!');
       // } else if (!/^[A-Za-z]+$/.test(text)) {
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
       setFirstNameError(
@@ -211,7 +211,7 @@ const SignUpSteps = props => {
   // Validation for Last Name
   const validateLastName = text => {
     if (text === '') {
-      setLastNameError('Last name is required.');
+      setLastNameError('Last name is required!');
       // } else if (!/^[A-Za-z]+$/.test(text)) {
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
       setLastNameError('Last name should contain only alphabetic characters.');
@@ -232,7 +232,7 @@ const SignUpSteps = props => {
     // const mobileReg = /^04[0-9]{8}$/;
     // const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === '') {
-      setMobileNumberError('Phone number is required.');
+      setMobileNumberError('Phone number is required!');
     } else if (!validMobileNumber(text)) {
       setMobileNumberError('Invalid phone number format.');
     } else {
@@ -265,15 +265,15 @@ const SignUpSteps = props => {
     if (!ImageName) {
       setImageError('Please select an image before proceeding.');
     } else if (firstName.trim() === '') {
-      setFirstNameError('First name is required.');
+      setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(firstName)) {
       setFirstNameError('First name should contain only alphabetic characters');
     } else if (lastName.trim() === '') {
-      setLastNameError('Last name is required.');
+      setLastNameError('Last name is required!');
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(lastName)) {
       setLastNameError('Last name should contain only alphabetic characters');
     } else if (mobileNumber.trim() === '') {
-      setMobileNumberError('Phone number is required.');
+      setMobileNumberError('Phone number is required!');
       // } else if (!validMobileNumber(mobileNumber)) {
       //   setMobileNumberError('Invalid phone number format.');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
@@ -490,7 +490,7 @@ const SignUpSteps = props => {
                   // validateMobileNumber(text);
                   const checkValid = phoneInput.current?.isValidNumber(text);
                   if (text === '') {
-                    setMobileNumberError('Phone number is required.');
+                    setMobileNumberError('Phone number is required!');
                   } else if (checkValid == false) {
                     setMobileNumberError('Invalid phone number format.');
                   } else {

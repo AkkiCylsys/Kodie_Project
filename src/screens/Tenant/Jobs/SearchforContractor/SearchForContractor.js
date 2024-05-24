@@ -75,7 +75,7 @@ export default SearchForContractor = props => {
   const [latitude, setlatitude] = useState('');
   const [longitude, setlongitude] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
 
   const searchForContractor = () => {};
 

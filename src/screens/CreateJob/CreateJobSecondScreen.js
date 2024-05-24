@@ -44,7 +44,7 @@ const images = [
 ];
 const CreateJobSecondScreen = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   // alert(loginData?.Login_details?.user_account_id);
 
   // validation...
@@ -61,7 +61,7 @@ const CreateJobSecondScreen = props => {
     } else if (MultiImageName.length > 0) {
       handleuploadJobFiles();
     } else {
-      setMultiImageNameError('Front images required.');
+      setMultiImageNameError('Front images required!');
       console.log('err...', MultiImageNameError);
     }
   };

@@ -294,7 +294,7 @@ export default Login = props => {
   const handleResetEmailChange = text => {
     setResetEmail(text);
     if (text.trim() === '') {
-      setResetEmailError('Email is required');
+      setResetEmailError('Email is required!');
     } else if (!validateResetEmail(text)) {
       setResetEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
@@ -307,7 +307,7 @@ export default Login = props => {
   //... inner reset password varification_Code variable define here
   const handleverificationcodes = () => {
     if (verificationcode.trim() === '') {
-      setVerificationcodeError('Verification code is required');
+      setVerificationcodeError('Verification code is required!');
     } else {
       verify_Otp();
     }
@@ -352,7 +352,7 @@ export default Login = props => {
   const handleEmailChange = text => {
     setEmail(text);
     if (text.trim() === '') {
-      setEmailError('Email is required.');
+      setEmailError('Email is required!');
     } else if (!validateEmail(text)) {
       setEmailError(
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
@@ -475,7 +475,7 @@ export default Login = props => {
     const regex = /^[0-9]+$/;
     setVerificationcode(text);
     if (text.trim() === '') {
-      setVerificationcodeError('Verification code is required.');
+      setVerificationcodeError('Verification code is required!.');
     } else if (!regex.test(text)) {
       setVerificationcodeError('Verification code must contain only numbers.');
     } else {

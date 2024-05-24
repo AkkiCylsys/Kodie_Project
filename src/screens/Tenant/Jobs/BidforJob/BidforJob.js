@@ -32,20 +32,20 @@ const BidforJob = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetailsData, setJobDetailsData] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const refRBSheet = useRef();
   console.log(SearchJobId, BidJobId);
   const handleRequestDate = text => {
     setSelectedDate(text);
     if (text.trim() === '') {
-      setSelectedDateError('Request date is required.');
+      setSelectedDateError('Request date is required!');
     } else {
       setSelectedDateError('');
     }
   };
   const handleValidatiomtionBid = () => {
     if (selectedDate.trim() === '') {
-      setSelectedDateError('Payment date is required.');
+      setSelectedDateError('Payment date is required!');
     } else {
       BidSubmitDetails();
     }

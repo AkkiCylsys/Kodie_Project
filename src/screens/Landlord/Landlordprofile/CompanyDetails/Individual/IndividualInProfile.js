@@ -39,7 +39,7 @@ const IndividualInProfile = ({
   handleMap,
 }) => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [website, setWebsite] = useState('');
   // accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
   //   ? accountDetails?.UAD_WEBSITE

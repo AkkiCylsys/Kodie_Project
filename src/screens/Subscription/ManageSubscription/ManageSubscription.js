@@ -83,7 +83,7 @@ const subscriptionData = [
 ];
 const ManageSubscription = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [priceRanges, setPriceRanges] = useState(0);
   const [max, setMax] = useState(0);

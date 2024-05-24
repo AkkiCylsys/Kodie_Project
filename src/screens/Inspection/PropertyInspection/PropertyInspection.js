@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, Image, ScrollView } from "react-native";
+import React, { useState,useRef, useEffect } from "react";
+import { View, Text, Image, ScrollView, SafeAreaView } from "react-native";
 import { SliderBox } from "react-native-image-slider-box";
 import TopHeader from "../../../components/Molecules/Header/Header";
 import CustomTabNavigator from "../../../components/Molecules/CustomTopNavigation/CustomTopNavigation";
@@ -11,6 +11,9 @@ import Entypo from "react-native-vector-icons/Entypo";
 import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import Inspection from "./Inspection/Inspection";
 import Schedule from "./Schedule/Schedule";
+import { Config } from "../../../Config";
+import axios from "axios";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 const images = [
   BANNERS.Apartment,
   BANNERS.BannerFirst,
@@ -19,10 +22,50 @@ const images = [
 ];
 const PropertyInspection = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
+  const [property_Detail, setProperty_Details] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
+
+const TIM_KEY = props?.route?.params?.TIM_KEY;
+const PropertyId = props?.route?.params?.PropertyId;
+const account_id = props?.route?.params?.account_id;
+console.log("TIM_KEY ins",TIM_KEY);
+console.log("PropertyId ins",PropertyId);
+useEffect(()=>{
+  fetchPropertyData();
+},[])
+  const refRBSheet = useRef();
+  const fetchPropertyData = async () => {
+    try {
+      // Fetch property details
+      const detailData = {
+        property_id:PropertyId,
+      };
+      // alert(JSON.stringify(detailData))
+      const url = Config.BASE_URL;
+      const property_Detailss = url + 'get_property_details';
+
+      console.log('url..', property_Detailss);
+      setIsLoading(true);
+      const response = await axios.post(property_Detailss, detailData);
+      setIsLoading(false);
+      console.log('response_get_property_details...', response?.data);
+      if (response?.data?.success === true) {
+        setProperty_Details(response?.data?.property_details[0]);
+      } else {
+        console.error('propertyDetail_error:', response?.data?.error);
+        // alert('Oops something went wrong! Please try again later.');
+      }
+     
+    } catch (error) {
+      console.error('Error:', error);
+      // alert(error);
+      setIsLoading(false);
+    }
+  };
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
-        return <Schedule />;
+        return <Schedule TIM_KEY={TIM_KEY} account_id={account_id} rescheduleInspection={()=>{props?.navigation?.navigate('CreateNewInspection',{TIM_KEY:TIM_KEY,InspectionView:'InspectionView'})}}/>;
       case "Tab2":
         return <Inspection />;
       case "Tab3":
@@ -42,15 +85,17 @@ const PropertyInspection = (props) => {
   };
 
   return (
-    <View style={PropertyInspectionCSS.MainContainer}>
+    <SafeAreaView style={PropertyInspectionCSS.MainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"8502 Preston Rd. Inglewood..."}
+        MiddleText={property_Detail?.location || ''}
       />
       <ScrollView>
         <View style={PropertyInspectionCSS.slider_view}>
+        {property_Detail.image_path &&
+            property_Detail.image_path.length != 0 ? (
           <SliderBox
-            images={images}
+            images={property_Detail.image_path}
             sliderBoxHeight={200}
             onCurrentImagePressed={(index) =>
               console.warn(`image ${index} pressed`)
@@ -67,14 +112,15 @@ const PropertyInspection = (props) => {
               resizeMode: "cover",
             }}
           />
+            ):null}
         </View>
         <View style={PropertyInspectionCSS.Container}>
           <Text style={PropertyInspectionCSS.apartment_text}>
-            {"Apartment"}
+         { property_Detail?.property_type}
           </Text>
 
           <Text style={PropertyInspectionCSS.melbourne_Text}>
-            {"Melbourne"}
+          {property_Detail?.state || property_Detail?.city || ''}
           </Text>
           <View style={PropertyInspectionCSS.locationView}>
             <Entypo
@@ -83,7 +129,8 @@ const PropertyInspection = (props) => {
               color={_COLORS.Kodie_GreenColor}
             />
             <Text style={PropertyInspectionCSS.LocationText}>
-              {"8502 Preston Rd.Inglewood,Queensland,Australia,."}
+            {property_Detail?.location || ''}
+
             </Text>
           </View>
         </View>
@@ -120,7 +167,8 @@ const PropertyInspection = (props) => {
         <View style={PropertyInspectionCSS.Line} />
         {checkTabs()}
       </ScrollView>
-    </View>
+      {isLoading?<CommonLoader/>:null}
+    </SafeAreaView>
   );
 };
 

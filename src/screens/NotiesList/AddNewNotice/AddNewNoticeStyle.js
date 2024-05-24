@@ -18,6 +18,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
   },
+  errorText: {color: 'red', marginTop: 3},
   mainreapeatview: {
     flex: 1,
     flexDirection: "row",
@@ -25,7 +26,13 @@ export const AddNewNoticeStyle = StyleSheet.create({
     alignItems: "center",
     marginTop: 15,
   },
-
+  bottomModal_container:{
+    borderTopLeftRadius:35,
+    borderTopRightRadius:35,
+    paddingHorizontal:20,
+    paddingVertical:20,
+    paddingBottom:30
+  },
   noticedropdownview: {
     width: 215,
   },
@@ -34,7 +41,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: "center",
-    marginTop: 10,
+  
   },
   iconStyle: {
     width: 20,
@@ -56,7 +63,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     marginTop: 15,
   },
   alldayview: {
@@ -67,15 +74,17 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 15,
+    alignSelf:'center'
   },
   datetimeview: {
     // marginHorizontal: 10,
   },
   dateview: {
+    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical:10,
-    marginLeft:45
+    alignItems: "center",
+    marginLeft:37
   },
   datetext: {
     color: _COLORS.Kodie_BlackColor,
@@ -111,8 +120,8 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginHorizontal: 5,
-    padding: 5,
+    // marginHorizontal: 5,
+    // padding: 5,
     flex: 1,
     marginTop: 15,
   },
@@ -144,6 +153,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
+    alignSelf:"center"
   },
   setnotificationdrop: {
     borderWidth: 0.5,
@@ -158,7 +168,8 @@ export const AddNewNoticeStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 10,
-    marginHorizontal: 15,
+    marginLeft:8,
+    // marginHorizontal: 15,
   },
   setcustometext: {
     fontSize: 14,
@@ -249,17 +260,18 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginTop: 20,
   },
   toggle_con: {
-    width: 45,
-    height: 20,
+    width: 50,
+    height: 25,
     borderRadius: 20,
     padding: 5,
     // marginTop: 18,
     alignItems: "center",
+    alignSelf:'center'
   },
   toggle_circle: {
-    width: 15,
-    height: 15,
-    borderRadius: 15 / 2,
+    width: 18,
+    height: 18,
+    borderRadius: 18 / 2,
   },
   input_guest:{
     flex: 1,
@@ -313,12 +325,12 @@ export const AddNewNoticeStyle = StyleSheet.create({
     paddingHorizontal: 10,
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_LightGrayColor,
   },
   locationIconView: {
     borderWidth: 1,
     borderRadius: 8,
-    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    borderColor: _COLORS.Kodie_LightGrayColor,
     marginLeft: 10,
     width: "15%",
     height: 48,
@@ -351,5 +363,86 @@ export const AddNewNoticeStyle = StyleSheet.create({
   textItem: {
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
+  },
+  uploadedImagesContainer: {
+    marginTop: 20,
+    height: 130,
+  },
+  uploadedImageContainer: {
+    marginRight: 10,
+  },
+  uploadedImage: {
+    width: 120,
+    height: 120,
+    borderRadius:10,
+    resizeMode: 'cover',
+  },
+  uploadedDocumentsContainer: {
+    marginTop: 10,
+    width: '100%',
+  },
+  container: {
+    flex: 1,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 4,
+    marginVertical: 5,
+  },
+
+  textContainer: {
+    // flex:1,
+    flexDirection: "column",
+    marginLeft: 10,
+  },
+
+  pdfInfo: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+  },
+  pdfName: {
+    flex: 0.5,
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    // width: 250,
+  },
+  pdfSize: {
+    fontSize: 12,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  pdfIcon: {
+    width: 45,
+    height: 45,
+    resizeMode: "cover",
+  },
+  crossIcon: {
+    flex: 1,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    position: "absolute",
+    top: 20,
+    right: 5,
+    zIndex: 1,
+  },
+  property_doc_text: {
+    fontSize: 18,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  upload_doc_text: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  upload_doc_sub: {
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_GrayColor,
   },
 });
