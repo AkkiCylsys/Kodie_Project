@@ -90,6 +90,7 @@ const AddNewNotice = props => {
   const [selectedToTimeError, setSelectedToTimeError] = useState('');
   const [showNoticeTypeError, setShowNoticeTypeError] = useState(false);
   const [selectedCustemValue, setSelectedCustemValue] = useState('');
+  const [NoticeAllData, setNoticeAllData] = useState(null);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const UploadrbSheetRef = useRef();
@@ -453,13 +454,24 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
     formData.append('custom', selectedCustemValue);
     formData.append('notes', notes);
     // formData.append("file_name", fileName);
-    if (selectFile.length > 0 && selectFile[0]) {
-      formData.append('file_name', {
-        uri: selectFile[0].uri || null,
-        name: selectFile[0].name || null,
-        type: selectFile[0].type || null,
-      });
-    }
+    uploadedFiles.forEach((file, index) => {
+      if (Array.isArray(file.uri)) {
+        // Handle nested uri case
+        file.uri.forEach((nestedFile, nestedIndex) => {
+          formData.append('file_name', {
+            uri: nestedFile.uri,
+            name: nestedFile.name,
+            type: nestedFile.type,
+          });
+        });
+      } else {
+        formData.append('file_name', {
+          uri: file.uri,
+          name: file.name || `file_${index}`,
+          type: file.type || 'application/octet-stream',
+        });
+      }
+    });
     console.log('formData', formData);
     const url = Config.BASE_URL;
     const createNoticeReminder_url = url + 'create_notices_reminder';
@@ -520,8 +532,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
           setNotification_type_value(parseInt(response?.data?.data.type_id));
           setNotes(response?.data?.data.notes);
           setSelectedCustemValue(response?.data?.data?.custom)
-          // setFileName(response?.data?.data.file_name)
-          setSelectFile(response?.data?.data.file_name);
+          setNoticeAllData(response?.data?.data.file_name);
           setTempSelectedValues(response?.data?.data?.guests)
         } else {
           // alert(response?.data?.message);
@@ -537,6 +548,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
         setIsLoading(false);
       });
   };
+
   const update_createNoticeReminder = async () => {
     const formData = new FormData();
     formData.append('notices_reminder_id', noticeReminderid);
@@ -824,7 +836,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   };
   const renderImageItem = ({ item,index }) => (
     <View style={AddNewNoticeStyle.uploadedImageContainer}>
-      <Image source={{ uri: item.uri }} style={AddNewNoticeStyle.uploadedImage} />
+      <Image source={{ uri:item?item: item.uri }} style={AddNewNoticeStyle.uploadedImage} />
       <TouchableOpacity
         style={{flex: 1,
           alignItems: "flex-end",
@@ -858,7 +870,8 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
       />
       <View style={AddNewNoticeStyle.textContainer}>
         <Text style={AddNewNoticeStyle.pdfName}>
-          {item?.uri[0].name}
+          {item?item
+          :item?.uri[0].name}
         </Text>
       </View>
     </View>
@@ -874,9 +887,21 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   </View>
     
   );
-
   const images = uploadedFiles.filter(file => file.type === 'image');
   const documents = uploadedFiles.filter(file => file.type === 'document');
+  const fileNames = NoticeAllData.split(',');
+  if (NoticeAllData && Array.isArray(NoticeAllData.image_path)) {
+   
+// Filter images and documents based on file extensions
+const additionalImages = fileNames.filter(fileName => /\.(jpg|png|jpeg)$/i.test(fileName));
+const additionalDocuments = fileNames.filter(fileName => /\.pdf$/i.test(fileName));
+console.log(additionalImages,"additionalImages");
+// Merge additional images and documents with existing ones
+images.push(...additionalImages.map(imageUrl => ({ uri: imageUrl, type: 'image' })));
+documents.push(...additionalDocuments.map(documentUrl => ({ uri: documentUrl, type: 'document' })));
+  } else {
+    console.error("NoticeAllData is not in the expected format:", NoticeAllData);
+  }
   return (
     <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader

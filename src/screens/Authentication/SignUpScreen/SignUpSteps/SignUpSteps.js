@@ -262,9 +262,10 @@ const SignUpSteps = props => {
 
   const handleNextBtn = () => {
     // alert(mobileNumber);
-    if (!ImageName) {
-      setImageError('Please select an image before proceeding.');
-    } else if (firstName.trim() === '') {
+    // if (!ImageName) {
+    //   setImageError('Please select an image before proceeding.');
+    // } else
+     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(firstName)) {
       setFirstNameError('First name should contain only alphabetic characters');
@@ -427,9 +428,9 @@ const SignUpSteps = props => {
           {/* {ImageName ? refRBSheet.current.close() : null} */}
           {/* <Text style={AccountStyle.edittext}>Edit profile photo</Text> */}
         </View>
-        {ImageName ? null : (
+        {/* {ImageName ? null : (
           <Text style={AccountStyle.error_text}>{imageError}</Text>
-        )}
+        )} */}
         {/* {ImageName ? refRBSheet.current.close() : null} */}
         <View style={AccountStyle.card}>
           <View style={AccountStyle.inputContainer}>
