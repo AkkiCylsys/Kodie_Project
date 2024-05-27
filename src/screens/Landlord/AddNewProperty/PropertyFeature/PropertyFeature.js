@@ -10,9 +10,9 @@ import {
 import {PropertyFeatureStyle} from './PropertyFeatureStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
-import {MultiSelect} from 'react-native-element-dropdown';
+
 import {Dropdown} from 'react-native-element-dropdown';
-import {LABEL_STYLES} from '../../../../Themes';
+import {FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
 import {_COLORS} from '../../../../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -24,6 +24,7 @@ import {Config} from '../../../../Config';
 import axios from 'axios';
 import {useSelector} from 'react-redux';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import MultiSelect from 'react-native-multiple-select';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 const renderDataItem = item => {
@@ -169,9 +170,14 @@ export default PropertyFeature = props => {
         setSelectedButtonFurnished(furnishedFeatureId);
         setSelectedButtonDeposit(yesFeatureId);
         setFlorSize(response?.data?.property_details[0]?.floor_size);
-        setAdditionalFeaturesKeyValue(
-          response?.data?.property_details[0]?.additional_key_features_id,
-        );
+        // setAdditionalFeaturesKeyValue(
+        //   response?.data?.property_details[0]?.additional_key_features_id,
+        // );
+        setAdditionalfeatureskey(response?.data?.property_details[0]?.additional_key_features);
+        const keyFeaturesId = response?.data?.property_details[0]?.additional_key_features_id;
+        const parsedKeyFeaturesId = typeof keyFeaturesId === 'string' ? JSON.parse(keyFeaturesId) : keyFeaturesId;
+        setAdditionalFeaturesKeyValue(Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : []);
+     
         setLandArea(response?.data?.property_details[0]?.land_area);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
@@ -485,6 +491,9 @@ export default PropertyFeature = props => {
         setIsLoading(false);
       });
   };
+  const onSelectedItemsChange = selectedItems => {
+    setAdditionalFeaturesKeyValue(selectedItems);
+  };
   return (
     <SafeAreaView style={PropertyFeatureStyle.mainContainer}>
       <TopHeader
@@ -793,7 +802,7 @@ export default PropertyFeature = props => {
               <Text style={PropertyFeatureStyle.Furnished_Text}>
                 {'Additional key features'}
               </Text>
-              <MultiSelect
+              {/* <MultiSelect
                 style={PropertyFeatureStyle.dropdown}
                 activeColor={activeColor}
                 // activeColor={'#a1fe68'}
@@ -843,7 +852,60 @@ export default PropertyFeature = props => {
                     </View>
                   </TouchableOpacity>
                 )}
-              />
+              /> */}
+              <MultiSelect
+      hideDropdown
+      items={additionalfeatureskey}
+      uniqueKey="paf_key"
+      onSelectedItemsChange={onSelectedItemsChange}
+      selectedItems={Array.isArray(additionalfeatureskeyvalue) ? additionalfeatureskeyvalue : []}
+      selectText="Add features such as pool, aircon, balcony etc."
+      searchInputPlaceholderText="Search Items..."
+      onChangeInput={item => {
+        setAdditionalFeaturesKeyValue(item);
+      }}
+      tagBorderColor={_COLORS.Kodie_BlackColor}
+      selectedItemTextColor={_COLORS.Kodie_GreenColor}
+      selectedItemIconColor={_COLORS.Kodie_GreenColor}
+      itemTextColor="#000"
+      displayKey="features_name"
+      searchInputStyle={{
+        color: _COLORS.Kodie_BlackColor,
+        borderColor: _COLORS.Kodie_GrayColor,
+        height: 40,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+      }}
+      styleListContainer={{
+        paddingVertical: 10,
+        height: 200,
+      }}
+      styleRowList={{
+        height: 40,
+      }}
+      tagContainerStyle={{
+        borderWidth: 1,
+        height: 40,
+        backgroundColor: _COLORS.Kodie_BlackColor,
+      }}
+      tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+      styleTextTag={{
+        fontSize: 14,
+        color: _COLORS.Kodie_WhiteColor,
+        fontFamily: FONTFAMILY.K_Medium,
+      }}
+      styleTextDropdown={{ marginLeft: 20 }}
+      styleDropdownMenu={{
+        flex: 1,
+        borderWidth: 1,
+        height: 50,
+        borderColor: _COLORS.Kodie_GrayColor,
+        marginTop: 10,
+        borderRadius: 8,
+      }}
+      submitButtonColor={_COLORS.Kodie_GreenColor}
+      submitButtonText={additionalfeatureskeyvalue.length > 0 ? 'Done' : 'Cancel'}
+    />
             </View>
             <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton

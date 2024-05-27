@@ -447,7 +447,7 @@ export default PropertyImages = props => {
 
               <Text style={PropertyImagesStyle.formatted_property_text}>
                 {
-                  'Images should be formatted .jpg or .png Size per image should not exceed 5 MB'
+                  'Images should be formatted .jpg or .png. Size per image should not exceed 5 MB.'
                 }
               </Text>
             </View>
@@ -513,7 +513,7 @@ export default PropertyImages = props => {
               )}
               <Text style={PropertyImagesStyle.formatted_property_text}>
                 {
-                  'Videos should be formatted .mp4, HEVC, MKV.Size per video should not exceed 100 MB'
+                  'Videos should be formatted .mp4, HEVC, MKV. Size per video should not exceed 100 MB.'
                 }
               </Text>
             </View>

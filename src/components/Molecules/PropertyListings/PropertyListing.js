@@ -161,6 +161,7 @@ console.log(allData);
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
     setPropId(item.property_id);
+    console.log(item.image_path,"lklhkjhjiehdi");
     return (
       <>
       {item.result ? null : (
@@ -367,10 +368,11 @@ console.log(allData);
   };
   return (
   
-        <SafeAreaView>
+        <>
       <FlatList data={searchQuery?filteredUsers:Vacant_data} renderItem={propertyData1_render}  keyExtractor={(item) => item.property_id}/>
+      
       {isLoading ? <CommonLoader /> : null}
-    </SafeAreaView>
+    </>
 
   );
 };

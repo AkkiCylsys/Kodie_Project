@@ -66,6 +66,8 @@ const VacantPropertiesList = props => {
           <PropertyListing onVacantDataFetch={handleVacantData} filteredUsers={filteredUsers} searchQuery={searchQuery} allData={allData}/>
         </View>
       </ScrollView>
+     
+
     </SafeAreaView>
   );
 };
