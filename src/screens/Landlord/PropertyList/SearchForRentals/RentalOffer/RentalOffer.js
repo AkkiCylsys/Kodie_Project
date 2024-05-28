@@ -91,6 +91,7 @@ const RentalOffer = props => {
   const [lastName, setLastName] = useState('');
   const [income, setIncome] = useState('');
   const [dropdownData, setDropdownData] = useState({});
+  const [allQuestion, setAllQuestion] = useState([]);
   useEffect(() => {
     handleLeaseTerm();
     handleStyingProperty();
@@ -284,6 +285,7 @@ const RentalOffer = props => {
         console.log('API Response QuesCode..', response?.data);
         if (response?.data?.success === true) {
           const data = response?.data?.data;
+          setAllQuestion(data);
           if (questionCode === 'PERSONAL_DETAILS') {
             setQuestion(data);
           } else if (questionCode === 'Employment_Status') {
@@ -443,54 +445,68 @@ const RentalOffer = props => {
     );
   };
   const handleInputChange = (questionCode, value) => {
-    const updateCategoryState = (stateSetter, prevState) => {
-      const updatedState = {
-        ...prevState,
-        [questionCode]: value,
-      };
-      stateSetter(updatedState);
-      console.log(`Updated ${questionCode} Values:`, updatedState);
-      return updatedState;
-    };
+    setInputValues(prevValues => ({
+      ...prevValues,
+      [questionCode]: value,
+    }));
 
     switch (questionCode) {
       case 'PERSONAL_DETAILS':
-        setPersonalDetails(prevState => {
-          const newState = updateCategoryState(setPersonalDetails, prevState);
-          return newState;
-        });
-        break;
-      case 'Employment_Status':
-        setEmploymentStatus(prevState => {
-          const newState = updateCategoryState(setEmploymentStatus, prevState);
-          return newState;
-        });
-        break;
-      default:
-        setInputValues(prevValues => ({
-          ...prevValues,
+        setPersonalDetails(prevState => ({
+          ...prevState,
           [questionCode]: value,
         }));
+        break;
+      case 'Employment_Status':
+        setEmploymentStatus(prevState => ({
+          ...prevState,
+          [questionCode]: value,
+        }));
+        break;
+      default:
+        break;
     }
   };
 
+  // Handle form submission
   const handleSubmit = () => {
-    console.log('Submitting JSON data:');
-    console.log('Personal Details:', personalDetails);
-    console.log('Employment Status:', employmentStatus);
-    console.log('Input Values:', inputValues);
+    const formData = {
+      ...inputValues,
+      personalDetails,
+      employmentStatus,
+    };
+
+    const resultData = {};
+
+    const processQuestions = questions => {
+      questions.forEach(questionItem => {
+        resultData[questionItem.tqm_Question_code] =
+          formData[questionItem.tqm_Question_code] || '';
+      });
+    };
+    processQuestions(question);
+    processQuestions(employeeQues);
+    processQuestions(earnIncome);
+    processQuestions(rentailDetails);
+    processQuestions(peopalStay);
+    processQuestions(rental_History);
+    processQuestions(preference);
+
+    console.log('Result Data:', resultData);
+    return resultData;
   };
 
-  const renderQuestionComponent = question => {
+  const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
       case 'Text':
         return (
-          <View>
+          <View key={index}>
             <TextInput
               style={RentalOfferStyle.input}
               placeholder={`Enter your ${question.tqm_Question_description}`}
               onChangeText={text => {
-                handleInputChange(question.tqm_Question_code, text);
+                handleInputChange(question.tqm_Question_code, text, index);
+                // alert(index);
               }}
               value={inputValues[question.tqm_Question_code] || ''}
             />
@@ -502,9 +518,9 @@ const RentalOffer = props => {
             <TextInput
               style={RentalOfferStyle.input}
               placeholder={`Enter your ${question.tqm_Question_description}`}
-              onChangeText={text => {
-                handleInputChange(question.tqm_Question_code, text);
-              }}
+              onChangeText={text =>
+                handleInputChange(question.tqm_Question_code, text, index)
+              }
               value={inputValues[question.tqm_Question_code] || ''}
               keyboardType="number-pad"
             />
@@ -515,9 +531,7 @@ const RentalOffer = props => {
           <View style={RentalOfferStyle.datePickerView}>
             <CalendarModal
               SelectDate={
-                inputValues[question.tqm_Question_code]
-                  ? inputValues[question.tqm_Question_code]
-                  : 'Start Date'
+                inputValues[question.tqm_Question_code] || 'Start Date'
               }
               _textInputStyle={{
                 color: inputValues[question.tqm_Question_code]
@@ -525,10 +539,13 @@ const RentalOffer = props => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModal}
-              onDayPress={day => {
-                setSelectedDate(day.dateString);
-                handleInputChange(question.tqm_Question_code, day.dateString);
-              }}
+              onDayPress={day =>
+                handleInputChange(
+                  question.tqm_Question_code,
+                  day.dateString,
+                  index,
+                )
+              }
               Visible={isModalVisible}
               onRequestClose={toggleModal}
               markedDates={{
@@ -552,15 +569,15 @@ const RentalOffer = props => {
               selectedTextStyle={RentalOfferStyle.selectedTextStyle}
               inputSearchStyle={RentalOfferStyle.inputSearchStyle}
               iconStyle={RentalOfferStyle.iconStyle}
-              data={dropdownData[question.tqm_Question_code] || []} // Use the dynamic data
+              data={dropdownData[question.tqm_Question_code] || []}
               search
               maxHeight={300}
               labelField="lookup_description"
               valueField="lookup_key"
-              placeholder="Full-time employed"
+              placeholder="Select an option"
               searchPlaceholder="Search..."
               value={inputValues[question.tqm_Question_code] || ''}
-              onFocus={() => handleDropdown(question.tqm_Question_code)} // Trigger the dropdown loading here
+              onFocus={() => handleDropdown(question.tqm_Question_code, index)}
               onChange={item =>
                 handleInputChange(question.tqm_Question_code, item.lookup_key)
               }
@@ -571,125 +588,16 @@ const RentalOffer = props => {
         return null;
     }
   };
-  const QuestionCodeRender = ({item}) => {
+
+  const QuestionCodeRender = ({item, index}) => {
     return (
       <View style={{marginHorizontal: 16, marginTop: 5}}>
         <View key={question.id}>
           <Text style={LABEL_STYLES.commontext}>
             {item.tqm_Question_description}
           </Text>
-          {renderQuestionComponent(item)}
+          {renderQuestionComponent(item, index)}
         </View>
-        {/* <View style={RentalOfferStyle.rentalleaseview}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'What rental lease term are you looking for?'}
-          </Text>
-          <Dropdown
-            style={RentalOfferStyle.dropdown}
-            placeholderStyle={RentalOfferStyle.placeholderStyle}
-            selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-            inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-            iconStyle={RentalOfferStyle.iconStyle}
-            data={RentalLeaseData}
-            search
-            maxHeight={300}
-            labelField="lookup_description"
-            valueField="lookup_key"
-            placeholder="6-month"
-            searchPlaceholder="Search..."
-            value={RentalLeasevalue}
-            onChange={item => {
-              setRentalLeaseValue(item.lookup_key);
-            }}
-          />
-        </View>
-        <View style={RentalOfferStyle.tenentpeople}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'How many people will be staying in the property?'}
-          </Text>
-          <Dropdown
-            style={RentalOfferStyle.dropdown}
-            placeholderStyle={RentalOfferStyle.placeholderStyle}
-            selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-            inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-            iconStyle={RentalOfferStyle.iconStyle}
-            data={valueStyingData}
-            search
-            maxHeight={300}
-            labelField="lookup_description"
-            valueField="lookup_key"
-            placeholder="3 people"
-            searchPlaceholder="Search..."
-            value={valueStying}
-            onChange={item => {
-              setValueStying(item.lookup_key);
-            }}
-          />
-        </View>
-        <View style={RentalOfferStyle.jobDetailsView}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'What is your rental budget?'}
-          </Text>
-          <TextInput
-            style={RentalOfferStyle.input}
-            value={rentalBudget}
-            onChangeText={setRentalBudget}
-            placeholder="Enter the rental amount"
-            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-          />
-        </View>
-        <View
-          style={[
-            RentalOfferStyle.inputContainer,
-            RentalOfferStyle.paymentbtnselectview,
-          ]}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'How often will you be paying rent?'}
-          </Text>
-          <RowButtons
-            LeftButtonText={'Weekly'}
-            leftButtonbackgroundColor={
-              !selected_Paying_Button
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            LeftButtonTextColor={
-              !selected_Paying_Button
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-            LeftButtonborderColor={
-              !selected_Paying_Button
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_LightWhiteColor
-            }
-            onPressLeftButton={() => {
-              setSelected_Paying_Button(false);
-              setSelected_Paying_Id(1);
-            }}
-            RightButtonText={'Monthly'}
-            RightButtonbackgroundColor={
-              selected_Paying_Button
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonTextColor={
-              selected_Paying_Button
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-            RightButtonborderColor={
-              selected_Paying_Button
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_LightWhiteColor
-            }
-            onPressRightButton={() => {
-              setSelected_Paying_Button(true);
-              setSelected_Paying_Id(0);
-            }}
-          />
-        </View> */}
-        {/* <DividerIcon marginTop={5} /> */}
       </View>
     );
   };
@@ -794,397 +702,11 @@ const RentalOffer = props => {
             {'Pre-rental questionnaire'}
           </Text>
         </View>
-        {/* .. */}
-
-        {/* <View style={{}}>
-          <View style={RentalOfferStyle.propety_details_view}>
-            <Text style={RentalOfferStyle.propery_det}>
-              {'Employment & income'}
-            </Text>
-
-            <TouchableOpacity
-              style={RentalOfferStyle.down_Arrow_icon}
-              onPress={toggleTenantRooms}>
-              <AntDesign
-                name={TenantRooms ? 'up' : 'down'}
-                size={15}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            </TouchableOpacity>
-          </View>
-          <DividerIcon marginTop={5} />
-
-          {TenantRooms && (
-            <View style={{marginHorizontal: 16}}>
-              <View style={{}}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'How would you describe your employment status?'}
-                </Text>
-                <Dropdown
-                  style={RentalOfferStyle.dropdown}
-                  placeholderStyle={RentalOfferStyle.placeholderStyle}
-                  selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-                  inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-                  iconStyle={RentalOfferStyle.iconStyle}
-                  data={EmployeeValueData}
-                  search
-                  maxHeight={300}
-                  labelField="lookup_description"
-                  valueField="lookup_key"
-                  placeholder="Full-time employed"
-                  searchPlaceholder="Search..."
-                  value={EmployeeValue}
-                  onChange={item => {
-                    setEmployeeValue(item.lookup_key);
-                  }}
-                />
-              </View>
-
-              <View style={RentalOfferStyle.jobDetailsView}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'How long have you been employed for?'}
-                </Text>
-                <TextInput
-                  style={RentalOfferStyle.input}
-                  value={longEmployee}
-                  onChangeText={setLongEmployee}
-                  placeholder="Enter number of years"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                />
-              </View>
-              <View
-                style={[
-                  RentalOfferStyle.jobDetailsView,
-                  RentalOfferStyle.weeklyincomeview,
-                ]}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'What is your household weekly gross  income?'}
-                </Text>
-                <TextInput
-                  style={RentalOfferStyle.input}
-                  value={weeklyIncome}
-                  onChangeText={setWeeklyIncome}
-                  placeholder="Enter weekly income"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                />
-              </View>
-              <DividerIcon marginTop={5} />
-            </View>
-          )}
-        </View>
-
-        <View style={{}}>
-          <View style={RentalOfferStyle.propety_details_view}>
-            <Text style={RentalOfferStyle.propery_det}>{'Rental history'}</Text>
-
-            <TouchableOpacity
-              style={RentalOfferStyle.down_Arrow_icon}
-              onPress={toggleRentalHistory}>
-              <AntDesign
-                name={RentalHistory ? 'up' : 'down'}
-                size={15}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            </TouchableOpacity>
-          </View>
-          <DividerIcon marginTop={5} />
-
-          {RentalHistory && (
-            <View style={{marginHorizontal: 16}}>
-              <View style={[RentalOfferStyle.longemployed]}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'Why are you looking to move?'}
-                </Text>
-                <TextInput
-                  style={RentalOfferStyle.input}
-                  value={lookingmove}
-                  onChangeText={setLookingmove}
-                  placeholder="Enter reason for move"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                />
-              </View>
-
-              <View
-                style={[
-                  RentalOfferStyle.paymentbtnselectview,
-                  RentalOfferStyle.rentalagrementview,
-                ]}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'Have you ever broken a rental agreement?'}
-                </Text>
-                <RowButtons
-                  LeftButtonText={'Yes'}
-                  leftButtonbackgroundColor={
-                    !selected_Rental_Agreement
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selected_Rental_Agreement
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selected_Rental_Agreement
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelected_Rental_Agreement(false);
-                    setSelected_Agreement_Id(1);
-                    // alert(selectedButtonId)
-                  }}
-                  RightButtonText={'No'}
-                  RightButtonbackgroundColor={
-                    selected_Rental_Agreement
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selected_Rental_Agreement
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selected_Rental_Agreement
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelected_Rental_Agreement(true);
-                    setSelected_Agreement_Id(0);
-                  }}
-                />
-              </View>
-
-              <View
-                style={[
-                  RentalOfferStyle.paymentbtnselectview,
-                  RentalOfferStyle.rentalagrementview,
-                ]}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'Have you ever been evicted from a previous rental?'}
-                </Text>
-                <RowButtons
-                  LeftButtonText={'Yes'}
-                  leftButtonbackgroundColor={
-                    !selected_Previous_Rental
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selected_Previous_Rental
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selected_Previous_Rental
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelected_Previous_Rental(false);
-                    setSelected_Previous_Id(1);
-                    // alert(selectedButtonId)
-                  }}
-                  RightButtonText={'No'}
-                  RightButtonbackgroundColor={
-                    selected_Previous_Rental
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selected_Previous_Rental
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selected_Previous_Rental
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelected_Previous_Rental(true);
-                    setSelected_Previous_Id(0);
-                  }}
-                />
-              </View>
-              <DividerIcon marginTop={5} />
-            </View>
-          )}
-        </View>
-
-        <View style={{}}>
-          <View style={RentalOfferStyle.propety_details_view}>
-            <Text style={RentalOfferStyle.propery_det}>{'Preferences'}</Text>
-
-            <TouchableOpacity
-              style={RentalOfferStyle.down_Arrow_icon}
-              onPress={togglePreferences}>
-              <AntDesign
-                name={Preferences ? 'up' : 'down'}
-                size={15}
-                color={_COLORS.Kodie_GrayColor}
-              />
-            </TouchableOpacity>
-          </View>
-          <DividerIcon marginTop={5} />
-          {Preferences && (
-            <View style={{marginHorizontal: 16}}>
-              <View
-                style={[
-                  // RentalOfferStyle.inputContainer,
-                  RentalOfferStyle.paymentbtnselectview,
-                  RentalOfferStyle.rentalagrementview,
-                ]}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'Are you a smoking or non-smoking household?'}
-                </Text>
-                <RowButtons
-                  LeftButtonText={'Non-smoking'}
-                  leftButtonbackgroundColor={
-                    !selected_Smoking
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selected_Smoking
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selected_Smoking
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelected_Smoking(false);
-                    setSelected_Smoking_Id(1);
-                    // alert(selectedButtonId)
-                  }}
-                  RightButtonText={'Non-smoking'}
-                  RightButtonbackgroundColor={
-                    selected_Smoking
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selected_Smoking
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selected_Smoking
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelected_Smoking(true);
-                    setSelected_Smoking_Id(0);
-                  }}
-                />
-              </View>
-
-              <View
-                style={[
-                  // RentalOfferStyle.inputContainer,
-                  RentalOfferStyle.paymentbtnselectview,
-                  RentalOfferStyle.rentalagrementview,
-                ]}>
-                <Text style={LABEL_STYLES.commontext}>
-                  {'Do you have any pets?'}
-                </Text>
-                <RowButtons
-                  LeftButtonText={'Yes'}
-                  leftButtonbackgroundColor={
-                    !selected_Pets
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  LeftButtonTextColor={
-                    !selected_Pets
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  LeftButtonborderColor={
-                    !selected_Pets
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressLeftButton={() => {
-                    setSelected_Pets(false);
-                    setSelected_Pets_Id(1);
-                    // alert(selectedButtonId)
-                  }}
-                  RightButtonText={'No'}
-                  RightButtonbackgroundColor={
-                    selected_Pets
-                      ? _COLORS.Kodie_lightGreenColor
-                      : _COLORS.Kodie_WhiteColor
-                  }
-                  RightButtonTextColor={
-                    selected_Pets
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_MediumGrayColor
-                  }
-                  RightButtonborderColor={
-                    selected_Pets
-                      ? _COLORS.Kodie_GrayColor
-                      : _COLORS.Kodie_LightWhiteColor
-                  }
-                  onPressRightButton={() => {
-                    setSelected_Pets(true);
-                    setSelected_Pets_Id(0);
-                  }}
-                />
-              </View>
-
-              <View style={RentalOfferStyle.additional_key_view}>
-                <Text style={RentalOfferStyle.Furnished_Text}>
-                  {'What type of pets do you have?'}
-                </Text>
-                <MultiSelect
-                  style={RentalOfferStyle.dropdown}
-                  placeholderStyle={RentalOfferStyle.placeholderStyle}
-                  selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-                  inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-                  iconStyle={RentalOfferStyle.iconStyle}
-                  data={petsData}
-                  activeColor={_COLORS.Kodie_MidLightGreenColor}
-                  labelField="lookup_description"
-                  valueField="lookup_key"
-                  placeholder="Search"
-                  value={pets}
-                  search
-                  searchPlaceholder="Search..."
-                  onChange={item => {
-                    setPets(item);
-                  }}
-                  renderItem={renderDataItem}
-                  renderSelectedItem={(item, unSelect) => (
-                    <TouchableOpacity
-                      onPress={() => unSelect && unSelect(item)}>
-                      <View style={RentalOfferStyle.selectedStyle}>
-                        <Text style={RentalOfferStyle.textSelectedStyle}>
-                          {item.lookup_description}
-                        </Text>
-                        <AntDesign color="white" name="close" size={17} />
-                      </View>
-                    </TouchableOpacity>
-                  )}
-                />
-              </View>
-              <DividerIcon style={RentalOfferStyle.dividericonpreferance} />
-            </View>
-          )}
-        </View> */}
-
         <FlatList
           data={quesHeading}
           keyExtractor={(item, index) => item.id}
           renderItem={QuesHeadingRender}
         />
-        {/* .... */}
         <View style={{marginHorizontal: 16, marginBottom: 20}}>
           <Text style={RentalOfferStyle.inspections}>
             {'Tenant  screening report (recommended)'}
