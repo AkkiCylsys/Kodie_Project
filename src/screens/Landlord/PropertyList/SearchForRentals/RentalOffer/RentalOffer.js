@@ -469,34 +469,73 @@ const RentalOffer = props => {
   };
 
   // Handle form submission
+  // const handleSubmit = () => {
+  //   const formData = {
+  //     ...inputValues,
+  //     personalDetails,
+  //     employmentStatus,
+  //   };
+  //   const resultData = {};
+  //   const processQuestions = questions => {
+  //     questions.forEach(questionItem => {
+  //       resultData[questionItem.tqm_Question_code] =
+  //         formData[questionItem.tqm_Question_code] || '';
+  //     });
+  //   };
+  //   processQuestions(question);
+  //   processQuestions(employeeQues);
+  //   processQuestions(earnIncome);
+  //   processQuestions(rentailDetails);
+  //   processQuestions(peopalStay);
+  //   processQuestions(rental_History);
+  //   processQuestions(preference);
+
+  //   console.log('Result Data:', resultData);
+  //   return resultData;
+  // };
+
   const handleSubmit = () => {
     const formData = {
       ...inputValues,
-      personalDetails,
-      employmentStatus,
+      ...personalDetails,
+      ...employmentStatus,
     };
-
-    const resultData = {};
-
-    const processQuestions = questions => {
+  
+    const resultData = {
+      propertyDetails: {},
+      employmentDetails: {},
+      incomeDetails: {},
+      rentalDetails: {},
+      peopleStayDetails: {},
+      rentalHistoryDetails: {},
+      preferenceDetails: {},
+      personalDetails: {},
+      employmentStatus: {}
+    };
+  
+    const processQuestions = (questions, category) => {
       questions.forEach(questionItem => {
-        resultData[questionItem.tqm_Question_code] =
-          formData[questionItem.tqm_Question_code] || '';
+        const value = formData[questionItem.tqm_Question_code];
+        resultData[category][questionItem.tqm_Question_code] = value !== undefined ? value : '';
       });
     };
-    processQuestions(question);
-    processQuestions(employeeQues);
-    processQuestions(earnIncome);
-    processQuestions(rentailDetails);
-    processQuestions(peopalStay);
-    processQuestions(rental_History);
-    processQuestions(preference);
-
+  
+    processQuestions(question, 'propertyDetails');
+    processQuestions(employeeQues, 'employmentDetails');
+    processQuestions(earnIncome, 'incomeDetails');
+    processQuestions(rentailDetails, 'rentalDetails');
+    processQuestions(peopalStay, 'peopleStayDetails');
+    processQuestions(rental_History, 'rentalHistoryDetails');
+    processQuestions(preference, 'preferenceDetails');
+  
+    resultData.personalDetails = { ...personalDetails };
+    resultData.employmentStatus = { ...employmentStatus };
+  
     console.log('Result Data:', resultData);
     return resultData;
   };
-
   const renderQuestionComponent = (question, index) => {
+    // console.log("Question inside the details...",question)
     switch (question.tqm_Question_type) {
       case 'Text':
         return (

@@ -92,7 +92,7 @@ console.log(allData);
   const get_Vacant_Details = async () => {
     try {
         const url = Config.BASE_URL;
-        const Vacant_Details_url = url + '/get_vacant_property_list';
+        const Vacant_Details_url = url + 'get_vacant_property_list';
         setIsLoading(true);
         console.log('Request URL:', Vacant_Details_url);
 
@@ -161,7 +161,7 @@ console.log(allData);
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
     setPropId(item.property_id);
-    console.log(item.image_path,"lklhkjhjiehdi");
+    // console.log(item.image_path,"lklhkjhjiehdi");
     return (
       <>
       {item.result ? null : (
@@ -226,7 +226,7 @@ console.log(allData);
                     setAddress(item?.location);
                     setPropId(item?.property_id);
                   
-                    console.log('property id..', item.property_id);
+                    // console.log('property id..', item.property_id);
                   }}>
                   <MaterialCommunityIcons
                     name={'dots-horizontal'}
@@ -323,7 +323,7 @@ console.log(allData);
 
         <RBSheet
           ref={refRBSheet3}
-          height={230}
+          height={180}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {

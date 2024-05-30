@@ -34,18 +34,18 @@ const data = [
       />
     ),
   },
-  {
-    id: "3",
-    key: "AddManually",
-    title: "Add tenant manually",
-    Icon: (
-      <MaterialCommunityIcons
-        name={"account-circle-outline"}
-        size={20}
-        color={_COLORS.Kodie_GreenColor}
-      />
-    ),
-  },
+  // {
+  //   id: "3",
+  //   key: "AddManually",
+  //   title: "Add tenant manually",
+  //   Icon: (
+  //     <MaterialCommunityIcons
+  //       name={"account-circle-outline"}
+  //       size={20}
+  //       color={_COLORS.Kodie_GreenColor}
+  //     />
+  //   ),
+  // },
 ];
 
 export default InviteTenantModal = (props) => {
@@ -68,9 +68,9 @@ export default InviteTenantModal = (props) => {
           navigation.navigate("Invitefriend");
           handleClosePopup()
         }
-        if (item.id === "3") {
-          refRBSheet.current.open();
-        }
+        // if (item.id === "3") {
+        //   refRBSheet.current.open();
+        // }
       }}
     >
       <View

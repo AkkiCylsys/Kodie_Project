@@ -58,6 +58,7 @@ const VacantPropertiesList = props => {
             SortedData={sortByDate}
             upArrow={sortOrder == 'asc'?'long-arrow-up':'long-arrow-down'}
             downArrow={sortOrder == 'asc'? 'long-arrow-down':'long-arrow-up'}
+            placeholder={"Search Property"}
           />
         </View>
         <DividerIcon style={VacantPropertiesListStyle.divider} />
