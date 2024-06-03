@@ -24,45 +24,6 @@ import Share from 'react-native-share';
 import {useNavigation} from '@react-navigation/native';
 import FileViewer from 'react-native-file-viewer';
 
-const Property_documents = [
-  'All',
-  'Pre+post inspection reports',
-  'Property images',
-  'Property floor plan',
-];
-
-const Lease_documents = [
-  'All',
-  'Rental invoices',
-  'Lease agreement',
-  'Expense bills',
-];
-
-const Tenant_documents = [
-  'All',
-  'Tenant screening report',
-  'Copy of ID without photo',
-  'Copy of ID with photo',
-];
-const data = [
-  {
-    id: '1',
-    pdfName: 'Pre+post inspection reports',
-    pdfSize: '4.8MB',
-  },
-  {
-    id: '2',
-    pdfName: 'Pre-inspection-checklist.pdf',
-    pdfSize: '1.3MB',
-  },
-  {
-    id: '3',
-    pdfName: 'Pre-inspection-checklist.pdf',
-    pdfSize: '2.2MB',
-  },
-];
-
-// ----data come from dropdown and define these condition
 const handleApply = selectedOptions => {
   console.log('Clear Action');
 };
@@ -81,6 +42,7 @@ export default Documents = props => {
     getUploadedDocumentsByModule('Tenant');
   }, [isfocused]);
   const property_id = props.property_id;
+  console.log("property_id..",property_id)
   // alert(props.property_id);
   const [value, setValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -314,8 +276,7 @@ export default Documents = props => {
   // Api intrigation ......
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
-    const getDocument_url = url + `tanant_details/get/document/${property_id}`;
-    // const getDocument_url = url + `tanant_details/get/document/${15}`;
+    const getDocument_url = url + `tanant_details/get/documentby/${property_id}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
     axios
@@ -323,7 +284,6 @@ export default Documents = props => {
       .then(response => {
         console.log('API Response getDocuments:', response?.data);
         if (response?.data?.success === true) {
-          // alert(response?.data?.message);
           setUploadDocData(response?.data?.data);
           console.log('getAlluploadDocData..', response?.data?.data);
         } else {
@@ -334,7 +294,6 @@ export default Documents = props => {
       .catch(error => {
         console.error('API failed AllDocuments', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -389,7 +348,6 @@ export default Documents = props => {
                 propertyDocByTenantlength,
               );
               break;
-            // Add cases for other module names if needed
             default:
               break;
           }

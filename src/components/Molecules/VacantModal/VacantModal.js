@@ -94,7 +94,7 @@ const data1 = [
 
 const VacantModal = props => {
   const propertyId = props?.propertyId;
-  console.log('propertyId.VacantModal..', propertyId);
+  // console.log('propertyId.VacantModal..', propertyId);
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const handleCloseModal = () => {
@@ -145,8 +145,10 @@ const VacantModal = props => {
             if (item.id === '3') {
               navigation.navigate('PropertyReview', {
                 propertyid: propertyId,
-                propertyView: 'propertyView',
+                // propertyView: 'propertyView',
                 DocTab: 'DocTab',
+                propertyListing: 'propertyListing',
+
               });
               handleCloseModal();
             }

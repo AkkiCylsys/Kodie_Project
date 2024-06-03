@@ -468,47 +468,76 @@ const RentalOffer = props => {
     }
   };
 
+  // const handleSubmit = () => {
+  //   const formData = {
+  //     ...inputValues,
+  //     ...personalDetails,
+  //     ...employmentStatus,
+  //   };
+
+  //   console.log("inputValues ......",inputValues)
+  //   console.log("personalDetails ......",personalDetails)
+  //   const resultData = {
+  //     propertyDetails: {},
+  //     employmentDetails: {},
+  //     incomeDetails: {},
+  //     rentalDetails: {},
+  //     peopleStayDetails: {},
+  //     rentalHistoryDetails: {},
+  //     preferenceDetails: {},
+  //     personalDetails: {},
+  //     employmentStatus: {},
+  //   };
+
+  //   const processQuestions = (questions, category) => {
+  //     questions.forEach(questionItem => {
+  //       const value = formData[questionItem.tqm_Question_code];
+  //       resultData[category][questionItem.tqm_Question_code] =
+  //         value !== undefined ? value : '';
+  //     });
+  //   };
+
+  //   processQuestions(question, 'propertyDetails');
+  //   processQuestions(employeeQues, 'employmentDetails');
+  //   processQuestions(earnIncome, 'incomeDetails');
+  //   processQuestions(rentailDetails, 'rentalDetails');
+  //   processQuestions(peopalStay, 'peopleStayDetails');
+  //   processQuestions(rental_History, 'rentalHistoryDetails');
+  //   processQuestions(preference, 'preferenceDetails');
+
+  //   resultData.personalDetails = {...personalDetails};
+  //   resultData.employmentStatus = {...employmentStatus};
+
+  //   console.log('Result Data:', resultData);
+  //   return resultData;
+  // };
+
   const handleSubmit = () => {
-    const formData = {
-      ...inputValues,
-      ...personalDetails,
-      ...employmentStatus,
+    const allQuestions = [
+      ...question,
+      ...employeeQues,
+      ...earnIncome,
+      ...rentailDetails,
+      ...peopalStay,
+      ...rental_History,
+      ...preference,
+    ];
+  
+    const allData = {};
+    allQuestions.forEach(q => {
+      const value = inputValues[q.tqm_Question_code];
+      allData[q.id] = value !== undefined ? value : null;
+    });
+  
+    const jsonData = {
+      "allData": allData
     };
-
-    const resultData = {
-      propertyDetails: {},
-      employmentDetails: {},
-      incomeDetails: {},
-      rentalDetails: {},
-      peopleStayDetails: {},
-      rentalHistoryDetails: {},
-      preferenceDetails: {},
-      personalDetails: {},
-      employmentStatus: {},
-    };
-
-    const processQuestions = (questions, category) => {
-      questions.forEach(questionItem => {
-        const value = formData[questionItem.tqm_Question_code];
-        resultData[category][questionItem.tqm_Question_code] =
-          value !== undefined ? value : '';
-      });
-    };
-
-    processQuestions(question, 'propertyDetails');
-    processQuestions(employeeQues, 'employmentDetails');
-    processQuestions(earnIncome, 'incomeDetails');
-    processQuestions(rentailDetails, 'rentalDetails');
-    processQuestions(peopalStay, 'peopleStayDetails');
-    processQuestions(rental_History, 'rentalHistoryDetails');
-    processQuestions(preference, 'preferenceDetails');
-
-    resultData.personalDetails = {...personalDetails};
-    resultData.employmentStatus = {...employmentStatus};
-
-    console.log('Result Data:', resultData);
-    return resultData;
+  
+    console.log('JSON Data:', jsonData);
+    return jsonData;
   };
+  
+  
   const renderQuestionComponent = (question, index) => {
     // console.log("Question inside the details...",question)
     switch (question.tqm_Question_type) {
