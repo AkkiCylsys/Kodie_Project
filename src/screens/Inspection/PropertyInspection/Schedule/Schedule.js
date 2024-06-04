@@ -73,32 +73,6 @@ console.log("account_id",account_id);
   useEffect(()=>{getInspectionDetails();
     Area_key();
   },[])
-  // const getPersonalDetails = async () => {
-  //   setIsLoading(true);
-  //   const url = Config.BASE_URL;
-  //   const apiUrl =
-  //     url + `getAccount_details/${account_id}`;
-  //   console.log('PersonalDetails_url..', apiUrl);
-  //   await axios
-  //     .get(apiUrl)
-  //     .then(response => {
-  //       console.log('API getAccount_details:', response?.data?.data[0]);
-  //       if (
-  //         response?.data?.data &&
-  //         Array.isArray(response.data.data) &&
-  //         response.data.data.length > 0
-  //       ) {
-  //         setAccountDetails(response?.data?.data[0]);
-  //       } else {
-  //         console.error('Invalid response data format:', response?.data);
-  //       }
-  //       setIsLoading(false);
-  //     })
-  //     .catch(error => {
-  //       console.error('API Error PersonalDetails Dash:', error);
-  //       setIsLoading(false);
-  //     });
-  // };
   const getInspectionDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -197,6 +171,7 @@ console.log("account_id",account_id);
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             RightButtonborderColor={_COLORS.Kodie_BlackColor}
             onPressRightButton={props?.rescheduleInspection}
+            onPressLeftButton={props?.CancelInspection}
           />
         </View>
         <DividerIcon />
@@ -204,26 +179,6 @@ console.log("account_id",account_id);
         <RowTexts leftText={'Landlord Rep'} rightText={'John MacDonald'} />
         <RowTexts leftText={'Tenant Rep'} rightText={Inspection_Detail?.v_TIM_ADD_ATTENDENCE} />
         <DividerIcon color={_COLORS.Kodie_WhiteColor} />
-
-        {/* <Text style={ScheduleCss.inspections}>{'Add attendees'}</Text>
-        <TouchableOpacity>
-          <View style={ScheduleCss.TextInputView}>
-            <TextInput
-              value={Inspection_Detail?.v_TIM_ADD_ATTENDENCE}
-              placeholder={'Add people attending the inspection'}
-              style={ScheduleCss.input}
-              // onChange={text => setContractor(text)}
-              palceholderColor={_COLORS.Kodie_MediumGrayColor}
-              editable={false}
-            />
-            <Feather
-                  name={'user-plus'}
-                  size={22}
-                  color={_COLORS.Kodie_GrayColor}
-                  style={{ marginRight: 10 }}
-                />
-          </View>
-        </TouchableOpacity> */}
         <DividerIcon />
 
         <Text style={ScheduleCss.inspections}>
