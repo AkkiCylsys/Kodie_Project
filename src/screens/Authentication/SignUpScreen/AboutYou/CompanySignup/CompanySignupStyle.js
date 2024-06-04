@@ -101,6 +101,7 @@ export default CompanySignupStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop:12
   },
   locationContainer: {
     flex: 1,

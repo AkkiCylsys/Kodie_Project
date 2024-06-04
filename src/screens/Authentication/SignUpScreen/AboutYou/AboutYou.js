@@ -962,7 +962,7 @@ export default AboutYou = props => {
               </View>
               {selectedselectJobTypesString == '' ? null : (
                 <View style={CompanySignupStyle.inputContainer}>
-                  <Text style={[CompanySignupStyle.typescommontext]}>
+                  <Text style={[LABEL_STYLES.commontext]}>
                     {'The type of service you perform'}
                   </Text>
                   <MultiSelect
@@ -993,7 +993,7 @@ export default AboutYou = props => {
               <View style={CompanySignupStyle.inputContainer}>
                 <View style={[CompanySignupStyle.commontextfield]}>
                   <View>
-                    <Text style={CompanySignupStyle.companycommontext}>
+                    <Text style={[LABEL_STYLES.commontext]}>
                       {'Company physical address'}
                     </Text>
                     <View style={CompanySignupStyle.locationConView}>

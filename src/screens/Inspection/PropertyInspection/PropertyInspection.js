@@ -62,12 +62,50 @@ useEffect(()=>{
       setIsLoading(false);
     }
   };
+  const CancleInspectionData = async () => {
+
+    try {
+      const detailData = {
+        TIM_KEY:TIM_KEY,
+      };
+      const url = Config.BASE_URL;
+      const Cancel_Inspection = url + 'inspection_details/cancel';
+
+      console.log('url..', Cancel_Inspection);
+      setIsLoading(true);
+      const response = await axios.put(Cancel_Inspection, detailData);
+      setIsLoading(false);
+      console.log('response_Cancel_Inspection..', response?.data);
+      if (response?.data?.success === true) {
+      console.log(response?.data?.message);
+      alert(response?.data?.message)
+      } else {
+        console.error('response_Cancel_Inspection_error:', response?.data?.error);
+        // alert('Oops something went wrong! Please try again later.');
+      }
+     
+    } catch (error) {
+      console.error('Error:', error);
+      // alert(error);
+      setIsLoading(false);
+    }
+  };
   const checkTabs = () => {
     switch (activeTab) {
       case "Tab1":
-        return <Schedule TIM_KEY={TIM_KEY} account_id={account_id} rescheduleInspection={()=>{props?.navigation?.navigate('CreateNewInspection',{TIM_KEY:TIM_KEY,InspectionView:'InspectionView'})}}/>;
+        return <Schedule 
+        TIM_KEY={TIM_KEY} 
+        account_id={account_id} 
+        rescheduleInspection={()=>{
+          props?.navigation?.navigate('CreateNewInspection',
+          {
+            TIM_KEY:TIM_KEY,
+            InspectionView:'InspectionView'
+          })}}
+          CancelInspection={CancleInspectionData}
+          />;
       case "Tab2":
-        return <Inspection />;
+        return <Inspection TIM_KEY={TIM_KEY} />;
       case "Tab3":
         return (
           <ReviewInspection
@@ -76,11 +114,7 @@ useEffect(()=>{
         );
 
       default:
-        return (
-          <View>
-            <Text>Schedule</Text>
-          </View>
-        );
+        return <Schedule/>
     }
   };
 

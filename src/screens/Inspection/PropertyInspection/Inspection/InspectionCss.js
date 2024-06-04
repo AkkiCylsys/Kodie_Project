@@ -32,7 +32,7 @@ export const InspectionCss = StyleSheet.create({
     marginLeft: 10,
   },
   flatListContainer: { flexDirection: "row", justifyContent: "space-between" },
-  ImageStyle: { height: 35, width: 35, alignSelf: "center" },
+  ImageStyle: {height: 35, width: 35, borderWidth:1,borderRadius:5 ,borderColor:_COLORS?.Kodie_MediumGrayColor,justifyContent:'center',alignSelf:'center'},
   rightIcon: {
     borderWidth: 1,
     borderRadius: 5,
