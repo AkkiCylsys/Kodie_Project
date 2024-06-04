@@ -173,11 +173,19 @@ export default PropertyFeature = props => {
         // setAdditionalFeaturesKeyValue(
         //   response?.data?.property_details[0]?.additional_key_features_id,
         // );
-        setAdditionalfeatureskey(response?.data?.property_details[0]?.additional_key_features);
-        const keyFeaturesId = response?.data?.property_details[0]?.additional_key_features_id;
-        const parsedKeyFeaturesId = typeof keyFeaturesId === 'string' ? JSON.parse(keyFeaturesId) : keyFeaturesId;
-        setAdditionalFeaturesKeyValue(Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : []);
-     
+        setAdditionalfeatureskey(
+          response?.data?.property_details[0]?.additional_key_features,
+        );
+        const keyFeaturesId =
+          response?.data?.property_details[0]?.additional_key_features_id;
+        const parsedKeyFeaturesId =
+          typeof keyFeaturesId === 'string'
+            ? JSON.parse(keyFeaturesId)
+            : keyFeaturesId;
+        setAdditionalFeaturesKeyValue(
+          Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : [],
+        );
+
         setLandArea(response?.data?.property_details[0]?.land_area);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
@@ -854,58 +862,67 @@ export default PropertyFeature = props => {
                 )}
               /> */}
               <MultiSelect
-      hideDropdown
-      items={additionalfeatureskey}
-      uniqueKey="paf_key"
-      onSelectedItemsChange={onSelectedItemsChange}
-      selectedItems={Array.isArray(additionalfeatureskeyvalue) ? additionalfeatureskeyvalue : []}
-      selectText="Add features such as pool, aircon, balcony etc."
-      searchInputPlaceholderText="Search Items..."
-      onChangeInput={item => {
-        setAdditionalFeaturesKeyValue(item);
-      }}
-      tagBorderColor={_COLORS.Kodie_BlackColor}
-      selectedItemTextColor={_COLORS.Kodie_GreenColor}
-      selectedItemIconColor={_COLORS.Kodie_GreenColor}
-      itemTextColor="#000"
-      displayKey="features_name"
-      searchInputStyle={{
-        color: _COLORS.Kodie_BlackColor,
-        borderColor: _COLORS.Kodie_GrayColor,
-        height: 40,
-        borderRadius: 5,
-        paddingHorizontal: 10,
-      }}
-      styleListContainer={{
-        paddingVertical: 10,
-        height: 200,
-      }}
-      styleRowList={{
-        height: 40,
-      }}
-      tagContainerStyle={{
-        borderWidth: 1,
-        height: 40,
-        backgroundColor: _COLORS.Kodie_BlackColor,
-      }}
-      tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
-      styleTextTag={{
-        fontSize: 14,
-        color: _COLORS.Kodie_WhiteColor,
-        fontFamily: FONTFAMILY.K_Medium,
-      }}
-      styleTextDropdown={{ marginLeft: 20 }}
-      styleDropdownMenu={{
-        flex: 1,
-        borderWidth: 1,
-        height: 50,
-        borderColor: _COLORS.Kodie_GrayColor,
-        marginTop: 10,
-        borderRadius: 8,
-      }}
-      submitButtonColor={_COLORS.Kodie_GreenColor}
-      submitButtonText={additionalfeatureskeyvalue.length > 0 ? 'Done' : 'Cancel'}
-    />
+                hideDropdown
+                items={additionalfeatureskey}
+                uniqueKey="paf_key"
+                noItemsText={
+                  'Feature being searched for is not found on the list.'
+                }
+                onSelectedItemsChange={onSelectedItemsChange}
+                selectedItems={
+                  Array.isArray(additionalfeatureskeyvalue)
+                    ? additionalfeatureskeyvalue
+                    : []
+                }
+                selectText="Add features such as pool, aircon, balcony etc."
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={item => {
+                  setAdditionalFeaturesKeyValue(item);
+                }}
+                tagBorderColor={_COLORS.Kodie_BlackColor}
+                selectedItemTextColor={_COLORS.Kodie_GreenColor}
+                selectedItemIconColor={_COLORS.Kodie_GreenColor}
+                itemTextColor="#000"
+                displayKey="features_name"
+                searchInputStyle={{
+                  color: _COLORS.Kodie_BlackColor,
+                  borderColor: _COLORS.Kodie_GrayColor,
+                  height: 40,
+                  borderRadius: 5,
+                  paddingHorizontal: 10,
+                }}
+                styleListContainer={{
+                  paddingVertical: 10,
+                  height: 200,
+                }}
+                styleRowList={{
+                  height: 40,
+                }}
+                tagContainerStyle={{
+                  borderWidth: 1,
+                  height: 40,
+                  backgroundColor: _COLORS.Kodie_BlackColor,
+                }}
+                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+                styleTextTag={{
+                  fontSize: 14,
+                  color: _COLORS.Kodie_WhiteColor,
+                  fontFamily: FONTFAMILY.K_Medium,
+                }}
+                styleTextDropdown={{marginLeft: 20}}
+                styleDropdownMenu={{
+                  flex: 1,
+                  borderWidth: 1,
+                  height: 50,
+                  borderColor: _COLORS.Kodie_GrayColor,
+                  marginTop: 10,
+                  borderRadius: 8,
+                }}
+                submitButtonColor={_COLORS.Kodie_GreenColor}
+                submitButtonText={
+                  additionalfeatureskeyvalue.length > 0 ? 'Done' : 'Cancel'
+                }
+              />
             </View>
             <View style={PropertyFeatureStyle.btnView}>
               <CustomSingleButton
