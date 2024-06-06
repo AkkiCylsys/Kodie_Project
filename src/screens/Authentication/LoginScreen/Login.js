@@ -237,6 +237,7 @@ export default Login = props => {
           alert(response?.data?.message);
         } else {
           setIsLoading(false);
+          alert(response?.data?.message)
         }
       })
       .catch(error => {

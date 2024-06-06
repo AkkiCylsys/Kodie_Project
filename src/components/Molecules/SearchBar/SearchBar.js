@@ -1,20 +1,32 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
-import { SearchBarStyle } from "./SearchBarStyle";
-import EvilIcons from "react-native-vector-icons/EvilIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Icon from "react-native-vector-icons/Ionicons";
-import { _COLORS, IMAGES } from "../../../Themes/index";
-const SearchBar = (props) => {
-  const [search, setSearch] = useState("");
+import React, {useState} from 'react';
+import {View, Text, TextInput, TouchableOpacity, Image} from 'react-native';
+import {SearchBarStyle} from './SearchBarStyle';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {_COLORS, IMAGES} from '../../../Themes/index';
+const SearchBar = props => {
+  let IconComponent;
 
-  const handleSearchChange = (text) => {
-    setSearch(text); // Update the search state
-    props.searchData(text); // Pass the search query to the parent component
+  switch (props?.iconSet) {
+    case 'AntDesign':
+      IconComponent = AntDesign;
+      break;
+    case 'EvilIcons':
+    default:
+      IconComponent = EvilIcons;
+      break;
+  }
+  const [search, setSearch] = useState('');
+
+  const handleSearchChange = text => {
+    setSearch(text);
+    props.searchData(text);
   };
   const truncatePlaceholder = (placeholder, maxLength) => {
     if (placeholder.length > maxLength) {
-      return placeholder.substring(0, maxLength - 3) + "...";
+      return placeholder.substring(0, maxLength - 3) + '...';
     }
     return placeholder;
   };
@@ -26,10 +38,11 @@ const SearchBar = (props) => {
           {
             height: props.height ? props.height : 45,
             marginTop: props.marginTop ? props.marginTop : 20,
-            marginHorizontal:props?.marginHorizontal? props?.marginHorizontal : 16,
+            marginHorizontal: props?.marginHorizontal
+              ? props?.marginHorizontal
+              : 16,
           },
-        ]}
-      >
+        ]}>
         {props.frontSearchIcon ? (
           <EvilIcons
             name="search"
@@ -64,11 +77,9 @@ const SearchBar = (props) => {
               height: props.height,
               marginTop: props.marginTop ? props.marginTop : 20,
             },
-          ]}
-        >
-          <EvilIcons
-            name="location"
-            // name={props?.SearchIcon}
+          ]}>
+          <IconComponent
+            name={props?.filterIcon || 'location'}
             size={28}
             color={_COLORS.Kodie_MediumGrayColor}
           />
@@ -79,20 +90,19 @@ const SearchBar = (props) => {
           style={[
             SearchBarStyle.filterView,
             {
-              flexDirection:'row',
+              flexDirection: 'row',
               height: props.height,
               marginTop: props.marginTop ? props.marginTop : 20,
             },
           ]}
-          onPress={props?.SortedData}
-        >
-           <FontAwesome
+          onPress={props?.SortedData}>
+          <FontAwesome
             // name="location"
             // name={'long-arrow-up'}
             name={props?.upArrow}
             size={20}
             color={_COLORS.Kodie_MediumGrayColor}
-            style={{alignSelf:'center'}}
+            style={{alignSelf: 'center'}}
           />
           <FontAwesome
             // name="location"
@@ -100,10 +110,8 @@ const SearchBar = (props) => {
             name={props?.downArrow}
             size={20}
             color={_COLORS.Kodie_MediumGrayColor}
-            style={{alignSelf:'center'}}
-
+            style={{alignSelf: 'center'}}
           />
-         
         </TouchableOpacity>
       ) : null}
       {props.mapIcon ? (
@@ -127,8 +135,7 @@ const SearchBar = (props) => {
       {props.isButtonShow ? (
         <TouchableOpacity
           style={SearchBarStyle.buttonView}
-          onPress={props.onPress}
-        >
+          onPress={props.onPress}>
           <Text style={SearchBarStyle.buttonText}>{props.buttonName}</Text>
         </TouchableOpacity>
       ) : null}
@@ -136,8 +143,8 @@ const SearchBar = (props) => {
   );
 };
 SearchBar.defaultProps = {
-  placeholder: "Search",
- upArrow:'long-arrow-up',
- downArrow:'long-arrow-down'
+  placeholder: 'Search',
+  upArrow: 'long-arrow-up',
+  downArrow: 'long-arrow-down',
 };
 export default SearchBar;

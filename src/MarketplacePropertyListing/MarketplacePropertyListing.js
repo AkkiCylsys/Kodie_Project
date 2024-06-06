@@ -15,7 +15,6 @@ import {MarketplacePropertyListingStyle} from './MarketplacePropertyListingStyle
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {_COLORS, IMAGES, BANNERS} from '../Themes';
 import AddBiddingDetails from '../components/Molecules/AddBiddingDetails/AddBiddingDetails';
-import InviteTenant from '../screens/Landlord/InviteTenant/InviteTenant';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import {Config} from '../Config';
 import {CommonLoader} from '../components/Molecules/ActiveLoader/ActiveLoader';

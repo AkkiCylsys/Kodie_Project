@@ -145,10 +145,10 @@ const AddBiddingDetails = props => {
         setBidData(response?.data);
 
         if (response?.data.success === true) {
-          Alert.alert('Success !', response?.data.message);
+          Alert.alert('Success!', response?.data.message);
           handleSaveClick();
         } else {
-          Alert.alert('Error !', response?.data.message);
+          Alert.alert('Error!', response?.data.message);
           setIsLoading(false);
         }
       })

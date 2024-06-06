@@ -54,7 +54,6 @@ const DocumentDetails = props => {
   console.log('property_id..', property_id);
 
   useEffect(() => {
-    // getuploadedDocuments();
     getUploadedDocumentsByModule();
   }, []);
   const closeModal = () => {
@@ -94,7 +93,6 @@ const DocumentDetails = props => {
     const dataToSend = {
       fileId: fileKey,
     };
-    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
     const delete_url = url + 'deletedocument';
     console.log('url...', delete_url);
@@ -148,7 +146,6 @@ const DocumentDetails = props => {
 
       if (response?.data?.success === true) {
         alert(response?.data?.message);
-        // props.navigation.pop();
         getUploadedDocumentsByModule();
       } else {
         alert(response?.data?.message);
@@ -156,12 +153,6 @@ const DocumentDetails = props => {
     } catch (error) {
       console.error('API failed uploadDocument', error);
       alert(error);
-      // Handle network errors more gracefully
-      // if (!error.response) {
-      //   alert("Network error. Please check your internet connection.");
-      // } else {
-      //   alert(error.response?.data?.message);
-      // }
     } finally {
       setIsLoading(false);
     }
@@ -177,11 +168,6 @@ const DocumentDetails = props => {
           err && console.log(err);
         });
     }, 300);
-    // try {
-    //   await Share.open({url: filePath});
-    // } catch (error) {
-    //   console.error('Error sharing PDF file:', error);
-    // }
   };
   const downloadviewFile = async () => {
     setIsLoading(true);
@@ -220,7 +206,6 @@ const DocumentDetails = props => {
       if (isIOS) {
         FileViewer.open(res.data, {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -230,7 +215,6 @@ const DocumentDetails = props => {
       } else {
         FileViewer.open(res.path(), {showOpenWithDialog: true})
           .then(() => {
-            // Alert.alert('Success', 'File downloaded and viewed successfully');
             setIsLoading(false);
           })
           .catch(error => {
@@ -243,33 +227,6 @@ const DocumentDetails = props => {
       console.error('Error downloading file:', error);
       Alert.alert('Error', 'Failed to download file');
     }
-  };
-  const getuploadedDocuments = () => {
-    const url = Config.BASE_URL;
-    const getDocument_url = url + `tanant_details/get/document/${property_id}`;
-    console.log('Request URL:', getDocument_url);
-    setIsLoading(true);
-    axios
-      .get(getDocument_url)
-      .then(response => {
-        console.log('API Response getDocuments:', response?.data);
-        if (response?.data?.success === true) {
-          // alert(response?.data?.message);
-          setUploadDocData(response?.data?.data);
-          console.log('uploadDocData..', response?.data?.data);
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed uploadedDocuments', error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
   };
   const getUploadedDocumentsByModule = () => {
     const url = Config.BASE_URL;
@@ -328,16 +285,11 @@ const DocumentDetails = props => {
     );
   };
   const GetuploadedDocumentrender = ({item, index}) => {
-    // setFileKey(item.PDUM_FILE_KEY);
     setFileName(item.PDUM_FILE_NAME);
     return (
       <>
         <View style={DocumentDetailStyle.container}>
           <View style={DocumentDetailStyle.pdfInfo}>
-            {/* <Image
-              source={IMAGES.document}
-              style={DocumentDetailStyle.pdfIcon}
-            /> */}
             <FontAwesome
               name="file-pdf-o"
               size={35}
@@ -425,9 +377,7 @@ const DocumentDetails = props => {
     config(options)
       .fetch('GET', image_URL)
       .then(res => {
-        // Showing alert after successful downloading
         console.log('res -> ', JSON.stringify(res));
-        // alert("Image Downloaded Successfully.");
         alert('File Downloaded Successfully.');
         setIsLoading(false);
         closeModal();
@@ -457,39 +407,6 @@ const DocumentDetails = props => {
         style={{
           marginHorizontal: 16,
         }}>
-        {/* <View style={{}}>
-          <CustomSingleButton
-            leftImage={IMAGES.uploadIcon}
-            isLeftImage={true}
-            borderColor={_COLORS.Kodie_TransparentColor}
-            _ButtonText={"Select Documents"}
-            backgroundColor={_COLORS.Kodie_lightGreenColor}
-            onPress={() => {
-              selectDoc();
-            }}
-            disabled={isLoading ? true : false}
-          />
-        </View> */}
-        {/* <View>
-          <Text style={DocumentDetailStyle.property_doc_text}>
-            {folderId == 1
-              ? "Property documents"
-              : folderId == 2
-              ? "Lease documents"
-              : folderId == 3
-              ? "Tenant documents"
-              : "Property documents"}
-          </Text>
-        </View> */}
-
-        {/* <FlatList
-          data={selectFile}
-          scrollEnabled
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{}}
-          keyExtractor={(item, index) => index}
-          renderItem={DocumentsData}
-        /> */}
         <View style={{marginVertical: 18}}>
           <Text style={DocumentDetailStyle.upload_doc_text}>
             {'Upload documents'}

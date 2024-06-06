@@ -1,10 +1,10 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image, FlatList} from 'react-native';
-import {InviteTenantStyle} from './InviteTenantStyle';
+import {ProspectsTenantStyle} from './ProspectsTenantStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../services/CommonServices';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
-import {_COLORS, IMAGES} from '../../../Themes/index';
+import {_COLORS, FONTFAMILY, IMAGES} from '../../../Themes/index';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import StarRating from 'react-native-star-rating';
@@ -16,41 +16,14 @@ import axios from 'axios';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {Config} from '../../../Config';
 import {useNavigation} from '@react-navigation/native';
-const data = [
-  {
-    id: '1',
-    name: 'Jason S',
-    name1: 'Stathom',
-    looking_For: 'Home',
-    location: 'Sydney',
-    budget: '$580 per week',
-  },
-  {
-    id: '2',
-    name: 'Mesut S',
-    rating: '4.0',
-    view: '100',
-    looking_For: 'flat',
-    location: 'Sydney',
-    budget: '$580 per week',
-  },
-  {
-    id: '3',
-    name: 'Jack B',
-    rating: '3.6',
-    view: '50',
-    looking_For: 'Apartment',
-    location: 'Sydney',
-    budget: '$580 per week',
-  },
-];
 
-export default InviteTenant = props => {
+export default ProspectsTenant = props => {
   const navigation = useNavigation();
   const [rating, setRating] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [inviteTenant, setInviteTenant] = useState([]);
   const [inviteTenantALl, setInviteTenantAll] = useState([]);
+  const [selectedBtnId, setSelectedBtnId] = useState(null);
   const refRBSheet = useRef();
   // Get APi bind first user show bydefault showing here....
   const searchInviteTenant = () => {};
@@ -92,45 +65,43 @@ export default InviteTenant = props => {
   const tenantData = ({item, index}) => {
     return (
       <>
-        <View style={InviteTenantStyle.usermainView}>
+        <View style={ProspectsTenantStyle.usermainView}>
           <View>
-            <TouchableOpacity style={InviteTenantStyle.usericon}>
+            <TouchableOpacity style={ProspectsTenantStyle.usericon}>
               <Image source={IMAGES.userImage} />
             </TouchableOpacity>
           </View>
-          <View style={InviteTenantStyle.nameView}>
-            <Text style={InviteTenantStyle.nameText}>
+          <View style={ProspectsTenantStyle.nameView}>
+            <Text style={ProspectsTenantStyle.nameText}>
               {item.UAD_FIRST_NAME}
             </Text>
-            <Text style={InviteTenantStyle.nameText}>{item.UAD_LAST_NAME}</Text>
+            <Text style={ProspectsTenantStyle.nameText}>
+              {item.UAD_LAST_NAME}
+            </Text>
           </View>
 
-          <View style={InviteTenantStyle.starStyle}>
-            <View style={InviteTenantStyle.bindstarview}>
-              <StarRating
-                disabled={false}
-                maxStars={1}
-                rating={rating}
-                fullStarColor={_COLORS.Kodie_lightGreenColor}
-                emptyStarColor={_COLORS.Kodie_LightGrayColor}
-                starSize={20}
-                selectedStar={rating => setRating(rating)}
+          <View style={ProspectsTenantStyle.starStyle}>
+            <View style={ProspectsTenantStyle.bindstarview}>
+              <AntDesign
+                name="star"
+                size={20}
+                color={_COLORS.Kodie_lightGreenColor}
               />
-              <Text style={InviteTenantStyle.starratingStyle}>4.6 (231)</Text>
+              <Text style={ProspectsTenantStyle.starratingStyle}>4.6(231)</Text>
             </View>
-            <View style={InviteTenantStyle.verifiedView}>
-              <Text style={InviteTenantStyle.verifiedtext}>Not verified</Text>
+            <View style={ProspectsTenantStyle.verifiedView}>
+              <Text style={ProspectsTenantStyle.verifiedtext}>
+                Not verified
+              </Text>
             </View>
           </View>
-          <View style={InviteTenantStyle.menuiconview}>
-            <TouchableOpacity>
-              <AntDesign
-                name="hearto"
-                size={25}
-                color={_COLORS.Kodie_GrayColor}
-                style={InviteTenantStyle.heartimg}
-              />
-            </TouchableOpacity>
+          <View style={ProspectsTenantStyle.menuiconview}>
+            <AntDesign
+              name="hearto"
+              size={25}
+              color={_COLORS.Kodie_GrayColor}
+              style={ProspectsTenantStyle.heartimg}
+            />
             <TouchableOpacity
               onPress={() => {
                 refRBSheet.current.open();
@@ -139,39 +110,62 @@ export default InviteTenant = props => {
                 name="dots-three-horizontal"
                 size={20}
                 color={_COLORS.Kodie_GrayColor}
-                style={InviteTenantStyle.closeIcon}
+                style={ProspectsTenantStyle.closeIcon}
               />
             </TouchableOpacity>
           </View>
         </View>
-        <View style={InviteTenantStyle.Maindescription}>
-          <View style={InviteTenantStyle.description}>
-            <View style={InviteTenantStyle.desc_View}>
-              <Text style={InviteTenantStyle.desc_heading}>
+        <View style={ProspectsTenantStyle.Maindescription}>
+          <View style={ProspectsTenantStyle.description}>
+            <View style={ProspectsTenantStyle.desc_View}>
+              <Text style={ProspectsTenantStyle.desc_heading}>
                 {'Looking for : '}
               </Text>
-              <Text style={InviteTenantStyle.desc_value}>
+              <Text style={ProspectsTenantStyle.desc_value}>
                 {item.looking_For}
               </Text>
             </View>
-            <View style={InviteTenantStyle.desc_View}>
-              <Text style={InviteTenantStyle.desc_heading}>
+            <View style={ProspectsTenantStyle.desc_View}>
+              <Text style={ProspectsTenantStyle.desc_heading}>
                 {'Location : '}
               </Text>
-              <Text style={InviteTenantStyle.desc_value}>
+              <Text style={ProspectsTenantStyle.desc_value}>
                 {item.UAD_CURR_PHYSICAL_ADD}
               </Text>
             </View>
-            <View style={InviteTenantStyle.desc_View}>
-              <Text style={InviteTenantStyle.desc_heading}>{'Budget : '}</Text>
-              <Text style={InviteTenantStyle.desc_value}>{item.budget}</Text>
+            <View style={ProspectsTenantStyle.desc_View}>
+              <Text style={ProspectsTenantStyle.desc_heading}>
+                {'Budget : '}
+              </Text>
+              <Text style={ProspectsTenantStyle.desc_value}>{item.budget}</Text>
             </View>
             <TouchableOpacity>
-              <Text style={InviteTenantStyle.readtext}>{'Read more'}</Text>
+              <Text style={ProspectsTenantStyle.readtext}>{'Read more'}</Text>
             </TouchableOpacity>
           </View>
+          <View>
+            <View style={ProspectsTenantStyle.screeningView}>
+              <Entypo
+                name="dot-single"
+                size={25}
+                color={_COLORS.Kodie_DarkOrange}
+                style={{
+                  alignSelf: 'center',
+                }}
+              />
+              <Text style={ProspectsTenantStyle.screeningText}>
+                {'Failed screening'}
+              </Text>
+            </View>
+            <Text style={ProspectsTenantStyle.residentText}>
+              {'Resident score:'}
+            </Text>
+            <View style={ProspectsTenantStyle.residentScoreView}>
+              <Text style={ProspectsTenantStyle.scoretext}>{'475'}</Text>
+            </View>
+          </View>
         </View>
-        <View style={InviteTenantStyle.RowBtnView}>
+        {/* <View style={ProspectsTenantStyle.RowBtnView}>
           <RowButtons
             leftButtonHeight={50}
             RightButtonHeight={50}
@@ -184,13 +178,51 @@ export default InviteTenant = props => {
             RightButtonTextColor={_COLORS.Kodie_WhiteColor}
             onPressRightButton={() => navigation.navigate('PropertyDetails')}
           />
+        </View> */}
+        <View style={ProspectsTenantStyle.RowBtnView}>
+          <RowButtons
+            LeftButtonText="View Profile"
+            leftButtonbackgroundColor={
+              selectedBtnId !== item.ATD_KEY
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            LeftButtonTextColor={
+              selectedBtnId !== item.ATD_KEY
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            LeftButtonborderColor={
+              selectedBtnId !== item.ATD_KEY
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_LightWhiteColor
+            }
+            onPressLeftButton={() => setSelectedBtnId(null)}
+            RightButtonText="Add to property"
+            RightButtonbackgroundColor={
+              selectedBtnId === item.ATD_KEY
+                ? _COLORS.Kodie_lightGreenColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonTextColor={
+              selectedBtnId === item.ATD_KEY
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+            RightButtonborderColor={
+              selectedBtnId === item.ATD_KEY
+                ? _COLORS.Kodie_GrayColor
+                : _COLORS.Kodie_LightWhiteColor
+            }
+            onPressRightButton={() => setSelectedBtnId(item.ATD_KEY)}
+          />
         </View>
         <DividerIcon />
       </>
     );
   };
   return (
-    <View style={InviteTenantStyle.mainContainer}>
+    <View style={ProspectsTenantStyle.mainContainer}>
       <SearchBar
         filterImage={IMAGES.filter}
         isFilterImage
@@ -199,6 +231,8 @@ export default InviteTenant = props => {
         placeholder={'Search tenants'}
         frontSearchIcon
         searchData={searchInviteTenant}
+        filterIcon="filter"
+        iconSet="AntDesign"
       />
       <DividerIcon borderBottomWidth={8} color={_COLORS.Kodie_LiteWhiteColor} />
       <FlatList
@@ -223,7 +257,7 @@ export default InviteTenant = props => {
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
-          container: InviteTenantStyle.bottomModal_container,
+          container: ProspectsTenantStyle.bottomModal_container,
         }}>
         <TenantData onClose={CloseUp} />
       </RBSheet>
