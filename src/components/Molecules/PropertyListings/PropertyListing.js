@@ -34,7 +34,7 @@ const PropertyListing = props => {
     refRBSheet3.current.close();
   };
   const [expandedItems, setExpandedItems] = useState([]);
-  const [Vacant_data, setVacantData] = useState([]);
+  const [sortVacantData, setSortVacantData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [propId, setPropId] = useState(0);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
@@ -48,13 +48,14 @@ const PropertyListing = props => {
   const filteredUsers = props?.filteredUsers;
   const searchQuery = props?.searchQuery;
   const allData = props?.allData;
+  const vacantData = props?.vacantData;
   // console.log(allData);
-  const totalPages = Math.ceil(Vacant_data.length / itemsPerPage);
+  // const totalPages = Math.ceil(Vacant_data.length / itemsPerPage);
 
   // Slice data based on current page
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentData = Vacant_data.slice(startIndex, endIndex);
+  // const currentData = Vacant_data.slice(startIndex, endIndex);
 
   const nextPage = () => {
     if (currentPage < totalPages) {
@@ -144,18 +145,6 @@ const PropertyListing = props => {
       Alert.alert('Worning', error?.response?.data?.message);
     }
   };
-
-  // useEffect(() => {
-  //   if (isvisible) {
-  //     get_Vacant_Details();
-  //   }
-  // }, [isvisible]);
-  useEffect(() => {
-    if (allData) {
-      // Update Vacant_data or any other logic with allData if needed
-      setVacantData(allData);
-    }
-  }, [allData]);
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
     setPropId(item.property_id);
@@ -304,23 +293,6 @@ const PropertyListing = props => {
           </View>
         )}
         <DividerIcon />
-
-        <RBSheet
-          ref={refRBSheet2}
-          height={760}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: PropertyListingCss.bottomModal_container,
-          }}>
-          <AddBiddingDetails />
-        </RBSheet>
-
         <RBSheet
           ref={refRBSheet3}
           height={180}
@@ -393,12 +365,10 @@ const PropertyListing = props => {
   return (
     <>
       <FlatList
-        data={searchQuery ? filteredUsers : props?.vacantData}
+        data={searchQuery ? filteredUsers : vacantData}
         renderItem={propertyData1_render}
         keyExtractor={item => item.property_id}
       />
-
-      {/* {isLoading ? <CommonLoader /> : null} */}
     </>
   );
 };

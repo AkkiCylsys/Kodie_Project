@@ -17,22 +17,25 @@ const VacantPropertiesList = props => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState('desc'); // Default sorting order is descending
   const [vacantData, setVacantData] = useState([]);
-  const [allData, setAllData] = useState([]);
 
   useEffect(() => {
     get_Vacant_Details();
   }, []);
-  const sortByDate = () => {
-    const sortedData = [...vacantData].sort((a, b) => {
-      console.log('Sorting:', a.property_id, b.property_id);
-      return sortOrder === 'asc'
-        ? a.property_id - b.property_id
-        : b.property_id - a.property_id;
-    });
-    console.log('Sorted Data:', sortedData);
-    setVacantData(sortedData);
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  const swipeVacantList = async () => {
+    const newData = [...vacantData];
+
+    if (newData.length > 1) {
+      const firstIndex = 0;
+      const lastIndex = newData.length - 1;
+      [newData[firstIndex], newData[lastIndex]] = [
+        newData[lastIndex],
+        newData[firstIndex],
+      ];
+    }
+    console.log('Swapped Data:', newData);
+    await setVacantData(newData);
   };
+
   const searchVacantProperty = query => {
     setSearchQuery(query);
     const filtered = query
@@ -42,7 +45,6 @@ const VacantPropertiesList = props => {
             item.property_type.toLowerCase().includes(query.toLowerCase()),
         )
       : vacantData;
-    console.log('filtered.........', filtered);
     setFilteredUsers(filtered);
   };
 
@@ -62,7 +64,7 @@ const VacantPropertiesList = props => {
       }
     } catch (error) {
       console.error('API failed Vacant_Details', error);
-      alert('An error occurred while fetching vacant details');
+      // alert('An error occurred while fetching vacant details');
     } finally {
       setIsLoading(false);
     }
@@ -81,7 +83,7 @@ const VacantPropertiesList = props => {
             updownSearch
             height={45}
             searchData={searchVacantProperty}
-            SortedData={sortByDate}
+            SortedData={swipeVacantList}
             upArrow={sortOrder == 'asc' ? 'long-arrow-up' : 'long-arrow-down'}
             downArrow={sortOrder == 'asc' ? 'long-arrow-down' : 'long-arrow-up'}
             placeholder={'Search Property'}
@@ -92,7 +94,6 @@ const VacantPropertiesList = props => {
           <PropertyListing
             filteredUsers={filteredUsers}
             searchQuery={searchQuery}
-            allData={allData}
             vacantData={vacantData}
             get_Vacant_Details={get_Vacant_Details}
           />

@@ -159,7 +159,7 @@ export default PropertyImages = props => {
           selectedVideos: selectedVideos,
           editMode: editMode,
         });
-        setMultiImageName([])
+        // setMultiImageName([])
       } else {
         console.error('Save Account Details error:', response?.data?.error);
         alert('Oops something went wrong! Please try again later.');
@@ -359,8 +359,7 @@ export default PropertyImages = props => {
           selectedVideos: selectedVideos,
         });
         console.log('Save Account Details', response?.data);
-        setMultiImageName([])
-
+        // setMultiImageName([])
       } else {
         console.log('Save Account Details error:', response?.data?.error);
         alert('Oops Somthing went wrong! please try again later.');
