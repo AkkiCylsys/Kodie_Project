@@ -6,7 +6,6 @@ import {
   Image,
   Alert,
   SafeAreaView,
-
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import Modal from 'react-native-modal';
@@ -24,12 +23,13 @@ import {Config} from '../../../Config';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import InviteTenantModal from '../InviteTenantModal/InviteTenantModal';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-const PropertyListing = (props) => {
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+const PropertyListing = props => {
+  const refRBSheet = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet3 = useRef();
- const isvisible = useIsFocused()
- const navigation=useNavigation()
+  const isvisible = useIsFocused();
+  const navigation = useNavigation();
   const Closemodal = () => {
     refRBSheet3.current.close();
   };
@@ -39,16 +39,16 @@ const PropertyListing = (props) => {
   const [propId, setPropId] = useState(0);
   const [isDeleteData_Clicked, setIsDeleteData_Clicked] = useState(false);
   const [isDeleteBottomSheetVisible, setIsDeleteBottomSheetVisible] =
-  useState(false);
+    useState(false);
   const [propertyDelId, setPropertyDelId] = useState();
   const [Address, setAddress] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const itemsPerPage = 10;
-const filteredUsers= props?.filteredUsers;
-const searchQuery= props?.searchQuery;
-const allData= props?.allData;
-console.log(allData);
+  const filteredUsers = props?.filteredUsers;
+  const searchQuery = props?.searchQuery;
+  const allData = props?.allData;
+  // console.log(allData);
   const totalPages = Math.ceil(Vacant_data.length / itemsPerPage);
 
   // Slice data based on current page
@@ -78,8 +78,6 @@ console.log(allData);
     }
   };
 
-
- 
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -89,30 +87,30 @@ console.log(allData);
     setIsDeleteData_Clicked(false);
   };
   // Get Api Bind here...
-  const get_Vacant_Details = async () => {
-    try {
-        const url = Config.BASE_URL;
-        const Vacant_Details_url = url + '/get_vacant_property_list';
-        setIsLoading(true);
-        console.log('Request URL:', Vacant_Details_url);
+  // const get_Vacant_Details = async () => {
+  //   try {
+  //     const url = Config.BASE_URL;
+  //     const Vacant_Details_url = url + 'get_vacant_property_list';
+  //     setIsLoading(true);
+  //     console.log('Request URL:', Vacant_Details_url);
 
-        const response = await axios.get(Vacant_Details_url);
+  //     const response = await axios.get(Vacant_Details_url);
 
-        console.log('API Response Vacant_Details_url:', response?.data);
-        
-        if (response?.data?.success === true) {
-            setVacantData(response?.data?.property_details);
-            props?.onVacantDataFetch(response?.data?.property_details);
-        } else {
-            alert(response?.data?.message);
-        }
-    } catch (error) {
-        console.error('API failed Vacant_Details', error);
-        alert('An error occurred while fetching vacant details');
-    } finally {
-        setIsLoading(false);
-    }
-};
+  //     console.log('API Response Vacant_Details_url:', response?.data);
+
+  //     if (response?.data?.success === true) {
+  //       setVacantData(response?.data?.property_details);
+  //       props?.onVacantDataFetch(response?.data?.property_details);
+  //     } else {
+  //       alert(response?.data?.message);
+  //     }
+  //   } catch (error) {
+  //     console.error('API failed Vacant_Details', error);
+  //     alert('An error occurred while fetching vacant details');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const propertyDelete = async () => {
     setIsDeleteData_Clicked(true);
@@ -136,8 +134,9 @@ console.log(allData);
           'Property Deleted',
           response?.data?.message || 'The property was deleted successfully.',
         );
-        get_Vacant_Details();
-
+        refRBSheet.current.close();
+        // get_Vacant_Details();
+        props.get_Vacant_Details();
         setIsLoading(false);
       }
     } catch (error) {
@@ -146,12 +145,11 @@ console.log(allData);
     }
   };
 
-  useEffect(() => {
-    if(isvisible){
-    get_Vacant_Details();
-   
-    }
-  }, [isvisible]);
+  // useEffect(() => {
+  //   if (isvisible) {
+  //     get_Vacant_Details();
+  //   }
+  // }, [isvisible]);
   useEffect(() => {
     if (allData) {
       // Update Vacant_data or any other logic with allData if needed
@@ -161,125 +159,129 @@ console.log(allData);
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
     setPropId(item.property_id);
-    console.log(item.image_path,"lklhkjhjiehdi");
     return (
       <>
-      {item.result ? null : (
-    
-        <View style={PropertyListingCss.flatListContainer} key={item.property_id}>
-          <View style={PropertyListingCss.flat_MainView}>
-            <View style={PropertyListingCss.flexContainer}>
-              <Text style={PropertyListingCss.apartmentText}>
-                {item.property_type}
-              </Text>
-              <Text style={PropertyListingCss.commontext}>{item.state ? item.state : item.city}</Text>
-              <View style={PropertyListingCss.flat_MainView}>
-                <MaterialCommunityIcons
-                  name={'map-marker'}
-                  size={12}
-                  color={_COLORS.Kodie_GreenColor}
-                />
-                <Text style={PropertyListingCss.locationText}>
-                  {item.location}
+        {item.result ? null : (
+          <View
+            style={PropertyListingCss.flatListContainer}
+            key={item.property_id}>
+            <View style={PropertyListingCss.flat_MainView}>
+              <View style={PropertyListingCss.flexContainer}>
+                <Text style={PropertyListingCss.apartmentText}>
+                  {item.property_type}
                 </Text>
-              </View>
-            </View>
-            {item.image_path && item.image_path.length > 0 ? (
-              <Image
-                source={{uri: item?.image_path[0]}}
-                style={PropertyListingCss.imageStyle}
-                resizeMode="cover"
-              />
-            ) : (
-              <View
-                style={[
-                  PropertyListingCss.imageStyle,
-                  {justifyContent: 'center'},
-                ]}>
-                <Text style={PropertyListingCss.Img_found}>
-                  {'Image not found'}
+                <Text style={PropertyListingCss.commontext}>
+                  {item.state ? item.state : item.city}
                 </Text>
-              </View>
-            )}
-
-            <View style={PropertyListingCss.flexContainer}>
-              <View style={PropertyListingCss.noteStyle}>
-                <TouchableOpacity  
-                onPress={() => {navigation?.navigate('PropertyDetails', {
-                  propertyid: item.property_id,
-                  editMode: 'editMode',
-                });
-              }}
-                        >
-                  <SimpleLineIcons
-                    name="note"
-                    size={25}
-                    color={_COLORS.Kodie_LightGrayColor}
-                    resizeMode={'contain'}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsDeleteBottomSheetVisible(true);
-                    setPropertyDelId(item.property_id);
-                    // alert(propertyDelId);
-                    setAddress(item?.location);
-                    setPropId(item?.property_id);
-                  
-                    console.log('property id..', item.property_id);
-                  }}>
+                <View style={PropertyListingCss.flat_MainView}>
                   <MaterialCommunityIcons
-                    name={'dots-horizontal'}
-                    size={25}
-                    color={_COLORS.Kodie_LightGrayColor}
+                    name={'map-marker'}
+                    size={12}
+                    color={_COLORS.Kodie_GreenColor}
                   />
-                </TouchableOpacity>
+                  <Text style={PropertyListingCss.locationText}>
+                    {item.location}
+                  </Text>
+                </View>
               </View>
-              <TouchableOpacity
-                style={[
-                  PropertyListingCss.buttonView,
-                  {
-                    backgroundColor: item.isRentPanding
-                      ? _COLORS.Kodie_LightOrange
-                      : item.isRentReceived
-                      ? _COLORS.Kodie_mostLightGreenColor
-                      : _COLORS.Kodie_LightGrayColor,
-                  },
-                ]}
-                onPress={() => {
-                  refRBSheet3.current.open();
-                }}>
-                <Text
+              {item.image_path && item.image_path.length > 0 ? (
+                <Image
+                  source={{uri: item?.image_path[0]}}
+                  style={PropertyListingCss.imageStyle}
+                  resizeMode="cover"
+                />
+              ) : (
+                <View
                   style={[
-                    PropertyListingCss.buttonText,
+                    PropertyListingCss.imageStyle,
+                    {justifyContent: 'center'},
+                  ]}>
+                  <Text style={PropertyListingCss.Img_found}>
+                    {'Image not found'}
+                  </Text>
+                </View>
+              )}
+
+              <View style={PropertyListingCss.flexContainer}>
+                <View style={PropertyListingCss.noteStyle}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation?.navigate('PropertyDetails', {
+                        propertyid: item.property_id,
+                        editMode: 'editMode',
+                      });
+                    }}>
+                    <SimpleLineIcons
+                      name="note"
+                      size={25}
+                      color={_COLORS.Kodie_LightGrayColor}
+                      resizeMode={'contain'}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      refRBSheet.current.open();
+                      setIsDeleteBottomSheetVisible(true);
+                      setPropertyDelId(item.property_id);
+                      setAddress(item?.location);
+                      setPropId(item?.property_id);
+                    }}>
+                    <MaterialCommunityIcons
+                      name={'dots-horizontal'}
+                      size={25}
+                      color={_COLORS.Kodie_LightGrayColor}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  style={[
+                    PropertyListingCss.buttonView,
                     {
-                      color: item.isRentPanding
-                        ? _COLORS.Kodie_DarkOrange
+                      backgroundColor: item.isRentPanding
+                        ? _COLORS.Kodie_LightOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_MediumGrayColor,
+                        ? _COLORS.Kodie_mostLightGreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                   onPress={() => {
                     refRBSheet3.current.open();
                   }}>
-                  {'+ invite Tenant'}
-                </Text>
-              </TouchableOpacity>
+                  <Text
+                    style={[
+                      PropertyListingCss.buttonText,
+                      {
+                        color: item.isRentPanding
+                          ? _COLORS.Kodie_DarkOrange
+                          : item.isRentReceived
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_MediumGrayColor,
+                      },
+                    ]}
+                    onPress={() => {
+                      refRBSheet3.current.open();
+                    }}>
+                    {'+ invite Tenant'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
+            <DividerIcon
+              IsShowIcon
+              iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+              onPress={() => {
+                if (isExpanded) {
+                  setExpandedItems(
+                    expandedItems.filter(
+                      property_id => property_id !== item.property_id,
+                    ),
+                  );
+                } else {
+                  setExpandedItems([...expandedItems, item.property_id]);
+                }
+              }}
+            />
           </View>
-          <DividerIcon
-            IsShowIcon
-            iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
-            onPress={() => {
-              if (isExpanded) {
-                setExpandedItems(expandedItems.filter(property_id => property_id !== item.property_id));
-              } else {
-                setExpandedItems([...expandedItems, item.property_id]);
-              }
-            }}
-          />
-        </View>
         )}
         {isExpanded && (
           <View style={PropertyListingCss.expandedContent}>
@@ -302,9 +304,7 @@ console.log(allData);
           </View>
         )}
         <DividerIcon />
-      
 
-     
         <RBSheet
           ref={refRBSheet2}
           height={760}
@@ -323,7 +323,7 @@ console.log(allData);
 
         <RBSheet
           ref={refRBSheet3}
-          height={230}
+          height={180}
           closeOnPressMask={false}
           customStyles={{
             wrapper: {
@@ -334,9 +334,34 @@ console.log(allData);
             },
             container: PropertyListingCss.bottomModal_container,
           }}>
-          <InviteTenantModal  onClose={Closemodal}/>
+          <InviteTenantModal onClose={Closemodal} />
         </RBSheet>
-        <Modal
+        <RBSheet
+          ref={refRBSheet}
+          height={330}
+          closeOnPressMask={true}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: PropertyListingCss.bottomModal_container,
+          }}>
+          <VacantModal
+            propertyId={propId}
+            onDelete={propertyDelete}
+            onCloseModal={handleCloseModal}
+            isDeletePropertyClicked={isDeleteData_Clicked}
+            onDeleteData={FinalDeleteProperty}
+            Address={Address}
+            onClose={() => {
+              refRBSheet.current.close();
+            }}
+          />
+        </RBSheet>
+        {/* <Modal
         isVisible={isDeleteBottomSheetVisible}
         onBackdropPress={() => setIsDeleteBottomSheetVisible(true)}
         style={[
@@ -361,19 +386,20 @@ console.log(allData);
           Address={Address}
           onClose={CloseUp}
         />
-      </Modal>
-    
+      </Modal> */}
       </>
     );
   };
   return (
-  
-        <>
-      <FlatList data={searchQuery?filteredUsers:Vacant_data} renderItem={propertyData1_render}  keyExtractor={(item) => item.property_id}/>
-      
-      {isLoading ? <CommonLoader /> : null}
-    </>
+    <>
+      <FlatList
+        data={searchQuery ? filteredUsers : props?.vacantData}
+        renderItem={propertyData1_render}
+        keyExtractor={item => item.property_id}
+      />
 
+      {/* {isLoading ? <CommonLoader /> : null} */}
+    </>
   );
 };
 
