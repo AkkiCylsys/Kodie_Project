@@ -1026,7 +1026,7 @@ export default AboutYou = props => {
                           onChangeText={setCompanyLocation}
                           onFocus={() => {
                             setIsSearch(true);
-                            props.IsSearch();
+                            // props.IsSearch();
                           }}
                           placeholder="Search location"
                           placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -1059,7 +1059,6 @@ export default AboutYou = props => {
                 />
               </View>
             </View>
-            {isLoading ? <CommonLoader /> : null}
           </View>
         );
       default:
@@ -1188,7 +1187,8 @@ export default AboutYou = props => {
                   numColumns={2}
                 />
                 {kodieDescribeYourselfId.includes(3) ||
-                kodieDescribeYourselfId.includes(10) ||
+                kodieDescribeYourselfId.includes(10) || 
+                kodieDescribeYourselfId.includes(2) ||
                 kodieDescribeYourselfId.length > 2 ? (
                   <View>
                     <Text style={AboutYouStyle.want_Heading}>

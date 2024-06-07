@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1095041111738",
+    "firebase_url": "https://kodiedemo-default-rtdb.firebaseio.com",
     "project_id": "kodiedemo",
     "storage_bucket": "kodiedemo.appspot.com"
   },
@@ -12,7 +13,12 @@
           "package_name": "com.kodie"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBtZn35PtCrPf8L76kPiORE1SlLuFRj7eg"
@@ -20,7 +26,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1095041111738-eml343q3fd04m0nrurdj1vh59gef0naj.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.kodie"
+              }
+            }
+          ]
         }
       }
     }

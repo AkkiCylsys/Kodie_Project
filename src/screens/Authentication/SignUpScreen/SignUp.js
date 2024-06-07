@@ -196,11 +196,11 @@ export default SignUp = props => {
     } catch (error) {
       if (error?.response || error?.response?.status === 400) {
         Alert.alert(
-          'Warning !',
+          'Warning!',
           'Failed to send OTP via email. Please try again later.',
         );
       } else if (error?.response || error?.response?.status === 401) {
-        Alert.alert('Warning !', 'Your Password is Wrong.');
+        Alert.alert('Warning!', 'Your Password is Wrong.');
       } else {
         // alert('An error occurred. Please try again later.');
       }

@@ -407,7 +407,7 @@ export default PropertyImages = props => {
             <View style={PropertyImagesStyle.slider_view}>
               <SliderBox
                 images={
-                  editMode
+                  editMode || property_id
                     ? [...(serverimagePath || []), ...imagePaths]
                     : [...imagePaths]
                 }
@@ -546,7 +546,7 @@ export default PropertyImages = props => {
               _ButtonText={'Next'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               onPress={() => {
-                if (editMode) {
+                if (editMode || property_id) {
                   handleSaveUpdateImage();
                 } else {
                   handleSaveImage();

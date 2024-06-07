@@ -8,6 +8,7 @@ import {
   Pressable,
   SafeAreaView,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {SignUpVerificationStyle} from './SignUpVerificationStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
@@ -67,7 +68,7 @@ export default SignUpVerification = props => {
         // otp: value,
       })
       .then(response => {
-        // console.log('API Response send otp:', response?.data);
+        console.log('API Response send otp:', response?.data);
         if (response?.data?.success === true) {
           alert(response?.data?.message);
           setVerificationCode('');
@@ -117,10 +118,10 @@ export default SignUpVerification = props => {
       })
       .catch(error => {
         if (error?.response && error?.response?.status === 404) {
-          alert('Incorrect OTP. Please try again.');
+          Alert.alert("Warning!",'Incorrect OTP. Please try again.');
           setValue('');
         } else if (error?.response && error?.response?.status === 422) {
-          alert('Time up. Please try again.');
+          Alert.alert("Warning!",'Time up. Please try again.');
           setValue('');
         } else {
           // alert('An error occurred. Please try again later.');
