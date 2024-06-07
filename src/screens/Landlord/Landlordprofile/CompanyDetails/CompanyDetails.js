@@ -677,7 +677,30 @@ export default CompanyDetails = props => {
       setIsLoading(false);
     }
   };
+  let lastOtherIndex = -1;
+  IndiservicesData.forEach((item, index) => {
+    if (item.lookup_description === "Other") {
+      lastOtherIndex = index;
+    }
+  });
 
+  // Filter data to keep only the last "Other" item
+  const filteredIndiservicesData = IndiservicesData.filter((item, index) => {
+    return item.lookup_description !== "Other" || index === lastOtherIndex;
+  });
+
+  let lastComOtherIndex = -1;
+  servicesData.forEach((item, index) => {
+    if (item.lookup_description === "Other") {
+      lastComOtherIndex = index;
+    }
+  });
+
+  // Filter data to keep only the last "Other" item
+  const filteredCompservicesData = servicesData.filter((item, index) => {
+    return item.lookup_description !== "Other" || index === lastComOtherIndex;
+  });
+ 
   const checkTabs = () => {
     switch (tabValue) {
       case 'IndividualInProfile':
@@ -710,7 +733,7 @@ export default CompanyDetails = props => {
                     iconStyle={IndividualProfileStyle.iconStyle}
                     search
                     activeColor={_COLORS.Kodie_MidLightGreenColor}
-                    data={IndiservicesData}
+                    data={filteredIndiservicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"
                     placeholder="Select item"
@@ -858,7 +881,7 @@ export default CompanyDetails = props => {
                     iconStyle={CompanyInProfileStyle.iconStyle}
                     search
                     activeColor={_COLORS.Kodie_MidLightGreenColor}
-                    data={servicesData}
+                    data={filteredCompservicesData}
                     labelField="lookup_description"
                     valueField="lookup_key"
                     placeholder="Select item"
