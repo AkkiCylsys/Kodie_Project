@@ -1037,7 +1037,6 @@ export default AboutYou = props => {
                 />
               </View>
             </View>
-            {isLoading ? <CommonLoader /> : null}
           </View>
         );
       default:

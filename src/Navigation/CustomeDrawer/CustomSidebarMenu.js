@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -17,8 +17,10 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {logoutActionCreator} from '../../redux/Actions/Authentication/AuthenticationApiCreator';
 import {useDispatch, useSelector} from 'react-redux';
-import { DrawerActions } from '@react-navigation/native';
+import {DrawerActions} from '@react-navigation/native';
+import RBSheet from 'react-native-raw-bottom-sheet';
 const CustomSidebarMenu = props => {
+  const refRBSheet = useRef();
   const [selectedId, setselectedId] = useState('');
   const dispatch = useDispatch();
   const check = data => {
@@ -54,7 +56,7 @@ const CustomSidebarMenu = props => {
         break;
       case 'Contractors':
         setselectedId('Contractors');
-        props.navigation.navigate('Managingcontractors'); 
+        props.navigation.navigate('Managingcontractors');
         break;
       case 'Notices':
         setselectedId('Notices');
@@ -104,9 +106,7 @@ const CustomSidebarMenu = props => {
           {'Properties'}
         </Text>
         <TouchableOpacity
-          style={[
-            DrawerStyle.SubHeadingView,
-          ]}
+          style={[DrawerStyle.SubHeadingView]}
           onPress={() => check('MarketplacePropertyListing')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
@@ -121,9 +121,7 @@ const CustomSidebarMenu = props => {
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
+          style={[DrawerStyle.rowFlex]}
           onPress={() => check('RentalOffers')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
@@ -138,9 +136,7 @@ const CustomSidebarMenu = props => {
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
+          style={[DrawerStyle.rowFlex]}
           onPress={() => check('vacantProperties')}>
           <View style={DrawerStyle.IconView}>
             <Octicons
@@ -156,9 +152,7 @@ const CustomSidebarMenu = props => {
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
+          style={[DrawerStyle.rowFlex]}
           onPress={() => check('Inspection')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
@@ -173,9 +167,7 @@ const CustomSidebarMenu = props => {
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
+          style={[DrawerStyle.rowFlex]}
           onPress={() => check('Tetants')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
@@ -192,11 +184,8 @@ const CustomSidebarMenu = props => {
 
         <Text style={[DrawerStyle.HeaderText, {marginTop: 15}]}>{'Jobs'}</Text>
         <TouchableOpacity
-          style={[
-            DrawerStyle.SubHeadingView,
-          ]}
-          onPress={() => check('MaintenanceJobs')}
-        >
+          style={[DrawerStyle.SubHeadingView]}
+          onPress={() => check('MaintenanceJobs')}>
           <View style={DrawerStyle.IconView}>
             <Feather
               name="list"
@@ -210,9 +199,7 @@ const CustomSidebarMenu = props => {
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
+          style={[DrawerStyle.rowFlex]}
           onPress={() => check('Contractors')}>
           <View style={DrawerStyle.IconView}>
             <MaterialIcons
@@ -228,11 +215,8 @@ const CustomSidebarMenu = props => {
         <DividerIcon marginBottom={3} marginTop={5} />
         <Text style={[DrawerStyle.HeaderText, {marginTop: 15}]}>{'Other'}</Text>
         <TouchableOpacity
-          style={[
-            DrawerStyle.SubHeadingView,
-          ]}
-          onPress={() => check('Notices')}
-        >
+          style={[DrawerStyle.SubHeadingView]}
+          onPress={() => check('Notices')}>
           <View style={DrawerStyle.IconView}>
             <Ionicons
               name="mail-unread-outline"
@@ -247,9 +231,7 @@ const CustomSidebarMenu = props => {
         <DividerIcon marginBottom={3} marginTop={5} />
 
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
+          style={[DrawerStyle.rowFlex]}
           onPress={() => check('Documents')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
@@ -265,11 +247,8 @@ const CustomSidebarMenu = props => {
         <DividerIcon marginBottom={3} marginTop={5} />
 
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
-          onPress={() => check('Reports')}
-        >
+          style={[DrawerStyle.rowFlex]}
+          onPress={() => check('Reports')}>
           <View style={DrawerStyle.IconView}>
             <MaterialIcons
               name="bar-chart"
@@ -283,11 +262,8 @@ const CustomSidebarMenu = props => {
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
-          onPress={() => check('Partners')}
-        >
+          style={[DrawerStyle.rowFlex]}
+          onPress={() => check('Partners')}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="seal"
@@ -301,10 +277,10 @@ const CustomSidebarMenu = props => {
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
         <TouchableOpacity
-          style={[
-            DrawerStyle.rowFlex,
-          ]}
-          onPress={() => check('Logout')}>
+          style={[DrawerStyle.rowFlex]}
+          onPress={() => {
+            refRBSheet.current.open();
+          }}>
           <View style={DrawerStyle.IconView}>
             <MaterialCommunityIcons
               name="logout"
@@ -317,6 +293,49 @@ const CustomSidebarMenu = props => {
           <Text style={DrawerStyle.SubHeading}>{'Logout'}</Text>
         </TouchableOpacity>
         <DividerIcon marginBottom={3} marginTop={5} />
+        <RBSheet
+          ref={refRBSheet}
+          height={150}
+          closeOnDragDown={false}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: DrawerStyle.bottomModal_container,
+          }}>
+          <View style={DrawerStyle.popupcantainer}>
+            <Text style={DrawerStyle.popuptext}>Logout from device ?</Text>
+            <MaterialIcons
+              name="close"
+              size={24}
+              color="black"
+              onPress={() => {
+                refRBSheet.current.close();
+              }}
+              style={{marginTop: 8}}
+            />
+          </View>
+          <View style={DrawerStyle.ViewBtn}>
+            <TouchableOpacity
+              onPress={() => {
+                refRBSheet.current.close();
+              }}
+              style={{height: 68}}>
+              <Text style={DrawerStyle.CancelBtn}>Cancel</Text>
+            </TouchableOpacity>
+            <View style={{margin: 5}} />
+            <TouchableOpacity
+              onPress={LogOut}
+              // onPress={check('Logout')}
+              style={{height: 68, alignSelf: 'center'}}>
+              <Text style={DrawerStyle.LogoutBtn}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </RBSheet>
       </ScrollView>
     </SafeAreaView>
   );
