@@ -1,11 +1,11 @@
 import {createStore, applyMiddleware, combineReducers} from 'redux';
-import authenticationReducer from '../Reducers/AuthenticationReducer/AuthenticationReducer'
-import subscriptionReducer from '../Reducers/SubscriptionReducer/SubscriptionReducer'
-
-
+import authenticationReducer from '../Reducers/AuthenticationReducer/AuthenticationReducer';
+import subscriptionReducer from '../Reducers/SubscriptionReducer/SubscriptionReducer';
+import AddPropertyStepsReducer from '../Reducers/AddPropertyStepReducer/AddPropertyStepReducer';
 const appReducers = combineReducers({
   authenticationReducer,
    subscriptionReducer,
+   AddPropertyStepsReducer
   // abcReducer
 
 });

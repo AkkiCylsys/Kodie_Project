@@ -22,9 +22,10 @@ import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {Config} from '../../../../Config';
 import axios from 'axios';
-import {useSelector} from 'react-redux';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import MultiSelect from 'react-native-multiple-select';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 const renderDataItem = item => {
@@ -43,8 +44,12 @@ const renderDataItem = item => {
   );
 };
 export default PropertyFeature = props => {
+  const addPropertySecondStepData = useSelector(
+    state => state.AddPropertyStepsReducer.data,
+  );
+  console.log('addPropertySecondStepData...', addPropertySecondStepData);
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-
   const [currentPage, setCurrentPage] = useState(1);
   const location = props?.route?.params?.location;
   const property_value = props?.route?.params?.property_value;
@@ -94,13 +99,12 @@ export default PropertyFeature = props => {
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
   const [florSize, setFlorSize] = useState('');
   const [landArea, setLandArea] = useState('');
+  const [selectedAutoList, setSelectedAutoList] = useState('');
   const [property_Detail, setProperty_Details] = useState([]);
+  const [savePropertyId, setSavePropertyId] = useState('');
   const [activeColor, setActiveColor] = useState(
     _COLORS.Kodie_MidLightGreenColor,
-  ); // Initial active color
-
-  // const [furnished, setFurnished] = useState([]);
-  // const [preFriendly, setProperty_Details] = useState([]);
+  );
   console.log(
     'propertyDetail....',
     property_Detail?.additional_key_features_id,
@@ -113,12 +117,10 @@ export default PropertyFeature = props => {
     additional_features();
     console.log('step 2');
     setActiveColor(_COLORS.Kodie_MidLightGreenColor);
-    propertyid > 0 ? DetailsData() : null;
+    propertyid > 0 || addPropertySecondStepData ? DetailsData() : null;
     try {
-      // Parsing the JSON string to an array of objects
       const keyFeaturesArray = JSON.parse(keyFeaturesString);
 
-      // Iterating through the array to find the value associated with "Bedrooms"
       for (const feature of keyFeaturesArray) {
         if (feature.Bedrooms !== undefined) {
           setCountBedroom(feature.Bedrooms);
@@ -135,9 +137,17 @@ export default PropertyFeature = props => {
     }
   }, [keyFeaturesString]);
   console.log('CountBedroom', CountBedroom, CountBathroom);
+
+  // const getinputData = ()=>{
+  //   setFlorSize(addPropertySecondStepData?.UPD_FLOOR_SIZE)
+  //   setLandArea(addPropertySecondStepData?.UPD_LAND_AREA)
+  // }
+
   const DetailsData = async () => {
     const detailData = {
-      property_id: propertyid,
+      property_id: addPropertySecondStepData
+        ? addPropertySecondStepData
+        : propertyid,
     };
     console.log('detailData', detailData);
     const url = Config.BASE_URL;
@@ -170,9 +180,6 @@ export default PropertyFeature = props => {
         setSelectedButtonFurnished(furnishedFeatureId);
         setSelectedButtonDeposit(yesFeatureId);
         setFlorSize(response?.data?.property_details[0]?.floor_size);
-        // setAdditionalFeaturesKeyValue(
-        //   response?.data?.property_details[0]?.additional_key_features_id,
-        // );
         setAdditionalfeatureskey(
           response?.data?.property_details[0]?.additional_key_features,
         );
@@ -189,12 +196,10 @@ export default PropertyFeature = props => {
         setLandArea(response?.data?.property_details[0]?.land_area);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        // alert('Oops something went wrong! Please try again later.');
         setIsLoading(false);
       }
     } catch (error) {
       console.error('property_type error:', error);
-      // alert(error);
       setIsLoading(false);
     }
   };
@@ -250,7 +255,6 @@ export default PropertyFeature = props => {
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
-      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
@@ -302,10 +306,9 @@ export default PropertyFeature = props => {
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderLabel = ({position, stepStatus}) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
         : '#808080';
@@ -345,7 +348,7 @@ export default PropertyFeature = props => {
   const goBack = () => {
     props.navigation.pop();
   };
-  const property_details = () => {
+  const property_details = async () => {
     const url = Config.BASE_URL;
     const additionalApi = url + 'add_property_details';
     console.log('Request URL:', additionalApi);
@@ -358,7 +361,7 @@ export default PropertyFeature = props => {
       location_latitude: latitude,
       islocation: 1,
       property_description: propertyDesc,
-      property_type: property_value,
+      property_type: property_value > 0 ? property_value : 0,
       key_features: AllCountsData,
       additional_features: PreFriedly,
       additional_key_features: additionalfeatureskeyvalue,
@@ -369,7 +372,7 @@ export default PropertyFeature = props => {
       p_state: state,
       p_country: country,
     };
-    console.log('sdfs.', data);
+    console.log('Property feature data..', data);
     axios
       .post(additionalApi, {
         user: loginData?.Login_details?.user_id,
@@ -400,21 +403,20 @@ export default PropertyFeature = props => {
             'response?.data?.Property_id',
             response?.data?.Property_id,
           );
-
-          // setCurrentPage(currentPage + 1);
+          dispatch(
+            fetchAddPropertySecondStepsSuccess(response?.data?.Property_id),
+          );
           props.navigation.navigate('PropertyImages', {
             property_id: response?.data?.Property_id,
           });
           console.log('property_details....', response?.data);
         } else {
           console.error('property_details_error:', response?.data?.error);
-          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('property_details error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -432,13 +434,8 @@ export default PropertyFeature = props => {
         setIsLoading(false);
         console.log('additional_features....', response?.data);
         setAdditionalfeatureskey(response?.data?.key_features_details);
-        console.log(
-          'AdditionalFeaturesKey....',
-          response?.data?.key_features_details,
-        );
       } else {
         console.error('additional_features_error:', response?.data?.error);
-        // alert('Oops something went wrong! Please try again later.');
         setIsLoading(false);
       }
     } catch (error) {
@@ -464,7 +461,9 @@ export default PropertyFeature = props => {
       UPD_LAND_AREA: landArea,
       additional_key_features: additionalfeatureskeyvalue,
       autolist: selectedButtonId,
-      property_id: propertyid,
+      property_id: addPropertySecondStepData
+        ? addPropertySecondStepData
+        : propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
@@ -481,21 +480,19 @@ export default PropertyFeature = props => {
         console.log('update_property_details', response?.data);
         if (response?.data?.success === true) {
           setIsLoading(false);
-          // alert("update_property_details....", propertyid);
           props.navigation.navigate('PropertyImages', {
-            property_id: propertyid,
+            property_id: addPropertySecondStepData
+              ? addPropertySecondStepData
+              : propertyid,
             editMode: editMode,
           });
-          // setupdateProperty_Details(response?.data?.property_details);
         } else {
           console.error('update_property_detailserror:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('update_property_details error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -515,7 +512,6 @@ export default PropertyFeature = props => {
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
           currentPosition={currentPage}
-          // onPress={onStepPress}
           renderStepIndicator={renderStepIndicator}
           labels={stepLabels}
           stepCount={4}
@@ -731,7 +727,6 @@ export default PropertyFeature = props => {
                   onPressLeftButton={() => {
                     setSelectedButtonFurnished(false);
                     setSelectedButtonFurnishedId(67);
-                    // alert(selectedButtonId)
                   }}
                   RightButtonText={'Unfurnished'}
                   RightButtonbackgroundColor={
@@ -752,7 +747,6 @@ export default PropertyFeature = props => {
                   onPressRightButton={() => {
                     setSelectedButtonFurnished(true);
                     setSelectedButtonFurnishedId(68);
-                    // alert(selectedButtonId)
                   }}
                 />
               </View>
@@ -780,7 +774,6 @@ export default PropertyFeature = props => {
                   onPressLeftButton={() => {
                     setSelectedButtonDeposit(false);
                     setSelectedButtonDepositId(70);
-                    // alert(selectedButtonId)
                   }}
                   RightButtonText={'No'}
                   RightButtonbackgroundColor={
@@ -801,7 +794,6 @@ export default PropertyFeature = props => {
                   onPressRightButton={() => {
                     setSelectedButtonDeposit(true);
                     setSelectedButtonDepositId(71);
-                    // alert(selectedButtonId)
                   }}
                 />
               </View>
@@ -929,7 +921,7 @@ export default PropertyFeature = props => {
                 _ButtonText={'Next'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  if (propertyid) {
+                  if (propertyid || addPropertySecondStepData) {
                     updatePropertyDetails();
                   } else {
                     property_details();
@@ -938,18 +930,6 @@ export default PropertyFeature = props => {
                 disabled={isLoading ? true : false}
               />
             </View>
-            {/* <View style={PropertyFeatureStyle.btnView}>
-              <CustomSingleButton
-                _ButtonText={
-                  editMode
-                    ? 'Edit property features later'
-                    : 'Add property features later'
-                }
-                Text_Color={_COLORS.Kodie_BlackColor}
-                backgroundColor={_COLORS.Kodie_WhiteColor}
-                disabled={isLoading ? true : false}
-              />
-            </View> */}
             <TouchableOpacity
               style={PropertyFeatureStyle.goBack_View}
               onPress={() => {

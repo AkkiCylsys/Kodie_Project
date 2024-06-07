@@ -642,11 +642,8 @@ export default PropertyDetails = props => {
                   _ButtonText={'Next'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
-                    // handleLocation(location);
-                    // handlePropertyValue(property_value);
-                    // if (handleLocation() ||handlePropertyValue()) {
                     if (!location) {
-                      setError('Please enter a location.'); // Show error if location is empty
+                      setError('Please enter a location.');
                       return;
                     } else {
                       props.navigation.navigate('PropertyFeature', {
@@ -663,9 +660,6 @@ export default PropertyDetails = props => {
                         editMode: editMode,
                       });
                     }
-                    // setLocation("");
-                    // setPropertyDesc("");
-                    // setProperty_value("");
                   }}
                   disabled={isLoading ? true : false}
                 />

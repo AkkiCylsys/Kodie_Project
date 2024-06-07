@@ -39,9 +39,15 @@ import {
   useNavigation,
   useNavigationState,
 } from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import { clearPropertyData } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import {useDispatch, useSelector} from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReview = props => {
+  const addPropertySecondStepData = useSelector(
+    state => state.AddPropertyStepsReducer.data,
+  );
+  console.log('addPropertySecondStepData...', addPropertySecondStepData);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const property_id = props?.route?.params?.property_id;
@@ -782,6 +788,7 @@ export default PropertyReview = props => {
                     } else {
                       props.navigation.pop(4);
                       props?.navigation?.navigate('Properties');
+                      dispatch(fetchAddPropertySecondStepsSuccess());
                     }
                   }}
                 />

@@ -207,7 +207,7 @@ const ManageSubscription = props => {
               RightButtonText={'Subscribe'}
               onPressLeftButton={() =>
                 // props.navigation.navigate("ContractorProfile")
-                alert('Contact us pressed')
+                alert('Coming soon')
               }
               isShowRightButton={SubscriptionStatus == 'active' ? false : true}
               onPressRightButton={handleSubscribePress}
