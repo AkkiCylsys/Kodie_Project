@@ -2,7 +2,7 @@
 //ScreenNo:95
 //ScreenNo:96
 //ScreenNo:97
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,7 @@ import {InspectionCss} from './InspectionCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
@@ -24,6 +25,9 @@ import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import {Dropdown} from 'react-native-element-dropdown';
 import Bedroom from './Bedroom/Bedroom';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Config } from '../../../../Config';
+import axios from 'axios';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 const Data = [
   {
     id: 1,
@@ -82,13 +86,18 @@ const DropdownData = [
   {label: 'Living Room', value: '8'},
   {label: 'Roof', value: '9'},
 ];
-const Inspection = () => {
+const Inspection = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(null);
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
+  const [AreaKey, setAreaKey] = useState([]);
+
+  const TIM_KEY = props?.TIM_KEY;
+
+  console.log(" props?.",TIM_KEY);
   const navigateToScreen = id => {
     switch (id) {
       case 1:
@@ -106,17 +115,95 @@ const Inspection = () => {
     refRBSheet2.current.close();
     refRBSheet1.current.close();
   };
+  useEffect(()=>{
+    getInspectionAreas()
+  })
+  const getInspectionAreas = () => {
+    const url = Config.BASE_URL;
+    const AreaGetUrl = url + `get_inspection_area_details/${TIM_KEY}`;
+    console.log('Request URL:', AreaGetUrl);
+    setIsLoading(true);
+    axios
+      .get(AreaGetUrl)
+      .then(response => {
+        console.log('Selected_Address', response?.data);
+        if (response?.data?.success === true) {
+          console.log('Selected_Address....', response?.data?.data);
+          setAreaKey(response?.data?.data);
+          setIsLoading(false);
+        } else {
+          console.error('Selected_Address_error:', response?.data?.error);
+          // alert('Oops something went wrong! Please try again later.');
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('Selected_Address error:', error);
+        // alert(error);
+        setIsLoading(false);
+     });
+  }; 
   const Inspection_render = ({item}) => {
+    console.log(item);
+    let IconComponent;
+    let iconName = '';
+
+    switch (item.area_name) {
+        case 'Bathroom':
+            IconComponent = FontAwesome;
+            iconName = 'bathtub';
+            break;
+        case 'Bedroom':
+            IconComponent = FontAwesome;
+            iconName = 'bed';
+            break;
+        case 'Garden':
+            IconComponent = AntDesign;
+            iconName = 'grass';
+            break;
+        case 'Kitchen':
+            IconComponent = AntDesign;
+            iconName = 'kitchen';
+            break;
+        case 'Dining room':
+            IconComponent = AntDesign;
+            iconName = 'kitchen';
+            break;
+        case 'Living room':
+            IconComponent = AntDesign;
+            iconName = 'kitchen';
+            break;
+        case 'Exterior':
+            IconComponent = AntDesign;
+            iconName = 'kitchen';
+            break;
+        case 'Roof':
+            IconComponent = AntDesign;
+            iconName = 'kitchen';
+            break;
+        case 'Garage':
+            IconComponent = MaterialIcons;
+            iconName = 'garage';
+            break;
+        // Add cases for other areas if needed
+        default:
+            IconComponent = MaterialIcons;
+            iconName = 'home'; // Default icon
+            break;
+    }
     return (
       <>
-        <View style={InspectionCss.mainView}>
+        <View style={InspectionCss.mainView} key={item?.area_key_id}>
           <View style={InspectionCss.flatListContainer}>
             {!isEditing ? (
-              <Image
-                source={item.image}
-                style={InspectionCss.ImageStyle}
-                resizeMode={'center'}
-              />
+              <View style={InspectionCss.ImageStyle}>
+                               <IconComponent
+                name={iconName} 
+                size={20} 
+                color={_COLORS.Kodie_GreenColor} 
+                style={{alignSelf:'center'}} 
+                resizeMode={'center'}/>
+                </View>
             ) : (
               <AntDesign
                 name={'minuscircle'}
@@ -125,7 +212,7 @@ const Inspection = () => {
                 style={InspectionCss.IconStyle}
               />
             )}
-            <Text style={InspectionCss.editText}>{item.name}</Text>
+            <Text style={InspectionCss.editText}>{item.area_name}</Text>
           </View>
           {!isEditing ? (
             <TouchableOpacity
@@ -186,17 +273,18 @@ const Inspection = () => {
             height={40}
             marginBottom={16}
             width={'50%'}
-            onPress={() => {
-              refRBSheet1.current.open();
+            onPress={()=>{
+              refRBSheet1?.current?.open();
+              alert('klhdkujdsgjdsg')
             }}
             disabled={isLoading ? true : false}
           />
         ) : null}
         <FlatList
-          data={Data}
+          data={AreaKey}
           scrollEnabled
           showsVerticalScrollIndicator={false}
-          keyExtractor={item => item?.id}
+          keyExtractor={item => item?.area_key_id}
           renderItem={Inspection_render}
         />
       </View>
@@ -334,6 +422,7 @@ const Inspection = () => {
         </View>
       </RBSheet>
     </View>
+    {/* {isLoading ? <CommonLoader/> : null} */}
     </ScrollView>
   );
 };
