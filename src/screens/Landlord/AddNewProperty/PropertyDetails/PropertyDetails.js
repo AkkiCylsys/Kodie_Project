@@ -43,8 +43,13 @@ import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {BackHandler} from 'react-native';
 //import Geolocation from '@react-native-community/geolocation';
 import Geolocation from 'react-native-geolocation-service';
+import { useSelector } from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
+  const addPropertySecondStepData = useSelector(
+    state => state.AddPropertyStepsReducer.data,
+  );
+  console.log('addPropertySecondStepData...', addPropertySecondStepData);
   const isFocus = useIsFocused();
   const propertyid = props?.route?.params?.propertyid;
   const editMode = props?.route?.params?.editMode;
@@ -105,7 +110,7 @@ export default PropertyDetails = props => {
   );
   useEffect(() => {
     handleProperty_Type();
-    propertyid > 0 ? DetailsData() : null;
+    propertyid > 0 || addPropertySecondStepData ? DetailsData() : null;
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -115,7 +120,7 @@ export default PropertyDetails = props => {
   }, []);
   const DetailsData = async () => {
     const detailData = {
-      property_id: propertyid,
+      property_id: addPropertySecondStepData ?addPropertySecondStepData: propertyid,
     };
     console.log('detailData', detailData);
     const url = Config.BASE_URL;
