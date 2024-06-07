@@ -18,6 +18,10 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
 import {logos} from '../../../Themes/CommonVectors/Images';
 import {LoginStyles} from './LoginCss';
@@ -75,14 +79,46 @@ export default Login = props => {
   const deviceId = DeviceInfo.getDeviceId();
   const deviceType = DeviceInfo.getDeviceType();
   const [Fcm_token, setFcm_token] = useState('');
+  const [googleSignIn, setGoogleSignIn] = useState([]);
 
-  // useEffect(() => {
-  //   Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
-  //     language: 'en',
-  //   });
-  //   // checkpermissionlocation()
-  //   Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
-  // }, []);
+  // Login with google here ......
+
+  useEffect(() => {
+    handlemessage();
+    requestUserPermission();
+    const configureGoogleSignIn = () => {
+      GoogleSignin.configure({
+        webClientId:
+          '1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com',
+      });
+    };
+    configureGoogleSignIn();
+  }, []);
+  const signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log('userInfo....', userInfo);
+      setGoogleSignIn(userInfo);
+    } catch (error) {
+      console.log('Error during signIn:', error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        console.log('SIGN_IN_CANCELLED');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+        console.log('IN_PROGRESS');
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+        console.log('PLAY_SERVICES_NOT_AVAILABLE');
+      } else {
+        // some other error happened
+        console.log('Error occurred:', error.message);
+        console.log('Error stack trace:', error.stack);
+        console.log('Full error object:', error);
+      }
+    }
+  };
   const fetchCurrentLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -216,12 +252,9 @@ export default Login = props => {
     console.log(token, 'token');
     setFcm_token(token);
   };
-  useEffect(() => {
-    handlemessage();
-    requestUserPermission();
-  }, []);
+
   // Activate account Api  ...
-  const handleActivateAccount =async() => {
+  const handleActivateAccount = async () => {
     const url = Config.BASE_URL;
     const activateAccount = url + 'sendMail';
     console.log('Request URL:', activateAccount);
@@ -229,7 +262,7 @@ export default Login = props => {
     const activateAccount_Data = {
       email: email,
     };
-   await axios
+    await axios
       .post(activateAccount, activateAccount_Data)
       .then(response => {
         console.log('API Response activateAccount..', response?.data);
@@ -237,7 +270,7 @@ export default Login = props => {
           alert(response?.data?.message);
         } else {
           setIsLoading(false);
-          alert(response?.data?.message)
+          alert(response?.data?.message);
         }
       })
       .catch(error => {
@@ -376,7 +409,7 @@ export default Login = props => {
   const handleNewPassword = text => {
     setNewPassword(text);
     if (text.trim() === '') {
-      setNewPasswordError('New Password is required!.');
+      setNewPasswordError('New password is required.');
     } else {
       setNewPasswordError('');
     }
@@ -764,7 +797,8 @@ export default Login = props => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
                 // props.navigation.navigate("SignUpSteps");
                 // props.navigation.navigate("Account");
-                Alert.alert('Login with Google', 'Coming soon');
+                // Alert.alert('Login with Google', 'Coming soon');
+                signIn();
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
