@@ -19,7 +19,6 @@ import Details from './Details/Details';
 import Expenses from './Expenses/Expenses';
 import Documents from './Documents/Documents';
 
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import {Config} from '../../../../Config';
 import axios from 'axios';
@@ -39,49 +38,6 @@ import {BackHandler} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
-
-const Detail = [
-  {
-    id: '1',
-    images: IMAGES.BedroomIcon,
-    name: 'Bedrooms: 3',
-  },
-  {
-    id: '2',
-    images: IMAGES.Bathroom,
-    name: 'Bathrooms: 2',
-  },
-  {
-    id: '3',
-    images: IMAGES.Parking,
-    name: 'Garages: 1',
-  },
-  {
-    id: '4',
-    images: IMAGES.BedroomIcon,
-    name: 'Parkings: 1',
-  },
-  {
-    id: '5',
-    images: IMAGES.BedroomIcon,
-    name: 'Garden',
-  },
-  {
-    id: '6',
-    images: IMAGES.BedroomIcon,
-    name: 'Pool',
-  },
-  {
-    id: '7',
-    images: IMAGES.BedroomIcon,
-    name: 'Furnished',
-  },
-  {
-    id: '8',
-    images: IMAGES.BedroomIcon,
-    name: 'WiFi',
-  },
-];
 export default PropertyReviewDetails = props => {
   const dispatch = useDispatch();
   const property_id = props?.route?.params?.property_id;
@@ -106,7 +62,6 @@ export default PropertyReviewDetails = props => {
   const [additionalKeyFeatures, setAdditionalKeyFeatures] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
   const [like, setLike] = useState(false);
-
   const [addtionalFeaturesID, setAddtionalFeaturesID] = useState('');
   const [propertyDetailsClp, setPropertyDetailsClp] = useState(false);
   const [roomClp, setRoomClp] = useState(false);
@@ -134,11 +89,6 @@ export default PropertyReviewDetails = props => {
       <>
         <View style={DetailsStyle.DetailsView}>
           {Object.keys(item)[0] == 'Bedrooms' ? (
-            // (<Image
-            //     source={IMAGES.BedroomIcon}
-            //     style={DetailsStyle.DetailsIcon}
-            //   />)
-
             <MaterialCommunityIcons
               name="bed-double-outline"
               size={25}
@@ -146,10 +96,6 @@ export default PropertyReviewDetails = props => {
               resizeMode={'contain'}
             />
           ) : Object.keys(item)[0] == 'Bathrooms' ? (
-            // (
-            //   <Image source={IMAGES.Bathroom}
-            //   style={DetailsStyle.DetailsIcon} />
-            // )
             <MaterialCommunityIcons
               name="shower-head"
               size={25}
@@ -157,10 +103,6 @@ export default PropertyReviewDetails = props => {
               resizeMode={'contain'}
             />
           ) : Object.keys(item)[0] == 'Parking Space' ? (
-            // (
-            //   <Image source={IMAGES.Parking}
-            //   style={DetailsStyle.DetailsIcon} />
-            // )
             <Ionicons
               name="car-outline"
               size={25}
@@ -168,10 +110,6 @@ export default PropertyReviewDetails = props => {
               resizeMode={'contain'}
             />
           ) : (
-            // (
-            //   <Image source={IMAGES.Garden}
-            //   style={DetailsStyle.DetailsIcon} />
-            // )
             <MaterialCommunityIcons
               name="garage"
               size={25}
@@ -180,8 +118,7 @@ export default PropertyReviewDetails = props => {
             />
           )}
           <Text style={DetailsStyle.details_text}>
-            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}
-            {/* {`${key}: ${value}`} */}
+            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}          
           </Text>
         </View>
       </>
@@ -190,10 +127,6 @@ export default PropertyReviewDetails = props => {
   const renderItem = ({item}) => (
     <View style={DetailsStyle.DetailsView}>
       {item === 'Pool' ? (
-        // (
-        //   <Image source={IMAGES.Bathroom}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialIcons
           name="pool"
           size={25}
@@ -201,10 +134,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Garage' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="garage"
           size={25}
@@ -212,10 +141,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Balcony' ? (
-        //   (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="balcony"
           size={25}
@@ -223,10 +148,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Outdoor Area' ? (
-        // (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="table-chair"
           size={25}
@@ -234,10 +155,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Ensuite' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="shower"
           size={25}
@@ -245,10 +162,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Dishwasher' ? (
-        // (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="dishwasher"
           size={25}
@@ -256,10 +169,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Study' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="bookshelf"
           size={25}
@@ -267,10 +176,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Built in Robes' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="cupboard"
           size={25}
@@ -278,10 +183,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Air Conditioning' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="air-conditioner"
           size={25}
@@ -289,10 +190,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Solar Panels' ? (
-        // (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="solar-panel"
           size={25}
@@ -300,10 +197,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'Heating' ? (
-        //   (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <MaterialCommunityIcons
           name="fireplace"
           size={25}
@@ -311,10 +204,6 @@ export default PropertyReviewDetails = props => {
           resizeMode={'contain'}
         />
       ) : item === 'High Energy Efficiency' ? (
-        //  (
-        //   <Image source={IMAGES.BedroomIcon}
-        //   style={DetailsStyle.DetailsIcon} />
-        // )
         <SimpleLineIcons
           name="energy"
           size={25}
@@ -325,9 +214,9 @@ export default PropertyReviewDetails = props => {
       <Text style={DetailsStyle.details_text}>{item}</Text>
     </View>
   );
+  // Api intrigation start here..
   const fetchData = async () => {
     try {
-      // Fetch property details
       const detailData = {
         property_id: propertyView ? propertyid : property_id,
       };
@@ -345,7 +234,6 @@ export default PropertyReviewDetails = props => {
           'type of property....',
           response?.data?.property_details[0],
         );
-        // Fetch and process key features..........
         if (response?.data?.property_details[0].key_features) {
           const parsedData = JSON.parse(
             response?.data?.property_details[0].key_features.replace(/\\/g, ''),
@@ -358,7 +246,6 @@ export default PropertyReviewDetails = props => {
         setAdditionalKeyFeaturesString(additionalKeyFeatures);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        // alert('Oops something went wrong! Please try again later.');
       }
       const additionalFeatures_id =
         response?.data?.property_details[0].additional_features;
@@ -367,7 +254,6 @@ export default PropertyReviewDetails = props => {
       setAddtionalFeaturesID(is_additionalFeaturesid);
     } catch (error) {
       console.error('Error:', error);
-      // alert(error);
       setIsLoading(false);
     }
   };
@@ -382,67 +268,24 @@ export default PropertyReviewDetails = props => {
       console.error('Error parsing additional_key_features:', error);
     }
     const timeout = setTimeout(() => {
-      setNumColumns(2); // Change to the desired number of columns
-    }, 2000); // Change this delay as needed
+      setNumColumns(2);
+    }, 2000);
 
     return () => clearTimeout(timeout);
   }, [property_id, propertyid, additionalKeyFeaturesString]);
-  // useEffect(() => {
-  //   const backAction = () => {
-  //     // If you want to handle custom back behavior on specific screens
-  //     // Replace 'ScreenName' with the name of the screen where you want to provide specific navigation
-  //     if (props.navigation.isFocused() && props.navigation.canGoBack()) {
-  //       props.navigation.dispatch(CommonActions.goBack());
-  //       return true;
-  //     }
-  //     // If you want to exit the app when the back button is pressed on the home screen
-  //     if (props.navigation.isFocused()) {
-  //       BackHandler.exitApp();
-  //       return true;
-  //     }
-
-  //     return false;
-  //   };
-
-  //   const backHandler = BackHandler.addEventListener(
-  //     'hardwareBackPress',
-  //     backAction,
-  //   );
-
-  //   return () => backHandler.remove();
-  // }, [props.navigation]);
-
-  // Deependra backhandler ....
   useEffect(() => {
     const handleBackButton = () => {
-      // Do nothing or handle differently for this particular page
-      // props.navigation.navigate('BottomNav')
-      // props.navigation.dispatch(
-      //   CommonActions.reset({
-      //     index: 0,
-      //     routes: [
-      //       {name: 'Properties'}, // Replace 'Home' with the name of your initial screen
-      //     ],
-      //   }),
-      // );
       props.navigation.navigate('Properties');
-      // props.navigation.pop()
-      return true; // Prevent default behavior (exiting the app)
+      return true; 
     };
-
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
-
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
     };
   }, []);
-
-  // const imagePaths = MultiImageName.map((image) => image.path);
-
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
-      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
@@ -494,10 +337,9 @@ export default PropertyReviewDetails = props => {
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderLabel = ({position, stepStatus}) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage 
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
         : '#808080';
@@ -544,13 +386,7 @@ export default PropertyReviewDetails = props => {
           <>
             <Text style={DetailsStyle.welcome_Text}>
               {property_Detail?.property_description}
-              {/* Welcome to your new home! This beautiful 3 bedroom, 2 bathroom
-              apartment boasts modern interior finishes and a spacious extended
-              balcony. As you enter, you... */}
             </Text>
-            {/* <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            > */}
             <DividerIcon marginTop={10} />
             <Text style={[DetailsStyle.propery_det, {marginHorizontal: 16}]}>
               {'Key features'}
@@ -562,7 +398,6 @@ export default PropertyReviewDetails = props => {
               contentContainerStyle={{}}
               numColumns={numColumns}
               keyExtractor={item => item?.id}
-              // keyExtractor={(item, index) => index.toString()}
               renderItem={Detail_rander}
             />
             <DividerIcon />
@@ -578,7 +413,6 @@ export default PropertyReviewDetails = props => {
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />
-            {/* </View> */}
             {property_Detail?.additional_key_features_id === '[]' ? null : (
               <DividerIcon
                 borderBottomWidth={1}
@@ -676,7 +510,6 @@ export default PropertyReviewDetails = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {/* {addtionalFeaturesID[0]} */}
                       {addtionalFeaturesID[1] ? 'Yes' : 'No'}
                     </Text>
                   </View>
@@ -696,8 +529,6 @@ export default PropertyReviewDetails = props => {
                   <DividerIcon marginTop={8} />
                 </>
               ) : null}
-
-              {/* <DividerIcon marginTop={8} /> */}
             </View>
             <View style={DetailsStyle.subContainer}>
               <TouchableOpacity
@@ -1021,11 +852,9 @@ export default PropertyReviewDetails = props => {
         return <Details />;
     }
   };
-  //alert(JSON.stringify(property_Detail))
   return (
     <SafeAreaView style={PropertyReviewStyle.mainContainer}>
       <TopHeader
-        // isprofileImage
         onPressLeftButton={
           propertyView ? () => props.navigation.navigate('Properties') : goBack
         }
@@ -1045,7 +874,6 @@ export default PropertyReviewDetails = props => {
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={currentPage}
-            // onPress={onStepPress}
             renderStepIndicator={renderStepIndicator}
             labels={stepLabels}
             stepCount={4}
@@ -1077,7 +905,7 @@ export default PropertyReviewDetails = props => {
               inactiveDotColor={_COLORS.Kodie_GrayColor}
               dotColor={_COLORS.Kodie_GreenColor}
               autoplay
-              circleLoop
+              // circleLoop
               resizeMethod={'resize'}
               resizeMode={'cover'}
               dotStyle={PropertyReviewStyle.dotStyle}

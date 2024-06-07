@@ -108,38 +108,18 @@ export default Dashboard = props => {
   const [profileCompletion, setProfileCompletion] = useState('');
   const dispatch = useDispatch();
   const isvisible = useIsFocused();
-
-  // props.onPress(handleClosePopup);
-  // alert(handleClosePopup, "close");
-  // console.log(handleClosePopup, "close");
-
   const handlegetCalenderid = Calenderid => {
     console.log('Calenderid....', Calenderid);
     setUpsheet(Calenderid);
   };
   const CloseUp = () => {
     refRBSheet.current.close();
-    // refRBSheet2.current.close();
     setOverlayVisible(false);
   };
-
-  // const Login_response = useSelector(
-  //   (state) => state?.authenticationReducer?.data
-  // );
-  // console.log("Login_response.....", Login_response);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const SubscriptionData = useSelector(
     state => state.subscriptionReducer.data?.data,
   );
-  console.log('SubscriptionData.....', SubscriptionData);
-  // console.log(
-  //   "UAD_FirstName.....",
-  //   loginData?.Account_details[0]?.UAD_FIRST_NAME
-  // );
-  // const UADFirstName = loginData?.Account_details[0]?.UAD_FIRST_NAME;
-  //---click back button closing the app
-
   useEffect(() => {
     fetchData();
     const handleBackPress = () => {
@@ -165,19 +145,15 @@ export default Dashboard = props => {
       await check_subscription();
     }
   };
-  //---click back button closing the app
 
   const handleprofileCompletion = async () => {
     const url = Config.BASE_URL;
     const profileCompletion_url = url + 'Profile_Completion';
     console.log('requested url..', profileCompletion_url);
     setIsLoading(true);
-    //alert('hi')
     const profileCompletion_urlBody = {
-      // account_id: '569',
       user_id: loginData?.Login_details?.user_id,
     };
-    // alert(loginData?.Login_details?.user_id)
     await axios
       .post(profileCompletion_url, profileCompletion_urlBody)
       .then(response => {
@@ -188,7 +164,6 @@ export default Dashboard = props => {
         const profileValueWithoutPercent = profile_Completion.replace('%', '');
         const progressValue = profileValueWithoutPercent / 100;
         console.log('progressValue7...', progressValue);
-        //  alert(progressValue)
         setProgressPercentage(progressValue);
         setIsLoading(false);
       })
@@ -202,15 +177,11 @@ export default Dashboard = props => {
   };
 
   const check_subscription = async () => {
-    // alert('hi')
     let check_Subs = {
       account_id: loginData?.Login_details?.user_account_id,
-
-      // account_id:res?.data?.Login_details?.user_account_id
     };
     console.log('checkid99', check_Subs);
     const res = await dispatch(userSubscribedCreator(check_Subs));
-    //alert(JSON.stringify(res?.data))
   };
 
   const Income_render = ({item, index}) => {
@@ -270,27 +241,6 @@ export default Dashboard = props => {
   const userProfileImageUri =
     loginData?.Login_details?.profile_photo_path ||
     signUp_account_response?.Login_details?.profile_photo_path;
-
-  // const getPersonalDetails =() => {
-  //   setIsLoading(true);
-  //   const url = Config.BASE_URL;
-  //   const apiUrl =
-  //     url + `getAccount_details/${loginData?.Login_details?.user_id}`;
-
-  //   console.log(apiUrl, 'apiUrlapiUrlapiUrl');
-
-  //   axios
-  //     .get(apiUrl)
-  //     .then(response => {
-  //       console.log('API Response:', response?.data?.data[0]);
-  //       setAccountDetails(response?.data?.data[0]);
-  //       setIsLoading(false);
-  //     })
-  //     .catch(error => {
-  //       console.error('API Error PersonalDetails D:', error);
-  //       setIsLoading(false);
-  //     });
-  // };
   const getPersonalDetails = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -325,9 +275,6 @@ export default Dashboard = props => {
           isMiddleImage={true}
           IsNotification={true}
           isprofileImage
-          // RightUserProfile={{
-          //   uri: userProfileImageUri,
-          // }}
           MiddleImage={logos.mainLogo}
           leftImage={'menu'}
           MiddleText={'Kodie'}
@@ -336,8 +283,6 @@ export default Dashboard = props => {
           onPressRightImgProfile={() =>
             props.navigation.navigate('LandlordProfile')
           }
-          // statusBarColor="red"
-          // statusBarStyle="dark-content"
         />
         <ScrollView showsVerticalScrollIndicator={false}>
           <DeshboardNotice
@@ -352,18 +297,14 @@ export default Dashboard = props => {
             }}
           />
           <View style={DashboardStyle.container}>
-            {/* <Text style={DashboardStyle.Name_Text}>{"Hi Jason!"}</Text> */}
             <Text style={DashboardStyle.Name_Text}>{`Hi ${
               accountDetails?.UAD_FIRST_NAME || ''
-              // loginData.Account_details[0]?.UAD_FIRST_NAME || null
             }! `}</Text>
             <Text style={DashboardStyle.welcome_Text}>{'Welcome Back'}</Text>
             <View
               style={{
-                // flex: 1,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                // marginRight:16
               }}>
               <Dropdown
                 style={[DashboardStyle.dropdown, {flex: 1}]}
@@ -376,7 +317,6 @@ export default Dashboard = props => {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                // placeholder="All Properties"
                 placeholder={truncateText('All Properties', 12)}
                 searchPlaceholder="Search..."
                 value={value}
@@ -396,7 +336,6 @@ export default Dashboard = props => {
                 maxHeight={300}
                 labelField="label"
                 valueField="value"
-                // placeholder="Year to date"
                 placeholder={truncateText('Year to date', 12)}
                 searchPlaceholder="Search..."
                 value={value}
@@ -440,7 +379,6 @@ export default Dashboard = props => {
                     backgroundColor: _COLORS.Kodie_WhiteColor,
                     backgroundGradientFrom: _COLORS.Kodie_WhiteColor,
                     backgroundGradientTo: _COLORS.Kodie_WhiteColor,
-                    // decimalPlaces: 2, // optional, defaults to 2dp
                     color: (opacity = 255) => `	rgb(0, 0, ${opacity})`,
                   }}
                   bezier
@@ -461,7 +399,6 @@ export default Dashboard = props => {
               </Card.Content>
             </Card>
 
-            {/* Ratio comopent call here... */}
             <View>
               <CircleProgress />
             </View>
@@ -485,7 +422,6 @@ export default Dashboard = props => {
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    // refRBSheet2.current.open();
                     setModalVisible(true);
                   }}>
                   <Entypo
@@ -546,17 +482,6 @@ export default Dashboard = props => {
                     </Text>
                   </View>
                 </View>
-                {/* <View style={DashboardStyle.maintenance_sts_NOView}>
-                  <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {'0'}
-                  </Text>
-                  <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {'0'}
-                  </Text>
-                  <Text style={DashboardStyle.maintenance_sts_NOText}>
-                    {'0'}
-                  </Text>
-                </View> */}
                 <CustomSingleButton
                   _ButtonText={'View all jobs'}
                   Text_Color={_COLORS.Kodie_BlackColor}
@@ -608,7 +533,6 @@ export default Dashboard = props => {
           </View>
         </ScrollView>
 
-        {/* RBSheet define here */}
         <RBSheet
           ref={refRBSheet}
           height={250}
@@ -625,25 +549,6 @@ export default Dashboard = props => {
           }}>
           <SelectProperties onClose={CloseUp} />
         </RBSheet>
-
-        {/* RBSheet 2 define here */}
-        {/* <RBSheet
-          ref={refRBSheet2}
-          height={upsheet == true ? 600 : 460}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: DashboardStyle.bottomModal_container,
-          }}
-        >
-          <SelectDate onClose={CloseUp} CalenderId={handlegetCalenderid} />
-        </RBSheet> */}
         <View
           style={{
             flex: 1,
@@ -678,7 +583,6 @@ export default Dashboard = props => {
           </ScrollView>
         </Modal>
       </SafeAreaView>
-
       <FloatingActionButton />
     </>
   );
