@@ -319,7 +319,7 @@ const CreateNewInspection = props => {
       const Inspection_Url = Url + "inspection_details/save"
       console.log("Inspection_Url", Inspection_Url);
       const res = await axios.post(Inspection_Url, Inspectiondata)
-      console.log(res?.data);
+      console.log('scheduule inspection....',res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
         console.log("TIM_KEY", res?.data?.data?.TIM_KEY);

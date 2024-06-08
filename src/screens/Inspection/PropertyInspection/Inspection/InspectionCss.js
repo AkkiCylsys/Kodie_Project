@@ -78,8 +78,9 @@ export const InspectionCss = StyleSheet.create({
   cancelView: { alignSelf: "center" },
   cancelText: {
     fontSize: 14,
-    fontFamily: FONTFAMILY.K_Bold,
+    fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
+    // marginTop:10
   },
   SaveView: {
     borderRadius: 5,
@@ -99,7 +100,7 @@ export const InspectionCss = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 12,
+    marginBottom:24,
     borderRadius: 8,
   },
 

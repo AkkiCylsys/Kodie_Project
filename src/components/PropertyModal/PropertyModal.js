@@ -3,6 +3,7 @@ import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import {PropertyModalStyle} from './PropertyModalStyle';
 import {_COLORS} from '../../Themes';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -59,8 +60,8 @@ const data = [
     id: '5',
     Data: 'Delete property',
     Icon: (
-      <MaterialIcons
-        name="delete-outline"
+      <AntDesign
+        name="delete"
         size={25}
         color={_COLORS.Kodie_GreenColor}
       />
@@ -73,8 +74,8 @@ const data1 = [
     id: '6',
     Data: 'Confirm delete property',
     Icon: (
-      <MaterialIcons
-        name="delete-outline"
+      <AntDesign
+        name="delete"
         size={25}
         color={_COLORS.Kodie_GreenColor}
       />

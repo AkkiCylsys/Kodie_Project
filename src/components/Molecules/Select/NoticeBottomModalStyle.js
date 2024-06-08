@@ -24,8 +24,8 @@ export const NoticeBottomModalStyle = StyleSheet.create({
     padding: 10,
   },
   optionsiconview: {
-    width: 32,
-    height: 30,
+    width: 35,
+    height: 35,
     borderWidth: 0.3,
     borderRadius: 5,
     alignItems: "center",
