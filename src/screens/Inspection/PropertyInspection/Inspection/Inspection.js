@@ -17,6 +17,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
@@ -183,6 +184,28 @@ const Inspection = props => {
       setIsLoading(false);
     }
   };
+
+
+
+  const handleDeleteInspection = async () => {
+    console.log('delete')
+    const url = Config.BASE_URL;
+    const deleteUrl = url + `delete_inspection_details/${TIM_KEY}`;
+
+    try {
+      const response = await axios.delete(deleteUrl);
+      if (response?.data?.success) {
+        Alert.alert('Success', 'Inspection deleted successfully');
+        refRBSheet2.current.close();
+      } else {
+        Alert.alert('Error', 'Failed to delete inspection');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to delete inspection');
+      console.error('Error:', error.response || error.message);
+    }
+  };
+
 
   const Inspection_render = ({item}) => {
     console.log(item);
@@ -464,20 +487,23 @@ const Inspection = props => {
             </View>
 
             <TouchableOpacity style={InspectionCss.modalFile}>
-              <Image
-                source={IMAGES.Duplicate}
-                style={InspectionCss.ImageStyle}
-                resizeMode={'center'}
-              />
+            <View style={InspectionCss.deleteIconView}>
+                <MaterialCommunityIcons
+                  name="file-multiple-outline"
+                  size={25}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+              </View>
               <Text style={InspectionCss.editText}>
                 {'Duplicate inspection'}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={InspectionCss.modalFile}>
+            <TouchableOpacity style={InspectionCss.modalFile}
+            onPress={handleDeleteInspection}>
               <View style={InspectionCss.deleteIconView}>
                 <MaterialIcons
                   name="delete-outline"
-                  size={20}
+                  size={25}
                   color={_COLORS.Kodie_GreenColor}
                 />
               </View>
