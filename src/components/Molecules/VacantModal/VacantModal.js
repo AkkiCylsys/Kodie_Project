@@ -6,6 +6,7 @@ import {useNavigation} from '@react-navigation/native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {BottomModalDataStyle} from '../BottomModal/BottomModalDataStyle';
 
@@ -59,8 +60,8 @@ const data = [
     id: '5',
     Data: 'Delete property',
     Icon: (
-      <MaterialIcons
-        name="delete-outline"
+      <AntDesign
+        name="delete"
         size={25}
         color={_COLORS.Kodie_GreenColor}
       />

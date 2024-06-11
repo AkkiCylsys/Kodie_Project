@@ -24,8 +24,8 @@ const data = [
     id: '2',
     Data: 'Rent history',
     Icon: (
-      <MaterialCommunityIcons
-        name="folder-cog-outline"
+      <MaterialIcons
+        name="history"
         size={25}
         color={_COLORS.Kodie_GreenColor}
       />
@@ -36,7 +36,7 @@ const data = [
     Data: 'Manage documents',
     Icon: (
       <MaterialCommunityIcons
-        name="folder-cog-outline"
+        name="file-download-outline"
         size={25}
         color={_COLORS.Kodie_GreenColor}
       />

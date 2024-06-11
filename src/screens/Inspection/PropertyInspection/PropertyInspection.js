@@ -105,7 +105,7 @@ useEffect(()=>{
           CancelInspection={CancleInspectionData}
           />;
       case "Tab2":
-        return <Inspection TIM_KEY={TIM_KEY} />;
+        return <Inspection TIM_KEY={TIM_KEY} PropertyId={PropertyId}/>;
       case "Tab3":
         return (
           <ReviewInspection
