@@ -142,7 +142,7 @@ const PropertyListing = props => {
       }
     } catch (error) {
       console.error('API Error DeleteProperty:', error);
-      Alert.alert('Worning', error?.response?.data?.message);
+      Alert.alert('Warning', error?.response?.data?.message);
     }
   };
   const propertyData1_render = ({item}) => {

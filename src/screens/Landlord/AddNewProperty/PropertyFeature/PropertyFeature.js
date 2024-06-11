@@ -136,12 +136,6 @@ export default PropertyFeature = props => {
       console.error('Error parsing key_features:', error);
     }
   }, [keyFeaturesString]);
-  console.log('CountBedroom', CountBedroom, CountBathroom);
-
-  // const getinputData = ()=>{
-  //   setFlorSize(addPropertySecondStepData?.UPD_FLOOR_SIZE)
-  //   setLandArea(addPropertySecondStepData?.UPD_LAND_AREA)
-  // }
 
   const DetailsData = async () => {
     const detailData = {
@@ -802,57 +796,6 @@ export default PropertyFeature = props => {
               <Text style={PropertyFeatureStyle.Furnished_Text}>
                 {'Additional key features'}
               </Text>
-              {/* <MultiSelect
-                style={PropertyFeatureStyle.dropdown}
-                activeColor={activeColor}
-                // activeColor={'#a1fe68'}
-                placeholderStyle={PropertyFeatureStyle.placeholderStyle}
-                selectedTextStyle={PropertyFeatureStyle.selectedTextStyle}
-                inputSearchStyle={PropertyFeatureStyle.inputSearchStyle}
-                iconStyle={PropertyFeatureStyle.iconStyle}
-                data={additionalfeatureskey}
-                labelField="features_name"
-                valueField="paf_key"
-                placeholder="Add features such as pool, aircon, balcony etc."
-                value={additionalfeatureskeyvalue}
-                search
-                searchPlaceholder="Search..."
-                onChange={items => {
-                  const selectedKeys = items.map(item => item);
-                  const uniqueKeys = [...new Set(selectedKeys)];
-                  const cleanedArray = uniqueKeys.reduce((acc, item) => {
-                    if (!isNaN(item) && !acc.includes(Number(item))) {
-                      acc.push(Number(item));
-                    }
-                    return acc;
-                  }, []);
-
-                  console.log('Unique Keys:', uniqueKeys);
-                  setAdditionalFeaturesKeyValue(
-                    cleanedArray.filter(value => value !== 0),
-                  );
-                  setActiveColor(_COLORS.Kodie_MidLightGreenColor);
-                }}
-                renderLeftIcon={() => (
-                  <AntDesign
-                    style={PropertyFeatureStyle.icon}
-                    color={_COLORS.Kodie_MediumGrayColor}
-                    name="search1"
-                    size={18}
-                  />
-                )}
-                renderItem={renderDataItem}
-                renderSelectedItem={(item, unSelect) => (
-                  <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-                    <View style={PropertyFeatureStyle.selectedStyle}>
-                      <Text style={PropertyFeatureStyle.textSelectedStyle}>
-                        {item.features_name}
-                      </Text>
-                      <AntDesign color="white" name="close" size={17} />
-                    </View>
-                  </TouchableOpacity>
-                )}
-              /> */}
               <MultiSelect
                 hideDropdown
                 items={additionalfeatureskey}
@@ -921,7 +864,11 @@ export default PropertyFeature = props => {
                 _ButtonText={'Next'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  if (propertyid || addPropertySecondStepData) {
+                  if (
+                    (Array.isArray(addPropertySecondStepData) &&
+                      addPropertySecondStepData.length > 0) ||
+                    typeof addPropertySecondStepData === 'number'
+                  ) {
                     updatePropertyDetails();
                   } else {
                     property_details();

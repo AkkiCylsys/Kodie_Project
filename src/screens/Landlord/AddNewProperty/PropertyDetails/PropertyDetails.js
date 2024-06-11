@@ -43,7 +43,7 @@ import {useFocusEffect, useIsFocused} from '@react-navigation/native';
 import {BackHandler} from 'react-native';
 //import Geolocation from '@react-native-community/geolocation';
 import Geolocation from 'react-native-geolocation-service';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyDetails = props => {
   const addPropertySecondStepData = useSelector(
@@ -78,16 +78,15 @@ export default PropertyDetails = props => {
 
   const handleTextInputFocus = () => {
     if (error) {
-      setError(''); // Clear error message when TextInput receives focus
+      setError('');
     }
   };
 
   const handleLocationSearch = () => {
     if (!location) {
-      setError('Please enter a location.'); // Show error if location is empty
+      setError('Please enter a location.');
     } else {
-      setError(''); // Clear error message if location is filled
-      // Perform location search logic
+      setError(''); 
     }
   };
   useFocusEffect(
@@ -110,7 +109,13 @@ export default PropertyDetails = props => {
   );
   useEffect(() => {
     handleProperty_Type();
-    propertyid > 0 || addPropertySecondStepData ? DetailsData() : null;
+    // propertyid > 0 || addPropertySecondStepData ? DetailsData() : null;
+    propertyid > 0 ||
+    (Array.isArray(addPropertySecondStepData) &&
+      addPropertySecondStepData.length > 0) ||
+    typeof addPropertySecondStepData === 'number'
+      ? DetailsData()
+      : null;
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -120,7 +125,9 @@ export default PropertyDetails = props => {
   }, []);
   const DetailsData = async () => {
     const detailData = {
-      property_id: addPropertySecondStepData ?addPropertySecondStepData: propertyid,
+      property_id: addPropertySecondStepData
+        ? addPropertySecondStepData
+        : propertyid,
     };
     console.log('detailData', detailData);
     const url = Config.BASE_URL;
@@ -149,12 +156,15 @@ export default PropertyDetails = props => {
         console.log('propertyDetail....', response?.data?.property_details);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        Alert.alert('Worning', error?.response?.data?.message);
+        Alert.alert('Warning', error?.response?.data?.message);
         setIsLoading(false);
       }
     } catch (error) {
-      console.error('property_type error in get data:', error);
-      Alert.alert('Worning', error?.response?.data?.message);
+      console.error(
+        'property_type error in get data:',
+        error?.response?.data?.message,
+      );
+      Alert.alert('Warning', error?.response?.data?.message);
       setIsLoading(false);
     }
   };
@@ -292,13 +302,10 @@ export default PropertyDetails = props => {
           json.results[0].address_components[8].long_name;
 
         var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2);
 
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // setLocation(MainFullAddress);
         console.log('location....', location);
-        //setAddress(MainFullAddress);
       })
       .catch(error => console.warn(error));
   };
@@ -321,15 +328,12 @@ export default PropertyDetails = props => {
         setIsLoading(false);
         console.log('propertyData....', response?.data?.lookup_details);
         setProperty_Data(response?.data?.lookup_details);
-        // setProperty_value(property_Detail[0]?.property_type_id);
       } else {
         console.error('property_type_error:', response?.data?.error);
-        // alert("Oops something went wrong! Please try again later.");
         setIsLoading(false);
       }
     } catch (error) {
       console.error('property_type error:', error);
-      // alert(error);
       setIsLoading(false);
     }
   };
@@ -548,24 +552,13 @@ export default PropertyDetails = props => {
                   valueField="lookup_key"
                   placeholder="Select property type"
                   value={
-                    // property_Detail[0]?.property_type
-                    //   ? property_Detail[0]?.property_type
-                    //   :
                     property_value
-                    // 24
                   }
                   onChange={item => {
                     setProperty_value(item.lookup_key);
-                    // handlePropertyValue()
-                    // setpropertytypeError("");
                   }}
                   renderItem={propertyType_render}
                 />
-                {/* {propertytypeError ? (
-                  <Text style={PropertyDetailsStyle.error_text}>
-                    {"please select a property type"}
-                  </Text>
-                ) : null} */}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
@@ -619,7 +612,6 @@ export default PropertyDetails = props => {
                 onPressLeftButton={() => {
                   setSelectedButton(false);
                   setSelectedButtonId(1);
-                  // alert(selectedButtonId)
                 }}
                 RightButtonText={'No'}
                 RightButtonbackgroundColor={

@@ -30,7 +30,6 @@ import CustomTabNavigator from '../../../components/Molecules/CustomTopNavigatio
 import UploadImageData from '../../../components/Molecules/UploadImage/UploadImage';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
-//import Geolocation from '@react-native-community/geolocation';
 import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -59,7 +58,6 @@ const data = [
 
 const EditProfile = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const [valid, setValid] = useState(false);
   const [fullName, setFirstName] = useState('');
   const [fullNameError, setFirstNameError] = useState('');
@@ -108,31 +106,11 @@ const EditProfile = props => {
   const phoneInput = useRef(null);
   console.log('latitude....', latitude);
   console.log('longitude....', longitude);
-  // console.log("formattedValue....",formattedValue)
-  // console.log("phoneNumber....",phoneNumber)
   const handleImageNameChange = async newImageName => {
     setImageName(newImageName);
     console.log('................ImageNAme', newImageName);
-    // const fileUri = ImageName.path;
-    // const fileName = fileUri.substring(fileUri.lastIndexOf("/") + 1);
-    // const fileType = ImageName.mime;
-    // console.log("fileUri....", fileUri);
-    // console.log("fileName....", fileName);
-    // console.log("fileType....", fileType);
   };
 
-  // Validation for First Name
-  // const validateFullName = text => {
-  //   if (text === '') {
-  //     setFullNameError('First name is required!');
-  //     // } else if (!/^[A-Za-z]+$/.test(text)) {
-  //   } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
-  //     setFullNameError('First name should contain only alphabetic characters');
-  //   } else {
-  //     setFullNameError('');
-  //   }
-  //   setFullName(text);
-  // };
   const validateFirstName = text => {
     if (text === '') {
       setFirstNameError('First name is required');
@@ -196,7 +174,6 @@ const EditProfile = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        // Handle successful response
         console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         setFirstName(response?.data?.data[0]?.UAD_FIRST_NAME);
@@ -552,68 +529,6 @@ const EditProfile = props => {
                       />
                     </View>
                   </View>
-                  {/* <View style={EditProfileStyle.firstview}>
-                    <Text style={EditProfileStyle.oldnumbertext}>
-                      Phone number
-                    </Text>
-                    <View style={[EditProfileStyle.phoneinputview]}>
-                      <PhoneInput
-                        ref={phoneInput}
-                        defaultValue={phoneNumber}
-                        // disabled={true}
-                        
-                        editable={false}
-                        defaultCode="AU"
-                        layout="second"
-                        Country={false}
-                        countryPickerProps={false}
-                        textInputProps={{
-                          maxLength: 9,
-                        }}
-                        placeholder={'Enter your phone number'}
-                        onChangeText={text => {
-                          // validateMobileNumber(text);
-                          const checkValid =
-                            phoneInput.current?.isValidNumber(text);
-                          if (text === '') {
-                            setPhoneNumberError('Phone number is required!');
-                            setPhoneNumber(text);
-                          } else if (checkValid == false) {
-                            setPhoneNumberError('Invalid phone number format');
-                            setPhoneNumber(text);
-                          } else {
-                            setPhoneNumberError('');
-                            // const numberOnly = text.substring(3);
-                            // setPhoneNumber(numberOnly);
-                          }
-                        }}
-                        onChangeFormattedText={text => {
-                          setPhoneNumber(text);
-                        }}
-                        textContainerStyle={{
-                          flex: 1,
-                          backgroundColor: _COLORS.Kodie_WhiteColor,
-                          paddingVertical: 2,
-                          height: 50,
-                          borderRadius: Platform.OS == 'ios' ? 6 : 10,
-                        }}
-                        containerStyle={{
-                          flex: 1,
-                          alignSelf: 'center',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          borderWidth: 1,
-                          borderColor: _COLORS.Kodie_GrayColor,
-                          borderRadius: Platform.OS == 'ios' ? 6 : 12,
-                        }}
-                      />
-                    </View>
-                  </View> */}
-                  {/* {phoneNumberError ? (
-                    <Text style={EditProfileStyle.errorText}>
-                      {phoneNumberError}
-                    </Text>
-                  ) : null} */}
                   <View style={EditProfileStyle.inputContainer}>
                     <Text style={LABEL_STYLES.commontext}>{'Bio'}</Text>
                     <TextInput
@@ -680,7 +595,6 @@ const EditProfile = props => {
                       backgroundColor={_COLORS.Kodie_BlackColor}
                       disabled={isLoading ? true : false}
                       onPress={() => {
-                        // Updateprofile();
                         handlevalidUpdation();
                       }}
                     />
@@ -693,79 +607,6 @@ const EditProfile = props => {
       case 'Tab2':
         return (
           <>
-            {/* {IsMap ? (
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: 'transparent',
-                }}>
-                <MapScreen
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                    alignSelf: 'center',
-                    marginBottom: 10,
-                  }}
-                  onRegionChange={onRegionChange}
-                  Maplat={latitude}
-                  Maplng={longitude}
-                />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                    width: '96%',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                    backgroundColor: 'white',
-                    borderColor: '#E5E4E2',
-                    marginTop: 10,
-                    position: 'absolute',
-                  }}>
-                  <TextInput
-                    style={{
-                      backgroundColor: 'transparent',
- 
-                      width: '90%',
-                      height: 45,
-                      alignSelf: 'center',
-                    }}
-                    onFocus={() => openMapandClose()}
-                    placeholder={'Search Place'}
-                    placeholderTextColor={_COLORS.Kodie_BlackColor}
-                  />
-                </View>
-                <TouchableOpacity
-                  style={CompanyDetailsStyle.BtnContainer}
-                  onPress={ConfirmAddress}>
-                  <Image
-                    source={IMAGES?.Shape}
-                    style={{height: 25, width: 25}}
-                  />
-                </TouchableOpacity>
-              </View>
-            ) : IsSearch ? (
-              <SearchPlaces
-                onPress={(data, details = null) => {
-                  console.log('LocationData....', details);
-                  if (activeTab === 'Tab1') {
-                    setlatitude(details.geometry.location.lat);
-                  } else {
-                    setCompany_latitude(details.geometry.location.lat);
-                  }
-                  if (activeTab === 'Tab1') {
-                    setlongitude(details.geometry.location.lng);
-                  } else {
-                    setCompany_longitude(details.geometry.location.lng);
-                  }
-                  setIsSearch(false);
-                  setIsMap(true);
-                  setCompanyPhysicaladdress(details.formatted_address);
-                }}
-              />
-            ) : ( */}
-
             <CompanyDetails />
           </>
         );
