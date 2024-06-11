@@ -32,6 +32,7 @@ import axios from 'axios';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import { googleMapIsInstalled } from 'react-native-maps/lib/decorateMapComponent';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
 const Data = [
   {
     id: 1,
@@ -101,12 +102,13 @@ const Inspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [selectedButtonFutue, setSelectedButtonFutue] = useState(0);
   const [selectedButtonStandard, setSelectedButtonStandard] = useState(0);
+  const [getinspection, setGetInspection] = useState([]);
   console.log(
     'loginresponse_jobdetails..',
     loginData?.Login_details?.user_account_id,
   );
   const TIM_KEY = props?.TIM_KEY;
-
+ 
   console.log(' props?.', TIM_KEY);
   const PropertyId=props.PropertyId
   const navigateToScreen = id => {
@@ -128,6 +130,9 @@ const Inspection = props => {
   };
   useEffect(() => {
     getInspectionAreas();
+  }, []);
+  useEffect(() => {
+    getInspectionDetails();
   }, []);
   const getInspectionAreas = () => {
     const url = Config.BASE_URL;
@@ -186,7 +191,6 @@ const Inspection = props => {
   };
 
 
-
   const handleDeleteInspection = async () => {
     console.log('delete')
     const url = Config.BASE_URL;
@@ -206,7 +210,72 @@ const Inspection = props => {
     }
   };
 
+  const getInspectionDetails = () => {
+   
+    setIsLoading(true);
+    const url = Config.BASE_URL;
 
+    const apiUrl =
+      url + `get_inspection_details/${TIM_KEY}`;
+
+    axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response: getinspection', response?.data?.data[0]);
+        setGetInspection(response?.data?.data[0]);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error PersonalDetails CIP:', error);
+      });
+  };
+
+
+  const SubmitInspection = async () => {
+    // alert(selectedAddress?.property_id)
+    setIsLoading(true);
+    try {
+      const Inspectiondata = {
+        UPD_KEY: PropertyId,
+        TIM_INSPECTION_TYPE: getinspection.v_TIM_INSPECTION_TYPE,
+        TIM_SCHEDULE_TIME: getinspection.v_TIM_SCHEDULE_TIME,
+        TIM_SCHEDULE_DATE:moment(getinspection.v_TIM_SCHEDULE_DATE).format('YYYY-MM-DD'),
+        TIM_LOCATION: getinspection.v_TIM_LOCATION,
+        TIM_LOCATION_LONGITUDE: parseFloat(getinspection.v_TIM_LOCATION_LONGITUDE),
+        TIM_LOCATION_LATITUDE: parseFloat(getinspection.v_TIM_LOCATION_LATITUDE),
+        TIM_ADD_ATTENDENCE: getinspection.v_TIM_ADD_ATTENDENCE,
+        TIM_IS_FURNISHED: getinspection.v_TIM_IS_FURNISHED,
+        TIM_DESCRIPTION: getinspection.v_TIM_DESCRIPTION,
+        TAM_AREA_KEYS: getinspection.cur_TAM_AREA_KEY,
+        CREATED_BY: loginData?.Login_details?.user_account_id.toString()
+      }
+      console.log("inspec", Inspectiondata);
+      const Url = Config.BASE_URL
+      const Inspection_Url = Url + "inspection_details/save"
+      console.log("Inspection_Url", Inspection_Url);
+      const res = await axios.post(Inspection_Url, Inspectiondata)
+      console.log('scheduule inspection....',res?.data);
+      refRBSheet2.current.close();
+      if (res?.data?.success == true) {
+        setTIM_key(res?.data?.data);
+        console.log("TIM_KEY", res?.data?.data?.TIM_KEY);
+        alert(res?.data?.message)
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error?.response && error?.response?.status === 404) {
+        alert(error?.response?.data?.message)
+        setIsLoading(false)
+      } else {
+        alert(error?.response?.data?.message)
+        setIsLoading(false);
+      }
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+    
+  }
   const Inspection_render = ({item}) => {
     console.log(item);
     let IconComponent;
@@ -486,7 +555,8 @@ const Inspection = props => {
               </TouchableOpacity>
             </View>
 
-            <TouchableOpacity style={InspectionCss.modalFile}>
+            <TouchableOpacity style={InspectionCss.modalFile}
+            onPress={SubmitInspection}>
             <View style={InspectionCss.deleteIconView}>
                 <MaterialCommunityIcons
                   name="file-multiple-outline"
