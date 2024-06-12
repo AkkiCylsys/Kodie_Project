@@ -889,19 +889,22 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   );
   const images = uploadedFiles.filter(file => file.type === 'image');
   const documents = uploadedFiles.filter(file => file.type === 'document');
-  const fileNames = NoticeAllData.split(',');
-  if (NoticeAllData && Array.isArray(NoticeAllData.image_path)) {
-   
-// Filter images and documents based on file extensions
-const additionalImages = fileNames.filter(fileName => /\.(jpg|png|jpeg)$/i.test(fileName));
-const additionalDocuments = fileNames.filter(fileName => /\.pdf$/i.test(fileName));
-console.log(additionalImages,"additionalImages");
-// Merge additional images and documents with existing ones
-images.push(...additionalImages.map(imageUrl => ({ uri: imageUrl, type: 'image' })));
-documents.push(...additionalDocuments.map(documentUrl => ({ uri: documentUrl, type: 'document' })));
+  
+  if (NoticeAllData && typeof NoticeAllData === 'object' && Array.isArray(NoticeAllData.image_path)) {
+    const fileNames = NoticeAllData.image_path;
+  
+    // Filter images and documents based on file extensions
+    const additionalImages = fileNames.filter(fileName => /\.(jpg|png|jpeg)$/i.test(fileName));
+    const additionalDocuments = fileNames.filter(fileName => /\.pdf$/i.test(fileName));
+    console.log(additionalImages, "additionalImages");
+  
+    // Merge additional images and documents with existing ones
+    images.push(...additionalImages.map(imageUrl => ({ uri: imageUrl, type: 'image' })));
+    documents.push(...additionalDocuments.map(documentUrl => ({ uri: documentUrl, type: 'document' })));
   } else {
     console.error("NoticeAllData is not in the expected format:", NoticeAllData);
   }
+  
   return (
     <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
