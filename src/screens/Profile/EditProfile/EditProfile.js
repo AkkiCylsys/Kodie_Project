@@ -505,7 +505,7 @@ const EditProfile = props => {
                         style={EditProfileStyle.inputStyle}
                         value={email}
                         onChangeText={text => setEmail(text)}
-                        keyboardType="numeric"
+                        keyboardType='email-address'
                         placeholder="jason5@gmail.com"
                         editable={false}
                       />

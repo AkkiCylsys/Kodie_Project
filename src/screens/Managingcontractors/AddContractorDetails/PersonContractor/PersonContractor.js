@@ -402,6 +402,7 @@ export default PersonContractor = props => {
               // onChangeText={() => handlePersonEmail(email)}
               placeholder="Enter tenant’s email address"
               placeholderTextColor="#999"
+              keyboardType="email-address"
             />
             <Text style={PersonContractorStyle.errorText}>{emailError}</Text>
           </View>

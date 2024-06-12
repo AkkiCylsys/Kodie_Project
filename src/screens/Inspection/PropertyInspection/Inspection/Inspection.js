@@ -454,6 +454,7 @@ const Inspection = props => {
               onChangeText={setEmail}
               placeholder="Create a name for your custom area"
               placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
+              keyboardType='email-address'
             />
           </View>
           <Text style={InspectionCss.cancelText}>

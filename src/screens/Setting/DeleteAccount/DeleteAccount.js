@@ -252,6 +252,7 @@ const DeleteAccount = props => {
                 onBlur={() => handleAccountEmail(email)}
                 placeholder="Email"
                 placeholderTextColor="#999"
+                keyboardType='email-address'
               />
             </View>
             {emailError ? (

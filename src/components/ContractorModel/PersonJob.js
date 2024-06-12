@@ -196,6 +196,7 @@ export default PersonJob = props => {
               // onChangeText={() => handlePersonEmail(email)}
               placeholder="Enter tenant’s email address"
               placeholderTextColor="#999"
+              keyboardType='email-address'
             />
             <Text style={PersonJobStyle.errorText}>{emailError}</Text>
           </View>

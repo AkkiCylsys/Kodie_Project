@@ -100,6 +100,7 @@ export default ContractorSignUpFirstScreen = props => {
                 onChangeText={setEmail}
                 placeholder="Enter your email address"
                 placeholderTextColor="#999"
+                keyboardType='email-address'
               />
             </View>
             <View style={ContractorSignUpStyle.inputContainer}>
