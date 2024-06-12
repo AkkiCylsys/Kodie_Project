@@ -44,7 +44,6 @@ export default CompanyDetails = props => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const [tabValue, setTabValue] = useState('IndividualInProfile');
   const [isLoading, setIsLoading] = useState(false);
   const [ImageName, setImageName] = useState('');
@@ -424,7 +423,6 @@ export default CompanyDetails = props => {
   };
 
   const ConfirmAddress = () => {
-    // alert(tabValue);
     setIsMap(false);
     if (tabValue == 'IndividualInProfile') {
       setLocation(currentLocation);
@@ -490,8 +488,6 @@ export default CompanyDetails = props => {
     setIsLoading(true);
     const apiUrl =
       url + `getAccount_details/${loginData.Login_details.user_account_id}`;
-
-    // Make a GET request using Axios
     axios
       .get(apiUrl)
       .then(response => {
@@ -581,14 +577,6 @@ export default CompanyDetails = props => {
         console.error('API Error PersonalDetails C:', error);
       });
   };
-  // useEffect(() => {
-  //   // Set initial tab value based on accountDetails
-  //   if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
-  //     setTabValue('IndividualInProfile');
-  //   } else if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
-  //     setTabValue('CompanyInProfile');
-  //   }
-  // }, [accountDetails]);
   const UpdateCompanyData = async () => {
     const formData = new FormData();
 
@@ -604,7 +592,6 @@ export default CompanyDetails = props => {
 
     if (!fileUri || !fileName || !fileType) {
       console.error('Invalid image data:', ImageName);
-      // Handle invalid image data
     } else {
       formData.append('company_logo', {
         uri: fileUri,
@@ -668,10 +655,8 @@ export default CompanyDetails = props => {
         alert(response?.data?.message);
         navigation.navigate('LandlordProfile');
         getPersonalDetails();
-        // getComapnyDetails();
       }
     } catch (error) {
-      // alert(error);
       console.log('update_error UpdateCompanyData...', error);
     } finally {
       setIsLoading(false);
@@ -684,7 +669,6 @@ export default CompanyDetails = props => {
     }
   });
 
-  // Filter data to keep only the last "Other" item
   const filteredIndiservicesData = IndiservicesData.filter((item, index) => {
     return item.lookup_description !== "Other" || index === lastOtherIndex;
   });
@@ -696,7 +680,6 @@ export default CompanyDetails = props => {
     }
   });
 
-  // Filter data to keep only the last "Other" item
   const filteredCompservicesData = servicesData.filter((item, index) => {
     return item.lookup_description !== "Other" || index === lastComOtherIndex;
   });
@@ -800,13 +783,6 @@ export default CompanyDetails = props => {
             </View>
             {isLoading ? <CommonLoader /> : null}
           </View>
-          // <IndividualInProfile
-          //   IndividualData={handleIndividualData}
-          //   handleMap={handleMapIndividualDetails}
-          //   IndividualLocation={location}
-          //   onChangeIndivialLocation={setLocation}
-          //   IndividualOnFocus={() => setIsSearch(true)}
-          // />
         );
       case 'CompanyInProfile':
         return (
@@ -946,20 +922,12 @@ export default CompanyDetails = props => {
             </View>
             {isLoading ? <CommonLoader /> : null}
           </View>
-          // <CompanyInProfile
-          //   CompanyData={handleCompanyData}
-          //   onPressCompanylocation={openMapCom}
-          //   CompanyLocation={Companylocation}
-          //   onChangeCompanyLocation={setCompanyLocation}
-          //   CompanyOnFocus={() => setIsSearch(true)}
-          // />
         );
       default:
         return <IndividualInProfile />;
     }
   };
   const handleMapIndividualDetails = () => {
-    // alert('company details....');
     setIsMap(true);
   };
   return (
@@ -968,11 +936,9 @@ export default CompanyDetails = props => {
         <View style={{height: windowHeight - 200, flex: 1}}>
           <View
             style={{
-              // flex: 1,
               backgroundColor: 'transparent',
               alignItems: 'center',
               height: '100%',
-              // marginTop: 100,
             }}>
             <MapScreen
               style={{
@@ -1015,16 +981,6 @@ export default CompanyDetails = props => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-            {/* <TouchableOpacity
-              style={FirstPropertyStyle.c_locationBtn}
-              onPress={() => {}}
-            >
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity> */}
             <TouchableOpacity
               style={CompanyDetailsStyle.BtnContainer}
               onPress={ConfirmAddress}>
@@ -1046,7 +1002,6 @@ export default CompanyDetails = props => {
 
             setIsSearch(false);
             setIsMap(true);
-            // setLocation(details.formatted_address);
             setCurrentLocation(details.formatted_address);
           }}
         />
@@ -1079,7 +1034,6 @@ export default CompanyDetails = props => {
                       resizeMode="cover"
                     />
                   )}
-                  {/* {ImageName ? refRBSheet.current.close() : null} */}
                   <View style={CompanyDetailsStyle.editlogoview}>
                     <FontAwesome
                       name="edit"
@@ -1099,7 +1053,6 @@ export default CompanyDetails = props => {
               </View>
               <Divider style={CompanyDetailsStyle.firstdivider} />
 
-              {/* Tab component code here...... */}
               <View style={CompanyDetailsStyle.tabmainview}>
                 <Text style={CompanyDetailsStyle.tabheadingtext}>
                   How do you run your business?
@@ -1116,9 +1069,7 @@ export default CompanyDetails = props => {
                       },
                     ]}
                     onPress={() => {
-                      // if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0) {
                       setTabValue('IndividualInProfile');
-                      // }
                     }}>
                     <Text
                       style={[
@@ -1144,9 +1095,7 @@ export default CompanyDetails = props => {
                       },
                     ]}
                     onPress={() => {
-                      // if (accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 1) {
                       setTabValue('CompanyInProfile');
-                      // }
                     }}>
                     <Text
                       style={[

@@ -6,7 +6,7 @@ import {_COLORS} from '../../../Themes';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {FlatList} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
@@ -131,7 +131,7 @@ const NoticeBottomModal = props => {
       Data: 'View/edit notice',
       icon: (
         <MaterialIcons
-          size={18}
+          size={25}
           color={_COLORS.Kodie_GreenColor}
           name="preview"
         />
@@ -140,13 +140,13 @@ const NoticeBottomModal = props => {
     {
       id: 2,
       Data: 'Duplicate notice',
-      icon: <Fontisto size={18} color={_COLORS.Kodie_GreenColor} name="copy" />,
+      icon: <MaterialCommunityIcons size={25} color={_COLORS.Kodie_GreenColor} name="file-multiple-outline" />,
     },
     {
       id: 3,
       Data: 'Delete notice',
       icon: (
-        <AntDesign size={18} color={_COLORS.Kodie_GreenColor} name="delete" />
+        <AntDesign size={25} color={_COLORS.Kodie_GreenColor} name="delete" />
       ),
     },
   ];
@@ -155,7 +155,7 @@ const NoticeBottomModal = props => {
       id: 4,
       Data: 'Confirm delete notice',
       icon: (
-        <AntDesign size={18} color={_COLORS.Kodie_GreenColor} name="delete" />
+        <AntDesign size={25} color={_COLORS.Kodie_GreenColor} name="delete" />
       ),
     },
    

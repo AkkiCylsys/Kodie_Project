@@ -106,7 +106,7 @@ const PropertyList = props => {
       console.log('property Data....', response?.data?.property_details);
       setIsLoading(false);
     } catch (error) {
-      Alert.alert('Worning', error?.response?.data?.message);
+      Alert.alert('Warning', error?.response?.data?.message);
       setIsLoading(false);
     }
   };
@@ -148,7 +148,7 @@ const PropertyList = props => {
       }
     } catch (error) {
       console.error('API Error DeleteProperty:', error);
-      Alert.alert('Worning', error?.response?.data?.message);
+      Alert.alert('Warning', error?.response?.data?.message);
     }
   };
 

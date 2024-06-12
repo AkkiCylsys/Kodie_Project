@@ -37,13 +37,11 @@ export default LandlordProfile = props => {
   );
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const isvisible = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
   console.log('signUp_account_response...', signUp_account_response);
   const user_id = loginData?.Login_details?.user_account_id;
-  // console.log('user_id in profile...', user_id);
   const getPersonalDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -52,22 +50,17 @@ export default LandlordProfile = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        // Handle successful response
         console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error PersonalDetails L:', error);
-        Alert.alert('Worning', error?.response?.data?.message);
+        Alert.alert('Warning', error?.response?.data?.message);
         setIsLoading(false);
       });
   };
   useEffect(() => {
-    // if (isvisible) {
-    //   getPersonalDetails();
-    // }
     user_id ? getPersonalDetails() : null;
   }, [isvisible]);
   const LogOut = () => {
@@ -78,20 +71,14 @@ export default LandlordProfile = props => {
         CommonActions.reset({
           index: 0,
           routes: [
-            {name: 'LoginScreen'}, // Replace 'Home' with the name of your initial screen
+            {name: 'LoginScreen'},
           ],
         }),
       );
     }, 500);
-
-    // refRBSheet.current.close();
-    //setOverlayVisible(false);
-    // props.navigation.navigate("DrawerNavigatorLeftMenu");
-    // props.navigation.navigate('LoginScreen');
   };
   const searchprofileMenu = () => {};
   const refRBSheet = useRef();
-  // Alert_____
   const handleGeneralSettingsPress = () => {
     Alert.alert('Alert', 'Coming soon');
   };
@@ -105,36 +92,20 @@ export default LandlordProfile = props => {
   return (
     <SafeAreaView style={LandlordProfileStyle.mainContainer}>
       <TopHeader
-        // onPressLeftButton={() => _goBack(props)}
-        // isprofileImage
         onPressLeftButton={() =>
-          // props.navigation.navigate('Dashboard')
           navigation.goBack()
         }
         MiddleText={'Profile'}
-        // RightUserProfile={{
-        //   uri:
-        //     loginData?.Login_details?.profile_photo_path ||
-        //     signUp_account_response?.Login_details?.profile_photo_path,
-        // }}
       />
       <ScrollView>
-        {/* <SearchBar
-          frontSearchIcon={true}
-          height={48}
-          marginTop={20}
-          searchData={searchprofileMenu}
-        /> */}
 
         <TouchableOpacity
           style={LandlordProfileStyle.profilemainView}
           onPress={() => props.navigation.navigate('EditProfile')}>
           <View style={LandlordProfileStyle.ProfileView}>
             <Image
-              // source={IMAGES.Landlordprofile}
               source={{
                 uri: accountDetails?.image_path[0],
-                // uri: loginData.Login_details?.profile_photo_path,
               }}
               style={LandlordProfileStyle.usericon}
               resizeMode="cover"
@@ -166,13 +137,7 @@ export default LandlordProfile = props => {
             </View>
           </View>
           <View
-            // onPress={() => props.navigation.navigate('EditProfile')}
             style={LandlordProfileStyle.contactIconView}>
-            {/* <Image
-              source={IMAGES.contactDetails}
-              style={LandlordProfileStyle.contactIcon}
-              resizeMode="contain"
-            /> */}
             <MaterialCommunityIcons
               name={'account-edit-outline'}
               size={20}
@@ -213,7 +178,6 @@ export default LandlordProfile = props => {
 
         <TouchableOpacity
           onPress={handleGeneralSettingsPress}
-          // onPress={() => {//   props.navigation.navigate("PrivacySecurity");// }} // Navigate To PrivacySecurity
         >
           <RowTab
             LeftIconLibrary={'MaterialCommunityIcons'}
@@ -225,9 +189,6 @@ export default LandlordProfile = props => {
           />
         </TouchableOpacity>
         <TouchableOpacity
-          // onPress={() => {
-          //   // props.navigation.navigate("ManageSubscription");
-          // }}
           onPress={handleGeneralSettingsPress}>
           <RowTab
             LeftIconLibrary={'MaterialIcons'}
@@ -285,7 +246,6 @@ export default LandlordProfile = props => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          // onPress={() => { props.navigation.navigate("GenerateReport");}}Navigate To Generate report
           onPress={handleGeneralSettingsPress}>
           <RowTab
             IsDivider={false}
@@ -310,7 +270,6 @@ export default LandlordProfile = props => {
             TabSubTaxt="Logout of your Kodie profile"
           />
         </TouchableOpacity>
-        {/* <LandlordProfileData /> */}
       </ScrollView>
       <RBSheet
         ref={refRBSheet}

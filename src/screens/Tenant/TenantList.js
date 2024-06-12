@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, SafeAreaView} from 'react-native';
 import React, {useState} from 'react';
 import {TenantListStyle} from './TenantListStyle';
 import {_COLORS} from '../../Themes';
@@ -26,7 +26,7 @@ const TenantList = props => {
     }
   };
   return (
-    <View style={TenantListStyle.Container}>
+    <SafeAreaView style={TenantListStyle.Container}>
       {/* <TopHeader onPressLeftButton={() => props.navigation.navigate("Dashboard")} /> */}
 
       <TopHeader
@@ -65,7 +65,7 @@ const TenantList = props => {
       />
       <View style={TenantListStyle.Line} />
       {checkTabs()}
-    </View>
+    </SafeAreaView>
   );
 };
 

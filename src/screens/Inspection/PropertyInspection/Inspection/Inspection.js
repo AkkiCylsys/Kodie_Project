@@ -10,12 +10,14 @@ import {
   Image,
   FlatList,
   TextInput,
+  Alert,
 } from 'react-native';
 import {InspectionCss} from './InspectionCss';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
@@ -24,10 +26,13 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import {Dropdown} from 'react-native-element-dropdown';
 import Bedroom from './Bedroom/Bedroom';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Config } from '../../../../Config';
+import {ScrollView} from 'react-native-gesture-handler';
+import {Config} from '../../../../Config';
 import axios from 'axios';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { googleMapIsInstalled } from 'react-native-maps/lib/decorateMapComponent';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 const Data = [
   {
     id: 1,
@@ -86,7 +91,7 @@ const DropdownData = [
   {label: 'Living Room', value: '8'},
   {label: 'Roof', value: '9'},
 ];
-const Inspection = (props) => {
+const Inspection = props => {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState(null);
   const [email, setEmail] = useState('');
@@ -94,10 +99,18 @@ const Inspection = (props) => {
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
   const [AreaKey, setAreaKey] = useState([]);
-
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const [selectedButtonFutue, setSelectedButtonFutue] = useState(0);
+  const [selectedButtonStandard, setSelectedButtonStandard] = useState(0);
+  const [getinspection, setGetInspection] = useState([]);
+  console.log(
+    'loginresponse_jobdetails..',
+    loginData?.Login_details?.user_account_id,
+  );
   const TIM_KEY = props?.TIM_KEY;
-
-  console.log(" props?.",TIM_KEY);
+ 
+  console.log(' props?.', TIM_KEY);
+  const PropertyId=props.PropertyId
   const navigateToScreen = id => {
     switch (id) {
       case 1:
@@ -115,9 +128,12 @@ const Inspection = (props) => {
     refRBSheet2.current.close();
     refRBSheet1.current.close();
   };
-  useEffect(()=>{
-    getInspectionAreas()
-  })
+  useEffect(() => {
+    getInspectionAreas();
+  }, []);
+  useEffect(() => {
+    getInspectionDetails();
+  }, []);
   const getInspectionAreas = () => {
     const url = Config.BASE_URL;
     const AreaGetUrl = url + `get_inspection_area_details/${TIM_KEY}`;
@@ -133,63 +149,180 @@ const Inspection = (props) => {
           setIsLoading(false);
         } else {
           console.error('Selected_Address_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('Selected_Address error:', error);
-        // alert(error);
         setIsLoading(false);
-     });
-  }; 
+      });
+  };
+
+  const handleDone = async () => {
+    alert(value)
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const AreaPostUrl = url + `inspection_details/CustomArea`;
+
+    try {
+      const response = await axios.post(AreaPostUrl, {
+        custom_area_name:email,
+        is_standard_check_inspection: true,
+        area_similar: 5,
+        area_future_inspection: false,
+        property_id: PropertyId,
+        inspection_id: TIM_KEY,
+        created_by: 543,
+      });
+      console.log (response)
+      if (response?.data?.success) {
+        Alert.alert('Success', 'Custom area added successfully');
+        refRBSheet1.current.close();
+      } else {
+        Alert.alert('Error', 'Failed to add custom area');
+        console.error('Error:', response?.data?.error || 'Unknown error');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to add custom area');
+      console.error('Error:', error.response || error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
+  const handleDeleteInspection = async () => {
+    console.log('delete')
+    const url = Config.BASE_URL;
+    const deleteUrl = url + `delete_inspection_details/${TIM_KEY}`;
+
+    try {
+      const response = await axios.delete(deleteUrl);
+      if (response?.data?.success) {
+        Alert.alert('Success', 'Inspection deleted successfully');
+        refRBSheet2.current.close();
+      } else {
+        Alert.alert('Error', 'Failed to delete inspection');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to delete inspection');
+      console.error('Error:', error.response || error.message);
+    }
+  };
+
+  const getInspectionDetails = () => {
+   
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+
+    const apiUrl =
+      url + `get_inspection_details/${TIM_KEY}`;
+
+    axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response: getinspection', response?.data?.data[0]);
+        setGetInspection(response?.data?.data[0]);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error PersonalDetails CIP:', error);
+      });
+  };
+
+
+  const SubmitInspection = async () => {
+    // alert(selectedAddress?.property_id)
+    setIsLoading(true);
+    try {
+      const Inspectiondata = {
+        UPD_KEY: PropertyId,
+        TIM_INSPECTION_TYPE: getinspection.v_TIM_INSPECTION_TYPE,
+        TIM_SCHEDULE_TIME: getinspection.v_TIM_SCHEDULE_TIME,
+        TIM_SCHEDULE_DATE:moment(getinspection.v_TIM_SCHEDULE_DATE).format('YYYY-MM-DD'),
+        TIM_LOCATION: getinspection.v_TIM_LOCATION,
+        TIM_LOCATION_LONGITUDE: parseFloat(getinspection.v_TIM_LOCATION_LONGITUDE),
+        TIM_LOCATION_LATITUDE: parseFloat(getinspection.v_TIM_LOCATION_LATITUDE),
+        TIM_ADD_ATTENDENCE: getinspection.v_TIM_ADD_ATTENDENCE,
+        TIM_IS_FURNISHED: getinspection.v_TIM_IS_FURNISHED,
+        TIM_DESCRIPTION: getinspection.v_TIM_DESCRIPTION,
+        TAM_AREA_KEYS: getinspection.cur_TAM_AREA_KEY,
+        CREATED_BY: loginData?.Login_details?.user_account_id.toString()
+      }
+      console.log("inspec", Inspectiondata);
+      const Url = Config.BASE_URL
+      const Inspection_Url = Url + "inspection_details/save"
+      console.log("Inspection_Url", Inspection_Url);
+      const res = await axios.post(Inspection_Url, Inspectiondata)
+      console.log('scheduule inspection....',res?.data);
+      refRBSheet2.current.close();
+      if (res?.data?.success == true) {
+        setTIM_key(res?.data?.data);
+        console.log("TIM_KEY", res?.data?.data?.TIM_KEY);
+        alert(res?.data?.message)
+        setIsLoading(false);
+      }
+    } catch (error) {
+      if (error?.response && error?.response?.status === 404) {
+        alert(error?.response?.data?.message)
+        setIsLoading(false)
+      } else {
+        alert(error?.response?.data?.message)
+        setIsLoading(false);
+      }
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+    
+  }
   const Inspection_render = ({item}) => {
     console.log(item);
     let IconComponent;
     let iconName = '';
 
     switch (item.area_name) {
-        case 'Bathroom':
-            IconComponent = FontAwesome;
-            iconName = 'bathtub';
-            break;
-        case 'Bedroom':
-            IconComponent = FontAwesome;
-            iconName = 'bed';
-            break;
-        case 'Garden':
-            IconComponent = AntDesign;
-            iconName = 'grass';
-            break;
-        case 'Kitchen':
-            IconComponent = AntDesign;
-            iconName = 'kitchen';
-            break;
-        case 'Dining room':
-            IconComponent = AntDesign;
-            iconName = 'kitchen';
-            break;
-        case 'Living room':
-            IconComponent = AntDesign;
-            iconName = 'kitchen';
-            break;
-        case 'Exterior':
-            IconComponent = AntDesign;
-            iconName = 'kitchen';
-            break;
-        case 'Roof':
-            IconComponent = AntDesign;
-            iconName = 'kitchen';
-            break;
-        case 'Garage':
-            IconComponent = MaterialIcons;
-            iconName = 'garage';
-            break;
-        // Add cases for other areas if needed
-        default:
-            IconComponent = MaterialIcons;
-            iconName = 'home'; // Default icon
-            break;
+      case 'Bathroom':
+        IconComponent = FontAwesome;
+        iconName = 'bathtub';
+        break;
+      case 'Bedroom':
+        IconComponent = FontAwesome;
+        iconName = 'bed';
+        break;
+      case 'Garden':
+        IconComponent = AntDesign;
+        iconName = 'grass';
+        break;
+      case 'Kitchen':
+        IconComponent = AntDesign;
+        iconName = 'kitchen';
+        break;
+      case 'Dining room':
+        IconComponent = AntDesign;
+        iconName = 'kitchen';
+        break;
+      case 'Living room':
+        IconComponent = AntDesign;
+        iconName = 'kitchen';
+        break;
+      case 'Exterior':
+        IconComponent = AntDesign;
+        iconName = 'kitchen';
+        break;
+      case 'Roof':
+        IconComponent = AntDesign;
+        iconName = 'kitchen';
+        break;
+      case 'Garage':
+        IconComponent = MaterialIcons;
+        iconName = 'garage';
+        break;
+      // Add cases for other areas if needed
+      default:
+        IconComponent = MaterialIcons;
+        iconName = 'home'; // Default icon
+        break;
     }
     return (
       <>
@@ -197,13 +330,14 @@ const Inspection = (props) => {
           <View style={InspectionCss.flatListContainer}>
             {!isEditing ? (
               <View style={InspectionCss.ImageStyle}>
-                               <IconComponent
-                name={iconName} 
-                size={20} 
-                color={_COLORS.Kodie_GreenColor} 
-                style={{alignSelf:'center'}} 
-                resizeMode={'center'}/>
-                </View>
+                <IconComponent
+                  name={iconName}
+                  size={20}
+                  color={_COLORS.Kodie_GreenColor}
+                  style={{alignSelf: 'center'}}
+                  resizeMode={'center'}
+                />
+              </View>
             ) : (
               <AntDesign
                 name={'minuscircle'}
@@ -240,55 +374,55 @@ const Inspection = (props) => {
     );
   };
   return (
-    <ScrollView>    
-    <View style={InspectionCss.MainContainer}>
-      <View style={InspectionCss.Container}>
-        <View style={InspectionCss.mainView}>
-          <Text style={InspectionCss.areasText}>{'Inspection areas'}</Text>
-          <View style={InspectionCss.editView}>
-            <TouchableOpacity
-              onPress={() => {
-                refRBSheet2.current.open();
-              }}
-              style={InspectionCss.IconView}>
-              <Entypo
-                name={'dots-three-horizontal'}
-                size={20}
-                color={_COLORS.Kodie_BlackColor}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setIsEditing(!isEditing)}
-              style={InspectionCss.IconView}>
-              <Text style={InspectionCss.editText}>{'Edit'}</Text>
-            </TouchableOpacity>
+    <ScrollView>
+      <View style={InspectionCss.MainContainer}>
+        <View style={InspectionCss.Container}>
+          <View style={InspectionCss.mainView}>
+            <Text style={InspectionCss.areasText}>{'Inspection areas'}</Text>
+            <View style={InspectionCss.editView}>
+              <TouchableOpacity
+                onPress={() => {
+                  refRBSheet2.current.open();
+                }}
+                style={InspectionCss.IconView}>
+                <Entypo
+                  name={'dots-three-horizontal'}
+                  size={20}
+                  color={_COLORS.Kodie_BlackColor}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setIsEditing(!isEditing)}
+                style={InspectionCss.IconView}>
+                <Text style={InspectionCss.editText}>{'Edit'}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        <DividerIcon />
-        {isEditing ? (
-          <CustomSingleButton
-            _ButtonText={'Add custom area'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            backgroundColor={_COLORS.Kodie_BlackColor}
-            height={40}
-            marginBottom={16}
-            width={'50%'}
-            onPress={()=>{
-              refRBSheet1?.current?.open();
-              alert('klhdkujdsgjdsg')
-            }}
-            disabled={isLoading ? true : false}
+          <DividerIcon />
+          {isEditing ? (
+            <CustomSingleButton
+              _ButtonText={'Add custom area'}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              backgroundColor={_COLORS.Kodie_BlackColor}
+              height={40}
+              marginBottom={16}
+              width={'50%'}
+              onPress={() => {
+                refRBSheet1.current.open();
+                // Alert.alert('Button Clicked', 'klhdkujdsgjdsg');
+              }}
+              disabled={false}
+            />
+          ) : null}
+          <FlatList
+            data={AreaKey}
+            scrollEnabled
+            showsVerticalScrollIndicator={false}
+            keyExtractor={item => item?.area_key_id}
+            renderItem={Inspection_render}
           />
-        ) : null}
-        <FlatList
-          data={AreaKey}
-          scrollEnabled
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => item?.area_key_id}
-          renderItem={Inspection_render}
-        />
-      </View>
-      <RBSheet
+        </View>
+        <RBSheet
         ref={refRBSheet1}
         closeOnDragDown={true}
         closeOnPressMask={true}
@@ -326,11 +460,19 @@ const Inspection = (props) => {
             {'Would you like to use a standard inspection checklist?'}
           </Text>
           <RowButtons
+          // onPressLeftButton={() => {
+          //   setSelectedButtonStandard(1);
+          //   // alert(selectedButtonStandard)
+          // }}
             LeftButtonText={'Yes'}
             leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
             LeftButtonTextColor={_COLORS.Kodie_BlackColor}
             LeftButtonborderColor={_COLORS.Kodie_GrayColor}
             RightButtonText={'No'}
+            // onPressRightButton={() => {
+            //   setSelectedButtonStandard(0);
+            //   // alert(selectedButtonStandard)
+            // }}
             RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
             RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
@@ -357,14 +499,22 @@ const Inspection = (props) => {
             }}
           />
           <Text style={InspectionCss.cancelText}>
-            {'Would you like to use a standard inspection checklist?'}
+            {'Make this a standard area for future inspections?'}
           </Text>
           <RowButtons
             LeftButtonText={'Yes'}
+            // onPressLeftButton={() => {
+            //   setSelectedButtonFutue(0);
+            //   // alert(selectedButtonFutue)
+            // }}
             leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
             LeftButtonTextColor={_COLORS.Kodie_BlackColor}
             LeftButtonborderColor={_COLORS.Kodie_GrayColor}
             RightButtonText={'No'}
+            // onPressRightButton={() => {
+            //   setSelectedButtonFutue(0);
+            //   // alert(selectedButtonFutue)
+            // }}
             RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
             RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
@@ -373,56 +523,66 @@ const Inspection = (props) => {
             <TouchableOpacity style={InspectionCss.cancelView}>
               <Text style={[InspectionCss.cancelText]}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={InspectionCss.SaveView}>
+            <TouchableOpacity style={InspectionCss.SaveView} onPress={handleDone} disabled={isLoading}>
               <Text style={InspectionCss.DoneText}>Done</Text>
             </TouchableOpacity>
           </View>
         </View>
       </RBSheet>
-      <RBSheet
-        ref={refRBSheet2}
-        closeOnDragDown={true}
-        closeOnPressMask={true}
-        height={200}
-        customStyles={{
-          wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
-          container: InspectionCss.bottomModal_container,
-        }}>
-        <View style={InspectionCss.Container}>
-          <View style={InspectionCss.ModalContainer}>
-            <Text style={InspectionCss.ShareText}>{'Options'}</Text>
-            <TouchableOpacity onPress={handleCloseModal}>
-              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+        <RBSheet
+          ref={refRBSheet2}
+          closeOnDragDown={true}
+          closeOnPressMask={true}
+          height={200}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: InspectionCss.bottomModal_container,
+          }}>
+          <View style={InspectionCss.Container}>
+            <View style={InspectionCss.ModalContainer}>
+              <Text style={InspectionCss.ShareText}>{'Options'}</Text>
+              <TouchableOpacity onPress={handleCloseModal}>
+                <Entypo
+                  name="cross"
+                  size={24}
+                  color={_COLORS.Kodie_BlackColor}
+                />
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity style={InspectionCss.modalFile}
+            onPress={SubmitInspection}>
+            <View style={InspectionCss.deleteIconView}>
+                <MaterialCommunityIcons
+                  name="file-multiple-outline"
+                  size={25}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+              </View>
+              <Text style={InspectionCss.editText}>
+                {'Duplicate inspection'}
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={InspectionCss.modalFile}
+            onPress={handleDeleteInspection}>
+              <View style={InspectionCss.deleteIconView}>
+                <MaterialIcons
+                  name="delete-outline"
+                  size={25}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+              </View>
+              <Text style={InspectionCss.editText}>{'Delete inspection'}</Text>
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity style={InspectionCss.modalFile}>
-            <Image
-              source={IMAGES.Duplicate}
-              style={InspectionCss.ImageStyle}
-              resizeMode={'center'}
-            />
-            <Text style={InspectionCss.editText}>{'Duplicate inspection'}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={InspectionCss.modalFile}>
-            <View style={InspectionCss.deleteIconView}>
-              <MaterialIcons
-                name="delete-outline"
-                size={20}
-                color={_COLORS.Kodie_GreenColor}
-              />
-            </View>
-            <Text style={InspectionCss.editText}>{'Delete inspection'}</Text>
-          </TouchableOpacity>
-        </View>
-      </RBSheet>
-    </View>
-    {/* {isLoading ? <CommonLoader/> : null} */}
+        </RBSheet>
+      </View>
+      {/* {isLoading ? <CommonLoader/> : null} */}
     </ScrollView>
   );
 };

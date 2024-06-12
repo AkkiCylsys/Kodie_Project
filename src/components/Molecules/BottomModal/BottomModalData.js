@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const data = [
@@ -67,8 +68,8 @@ const data = [
     Data: 'Delete property',
     // Img: IMAGES.Delete,
     Icon: (
-      <MaterialIcons
-        name="delete-outline"
+      <AntDesign
+        name="delete"
         size={25}
         color={_COLORS.Kodie_GreenColor}
       />
