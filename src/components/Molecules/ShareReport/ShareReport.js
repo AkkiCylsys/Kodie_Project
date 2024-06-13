@@ -22,6 +22,7 @@ const ShareReport = (props) => {
             onChangeText={setEmail}
             placeholder="Enter your email address"
             placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+            keyboardType="email-address"
           />
         </View>
 

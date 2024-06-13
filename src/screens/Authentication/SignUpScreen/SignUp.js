@@ -269,6 +269,7 @@ export default SignUp = props => {
               placeholderTextColor="#999"
               maxLength={30}
               autoCapitalize={'none'}
+              keyboardType="email-address"
             />
             {emailError ? (
               <Text style={SignUpStyles.error_text}>{emailError}</Text>

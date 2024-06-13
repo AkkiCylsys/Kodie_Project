@@ -232,6 +232,7 @@ console.log("account_id",account_id);
                 onChangeText={setEmail}
                 placeholder="Enter your email address"
                 placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
+                keyboardType="email-address"
               />
             </View>
             <View style={ScheduleCss.ButtonView}>

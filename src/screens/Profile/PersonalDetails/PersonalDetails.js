@@ -305,7 +305,7 @@ const PersonalDetails = props => {
                   <TextInput
                     value={email}
                     onChangeText={setEmail}
-                    keyboardType="numeric"
+                    keyboardType="email-address"
                     placeholder="jason5@gmail.com"
                     editable={false}
                   />

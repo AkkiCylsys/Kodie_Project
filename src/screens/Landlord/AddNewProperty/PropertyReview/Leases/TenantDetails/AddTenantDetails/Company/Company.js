@@ -177,6 +177,7 @@ export default Company = props => {
               onBlur={() => handleCompanyEmail(email)}
               placeholder="Enter company’s email address"
               placeholderTextColor="#999"
+              keyboardType="email-address"
             />
             <Text style={CompanyStyle.errorText}>{emailError}</Text>
           </View>

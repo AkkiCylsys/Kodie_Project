@@ -403,6 +403,7 @@ export default CompanyContractor = props => {
               onBlur={() => handleCompanyEmail(email)}
               placeholder="Enter company’s email address"
               placeholderTextColor="#999"
+              keyboardType="email-address"
             />
             <Text style={CompanyContractorStyle.errorText}>{emailError}</Text>
           </View>

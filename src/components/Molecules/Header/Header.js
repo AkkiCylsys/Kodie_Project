@@ -4,6 +4,7 @@ import {HeaderStyle} from './HeaderStyle';
 import {FONTFAMILY, SMALLICON, IMAGES, _COLORS} from './../../../Themes/index';
 import {_goBack} from '../../../services/CommonServices';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DividerIcon from '../../Atoms/Devider/DividerIcon';
 import {useSelector} from 'react-redux';
 import {Config} from '../../../Config';
@@ -157,7 +158,14 @@ const TopHeader = props => {
                   }}
                   style={HeaderStyle.usericon}
                 />
-              ) : null}
+              ) : (
+                <FontAwesome
+                  name="user-circle"
+                  size={38}
+                  color={_COLORS.Kodie_GrayColor}
+                  style={{marginLeft: 10}}
+                />
+              )}
             </TouchableOpacity>
           </View>
         )}

@@ -60,7 +60,7 @@ const Contactus = props => {
       .post(contactUsUrl, contactus_data)
       .then(response => {
         console.log('API Response contact us:', response.data);
-        if (response?.data?.status === true) {
+        if (response?.data?.success === true) {
           alert(response?.data?.message);
           setAboutHelp('');
         } else {

@@ -135,6 +135,7 @@ const ReviewInspection = () => {
                 onChangeText={setEmail}
                 placeholder="Enter your email address"
                 placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
+                keyboardType="email-address"
               />
             </View>
             <View style={ReviewInspectionCss.ButtonView}>
