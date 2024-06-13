@@ -152,20 +152,22 @@ const TopHeader = props => {
               onPress={props?.onPressRightImgProfile}
               style={{alignSelf: 'center'}}>
               {props.isprofileImage ? (
-                <Image
-                  source={{
-                    uri: userProfileImageUri,
-                  }}
-                  style={HeaderStyle.usericon}
-                />
-              ) : (
-                <FontAwesome
-                  name="user-circle"
-                  size={38}
-                  color={_COLORS.Kodie_GrayColor}
-                  style={{marginLeft: 10}}
-                />
-              )}
+                userProfileImageUri ? (
+                  <Image
+                    source={{
+                      uri: userProfileImageUri,
+                    }}
+                    style={HeaderStyle.usericon}
+                  />
+                ) : (
+                  <FontAwesome
+                    name="user-circle"
+                    size={38}
+                    color={_COLORS.Kodie_GrayColor}
+                    style={{marginLeft: 10}}
+                  />
+                )
+              ) : null}
             </TouchableOpacity>
           </View>
         )}
