@@ -1,5 +1,5 @@
 //ScreenNo:159
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -9,13 +9,13 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
 } from 'react-native';
-import { AddNewNoticeStyle } from './AddNewNoticeStyle';
+import {AddNewNoticeStyle} from './AddNewNoticeStyle';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import { Dropdown } from 'react-native-element-dropdown';
-import { _COLORS, FONTFAMILY, IMAGES, LABEL_STYLES } from '../../../Themes';
-import { Divider } from 'react-native-paper';
+import {Dropdown} from 'react-native-element-dropdown';
+import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../Themes';
+import {Divider} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -25,24 +25,24 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import { _goBack } from '../../../services/CommonServices';
+import {_goBack} from '../../../services/CommonServices';
 import SwitchToggle from 'react-native-switch-toggle';
-import { Config } from '../../../Config';
+import {Config} from '../../../Config';
 import axios from 'axios';
-import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import Geocoder from 'react-native-geocoding';
 import Geolocation from 'react-native-geolocation-service';
 import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
-import { request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import { useSelector } from 'react-redux';
+import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {useSelector} from 'react-redux';
 import DocumentPicker from 'react-native-document-picker';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
 import moment from 'moment/moment';
 import debounce from 'lodash/debounce';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import NoticesUploadDocument from '../../../components/NoticesUploadDocument/NoticesUploadDocument'
+import NoticesUploadDocument from '../../../components/NoticesUploadDocument/NoticesUploadDocument';
 import CustomNotificationPicker from '../../../components/CustomNotificationPicker/CustomNotificationPicker';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
 const AddNewNotice = props => {
@@ -95,18 +95,18 @@ const AddNewNotice = props => {
   const refRBSheet1 = useRef();
   const UploadrbSheetRef = useRef();
 
-  const handleApply = (value) => {
+  const handleApply = value => {
     setSelectedCustemValue(value);
     refRBSheet1.current.close();
   };
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const handleFileUpload = (fileUri, type) => {
-    console.log("fileUri, type",fileUri, type);
-    setUploadedFiles(prevFiles => [...prevFiles, { uri: fileUri, type }]);
+    console.log('fileUri, type', fileUri, type);
+    setUploadedFiles(prevFiles => [...prevFiles, {uri: fileUri, type}]);
     UploadrbSheetRef.current.close();
   };
-console.log("uploadedFiles",JSON.stringify(uploadedFiles));
+  console.log('uploadedFiles', JSON.stringify(uploadedFiles));
   useEffect(() => {
     handle_notice();
     handle_Repeat();
@@ -129,8 +129,9 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
       const startDate = moment(selectedDate, 'YYYY-MM-DD');
       const endDate = moment(text, 'YYYY-MM-DD');
       if (endDate.isBefore(startDate)) {
-        setSelectedToDateError('Start date should not be greater than end date.');
-
+        setSelectedToDateError(
+          'Start date should not be greater than end date.',
+        );
       } else {
         setSelectedToDateError('');
       }
@@ -142,8 +143,14 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
     if (text.trim() === '') {
       setSelectedToTimeError('End time is required!');
     } else {
-      const startDateTime = moment(`${selectedDate} ${currentfromTime}`, 'YYYY-MM-DD HH:mm');
-      const endDateTime = moment(`${selectedToDate} ${text}`, 'YYYY-MM-DD HH:mm');
+      const startDateTime = moment(
+        `${selectedDate} ${currentfromTime}`,
+        'YYYY-MM-DD HH:mm',
+      );
+      const endDateTime = moment(
+        `${selectedToDate} ${text}`,
+        'YYYY-MM-DD HH:mm',
+      );
       if (endDateTime.isSame(startDateTime)) {
         setSelectedToTimeError('End time cannot be the same as start time.');
       } else {
@@ -531,9 +538,9 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
           setToggleNotification(response?.data?.data.notifications);
           setNotification_type_value(parseInt(response?.data?.data.type_id));
           setNotes(response?.data?.data.notes);
-          setSelectedCustemValue(response?.data?.data?.custom)
+          setSelectedCustemValue(response?.data?.data?.custom);
           setNoticeAllData(response?.data?.data.file_name);
-          setTempSelectedValues(response?.data?.data?.guests)
+          setTempSelectedValues(response?.data?.data?.guests);
         } else {
           // alert(response?.data?.message);
           setIsLoading(false);
@@ -670,7 +677,6 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
     );
   };
   const repeatRender = item => {
-
     return (
       <View
         key={item.lookup_key}
@@ -734,14 +740,14 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
       </View>
     );
   };
-  const fetchResults = async (searchQuery) => {
+  const fetchResults = async searchQuery => {
     // alert(searchQuery)
     setIsLoading(true);
 
     try {
-      const Url = Config.BASE_URL
-      const search_Url = Url + "add_attendees/search"
-      console.log("Inspection_Url", search_Url);
+      const Url = Config.BASE_URL;
+      const search_Url = Url + 'add_attendees/search';
+      console.log('Inspection_Url', search_Url);
       const response = await axios.post(search_Url, {
         search: searchQuery,
       });
@@ -754,7 +760,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
     }
   };
 
-  const debouncedFetchResults = debounce((searchQuery) => {
+  const debouncedFetchResults = debounce(searchQuery => {
     if (searchQuery) {
       fetchResults(searchQuery);
     } else {
@@ -769,11 +775,15 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
     };
   }, [query]);
 
-  const handleSelect = (user) => {
-    setTempSelectedValues((prevSelectedUsers) => {
-      const isSelected = prevSelectedUsers.find(selectedUser => selectedUser.UAD_KEY === user.UAD_KEY);
+  const handleSelect = user => {
+    setTempSelectedValues(prevSelectedUsers => {
+      const isSelected = prevSelectedUsers.find(
+        selectedUser => selectedUser.UAD_KEY === user.UAD_KEY,
+      );
       if (isSelected) {
-        return prevSelectedUsers.filter((selectedUser) => selectedUser.UAD_KEY !== user.UAD_KEY);
+        return prevSelectedUsers.filter(
+          selectedUser => selectedUser.UAD_KEY !== user.UAD_KEY,
+        );
       } else {
         return [...prevSelectedUsers, user];
       }
@@ -783,9 +793,9 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   const handleClosePopup = () => {
     refRBSheet.current.close();
   };
-  const displaySelectedValues = selectedValues.map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`).join(', ');;
-
-
+  const displaySelectedValues = selectedValues
+    .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
+    .join(', ');
 
   const applySelection = () => {
     if (validateguestSelection()) {
@@ -797,119 +807,159 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
   };
   const handlevalidUpdation = () => {
     if (noticeTypeDataValue == '') {
-      setShowNoticeTypeError(true)
-    } else
-      if (noticeTittle.trim() == '') {
-        setTitleError('Notice title is required!');
-      } else if (selectedDate.trim() === '' || currentfromTime.trim() === '') {
-        setSelectedDateError('Select start date is required!');
-        setSelectedFromTimeError('Select start time is required!');
-      } else if (selectedToDate.trim() === '' || currentToTime.trim() === '') {
-        setSelectedToDateError('Select end date is required!');
-        setSelectedToTimeError('Select end time is required!');
-      } else if (selectedValues.length == 0) {
-        setguestError('At least one guest can be added in this field.');
+      setShowNoticeTypeError(true);
+    } else if (noticeTittle.trim() == '') {
+      setTitleError('Notice title is required!');
+    } else if (selectedDate.trim() === '' || currentfromTime.trim() === '') {
+      setSelectedDateError('Select start date is required!');
+      setSelectedFromTimeError('Select start time is required!');
+    } else if (selectedToDate.trim() === '' || currentToTime.trim() === '') {
+      setSelectedToDateError('Select end date is required!');
+      setSelectedToTimeError('Select end time is required!');
+    } else if (selectedValues.length == 0) {
+      setguestError('At least one guest can be added in this field.');
+    } else {
+      const startDate = moment(
+        `${selectedDate} ${currentfromTime}`,
+        'YYYY-MM-DD HH:mm',
+      );
+      const endDate = moment(
+        `${selectedToDate} ${currentToTime}`,
+        'YYYY-MM-DD HH:mm',
+      );
+
+      if (startDate.isAfter(endDate)) {
+        setSelectedDateError(
+          'Start date and time should not be greater than end date and time.',
+        );
+        setSelectedToDateError(
+          'End date and time should not be less than start date and time.',
+        );
+      } else if (startDate.isSame(endDate)) {
+        setSelectedFromTimeError('Start time should not be equal to end time.');
+        setSelectedToTimeError('End time should not be equal to start time.');
       } else {
-        const startDate = moment(`${selectedDate} ${currentfromTime}`, 'YYYY-MM-DD HH:mm');
-        const endDate = moment(`${selectedToDate} ${currentToTime}`, 'YYYY-MM-DD HH:mm');
+        setSelectedDateError('');
+        setSelectedFromTimeError('');
+        setSelectedToDateError('');
+        setSelectedToTimeError('');
 
-        if (startDate.isAfter(endDate)) {
-          setSelectedDateError('Start date and time should not be greater than end date and time.');
-          setSelectedToDateError('End date and time should not be less than start date and time.');
-        } else if (startDate.isSame(endDate)) {
-          setSelectedFromTimeError('Start time should not be equal to end time.');
-          setSelectedToTimeError('End time should not be equal to start time.');
-        } else {
-          setSelectedDateError('');
-          setSelectedFromTimeError('');
-          setSelectedToDateError('');
-          setSelectedToTimeError('');
-
-          noticeReminderid
-            ? update_createNoticeReminder()
-            : createNoticeReminder();
-        }
+        noticeReminderid
+          ? update_createNoticeReminder()
+          : createNoticeReminder();
       }
+    }
   };
-  const handleRemoveFile = (index) => {
+  const handleRemoveFile = index => {
     setUploadedFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
-  const renderImageItem = ({ item,index }) => (
+  const renderImageItem = ({item, index}) => (
     <View style={AddNewNoticeStyle.uploadedImageContainer}>
-      <Image source={{ uri:item?item: item.uri }} style={AddNewNoticeStyle.uploadedImage} />
+      <Image
+        source={{uri: item ? item : item.uri}}
+        style={AddNewNoticeStyle.uploadedImage}
+      />
       <TouchableOpacity
-        style={{flex: 1,
-          alignItems: "flex-end",
-          justifyContent: "center",
-          position: "absolute",
+        style={{
+          flex: 1,
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          position: 'absolute',
           top: 5,
           right: 5,
           zIndex: 1,
         }}
-        onPress={() => handleRemoveFile(index)}
-      >
-        <View style={{width:20,height:20,borderRadius:5,backgroundColor:_COLORS?.Kodie_GrayColor}}>
-        <AntDesign
-          name="close"
-          size={20}
-          color={_COLORS.Kodie_BlackColor}
-        />
-      </View>
+        onPress={() => handleRemoveFile(index)}>
+        <View
+          style={{
+            width: 20,
+            height: 20,
+            borderRadius: 5,
+            backgroundColor: _COLORS?.Kodie_GrayColor,
+          }}>
+          <AntDesign name="close" size={20} color={_COLORS.Kodie_BlackColor} />
+        </View>
       </TouchableOpacity>
     </View>
   );
 
-  const renderDocumentItem = ({ item,index }) => (
+  const renderDocumentItem = ({item, index}) => (
     <View style={AddNewNoticeStyle.container}>
-    <View style={AddNewNoticeStyle.pdfInfo}>
-      <FontAwesome
-        name="file-pdf-o"
-        size={35}
-        color={_COLORS.Kodie_BlackColor}
-        resizeMode={'contain'}
-      />
-      <View style={AddNewNoticeStyle.textContainer}>
-        <Text style={AddNewNoticeStyle.pdfName}>
-          {item?item
-          :item?.uri[0].name}
-        </Text>
+      <View style={AddNewNoticeStyle.pdfInfo}>
+        <FontAwesome
+          name="file-pdf-o"
+          size={35}
+          color={_COLORS.Kodie_BlackColor}
+          resizeMode={'contain'}
+        />
+        <View style={AddNewNoticeStyle.textContainer}>
+          <Text style={AddNewNoticeStyle.pdfName}>
+            {item ? item : item?.uri[0].name}
+          </Text>
+        </View>
       </View>
+      <TouchableOpacity
+        style={AddNewNoticeStyle.crossIcon}
+        onPress={() => {
+          handleRemoveFile(index);
+        }}>
+        <AntDesign name="close" size={20} color={_COLORS.Kodie_GrayColor} />
+      </TouchableOpacity>
     </View>
-    <TouchableOpacity
-      style={AddNewNoticeStyle.crossIcon}
-      onPress={()=>{handleRemoveFile(index)}}>
-      <AntDesign
-        name="close"
-        size={20}
-        color={_COLORS.Kodie_GrayColor}
-      />
-    </TouchableOpacity>
-  </View>
-    
   );
   const images = uploadedFiles.filter(file => file.type === 'image');
   const documents = uploadedFiles.filter(file => file.type === 'document');
-  
-  if (NoticeAllData && typeof NoticeAllData === 'object' && Array.isArray(NoticeAllData.image_path)) {
+
+  if (
+    NoticeAllData &&
+    typeof NoticeAllData === 'object' &&
+    Array.isArray(NoticeAllData.image_path)
+  ) {
     const fileNames = NoticeAllData.image_path;
-  
+
     // Filter images and documents based on file extensions
-    const additionalImages = fileNames.filter(fileName => /\.(jpg|png|jpeg)$/i.test(fileName));
-    const additionalDocuments = fileNames.filter(fileName => /\.pdf$/i.test(fileName));
-    console.log(additionalImages, "additionalImages");
-  
+    const additionalImages = fileNames.filter(fileName =>
+      /\.(jpg|png|jpeg)$/i.test(fileName),
+    );
+    const additionalDocuments = fileNames.filter(fileName =>
+      /\.pdf$/i.test(fileName),
+    );
+    console.log(additionalImages, 'additionalImages');
+
     // Merge additional images and documents with existing ones
-    images.push(...additionalImages.map(imageUrl => ({ uri: imageUrl, type: 'image' })));
-    documents.push(...additionalDocuments.map(documentUrl => ({ uri: documentUrl, type: 'document' })));
+    images.push(
+      ...additionalImages.map(imageUrl => ({uri: imageUrl, type: 'image'})),
+    );
+    documents.push(
+      ...additionalDocuments.map(documentUrl => ({
+        uri: documentUrl,
+        type: 'document',
+      })),
+    );
   } else {
-    console.error("NoticeAllData is not in the expected format:", NoticeAllData);
+    console.error(
+      'NoticeAllData is not in the expected format:',
+      NoticeAllData,
+    );
   }
-  
+
   return (
     <SafeAreaView style={AddNewNoticeStyle.MainContainer}>
       <TopHeader
-        onPressLeftButton={() => IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false): _goBack(props)}
-        MiddleText={IsMap || IsSearch ? 'Location' : editNotice ? "Edit notice" : 'Add new notice'}
+        onPressLeftButton={() =>
+          IsMap
+            ? setIsMap(false)
+            : IsSearch
+            ? setIsSearch(false)
+            : _goBack(props)
+        }
+        MiddleText={
+          IsMap || IsSearch
+            ? 'Location'
+            : editNotice
+            ? 'Edit notice'
+            : 'Add new notice'
+        }
       />
       {IsMap ? (
         <View
@@ -962,7 +1012,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
           <TouchableOpacity
             style={AddNewNoticeStyle.BtnContainer}
             onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{ height: 25, width: 25 }} />
+            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
           </TouchableOpacity>
         </View>
       ) : IsSearch ? (
@@ -980,7 +1030,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
         <KeyboardAvoidingView
           style={AddNewNoticeStyle.MainContainer}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-          <ScrollView contentContainerStyle={{ marginBottom: 50 }}>
+          <ScrollView contentContainerStyle={{marginBottom: 50}}>
             <View style={AddNewNoticeStyle.mainview}>
               <View style={AddNewNoticeStyle.jobDetailsView}>
                 <Text style={LABEL_STYLES.commontext}>
@@ -1002,13 +1052,17 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                   value={noticeTypeDataValue}
                   onChange={item => {
                     setNoticeTypeDataValue(item.lookup_key);
-                    setShowNoticeTypeError(false)
+                    setShowNoticeTypeError(false);
                     // alert(item.lookup_key)
                   }}
                   renderItem={TypeOfNotices}
                 />
               </View>
-              {showNoticeTypeError ? <Text style={AddNewNoticeStyle.errorText}>{"Please select a notice type."}</Text> : null}
+              {showNoticeTypeError ? (
+                <Text style={AddNewNoticeStyle.errorText}>
+                  {'Please select a notice type.'}
+                </Text>
+              ) : null}
 
               <View style={AddNewNoticeStyle.jobDetailsView}>
                 <Text style={LABEL_STYLES.commontext}>{'Notice title'}</Text>
@@ -1022,9 +1076,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                 />
               </View>
               {titleError ? (
-                <Text style={AddNewNoticeStyle.errorText}>
-                  {titleError}
-                </Text>
+                <Text style={AddNewNoticeStyle.errorText}>{titleError}</Text>
               ) : null}
 
               <Divider style={AddNewNoticeStyle.divider} />
@@ -1033,14 +1085,19 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                   name="repeat"
                   size={35}
                   color={_COLORS.Kodie_ExtraLiteGrayColor}
-                  style={{ alignSelf: 'center' }}
+                  style={{alignSelf: 'center'}}
                 />
                 <Text style={AddNewNoticeStyle.repeattext}>Repeat</Text>
                 <View style={AddNewNoticeStyle.noticedropdownview}>
                   <Dropdown
                     style={[
                       AddNewNoticeStyle.dropdown,
-                      { borderRadius: 8, height: 28, alignItems: 'center', marginTop: 0 },
+                      {
+                        borderRadius: 8,
+                        height: 28,
+                        alignItems: 'center',
+                        marginTop: 0,
+                      },
                     ]}
                     placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                     selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
@@ -1066,7 +1123,9 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
               {/* fourth part start here */}
               <View style={AddNewNoticeStyle.alldayviewmain}>
                 <View style={AddNewNoticeStyle.alldayview}>
-                  <MaterialCommunityIcons name="alarm-plus" size={35}
+                  <MaterialCommunityIcons
+                    name="alarm-plus"
+                    size={35}
                     color={_COLORS.Kodie_ExtraLiteGrayColor}
                   />
                   <Text style={AddNewNoticeStyle.alldaytext}>All Day</Text>
@@ -1084,12 +1143,10 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                   backgroundColorOff={_COLORS.Kodie_LiteWhiteColor}
                   containerStyle={AddNewNoticeStyle.toggle_con}
                   circleStyle={AddNewNoticeStyle.toggle_circle}
-
                 />
               </View>
               <View style={AddNewNoticeStyle.datetimeview}>
                 <View style={AddNewNoticeStyle.dateview}>
-
                   <CalendarModal
                     // SelectDate={selectedDate ? selectedDate : "Select Date"}
                     SelectDate={
@@ -1125,7 +1182,6 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                     _ApplyButton={apply_toggleModal}
                   />
 
-
                   <TimePicker
                     selectedTime={
                       currentfromTime && currentfromTime != ''
@@ -1148,11 +1204,9 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                     }}
                     onChange={() => handleFromTime(currentfromTime)}
                   />
-
-
                 </View>
                 <View style={AddNewNoticeStyle.dateview}>
-                  <View style={{ flex: 1 }}>
+                  <View style={{flex: 1}}>
                     <CalendarModal
                       // SelectDate={selectedDate ? selectedDate : "Select Date"}
                       SelectDate={
@@ -1207,23 +1261,25 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                       handleToTime(moment(date).format('hh:mm A'));
                     }}
                     onChange={() => handleToTime(currentToTime)}
-
                   />
                 </View>
               </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 {selectedDateError ? (
                   <Text style={AddNewNoticeStyle.errorText}>
                     {selectedDateError}
                   </Text>
                 ) : null}
                 {selectedFromTimeError ? (
-                  <Text style={[AddNewNoticeStyle.errorText, { textAlign: 'right' }]}>
+                  <Text
+                    style={[AddNewNoticeStyle.errorText, {textAlign: 'right'}]}>
                     {selectedFromTimeError}
                   </Text>
                 ) : null}
               </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                 {selectedToDateError ? (
                   <Text style={AddNewNoticeStyle.errorText}>
                     {selectedToDateError}
@@ -1241,7 +1297,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                 {/* <AddGuest /> */}
                 <View style={AddNewNoticeStyle.jobDetailsView}>
                   <Text style={LABEL_STYLES.commontext}>{'Add guests'}</Text>
-                  <View style={{ flex: 1, flexDirection: 'row' }}>
+                  <View style={{flex: 1, flexDirection: 'row'}}>
                     <TouchableOpacity
                       style={[
                         AddNewNoticeStyle.input,
@@ -1249,7 +1305,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                       ]}
                       onPress={() => refRBSheet.current.open()}>
                       <TextInput
-                        style={{ flex: 1 }}
+                        style={{flex: 1}}
                         value={displaySelectedValues}
                         placeholder="Add guests"
                         placeholderTextColor={_COLORS.Kodie_LightGrayColor}
@@ -1259,7 +1315,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                         name="user-plus"
                         size={30}
                         color={_COLORS.Kodie_GrayColor}
-                        style={{ alignSelf: 'center', marginHorizontal: 10 }}
+                        style={{alignSelf: 'center', marginHorizontal: 10}}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity style={AddNewNoticeStyle.chatBtn}>
@@ -1267,16 +1323,14 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                         name="chatbubble-ellipses-outline"
                         size={30}
                         color={_COLORS.Kodie_WhiteColor}
-                        style={{ alignSelf: 'center' }}
+                        style={{alignSelf: 'center'}}
                       />
                       <Text style={AddNewNoticeStyle.ChatText}>{'Chat '}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
                 {guestError ? (
-                  <Text style={AddNewNoticeStyle.errorText}>
-                    {guestError}
-                  </Text>
+                  <Text style={AddNewNoticeStyle.errorText}>{guestError}</Text>
                 ) : null}
                 <View style={AddNewNoticeStyle.firstview}>
                   <Text style={AddNewNoticeStyle.oldnumbertext}>
@@ -1317,7 +1371,9 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                 {/*seven part start here */}
                 <View style={AddNewNoticeStyle.setnotificationview}>
                   <View style={AddNewNoticeStyle.notificationbind}>
-                    <FontAwesome name="bell-o" size={35}
+                    <FontAwesome
+                      name="bell-o"
+                      size={35}
                       color={_COLORS.Kodie_ExtraLiteGrayColor}
                     />
                     <Text style={AddNewNoticeStyle.settext}>
@@ -1345,7 +1401,10 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                     Set notification type
                   </Text>
                   <Dropdown
-                    style={[AddNewNoticeStyle.setnotificationdrop, { width: 130 }]}
+                    style={[
+                      AddNewNoticeStyle.setnotificationdrop,
+                      {width: 130},
+                    ]}
                     placeholderStyle={AddNewNoticeStyle.placeholderStyle}
                     selectedTextStyle={AddNewNoticeStyle.selectedTextStyle}
                     inputSearchStyle={AddNewNoticeStyle.inputSearchStyle}
@@ -1365,10 +1424,17 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                 </View>
                 {/*nine part start here */}
                 <View style={AddNewNoticeStyle.setcustomview}>
-                  <Text style={AddNewNoticeStyle.setcustometext}>Set custom</Text>
-                  <View style={{ flexDirection: 'row' }}
-                  >
-                    <Text style={[AddNewNoticeStyle.setcustometext, { marginRight: 15 }]}>{selectedCustemValue}</Text>
+                  <Text style={AddNewNoticeStyle.setcustometext}>
+                    Set custom
+                  </Text>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text
+                      style={[
+                        AddNewNoticeStyle.setcustometext,
+                        {marginRight: 15},
+                      ]}>
+                      {selectedCustemValue}
+                    </Text>
 
                     <TouchableOpacity
                       onPress={() => refRBSheet1.current.open()}
@@ -1377,19 +1443,18 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                         name="chevron-small-right"
                         size={22}
                         color={_COLORS.Kodie_GrayColor}
-                        style={{ flex: 1, alignItems: 'center' }}
+                        style={{flex: 1, alignItems: 'center'}}
                       />
                     </TouchableOpacity>
                   </View>
                 </View>
               </View>
 
-
               <Divider style={AddNewNoticeStyle.dividerfourth} />
               <View style={AddNewNoticeStyle.jobDetailsView}>
                 <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
                 <TextInput
-                  style={[AddNewNoticeStyle.input, { height: 100 }]}
+                  style={[AddNewNoticeStyle.input, {height: 100}]}
                   value={notes}
                   onChangeText={setNotes}
                   placeholder="Add additional notes"
@@ -1405,22 +1470,22 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                 </Text>
                 {/* Display uploaded images in a horizontal FlatList */}
                 {images.length > 0 && (
-                <FlatList
-                  data={images}
-                  renderItem={renderImageItem}
-                  keyExtractor={(item, index) => index.toString()}
-                  horizontal
-                  style={AddNewNoticeStyle.uploadedImagesContainer}
-                />
+                  <FlatList
+                    data={images}
+                    renderItem={renderImageItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    horizontal
+                    style={AddNewNoticeStyle.uploadedImagesContainer}
+                  />
                 )}
                 {/* Display uploaded documents in a vertical FlatList */}
                 {documents.length > 0 && (
-                <FlatList
-                  data={documents}
-                  renderItem={renderDocumentItem}
-                  keyExtractor={(item, index) => index.toString()}
-                  style={AddNewNoticeStyle.uploadedDocumentsContainer}
-                />
+                  <FlatList
+                    data={documents}
+                    renderItem={renderDocumentItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    style={AddNewNoticeStyle.uploadedDocumentsContainer}
+                  />
                 )}
 
                 <CustomSingleButton
@@ -1437,13 +1502,12 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
                 />
                 <Divider style={AddNewNoticeStyle.dividerfourth} />
                 <CustomSingleButton
-                  _ButtonText={editNotice ? "Edit notice" : 'Add notice'}
+                  _ButtonText={editNotice ? 'Edit notice' : 'Add notice'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   disabled={isLoading ? true : false}
                   onPress={handlevalidUpdation}
                 />
               </View>
-
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
@@ -1454,14 +1518,13 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
         openDuration={250}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: AddNewNoticeStyle.bottomModal_container,
-        }}
-      >
+        }}>
         <GuestSelectionContent
           query={query}
           setQuery={setQuery}
@@ -1474,11 +1537,7 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
           handleClosePopup={handleClosePopup}
         />
 
-
-        {
-          isLoading ? <CommonLoader /> : null
-        }
-
+        {isLoading ? <CommonLoader /> : null}
       </RBSheet>
       <RBSheet
         ref={UploadrbSheetRef}
@@ -1486,16 +1545,17 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
         openDuration={250}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: AddNewNoticeStyle.bottomModal_container,
-        }}
-      >
-        <NoticesUploadDocument onFileUpload={handleFileUpload} rbSheetRefclose={() => UploadrbSheetRef.current.close()} />
-
+        }}>
+        <NoticesUploadDocument
+          onFileUpload={handleFileUpload}
+          rbSheetRefclose={() => UploadrbSheetRef.current.close()}
+        />
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}
       <RBSheet
@@ -1504,17 +1564,18 @@ console.log("uploadedFiles",JSON.stringify(uploadedFiles));
         openDuration={250}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: AddNewNoticeStyle.bottomModal_container,
-        }}
-      >
-        <CustomNotificationPicker onApply={handleApply} onClose={() => refRBSheet1.current.close()} />
+        }}>
+        <CustomNotificationPicker
+          onApply={handleApply}
+          onClose={() => refRBSheet1.current.close()}
+        />
       </RBSheet>
-
     </SafeAreaView>
   );
 };

@@ -139,9 +139,9 @@ export default PropertyFeature = props => {
 
   const DetailsData = async () => {
     const detailData = {
-      property_id: addPropertySecondStepData
-        ? addPropertySecondStepData
-        : propertyid,
+      property_id: addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+      ? addPropertySecondStepData
+      : propertyid,
     };
     console.log('detailData', detailData);
     const url = Config.BASE_URL;
@@ -397,9 +397,11 @@ export default PropertyFeature = props => {
             'response?.data?.Property_id',
             response?.data?.Property_id,
           );
+
           dispatch(
             fetchAddPropertySecondStepsSuccess(response?.data?.Property_id),
           );
+
           props.navigation.navigate('PropertyImages', {
             property_id: response?.data?.Property_id,
           });
@@ -866,7 +868,7 @@ export default PropertyFeature = props => {
                 onPress={() => {
                   if (
                     (Array.isArray(addPropertySecondStepData) &&
-                      addPropertySecondStepData.length > 0) ||
+                      addPropertySecondStepData.length > 0) || propertyid ||editMode||
                     typeof addPropertySecondStepData === 'number'
                   ) {
                     updatePropertyDetails();

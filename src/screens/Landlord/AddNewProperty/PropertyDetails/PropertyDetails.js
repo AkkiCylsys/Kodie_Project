@@ -86,7 +86,7 @@ export default PropertyDetails = props => {
     if (!location) {
       setError('Please enter a location.');
     } else {
-      setError(''); 
+      setError('');
     }
   };
   useFocusEffect(
@@ -122,12 +122,12 @@ export default PropertyDetails = props => {
     setLocation('');
     setProperty_value('');
     setPropertyDesc('');
-  }, []);
+  }, [propertyid, addPropertySecondStepData]);
   const DetailsData = async () => {
     const detailData = {
-      property_id: addPropertySecondStepData
-        ? addPropertySecondStepData
-        : propertyid,
+      property_id: addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+      ? addPropertySecondStepData
+      : propertyid,
     };
     console.log('detailData', detailData);
     const url = Config.BASE_URL;
@@ -551,9 +551,7 @@ export default PropertyDetails = props => {
                   labelField="lookup_description"
                   valueField="lookup_key"
                   placeholder="Select property type"
-                  value={
-                    property_value
-                  }
+                  value={property_value}
                   onChange={item => {
                     setProperty_value(item.lookup_key);
                   }}

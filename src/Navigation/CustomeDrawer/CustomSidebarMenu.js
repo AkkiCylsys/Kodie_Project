@@ -93,6 +93,8 @@ const CustomSidebarMenu = props => {
     setTimeout(() => {
       dispatch(logoutActionCreator());
     }, 3000);
+    refRBSheet.current.close();
+
   };
   const handleGeneralSettingsPress = () => {
     Alert.alert('Alert', 'Coming soon');
