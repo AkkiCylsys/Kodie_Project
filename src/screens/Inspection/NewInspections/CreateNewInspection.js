@@ -2,7 +2,7 @@
 //ScreenNo:89
 //ScreenNo:90
 //ScreenNo:92
-import React, { useState, useRef, useEffect } from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -15,11 +15,11 @@ import {
   Button,
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import { Dropdown } from 'react-native-element-dropdown';
-import { CreateNewInspectionStyle } from './CreateNewInspectionCss';
+import {Dropdown} from 'react-native-element-dropdown';
+import {CreateNewInspectionStyle} from './CreateNewInspectionCss';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
-import { LABEL_STYLES, _COLORS, IMAGES, FONTFAMILY } from '../../../Themes';
+import {LABEL_STYLES, _COLORS, IMAGES, FONTFAMILY} from '../../../Themes';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
@@ -28,20 +28,20 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import { _goBack } from '../../../services/CommonServices';
+import {_goBack} from '../../../services/CommonServices';
 import CustomDropdown from '../../../components/Molecules/CustomDropdown/CustomDropdown';
-import { Config } from '../../../Config';
+import {Config} from '../../../Config';
 import axios from 'axios';
-import moment from 'moment'
-import { useSelector } from 'react-redux';
+import moment from 'moment';
+import {useSelector} from 'react-redux';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
-import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import debounce from 'lodash/debounce';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -73,34 +73,35 @@ const CreateNewInspection = props => {
   const TIM_KEY = props?.route?.params?.TIM_KEY;
   const InspectionView = props?.route?.params?.InspectionView;
   console.log(InspectionView);
-  const Area_key = () => {
+  const Area_key = async () => {
     const url = Config.BASE_URL;
     const AreaGetUrl = url + 'get_inspection_area';
     console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
-    axios
+    await axios
       .get(AreaGetUrl)
       .then(response => {
-        console.log('Selected_Address', response?.data);
+        console.log('area response', response?.data);
         if (response?.data?.success === true) {
           setIsLoading(false);
-          console.log('Selected_Address....', response?.data?.data);
-          setAreaKey(response?.data?.data);
+          console.log('area response....', response?.data?.data);
+          setAreaKey(response?.data?.data[0]);
+          console.log("setAreaKey..",AreaKey)
         } else {
-          console.error('Selected_Address_error:', response?.data?.error);
+          console.error('area response_error:', response?.data?.error);
           // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
-        console.error('Selected_Address error:', error);
+        console.error('area response error:', error);
         // alert(error);
         setIsLoading(false);
       });
   };
 
-  const toggleCheckBox = (itemId) => {
-    setCheckedItems((prevCheckedItems) => ({
+  const toggleCheckBox = itemId => {
+    setCheckedItems(prevCheckedItems => ({
       ...prevCheckedItems,
       [itemId]: !prevCheckedItems[itemId],
     }));
@@ -119,30 +120,35 @@ const CreateNewInspection = props => {
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
-  const getInspectionDetails = () => {
+  const getInspectionDetails = async () => {
     // alert(TIM_KEY)
     setIsLoading(true);
     const url = Config.BASE_URL;
 
-    const apiUrl =
-      url + `get_inspection_details/${TIM_KEY}`;
+    const apiUrl = url + `get_inspection_details/${TIM_KEY}`;
 
-    axios
+    await axios
       .get(apiUrl)
       .then(response => {
         console.log('API Response:', response?.data?.data[0]);
         setInspection_Details(response?.data?.data[0]);
-        setInspection_value(response?.data?.data[0]?.v_TIM_INSPECTION_TYPE)
-        setSelectedDate(moment(response?.data?.data[0]?.v_TIM_SCHEDULE_DATE).format('YYYY-MM-DD'))
-        setCurrentTime(response?.data?.data[0]?.v_TIM_SCHEDULE_TIME)
-        setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY)
+        setInspection_value(response?.data?.data[0]?.v_TIM_INSPECTION_TYPE);
+        setSelectedDate(
+          moment(response?.data?.data[0]?.v_TIM_SCHEDULE_DATE).format(
+            'YYYY-MM-DD',
+          ),
+        );
+        setCurrentTime(response?.data?.data[0]?.v_TIM_SCHEDULE_TIME);
+        setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY);
         setSelectedAddress({
           latitude: response?.data?.data[0]?.v_TIM_LOCATION_LATITUDE,
           longitude: response?.data?.data[0]?.v_TIM_LOCATION_LONGITUDE,
           location: response?.data?.data[0]?.v_TIM_LOCATION,
-        })
-        setNotes(response?.data?.data[0]?.v_TIM_DESCRIPTION)
-        setSelectedButtonFurnishedId(response?.data?.data[0]?.v_TIM_IS_FURNISHED)
+        });
+        setNotes(response?.data?.data[0]?.v_TIM_DESCRIPTION);
+        setSelectedButtonFurnishedId(
+          response?.data?.data[0]?.v_TIM_IS_FURNISHED,
+        );
         setIsLoading(false);
       })
       .catch(error => {
@@ -151,16 +157,18 @@ const CreateNewInspection = props => {
       });
   };
   useEffect(() => {
-    
-    if(isVisible){
-      handleInspection_Type();
-    Selected_Address_Type();
-    Area_key(); 
-    getInspectionDetails();
+    if (isVisible) {
+      fetchData();
     }
-  }, [isVisible])
+  }, [isVisible]);
 
-  const Selected_Address_Type = () => {
+  const fetchData = async () => {
+    await getInspectionDetails();
+    await handleInspection_Type();
+    await Selected_Address_Type();
+    await Area_key();
+  };
+  const Selected_Address_Type = async () => {
     const Selected_Address = {
       account_id: loginData?.Login_details?.user_account_id,
     };
@@ -168,7 +176,7 @@ const CreateNewInspection = props => {
     const Selected_AddressType = url + 'get_property_details_my_acc_id';
     console.log('Request URL:', Selected_AddressType);
     setIsLoading(true);
-    axios
+    await axios
       .post(Selected_AddressType, Selected_Address)
       .then(response => {
         console.log('Selected_Address', response?.data);
@@ -253,7 +261,7 @@ const CreateNewInspection = props => {
       item?.latitude === selectedAddress.latitude;
 
     return (
-      <View contentContainerStyle={{ flex: 1, height: '100%' }}>
+      <View contentContainerStyle={{flex: 1, height: '100%'}}>
         <View
           style={[
             CreateNewInspectionStyle.itemView,
@@ -281,7 +289,7 @@ const CreateNewInspection = props => {
       </View>
     );
   };
-  const Detail_render = ({ item, index }) => {
+  const Detail_render = ({item, index}) => {
     const isChecked = checkedItems[item.TAM_AREA_KEY]; // Use a unique identifier for each item
     return (
       <View style={CreateNewInspectionStyle.DetailsView}>
@@ -289,10 +297,16 @@ const CreateNewInspection = props => {
           <MaterialIcons
             name={isChecked ? 'check-box' : 'check-box-outline-blank'}
             size={25}
-            color={isChecked ? _COLORS?.Kodie_GreenColor : _COLORS.Kodie_MediumGrayColor}
+            color={
+              isChecked
+                ? _COLORS?.Kodie_GreenColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
           />
         </TouchableOpacity>
-        <Text style={CreateNewInspectionStyle.details_text}>{item.TAM_AREA_NAME}</Text>
+        <Text style={CreateNewInspectionStyle.details_text}>
+          {item.TAM_AREA_NAME}
+        </Text>
       </View>
     );
   };
@@ -312,54 +326,54 @@ const CreateNewInspection = props => {
         TIM_IS_FURNISHED: selectedButtonFurnishedId,
         TIM_DESCRIPTION: Notes,
         TAM_AREA_KEYS: checkedItemIds.toString(),
-        CREATED_BY: loginData?.Login_details?.user_account_id.toString()
-      }
-      console.log("inspec", Inspectiondata);
-      const Url = Config.BASE_URL
-      const Inspection_Url = Url + "inspection_details/save"
-      console.log("Inspection_Url", Inspection_Url);
-      const res = await axios.post(Inspection_Url, Inspectiondata)
-      console.log('scheduule inspection....',res?.data);
+        CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
+      };
+      console.log('inspec', Inspectiondata);
+      const Url = Config.BASE_URL;
+      const Inspection_Url = Url + 'inspection_details/save';
+      console.log('Inspection_Url', Inspection_Url);
+      const res = await axios.post(Inspection_Url, Inspectiondata);
+      console.log('scheduule inspection....', res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
-        console.log("TIM_KEY", res?.data?.data?.TIM_KEY);
-        alert(res?.data?.message)
+        console.log('TIM_KEY', res?.data?.data?.TIM_KEY);
+        alert(res?.data?.message);
         props?.navigation?.navigate('PropertyInspection', {
           TIM_KEY: res?.data?.data?.TIM_KEY,
           PropertyId: selectedAddress?.property_id,
-          account_id: selectedAddress?.user_Id
-        })
+          account_id: selectedAddress?.user_Id,
+        });
         setIsLoading(false);
         setInspection_value();
         setCurrentTime('');
-        setSelectedDate('')
+        setSelectedDate('');
         setSelectedAddress([]);
         setTempSelectedValues([]);
         setSelectedValues([]);
         setSelectedButtonFurnishedId();
-        setSelectedButtonFurnished([])
-        setNotes('')
-        setCheckedItems({})
+        setSelectedButtonFurnished([]);
+        setNotes('');
+        setCheckedItems({});
       }
     } catch (error) {
       if (error?.response && error?.response?.status === 404) {
-        alert(error?.response?.data?.message)
-        setIsLoading(false)
+        alert(error?.response?.data?.message);
+        setIsLoading(false);
       } else {
-        alert(error?.response?.data?.message)
+        alert(error?.response?.data?.message);
         setIsLoading(false);
       }
       console.log(error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
   const UpdateInspection = async () => {
     // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
-        TIM_KEY:TIM_KEY,
+        TIM_KEY: TIM_KEY,
         UPD_KEY: selectedAddress?.property_id,
         TIM_INSPECTION_TYPE: Inspection_value,
         TIM_SCHEDULE_TIME: currentTime,
@@ -371,64 +385,63 @@ const CreateNewInspection = props => {
         TIM_IS_FURNISHED: selectedButtonFurnishedId,
         TIM_DESCRIPTION: Notes,
         TAM_AREA_KEYS: checkedItemIds.toString(),
-        CREATED_BY: loginData?.Login_details?.user_account_id.toString()
-      }
-      console.log("inspec", Inspectiondata);
-      const Url = Config.BASE_URL
-      const Inspection_Url = Url + "inspection_details/save"
-      console.log("Inspection_Url", Inspection_Url);
-      const res = await axios.post(Inspection_Url, Inspectiondata)
+        CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
+      };
+      console.log('inspec', Inspectiondata);
+      const Url = Config.BASE_URL;
+      const Inspection_Url = Url + 'inspection_details/save';
+      console.log('Inspection_Url', Inspection_Url);
+      const res = await axios.post(Inspection_Url, Inspectiondata);
       console.log(res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
-        console.log("TIM_KEY", res?.data?.data?.TIM_KEY);
-        alert(res?.data?.message)
+        console.log('TIM_KEY', res?.data?.data?.TIM_KEY);
+        alert(res?.data?.message);
         props?.navigation?.navigate('PropertyInspection', {
           TIM_KEY: res?.data?.data?.TIM_KEY,
           PropertyId: selectedAddress?.property_id,
-          account_id: selectedAddress?.user_Id
-        })
+          account_id: selectedAddress?.user_Id,
+        });
         setIsLoading(false);
         setInspection_value();
         setCurrentTime('');
-        setSelectedDate('')
+        setSelectedDate('');
         setSelectedAddress([]);
         setTempSelectedValues([]);
         setSelectedValues([]);
         setSelectedButtonFurnishedId();
-        setSelectedButtonFurnished([])
-        setNotes('')
-        setCheckedItems({})
+        setSelectedButtonFurnished([]);
+        setNotes('');
+        setCheckedItems({});
       }
     } catch (error) {
       if (error?.response && error?.response?.status === 404) {
-        alert(error?.response?.data?.message)
-        setIsLoading(false)
+        alert(error?.response?.data?.message);
+        setIsLoading(false);
       } else {
-        alert(error?.response?.data?.message)
+        alert(error?.response?.data?.message);
         setIsLoading(false);
       }
       console.log(error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
   const handleSubmit = () => {
     if (selectedAddress == '') {
       setShowError(true);
     } else {
-    InspectionView? UpdateInspection():
-      SubmitInspection()
+      InspectionView ? UpdateInspection() : SubmitInspection();
     }
   };
-  const fetchResults = async (searchQuery) => {
+  const fetchResults = async searchQuery => {
     // alert(searchQuery)
     setIsLoading(true);
 
     try {
-      const Url = Config.BASE_URL
-      const search_Url = Url + "add_attendees/search"
-      console.log("Inspection_Url", search_Url);
+      const Url = Config.BASE_URL;
+      const search_Url = Url + 'add_attendees/search';
+      console.log('Inspection_Url', search_Url);
       const response = await axios.post(search_Url, {
         search: searchQuery,
       });
@@ -441,7 +454,7 @@ const CreateNewInspection = props => {
     }
   };
 
-  const debouncedFetchResults = debounce((searchQuery) => {
+  const debouncedFetchResults = debounce(searchQuery => {
     if (searchQuery) {
       fetchResults(searchQuery);
     } else {
@@ -456,11 +469,15 @@ const CreateNewInspection = props => {
     };
   }, [query]);
 
-  const handleSelect = (user) => {
-    setTempSelectedValues((prevSelectedUsers) => {
-      const isSelected = prevSelectedUsers.find(selectedUser => selectedUser.UAD_KEY === user.UAD_KEY);
+  const handleSelect = user => {
+    setTempSelectedValues(prevSelectedUsers => {
+      const isSelected = prevSelectedUsers.find(
+        selectedUser => selectedUser.UAD_KEY === user.UAD_KEY,
+      );
       if (isSelected) {
-        return prevSelectedUsers.filter((selectedUser) => selectedUser.UAD_KEY !== user.UAD_KEY);
+        return prevSelectedUsers.filter(
+          selectedUser => selectedUser.UAD_KEY !== user.UAD_KEY,
+        );
       } else {
         return [...prevSelectedUsers, user];
       }
@@ -473,12 +490,16 @@ const CreateNewInspection = props => {
   const handleClosePopup = () => {
     refRBSheet.current.close();
   };
-  const displaySelectedValues = selectedValues.map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`).join(', ');;
+  const displaySelectedValues = selectedValues
+    .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
+    .join(', ');
   return (
     <SafeAreaView style={CreateNewInspectionStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={InspectionView?'Reschedule Inspections': 'Create New Inspections'}
+        MiddleText={
+          InspectionView ? 'Reschedule Inspections' : 'Create New Inspections'
+        }
       />
 
       <ScrollView
@@ -488,8 +509,7 @@ const CreateNewInspection = props => {
           {'Tell us about your inspection'}
         </Text>
 
-
-        <View style={{ marginBottom: 15 }}>
+        <View style={{marginBottom: 15}}>
           <Text style={LABEL_STYLES.commontext}>
             {'What type if inspection is this?'}
           </Text>
@@ -497,7 +517,7 @@ const CreateNewInspection = props => {
             style={CreateNewInspectionStyle.dropdown}
             placeholderStyle={[
               CreateNewInspectionStyle.placeholderStyle,
-              { color: _COLORS.Kodie_LightGrayColor },
+              {color: _COLORS.Kodie_LightGrayColor},
             ]}
             selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
             inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
@@ -507,9 +527,7 @@ const CreateNewInspection = props => {
             labelField="lookup_description"
             valueField="lookup_key"
             placeholder="Select inspection type"
-            value={
-              Inspection_value
-            }
+            value={Inspection_value}
             onChange={item => {
               setInspection_value(item.lookup_key);
             }}
@@ -560,8 +578,7 @@ const CreateNewInspection = props => {
           />
         </View>
 
-
-        <View style={{ marginBottom: 15 }}>
+        <View style={{marginBottom: 15}}>
           <Text style={LABEL_STYLES.commontext}>
             {'Where is the inspection taking place?'}
           </Text>
@@ -607,12 +624,17 @@ const CreateNewInspection = props => {
             placeholderTextColor={_COLORS.Kodie_LightGrayColor}
           />
         </View>
-        {showError ? <Text style={CreateNewInspectionStyle.errorText}>{"Please select a property."}</Text> : null}
+        {showError ? (
+          <Text style={CreateNewInspectionStyle.errorText}>
+            {'Please select a property.'}
+          </Text>
+        ) : null}
 
-        <View style={{ marginBottom: 15, marginTop: 15 }}>
+        <View style={{marginBottom: 15, marginTop: 15}}>
           <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
 
-          <TouchableOpacity style={CreateNewInspectionStyle.TextInputView}
+          <TouchableOpacity
+            style={CreateNewInspectionStyle.TextInputView}
             onPress={() => refRBSheet.current.open()}>
             <TextInput
               value={displaySelectedValues}
@@ -620,15 +642,13 @@ const CreateNewInspection = props => {
               style={CreateNewInspectionStyle.input}
               palceholderColor={_COLORS.Kodie_MediumGrayColor}
               editable={false}
-
             />
             <Feather
               name={'user-plus'}
               size={22}
               color={_COLORS.Kodie_GrayColor}
-              style={{ marginRight: 10 }}
+              style={{marginRight: 10}}
             />
-
           </TouchableOpacity>
         </View>
         <Text style={LABEL_STYLES.commontext}>
@@ -680,18 +700,18 @@ const CreateNewInspection = props => {
             }}
           />
         </View>
-        <View style={{ marginBottom: 15 }}>
+        <View style={{marginBottom: 15}}>
           <Text style={LABEL_STYLES.commontext}>
             {'Select the areas you would like to include:'}
           </Text>
-          <View style={{ marginTop: 10 }}>
+          <View style={{marginTop: 10}}>
             <FlatList
               data={AreaKey}
               scrollEnabled
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{}}
               numColumns={2}
-              keyExtractor={(item) => item.TAM_AREA_KEY.toString()}
+              keyExtractor={item => item.TAM_AREA_KEY}
               renderItem={Detail_render}
             />
           </View>
@@ -708,7 +728,9 @@ const CreateNewInspection = props => {
           textAlignVertical={'top'}
         />
         <CustomSingleButton
-          _ButtonText={InspectionView?'Reschedule Inspection':'Schedule inspection'}
+          _ButtonText={
+            InspectionView ? 'Reschedule Inspection' : 'Schedule inspection'
+          }
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}
           disabled={isLoading ? true : false}
@@ -722,14 +744,13 @@ const CreateNewInspection = props => {
         openDuration={250}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: CreateNewInspectionStyle.bottomModal_container,
-        }}
-      >
+        }}>
         <GuestSelectionContent
           query={query}
           setQuery={setQuery}
@@ -741,14 +762,9 @@ const CreateNewInspection = props => {
           applySelection={applySelection}
           handleClosePopup={handleClosePopup}
         />
-        {
-          isLoading ? <CommonLoader /> : null
-        }
-
+        {isLoading ? <CommonLoader /> : null}
       </RBSheet>
-      {
-        isLoading ? <CommonLoader /> : null
-      }
+      {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
 };
