@@ -177,6 +177,7 @@ export default PropertyFeature = props => {
         setAdditionalfeatureskey(
           response?.data?.property_details[0]?.additional_key_features,
         );
+        console.log("additionalfeatureskey..d",additionalfeatureskey)
         const keyFeaturesId =
           response?.data?.property_details[0]?.additional_key_features_id;
         const parsedKeyFeaturesId =

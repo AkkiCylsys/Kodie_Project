@@ -24,14 +24,14 @@ import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import axios from 'axios';
 import InviteTenantModal from '../InviteTenantModal/InviteTenantModal';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import Entypo from 'react-native-vector-icons/Entypo';
 const PropertyListing = props => {
-  const refRBSheet = useRef();
-  const refRBSheet2 = useRef();
-  const refRBSheet3 = useRef();
+  const refRBSheet = useRef(null);
+  const refRBSheet1 = useRef(null);
   const isvisible = useIsFocused();
   const navigation = useNavigation();
   const Closemodal = () => {
-    refRBSheet3.current.close();
+    refRBSheet1.current.close();
   };
   const [expandedItems, setExpandedItems] = useState([]);
   const [sortVacantData, setSortVacantData] = useState([]);
@@ -78,44 +78,6 @@ const PropertyListing = props => {
       }, 1000); // Simulating a delay, replace with your actual data fetching logic
     }
   };
-
-  const handleCloseModal = () => {
-    setIsDeleteData_Clicked(false);
-    setIsDeleteBottomSheetVisible(false);
-  };
-  const CloseUp = () => {
-    setIsDeleteBottomSheetVisible(false);
-    setIsDeleteData_Clicked(false);
-  };
-  // Get Api Bind here...
-  // const get_Vacant_Details = async () => {
-  //   try {
-  //     const url = Config.BASE_URL;
-  //     const Vacant_Details_url = url + 'get_vacant_property_list';
-  //     setIsLoading(true);
-  //     console.log('Request URL:', Vacant_Details_url);
-
-  //     const response = await axios.get(Vacant_Details_url);
-
-  //     console.log('API Response Vacant_Details_url:', response?.data);
-
-  //     if (response?.data?.success === true) {
-  //       setVacantData(response?.data?.property_details);
-  //       props?.onVacantDataFetch(response?.data?.property_details);
-  //     } else {
-  //       alert(response?.data?.message);
-  //     }
-  //   } catch (error) {
-  //     console.error('API failed Vacant_Details', error);
-  //     alert('An error occurred while fetching vacant details');
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  const propertyDelete = async () => {
-    setIsDeleteData_Clicked(true);
-  };
   const FinalDeleteProperty = async () => {
     setIsLoading(true);
     setIsDeleteData_Clicked(false);
@@ -123,7 +85,7 @@ const PropertyListing = props => {
     try {
       const url = Config.BASE_URL;
       const response = await axios.delete(url + 'delete_property_by_id', {
-        data: JSON.stringify({property_id: propertyDelId}),
+        data: JSON.stringify({property_id: propId}),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -210,8 +172,6 @@ const PropertyListing = props => {
                   <TouchableOpacity
                     onPress={() => {
                       refRBSheet.current.open();
-                      setIsDeleteBottomSheetVisible(true);
-                      setPropertyDelId(item.property_id);
                       setAddress(item?.location);
                       setPropId(item?.property_id);
                     }}>
@@ -234,7 +194,7 @@ const PropertyListing = props => {
                     },
                   ]}
                   onPress={() => {
-                    refRBSheet3.current.open();
+                    refRBSheet1.current.open();
                   }}>
                   <Text
                     style={[
@@ -246,10 +206,7 @@ const PropertyListing = props => {
                           ? _COLORS.Kodie_GreenColor
                           : _COLORS.Kodie_MediumGrayColor,
                       },
-                    ]}
-                    onPress={() => {
-                      refRBSheet3.current.open();
-                    }}>
+                    ]}>
                     {'+ invite Tenant'}
                   </Text>
                 </TouchableOpacity>
@@ -294,7 +251,7 @@ const PropertyListing = props => {
         )}
         <DividerIcon />
         <RBSheet
-          ref={refRBSheet3}
+          ref={refRBSheet1}
           height={180}
           closeOnPressMask={false}
           customStyles={{
@@ -321,11 +278,18 @@ const PropertyListing = props => {
             },
             container: PropertyListingCss.bottomModal_container,
           }}>
+          <TouchableOpacity
+            style={{
+              justifyContent: 'flex-end',
+              alignSelf: 'flex-end',
+            }}
+            onPress={() => {
+              refRBSheet.current.close();
+            }}>
+            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+          </TouchableOpacity>
           <VacantModal
             propertyId={propId}
-            onDelete={propertyDelete}
-            onCloseModal={handleCloseModal}
-            isDeletePropertyClicked={isDeleteData_Clicked}
             onDeleteData={FinalDeleteProperty}
             Address={Address}
             onClose={() => {

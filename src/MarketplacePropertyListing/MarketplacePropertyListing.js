@@ -35,89 +35,6 @@ const HorizontalData = [
   'Rent Received',
   'Archive',
 ];
-
-const property_List1 = [
-  {
-    id: '1',
-    propertyName: 'Apartment',
-    name: 'Melbourne',
-    location: '8502 Preston Rd. Inglewood',
-    image: BANNERS.apartment,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: true,
-    isRentReceived: false,
-    isinviteTenants: false,
-  },
-
-  {
-    id: '2',
-    propertyName: 'House',
-    name: 'Sydney',
-    location: '2118 Thornridge Cir. Syracuse',
-    image: BANNERS.house,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: false,
-    isRentReceived: true,
-    isinviteTenants: false,
-  },
-  {
-    id: '3',
-    propertyName: 'Cottage',
-    name: 'Brisbane',
-    location: '1729 Sickle St, QLD, 4010, Australia ',
-    image: BANNERS.cottage,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: false,
-    isRentReceived: false,
-    isinviteTenants: true,
-  },
-  {
-    id: '4',
-    propertyName: 'Apartment',
-    name: 'Melbourne',
-    location: '8502 Preston Rd. Inglewood',
-    image: BANNERS.apartment,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: true,
-    isRentReceived: false,
-    isinviteTenants: false,
-  },
-  {
-    id: '5',
-    propertyName: 'House',
-    name: 'Sydney',
-    location: '2118 Thornridge Cir. Syracuse',
-    image: BANNERS.house,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: false,
-    isRentReceived: true,
-    isinviteTenants: false,
-  },
-  {
-    id: '6',
-    propertyName: 'Cottage',
-    name: 'Brisbane',
-    location: '1729 Sickle St, QLD, 4010, Australia ',
-    image: BANNERS.cottage,
-    buttonName: '+ Invite Tenant',
-    tanentDay: '27 Days',
-    rent: '$850',
-    isRentPanding: false,
-    isRentReceived: false,
-    isinviteTenants: true,
-  },
-];
-
 const MarketplacePropertyListing = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   // console.log('loginResponse.....', loginData);
@@ -134,6 +51,7 @@ const MarketplacePropertyListing = props => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredMarketPlace, setFilteredMarketPlace] = useState([]);
 
+  const viewMarketPlace =  props?.route?.params?.viewMarketPlace
   const isvisible = useIsFocused();
   const horizontal_render = ({item}) => {
     return (
@@ -451,7 +369,7 @@ const MarketplacePropertyListing = props => {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <TopHeader
-        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        onPressLeftButton={() => viewMarketPlace?  props.navigation.navigate('VacantPropertiesList'):_goBack(props)}
         MiddleText={'Propery listings'}
       />
 

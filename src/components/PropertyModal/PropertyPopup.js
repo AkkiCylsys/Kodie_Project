@@ -90,7 +90,7 @@ const PropertyPopup = props => {
   }, []);
   const handleOptionClick = option => {
     setSelectedOption(option);
-    // handleclosepopUp();
+    handleClosePopup();
   };
   const sendDataToParent = () => {
     const data = 'Hello from child!';
@@ -413,7 +413,6 @@ const PropertyPopup = props => {
                     value={notification_type_value}
                     onChange={item => {
                       setNotification_type_value(item.lookup_key);
-                      // alert(item.lookup_key);
                     }}
                     renderItem={notification_render}
                   />
@@ -425,7 +424,6 @@ const PropertyPopup = props => {
                     onPress={() => {
                       setToggle_open(!Toggle_open);
                       settoggle_Bid_Open(Toggle_open ? 0 : 1);
-                      // alert(toggle_Bid_Open);
                     }}
                     circleColorOff={_COLORS.Kodie_ExtraLightGrayColor}
                     circleColorOn={_COLORS.Kodie_GreenColor}
@@ -434,7 +432,6 @@ const PropertyPopup = props => {
                     containerStyle={PropertyPopupStyle.toggle_con}
                     circleStyle={PropertyPopupStyle.toggle_circle}
                   />
-                  {/* <View style={{ margin: 5 }} /> */}
                   <Text style={PropertyPopupStyle.exp_reminder_text}>
                     {'Bidding open reminder'}
                   </Text>
@@ -459,7 +456,6 @@ const PropertyPopup = props => {
                       value={open_reminder_Value}
                       onChange={item => {
                         setopen_reminder_Value(item.lookup_key);
-                        // alert(item.lookup_key)
                       }}
                     />
                     <Text style={PropertyPopupStyle.before}>{'before'}</Text>
@@ -479,7 +475,6 @@ const PropertyPopup = props => {
                     containerStyle={PropertyPopupStyle.toggle_con}
                     circleStyle={PropertyPopupStyle.toggle_circle}
                   />
-                  {/* <View style={{ margin: 5 }} /> */}
                   <Text style={PropertyPopupStyle.exp_reminder_text}>
                     {'Bidding close reminder'}
                   </Text>
@@ -523,7 +518,6 @@ const PropertyPopup = props => {
                     containerStyle={PropertyPopupStyle.toggle_con}
                     circleStyle={PropertyPopupStyle.toggle_circle}
                   />
-                  {/* <View style={{ margin: 5 }} /> */}
                   <Text style={PropertyPopupStyle.exp_reminder_text}>
                     {'New bid'}
                   </Text>
@@ -555,7 +549,6 @@ const PropertyPopup = props => {
                 </View>
               </View>
 
-              {/* Button section here */}
               <View style={PropertyPopupStyle.ButtonView}>
                 <TouchableOpacity
                   style={[
@@ -586,7 +579,6 @@ const PropertyPopup = props => {
                     },
                   ]}
                   onPress={() => {
-                    // toggleview("Save");
 
                     handle_addlease_Bid();
                   }}>
@@ -606,6 +598,7 @@ const PropertyPopup = props => {
           </ScrollView>
           {isLoading ? <CommonLoader /> : null}
         </View>
+
       ) : (
         <View style={PropertyPopupStyle.modalContainer}>
           <Text style={PropertyPopupStyle.modalMainText}>Bidding enabled</Text>
@@ -621,7 +614,6 @@ const PropertyPopup = props => {
             _ButtonText={'Continue'}
             Text_Color={_COLORS.Kodie_WhiteColor}
             height={48}
-            // onPress={sendDataToParent}
             onPress={handleClosePopup}
           />
           <CustomSingleButton
@@ -631,7 +623,6 @@ const PropertyPopup = props => {
             height={48}
             borderColor={_COLORS.Kodie_WhiteColor}
             backgroundColor={_COLORS.Kodie_WhiteColor}
-            // onPress={sendDataToParent}
             onPress={handleClosePopup}
           />
         </View>

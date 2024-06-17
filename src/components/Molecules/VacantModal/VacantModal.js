@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {View, Text, Image, FlatList,Alert} from 'react-native';
+import {View, Text, Image, FlatList, Alert} from 'react-native';
 import {IMAGES, _COLORS} from '../../../Themes';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -60,11 +60,7 @@ const data = [
     id: '5',
     Data: 'Delete property',
     Icon: (
-      <AntDesign
-        name="delete"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
+      <AntDesign name="delete" size={25} color={_COLORS.Kodie_GreenColor} />
     ),
   },
 ];
@@ -95,38 +91,13 @@ const data1 = [
 
 const VacantModal = props => {
   const propertyId = props?.propertyId;
-  // console.log('propertyId.VacantModal..', propertyId);
   const navigation = useNavigation();
-  const refRBSheet = useRef();
   const handleCloseModal = () => {
     props.onClose();
-  };
-  const handleDeleteProperty = propertyDelId => {
-    props.onDelete(propertyDelId);
-    handleCloseModal()
-  };
-  const FinalDeleteProperty = (propertyDelId, Address) => {
-    props.onDelete(propertyDelId, Address);
   };
   const BottomData = ({item, index}) => {
     return (
       <>
-        {/* {props?.isDeletePropertyClicked ? (
-          <>
-            <TouchableOpacity
-              style={BottomModalDataStyle.container}
-              onPress={() => {
-                if (item.id === '1') {
-                  FinalDeleteProperty();
-                }
-                if (item.id === '2') {
-                }
-              }}>
-              <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
-              <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
-            </TouchableOpacity>
-          </>
-        ) : ( */}
         <TouchableOpacity
           style={BottomModalDataStyle.container}
           onPress={() => {
@@ -140,6 +111,7 @@ const VacantModal = props => {
             if (item.id === '2') {
               navigation.navigate('MarketplacePropertyListing', {
                 propertyid: propertyId,
+                viewMarketPlace: 'ViewMarketPlace',
               });
               handleCloseModal();
             }
@@ -149,7 +121,6 @@ const VacantModal = props => {
                 // propertyView: 'propertyView',
                 DocTab: 'DocTab',
                 propertyListing: 'propertyListing',
-
               });
               handleCloseModal();
             }
@@ -170,7 +141,7 @@ const VacantModal = props => {
                   {
                     text: 'OK',
                     onPress: () => {
-                      props.onDeleteData()
+                      props.onDeleteData();
                     },
                   },
                 ],
@@ -180,40 +151,26 @@ const VacantModal = props => {
           <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
           <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
         </TouchableOpacity>
-        {/* )} */}
       </>
     );
   };
   return (
     <View style={BottomModalDataStyle.mainContainer}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={{
           justifyContent: 'flex-end',
           alignSelf: 'flex-end',
         }}
         onPress={handleCloseModal}>
         <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <FlatList
-        // data={props?.isDeletePropertyClicked ? data1 : data}
         data={data}
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
         keyExtractor={item => item?.id}
         renderItem={BottomData}
-        // ListHeaderComponent={() => {
-        //   return (
-        //     <>
-        //       {props?.isDeletePropertyClicked ? (
-        //         <Text
-        //           style={
-        //             BottomModalDataStyle.text
-        //           }>{`Delete property: ${props?.Address} ?`}</Text>
-        //       ) : null}
-        //     </>
-        //   );
-        // }}
       />
     </View>
   );

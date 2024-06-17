@@ -110,7 +110,7 @@ const AddBiddingDetails = props => {
     setIsSaveClicked(true);
   };
   const handleclosepopUp = () => {
-    props.onclose();
+    props.onClose();
   };
   const handle_add_Bid = () => {
     const url = Config.BASE_URL;

@@ -63,14 +63,14 @@ export default Expenses = props => {
   };
   // Fetch property expenses......
 
-  const get_Expenses_Details = () => {
+  const get_Expenses_Details =async () => {
     const url = Config.BASE_URL;
     const Expenses_Details_url =
       url + `property_expenses_details/getAll/${property_id}`;
     setIsLoading(true);
     console.log('Request URL:', Expenses_Details_url);
     // setIsLoading(true);
-    axios
+   await axios
       .get(Expenses_Details_url)
       .then(response => {
         console.log('API Response Expenses_Details_url:', response?.data);
