@@ -94,6 +94,9 @@ const FloatingActionButton = (props) => {
       case "Create_new_job":
         navigation.navigate('CreateJobFirstScreen')
         break;
+      case "Add_Notice_Reminder":
+        navigation.navigate('AddNotices')
+        break;
       default:
         break;
     }

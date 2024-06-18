@@ -13,6 +13,7 @@ import {_goBack} from '../../../services/CommonServices';
 import {LandlordProfileStyle} from './LandlordProfileStyle';
 import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {_COLORS, IMAGES} from '../../../Themes/index';
@@ -70,9 +71,7 @@ export default LandlordProfile = props => {
       props.navigation.dispatch(
         CommonActions.reset({
           index: 0,
-          routes: [
-            {name: 'LoginScreen'},
-          ],
+          routes: [{name: 'LoginScreen'}],
         }),
       );
     }, 500);
@@ -92,24 +91,30 @@ export default LandlordProfile = props => {
   return (
     <SafeAreaView style={LandlordProfileStyle.mainContainer}>
       <TopHeader
-        onPressLeftButton={() =>
-          navigation.goBack()
-        }
+        onPressLeftButton={() => navigation.goBack()}
         MiddleText={'Profile'}
       />
       <ScrollView>
-
         <TouchableOpacity
           style={LandlordProfileStyle.profilemainView}
           onPress={() => props.navigation.navigate('EditProfile')}>
           <View style={LandlordProfileStyle.ProfileView}>
-            <Image
-              source={{
-                uri: accountDetails?.image_path[0],
-              }}
-              style={LandlordProfileStyle.usericon}
-              resizeMode="cover"
-            />
+            {accountDetails?.image_path[0] ? (
+              <Image
+                source={{
+                  uri: accountDetails?.image_path[0],
+                }}
+                style={LandlordProfileStyle.usericon}
+                resizeMode="cover"
+              />
+            ) : (
+              <FontAwesome
+                name="user-circle"
+                size={38}
+                color={_COLORS.Kodie_GrayColor}
+                style={{marginLeft: 10}}
+              />
+            )}
           </View>
           <View style={LandlordProfileStyle.nameView}>
             <Text style={LandlordProfileStyle.nameText}>
@@ -136,8 +141,7 @@ export default LandlordProfile = props => {
               </Text>
             </View>
           </View>
-          <View
-            style={LandlordProfileStyle.contactIconView}>
+          <View style={LandlordProfileStyle.contactIconView}>
             <MaterialCommunityIcons
               name={'account-edit-outline'}
               size={20}
@@ -176,9 +180,7 @@ export default LandlordProfile = props => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={handleGeneralSettingsPress}
-        >
+        <TouchableOpacity onPress={handleGeneralSettingsPress}>
           <RowTab
             LeftIconLibrary={'MaterialCommunityIcons'}
             IsDivider={false}
@@ -188,8 +190,7 @@ export default LandlordProfile = props => {
             TabSubTaxt="View your privacy and security settings"
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleGeneralSettingsPress}>
+        <TouchableOpacity onPress={handleGeneralSettingsPress}>
           <RowTab
             LeftIconLibrary={'MaterialIcons'}
             IsDivider={false}
@@ -245,8 +246,7 @@ export default LandlordProfile = props => {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          onPress={handleGeneralSettingsPress}>
+        <TouchableOpacity onPress={handleGeneralSettingsPress}>
           <RowTab
             IsDivider={false}
             isSecondRowText={true}

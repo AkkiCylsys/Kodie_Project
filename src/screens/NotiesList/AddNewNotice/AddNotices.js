@@ -1005,7 +1005,7 @@ const AddNotices = (props) => {
                                     maxHeight={300}
                                     labelField="lookup_description"
                                     valueField="lookup_key"
-                                    placeholder="select"
+                                    placeholder="Select"
                                     searchPlaceholder="Search..."
                                     value={repeatDataValue}
                                     onChange={item => {
@@ -1020,7 +1020,7 @@ const AddNotices = (props) => {
                             <View style={AddNewNoticeStyle.alldayview}>
                                 <MaterialCommunityIcons
                                     name="alarm-plus"
-                                    size={35}
+                                    size={30}
                                     color={_COLORS.Kodie_ExtraLiteGrayColor}
                                 />
                                 <Text style={AddNewNoticeStyle.alldaytext}>All Day</Text>
@@ -1259,7 +1259,7 @@ const AddNotices = (props) => {
                                 <View style={AddNewNoticeStyle.notificationbind}>
                                     <FontAwesome
                                         name="bell-o"
-                                        size={35}
+                                        size={30}
                                         color={_COLORS.Kodie_ExtraLiteGrayColor}
                                     />
                                     <Text style={AddNewNoticeStyle.settext}>

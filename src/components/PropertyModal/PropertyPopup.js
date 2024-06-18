@@ -379,6 +379,7 @@ const PropertyPopup = props => {
                   onChangeText={setRentalBond}
                   placeholder="The amount which you are prepared to accept"
                   placeholderTextColor="#D9D9D9"
+                  keyboardType='number-pad'
                 />
               </View>
               <View style={PropertyPopupStyle.inputContainer}>

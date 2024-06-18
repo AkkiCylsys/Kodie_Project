@@ -88,7 +88,6 @@ const PropertyList = props => {
   };
   const getPropertyDetailsByFilter = async filter => {
     setIsLoading(true);
-    // alert(JSON.stringify(loginData?.Login_details?.user_account_id));
     try {
       const url = Config.BASE_URL;
       const filter_apiUrl = url + 'get_property_details_by_filter';
@@ -197,9 +196,6 @@ const PropertyList = props => {
   };
   const propertyData1_render = ({item, index}) => {
     const isExpanded = expandedItems.includes(item.property_id);
-    // const propertyIds = data.map(item => item.property_id);
-    // setPropId(item.property_id);
-    // console.log("property id in modal",item.property_id)
     return (
       <TouchableOpacity
         onPress={() => {
@@ -373,29 +369,6 @@ const PropertyList = props => {
             <DividerIcon />
           </>
         )}
-        {/* <RBSheet
-          height={isDeleteData_Clicked ? 200 : 330}
-          ref={refRBSheetDelete}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: PropertyListCSS.bottomModal_container,
-          }}
-          onClose={() => setIsDeleteBottomSheetVisible(false)}
-        >
-          <BottomModalData
-            onDelete={propertyDelete}
-            isDeletePropertyClicked={isDeleteData_Clicked}
-            onDeleteData={FinalDeleteProperty}
-            Address={Address}
-          />
-        </RBSheet> */}
       </TouchableOpacity>
     );
   };
@@ -653,14 +626,6 @@ const PropertyList = props => {
           <>
             <View style={PropertyListCSS.Container}>
               <View style={PropertyListCSS.flat_MainView}>
-                {/* <TouchableOpacity style={PropertyListCSS.AllView}>
-                  <Text style={PropertyListCSS.item_style}>ALL</Text>
-                  <MaterialCommunityIcons
-                    name={"check"}
-                    size={18}
-                    color={_COLORS.Kodie_WhiteColor}
-                  />
-                </TouchableOpacity> */}
                 <FlatList
                   horizontal
                   showsHorizontalScrollIndicator={false}
@@ -671,7 +636,6 @@ const PropertyList = props => {
             </View>
             <DividerIcon />
             <FlatList
-              // data={propertyData}
               data={searchQuery ? filteredpropertyData : propertyData}
               onEndReached={handleEndReached}
               onEndReachedThreshold={0.8}
@@ -698,11 +662,6 @@ const PropertyList = props => {
           },
         ]}>
         <BottomModalData
-          // onViewProperty={() =>
-          //   props?.navigation?.navigate("ViewPropertyDetails", {
-          //     propertyDelId: propertyDelId,
-          //   })
-          // }
           propertyId={propId}
           onDelete={propertyDelete}
           onCloseModal={handleCloseModal}

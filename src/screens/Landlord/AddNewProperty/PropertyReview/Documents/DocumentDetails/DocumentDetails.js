@@ -144,7 +144,7 @@ const DocumentDetails = props => {
 
       console.log('API Response uploadDocument:', response?.data);
 
-      if (response?.data?.success === true) {
+      if (response?.data?.status === true) {
         alert(response?.data?.message);
         getUploadedDocumentsByModule();
       } else {

@@ -97,9 +97,9 @@ const PropertyListing = props => {
           'Property Deleted',
           response?.data?.message || 'The property was deleted successfully.',
         );
-        refRBSheet.current.close();
         // get_Vacant_Details();
         props.get_Vacant_Details();
+        refRBSheet.current.close();
         setIsLoading(false);
       }
     } catch (error) {
@@ -109,7 +109,6 @@ const PropertyListing = props => {
   };
   const propertyData1_render = ({item}) => {
     const isExpanded = expandedItems.includes(item.property_id);
-    setPropId(item.property_id);
     return (
       <>
         {item.result ? null : (
@@ -297,32 +296,6 @@ const PropertyListing = props => {
             }}
           />
         </RBSheet>
-        {/* <Modal
-        isVisible={isDeleteBottomSheetVisible}
-        onBackdropPress={() => setIsDeleteBottomSheetVisible(true)}
-        style={[
-          PropertyListingCss.bottomModal_container,
-          {
-            position: 'absolute',
-            left: -20,
-            bottom: -10,
-            width: '100%',
-            height: isDeleteData_Clicked ? '30%' : '35%',
-            backgroundColor: 'white',
-            borderRadius: 10,
-            paddingVertical: 8,
-          },
-        ]}>
-        <VacantModal
-          propertyId={propId}
-          onDelete={propertyDelete}
-          onCloseModal={handleCloseModal}
-          isDeletePropertyClicked={isDeleteData_Clicked}
-          onDeleteData={FinalDeleteProperty}
-          Address={Address}
-          onClose={CloseUp}
-        />
-      </Modal> */}
       </>
     );
   };

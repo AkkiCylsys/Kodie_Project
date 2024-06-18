@@ -113,7 +113,7 @@ export default Leases = props => {
           console.log('rental receipt Data..', response?.data?.data);
           // alert(JSON.stringify(response?.data?.data));
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })

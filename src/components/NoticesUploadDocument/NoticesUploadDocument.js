@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { FONTFAMILY, _COLORS } from '../../Themes';
+import {FONTFAMILY, _COLORS} from '../../Themes';
 
-const NoticesUploadDocument = ({ onFileUpload, rbSheetRefclose }) => {
+const NoticesUploadDocument = ({onFileUpload, rbSheetRefclose}) => {
   const [message, setMessage] = useState('');
 
   const handleTakePhoto = () => {
@@ -16,15 +16,19 @@ const NoticesUploadDocument = ({ onFileUpload, rbSheetRefclose }) => {
       height: 400,
       cropping: true,
       multiple: true,
-    }).then(images => {
-      console.log(images);
-      images.forEach(image => {
-        onFileUpload(image.path, 'image');
+    })
+      .then(images => {
+        console.log(images);
+        // images.forEach(image => {
+        //   onFileUpload(image.path, 'image');
+        // });
+        onFileUpload(images.path, 'image');
+
+        setMessage('Photos taken successfully!');
+      })
+      .catch(error => {
+        console.log('Error taking photo:', error);
       });
-      setMessage('Photos taken successfully!');
-    }).catch(error => {
-      console.log('Error taking photo:', error);
-    });
   };
 
   const handleChooseFromGallery = () => {
@@ -33,15 +37,17 @@ const NoticesUploadDocument = ({ onFileUpload, rbSheetRefclose }) => {
       height: 400,
       cropping: true,
       multiple: true,
-    }).then(images => {
-      console.log(images);
-      images.forEach(image => {
-        onFileUpload(image.path, 'image');
+    })
+      .then(images => {
+        console.log(images);
+        images.forEach(image => {
+          onFileUpload(image.path, 'image');
+        });
+        setMessage('Photos selected from gallery!');
+      })
+      .catch(error => {
+        console.log('Error selecting photos:', error);
       });
-      setMessage('Photos selected from gallery!');
-    }).catch(error => {
-      console.log('Error selecting photos:', error);
-    });
   };
 
   const handleChooseDocument = async () => {
@@ -62,8 +68,13 @@ const NoticesUploadDocument = ({ onFileUpload, rbSheetRefclose }) => {
 
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <Text style={{ fontSize: 20, color: _COLORS?.Kodie_BlackColor, fontFamily: FONTFAMILY?.K_Bold }}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <Text
+          style={{
+            fontSize: 20,
+            color: _COLORS?.Kodie_BlackColor,
+            fontFamily: FONTFAMILY?.K_Bold,
+          }}>
           {'Upload more documents'}
         </Text>
         <TouchableOpacity onPress={rbSheetRefclose}>
@@ -74,51 +85,50 @@ const NoticesUploadDocument = ({ onFileUpload, rbSheetRefclose }) => {
           />
         </TouchableOpacity>
       </View>
-      <View style={{ marginVertical: 15 }}>
-        <TouchableOpacity
-          style={styles.sheetButton}
-          onPress={handleTakePhoto}
-        >
+      <View style={{marginVertical: 15}}>
+        <TouchableOpacity style={styles.sheetButton} onPress={handleTakePhoto}>
           <View style={styles.IconView}>
             <Feather
               name="camera"
               size={22}
               color={_COLORS.Kodie_GreenColor}
               resizeMode={'contain'}
-              style={{ alignSelf: 'center' }}
+              style={{alignSelf: 'center'}}
             />
           </View>
           <Text style={styles.sheetButtonText}>{'Take photo'}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.sheetButton}
-          onPress={handleChooseFromGallery}
-        >
+          onPress={handleChooseFromGallery}>
           <View style={styles.IconView}>
             <MaterialIcons
               name="add-photo-alternate"
               size={22}
               color={_COLORS.Kodie_GreenColor}
               resizeMode={'contain'}
-              style={{ alignSelf: 'center' }}
+              style={{alignSelf: 'center'}}
             />
           </View>
-          <Text style={styles.sheetButtonText}>{'Choose files from library'}</Text>
+          <Text style={styles.sheetButtonText}>
+            {'Choose files from library'}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.sheetButton}
-          onPress={handleChooseDocument}
-        >
+          onPress={handleChooseDocument}>
           <View style={styles.IconView}>
             <MaterialIcons
               name="drive-folder-upload"
               size={22}
               color={_COLORS.Kodie_GreenColor}
               resizeMode={'contain'}
-              style={{ alignSelf: 'center' }}
+              style={{alignSelf: 'center'}}
             />
           </View>
-          <Text style={styles.sheetButtonText}>{'Choose files from folder'}</Text>
+          <Text style={styles.sheetButtonText}>
+            {'Choose files from folder'}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

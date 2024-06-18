@@ -102,9 +102,14 @@ const VacantModal = props => {
           style={BottomModalDataStyle.container}
           onPress={() => {
             if (item.id === '1') {
-              navigation.navigate('PropertyReview', {
+              // navigation.navigate('PropertyReview', {
+              //   propertyid: propertyId,
+              //   propertyListing: 'propertyListing',
+              // });
+              navigation.navigate('PropertyReviewDetails', {
                 propertyid: propertyId,
                 propertyListing: 'propertyListing',
+                propertyView: 'propertyView',
               });
               handleCloseModal();
             }

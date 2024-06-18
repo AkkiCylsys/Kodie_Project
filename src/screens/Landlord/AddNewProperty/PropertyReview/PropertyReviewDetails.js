@@ -12,7 +12,13 @@ import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
 import {SliderBox} from 'react-native-image-slider-box';
-import {_COLORS, BANNERS, IMAGES, LABEL_STYLES,FONTFAMILY} from '../../../../Themes';
+import {
+  _COLORS,
+  BANNERS,
+  IMAGES,
+  LABEL_STYLES,
+  FONTFAMILY,
+} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Leases from './Leases/Leases';
 import Details from './Details/Details';
@@ -44,6 +50,8 @@ export default PropertyReviewDetails = props => {
 
   const propertyid = props?.route?.params?.propertyid;
   const propertyView = props?.route?.params?.propertyView;
+  const propertyListing = props?.route?.params?.propertyListing;
+  const backProperty = props?.route?.params?.backProperty;
   const MultiImageName = props?.route?.params?.MultiImageName;
   const selectedVideos = props?.route?.params?.selectedVideos;
   const editMode = props?.route?.params?.editMode;
@@ -118,7 +126,7 @@ export default PropertyReviewDetails = props => {
             />
           )}
           <Text style={DetailsStyle.details_text}>
-            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}          
+            {`${Object.keys(item)[0]}: ${Object.values(item)[0]}` || ''}
           </Text>
         </View>
       </>
@@ -276,7 +284,7 @@ export default PropertyReviewDetails = props => {
   useEffect(() => {
     const handleBackButton = () => {
       props.navigation.navigate('Properties');
-      return true; 
+      return true;
     };
     BackHandler.addEventListener('hardwareBackPress', handleBackButton);
     return () => {
@@ -338,7 +346,7 @@ export default PropertyReviewDetails = props => {
   );
   const renderLabel = ({position, stepStatus}) => {
     const iconColor =
-      position === currentPage 
+      position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
@@ -856,7 +864,12 @@ export default PropertyReviewDetails = props => {
     <SafeAreaView style={PropertyReviewStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={
-          propertyView ? () => props.navigation.navigate('Properties') : goBack
+          // propertyView ? () => props.navigation.navigate('Properties') : goBack
+          backProperty
+            ? () => props.navigation.navigate('Properties')
+            : propertyListing
+            ? () => props.navigation.navigate('VacantPropertiesList')
+            : goBack
         }
         MiddleText={
           editMode

@@ -797,8 +797,8 @@ export default Login = props => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
                 // props.navigation.navigate("SignUpSteps");
                 // props.navigation.navigate("Account");
-                // Alert.alert('Login with Google', 'Coming soon');
-                signIn();
+                Alert.alert('Login with Google', 'Coming soon');
+                // signIn();
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}

@@ -63,6 +63,7 @@ const Contactus = props => {
         if (response?.data?.success === true) {
           alert(response?.data?.message);
           setAboutHelp('');
+          setCheck(false)
         } else {
           alert(response?.data?.message);
           setIsLoading(false);

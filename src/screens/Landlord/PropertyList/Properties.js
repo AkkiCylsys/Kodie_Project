@@ -73,6 +73,7 @@ const Properties = props => {
               props.navigation.navigate('PropertyReviewDetails', {
                 propertyid: propertyid,
                 propertyView: 'propertyView',
+                backProperty:"backProperty"
               });
             }}
           />
