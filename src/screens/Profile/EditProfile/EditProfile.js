@@ -500,12 +500,16 @@ const EditProfile = props => {
                     <Text style={EditProfileStyle.oldnumbertext}>
                       Email address
                     </Text>
-                    <View style={EditProfileStyle.simpleinputview}>
+                    <View
+                      style={[
+                        EditProfileStyle.simpleinputview,
+                        {backgroundColor: _COLORS.Kodie_GrayColor},
+                      ]}>
                       <TextInput
                         style={EditProfileStyle.inputStyle}
                         value={email}
                         onChangeText={text => setEmail(text)}
-                        keyboardType='email-address'
+                        keyboardType="email-address"
                         placeholder="jason5@gmail.com"
                         editable={false}
                       />
@@ -522,7 +526,7 @@ const EditProfile = props => {
                       ]}>
                       <TextInput
                         style={EditProfileStyle.inputStyle}
-                        value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                        value={`${accountDetails?.UAD_PHONE_NO || ''} ${
                           phoneNumber || ''
                         }`}
                         editable={false}

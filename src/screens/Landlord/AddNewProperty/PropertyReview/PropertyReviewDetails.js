@@ -458,7 +458,7 @@ export default PropertyReviewDetails = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {'NA'}
+                      {propertyid}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />

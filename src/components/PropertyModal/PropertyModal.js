@@ -9,6 +9,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import PropertyPopup from './PropertyPopup';
 import {useNavigation} from '@react-navigation/native';
+import AddBiddingDetails from '../Molecules/AddBiddingDetails/AddBiddingDetails';
 // Define data for FlatList
 const data = [
   {
@@ -60,11 +61,7 @@ const data = [
     id: '5',
     Data: 'Delete property',
     Icon: (
-      <AntDesign
-        name="delete"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
+      <AntDesign name="delete" size={25} color={_COLORS.Kodie_GreenColor} />
     ),
   },
 ];
@@ -74,11 +71,7 @@ const data1 = [
     id: '6',
     Data: 'Confirm delete property',
     Icon: (
-      <AntDesign
-        name="delete"
-        size={25}
-        color={_COLORS.Kodie_GreenColor}
-      />
+      <AntDesign name="delete" size={25} color={_COLORS.Kodie_GreenColor} />
     ),
   },
   {
@@ -180,6 +173,7 @@ const PropertyModal = props => {
         }}>
         {/* Pass propertyId to PropertyPopup */}
         <PropertyPopup propertyId={propertyId} onClose={handleCloseModal} />
+        {/* <AddBiddingDetails propertyId={propertyId} onClose={handleCloseModal} /> */}
       </RBSheet>
     </View>
   );

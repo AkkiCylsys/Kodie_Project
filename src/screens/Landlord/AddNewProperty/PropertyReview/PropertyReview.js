@@ -52,6 +52,7 @@ export default PropertyReview = props => {
   const dispatch = useDispatch();
   const property_id = props?.route?.params?.property_id;
   const propertyListing = props?.route?.params?.propertyListing;
+  console.log("propertyListing..",propertyListing)
   const propertyid = props?.route?.params?.propertyid;
   const propertyView = props?.route?.params?.propertyView;
   const MultiImageName = props?.route?.params?.MultiImageName;
@@ -455,7 +456,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {'NA'}
+                      {property_id}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
@@ -507,7 +508,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {addtionalFeaturesID[1] ? 'Yes' : 'No'}
+                      {addtionalFeaturesID[1] ? 'No' : 'Yes'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
@@ -861,7 +862,7 @@ export default PropertyReview = props => {
       <TopHeader
         onPressLeftButton={
           propertyView
-            ? () => props.navigation.navigate('Properties')
+            ? () => props.navigation.navigate('MarketplacePropertyListing')
             : propertyListing
             ? () => props.navigation.navigate('VacantPropertiesList')
             : goBack
