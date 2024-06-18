@@ -408,7 +408,7 @@ const Notices = props => {
             Text_Color={_COLORS.Kodie_WhiteColor}
             disabled={isLoading ? true : false}
             onPress={() => {
-              props.navigation.navigate('AddNewNotice');
+              props.navigation.navigate('AddNotices');
             }}
             height={48}
           />

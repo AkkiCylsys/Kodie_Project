@@ -91,6 +91,7 @@ const AddNewNotice = props => {
   const [showNoticeTypeError, setShowNoticeTypeError] = useState(false);
   const [selectedCustemValue, setSelectedCustemValue] = useState('');
   const [NoticeAllData, setNoticeAllData] = useState(null);
+  const [uploadedFiles, setUploadedFiles] = useState([]);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const UploadrbSheetRef = useRef();
@@ -99,7 +100,6 @@ const AddNewNotice = props => {
     setSelectedCustemValue(value);
     refRBSheet1.current.close();
   };
-  const [uploadedFiles, setUploadedFiles] = useState([]);
 
   const handleFileUpload = (fileUri, type) => {
     console.log('fileUri, type', fileUri, type);
@@ -576,13 +576,24 @@ const AddNewNotice = props => {
     formData.append('custom', selectedCustemValue);
     formData.append('notes', notes);
     // formData.append("file_name", fileName);
-    if (selectFile) {
-      formData.append('file_name', {
-        uri: selectFile[0].uri || null,
-        name: selectFile[0].name || selectFile,
-        type: selectFile[0].type || null,
-      });
-    }
+    uploadedFiles.forEach((file, index) => {
+      if (Array.isArray(file.uri)) {
+        // Handle nested uri case
+        file.uri.forEach((nestedFile, nestedIndex) => {
+          formData.append('file_name', {
+            uri: nestedFile.uri,
+            name: nestedFile.name,
+            type: nestedFile.type,
+          });
+        });
+      } else {
+        formData.append('file_name', {
+          uri: file.uri,
+          name: file.name || `file_${index}`,
+          type: file.type || 'application/octet-stream',
+        });
+      }
+    });
     console.log('formData', formData);
     const url = Config.BASE_URL;
     const update_createNoticeReminder_url = url + 'update_notices_reminder';
@@ -910,11 +921,8 @@ const AddNewNotice = props => {
   const images = uploadedFiles.filter(file => file.type === 'image');
   const documents = uploadedFiles.filter(file => file.type === 'document');
 
-  if (
-    NoticeAllData &&
-    typeof NoticeAllData === 'object' &&
-    Array.isArray(NoticeAllData.image_path)
-  ) {
+  if (NoticeAllData && typeof NoticeAllData === 'object' && Array.isArray(NoticeAllData.image_path)) 
+    {
     const fileNames = NoticeAllData.image_path;
 
     // Filter images and documents based on file extensions

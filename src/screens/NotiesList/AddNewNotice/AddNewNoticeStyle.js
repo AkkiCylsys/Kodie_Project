@@ -34,7 +34,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     paddingBottom:30
   },
   noticedropdownview: {
-    width: 215,
+    width: '70%',
   },
   repeattext: {
     fontSize: 14,
@@ -52,11 +52,11 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   divider: {
     marginHorizontal: 5,
-    flex: 1,
+    // flex: 1,
     marginTop: 20,
   },
   dividersecond: {
-    flex: 1,
+    // flex: 1,
     marginTop: 20,
   },
   alldayviewmain: {

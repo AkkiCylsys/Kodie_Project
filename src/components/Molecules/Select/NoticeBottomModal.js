@@ -168,7 +168,7 @@ const NoticeBottomModal = props => {
           style={NoticeBottomModalStyle.optionsview}
           onPress={() => {
             if (item.id == 1) {
-              navigation.navigate('AddNewNotice', {
+              navigation.navigate('AddNotices', {
                 noticeReminderid: props.noticeReminderid,
                 editNotice: 'editNotice',
               });
