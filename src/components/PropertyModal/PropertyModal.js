@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, Alert} from 'react-native';
 import {PropertyModalStyle} from './PropertyModalStyle';
 import {_COLORS} from '../../Themes';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -110,7 +110,8 @@ const PropertyModal = props => {
             handleCloseModal();
           }
           if (item.id === '2') {
-            refRBSheet.current.open();
+            // refRBSheet.current.open();
+            Alert.alert('Alert!', "Coming soon");
           }
           if (item.id === '3') {
             navigation.navigate('PropertyReview', {

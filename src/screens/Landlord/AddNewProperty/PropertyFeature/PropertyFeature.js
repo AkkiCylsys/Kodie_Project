@@ -58,24 +58,11 @@ export default PropertyFeature = props => {
   const latitude = props?.route?.params?.latitude;
   const longitude = props?.route?.params?.longitude;
   const propertyid = props?.route?.params?.propertyid;
+  console.log('dee...', propertyid);
   const city = props?.route?.params?.city;
   const state = props?.route?.params?.state;
   const country = props?.route?.params?.country;
   const editMode = props?.route?.params?.editMode;
-  console.log(
-    'location......',
-    location,
-    property_value,
-    selectedButtonId,
-    propertyDesc,
-    longitude,
-    latitude,
-    propertyid,
-    city,
-    state,
-    country,
-    editMode,
-  );
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
 
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
@@ -139,9 +126,10 @@ export default PropertyFeature = props => {
 
   const DetailsData = async () => {
     const detailData = {
-      property_id: addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-      ? addPropertySecondStepData
-      : propertyid,
+      property_id:
+        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+          ? addPropertySecondStepData
+          : propertyid,
     };
     console.log('detailData', detailData);
     const url = Config.BASE_URL;
@@ -177,7 +165,7 @@ export default PropertyFeature = props => {
         setAdditionalfeatureskey(
           response?.data?.property_details[0]?.additional_key_features,
         );
-        console.log("additionalfeatureskey..d",additionalfeatureskey)
+        console.log('additionalfeatureskey..d', additionalfeatureskey);
         const keyFeaturesId =
           response?.data?.property_details[0]?.additional_key_features_id;
         const parsedKeyFeaturesId =
@@ -187,7 +175,6 @@ export default PropertyFeature = props => {
         setAdditionalFeaturesKeyValue(
           Array.isArray(parsedKeyFeaturesId) ? parsedKeyFeaturesId : [],
         );
-
         setLandArea(response?.data?.property_details[0]?.land_area);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
@@ -458,9 +445,10 @@ export default PropertyFeature = props => {
       UPD_LAND_AREA: landArea,
       additional_key_features: additionalfeatureskeyvalue,
       autolist: selectedButtonId,
-      property_id: addPropertySecondStepData
-        ? addPropertySecondStepData
-        : propertyid,
+      property_id:
+        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+          ? addPropertySecondStepData
+          : propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
@@ -869,7 +857,9 @@ export default PropertyFeature = props => {
                 onPress={() => {
                   if (
                     (Array.isArray(addPropertySecondStepData) &&
-                      addPropertySecondStepData.length > 0) || propertyid ||editMode||
+                      addPropertySecondStepData.length > 0) ||
+                    propertyid ||
+                    editMode ||
                     typeof addPropertySecondStepData === 'number'
                   ) {
                     updatePropertyDetails();

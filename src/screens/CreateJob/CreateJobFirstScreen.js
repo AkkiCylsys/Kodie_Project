@@ -96,7 +96,6 @@ export default CreateJobFirstScreen = props => {
   const [currentLocation, setCurrentLocation] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
 
   // validation.....
   const handleNextbtn = () => {
@@ -130,7 +129,6 @@ export default CreateJobFirstScreen = props => {
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
-    // setLocation(currentLocation);
     setLocation(currentLocation);
   };
   const openMapandClose = text => {
@@ -138,12 +136,10 @@ export default CreateJobFirstScreen = props => {
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    // alert(JSON.stringify(Region));
     console.log('Region....', JSON.stringify(Region));
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
@@ -189,7 +185,6 @@ export default CreateJobFirstScreen = props => {
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
-      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
@@ -242,10 +237,9 @@ export default CreateJobFirstScreen = props => {
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderLabel = ({position, stepStatus}) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
         : '#808080';
@@ -289,9 +283,6 @@ export default CreateJobFirstScreen = props => {
     handleRatingThreshold();
     handleJobType();
     JobId > 0 ? getJobDetails() : null; //edit by Deependra..
-    // if (selectJobType !== null) {
-    //   handleServices(selectJobType);
-    // }
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -303,8 +294,6 @@ export default CreateJobFirstScreen = props => {
     setLocation('');
     setSelectedAddress('');
     setRatingThresholdValue('');
-    // map...
-    // Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
   }, []); //pass the selectJobType in the depandency.
   useEffect(() => {
     if (selectJobType !== null) {
@@ -313,8 +302,10 @@ export default CreateJobFirstScreen = props => {
   }, [selectJobType]);
   const Selected_Time_render = item => {
     const isSelected =
-      item?.longitude === selectedAddress.longitude &&
-      item?.latitude === selectedAddress.latitude;
+      // item?.longitude === selectedAddress.longitude &&
+      // item?.latitude === selectedAddress.latitude;
+      // item?.property_id;
+      selectedAddress?.property_id === item.property_id;
 
     return (
       <View contentContainerStyle={{flex: 1, height: '100%'}}>
@@ -491,7 +482,6 @@ export default CreateJobFirstScreen = props => {
         <ServicesBox
           images
           Services_Name={item.lookup_description}
-          // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item?.lookup_key === 166
               ? 'cleaning-services'
@@ -537,11 +527,9 @@ export default CreateJobFirstScreen = props => {
                   : _COLORS.Kodie_MediumGrayColor,
             },
           ]}
-          // onPress={() => setIsClick(!isClick)}
           onPress={() => {
             handleBoxPress(item?.lookup_key);
             setSelectJobType(item?.lookup_key);
-            // alert(item.lookup_key);
           }}
         />
       </View>
@@ -567,7 +555,6 @@ export default CreateJobFirstScreen = props => {
           setSelectedAddreeData(response?.data?.property_details);
         } else {
           console.error('Selected_Address_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -602,7 +589,6 @@ export default CreateJobFirstScreen = props => {
       })
       .catch(error => {
         console.error('Job_priority error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -631,7 +617,6 @@ export default CreateJobFirstScreen = props => {
             'RatingThreshold_error:',
             'Oops something went wrong! Please try again later.',
           );
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -660,7 +645,6 @@ export default CreateJobFirstScreen = props => {
           setJobTypeData(response?.data?.lookup_details);
         } else {
           console.error('JobType_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
@@ -672,7 +656,6 @@ export default CreateJobFirstScreen = props => {
   };
 
   const handleServices = selectJobType => {
-    // Check the value of selectJobType
     let P_PARENT_CODE = null;
 
     // Map CompanyjobType to P_PARENT_CODE
@@ -691,7 +674,7 @@ export default CreateJobFirstScreen = props => {
         break;
       default:
         console.error('Unknown CompanyjobType:', selectJobType);
-        return; // Exit the function if selectJobType is unknown
+        return;
     }
 
     console.log('P_PARENT_CODE:', P_PARENT_CODE);
@@ -747,7 +730,6 @@ export default CreateJobFirstScreen = props => {
           setJobDetailsData(response?.data?.data);
           console.log('jobDetailsData....', response?.data?.data);
           setSelectJobTypeid(response?.data?.data?.job_type_key);
-          // alert(response?.data?.data.job_type_key);
           setIsClick(parseInt(response?.data?.data?.job_type_key));
           setAboutyourNeed(response?.data?.data?.job_description);
           setservicesValue(
@@ -770,7 +752,6 @@ export default CreateJobFirstScreen = props => {
       .catch(error => {
         console.error('API failed JobDetails in Edit mode ', error);
         setIsLoading(false);
-        // alert(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -795,21 +776,17 @@ export default CreateJobFirstScreen = props => {
           setProperty_Data(response?.data?.lookup_details);
         } else {
           console.error('property_type_error:', response?.data?.error);
-          // alert("Oops something went wrong! Please try again later.");
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('property_type error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
   return (
     <SafeAreaView style={CreateJobFirstStyle.container}>
       <TopHeader
-        // isprofileImage
-        // IsNotification
         onPressLeftButton={() => {
           IsMap ? setIsMap(false) : IsSearch ? setIsSearch(false) : goBack();
         }}
@@ -826,7 +803,6 @@ export default CreateJobFirstScreen = props => {
           <StepIndicator
             customSignUpStepStyle={firstIndicatorSignUpStepStyle}
             currentPosition={0}
-            // onPress={onStepPress}
             renderStepIndicator={renderStepIndicator}
             labels={stepLabels}
             stepCount={4}
@@ -838,27 +814,19 @@ export default CreateJobFirstScreen = props => {
         <View
           style={{
             flex: 1,
-            // paddingHorizontal: 10,
             backgroundColor: 'transparent',
           }}>
           <MapScreen
             style={{
               height: '100%',
               width: '100%',
-              // borderRadius: 20,
-              // borderWidth: 1,
-              //borderColor: .greenAppColor,
               alignSelf: 'center',
               marginBottom: 10,
             }}
             onRegionChange={onRegionChange}
-            // onRegionChangeComplete={onRegionChangeComplete}
             Maplat={latitude}
             Maplng={longitude}
-            // Maplat={getLat}
-            // Maplng={getLong}
           />
-          {/* <MapComponent/> */}
           <View
             style={{
               flexDirection: 'row',
@@ -875,31 +843,15 @@ export default CreateJobFirstScreen = props => {
             <TextInput
               style={{
                 backgroundColor: 'transparent',
-
                 width: '90%',
                 height: 45,
                 alignSelf: 'center',
-                //marginTop: 10,
               }}
               onFocus={() => openMapandClose()}
               placeholder={'Search Place'}
               placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
           </View>
-          {/* <TouchableOpacity
-            style={CreateJobFirstStyle.c_locationBtn}
-            onPress={() => {
-              // Platform.OS == "ios"
-              //   ? CheckIOSMapPermission()
-              //   : checkpermissionlocation();
-            }}
-          >
-            <Entypo
-              name="location-pin"
-              size={30}
-              color={_COLORS.Kodie_lightGreenColor}
-            />
-          </TouchableOpacity> */}
           <TouchableOpacity
             style={CreateJobFirstStyle.BtnContainer}
             onPress={ConfirmAddress}>
@@ -915,7 +867,6 @@ export default CreateJobFirstScreen = props => {
             setIsSearch(false);
             setIsMap(true);
             setCurrentLocation(details.formatted_address);
-            // setLocation(details.formatted_address);
           }}
         />
       ) : (
@@ -963,17 +914,8 @@ export default CreateJobFirstScreen = props => {
                 searchPlaceholder="Search..."
                 onChange={item => {
                   setservicesValue(item.lookup_key);
-                  // alert(item.lookup_key)
                 }}
                 renderItem={lookingServices_render}
-                // renderRightIcon={() => (
-                //   <AntDesign
-                //     // name={dropdownIcon ? "down" : "up"}
-                //     // name="down"
-                //     name={arrowIcon ? "up" : "down"}
-                //     size={20}
-                //   />
-                // )}
               />
             </View>
             <View style={CreateJobFirstStyle.jobDetailsView}>
@@ -1010,7 +952,6 @@ export default CreateJobFirstScreen = props => {
                 value={jobPriorityValue}
                 onChange={item => {
                   setJobPriorityValue(item.lookup_key);
-                  // alert(item.lookup_key)
                   setJobPriorityValueError(false);
                 }}
                 renderItem={jobPriority_render}
@@ -1066,12 +1007,13 @@ export default CreateJobFirstScreen = props => {
                 valueField="longitude"
                 placeholder="Select property"
                 searchPlaceholder="Search..."
-                value={selectedAddress}
+                value={selectedAddress || null}
                 onChange={item => {
                   setSelectedAddress({
                     latitude: item.latitude,
                     longitude: item.longitude,
                     location: item.location,
+                    property_id: item?.property_id,
                   });
                 }}
                 renderItem={Selected_Time_render}

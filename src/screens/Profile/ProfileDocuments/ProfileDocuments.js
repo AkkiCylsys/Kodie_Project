@@ -59,7 +59,7 @@ const ProfileDocuments = props => {
   }, [isfocused]);
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'tanant_details/get/documents';
+    const getDocumentUrl = url + 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
@@ -70,7 +70,7 @@ const ProfileDocuments = props => {
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response.data);
-        if (response?.data?.success == true) {
+        if (response?.data?.status == true) {
           switch (moduleName) {
             case 'Identity_documents':
               setIdentifyDocumentId(response?.data?.data);

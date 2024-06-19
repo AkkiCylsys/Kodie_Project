@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../Themes';
 
 export const NoticesStyle = StyleSheet.create({
   mainview: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
-    height: "100%",
+    height: '100%',
   },
   scrollContainer: {
     // marginHorizontal:15
@@ -25,12 +25,12 @@ export const NoticesStyle = StyleSheet.create({
   },
   flat_MainView: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   AllView: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderRadius: 15,
     paddingVertical: 2,
@@ -45,8 +45,8 @@ export const NoticesStyle = StyleSheet.create({
   },
   flatlistView: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     paddingHorizontal: 10,
@@ -62,20 +62,20 @@ export const NoticesStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     backgroundColor: _COLORS.Kodie_GrayColor,
-    alignSelf: "center",
-    alignItems:'center',
+    alignSelf: 'center',
+    alignItems: 'center',
     marginRight: 5,
   },
   item_style: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_VeryLightGrayColor,
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   calenderview: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginHorizontal: 10,
   },
   monthtext: {
@@ -93,14 +93,14 @@ export const NoticesStyle = StyleSheet.create({
 
   mainContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 10,
     // width:'100%',
-    marginHorizontal:16,
+    marginHorizontal: 16,
   },
   dateDayview: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   daytext: {
     fontSize: 12,
@@ -114,63 +114,61 @@ export const NoticesStyle = StyleSheet.create({
     width: 40,
   },
   middatabindview: {
-   
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginLeft:10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginLeft: 10,
     borderWidth: 0.4,
-    width: "85%",
+    width: '85%',
     // height: 90,
     borderRadius: 4,
     paddingHorizontal: 15,
-    paddingVertical:5,
+    paddingVertical: 5,
     borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
     // padding: 15,
   },
   bindview: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   headinglineview: {
     // flexDirection:'row',
     marginHorizontal: 10,
-    alignSelf:'center',
-    justifyContent:'center'
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
   lineimg: {
     width: 4,
     height: 40,
-    alignItems: "center",
-    alignSelf:'center',
-    justifyContent: "center",
+    alignItems: 'center',
+    alignSelf: 'center',
+    justifyContent: 'center',
     // marginTop: 10,
   },
   headintext: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    alignItem:'center',
-    justifyContent:'center'
+    alignItem: 'center',
+    justifyContent: 'center',
   },
   addressviewbind: {
-    flexDirection: "row",
+    // flex: 1,
+    flexDirection: 'row',
     marginTop: 3,
-    alignSelf:'center',
-    alignItems:'center'
-  
+    alignSelf: 'center',
+    alignItems: 'center',
   },
   addresstext: {
     fontSize: 12,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
-    // marginLeft: 2,
-    width: 200,
-    alignSelf:'center'
+    width: 168,
+    alignSelf: 'center',
   },
   locationimg: {},
   dotsview: {
-    justifyContent: "flex-end",
-    flexDirection: "row",
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
   },
   dotimg: {},
   bottomModal_container: {
@@ -182,7 +180,7 @@ export const NoticesStyle = StyleSheet.create({
   },
   flatlistView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     // alignItems: "center",
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
@@ -199,14 +197,14 @@ export const NoticesStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightGrayColor,
     backgroundColor: _COLORS.Kodie_GrayColor,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginRight: 5,
   },
   item_style: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
     color: _COLORS.Kodie_VeryLightGrayColor,
-    alignSelf:'center',
-    alignItems:'center'
+    alignSelf: 'center',
+    alignItems: 'center',
   },
 });

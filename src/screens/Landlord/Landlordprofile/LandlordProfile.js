@@ -110,9 +110,9 @@ export default LandlordProfile = props => {
             ) : (
               <FontAwesome
                 name="user-circle"
-                size={38}
+                size={76}
                 color={_COLORS.Kodie_GrayColor}
-                style={{marginLeft: 10}}
+                // style={{marginLeft: 10}}
               />
             )}
           </View>

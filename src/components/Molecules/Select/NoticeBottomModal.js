@@ -125,6 +125,66 @@ const NoticeBottomModal = props => {
       setIsLoading(false);
     }
   };
+  const duplicateNoticeReminder = async () => {
+    const formData = new FormData();
+    formData.append('account_id', loginData?.Login_details?.user_account_id);
+    formData.append('notice_type', noticeRemiderDetails.type_notice_id);
+    formData.append('notice_title', noticeRemiderDetails.title);
+    formData.append('notice_repeat', noticeRemiderDetails.Repeat_id);
+    formData.append(
+      'notice_notifications',
+      noticeRemiderDetails.notification_notice,
+    );
+    formData.append('notice_from_date', noticeRemiderDetails.from_date);
+    formData.append('notice_from_time', noticeRemiderDetails.from_time);
+    formData.append('notice_to_date', noticeRemiderDetails.to_date);
+    formData.append('notice_to_time', noticeRemiderDetails.to_time);
+    formData.append('guests', noticeRemiderDetails.guests);
+    formData.append('location', noticeRemiderDetails.location);
+    formData.append('longitude', noticeRemiderDetails.longitude);
+    formData.append('latitude', noticeRemiderDetails.latitude);
+    formData.append('notification', noticeRemiderDetails.type_id);
+    formData.append(
+      'notification_type',
+      noticeRemiderDetails.notifications_type,
+    );
+    formData.append('custom', noticeRemiderDetails.custom);
+    formData.append('notes', noticeRemiderDetails.notes);
+    // formData.append("file_name", "fileName");
+    if (selectFile.length > 0 && selectFile[0]) {
+      formData.append('file_name', {
+        uri: null,
+        name: null,
+        type: null,
+      });
+    }
+
+    console.log('formData', formData);
+    const url = Config.BASE_URL;
+    const createNoticeReminder_url = url + 'create_notices_reminder';
+    setIsLoading(true);
+    try {
+      console.log('Request URL:', createNoticeReminder_url);
+      const response = await axios.post(createNoticeReminder_url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('createNoticeReminder....', response?.data);
+      if (response?.data?.status === true) {
+        // alert(response?.data?.message);
+        alert("Notices & Reminder duplicate successfully");
+        props.onchange();
+      }
+      // clearState();
+      setIsLoading(false);
+    } catch (error) {
+      alert(error);
+      console.log('createNoticeReminder_error...', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const modalData = [
     {
       id: 1,
@@ -175,7 +235,8 @@ const NoticeBottomModal = props => {
               onClosemodal();
             }
             if (item.id == 2) {
-              createNoticeReminder();
+              // createNoticeReminder();
+              duplicateNoticeReminder()
               onClosemodal();
             }
             if (item.id == 3) {

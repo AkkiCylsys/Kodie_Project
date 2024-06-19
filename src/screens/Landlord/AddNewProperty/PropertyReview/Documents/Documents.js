@@ -242,10 +242,6 @@ export default Documents = props => {
     return (
       <TouchableOpacity
         style={DocumentsStyle.folderView}
-        // onPress={() => {
-        //   props.navigation.navigate("DocumentDetails");
-        //   alert(item?.id)
-        // }}
         onPress={() => {
           console.log('item.id:', item.id);
           props?.documentDetail(item.id, item.moduleName, property_id);
@@ -256,11 +252,6 @@ export default Documents = props => {
             size={30}
             color={_COLORS.Kodie_GrayColor}
           />
-          {/* <Entypo
-            name="dots-three-vertical"
-            size={25}
-            color={_COLORS.Kodie_GrayColor}
-          /> */}
         </View>
         <View>
           <Text style={DocumentsStyle.propertyDocText}>
@@ -301,7 +292,8 @@ export default Documents = props => {
   };
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'tanant_details/get/documents';
+    // const getDocumentUrl = url + 'tanant_details/get/documents';
+    const getDocumentUrl = url + 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
@@ -312,7 +304,7 @@ export default Documents = props => {
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response?.data);
-        if (response?.data?.success == true) {
+        if (response?.data?.status == true) {
           switch (moduleName) {
             case 'Property':
               setpropertyDocByproperty(response?.data?.data);

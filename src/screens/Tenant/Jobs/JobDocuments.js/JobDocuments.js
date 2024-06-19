@@ -373,7 +373,7 @@ export default JobDocuments = props => {
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log(`API Response for ${moduleName}:`, response.data);
-        if (response?.data?.success == true) {
+        if (response?.data?.status == true) {
           switch (moduleName) {
             case 'Job_proposal':
               setJobDocByModulename(response?.data?.data);

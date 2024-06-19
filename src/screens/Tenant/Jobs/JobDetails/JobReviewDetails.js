@@ -246,8 +246,8 @@ const JobReviewDetails = props => {
   return (
     <SafeAreaView style={JobDetailsStyle.container}>
       <TopHeader
-        isprofileImage
-        IsNotification
+        // isprofileImage
+        // IsNotification
         onPressLeftButton={() =>
           View_Job_Details
             ? props.navigation.navigate('Jobs', {
@@ -285,8 +285,8 @@ const JobReviewDetails = props => {
                 }
                 inactiveDotColor={_COLORS.Kodie_GrayColor}
                 dotColor={_COLORS.Kodie_GreenColor}
-                autoplay
-                circleLoop
+                // autoplay
+                // circleLoop
                 resizeMethod={'resize'}
                 resizeMode={'cover'}
                 dotStyle={JobDetailsStyle.dotStyle}

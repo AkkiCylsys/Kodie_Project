@@ -282,8 +282,8 @@ const JobDetails = props => {
               }
               inactiveDotColor={_COLORS.Kodie_GrayColor}
               dotColor={_COLORS.Kodie_GreenColor}
-              autoplay
-              circleLoop
+              // autoplay
+              // circleLoop
               resizeMethod={'resize'}
               resizeMode={'cover'}
               dotStyle={JobDetailsStyle.dotStyle}

@@ -265,7 +265,7 @@ const Notices = props => {
                   style={{alignSelf:'center'}}
                 />
                
-                <Text style={NoticesStyle.addresstext}>{item.location}</Text></>):null}
+                <Text numberOfLines={2} ellipsizeMode="tail" style={NoticesStyle.addresstext}>{item.location}</Text></>):null}
               </View>
             </View>
           </View>
@@ -513,180 +513,10 @@ const Notices = props => {
           />
         </View>
       </ScrollView>
- 
-      {/* <Modal
-        visible={isModalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={toggleModal}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-
-            backgroundColor: 'rgba(0,0,0,0.5)',
-          }}>
-          <View
-            style={{backgroundColor: 'white', padding: 20, borderRadius: 10}}>
-            <FlatList
-              data={_MONTHS}
-              keyExtractor={item => item.id.toString()}
-              numColumns={3}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    backgroundColor:
-                      item.id === _selectedMonthId
-                        ? _COLORS?.Kodie_GreenColor
-                        : _COLORS?.Kodie_WhiteColor,
-                    paddingHorizontal: 7,
-                    paddingVertical: 8,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    borderWidth: 1,
-                    borderColor:
-                      item.id === _selectedMonthId
-                        ? _COLORS?.Kodie_GreenColor
-                        : _COLORS?.Kodie_GrayColor,
-                    margin: 5,
-                  }}
-                  onPress={() => selectMonth(item.id)}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color:
-                        item.id === _selectedMonthId
-                          ? _COLORS?.Kodie_WhiteColor
-                          : _COLORS?.Kodie_BlackColor,
-                      fontFamily: FONTFAMILY?.K_Bold,
-                      alignSelf: 'center',
-                    }}>
-                    {item.name}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            /> */}
-      {/* <TouchableOpacity
-              onPress={toggleModal}
-              style={{
-                backgroundColor: _COLORS?.Kodie_GreenColor,
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end',
-                paddingHorizontal: 10,
-                paddingVertical: 8,
-                marginHorizontal: '30%',
-                borderRadius: 8,
-              }}>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: _COLORS?.Kodie_WhiteColor,
-                  fontFamily: FONTFAMILY?.K_Bold,
-                  alignSelf: 'center',
-                }}>
-                {'Done'}
-              </Text>
-            </TouchableOpacity> */}
-      {/* </View>
-        </View>
-      </Modal> */}
-      {/* <Modal
-        visible={isModalVisibleYear}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={toggleYearModal}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-
-            backgroundColor: 'rgba(0,0,0,0.5)',
-          }}>
-          <View
-            style={{backgroundColor: 'white', padding: 20, borderRadius: 10}}>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginBottom: 10,
-              }}>
-              {_selectedYear > 1803 && (
-                <TouchableOpacity onPress={handlePrevYears}>
-                  <Entypo name={'chevron-left'} size={22} color={'black'} />
-                </TouchableOpacity>
-              )}
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: _COLORS?.Kodie_BlackColor,
-                    fontFamily: FONTFAMILY?.K_Bold,
-                    alignSelf: 'center',
-                  }}>
-                  {generatetopYears(_selectedYear)}
-                </Text>
-              </View>
-              <TouchableOpacity onPress={handleNextYears}>
-                <Entypo name={'chevron-right'} size={22} color={'black'} />
-              </TouchableOpacity>
-            </View>
-            <FlatList
-              data={generateYears(_selectedYear)}
-              keyExtractor={item => item}
-              numColumns={3}
-              renderItem={({item}) => (
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    backgroundColor:
-                      item === _selectedYear
-                        ? _COLORS?.Kodie_GreenColor
-                        : _COLORS?.Kodie_WhiteColor,
-                    paddingHorizontal: 7,
-                    paddingVertical: 8,
-                    borderRadius: 8,
-                    justifyContent: 'center',
-                    borderWidth: 1,
-                    borderColor:
-                      item === _selectedYear
-                        ? _COLORS?.Kodie_GreenColor
-                        : _COLORS?.Kodie_GrayColor,
-                    margin: 5,
-                  }}
-                  onPress={() => {
-                    selectYear(item);
-                    getNoticesReminderDeatilsByFilter(item);
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color:
-                        item === _selectedYear
-                          ? _COLORS?.Kodie_WhiteColor
-                          : _COLORS?.Kodie_BlackColor,
-                      fontFamily: FONTFAMILY?.K_Bold,
-                      alignSelf: 'center',
-                    }}>
-                    {item}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </View>
-      </Modal> */}
       {isLoading ? <CommonLoader /> : null}
       <RBSheet
         ref={refRBSheet}
         height={250}
-        // closeOnDragDown={true}
-        // closeOnPressMask={false}
         customStyles={{
           wrapper: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',

@@ -428,13 +428,19 @@ const EditProfile = props => {
                         source={{uri: ImageName.path || ImageName}}
                         style={[EditProfileStyle.logo, {borderRadius: 110 / 2}]}
                       />
-                    ) : (
+                    ) : accountDetails?.image_path[0] ? (
                       <Image
                         style={EditProfileStyle.profilelogo}
                         source={{
                           uri: accountDetails?.image_path[0],
                         }}
                         resizeMode="cover"
+                      />
+                    ) : (
+                      <FontAwesome
+                        name="user-circle"
+                        size={100}
+                        color={_COLORS.Kodie_GrayColor}
                       />
                     )}
 
@@ -526,8 +532,8 @@ const EditProfile = props => {
                       ]}>
                       <TextInput
                         style={EditProfileStyle.inputStyle}
-                        value={`${accountDetails?.UAD_PHONE_NO || ''} ${
-                          phoneNumber || ''
+                        value={`${accountDetails?.UAD_COUNTRY_CODE || ''} ${
+                          accountDetails?.UAD_PHONE_NO || ''
                         }`}
                         editable={false}
                       />

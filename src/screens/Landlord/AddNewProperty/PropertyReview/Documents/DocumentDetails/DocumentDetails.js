@@ -152,7 +152,7 @@ const DocumentDetails = props => {
       }
     } catch (error) {
       console.error('API failed uploadDocument', error);
-      alert(error);
+      // alert(error);
     } finally {
       setIsLoading(false);
     }
@@ -230,7 +230,7 @@ const DocumentDetails = props => {
   };
   const getUploadedDocumentsByModule = () => {
     const url = Config.BASE_URL;
-    const getDocumentUrl = url + 'tanant_details/get/documents';
+    const getDocumentUrl = url + 'get/documents';
     console.log('Request URL:', getDocumentUrl);
     setIsLoading(true);
     const documentModuleData = {
@@ -241,7 +241,7 @@ const DocumentDetails = props => {
       .post(getDocumentUrl, documentModuleData)
       .then(response => {
         console.log('API Response getDocumentsByModule:', response?.data);
-        if (response?.data?.success == true) {
+        if (response?.data?.status == true) {
           setGetuploadDocByModuleName(response?.data?.data);
         }
       })

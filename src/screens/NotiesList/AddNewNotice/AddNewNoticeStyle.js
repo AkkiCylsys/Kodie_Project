@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, IMAGES, FONTFAMILY } from "../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, IMAGES, FONTFAMILY} from '../../../Themes';
 
 export const AddNewNoticeStyle = StyleSheet.create({
-  MainContainer: { flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor },
+  MainContainer: {flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor},
   mainview: {
     flex: 1,
     marginTop: 20,
@@ -14,24 +14,24 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 10,
     marginTop: 4,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 10,
   },
   errorText: {color: 'red', marginTop: 3},
   mainreapeatview: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginTop: 15,
   },
-  bottomModal_container:{
-    borderTopLeftRadius:35,
-    borderTopRightRadius:35,
-    paddingHorizontal:20,
-    paddingVertical:20,
-    paddingBottom:30
+  bottomModal_container: {
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    paddingBottom: 30,
   },
   noticedropdownview: {
     width: '70%',
@@ -40,8 +40,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf: "center",
-  
+    alignSelf: 'center',
   },
   iconStyle: {
     width: 20,
@@ -61,30 +60,30 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   alldayviewmain: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     // marginHorizontal: 10,
     marginTop: 15,
   },
   alldayview: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   alldaytext: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 15,
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   datetimeview: {
     // marginHorizontal: 10,
   },
   dateview: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginLeft:37
+    // flex: 1,
+    flexDirection: 'row',
+    // justifyContent: 'space-between',
+    alignItems: 'center',
+    marginLeft: 37,
   },
   datetext: {
     color: _COLORS.Kodie_BlackColor,
@@ -117,9 +116,9 @@ export const AddNewNoticeStyle = StyleSheet.create({
     marginBottom: 5,
   },
   setnotificationview: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     // marginHorizontal: 5,
     // padding: 5,
     flex: 1,
@@ -130,9 +129,9 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderRadius: 8,
     width: 23,
     height: 23,
-    alignItems: "center",
+    alignItems: 'center',
     paddingTop: 5,
-    color:_COLORS.Kodie_GrayColor
+    color: _COLORS.Kodie_GrayColor,
   },
   rightarrowimg: {
     width: 6,
@@ -140,20 +139,20 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   setnoticeviewdrop: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   notificationbind: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   settext: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
     marginLeft: 10,
-    alignSelf:"center"
+    alignSelf: 'center',
   },
   setnotificationdrop: {
     borderWidth: 0.5,
@@ -165,10 +164,10 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   setcustomview: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 10,
-    marginLeft:8,
+    marginLeft: 8,
     // marginHorizontal: 15,
   },
   setcustometext: {
@@ -181,7 +180,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginLeft:45,
+    marginLeft: 45,
   },
   inputContainer: {
     marginBottom: 15,
@@ -193,7 +192,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 5,
@@ -205,14 +204,13 @@ export const AddNewNoticeStyle = StyleSheet.create({
   },
   addattachmentbtnview: {
     flex: 1,
-    marginBottom:20
+    marginBottom: 20,
   },
   addattachment: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    marginTop:24,
-    
+    marginTop: 24,
   },
   // ....drop down
   jobDetailsView: {
@@ -254,7 +252,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 20,
@@ -265,39 +263,38 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderRadius: 20,
     padding: 5,
     // marginTop: 18,
-    alignItems: "center",
-    alignSelf:'center'
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   toggle_circle: {
     width: 18,
     height: 18,
     borderRadius: 18 / 2,
   },
-  input_guest:{
+  input_guest: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     borderWidth: 1,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
-  ChatText:{
-    fontSize:10,
-    color:_COLORS.Kodie_WhiteColor,
-    fontFamily:FONTFAMILY.K_Medium,
-    alignSelf:"center"
-
+  ChatText: {
+    fontSize: 10,
+    color: _COLORS.Kodie_WhiteColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    alignSelf: 'center',
   },
-  chatBtn:{
+  chatBtn: {
     borderWidth: 1,
     width: 56,
     height: 48,
-    marginLeft:10,
-    alignSelf:"center",
-    marginTop:20,
-    borderRadius:8,
-    backgroundColor:_COLORS.Kodie_lightGreenColor,
-    borderColor:_COLORS.Kodie_lightGreenColor,
+    marginLeft: 10,
+    alignSelf: 'center',
+    marginTop: 20,
+    borderRadius: 8,
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    borderColor: _COLORS.Kodie_lightGreenColor,
   },
-  customIcon:{
+  customIcon: {
     height: 23,
     width: 23,
     borderWidth: 1,
@@ -305,7 +302,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderRadius: 8,
   },
   firstview: {
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     marginVertical: 10,
   },
   oldnumbertext: {
@@ -313,11 +310,11 @@ export const AddNewNoticeStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
     marginBottom: 12,
-    marginTop:22
+    marginTop: 22,
   },
   locationContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   locationInput: {
     flex: 1,
@@ -332,27 +329,27 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LightGrayColor,
     marginLeft: 10,
-    width: "15%",
+    width: '15%',
     height: 48,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   locationIcon: {
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   BtnContainer: {
     backgroundColor: _COLORS.Kodie_lightGreenColor,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
     paddingVertical: 3,
     borderRadius: 10,
-    width: "30%",
+    width: '30%',
     height: 50,
     bottom: 0,
     right: 20,
     marginBottom: 20,
-    position: "absolute",
+    position: 'absolute',
   },
   itemView: {
     flex: 1,
@@ -374,7 +371,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
   uploadedImage: {
     width: 120,
     height: 120,
-    borderRadius:10,
+    borderRadius: 10,
     resizeMode: 'cover',
   },
   uploadedDocumentsContainer: {
@@ -392,14 +389,14 @@ export const AddNewNoticeStyle = StyleSheet.create({
 
   textContainer: {
     // flex:1,
-    flexDirection: "column",
+    flexDirection: 'column',
     marginLeft: 10,
   },
 
   pdfInfo: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
   },
   pdfName: {
@@ -417,13 +414,13 @@ export const AddNewNoticeStyle = StyleSheet.create({
   pdfIcon: {
     width: 45,
     height: 45,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   crossIcon: {
     flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "center",
-    position: "absolute",
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    position: 'absolute',
     top: 20,
     right: 5,
     zIndex: 1,

@@ -107,6 +107,7 @@ export default CompanyDetails = props => {
     if (selectJobType !== undefined && selectJobType !== null) {
       handleServices(selectJobType);
     }
+    console.log("logo",accountDetails?.business_data?.UAD_Company_logo)
   }, [selectJobType]);
   useEffect(() => {
     if (IndiselectJobType !== undefined && IndiselectJobType !== null) {
@@ -1029,7 +1030,7 @@ export default CompanyDetails = props => {
                     <Image
                       style={CompanyDetailsStyle.profilelogo}
                       source={{
-                        uri: `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.UAD_Company_logo}`,
+                        uri: `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.business_data?.UAD_Company_logo}`,
                       }}
                       resizeMode="cover"
                     />

@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { FONTFAMILY, IMAGES, _COLORS } from "./../../../Themes/index";
 export const SignUpStyles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
   logoContainer: {

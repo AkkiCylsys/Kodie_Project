@@ -206,7 +206,7 @@ const PropertyListing = props => {
                           : _COLORS.Kodie_MediumGrayColor,
                       },
                     ]}>
-                    {'+ invite Tenant'}
+                    {'+ Invite Tenant'}
                   </Text>
                 </TouchableOpacity>
               </View>

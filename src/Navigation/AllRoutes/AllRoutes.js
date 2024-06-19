@@ -169,20 +169,6 @@ const BottomNav = props => {
                 backgroundColor: 'transparent',
                 width: '100%',
               }}>
-              {/* <MacIcon
-                name={"clipboard-check-multiple"}
-                size={focused ? 30 : 25}
-                color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
-                }
-              /> */}
-              {/* <Image
-                source={focused ? IMAGES.greenDeshboard : IMAGES.dashboard}
-                style={{
-                  height: 30,
-                  width: 30,
-                }}
-              /> */}
               <MaterialIcons
                 name="bar-chart"
                 size={30}
@@ -224,20 +210,6 @@ const BottomNav = props => {
                 backgroundColor: 'transparent',
                 width: '100%',
               }}>
-              {/* <MacIcon
-                name={"clipboard-check-multiple"}
-                size={focused ? 30 : 25}
-                color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
-                }
-              /> */}
-              {/* <Image
-                source={focused ? IMAGES.greenproperty : IMAGES.property}
-                style={{
-                  height: 30,
-                  width: 30,
-                }}
-              /> */}
               <MaterialCommunityIcons
                 name="home-city-outline"
                 size={30}
@@ -278,20 +250,6 @@ const BottomNav = props => {
                 backgroundColor: 'transparent',
                 width: '100%',
               }}>
-              {/* <MacIcon
-                name={"clipboard-check-multiple"}
-                size={focused ? 30 : 25}
-                color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
-                }
-              /> */}
-              {/* <Image
-                source={focused ? IMAGES.greenRepair : IMAGES.repair}
-                style={{
-                  height: 30,
-                  width: 30,
-                }}
-              /> */}
               <MaterialCommunityIcons
                 name="hammer-wrench"
                 size={30}
@@ -333,20 +291,6 @@ const BottomNav = props => {
                 backgroundColor: 'transparent',
                 width: '100%',
               }}>
-              {/* <MacIcon
-                name={"chat-processing-outline"}
-                size={focused ? 30 : 25}
-                color={
-                  focused ? _COLORS.Kodie_GreenColor : _COLORS. Kodie_MediumGrayColor
-                }
-              /> */}
-              {/* <Image
-                
-                style={{
-                  height: 30,
-                  width: 30,
-                }}
-              /> */}
               <Ionicons
                 name="chatbubble-ellipses-outline"
                 size={28}

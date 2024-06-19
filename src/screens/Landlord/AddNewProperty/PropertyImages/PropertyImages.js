@@ -555,7 +555,7 @@ export default PropertyImages = props => {
               disabled={isLoading ? true : false}
             />
           </View>
-          <View style={PropertyImagesStyle.btnView}>
+          {/* <View style={PropertyImagesStyle.btnView}>
             <CustomSingleButton
               _ButtonText={
                 editMode
@@ -566,7 +566,7 @@ export default PropertyImages = props => {
               backgroundColor={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
             />
-          </View>
+          </View> */}
           <TouchableOpacity
             style={PropertyImagesStyle.goBack_View}
             onPress={() => {

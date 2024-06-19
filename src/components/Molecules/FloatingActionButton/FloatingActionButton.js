@@ -102,21 +102,15 @@ const FloatingActionButton = (props) => {
     }
   };
   return (
-    // <SafeAreaView style={styles.container}>
-    //   <View style={styles.container}>
     <FloatingAction
       actions={actions}
       actionsPaddingTopBottom={6}
       color={_COLORS.Kodie_GreenColor}
       onPressItem={(name) => {
-        // Alert.alert("Options pressed", `${name} was pressed`);
         handleActionPress(name)
       }}
-      // overlayColor={_COLORS.Kodie_LightGrayColor}
       overlayColor="rgba(0, 0, 0, 0.5)"
     />
-    //   </View>
-    // </SafeAreaView>
   );
 };
 
