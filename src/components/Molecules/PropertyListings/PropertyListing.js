@@ -33,6 +33,7 @@ const PropertyListing = props => {
   const Closemodal = () => {
     refRBSheet1.current.close();
   };
+  const [modalVisible, setModalVisible] = useState(false);
   const [expandedItems, setExpandedItems] = useState([]);
   const [sortVacantData, setSortVacantData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -97,9 +98,9 @@ const PropertyListing = props => {
           'Property Deleted',
           response?.data?.message || 'The property was deleted successfully.',
         );
-        // get_Vacant_Details();
+        setModalVisible(false);
         props.get_Vacant_Details();
-        refRBSheet.current.close();
+        // refRBSheet.current.close();
         setIsLoading(false);
       }
     } catch (error) {
@@ -170,7 +171,8 @@ const PropertyListing = props => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      refRBSheet.current.open();
+                      // refRBSheet.current.open();
+                      setModalVisible(true);
                       setAddress(item?.location);
                       setPropId(item?.property_id);
                     }}>
@@ -264,7 +266,7 @@ const PropertyListing = props => {
           }}>
           <InviteTenantModal onClose={Closemodal} />
         </RBSheet>
-        <RBSheet
+        {/* <RBSheet
           ref={refRBSheet}
           height={330}
           closeOnPressMask={true}
@@ -292,10 +294,47 @@ const PropertyListing = props => {
             onDeleteData={FinalDeleteProperty}
             Address={Address}
             onClose={() => {
-              refRBSheet.current.close();
+              // refRBSheet.current.close();
+              setModalVisible(false);
             }}
           />
-        </RBSheet>
+        </RBSheet> */}
+        <Modal
+          isVisible={modalVisible}
+          onBackdropPress={() => setModalVisible(true)}
+          style={[
+            PropertyListingCss.bottomModal_container,
+            {
+              position: 'absolute',
+              left: -20,
+              bottom: -10,
+              width: '100%',
+              height: '50%',
+              backgroundColor: 'white',
+              borderRadius: 10,
+              paddingVertical: 8,
+            },
+          ]}>
+          <TouchableOpacity
+            style={{
+              justifyContent: 'flex-end',
+              alignSelf: 'flex-end',
+            }}
+            onPress={() => {
+              setModalVisible(false);
+            }}>
+            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+          </TouchableOpacity>
+          <VacantModal
+            propertyId={propId}
+            onDeleteData={FinalDeleteProperty}
+            Address={Address}
+            onClose={() => {
+              // refRBSheet.current.close();
+              setModalVisible(false);
+            }}
+          />
+        </Modal>
       </>
     );
   };

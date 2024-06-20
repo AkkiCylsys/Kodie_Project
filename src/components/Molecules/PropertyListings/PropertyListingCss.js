@@ -102,4 +102,5 @@ export const PropertyListingCss = StyleSheet.create({
     paddingHorizontal:10,paddingVertical:15
     // elevation: 10,
   },
+  
 });
