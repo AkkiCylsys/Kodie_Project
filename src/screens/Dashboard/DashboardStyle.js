@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 import {FONTFAMILY, _COLORS} from '../../Themes';
 export const DashboardStyle = StyleSheet.create({
   mainContainer: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: _COLORS.Kodie_ExtraLiteWhiteColor,
   },
   container: {
@@ -160,7 +160,7 @@ export const DashboardStyle = StyleSheet.create({
   Noticemain_View: {
     flex: 1,
     marginTop: 15,
-    marginBottom: 15,
+    marginBottom: 110,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 15,
