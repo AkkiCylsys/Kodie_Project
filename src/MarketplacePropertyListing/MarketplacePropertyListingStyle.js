@@ -139,5 +139,10 @@ export const MarketplacePropertyListingStyle = StyleSheet.create({
   crossIcon:{
     alignSelf: 'flex-end',
     marginHorizontal: 10,
-  }
+  },
+  bottomModal_container: {
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingHorizontal:10,paddingVertical:15
+  },
 });

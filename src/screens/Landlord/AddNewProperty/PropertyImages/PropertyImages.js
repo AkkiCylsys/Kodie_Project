@@ -171,6 +171,7 @@ export default PropertyImages = props => {
       setIsLoading(false);
     }
   };
+  
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
@@ -295,6 +296,8 @@ export default PropertyImages = props => {
   };
 
   const imagePaths = MultiImageName.map(image => image.path);
+  console.log('lenght images...', imagePaths.length);
+
   // alert(imagePaths);
   const handleSaveImage = async () => {
     const formData = new FormData();
@@ -548,6 +551,7 @@ export default PropertyImages = props => {
               onPress={() => {
                 if (editMode || property_id) {
                   handleSaveUpdateImage();
+                  alert('sdv');
                 } else {
                   handleSaveImage();
                 }

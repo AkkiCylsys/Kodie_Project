@@ -121,11 +121,12 @@ const VacantModal = props => {
               handleCloseModal();
             }
             if (item.id === '3') {
-              navigation.navigate('PropertyReview', {
+              navigation.navigate('PropertyReviewDetails', {
                 propertyid: propertyId,
                 // propertyView: 'propertyView',
                 DocTab: 'DocTab',
                 propertyListing: 'propertyListing',
+                propertyView: 'propertyView',
               });
               handleCloseModal();
             }
@@ -161,14 +162,6 @@ const VacantModal = props => {
   };
   return (
     <View style={BottomModalDataStyle.mainContainer}>
-      {/* <TouchableOpacity
-        style={{
-          justifyContent: 'flex-end',
-          alignSelf: 'flex-end',
-        }}
-        onPress={handleCloseModal}>
-        <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-      </TouchableOpacity> */}
       <FlatList
         data={data}
         scrollEnabled

@@ -424,7 +424,7 @@ export default PropertyFeature = props => {
       }
     } catch (error) {
       console.error('additional_features error:', error);
-      alert(error);
+      // alert(error);
       setIsLoading(false);
     }
   };
