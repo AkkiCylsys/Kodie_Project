@@ -328,41 +328,7 @@ const MarketplacePropertyListing = props => {
         )}
         <DividerIcon />
         {/* three dot click popup menu */}
-        <RBSheet
-          ref={refRBSheet1}
-          closeOnDragDown={true}
-          height={280}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-              width: 40,
-              height: 4,
-              borderRadius: 2,
-            },
-            container: MarketplacePropertyListingStyle.bottomModal_container,
-          }}>
-          <TouchableOpacity
-            style={MarketplacePropertyListingStyle.crossIcon}
-            onPress={() => {
-              refRBSheet1.current.close();
-            }}>
-            <Entypo
-              name="cross"
-              size={24}
-              color={_COLORS.Kodie_BlackColor}
-            />
-          </TouchableOpacity>
-          <PropertyModal
-            onClose={CloseUp}
-            propertyId={propId}
-            Address={Address}
-            deletelist={FinalDeleteVacant}
-          />
-        </RBSheet>
+       
       </View>
     );
   };
@@ -398,6 +364,41 @@ const MarketplacePropertyListing = props => {
         renderItem={propertyData1_render}
       />
       {isLoading ? <CommonLoader /> : null}
+      <RBSheet
+          ref={refRBSheet1}
+          closeOnDragDown={true}
+          height={280}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+              width: 40,
+              height: 4,
+              borderRadius: 2,
+            },
+            container: MarketplacePropertyListingStyle.bottomModal_container,
+          }}>
+          <TouchableOpacity
+            style={MarketplacePropertyListingStyle.crossIcon}
+            onPress={() => {
+              refRBSheet1.current.close();
+            }}>
+            <Entypo
+              name="cross"
+              size={24}
+              color={_COLORS.Kodie_BlackColor}
+            />
+          </TouchableOpacity>
+          <PropertyModal
+            onClose={CloseUp}
+            propertyId={propId}
+            Address={Address}
+            deletelist={FinalDeleteVacant}
+          />
+        </RBSheet>
     </SafeAreaView>
   );
 };

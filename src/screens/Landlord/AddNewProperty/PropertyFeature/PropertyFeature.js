@@ -104,7 +104,7 @@ export default PropertyFeature = props => {
     additional_features();
     console.log('step 2');
     setActiveColor(_COLORS.Kodie_MidLightGreenColor);
-    propertyid > 0 || addPropertySecondStepData ? DetailsData() : null;
+    propertyid > 0 || addPropertySecondStepData?.length ? DetailsData() : null;
     try {
       const keyFeaturesArray = JSON.parse(keyFeaturesString);
 
@@ -408,27 +408,27 @@ export default PropertyFeature = props => {
     const url = Config.BASE_URL;
     const additionalApi = url + 'get_key_features';
     console.log('Request URL:', additionalApi);
-    setIsLoading(true);
+    
+    setIsLoading(true); // Assuming setIsLoading is a state setter function
+  
     try {
       const response = await axios.get(additionalApi);
-      console.log('additional_Data', response?.data);
-      console.log('step 1.1');
-
-      if (response?.data?.success === true) {
-        setIsLoading(false);
-        console.log('additional_features....', response?.data);
-        setAdditionalfeatureskey(response?.data?.key_features_details);
+      console.log('additional_Data:', response.data); // Adjusted to directly access response.data
+  
+      if (response.data.success) {
+        console.log('additional_features:', response.data);
+        setAdditionalfeatureskey(response.data.key_features_details);
       } else {
-        console.error('additional_features_error:', response?.data?.error);
-        setIsLoading(false);
+        console.error('additional_features_error:', response.data.error || 'Unknown error');
       }
     } catch (error) {
       console.error('additional_features error:', error);
-      alert(error);
-      setIsLoading(false);
+      alert('Error fetching additional features'); // Better to have a more generic message for the alert
+    } finally {
+      setIsLoading(false); // Ensure setIsLoading(false) is called in both success and error cases
     }
   };
-
+  
   const updatePropertyDetails = () => {
     const updateData = {
       user: loginData?.Login_details?.user_id,

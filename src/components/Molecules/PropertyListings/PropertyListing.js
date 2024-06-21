@@ -80,8 +80,8 @@ const PropertyListing = props => {
   };
   const FinalDeleteProperty = async () => {
     setIsLoading(true);
-    setIsDeleteData_Clicked(false);
-    setIsDeleteBottomSheetVisible(false);
+    // setIsDeleteData_Clicked(false);
+    // setIsDeleteBottomSheetVisible(false);
     try {
       const url = Config.BASE_URL;
       const response = await axios.delete(url + 'delete_property_by_id', {
@@ -99,7 +99,7 @@ const PropertyListing = props => {
         );
         // get_Vacant_Details();
         props.get_Vacant_Details();
-        refRBSheet.current.close();
+        refRBSheet.current?.close();
         setIsLoading(false);
       }
     } catch (error) {
@@ -170,7 +170,7 @@ const PropertyListing = props => {
                   </TouchableOpacity>
                   <TouchableOpacity
                     onPress={() => {
-                      refRBSheet.current.open();
+                      refRBSheet?.current?.open();
                       setAddress(item?.location);
                       setPropId(item?.property_id);
                     }}>
@@ -249,7 +249,18 @@ const PropertyListing = props => {
           </View>
         )}
         <DividerIcon />
-        <RBSheet
+      
+      </>
+    );
+  };
+  return (
+    <>
+      <FlatList
+        data={searchQuery ? filteredUsers : vacantData}
+        renderItem={propertyData1_render}
+        keyExtractor={item => item.property_id}
+      />
+       <RBSheet
           ref={refRBSheet1}
           height={180}
           closeOnPressMask={false}
@@ -296,16 +307,6 @@ const PropertyListing = props => {
             }}
           />
         </RBSheet>
-      </>
-    );
-  };
-  return (
-    <>
-      <FlatList
-        data={searchQuery ? filteredUsers : vacantData}
-        renderItem={propertyData1_render}
-        keyExtractor={item => item.property_id}
-      />
     </>
   );
 };

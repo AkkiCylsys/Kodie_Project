@@ -411,6 +411,7 @@ export default Leases = props => {
     );
   };
   return (
+    <>
     <View style={LeasesStyle.mainContainer}>
       <ScrollView>
         {!lease_summary_data.length > 0 ? (
@@ -425,11 +426,12 @@ export default Leases = props => {
                 _ButtonText={'+ Add lease'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => {
-                  refRBSheet.current.open();
+                  // alert('kjgjhgjh')
+                  refRBSheet.current?.open();
                   setIsSheetOpen(true);
                 }}
                 height={45}
-                disabled={isLoading ? true : false}
+                // disabled={isLoading ? true : false}
               />
             </View>
           </View>
@@ -503,7 +505,10 @@ export default Leases = props => {
           </View>
         ) : null}
 
-        <RBSheet
+      
+      </ScrollView>
+    </View>
+    <RBSheet
           ref={refRBSheet}
           height={720}
           customStyles={{
@@ -566,7 +571,6 @@ export default Leases = props => {
           }}>
           <LeaseBottomModal onClose={handleLeaseClose} />
         </RBSheet>
-      </ScrollView>
-    </View>
+    </>
   );
 };
