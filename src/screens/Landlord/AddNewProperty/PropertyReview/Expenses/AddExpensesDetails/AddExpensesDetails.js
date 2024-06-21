@@ -217,7 +217,8 @@ export default AddExpensesDetails = props => {
       is_active: 1,
     };
     const url = Config.BASE_URL;
-    const ExpenceUrl = url + 'property_expenses_details/create';
+    // const ExpenceUrl = url + 'property_expenses_details/create';
+    const ExpenceUrl = url + 'create/expenses';
     console.log('Request URL:', ExpenceUrl);
     setIsLoading(true);
 
@@ -250,7 +251,7 @@ export default AddExpensesDetails = props => {
         }
       })
       .catch(error => {
-        console.error('ExpenceDetail error...:', error);
+        console.error('Add ExpenceDetail error...:', error);
         setIsLoading(false);
       });
   };
@@ -280,7 +281,7 @@ export default AddExpensesDetails = props => {
   useEffect(() => {
     handleExpenceCategory();
     handleResponsible();
-    Expencehandle();
+    // Expencehandle();
   }, []);
   // dropDownRender
   const expenseCategory_render = item => {
