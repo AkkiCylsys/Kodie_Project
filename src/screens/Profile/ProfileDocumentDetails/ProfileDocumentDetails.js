@@ -136,7 +136,7 @@ const ProfileDocumentDetails = props => {
   // renderItem....
   const DocumentsData = ({item, index}) => {
     // setFileKey(item.PDUM_FILE_KEY);
-    setFileName(item.PDUM_FILE_NAME);
+    setFileName(item.image_paths);
     // setFilePath(item.PDUM_FILE_PATH);
     return (
       <>
@@ -325,7 +325,9 @@ const ProfileDocumentDetails = props => {
     console.log('url...', delete_url);
     setIsLoading(true);
     axios
-      .patch(delete_url, dataToSend)
+      .delete(delete_url, {
+        data: dataToSend,
+      })
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {

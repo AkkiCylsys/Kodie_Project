@@ -44,6 +44,7 @@ export default CompanyDetails = props => {
   const navigation = useNavigation();
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log("loginData...",loginData)
   const [tabValue, setTabValue] = useState('IndividualInProfile');
   const [isLoading, setIsLoading] = useState(false);
   const [ImageName, setImageName] = useState('');
@@ -107,7 +108,6 @@ export default CompanyDetails = props => {
     if (selectJobType !== undefined && selectJobType !== null) {
       handleServices(selectJobType);
     }
-    console.log("logo",accountDetails?.business_data?.UAD_Company_logo)
   }, [selectJobType]);
   useEffect(() => {
     if (IndiselectJobType !== undefined && IndiselectJobType !== null) {
@@ -379,6 +379,7 @@ export default CompanyDetails = props => {
         const response = await axios.post(propertyType, propertyData);
 
         if (response?.data?.status === true) {
+          console.log("knsdnven....",response?.data?.lookup_details)
           servicesDatas.push(...response?.data?.lookup_details);
           setIsLoading(false);
         } else {
@@ -665,26 +666,26 @@ export default CompanyDetails = props => {
   };
   let lastOtherIndex = -1;
   IndiservicesData.forEach((item, index) => {
-    if (item.lookup_description === "Other") {
+    if (item.lookup_description === 'Other') {
       lastOtherIndex = index;
     }
   });
-
+console.log("IndiservicesData...dee",IndiservicesData)
   const filteredIndiservicesData = IndiservicesData.filter((item, index) => {
-    return item.lookup_description !== "Other" || index === lastOtherIndex;
+    return item.lookup_description !== 'Other' || index === lastOtherIndex;
   });
 
   let lastComOtherIndex = -1;
   servicesData.forEach((item, index) => {
-    if (item.lookup_description === "Other") {
+    if (item.lookup_description === 'Other') {
       lastComOtherIndex = index;
     }
   });
 
   const filteredCompservicesData = servicesData.filter((item, index) => {
-    return item.lookup_description !== "Other" || index === lastComOtherIndex;
+    return item.lookup_description !== 'Other' || index === lastComOtherIndex;
   });
- 
+
   const checkTabs = () => {
     switch (tabValue) {
       case 'IndividualInProfile':
@@ -1026,13 +1027,19 @@ export default CompanyDetails = props => {
                         {borderRadius: 110 / 2},
                       ]}
                     />
-                  ) : (
+                  ) : accountDetails?.business_data?.UAD_Company_logo ? (
                     <Image
                       style={CompanyDetailsStyle.profilelogo}
                       source={{
-                        uri: `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.business_data?.UAD_Company_logo}`,
+                        uri:accountDetails?.UAD_HOW_TO_RUN_YOUR_BUSINESS === 0 ?'': `https://kodieapis.cylsys.com/upload/photo/${accountDetails?.business_data?.company_logo}`,
                       }}
                       resizeMode="cover"
+                    />
+                  ) : (
+                    <FontAwesome
+                      name="user-circle"
+                      size={100}
+                      color={_COLORS.Kodie_GrayColor}
                     />
                   )}
                   <View style={CompanyDetailsStyle.editlogoview}>

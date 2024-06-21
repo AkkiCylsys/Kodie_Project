@@ -97,8 +97,11 @@ const DocumentDetails = props => {
     const delete_url = url + 'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
+  
     axios
-      .patch(delete_url, dataToSend)
+      .delete(delete_url, {
+        data: dataToSend, // Send data as part of the config object
+      })
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
@@ -114,6 +117,7 @@ const DocumentDetails = props => {
         setIsLoading(false);
       });
   };
+  
   const uploadDocument = async doc => {
     // alert("upload");
     console.log('uri....', doc[0].uri);
@@ -309,9 +313,9 @@ const DocumentDetails = props => {
             style={DocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
-              setFilePath(item.PDUM_FILE_PATH);
-              console.log('fileKey....', fileKey);
+              setFilePath(item.image_paths);
               setFileKey(item.PDUM_FILE_KEY);
+              console.log('fileKey....', fileKey);
             }}>
             <Entypo
               name="dots-three-vertical"

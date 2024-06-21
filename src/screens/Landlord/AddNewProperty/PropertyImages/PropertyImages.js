@@ -171,7 +171,6 @@ export default PropertyImages = props => {
       setIsLoading(false);
     }
   };
-  
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
@@ -272,7 +271,7 @@ export default PropertyImages = props => {
     props.navigation.pop();
   };
   const handleImageNameChange = multipleImages => {
-    const MAX_FILE_SIZE = 5 * 1024 * 1024;
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
     const oversizedImage = multipleImages.find(
       image => image.size > MAX_FILE_SIZE,
     );
@@ -283,11 +282,24 @@ export default PropertyImages = props => {
       return;
     }
 
-    // setMultiImageName(multipleImages);
-    setMultiImageName([...MultiImageName, ...multipleImages]);
-    console.log('................ImageNAme', multipleImages);
-    console.log('................ImageNAme', multipleImages.path);
+    const newTotalImages = MultiImageName.length + multipleImages.length;
+
+    if (newTotalImages > 4) {
+      Alert.alert(
+        'Maximum Image Limit Exceeded',
+        'Oops! You can add up to 4 images per card only.',
+      );
+      refRBSheet.current.close();
+    } else {
+      setMultiImageName([...MultiImageName, ...multipleImages]);
+      console.log('................ImageName', multipleImages);
+      console.log(
+        '................ImageName',
+        multipleImages.map(image => image.path),
+      );
+    }
   };
+
   //.....remove video....////
   const removeVideo = indexToRemove => {
     const updatedVideos = [...selectedVideos];

@@ -284,7 +284,7 @@ const MarketplacePropertyListing = props => {
                   onPress={() => {
                     props.navigation.navigate('Invitefriend');
                   }}>
-                  {'+ invite Tenant'}
+                  {'+ Invite Tenant'}
                 </Text>
               </View>
             </View>
