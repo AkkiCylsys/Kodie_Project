@@ -586,9 +586,9 @@ export default AddLeaseDetails = props => {
               labelField="lookup_description"
               valueField="lookup_key"
               placeholder="Select day in each period rent is paid"
-              value={lease_end_value}
+              value={paymentDueDay}
               onChange={item => {
-                setlLease_end_value(item.value);
+                setPaymentDueDay(item.value);
                 // alert(item.lookup_key);
               }}
               renderItem={lease_end_render}

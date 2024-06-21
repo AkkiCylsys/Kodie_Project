@@ -46,11 +46,12 @@ const GuestSelectionContent = ({
         style={{
           flexDirection: 'row',
           height: 48,
-          borderColor: _COLORS?.Kodie_GrayColor,
+          borderColor: _COLORS.Kodie_GrayColor,
           borderWidth: 1,
           borderRadius: 8,
           marginVertical: 22,
           alignItems: 'center',
+          paddingHorizontal: 10,
         }}>
         <EvilIcons
           name="search"
@@ -61,7 +62,7 @@ const GuestSelectionContent = ({
           placeholder="Type to search"
           value={query}
           onChangeText={text => setQuery(text)}
-          style={{alignSelf: 'center'}}
+          style={{flex: 1, marginLeft: 10}}
           onFocus={() => {
             refRBSheet.current.open();
           }}
@@ -124,9 +125,9 @@ const GuestSelectionContent = ({
                   fontFamily: FONTFAMILY?.K_Medium,
                   alignSelf: 'center',
                 }}>
-                {tempSelectedValues.some(
-                  user => user.UAD_KEY === item.UAD_KEY,
-                ) ? "Added":'Add'}
+                {tempSelectedValues.some(user => user.UAD_KEY === item.UAD_KEY)
+                  ? 'Added'
+                  : 'Add'}
               </Text>
             </TouchableOpacity>
           </View>
