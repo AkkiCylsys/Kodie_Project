@@ -839,12 +839,15 @@ export default PropertyReviewDetails = props => {
           </>
         );
       case 'Tab2':
-        return <Leases property_id={propertyid} />;
+        return (
+          // <Leases property_id={propertyid} />
+          Alert.alert('Alert!', 'Coming soon')
+        );
 
       case 'Tab3':
         return (
-        // <Expenses property_id={propertyid} />
-        Alert.alert('Alert!', "Coming soon")
+          // <Expenses property_id={propertyid} />
+          Alert.alert('Alert!', 'Coming soon')
         );
       case 'Tab4':
         return (
