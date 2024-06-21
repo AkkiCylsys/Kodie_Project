@@ -921,8 +921,11 @@ const AddNewNotice = props => {
   const images = uploadedFiles.filter(file => file.type === 'image');
   const documents = uploadedFiles.filter(file => file.type === 'document');
 
-  if (NoticeAllData && typeof NoticeAllData === 'object' && Array.isArray(NoticeAllData.image_path)) 
-    {
+  if (
+    NoticeAllData &&
+    typeof NoticeAllData === 'object' &&
+    Array.isArray(NoticeAllData.image_path)
+  ) {
     const fileNames = NoticeAllData.image_path;
 
     // Filter images and documents based on file extensions

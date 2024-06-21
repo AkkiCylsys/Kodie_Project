@@ -1090,28 +1090,28 @@ const AddNotices = props => {
                   _closeButton={toggleModal}
                   _ApplyButton={apply_toggleModal}
                 />
-                  <TimePicker
-                    selectedTime={
-                      currentfromTime && currentfromTime != ''
-                        ? String(currentfromTime)
-                        : 'Select from time'
-                    }
-                    timerConStyle={{
-                      borderWidth: 0,
-                      marginTop: 0,
-                    }}
-                    _TextTimeColor={
-                      currentfromTime
-                        ? _COLORS.Kodie_BlackColor
-                        : _COLORS.Kodie_BlackColor
-                    }
-                    timerIcons
-                    data={new Date()}
-                    getData={date => {
-                      handleFromTime(moment(date).format('hh:mm A'));
-                    }}
-                    onChange={() => handleFromTime(currentfromTime)}
-                  />
+                <TimePicker
+                  selectedTime={
+                    currentfromTime && currentfromTime != ''
+                      ? String(currentfromTime)
+                      : 'Select from time'
+                  }
+                  timerConStyle={{
+                    borderWidth: 0,
+                    marginTop: 0,
+                  }}
+                  _TextTimeColor={
+                    currentfromTime
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_BlackColor
+                  }
+                  timerIcons
+                  data={new Date()}
+                  getData={date => {
+                    handleFromTime(moment(date).format('hh:mm A'));
+                  }}
+                  onChange={() => handleFromTime(currentfromTime)}
+                />
               </View>
               <View style={AddNewNoticeStyle.dateview}>
                 <View style={{flex: 1}}>
