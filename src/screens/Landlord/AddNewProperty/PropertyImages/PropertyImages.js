@@ -551,7 +551,6 @@ export default PropertyImages = props => {
               onPress={() => {
                 if (editMode || property_id) {
                   handleSaveUpdateImage();
-                  alert('sdv');
                 } else {
                   handleSaveImage();
                 }
