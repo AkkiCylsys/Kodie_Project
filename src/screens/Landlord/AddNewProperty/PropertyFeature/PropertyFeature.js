@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -7,25 +7,25 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
-import {PropertyFeatureStyle} from './PropertyFeatureStyle';
+import { PropertyFeatureStyle } from './PropertyFeatureStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../../services/CommonServices';
+import { _goBack } from '../../../../services/CommonServices';
 
-import {Dropdown} from 'react-native-element-dropdown';
-import {FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
-import {_COLORS} from '../../../../Themes';
+import { Dropdown } from 'react-native-element-dropdown';
+import { FONTFAMILY, LABEL_STYLES } from '../../../../Themes';
+import { _COLORS } from '../../../../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {Config} from '../../../../Config';
+import { Config } from '../../../../Config';
 import axios from 'axios';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import MultiSelect from 'react-native-multiple-select';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 const renderDataItem = item => {
@@ -104,7 +104,12 @@ export default PropertyFeature = props => {
     additional_features();
     console.log('step 2');
     setActiveColor(_COLORS.Kodie_MidLightGreenColor);
-    propertyid > 0 || addPropertySecondStepData?.length ? DetailsData() : null;
+    propertyid > 0 ||
+      (Array.isArray(addPropertySecondStepData) &&
+        addPropertySecondStepData.length > 0) ||
+      typeof addPropertySecondStepData === 'number'
+      ? DetailsData()
+      : null;
     try {
       const keyFeaturesArray = JSON.parse(keyFeaturesString);
 
@@ -126,10 +131,9 @@ export default PropertyFeature = props => {
 
   const DetailsData = async () => {
     const detailData = {
-      property_id:
-        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData) && addPropertySecondStepData?.length
-          ? addPropertySecondStepData
-          : propertyid,
+      property_id: addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+        ? addPropertySecondStepData
+        : propertyid,
     };
     console.log('detailData', detailData);
     const url = Config.BASE_URL;
@@ -187,10 +191,10 @@ export default PropertyFeature = props => {
   };
 
   const AllCountsData = [
-    {Bedrooms: CountBedroom},
-    {Bathrooms: CountBathroom},
-    {'Parking Space': CountParking},
-    {Garages: CountParkingStreet},
+    { Bedrooms: CountBedroom },
+    { Bathrooms: CountBathroom },
+    { 'Parking Space': CountParking },
+    { Garages: CountParkingStreet },
   ];
 
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
@@ -234,7 +238,7 @@ export default PropertyFeature = props => {
     }
   };
 
-  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
+  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -287,23 +291,23 @@ export default PropertyFeature = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({position, stepStatus}) => {
+  const renderLabel = ({ position, stepStatus }) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-        ? '#000000'
-        : '#808080';
+          ? '#000000'
+          : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-        ? 'Features'
-        : position === 2
-        ? 'Images'
-        : position === 3
-        ? 'Review'
-        : 'null';
+          ? 'Features'
+          : position === 2
+            ? 'Images'
+            : position === 3
+              ? 'Review'
+              : 'null';
 
     return (
       <View style={{}}>
@@ -408,13 +412,13 @@ export default PropertyFeature = props => {
     const url = Config.BASE_URL;
     const additionalApi = url + 'get_key_features';
     console.log('Request URL:', additionalApi);
-    
+
     setIsLoading(true); // Assuming setIsLoading is a state setter function
-  
+
     try {
       const response = await axios.get(additionalApi);
       console.log('additional_Data:', response.data); // Adjusted to directly access response.data
-  
+
       if (response.data.success) {
         console.log('additional_features:', response.data);
         setAdditionalfeatureskey(response.data.key_features_details);
@@ -428,7 +432,7 @@ export default PropertyFeature = props => {
       setIsLoading(false); // Ensure setIsLoading(false) is called in both success and error cases
     }
   };
-  
+
   const updatePropertyDetails = () => {
     const updateData = {
       user: loginData?.Login_details?.user_id,
@@ -835,7 +839,7 @@ export default PropertyFeature = props => {
                   color: _COLORS.Kodie_WhiteColor,
                   fontFamily: FONTFAMILY.K_Medium,
                 }}
-                styleTextDropdown={{marginLeft: 20}}
+                styleTextDropdown={{ marginLeft: 20 }}
                 styleDropdownMenu={{
                   flex: 1,
                   borderWidth: 1,
