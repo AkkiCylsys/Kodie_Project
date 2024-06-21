@@ -127,7 +127,8 @@ export default AddLeaseDetails = props => {
   const handle_add_Lease = () => {
     console.log('paymentDueDay....', paymentDueDay);
     const url = Config.BASE_URL;
-    const add_Lease_url = url + 'property_lease_details/create';
+    // const add_Lease_url = url + 'property_lease_details/create';
+    const add_Lease_url = url + 'create/lease';
     console.log('Request URL:', add_Lease_url);
     setIsLoading(true);
     console.log('selectedDate', selectedDate);
@@ -136,15 +137,15 @@ export default AddLeaseDetails = props => {
       upd_key: property_id,
       commencement_date: selectedDate,
       rental_lease_term: lease_term_value,
-      lease_end_date:selectedEndDate,
+      lease_end_date: selectedEndDate,
       rental_amount: rentalAmount,
       rental_bond_amount: rentalBond,
       rental_payment_frequency: lease_end_value,
       payment_due_day: paymentDueDay,
-      pro_rata_amount:25,
+      pro_rata_amount: 25,
       first_rental_payment: selected_payment_Id,
-      rental_deposit:25000,
-      rental_escalation:'20%',
+      rental_deposit: 25000,
+      rental_escalation: '20%',
       set_notification_type: notification_type_value,
       is_active: 1,
       lease_expire: toggle_lease_expire,
@@ -154,6 +155,7 @@ export default AddLeaseDetails = props => {
       rent_payment_reminder: payment_reminder_value,
       late_rental_reminder: rental_reminder_value,
     };
+    console.log(lease_Data, 'lease_Data///////');
     axios
       .post(add_Lease_url, lease_Data)
       .then(response => {
@@ -161,6 +163,7 @@ export default AddLeaseDetails = props => {
         if (response?.data?.success === true) {
           alert(response?.data?.message);
           handlePopUp();
+          setIsLoading(false);
         } else {
           alert(response?.data?.message);
           setIsLoading(false);
@@ -384,7 +387,7 @@ export default AddLeaseDetails = props => {
     return (
       <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
         <View style={AddLeaseDetailsStyle.itemView}>
-          {item.lookup_key === lease_term_value ? (
+          {item.lookup_key === lease_term_value.toString ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
               name={'checkcircle'}
@@ -592,7 +595,9 @@ export default AddLeaseDetails = props => {
             />
           </View>
           <View style={AddLeaseDetailsStyle.probtn}>
-            <Text style={AddLeaseDetailsStyle.Protext}>Pro rata first payment*</Text>
+            <Text style={AddLeaseDetailsStyle.Protext}>
+              Pro rata first payment*
+            </Text>
             <Text style={AddLeaseDetailsStyle.Protext1}>Pro rata amount</Text>
           </View>
           <View style={AddLeaseDetailsStyle.Twobtn}>
@@ -624,7 +629,7 @@ export default AddLeaseDetails = props => {
               />
             </View>
           </View>
-          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor}/>
+          <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           <View>
             <View
               style={{flexDirection: 'row', justifyContent: 'space-between'}}>

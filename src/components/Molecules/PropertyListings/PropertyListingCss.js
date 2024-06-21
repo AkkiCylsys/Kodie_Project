@@ -95,11 +95,9 @@ export const PropertyListingCss = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
   },
   bottomModal_container: {
-    // borderWidth: 0.5,
-
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal:10,paddingVertical:15
-    // elevation: 10,
   },
+  
 });

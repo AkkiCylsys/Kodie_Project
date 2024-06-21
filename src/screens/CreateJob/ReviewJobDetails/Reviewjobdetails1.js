@@ -130,7 +130,7 @@ console.log("F_job_id....",F_job_id)
       <View style={{marginBottom: 50}}>
         <RowTexts
           leftText={'Name'}
-          rightText={`${jobDetailsData.first_name} ${jobDetailsData.last_name}`}
+          rightText={`${jobDetailsData.first_name || ""} ${jobDetailsData.last_name || ""}`}
         />
         <RowTexts
           leftText={'Location'}
@@ -160,7 +160,7 @@ console.log("F_job_id....",F_job_id)
         <RowTexts leftText={'How often'} rightText={jobDetailsData.how_often} />
         <RowTexts
           leftText={'Budget range'}
-          rightText={`${jobDetailsData.job_min_budget} - ${jobDetailsData.job_max_budget}`}
+          rightText={`${jobDetailsData.job_min_budget || ""} - ${jobDetailsData.job_max_budget || ""}`}
         />
         <RowTexts leftText={'Payment'} rightText={jobDetailsData.payment_by} />
         {/* This is hide for now client requirement. */}

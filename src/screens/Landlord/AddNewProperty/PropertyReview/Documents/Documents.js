@@ -267,7 +267,7 @@ export default Documents = props => {
   // Api intrigation ......
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
-    const getDocument_url = url + `tanant_details/get/documentby/${property_id}`;
+    const getDocument_url = url + `get/document/${property_id}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
     axios

@@ -8,7 +8,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
-import Modal from 'react-native-modal';
+// import Modal from 'react-native-modal';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import DividerIcon from '../../Atoms/Devider/DividerIcon';
 import BottomModalData from '../BottomModal/BottomModalData';
@@ -97,7 +97,6 @@ const PropertyListing = props => {
           'Property Deleted',
           response?.data?.message || 'The property was deleted successfully.',
         );
-        // get_Vacant_Details();
         props.get_Vacant_Details();
         refRBSheet.current?.close();
         setIsLoading(false);

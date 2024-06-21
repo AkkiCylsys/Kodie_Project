@@ -27,7 +27,8 @@ import EditDocumentsModal from '../../../../components/Molecules/EditDocumentsMo
 import RNFetchBlob from 'rn-fetch-blob';
 import {Config} from '../../../../Config';
 import Share from 'react-native-share';
-import FileViewer from 'react-native-file-viewer'
+import FileViewer from 'react-native-file-viewer';
+import {useIsFocused} from '@react-navigation/native';
 
 const JobDocumentDetails = props => {
   const refRBSheet = useRef();
@@ -42,6 +43,7 @@ const JobDocumentDetails = props => {
   const [filePath, setFilePath] = useState('');
   const [jobDocByModulename, setJobDocByModulename] = useState([]);
   const file = selectFile[0];
+  const isVisible = useIsFocused();
   //   alert(folderId);
   // alert(moduleName);
   // alert(JOB_ID);
@@ -50,7 +52,7 @@ const JobDocumentDetails = props => {
 
   useEffect(() => {
     getUploadedDocumentsByModule();
-  }, []);
+  }, [isVisible]);
   // share doc....
   const shareDocFile = async () => {
     setTimeout(() => {
@@ -156,7 +158,7 @@ const JobDocumentDetails = props => {
       });
       console.log('API Response uploadDocument:', response.data);
 
-      if (response?.data?.success === true) {
+      if (response?.data?.status === true) {
         alert(response?.data?.message);
         // props.navigation.pop();
         getUploadedDocumentsByModule();

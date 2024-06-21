@@ -304,6 +304,7 @@ const ProfileDocumentDetails = props => {
         console.log('API Response getDocumentsByModule:', response.data);
         if (response?.data?.status == true) {
           setDocumentdataByModulename(response?.data?.data);
+          getUploadedDocumentsByModule();
         }
       })
       .catch(error => {
