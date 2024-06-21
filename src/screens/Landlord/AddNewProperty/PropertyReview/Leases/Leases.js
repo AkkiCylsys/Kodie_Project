@@ -93,10 +93,10 @@ export default Leases = props => {
         console.error('API failed lease_summary', error);
         setIsLoading(false);
         // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
+    // .finally(() => {
+    //   setIsLoading(false);
+    // });
   };
   const get_retal_receipt = () => {
     const url = Config.BASE_URL;
