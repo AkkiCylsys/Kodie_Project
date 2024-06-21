@@ -57,11 +57,13 @@ const VacantModal = (props) => {
           color={_COLORS.Kodie_GreenColor}
         />
       ),
-      navigateTo: 'PropertyReview',
+      navigateTo: 'PropertyReviewDetails',
       params: {
         propertyid: propertyId,
         DocTab: 'DocTab',
         propertyListing: 'propertyListing',
+        propertyView: 'propertyView',
+
       },
     },
     {

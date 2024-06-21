@@ -97,6 +97,7 @@ export const NoticesStyle = StyleSheet.create({
     marginTop: 10,
     // width:'100%',
     marginHorizontal: 16,
+    marginBottom:8
   },
   dateDayview: {
     alignItems: 'center',
@@ -126,6 +127,7 @@ export const NoticesStyle = StyleSheet.create({
     paddingVertical: 5,
     borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
     // padding: 15,
+    
   },
   bindview: {
     flexDirection: 'row',

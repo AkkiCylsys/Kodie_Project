@@ -66,6 +66,7 @@ const GuestSelectionContent = ({
           onFocus={() => {
             refRBSheet.current.open();
           }}
+          placeholderTextColor={_COLORS.Kodie_BlackColor}
         />
       </View>
 

@@ -103,7 +103,7 @@ const PropertyModal = props => {
         style={PropertyModalStyle.container}
         onPress={() => {
           if (item.id === '1') {
-            navigation.navigate('PropertyReview', {
+            navigation.navigate('PropertyReviewDetails', {
               propertyid: propertyId,
               propertyView: 'propertyView',
             });
@@ -114,7 +114,7 @@ const PropertyModal = props => {
             Alert.alert('Alert!', "Coming soon");
           }
           if (item.id === '3') {
-            navigation.navigate('PropertyReview', {
+            navigation.navigate('PropertyReviewDetails', {
               propertyid: propertyId,
               propertyView: 'propertyView',
               DocTab: 'DocTab',

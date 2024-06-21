@@ -262,6 +262,8 @@ export default PropertyReview = props => {
       console.log('additionalFeaturesid....', additionalFeatures_id);
       const is_additionalFeaturesid = additionalFeatures_id.split(',');
       setAddtionalFeaturesID(is_additionalFeaturesid);
+    console.log("deependra furnished..",is_additionalFeaturesid);
+
     } catch (error) {
       console.error('Error:', error);
       setIsLoading(false);
@@ -508,7 +510,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {addtionalFeaturesID[1] ? 'Yes' : 'No'}
+                      {addtionalFeaturesID[1] == "Furnished" ? 'Yes' : 'No'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
