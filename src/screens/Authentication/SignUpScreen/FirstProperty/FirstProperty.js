@@ -579,10 +579,11 @@ export default FirstProperty = props => {
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log('signupAccountApiActionCreator..', res.data);
     if (res.data.status === true) {
+     
+      // registerUser();
+      props.navigation.navigate('DrawerNavigatorLeftMenu');
       setIsLoading(false);
 
-      registerUser();
-      props.navigation.navigate('DrawerNavigatorLeftMenu');
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
     } else {
@@ -620,7 +621,7 @@ export default FirstProperty = props => {
       await AsyncStorage.setItem('USERKEY', String(user_key));
 
       console.log('User data saved to AsyncStorage');
-      props.navigation.navigate('DrawerNavigatorLeftMenu');
+      // props.navigation.navigate('DrawerNavigatorLeftMenu');
 
       // Call handleSaveSignup function
       // handleSaveSignup();
@@ -760,11 +761,11 @@ export default FirstProperty = props => {
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log('signupAccountApiActionCreator..', res.data);
     if (res.data.status === true) {
-      setIsLoading(false);
-      // props.navigation.navigate('DrawerNavigatorLeftMenu');
-      registerUserfill();
+      props.navigation.navigate('DrawerNavigatorLeftMenu');
+      // registerUserfill();
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
+      setIsLoading(false);
     } else {
       setIsLoading(false);
       console.error('Save Account Details error:', res?.data?.error);
