@@ -127,7 +127,7 @@ export default PropertyFeature = props => {
   const DetailsData = async () => {
     const detailData = {
       property_id:
-        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData) && addPropertySecondStepData?.length
           ? addPropertySecondStepData
           : propertyid,
     };

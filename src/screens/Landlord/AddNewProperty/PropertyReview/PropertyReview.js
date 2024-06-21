@@ -153,7 +153,7 @@ export default PropertyReview = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Outdoor Area' ? (
+      ) : item === 'Outdoor area' ? (
         <MaterialCommunityIcons
           name="table-chair"
           size={25}
@@ -181,21 +181,21 @@ export default PropertyReview = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Built in Robes' ? (
+      ) : item === 'Built in robes' ? (
         <MaterialCommunityIcons
           name="cupboard"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Air Conditioning' ? (
+      ) : item === 'Air conditioning' ? (
         <MaterialCommunityIcons
           name="air-conditioner"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Solar Panels' ? (
+      ) : item === 'Solar panels' ? (
         <MaterialCommunityIcons
           name="solar-panel"
           size={25}
@@ -209,7 +209,7 @@ export default PropertyReview = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'High Energy Efficiency' ? (
+      ) : item === 'High energy efficiency' ? (
         <SimpleLineIcons
           name="energy"
           size={25}

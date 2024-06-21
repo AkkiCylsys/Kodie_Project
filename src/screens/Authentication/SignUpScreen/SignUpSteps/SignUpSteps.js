@@ -628,7 +628,7 @@ const SignUpSteps = props => {
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
         <TopHeader
           MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
           onPressLeftButton={() => {

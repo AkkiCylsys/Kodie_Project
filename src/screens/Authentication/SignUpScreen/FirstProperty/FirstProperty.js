@@ -1,5 +1,5 @@
 //ScreenNo:13
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,6 @@ import {
   TextInput,
   Image,
   Platform,
-  PermissionsAndroid,
   SafeAreaView,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -23,18 +22,14 @@ import {_COLORS, FONTFAMILY} from '../../../../Themes';
 import {LABEL_STYLES, IMAGES} from '../../../../Themes';
 import {Dropdown} from 'react-native-element-dropdown';
 import MultiSelect from 'react-native-multiple-select';
-
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {Config} from '../../../../Config';
 import axios from 'axios';
 import Geocoder from 'react-native-geocoding';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
-import Geolocation from 'react-native-geolocation-service';
-//import Geolocation from '@react-native-community/geolocation';
 import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useDispatch, useSelector} from 'react-redux';
@@ -42,7 +37,6 @@ import {useFocusEffect} from '@react-navigation/native';
 import {BackHandler} from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import {signupAccountApiActionCreator} from '../../../../redux/Actions/Authentication/AuthenticationApiCreator';
-import mime from 'mime';
 import uuid from 'react-native-uuid';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
@@ -72,33 +66,15 @@ const firstIndicatorSignUpStepStyle = {
 const getStepIndicatorIconConfig = ({position, stepStatus}) => {
   const iconConfig = {
     name: 'feed',
-    // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
     color: stepStatus === 'finished' ? '#ffffff' : '#ffffff',
     size: 20,
   };
   iconConfig.name = stepStatus === 'finished' ? 'check' : null;
   return iconConfig;
 };
-const renderDataItem = item => {
-  return (
-    <View style={FirstPropertyStyle.item}>
-      <Text style={FirstPropertyStyle.selectedTextStyle}>
-        {item.features_name}
-      </Text>
-    </View>
-  );
-};
 export default FirstProperty = props => {
-  const signUp_account_response = useSelector(
-    state => state?.authenticationReducer?.data,
-  );
   const deviceId = DeviceInfo.getDeviceId();
   const deviceType = DeviceInfo.getDeviceType();
-  console.log('Device ID:', deviceId);
-  console.log('Device type:', deviceType);
-
-  // console.log('signUp_account_response.....', signUp_account_response);
-
   let firstName = props?.route?.params?.firstName;
   let lastName = props?.route?.params?.lastName;
   let mobileNumber = props?.route?.params?.mobileNumber;
@@ -133,39 +109,6 @@ export default FirstProperty = props => {
   let individualAddress = props?.route?.params?.individualAddress;
   let country_code = props?.route?.params?.country_code;
   let company_address = props?.route?.params?.company_address;
-
-  console.log('firstname..', firstName);
-  console.log('lastName..', lastName);
-  console.log('mobileNumber..first', mobileNumber);
-  console.log('physicalAddress..', physicalAddress);
-  console.log('referral..', referral);
-  console.log('selectManageProperty..', selectManageProperty);
-  console.log('selectedServiceKeysString..', selectedServiceKeysString);
-  console.log('kodieHelpValue..', kodieHelpValue);
-  console.log('ImageName_data..', ImageName);
-  console.log('email..', email);
-  console.log('country..', country);
-  console.log('state..', state);
-  console.log('city..', city);
-  console.log('p_latitude..', p_latitude);
-  console.log('p_longitude..', p_longitude);
-  console.log('user_key..', user_key);
-  console.log('country_code.....first', country_code);
-  console.log('company_address', company_address);
-  console.log(
-    'run_your_business..',
-    run_your_business,
-    BusinessNumber,
-    IndividualWebSide,
-    companyName,
-    CompanyselectJobType,
-    IndividualservicesValue,
-    IndividualselectJobType,
-    Individualp_longitude,
-    Individualp_latitude,
-    CompanyWebSide,
-    CompanyservicesValue,
-  );
   const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyLocation, setPropertyLocation] = useState('');
@@ -199,7 +142,6 @@ export default FirstProperty = props => {
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
     useState(67);
   const P_addressParts = propertyLocation.split(', ');
-  console.log('P_addressParts', P_addressParts);
   const p_city = P_addressParts[P_addressParts.length - 2]?.trim() ?? '';
   const P_state = P_addressParts[2]?.trim() ?? '';
   const p_country = P_addressParts[P_addressParts.length - 1]?.trim() ?? '';
@@ -261,11 +203,6 @@ export default FirstProperty = props => {
       };
     }, [IsMap, IsSearch]),
   );
-
-  console.log('p_country:', p_country);
-  console.log('P_state:', P_state);
-  console.log('p_city:', p_city);
-
   const AllCountsData = [
     {Bedrooms: CountBedroom},
     {Bathrooms: CountBathroom},
@@ -307,7 +244,6 @@ export default FirstProperty = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  //dropDown render Item....
   const propertyType_render = item => {
     return (
       <View
@@ -409,13 +345,11 @@ export default FirstProperty = props => {
           setProperty_Data(response?.data?.lookup_details);
         } else {
           console.error('property_type_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('property_type error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -438,13 +372,11 @@ export default FirstProperty = props => {
           );
         } else {
           console.error('additional_features_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('additional_features error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -516,11 +448,6 @@ export default FirstProperty = props => {
         },
       };
     }
-    console.log('newData...', JSON.stringify(newData));
-    console.log('ImageName?.path...', JSON.stringify(ImageName?.path));
-    console.log('ImageName?.mime...', JSON.stringify(ImageName?.mime));
-    console.log('image...', JSON.stringify(newData?.image));
-
     const formData = new FormData();
     formData.append('user', newData?.user_key);
     formData.append('first_name', newData?.firstName);
@@ -577,19 +504,15 @@ export default FirstProperty = props => {
     console.log('formData.....', JSON.stringify(formData));
 
     const res = await dispatch(signupAccountApiActionCreator(formData));
-    console.log('signupAccountApiActionCreator..', res.data);
-    if (res.data.status === true) {
-     
-      // registerUser();
-      props.navigation.navigate('DrawerNavigatorLeftMenu');
+    console.log('signupAccountApiActionCreator..', res?.data);
+    if (res?.data?.status === true) {
       setIsLoading(false);
-
+      props.navigation.navigate('DrawerNavigatorLeftMenu');
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
     } else {
       setIsLoading(false);
       console.error('Save Account Details error:', res?.data?.error);
-      // alert(res.data.error);
     }
   };
   const registerUser = async () => {
@@ -611,20 +534,13 @@ export default FirstProperty = props => {
           user_key: String(user_key),
           image: downloadURL,
         });
-      console.log('User created');
-
-      // Save data to AsyncStorage
       await AsyncStorage.setItem('USERID', userId);
       await AsyncStorage.setItem('NAME', firstName);
       await AsyncStorage.setItem('EMAIL', email);
       await AsyncStorage.setItem('MOBILE', mobileNumber);
       await AsyncStorage.setItem('USERKEY', String(user_key));
-
       console.log('User data saved to AsyncStorage');
-      // props.navigation.navigate('DrawerNavigatorLeftMenu');
-
-      // Call handleSaveSignup function
-      // handleSaveSignup();
+      props.navigation.navigate('DrawerNavigatorLeftMenu');
     } catch (error) {
       console.error('Error creating user:', error);
       setIsLoading(false);
@@ -698,11 +614,6 @@ export default FirstProperty = props => {
         },
       };
     }
-    console.log('newData...', JSON.stringify(newData));
-    console.log('ImageName?.path...', JSON.stringify(ImageName?.path));
-    console.log('ImageName?.mime...', JSON.stringify(ImageName?.mime));
-    console.log('image...', JSON.stringify(newData?.image));
-
     const formData = new FormData();
     formData.append('user', newData?.user_key);
     formData.append('first_name', newData?.firstName);
@@ -761,15 +672,13 @@ export default FirstProperty = props => {
     const res = await dispatch(signupAccountApiActionCreator(formData));
     console.log('signupAccountApiActionCreator..', res.data);
     if (res.data.status === true) {
+      setIsLoading(false);
       props.navigation.navigate('DrawerNavigatorLeftMenu');
-      // registerUserfill();
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
-      setIsLoading(false);
     } else {
       setIsLoading(false);
       console.error('Save Account Details error:', res?.data?.error);
-      // alert(res.data.error);
     }
   };
   const registerUserfill = async () => {
@@ -790,25 +699,13 @@ export default FirstProperty = props => {
           userId: userId,
           user_key: String(user_key),
           image: downloadURL,
-          // image: {
-          //   uri: ImageName?.path || '',
-          //   type: ImageName?.mime || 'image/jpeg',
-          //   name: String(ImageName?.path.split('/').pop()),
-          // },
         });
-      console.log('User created');
-
-      // Save data to AsyncStorage
       await AsyncStorage.setItem('USERID', userId);
       await AsyncStorage.setItem('NAME', firstName);
       await AsyncStorage.setItem('EMAIL', email);
       await AsyncStorage.setItem('MOBILE', mobileNumber);
       await AsyncStorage.setItem('USERKEY', String(user_key));
-
-      console.log('User data saved to AsyncStorage');
       props.navigation.navigate('DrawerNavigatorLeftMenu');
-      // Call handleSaveSignup function
-      // handleSaveSignupfill();
     } catch (error) {
       console.error('Error creating user:', error);
       setIsLoading(false);
@@ -829,7 +726,6 @@ export default FirstProperty = props => {
     setlatitude(Region.latitude);
     setlongitude(Region.longitude);
     getAddress(Region.latitude, Region.longitude);
-    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
@@ -866,10 +762,7 @@ export default FirstProperty = props => {
   const onSelectedItemsChange = selectedItems => {
     setAdditionalFeaturesKeyValue(selectedItems);
   };
-
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
-  console.log(PreFriedly, 'pre friedly............');
-  console.log('additionalfeatureskeyvalue', additionalfeatureskeyvalue);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
       <KeyboardAvoidingView
@@ -926,16 +819,6 @@ export default FirstProperty = props => {
                   placeholderTextColor={_COLORS.Kodie_BlackColor}
                 />
               </View>
-              {/* <TouchableOpacity
-              style={FirstPropertyStyle.c_locationBtn}
-              onPress={() => {}}
-            >
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity> */}
               <TouchableOpacity
                 style={FirstPropertyStyle.BtnContainer}
                 onPress={ConfirmAddress}>
@@ -950,7 +833,6 @@ export default FirstProperty = props => {
                 setlongitude(details.geometry.location.lng);
                 setIsSearch(false);
                 setIsMap(true);
-                // setPropertyLocation(details.formatted_address);
                 setCurrentLocation(details.formatted_address);
               }}
             />
@@ -1024,25 +906,6 @@ export default FirstProperty = props => {
                     <Text style={LABEL_STYLES._texinputLabel}>
                       Property type
                     </Text>
-                    {/* <Dropdown
-                    style={FirstPropertyStyle.dropdown}
-                    placeholderStyle={[
-                      FirstPropertyStyle.placeholderStyle,
-                      {color: _COLORS.Kodie_LightGrayColor},
-                    ]}
-                    selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                    inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                    iconStyle={FirstPropertyStyle.iconStyle}
-                    data={property_Data}
-                    maxHeight={300}
-                    labelField="lookup_description"
-                    valueField="lookup_key"
-                    placeholder="Please select property type"
-                    value={property_value}
-                    onChange={item => {
-                      setProperty_value(item.lookup_key);
-                    }}
-                  /> */}
                     <Dropdown
                       style={FirstPropertyStyle.dropdown}
                       placeholderStyle={[
@@ -1107,14 +970,12 @@ export default FirstProperty = props => {
                           </TouchableOpacity>
                         </TouchableOpacity>
                       </View>
-
                       <View style={FirstPropertyStyle.mainfeaturesview}>
                         <View style={FirstPropertyStyle.key_feature_Text_view}>
                           <Text style={FirstPropertyStyle.key_feature_Text}>
                             {'Bathrooms'}
                           </Text>
                         </View>
-
                         <TouchableOpacity
                           style={FirstPropertyStyle.plus_minusview}>
                           <TouchableOpacity
@@ -1280,7 +1141,6 @@ export default FirstProperty = props => {
                           onPressLeftButton={() => {
                             setSelectedButtonFurnished(false);
                             setSelectedButtonFurnishedId(67);
-                            // alert(selectedButtonId)
                           }}
                           RightButtonText={'Unfurnished'}
                           RightButtonbackgroundColor={
@@ -1301,7 +1161,6 @@ export default FirstProperty = props => {
                           onPressRightButton={() => {
                             setSelectedButtonFurnished(true);
                             setSelectedButtonFurnishedId(68);
-                            // alert(selectedButtonId)
                           }}
                         />
                       </View>
@@ -1350,7 +1209,6 @@ export default FirstProperty = props => {
                           onPressRightButton={() => {
                             setSelectedButtonDeposit(true);
                             setSelectedButtonDepositId(71);
-                            // alert(selectedButtonId)
                           }}
                         />
                       </View>
@@ -1364,61 +1222,6 @@ export default FirstProperty = props => {
                         ]}>
                         Additional key features
                       </Text>
-                      {/* <MultiSelect
-                        style={FirstPropertyStyle.dropdown}
-                        placeholderStyle={[
-                          FirstPropertyStyle.placeholderStyle,
-                          {color: _COLORS.Kodie_LightGrayColor},
-                        ]}
-                        activeColor={_COLORS.Kodie_MidLightGreenColor}
-                        selectedTextStyle={FirstPropertyStyle.selectedTextStyle}
-                        inputSearchStyle={FirstPropertyStyle.inputSearchStyle}
-                        iconStyle={FirstPropertyStyle.iconStyle}
-                        data={additionalfeatureskey}
-                        labelField="features_name"
-                        valueField="paf_key"
-                        placeholder="Select additional features"
-                        value={additionalfeatureskeyvalue}
-                        search
-                        searchPlaceholder="Search..."
-                        onChange={item => {
-                          setAdditionalFeaturesKeyValue(item);
-                          // alert(item);
-                        }}
-                        renderItem={renderDataItem}
-                        renderSelectedItem={(item, unSelect) => (
-                          <TouchableOpacity
-                            onPress={() => unSelect && unSelect(item)}>
-                            <View style={FirstPropertyStyle.selectedStyle}>
-                              <Text
-                                style={FirstPropertyStyle.textSelectedStyle}>
-                                {item.features_name}
-                              </Text>
-                              <AntDesign color="white" name="close" size={17} />
-                            </View>
-                          </TouchableOpacity>
-                        )}
-                      /> */}
-
-                      {/* <View
-                        style={{
-                          flex: 1,
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          borderWidth: 1,
-                          height: 50,
-                          borderColor: _COLORS.Kodie_GrayColor,
-                          marginTop: 10,
-                          borderRadius: 8,
-                        }}>
-                        <TouchableOpacity>
-                          <AntDesign
-                            name="search1"
-                            color={_COLORS.Kodie_BlackColor}
-                            size={20}
-                          />
-                        </TouchableOpacity>
-                        <View style={{flex: 1}}> */}
                       <MultiSelect
                         hideDropdown
                         items={additionalfeatureskey}
@@ -1469,9 +1272,6 @@ export default FirstProperty = props => {
                             : 'Cancel'
                         }
                       />
-                      {/* </View>
-                       
-                      </View> */}
                     </View>
                   </View>
                 </View>
@@ -1482,7 +1282,6 @@ export default FirstProperty = props => {
                     Text_Color={_COLORS.Kodie_WhiteColor}
                     onPress={() => {
                       handleSaveSignup();
-                      // registerUser();
                     }}
                   />
                 </View>
@@ -1494,7 +1293,6 @@ export default FirstProperty = props => {
                     backgroundColor={_COLORS.Kodie_WhiteColor}
                     onPress={() => {
                       handleSaveSignupfill();
-                      // registerUserfill();
                     }}
                   />
                 </View>

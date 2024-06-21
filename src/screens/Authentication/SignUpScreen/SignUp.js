@@ -11,6 +11,7 @@ import {
   Keyboard,
   Platform,
   Alert,
+  SafeAreaView
 } from 'react-native';
 import {BANNERS} from '../../../Themes/CommonVectors/Images';
 import {SignUpStyles} from './SignUpStyle';
@@ -234,10 +235,11 @@ export default SignUp = props => {
   };
 
   return (
+    <SafeAreaView style={{flex: 1}}>
     <KeyboardAvoidingView
       style={SignUpStyles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView keyboardShouldPersistTaps="handled">
+      <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps="handled">
         <View style={SignUpStyles.logoContainer}>
           <Image source={BANNERS.BannerFirst} style={SignUpStyles.logo} />
         </View>
@@ -435,5 +437,6 @@ export default SignUp = props => {
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
     </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };

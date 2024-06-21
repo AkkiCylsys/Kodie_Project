@@ -549,11 +549,13 @@ export default PropertyImages = props => {
               _ButtonText={'Next'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               onPress={() => {
-                if (editMode || property_id) {
+                if (editMode) {
                   handleSaveUpdateImage();
-                  alert('sdv');
+                  // alert('sdv');
                 } else {
                   handleSaveImage();
+                  // alert('sdee');
+
                 }
               }}
               disabled={isLoading ? true : false}
