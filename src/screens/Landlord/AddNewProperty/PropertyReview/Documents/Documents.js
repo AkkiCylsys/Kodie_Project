@@ -36,7 +36,7 @@ export default Documents = props => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    getAllDocuments();
+    getAllDocuments()
     getUploadedDocumentsByModule('Property');
     getUploadedDocumentsByModule('Lease');
     getUploadedDocumentsByModule('Tenant');
@@ -110,13 +110,14 @@ export default Documents = props => {
     const dataToSend = {
       fileId: fileKey,
     };
-    // const url = "https://e3.cylsys.com/api/v1/deletedocument";
     const url = Config.BASE_URL;
     const delete_url = url + 'deletedocument';
     console.log('url...', delete_url);
     setIsLoading(true);
     axios
-      .patch(delete_url, dataToSend)
+      .delete(delete_url, {
+        data: dataToSend, 
+      })
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
@@ -223,8 +224,7 @@ export default Documents = props => {
             style={DocumentsStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
-              setFilePath(item.PDUM_FILE_PATH);
-              console.log('file Path..', item.PDUM_FILE_PATH);
+              setFilePath(item.image_paths);
               setFileKey(item.PDUM_FILE_KEY);
             }}>
             <Entypo
@@ -265,12 +265,12 @@ export default Documents = props => {
   };
 
   // Api intrigation ......
-  const getAllDocuments = () => {
+  const getAllDocuments =async () => {
     const url = Config.BASE_URL;
     const getDocument_url = url + `get/document/${property_id}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
-    axios
+   await axios
       .get(getDocument_url)
       .then(response => {
         console.log('API Response getDocuments:', response?.data);

@@ -109,14 +109,16 @@ export default JobDocuments = props => {
     console.log('url...', delete_url);
     setIsLoading(true);
     axios
-      .patch(delete_url, dataToSend)
+      .delete(delete_url, {
+        data: dataToSend,
+      })
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
           alert(res?.data?.message);
+          getAllDocuments();
           closeModal();
         }
-        getAllDocuments();
       })
       .catch(error => {
         console.error('Error deleting:', error);
@@ -280,7 +282,7 @@ export default JobDocuments = props => {
             style={JobDocumentsStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
-              setFilePath(item.PDUM_FILE_PATH);
+              setFilePath(item.image_paths);
               setFileKey(item.PDUM_FILE_KEY);
             }}>
             <Entypo
@@ -331,13 +333,13 @@ export default JobDocuments = props => {
   };
 
   // Api intrigation ......
-  const getAllDocuments = () => {
+  const getAllDocuments =async () => {
     const url = Config.BASE_URL;
     const getDocument_url = url + `get/document/${JOB_ID}`;
     // const getDocument_url = url + `tanant_details/get/document/${15}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
-    axios
+   await axios
       .get(getDocument_url)
       .then(response => {
         console.log('API Response getDocuments:', response.data);

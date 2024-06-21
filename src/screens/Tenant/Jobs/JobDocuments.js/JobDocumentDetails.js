@@ -113,7 +113,9 @@ const JobDocumentDetails = props => {
     console.log('url...', delete_url);
     setIsLoading(true);
     axios
-      .patch(delete_url, dataToSend)
+      .delete(delete_url, {
+        data: dataToSend,
+      })
       .then(res => {
         console.log('res......', res);
         if (res?.data?.success === true) {
@@ -327,7 +329,7 @@ const JobDocumentDetails = props => {
             style={JobDocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
-              setFilePath(item.PDUM_FILE_PATH);
+              setFilePath(item.image_paths);
               console.log('fileKey....', fileKey);
               setFileKey(item.PDUM_FILE_KEY);
               console.log('file keu for delete...', item.PDUM_FILE_KEY);
@@ -430,39 +432,6 @@ const JobDocumentDetails = props => {
         style={{
           marginHorizontal: 16,
         }}>
-        {/* <View style={{}}>
-         <CustomSingleButton
-           leftImage={IMAGES.uploadIcon}
-           isLeftImage={true}
-           borderColor={_COLORS.Kodie_TransparentColor}
-           _ButtonText={"Select Documents"}
-           backgroundColor={_COLORS.Kodie_lightGreenColor}
-           onPress={() => {
-             selectDoc();
-           }}
-           disabled={isLoading ? true : false}
-         />
-       </View> */}
-        {/* <View>
-         <Text style={JobDocumentDetailStyle.property_doc_text}>
-           {folderId == 1
-             ? "Property documents"
-             : folderId == 2
-             ? "Lease documents"
-             : folderId == 3
-             ? "Tenant documents"
-             : "Property documents"}
-         </Text>
-       </View> */}
-
-        {/* <FlatList
-         data={selectFile}
-         scrollEnabled
-         showsHorizontalScrollIndicator={false}
-         contentContainerStyle={{}}
-         keyExtractor={(item, index) => index}
-         renderItem={DocumentsData}
-       /> */}
         <View>
           <Text style={JobDocumentDetailStyle.upload_doc_text}>
             {'Upload documents'}

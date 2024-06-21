@@ -17,7 +17,6 @@ const data = [
   {
     id: '1',
     Data: 'Take photo',
-    // Img: IMAGES.camera,
     Img: (
       <Feather
         name="camera"
@@ -31,7 +30,6 @@ const data = [
   {
     id: '2',
     Data: 'Choose photo from library',
-    // Img: IMAGES.gallery,
     Img: (
       <MaterialIcons
         name="add-photo-alternate"
@@ -42,11 +40,6 @@ const data = [
       />
     ),
   },
-  // {
-  //   id: "3",
-  //   Data: "Choose file from folder",
-  //   Img: IMAGES.Upload,
-  // },
 ];
 
 const UploadMultipleImage = props => {
@@ -68,6 +61,7 @@ const UploadMultipleImage = props => {
       );
     }
   };
+  
   const UploadImageContent = ({item, index}) => {
     return (
       <>
@@ -85,23 +79,15 @@ const UploadMultipleImage = props => {
                 .then(image => {
                   // console.log("image....", image);
                   setImage(image);
-                  // setMultipleImage(image);
-                  // // props?.ImageName(image?.path)
-                  // props?.multipleImage(image);
                   setMultipleImage(Array.isArray(image) ? image : [image]); // Ensure it's an array
                   props?.multipleImage(Array.isArray(image) ? image : [image]);
                   console.log('ImagePath..', multipleImage);
                 })
-                // .then(() => {
-                //   setMultipleImage(Array.isArray(image) ? image : [image]);
-                //   handleImageSelection(image);
-                // })
                 .catch(err => {
                   console.log('err...', err);
                 });
             }
             if (item.id === '2') {
-              // Navigate to Choose photo from library when Contact Us is clicked.......
               ImagePicker.openPicker({
                 width: 300,
                 height: 400,
@@ -110,18 +96,6 @@ const UploadMultipleImage = props => {
                 multiple: true,
               })
                 .then(image => {
-                  // console.log(image);
-                  // setImage(image);
-                  // setImageName(JSON.stringify(image?.path));
-                  // props?.ImageName(image?.path);
-                  // console.log("ImagePath..", imageName);
-
-                  // if (image.length > 0) {
-                  //   setImage(image);
-                  //   setMultipleImage(image);
-                  //   props.multipleImage(image);
-                  //   console.log('Navigating to view photos with', image);
-                  // }
                   handleImageSelection(image);
                 })
                 .catch(err => {
@@ -131,7 +105,6 @@ const UploadMultipleImage = props => {
           }}>
           {console.log(typeof item.Img, item.Img)}
           <TouchableOpacity style={UploadImageStyle.Bottomcontainer}>
-            {/* <Image source={item.Img} style={UploadImageStyle.Icons} /> */}
             <View style={UploadImageStyle.IconView}>{item.Img}</View>
           </TouchableOpacity>
           <Text style={UploadImageStyle.text}>{item.Data}</Text>
@@ -140,7 +113,6 @@ const UploadMultipleImage = props => {
     );
   };
   const navigateToViewPhotos = image => {
-    // Implement your navigation logic here
     setImage(image);
     setMultipleImage(image?.path);
     props?.multipleImage(image);

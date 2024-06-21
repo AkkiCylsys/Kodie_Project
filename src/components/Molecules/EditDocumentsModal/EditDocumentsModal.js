@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {IMAGES} from '../../../Themes';
 import {useNavigation} from '@react-navigation/native';
@@ -84,7 +85,23 @@ export default EditDocumentsModal = props => {
           props.onpress();
         }
         if (item.id === '2') {
-          deleteHandler(fileKey);
+          Alert.alert(
+            'Confirm Deletion',
+            'Are you sure you want to delete this document?',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => console.log('Deletion cancelled'),
+                style: 'cancel',
+              },
+              {
+                text: 'OK',
+                onPress: () => deleteHandler(fileKey),
+              },
+            ],
+            {cancelable: false},
+          );
+          // deleteHandler(fileKey);
         }
         if (item.id === '3') {
           downloadFile();

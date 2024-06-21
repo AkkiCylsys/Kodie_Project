@@ -7,16 +7,6 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 const UploadImageBoxes = (props) => {
   return (
     <View style={UploadImageBoxesStyle.mainContainer}>
-      {/* <View style={UploadImageBoxesStyle.heading_View}>
-        <Text style={UploadImageBoxesStyle.heading_Text}>
-          {props.heading_Text}
-        </Text>
-        <MaterialCommunityIcons
-          name="information"
-          size={25}
-          color={_COLORS.Kodie_GrayColor}
-        />
-      </View> */}
       <TouchableOpacity
         style={UploadImageBoxesStyle.container}
         onPress={props.onPress}

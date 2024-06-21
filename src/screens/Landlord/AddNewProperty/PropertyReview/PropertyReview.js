@@ -39,8 +39,8 @@ import {
   useNavigation,
   useNavigationState,
 } from '@react-navigation/native';
-import { clearPropertyData } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
-import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import {clearPropertyData} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 import {useDispatch, useSelector} from 'react-redux';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReview = props => {
@@ -52,7 +52,7 @@ export default PropertyReview = props => {
   const dispatch = useDispatch();
   const property_id = props?.route?.params?.property_id;
   const propertyListing = props?.route?.params?.propertyListing;
-  console.log("propertyListing..",propertyListing)
+  console.log('propertyListing..', propertyListing);
   const propertyid = props?.route?.params?.propertyid;
   const propertyView = props?.route?.params?.propertyView;
   const MultiImageName = props?.route?.params?.MultiImageName;
@@ -508,7 +508,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {addtionalFeaturesID[1] ? 'No' : 'Yes'}
+                      {addtionalFeaturesID[1] ? 'Yes' : 'No'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
@@ -796,7 +796,7 @@ export default PropertyReview = props => {
               </View>
               {propertyView ? null : (
                 <>
-                  <View style={PropertyReviewStyle.btnView}>
+                  {/* <View style={PropertyReviewStyle.btnView}>
                     <CustomSingleButton
                       _ButtonText={
                         editMode
@@ -807,7 +807,7 @@ export default PropertyReview = props => {
                       backgroundColor={_COLORS.Kodie_WhiteColor}
                       disabled={isLoading ? true : false}
                     />
-                  </View>
+                  </View> */}
                   <TouchableOpacity
                     style={PropertyReviewStyle.goBack_View}
                     onPress={() => {
@@ -833,7 +833,8 @@ export default PropertyReview = props => {
         return <Leases property_id={propertyid} />;
 
       case 'Tab3':
-        return <Expenses property_id={propertyid} />;
+        return;
+        <Expenses property_id={propertyid} />;
       case 'Tab4':
         return (
           <Documents
