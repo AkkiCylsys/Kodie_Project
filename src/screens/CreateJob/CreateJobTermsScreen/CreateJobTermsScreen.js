@@ -231,7 +231,7 @@ export default CreateJobTermsScreen = props => {
 
   const handleValidatiomtionCreateJob = () => {
     if (selectedDate.trim() === '') {
-      setSelectedDateError('Payment date is required!');
+      setSelectedDateError('Select date is required!');
     } else {
       handleCreateJob();
     }
