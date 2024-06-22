@@ -94,8 +94,8 @@ const AddNotices = props => {
   const UploadrbSheetRef = useRef();
 
   const handleFileUpload = (fileUri, type) => {
-    console.log('fileUri, type', fileUri, type);
-    setUploadedFiles(prevFiles => [...prevFiles, {uri: fileUri, type}]);
+    const file = { uri: fileUri, type, id: new Date().getTime().toString() };
+    setUploadedFiles(prevFiles => [...prevFiles, file]);
     UploadrbSheetRef.current.close();
   };
   console.log('uploadedFiles', JSON.stringify(uploadedFiles));
@@ -513,26 +513,25 @@ const AddNotices = props => {
     formData.append('notification_type', notification_type_value);
     formData.append('custom', selectedCustemValue);
     formData.append('notes', notes);
-    // formData.append("file_name", fileName);
-    uploadedFiles.forEach((file, index) => {
-      if (Array.isArray(file.uri)) {
-        // Handle nested uri case
-        file.uri.forEach((nestedFile, nestedIndex) => {
-          formData.append('file_name', {
-            uri: nestedFile.uri,
-            name: nestedFile.name,
-            type: nestedFile.type,
-          });
-        });
-      } else {
-        formData.append('file_name', {
-          uri: file.uri,
-          name: file.name || `file_${index}`,
-          type: file.type || 'application/octet-stream',
-        });
-      }
+    const pdfFile = uploadedFiles.find(file => file.type === 'document');
+    if (pdfFile) {
+      formData.append('file_name', {
+        uri: pdfFile.uri[0].uri,  // Assuming PDF file is accessed correctly
+        name: pdfFile.uri[0].name,
+        type: 'application/pdf',
+      });
+    }
+  
+    // Append image files if exist
+    const imageFiles = uploadedFiles.filter(file => file.type === 'image');
+    imageFiles.forEach((file, index) => {
+      formData.append('file_name', {
+        uri: file.uri,
+        name: file.name ,
+        type: 'image/jpeg',  // Adjust MIME type as necessary
+      });
     });
-    console.log('formData', formData);
+    console.log('FormData content:', formData);
     const url = Config.BASE_URL;
     const createNoticeReminder_url = url + 'create_notices_reminder';
     setIsLoading(true);
@@ -590,6 +589,7 @@ const AddNotices = props => {
           setNotes(response?.data?.data.notes);
           setSelectedCustemValue(response?.data?.data?.custom);
           setNoticeAllData(response?.data?.data);
+          setUploadedFiles(response?.data?.data?.image_path)
         } else {
           // alert(response?.data?.message);
           setIsLoading(false);
@@ -624,26 +624,25 @@ const AddNotices = props => {
     formData.append('notification_type', notification_type_value);
     formData.append('custom', selectedCustemValue);
     formData.append('notes', notes);
-    // formData.append("file_name", fileName);
-    uploadedFiles.forEach((file, index) => {
-      if (Array.isArray(file.uri)) {
-        // Handle nested uri case
-        file.uri.forEach((nestedFile, nestedIndex) => {
-          formData.append('file_name', {
-            uri: nestedFile.uri,
-            name: nestedFile.name,
-            type: nestedFile.type,
-          });
-        });
-      } else {
-        formData.append('file_name', {
-          uri: file.uri,
-          name: file.name || `file_${index}`,
-          type: file.type || 'application/octet-stream',
-        });
-      }
+    const pdfFile = uploadedFiles.find(file => file.type === 'document');
+    if (pdfFile) {
+      formData.append('file_name', {
+        uri: pdfFile.uri[0].uri,  // Assuming PDF file is accessed correctly
+        name: pdfFile.uri[0].name,
+        type: 'application/pdf',
+      });
+    }
+  
+    // Append image files if exist
+    const imageFiles = uploadedFiles.filter(file => file.type === 'image');
+    imageFiles.forEach((file, index) => {
+      formData.append('file_name', {
+        uri: file.uri,
+        name: file.name || `image_${index}`,
+        type: 'image/jpeg',  // Adjust MIME type as necessary
+      });
     });
-    console.log('formData', formData);
+    console.log('formData vdsfs',formData);
     const url = Config.BASE_URL;
     const update_createNoticeReminder_url = url + 'update_notices_reminder';
     setIsLoading(true);
@@ -773,18 +772,19 @@ const AddNotices = props => {
     );
   };
 
-  const handleRemoveFile = index => {
-    setUploadedFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
-  };
-  const isImage = file => {
-    if (typeof file === 'string') {
-      return (
-        file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png')
-      );
-    }
-    return file.type === 'image';
+  
+  const handleRemoveFile = id => {
+    setUploadedFiles(prevFiles => prevFiles.filter(file => file.id !== id));
   };
 
+  const isImage = file => {
+    if (typeof file === 'string') {
+      return file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png');
+    }
+    return file.type.startsWith('image');
+  };
+
+  // Function to check if a file is a PDF document
   const isDocument = file => {
     if (typeof file === 'string') {
       return file.endsWith('.pdf');
@@ -792,6 +792,7 @@ const AddNotices = props => {
     return file.type === 'document';
   };
 
+  // Filter images and PDF documents
   const images = uploadedFiles.filter(isImage);
   const documents = uploadedFiles.filter(isDocument);
 
@@ -810,7 +811,7 @@ const AddNotices = props => {
             right: 5,
             zIndex: 1,
           }}
-          onPress={() => handleRemoveFile(index)}>
+          onPress={() => handleRemoveFile(item?.id)}>
           <View
             style={{
               width: 20,
@@ -830,9 +831,8 @@ const AddNotices = props => {
   };
   const renderDocumentItem = ({item, index}) => {
     const uri = typeof item === 'string' ? item : item.uri[0].uri;
-    const name =
-      typeof item === 'string' ? item.split('/').pop() : item.uri[0].name;
-    return (
+    const name = typeof item === 'string' ? item.split('/').pop() : item.uri[0].name;
+     return (
       <View style={AddNewNoticeStyle.container}>
         <View style={AddNewNoticeStyle.pdfInfo}>
           <FontAwesome
@@ -847,7 +847,7 @@ const AddNotices = props => {
         </View>
         <TouchableOpacity
           style={AddNewNoticeStyle.crossIcon}
-          onPress={() => handleRemoveFile(index)}>
+          onPress={() => handleRemoveFile(item?.id)}>
           <AntDesign name="close" size={20} color={_COLORS.Kodie_GrayColor} />
         </TouchableOpacity>
       </View>

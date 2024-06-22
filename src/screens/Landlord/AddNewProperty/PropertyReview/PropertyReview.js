@@ -379,6 +379,10 @@ export default PropertyReview = props => {
       </View>
     );
   };
+  const parkingSpaceValueObj = Detail.find(item => "Parking Space" in item);
+  const parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj["Parking Space"] : null;
+  
+  console.log("Parking Space value:", parkingSpaceValue);
   const goBack = () => {
     props.navigation.pop();
   };
@@ -672,7 +676,7 @@ export default PropertyReview = props => {
                       LABEL_STYLES.commontext,
                       {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
-                    {Detail[0]?.Bedrooms}
+                    {parkingSpaceValue}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
