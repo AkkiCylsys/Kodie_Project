@@ -10,6 +10,7 @@ import {
   ScrollView,
   FlatList,
   Image,
+  Keyboard,
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {request, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -88,7 +89,8 @@ const AddNotices = props => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [notes, setNotes] = useState('');
   const [NoticeAllData, setNoticeAllData] = useState(null);
-
+const propertyView = props.route.params?.propertyView;
+console.log(propertyView);
   const refRBSheet1 = useRef();
   const refRBSheet = useRef();
   const UploadrbSheetRef = useRef();
@@ -232,6 +234,7 @@ const AddNotices = props => {
         return [...prevSelectedUsers, user];
       }
     });
+    // Keyboard.dismiss()
   };
 
   const handleClosePopup = () => {
@@ -515,6 +518,8 @@ const AddNotices = props => {
     formData.append('notes', notes);
     const pdfFile = uploadedFiles.find(file => file.type === 'document');
     if (pdfFile) {
+      console.log("pdfFile.....",pdfFile);
+
       formData.append('file_name', {
         uri: pdfFile.uri[0].uri,  // Assuming PDF file is accessed correctly
         name: pdfFile.uri[0].name,
@@ -525,9 +530,11 @@ const AddNotices = props => {
     // Append image files if exist
     const imageFiles = uploadedFiles.filter(file => file.type === 'image');
     imageFiles.forEach((file, index) => {
+      console.log("file.....",file.uri);
+      const filename = file?.uri.split('/').pop();
       formData.append('file_name', {
         uri: file.uri,
-        name: file.name ,
+        name: filename ,
         type: 'image/jpeg',  // Adjust MIME type as necessary
       });
     });
@@ -626,6 +633,8 @@ const AddNotices = props => {
     formData.append('notes', notes);
     const pdfFile = uploadedFiles.find(file => file.type === 'document');
     if (pdfFile) {
+      console.log("pdfFile.....",pdfFile);
+
       formData.append('file_name', {
         uri: pdfFile.uri[0].uri,  // Assuming PDF file is accessed correctly
         name: pdfFile.uri[0].name,
@@ -636,9 +645,11 @@ const AddNotices = props => {
     // Append image files if exist
     const imageFiles = uploadedFiles.filter(file => file.type === 'image');
     imageFiles.forEach((file, index) => {
+      console.log("pdfFile.....",file);
+      const filename = file?.uri.split('/').pop();
       formData.append('file_name', {
         uri: file.uri,
-        name: file.name || `image_${index}`,
+        name: filename,
         type: 'image/jpeg',  // Adjust MIME type as necessary
       });
     });
@@ -861,7 +872,9 @@ const AddNotices = props => {
           IsMap
             ? setIsMap(false)
             : IsSearch
-            ? setIsSearch(false)
+            ? setIsSearch(false) : 
+            propertyView ?
+             props?.navigation?.navigate('Properties')
             : _goBack(props)
         }
         MiddleText={

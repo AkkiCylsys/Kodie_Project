@@ -1,11 +1,11 @@
-import React, {useRef} from 'react';
-import {View, Text, Image, FlatList} from 'react-native';
-import {BottomModalDataStyle} from './BottomModalDataStyle';
-import {IMAGES, _COLORS} from '../../../Themes';
-import {TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import React, { useRef } from 'react';
+import { View, Text, Image, FlatList } from 'react-native';
+import { BottomModalDataStyle } from './BottomModalDataStyle';
+import { IMAGES, _COLORS } from '../../../Themes';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {PropertyListCSS} from '../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS';
+import { PropertyListCSS } from '../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -23,7 +23,7 @@ const data = [
         name="preview"
         size={25}
         color={_COLORS.Kodie_GreenColor}
-        style={{alignSelf: 'center'}}
+        style={{ alignSelf: 'center' }}
       />
     ),
   },
@@ -128,7 +128,7 @@ const BottomModalData = props => {
     );
     // alert(propertyDelId);
   };
-  const BottomData = ({item, index}) => {
+  const BottomData = ({ item, index }) => {
     return (
       <>
         {props?.isDeletePropertyClicked ? (
@@ -174,7 +174,10 @@ const BottomModalData = props => {
                 });
                 handleCloseModal();
               }
-
+              if (item.id === '3') {
+                navigation.navigate('AddNotices', { propertyView: 'propertyView' });
+                handleCloseModal();
+              }
               if (item.id === '5') {
                 // navigation.navigate("ViewPropertyDetails");
                 handleDeleteProperty();

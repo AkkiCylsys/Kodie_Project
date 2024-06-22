@@ -103,9 +103,9 @@ const PropertyModal = props => {
         style={PropertyModalStyle.container}
         onPress={() => {
           if (item.id === '1') {
-            navigation.navigate('PropertyReviewDetails', {
+            navigation.navigate('PropertyReview', {
               propertyid: propertyId,
-              propertyView: 'propertyView',
+              propertyListing: 'propertyListing',
             });
             handleCloseModal();
           }
@@ -114,9 +114,9 @@ const PropertyModal = props => {
             Alert.alert('Alert!', "Coming soon");
           }
           if (item.id === '3') {
-            navigation.navigate('PropertyReviewDetails', {
+            navigation.navigate('PropertyReview', {
               propertyid: propertyId,
-              propertyView: 'propertyView',
+              propertyListing: 'propertyListing',
               DocTab: 'DocTab',
             });
             handleCloseModal();

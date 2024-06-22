@@ -27,8 +27,8 @@ const VacantModal = (props) => {
       navigateTo: 'PropertyReviewDetails',
       params: {
         propertyid: propertyId,
-        propertyListing: 'propertyListing',
-        propertyView: 'propertyView',
+        propertyVacantListing: 'propertyVacantListing',
+        // propertyView: 'propertyView',
       },
     },
     {
@@ -61,9 +61,7 @@ const VacantModal = (props) => {
       params: {
         propertyid: propertyId,
         DocTab: 'DocTab',
-        propertyListing: 'propertyListing',
-        propertyView: 'propertyView',
-
+        propertyVacantListing: 'propertyVacantListing',
       },
     },
     {
