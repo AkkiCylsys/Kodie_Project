@@ -329,7 +329,7 @@ const JobDocumentDetails = props => {
             style={JobDocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
-              setFilePath(item.image_paths);
+              setFilePath(item.image_paths[0]);
               console.log('fileKey....', fileKey);
               setFileKey(item.PDUM_FILE_KEY);
               console.log('file keu for delete...', item.PDUM_FILE_KEY);

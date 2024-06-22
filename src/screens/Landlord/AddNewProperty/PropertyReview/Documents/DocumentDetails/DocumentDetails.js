@@ -313,7 +313,7 @@ const DocumentDetails = props => {
             style={DocumentDetailStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
-              setFilePath(item.image_paths);
+              setFilePath(item.image_paths[0]);
               setFileKey(item.PDUM_FILE_KEY);
               console.log('fileKey....', fileKey);
             }}>

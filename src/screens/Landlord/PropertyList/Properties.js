@@ -73,20 +73,31 @@ const Properties = props => {
               props.navigation.navigate('PropertyReviewDetails', {
                 propertyid: propertyid,
                 propertyView: 'propertyView',
-                backProperty:"backProperty"
+                backProperty: 'backProperty',
               });
             }}
           />
         );
       case 'Tab2':
         return (
-          <PropertyList2
-            SearchButton={() => {
-              props.navigation.navigate('SearchResult');
-            }}
-            setOpenMap={handleOpenMap}
-            closeMap={openMap}
-          />
+          <>
+            {/* <PropertyList2
+              SearchButton={() => {
+                props.navigation.navigate('SearchResult');
+              }}
+              setOpenMap={handleOpenMap}
+              closeMap={openMap}
+            /> */}
+            {Alert.alert('Search for rentals', 'Coming soon', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  console.log('OK Pressed');
+                  setActiveTab('Tab1');
+                },
+              },
+            ])}
+          </>
         );
       case 'Tab3':
         return (
