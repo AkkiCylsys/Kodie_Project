@@ -1,6 +1,6 @@
-import { StyleSheet } from "react-native";
-import { View, Text } from "react-native";
-import { FONTFAMILY, _COLORS } from "../../../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {View, Text} from 'react-native';
+import {FONTFAMILY, _COLORS} from '../../../../../../Themes';
 
 export const AddLeaseDetailsStyle = StyleSheet.create({
   mainContainer: {
@@ -14,30 +14,30 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     fontSize: 20,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf: "center"
+    alignSelf: 'center',
   },
   heading_View: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 16,
     marginHorizontal: 18,
   },
   card: {
-    width: "100%",
+    width: '100%',
     backgroundColor: _COLORS.Kodie_TransparentColor,
     borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     padding: 20,
-    marginBottom: 250,
+    marginBottom: 150,
   },
   inputContainer: {
     marginBottom: 15,
   },
   datePickerView: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
 
   dropdown: {
@@ -82,16 +82,16 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 10,
   },
-  notification_view: { flexDirection: "row", justifyContent: "space-between" },
+  notification_view: {flexDirection: 'row', justifyContent: 'space-between'},
   notification_text: {
     // borderWidth:1,
     flex: 1,
-    alignSelf: "center",
+    alignSelf: 'center',
     fontSize: 13,
   },
   toggle_con: {
@@ -100,7 +100,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 20,
     padding: 5,
     marginTop: 18,
-    alignItems: "center",
+    alignItems: 'center',
   },
   toggle_circle: {
     width: 10,
@@ -110,18 +110,18 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   exp_reminder_text: {
     flex: 1,
     // marginLeft: 10,
-    alignSelf: "center",
+    alignSelf: 'center',
     color: _COLORS.Kodie_BlackColor,
     fontSize: 11.2,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   reminder_m_view: {
     flex: 0.9,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   reminder_dropdown: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   reminder_dropdown_sty: {
     flex: 1,
@@ -130,21 +130,21 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   before: {
     // flex:1,
     marginLeft: 5,
-    alignSelf: "center",
+    alignSelf: 'center',
     color: _COLORS.Kodie_BlackColor,
     fontSize: 10,
     fontFamily: FONTFAMILY.K_Regular,
   },
   after: {
     marginLeft: 14,
-    alignSelf: "center",
+    alignSelf: 'center',
     color: _COLORS.Kodie_BlackColor,
     fontSize: 10,
     fontFamily: FONTFAMILY.K_Regular,
   },
   ButtonView: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     marginRight: 10,
     marginTop: 20,
   },
@@ -163,20 +163,20 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
   },
   text: {
     color: _COLORS.Kodie_WhiteColor,
-    alignSelf: "center",
+    alignSelf: 'center',
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   itemView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 10,
     marginHorizontal: 10,
   },
   textItem: {
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   down_Arrow_icon: {
     borderWidth: 1,
@@ -185,5 +185,95 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
   },
- 
+  probtn: {
+    flexDirection: 'row',
+    flex: 1,
+    marginTop: 15,
+    justifyContent: 'space-between',
+  },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  amountInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  amountInput: {
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    width: 150,
+  },
+  Protext: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    letterSpacing: 0.3,
+  },
+  Protext1: {
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    letterSpacing: 0.3,
+    marginRight: 20,
+  },
+  Twobtn: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // marginBottom: 20,
+  },
+  btn_main_view: {
+    padding: 4,
+    width: 159,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 10,
+    marginRight: 20,
+  },
+  no_view: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    flex: 1,
+    marginRight: 10,
+  },
+  yes_view: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderRadius: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
+    flex: 1,
+  },
+  selectedBtn: {
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+  },
+  no_text: {
+    color: _COLORS.Kodie_BlackColor,
+    textAlign: 'center',
+  },
+  yes_text: {
+    color: _COLORS.Kodie_BlackColor,
+    textAlign: 'center',
+  },
+  Amountinput: {
+    height: 39,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Medium,
+    marginTop: 12,
+    paddingHorizontal: 40,
+  },
 });

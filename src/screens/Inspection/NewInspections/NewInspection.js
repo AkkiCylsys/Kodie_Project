@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  SafeAreaView,
 } from "react-native";
 import { NewInspectionStyle } from "./NewInspectionStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -130,7 +131,7 @@ export default NewInspection = (props) => {
     );
   };
   return (
-    <View style={NewInspectionStyle.mainContainer}>
+    <SafeAreaView style={NewInspectionStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Inspections"}
@@ -194,6 +195,6 @@ export default NewInspection = (props) => {
           renderItem={Inspection_render}
         />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };

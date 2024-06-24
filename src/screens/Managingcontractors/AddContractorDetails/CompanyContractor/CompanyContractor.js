@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,99 +6,99 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-} from "react-native";
-import { _COLORS, LABEL_STYLES } from "../../../../Themes";
-import { useDispatch, useSelector } from "react-redux";
-import { CommonLoader } from "../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import axios from "axios";
-import { Config } from "../../../../Config";
-import { Dropdown } from "react-native-element-dropdown";
-import ServicesBox from "../../../../components/Molecules/ServicesBox/ServicesBox";
-import Fontisto from "react-native-vector-icons/Fontisto";
+} from 'react-native';
+import {_COLORS, LABEL_STYLES} from '../../../../Themes';
+import {useDispatch, useSelector} from 'react-redux';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import axios from 'axios';
+import {Config} from '../../../../Config';
+import {Dropdown} from 'react-native-element-dropdown';
+import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBox';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
-import { CompanyContractorStyle } from "./CompanyContractorStyle";
+import {CompanyContractorStyle} from './CompanyContractorStyle';
 
-export default CompanyContractor = (props) => {
-  const loginData = useSelector((state) => state.authenticationReducer.data);
+export default CompanyContractor = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
   const property_id = props.property_id;
-  const [companyName, setCompanyName] = useState("");
-  const [companyNameError, setCompanyNameError] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
+  const [companyName, setCompanyName] = useState('');
+  const [companyNameError, setCompanyNameError] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [PhoneNumber, setPhoneNumber] = useState("");
-  const [PhoneNumberError, setPhoneNumberError] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [mobileNumberError, setMobileNumberError] = useState("");
-  const [note, setNote] = useState("");
-  const [website, setWebsite] = useState("");
-  const [selectedOption, setSelectedOption] = useState("Save");
-  const [companyResponse, setCompanyResponse] = useState("");
+  const [PhoneNumber, setPhoneNumber] = useState('');
+  const [PhoneNumberError, setPhoneNumberError] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [mobileNumberError, setMobileNumberError] = useState('');
+  const [note, setNote] = useState('');
+  const [website, setWebsite] = useState('');
+  const [selectedOption, setSelectedOption] = useState('Save');
+  const [companyResponse, setCompanyResponse] = useState('');
   const [jobTypeData, setJobTypeData] = useState([]);
   const [servicesData, setServicesData] = useState([]);
   const [servicesValue, setservicesValue] = useState([]);
   const [selectJobType, setSelectJobType] = useState(166);
-  const [selectJobTypeid, setSelectJobTypeid] = useState("");
+  const [selectJobTypeid, setSelectJobTypeid] = useState('');
   const [isClick, setIsClick] = useState(null);
-  const handleOptionClick = (option) => {
+  const handleOptionClick = option => {
     setSelectedOption(option);
   };
 
   //... Regex signup email validation
-  const validateCompanyEmail = (email) => {
+  const validateCompanyEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
   // Validation for First Name....
-  const validateCompanyName = (text) => {
-    if (text === "") {
-      setCompanyNameError("Organisation name is required");
+  const validateCompanyName = text => {
+    if (text === '') {
+      setCompanyNameError('Organisation name is required!');
     } else if (!/^[A-Za-z]+$/.test(text)) {
       setCompanyNameError(
-        "Organisation name should contain only alphabetic characters"
+        'Organisation name should contain only alphabetic characters',
       );
     } else {
-      setCompanyNameError("");
+      setCompanyNameError('');
     }
     setCompanyName(text);
   };
 
   // Email validation define here....
-  const handleCompanyEmail = (text) => {
+  const handleCompanyEmail = text => {
     setEmail(text);
-    if (text.trim() === "") {
-      setEmailError("Email is required");
+    if (text.trim() === '') {
+      setEmailError('Email is required!');
     } else if (!validateCompanyEmail(text)) {
       setEmailError(
-        "Hold on, this email appears to be invalid. Please enter a valid email address."
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
-      setEmailError("");
+      setEmailError('');
     }
   };
 
   // Validation for Phone Number
-  const validatePhoneNumber = (text) => {
+  const validatePhoneNumber = text => {
     const mobileReg = /^\d{6}$/;
-    if (text === "") {
-      setPhoneNumberError("Phone number is required");
+    if (text === '') {
+      setPhoneNumberError('Phone number is required!');
     } else if (!mobileReg.test(text)) {
-      setPhoneNumberError("Invalid phone number format");
+      setPhoneNumberError('Invalid phone number format');
     } else {
-      setPhoneNumberError("");
+      setPhoneNumberError('');
     }
     setPhoneNumber(text);
   };
   // Validation for Phone Number
-  const validateMobileNumber = (text) => {
+  const validateMobileNumber = text => {
     const mobileReg = /^\d{10}$/;
-    if (text === "") {
-      setMobileNumberError("Phone number is required");
+    if (text === '') {
+      setMobileNumberError('Phone number is required!');
     } else if (!mobileReg.test(text)) {
-      setMobileNumberError("Invalid phone number format");
+      setMobileNumberError('Invalid phone number format');
     } else {
-      setMobileNumberError("");
+      setMobileNumberError('');
     }
     setMobileNumber(text);
   };
@@ -114,8 +114,8 @@ export default CompanyContractor = (props) => {
       User_USP_KEY: loginData.Login_details.user_id,
       User_Account_UDP_KEY: loginData.Login_details.user_account_id,
       UACP_IS_COMPANY: 1,
-      FIRST_NAME: "",
-      LAST_NAME: "",
+      FIRST_NAME: '',
+      LAST_NAME: '',
       ORGANISATION_NAME: companyName,
       CATEGORY_CONTRACTOR: selectJobTypeid,
       CONTRACTOR_PROFESSION: servicesValue,
@@ -126,78 +126,81 @@ export default CompanyContractor = (props) => {
       NOTES: note,
     };
     const url = Config.BASE_URL;
-    const CompanyUrl = url + "invitecontractor_details";
-    console.log("Request URL:", CompanyUrl);
+    const CompanyUrl = url + 'invitecontractor_details';
+    console.log('Request URL:', CompanyUrl);
     setIsLoading(true);
 
     axios
       .post(CompanyUrl, CompanyDetailsData)
-      .then((response) => {
-        setCompanyResponse(response.data);
-        console.log("Company Details_data response", response.data);
-        if (response.data.success === true || response.data.error == false) {
+      .then(response => {
+        setCompanyResponse(response?.data);
+        console.log('Company Details_data response', response?.data);
+        if (
+          response?.data?.success === true ||
+          response?.data?.error == false
+        ) {
           // props.navigation.navigate("LeaseSummary");
-          alert(response.data.message);
+          alert(response?.data?.message);
           // setIsLoading(false);
-          setCompanyName("");
-          setEmail("");
-          setPhoneNumber("");
-          setMobileNumber("");
-          setNote("");
-          website("");
-          selectJobTypeid("");
+          setCompanyName('');
+          setEmail('');
+          setPhoneNumber('');
+          setMobileNumber('');
+          setNote('');
+          website('');
+          selectJobTypeid('');
           props.onCloseSave();
           setIsLoading(false);
         } else {
-          setEmailError(response.data.message);
-          console.error("CompanyDetail_error:", response.data.error);
-          alert(response.data.error);
+          setEmailError(response?.data?.message);
+          console.error('CompanyDetail_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("CompanyDetail error...:", error);
+      .catch(error => {
+        console.error('CompanyDetail error...:', error);
         setIsLoading(false);
       });
   };
 
   const handleSaveBtn = () => {
-    if (companyName.trim() === "") {
-      setCompanyNameError("Organisation name is required.");
-    } else if (email.trim() == "") {
-      setEmailError("Email is required.");
+    if (companyName.trim() === '') {
+      setCompanyNameError('Organisation name is required!');
+    } else if (email.trim() == '') {
+      setEmailError('Email is required!');
     } else {
       Companyhandle();
     }
   };
-  const jobType_render = ({ item }) => {
+  const jobType_render = ({item}) => {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         <ServicesBox
           images
           Services_Name={item.lookup_description}
           // Services_Icon={item.lookup_key ? IMAGES.cleaner : IMAGES.lightCleaner}
           Services_Icon={
             item.lookup_key === 166
-              ? "cleaning-services"
+              ? 'cleaning-services'
               : item.lookup_key === 167
-              ? "mower-bag"
+              ? 'mower-bag'
               : item.lookup_key === 168
-              ? "forklift"
+              ? 'forklift'
               : item.lookup_key === 169
-              ? "tools"
-              : "MaterialIcons"
+              ? 'tools'
+              : 'MaterialIcons'
           }
           iconLibrary={
             item.lookup_key === 166
-              ? "MaterialIcons"
+              ? 'MaterialIcons'
               : item.lookup_key === 167
-              ? "MaterialCommunityIcons"
+              ? 'MaterialCommunityIcons'
               : item.lookup_key === 168
-              ? "MaterialCommunityIcons"
+              ? 'MaterialCommunityIcons'
               : item.lookup_key === 169
-              ? "Entypo"
-              : "MaterialIcons"
+              ? 'Entypo'
+              : 'MaterialIcons'
           }
           iconColor={
             isClick === item.lookup_key
@@ -241,91 +244,91 @@ export default CompanyContractor = (props) => {
   }, [selectJobType]);
   const handleJobType = () => {
     const propertyData = {
-      P_PARENT_CODE: "JOB_TYPE",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'JOB_TYPE',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
+    const propertyType = url + 'lookup_details';
+    console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
-      .then((response) => {
-        console.log("JobType...", response.data);
-        if (response.data.status === true) {
+      .then(response => {
+        console.log('JobType...', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log("JobTypeData....", response.data.lookup_details);
-          setJobTypeData(response.data.lookup_details);
+          console.log('JobTypeData....', response?.data?.lookup_details);
+          setJobTypeData(response?.data?.lookup_details);
         } else {
-          console.error("JobType_error:", response.data.error);
-          alert(response.data.error);
+          console.error('JobType_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("JobType error:", error);
+      .catch(error => {
+        console.error('JobType error:', error);
         alert(error);
         setIsLoading(false);
       });
   };
-  const handleBoxPress = (lookup_key) => {
+  const handleBoxPress = lookup_key => {
     setIsClick(lookup_key);
     setSelectJobTypeid(lookup_key);
     // alert(selectJobTypeid);
     // alert(isClick)
   };
-  const handleServices = (selectJobType) => {
+  const handleServices = selectJobType => {
     const propertyData = {
       P_PARENT_CODE:
         selectJobType === 166
-          ? "HOME_CLEANING"
+          ? 'HOME_CLEANING'
           : selectJobType === 167
-          ? "OUTDOOR_CLEANING"
+          ? 'OUTDOOR_CLEANING'
           : selectJobType === 168
-          ? "HEAVY_LIFTING"
+          ? 'HEAVY_LIFTING'
           : selectJobType === 169
-          ? "FIXING_AND_MAINTENANCE"
+          ? 'FIXING_AND_MAINTENANCE'
           : null,
-      P_TYPE: "OPTION",
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
+    const propertyType = url + 'lookup_details';
+    console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, propertyData)
-      .then((response) => {
-        console.log("ServicesType...", response.data);
-        if (response.data.status === true) {
+      .then(response => {
+        console.log('ServicesType...', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log("ServicesTypeData....", response.data.lookup_details);
-          setServicesData(response.data.lookup_details);
+          console.log('ServicesTypeData....', response?.data?.lookup_details);
+          setServicesData(response?.data?.lookup_details);
         } else {
-          console.error("Services_error:", response.data.error);
-          alert(response.data.error);
+          console.error('Services_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("Services error:", error);
+      .catch(error => {
+        console.error('Services error:', error);
         // alert(error);
         setIsLoading(false);
       });
   };
-  const lookingServices_render = (item) => {
+  const lookingServices_render = item => {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, height: "100%" }}>
+      <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
         <View style={CompanyContractorStyle.itemView}>
           {item.lookup_key === servicesValue ? (
             <Fontisto
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-active"}
+              name={'radio-btn-active'}
               size={20}
             />
           ) : (
             <Fontisto
               color={_COLORS.Kodie_GreenColor}
-              name={"radio-btn-passive"}
+              name={'radio-btn-passive'}
               size={20}
             />
           )}
@@ -341,7 +344,7 @@ export default CompanyContractor = (props) => {
       <ScrollView>
         <View style={CompanyContractorStyle.card}>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Organisation name*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Organisation name*'}</Text>
             <TextInput
               style={CompanyContractorStyle.input}
               value={companyName}
@@ -356,19 +359,19 @@ export default CompanyContractor = (props) => {
 
           <View style={CompanyContractorStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {"Select the category of contractor*"}
+              {'Select the category of contractor*'}
             </Text>
 
             <FlatList
               data={jobTypeData}
-              keyExtractor={(item) => item.lookup_key.toString()}
+              keyExtractor={item => item.lookup_key.toString()}
               renderItem={jobType_render}
               numColumns={2}
             />
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {"Select the contractor’s profession*"}
+              {'Select the contractor’s profession*'}
             </Text>
             <Dropdown
               style={CompanyContractorStyle.dropdown}
@@ -384,7 +387,7 @@ export default CompanyContractor = (props) => {
               placeholder="Select item"
               searchPlaceholder="Search..."
               value={servicesValue}
-              onChange={(item) => {
+              onChange={item => {
                 setservicesValue(item.lookup_key);
                 // alert(item.lookup_key)
               }}
@@ -392,7 +395,7 @@ export default CompanyContractor = (props) => {
             />
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Email*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Email*'}</Text>
             <TextInput
               style={CompanyContractorStyle.input}
               value={email}
@@ -400,11 +403,12 @@ export default CompanyContractor = (props) => {
               onBlur={() => handleCompanyEmail(email)}
               placeholder="Enter company’s email address"
               placeholderTextColor="#999"
+              keyboardType="email-address"
             />
             <Text style={CompanyContractorStyle.errorText}>{emailError}</Text>
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Phone number"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Phone number'}</Text>
             <TextInput
               style={CompanyContractorStyle.input}
               value={PhoneNumber}
@@ -420,7 +424,7 @@ export default CompanyContractor = (props) => {
             </Text>
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Mobile number"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Mobile number'}</Text>
             <TextInput
               style={CompanyContractorStyle.input}
               value={mobileNumber}
@@ -436,7 +440,7 @@ export default CompanyContractor = (props) => {
             </Text>
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Website"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
             <TextInput
               style={[CompanyContractorStyle.input]}
               value={website}
@@ -446,16 +450,16 @@ export default CompanyContractor = (props) => {
             />
           </View>
           <View style={CompanyContractorStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
             <TextInput
-              style={[CompanyContractorStyle.input, { height: 100 }]}
+              style={[CompanyContractorStyle.input, {height: 100}]}
               value={note}
               onChangeText={setNote}
               placeholder="Enter any notes about your tenant"
               placeholderTextColor="#999"
               multiline
               numberOfLines={5}
-              textAlignVertical={"top"}
+              textAlignVertical={'top'}
             />
           </View>
           <View style={CompanyContractorStyle.ButtonView}>
@@ -465,27 +469,25 @@ export default CompanyContractor = (props) => {
                 CompanyContractorStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Cancel"
+                    selectedOption == 'Cancel'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("Cancel");
-              }}
-            >
+                handleOptionClick('Cancel');
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
                     color:
-                      selectedOption == "Cancel"
+                      selectedOption == 'Cancel'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {"Cancel"}
+                ]}>
+                {'Cancel'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -493,7 +495,7 @@ export default CompanyContractor = (props) => {
                 CompanyContractorStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Save"
+                    selectedOption == 'Save'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_WhiteColor,
                 },
@@ -501,21 +503,19 @@ export default CompanyContractor = (props) => {
               onPress={() => {
                 handleSaveBtn();
                 // handleOptionClick("Save");
-              }}
-            >
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   CompanyContractorStyle.text,
                   {
                     color:
-                      selectedOption == "Save"
+                      selectedOption == 'Save'
                         ? _COLORS.Kodie_WhiteColor
                         : null,
                   },
-                ]}
-              >
-                {" Save"}
+                ]}>
+                {' Save'}
               </Text>
             </TouchableOpacity>
           </View>

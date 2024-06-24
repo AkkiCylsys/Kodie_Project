@@ -15,10 +15,11 @@ export const GoogleMapStyle = StyleSheet.create({
   },
 
   tooltipText: {
+    flex:1,
     textAlign: "center",
     fontSize: 15,
     alignSelf: "center",
-    width: "30%",
+    width: "100%",
     marginVertical: "4%",
     marginRight: "3%",
     color: "black",
@@ -29,5 +30,20 @@ export const GoogleMapStyle = StyleSheet.create({
     alignSelf: "center",
     marginTop: 100,
     backgroundColor: "red",
+  },
+  myLocationIcon: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    backgroundColor: 'white', // Example styling for the icon
+    borderRadius: 20,
+    padding: 8,
+  },
+  compass: {
+    position: 'relative',
+    left: '50%',
+    marginLeft: -20, 
+    marginTop: -20,
+    top:"50%"
   },
 });

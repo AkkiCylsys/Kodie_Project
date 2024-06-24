@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { _COLORS,FONTFAMILY,IMAGES } from "../../../Themes";
-import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
 
 export const StorageSettingsStyle = StyleSheet.create({
     maincontainer:{

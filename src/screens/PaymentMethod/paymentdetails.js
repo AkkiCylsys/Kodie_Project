@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, {useRef, useState} from 'react';
 import {
   View,
   Text,
@@ -6,23 +6,23 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-} from "react-native";
-import TopHeader from "../../components/Molecules/Header/Header";
-import { _COLORS, IMAGES } from "../../Themes";
-import PayButton from "../../components/PayButton/PayButton";
-import { paymentdetailsStyle } from "./paymentdetailsStyle";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import CustomSingleButton from "../../components/Atoms/CustomButton/CustomSingleButton";
-import ApplePay from "./ApplePay/ApplePay";
-import CreditCard from "./CreditCard/CreditCard";
-const paymentdetails = (props) => {
-  const [tabValue, setTabValue] = useState("CreditCard");
+} from 'react-native';
+import TopHeader from '../../components/Molecules/Header/Header';
+import {_COLORS, IMAGES} from '../../Themes';
+import PayButton from '../../components/PayButton/PayButton';
+import {paymentdetailsStyle} from './paymentdetailsStyle';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import CustomSingleButton from '../../components/Atoms/CustomButton/CustomSingleButton';
+import ApplePay from './ApplePay/ApplePay';
+import CreditCard from './CreditCard/CreditCard';
+const paymentdetails = props => {
+  const [tabValue, setTabValue] = useState('CreditCard');
   const checkTabs = () => {
     switch (tabValue) {
-      case "CreditCard":
+      case 'CreditCard':
         return <CreditCard />;
-      case "ApplePay":
+      case 'ApplePay':
         return <ApplePay />;
       default:
         return <CreditCard />;
@@ -31,8 +31,8 @@ const paymentdetails = (props) => {
   return (
     <View style={paymentdetailsStyle.Mainview}>
       <TopHeader
-        onPressLeftButton={() => props.navigation.navigate("PaymentMethod")}
-        MiddleText={"Enter payment details"}
+        onPressLeftButton={() => props.navigation.navigate('PaymentMethod')}
+        MiddleText={'Enter payment details'}
       />
 
       <ScrollView style={paymentdetailsStyle.scrollviewpayment}>
@@ -41,7 +41,7 @@ const paymentdetails = (props) => {
           <Text style={paymentdetailsStyle.Paymenttext}>$173.25</Text>
         </View>
         <View>
-          <Text style={{ alignSelf: "flex-end" }}>Including VAT (21%)</Text>
+          <Text style={{alignSelf: 'flex-end'}}>Including VAT (21%)</Text>
         </View>
         <View style={paymentdetailsStyle.btn_main_view}>
           <TouchableOpacity
@@ -49,15 +49,14 @@ const paymentdetails = (props) => {
               paymentdetailsStyle.person_view,
               {
                 backgroundColor:
-                  tabValue === "CreditCard"
+                  tabValue === 'CreditCard'
                     ? _COLORS.Kodie_lightGreenColor
                     : _COLORS.Kodie_LightGrayColor,
               },
             ]}
             onPress={() => {
-              setTabValue("CreditCard");
-            }}
-          >
+              setTabValue('CreditCard');
+            }}>
             <Fontisto
               name="credit-card"
               size={24}
@@ -68,13 +67,12 @@ const paymentdetails = (props) => {
                 paymentdetailsStyle.person_text,
                 {
                   color:
-                    tabValue === "CreditCard"
+                    tabValue === 'CreditCard'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_BlackColor,
                 },
-              ]}
-            >
-              {"Credit Card"}
+              ]}>
+              {'Credit Card'}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -82,29 +80,26 @@ const paymentdetails = (props) => {
               paymentdetailsStyle.person_view,
               {
                 backgroundColor:
-                  tabValue === "ApplePay"
+                  tabValue === 'ApplePay'
                     ? _COLORS.Kodie_lightGreenColor
                     : _COLORS.Kodie_LightGrayColor,
               },
             ]}
             onPress={() => {
-              setTabValue("ApplePay");
-            }}
-          >
-            <Fontisto name="apple" size={24} color={_COLORS.Kodie_BlackColor}
-            />
+              setTabValue('ApplePay');
+            }}>
+            <Fontisto name="apple" size={24} color={_COLORS.Kodie_BlackColor} />
             <Text
               style={[
                 paymentdetailsStyle.company_text,
                 {
                   color:
-                    tabValue === "ApplePay"
+                    tabValue === 'ApplePay'
                       ? _COLORS.Kodie_BlackColor
                       : _COLORS.Kodie_BlackColor,
                 },
-              ]}
-            >
-              {"Apple Pay"}
+              ]}>
+              {'Apple Pay'}
             </Text>
           </TouchableOpacity>
         </View>

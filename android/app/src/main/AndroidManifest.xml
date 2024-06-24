@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.kodie">
 
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -25,7 +25,7 @@
 
        <meta-data
           android:name="com.google.android.geo.API_KEY"
-          android:value="AIzaSyDLWZtQIx0JsQciFm7VLzSKJOS_QqjJsoA"/>
+          android:value="AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw"/>
           
       <activity
         android:name=".MainActivity"

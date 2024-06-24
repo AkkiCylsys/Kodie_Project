@@ -1,27 +1,23 @@
-import { View, Text, Image, Modal, TouchableOpacity } from "react-native";
-import React from "react";
-import { _COLORS, IMAGES, LABEL_STYLES } from "../../../Themes";
-import Entypo from "react-native-vector-icons/Entypo";
-import SearchBar from "../SearchBar/SearchBar";
-import { AddguestsComponentStyle } from "./AddguestsComponentStyle";
-const AddguestsComponent = (props) => {
-
-  const searchGuest =()=>{
-    
-  }
+import {View, Text, Image, Modal, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {_COLORS, IMAGES, LABEL_STYLES} from '../../../Themes';
+import Entypo from 'react-native-vector-icons/Entypo';
+import SearchBar from '../SearchBar/SearchBar';
+import {AddguestsComponentStyle} from './AddguestsComponentStyle';
+const AddguestsComponent = props => {
+  const searchGuest = () => {};
   return (
     <View>
       <Modal
         animationType="slide"
         transparent={true}
         visible={props.Visible}
-        onRequestClose={props.onRequestClose}
-      >
+        onRequestClose={props.onRequestClose}>
         <View style={AddguestsComponentStyle.modalContainer}>
           <View style={AddguestsComponentStyle.modalContent}>
             <View style={AddguestsComponentStyle.headingView}>
               <Text style={AddguestsComponentStyle.addguestetext}>
-                {"Add guests"}
+                {'Add guests'}
               </Text>
               <TouchableOpacity onPress={props.onRequestClose}>
                 <Entypo
@@ -31,7 +27,12 @@ const AddguestsComponent = (props) => {
                 />
               </TouchableOpacity>
             </View>
-            <SearchBar frontSearchIcon height={45} marginTop={20} searchData={searchGuest} />
+            <SearchBar
+              frontSearchIcon
+              height={45}
+              marginTop={20}
+              searchData={searchGuest}
+            />
             <View style={AddguestsComponentStyle.Imageview}>
               <View style={AddguestsComponentStyle.imagetext}>
                 <Image
@@ -95,22 +96,19 @@ const AddguestsComponent = (props) => {
                 style={[
                   AddguestsComponentStyle.closeButton,
                   AddguestsComponentStyle.closeText,
-                ]}
-              >
+                ]}>
                 <Text style={LABEL_STYLES.commontext}>cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
                   AddguestsComponentStyle.closeButton,
                   AddguestsComponentStyle.applyText,
-                ]}
-              >
+                ]}>
                 <Text
                   style={[
                     LABEL_STYLES.commontext,
                     AddguestsComponentStyle.text,
-                  ]}
-                >
+                  ]}>
                   Apply
                 </Text>
               </TouchableOpacity>

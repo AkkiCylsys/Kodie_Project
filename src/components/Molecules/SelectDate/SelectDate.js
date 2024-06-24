@@ -59,7 +59,7 @@ const SelectDate = (props) => {
   ];
 
   const renderdate = ({ item }) => (
-    <View style={SelectDateStyle.optionsview}>
+    <View style={SelectDateStyle.optionsview} key={item?.id}>
       <View style={SelectDateStyle.bindview}>
         <TouchableOpacity onPress={() => toggleOption(item.id)}>
           <View style={SelectDateStyle.optionsiconview}>
@@ -101,7 +101,7 @@ const SelectDate = (props) => {
             <FlatList
               data={OptionData}
               renderItem={renderdate}
-              keyExtractor={(item) => item.key}
+              keyExtractor={(item) => item.id}
             />
 
             {calender && (

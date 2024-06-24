@@ -2,6 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, SafeAreaView, Alert } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { _COLORS, IMAGES } from "../../../Themes";
+// import { withNavigation } from 'react-navigation';
+import { useNavigation } from "@react-navigation/native";
 const actions = [
   {
     text: "Add property",
@@ -78,22 +80,37 @@ const actions = [
   },
 ];
 
-const FloatingActionButton = () => {
+
+
+
+const FloatingActionButton = (props) => {
+  const navigation = useNavigation();
+  const handleActionPress = (name) => {
+    switch (name) {
+      case "add_Property":
+        navigation.navigate("PropertyDetails");
+        console.log('pressed')
+        break;
+      case "Create_new_job":
+        navigation.navigate('CreateJobFirstScreen')
+        break;
+      case "Add_Notice_Reminder":
+        navigation.navigate('AddNotices')
+        break;
+      default:
+        break;
+    }
+  };
   return (
-    // <SafeAreaView style={styles.container}>
-    //   <View style={styles.container}>
     <FloatingAction
       actions={actions}
       actionsPaddingTopBottom={6}
       color={_COLORS.Kodie_GreenColor}
       onPressItem={(name) => {
-        Alert.alert("Options pressed", `${name} was pressed`);
+        handleActionPress(name)
       }}
-      // overlayColor={_COLORS.Kodie_LightGrayColor}
       overlayColor="rgba(0, 0, 0, 0.5)"
     />
-    //   </View>
-    // </SafeAreaView>
   );
 };
 

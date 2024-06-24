@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,89 +7,85 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
-} from "react-native";
-import { PersonStyle } from "./PersonStyle";
-import { _COLORS, LABEL_STYLES } from "../../../../../../../../Themes";
-import axios from "axios";
-import { CommonLoader } from "../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader";
-import { useDispatch, useSelector } from "react-redux";
-export default Person = (props) => {
+} from 'react-native';
+import {PersonStyle} from './PersonStyle';
+import {_COLORS, LABEL_STYLES} from '../../../../../../../../Themes';
+import axios from 'axios';
+import {CommonLoader} from '../../../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {useDispatch, useSelector} from 'react-redux';
+import {Config} from '../../../../../../../../Config';
+export default Person = props => {
   const handleClosePopup = () => {
     props.onClose();
   };
-  const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData.....", loginData);
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginData.....', loginData);
   const property_id = props.property_id;
-  const [firstName, setFirstName] = useState("");
-  const [firstNameError, setFirstNameError] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [lastNameError, setLastNameError] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [PhoneNumber, setPhoneNumber] = useState("");
-  const [PhoneNumbeError, setPhoneNumberError] = useState("");
-  const [note, setNote] = useState("");
-  const [selectedOption, setSelectedOption] = useState("Save");
+  const [firstName, setFirstName] = useState('');
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [PhoneNumber, setPhoneNumber] = useState('');
+  const [PhoneNumbeError, setPhoneNumberError] = useState('');
+  const [note, setNote] = useState('');
+  const [selectedOption, setSelectedOption] = useState('Save');
   const [isLoading, setIsLoading] = useState(false);
-  const [personResponse, setpersonResponse] = useState("");
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    handleClosePopup();
-  };
-
-  //... Regex signup email validation
-  const validatePersonEmail = (email) => {
+  const [personResponse, setpersonResponse] = useState('');
+ 
+  const validatePersonEmail = email => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
   // Validation for First Name....
-  const validateFirstName = (text) => {
-    if (text === "") {
-      setFirstNameError("First name is required");
+  const validateFirstName = text => {
+    if (text === '') {
+      setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+$/.test(text)) {
-      setFirstNameError("First name should contain only alphabetic characters");
+      setFirstNameError('First name should contain only alphabetic characters');
     } else {
-      setFirstNameError("");
+      setFirstNameError('');
     }
     setFirstName(text);
   };
 
   // Validation for Last Name....
-  const validateLastName = (text) => {
-    if (text === "") {
-      setLastNameError("Last name is required");
+  const validateLastName = text => {
+    if (text === '') {
+      setLastNameError('Last name is required!');
     } else if (!/^[A-Za-z]+$/.test(text)) {
-      setLastNameError("Last name should contain only alphabetic characters");
+      setLastNameError('Last name should contain only alphabetic characters');
     } else {
-      setLastNameError("");
+      setLastNameError('');
     }
     setLastName(text);
   };
 
   // Email validation define here....
-  const handlePersonEmail = (text) => {
+  const handlePersonEmail = text => {
     setEmail(text);
-    if (text.trim() === "") {
-      setEmailError("Email is required");
+    if (text.trim() === '') {
+      setEmailError('Email is required!');
     } else if (!validatePersonEmail(text)) {
       setEmailError(
-        "Hold on, this email appears to be invalid. Please enter a valid email address."
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
-      setEmailError("");
+      setEmailError('');
     }
   };
 
   // Validation for Phone Number
-  const validatePhoneNumber = (text) => {
+  const validatePhoneNumber = text => {
     const mobileReg = /^\d{10}$/;
-    if (text === "") {
-      setPhoneNumberError("Phone number is required");
+    if (text === '') {
+      setPhoneNumberError('Phone number is required!');
     } else if (!mobileReg.test(text)) {
-      setPhoneNumberError("Invalid phone number format");
+      setPhoneNumberError('Invalid phone number format');
     } else {
-      setPhoneNumberError("");
+      setPhoneNumberError('');
     }
     setPhoneNumber(text);
   };
@@ -105,48 +101,48 @@ export default Person = (props) => {
       phone_number: PhoneNumber,
       notes: note,
     };
-    const PersonUrl =
-      "https://e3.cylsys.com/api/v1/tanant_details/create/person";
-    console.log("Request URL:", PersonUrl);
+    const url = Config.BASE_URL;
+    const PersonUrl = url + 'tanant_details/create/person';
+    console.log('Request URL:', PersonUrl);
     setIsLoading(true);
 
     axios
       .post(PersonUrl, PersonDetailsData)
-      .then((response) => {
-        setpersonResponse(response.data);
-        console.log("Person Details_data response", response.data);
-        if (response.data.success == true || response.data.error == false) {
-          alert(response.data.message);
+      .then(response => {
+        setpersonResponse(response?.data);
+        console.log('Person Details_data response', response?.data);
+        if (response?.data?.success == true || response?.data?.error == false) {
+          alert(response?.data?.message);
           setIsLoading(false);
-          setFirstName("");
-          setLastName("");
-          setEmail("");
-          setPhoneNumber("");
-          setPhoneNumber("");
-          setNote("");
+          setFirstName('');
+          setLastName('');
+          setEmail('');
+          setPhoneNumber('');
+          setPhoneNumber('');
+          setNote('');
           setIsLoading(false);
           handleClosePopup();
         } else {
-          setEmailError(response.data.message);
-          console.error("personDetail_error:", response.data.error);
+          setEmailError(response?.data?.message);
+          console.error('personDetail_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("personDetail error...:", error);
+      .catch(error => {
+        console.error('personDetail error...:', error);
         alert(error);
         setIsLoading(false);
       });
   };
-  // setEmailError(response.data.message);
+  // setEmailError(response?.data?.message);
   // props.navigation.navigate("LeaseSummary");
   const handleSaveBtn = () => {
-    if (firstName.trim() === "") {
-      setFirstNameError("First name is required.");
-    } else if (lastName.trim() === "") {
-      setLastNameError("Last name is required.");
-    } else if (email.trim() == "") {
-      setEmailError("Email is required.");
+    if (firstName.trim() === '') {
+      setFirstNameError('First name is required!');
+    } else if (lastName.trim() === '') {
+      setLastNameError('Last name is required!');
+    } else if (email.trim() == '') {
+      setEmailError('Email is required!');
     } else {
       Personhandle();
     }
@@ -155,12 +151,13 @@ export default Person = (props) => {
   return (
     <KeyboardAvoidingView
       style={PersonStyle.mainConatainer}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView>
         <View style={PersonStyle.card}>
           <View style={PersonStyle.inputContainer}>
-            <Text style={[LABEL_STYLES.commontext,{marginTop:15}]}>{"First name*"}</Text>
+            <Text style={[LABEL_STYLES.commontext, {marginTop: 15}]}>
+              {'First name*'}
+            </Text>
             <TextInput
               style={PersonStyle.input}
               value={firstName}
@@ -172,7 +169,7 @@ export default Person = (props) => {
           </View>
 
           <View style={PersonStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Last name*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Last name*'}</Text>
             <TextInput
               style={PersonStyle.input}
               value={lastName}
@@ -184,7 +181,7 @@ export default Person = (props) => {
           </View>
 
           <View style={PersonStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Email*"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Email*'}</Text>
             <TextInput
               style={PersonStyle.input}
               value={email}
@@ -193,13 +190,14 @@ export default Person = (props) => {
               // onChangeText={() => handlePersonEmail(email)}
               placeholder="Enter tenant’s email address"
               placeholderTextColor="#999"
+              keyboardType="email-address"
             />
             <Text style={PersonStyle.errorText}>{emailError}</Text>
           </View>
 
           <View style={PersonStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {"Phone number (mobile preferred)"}
+              {'Phone number (mobile preferred)'}
             </Text>
             <TextInput
               style={PersonStyle.input}
@@ -214,16 +212,16 @@ export default Person = (props) => {
             <Text style={PersonStyle.errorText}>{PhoneNumbeError}</Text>
           </View>
           <View style={PersonStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{"Notes"}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Notes'}</Text>
             <TextInput
-              style={[PersonStyle.input, { height: 100 }]}
+              style={[PersonStyle.input, {height: 100}]}
               value={note}
               onChangeText={setNote}
               placeholder="Enter any notes about your tenant"
               placeholderTextColor="#999"
               multiline
               numberOfLines={5}
-              textAlignVertical={"top"}
+              textAlignVertical={'top'}
             />
           </View>
           <View style={PersonStyle.ButtonView}>
@@ -233,57 +231,45 @@ export default Person = (props) => {
                 PersonStyle.applyText,
                 {
                   backgroundColor:
-                    selectedOption == "Cancel"
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_WhiteColor,
+                      _COLORS.Kodie_WhiteColor,
                 },
               ]}
               onPress={() => {
-                handleOptionClick("Cancel");
-              }}
-            >
+                handleClosePopup()
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   {
-                    color:
-                      selectedOption == "Cancel"
-                        ? _COLORS.Kodie_WhiteColor
-                        : null,
+                    color: _COLORS.Kodie_BlackColor
+                       
                   },
-                ]}
-              >
-                {"Cancel"}
+                ]}>
+                {'Cancel'}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[
                 PersonStyle.applyText,
                 {
-                  backgroundColor:
-                    selectedOption == "Save"
-                      ? _COLORS.Kodie_BlackColor
-                      : _COLORS.Kodie_WhiteColor,
+                  backgroundColor:_COLORS.Kodie_BlackColor,
                 },
               ]}
               onPress={() => {
                 handleSaveBtn();
                 // handleOptionClick("Save");
-              }}
-            >
+              }}>
               <Text
                 style={[
                   LABEL_STYLES.commontext,
                   PersonStyle.text,
                   {
                     color:
-                      selectedOption == "Save"
-                        ? _COLORS.Kodie_WhiteColor
-                        : null,
+                      _COLORS.Kodie_WhiteColor
+                       
                   },
-                ]}
-              >
-                {" Save"}
+                ]}>
+                {' Save'}
               </Text>
             </TouchableOpacity>
           </View>

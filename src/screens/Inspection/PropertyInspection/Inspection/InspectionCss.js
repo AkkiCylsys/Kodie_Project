@@ -32,7 +32,7 @@ export const InspectionCss = StyleSheet.create({
     marginLeft: 10,
   },
   flatListContainer: { flexDirection: "row", justifyContent: "space-between" },
-  ImageStyle: { height: 35, width: 35, alignSelf: "center" },
+  ImageStyle: {height: 35, width: 35, borderWidth:1,borderRadius:5 ,borderColor:_COLORS?.Kodie_MediumGrayColor,justifyContent:'center',alignSelf:'center'},
   rightIcon: {
     borderWidth: 1,
     borderRadius: 5,
@@ -78,8 +78,9 @@ export const InspectionCss = StyleSheet.create({
   cancelView: { alignSelf: "center" },
   cancelText: {
     fontSize: 14,
-    fontFamily: FONTFAMILY.K_Bold,
+    fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
+    // marginTop:10
   },
   SaveView: {
     borderRadius: 5,
@@ -99,7 +100,7 @@ export const InspectionCss = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginTop: 12,
+    marginBottom:24,
     borderRadius: 8,
   },
 

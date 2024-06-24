@@ -5,44 +5,44 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-} from "react-native";
-import React, { useState, useRef, useEffect } from "react";
-import { PreScreeningStyle } from "./PreScreeningStyle";
-import TopHeader from "../../../components/Molecules/Header/Header";
-import { _goBack } from "../../../services/CommonServices";
-import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
-import Entypo from "react-native-vector-icons/Entypo";
-import StarRating from "react-native-star-rating";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import { _COLORS, FONTFAMILY, IMAGES, LABEL_STYLES } from "../../../Themes";
-import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import CalendarModal from "../../../components/Molecules/CalenderModal/CalenderModal";
-import { Dropdown } from "react-native-element-dropdown";
-import RowButtons from "../../../components/Molecules/RowButtons/RowButtons";
-import { MultiSelect } from "react-native-element-dropdown";
-import { Config } from "../../../Config";
-import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
-import axios from "axios";
-import { stringify } from "querystring";
-import { useSelector } from "react-redux";
+} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {PreScreeningStyle} from './PreScreeningStyle';
+import TopHeader from '../../../components/Molecules/Header/Header';
+import {_goBack} from '../../../services/CommonServices';
+import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
+import Entypo from 'react-native-vector-icons/Entypo';
+import StarRating from 'react-native-star-rating';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../Themes';
+import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
+import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
+import {Dropdown} from 'react-native-element-dropdown';
+import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
+import {MultiSelect} from 'react-native-element-dropdown';
+import {Config} from '../../../Config';
+import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import axios from 'axios';
+import {stringify} from 'querystring';
+import {useSelector} from 'react-redux';
 
 const data = [
-  { label: "Electricals", value: "1" },
-  { label: "Home cleaning", value: "2" },
-  { label: "Outdoor cleaning", value: "3" },
-  { label: "Heavy lifting", value: "4" },
-  { label: "Fixing & maintenance", value: "5" },
+  {label: 'Electricals', value: '1'},
+  {label: 'Home cleaning', value: '2'},
+  {label: 'Outdoor cleaning', value: '3'},
+  {label: 'Heavy lifting', value: '4'},
+  {label: 'Fixing & maintenance', value: '5'},
 ];
 
 const PetsData = [
-  { label: "Dog", value: "1" },
-  { label: "Cat", value: "2" },
-  { label: "Bird", value: "3" },
-  { label: "Fish", value: "4" },
-  { label: "Cow", value: "5" },
+  {label: 'Dog', value: '1'},
+  {label: 'Cat', value: '2'},
+  {label: 'Bird', value: '3'},
+  {label: 'Fish', value: '4'},
+  {label: 'Cow', value: '5'},
 ];
 
-const renderDataItem = (item) => {
+const renderDataItem = item => {
   return (
     <View style={PreScreeningStyle.item}>
       <Text style={PreScreeningStyle.selectedTextStyle}>
@@ -58,9 +58,9 @@ const renderDataItem = (item) => {
   );
 };
 
-const PreScreening = (props) => {
-  const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginData", loginData);
+const PreScreening = props => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('loginData', loginData);
   const [rating, setRating] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [RentalDetails, setRentalDetails] = useState(false);
@@ -75,8 +75,8 @@ const PreScreening = (props) => {
   const [valueStying, setValueStying] = useState(0);
   const [valueStyingData, setValueStyingData] = useState([]);
   const [jobDetails, setJobDetails] = useState(0);
-  const [roomnumberOfYear, setRoomNumberOfYear] = useState("");
-  const [numberOfYear, setNumberOfYear] = useState("");
+  const [roomnumberOfYear, setRoomNumberOfYear] = useState('');
+  const [numberOfYear, setNumberOfYear] = useState('');
   const [weeklyIncome, setWeeklyIncome] = useState(0);
   const [selected_Paying_Button, setSelected_Paying_Button] = useState(false);
   const [selected_Paying_Id, setSelected_Paying_Id] = useState(1);
@@ -94,7 +94,7 @@ const PreScreening = (props) => {
   const [petsData, setPetsData] = useState([]);
   const [Preferences, setPreferences] = useState(false);
   const [preScreening, setPreScreening] = useState([]);
-  const handleDayPress = (day) => {
+  const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
   const toggleModal = () => {
@@ -130,7 +130,7 @@ const PreScreening = (props) => {
       selected_Previous_Id,
       selected_Smoking_Id,
       selected_Pets_Id,
-      JSON.stringify(pets)
+      JSON.stringify(pets),
     );
 
     const PreScreeningData =
@@ -170,37 +170,37 @@ const PreScreening = (props) => {
         tpq_any_pets: selected_Pets_Id,
         tpq_type_pets: JSON.stringify(pets),
         tpq_is_active: 1,
-        tpq_created_by: "admin123",
+        tpq_created_by: 'admin123',
       };
     const url = Config.BASE_URL;
-    const PreScreeningUrl = url + "add_tenant_questionarie/create";
-    console.log("Request URL:", PreScreeningUrl);
+    const PreScreeningUrl = url + 'add_tenant_questionarie/create';
+    console.log('Request URL:', PreScreeningUrl);
     setIsLoading(true);
 
     axios
       .post(PreScreeningUrl, PreScreeningData)
-      .then((response) => {
+      .then(response => {
         setPreScreening(response.data);
-        console.log("PreScreening_data response...", response.data);
-        if (response.data.success === true) {
-          alert(response.data.message);
-          setSelectedDate("");
-          setValueStying("");
-          setRoomNumberOfYear("");
-          setJobDetails("");
-          setEmployeeValue("");
-          setNumberOfYear("");
-          setWeeklyIncome("");
-          setPets("");
-          props.navigation.navigate("TenantList", {});
+        console.log('PreScreening_data response...', response.data);
+        if (response?.data?.success === true) {
+          alert(response?.data?.message);
+          setSelectedDate('');
+          setValueStying('');
+          setRoomNumberOfYear('');
+          setJobDetails('');
+          setEmployeeValue('');
+          setNumberOfYear('');
+          setWeeklyIncome('');
+          setPets('');
+          props.navigation.navigate('TenantList', {});
           setIsLoading(false);
         } else {
-          console.error("PreScreening_data_error:", response.data.error);
+          console.error('PreScreening_data_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("PreScreening_data error...:", error);
+      .catch(error => {
+        console.error('PreScreening_data error...:', error);
         setIsLoading(false);
       });
   };
@@ -208,28 +208,28 @@ const PreScreening = (props) => {
   // API bind What rental lease term are you looking for Lookup key code here........
   const handleLeaseTerm = () => {
     const TenantData = {
-      P_PARENT_CODE: "RLT",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'RLT',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const propertyType = url + "lookup_details";
-    console.log("Request URL:", propertyType);
+    const propertyType = url + 'lookup_details';
+    console.log('Request URL:', propertyType);
     setIsLoading(true);
     axios
       .post(propertyType, TenantData)
-      .then((response) => {
-        console.log("Tenant_Data_type", response.data);
-        if (response.data.status === true) {
+      .then(response => {
+        console.log('Tenant_Data_type', response.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log("Renal Lease....", response.data.lookup_details);
-          setRentalLeaseData(response.data.lookup_details);
+          console.log('Renal Lease....', response?.data?.lookup_details);
+          setRentalLeaseData(response?.data?.lookup_details);
         } else {
-          console.error("Renal_Lease_error:", response.data.error);
+          console.error('Renal_Lease_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("Renal_Lease error:", error);
+      .catch(error => {
+        console.error('Renal_Lease error:', error);
         setIsLoading(false);
       });
   };
@@ -237,28 +237,28 @@ const PreScreening = (props) => {
   // API bind How many people will be staying in the property? Lookup key code here........
   const handleStyingProperty = () => {
     const StyingPropertData = {
-      P_PARENT_CODE: "PST",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'PST',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const StyingPropertType = url + "lookup_details";
-    console.log("Request URL:", StyingPropertType);
+    const StyingPropertType = url + 'lookup_details';
+    console.log('Request URL:', StyingPropertType);
     setIsLoading(true);
     axios
       .post(StyingPropertType, StyingPropertData)
-      .then((response) => {
-        console.log("Stying_Propert_type", response.data);
-        if (response.data.status === true) {
+      .then(response => {
+        console.log('Stying_Propert_type', response.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log("Renal Lease....", response.data.lookup_details);
-          setValueStyingData(response.data.lookup_details);
+          console.log('Renal Lease....', response?.data?.lookup_details);
+          setValueStyingData(response?.data?.lookup_details);
         } else {
-          console.error("Stying_Propert_error:", response.data.error);
+          console.error('Stying_Propert_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("Stying_Propert error:", error);
+      .catch(error => {
+        console.error('Stying_Propert error:', error);
         setIsLoading(false);
       });
   };
@@ -266,28 +266,28 @@ const PreScreening = (props) => {
   // API bind How would you describe your employment status Lookup key code here........
   const handleDescribeStatus = () => {
     const DescribeStatustData = {
-      P_PARENT_CODE: "ES",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'ES',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const DescribeStatustType = url + "lookup_details";
-    console.log("Request URL:", DescribeStatustType);
+    const DescribeStatustType = url + 'lookup_details';
+    console.log('Request URL:', DescribeStatustType);
     setIsLoading(true);
     axios
       .post(DescribeStatustType, DescribeStatustData)
-      .then((response) => {
-        console.log("Describe_Status_type", response.data);
-        if (response.data.status === true) {
+      .then(response => {
+        console.log('Describe_Status_type', response.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log("Describe_Status....", response.data.lookup_details);
-          setEmployeeValueData(response.data.lookup_details);
+          console.log('Describe_Status....', response?.data?.lookup_details);
+          setEmployeeValueData(response?.data?.lookup_details);
         } else {
-          console.error("Describe_Status_error:", response.data.error);
+          console.error('Describe_Status_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("Describe_Status error:", error);
+      .catch(error => {
+        console.error('Describe_Status error:', error);
         setIsLoading(false);
       });
   };
@@ -295,29 +295,29 @@ const PreScreening = (props) => {
   // API bind What type of pets do you have? Lookup key code here........
   const handleTypesPets = () => {
     const PetsTypeData = {
-      P_PARENT_CODE: "TP",
-      P_TYPE: "OPTION",
+      P_PARENT_CODE: 'TP',
+      P_TYPE: 'OPTION',
     };
     const url = Config.BASE_URL;
-    const PetsDataType = url + "lookup_details";
-    console.log("Request URL:", PetsDataType);
+    const PetsDataType = url + 'lookup_details';
+    console.log('Request URL:', PetsDataType);
     setIsLoading(true);
     axios
       .post(PetsDataType, PetsTypeData)
-      .then((response) => {
-        console.log("Pets_type", response.data);
-        if (response.data.status === true) {
+      .then(response => {
+        console.log('Pets_type', response.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log("Pets_type_....", response.data.lookup_details);
-          setPetsData(response.data.lookup_details);
-          console.log("pets daa...", response.data.lookup_details);
+          console.log('Pets_type_....', response?.data?.lookup_details);
+          setPetsData(response?.data?.lookup_details);
+          console.log('pets daa...', response?.data?.lookup_details);
         } else {
-          console.error("Pets_type_Status_error:", response.data.error);
+          console.error('Pets_type_Status_error:', response?.data?.error);
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("Pets_type_Status error:", error);
+      .catch(error => {
+        console.error('Pets_type_Status error:', error);
         setIsLoading(false);
       });
   };
@@ -337,7 +337,7 @@ const PreScreening = (props) => {
     <>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Pre-screening"}
+        MiddleText={'Pre-screening'}
       />
       <ScrollView style={PreScreeningStyle.mainContainer}>
         <ScrollView>
@@ -358,7 +358,7 @@ const PreScreening = (props) => {
                   fullStarColor={_COLORS.Kodie_lightGreenColor}
                   emptyStarColor={_COLORS.Kodie_GrayColor}
                   starSize={18}
-                  selectedStar={(rating) => setRating(rating)}
+                  selectedStar={rating => setRating(rating)}
                 />
                 <Text style={PreScreeningStyle.ratingtext}>
                   3.9 (
@@ -368,7 +368,7 @@ const PreScreening = (props) => {
 
               <View style={PreScreeningStyle.VerifiedView}>
                 <AntDesign
-                  name={"checkcircle"}
+                  name={'checkcircle'}
                   size={12}
                   color={_COLORS.Kodie_GreenColor}
                   style={PreScreeningStyle.iconStl}
@@ -379,7 +379,7 @@ const PreScreening = (props) => {
 
             <View>
               <Entypo
-                name={"dots-three-horizontal"}
+                name={'dots-three-horizontal'}
                 size={20}
                 color={_COLORS.Kodie_GrayColor}
                 style={PreScreeningStyle.iconStl}
@@ -388,9 +388,9 @@ const PreScreening = (props) => {
           </View>
           <DividerIcon style={PreScreeningStyle.dividerstyle} />
           <View style={PreScreeningStyle.Container}>
-            <Text style={PreScreeningStyle.apartment_text}>{"Apartment"}</Text>
+            <Text style={PreScreeningStyle.apartment_text}>{'Apartment'}</Text>
 
-            <Text style={PreScreeningStyle.melbourne_Text}>{"Sydney"}</Text>
+            <Text style={PreScreeningStyle.melbourne_Text}>{'Sydney'}</Text>
             <View style={PreScreeningStyle.locationView}>
               <Entypo
                 name="location-pin"
@@ -398,7 +398,7 @@ const PreScreening = (props) => {
                 color={_COLORS.Kodie_GreenColor}
               />
               <Text style={PreScreeningStyle.LocationText}>
-                {"2118 Thornridge Cir. Syracuse."}
+                {'2118 Thornridge Cir. Syracuse.'}
               </Text>
             </View>
           </View>
@@ -410,15 +410,14 @@ const PreScreening = (props) => {
             </Text>
             <View style={PreScreeningStyle.propety_details_view}>
               <Text style={PreScreeningStyle.propery_det}>
-                {"Rental details"}
+                {'Rental details'}
               </Text>
 
               <TouchableOpacity
                 style={PreScreeningStyle.down_Arrow_icon}
-                onPress={toggleRentalDetails}
-              >
+                onPress={toggleRentalDetails}>
                 <AntDesign
-                  name={RentalDetails ? "up" : "down"}
+                  name={RentalDetails ? 'up' : 'down'}
                   size={15}
                   color={_COLORS.Kodie_GrayColor}
                 />
@@ -429,11 +428,11 @@ const PreScreening = (props) => {
             {RentalDetails && (
               <View>
                 <Text style={LABEL_STYLES.commontext}>
-                  {"What date would you like to move?"}
+                  {'What date would you like to move?'}
                 </Text>
                 <View style={PreScreeningStyle.datePickerView}>
                   <CalendarModal
-                    SelectDate={selectedDate ? selectedDate : "Start Date"}
+                    SelectDate={selectedDate ? selectedDate : 'Start Date'}
                     _textInputStyle={{
                       color: selectedDate
                         ? _COLORS.Kodie_BlackColor
@@ -457,7 +456,7 @@ const PreScreening = (props) => {
 
                 <View style={PreScreeningStyle.rentalleaseview}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"What rental lease term are you looking for?"}
+                    {'What rental lease term are you looking for?'}
                   </Text>
                   <Dropdown
                     style={PreScreeningStyle.dropdown}
@@ -473,7 +472,7 @@ const PreScreening = (props) => {
                     placeholder="Electricals"
                     searchPlaceholder="Search..."
                     value={RentalLeasevalue}
-                    onChange={(item) => {
+                    onChange={item => {
                       setRentalLeaseValue(item.lookup_key);
                     }}
                   />
@@ -481,7 +480,7 @@ const PreScreening = (props) => {
 
                 <View style={PreScreeningStyle.tenentpeople}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"How many people will be staying in the property?"}
+                    {'How many people will be staying in the property?'}
                   </Text>
                   <Dropdown
                     style={PreScreeningStyle.dropdown}
@@ -497,7 +496,7 @@ const PreScreening = (props) => {
                     placeholder="3 people"
                     searchPlaceholder="Search..."
                     value={valueStying}
-                    onChange={(item) => {
+                    onChange={item => {
                       setValueStying(item.lookup_key);
                     }}
                   />
@@ -505,7 +504,7 @@ const PreScreening = (props) => {
 
                 <View style={PreScreeningStyle.jobDetailsView}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"What is your rental budget?"}
+                    {'What is your rental budget?'}
                   </Text>
                   <TextInput
                     style={[PreScreeningStyle.input, PreScreeningStyle.jobD_]}
@@ -515,7 +514,7 @@ const PreScreening = (props) => {
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                     multiline
                     numberOfLines={5}
-                    textAlignVertical={"top"}
+                    textAlignVertical={'top'}
                     keyboardType="phone-pad"
                   />
                 </View>
@@ -524,13 +523,12 @@ const PreScreening = (props) => {
                   style={[
                     PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
-                  ]}
-                >
+                  ]}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"Rental payment frequency"}
+                    {'Rental payment frequency'}
                   </Text>
                   <RowButtons
-                    LeftButtonText={"Weekly"}
+                    LeftButtonText={'Weekly'}
                     leftButtonbackgroundColor={
                       !selected_Paying_Button
                         ? _COLORS.Kodie_lightGreenColor
@@ -551,7 +549,7 @@ const PreScreening = (props) => {
                       setSelected_Paying_Id(1);
                       // alert(selectedButtonId)
                     }}
-                    RightButtonText={"Monthly"}
+                    RightButtonText={'Monthly'}
                     RightButtonbackgroundColor={
                       selected_Paying_Button
                         ? _COLORS.Kodie_lightGreenColor
@@ -580,14 +578,13 @@ const PreScreening = (props) => {
 
           <View style={PreScreeningStyle.Container}>
             <View style={PreScreeningStyle.propety_details_view}>
-              <Text style={PreScreeningStyle.propery_det}>{"Rooms"}</Text>
+              <Text style={PreScreeningStyle.propery_det}>{'Rooms'}</Text>
 
               <TouchableOpacity
                 style={PreScreeningStyle.down_Arrow_icon}
-                onPress={toggleTenantRooms}
-              >
+                onPress={toggleTenantRooms}>
                 <AntDesign
-                  name={TenantRooms ? "up" : "down"}
+                  name={TenantRooms ? 'up' : 'down'}
                   size={15}
                   color={_COLORS.Kodie_GrayColor}
                 />
@@ -599,7 +596,7 @@ const PreScreening = (props) => {
               <View>
                 <View style={PreScreeningStyle.rentalleaseview}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"How would you describe your employment status?"}
+                    {'How would you describe your employment status?'}
                   </Text>
                   <Dropdown
                     style={PreScreeningStyle.dropdown}
@@ -615,7 +612,7 @@ const PreScreening = (props) => {
                     placeholder="Full-time employed"
                     searchPlaceholder="Search..."
                     value={EmployeeValue}
-                    onChange={(item) => {
+                    onChange={item => {
                       setEmployeeValue(item.lookup_key);
                     }}
                   />
@@ -623,7 +620,7 @@ const PreScreening = (props) => {
 
                 <View style={PreScreeningStyle.jobDetailsView}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"How long have you been employed for?"}
+                    {'How long have you been employed for?'}
                   </Text>
                   <TextInput
                     style={[PreScreeningStyle.input, PreScreeningStyle.jobD_]}
@@ -633,7 +630,7 @@ const PreScreening = (props) => {
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                     multiline
                     numberOfLines={5}
-                    textAlignVertical={"top"}
+                    textAlignVertical={'top'}
                     keyboardType="phone-pad"
                   />
                 </View>
@@ -642,10 +639,9 @@ const PreScreening = (props) => {
                   style={[
                     PreScreeningStyle.jobDetailsView,
                     PreScreeningStyle.weeklyincomeview,
-                  ]}
-                >
+                  ]}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"What is your household weekly gross  income?"}
+                    {'What is your household weekly gross  income?'}
                   </Text>
                   <TextInput
                     style={[PreScreeningStyle.input, PreScreeningStyle.jobD_]}
@@ -655,7 +651,7 @@ const PreScreening = (props) => {
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                     multiline
                     numberOfLines={5}
-                    textAlignVertical={"top"}
+                    textAlignVertical={'top'}
                     keyboardType="phone-pad"
                   />
                 </View>
@@ -667,15 +663,14 @@ const PreScreening = (props) => {
           <View style={PreScreeningStyle.Container}>
             <View style={PreScreeningStyle.propety_details_view}>
               <Text style={PreScreeningStyle.propery_det}>
-                {"Rental history"}
+                {'Rental history'}
               </Text>
 
               <TouchableOpacity
                 style={PreScreeningStyle.down_Arrow_icon}
-                onPress={toggleRentalHistory}
-              >
+                onPress={toggleRentalHistory}>
                 <AntDesign
-                  name={RentalHistory ? "up" : "down"}
+                  name={RentalHistory ? 'up' : 'down'}
                   size={15}
                   color={_COLORS.Kodie_GrayColor}
                 />
@@ -687,7 +682,7 @@ const PreScreening = (props) => {
               <View>
                 <View style={[PreScreeningStyle.longemployed]}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"How long have you been employed for?"}
+                    {'How long have you been employed for?'}
                   </Text>
                   <TextInput
                     style={[PreScreeningStyle.input, PreScreeningStyle.jobD_]}
@@ -697,7 +692,7 @@ const PreScreening = (props) => {
                     placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                     multiline
                     numberOfLines={5}
-                    textAlignVertical={"top"}
+                    textAlignVertical={'top'}
                     keyboardType="phone-pad"
                   />
                 </View>
@@ -707,13 +702,12 @@ const PreScreening = (props) => {
                     // PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
                     PreScreeningStyle.rentalagrementview,
-                  ]}
-                >
+                  ]}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"Have you ever broken a rental agreement?"}
+                    {'Have you ever broken a rental agreement?'}
                   </Text>
                   <RowButtons
-                    LeftButtonText={"Yes"}
+                    LeftButtonText={'Yes'}
                     leftButtonbackgroundColor={
                       !selected_Rental_Agreement
                         ? _COLORS.Kodie_lightGreenColor
@@ -734,7 +728,7 @@ const PreScreening = (props) => {
                       setSelected_Agreement_Id(1);
                       // alert(selectedButtonId)
                     }}
-                    RightButtonText={"No"}
+                    RightButtonText={'No'}
                     RightButtonbackgroundColor={
                       selected_Rental_Agreement
                         ? _COLORS.Kodie_lightGreenColor
@@ -762,13 +756,12 @@ const PreScreening = (props) => {
                     // PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
                     PreScreeningStyle.rentalagrementview,
-                  ]}
-                >
+                  ]}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"Have you ever been evicted from a previous rental?"}
+                    {'Have you ever been evicted from a previous rental?'}
                   </Text>
                   <RowButtons
-                    LeftButtonText={"Yes"}
+                    LeftButtonText={'Yes'}
                     leftButtonbackgroundColor={
                       !selected_Previous_Rental
                         ? _COLORS.Kodie_lightGreenColor
@@ -789,7 +782,7 @@ const PreScreening = (props) => {
                       setSelected_Previous_Id(1);
                       // alert(selectedButtonId)
                     }}
-                    RightButtonText={"No"}
+                    RightButtonText={'No'}
                     RightButtonbackgroundColor={
                       selected_Previous_Rental
                         ? _COLORS.Kodie_lightGreenColor
@@ -817,14 +810,13 @@ const PreScreening = (props) => {
           </View>
           <View style={PreScreeningStyle.Container}>
             <View style={PreScreeningStyle.propety_details_view}>
-              <Text style={PreScreeningStyle.propery_det}>{"Preferences"}</Text>
+              <Text style={PreScreeningStyle.propery_det}>{'Preferences'}</Text>
 
               <TouchableOpacity
                 style={PreScreeningStyle.down_Arrow_icon}
-                onPress={togglePreferences}
-              >
+                onPress={togglePreferences}>
                 <AntDesign
-                  name={Preferences ? "up" : "down"}
+                  name={Preferences ? 'up' : 'down'}
                   size={15}
                   color={_COLORS.Kodie_GrayColor}
                 />
@@ -838,13 +830,12 @@ const PreScreening = (props) => {
                     // PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
                     PreScreeningStyle.rentalagrementview,
-                  ]}
-                >
+                  ]}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"Are you a smoking or non-smoking household?"}
+                    {'Are you a smoking or non-smoking household?'}
                   </Text>
                   <RowButtons
-                    LeftButtonText={"Non-smoking"}
+                    LeftButtonText={'Non-smoking'}
                     leftButtonbackgroundColor={
                       !selected_Smoking
                         ? _COLORS.Kodie_lightGreenColor
@@ -865,7 +856,7 @@ const PreScreening = (props) => {
                       setSelected_Smoking_Id(1);
                       // alert(selectedButtonId)
                     }}
-                    RightButtonText={"Non-smoking"}
+                    RightButtonText={'Non-smoking'}
                     RightButtonbackgroundColor={
                       selected_Smoking
                         ? _COLORS.Kodie_lightGreenColor
@@ -893,13 +884,12 @@ const PreScreening = (props) => {
                     // PreScreeningStyle.inputContainer,
                     PreScreeningStyle.paymentbtnselectview,
                     PreScreeningStyle.rentalagrementview,
-                  ]}
-                >
+                  ]}>
                   <Text style={LABEL_STYLES.commontext}>
-                    {"Do you have any pets?"}
+                    {'Do you have any pets?'}
                   </Text>
                   <RowButtons
-                    LeftButtonText={"Yes"}
+                    LeftButtonText={'Yes'}
                     leftButtonbackgroundColor={
                       !selected_Pets
                         ? _COLORS.Kodie_lightGreenColor
@@ -920,7 +910,7 @@ const PreScreening = (props) => {
                       setSelected_Pets_Id(1);
                       // alert(selectedButtonId)
                     }}
-                    RightButtonText={"No"}
+                    RightButtonText={'No'}
                     RightButtonbackgroundColor={
                       selected_Pets
                         ? _COLORS.Kodie_lightGreenColor
@@ -945,7 +935,7 @@ const PreScreening = (props) => {
 
                 <View style={PreScreeningStyle.additional_key_view}>
                   <Text style={PreScreeningStyle.Furnished_Text}>
-                    {"What type of pets do you have?"}
+                    {'What type of pets do you have?'}
                   </Text>
                   <MultiSelect
                     style={PreScreeningStyle.dropdown}
@@ -954,20 +944,20 @@ const PreScreening = (props) => {
                     inputSearchStyle={PreScreeningStyle.inputSearchStyle}
                     iconStyle={PreScreeningStyle.iconStyle}
                     data={petsData}
+                    activeColor={_COLORS.Kodie_MidLightGreenColor}
                     labelField="lookup_description"
                     valueField="lookup_key"
                     placeholder="Search"
                     value={pets}
                     search
                     searchPlaceholder="Search..."
-                    onChange={(item) => {
+                    onChange={item => {
                       setPets(item);
                     }}
                     renderItem={renderDataItem}
                     renderSelectedItem={(item, unSelect) => (
                       <TouchableOpacity
-                        onPress={() => unSelect && unSelect(item)}
-                      >
+                        onPress={() => unSelect && unSelect(item)}>
                         <View style={PreScreeningStyle.selectedStyle}>
                           <Text style={PreScreeningStyle.textSelectedStyle}>
                             {item.lookup_description}
@@ -985,10 +975,10 @@ const PreScreening = (props) => {
 
           <View style={PreScreeningStyle.Container}>
             <Text style={PreScreeningStyle.inspections}>
-              {"Tenant  screening report (recommended)"}
+              {'Tenant  screening report (recommended)'}
             </Text>
             <CustomSingleButton
-              _ButtonText={"Start Now"}
+              _ButtonText={'Start Now'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
               onPress={() => {
@@ -998,13 +988,12 @@ const PreScreening = (props) => {
           </View>
 
           <View
-            style={[PreScreeningStyle.Container, PreScreeningStyle.uplodbtn]}
-          >
+            style={[PreScreeningStyle.Container, PreScreeningStyle.uplodbtn]}>
             <Text style={PreScreeningStyle.inspections}>
-              {"Already have a background report?"}
+              {'Already have a background report?'}
             </Text>
             <CustomSingleButton
-              _ButtonText={"Upload"}
+              _ButtonText={'Upload'}
               Text_Color={_COLORS.Kodie_BlackColor}
               borderColor={_COLORS.Kodie_TransparentColor}
               backgroundColor={_COLORS.Kodie_lightGreenColor}

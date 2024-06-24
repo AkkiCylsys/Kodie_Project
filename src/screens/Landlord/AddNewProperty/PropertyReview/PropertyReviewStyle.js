@@ -88,7 +88,7 @@ export const PropertyReviewStyle = StyleSheet.create({
   btnView: {
     marginTop: 24,
     marginHorizontal: 16,
-    
+    marginBottom:10
   },
   DetailsView: {
     flex: 1,

@@ -68,10 +68,56 @@ export const LandlordProfileStyle = StyleSheet.create({
   },
   contactIcon: { height: 16, width: 16 },
   AllcontactsText: {
-    fontSize: 16,
+    fontSize: 17,
     paddingHorizontal: 16,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_SemiBold,
+    fontFamily: FONTFAMILY.K_Bold,
     marginTop:20
   },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
+  popupcantainer:{
+    marginHorizontal:16,
+    marginTop:10,
+    flexDirection:"row",
+    justifyContent:"space-between"
+  },
+  popuptext:{
+    fontSize:20,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,color: _COLORS.Kodie_BlackColor,
+  },
+  ViewBtn:{
+    justifyContent:"flex-end",
+    // marginLeft:100,
+    marginHorizontal:16,
+    flexDirection:"row",
+    marginTop:48,
+    alignItems:"flex-end"
+  },
+  CancelBtn:{
+    borderWidth:0,
+    color:_COLORS.Kodie_BlackColor,
+    paddingHorizontal:15,
+    paddingVertical:10,
+    borderRadius:5,
+    fontSize:14,
+    fontFamily:FONTFAMILY.K_Medium
+
+  },
+  LogoutBtn:{
+    backgroundColor:_COLORS.Kodie_BlackColor,
+    paddingHorizontal:15,
+    paddingVertical:10,
+    borderRadius:5,
+    color:_COLORS.Kodie_WhiteColor,
+    fontSize:14,
+    fontFamily:FONTFAMILY.K_Medium,
+    alignSelf:'center'
+  }
 });

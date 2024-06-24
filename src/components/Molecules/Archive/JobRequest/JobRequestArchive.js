@@ -185,8 +185,8 @@
 //     axios
 //       .get(Details_url)
 //       .then((response) => {
-//         if (response.data && response.data.data.length > 0) {
-//           const updatedList = response.data.data.map((item, index) => ({
+//         if (response?.data && response?.data?.data.length > 0) {
+//           const updatedList = response?.data?.data.map((item, index) => ({
 //             key: index.toString(),
 //             job_id: item.job_id.toString(),
 //             service_looking: item.service_looking,
@@ -430,10 +430,7 @@
 
 // export default JobRequestArchive;
 
-
-
-
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -443,26 +440,26 @@ import {
   TouchableWithoutFeedback,
   Animated,
   useWindowDimensions,
-} from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import { SwipeListView } from "react-native-swipe-list-view";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import ReactNativeHapticFeedback from "react-native-haptic-feedback";
+} from 'react-native';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {SwipeListView} from 'react-native-swipe-list-view';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
-import { JobRequestStyle } from "./JobRequestStyle";
-import { _COLORS, FONTFAMILY, LABEL_STYLES } from "../../../../Themes";
-import DividerIcon from "../../../Atoms/Devider/DividerIcon";
-import { CommonLoader } from "../../ActiveLoader/ActiveLoader";
-import axios from "axios";
+import {JobRequestStyle} from './JobRequestStyle';
+import {_COLORS, FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
+import DividerIcon from '../../../Atoms/Devider/DividerIcon';
+import {CommonLoader} from '../../ActiveLoader/ActiveLoader';
+import axios from 'axios';
 
 const hapticFeedbackOptions = {
   enableVibrateFallback: true,
   ignoreAndroidSystemSettings: false,
 };
 
-const HiddenItemWithActions = (props) => {
+const HiddenItemWithActions = props => {
   const {
     leftActionActivated,
     rightActionActivated,
@@ -479,7 +476,7 @@ const HiddenItemWithActions = (props) => {
 
   useEffect(() => {
     if (rightActionActivated) {
-      ReactNativeHapticFeedback.trigger("impactLight", hapticFeedbackOptions);
+      ReactNativeHapticFeedback.trigger('impactLight', hapticFeedbackOptions);
       Animated.timing(singleValue, {
         toValue: Math.abs(swipeAnimatedValue.__getValue()),
         duration: 250,
@@ -498,9 +495,8 @@ const HiddenItemWithActions = (props) => {
     <Animated.View
       style={[
         JobRequestStyle.rowBack,
-        { height: rowAnimatedValues[rowKey].rowHeight },
-      ]}
-    >
+        {height: rowAnimatedValues[rowKey].rowHeight},
+      ]}>
       {!rightActionActivated && (
         <TouchableWithoutFeedback onPress={onClose}>
           <Animated.View
@@ -514,13 +510,12 @@ const HiddenItemWithActions = (props) => {
                     translateX: swipeAnimatedValue.interpolate({
                       inputRange: [0, 60, 100],
                       outputRange: [-100, -40, 0],
-                      extrapolate: "clamp",
+                      extrapolate: 'clamp',
                     }),
                   },
                 ],
               },
-            ]}
-          >
+            ]}>
             <View style={JobRequestStyle.backBtnInner}>
               <Ionicons
                 name="arrow-forward-outline"
@@ -546,13 +541,12 @@ const HiddenItemWithActions = (props) => {
                     translateX: swipeAnimatedValue.interpolate({
                       inputRange: [-200, -120, 0],
                       outputRange: [-100, -20, 100],
-                      extrapolate: "clamp",
+                      extrapolate: 'clamp',
                     }),
                   },
                 ],
               },
-            ]}
-          >
+            ]}>
             <View style={JobRequestStyle.backBtnInner}>
               <Entypo
                 name="dots-three-horizontal"
@@ -579,13 +573,12 @@ const HiddenItemWithActions = (props) => {
                     translateX: swipeAnimatedValue.interpolate({
                       inputRange: [-200, -120, 0],
                       outputRange: [0, 40, 100],
-                      extrapolate: "clamp",
+                      extrapolate: 'clamp',
                     }),
                   },
                 ],
               },
-            ]}
-          >
+            ]}>
             <View style={JobRequestStyle.backBtnInner}>
               <Ionicons
                 name="archive-outline"
@@ -604,17 +597,17 @@ const HiddenItemWithActions = (props) => {
 const rowAnimatedValues = {};
 
 const JobRequestArchive = () => {
-  const isDarkMode = useColorScheme() === "dark";
+  const isDarkMode = useColorScheme() === 'dark';
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-  const { width: screenWidth } = useWindowDimensions();
+  const {width: screenWidth} = useWindowDimensions();
   const [list, setList] = useState([]);
   const [catchData, setCatchData] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
 
   Array(catchData)
-    .fill("")
+    .fill('')
     .forEach((_, i) => {
       rowAnimatedValues[`${i}`] = {
         rowHeight: new Animated.Value(60),
@@ -630,9 +623,9 @@ const JobRequestArchive = () => {
   //   axios
   //     .get(Details_url)
   //     .then((response) => {
-  //       if (response.data && response.data.data.length > 0) {
-  //         setCatchData(response.data.data.length);
-  //         const updatedList = response.data.data.map((item, index) => ({
+  //       if (response?.data && response?.data?.data.length > 0) {
+  //         setCatchData(response?.data?.data.length);
+  //         const updatedList = response?.data?.data.map((item, index) => ({
   //           key: index.toString(),
   //           job_id: item.job_id.toString(),
   //           service_looking: item.service_looking,
@@ -659,17 +652,18 @@ const JobRequestArchive = () => {
   // };
 
   const get_Details = () => {
-    const url = "https://e3.cylsys.com/api/v1/job/getAlljobs/479";
+    // const url = 'https://kodieapis.cylsys.com/api/v1/job/getAlljobs/479';
+    const url = 'https://kodietestapi.cylsys.com/api/v1/job/getAlljobs/479';
     const Details_url = url;
-    console.log("Request URL:", Details_url);
+    console.log('Request URL:', Details_url);
     setIsLoading(true);
     axios
       .get(Details_url)
-      .then((response) => {
-        if (response.data && response.data.data.length > 0) {
+      .then(response => {
+        if (response?.data && response?.data?.data.length > 0) {
           // ... (your existing code)
-  
-          const updatedList = response.data.data.map((item, index) => ({
+
+          const updatedList = response?.data?.data.map((item, index) => ({
             key: index.toString(),
             job_id: item.job_id.toString(),
             service_looking: item.service_looking,
@@ -684,17 +678,16 @@ const JobRequestArchive = () => {
               rowBackWidth: new Animated.Value(100),
             };
           });
-  
+
           setIsLoading(false);
         } else {
-          setIsLoading(false)
+          setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("API failed", error);
+      .catch(error => {
+        console.error('API failed', error);
       });
   };
-  
 
   // const archiveJob = async (jobId) => {
   //   try {
@@ -704,11 +697,11 @@ const JobRequestArchive = () => {
   //       p_job_id: jobId,
   //     });
 
-  //     if (response.data && response.data.success) {
+  //     if (response?.data && response?.data?.success) {
   //       console.log("Job archived successfully");
   //       return true;
   //     } else {
-  //       console.error("Failed to archive job:", response.data.message);
+  //       console.error("Failed to archive job:", response?.data?.message);
   //       alert("Error", "Failed to archive job");
   //       return false;
   //     }
@@ -718,34 +711,35 @@ const JobRequestArchive = () => {
   //     return false;
   //   }
   // };
-  const archiveJob = async (jobId) => {
+  const archiveJob = async jobId => {
     try {
-      const url = "https://e3.cylsys.com/api/v1/job/addJobArchieve";
-      console.log('Archive api.....',url)
+      // const url = 'https://kodieapis.cylsys.com/api/v1/job/addJobArchieve';
+      const url = 'https://kodietestapi.cylsys.com/api/v1/job/addJobArchieve';
+      console.log('Archive api.....', url);
       const response = await axios.post(url, {
         p_job_id: jobId,
       });
-  
-      console.log("Archive API Response:", response.data);
-  
-      if (response.data && response.data.success) {
-        console.log("Job archived successfully");
-        setIsLoading(false)
+
+      console.log('Archive API Response:', response?.data);
+
+      if (response?.data && response?.data?.success) {
+        console.log('Job archived successfully');
+        setIsLoading(false);
         return true;
       } else {
-        console.error("Failed to archive job:", response.data.message);
-        alert("Error", "Failed to archive job");
-        setIsLoading(false)
+        console.error('Failed to archive job:', response?.data?.message);
+        alert('Error', 'Failed to archive job');
+        setIsLoading(false);
         return false;
       }
     } catch (error) {
-      console.error("API call failed:", error);
-      alert("Error", "API call failed");
-      setIsLoading(false)
+      console.error('API call failed:', error);
+      alert('Error', 'API call failed');
+      setIsLoading(false);
       return false;
     }
   };
-  
+
   useEffect(() => {
     get_Details();
     archiveJob();
@@ -754,11 +748,11 @@ const JobRequestArchive = () => {
   useEffect(() => {
     const fetchData = async () => {
       await get_Details();
-      console.log("List:", list);
-  
+      console.log('List:', list);
+
       if (list.length > 0) {
         const isArchived = await archiveJob(list[0].job_id);
-  
+
         if (isArchived) {
           // Logic for successful archive
           // alert('Success', 'Job archived successfully');
@@ -768,24 +762,21 @@ const JobRequestArchive = () => {
         }
       }
     };
-  
+
     fetchData();
   }, [list]);
-  
-  
 
-  
-  const VisibleItem = (props) => {
-    const { data, screenWidth, rowKey } = props;
+  const VisibleItem = props => {
+    const {data, screenWidth, rowKey} = props;
     const translateX = rowAnimatedValues[
       rowKey
     ]?.rowFrontTranslate?.interpolate({
       inputRange: [0, 1],
       outputRange: [-screenWidth, 0],
-      extrapolate: "clamp",
+      extrapolate: 'clamp',
     });
     return (
-      <TouchableWithoutFeedback onPress={() => console.log("touched")}>
+      <TouchableWithoutFeedback onPress={() => console.log('touched')}>
         <Animated.View
           style={[
             JobRequestStyle.rowFront,
@@ -797,8 +788,7 @@ const JobRequestArchive = () => {
                 },
               ],
             },
-          ]}
-        >
+          ]}>
           <View style={JobRequestStyle.Container}>
             {console.log(data.job_id)}
             <View style={JobRequestStyle.flat_MainView}>
@@ -819,8 +809,7 @@ const JobRequestArchive = () => {
                         ? _COLORS.Kodie_LightOrange
                         : _COLORS.Kodie_mostLightGreenColor,
                     },
-                  ]}
-                >
+                  ]}>
                   <View
                     style={[
                       JobRequestStyle.roundButton,
@@ -843,22 +832,19 @@ const JobRequestArchive = () => {
                           ? _COLORS.Kodie_DarkOrange
                           : _COLORS.Kodie_GreenColor,
                       },
-                    ]}
-                  >
+                    ]}>
                     {data.button}
                   </Text>
                 </View>
               </View>
               <Entypo
-                name={"dots-three-horizontal"}
+                name={'dots-three-horizontal'}
                 size={20}
                 color={_COLORS.Kodie_GrayColor}
-                style={{ marginLeft: 15 }}
+                style={{marginLeft: 15}}
               />
             </View>
-            <Text style={JobRequestStyle.commonMidtext}>
-              {data.refno}
-            </Text>
+            <Text style={JobRequestStyle.commonMidtext}>{data.refno}</Text>
             <View style={JobRequestStyle.flat_MainView}>
               <View style={JobRequestStyle.flexContainer}>
                 <View style={JobRequestStyle.propertyView}>
@@ -866,10 +852,10 @@ const JobRequestArchive = () => {
                     <Text style={JobRequestStyle.tom}>Tom</Text>
                     <View style={JobRequestStyle.locationView}>
                       <MaterialCommunityIcons
-                        name={"map-marker"}
+                        name={'map-marker'}
                         size={16}
                         color={_COLORS.Kodie_MediumGrayColor}
-                        style={{ alignSelf: "center" }}
+                        style={{alignSelf: 'center'}}
                       />
                       <Text style={JobRequestStyle.locationText}>
                         {data.job_location}
@@ -884,9 +870,7 @@ const JobRequestArchive = () => {
                     {data.job_budget}
                   </Text>
 
-                  <Text style={JobRequestStyle.spend}>
-                    {data.location}
-                  </Text>
+                  <Text style={JobRequestStyle.spend}>{data.location}</Text>
                 </View>
               </View>
             </View>
@@ -902,13 +886,13 @@ const JobRequestArchive = () => {
     }
   };
 
-  const deleteRow = (rowKey) => {
-    const newData = list.filter((item) => item.key !== rowKey);
+  const deleteRow = rowKey => {
+    const newData = list.filter(item => item.key !== rowKey);
     setList(newData);
   };
 
-  const onDelete = async (rowKey) => {
-    const jobId = list.find((item) => item.key === rowKey)?.job_id;
+  const onDelete = async rowKey => {
+    const jobId = list.find(item => item.key === rowKey)?.job_id;
 
     // if (jobId) {
     //   await archiveJob(jobId);
@@ -923,9 +907,9 @@ const JobRequestArchive = () => {
       //   return item;
       // });
       if (isArchived) {
-        const updatedList = list.map((item) => {
+        const updatedList = list.map(item => {
           if (item.key === rowKey) {
-            return { ...item, archived: true };
+            return {...item, archived: true};
           }
           return item;
         });
@@ -951,8 +935,8 @@ const JobRequestArchive = () => {
     }
   };
 
-  const onRightActionStatusChange = (rowKey) => {
-    console.log("on right action status change");
+  const onRightActionStatusChange = rowKey => {
+    console.log('on right action status change');
   };
 
   const swipeGestureEnded = (rowKey, data) => {
@@ -995,7 +979,7 @@ const JobRequestArchive = () => {
   return (
     <>
       <SafeAreaView style={backgroundStyle}>
-        <StatusBar barStyle={isDarkMode ? "light-content" : "dark-content"} />
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <SwipeListView
           data={list}
           renderItem={renderItem}

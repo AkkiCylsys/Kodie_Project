@@ -199,7 +199,7 @@ export const PropertyFeatureStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
     textAlign: "center",
     width: '100%',
-    // height: 38,
+    height: 38,
     paddingTop:5,
     alignSelf:'center',
     justifyContent:'center',

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,87 +6,87 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
-} from "react-native";
-import { DetailsStyle } from "./DetailsStyles";
-import { _goBack } from "../../../../../services/CommonServices";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import DividerIcon from "../../../../../components/Atoms/Devider/DividerIcon";
-import { _COLORS, BANNERS, LABEL_STYLES, IMAGES } from "../../../../../Themes";
-import { Config } from "../../../../../Config";
-import axios from "axios";
-import { CommonLoader } from "../../../../../components/Molecules/ActiveLoader/ActiveLoader";
+} from 'react-native';
+import {DetailsStyle} from './DetailsStyles';
+import {_goBack} from '../../../../../services/CommonServices';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
+import {_COLORS, BANNERS, LABEL_STYLES, IMAGES} from '../../../../../Themes';
+import {Config} from '../../../../../Config';
+import axios from 'axios';
+import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 const Detail = [
   {
-    id: "1",
+    id: '1',
     images: IMAGES.BedroomIcon,
-    name: "Bedrooms: 3",
+    name: 'Bedrooms: 3',
   },
   {
-    id: "2",
+    id: '2',
     images: IMAGES.Bathroom,
-    name: "Bathrooms: 2",
+    name: 'Bathrooms: 2',
   },
   {
-    id: "3",
+    id: '3',
     images: IMAGES.Parking,
-    name: "Garages: 1",
+    name: 'Garages: 1',
   },
   {
-    id: "4",
+    id: '4',
     images: IMAGES.BedroomIcon,
-    name: "Parkings: 1",
+    name: 'Parkings: 1',
   },
   {
-    id: "5",
+    id: '5',
     images: IMAGES.BedroomIcon,
-    name: "Garden",
+    name: 'Garden',
   },
   {
-    id: "6",
+    id: '6',
     images: IMAGES.BedroomIcon,
-    name: "Pool",
+    name: 'Pool',
   },
   {
-    id: "7",
+    id: '7',
     images: IMAGES.BedroomIcon,
-    name: "Furnished",
+    name: 'Furnished',
   },
   {
-    id: "8",
+    id: '8',
     images: IMAGES.BedroomIcon,
-    name: "WiFi",
+    name: 'WiFi',
   },
 ];
 
-export default Details = (props) => {
+export default Details = props => {
   const [getPropertyDetail, setGetPropertyDetail] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const getPropertyDetails = () => {
     const url = Config.API_URL;
-    const getPropertyDetailsurl = url + "get_All_Property_details";
-    console.log("Request URL:", getPropertyDetailsurl);
+    const getPropertyDetailsurl = url + 'get_All_Property_details';
+    console.log('Request URL:', getPropertyDetailsurl);
     setIsLoading(true);
     axios
       .post(getPropertyDetailsurl, {
         user: 2,
       })
-      .then((response) => {
-        console.log("getPropertyDetails", response.data);
-        if (response.data.status === true) {
+      .then(response => {
+        console.log('getPropertyDetails', response?.data);
+        if (response?.data?.status === true) {
           setIsLoading(false);
           console.log(
-            "getPropertyDetails....",
-            response.data?.property_details
+            'getPropertyDetails....',
+            response?.data?.property_details,
           );
           setGetPropertyDetail(response?.data?.property_details);
         } else {
-          console.error("getPropertyDetails_error:", response.data.error);
-          alert(response.data.error);
+          console.error('getPropertyDetails_error:', response?.data?.error);
+          alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
-      .catch((error) => {
-        console.error("getPropertyDetails error:", error);
+      .catch(error => {
+        console.error('getPropertyDetails error:', error);
         alert(error);
         setIsLoading(false);
       });
@@ -95,7 +95,7 @@ export default Details = (props) => {
     getPropertyDetails();
   }, []);
 
-  const Detail_rander = ({ item, index }) => {
+  const Detail_rander = ({item, index}) => {
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
@@ -110,7 +110,7 @@ export default Details = (props) => {
       <ScrollView>
         <Text style={DetailsStyle.welcome_Text}>
           {
-            "Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you..."
+            'Welcome to your new home! This beautiful 3 bedroom, 2 bathroom apartment boasts modern interior finishes and a spacious extended balcony. As you enter, you...'
           }
         </Text>
 
@@ -120,14 +120,14 @@ export default Details = (props) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{}}
           numColumns={2}
-          keyExtractor={(item) => item?.id}
+          keyExtractor={item => item?.id}
           renderItem={Detail_rander}
         />
 
         <DividerIcon borderBottomWidth={1} color={_COLORS.Kodie_GrayColor} />
         <View style={DetailsStyle.subContainer}>
           <View style={DetailsStyle.propety_details_view}>
-            <Text style={DetailsStyle.propery_det}>{"Property details"}</Text>
+            <Text style={DetailsStyle.propery_det}>{'Property details'}</Text>
 
             <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
               <AntDesign
@@ -141,7 +141,7 @@ export default Details = (props) => {
         </View>
         <View style={DetailsStyle.subContainer}>
           <View style={DetailsStyle.propety_details_view}>
-            <Text style={DetailsStyle.propery_det}>{"Rooms"}</Text>
+            <Text style={DetailsStyle.propery_det}>{'Rooms'}</Text>
 
             <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
               <AntDesign
@@ -155,7 +155,7 @@ export default Details = (props) => {
         </View>
         <View style={DetailsStyle.subContainer}>
           <View style={DetailsStyle.propety_details_view}>
-            <Text style={DetailsStyle.propery_det}>{"External featuress"}</Text>
+            <Text style={DetailsStyle.propery_det}>{'External featuress'}</Text>
 
             <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
               <AntDesign
@@ -169,7 +169,7 @@ export default Details = (props) => {
         </View>
         <View style={DetailsStyle.subContainer}>
           <View style={DetailsStyle.propety_details_view}>
-            <Text style={DetailsStyle.propery_det}>{"Points of interest"}</Text>
+            <Text style={DetailsStyle.propery_det}>{'Points of interest'}</Text>
 
             <TouchableOpacity style={DetailsStyle.down_Arrow_icon}>
               <AntDesign

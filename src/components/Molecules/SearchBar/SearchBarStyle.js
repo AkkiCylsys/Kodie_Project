@@ -1,11 +1,10 @@
-import { StyleSheet } from "react-native";
-import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
-import { FONTFAMILY, _COLORS } from "../../../Themes/index";
+import {StyleSheet} from 'react-native';
+import {FONTFAMILY, _COLORS} from '../../../Themes/index';
 export const SearchBarStyle = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
@@ -20,25 +19,25 @@ export const SearchBarStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Medium,
   },
   serchheaderView: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   filterView: {
-    alignSelf: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    justifyContent: 'center',
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginRight: 16,
-    // marginTop: 18,
+    marginTop: 18,
   },
   buttonView: {
     borderWidth: 1,
     backgroundColor: _COLORS.Kodie_BlackColor,
     marginTop: 18,
     marginRight: 16,
-    justifyContent: "center",
+    justifyContent: 'center',
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 10,
@@ -47,17 +46,17 @@ export const SearchBarStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_WhiteColor,
-    textAlign: "center",
-    alignSelf: "center",
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   groupIconView: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   groupIcon: {
-    position: "absolute",
+    position: 'absolute',
     left: 10,
     top: 10,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 });

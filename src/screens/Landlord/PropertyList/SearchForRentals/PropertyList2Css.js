@@ -34,10 +34,10 @@ export const PropertyList2Css = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   inputText: {
-    fontSize: 12,
-    fontFamily: FONTFAMILY.K_Bold,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
     color: _COLORS.Kodie_BlackColor,
-    marginTop: 6,
+    marginTop: 15,
   },
   rowView: {
     flex: 1,
@@ -65,7 +65,7 @@ export const PropertyList2Css = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
-    color:_COLORS.Kodie_GrayColor
+    color:_COLORS.Kodie_BlackColor
 
   },
   iconStyle: {
@@ -113,4 +113,128 @@ export const PropertyList2Css = StyleSheet.create({
     fontSize: 12,
     color:_COLORS.Kodie_WhiteColor
   },
+  select_item: {
+    padding: 17,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  key_selectedStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    shadowColor: '#000',
+    marginTop: 8,
+    marginRight: 12,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  // 
+  mainfeaturesview: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 12,
+  },
+  key_feature_mainView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  key_feature_subView: {flex: 1},
+  floorsizeview: {
+    flex: 0.5,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+  },
+  flor_input_field: {
+    borderWidth: 0.5,
+    borderRadius: 6,
+    borderColor: _COLORS.Kodie_ExtraminLiteGrayColor,
+    color: '#333',
+    fontFamily: FONTFAMILY.K_Medium,
+    textAlign: 'center',
+    alignItems: 'center',
+    width: 105,
+    height: 36,
+  },
+  key_feature_Text: {
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
+  key_feature_Text_view: {
+    flex: 1,
+  },
+  plus_minusview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 0.7,
+  },
+  menusIconView: {
+    borderWidth: 0.5,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  locationConView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  locationContainer: {
+    // flexDirection: "row",
+    // alignItems: "center",
+    flex: 1,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 6,
+    shadowColor: '#000',
+    // shadowOffset: { width: 0, height: 2 },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 2,
+  },
+  locationInput: {
+    flex: 1,
+    height: 48,
+    paddingHorizontal: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#ccc',
+    marginLeft: 5,
+    width: '15%',
+    justifyContent: 'center',
+    height: 50,
+  },
+  locationIcon: {
+    alignSelf: 'center',
+  },
+  BtnContainer: {
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    paddingVertical: 3,
+    borderRadius: 10,
+    width: '30%',
+    height: 50,
+    bottom: 0,
+    right: 20,
+    marginBottom: 30,
+    position: 'absolute',
+  },
+  error_text: {color: 'red', marginLeft: 10, marginTop: 5},
+
 });

@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { _COLORS, FONTFAMILY } from "../../../Themes";
-import { fontFamily } from "../../../Themes/FontStyle/FontStyle";
 export const JobCompletionCss = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -12,7 +11,7 @@ export const JobCompletionCss = StyleSheet.create({
   },
   HeadingText: {
     fontSize: 24,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
   },
   starStyle: { marginTop: 10, marginHorizontal: 5 },
@@ -32,7 +31,7 @@ export const JobCompletionCss = StyleSheet.create({
   leftText: { flex: 1, alignSelf: "center" },
   photo: {
     fontSize: 16,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
     marginTop: 15,
   },
@@ -47,7 +46,7 @@ export const JobCompletionCss = StyleSheet.create({
   ButtonView: { marginHorizontal: 16, marginBottom: 10 },
   SkipText: {
     fontSize: 16,
-    fontFamily: fontFamily.K_Bold,
+    fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
     marginVertical: 15,
     textAlign: "center",

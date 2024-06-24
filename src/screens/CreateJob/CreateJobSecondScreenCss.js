@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { FONTFAMILY, _COLORS } from "../../Themes/index";
+import {StyleSheet} from 'react-native';
+import {FONTFAMILY, _COLORS} from '../../Themes/index';
 export const CreateJobSecondStyle = StyleSheet.create({
   container: {
     flex: 1,
@@ -30,10 +30,10 @@ export const CreateJobSecondStyle = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
-  heading_View: { flexDirection: "row", marginTop: 10 },
+  heading_View: {flexDirection: 'row', marginTop: 10},
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginTop: 29,
   },
   goBack_Text: {
@@ -47,7 +47,7 @@ export const CreateJobSecondStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LiteWhiteColor,
   },
-  next_Btn: { marginTop: 50 },
+  next_Btn: {marginTop: 50},
   bottomModal_container: {
     borderWidth: 0.5,
     borderColor: _COLORS.Kodie_LightGrayColor,
@@ -57,12 +57,12 @@ export const CreateJobSecondStyle = StyleSheet.create({
   },
   slider_view: {
     flex: 1,
-    justifyContent: "center",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignSelf: 'center',
     // borderWidth: 1,
     marginVertical: 25,
   },
-  uploadImagebox: { flexDirection: "row" },
+  uploadImagebox: {flexDirection: 'row'},
   upload_Heading_Text: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
@@ -70,8 +70,8 @@ export const CreateJobSecondStyle = StyleSheet.create({
     marginTop: 10,
   },
   error_text: {
-    color: "red",
-
+    color: 'red',
+    // alignSelf: 'center',
     marginTop: 10,
 
     // borderWidth: 1,

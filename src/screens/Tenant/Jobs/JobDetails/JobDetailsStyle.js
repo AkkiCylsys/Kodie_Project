@@ -11,7 +11,8 @@ export const JobDetailsStyle = StyleSheet.create({
     fontSize: 24,
     fontFamily: FONTFAMILY.K_Bold,
     marginHorizontal: 16,
-    marginVertical: 25,
+    // marginVertical: 25,
+    marginBottom:10
   },
   slider_view: {
     flex: 1,

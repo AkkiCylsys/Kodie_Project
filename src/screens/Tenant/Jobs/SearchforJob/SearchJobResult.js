@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, FlatList, SafeAreaView } from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import Octicons from "react-native-vector-icons/Octicons";
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -10,24 +10,12 @@ import { _COLORS, IMAGES, FONTFAMILY } from "../../../../Themes";
 import DividerIcon from "../../../../components/Atoms/Devider/DividerIcon";
 import { SearchJobResultStyle } from "./SearchJobResultStyle";
 
-const searchData = [
-  {
-    id: "1",
-    category: "Fixing & maintenance",
-    description: "Electricals; Sydney; Greater than 4 rating; Budget: $200 ...",
-    title: "Fix plugs",
-    refNumber: "Ref #16642",
-    contractor: "Tom Smith",
-    budget: "$100",
-    location: "1729 Melbourne St Australia",
-  },
-  // Add more items as needed
-];
+
 
 const SearchJobResult = (props) => {
   const [rating, setRating] = useState(4);
   let SearchDataDetail = props?.route?.params?.SearchDataDetail;
-  console.log(SearchDataDetail);
+  console.log(SearchDataDetail,"jgjhgjhgjyg");
   const uniqueJobTypes = [
     ...new Set(SearchDataDetail.searchTypeData.map((item) => item.job_type)),
   ];
@@ -123,7 +111,7 @@ const SearchJobResult = (props) => {
 
   return (
     <>
-      <View style={SearchJobResultStyle.Mainview}>
+      <SafeAreaView style={SearchJobResultStyle.Mainview}>
         <TopHeader
           onPressLeftButton={() => _goBack(props)}
           MiddleText={"Search results"}
@@ -164,7 +152,7 @@ const SearchJobResult = (props) => {
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
         />
-      </View>
+      </SafeAreaView>
     </>
   );
 };

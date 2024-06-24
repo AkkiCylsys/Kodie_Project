@@ -1,34 +1,35 @@
-import React, { useRef } from "react";
-import { View, Text, Image, FlatList } from "react-native";
-import { BottomModalDataStyle } from "./BottomModalDataStyle";
-import { IMAGES, _COLORS } from "../../../Themes";
-import { TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import RBSheet from "react-native-raw-bottom-sheet";
-import { PropertyListCSS } from "../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import React, { useRef } from 'react';
+import { View, Text, Image, FlatList } from 'react-native';
+import { BottomModalDataStyle } from './BottomModalDataStyle';
+import { IMAGES, _COLORS } from '../../../Themes';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import { PropertyListCSS } from '../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const data = [
   {
-    id: "1",
-    Data: "View property details",
+    id: '1',
+    Data: 'View property details',
     // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons
         name="preview"
         size={25}
         color={_COLORS.Kodie_GreenColor}
-        style={{ alignSelf: "center" }}
+        style={{ alignSelf: 'center' }}
       />
     ),
   },
   {
-    id: "2",
-    Data: "Manage documents",
+    id: '2',
+    Data: 'Manage documents',
     // Img: IMAGES.Documents,
     Icon: (
       <MaterialCommunityIcons
@@ -39,8 +40,8 @@ const data = [
     ),
   },
   {
-    id: "3",
-    Data: "Create notice / reminder",
+    id: '3',
+    Data: 'Create notice / reminder',
     // Img: IMAGES.Reminder,
     Icon: (
       <Ionicons
@@ -51,8 +52,8 @@ const data = [
     ),
   },
   {
-    id: "4",
-    Data: "Chat to tenant",
+    id: '4',
+    Data: 'Chat to tenant',
     // Img: IMAGES.Chat_Tenant,
     Icon: (
       <Ionicons
@@ -63,12 +64,12 @@ const data = [
     ),
   },
   {
-    id: "5",
-    Data: "Delete property",
+    id: '5',
+    Data: 'Delete property',
     // Img: IMAGES.Delete,
     Icon: (
-      <MaterialIcons
-        name="delete-outline"
+      <AntDesign
+        name="delete"
         size={25}
         color={_COLORS.Kodie_GreenColor}
       />
@@ -77,8 +78,8 @@ const data = [
 ];
 const data1 = [
   {
-    id: "1",
-    Data: "Confirm delete property",
+    id: '1',
+    Data: 'Confirm delete property',
     // Img: IMAGES.View_property,
     Icon: (
       <MaterialIcons
@@ -89,8 +90,8 @@ const data1 = [
     ),
   },
   {
-    id: "2",
-    Data: "Archive instead",
+    id: '2',
+    Data: 'Archive instead',
     // Img: IMAGES.Documents,
     Icon: (
       <Ionicons
@@ -102,28 +103,28 @@ const data1 = [
   },
 ];
 
-const BottomModalData = (props) => {
+const BottomModalData = props => {
   const propertyId = props?.propertyId;
-  console.log("propertyId...", propertyId);
+  console.log('propertyId...', propertyId);
   const navigation = useNavigation(); // Hook to get navigation
   const refRBSheet = useRef();
   const handleCloseModal = () => {
     props.onClose(); // Call this function when you want to close the modal without performing delete action
     //alert('hi')
   };
-  const handleDeleteProperty = (propertyDelId) => {
-    console.log(propertyDelId, "catch data");
+  const handleDeleteProperty = propertyDelId => {
+    console.log(propertyDelId, 'catch data');
     props.onDelete(propertyDelId);
-    console.log("Raul data cath........... ", props.onDelete(propertyDelId));
+    console.log('Raul data cath........... ', props.onDelete(propertyDelId));
     // alert(propertyDelId);
   };
   const FinalDeleteProperty = (propertyDelId, Address) => {
-    console.log(propertyDelId, Address, "catch data");
+    console.log(propertyDelId, Address, 'catch data');
     props.onDelete(propertyDelId, Address);
-    console.log("come data...........", propertyDelId);
+    console.log('come data...........', propertyDelId);
     console.log(
-      "Raul data cath........... ",
-      props.onDeleteData(propertyDelId, Address)
+      'Raul data cath........... ',
+      props.onDeleteData(propertyDelId, Address),
     );
     // alert(propertyDelId);
   };
@@ -135,16 +136,15 @@ const BottomModalData = (props) => {
             <TouchableOpacity
               style={BottomModalDataStyle.container}
               onPress={() => {
-                if (item.id === "1") {
+                if (item.id === '1') {
                   FinalDeleteProperty();
                   // navigation.navigate("ViewPropertyDetails");
                 }
-                if (item.id === "2") {
+                if (item.id === '2') {
                   // navigation.navigate("ViewPropertyDetails");
                   // console.log("Property ID:", item.property_id);
                 }
-              }}
-            >
+              }}>
               {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
               {/* //{item.Icon} */}
               <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
@@ -155,34 +155,36 @@ const BottomModalData = (props) => {
           <TouchableOpacity
             style={BottomModalDataStyle.container}
             onPress={() => {
-              if (item.id === "1") {
-                navigation.navigate("PropertyReview", {
+              if (item.id === '1') {
+                navigation.navigate('PropertyReview', {
                   // propertyId: propertyId,
                   // propertyView: "propertyView",
                   propertyid: propertyId,
-                  propertyView: "propertyView",
+                  propertyView: 'propertyView',
                 });
                 handleCloseModal();
               }
-              if (item.id === "2") {
-                navigation.navigate("PropertyReview", {
+              if (item.id === '2') {
+                navigation.navigate('PropertyReview', {
                   // propertyId: propertyId,
                   // propertyView: "propertyView",
                   propertyid: propertyId,
-                  propertyView: "propertyView",
-                  DocTab:"DocTab"
+                  propertyView: 'propertyView',
+                  DocTab: 'DocTab',
                 });
                 handleCloseModal();
               }
-
-              if (item.id === "5") {
+              if (item.id === '3') {
+                navigation.navigate('AddNotices', { propertyView: 'propertyView' });
+                handleCloseModal();
+              }
+              if (item.id === '5') {
                 // navigation.navigate("ViewPropertyDetails");
                 handleDeleteProperty();
 
                 // console.log("Property ID:", item.property_id);
               }
-            }}
-          >
+            }}>
             {/* <Image source={item.Img} style={BottomModalDataStyle.Icons} /> */}
             <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
             <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
@@ -195,29 +197,27 @@ const BottomModalData = (props) => {
     <View style={BottomModalDataStyle.mainContainer}>
       <TouchableOpacity
         style={{
-          justifyContent: "flex-end",
-          alignSelf: "flex-end",
-          paddingHorizontal: 20,
+          justifyContent: 'flex-end',
+          alignSelf: 'flex-end',
         }}
-        onPress={handleCloseModal}
-      >
+        onPress={handleCloseModal}>
         <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-        {/* <Icon name={"close"} size={15} color={_COLORS?.Kodie_BlackColor} /> */}
       </TouchableOpacity>
       <FlatList
         data={props?.isDeletePropertyClicked ? data1 : data}
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
-        keyExtractor={(item) => item?.id}
+        keyExtractor={item => item?.id}
         renderItem={BottomData}
         ListHeaderComponent={() => {
           return (
             <>
               {props?.isDeletePropertyClicked ? (
                 <Text
-                  style={BottomModalDataStyle.text}
-                >{`Delete property: ${props?.Address} ?`}</Text>
+                  style={
+                    BottomModalDataStyle.text
+                  }>{`Delete property: ${props?.Address} ?`}</Text>
               ) : null}
             </>
           );

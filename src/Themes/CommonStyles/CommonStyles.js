@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from 'react-native';
 
-import { colors } from "../CommonColors/CommonColor";
-import { FONTFAMILY, _COLORS } from "../index";
-import { fontFamily } from "../FontStyle/FontStyle";
+import {colors} from '../CommonColors/CommonColor';
+import {FONTFAMILY, _COLORS} from '../index';
+import {fontFamily} from '../FontStyle/FontStyle';
 export const LABEL_STYLES = StyleSheet.create({
   // kodie Common label CSS
   _texinputLabel: {
@@ -16,7 +16,7 @@ export const LABEL_STYLES = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    letterSpacing:0.3,
+    letterSpacing: 0.3,
   },
   commonMidtext: {
     fontSize: 12,
@@ -28,8 +28,8 @@ export const VIEW_STYLES = StyleSheet.create({
   // kodie Common View CSS
   _bottomButtonView: {
     bottom: 10,
-    width: "100%",
-    position: "absolute",
+    width: '100%',
+    position: 'absolute',
     paddingHorizontal: 20,
   },
 });
@@ -38,115 +38,115 @@ const LabelStyles = StyleSheet.create({
   minTextLight: {
     fontSize: 9,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   minText: {
     fontSize: 9,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   minTextBold: {
     fontSize: 9,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   smallTextLight: {
     fontSize: 10,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   smallText: {
     fontSize: 10,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   smallTextBold: {
     fontSize: 10,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   commTextLight: {
     fontSize: 12,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   commText: {
     fontSize: 12,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   commTextBold: {
     fontSize: 12,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   commonTitleTextLight: {
     fontSize: 14,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   commonTitleText: {
     fontSize: 14,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   commonTitleTextBold: {
     fontSize: 14,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   errorText: {
     marginLeft: 2,
     fontSize: 14,
     color: colors?.red,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
 
   midLightText: {
     fontSize: 16,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   midText: {
     fontSize: 16,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   midTextBold: {
     fontSize: 16,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   largeTextLight: {
     fontSize: 20,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Light,
   },
   largeText: {
     fontSize: 20,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.medium,
+    fontFamily: FONTFAMILY?.K_Medium,
   },
   largeTextBold: {
     fontSize: 20,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
 
   ExtralargeTextLight: {
     fontSize: 30,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.light,
+    fontFamily: FONTFAMILY?.K_Bold,
   },
   ExtralargeTextBold: {
     fontSize: 30,
     color: colors?.fullBlack,
-    fontFamily: fontFamily?.bold,
+    fontFamily: fontFamily?.K_Bold,
   },
 });
 
@@ -163,18 +163,18 @@ const CommonStyles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 5,
     borderColor: colors?.Extralightgray,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
-  minText: { fontSize: 8, fontWeight: "400", color: colors?.fullBlack },
-  minTextBold: { fontSize: 8, fontWeight: "700", color: colors?.darkGray },
+  minText: {fontSize: 8, fontWeight: '400', color: colors?.fullBlack},
+  minTextBold: {fontSize: 8, fontWeight: '700', color: colors?.darkGray},
 
-  smallText: { fontSize: 10, fontWeight: "500", color: colors?.fullBlack },
-  smallTextBold: { fontSize: 10, fontWeight: "700", color: colors?.darkGray },
+  smallText: {fontSize: 10, fontWeight: '500', color: colors?.fullBlack},
+  smallTextBold: {fontSize: 10, fontWeight: '700', color: colors?.darkGray},
 
-  commText: { fontSize: 12, color: colors?.fullBlack, fontWeight: "500" },
-  commTextBold: { fontSize: 12, color: colors?.darkGray, fontWeight: "700" },
+  commText: {fontSize: 12, color: colors?.fullBlack, fontWeight: '500'},
+  commTextBold: {fontSize: 12, color: colors?.darkGray, fontWeight: '700'},
 
   normalText: {
     fontSize: 14,
@@ -189,68 +189,68 @@ const CommonStyles = StyleSheet.create({
   commonTitleText_2: {
     fontSize: 14,
     color: colors?.fullBlack,
-    fontWeight: "400",
+    fontWeight: '400',
   },
   commonTitleText: {
     fontSize: 14,
     color: colors?.fullBlack,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   commonTitleTextBold: {
     fontSize: 14,
     color: colors?.darkGray,
-    fontWeight: "900",
+    fontWeight: '900',
   },
 
   midTextLight: {
     fontSize: 15,
     color: colors?.fullBlack,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   midText: {
     fontSize: 15,
     color: colors?.darkGray,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   midTextBold: {
     fontSize: 15,
     color: colors?.bldarkGrayack,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   largeText: {
     fontSize: 17,
     color: colors?.fullBlack,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   largeTextBold: {
     fontSize: 18,
     color: colors?.darkGray,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   ExtralargeTextBold: {
     fontSize: 25,
     color: colors?.darkGray,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 
   mainHeading: {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 20,
     color: colors?.fullBlack,
   },
 
   mainHeadingBold: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 20,
     color: colors?.darkGray,
   },
 
   mainButtonContainer: {
     backgroundColor: colors?.orange,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 2,
     paddingVertical: 2,
     borderRadius: 5,
@@ -258,22 +258,22 @@ const CommonStyles = StyleSheet.create({
   mainButtonText: {
     fontSize: 15,
     color: colors?.fullWhite,
-    fontWeight: "700",
+    fontWeight: '700',
   },
   subButtonText: {
     fontSize: 12,
     color: colors?.fullWhite,
-    fontWeight: "500",
+    fontWeight: '500',
   },
 });
 
 const LoderStyles = StyleSheet.create({
   loaderFrameStyle: {
-    position: "absolute",
+    position: 'absolute',
     flex: 1,
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     left: 0,
     right: 0,
     top: 0,
@@ -292,15 +292,15 @@ const ModalViewStyles = StyleSheet.create({
   },
 });
 const CommonViewStyles = StyleSheet.create({
-  mainViewContainer: { flex: 1, backgroundColor: colors?.fullWhite },
-  rowView: { flexDirection: "row", alignItems: "center" },
-  rowViewCenter: { flexDirection: "row", justifyContent: "center" },
-  rowViewSpread: { flexDirection: "row", justifyContent: "space-between" },
-  LineHorizontal: { borderWidth: 0.3, borderColor: colors?.lightGray },
-  LineVertical: { borderWidth: 0.3, borderColor: colors?.lightGray },
+  mainViewContainer: {flex: 1, backgroundColor: colors?.fullWhite},
+  rowView: {flexDirection: 'row', alignItems: 'center'},
+  rowViewCenter: {flexDirection: 'row', justifyContent: 'center'},
+  rowViewSpread: {flexDirection: 'row', justifyContent: 'space-between'},
+  LineHorizontal: {borderWidth: 0.3, borderColor: colors?.lightGray},
+  LineVertical: {borderWidth: 0.3, borderColor: colors?.lightGray},
   shadowView: {
     shadowColor: colors?.fullBlack,
-    shadowOpacity: Platform.OS == "android" ? 0.3 : null,
+    shadowOpacity: Platform.OS == 'android' ? 0.3 : null,
     borderRadius: 2,
     shadowOffset: {
       height: 0.5,
@@ -311,7 +311,7 @@ const CommonViewStyles = StyleSheet.create({
   cardView: {
     borderRadius: 5,
     shadowColor: colors?.orange,
-    shadowOpacity: Platform.OS == "android" ? 0.2 : null,
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     shadowOffset: {
       height: 0,
@@ -323,8 +323,8 @@ const CommonViewStyles = StyleSheet.create({
   cardContentView: {
     elevation: 0.2,
     borderRadius: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: colors?.lowlightgrey,
   },
   contentContainer: {
@@ -334,9 +334,9 @@ const CommonViewStyles = StyleSheet.create({
   },
   squareView: {
     borderWidth: 1,
-    borderColor: "transparent",
-    justifyContent: "center",
-    alignItems: "center",
+    borderColor: 'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 6,
     padding: 2,
   },
@@ -345,15 +345,15 @@ const CommonViewStyles = StyleSheet.create({
 const ScrollViewStyles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    paddingBottom: "10%",
+    paddingBottom: '10%',
   },
   upperLayer: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: 'flex-start',
   },
   lowerLayer: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
 });
 

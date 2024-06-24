@@ -36,4 +36,11 @@ export const AddContractorModalStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
   },
   content_View: { flexDirection: "row", marginTop: 10, marginHorizontal: 16 },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },  
 });

@@ -1,17 +1,17 @@
-import { View, Text, TextInput, Image } from "react-native";
-import React, { useRef } from "react";
-import { CreditCardStyle } from "./CreditCardStyle";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { _COLORS, IMAGES } from "../../../Themes";
-import RBSheet from "react-native-raw-bottom-sheet";
-import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
-import { _goBack } from "../../../services/CommonServices";
-const CreditCard = (props) => {
+import {View, Text, TextInput, Image} from 'react-native';
+import React, {useRef} from 'react';
+import {CreditCardStyle} from './CreditCardStyle';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {_COLORS, IMAGES} from '../../../Themes';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
+import {_goBack} from '../../../services/CommonServices';
+const CreditCard = props => {
   const refRBSheet = useRef();
   return (
     <View>
-      <View style={{ marginTop: 30 }}>
+      <View style={{marginTop: 30}}>
         <Text style={CreditCardStyle.inputtext}>Card number</Text>
         <View style={CreditCardStyle.inputContainer}>
           <TextInput
@@ -39,7 +39,7 @@ const CreditCard = (props) => {
         </View>
       </View>
 
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View>
           <Text style={CreditCardStyle.inputtext}>Expiry date</Text>
           <View style={CreditCardStyle.inputCarddate}>
@@ -51,15 +51,13 @@ const CreditCard = (props) => {
           </View>
         </View>
         <View>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={CreditCardStyle.inputtext}>CVV / CVC</Text>
             <AntDesign
-              name={"questioncircleo"}
+              name={'questioncircleo'}
               size={20}
               color={_COLORS.Kodie_lightGreenColor}
-              style={{ marginRight: 25 }}
+              style={{marginRight: 25}}
             />
           </View>
           <View style={CreditCardStyle.inputCarddate}>
@@ -81,7 +79,7 @@ const CreditCard = (props) => {
       <View style={CreditCardStyle.btnview}>
         <CustomSingleButton
           borderColor={_COLORS.Kodie_TransparentColor}
-          _ButtonText={"Complete payment"}
+          _ButtonText={'Complete payment'}
           backgroundColor={_COLORS.Kodie_BlackColor}
           Text_Color={_COLORS.Kodie_WhiteColor}
           // disabled={isLoading ? true : false}
@@ -96,14 +94,13 @@ const CreditCard = (props) => {
         height={400}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: CreditCardStyle.bottomModal_container,
-        }}
-      >
+        }}>
         <View style={CreditCardStyle.modalContainer}>
           <Text style={CreditCardStyle.modalMainText}>Payment Successful!</Text>
           <Text style={CreditCardStyle.modalMainText2}>
@@ -111,11 +108,11 @@ const CreditCard = (props) => {
           </Text>
           <Image
             source={IMAGES.CheckIcon}
-            resizeMode={"center"}
+            resizeMode={'center'}
             style={CreditCardStyle.checkStl}
           />
           <CustomSingleButton
-            _ButtonText={"View history"}
+            _ButtonText={'View history'}
             Text_Color={_COLORS.Kodie_WhiteColor}
             height={48}
             onPress={() => {
@@ -124,7 +121,7 @@ const CreditCard = (props) => {
           />
           <CustomSingleButton
             // disabled={isLoading ? true : false}
-            _ButtonText={"Return home"}
+            _ButtonText={'Return home'}
             Text_Color={_COLORS.Kodie_BlackColor}
             height={48}
             borderColor={_COLORS.Kodie_WhiteColor}

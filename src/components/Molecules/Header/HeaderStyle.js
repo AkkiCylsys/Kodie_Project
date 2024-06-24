@@ -5,7 +5,7 @@ export const HeaderStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     height: 55, // Adjust height for iOS
-    marginTop: Platform.OS === "ios" ? 38 : 40,
+    marginTop: Platform.OS === "ios" ?0 : 40,
     width: "100%",
   },
   leftButtonView: { width: "25%", alignSelf: "center" },
@@ -48,8 +48,8 @@ export const HeaderStyle = StyleSheet.create({
     marginLeft: 10,
     justifyContent: "center",
     alignSelf: "center",
-    // borderColor: "red",
-    borderWidth: 0.2,
+    borderColor:_COLORS.Kodie_GrayColor,
+    borderWidth:1,
   },
   nullView: { width: "25%", flexDirection: "row", justifyContent: "center" },
   notificationButton: {

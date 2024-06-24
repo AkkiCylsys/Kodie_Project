@@ -1,13 +1,17 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet,Platform} from "react-native";
 import { FONTFAMILY, _COLORS } from "../../../Themes/index";
 export const BottomModalDataStyle = StyleSheet.create({
-  mainContainer: { flex: 1 },
+  mainContainer: {
+     flex: 1,
+     marginHorizontal:16
+     },
   container: {
     flexDirection: "row",
     alignItems: "center",
     // padding: "1%",
-    marginHorizontal: 10,
+    // marginHorizontal: 10,
     backgroundColor: _COLORS.Kodie_WhiteColor,
+    marginBottom:Platform.OS == 'ios'?12:8
   },
   text: {
     fontSize: 14,

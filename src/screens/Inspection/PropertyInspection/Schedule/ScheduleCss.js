@@ -10,7 +10,6 @@ export const ScheduleCss = StyleSheet.create({
     marginVertical: 16,
   },
   inspections: {
-    fontFamily: 14,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
     marginBottom: 10,

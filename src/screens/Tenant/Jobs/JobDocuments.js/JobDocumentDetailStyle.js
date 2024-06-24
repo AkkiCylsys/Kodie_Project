@@ -4,6 +4,17 @@ export const JobDocumentDetailStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
   },
+  submodalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginHorizontal: 16,
+    marginTop: 25,
+  },
+  Invite_tenant: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+  },
   mainview: {
     justifyContent: "center",
     backgroundColor: "#9debd6",
@@ -47,14 +58,14 @@ export const JobDocumentDetailStyle = StyleSheet.create({
   textContainer: {
     // flex:1,
     flexDirection: "column",
-    marginLeft: 5,
+    marginLeft: 10,
   },
 
   pdfInfo: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    padding: 5,
+    padding: 10,
   },
   pdfName: {
     flex: 0.5,

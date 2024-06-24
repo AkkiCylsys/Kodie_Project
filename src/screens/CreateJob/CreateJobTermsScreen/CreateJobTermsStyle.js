@@ -48,7 +48,7 @@ export const CreateJobTermsStyle = StyleSheet.create({
 
   placeholderStyle: {
     fontSize: 14,
-    color: _COLORS.Kodie_BlackColor,
+    color: _COLORS.Kodie_LightGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginLeft: 10,
   },

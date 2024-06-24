@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView,TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { InviteTenantStyle } from "./InviteTenantStyle";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -10,21 +10,17 @@ const InviteTenant = () => {
   const [isPopupVisible, setPopupVisible] = useState(true);
 
   const handleClosePopup = () => {
-    setPopupVisible(false);
+    props.onClose();
   };
-
   return (
     <ScrollView>
       <View style={InviteTenantStyle.headingview}>
         <Text style={InviteTenantStyle.headingtext}>
         Invite tenant 
         </Text>
-        <Entypo
-          name="cross"
-          size={24}
-          color={_COLORS.Kodie_BlackColor}
-          onPress={handleClosePopup}
-        />
+        <TouchableOpacity onPress={handleClosePopup}>
+          <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+        </TouchableOpacity>
       </View>
 
       <View style={InviteTenantStyle.optionsmainview}>

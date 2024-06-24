@@ -21,7 +21,7 @@ Container:{
     lineHeight:20,
     color:_COLORS.Kodie_BlackColor,
     fontSize:12,
-    fontFamily:'Plus Jakarta Sans'
+    fontFamily: FONTFAMILY.K_Bold,
   },
   Time:{
     fontSize:14,
@@ -85,7 +85,7 @@ Container:{
   Mondaytime:{
     color:_COLORS.Kodie_BlackColor,
     fontSize:10,
-    fontFamily:' Plus Jakarta Sans',
+    fontFamily:FONTFAMILY.K_Bold,
     fontFamily: FONTFAMILY.K_Bold,
     borderWidth:1,
     borderRadius:8,

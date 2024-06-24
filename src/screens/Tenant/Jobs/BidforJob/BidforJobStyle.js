@@ -49,7 +49,7 @@ export const BidforJobStyle = StyleSheet.create({
     marginTop: 15,
     flex: 1,
   },
-  datePickerView: { flexDirection: "row" },
+  datePickerView: { flex:1,flexDirection: "row" },
   error_text: { color: "red", marginLeft: 10 },
   textInputStyle: {
     alignSelf: "center",

@@ -139,7 +139,7 @@ export const PropertyDetailsStyle = StyleSheet.create({
   },
   itemView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 10,
     marginHorizontal: 10,
   },
@@ -147,7 +147,28 @@ export const PropertyDetailsStyle = StyleSheet.create({
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
   },
-  characterLimit:{
-    marginTop:5
-  }
+  characterLimit: {
+    marginTop: 5,
+  },
+  c_locationBtn: {
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    // alignSelf: "flex-end",
+    paddingVertical: 3,
+    borderRadius: 10,
+    width: '25%',
+    height: 60,
+    bottom: 0,
+    // right: 20,
+    left: 20,
+    marginBottom: 30,
+    position: 'absolute',
+  },
+  errorText: {
+    color: _COLORS.Kodie_redColor,
+    fontFamily: FONTFAMILY?.K_Medium,
+    fontSize: 14,
+  },
 });
