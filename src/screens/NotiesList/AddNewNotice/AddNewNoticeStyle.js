@@ -323,7 +323,7 @@ export const AddNewNoticeStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: _COLORS.Kodie_LightGrayColor,
-    color:_COLORS.Kodie_LightGrayColor
+    color:_COLORS.Kodie_BlackColor
   },
   locationIconView: {
     borderWidth: 1,

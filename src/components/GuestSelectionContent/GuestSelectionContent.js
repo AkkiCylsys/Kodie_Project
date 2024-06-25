@@ -6,6 +6,7 @@ import {
   TextInput,
   FlatList,
   Image,
+  Keyboard
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -103,7 +104,9 @@ const GuestSelectionContent = ({
               </Text>
             </View>
             <TouchableOpacity
-              onPress={() => handleSelect(item)}
+              onPress={() => {handleSelect(item);
+                Keyboard.dismiss();
+              }}
               style={{
                 paddingHorizontal: 15,
                 paddingVertical: 10,

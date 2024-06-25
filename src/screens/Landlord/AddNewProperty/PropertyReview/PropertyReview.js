@@ -379,6 +379,10 @@ export default PropertyReview = props => {
       </View>
     );
   };
+  const parkingSpaceValueObj = Detail.find(item => "Parking Space" in item);
+  const parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj["Parking Space"] : null;
+  
+  console.log("Parking Space value:", parkingSpaceValue);
   const goBack = () => {
     props.navigation.pop();
   };
@@ -672,7 +676,7 @@ export default PropertyReview = props => {
                       LABEL_STYLES.commontext,
                       {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
-                    {Detail[0]?.Bedrooms}
+                    {parkingSpaceValue}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
@@ -865,9 +869,9 @@ export default PropertyReview = props => {
       <TopHeader
         onPressLeftButton={
           propertyView
-            ? () => props.navigation.navigate('MarketplacePropertyListing')
+            ? () => props.navigation.navigate('Properties')
             : propertyListing
-            ? () => props.navigation.navigate('VacantPropertiesList')
+            ? () => props.navigation.navigate('MarketplacePropertyListing')
             : goBack
         }
         MiddleText={
@@ -896,7 +900,7 @@ export default PropertyReview = props => {
         </View>
       )}
       <ScrollView contentContainerStyle={{}}>
-        {propertyView ? null : (
+        {propertyView || propertyListing? null : (
           <View style={[PropertyReviewStyle.headingView]}>
             <Text style={PropertyReviewStyle.heading}>
               {'Review property details'}
@@ -1016,7 +1020,7 @@ export default PropertyReview = props => {
             onPressTab2={() => {
               if (editMode) {
                 null;
-              } else if (propertyView) {
+              } else if (propertyView || propertyListing) {
                 setActiveTab('Tab2');
               } else {
                 null;
@@ -1025,7 +1029,7 @@ export default PropertyReview = props => {
             onPressTab3={() => {
               if (editMode) {
                 null;
-              } else if (propertyView) {
+              } else if (propertyView || propertyListing) {
                 setActiveTab('Tab3');
               } else {
                 null;
@@ -1034,7 +1038,7 @@ export default PropertyReview = props => {
             onPressTab4={() => {
               if (editMode) {
                 null;
-              } else if (propertyView) {
+              } else if (propertyView || propertyListing) {
                 setActiveTab('Tab4');
               } else {
                 null;

@@ -165,7 +165,7 @@ const ProfileDocumentDetails = props => {
             onPress={() => {
               refRBSheet.current.open();
               setFileKey(item.PDUM_FILE_KEY);
-              setFilePath(item.PDUM_FILE_PATH);
+              setFilePath(item.image_paths[0]);
             }}>
             <Entypo
               name="dots-three-vertical"

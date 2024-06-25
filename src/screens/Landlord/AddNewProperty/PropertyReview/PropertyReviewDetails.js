@@ -52,7 +52,7 @@ export default PropertyReviewDetails = props => {
 
   const propertyid = props?.route?.params?.propertyid;
   const propertyView = props?.route?.params?.propertyView;
-  const propertyListing = props?.route?.params?.propertyListing;
+  const propertyVacantListing = props?.route?.params?.propertyVacantListing;
   const backProperty = props?.route?.params?.backProperty;
   const MultiImageName = props?.route?.params?.MultiImageName;
   const selectedVideos = props?.route?.params?.selectedVideos;
@@ -228,7 +228,8 @@ export default PropertyReviewDetails = props => {
   const fetchData = async () => {
     try {
       const detailData = {
-        property_id: propertyView ? propertyid : property_id,
+        property_id:
+          propertyView || propertyVacantListing ? propertyid : property_id,
       };
       const url = Config.BASE_URL;
       const property_Detailss = url + 'get_property_details';
@@ -389,6 +390,12 @@ export default PropertyReviewDetails = props => {
   const goBack = () => {
     props.navigation.pop();
   };
+  const parkingSpaceValueObj = Detail.find(item => 'Parking Space' in item);
+  const parkingSpaceValue = parkingSpaceValueObj
+    ? parkingSpaceValueObj['Parking Space']
+    : null;
+
+  console.log('Parking Space value:', parkingSpaceValue);
   const checkTabs = () => {
     switch (activeTab) {
       case 'Tab1':
@@ -682,7 +689,7 @@ export default PropertyReviewDetails = props => {
                       LABEL_STYLES.commontext,
                       {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
-                    {Detail[0]?.Bedrooms}
+                    {parkingSpaceValue}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
@@ -875,19 +882,19 @@ export default PropertyReviewDetails = props => {
           // propertyView ? () => props.navigation.navigate('Properties') : goBack
           backProperty
             ? () => props.navigation.navigate('Properties')
-            : propertyListing
+            : propertyVacantListing
             ? () => props.navigation.navigate('VacantPropertiesList')
             : goBack
         }
         MiddleText={
           editMode
             ? 'Edit property'
-            : propertyView
+            : propertyView || propertyVacantListing
             ? property_Detail?.location
             : 'Add new property'
         }
       />
-      {propertyView ? null : (
+      {propertyView || propertyVacantListing ? null : (
         <View
           style={{
             marginTop: 15,
@@ -903,7 +910,7 @@ export default PropertyReviewDetails = props => {
         </View>
       )}
       <ScrollView contentContainerStyle={{}}>
-        {propertyView ? null : (
+        {propertyView || propertyVacantListing ? null : (
           <View style={[PropertyReviewStyle.headingView]}>
             <Text style={PropertyReviewStyle.heading}>
               {'Review property details'}
@@ -997,14 +1004,32 @@ export default PropertyReviewDetails = props => {
             TAB3
             TAB4
             Tab1={'Details'}
-            Tab2={editMode ? null : propertyView ? 'Leases' : null}
-            Tab3={editMode ? null : propertyView ? 'Expenses' : null}
-            Tab4={editMode ? null : propertyView ? 'Documents' : null}
+            Tab2={
+              editMode
+                ? null
+                : propertyView || propertyVacantListing
+                ? 'Leases'
+                : null
+            }
+            Tab3={
+              editMode
+                ? null
+                : propertyView || propertyVacantListing
+                ? 'Expenses'
+                : null
+            }
+            Tab4={
+              editMode
+                ? null
+                : propertyView || propertyVacantListing
+                ? 'Documents'
+                : null
+            }
             onPressTab1={() => setActiveTab('Tab1')}
             onPressTab2={() => {
               if (editMode) {
                 null;
-              } else if (propertyView) {
+              } else if (propertyView || propertyVacantListing) {
                 setActiveTab('Tab2');
               } else {
                 null;
@@ -1013,7 +1038,7 @@ export default PropertyReviewDetails = props => {
             onPressTab3={() => {
               if (editMode) {
                 null;
-              } else if (propertyView) {
+              } else if (propertyView || propertyVacantListing) {
                 setActiveTab('Tab3');
               } else {
                 null;
@@ -1022,7 +1047,7 @@ export default PropertyReviewDetails = props => {
             onPressTab4={() => {
               if (editMode) {
                 null;
-              } else if (propertyView) {
+              } else if (propertyView || propertyVacantListing) {
                 setActiveTab('Tab4');
               } else {
                 null;

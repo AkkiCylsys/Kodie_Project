@@ -65,16 +65,16 @@ const Jobs = props => {
       case 'Tab2':
         return (
           <>
-          {Alert.alert('Search For Contractor', 'Coming soon', [
-            {
-              text: 'OK',
-              onPress: () => {
-                console.log('OK Pressed');
-                setActiveTab('Tab1');
+            {Alert.alert('Search for contractor', 'Coming soon', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  console.log('OK Pressed');
+                  setActiveTab('Tab1');
+                },
               },
-            },
-          ])}
-        </>
+            ])}
+          </>
           // <SearchForContractor
           //   Search={SearchData => {
           //     alert('dfgdsgddgdsdfd', JSON.stringify(SearchData));
@@ -87,14 +87,25 @@ const Jobs = props => {
 
       case 'Tab3':
         return (
-          <SearchforJob
-            SearchResultJob={Searchjob => {
-              // alert("Searchjob", JSON.stringify(Searchjob));
-              props.navigation.navigate('SearchJobResult', {
-                SearchDataDetail: Searchjob,
-              });
-            }}
-          />
+          // <SearchforJob
+          //   SearchResultJob={Searchjob => {
+          //     // alert("Searchjob", JSON.stringify(Searchjob));
+          //     props.navigation.navigate('SearchJobResult', {
+          //       SearchDataDetail: Searchjob,
+          //     });
+          //   }}
+          // />
+          <>
+            {Alert.alert('Search for job', 'Coming soon', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  console.log('OK Pressed');
+                  setActiveTab('Tab1');
+                },
+              },
+            ])}
+          </>
         );
 
       default:

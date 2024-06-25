@@ -36,13 +36,15 @@ export default Documents = props => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    getAllDocuments()
+    {
+      isfocused ? getAllDocuments() : null;
+    }
     getUploadedDocumentsByModule('Property');
     getUploadedDocumentsByModule('Lease');
     getUploadedDocumentsByModule('Tenant');
   }, [isfocused]);
   const property_id = props.property_id;
-  console.log("property_id..",property_id)
+  console.log('property_id..', property_id);
   // alert(props.property_id);
   const [value, setValue] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -116,15 +118,15 @@ export default Documents = props => {
     setIsLoading(true);
     axios
       .delete(delete_url, {
-        data: dataToSend, 
+        data: dataToSend,
       })
       .then(res => {
-        console.log('res......', res);
+        console.log('res......', res?.data);
         if (res?.data?.success === true) {
           alert(res?.data?.message);
+          getAllDocuments();
           closeModal();
         }
-        getAllDocuments();
       })
       .catch(error => {
         console.error('Error deleting:', error);
@@ -224,7 +226,7 @@ export default Documents = props => {
             style={DocumentsStyle.crossIcon}
             onPress={() => {
               refRBSheet.current.open();
-              setFilePath(item.image_paths);
+              setFilePath(item.image_paths[0]);
               setFileKey(item.PDUM_FILE_KEY);
             }}>
             <Entypo
@@ -265,12 +267,12 @@ export default Documents = props => {
   };
 
   // Api intrigation ......
-  const getAllDocuments =async () => {
+  const getAllDocuments = () => {
     const url = Config.BASE_URL;
     const getDocument_url = url + `get/document/${property_id}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
-   await axios
+    axios
       .get(getDocument_url)
       .then(response => {
         console.log('API Response getDocuments:', response?.data);
@@ -278,7 +280,7 @@ export default Documents = props => {
           setUploadDocData(response?.data?.data);
           console.log('getAlluploadDocData..', response?.data?.data);
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
