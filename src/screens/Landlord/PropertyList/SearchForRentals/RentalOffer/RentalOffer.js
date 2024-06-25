@@ -30,6 +30,7 @@ import TenantScreeningReportModal from '../../../../../components/Molecules/Tena
 import ApplicationSubmitModal from '../../../../../components/Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';
+import {resolvePlugin} from '@babel/core';
 
 const DocumentData = [
   {
@@ -41,34 +42,20 @@ const RentalOffer = props => {
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
+  const [fullName, setFullName] = useState('');
+  const [leaseFullName, setLeaseFullName] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
+  const [leaseEmailAddress, setleaseEmailAddress] = useState('');
+  const [leasecConfirmEmailAddress, setLeasecConfirmEmailAddress] =
+    useState('');
   const [RentalDetails, setRentalDetails] = useState(false);
   const [RentalHistory, setRentalHistory] = useState(false);
   const [TenantRooms, setTenantRooms] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [RentalLeasevalue, setRentalLeaseValue] = useState(0);
   const [RentalLeaseData, setRentalLeaseData] = useState([]);
-  const [EmployeeValue, setEmployeeValue] = useState(0);
   const [EmployeeValueData, setEmployeeValueData] = useState(null);
-  const [valueStying, setValueStying] = useState(0);
   const [valueStyingData, setValueStyingData] = useState([]);
-  const [rentalBudget, setRentalBudget] = useState('');
-  const [longEmployee, setLongEmployee] = useState('');
-  const [lookingmove, setLookingmove] = useState('');
-  const [weeklyIncome, setWeeklyIncome] = useState(0);
-  const [selected_Paying_Button, setSelected_Paying_Button] = useState(false);
-  const [selected_Paying_Id, setSelected_Paying_Id] = useState(1);
-  const [selected_Rental_Agreement, setSelected_Rental_Agreement] =
-    useState(false);
-  const [selected_Agreement_Id, setSelected_Agreement_Id] = useState(1);
-  const [selected_Previous_Rental, setSelected_Previous_Rental] =
-    useState(false);
-  const [selected_Previous_Id, setSelected_Previous_Id] = useState(1);
-  const [selected_Smoking, setSelected_Smoking] = useState(false);
-  const [selected_Smoking_Id, setSelected_Smoking_Id] = useState(1);
-  const [selected_Pets, setSelected_Pets] = useState(false);
-  const [selected_Pets_Id, setSelected_Pets_Id] = useState(1);
-  const [pets, setPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
   const [Preferences, setPreferences] = useState(false);
   const [submitApplicationBtn, setSubmitApplicationBtn] = useState(false);
@@ -80,18 +67,43 @@ const RentalOffer = props => {
   const [inputValues, setInputValues] = useState({});
   const [question, setQuestion] = useState([]);
   const [employeeQues, setEmployeeQues] = useState([]);
-  const [earnIncome, setEarnIncome] = useState([]);
   const [rentailDetails, setRentailDetails] = useState([]);
-  const [peopalStay, setPeopalStay] = useState([]);
   const [rental_History, setRental_History] = useState([]);
   const [preference, setPreference] = useState([]);
   const [personalDetails, setPersonalDetails] = useState({});
   const [employmentStatus, setEmploymentStatus] = useState({});
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [income, setIncome] = useState('');
   const [dropdownData, setDropdownData] = useState({});
   const [allQuestion, setAllQuestion] = useState([]);
+  const [numberOccupants, setNumberOccupants] = useState(0);
+  const [numberLeaseHolder, setNumberLeaseHolder] = useState(0);
+  const [numberYearEmp, setNumberYearEmp] = useState(0);
+  const [toggleOccupants, setToggleOccupants] = useState(false);
+  const [leaseHolder, setLeaseHolder] = useState(false);
+  const increaseNumberOccupants = () => {
+    setNumberOccupants(prevCount => prevCount + 1);
+  };
+  const increaseLeaseHolder = () => {
+    setNumberLeaseHolder(prevCount => prevCount + 1);
+  };
+  const decreaseNumberOccupants = () => {
+    if (numberOccupants > 0) {
+      setNumberOccupants(prevCount => prevCount - 1);
+    }
+  };
+  const decreaseLeaseHolder = () => {
+    if (numberLeaseHolder > 0) {
+      setNumberLeaseHolder(prevCount => prevCount - 1);
+    }
+  };
+  const increaseNumberYearEmp = () => {
+    setNumberYearEmp(prevCount => prevCount + 1);
+  };
+  const decreaseNumberYearEmp = () => {
+    if (numberYearEmp > 0) {
+      setNumberYearEmp(prevCount => prevCount - 1);
+    }
+  };
   useEffect(() => {
     handleLeaseTerm();
     handleStyingProperty();
@@ -270,6 +282,7 @@ const RentalOffer = props => {
         setIsLoading(false);
       });
   };
+
   const handleQuesCode = questionCode => {
     const url = Config.BASE_URL;
     const tenantQues_url = url + 'question_details_for_tenant_ques';
@@ -279,6 +292,7 @@ const RentalOffer = props => {
       p_question_code: questionCode,
       p_type: 'OPTION',
     };
+
     axios
       .post(tenantQues_url, tenantQuesData)
       .then(response => {
@@ -286,30 +300,24 @@ const RentalOffer = props => {
         if (response?.data?.success === true) {
           const data = response?.data?.data;
           setAllQuestion(data);
-          if (questionCode === 'PERSONAL_DETAILS') {
-            setQuestion(data);
-          } else if (questionCode === 'Employment_Status') {
-            setEmployeeQues(data);
-          } else if (questionCode === 'EARN_INCOME') {
-            setEarnIncome(data);
-          } else if (questionCode === 'RENTAL_DETAILS') {
+
+          if (questionCode === 'RENTAL_DETIALS') {
             setRentailDetails(data);
-          } else if (questionCode === 'PEOPLE_STAY') {
-            setPeopalStay(data);
+            console.log('rentailDetails.....', rentailDetails);
+          } else if (questionCode === 'EMPLOYEMENT&INCOME') {
+            setEmployeeQues(data);
+            console.log('employeeQues....', employeeQues);
+            console.log('employeeQues.....', employeeQues);
           } else if (questionCode === 'RENTAL_HISTORY') {
             setRental_History(data);
           } else if (questionCode === 'PREFERENCES') {
             setPreference(data);
           }
-        } else {
-          setIsLoading(false);
         }
+        setIsLoading(false);
       })
       .catch(error => {
         console.error('API failed QuesCode', error);
-        setIsLoading(false);
-      })
-      .finally(() => {
         setIsLoading(false);
       });
   };
@@ -328,25 +336,6 @@ const RentalOffer = props => {
     setIsLoading(false);
   };
 
-  // const handleDropdown = async questionCode => {
-  //   setIsLoading(true);
-  //   const res = await SignupLookupDetails({
-  //     P_PARENT_CODE: questionCode, // Use the dynamic question code here
-  //     P_TYPE: 'OPTION',
-  //   });
-
-  //   console.log('Dropdown data...', res);
-  //   if (res.status === true) {
-  //     // Update the dropdown data state with the fetched data
-  //     setDropdownData(prevData => ({
-  //       ...prevData,
-  //       [questionCode]: res?.lookup_details,
-  //     }));
-  //   } else {
-  //     alert("false")
-  //     setIsLoading(false);
-  //   }
-  // };
   const handleDropdown = async questionCode => {
     setIsLoading(true);
     try {
@@ -385,7 +374,7 @@ const RentalOffer = props => {
           {item.lookup_description}
         </Text>
         {/* <AntDesign
-            style={PropertyFeatureStyle.icon}
+            style={RentalOfferStyle.icon}
             color={_COLORS.Kodie_BlackColor}
             name="check"
             size={20}
@@ -421,16 +410,10 @@ const RentalOffer = props => {
         {expandedItems[item?.tqm_Question_code] && (
           <FlatList
             data={
-              item?.tqm_Question_code === 'PERSONAL_DETAILS'
-                ? question
-                : item?.tqm_Question_code === 'Employment_Status'
-                ? employeeQues
-                : item?.tqm_Question_code === 'EARN_INCOME'
-                ? earnIncome
-                : item?.tqm_Question_code === 'PEOPLE_STAY'
-                ? peopalStay
-                : item?.tqm_Question_code === 'RENTAL_DETAILS'
+              item?.tqm_Question_code === 'RENTAL_DETIALS'
                 ? rentailDetails
+                : item?.tqm_Question_code === 'EMPLOYEMENT&INCOME'
+                ? employeeQues
                 : item?.tqm_Question_code === 'RENTAL_HISTORY'
                 ? rental_History
                 : item?.tqm_Question_code === 'PREFERENCES'
@@ -468,50 +451,6 @@ const RentalOffer = props => {
     }
   };
 
-  // const handleSubmit = () => {
-  //   const formData = {
-  //     ...inputValues,
-  //     ...personalDetails,
-  //     ...employmentStatus,
-  //   };
-
-  //   console.log("inputValues ......",inputValues)
-  //   console.log("personalDetails ......",personalDetails)
-  //   const resultData = {
-  //     propertyDetails: {},
-  //     employmentDetails: {},
-  //     incomeDetails: {},
-  //     rentalDetails: {},
-  //     peopleStayDetails: {},
-  //     rentalHistoryDetails: {},
-  //     preferenceDetails: {},
-  //     personalDetails: {},
-  //     employmentStatus: {},
-  //   };
-
-  //   const processQuestions = (questions, category) => {
-  //     questions.forEach(questionItem => {
-  //       const value = formData[questionItem.tqm_Question_code];
-  //       resultData[category][questionItem.tqm_Question_code] =
-  //         value !== undefined ? value : '';
-  //     });
-  //   };
-
-  //   processQuestions(question, 'propertyDetails');
-  //   processQuestions(employeeQues, 'employmentDetails');
-  //   processQuestions(earnIncome, 'incomeDetails');
-  //   processQuestions(rentailDetails, 'rentalDetails');
-  //   processQuestions(peopalStay, 'peopleStayDetails');
-  //   processQuestions(rental_History, 'rentalHistoryDetails');
-  //   processQuestions(preference, 'preferenceDetails');
-
-  //   resultData.personalDetails = {...personalDetails};
-  //   resultData.employmentStatus = {...employmentStatus};
-
-  //   console.log('Result Data:', resultData);
-  //   return resultData;
-  // };
-
   const handleSubmit = () => {
     const allQuestions = [
       ...question,
@@ -522,26 +461,25 @@ const RentalOffer = props => {
       ...rental_History,
       ...preference,
     ];
-  
+
     const allData = {};
     allQuestions.forEach(q => {
       const value = inputValues[q.tqm_Question_code];
       allData[q.id] = value !== undefined ? value : null;
     });
-  
+
     const jsonData = {
-      "allData": allData
+      allData: allData,
     };
-  
+
     console.log('JSON Data:', jsonData);
     return jsonData;
   };
-  
-  
+
   const renderQuestionComponent = (question, index) => {
     // console.log("Question inside the details...",question)
     switch (question.tqm_Question_type) {
-      case 'Text':
+      case 'Input':
         return (
           <View key={index}>
             <TextInput
@@ -569,7 +507,7 @@ const RentalOffer = props => {
             />
           </View>
         );
-      case 'Calendar':
+      case 'Date':
         return (
           <View style={RentalOfferStyle.datePickerView}>
             <CalendarModal
@@ -625,6 +563,232 @@ const RentalOffer = props => {
                 handleInputChange(question.tqm_Question_code, item.lookup_key)
               }
             />
+          </View>
+        );
+      case 'Occupant_Count':
+        return (
+          <View>
+            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+              <View style={RentalOfferStyle.key_feature_Text_view}>
+                <Text style={RentalOfferStyle.key_feature_Text}>
+                  {'Number of occupants'}
+                </Text>
+              </View>
+              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={decreaseNumberOccupants}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={RentalOfferStyle.countdata}>
+                  {numberOccupants}
+                </Text>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={() => {
+                    increaseNumberOccupants();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            {numberOccupants > 0 && (
+              <View style={RentalOfferStyle.AddOccupantMainView}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.AddOccupantView}
+                  onPress={() => {
+                    setToggleOccupants(!toggleOccupants);
+                  }}>
+                  <Entypo
+                    name={
+                      toggleOccupants
+                        ? 'chevron-small-up'
+                        : 'chevron-small-down'
+                    }
+                    color={_COLORS.Kodie_BlackColor}
+                    size={25}
+                  />
+                  <Text style={RentalOfferStyle.AddOccupantText}>
+                    {'Add occupants'}
+                  </Text>
+                </TouchableOpacity>
+                {toggleOccupants && (
+                  <View style={RentalOfferStyle.inputView}>
+                    <View style={{marginTop: 11}}>
+                      <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Enter full name'}
+                        onChangeText={setFullName}
+                        value={fullName}
+                      />
+                    </View>
+                    <View style={RentalOfferStyle.inputView}>
+                      <Text style={LABEL_STYLES.commontext}>
+                        {'Email address'}
+                      </Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Enter email address'}
+                        onChangeText={setEmailAddress}
+                        value={emailAddress}
+                        keyboardType="email-address"
+                      />
+                    </View>
+                    <CustomSingleButton
+                      _ButtonText={'Add occupant'}
+                      Text_Color={_COLORS.Kodie_WhiteColor}
+                      disabled={isLoading ? true : false}
+                      onPress={() => {}}
+                    />
+                  </View>
+                )}
+              </View>
+            )}
+            {/* LeaseHolder... */}
+            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+              <View style={RentalOfferStyle.key_feature_Text_view}>
+                <Text style={RentalOfferStyle.key_feature_Text}>
+                  {'Number of leaseholders'}
+                </Text>
+              </View>
+              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={decreaseLeaseHolder}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={RentalOfferStyle.countdata}>
+                  {numberLeaseHolder}
+                </Text>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={() => {
+                    increaseLeaseHolder();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            {numberLeaseHolder > 0 && (
+              <View style={RentalOfferStyle.AddOccupantMainView}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.AddOccupantView}
+                  onPress={() => {
+                    setLeaseHolder(!leaseHolder);
+                  }}>
+                  <Entypo
+                    name={
+                      leaseHolder ? 'chevron-small-up' : 'chevron-small-down'
+                    }
+                    color={_COLORS.Kodie_BlackColor}
+                    size={25}
+                  />
+                  <Text style={RentalOfferStyle.AddOccupantText}>
+                    {'Add leaseholders'}
+                  </Text>
+                </TouchableOpacity>
+                {leaseHolder && (
+                  <View style={{marginTop: 10}}>
+                    <Text style={RentalOfferStyle.AddLeasesubText}>
+                      {
+                        'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application. '
+                      }
+                    </Text>
+                    <View style={RentalOfferStyle.inputView}>
+                      <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Enter full name'}
+                        onChangeText={setLeaseFullName}
+                        value={leaseFullName}
+                      />
+                    </View>
+                    <View style={RentalOfferStyle.inputView}>
+                      <Text style={LABEL_STYLES.commontext}>
+                        {'Email address'}
+                      </Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Enter email address'}
+                        onChangeText={setleaseEmailAddress}
+                        value={leaseEmailAddress}
+                        keyboardType="email-address"
+                      />
+                    </View>
+                    <View style={RentalOfferStyle.inputView}>
+                      <Text style={LABEL_STYLES.commontext}>
+                        {'Confirm email address'}
+                      </Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Confirm email address'}
+                        onChangeText={setLeasecConfirmEmailAddress}
+                        value={leasecConfirmEmailAddress}
+                        keyboardType="email-address"
+                      />
+                    </View>
+                    <CustomSingleButton
+                      _ButtonText={'Invite leaseholder'}
+                      Text_Color={_COLORS.Kodie_WhiteColor}
+                      disabled={isLoading ? true : false}
+                      onPress={() => {}}
+                    />
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+        );
+      case 'Count':
+        return (
+          <View>
+            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+              <View style={RentalOfferStyle.key_feature_Text_view}>
+                <Text style={RentalOfferStyle.key_feature_Text}>
+                  {'Number of years employed'}
+                </Text>
+              </View>
+              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={decreaseNumberYearEmp}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={RentalOfferStyle.countdata}>{numberYearEmp}</Text>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={() => {
+                    increaseNumberYearEmp();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
         );
       default:

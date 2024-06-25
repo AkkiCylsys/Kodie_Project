@@ -206,6 +206,9 @@ export const RentalOfferStyle = StyleSheet.create({
   paymentbtnselectview: {
     marginVertical: 10,
   },
+  inputView: {
+    marginTop: 10,
+  },
   input: {
     height: 48,
     borderRadius: 6,
@@ -311,12 +314,12 @@ export const RentalOfferStyle = StyleSheet.create({
     marginBottom: 30,
   },
   card: {
-    width: "100%",
+    width: '100%',
     backgroundColor: _COLORS.Kodie_TransparentColor,
     borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity:Platform.OS =='android'? 0.2:null,
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: Platform.OS == 'android' ? 0.2 : null,
     shadowRadius: 2,
     marginBottom: 20,
   },
@@ -327,21 +330,21 @@ export const RentalOfferStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 4,
     marginVertical: 5,
-    marginTop:10
+    marginTop: 10,
   },
 
   textContainer: {
     // flex:1,
-    flexDirection: "column",
+    flexDirection: 'column',
     marginLeft: 10,
     // borderWidth:1
   },
 
   pdfInfo: {
-    flex:1,
-    flexDirection: "row",
-    alignItems: "center",
-    padding:10,
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
   },
   pdfName: {
     flex: 0.5,
@@ -358,15 +361,70 @@ export const RentalOfferStyle = StyleSheet.create({
   pdfIcon: {
     width: 45,
     height: 45,
-    resizeMode: "cover",
+    resizeMode: 'cover',
   },
   crossIcon: {
     flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "center",
-    position: "absolute",
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    position: 'absolute',
     top: 20,
     right: 5,
     zIndex: 1,
+  },
+  mainfeaturesview: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 20,
+  },
+  key_feature_Text_view: {
+    // flex: 1,
+  },
+  key_feature_Text: {
+    color: _COLORS.Kodie_ExtraminLiteGrayColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    alignSelf: 'center',
+  },
+  plus_minusview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 0.7,
+  },
+  menusIconView: {
+    borderWidth: 0.5,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  countdata: {
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_Regular,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  AddOccupantMainView: {
+    backgroundColor: _COLORS.Kodie_LiteWhiteColor,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  AddOccupantView: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  AddOccupantText: {
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  AddLeasesubText: {
+    color: _COLORS.Kodie_GrayColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Medium,
   },
 });
