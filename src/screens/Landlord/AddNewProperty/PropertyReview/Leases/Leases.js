@@ -85,7 +85,7 @@ export default Leases = props => {
           console.log('lease_summaryData..', response?.data?.data);
           // alert(JSON.stringify(response?.data?.data));
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })
@@ -147,7 +147,7 @@ export default Leases = props => {
           );
           // alert(JSON.stringify(response?.data?.data));
         } else {
-          alert(response?.data?.message);
+          // alert(response?.data?.message);
           setIsLoading(false);
         }
       })

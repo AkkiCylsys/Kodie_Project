@@ -148,7 +148,7 @@ console.log("account_id",account_id);
       </View>
     );
   };
-  const filteredData = AreaKey.filter(item => checkedItems[item.TAM_AREA_KEY]);
+  const filteredData = AreaKey[0].filter(item => checkedItems[item.TAM_AREA_KEY]);
   return (
     <View style={ScheduleCss.MainContainer}>
       <View style={ScheduleCss.Container}>

@@ -525,7 +525,7 @@ export default Dashboard = props => {
                   Text_Color={_COLORS.Kodie_BlackColor}
                   borderColor={_COLORS.Kodie_GreenColor}
                   onPress={() => {
-                    Alert.alert('Notices !', 'Coming soon');
+                    props.navigation.navigate('Notices');
                   }}
                 />
               </View>

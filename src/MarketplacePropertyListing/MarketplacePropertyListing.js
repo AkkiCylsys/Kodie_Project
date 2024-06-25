@@ -309,7 +309,7 @@ const MarketplacePropertyListing = props => {
                 Number of days listed:
               </Text>
               <Text style={MarketplacePropertyListingStyle.commonDay}>
-                {item.tanentDay}
+                {'0'}
               </Text>
             </View>
 
@@ -320,7 +320,7 @@ const MarketplacePropertyListing = props => {
 
               <View style={MarketplacePropertyListingStyle.commonRentview}>
                 <Text style={MarketplacePropertyListingStyle.commonRent}>
-                  {item.rent}
+                  {'0'}
                 </Text>
               </View>
             </View>

@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
@@ -836,11 +837,38 @@ export default PropertyReview = props => {
           </>
         );
       case 'Tab2':
-        return <Leases property_id={propertyid} />;
+        return (
+          <>
+         <Leases property_id={propertyid} />
+        {/* {Alert.alert('Lease', 'Coming soon', [
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('OK Pressed');
+              setActiveTab('Tab1');
+            },
+          },
+        ])} */}
+        </>
+      )
 
       case 'Tab3':
-        return;
-        <Expenses property_id={propertyid} />;
+        return (
+          <>
+        <Expenses property_id={propertyid} />
+      
+        {/* {Alert.alert('Expenses', 'Coming soon', [
+          {
+            text: 'OK',
+            onPress: () => {
+              console.log('OK Pressed');
+              setActiveTab('Tab1');
+            },
+          },
+        ])} */}
+      
+        </>
+        )
       case 'Tab4':
         return (
           <Documents
