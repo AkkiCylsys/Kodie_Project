@@ -125,9 +125,10 @@ export default PropertyDetails = props => {
   }, [propertyid, addPropertySecondStepData]);
   const DetailsData = async () => {
     const detailData = {
-      property_id: addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-      ? addPropertySecondStepData
-      : propertyid,
+      property_id:
+        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+          ? addPropertySecondStepData
+          : propertyid,
     };
     console.log('detailData', detailData);
     const url = Config.BASE_URL;
@@ -146,9 +147,10 @@ export default PropertyDetails = props => {
         setProperty_value(
           parseInt(response?.data?.property_details[0]?.property_type_id),
         );
-        setSelectedButton(
-          parseInt(response?.data?.property_details[0]?.auto_list),
+        const autoListValue = parseInt(
+          response?.data?.property_details[0]?.auto_list,
         );
+        setSelectedButton(autoListValue === 0);
         setPropertyDesc(
           response?.data?.property_details[0]?.property_description,
         );
