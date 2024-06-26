@@ -19,10 +19,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import CalendarModal from '../../../../../components/Molecules/CalenderModal/CalenderModal';
-import {Dropdown} from 'react-native-element-dropdown';
+import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
-import {MultiSelect} from 'react-native-element-dropdown';
+// import MultiSelect from 'react-native-multiple-select';
+
 import {Config} from '../../../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -43,6 +44,8 @@ const RentalOffer = props => {
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [fullName, setFullName] = useState('');
+  const [fullReferenceName, setFullReferenceName] = useState('');
+  const [fullReferenceEmail, setFullReferenceEmail] = useState('');
   const [leaseFullName, setLeaseFullName] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [leaseEmailAddress, setleaseEmailAddress] = useState('');
@@ -78,8 +81,17 @@ const RentalOffer = props => {
   const [numberOccupants, setNumberOccupants] = useState(0);
   const [numberLeaseHolder, setNumberLeaseHolder] = useState(0);
   const [numberYearEmp, setNumberYearEmp] = useState(0);
+  const [numberPets, setNumberPets] = useState(0);
   const [toggleOccupants, setToggleOccupants] = useState(false);
   const [leaseHolder, setLeaseHolder] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButtonId, setSelectedButtonId] = useState(0);
+  const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
+  const [selectedSomokingButtonId, setSelectedSomokingButtonId] = useState(0);
+  const [typeOfPetsValue, setTypeOfPetsValue] = useState([]);
+
+  const [toggleReference, setToggleReference] = useState(false);
+
   const increaseNumberOccupants = () => {
     setNumberOccupants(prevCount => prevCount + 1);
   };
@@ -104,6 +116,17 @@ const RentalOffer = props => {
       setNumberYearEmp(prevCount => prevCount - 1);
     }
   };
+  const decreaseNumberPet = () => {
+    if (numberPets > 0) {
+      setNumberPets(prevCount => prevCount - 1);
+    }
+  };
+  const increaseNumberPets = () => {
+    setNumberPets(prevCount => prevCount + 1);
+  };
+  const onSelectedItemsChange = selectedItems => {
+    setTypeOfPetsValue(selectedItems);
+  };
   useEffect(() => {
     handleLeaseTerm();
     handleStyingProperty();
@@ -112,6 +135,22 @@ const RentalOffer = props => {
     handleTenantQues();
   }, []);
 
+  // render item
+  const renderDataItem = item => {
+    return (
+      <View style={RentalOfferStyle.item}>
+        <Text style={RentalOfferStyle.selectedTextStyle}>
+          {item.lookup_description}
+        </Text>
+        <AntDesign
+          style={RentalOfferStyle.icon}
+          color={_COLORS.Kodie_WhiteColor}
+          name="check"
+          size={20}
+        />
+      </View>
+    );
+  };
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
@@ -322,20 +361,6 @@ const RentalOffer = props => {
       });
   };
 
-  const handle_Income = async () => {
-    setIsLoading(true);
-    const res = await SignupLookupDetails({
-      P_PARENT_CODE: 'JOB_TYPE',
-      P_TYPE: 'OPTION',
-    });
-
-    console.log('IndiServicesOffer', res);
-    if (res.status === true) {
-      setIncome(res?.lookup_details);
-    }
-    setIsLoading(false);
-  };
-
   const handleDropdown = async questionCode => {
     setIsLoading(true);
     try {
@@ -366,22 +391,6 @@ const RentalOffer = props => {
     }
   };
 
-  // renderItem......
-  const renderDataItem = item => {
-    return (
-      <View style={RentalOfferStyle.item}>
-        <Text style={RentalOfferStyle.selectedTextStyle}>
-          {item.lookup_description}
-        </Text>
-        {/* <AntDesign
-            style={RentalOfferStyle.icon}
-            color={_COLORS.Kodie_BlackColor}
-            name="check"
-            size={20}
-          /> */}
-      </View>
-    );
-  };
   const QuesHeadingRender = ({item}) => {
     return (
       <View
@@ -788,6 +797,226 @@ const RentalOffer = props => {
                   />
                 </TouchableOpacity>
               </TouchableOpacity>
+            </View>
+          </View>
+        );
+      case 'Pets_Count':
+        return (
+          <View>
+            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+              <View style={RentalOfferStyle.key_feature_Text_view}>
+                <Text style={RentalOfferStyle.key_feature_Text}>
+                  {'Number of pets'}
+                </Text>
+              </View>
+              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={decreaseNumberPet}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={RentalOfferStyle.countdata}>{numberPets}</Text>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={() => {
+                    increaseNumberPets();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+          </View>
+        );
+      case 'Yes_no':
+        return (
+          <View>
+            <RowButtons
+              LeftButtonText={'Yes'}
+              leftButtonbackgroundColor={
+                !selectedButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButton(false);
+                // selectedButtonId(1);
+              }}
+              RightButtonText={'No'}
+              RightButtonbackgroundColor={
+                selectedButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedButton(true);
+                // selectedButtonId(0);
+              }}
+            />
+          </View>
+        );
+      case 'Smoking/Non-smoking':
+        return (
+          <View>
+            <RowButtons
+              LeftButtonText={'Smoking'}
+              leftButtonbackgroundColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedSomokingButton(false);
+                setSelectedSomokingButtonId(1);
+              }}
+              RightButtonText={'Non-smoking'}
+              RightButtonbackgroundColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedSomokingButton(true);
+                setSelectedSomokingButtonId(1);
+              }}
+            />
+          </View>
+        );
+      case 'Search':
+        return (
+          <View key={index}>
+            <MultiSelect
+              style={RentalOfferStyle.dropdown}
+              placeholderStyle={RentalOfferStyle.placeholderStyle}
+              selectedTextStyle={RentalOfferStyle.selectedTextStyle}
+              inputSearchStyle={RentalOfferStyle.inputSearchStyle}
+              iconStyle={RentalOfferStyle.iconStyle}
+              data={dropdownData[question.tqm_Question_code] || []}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              searchPlaceholder="Search..."
+              search
+              onChange={items =>
+                handleInputChange(question.tqm_Question_code, items)
+              }
+              onFocus={() => handleDropdown(question.tqm_Question_code)}
+              renderItem={renderDataItem}
+              renderSelectedItem={(item, unSelect) => (
+                <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                  <View style={RentalOfferStyle.selectedStyle}>
+                    <Text style={RentalOfferStyle.textSelectedStyle}>
+                      {item.lookup_description}
+                    </Text>
+                    <AntDesign
+                      color={_COLORS.Kodie_WhiteColor}
+                      name="close"
+                      size={17}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        );
+      case 'Input_location':
+        return (
+          <View key={index} style={{marginTop: 10}}>
+            
+            <View style={RentalOfferStyle.AddOccupantMainView}>
+              <TouchableOpacity
+                style={RentalOfferStyle.AddOccupantView}
+                onPress={() => {
+                  setToggleReference(!toggleReference);
+                }}>
+                <Entypo
+                  name={
+                    toggleReference ? 'chevron-small-up' : 'chevron-small-down'
+                  }
+                  color={_COLORS.Kodie_BlackColor}
+                  size={25}
+                />
+                <Text style={RentalOfferStyle.AddOccupantText}>
+                  {'Add rental references'}
+                </Text>
+              </TouchableOpacity>
+              {toggleReference && (
+                <View style={RentalOfferStyle.inputView}>
+                  <View style={{marginTop: 11}}>
+                    <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                    <TextInput
+                      style={RentalOfferStyle.input}
+                      placeholder={'Enter full name'}
+                      onChangeText={setFullReferenceName}
+                      value={fullReferenceName}
+                    />
+                  </View>
+                  <View style={RentalOfferStyle.inputView}>
+                    <Text style={LABEL_STYLES.commontext}>
+                      {'Email address'}
+                    </Text>
+                    <TextInput
+                      style={RentalOfferStyle.input}
+                      placeholder={'Enter email address'}
+                      onChangeText={setFullReferenceEmail}
+                      value={fullReferenceEmail}
+                      keyboardType="email-address"
+                    />
+                  </View>
+                  <CustomSingleButton
+                    _ButtonText={'Add reference'}
+                    Text_Color={_COLORS.Kodie_WhiteColor}
+                    disabled={isLoading ? true : false}
+                    onPress={() => {}}
+                  />
+                </View>
+              )}
             </View>
           </View>
         );

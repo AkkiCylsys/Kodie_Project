@@ -242,6 +242,9 @@ export const RentalOfferStyle = StyleSheet.create({
   rentalagrementview: {
     marginTop: 5,
   },
+  icon: {
+    marginRight: 5,
+  },
   item: {
     padding: 17,
     flexDirection: 'row',
