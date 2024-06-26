@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../../Themes';
 export const BedroomCss = StyleSheet.create({
   MainContainer: {
     flex: 1,
@@ -16,8 +16,8 @@ export const BedroomCss = StyleSheet.create({
     marginBottom: 15,
   },
   RowContainer: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   RowText: {
     fontSize: 12,
@@ -25,28 +25,55 @@ export const BedroomCss = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     borderBottomWidth: 1,
   },
-  TableView: { flexDirection: "row", justifyContent: "space-between" },
+  TableView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  minustextview: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical:5
+  },
+  crossrendermainview:{
+    flexDirection: 'row',
+    flex: 0.5,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   bedText: {
-    flex: 0.3,
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_BlackColor,
-    alignSelf: "flex-start",
-    justifyContent: "flex-start",
+    alignSelf: 'flex-start',
+    justifyContent: 'flex-start',
+    alignSelf: 'center',
   },
   boxView: {
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightWhiteColor,
-    paddingHorizontal: 8,
+    width: '30%',
+    paddingVertical: 5,
     borderRadius: 5,
-    alignSelf: "center",
-    paddingVertical: 2,
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  bindinputview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 0.38,
+    justifyContent: 'space-between',
+  },
+  messageview: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 0.5,
   },
   YText: {
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_BlackColor,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   rightIcon: {
     borderWidth: 1,
@@ -54,9 +81,13 @@ export const BedroomCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightWhiteColor,
     paddingHorizontal: 5,
     paddingVertical: 2,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
-  IconStyle: { alignSelf: "center", justifyContent: "center" },
+  IconStyle: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    flex: 0.3,
+  },
   dropdown1: {
     flex: 0.35,
     height: 30,
@@ -94,8 +125,8 @@ export const BedroomCss = StyleSheet.create({
     fontSize: 12,
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
   },
   goBack_Text: {
@@ -117,8 +148,8 @@ export const BedroomCss = StyleSheet.create({
     elevation: 10,
   },
   ModalContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   ShareText: {
     fontFamily: FONTFAMILY.K_Bold,
@@ -128,7 +159,7 @@ export const BedroomCss = StyleSheet.create({
   inputContainer: {
     marginVertical: 4,
   },
-  cardHeight: { marginBottom: 8 },
+  cardHeight: {marginBottom: 8},
   emailinput: {
     borderWidth: 1,
     height: 45,
@@ -137,12 +168,12 @@ export const BedroomCss = StyleSheet.create({
     borderRadius: 5,
   },
   ButtonView: {
-    flexDirection: "row",
-    alignSelf: "flex-end",
-    justifyContent: "flex-end",
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    justifyContent: 'flex-end',
     marginVertical: 26,
   },
-  cancelView: { alignSelf: "center" },
+  cancelView: {alignSelf: 'center'},
   cancelText: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Bold,
@@ -156,26 +187,26 @@ export const BedroomCss = StyleSheet.create({
     paddingVertical: 6,
   },
   DoneText: {
-    alignSelf: "center",
-    textAlign: "center",
+    alignSelf: 'center',
+    textAlign: 'center',
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_WhiteColor,
   },
   groupIconView: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   groupIcon: {
-    position: "absolute",
+    position: 'absolute',
     left: 5,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
-  secondModal: { flex: 1, marginHorizontal: 16 },
-  circleStyle: { height: 35, width: 35, borderRadius: 35 / 2 },
+  secondModal: {flex: 1, marginHorizontal: 16},
+  circleStyle: {height: 35, width: 35, borderRadius: 35 / 2},
   pluscirclestyle: {
-    position: "absolute",
-    alignSelf: "flex-end",
+    position: 'absolute',
+    alignSelf: 'flex-end',
     top: 27,
     borderColor: _COLORS.Kodie_LightWhiteColor,
   },
@@ -184,7 +215,7 @@ export const BedroomCss = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
   },
