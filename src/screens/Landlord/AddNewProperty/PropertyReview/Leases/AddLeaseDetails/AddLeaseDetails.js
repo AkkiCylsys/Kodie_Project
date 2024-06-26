@@ -158,7 +158,7 @@ export default AddLeaseDetails = props => {
       lease_end_date: selectedEndDate,
       rental_amount: rentalAmount,
       rental_bond_amount: rentalBond,
-      rental_payment_frequency: lease_end_value,
+      rental_payment_frequency: lease_end_value?.lookup_description,
       payment_due_day: paymentDueDay,
       pro_rata_amount: ProRate,
       first_rental_payment: isYesSelectedId,
@@ -353,7 +353,7 @@ export default AddLeaseDetails = props => {
     console.log('Request URL:', lease_end__url);
     setIsLoading(true);
     const lease_end_data = {
-      P_PARENT_CODE: 'GET_PAID',
+      P_PARENT_CODE: 'RENT_PAID',
       P_TYPE: 'OPTION',
     };
     axios
@@ -381,7 +381,7 @@ export default AddLeaseDetails = props => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View style={AddLeaseDetailsStyle.itemView}>
-          {item.lookup_key === lease_end_value ? (
+          {item.lookup_key === lease_end_value.lookup_key ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
               name={'checkcircle'}
@@ -454,10 +454,10 @@ export default AddLeaseDetails = props => {
     }
   }
   useEffect(() => {
-    if (lease_end_value === 506) {
+    if (lease_end_value.lookup_key === 506) {
       updateDateToNextYear();
     }
-  }, [lease_end_value, selectedDate]);
+  }, [lease_end_value.lookup_key, selectedDate]);
   const calculateLeaseEndDate = (startDate, termKey) => {
     let monthsToAdd;
     switch (termKey) {
@@ -487,9 +487,9 @@ export default AddLeaseDetails = props => {
   };
   const renderPaymentDueDayPicker = () => {
     // alert(lease_end_Data)
-    console.log(lease_end_value);
+    console.log(lease_end_value.lookup_key);
 
-    switch (lease_end_value) {
+    switch (lease_end_value.lookup_key) {
       case 500:
         return (
           <View style={{ flex: 1 }}>
@@ -765,7 +765,9 @@ export default AddLeaseDetails = props => {
               placeholder="How often is rent paid"
               value={lease_end_value}
               onChange={item => {
-                setlLease_end_value(item.lookup_key);
+                setlLease_end_value({lookup_key: item.lookup_key,
+                  lookup_description: item?.lookup_description
+                });
                 // alert(item.lookup_key);
               }}
               renderItem={lease_end_render}
@@ -784,7 +786,7 @@ export default AddLeaseDetails = props => {
               maxLength={5}
             />
           </View>
-          {lease_end_value ? (
+          {lease_end_value.lookup_key ? (
             <View style={AddLeaseDetailsStyle.inputContainer}>
               <Text style={LABEL_STYLES.commontext}>{'Payment due day*'}</Text>
               {renderPaymentDueDayPicker()}
