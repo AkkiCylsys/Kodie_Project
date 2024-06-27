@@ -415,6 +415,7 @@ export const RentalOfferStyle = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderRadius: 10,
+    marginTop:10
   },
   AddOccupantView: {
     flex: 1,
@@ -429,5 +430,50 @@ export const RentalOfferStyle = StyleSheet.create({
     color: _COLORS.Kodie_GrayColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
+  },
+  locationContainer: {
+    flex: 1,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 6,
+    shadowColor: '#000',
+  },
+  locationInput: {
+    flex: 1,
+    height: 48,
+    paddingHorizontal: 10,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  locationIconView: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '#ccc',
+    marginLeft: 5,
+    width: '15%',
+    justifyContent: 'center',
+    height: 50,
+  },
+  locationIcon: {
+    alignSelf: 'center',
+  },
+  locationConView: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  BtnContainer: {
+    backgroundColor: _COLORS.Kodie_lightGreenColor,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
+    paddingVertical: 3,
+    borderRadius: 10,
+    width: '30%',
+    height: 50,
+    bottom: 0,
+    right: 20,
+    marginBottom: 30,
+    position: 'absolute',
   },
 });

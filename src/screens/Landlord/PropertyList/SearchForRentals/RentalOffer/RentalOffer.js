@@ -16,6 +16,7 @@ import {RentalOfferStyle} from './RentalOfferStyle';
 import {_goBack} from '../../../../../services/CommonServices';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import CalendarModal from '../../../../../components/Molecules/CalenderModal/CalenderModal';
@@ -32,7 +33,9 @@ import ApplicationSubmitModal from '../../../../../components/Molecules/TenantSc
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';
 import {resolvePlugin} from '@babel/core';
-
+import MapScreen from '../../../../../components/Molecules/GoogleMap/googleMap';
+import Geocoder from 'react-native-geocoding';
+import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
 const DocumentData = [
   {
     id: 1,
@@ -89,8 +92,71 @@ const RentalOffer = props => {
   const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
   const [selectedSomokingButtonId, setSelectedSomokingButtonId] = useState(0);
   const [typeOfPetsValue, setTypeOfPetsValue] = useState([]);
-
   const [toggleReference, setToggleReference] = useState(false);
+
+  const [location, setLocation] = useState('');
+  const [IsMap, setIsMap] = useState(false);
+  const [IsSearch, setIsSearch] = useState(false);
+  const [latitude, setlatitude] = useState('');
+  const [longitude, setlongitude] = useState('');
+  const [currentLocation, setCurrentLocation] = useState('');
+  const addressParts = location ? location.split(', ') : [];
+  const country = addressParts.pop();
+  const state = addressParts.pop();
+  const city = addressParts.join(', ');
+  const [occupants, setOccupants] = useState([]);
+  // location....
+  const ConfirmAddress = () => {
+    setIsMap(false);
+    setLocation(currentLocation);
+  };
+  const openMapandClose = text => {
+    setIsMap(false);
+    setIsSearch(true);
+  };
+  const onRegionChange = Region => {
+    // alert(JSON.stringify(Region));
+    console.log('Region....', JSON.stringify(Region));
+    setlatitude(Region.latitude);
+    setlongitude(Region.longitude);
+    getAddress(Region.latitude, Region.longitude);
+  };
+  const getAddress = (latitude, longitude) => {
+    Geocoder.from(latitude, longitude)
+      .then(json => {
+        console.log('json location.......', json);
+        console.log('current address...', json.results[0].formatted_address);
+        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
+        // setLocation(json.results[0].formatted_address);
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ', ' +
+          json.results[0].address_components[2].long_name +
+          ', ' +
+          json.results[0].address_components[3].long_name +
+          ', ' +
+          json.results[0].address_components[4].long_name +
+          ', ' +
+          json.results[0].address_components[5].long_name +
+          ', ' +
+          json.results[0].address_components[6].long_name +
+          ', ' +
+          json.results[0].address_components[7].long_name +
+          ', ' +
+          json.results[0].address_components[8].long_name;
+
+        var addressComponent2 = json.results[0].address_components[1];
+        console.log('addressComponent2.....', addressComponent2);
+        setUserCurrentCity(addressComponent2.long_name);
+        console.log('UserCurrentCity....', UserCurrentCity);
+        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
+        // setLocation(MainFullAddress);
+        console.log('mainFullAddress....', MainFullAddress);
+      })
+      .catch(error => console.warn(error));
+  };
 
   const increaseNumberOccupants = () => {
     setNumberOccupants(prevCount => prevCount + 1);
@@ -183,6 +249,15 @@ const RentalOffer = props => {
     refRBSheet1.current.close();
   };
 
+  const addOccupant = () => {
+    if (fullName && emailAddress) {
+      const newOccupant = {fullName, emailAddress};
+      setOccupants([...occupants, newOccupant]);
+      console.log('occupants...', occupants);
+      setFullName('');
+      setEmailAddress('');
+    }
+  };
   // Api intrigation....
   const handleLeaseTerm = () => {
     const TenantData = {
@@ -656,7 +731,7 @@ const RentalOffer = props => {
                       _ButtonText={'Add occupant'}
                       Text_Color={_COLORS.Kodie_WhiteColor}
                       disabled={isLoading ? true : false}
-                      onPress={() => {}}
+                      onPress={addOccupant}
                     />
                   </View>
                 )}
@@ -968,7 +1043,33 @@ const RentalOffer = props => {
       case 'Input_location':
         return (
           <View key={index} style={{marginTop: 10}}>
-            
+            <View style={[RentalOfferStyle.locationConView]}>
+              <View style={RentalOfferStyle.locationContainer}>
+                <TextInput
+                  style={RentalOfferStyle.locationInput}
+                  value={location}
+                  onChangeText={setLocation}
+                  onFocus={() => {
+                    setIsSearch(true);
+                    props.setOpenMap && props.setOpenMap(true);
+                  }}
+                  placeholder="Search location"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+              </View>
+              <TouchableOpacity
+                style={RentalOfferStyle.locationIconView}
+                onPress={() => {
+                  setIsMap(true);
+                }}>
+                <Octicons
+                  name={'location'}
+                  size={22}
+                  color={_COLORS.Kodie_GreenColor}
+                  style={RentalOfferStyle.locationIcon}
+                />
+              </TouchableOpacity>
+            </View>
             <View style={RentalOfferStyle.AddOccupantMainView}>
               <TouchableOpacity
                 style={RentalOfferStyle.AddOccupantView}
@@ -1043,233 +1144,290 @@ const RentalOffer = props => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Submit application'}
       />
-      <ScrollView>
-        <View style={RentalOfferStyle.container}>
+      {IsMap ? (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+          }}>
+          <MapScreen
+            style={{
+              height: '100%',
+              width: '100%',
+              alignSelf: 'center',
+              marginBottom: 10,
+            }}
+            onRegionChange={onRegionChange}
+            Maplat={latitude}
+            Maplng={longitude}
+          />
           <View
             style={{
               flexDirection: 'row',
+              justifyContent: 'center',
+              alignSelf: 'center',
+              width: '96%',
+              borderWidth: 1,
+              borderRadius: 8,
+              backgroundColor: 'white',
+              borderColor: '#E5E4E2',
+              marginTop: 10,
+              position: 'absolute',
             }}>
-            <Image
-              source={IMAGES.userImage}
-              resizeMode={'cover'}
-              style={RentalOfferStyle.userImg}
+            <TextInput
+              style={{
+                backgroundColor: 'transparent',
+
+                width: '90%',
+                height: 45,
+                alignSelf: 'center',
+                //marginTop: 10,
+              }}
+              onFocus={() => openMapandClose()}
+              placeholder={'Search Place'}
+              placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
-            <View style={RentalOfferStyle.userNameView}>
-              <Text style={RentalOfferStyle.username}>{'Jack'}</Text>
-              <Text style={RentalOfferStyle.username}>{'Black'}</Text>
-            </View>
           </View>
-          <View>
+          <TouchableOpacity
+            style={RentalOfferStyle.BtnContainer}
+            onPress={ConfirmAddress}>
+            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+          </TouchableOpacity>
+        </View>
+      ) : IsSearch ? (
+        <SearchPlaces
+          onPress={(data, details = null) => {
+            console.log('LocationData....', details);
+            setlatitude(details.geometry.location.lat);
+            setlongitude(details.geometry.location.lng);
+            setIsSearch(false);
+            setIsMap(true);
+            setCurrentLocation(details.formatted_address);
+          }}
+        />
+      ) : (
+        <ScrollView>
+          <View style={RentalOfferStyle.container}>
             <View
               style={{
                 flexDirection: 'row',
               }}>
-              <AntDesign
-                name="star"
-                size={18}
-                color={_COLORS.Kodie_lightGreenColor}
-                style={RentalOfferStyle.starIcon}
+              <Image
+                source={IMAGES.userImage}
+                resizeMode={'cover'}
+                style={RentalOfferStyle.userImg}
               />
-              <Text style={[RentalOfferStyle.username]}>{'3.9 (81)'}</Text>
+              <View style={RentalOfferStyle.userNameView}>
+                <Text style={RentalOfferStyle.username}>{'Jack'}</Text>
+                <Text style={RentalOfferStyle.username}>{'Black'}</Text>
+              </View>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-              }}>
-              <AntDesign
-                name="checkcircle"
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <AntDesign
+                  name="star"
+                  size={18}
+                  color={_COLORS.Kodie_lightGreenColor}
+                  style={RentalOfferStyle.starIcon}
+                />
+                <Text style={[RentalOfferStyle.username]}>{'3.9 (81)'}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <AntDesign
+                  name="checkcircle"
+                  size={18}
+                  color={_COLORS.Kodie_lightGreenColor}
+                  style={RentalOfferStyle.starIcon}
+                />
+                <Text
+                  style={[
+                    RentalOfferStyle.username,
+                    {color: _COLORS.Kodie_GreenColor},
+                  ]}>
+                  {'Verified'}
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity style={{}}>
+              <Entypo
+                name="dots-three-horizontal"
                 size={18}
-                color={_COLORS.Kodie_lightGreenColor}
-                style={RentalOfferStyle.starIcon}
+                color={_COLORS.Kodie_GrayColor}
+                style={{
+                  alignSelf: 'center',
+                }}
               />
-              <Text
-                style={[
-                  RentalOfferStyle.username,
-                  {color: _COLORS.Kodie_GreenColor},
-                ]}>
-                {'Verified'}
+            </TouchableOpacity>
+          </View>
+          <DividerIcon
+            borderBottomWidth={3}
+            color={_COLORS.Kodie_LiteWhiteColor}
+          />
+          <View style={RentalOfferStyle.apartmentView}>
+            <Text style={RentalOfferStyle.propertyHeading}>{'Apartment'}</Text>
+            <Text
+              style={[
+                RentalOfferStyle.propertyHeading,
+                {fontFamily: FONTFAMILY.K_Bold},
+              ]}>
+              {'Melbourne'}
+            </Text>
+            <View style={RentalOfferStyle.locationView}>
+              <Entypo
+                color={_COLORS.Kodie_GreenColor}
+                name="location-pin"
+                size={20}
+              />
+              <Text style={RentalOfferStyle.location}>
+                {'8502 Preston Rd. Inglewood, Queensland, Australia, ...'}
               </Text>
             </View>
           </View>
-          <TouchableOpacity style={{}}>
-            <Entypo
-              name="dots-three-horizontal"
-              size={18}
-              color={_COLORS.Kodie_GrayColor}
-              style={{
-                alignSelf: 'center',
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-        <DividerIcon
-          borderBottomWidth={3}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-        <View style={RentalOfferStyle.apartmentView}>
-          <Text style={RentalOfferStyle.propertyHeading}>{'Apartment'}</Text>
-          <Text
-            style={[
-              RentalOfferStyle.propertyHeading,
-              {fontFamily: FONTFAMILY.K_Bold},
-            ]}>
-            {'Melbourne'}
-          </Text>
-          <View style={RentalOfferStyle.locationView}>
-            <Entypo
-              color={_COLORS.Kodie_GreenColor}
-              name="location-pin"
-              size={20}
-            />
-            <Text style={RentalOfferStyle.location}>
-              {'8502 Preston Rd. Inglewood, Queensland, Australia, ...'}
+          <DividerIcon
+            borderBottomWidth={3}
+            color={_COLORS.Kodie_LiteWhiteColor}
+          />
+          <View
+            style={{
+              marginHorizontal: 16,
+            }}>
+            <Text style={[RentalOfferStyle.PreRentaltext]}>
+              {'Pre-rental questionnaire'}
             </Text>
           </View>
-        </View>
-        <DividerIcon
-          borderBottomWidth={3}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-        <View
-          style={{
-            marginHorizontal: 16,
-          }}>
-          <Text style={[RentalOfferStyle.PreRentaltext]}>
-            {'Pre-rental questionnaire'}
-          </Text>
-        </View>
-        <FlatList
-          data={quesHeading}
-          keyExtractor={(item, index) => item.id}
-          renderItem={QuesHeadingRender}
-        />
-        <View style={{marginHorizontal: 16, marginBottom: 20}}>
-          <Text style={RentalOfferStyle.inspections}>
-            {'Tenant  screening report (recommended)'}
-          </Text>
-          <CustomSingleButton
-            _ButtonText={'Start Now'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            disabled={isLoading ? true : false}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
+          <FlatList
+            data={quesHeading}
+            keyExtractor={(item, index) => item.id}
+            renderItem={QuesHeadingRender}
           />
-          {/* .... */}
-        </View>
-        <DividerIcon marginTop={5} />
-        <View style={RentalOfferStyle.submitApplicationbtn}>
-          <RowButtons
-            LeftButtonText={'Cancel'}
-            leftButtonbackgroundColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            LeftButtonTextColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_BlackColor
-            }
-            LeftButtonborderColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_BlackColor
-            }
-            onPressLeftButton={() => {
-              setSubmitApplicationBtn(false);
-              setSubmitApplicationBtnId(0);
-              handleSubmit();
-              // alert(selectPetFriendlyBtnId)
-            }}
-            RightButtonText={'Submit'}
-            RightButtonbackgroundColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonTextColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_BlackColor
-            }
-            RightButtonborderColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_BlackColor
-            }
-            onPressRightButton={() => {
-              setSubmitApplicationBtn(true);
-              setSubmitApplicationBtnId(1);
-              // alert(selectPetFriendlyBtnId)
-              refRBSheet1.current.open();
-            }}
-          />
-        </View>
-        <RBSheet
-          height={500}
-          ref={refRBSheet}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: RentalOfferStyle.bottomModal_container,
-          }}>
-          <TouchableOpacity
-            style={{
-              // justifyContent: 'flex-end',
-              // alignSelf: 'flex-end',
-              marginHorizontal: 10,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-            onPress={() => {
-              onClose();
-            }}>
-            <Text style={RentalOfferStyle.tenantScreenText}>
-              {'Tenant screening report'}
+          <View style={{marginHorizontal: 16, marginBottom: 20}}>
+            <Text style={RentalOfferStyle.inspections}>
+              {'Tenant  screening report (recommended)'}
             </Text>
-            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-          </TouchableOpacity>
-          {/* <BottomModalSearchRental onClose={onClose} /> */}
-          <TenantScreeningReportModal onClose={onClose} />
-        </RBSheet>
-        <RBSheet
-          height={400}
-          ref={refRBSheet1}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: RentalOfferStyle.bottomModal_container,
-          }}>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'flex-end',
-              alignSelf: 'flex-end',
-              marginHorizontal: 10,
-              // flexDirection: 'row',
-              // justifyContent: 'space-between',
-            }}
-            onPress={() => {
-              onClose1();
+            <CustomSingleButton
+              _ButtonText={'Start Now'}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
+              onPress={() => {
+                refRBSheet.current.open();
+              }}
+            />
+            {/* .... */}
+          </View>
+          <DividerIcon marginTop={5} />
+          <View style={RentalOfferStyle.submitApplicationbtn}>
+            <RowButtons
+              LeftButtonText={'Cancel'}
+              leftButtonbackgroundColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              LeftButtonborderColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              onPressLeftButton={() => {
+                setSubmitApplicationBtn(false);
+                setSubmitApplicationBtnId(0);
+                handleSubmit();
+                // alert(selectPetFriendlyBtnId)
+              }}
+              RightButtonText={'Submit'}
+              RightButtonbackgroundColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonborderColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              onPressRightButton={() => {
+                setSubmitApplicationBtn(true);
+                setSubmitApplicationBtnId(1);
+                // alert(selectPetFriendlyBtnId)
+                refRBSheet1.current.open();
+              }}
+            />
+          </View>
+          <RBSheet
+            height={500}
+            ref={refRBSheet}
+            closeOnDragDown={true}
+            closeOnPressMask={false}
+            customStyles={{
+              wrapper: {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              },
+              draggableIcon: {
+                backgroundColor: _COLORS.Kodie_LightGrayColor,
+              },
+              container: RentalOfferStyle.bottomModal_container,
             }}>
-            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-          </TouchableOpacity>
-          {/* <TenantScreeningReportModal onClose={onClose} /> */}
-          <ApplicationSubmitModal onClose={onClose1} />
-        </RBSheet>
-      </ScrollView>
+            <TouchableOpacity
+              style={{
+                marginHorizontal: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+              onPress={() => {
+                onClose();
+              }}>
+              <Text style={RentalOfferStyle.tenantScreenText}>
+                {'Tenant screening report'}
+              </Text>
+              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+            </TouchableOpacity>
+            <TenantScreeningReportModal onClose={onClose} />
+          </RBSheet>
+          <RBSheet
+            height={400}
+            ref={refRBSheet1}
+            closeOnDragDown={true}
+            closeOnPressMask={false}
+            customStyles={{
+              wrapper: {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              },
+              draggableIcon: {
+                backgroundColor: _COLORS.Kodie_LightGrayColor,
+              },
+              container: RentalOfferStyle.bottomModal_container,
+            }}>
+            <TouchableOpacity
+              style={{
+                justifyContent: 'flex-end',
+                alignSelf: 'flex-end',
+                marginHorizontal: 10,
+              }}
+              onPress={() => {
+                onClose1();
+              }}>
+              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+            </TouchableOpacity>
+            <ApplicationSubmitModal onClose={onClose1} />
+          </RBSheet>
+        </ScrollView>
+      )}
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
