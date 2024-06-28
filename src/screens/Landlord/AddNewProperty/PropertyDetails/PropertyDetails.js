@@ -156,7 +156,7 @@ export default PropertyDetails = props => {
         console.log('propertyDetail....', response?.data?.property_details);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        Alert.alert('Warning', error?.response?.data?.message);
+        // Alert.alert('Warning', error?.response?.data?.message);
         setIsLoading(false);
       }
     } catch (error) {
@@ -164,7 +164,7 @@ export default PropertyDetails = props => {
         'property_type error in get data:',
         error?.response?.data?.message,
       );
-      Alert.alert('Warning', error?.response?.data?.message);
+      // Alert.alert('Warning', error?.response?.data?.message);
       setIsLoading(false);
     }
   };
