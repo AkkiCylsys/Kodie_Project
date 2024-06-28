@@ -197,10 +197,9 @@ const SignUpSteps = props => {
   const validateFirstName = text => {
     if (text === '') {
       setFirstNameError('First name is required!');
-      // } else if (!/^[A-Za-z]+$/.test(text)) {
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
+    } else if (!/^[A-Za-z\s\-]+$/.test(text)) {
       setFirstNameError(
-        'First name should contain only alphabetic characters.',
+        'First name should contain only alphabetic characters, spaces, or hyphens.',
       );
     } else {
       setFirstNameError('');
@@ -212,14 +211,16 @@ const SignUpSteps = props => {
   const validateLastName = text => {
     if (text === '') {
       setLastNameError('Last name is required!');
-      // } else if (!/^[A-Za-z]+$/.test(text)) {
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(text)) {
-      setLastNameError('Last name should contain only alphabetic characters.');
+    } else if (!/^[A-Za-z\s\-]+$/.test(text)) {
+      setLastNameError(
+        'Last name should contain only alphabetic characters, spaces, or hyphens.',
+      );
     } else {
       setLastNameError('');
     }
     setLastName(text);
   };
+
   const validMobileNumber = () => {
     // const mobileReg = /^61[4][0-9]{9}$/;
     const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
@@ -265,7 +266,7 @@ const SignUpSteps = props => {
     // if (!ImageName) {
     //   setImageError('Please select an image before proceeding.');
     // } else
-     if (firstName.trim() === '') {
+    if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(firstName)) {
       setFirstNameError('First name should contain only alphabetic characters');
