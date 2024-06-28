@@ -16,13 +16,15 @@ import {RentalOfferStyle} from './RentalOfferStyle';
 import {_goBack} from '../../../../../services/CommonServices';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
+import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import CalendarModal from '../../../../../components/Molecules/CalenderModal/CalenderModal';
-import {Dropdown} from 'react-native-element-dropdown';
+import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
-import {MultiSelect} from 'react-native-element-dropdown';
+// import MultiSelect from 'react-native-multiple-select';
+
 import {Config} from '../../../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -30,7 +32,10 @@ import TenantScreeningReportModal from '../../../../../components/Molecules/Tena
 import ApplicationSubmitModal from '../../../../../components/Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {SignupLookupDetails} from '../../../../../APIs/AllApi';
-
+import {resolvePlugin} from '@babel/core';
+import MapScreen from '../../../../../components/Molecules/GoogleMap/googleMap';
+import Geocoder from 'react-native-geocoding';
+import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
 const DocumentData = [
   {
     id: 1,
@@ -41,34 +46,22 @@ const RentalOffer = props => {
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
+  const [fullName, setFullName] = useState('');
+  const [fullReferenceName, setFullReferenceName] = useState('');
+  const [fullReferenceEmail, setFullReferenceEmail] = useState('');
+  const [leaseFullName, setLeaseFullName] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
+  const [leaseEmailAddress, setleaseEmailAddress] = useState('');
+  const [leasecConfirmEmailAddress, setLeasecConfirmEmailAddress] =
+    useState('');
   const [RentalDetails, setRentalDetails] = useState(false);
   const [RentalHistory, setRentalHistory] = useState(false);
   const [TenantRooms, setTenantRooms] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [RentalLeasevalue, setRentalLeaseValue] = useState(0);
   const [RentalLeaseData, setRentalLeaseData] = useState([]);
-  const [EmployeeValue, setEmployeeValue] = useState(0);
   const [EmployeeValueData, setEmployeeValueData] = useState(null);
-  const [valueStying, setValueStying] = useState(0);
   const [valueStyingData, setValueStyingData] = useState([]);
-  const [rentalBudget, setRentalBudget] = useState('');
-  const [longEmployee, setLongEmployee] = useState('');
-  const [lookingmove, setLookingmove] = useState('');
-  const [weeklyIncome, setWeeklyIncome] = useState(0);
-  const [selected_Paying_Button, setSelected_Paying_Button] = useState(false);
-  const [selected_Paying_Id, setSelected_Paying_Id] = useState(1);
-  const [selected_Rental_Agreement, setSelected_Rental_Agreement] =
-    useState(false);
-  const [selected_Agreement_Id, setSelected_Agreement_Id] = useState(1);
-  const [selected_Previous_Rental, setSelected_Previous_Rental] =
-    useState(false);
-  const [selected_Previous_Id, setSelected_Previous_Id] = useState(1);
-  const [selected_Smoking, setSelected_Smoking] = useState(false);
-  const [selected_Smoking_Id, setSelected_Smoking_Id] = useState(1);
-  const [selected_Pets, setSelected_Pets] = useState(false);
-  const [selected_Pets_Id, setSelected_Pets_Id] = useState(1);
-  const [pets, setPets] = useState([]);
   const [petsData, setPetsData] = useState([]);
   const [Preferences, setPreferences] = useState(false);
   const [submitApplicationBtn, setSubmitApplicationBtn] = useState(false);
@@ -80,18 +73,126 @@ const RentalOffer = props => {
   const [inputValues, setInputValues] = useState({});
   const [question, setQuestion] = useState([]);
   const [employeeQues, setEmployeeQues] = useState([]);
-  const [earnIncome, setEarnIncome] = useState([]);
   const [rentailDetails, setRentailDetails] = useState([]);
-  const [peopalStay, setPeopalStay] = useState([]);
   const [rental_History, setRental_History] = useState([]);
   const [preference, setPreference] = useState([]);
   const [personalDetails, setPersonalDetails] = useState({});
   const [employmentStatus, setEmploymentStatus] = useState({});
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [income, setIncome] = useState('');
   const [dropdownData, setDropdownData] = useState({});
   const [allQuestion, setAllQuestion] = useState([]);
+  const [numberOccupants, setNumberOccupants] = useState(0);
+  const [numberLeaseHolder, setNumberLeaseHolder] = useState(0);
+  const [numberYearEmp, setNumberYearEmp] = useState(0);
+  const [numberPets, setNumberPets] = useState(0);
+  const [toggleOccupants, setToggleOccupants] = useState(false);
+  const [leaseHolder, setLeaseHolder] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButtonId, setSelectedButtonId] = useState(0);
+  const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
+  const [selectedSomokingButtonId, setSelectedSomokingButtonId] = useState(0);
+  const [typeOfPetsValue, setTypeOfPetsValue] = useState([]);
+  const [toggleReference, setToggleReference] = useState(false);
+
+  const [location, setLocation] = useState('');
+  const [IsMap, setIsMap] = useState(false);
+  const [IsSearch, setIsSearch] = useState(false);
+  const [latitude, setlatitude] = useState('');
+  const [longitude, setlongitude] = useState('');
+  const [currentLocation, setCurrentLocation] = useState('');
+  const addressParts = location ? location.split(', ') : [];
+  const country = addressParts.pop();
+  const state = addressParts.pop();
+  const city = addressParts.join(', ');
+  const [occupants, setOccupants] = useState([]);
+  // location....
+  const ConfirmAddress = () => {
+    setIsMap(false);
+    setLocation(currentLocation);
+  };
+  const openMapandClose = text => {
+    setIsMap(false);
+    setIsSearch(true);
+  };
+  const onRegionChange = Region => {
+    // alert(JSON.stringify(Region));
+    console.log('Region....', JSON.stringify(Region));
+    setlatitude(Region.latitude);
+    setlongitude(Region.longitude);
+    getAddress(Region.latitude, Region.longitude);
+  };
+  const getAddress = (latitude, longitude) => {
+    Geocoder.from(latitude, longitude)
+      .then(json => {
+        console.log('json location.......', json);
+        console.log('current address...', json.results[0].formatted_address);
+        // currentLocation ? setLocation(json.results[0].formatted_address) : null;
+        const formatedAddress = json.results[0].formatted_address;
+        setCurrentLocation(formatedAddress);
+        // setLocation(json.results[0].formatted_address);
+        let MainFullAddress =
+          json.results[0].address_components[1].long_name +
+          ', ' +
+          json.results[0].address_components[2].long_name +
+          ', ' +
+          json.results[0].address_components[3].long_name +
+          ', ' +
+          json.results[0].address_components[4].long_name +
+          ', ' +
+          json.results[0].address_components[5].long_name +
+          ', ' +
+          json.results[0].address_components[6].long_name +
+          ', ' +
+          json.results[0].address_components[7].long_name +
+          ', ' +
+          json.results[0].address_components[8].long_name;
+
+        var addressComponent2 = json.results[0].address_components[1];
+        console.log('addressComponent2.....', addressComponent2);
+        setUserCurrentCity(addressComponent2.long_name);
+        console.log('UserCurrentCity....', UserCurrentCity);
+        setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
+        // setLocation(MainFullAddress);
+        console.log('mainFullAddress....', MainFullAddress);
+      })
+      .catch(error => console.warn(error));
+  };
+
+  const increaseNumberOccupants = () => {
+    setNumberOccupants(prevCount => prevCount + 1);
+  };
+  const increaseLeaseHolder = () => {
+    setNumberLeaseHolder(prevCount => prevCount + 1);
+  };
+  const decreaseNumberOccupants = () => {
+    if (numberOccupants > 0) {
+      setNumberOccupants(prevCount => prevCount - 1);
+    }
+  };
+  const decreaseLeaseHolder = () => {
+    if (numberLeaseHolder > 0) {
+      setNumberLeaseHolder(prevCount => prevCount - 1);
+    }
+  };
+  const increaseNumberYearEmp = () => {
+    setNumberYearEmp(prevCount => prevCount + 1);
+  };
+  const decreaseNumberYearEmp = () => {
+    if (numberYearEmp > 0) {
+      setNumberYearEmp(prevCount => prevCount - 1);
+    }
+  };
+  const decreaseNumberPet = () => {
+    if (numberPets > 0) {
+      setNumberPets(prevCount => prevCount - 1);
+    }
+  };
+  const increaseNumberPets = () => {
+    setNumberPets(prevCount => prevCount + 1);
+  };
+  const onSelectedItemsChange = selectedItems => {
+    setTypeOfPetsValue(selectedItems);
+  };
   useEffect(() => {
     handleLeaseTerm();
     handleStyingProperty();
@@ -100,6 +201,22 @@ const RentalOffer = props => {
     handleTenantQues();
   }, []);
 
+  // render item
+  const renderDataItem = item => {
+    return (
+      <View style={RentalOfferStyle.item}>
+        <Text style={RentalOfferStyle.selectedTextStyle}>
+          {item.lookup_description}
+        </Text>
+        <AntDesign
+          style={RentalOfferStyle.icon}
+          color={_COLORS.Kodie_WhiteColor}
+          name="check"
+          size={20}
+        />
+      </View>
+    );
+  };
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
@@ -132,6 +249,15 @@ const RentalOffer = props => {
     refRBSheet1.current.close();
   };
 
+  const addOccupant = () => {
+    if (fullName && emailAddress) {
+      const newOccupant = {fullName, emailAddress};
+      setOccupants([...occupants, newOccupant]);
+      console.log('occupants...', occupants);
+      setFullName('');
+      setEmailAddress('');
+    }
+  };
   // Api intrigation....
   const handleLeaseTerm = () => {
     const TenantData = {
@@ -270,6 +396,7 @@ const RentalOffer = props => {
         setIsLoading(false);
       });
   };
+
   const handleQuesCode = questionCode => {
     const url = Config.BASE_URL;
     const tenantQues_url = url + 'question_details_for_tenant_ques';
@@ -279,6 +406,7 @@ const RentalOffer = props => {
       p_question_code: questionCode,
       p_type: 'OPTION',
     };
+
     axios
       .post(tenantQues_url, tenantQuesData)
       .then(response => {
@@ -286,67 +414,28 @@ const RentalOffer = props => {
         if (response?.data?.success === true) {
           const data = response?.data?.data;
           setAllQuestion(data);
-          if (questionCode === 'PERSONAL_DETAILS') {
-            setQuestion(data);
-          } else if (questionCode === 'Employment_Status') {
-            setEmployeeQues(data);
-          } else if (questionCode === 'EARN_INCOME') {
-            setEarnIncome(data);
-          } else if (questionCode === 'RENTAL_DETAILS') {
+
+          if (questionCode === 'RENTAL_DETIALS') {
             setRentailDetails(data);
-          } else if (questionCode === 'PEOPLE_STAY') {
-            setPeopalStay(data);
+            console.log('rentailDetails.....', rentailDetails);
+          } else if (questionCode === 'EMPLOYEMENT&INCOME') {
+            setEmployeeQues(data);
+            console.log('employeeQues....', employeeQues);
+            console.log('employeeQues.....', employeeQues);
           } else if (questionCode === 'RENTAL_HISTORY') {
             setRental_History(data);
           } else if (questionCode === 'PREFERENCES') {
             setPreference(data);
           }
-        } else {
-          setIsLoading(false);
         }
+        setIsLoading(false);
       })
       .catch(error => {
         console.error('API failed QuesCode', error);
         setIsLoading(false);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   };
 
-  const handle_Income = async () => {
-    setIsLoading(true);
-    const res = await SignupLookupDetails({
-      P_PARENT_CODE: 'JOB_TYPE',
-      P_TYPE: 'OPTION',
-    });
-
-    console.log('IndiServicesOffer', res);
-    if (res.status === true) {
-      setIncome(res?.lookup_details);
-    }
-    setIsLoading(false);
-  };
-
-  // const handleDropdown = async questionCode => {
-  //   setIsLoading(true);
-  //   const res = await SignupLookupDetails({
-  //     P_PARENT_CODE: questionCode, // Use the dynamic question code here
-  //     P_TYPE: 'OPTION',
-  //   });
-
-  //   console.log('Dropdown data...', res);
-  //   if (res.status === true) {
-  //     // Update the dropdown data state with the fetched data
-  //     setDropdownData(prevData => ({
-  //       ...prevData,
-  //       [questionCode]: res?.lookup_details,
-  //     }));
-  //   } else {
-  //     alert("false")
-  //     setIsLoading(false);
-  //   }
-  // };
   const handleDropdown = async questionCode => {
     setIsLoading(true);
     try {
@@ -377,22 +466,6 @@ const RentalOffer = props => {
     }
   };
 
-  // renderItem......
-  const renderDataItem = item => {
-    return (
-      <View style={RentalOfferStyle.item}>
-        <Text style={RentalOfferStyle.selectedTextStyle}>
-          {item.lookup_description}
-        </Text>
-        {/* <AntDesign
-            style={PropertyFeatureStyle.icon}
-            color={_COLORS.Kodie_BlackColor}
-            name="check"
-            size={20}
-          /> */}
-      </View>
-    );
-  };
   const QuesHeadingRender = ({item}) => {
     return (
       <View
@@ -421,16 +494,10 @@ const RentalOffer = props => {
         {expandedItems[item?.tqm_Question_code] && (
           <FlatList
             data={
-              item?.tqm_Question_code === 'PERSONAL_DETAILS'
-                ? question
-                : item?.tqm_Question_code === 'Employment_Status'
-                ? employeeQues
-                : item?.tqm_Question_code === 'EARN_INCOME'
-                ? earnIncome
-                : item?.tqm_Question_code === 'PEOPLE_STAY'
-                ? peopalStay
-                : item?.tqm_Question_code === 'RENTAL_DETAILS'
+              item?.tqm_Question_code === 'RENTAL_DETIALS'
                 ? rentailDetails
+                : item?.tqm_Question_code === 'EMPLOYEMENT&INCOME'
+                ? employeeQues
                 : item?.tqm_Question_code === 'RENTAL_HISTORY'
                 ? rental_History
                 : item?.tqm_Question_code === 'PREFERENCES'
@@ -468,50 +535,6 @@ const RentalOffer = props => {
     }
   };
 
-  // const handleSubmit = () => {
-  //   const formData = {
-  //     ...inputValues,
-  //     ...personalDetails,
-  //     ...employmentStatus,
-  //   };
-
-  //   console.log("inputValues ......",inputValues)
-  //   console.log("personalDetails ......",personalDetails)
-  //   const resultData = {
-  //     propertyDetails: {},
-  //     employmentDetails: {},
-  //     incomeDetails: {},
-  //     rentalDetails: {},
-  //     peopleStayDetails: {},
-  //     rentalHistoryDetails: {},
-  //     preferenceDetails: {},
-  //     personalDetails: {},
-  //     employmentStatus: {},
-  //   };
-
-  //   const processQuestions = (questions, category) => {
-  //     questions.forEach(questionItem => {
-  //       const value = formData[questionItem.tqm_Question_code];
-  //       resultData[category][questionItem.tqm_Question_code] =
-  //         value !== undefined ? value : '';
-  //     });
-  //   };
-
-  //   processQuestions(question, 'propertyDetails');
-  //   processQuestions(employeeQues, 'employmentDetails');
-  //   processQuestions(earnIncome, 'incomeDetails');
-  //   processQuestions(rentailDetails, 'rentalDetails');
-  //   processQuestions(peopalStay, 'peopleStayDetails');
-  //   processQuestions(rental_History, 'rentalHistoryDetails');
-  //   processQuestions(preference, 'preferenceDetails');
-
-  //   resultData.personalDetails = {...personalDetails};
-  //   resultData.employmentStatus = {...employmentStatus};
-
-  //   console.log('Result Data:', resultData);
-  //   return resultData;
-  // };
-
   const handleSubmit = () => {
     const allQuestions = [
       ...question,
@@ -522,26 +545,25 @@ const RentalOffer = props => {
       ...rental_History,
       ...preference,
     ];
-  
+
     const allData = {};
     allQuestions.forEach(q => {
       const value = inputValues[q.tqm_Question_code];
       allData[q.id] = value !== undefined ? value : null;
     });
-  
+
     const jsonData = {
-      "allData": allData
+      allData: allData,
     };
-  
+
     console.log('JSON Data:', jsonData);
     return jsonData;
   };
-  
-  
+
   const renderQuestionComponent = (question, index) => {
     // console.log("Question inside the details...",question)
     switch (question.tqm_Question_type) {
-      case 'Text':
+      case 'Input':
         return (
           <View key={index}>
             <TextInput
@@ -569,7 +591,7 @@ const RentalOffer = props => {
             />
           </View>
         );
-      case 'Calendar':
+      case 'Date':
         return (
           <View style={RentalOfferStyle.datePickerView}>
             <CalendarModal
@@ -627,6 +649,478 @@ const RentalOffer = props => {
             />
           </View>
         );
+      case 'Occupant_Count':
+        return (
+          <View>
+            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+              <View style={RentalOfferStyle.key_feature_Text_view}>
+                <Text style={RentalOfferStyle.key_feature_Text}>
+                  {'Number of occupants'}
+                </Text>
+              </View>
+              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={decreaseNumberOccupants}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={RentalOfferStyle.countdata}>
+                  {numberOccupants}
+                </Text>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={() => {
+                    increaseNumberOccupants();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            {numberOccupants > 0 && (
+              <View style={RentalOfferStyle.AddOccupantMainView}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.AddOccupantView}
+                  onPress={() => {
+                    setToggleOccupants(!toggleOccupants);
+                  }}>
+                  <Entypo
+                    name={
+                      toggleOccupants
+                        ? 'chevron-small-up'
+                        : 'chevron-small-down'
+                    }
+                    color={_COLORS.Kodie_BlackColor}
+                    size={25}
+                  />
+                  <Text style={RentalOfferStyle.AddOccupantText}>
+                    {'Add occupants'}
+                  </Text>
+                </TouchableOpacity>
+                {toggleOccupants && (
+                  <View style={RentalOfferStyle.inputView}>
+                    <View style={{marginTop: 11}}>
+                      <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Enter full name'}
+                        onChangeText={setFullName}
+                        value={fullName}
+                      />
+                    </View>
+                    <View style={RentalOfferStyle.inputView}>
+                      <Text style={LABEL_STYLES.commontext}>
+                        {'Email address'}
+                      </Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Enter email address'}
+                        onChangeText={setEmailAddress}
+                        value={emailAddress}
+                        keyboardType="email-address"
+                      />
+                    </View>
+                    <CustomSingleButton
+                      _ButtonText={'Add occupant'}
+                      Text_Color={_COLORS.Kodie_WhiteColor}
+                      disabled={isLoading ? true : false}
+                      onPress={addOccupant}
+                    />
+                  </View>
+                )}
+              </View>
+            )}
+            {/* LeaseHolder... */}
+            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+              <View style={RentalOfferStyle.key_feature_Text_view}>
+                <Text style={RentalOfferStyle.key_feature_Text}>
+                  {'Number of leaseholders'}
+                </Text>
+              </View>
+              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={decreaseLeaseHolder}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={RentalOfferStyle.countdata}>
+                  {numberLeaseHolder}
+                </Text>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={() => {
+                    increaseLeaseHolder();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            {numberLeaseHolder > 0 && (
+              <View style={RentalOfferStyle.AddOccupantMainView}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.AddOccupantView}
+                  onPress={() => {
+                    setLeaseHolder(!leaseHolder);
+                  }}>
+                  <Entypo
+                    name={
+                      leaseHolder ? 'chevron-small-up' : 'chevron-small-down'
+                    }
+                    color={_COLORS.Kodie_BlackColor}
+                    size={25}
+                  />
+                  <Text style={RentalOfferStyle.AddOccupantText}>
+                    {'Add leaseholders'}
+                  </Text>
+                </TouchableOpacity>
+                {leaseHolder && (
+                  <View style={{marginTop: 10}}>
+                    <Text style={RentalOfferStyle.AddLeasesubText}>
+                      {
+                        'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application. '
+                      }
+                    </Text>
+                    <View style={RentalOfferStyle.inputView}>
+                      <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Enter full name'}
+                        onChangeText={setLeaseFullName}
+                        value={leaseFullName}
+                      />
+                    </View>
+                    <View style={RentalOfferStyle.inputView}>
+                      <Text style={LABEL_STYLES.commontext}>
+                        {'Email address'}
+                      </Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Enter email address'}
+                        onChangeText={setleaseEmailAddress}
+                        value={leaseEmailAddress}
+                        keyboardType="email-address"
+                      />
+                    </View>
+                    <View style={RentalOfferStyle.inputView}>
+                      <Text style={LABEL_STYLES.commontext}>
+                        {'Confirm email address'}
+                      </Text>
+                      <TextInput
+                        style={RentalOfferStyle.input}
+                        placeholder={'Confirm email address'}
+                        onChangeText={setLeasecConfirmEmailAddress}
+                        value={leasecConfirmEmailAddress}
+                        keyboardType="email-address"
+                      />
+                    </View>
+                    <CustomSingleButton
+                      _ButtonText={'Invite leaseholder'}
+                      Text_Color={_COLORS.Kodie_WhiteColor}
+                      disabled={isLoading ? true : false}
+                      onPress={() => {}}
+                    />
+                  </View>
+                )}
+              </View>
+            )}
+          </View>
+        );
+      case 'Count':
+        return (
+          <View>
+            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+              <View style={RentalOfferStyle.key_feature_Text_view}>
+                <Text style={RentalOfferStyle.key_feature_Text}>
+                  {'Number of years employed'}
+                </Text>
+              </View>
+              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={decreaseNumberYearEmp}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={RentalOfferStyle.countdata}>{numberYearEmp}</Text>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={() => {
+                    increaseNumberYearEmp();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+          </View>
+        );
+      case 'Pets_Count':
+        return (
+          <View>
+            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
+              <View style={RentalOfferStyle.key_feature_Text_view}>
+                <Text style={RentalOfferStyle.key_feature_Text}>
+                  {'Number of pets'}
+                </Text>
+              </View>
+              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={decreaseNumberPet}>
+                  <AntDesign
+                    name="minus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+                <Text style={RentalOfferStyle.countdata}>{numberPets}</Text>
+                <TouchableOpacity
+                  style={RentalOfferStyle.menusIconView}
+                  onPress={() => {
+                    increaseNumberPets();
+                  }}>
+                  <AntDesign
+                    name="plus"
+                    size={20}
+                    color={_COLORS.Kodie_BlackColor}
+                  />
+                </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+          </View>
+        );
+      case 'Yes_no':
+        return (
+          <View>
+            <RowButtons
+              LeftButtonText={'Yes'}
+              leftButtonbackgroundColor={
+                !selectedButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButton(false);
+                // selectedButtonId(1);
+              }}
+              RightButtonText={'No'}
+              RightButtonbackgroundColor={
+                selectedButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedButton(true);
+                // selectedButtonId(0);
+              }}
+            />
+          </View>
+        );
+      case 'Smoking/Non-smoking':
+        return (
+          <View>
+            <RowButtons
+              LeftButtonText={'Smoking'}
+              leftButtonbackgroundColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedSomokingButton(false);
+                setSelectedSomokingButtonId(1);
+              }}
+              RightButtonText={'Non-smoking'}
+              RightButtonbackgroundColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedSomokingButton(true);
+                setSelectedSomokingButtonId(1);
+              }}
+            />
+          </View>
+        );
+      case 'Search':
+        return (
+          <View key={index}>
+            <MultiSelect
+              style={RentalOfferStyle.dropdown}
+              placeholderStyle={RentalOfferStyle.placeholderStyle}
+              selectedTextStyle={RentalOfferStyle.selectedTextStyle}
+              inputSearchStyle={RentalOfferStyle.inputSearchStyle}
+              iconStyle={RentalOfferStyle.iconStyle}
+              data={dropdownData[question.tqm_Question_code] || []}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              searchPlaceholder="Search..."
+              search
+              onChange={items =>
+                handleInputChange(question.tqm_Question_code, items)
+              }
+              onFocus={() => handleDropdown(question.tqm_Question_code)}
+              renderItem={renderDataItem}
+              renderSelectedItem={(item, unSelect) => (
+                <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                  <View style={RentalOfferStyle.selectedStyle}>
+                    <Text style={RentalOfferStyle.textSelectedStyle}>
+                      {item.lookup_description}
+                    </Text>
+                    <AntDesign
+                      color={_COLORS.Kodie_WhiteColor}
+                      name="close"
+                      size={17}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        );
+      case 'Input_location':
+        return (
+          <View key={index} style={{marginTop: 10}}>
+            <View style={[RentalOfferStyle.locationConView]}>
+              <View style={RentalOfferStyle.locationContainer}>
+                <TextInput
+                  style={RentalOfferStyle.locationInput}
+                  value={location}
+                  onChangeText={setLocation}
+                  onFocus={() => {
+                    setIsSearch(true);
+                    props.setOpenMap && props.setOpenMap(true);
+                  }}
+                  placeholder="Search location"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                />
+              </View>
+              <TouchableOpacity
+                style={RentalOfferStyle.locationIconView}
+                onPress={() => {
+                  setIsMap(true);
+                }}>
+                <Octicons
+                  name={'location'}
+                  size={22}
+                  color={_COLORS.Kodie_GreenColor}
+                  style={RentalOfferStyle.locationIcon}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={RentalOfferStyle.AddOccupantMainView}>
+              <TouchableOpacity
+                style={RentalOfferStyle.AddOccupantView}
+                onPress={() => {
+                  setToggleReference(!toggleReference);
+                }}>
+                <Entypo
+                  name={
+                    toggleReference ? 'chevron-small-up' : 'chevron-small-down'
+                  }
+                  color={_COLORS.Kodie_BlackColor}
+                  size={25}
+                />
+                <Text style={RentalOfferStyle.AddOccupantText}>
+                  {'Add rental references'}
+                </Text>
+              </TouchableOpacity>
+              {toggleReference && (
+                <View style={RentalOfferStyle.inputView}>
+                  <View style={{marginTop: 11}}>
+                    <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                    <TextInput
+                      style={RentalOfferStyle.input}
+                      placeholder={'Enter full name'}
+                      onChangeText={setFullReferenceName}
+                      value={fullReferenceName}
+                    />
+                  </View>
+                  <View style={RentalOfferStyle.inputView}>
+                    <Text style={LABEL_STYLES.commontext}>
+                      {'Email address'}
+                    </Text>
+                    <TextInput
+                      style={RentalOfferStyle.input}
+                      placeholder={'Enter email address'}
+                      onChangeText={setFullReferenceEmail}
+                      value={fullReferenceEmail}
+                      keyboardType="email-address"
+                    />
+                  </View>
+                  <CustomSingleButton
+                    _ButtonText={'Add reference'}
+                    Text_Color={_COLORS.Kodie_WhiteColor}
+                    disabled={isLoading ? true : false}
+                    onPress={() => {}}
+                  />
+                </View>
+              )}
+            </View>
+          </View>
+        );
       default:
         return null;
     }
@@ -650,233 +1144,290 @@ const RentalOffer = props => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={'Submit application'}
       />
-      <ScrollView>
-        <View style={RentalOfferStyle.container}>
+      {IsMap ? (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'transparent',
+          }}>
+          <MapScreen
+            style={{
+              height: '100%',
+              width: '100%',
+              alignSelf: 'center',
+              marginBottom: 10,
+            }}
+            onRegionChange={onRegionChange}
+            Maplat={latitude}
+            Maplng={longitude}
+          />
           <View
             style={{
               flexDirection: 'row',
+              justifyContent: 'center',
+              alignSelf: 'center',
+              width: '96%',
+              borderWidth: 1,
+              borderRadius: 8,
+              backgroundColor: 'white',
+              borderColor: '#E5E4E2',
+              marginTop: 10,
+              position: 'absolute',
             }}>
-            <Image
-              source={IMAGES.userImage}
-              resizeMode={'cover'}
-              style={RentalOfferStyle.userImg}
+            <TextInput
+              style={{
+                backgroundColor: 'transparent',
+
+                width: '90%',
+                height: 45,
+                alignSelf: 'center',
+                //marginTop: 10,
+              }}
+              onFocus={() => openMapandClose()}
+              placeholder={'Search Place'}
+              placeholderTextColor={_COLORS.Kodie_BlackColor}
             />
-            <View style={RentalOfferStyle.userNameView}>
-              <Text style={RentalOfferStyle.username}>{'Jack'}</Text>
-              <Text style={RentalOfferStyle.username}>{'Black'}</Text>
-            </View>
           </View>
-          <View>
+          <TouchableOpacity
+            style={RentalOfferStyle.BtnContainer}
+            onPress={ConfirmAddress}>
+            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
+          </TouchableOpacity>
+        </View>
+      ) : IsSearch ? (
+        <SearchPlaces
+          onPress={(data, details = null) => {
+            console.log('LocationData....', details);
+            setlatitude(details.geometry.location.lat);
+            setlongitude(details.geometry.location.lng);
+            setIsSearch(false);
+            setIsMap(true);
+            setCurrentLocation(details.formatted_address);
+          }}
+        />
+      ) : (
+        <ScrollView>
+          <View style={RentalOfferStyle.container}>
             <View
               style={{
                 flexDirection: 'row',
               }}>
-              <AntDesign
-                name="star"
-                size={18}
-                color={_COLORS.Kodie_lightGreenColor}
-                style={RentalOfferStyle.starIcon}
+              <Image
+                source={IMAGES.userImage}
+                resizeMode={'cover'}
+                style={RentalOfferStyle.userImg}
               />
-              <Text style={[RentalOfferStyle.username]}>{'3.9 (81)'}</Text>
+              <View style={RentalOfferStyle.userNameView}>
+                <Text style={RentalOfferStyle.username}>{'Jack'}</Text>
+                <Text style={RentalOfferStyle.username}>{'Black'}</Text>
+              </View>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-              }}>
-              <AntDesign
-                name="checkcircle"
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <AntDesign
+                  name="star"
+                  size={18}
+                  color={_COLORS.Kodie_lightGreenColor}
+                  style={RentalOfferStyle.starIcon}
+                />
+                <Text style={[RentalOfferStyle.username]}>{'3.9 (81)'}</Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                <AntDesign
+                  name="checkcircle"
+                  size={18}
+                  color={_COLORS.Kodie_lightGreenColor}
+                  style={RentalOfferStyle.starIcon}
+                />
+                <Text
+                  style={[
+                    RentalOfferStyle.username,
+                    {color: _COLORS.Kodie_GreenColor},
+                  ]}>
+                  {'Verified'}
+                </Text>
+              </View>
+            </View>
+            <TouchableOpacity style={{}}>
+              <Entypo
+                name="dots-three-horizontal"
                 size={18}
-                color={_COLORS.Kodie_lightGreenColor}
-                style={RentalOfferStyle.starIcon}
+                color={_COLORS.Kodie_GrayColor}
+                style={{
+                  alignSelf: 'center',
+                }}
               />
-              <Text
-                style={[
-                  RentalOfferStyle.username,
-                  {color: _COLORS.Kodie_GreenColor},
-                ]}>
-                {'Verified'}
+            </TouchableOpacity>
+          </View>
+          <DividerIcon
+            borderBottomWidth={3}
+            color={_COLORS.Kodie_LiteWhiteColor}
+          />
+          <View style={RentalOfferStyle.apartmentView}>
+            <Text style={RentalOfferStyle.propertyHeading}>{'Apartment'}</Text>
+            <Text
+              style={[
+                RentalOfferStyle.propertyHeading,
+                {fontFamily: FONTFAMILY.K_Bold},
+              ]}>
+              {'Melbourne'}
+            </Text>
+            <View style={RentalOfferStyle.locationView}>
+              <Entypo
+                color={_COLORS.Kodie_GreenColor}
+                name="location-pin"
+                size={20}
+              />
+              <Text style={RentalOfferStyle.location}>
+                {'8502 Preston Rd. Inglewood, Queensland, Australia, ...'}
               </Text>
             </View>
           </View>
-          <TouchableOpacity style={{}}>
-            <Entypo
-              name="dots-three-horizontal"
-              size={18}
-              color={_COLORS.Kodie_GrayColor}
-              style={{
-                alignSelf: 'center',
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-        <DividerIcon
-          borderBottomWidth={3}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-        <View style={RentalOfferStyle.apartmentView}>
-          <Text style={RentalOfferStyle.propertyHeading}>{'Apartment'}</Text>
-          <Text
-            style={[
-              RentalOfferStyle.propertyHeading,
-              {fontFamily: FONTFAMILY.K_Bold},
-            ]}>
-            {'Melbourne'}
-          </Text>
-          <View style={RentalOfferStyle.locationView}>
-            <Entypo
-              color={_COLORS.Kodie_GreenColor}
-              name="location-pin"
-              size={20}
-            />
-            <Text style={RentalOfferStyle.location}>
-              {'8502 Preston Rd. Inglewood, Queensland, Australia, ...'}
+          <DividerIcon
+            borderBottomWidth={3}
+            color={_COLORS.Kodie_LiteWhiteColor}
+          />
+          <View
+            style={{
+              marginHorizontal: 16,
+            }}>
+            <Text style={[RentalOfferStyle.PreRentaltext]}>
+              {'Pre-rental questionnaire'}
             </Text>
           </View>
-        </View>
-        <DividerIcon
-          borderBottomWidth={3}
-          color={_COLORS.Kodie_LiteWhiteColor}
-        />
-        <View
-          style={{
-            marginHorizontal: 16,
-          }}>
-          <Text style={[RentalOfferStyle.PreRentaltext]}>
-            {'Pre-rental questionnaire'}
-          </Text>
-        </View>
-        <FlatList
-          data={quesHeading}
-          keyExtractor={(item, index) => item.id}
-          renderItem={QuesHeadingRender}
-        />
-        <View style={{marginHorizontal: 16, marginBottom: 20}}>
-          <Text style={RentalOfferStyle.inspections}>
-            {'Tenant  screening report (recommended)'}
-          </Text>
-          <CustomSingleButton
-            _ButtonText={'Start Now'}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            disabled={isLoading ? true : false}
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
+          <FlatList
+            data={quesHeading}
+            keyExtractor={(item, index) => item.id}
+            renderItem={QuesHeadingRender}
           />
-          {/* .... */}
-        </View>
-        <DividerIcon marginTop={5} />
-        <View style={RentalOfferStyle.submitApplicationbtn}>
-          <RowButtons
-            LeftButtonText={'Cancel'}
-            leftButtonbackgroundColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            LeftButtonTextColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_BlackColor
-            }
-            LeftButtonborderColor={
-              !submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_BlackColor
-            }
-            onPressLeftButton={() => {
-              setSubmitApplicationBtn(false);
-              setSubmitApplicationBtnId(0);
-              handleSubmit();
-              // alert(selectPetFriendlyBtnId)
-            }}
-            RightButtonText={'Submit'}
-            RightButtonbackgroundColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonTextColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_WhiteColor
-                : _COLORS.Kodie_BlackColor
-            }
-            RightButtonborderColor={
-              submitApplicationBtn
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_BlackColor
-            }
-            onPressRightButton={() => {
-              setSubmitApplicationBtn(true);
-              setSubmitApplicationBtnId(1);
-              // alert(selectPetFriendlyBtnId)
-              refRBSheet1.current.open();
-            }}
-          />
-        </View>
-        <RBSheet
-          height={500}
-          ref={refRBSheet}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: RentalOfferStyle.bottomModal_container,
-          }}>
-          <TouchableOpacity
-            style={{
-              // justifyContent: 'flex-end',
-              // alignSelf: 'flex-end',
-              marginHorizontal: 10,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-            onPress={() => {
-              onClose();
-            }}>
-            <Text style={RentalOfferStyle.tenantScreenText}>
-              {'Tenant screening report'}
+          <View style={{marginHorizontal: 16, marginBottom: 20}}>
+            <Text style={RentalOfferStyle.inspections}>
+              {'Tenant  screening report (recommended)'}
             </Text>
-            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-          </TouchableOpacity>
-          {/* <BottomModalSearchRental onClose={onClose} /> */}
-          <TenantScreeningReportModal onClose={onClose} />
-        </RBSheet>
-        <RBSheet
-          height={400}
-          ref={refRBSheet1}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: RentalOfferStyle.bottomModal_container,
-          }}>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'flex-end',
-              alignSelf: 'flex-end',
-              marginHorizontal: 10,
-              // flexDirection: 'row',
-              // justifyContent: 'space-between',
-            }}
-            onPress={() => {
-              onClose1();
+            <CustomSingleButton
+              _ButtonText={'Start Now'}
+              Text_Color={_COLORS.Kodie_WhiteColor}
+              disabled={isLoading ? true : false}
+              onPress={() => {
+                refRBSheet.current.open();
+              }}
+            />
+            {/* .... */}
+          </View>
+          <DividerIcon marginTop={5} />
+          <View style={RentalOfferStyle.submitApplicationbtn}>
+            <RowButtons
+              LeftButtonText={'Cancel'}
+              leftButtonbackgroundColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              LeftButtonborderColor={
+                !submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              onPressLeftButton={() => {
+                setSubmitApplicationBtn(false);
+                setSubmitApplicationBtnId(0);
+                handleSubmit();
+                // alert(selectPetFriendlyBtnId)
+              }}
+              RightButtonText={'Submit'}
+              RightButtonbackgroundColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_WhiteColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              RightButtonborderColor={
+                submitApplicationBtn
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_BlackColor
+              }
+              onPressRightButton={() => {
+                setSubmitApplicationBtn(true);
+                setSubmitApplicationBtnId(1);
+                // alert(selectPetFriendlyBtnId)
+                refRBSheet1.current.open();
+              }}
+            />
+          </View>
+          <RBSheet
+            height={500}
+            ref={refRBSheet}
+            closeOnDragDown={true}
+            closeOnPressMask={false}
+            customStyles={{
+              wrapper: {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              },
+              draggableIcon: {
+                backgroundColor: _COLORS.Kodie_LightGrayColor,
+              },
+              container: RentalOfferStyle.bottomModal_container,
             }}>
-            <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-          </TouchableOpacity>
-          {/* <TenantScreeningReportModal onClose={onClose} /> */}
-          <ApplicationSubmitModal onClose={onClose1} />
-        </RBSheet>
-      </ScrollView>
+            <TouchableOpacity
+              style={{
+                marginHorizontal: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+              onPress={() => {
+                onClose();
+              }}>
+              <Text style={RentalOfferStyle.tenantScreenText}>
+                {'Tenant screening report'}
+              </Text>
+              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+            </TouchableOpacity>
+            <TenantScreeningReportModal onClose={onClose} />
+          </RBSheet>
+          <RBSheet
+            height={400}
+            ref={refRBSheet1}
+            closeOnDragDown={true}
+            closeOnPressMask={false}
+            customStyles={{
+              wrapper: {
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              },
+              draggableIcon: {
+                backgroundColor: _COLORS.Kodie_LightGrayColor,
+              },
+              container: RentalOfferStyle.bottomModal_container,
+            }}>
+            <TouchableOpacity
+              style={{
+                justifyContent: 'flex-end',
+                alignSelf: 'flex-end',
+                marginHorizontal: 10,
+              }}
+              onPress={() => {
+                onClose1();
+              }}>
+              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+            </TouchableOpacity>
+            <ApplicationSubmitModal onClose={onClose1} />
+          </RBSheet>
+        </ScrollView>
+      )}
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );

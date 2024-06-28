@@ -81,14 +81,14 @@ const Properties = props => {
       case 'Tab2':
         return (
           <>
-            {/* <PropertyList2
+            <PropertyList2
               SearchButton={() => {
                 props.navigation.navigate('SearchResult');
               }}
               setOpenMap={handleOpenMap}
               closeMap={openMap}
-            /> */}
-            {Alert.alert('Search for rentals', 'Coming soon', [
+            />
+            {/* {Alert.alert('Search for rentals', 'Coming soon', [
               {
                 text: 'OK',
                 onPress: () => {
@@ -96,7 +96,7 @@ const Properties = props => {
                   setActiveTab('Tab1');
                 },
               },
-            ])}
+            ])} */}
           </>
         );
       case 'Tab3':

@@ -203,7 +203,7 @@ export default ContractorSignUpFirstScreen = props => {
                 )}
                 renderItem={renderDataItem}
                 renderSelectedItem={(item, unSelect) => (
-                  <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                  <TouchableOpacity onPress={() => unSelect(item)}>
                     <View style={ContractorSignUpStyle.selectedStyle}>
                       <Text style={ContractorSignUpStyle.textSelectedStyle}>
                         {item.label}
