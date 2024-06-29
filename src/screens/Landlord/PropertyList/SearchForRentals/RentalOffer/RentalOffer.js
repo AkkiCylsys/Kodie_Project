@@ -37,6 +37,8 @@ import {resolvePlugin} from '@babel/core';
 import MapScreen from '../../../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
 import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
+import DocumentPicker from 'react-native-document-picker';
+
 const DocumentData = [
   {
     id: 1,
@@ -50,7 +52,9 @@ const RentalOffer = props => {
   const [fullName, setFullName] = useState('');
   const [fullNameError, setFullNameError] = useState('');
   const [referenceFullName, setReferenceFullName] = useState('');
-  const [referenceFullEmail, setReferenceFullEmail] = useState('');
+  const [referenceFullNameError, setReferenceFullNameError] = useState('');
+  const [referenceEmail, setReferenceEmail] = useState('');
+  const [referenceEmailError, setReferenceEmailError] = useState('');
   const [referencesItem, setReferencesItem] = useState([]);
   const [leaseFullName, setLeaseFullName] = useState('');
   const [leaseFullNameError, setLeaseFullNameError] = useState('');
@@ -113,6 +117,9 @@ const RentalOffer = props => {
   const city = addressParts.join(', ');
   const [occupants, setOccupants] = useState([]);
   const [leaseHolderItem, setLeaseHolderItem] = useState([]);
+  const [selectFile, setSelectFile] = useState([]);
+  const [getuploadDocByModuleName, setGetuploadDocByModuleName] = useState([]);
+
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -165,7 +172,6 @@ const RentalOffer = props => {
       })
       .catch(error => console.warn(error));
   };
-
   const increaseNumberOccupants = () => {
     setNumberOccupants(prevCount => prevCount + 1);
   };
@@ -310,10 +316,44 @@ const RentalOffer = props => {
       addLeaseHolder();
     }
   };
+  // Reference validation
+  const validReferenceFullName = text => {
+    setReferenceFullName(text);
+    if (referenceFullName === '') {
+      setReferenceFullNameError('References fullName is required.');
+    } else {
+      setReferenceFullNameError('');
+    }
+  };
+  const validReferencesEmailAddress = text => {
+    setReferenceEmail(text);
+    if (referenceEmail === '') {
+      setReferenceEmailError('References email Address is required.');
+    } else if (!validateResetEmail(referenceEmail)) {
+      setReferenceEmailError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
+      setReferenceEmailError('');
+    }
+  };
+  const handleReferences = () => {
+    if (referenceFullName === '') {
+      setReferenceFullNameError('References fullName is required.');
+    } else if (referenceEmail === '') {
+      setReferenceEmailError('References email Address is required.');
+    } else if (!validateResetEmail(referenceEmail)) {
+      setReferenceEmailError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
+      addReferences();
+    }
+  };
   // render item
   const renderDataItem = item => {
     return (
-      <View style={RentalOfferStyle.item}>
+      <View style={[RentalOfferStyle.item]}>
         <Text style={RentalOfferStyle.selectedTextStyle}>
           {item.lookup_description}
         </Text>
@@ -419,9 +459,11 @@ const RentalOffer = props => {
     return (
       <View style={RentalOfferStyle.occupants_item_View}>
         <View>
-          <Text style={RentalOfferStyle.occupants_name}>{item?.referenceFullName}</Text>
+          <Text style={RentalOfferStyle.occupants_name}>
+            {item?.referenceFullName}
+          </Text>
           <Text style={RentalOfferStyle.occupants_email}>
-            {item?.referenceFullEmail}
+            {item?.referenceEmail}
           </Text>
         </View>
         <View style={{marginHorizontal: 5}}>
@@ -514,15 +556,15 @@ const RentalOffer = props => {
     }
   };
   const addReferences = () => {
-    if (referenceFullName && referenceFullEmail) {
+    if (referenceFullName && referenceEmail) {
       const newReferences = {
         referenceFullName,
-        referenceFullEmail,
+        referenceEmail,
       };
       setReferencesItem([...referencesItem, newReferences]);
       console.log('referencesItem...', referencesItem);
       setReferenceFullName('');
-      setReferenceFullEmail('');
+      setReferenceEmail('');
     }
   };
   const removeOccupant = index => {
@@ -537,7 +579,65 @@ const RentalOffer = props => {
     const updatedReferences = referencesItem.filter((_, i) => i !== index);
     setReferencesItem(updatedReferences);
   };
+  // upload Documents
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+        allowMultiSelection: true,
+      });
+      console.log('doc......', doc);
+      setSelectFile(doc);
+      await uploadDocument(doc);
+      console.log('Documents.....', doc);
+      console.log('selectFile.....', selectFile);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err))
+        console.log('User cancelled the upload', err);
+      else console.log(err);
+    }
+  };
   // Api intrigation....
+  const uploadDocument = async doc => {
+    console.log('uri....', doc[0].uri);
+    console.log('name....', doc[0].name.replace(/\s/g, ''));
+    console.log('type....', doc[0].type);
+    console.log('p_referral_key....', property_id);
+    console.log('p_module_name....', moduleName);
+    const url = Config.BASE_URL;
+    const uploadDoc_url = url + 'uploadDocument';
+    console.log('Request URL:', uploadDoc_url);
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('documents', {
+        uri: doc[0].uri,
+        name: doc[0].name.replace(/\s/g, ''),
+        type: doc[0].type,
+      });
+      formData.append('p_referral_key', property_id);
+      formData.append('p_module_name', moduleName);
+      const response = await axios.post(uploadDoc_url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('API Response uploadDocument:', response?.data);
+
+      if (response?.data?.status === true) {
+        alert(response?.data?.message);
+        // getUploadedDocumentsByModule(); // will intrigate it.
+      } else {
+        alert(response?.data?.message);
+      }
+    } catch (error) {
+      console.error('API failed uploadDocument', error);
+      // alert(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleLeaseTerm = () => {
     const TenantData = {
       P_PARENT_CODE: 'RLT',
@@ -1342,6 +1442,7 @@ const RentalOffer = props => {
               valueField="lookup_key"
               searchPlaceholder="Search..."
               search
+              value={inputValues[question.tqm_Question_code] || []}
               onChange={items =>
                 handleInputChange(question.tqm_Question_code, items)
               }
@@ -1425,8 +1526,14 @@ const RentalOffer = props => {
                       placeholder={'Enter full name'}
                       onChangeText={setReferenceFullName}
                       value={referenceFullName}
+                      onBlur={() => validReferenceFullName(referenceFullName)}
                     />
                   </View>
+                  {referenceFullNameError ? (
+                    <Text style={RentalOfferStyle.error_text}>
+                      {referenceFullNameError}
+                    </Text>
+                  ) : null}
                   <View style={RentalOfferStyle.inputView}>
                     <Text style={LABEL_STYLES.commontext}>
                       {'Email address'}
@@ -1434,17 +1541,23 @@ const RentalOffer = props => {
                     <TextInput
                       style={RentalOfferStyle.input}
                       placeholder={'Enter email address'}
-                      onChangeText={setReferenceFullEmail}
-                      value={referenceFullEmail}
+                      onChangeText={setReferenceEmail}
+                      value={referenceEmail}
+                      onBlur={() => validReferencesEmailAddress(referenceEmail)}
                       keyboardType="email-address"
                     />
                   </View>
+                  {referenceEmailError ? (
+                    <Text style={RentalOfferStyle.error_text}>
+                      {referenceEmailError}
+                    </Text>
+                  ) : null}
                   <CustomSingleButton
                     _ButtonText={'Add reference'}
                     Text_Color={_COLORS.Kodie_WhiteColor}
                     disabled={isLoading ? true : false}
                     onPress={() => {
-                      addReferences();
+                      handleReferences();
                     }}
                   />
                 </View>
@@ -1637,7 +1750,7 @@ const RentalOffer = props => {
             keyExtractor={(item, index) => item.id}
             renderItem={QuesHeadingRender}
           />
-          <View style={{marginHorizontal: 16, marginBottom: 20}}>
+          <View style={{marginHorizontal: 16}}>
             <Text style={RentalOfferStyle.inspections}>
               {'Tenant  screening report (recommended)'}
             </Text>
@@ -1698,6 +1811,17 @@ const RentalOffer = props => {
                 // alert(selectPetFriendlyBtnId)
                 refRBSheet1.current.open();
               }}
+            />
+          </View>
+          <View style={{marginHorizontal: 16, marginBottom: 20}}>
+            <CustomSingleButton
+              _ButtonText={'Upload'}
+              Text_Color={_COLORS.Kodie_BlackColor}
+              disabled={isLoading ? true : false}
+              isLeftImage={true}
+              leftImage={IMAGES.uploadIcon}
+              onPress={() => {selectDoc()}}
+              backgroundColor={_COLORS.Kodie_lightGreenColor}
             />
           </View>
           <RBSheet
