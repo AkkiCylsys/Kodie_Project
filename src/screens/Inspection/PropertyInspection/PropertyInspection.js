@@ -24,6 +24,7 @@ const PropertyInspection = (props) => {
   const [activeTab, setActiveTab] = useState("Tab1");
   const [property_Detail, setProperty_Details] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
+  const [isCancel, setIsCancel] = useState('');
 
 const TIM_KEY = props?.route?.params?.TIM_KEY;
 const PropertyId = props?.route?.params?.PropertyId;
@@ -78,6 +79,7 @@ useEffect(()=>{
       console.log('response_Cancel_Inspection..', response?.data);
       if (response?.data?.success === true) {
       console.log(response?.data?.message);
+      setIsCancel(response?.data?.newStatus)
       alert(response?.data?.message)
       } else {
         console.error('response_Cancel_Inspection_error:', response?.data?.error);
@@ -96,12 +98,13 @@ useEffect(()=>{
         return <Schedule 
         TIM_KEY={TIM_KEY} 
         account_id={account_id} 
-        rescheduleInspection={()=>{
-          props?.navigation?.navigate('CreateNewInspection',
+        newStatus={isCancel}
+        rescheduleInspection={()=>
+          props.navigation.navigate('CreateNewInspection',
           {
             TIM_KEY:TIM_KEY,
             InspectionView:'InspectionView'
-          })}}
+          })}
           CancelInspection={CancleInspectionData}
           />;
       case "Tab2":

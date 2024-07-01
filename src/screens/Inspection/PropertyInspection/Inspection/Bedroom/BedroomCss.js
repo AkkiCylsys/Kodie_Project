@@ -7,7 +7,7 @@ export const BedroomCss = StyleSheet.create({
   },
   Container: {
     marginHorizontal: 16,
-    marginVertical: 16,
+    // marginVertical: 16,
   },
   HeaderText: {
     fontSize: 20,
@@ -52,6 +52,7 @@ export const BedroomCss = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightWhiteColor,
     width: '30%',
+    height:40,
     paddingVertical: 5,
     borderRadius: 5,
     alignSelf: 'center',
@@ -70,7 +71,7 @@ export const BedroomCss = StyleSheet.create({
     flex: 0.5,
   },
   YText: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_BlackColor,
     alignSelf: 'center',
@@ -96,7 +97,7 @@ export const BedroomCss = StyleSheet.create({
     borderRadius: 8,
   },
   dropdown: {
-    height: 40,
+    height: 48,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
     borderRadius: 8,
@@ -115,10 +116,10 @@ export const BedroomCss = StyleSheet.create({
     marginLeft: 5,
   },
   iconStyle: {
-    width: 15,
-    height: 15,
-    borderWidth: 1,
-    marginRight: 5,
+    width: 18,
+    height: 18,
+    // borderWidth: 1,
+    marginRight: 8,
   },
   inputSearchStyle: {
     height: 40,
@@ -150,16 +151,17 @@ export const BedroomCss = StyleSheet.create({
   ModalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom:10
   },
   ShareText: {
     fontFamily: FONTFAMILY.K_Bold,
-    fontSize: 16,
+    fontSize: 18,
     color: _COLORS.Kodie_BlackColor,
   },
   inputContainer: {
-    marginVertical: 4,
+    // marginVertical: 4,
   },
-  cardHeight: {marginBottom: 8},
+  cardHeight: {marginBottom: 15,marginTop:15},
   emailinput: {
     borderWidth: 1,
     height: 45,
@@ -171,7 +173,7 @@ export const BedroomCss = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'flex-end',
     justifyContent: 'flex-end',
-    marginVertical: 26,
+    marginTop:36,
   },
   cancelView: {alignSelf: 'center'},
   cancelText: {
@@ -203,7 +205,7 @@ export const BedroomCss = StyleSheet.create({
     alignSelf: 'center',
   },
   secondModal: {flex: 1, marginHorizontal: 16},
-  circleStyle: {height: 35, width: 35, borderRadius: 35 / 2},
+  circleStyle: {height: 38, width: 38, borderRadius: 38 / 2},
   pluscirclestyle: {
     position: 'absolute',
     alignSelf: 'flex-end',
@@ -211,7 +213,7 @@ export const BedroomCss = StyleSheet.create({
     borderColor: _COLORS.Kodie_LightWhiteColor,
   },
   input: {
-    height: 70,
+    height: "20%",
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,

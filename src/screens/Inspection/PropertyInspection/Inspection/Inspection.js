@@ -64,24 +64,15 @@ const Inspection = props => {
   console.log('getinspection.TAM_AREA_KEY', AreaKey);
   console.log('getAreaKey....', getAreaKey);
   const PropertyId = props.PropertyId;
-  const navigateToScreen = id => {
-    switch (id) {
-      case 'Bedroom':
-        // <Bedroom />;
+  const navigateToScreen = (id,name) => {
         navigation.navigate('Bedroom', {
-          TeamAreaKey: getAreaKey.area_key_id,
+          TeamAreaKey: id,
+          AreaName:name,
           TIM_KEY: TIM_KEY,
           getinspectionKey: getinspection.v_UPD_KEY,
+          PropertyId:PropertyId,
           teamCreateId: loginData?.Login_details?.user_account_id,
         });
-        break;
-      case 2:
-        break;
-      case 3:
-        break;
-      default:
-        break;
-    }
   };
   const handleCloseModal = () => {
     refRBSheet2.current.close();
@@ -268,7 +259,7 @@ const Inspection = props => {
     }
   };
   const Inspection_render = ({item}) => {
-    console.log(item);
+    console.log(item.area_key_id);
     let IconComponent;
     let iconName = '';
 
@@ -342,7 +333,7 @@ const Inspection = props => {
           {!isEditing ? (
             <TouchableOpacity
               onPress={() =>
-                navigateToScreen(item.area_name, item.TAM_AREA_KEY)
+                navigateToScreen(item.area_key_id,item?.area_name)
               }
               style={InspectionCss.rightIcon}>
               <Feather
@@ -366,6 +357,8 @@ const Inspection = props => {
       </>
     );
   };
+
+ 
   return (
     <ScrollView>
       <View style={InspectionCss.MainContainer}>

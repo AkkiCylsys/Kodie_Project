@@ -1,5 +1,5 @@
 //ScreenNo:87
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   Image,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import { NewInspectionStyle } from "./NewInspectionStyle";
 import TopHeader from "../../../components/Molecules/Header/Header";
@@ -20,7 +21,11 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
-import { useState } from "react";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { Config } from "../../../Config";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 
 const HorizontalData = ["Scheduled", "In Progress", "Complete"];
 
@@ -52,8 +57,109 @@ const inspection_data = [
 ];
 
 export default NewInspection = (props) => {
+  const navigation = useNavigation()
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const [page, setPage] = useState(1);
+  const isFocused = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
-  const searchInspection = () => {};
+  const [_selectedMonthId, set_selectedMonthId] = useState(
+    new Date().getMonth() + 1,);
+  const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear());
+  const [_MONTHS, set_MONTHS] = useState([
+    { id: 1, name: 'January' },
+    { id: 2, name: 'February' },
+    { id: 3, name: 'March' },
+    { id: 4, name: 'April' },
+    { id: 5, name: 'May' },
+    { id: 6, name: 'June' },
+    { id: 7, name: 'July' },
+    { id: 8, name: 'August' },
+    { id: 9, name: 'September' },
+    { id: 10, name: 'October' },
+    { id: 11, name: 'November' },
+    { id: 12, name: 'December' },
+  ]);
+  const [InspectionDetails, setInspectionDetails] = useState([])
+  useEffect(() => {
+    if (isFocused) {
+      getInspectionDeatilsByFilter({
+        monthId: _selectedMonthId,
+        year: _selectedYear,
+      });
+    }
+  }, [isFocused]);
+  const getInspectionDeatilsByFilter = async ({ monthId, year, page }) => {
+    setIsLoading(true);
+    try {
+      const url = Config.BASE_URL;
+      const InspectionDeatilsByFilter_url = url + 'get/AllInspectionDetails';
+      console.log('InspectionDeatilsByFilter_url...', InspectionDeatilsByFilter_url);
+      const data = {
+        v_Filter: "All",
+        P_TIM_CREATED_BY: loginData?.Login_details?.user_account_id,
+        p_limit: 10,
+        p_order_wise: 'DESC',
+        P_TIM_IS_MONTHS: monthId.toString(),
+        P_TIM_IS_YEAR: year,
+        p_page: 1,
+      };
+      console.log('monthdatae', data);
+      const response = await axios.post(InspectionDeatilsByFilter_url, data);
+      console.log('InspectionDeatilsByFilter_Data response...', response?.data);
+      if(response?.data?.success === true){
+      setInspectionDetails(response?.data?.data)
+      }
+      // Append new data to the existing list
+      // setInspectionDetails(prevDetails => [...prevDetails, ...response?.data?.data]);
+      console.log('InspectionDeatilsByFilter_Data..', response?.data?.data);
+      setIsLoading(false);
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        Alert.alert("Warning", error.response.data.message || "Internal server issue");
+        setIsLoading(false);
+      } else if(error.response.status === 404) {
+        setInspectionDetails([])
+        setIsLoading(false);
+      }
+      console.error('API Error InspectionDeatilsByFilter:', error);
+      setIsLoading(false);
+    }
+  };
+  const loadMoreData = () => {
+    setPage(prevPage => prevPage + 1);
+  };
+  const searchInspection = () => { };
+  const navigateToPreviousMonth = async () => {
+    let newMonthId = _selectedMonthId - 1;
+    let newYear = _selectedYear;
+    if (newMonthId < 1) {
+      newMonthId = 12; // Set to December
+      newYear -= 1; // Decrement year
+    }
+    set_selectedMonthId(newMonthId);
+    set_selectedYear(newYear);
+    await getInspectionDeatilsByFilter({
+      monthId: newMonthId,
+      year: newYear,
+    });
+  };
+
+  const navigateToNextMonth = async () => {
+    let newMonthId = _selectedMonthId + 1;
+    let newYear = _selectedYear;
+    if (newMonthId > 12) {
+      newMonthId = 1; // Set to January
+      newYear += 1; // Increment year
+    }
+    set_selectedMonthId(newMonthId);
+    set_selectedYear(newYear);
+    await getInspectionDeatilsByFilter({
+      monthId: newMonthId,
+      year: newYear,
+    });
+  };
+
+
 
   const horizontal_render = ({ item }) => {
     return (
@@ -65,32 +171,51 @@ export default NewInspection = (props) => {
   };
 
   const Inspection_render = ({ item, index }) => {
+    const getDate = new Date(item.scheduled_date);
+
+    const dayOfMonth = getDate.getDate(); // Extracts the day of the month
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayOfWeek = daysOfWeek[getDate.getDay()];
     return (
       <>
         <View style={NewInspectionStyle.insp_data_View}>
           <View style={NewInspectionStyle.insp_cld_main_view}>
-            <Text style={NewInspectionStyle.insp_cld_date}>{"3"}</Text>
-            <Text style={NewInspectionStyle.insp_cld_Text}>{"Monday"}</Text>
-            <Text style={NewInspectionStyle.insp_cld_Text}>{"8:30am"}</Text>
+            <Text style={NewInspectionStyle.insp_cld_date}>{dayOfMonth}</Text>
+            <Text style={NewInspectionStyle.insp_cld_Text}>{dayOfWeek}</Text>
+            <Text style={NewInspectionStyle.insp_cld_Text}>{item?.scheduled_time}</Text>
           </View>
-          <View>
-            <Image source={item.img} style={NewInspectionStyle.img_Sty} />
+          <View style={{flex:0.4}}>
+            {item.image_path && item.image_path.length > 0 ? (
+              <Image source={{ uri: item?.image_path[0] }} style={NewInspectionStyle.img_Sty} />
+            ) : (<View
+              style={[
+                NewInspectionStyle.img_Sty,
+                { justifyContent: 'center' },
+              ]}>
+              <Text style={{
+                fontSize: 12,
+                color: _COLORS?.Kodie_BlackColor,
+                textAlign: 'center',
+                alignSelf: 'center',
+              }}>
+                {'Image not found'}
+              </Text>
+            </View>)}
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1,marginLeft:2 }}>
             <View style={NewInspectionStyle.location_main_view}>
               <Entypo
                 name="location-pin"
                 size={18}
                 color={_COLORS.Kodie_GreenColor}
+                style={{alignSelf:'center'}}
               />
               <Text style={NewInspectionStyle.location_text}>
                 {item.location}
               </Text>
-              {/* <Image
-                source={IMAGES.noteBook}
-                style={NewInspectionStyle.note_b_img_sty}
-              /> */}
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>{
+              navigation?.navigate('CreateNewInspection',{TIM_KEY:item.tim_key,Ins_editMode:"Ins_editMode"})
+              }}>
                 <SimpleLineIcons
                   name="note"
                   size={25}
@@ -98,6 +223,7 @@ export default NewInspection = (props) => {
                   resizeMode={"contain"}
                 />
               </TouchableOpacity>
+              <View style={{ margin: 6 }} />
               <TouchableOpacity>
                 <Entypo
                   name="dots-three-horizontal"
@@ -118,7 +244,7 @@ export default NewInspection = (props) => {
               </View>
               <TouchableOpacity style={NewInspectionStyle.in_progress_view}>
                 <Text style={NewInspectionStyle.in_progress_txt}>
-                  {item.review}
+                  {"Schedule"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -136,7 +262,7 @@ export default NewInspection = (props) => {
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"Inspections"}
       />
-      <ScrollView>
+     
         <View style={NewInspectionStyle.subContainer}>
           <CustomSingleButton
             _ButtonText={"Create new inspection"}
@@ -172,7 +298,7 @@ export default NewInspection = (props) => {
           />
         </View>
         <DividerIcon />
-        <View style={NewInspectionStyle.month_View}>
+        {/* <View style={NewInspectionStyle.month_View}>
           <TouchableOpacity style={NewInspectionStyle.backIconSty}>
             <AntDesign name="left" size={25} color={_COLORS.Kodie_BlackColor} />
           </TouchableOpacity>
@@ -184,17 +310,79 @@ export default NewInspection = (props) => {
               color={_COLORS.Kodie_BlackColor}
             />
           </TouchableOpacity>
+        </View> */}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginHorizontal: 16,
+            marginVertical: 10,
+          }}>
+          <TouchableOpacity
+            onPress={navigateToPreviousMonth}
+            style={{
+              justifyContent: 'flex-start',
+              alignItems: 'flex-start',
+            }}>
+            <Entypo name={'chevron-left'} size={22} color={'black'} />
+          </TouchableOpacity>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <View
+              // onPress={toggleModal}
+              style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  alignSelf: 'center',
+                  fontFamily: FONTFAMILY?.K_Bold,
+                  color: _COLORS.Kodie_BlackColor,
+                }}>
+                {_MONTHS.find(month => month.id === _selectedMonthId)?.name}{' '}
+              </Text>
+            </View>
+            <View
+              // onPress={toggleYearModal}
+              style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <Text
+                style={{
+                  fontSize: 18,
+                  alignSelf: 'center',
+                  fontFamily: FONTFAMILY?.K_Bold,
+                  color: _COLORS.Kodie_BlackColor,
+                }}>
+                {_selectedYear}
+              </Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={navigateToNextMonth}
+            style={{
+              justifyContent: 'flex-end',
+              alignItems: 'flex-end',
+            }}>
+            <Entypo name={'chevron-right'} size={22} color={'black'} />
+          </TouchableOpacity>
         </View>
         <DividerIcon />
+        <ScrollView>
         <FlatList
-          data={inspection_data}
+          data={InspectionDetails}
           scrollEnabled
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{}}
           keyExtractor={(item) => item?.id}
           renderItem={Inspection_render}
+         
         />
       </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
 };
