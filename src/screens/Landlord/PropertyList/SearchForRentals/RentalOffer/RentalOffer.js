@@ -97,7 +97,7 @@ const RentalOffer = props => {
   const [numberYearEmp, setNumberYearEmp] = useState(0);
   const [numberPets, setNumberPets] = useState(0);
   const [toggleOccupants, setToggleOccupants] = useState(false);
-  const [leaseHolder, setLeaseHolder] = useState(false);
+  const [toggleleaseHolder, setToggleLeaseHolder] = useState(false);
   const [selectedButton, setSelectedButton] = useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
@@ -174,18 +174,22 @@ const RentalOffer = props => {
   };
   const increaseNumberOccupants = () => {
     setNumberOccupants(prevCount => prevCount + 1);
+    setToggleOccupants(true);
   };
   const increaseLeaseHolder = () => {
     setNumberLeaseHolder(prevCount => prevCount + 1);
+    setToggleLeaseHolder(true);
   };
   const decreaseNumberOccupants = () => {
     if (numberOccupants > 0) {
       setNumberOccupants(prevCount => prevCount - 1);
+      setToggleOccupants(false);
     }
   };
   const decreaseLeaseHolder = () => {
     if (numberLeaseHolder > 0) {
       setNumberLeaseHolder(prevCount => prevCount - 1);
+      setToggleLeaseHolder(false);
     }
   };
   const increaseNumberYearEmp = () => {
@@ -539,6 +543,7 @@ const RentalOffer = props => {
       console.log('occupants...', occupants);
       setFullName('');
       setEmailAddress('');
+      setToggleOccupants(false);
     }
   };
   const addLeaseHolder = () => {
@@ -553,6 +558,7 @@ const RentalOffer = props => {
       setLeaseFullName('');
       setleaseEmailAddress('');
       setLeaseConfirmEmailAddress('');
+      setToggleLeaseHolder(false);
     }
   };
   const addReferences = () => {
@@ -914,28 +920,71 @@ const RentalOffer = props => {
     }
   };
 
-  const handleSubmit = () => {
-    const allQuestions = [
-      ...question,
-      ...employeeQues,
-      ...rentailDetails,
-      ...rental_History,
-      ...preference,
-    ];
+  // const handleSubmit = () => {
+  //   const allQuestions = [
+  //     ...question,
+  //     ...employeeQues,
+  //     ...rentailDetails,
+  //     ...rental_History,
+  //     ...preference,
+  //   ];
 
-    const allData = {};
-    allQuestions.forEach(q => {
-      const value = inputValues[q.tqm_Question_code];
-      allData[q.id] = value !== undefined ? value : null;
-    });
+  //   const allData = {};
+  //   allQuestions.forEach(q => {
+  //     const value = inputValues[q.tqm_Question_code];
+  //     allData[q.id] = value !== undefined ? value : null;
+  //   });
 
-    const jsonData = {
-      allData: allData,
-    };
+  //   const jsonData = {
+  //     allData: allData,
+  //   };
 
-    console.log('JSON Data:', jsonData);
-    return jsonData;
+  //   console.log('JSON Data:', jsonData);
+  //   return jsonData;
+  // };
+
+const handleSubmit = () => {
+  const allQuestions = [
+    ...question,
+    ...employeeQues,
+    ...rentailDetails,
+    ...rental_History,
+    ...preference,
+  ];
+
+  const allData = {};
+  allQuestions.forEach(q => {
+    const value = inputValues[q.tqm_Question_code];
+    allData[q.id] = value !== undefined ? value : null;
+  });
+
+  // Add additional fields not covered by inputValues
+  allData['numberOccupants'] = numberOccupants;
+  allData['occupants'] = occupants;
+  allData['numberLeaseHolder'] = numberLeaseHolder;
+  allData['leaseHolderItem'] = leaseHolderItem;
+  allData['numberYearEmp'] = numberYearEmp;
+  allData['numberPets'] = numberPets;
+  allData['selectedButton'] = selectedButton;
+  allData['selectedSomokingButton'] = selectedSomokingButton;
+  allData['location'] = location;
+  allData['referencesItem'] = referencesItem;
+  allData['fullName'] = fullName;
+  allData['emailAddress'] = emailAddress;
+  allData['leaseFullName'] = leaseFullName;
+  allData['leaseEmailAddress'] = leaseEmailAddress;
+  allData['leaseConfirmEmailAddress'] = leaseConfirmEmailAddress;
+  allData['referenceFullName'] = referenceFullName;
+  allData['referenceEmail'] = referenceEmail;
+
+  const jsonData = {
+    allData: allData,
   };
+
+  console.log('JSON Data:', jsonData);
+  return jsonData;
+};
+
 
   const renderQuestionComponent = (question, index) => {
     // console.log("Question inside the details...",question)
@@ -1170,11 +1219,13 @@ const RentalOffer = props => {
                 <TouchableOpacity
                   style={RentalOfferStyle.AddOccupantView}
                   onPress={() => {
-                    setLeaseHolder(!leaseHolder);
+                    setToggleLeaseHolder(!toggleleaseHolder);
                   }}>
                   <Entypo
                     name={
-                      leaseHolder ? 'chevron-small-up' : 'chevron-small-down'
+                      toggleleaseHolder
+                        ? 'chevron-small-up'
+                        : 'chevron-small-down'
                     }
                     color={_COLORS.Kodie_BlackColor}
                     size={25}
@@ -1183,83 +1234,91 @@ const RentalOffer = props => {
                     {'Add leaseholders'}
                   </Text>
                 </TouchableOpacity>
-                {leaseHolder && (
-                  <View style={{marginTop: 10}}>
+                <View style={{marginTop: 10}}>
+                  {toggleleaseHolder && (
                     <Text style={RentalOfferStyle.AddLeasesubText}>
                       {
                         'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application. '
                       }
                     </Text>
-                    <FlatList
-                      data={leaseHolderItem}
-                      keyExtractor={(item, index) => index.toString()}
-                      renderItem={leaseHolderRender}
-                    />
-                    <View style={RentalOfferStyle.inputView}>
-                      <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
-                      <TextInput
-                        style={RentalOfferStyle.input}
-                        placeholder={'Enter full name'}
-                        onChangeText={setLeaseFullName}
-                        value={leaseFullName}
-                        onBlur={() => validLeaseFullName(leaseFullName)}
+                  )}
+                  <FlatList
+                    data={leaseHolderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={leaseHolderRender}
+                  />
+                  {toggleleaseHolder && (
+                    <View>
+                      <View style={RentalOfferStyle.inputView}>
+                        <Text style={LABEL_STYLES.commontext}>
+                          {'Full name'}
+                        </Text>
+                        <TextInput
+                          style={RentalOfferStyle.input}
+                          placeholder={'Enter full name'}
+                          onChangeText={setLeaseFullName}
+                          value={leaseFullName}
+                          onBlur={() => validLeaseFullName(leaseFullName)}
+                        />
+                      </View>
+                      {leaseFullNameError ? (
+                        <Text style={RentalOfferStyle.error_text}>
+                          {leaseFullNameError}
+                        </Text>
+                      ) : null}
+                      <View style={RentalOfferStyle.inputView}>
+                        <Text style={LABEL_STYLES.commontext}>
+                          {'Email address'}
+                        </Text>
+                        <TextInput
+                          style={RentalOfferStyle.input}
+                          placeholder={'Enter email address'}
+                          onChangeText={setleaseEmailAddress}
+                          value={leaseEmailAddress}
+                          onBlur={() =>
+                            validLeaseEmailAddress(leaseEmailAddress)
+                          }
+                          keyboardType="email-address"
+                        />
+                      </View>
+                      {leaseEmailAddressError ? (
+                        <Text style={RentalOfferStyle.error_text}>
+                          {leaseEmailAddressError}
+                        </Text>
+                      ) : null}
+                      <View style={RentalOfferStyle.inputView}>
+                        <Text style={LABEL_STYLES.commontext}>
+                          {'Confirm email address'}
+                        </Text>
+                        <TextInput
+                          style={RentalOfferStyle.input}
+                          placeholder={'Confirm email address'}
+                          onChangeText={setLeaseConfirmEmailAddress}
+                          value={leaseConfirmEmailAddress}
+                          onBlur={() =>
+                            validConfirmLeaseEmailAddress(
+                              leaseConfirmEmailAddress,
+                            )
+                          }
+                          keyboardType="email-address"
+                        />
+                      </View>
+                      {leaseConfirmEmailAddressError ? (
+                        <Text style={RentalOfferStyle.error_text}>
+                          {leaseConfirmEmailAddressError}
+                        </Text>
+                      ) : null}
+                      <CustomSingleButton
+                        _ButtonText={'Invite leaseholder'}
+                        Text_Color={_COLORS.Kodie_WhiteColor}
+                        disabled={isLoading ? true : false}
+                        onPress={() => {
+                          handleValidLeaseHolder();
+                        }}
                       />
                     </View>
-                    {leaseFullNameError ? (
-                      <Text style={RentalOfferStyle.error_text}>
-                        {leaseFullNameError}
-                      </Text>
-                    ) : null}
-                    <View style={RentalOfferStyle.inputView}>
-                      <Text style={LABEL_STYLES.commontext}>
-                        {'Email address'}
-                      </Text>
-                      <TextInput
-                        style={RentalOfferStyle.input}
-                        placeholder={'Enter email address'}
-                        onChangeText={setleaseEmailAddress}
-                        value={leaseEmailAddress}
-                        onBlur={() => validLeaseEmailAddress(leaseEmailAddress)}
-                        keyboardType="email-address"
-                      />
-                    </View>
-                    {leaseEmailAddressError ? (
-                      <Text style={RentalOfferStyle.error_text}>
-                        {leaseEmailAddressError}
-                      </Text>
-                    ) : null}
-                    <View style={RentalOfferStyle.inputView}>
-                      <Text style={LABEL_STYLES.commontext}>
-                        {'Confirm email address'}
-                      </Text>
-                      <TextInput
-                        style={RentalOfferStyle.input}
-                        placeholder={'Confirm email address'}
-                        onChangeText={setLeaseConfirmEmailAddress}
-                        value={leaseConfirmEmailAddress}
-                        onBlur={() =>
-                          validConfirmLeaseEmailAddress(
-                            leaseConfirmEmailAddress,
-                          )
-                        }
-                        keyboardType="email-address"
-                      />
-                    </View>
-                    {leaseConfirmEmailAddressError ? (
-                      <Text style={RentalOfferStyle.error_text}>
-                        {leaseConfirmEmailAddressError}
-                      </Text>
-                    ) : null}
-                    <CustomSingleButton
-                      _ButtonText={'Invite leaseholder'}
-                      Text_Color={_COLORS.Kodie_WhiteColor}
-                      disabled={isLoading ? true : false}
-                      onPress={() => {
-                        handleValidLeaseHolder();
-                      }}
-                    />
-                  </View>
-                )}
+                  )}
+                </View>
               </View>
             )}
           </View>
@@ -1820,7 +1879,9 @@ const RentalOffer = props => {
               disabled={isLoading ? true : false}
               isLeftImage={true}
               leftImage={IMAGES.uploadIcon}
-              onPress={() => {selectDoc()}}
+              onPress={() => {
+                selectDoc();
+              }}
               backgroundColor={_COLORS.Kodie_lightGreenColor}
             />
           </View>
