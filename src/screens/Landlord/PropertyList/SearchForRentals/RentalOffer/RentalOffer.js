@@ -969,7 +969,6 @@ const RentalOffer = props => {
   //   allData['selectedPreviousRentalButton'] = selectedPreviousRentalButton;
   //   allData['selectedRentalBondButton'] = selectedRentalBondButton;
 
-
   //   const jsonData = {
   //     allData: allData,
   //   };
@@ -980,48 +979,48 @@ const RentalOffer = props => {
 
   const handleSubmit = () => {
     const allQuestions = [
-        ...question,
-        ...employeeQues,
-        ...rentailDetails,
-        ...rental_History,
-        ...preference,
+      ...question,
+      ...employeeQues,
+      ...rentailDetails,
+      ...rental_History,
+      ...preference,
     ];
 
     const allData = {};
     allQuestions.forEach(q => {
-        const value = inputValues[q.tqm_Question_code];
-        allData[q.id] = value !== undefined ? value : null;
+      const value = inputValues[q.tqm_Question_code];
+      allData[q.id] = value !== undefined ? value : null;
     });
 
     // Add additional fields using the actual data field names and their corresponding IDs
-    allData[34] = numberOccupants;
-    allData[38] = occupants;
-    allData[35] = numberLeaseHolder;
-    allData[32] = leaseHolderItem;
-    allData[37] = numberYearEmp;
-    allData[36] = numberPets;
-    allData[42] = selectedButton;
-    allData[46] = selectedSomokingButton;
-    allData[33] = location;
-    allData[41] = referencesItem;
-    allData[28] = fullName;
-    allData[27] = emailAddress;
-    allData[31] = leaseFullName;
-    allData[30] = leaseEmailAddress;
-    allData[29] = leaseConfirmEmailAddress;
-    allData[40] = referenceFullName;
-    allData[39] = referenceEmail;
-    allData[43] = selectedPetsButton;
-    allData[44] = selectedPreviousRentalButton;
-    allData[45] = selectedRentalBondButton;
+    // allData[34] = numberOccupants;
+    // allData[38] = occupants;
+    // allData[35] = numberLeaseHolder;
+    // allData[32] = leaseHolderItem;
+    // allData[37] = numberYearEmp;
+    // allData[36] = numberPets;
+    // allData[42] = selectedButton;
+    // allData[46] = selectedSomokingButton;
+    // allData[33] = location;
+    // allData[41] = referencesItem;
+    // allData[28] = fullName;
+    // allData[27] = emailAddress;
+    // allData[31] = leaseFullName;
+    // allData[30] = leaseEmailAddress;
+    // allData[29] = leaseConfirmEmailAddress;
+    // allData[40] = referenceFullName;
+    // allData[39] = referenceEmail;
+    // allData[43] = selectedPetsButton;
+    // allData[44] = selectedPreviousRentalButton;
+    // allData[45] = selectedRentalBondButton;
 
     const jsonData = {
-        allData: allData,
+      allData: allData,
     };
 
     console.log('JSON Data:', jsonData);
     return jsonData;
-};
+  };
 
   const renderQuestionComponent = (question, index) => {
     // console.log("Question inside the details...",question)
@@ -1106,9 +1105,10 @@ const RentalOffer = props => {
               searchPlaceholder="Search..."
               value={inputValues[question.tqm_Question_code] || ''}
               onFocus={() => handleDropdown(question.tqm_Question_code, index)}
-              onChange={item =>
-                handleInputChange(question.tqm_Question_code, item.lookup_key)
-              }
+              onChange={item => {
+                handleInputChange(question.tqm_Question_code, item.lookup_key);
+                alert(inputValues[question.tqm_Question_code]);
+              }}
             />
           </View>
         );
