@@ -99,6 +99,12 @@ const RentalOffer = props => {
   const [toggleOccupants, setToggleOccupants] = useState(false);
   const [toggleleaseHolder, setToggleLeaseHolder] = useState(false);
   const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedEarnButton, setSelectedEarnButton] = useState(false);
+  const [selectedRentalBondButton, setSelectedRentalBondButton] =
+    useState(false);
+  const [selectedPetsButton, setSelectedPetsButton] = useState(false);
+  const [selectedPreviousRentalButton, setSelectedPreviousRentalButton] =
+    useState(false);
   const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
   const [selectedSomokingButtonId, setSelectedSomokingButtonId] = useState(0);
@@ -901,23 +907,6 @@ const RentalOffer = props => {
       ...prevValues,
       [questionCode]: value,
     }));
-
-    switch (questionCode) {
-      case 'PERSONAL_DETAILS':
-        setPersonalDetails(prevState => ({
-          ...prevState,
-          [questionCode]: value,
-        }));
-        break;
-      case 'Employment_Status':
-        setEmploymentStatus(prevState => ({
-          ...prevState,
-          [questionCode]: value,
-        }));
-        break;
-      default:
-        break;
-    }
   };
 
   // const handleSubmit = () => {
@@ -943,48 +932,96 @@ const RentalOffer = props => {
   //   return jsonData;
   // };
 
-const handleSubmit = () => {
-  const allQuestions = [
-    ...question,
-    ...employeeQues,
-    ...rentailDetails,
-    ...rental_History,
-    ...preference,
-  ];
+  // const handleSubmit = () => {
+  //   const allQuestions = [
+  //     ...question,
+  //     ...employeeQues,
+  //     ...rentailDetails,
+  //     ...rental_History,
+  //     ...preference,
+  //   ];
 
-  const allData = {};
-  allQuestions.forEach(q => {
-    const value = inputValues[q.tqm_Question_code];
-    allData[q.id] = value !== undefined ? value : null;
-  });
+  //   const allData = {};
+  //   allQuestions.forEach(q => {
+  //     const value = inputValues[q.tqm_Question_code];
+  //     allData[q.id] = value !== undefined ? value : null;
+  //   });
 
-  // Add additional fields not covered by inputValues
-  allData['numberOccupants'] = numberOccupants;
-  allData['occupants'] = occupants;
-  allData['numberLeaseHolder'] = numberLeaseHolder;
-  allData['leaseHolderItem'] = leaseHolderItem;
-  allData['numberYearEmp'] = numberYearEmp;
-  allData['numberPets'] = numberPets;
-  allData['selectedButton'] = selectedButton;
-  allData['selectedSomokingButton'] = selectedSomokingButton;
-  allData['location'] = location;
-  allData['referencesItem'] = referencesItem;
-  allData['fullName'] = fullName;
-  allData['emailAddress'] = emailAddress;
-  allData['leaseFullName'] = leaseFullName;
-  allData['leaseEmailAddress'] = leaseEmailAddress;
-  allData['leaseConfirmEmailAddress'] = leaseConfirmEmailAddress;
-  allData['referenceFullName'] = referenceFullName;
-  allData['referenceEmail'] = referenceEmail;
+  //   // Add additional fields not covered by inputValues
+  //   allData['numberOccupants'] = numberOccupants;
+  //   allData['occupants'] = occupants;
+  //   allData['numberLeaseHolder'] = numberLeaseHolder;
+  //   allData['leaseHolderItem'] = leaseHolderItem;
+  //   allData['numberYearEmp'] = numberYearEmp;
+  //   allData['numberPets'] = numberPets;
+  //   allData['selectedButton'] = selectedButton;
+  //   allData['selectedSomokingButton'] = selectedSomokingButton;
+  //   allData['location'] = location;
+  //   allData['referencesItem'] = referencesItem;
+  //   allData['fullName'] = fullName;
+  //   allData['emailAddress'] = emailAddress;
+  //   allData['leaseFullName'] = leaseFullName;
+  //   allData['leaseEmailAddress'] = leaseEmailAddress;
+  //   allData['leaseConfirmEmailAddress'] = leaseConfirmEmailAddress;
+  //   allData['referenceFullName'] = referenceFullName;
+  //   allData['referenceEmail'] = referenceEmail;
+  //   allData['selectedPetsButton'] = selectedPetsButton;
+  //   allData['selectedPreviousRentalButton'] = selectedPreviousRentalButton;
+  //   allData['selectedRentalBondButton'] = selectedRentalBondButton;
 
-  const jsonData = {
-    allData: allData,
-  };
 
-  console.log('JSON Data:', jsonData);
-  return jsonData;
+  //   const jsonData = {
+  //     allData: allData,
+  //   };
+
+  //   console.log('JSON Data:', jsonData);
+  //   return jsonData;
+  // };
+
+  const handleSubmit = () => {
+    const allQuestions = [
+        ...question,
+        ...employeeQues,
+        ...rentailDetails,
+        ...rental_History,
+        ...preference,
+    ];
+
+    const allData = {};
+    allQuestions.forEach(q => {
+        const value = inputValues[q.tqm_Question_code];
+        allData[q.id] = value !== undefined ? value : null;
+    });
+
+    // Add additional fields using the actual data field names and their corresponding IDs
+    allData[34] = numberOccupants;
+    allData[38] = occupants;
+    allData[35] = numberLeaseHolder;
+    allData[32] = leaseHolderItem;
+    allData[37] = numberYearEmp;
+    allData[36] = numberPets;
+    allData[42] = selectedButton;
+    allData[46] = selectedSomokingButton;
+    allData[33] = location;
+    allData[41] = referencesItem;
+    allData[28] = fullName;
+    allData[27] = emailAddress;
+    allData[31] = leaseFullName;
+    allData[30] = leaseEmailAddress;
+    allData[29] = leaseConfirmEmailAddress;
+    allData[40] = referenceFullName;
+    allData[39] = referenceEmail;
+    allData[43] = selectedPetsButton;
+    allData[44] = selectedPreviousRentalButton;
+    allData[45] = selectedRentalBondButton;
+
+    const jsonData = {
+        allData: allData,
+    };
+
+    console.log('JSON Data:', jsonData);
+    return jsonData;
 };
-
 
   const renderQuestionComponent = (question, index) => {
     // console.log("Question inside the details...",question)
@@ -1396,50 +1433,182 @@ const handleSubmit = () => {
       case 'Yes_no':
         return (
           <View>
-            <RowButtons
-              LeftButtonText={'Yes'}
-              leftButtonbackgroundColor={
-                !selectedButton
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !selectedButton
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              LeftButtonborderColor={
-                !selectedButton
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressLeftButton={() => {
-                setSelectedButton(false);
-                // selectedButtonId(1);
-              }}
-              RightButtonText={'No'}
-              RightButtonbackgroundColor={
-                selectedButton
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                selectedButton
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              RightButtonborderColor={
-                selectedButton
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressRightButton={() => {
-                setSelectedButton(true);
-                // selectedButtonId(0);
-              }}
-            />
+            {question.id === 13 ? (
+              <RowButtons
+                LeftButtonText={'Yes'}
+                leftButtonbackgroundColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedButton(false);
+                  handleInputChange(question.id, 'Yes');
+                }}
+                RightButtonText={'No'}
+                RightButtonbackgroundColor={
+                  selectedButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedButton(true);
+                  handleInputChange(question.id, 'No');
+                }}
+              />
+            ) : question.id === 20 ? (
+              <RowButtons
+                LeftButtonText={'Yes'}
+                leftButtonbackgroundColor={
+                  !selectedRentalBondButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedRentalBondButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedRentalBondButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedRentalBondButton(false);
+                  handleInputChange(question.id, 'Yes');
+                }}
+                RightButtonText={'No'}
+                RightButtonbackgroundColor={
+                  selectedRentalBondButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedRentalBondButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedRentalBondButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedRentalBondButton(true);
+                  handleInputChange(question.id, 'No');
+                }}
+              />
+            ) : question.id === 21 ? (
+              <RowButtons
+                LeftButtonText={'Yes'}
+                leftButtonbackgroundColor={
+                  !selectedPreviousRentalButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedPreviousRentalButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedPreviousRentalButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedPreviousRentalButton(false);
+                  handleInputChange(question.id, 'Yes');
+                }}
+                RightButtonText={'No'}
+                RightButtonbackgroundColor={
+                  selectedPreviousRentalButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedPreviousRentalButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedPreviousRentalButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedPreviousRentalButton(true);
+                  handleInputChange(question.id, 'No');
+                }}
+              />
+            ) : question.id === 24 ? (
+              <RowButtons
+                LeftButtonText={'Yes'}
+                leftButtonbackgroundColor={
+                  !selectedPetsButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedPetsButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedPetsButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedPetsButton(false);
+                  handleInputChange(question.id, 'Yes');
+                }}
+                RightButtonText={'No'}
+                RightButtonbackgroundColor={
+                  selectedPetsButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedPetsButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedPetsButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedPetsButton(true);
+                  handleInputChange(question.id, 'No');
+                }}
+              />
+            ) : null}
           </View>
         );
+
       case 'Smoking/Non-smoking':
         return (
           <View>
