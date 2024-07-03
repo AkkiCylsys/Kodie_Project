@@ -144,6 +144,8 @@ export default PropertyDetails = props => {
         setIsLoading(false);
         setProperty_Details(response?.data?.property_details[0]);
         setLocation(response?.data?.property_details[0]?.location);
+        setlongitude(response?.data?.property_details[0]?.longitude);
+        setlatitude(response?.data?.property_details[0]?.latitude);
         setProperty_value(
           parseInt(response?.data?.property_details[0]?.property_type_id),
         );
@@ -158,7 +160,7 @@ export default PropertyDetails = props => {
         console.log('propertyDetail....', response?.data?.property_details);
       } else {
         console.error('propertyDetail_error:', response?.data?.error);
-        Alert.alert('Warning', error?.response?.data?.message);
+        // Alert.alert('Warning', error?.response?.data?.message);
         setIsLoading(false);
       }
     } catch (error) {
@@ -166,7 +168,7 @@ export default PropertyDetails = props => {
         'property_type error in get data:',
         error?.response?.data?.message,
       );
-      Alert.alert('Warning', error?.response?.data?.message);
+      // Alert.alert('Warning', error?.response?.data?.message);
       setIsLoading(false);
     }
   };

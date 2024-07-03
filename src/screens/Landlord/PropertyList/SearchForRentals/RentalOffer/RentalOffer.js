@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   FlatList,
+  Alert,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
 import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../../../Themes';
@@ -36,6 +37,8 @@ import {resolvePlugin} from '@babel/core';
 import MapScreen from '../../../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
 import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
+import DocumentPicker from 'react-native-document-picker';
+
 const DocumentData = [
   {
     id: 1,
@@ -47,12 +50,20 @@ const RentalOffer = props => {
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [fullName, setFullName] = useState('');
-  const [fullReferenceName, setFullReferenceName] = useState('');
-  const [fullReferenceEmail, setFullReferenceEmail] = useState('');
+  const [fullNameError, setFullNameError] = useState('');
+  const [referenceFullName, setReferenceFullName] = useState('');
+  const [referenceFullNameError, setReferenceFullNameError] = useState('');
+  const [referenceEmail, setReferenceEmail] = useState('');
+  const [referenceEmailError, setReferenceEmailError] = useState('');
+  const [referencesItem, setReferencesItem] = useState([]);
   const [leaseFullName, setLeaseFullName] = useState('');
+  const [leaseFullNameError, setLeaseFullNameError] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
+  const [emailAddressError, setEmailAddressError] = useState('');
   const [leaseEmailAddress, setleaseEmailAddress] = useState('');
-  const [leasecConfirmEmailAddress, setLeasecConfirmEmailAddress] =
+  const [leaseEmailAddressError, setleaseEmailAddressError] = useState('');
+  const [leaseConfirmEmailAddress, setLeaseConfirmEmailAddress] = useState('');
+  const [leaseConfirmEmailAddressError, setLeaseConfirmEmailAddressError] =
     useState('');
   const [RentalDetails, setRentalDetails] = useState(false);
   const [RentalHistory, setRentalHistory] = useState(false);
@@ -105,6 +116,10 @@ const RentalOffer = props => {
   const state = addressParts.pop();
   const city = addressParts.join(', ');
   const [occupants, setOccupants] = useState([]);
+  const [leaseHolderItem, setLeaseHolderItem] = useState([]);
+  const [selectFile, setSelectFile] = useState([]);
+  const [getuploadDocByModuleName, setGetuploadDocByModuleName] = useState([]);
+
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -157,7 +172,6 @@ const RentalOffer = props => {
       })
       .catch(error => console.warn(error));
   };
-
   const increaseNumberOccupants = () => {
     setNumberOccupants(prevCount => prevCount + 1);
   };
@@ -201,10 +215,145 @@ const RentalOffer = props => {
     handleTenantQues();
   }, []);
 
+  //... Regex login email validation
+  const validateResetEmail = resetEmail => {
+    const emailPattern =
+      /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    return emailPattern.test(resetEmail);
+  };
+  // Validation...
+  const handleValidFullName = text => {
+    setFullName(text);
+    if (fullName === '') {
+      setFullNameError('Full name is required.');
+    } else {
+      setFullNameError('');
+    }
+  };
+  const handleValidEmial = text => {
+    setEmailAddress(text);
+    if (emailAddress === '') {
+      setEmailAddressError('Email address is required.');
+    } else if (!validateResetEmail(emailAddress)) {
+      setEmailAddressError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
+      setEmailAddressError('');
+    }
+  };
+  const handleAddOccupant = () => {
+    if (fullName === '') {
+      setFullNameError('Full name is required.');
+    } else if (emailAddress === '') {
+      setEmailAddressError('Email address is required.');
+    } else if (!validateResetEmail(emailAddress)) {
+      setEmailAddressError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
+      addOccupant();
+    }
+  };
+  // InviteLeaseHolder
+
+  const validLeaseFullName = text => {
+    setLeaseFullName(text);
+    if (leaseFullName === '') {
+      setLeaseFullNameError('Lease fullName is required.');
+    } else {
+      setLeaseFullNameError('');
+    }
+  };
+  const validLeaseEmailAddress = text => {
+    setleaseEmailAddress(text);
+    if (leaseEmailAddress === '') {
+      setleaseEmailAddressError('Lease Email Address is required.');
+    } else if (!validateResetEmail(leaseEmailAddress)) {
+      setleaseEmailAddressError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
+      setleaseEmailAddressError('');
+    }
+  };
+  const validConfirmLeaseEmailAddress = text => {
+    setLeaseConfirmEmailAddress(text);
+    if (leaseConfirmEmailAddress === '') {
+      setLeaseConfirmEmailAddressError(
+        'Lease Confirm Email Address is required.',
+      );
+    } else if (!validateResetEmail(leaseConfirmEmailAddress)) {
+      setLeaseConfirmEmailAddressError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
+      setLeaseConfirmEmailAddressError('');
+    }
+  };
+  const handleValidLeaseHolder = () => {
+    if (leaseFullName === '') {
+      setLeaseFullNameError('Lease fullName is required.');
+    } else if (leaseEmailAddress === '') {
+      setleaseEmailAddressError('Lease Email Address is required.');
+    } else if (!validateResetEmail(leaseEmailAddress)) {
+      setleaseEmailAddressError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else if (leaseConfirmEmailAddress === '') {
+      setLeaseConfirmEmailAddressError(
+        'Lease Confirm Email Address is required.',
+      );
+    } else if (!validateResetEmail(leaseConfirmEmailAddress)) {
+      setLeaseConfirmEmailAddressError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else if (leaseEmailAddress !== leaseConfirmEmailAddress) {
+      setLeaseConfirmEmailAddressError(
+        'Email address and confirm email address do not match.',
+      );
+    } else {
+      addLeaseHolder();
+    }
+  };
+  // Reference validation
+  const validReferenceFullName = text => {
+    setReferenceFullName(text);
+    if (referenceFullName === '') {
+      setReferenceFullNameError('References fullName is required.');
+    } else {
+      setReferenceFullNameError('');
+    }
+  };
+  const validReferencesEmailAddress = text => {
+    setReferenceEmail(text);
+    if (referenceEmail === '') {
+      setReferenceEmailError('References email Address is required.');
+    } else if (!validateResetEmail(referenceEmail)) {
+      setReferenceEmailError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
+      setReferenceEmailError('');
+    }
+  };
+  const handleReferences = () => {
+    if (referenceFullName === '') {
+      setReferenceFullNameError('References fullName is required.');
+    } else if (referenceEmail === '') {
+      setReferenceEmailError('References email Address is required.');
+    } else if (!validateResetEmail(referenceEmail)) {
+      setReferenceEmailError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
+    } else {
+      addReferences();
+    }
+  };
   // render item
   const renderDataItem = item => {
     return (
-      <View style={RentalOfferStyle.item}>
+      <View style={[RentalOfferStyle.item]}>
         <Text style={RentalOfferStyle.selectedTextStyle}>
           {item.lookup_description}
         </Text>
@@ -217,6 +366,140 @@ const RentalOffer = props => {
       </View>
     );
   };
+  const addOccupantRender = ({item, index}) => {
+    return (
+      <View style={RentalOfferStyle.occupants_item_View}>
+        <View>
+          <Text style={RentalOfferStyle.occupants_name}>{item?.fullName}</Text>
+          <Text style={RentalOfferStyle.occupants_email}>
+            {item?.emailAddress}
+          </Text>
+        </View>
+        <View style={{marginHorizontal: 5}}>
+          <CustomSingleButton
+            _ButtonText={'Remove'}
+            backgroundColor={_COLORS.Kodie_WhiteColor}
+            borderColor={_COLORS.Kodie_GrayColor}
+            height={35}
+            width={90}
+            marginTop={0}
+            onPress={() => {
+              Alert.alert(
+                'Remove person?',
+                'This person will be permanently removed from the application.',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Remove',
+                    onPress: () => {
+                      console.log('Remove');
+                      removeOccupant(index);
+                    },
+                  },
+                ],
+              );
+            }}
+          />
+        </View>
+      </View>
+    );
+  };
+  const leaseHolderRender = ({item, index}) => {
+    return (
+      <View style={RentalOfferStyle.occupants_item_View}>
+        <View>
+          <Text style={RentalOfferStyle.occupants_name}>
+            {item?.leaseFullName}
+          </Text>
+          <Text style={RentalOfferStyle.occupants_email}>
+            {item?.leaseEmailAddress}
+          </Text>
+          <Text style={RentalOfferStyle.occupants_email}>
+            {item?.leaseConfirmEmailAddress}
+          </Text>
+        </View>
+        <View style={{marginHorizontal: 5}}>
+          <CustomSingleButton
+            _ButtonText={'Remove'}
+            backgroundColor={_COLORS.Kodie_WhiteColor}
+            borderColor={_COLORS.Kodie_GrayColor}
+            height={35}
+            width={90}
+            marginTop={0}
+            onPress={() => {
+              Alert.alert(
+                'Remove person?',
+                'This person will be permanently removed from the application.',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Remove',
+                    onPress: () => {
+                      console.log('Remove');
+                      removeLeaseHolderItem(index);
+                    },
+                  },
+                ],
+              );
+            }}
+          />
+        </View>
+      </View>
+    );
+  };
+  const addReferencesRender = ({item, index}) => {
+    return (
+      <View style={RentalOfferStyle.occupants_item_View}>
+        <View>
+          <Text style={RentalOfferStyle.occupants_name}>
+            {item?.referenceFullName}
+          </Text>
+          <Text style={RentalOfferStyle.occupants_email}>
+            {item?.referenceEmail}
+          </Text>
+        </View>
+        <View style={{marginHorizontal: 5}}>
+          <CustomSingleButton
+            _ButtonText={'Remove'}
+            backgroundColor={_COLORS.Kodie_WhiteColor}
+            borderColor={_COLORS.Kodie_GrayColor}
+            height={35}
+            width={90}
+            marginTop={0}
+            onPress={() => {
+              Alert.alert(
+                'Remove person?',
+                'This person will be permanently removed from the application.',
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Remove',
+                    onPress: () => {
+                      console.log('Remove');
+                      removeReferenceItem(index);
+                    },
+                  },
+                ],
+              );
+            }}
+          />
+        </View>
+      </View>
+    );
+  };
+
   const handleDayPress = day => {
     setSelectedDate(day.dateString);
   };
@@ -258,7 +541,103 @@ const RentalOffer = props => {
       setEmailAddress('');
     }
   };
+  const addLeaseHolder = () => {
+    if (leaseFullName && leaseEmailAddress && leaseConfirmEmailAddress) {
+      const newLeaseHolder = {
+        leaseFullName,
+        leaseEmailAddress,
+        leaseConfirmEmailAddress,
+      };
+      setLeaseHolderItem([...leaseHolderItem, newLeaseHolder]);
+      console.log('leaseHolderItem...', leaseHolderItem);
+      setLeaseFullName('');
+      setleaseEmailAddress('');
+      setLeaseConfirmEmailAddress('');
+    }
+  };
+  const addReferences = () => {
+    if (referenceFullName && referenceEmail) {
+      const newReferences = {
+        referenceFullName,
+        referenceEmail,
+      };
+      setReferencesItem([...referencesItem, newReferences]);
+      console.log('referencesItem...', referencesItem);
+      setReferenceFullName('');
+      setReferenceEmail('');
+    }
+  };
+  const removeOccupant = index => {
+    const updatedOccupants = occupants.filter((_, i) => i !== index);
+    setOccupants(updatedOccupants);
+  };
+  const removeLeaseHolderItem = index => {
+    const updatedLeaseHolder = leaseHolderItem.filter((_, i) => i !== index);
+    setLeaseHolderItem(updatedLeaseHolder);
+  };
+  const removeReferenceItem = index => {
+    const updatedReferences = referencesItem.filter((_, i) => i !== index);
+    setReferencesItem(updatedReferences);
+  };
+  // upload Documents
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+        allowMultiSelection: true,
+      });
+      console.log('doc......', doc);
+      setSelectFile(doc);
+      await uploadDocument(doc);
+      console.log('Documents.....', doc);
+      console.log('selectFile.....', selectFile);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err))
+        console.log('User cancelled the upload', err);
+      else console.log(err);
+    }
+  };
   // Api intrigation....
+  const uploadDocument = async doc => {
+    console.log('uri....', doc[0].uri);
+    console.log('name....', doc[0].name.replace(/\s/g, ''));
+    console.log('type....', doc[0].type);
+    console.log('p_referral_key....', property_id);
+    console.log('p_module_name....', moduleName);
+    const url = Config.BASE_URL;
+    const uploadDoc_url = url + 'uploadDocument';
+    console.log('Request URL:', uploadDoc_url);
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append('documents', {
+        uri: doc[0].uri,
+        name: doc[0].name.replace(/\s/g, ''),
+        type: doc[0].type,
+      });
+      formData.append('p_referral_key', property_id);
+      formData.append('p_module_name', moduleName);
+      const response = await axios.post(uploadDoc_url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      console.log('API Response uploadDocument:', response?.data);
+
+      if (response?.data?.status === true) {
+        alert(response?.data?.message);
+        // getUploadedDocumentsByModule(); // will intrigate it.
+      } else {
+        alert(response?.data?.message);
+      }
+    } catch (error) {
+      console.error('API failed uploadDocument', error);
+      // alert(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleLeaseTerm = () => {
     const TenantData = {
       P_PARENT_CODE: 'RLT',
@@ -539,9 +918,7 @@ const RentalOffer = props => {
     const allQuestions = [
       ...question,
       ...employeeQues,
-      ...earnIncome,
       ...rentailDetails,
-      ...peopalStay,
       ...rental_History,
       ...preference,
     ];
@@ -704,6 +1081,12 @@ const RentalOffer = props => {
                     {'Add occupants'}
                   </Text>
                 </TouchableOpacity>
+
+                <FlatList
+                  data={occupants}
+                  keyExtractor={(item, index) => index.toString()}
+                  renderItem={addOccupantRender}
+                />
                 {toggleOccupants && (
                   <View style={RentalOfferStyle.inputView}>
                     <View style={{marginTop: 11}}>
@@ -712,9 +1095,15 @@ const RentalOffer = props => {
                         style={RentalOfferStyle.input}
                         placeholder={'Enter full name'}
                         onChangeText={setFullName}
+                        onBlur={() => handleValidFullName(fullName)}
                         value={fullName}
                       />
                     </View>
+                    {fullNameError ? (
+                      <Text style={RentalOfferStyle.error_text}>
+                        {fullNameError}
+                      </Text>
+                    ) : null}
                     <View style={RentalOfferStyle.inputView}>
                       <Text style={LABEL_STYLES.commontext}>
                         {'Email address'}
@@ -723,15 +1112,21 @@ const RentalOffer = props => {
                         style={RentalOfferStyle.input}
                         placeholder={'Enter email address'}
                         onChangeText={setEmailAddress}
+                        onBlur={() => handleValidEmial(emailAddress)}
                         value={emailAddress}
                         keyboardType="email-address"
                       />
                     </View>
+                    {emailAddressError ? (
+                      <Text style={RentalOfferStyle.error_text}>
+                        {emailAddressError}
+                      </Text>
+                    ) : null}
                     <CustomSingleButton
                       _ButtonText={'Add occupant'}
                       Text_Color={_COLORS.Kodie_WhiteColor}
                       disabled={isLoading ? true : false}
-                      onPress={addOccupant}
+                      onPress={handleAddOccupant}
                     />
                   </View>
                 )}
@@ -795,6 +1190,11 @@ const RentalOffer = props => {
                         'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application. '
                       }
                     </Text>
+                    <FlatList
+                      data={leaseHolderItem}
+                      keyExtractor={(item, index) => index.toString()}
+                      renderItem={leaseHolderRender}
+                    />
                     <View style={RentalOfferStyle.inputView}>
                       <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
                       <TextInput
@@ -802,8 +1202,14 @@ const RentalOffer = props => {
                         placeholder={'Enter full name'}
                         onChangeText={setLeaseFullName}
                         value={leaseFullName}
+                        onBlur={() => validLeaseFullName(leaseFullName)}
                       />
                     </View>
+                    {leaseFullNameError ? (
+                      <Text style={RentalOfferStyle.error_text}>
+                        {leaseFullNameError}
+                      </Text>
+                    ) : null}
                     <View style={RentalOfferStyle.inputView}>
                       <Text style={LABEL_STYLES.commontext}>
                         {'Email address'}
@@ -813,9 +1219,15 @@ const RentalOffer = props => {
                         placeholder={'Enter email address'}
                         onChangeText={setleaseEmailAddress}
                         value={leaseEmailAddress}
+                        onBlur={() => validLeaseEmailAddress(leaseEmailAddress)}
                         keyboardType="email-address"
                       />
                     </View>
+                    {leaseEmailAddressError ? (
+                      <Text style={RentalOfferStyle.error_text}>
+                        {leaseEmailAddressError}
+                      </Text>
+                    ) : null}
                     <View style={RentalOfferStyle.inputView}>
                       <Text style={LABEL_STYLES.commontext}>
                         {'Confirm email address'}
@@ -823,16 +1235,28 @@ const RentalOffer = props => {
                       <TextInput
                         style={RentalOfferStyle.input}
                         placeholder={'Confirm email address'}
-                        onChangeText={setLeasecConfirmEmailAddress}
-                        value={leasecConfirmEmailAddress}
+                        onChangeText={setLeaseConfirmEmailAddress}
+                        value={leaseConfirmEmailAddress}
+                        onBlur={() =>
+                          validConfirmLeaseEmailAddress(
+                            leaseConfirmEmailAddress,
+                          )
+                        }
                         keyboardType="email-address"
                       />
                     </View>
+                    {leaseConfirmEmailAddressError ? (
+                      <Text style={RentalOfferStyle.error_text}>
+                        {leaseConfirmEmailAddressError}
+                      </Text>
+                    ) : null}
                     <CustomSingleButton
                       _ButtonText={'Invite leaseholder'}
                       Text_Color={_COLORS.Kodie_WhiteColor}
                       disabled={isLoading ? true : false}
-                      onPress={() => {}}
+                      onPress={() => {
+                        handleValidLeaseHolder();
+                      }}
                     />
                   </View>
                 )}
@@ -1018,6 +1442,7 @@ const RentalOffer = props => {
               valueField="lookup_key"
               searchPlaceholder="Search..."
               search
+              value={inputValues[question.tqm_Question_code] || []}
               onChange={items =>
                 handleInputChange(question.tqm_Question_code, items)
               }
@@ -1087,6 +1512,11 @@ const RentalOffer = props => {
                   {'Add rental references'}
                 </Text>
               </TouchableOpacity>
+              <FlatList
+                data={referencesItem}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={addReferencesRender}
+              />
               {toggleReference && (
                 <View style={RentalOfferStyle.inputView}>
                   <View style={{marginTop: 11}}>
@@ -1094,10 +1524,16 @@ const RentalOffer = props => {
                     <TextInput
                       style={RentalOfferStyle.input}
                       placeholder={'Enter full name'}
-                      onChangeText={setFullReferenceName}
-                      value={fullReferenceName}
+                      onChangeText={setReferenceFullName}
+                      value={referenceFullName}
+                      onBlur={() => validReferenceFullName(referenceFullName)}
                     />
                   </View>
+                  {referenceFullNameError ? (
+                    <Text style={RentalOfferStyle.error_text}>
+                      {referenceFullNameError}
+                    </Text>
+                  ) : null}
                   <View style={RentalOfferStyle.inputView}>
                     <Text style={LABEL_STYLES.commontext}>
                       {'Email address'}
@@ -1105,16 +1541,24 @@ const RentalOffer = props => {
                     <TextInput
                       style={RentalOfferStyle.input}
                       placeholder={'Enter email address'}
-                      onChangeText={setFullReferenceEmail}
-                      value={fullReferenceEmail}
+                      onChangeText={setReferenceEmail}
+                      value={referenceEmail}
+                      onBlur={() => validReferencesEmailAddress(referenceEmail)}
                       keyboardType="email-address"
                     />
                   </View>
+                  {referenceEmailError ? (
+                    <Text style={RentalOfferStyle.error_text}>
+                      {referenceEmailError}
+                    </Text>
+                  ) : null}
                   <CustomSingleButton
                     _ButtonText={'Add reference'}
                     Text_Color={_COLORS.Kodie_WhiteColor}
                     disabled={isLoading ? true : false}
-                    onPress={() => {}}
+                    onPress={() => {
+                      handleReferences();
+                    }}
                   />
                 </View>
               )}
@@ -1306,7 +1750,7 @@ const RentalOffer = props => {
             keyExtractor={(item, index) => item.id}
             renderItem={QuesHeadingRender}
           />
-          <View style={{marginHorizontal: 16, marginBottom: 20}}>
+          <View style={{marginHorizontal: 16}}>
             <Text style={RentalOfferStyle.inspections}>
               {'Tenant  screening report (recommended)'}
             </Text>
@@ -1367,6 +1811,17 @@ const RentalOffer = props => {
                 // alert(selectPetFriendlyBtnId)
                 refRBSheet1.current.open();
               }}
+            />
+          </View>
+          <View style={{marginHorizontal: 16, marginBottom: 20}}>
+            <CustomSingleButton
+              _ButtonText={'Upload'}
+              Text_Color={_COLORS.Kodie_BlackColor}
+              disabled={isLoading ? true : false}
+              isLeftImage={true}
+              leftImage={IMAGES.uploadIcon}
+              onPress={() => {selectDoc()}}
+              backgroundColor={_COLORS.Kodie_lightGreenColor}
             />
           </View>
           <RBSheet

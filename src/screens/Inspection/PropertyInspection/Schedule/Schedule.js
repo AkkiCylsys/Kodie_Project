@@ -20,6 +20,9 @@ import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import moment from 'moment/moment';
 import { Config } from '../../../../Config';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import { useSelector } from 'react-redux';
 const Detail = [
   {
     id: '1',
@@ -59,20 +62,68 @@ const Detail = [
   },
 ];
 const Schedule = (props) => {
+  const isFoucus = useNavigation()
   const [contractor, setContractor] = useState('');
   const [email, setEmail] = useState('');
   const [Inspection_Detail, setInspection_Details] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [AreaKey, setAreaKey] = useState([]);
   const [checkedItems, setCheckedItems] = useState({});
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log(
+    'loginresponse_jobdetails..',
+    loginData?.Login_details
+  );
+  const [accountDetails, setAccountDetails] = useState(null);
 
 const TIM_KEY = props?.TIM_KEY;
+const newStatus = props?.newStatus;
 const account_id = props?.account_id;
-console.log("account_id",account_id);
+console.log("newStatus",newStatus);
   const refRBSheet = useRef();
-  useEffect(()=>{getInspectionDetails();
+  useEffect(()=>{
+    if(isFoucus){
+      if (newStatus === 1 || newStatus == null || newStatus === '') {
+        getInspectionDetails();
+      }
     Area_key();
-  },[])
+    fetchData();
+    }
+  },[isFoucus])
+  const fetchData = async () => {
+    if (
+      loginData?.Login_details?.user_id ||
+      loginData?.Login_details?.user_account_id
+    ) {
+      await getPersonalDetails();
+    }
+  };
+  const getPersonalDetails = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const apiUrl =
+      url + `getAccount_details/${loginData?.Login_details?.user_account_id}`;
+    console.log('PersonalDetails_url..', apiUrl);
+    await axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response getPersonalDetails:', response?.data?.data[0]);
+        if (
+          response?.data?.data &&
+          Array.isArray(response.data.data) &&
+          response.data.data.length > 0
+        ) {
+          setAccountDetails(response?.data?.data[0]);
+        } else {
+          console.error('Invalid response data format:', response?.data);
+        }
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error PersonalDetails Dash:', error);
+        setIsLoading(false);
+      });
+  };
   const getInspectionDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -105,7 +156,7 @@ console.log("account_id",account_id);
         if (response?.data?.success === true) {
           setIsLoading(false);
           console.log('Selected_Address....', response?.data?.data);
-          setAreaKey(response?.data?.data);
+          setAreaKey(response?.data?.data[0]);
         } else {
           console.error('Selected_Address_error:', response?.data?.error);
           // alert('Oops something went wrong! Please try again later.');
@@ -130,7 +181,7 @@ console.log("account_id",account_id);
       .join(',');
   };
   const checkedItemIds = getCheckedItemIds();
-  console.log(checkedItemIds);
+  // console.log(checkedItemIds);
   const Detail_render = ({ item, index }) => {
     const isChecked = checkedItems[item.TAM_AREA_KEY]; // Use a unique identifier for each item
     return (
@@ -152,6 +203,8 @@ console.log("account_id",account_id);
   return (
     <View style={ScheduleCss.MainContainer}>
       <View style={ScheduleCss.Container}>
+      {(newStatus === 1 || newStatus == null || newStatus === '') &&
+        <>
         <Text style={ScheduleCss.inspections}>
           {'Date and time of inspection'}
         </Text>
@@ -161,8 +214,12 @@ console.log("account_id",account_id);
         />
         <RowTexts leftText={'Proposed time'} rightText={Inspection_Detail?.v_TIM_SCHEDULE_TIME} />
         <View style={ScheduleCss.margin}>
+           </View>
+        </>
+      }
+       {(newStatus === 1 || newStatus == null || newStatus === '') ?(
           <RowButtons
-            LeftButtonText={'Cancel inspection'}
+            LeftButtonText={ 'Cancel inspection'}
             leftButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
             LeftButtonTextColor={_COLORS.Kodie_BlackColor}
             LeftButtonborderColor={_COLORS.Kodie_BlackColor}
@@ -172,11 +229,22 @@ console.log("account_id",account_id);
             RightButtonborderColor={_COLORS.Kodie_BlackColor}
             onPressRightButton={props?.rescheduleInspection}
             onPressLeftButton={props?.CancelInspection}
-          />
-        </View>
+          />):
+          ( <CustomSingleButton
+            disabled={isLoading ? true : false}
+            _ButtonText={'Activate'}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            height={48}
+            borderColor={_COLORS.Kodie_BlackColor}
+            backgroundColor={_COLORS.Kodie_BlackColor}
+            onPress={props?.CancelInspection}
+          />)}
+       
         <DividerIcon />
+        {(newStatus === 1 || newStatus == null || newStatus === '') ? (
+          <>
         <Text style={ScheduleCss.inspections}>{'People attending'}</Text>
-        <RowTexts leftText={'Landlord Rep'} rightText={'John MacDonald'} />
+        <RowTexts leftText={'Landlord Rep'} rightText={`${accountDetails?.UAD_FIRST_NAME} ${accountDetails?.UAD_LAST_NAME}`} />
         <RowTexts leftText={'Tenant Rep'} rightText={Inspection_Detail?.v_TIM_ADD_ATTENDENCE} />
         <DividerIcon color={_COLORS.Kodie_WhiteColor} />
         <DividerIcon />
@@ -197,7 +265,8 @@ console.log("account_id",account_id);
         <Text style={ScheduleCss.inspections}>{'Notes'}</Text>
         <Text style={ScheduleCss.MBText}>{Inspection_Detail?.v_TIM_DESCRIPTION}</Text>
         <DividerIcon />
-
+</>
+        ):null}
         <RBSheet
           ref={refRBSheet}
           closeOnDragDown={true}

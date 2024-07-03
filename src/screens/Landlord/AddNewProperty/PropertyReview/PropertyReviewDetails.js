@@ -848,14 +848,36 @@ export default PropertyReviewDetails = props => {
         );
       case 'Tab2':
         return (
-          // <Leases property_id={propertyid} />
-          Alert.alert('Alert!', 'Coming soon')
+          <Leases property_id={propertyid} />
+          // <>
+          // {Alert.alert('Lease', 'Coming soon', [
+          //   {
+          //     text: 'OK',
+          //     onPress: () => {
+          //       console.log('OK Pressed');
+          //       setActiveTab('Tab1');
+          //     },
+          //   },
+          // ])}
+          // </>
+        
         );
 
       case 'Tab3':
         return (
-          // <Expenses property_id={propertyid} />
-          Alert.alert('Alert!', 'Coming soon')
+          <Expenses property_id={propertyid} />
+          // // Alert.alert('Alert!', 'Coming soon')
+          // <>
+          // {Alert.alert('Expenses', 'Coming soon', [
+          //   {
+          //     text: 'OK',
+          //     onPress: () => {
+          //       console.log('OK Pressed');
+          //       setActiveTab('Tab1');
+          //     },
+          //   },
+          // ])}
+          // </>
         );
       case 'Tab4':
         return (

@@ -92,7 +92,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     // borderWidth:1,
     flex: 1,
     alignSelf: 'center',
-    fontSize: 13,
+    // fontSize: 13,
   },
   toggle_con: {
     width: 35,
@@ -112,7 +112,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     // marginLeft: 10,
     alignSelf: 'center',
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 11.2,
+    fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
   },
   reminder_m_view: {
@@ -132,7 +132,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     marginLeft: 5,
     alignSelf: 'center',
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
   },
   after: {
@@ -206,7 +206,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     paddingVertical: 8,
-    width: 150,
+    // width: 150,
   },
   Protext: {
     fontSize: 14,
@@ -218,17 +218,21 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_SemiBold,
-    letterSpacing: 0.3,
-    marginRight: 20,
+    // letterSpacing: 0.3,
+    marginRight: 10,
+    // borderWidth:1
   },
   Twobtn: {
+    flex:1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    // borderWidth:1
+
     // marginBottom: 20,
   },
   btn_main_view: {
     padding: 4,
-    width: 159,
+    // width: 159,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -238,7 +242,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 10,
-    marginRight: 20,
+    // marginRight: 20,
   },
   no_view: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
@@ -274,6 +278,10 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
     marginTop: 12,
-    paddingHorizontal: 40,
+    alignItems:'center',
+    textAlign:'center',
+    borderWidth:1
+
+    // paddingHorizontal: 40,
   },
 });

@@ -130,7 +130,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
-  
+  alignSelf:'center'
   },
   userStyle: { height: 20, width: 20, marginHorizontal: 10 },
   margin: { marginBottom: 15 },

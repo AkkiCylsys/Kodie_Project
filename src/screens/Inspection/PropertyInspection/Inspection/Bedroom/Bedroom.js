@@ -5,7 +5,7 @@
 //ScreenNo:102
 //ScreenNo:103
 //ScreenNo:104
-import React, { useState, useRef } from "react";
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -13,197 +13,327 @@ import {
   FlatList,
   ScrollView,
   TextInput,
-} from "react-native";
-import TopHeader from "../../../../../components/Molecules/Header/Header";
-import { BedroomCss } from "./BedroomCss";
-import DividerIcon from "../../../../../components/Atoms/Devider/DividerIcon";
-import { _goBack } from "../../../../../services/CommonServices";
-import Feather from "react-native-vector-icons/Feather";
-import Entypo from "react-native-vector-icons/Entypo";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { Dropdown } from "react-native-element-dropdown";
-import { LABEL_STYLES, _COLORS } from "../../../../../Themes";
-import CustomSingleButton from "../../../../../components/Atoms/CustomButton/CustomSingleButton";
-import RBSheet from "react-native-raw-bottom-sheet";
-import RowButtons from "../../../../../components/Molecules/RowButtons/RowButtons";
-import UploadImageBoxes from "../../../../../components/Molecules/UploadImageBoxes/UploadImageBoxes";
-import UploadImageData from "../../../../../components/Molecules/UploadImage/UploadImage";
+  SafeAreaView,
+  Alert,
+} from 'react-native';
+import TopHeader from '../../../../../components/Molecules/Header/Header';
+import {BedroomCss} from './BedroomCss';
+import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
+import {_goBack} from '../../../../../services/CommonServices';
+import Feather from 'react-native-vector-icons/Feather';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Dropdown} from 'react-native-element-dropdown';
+import {FONTFAMILY, LABEL_STYLES, _COLORS} from '../../../../../Themes';
+import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
+import UploadImageBoxes from '../../../../../components/Molecules/UploadImageBoxes/UploadImageBoxes';
+import UploadImageData from '../../../../../components/Molecules/UploadImage/UploadImage';
+import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {Config} from '../../../../../Config';
+import axios from 'axios';
+import AddCustomItems from '../../../../../components/InspectionModul/AddCustomItem';
+import { useNavigation } from '@react-navigation/native';
 const data = [
-  { label: "Good", value: "1" },
-  { label: "Ok", value: "2" },
-  { label: "Bad", value: "3" },
-  { label: "Damaged", value: "4" },
-  { label: "Urgent repair", value: "5" },
-  { label: "Not usable", value: "6" },
+  {label: 'Good', value: '1'},
+  {label: 'Ok', value: '2'},
+  {label: 'Bad', value: '3'},
+  {label: 'Damaged', value: '4'},
+  {label: 'Urgent repair', value: '5'},
+  {label: 'Not usable', value: '6'},
 ];
-const TableData = [
-  {
-    id: 1,
-    name: "Bed",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 2,
-    name: "Cabinets",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 3,
-    name: "Ceiling",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 4,
-    name: "Doors",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 5,
-    name: "Drawers",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 6,
-    name: "Floor",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 7,
-    name: "Lights",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 8,
-    name: "Mirrors",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 9,
-    name: "Outlets",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 10,
-    name: "Switches",
-    Inspected: "Y",
-    status: "Good",
-  },
-  {
-    id: 11,
-    name: "Walls",
-    Inspected: "Y",
-    status: "Good",
-  },
-];
-const Bedroom = (props) => {
+
+const Bedroom = props => {
   const [isEditing, setIsEditing] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [remainingItemId, setRemainingItemId] = useState([]);
+  const [editGetItem, setEditGetItem] = useState([]);
+  const [getItems, setGetItems] = useState([]);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const refRBSheet2 = useRef();
-
   const [value, setValue] = useState(null);
-  const [name, setName] = useState("");
-  const [comment, setComment] = useState("");
-  const [Description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [comment, setComment] = useState('');
+  const [Description, setDescription] = useState('');
+  const [futureInspection, setfutureInspection] = useState(false);
+  const [futureInspectionId, setfutureInspectionId] = useState(1);
+  const [InspectionStatusType, setInspectionStatusType] = useState([]);
+const navigation= useNavigation()
+  const AreasKey = props.route.params.TeamAreaKey;
+  const Team_Key = props.route.params.TIM_KEY;
+  const Inspection_Key = props.route.params.getinspectionKey;
+  const Created_Id = props.route.params.teamCreateId;
+  const AreaName = props.route.params.AreaName;
+  const PropertyId = props.route.params.PropertyId;
+  console.log('AreasKey', AreasKey);
+  console.log(Team_Key, Inspection_Key, Created_Id, 'get DAta in Bedroom....');
 
-  const BedroomDetail_render = ({ item }) => {
+  useEffect(() => {
+    handleInspectionItem();
+    handleInsStatus_Type();
+  }, []);
+  const handleInspectionItem = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const AreaPostUrl = url + `getAreaItemMaster`;
+
+    try {
+      const response = await axios.post(AreaPostUrl, {
+        tamAreaKey: AreasKey,
+      });
+      // console.log(response);
+      if (response?.data?.success) {
+        const items = response?.data?.data[0];
+        setGetItems(items);
+        setEditGetItem(items);
+        // setRemainingItemId(items.map(item => item.id));
+        
+        console.log(response?.data?.data[0], 'beroomData.....');
+      } else {
+        console.error('Error:', response?.data?.error || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Error:', error.response || error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleInspectionudateItem = async () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
+    const AreaPostUrl = url + `getInspectionItemByAreakey`;
+
+    try {
+      const response = await axios.post(AreaPostUrl, {
+        TAMAREAKEY: AreasKey,
+  TIMKEY: Team_Key
+      });
+      // console.log(response);
+      if (response?.data?.success) {
+        const items = response?.data?.data[0];
+        setGetItems(items);
+        setEditGetItem(items);
+        // setRemainingItemId(items.map(item => item.id));
+        
+        console.log(response?.data?.data[0], 'handleInspectionudateItem.....');
+      } else {
+        console.error('Error:', response?.data?.error || 'Unknown error');
+      }
+    } catch (error) {
+      console.error('Error:', error.response || error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const removeItem = (id) => {
+    const removedItem = getItems.find((item) => item.TAIM_ITEM_KEY === id);
+    if (!removedItem) {
+      console.warn(`Item with ID ${id} not found in getItems.`);
+      return;
+    }
+    console.log(`Removing item with ID ${removedItem.TAIM_ITEM_KEY}`);
+
+    const updatedItems = getItems.filter((item) => item.TAIM_ITEM_KEY !== id);
+    setGetItems(updatedItems);
+  };
+
+  const tamAreaKeys = getItems.map(item => item.TAIM_ITEM_KEY).join(',');
+  console.log("dfdfddffd",tamAreaKeys);
+  const ListItem = ({item,onPressRemove}) => {
+    return (
+      <View key={item.TAIM_ITEM_KEY}>
+        <View style={[BedroomCss.minustextview]} >
+          <View style={BedroomCss.crossrendermainview}>
+            <TouchableOpacity
+              onPress={() => onPressRemove(item.TAIM_ITEM_KEY)}
+              style={{
+                alignItems: 'center',
+              }}>
+              <AntDesign
+                name={'minuscircle'}
+                size={20}
+                color={_COLORS.Kodie_lightRedColor}
+                style={[BedroomCss.IconStyle]}
+              />
+            </TouchableOpacity>
+            <Text
+              style={[
+                BedroomCss.bedText,
+                {
+                  flex: isEditing ? 0.8 : 0,
+                },
+              ]}>
+              {item?.TAIM_ITEM_NAME}
+            </Text>
+          </View>
+          <TouchableOpacity>
+            <Entypo
+              name={'menu'}
+              size={25}
+              color={_COLORS.Kodie_MediumGrayColor}
+            />
+          </TouchableOpacity>
+        </View>
+        <DividerIcon marginTop={8} />
+      </View>
+    );
+  };
+  const renderItem = ({ item }) => (
+    <ListItem item={item} onPressRemove={removeItem} />
+  );
+  const BedroomDetail_render = ({item}) => {
+    console.log("itemitemitemitem",item);
     return (
       <>
         <View style={BedroomCss.TableView}>
-          {isEditing ? (
-            <AntDesign
-              name={"minuscircle"}
-              size={20}
-              color={_COLORS.Kodie_lightRedColor}
-              style={BedroomCss.IconStyle}
-            />
+          {!isEditing ? (
+            <Text
+              style={[
+                BedroomCss.bedText,
+                {
+                  flex: !isEditing ? 0.3 : 0,
+                },
+              ]}>
+              {item?.TAIM_ITEM_NAME}
+            </Text>
           ) : null}
-          <Text style={[BedroomCss.bedText]}>{item.name}</Text>
 
           {!isEditing ? (
             <>
               <View style={BedroomCss.boxView}>
-                <Text style={BedroomCss.YText}>{item.Inspected}</Text>
+                <Text
+                  style={BedroomCss.YText}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}>
+                  {item.Inspected? item.Inspected: 'Status'}
+                </Text>
               </View>
-              <Dropdown
-                style={BedroomCss.dropdown1}
-                placeholderStyle={BedroomCss.placeholderStyle}
-                selectedTextStyle={BedroomCss.selectedTextStyle}
-                inputSearchStyle={BedroomCss.inputSearchStyle}
-                iconStyle={BedroomCss.iconStyle}
-                data={data}
-                search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder="select"
-                searchPlaceholder="Search..."
-                value={value}
-                onChange={(item) => {
-                  setValue(item.value);
-                }}
-              />
             </>
           ) : null}
           {!isEditing ? (
-            <TouchableOpacity
-              onPress={() => {
-                setSelectedItem(item);
-                refRBSheet2.current.open({ item });
-              }}
-              style={BedroomCss.rightIcon}
-            >
-              <Feather
-                name={"chevron-right"}
-                size={15}
-                color={_COLORS.Kodie_BlackColor}
-                style={BedroomCss.IconStyle}
+            <View style={BedroomCss.bindinputview}>
+              <AntDesign
+                name="checkcircle"
+                size={18}
+                color={_COLORS.Kodie_GreenColor}
               />
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity>
-              <Entypo
-                name={"menu"}
-                size={25}
-                color={_COLORS.Kodie_MediumGrayColor}
-              />
-            </TouchableOpacity>
-          )}
+              <View style={BedroomCss.messageview}>
+                <Text
+                  style={{
+                    color: _COLORS.Kodie_BlackColor,
+                    fontSize: 13,
+                    alignItems: 'center',
+                    fontFamily: FONTFAMILY.K_Regular,
+                  }}>
+                  1
+                </Text>
+                <MaterialCommunityIcons
+                  name="message-text-outline"
+                  size={18}
+                  color={_COLORS.Kodie_GreenColor}
+                />
+              </View>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setSelectedItem(item);
+                  refRBSheet2.current.open({item});
+                }}
+                style={BedroomCss.rightIcon}>
+                <Feather
+                  name={'chevron-right'}
+                  size={15}
+                  color={_COLORS.Kodie_BlackColor}
+                  style={BedroomCss.IconStyle}
+                />
+              </TouchableOpacity>
+            </View>
+          ) : null}
         </View>
         <DividerIcon marginTop={8} />
       </>
     );
   };
+  const HandleOnFirstRbSheet =()=>{
+    refRBSheet1.current.close()
+  }
+  const handleAddItem = async () => {
+    setIsLoading(true);
 
+    const data ={
+      timKey: Team_Key,
+      taimItemKey:tamAreaKeys.toString(),
+      tamAreaKey: AreasKey,
+      updKey: PropertyId,
+      tiimCreatedBy:Created_Id.toString()
+    };
+    console.log("Item",data);
+const Url = Config.BASE_URL;
+const ItemUrl = Url + 'add/Item'
+    try {
+      const response = await axios.post( ItemUrl,data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      Alert.alert('Success',response?.data?.message);
+      handleInspectionudateItem();
+      console.log('API Response:', response.data);
+    setIsLoading(false);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to add custom item');
+      console.error('Error adding custom item:', error);
+    }
+  };
+  const handleInsStatus_Type = async () => {
+    const InspectionData = {
+      P_PARENT_CODE: 'STATUS',
+      P_TYPE: 'OPTION',
+    };
+    const url = Config.BASE_URL;
+    const InspectionStatustype = url + 'lookup_details';
+    console.log('Request URL:', InspectionStatustype);
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(InspectionStatustype, InspectionData);
+      console.log('Inspection_Statustype', response?.data);
+
+      if (response?.data?.status === true) {
+        setIsLoading(false);
+        console.log('InspectionStatusData....', response?.data?.lookup_details);
+        setInspectionStatusType(response?.data?.lookup_details);
+      } else {
+        console.error('Inspection_type_error:', response?.data?.error);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('Inspection_type error:', error);
+      setIsLoading(false);
+    }
+  };
   return (
-    <View style={BedroomCss.MainContainer}>
+    <SafeAreaView style={BedroomCss.MainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={"Bedroom"}
+        MiddleText={AreaName}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={BedroomCss.Container}>
           {isEditing ? (
             <CustomSingleButton
-              _ButtonText={"Add custom item"}
+              _ButtonText={'Add custom item'}
               Text_Color={_COLORS.Kodie_WhiteColor}
               backgroundColor={_COLORS.Kodie_BlackColor}
               height={40}
               marginBottom={16}
-              width={"50%"}
+              width={'50%'}
               onPress={() => {
                 refRBSheet1.current.open();
               }}
@@ -211,147 +341,132 @@ const Bedroom = (props) => {
             />
           ) : null}
           <View style={BedroomCss.TableView}>
-            <Text style={BedroomCss.HeaderText}>{"Inspection items"}</Text>
+            <Text style={BedroomCss.HeaderText}>{'Inspection items'}</Text>
             <TouchableOpacity onPress={() => setIsEditing(!isEditing)}>
-              <Text style={BedroomCss.bedText}>{"Edit"}</Text>
+              <Text style={BedroomCss.bedText}>{'Edit'}</Text>
             </TouchableOpacity>
           </View>
-          {!isEditing ? (
-            <View style={BedroomCss.RowContainer}>
-              <Text style={BedroomCss.RowText}>{"Inspected"}</Text>
-              <Text style={BedroomCss.RowText}>{"Status"}</Text>
-            </View>
-          ) : null}
           <DividerIcon marginTop={5} />
-          <FlatList
-            data={TableData}
-            scrollEnabled
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{}}
-            keyExtractor={(item) => item?.id}
-            renderItem={BedroomDetail_render}
-          />
-          <CustomSingleButton
-            _ButtonText={"Save"}
-            Text_Color={_COLORS.Kodie_WhiteColor}
-            onPress={() => {
-              props.navigation.navigate("AboutYou");
-            }}
-            disabled={isLoading ? true : false}
-          />
-          <TouchableOpacity style={BedroomCss.goBack_View}>
-            <View style={BedroomCss.backIcon}>
-              <Feather
-                name="chevron-left"
-                size={22}
-                color={_COLORS.Kodie_MediumGrayColor}
+          {isEditing ? (
+            <FlatList
+              data={getItems}
+              scrollEnabled
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{}}
+              keyExtractor={item => item?.id}
+              renderItem={renderItem}
+            />
+          ) : (
+            <FlatList
+              data={getItems}
+              scrollEnabled
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{}}
+              keyExtractor={item => item?.id}
+              renderItem={BedroomDetail_render}
+            />
+          )}
+          {isEditing ? (
+            <>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}>
+                <CustomSingleButton
+                  _ButtonText={'Cancel'}
+                  Text_Color={_COLORS.Kodie_BlackColor}
+                  backgroundColor={_COLORS.Kodie_WhiteColor}
+                  borderColor={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    navigation.navigate.pop();
+                  }}
+                  disabled={isLoading ? true : false}
+                  width={'20%'}
+                  marginHorizontal={10}
+                />
+                <CustomSingleButton
+                  _ButtonText={'Done'}
+                  Text_Color={_COLORS.Kodie_WhiteColor}
+                  onPress={() => {
+                    // props.navigation.navigate('AboutYou');
+                  handleAddItem();
+                  }}
+                  disabled={isLoading ? true : false}
+                  width={'20%'}
+                />
+              </View>
+            </>
+          ) : (
+            <>
+              <CustomSingleButton
+                _ButtonText={'Save'}
+                Text_Color={_COLORS.Kodie_WhiteColor}
+                onPress={() => {
+                  handleAddItem();
+                }}
+                disabled={isLoading ? true : false}
               />
-            </View>
-            <Text style={BedroomCss.goBack_Text}>{"Go back"}</Text>
-          </TouchableOpacity>
+              <TouchableOpacity style={BedroomCss.goBack_View}>
+                <View style={BedroomCss.backIcon}>
+                  <Feather
+                    name="chevron-left"
+                    size={22}
+                    color={_COLORS.Kodie_MediumGrayColor}
+                  />
+                </View>
+                <Text style={BedroomCss.goBack_Text}>{'Go back'}</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
       </ScrollView>
       <RBSheet
         ref={refRBSheet1}
         closeOnDragDown={true}
         closeOnPressMask={true}
-        height={400}
+        height={500}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: BedroomCss.bottomModal_container,
-        }}
-      >
-        <View style={BedroomCss.Container}>
-          <View style={BedroomCss.ModalContainer}>
-            <Text style={BedroomCss.ShareText}>{"Add custom item"}</Text>
-            <AntDesign
-              name="close"
-              size={20}
-              color={_COLORS.Kodie_BlackColor}
-            />
-          </View>
-          <View style={BedroomCss.inputContainer}>
-            <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-              {"Name of item"}
-            </Text>
-            <TextInput
-              style={BedroomCss.emailinput}
-              value={name}
-              onChangeText={setName}
-              placeholder="Create a name for your custom item"
-              placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
-            />
-          </View>
-          <View style={BedroomCss.inputContainer}>
-            <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-              {"Description of item"}
-            </Text>
-            <TextInput
-              style={BedroomCss.emailinput}
-              value={Description}
-              onChangeText={setDescription}
-              placeholder="Provide a description of the item"
-              placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
-            />
-          </View>
-          <Text style={BedroomCss.cancelText}>
-            {"Make this a standard item for future inspections?"}
-          </Text>
-          <RowButtons
-            LeftButtonText={"Yes"}
-            leftButtonbackgroundColor={_COLORS.Kodie_lightGreenColor}
-            LeftButtonTextColor={_COLORS.Kodie_BlackColor}
-            LeftButtonborderColor={_COLORS.Kodie_GrayColor}
-            RightButtonText={"No"}
-            RightButtonbackgroundColor={_COLORS.Kodie_WhiteColor}
-            RightButtonTextColor={_COLORS.Kodie_MediumGrayColor}
-            RightButtonborderColor={_COLORS.Kodie_LightWhiteColor}
-          />
-
-          <View style={BedroomCss.ButtonView}>
-            <TouchableOpacity style={BedroomCss.cancelView}>
-              <Text style={[BedroomCss.cancelText]}>Cancel</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={BedroomCss.SaveView}>
-              <Text style={BedroomCss.DoneText}>Done</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+        }}>
+       <AddCustomItems Team_Key={Team_Key} PropertyId={PropertyId} AreasKey={AreasKey} Created_Id={Created_Id} onClose={HandleOnFirstRbSheet}/>
       </RBSheet>
       <RBSheet
         ref={refRBSheet2}
         closeOnDragDown={true}
         closeOnPressMask={true}
-        height={500}
+        height={600}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: BedroomCss.bottomModal_container,
-        }}
-      >
-        {/* Second Modal Content */}
+        }}>
         <View style={BedroomCss.secondModal}>
           <View style={BedroomCss.ModalContainer}>
             <Text style={BedroomCss.ShareText}>
-              {selectedItem ? selectedItem.name : ""}
+              {selectedItem ? selectedItem.TAIM_ITEM_NAME : ''}
             </Text>
+            <TouchableOpacity onPress={()=>refRBSheet2.current.close()}>
             <AntDesign
               name="close"
               size={20}
               color={_COLORS.Kodie_BlackColor}
             />
+            </TouchableOpacity>
           </View>
           <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-            {"Has this item been inspected?"}
+            {'Has this item been inspected?'}
           </Text>
           <TouchableOpacity onPress={() => setIsChecked(!isChecked)}>
             {!isChecked ? (
@@ -377,7 +492,7 @@ const Bedroom = (props) => {
             )}
           </TouchableOpacity>
           <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-            {"Describe the current state of the item"}
+            {'Describe the current state of the item'}
           </Text>
           <Dropdown
             style={BedroomCss.dropdown}
@@ -393,15 +508,15 @@ const Bedroom = (props) => {
             placeholder="Select from drop down"
             searchPlaceholder="Search..."
             value={value}
-            onChange={(item) => {
+            onChange={item => {
               setValue(item.value);
             }}
           />
           <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-            {"Upload clear images of the item"}
+            {'Upload clear images of the item'}
           </Text>
           <UploadImageBoxes
-            Box_Text={"Add Photo"}
+            Box_Text={'Add Photo'}
             circlestyle={BedroomCss.circleStyle}
             pluacircle={BedroomCss.pluscirclestyle}
             size={15}
@@ -410,7 +525,7 @@ const Bedroom = (props) => {
             }}
           />
           <Text style={[LABEL_STYLES._texinputLabel, BedroomCss.cardHeight]}>
-            {"Comment"}
+            {'Comment'}
           </Text>
           <TextInput
             style={BedroomCss.input}
@@ -420,7 +535,7 @@ const Bedroom = (props) => {
             placeholderTextColor="#999"
             multiline
             numberOfLines={5}
-            textAlignVertical={"top"}
+            textAlignVertical={'top'}
           />
           <View style={BedroomCss.ButtonView}>
             <TouchableOpacity style={BedroomCss.cancelView}>
@@ -439,17 +554,17 @@ const Bedroom = (props) => {
         height={180}
         customStyles={{
           wrapper: {
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
           },
           draggableIcon: {
             backgroundColor: _COLORS.Kodie_LightGrayColor,
           },
           container: BedroomCss.bottomModal_container,
-        }}
-      >
-        <UploadImageData heading_Text={"Upload more images"} />
+        }}>
+        <UploadImageData heading_Text={'Upload more images'} />
       </RBSheet>
-    </View>
+      {isLoading ? <CommonLoader /> : null}
+    </SafeAreaView>
   );
 };
 export default Bedroom;

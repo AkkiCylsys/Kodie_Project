@@ -56,6 +56,7 @@ const CreateNewInspection = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAddressData, setSelectedAddreeData] = useState([]);
   const [selectedAddress, setSelectedAddress] = useState([]);
+  const [selectedAddressDetail, setSelectedAddressDetail] = useState([]);
   const [AreaKey, setAreaKey] = useState([]);
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
   const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
@@ -68,11 +69,13 @@ const CreateNewInspection = props => {
   const [tempSelectedValues, setTempSelectedValues] = useState([]);
   const [showError, setShowError] = useState(false);
   const [Inspection_Detail, setInspection_Details] = useState([]);
+  const [displaySelectedValues, setDisplaySelectedValues] = useState('');
 
   const refRBSheet = useRef();
   const TIM_KEY = props?.route?.params?.TIM_KEY;
   const InspectionView = props?.route?.params?.InspectionView;
-  console.log(InspectionView);
+  const Ins_editMode = props?.route?.params?.Ins_editMode;
+  console.log(InspectionView,Ins_editMode,TIM_KEY);
   const Area_key = async () => {
     const url = Config.BASE_URL;
     const AreaGetUrl = url + 'get_inspection_area';
@@ -112,7 +115,7 @@ const CreateNewInspection = props => {
       .join(',');
   };
   const checkedItemIds = getCheckedItemIds();
-  console.log(checkedItemIds);
+  console.log(checkedItemIds,"checkedItemIds");
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -140,11 +143,17 @@ const CreateNewInspection = props => {
         );
         setCurrentTime(response?.data?.data[0]?.v_TIM_SCHEDULE_TIME);
         setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY);
+      
         setSelectedAddress({
           latitude: response?.data?.data[0]?.v_TIM_LOCATION_LATITUDE,
           longitude: response?.data?.data[0]?.v_TIM_LOCATION_LONGITUDE,
           location: response?.data?.data[0]?.v_TIM_LOCATION,
+          property_id: response?.data?.data[0]?.v_UPD_KEY,
+          user_Id: response?.data?.data[0]?.v_CREATED_BY,
         });
+        setSelectedAddressDetail( response?.data?.data[0]?.v_UPD_KEY
+         );
+       setDisplaySelectedValues(response?.data?.data[0]?.v_TIM_ADD_ATTENDENCE)
         setNotes(response?.data?.data[0]?.v_TIM_DESCRIPTION);
         setSelectedButtonFurnishedId(
           response?.data?.data[0]?.v_TIM_IS_FURNISHED,
@@ -156,6 +165,7 @@ const CreateNewInspection = props => {
         console.error('API Error PersonalDetails CIP:', error);
       });
   };
+  // alert(JSON.stringify(selectedAddress))
   useEffect(() => {
     if (isVisible) {
       fetchData();
@@ -196,7 +206,14 @@ const CreateNewInspection = props => {
         setIsLoading(false);
       });
   };
-
+  
+  useEffect(() => {
+    const allSelectedValues = [...displaySelectedValues, ...selectedValues];
+    const selectedValuesString = selectedValues
+      .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
+      .join(', ');
+    setDisplaySelectedValues(selectedValuesString);
+  }, [selectedValues]);
   const handleInspection_Type = async () => {
     const InspectionData = {
       P_PARENT_CODE: 'INSPECTION_TYPE',
@@ -347,7 +364,7 @@ const CreateNewInspection = props => {
         setInspection_value();
         setCurrentTime('');
         setSelectedDate('');
-        setSelectedAddress([]);
+        setSelectedAddressDetail([]);
         setTempSelectedValues([]);
         setSelectedValues([]);
         setSelectedButtonFurnishedId();
@@ -379,19 +396,19 @@ const CreateNewInspection = props => {
         TIM_SCHEDULE_TIME: currentTime,
         TIM_SCHEDULE_DATE: selectedDate,
         TIM_LOCATION: selectedAddress.location,
-        TIM_LOCATION_LONGITUDE: parseFloat(selectedAddress.longitude),
-        TIM_LOCATION_LATITUDE: parseFloat(selectedAddress.latitude),
+        TIM_LOCATION_LONGITUDE: selectedAddress.longitude,
+        TIM_LOCATION_LATITUDE:selectedAddress.latitude,
         TIM_ADD_ATTENDENCE: displaySelectedValues,
         TIM_IS_FURNISHED: selectedButtonFurnishedId,
         TIM_DESCRIPTION: Notes,
         TAM_AREA_KEYS: checkedItemIds.toString(),
         CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
       };
-      console.log('inspec', Inspectiondata);
+      console.log('inspecsd', Inspectiondata);
       const Url = Config.BASE_URL;
-      const Inspection_Url = Url + 'inspection_details/save';
+      const Inspection_Url = Url + 'inspection_details/update';
       console.log('Inspection_Url', Inspection_Url);
-      const res = await axios.post(Inspection_Url, Inspectiondata);
+      const res = await axios.put(Inspection_Url, Inspectiondata);
       console.log(res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
@@ -406,7 +423,7 @@ const CreateNewInspection = props => {
         setInspection_value();
         setCurrentTime('');
         setSelectedDate('');
-        setSelectedAddress([]);
+        setSelectedAddressDetail([]);
         setTempSelectedValues([]);
         setSelectedValues([]);
         setSelectedButtonFurnishedId();
@@ -431,7 +448,7 @@ const CreateNewInspection = props => {
     if (selectedAddress == '') {
       setShowError(true);
     } else {
-      InspectionView ? UpdateInspection() : SubmitInspection();
+      InspectionView ? UpdateInspection() :Ins_editMode?UpdateInspection(): SubmitInspection();
     }
   };
   const fetchResults = async searchQuery => {
@@ -490,15 +507,15 @@ const CreateNewInspection = props => {
   const handleClosePopup = () => {
     refRBSheet.current.close();
   };
-  const displaySelectedValues = selectedValues
-    .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
-    .join(', ');
+  // const displaySelectedValues = selectedValues
+  //   .map(user => `${user.UAD_FIRST_NAME} ${user.UAD_LAST_NAME}`)
+  //   .join(', ');
   return (
     <SafeAreaView style={CreateNewInspectionStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={
-          InspectionView ? 'Reschedule Inspections' : 'Create New Inspections'
+          InspectionView ? 'Reschedule Inspections' : Ins_editMode? 'Edit Inspections' : 'Create New Inspections'
         }
       />
 
@@ -592,11 +609,12 @@ const CreateNewInspection = props => {
             search
             maxHeight={300}
             labelField="location"
-            valueField="longitude"
+            valueField="property_id"
             placeholder="Select property"
             searchPlaceholder="Search..."
-            value={selectedAddress}
+            value={selectedAddressDetail}
             onChange={item => {
+              setSelectedAddressDetail(item?.property_id)
               setSelectedAddress({
                 latitude: item?.latitude,
                 longitude: item?.longitude,
@@ -636,13 +654,19 @@ const CreateNewInspection = props => {
           <TouchableOpacity
             style={CreateNewInspectionStyle.TextInputView}
             onPress={() => refRBSheet.current.open()}>
-            <TextInput
+            <Text 
+              style={[CreateNewInspectionStyle.input,{color:displaySelectedValues? _COLORS.Kodie_BlackColor:_COLORS.Kodie_MediumGrayColor}]}
+              >
+                {displaySelectedValues? displaySelectedValues: 'Add people attending the inspection'}
+              </Text>
+
+            {/* <TextInput
               value={displaySelectedValues}
               placeholder={'Add people attending the inspection'}
               style={CreateNewInspectionStyle.input}
               palceholderColor={_COLORS.Kodie_MediumGrayColor}
               editable={false}
-            />
+            /> */}
             <Feather
               name={'user-plus'}
               size={22}
@@ -729,7 +753,7 @@ const CreateNewInspection = props => {
         />
         <CustomSingleButton
           _ButtonText={
-            InspectionView ? 'Reschedule Inspection' : 'Schedule inspection'
+            InspectionView ? 'Reschedule Inspection' :Ins_editMode? 'Edit Inspections' : 'Schedule inspection'
           }
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}

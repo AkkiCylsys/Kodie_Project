@@ -8,6 +8,7 @@ import {
   Modal,
   Button,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import {NoticesStyle} from './NoticesStyle';
@@ -324,7 +325,7 @@ const Notices = props => {
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
-        alert(error.response.message);
+        Alert.alert("Warning",error.response.data.message || "Internal Server Error");
         setIsLoading(false);
       } else {
         setIsLoading(false);
