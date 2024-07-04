@@ -90,7 +90,7 @@ export const NewInspectionStyle = StyleSheet.create({
     marginBottom:10
   },
   insp_cld_main_view: {
-    flex:0.4,
+    flex:0.3,
     marginRight: 8,
     marginTop: 10,
   },

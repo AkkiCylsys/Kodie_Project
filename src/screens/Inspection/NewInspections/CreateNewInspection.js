@@ -2,7 +2,7 @@
 //ScreenNo:89
 //ScreenNo:90
 //ScreenNo:92
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -15,11 +15,11 @@ import {
   Button,
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
-import {Dropdown} from 'react-native-element-dropdown';
-import {CreateNewInspectionStyle} from './CreateNewInspectionCss';
+import { Dropdown } from 'react-native-element-dropdown';
+import { CreateNewInspectionStyle } from './CreateNewInspectionCss';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
-import {LABEL_STYLES, _COLORS, IMAGES, FONTFAMILY} from '../../../Themes';
+import { LABEL_STYLES, _COLORS, IMAGES, FONTFAMILY } from '../../../Themes';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Feather from 'react-native-vector-icons/Feather';
@@ -28,20 +28,21 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import {_goBack} from '../../../services/CommonServices';
+import { _goBack } from '../../../services/CommonServices';
 import CustomDropdown from '../../../components/Molecules/CustomDropdown/CustomDropdown';
-import {Config} from '../../../Config';
+import { Config } from '../../../Config';
 import axios from 'axios';
 import moment from 'moment';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
 import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import debounce from 'lodash/debounce';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { clockRunning } from 'react-native-reanimated';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -75,7 +76,7 @@ const CreateNewInspection = props => {
   const TIM_KEY = props?.route?.params?.TIM_KEY;
   const InspectionView = props?.route?.params?.InspectionView;
   const Ins_editMode = props?.route?.params?.Ins_editMode;
-  console.log(InspectionView,Ins_editMode,TIM_KEY);
+  console.log(InspectionView, Ins_editMode, TIM_KEY);
   const Area_key = async () => {
     const url = Config.BASE_URL;
     const AreaGetUrl = url + 'get_inspection_area';
@@ -89,7 +90,7 @@ const CreateNewInspection = props => {
           setIsLoading(false);
           console.log('area response....', response?.data?.data);
           setAreaKey(response?.data?.data[0]);
-          console.log("setAreaKey..",AreaKey)
+          console.log("setAreaKey..", AreaKey)
         } else {
           console.error('area response_error:', response?.data?.error);
           // alert('Oops something went wrong! Please try again later.');
@@ -109,14 +110,22 @@ const CreateNewInspection = props => {
       [itemId]: !prevCheckedItems[itemId],
     }));
   };
+  // const getCheckedItemIds = () => {
+  //   return Object.keys(checkedItems)
+  //   .filter(itemId => checkedItems[itemId])
+  //     .join(',');
+  // };
+  // const checkedItemIds = getCheckedItemIds();
+  // console.log(checkedItemIds, "checkedItemIds");
   const getCheckedItemIds = () => {
     return Object.keys(checkedItems)
-      .filter(itemId => checkedItems[itemId])
+      .filter(itemId => checkedItems[itemId] && itemId !== '0')
       .join(',');
   };
+  
   const checkedItemIds = getCheckedItemIds();
-  console.log(checkedItemIds,"checkedItemIds");
-
+  console.log(checkedItemIds, "checkedItemIds");
+  
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -143,7 +152,7 @@ const CreateNewInspection = props => {
         );
         setCurrentTime(response?.data?.data[0]?.v_TIM_SCHEDULE_TIME);
         setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY);
-      
+
         setSelectedAddress({
           latitude: response?.data?.data[0]?.v_TIM_LOCATION_LATITUDE,
           longitude: response?.data?.data[0]?.v_TIM_LOCATION_LONGITUDE,
@@ -151,9 +160,9 @@ const CreateNewInspection = props => {
           property_id: response?.data?.data[0]?.v_UPD_KEY,
           user_Id: response?.data?.data[0]?.v_CREATED_BY,
         });
-        setSelectedAddressDetail( response?.data?.data[0]?.v_UPD_KEY
-         );
-       setDisplaySelectedValues(response?.data?.data[0]?.v_TIM_ADD_ATTENDENCE)
+        setSelectedAddressDetail(response?.data?.data[0]?.v_UPD_KEY
+        );
+        setDisplaySelectedValues(response?.data?.data[0]?.v_TIM_ADD_ATTENDENCE)
         setNotes(response?.data?.data[0]?.v_TIM_DESCRIPTION);
         setSelectedButtonFurnishedId(
           response?.data?.data[0]?.v_TIM_IS_FURNISHED,
@@ -206,7 +215,7 @@ const CreateNewInspection = props => {
         setIsLoading(false);
       });
   };
-  
+
   useEffect(() => {
     const allSelectedValues = [...displaySelectedValues, ...selectedValues];
     const selectedValuesString = selectedValues
@@ -278,7 +287,7 @@ const CreateNewInspection = props => {
       item?.latitude === selectedAddress.latitude;
 
     return (
-      <View contentContainerStyle={{flex: 1, height: '100%'}}>
+      <View contentContainerStyle={{ flex: 1, height: '100%' }}>
         <View
           style={[
             CreateNewInspectionStyle.itemView,
@@ -306,7 +315,7 @@ const CreateNewInspection = props => {
       </View>
     );
   };
-  const Detail_render = ({item, index}) => {
+  const Detail_render = ({ item, index }) => {
     const isChecked = checkedItems[item.TAM_AREA_KEY]; // Use a unique identifier for each item
     return (
       <View style={CreateNewInspectionStyle.DetailsView}>
@@ -397,7 +406,7 @@ const CreateNewInspection = props => {
         TIM_SCHEDULE_DATE: selectedDate,
         TIM_LOCATION: selectedAddress.location,
         TIM_LOCATION_LONGITUDE: selectedAddress.longitude,
-        TIM_LOCATION_LATITUDE:selectedAddress.latitude,
+        TIM_LOCATION_LATITUDE: selectedAddress.latitude,
         TIM_ADD_ATTENDENCE: displaySelectedValues,
         TIM_IS_FURNISHED: selectedButtonFurnishedId,
         TIM_DESCRIPTION: Notes,
@@ -448,7 +457,7 @@ const CreateNewInspection = props => {
     if (selectedAddress == '') {
       setShowError(true);
     } else {
-      InspectionView ? UpdateInspection() :Ins_editMode?UpdateInspection(): SubmitInspection();
+      InspectionView ? UpdateInspection() : Ins_editMode ? UpdateInspection() : SubmitInspection();
     }
   };
   const fetchResults = async searchQuery => {
@@ -515,7 +524,7 @@ const CreateNewInspection = props => {
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={
-          InspectionView ? 'Reschedule Inspections' : Ins_editMode? 'Edit Inspections' : 'Create New Inspections'
+          InspectionView ? 'Reschedule Inspections' : Ins_editMode ? 'Edit Inspections' : 'Create New Inspections'
         }
       />
 
@@ -526,7 +535,7 @@ const CreateNewInspection = props => {
           {'Tell us about your inspection'}
         </Text>
 
-        <View style={{marginBottom: 15}}>
+        <View style={{ marginBottom: 15 }}>
           <Text style={LABEL_STYLES.commontext}>
             {'What type if inspection is this?'}
           </Text>
@@ -534,7 +543,7 @@ const CreateNewInspection = props => {
             style={CreateNewInspectionStyle.dropdown}
             placeholderStyle={[
               CreateNewInspectionStyle.placeholderStyle,
-              {color: _COLORS.Kodie_LightGrayColor},
+              { color: _COLORS.Kodie_LightGrayColor },
             ]}
             selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
             inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
@@ -595,7 +604,7 @@ const CreateNewInspection = props => {
           />
         </View>
 
-        <View style={{marginBottom: 15}}>
+        <View style={{ marginBottom: 15 }}>
           <Text style={LABEL_STYLES.commontext}>
             {'Where is the inspection taking place?'}
           </Text>
@@ -648,17 +657,17 @@ const CreateNewInspection = props => {
           </Text>
         ) : null}
 
-        <View style={{marginBottom: 15, marginTop: 15}}>
+        <View style={{ marginBottom: 15, marginTop: 15 }}>
           <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
 
           <TouchableOpacity
             style={CreateNewInspectionStyle.TextInputView}
             onPress={() => refRBSheet.current.open()}>
-            <Text 
-              style={[CreateNewInspectionStyle.input,{color:displaySelectedValues? _COLORS.Kodie_BlackColor:_COLORS.Kodie_MediumGrayColor}]}
-              >
-                {displaySelectedValues? displaySelectedValues: 'Add people attending the inspection'}
-              </Text>
+            <Text
+              style={[CreateNewInspectionStyle.input, { color: displaySelectedValues ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_MediumGrayColor }]}
+            >
+              {displaySelectedValues ? displaySelectedValues : 'Add people attending the inspection'}
+            </Text>
 
             {/* <TextInput
               value={displaySelectedValues}
@@ -671,7 +680,7 @@ const CreateNewInspection = props => {
               name={'user-plus'}
               size={22}
               color={_COLORS.Kodie_GrayColor}
-              style={{marginRight: 10}}
+              style={{ marginRight: 10 }}
             />
           </TouchableOpacity>
         </View>
@@ -724,11 +733,11 @@ const CreateNewInspection = props => {
             }}
           />
         </View>
-        <View style={{marginBottom: 15}}>
+        <View style={{ marginBottom: 15 }}>
           <Text style={LABEL_STYLES.commontext}>
             {'Select the areas you would like to include:'}
           </Text>
-          <View style={{marginTop: 10}}>
+          <View style={{ marginTop: 10 }}>
             <FlatList
               data={AreaKey}
               scrollEnabled
@@ -753,7 +762,7 @@ const CreateNewInspection = props => {
         />
         <CustomSingleButton
           _ButtonText={
-            InspectionView ? 'Reschedule Inspection' :Ins_editMode? 'Edit Inspections' : 'Schedule inspection'
+            InspectionView ? 'Reschedule Inspection' : Ins_editMode ? 'Edit Inspections' : 'Schedule inspection'
           }
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}
