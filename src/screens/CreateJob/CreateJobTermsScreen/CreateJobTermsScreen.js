@@ -495,6 +495,7 @@ export default CreateJobTermsScreen = props => {
     //   setIsLoading(false);
     // });
   };
+
   // EditMode Api.........
   const getJobDetails = () => {
     const url = Config.BASE_URL;
@@ -518,9 +519,9 @@ export default CreateJobTermsScreen = props => {
             parseInt(response?.data?.data?.job_how_often_key),
           );
           setFormattedPriceRanges(response?.data?.data?.job_budget);
-          setSelectedButtonResponsible(
-            parseInt(response?.data?.data?.job_payment_by_key),
-          );
+          const payingThis = parseInt(response?.data?.data?.job_payment_by_key);
+          console.log('payingThis...', payingThis);
+          setSelectedButtonResponsible(payingThis === '259');
           setSelectedButtonBookingInsurance(
             parseInt(response?.data?.data?.job_insurence_key),
           );
@@ -743,7 +744,7 @@ export default CreateJobTermsScreen = props => {
 
             <RowButtons
               LeftButtonText={
-                selectedResponsibleData[0]?.lookup_description || 'Landlord'
+                selectedResponsibleData[0]?.lookup_description || 'Tenant'
               }
               leftButtonbackgroundColor={
                 !selectedButtonResponsible
@@ -763,10 +764,9 @@ export default CreateJobTermsScreen = props => {
               onPressLeftButton={() => {
                 setSelectedButtonResponsible(false);
                 setSelectedButtonResponsibleId(259);
-                // alert(selectedResponsibleData[0]?.lookup_key);
               }}
               RightButtonText={
-                selectedResponsibleData[1]?.lookup_description || 'Tenant'
+                selectedResponsibleData[1]?.lookup_description || 'Landloard'
               }
               RightButtonbackgroundColor={
                 selectedButtonResponsible

@@ -763,26 +763,26 @@ export default AboutYou = props => {
   const [tabValue, setTabValue] = useState('IndividualSignup');
   let lastOtherIndex = -1;
   IndiservicesData.forEach((item, index) => {
-    if (item.lookup_description === "Other") {
+    if (item.lookup_description === 'Other') {
       lastOtherIndex = index;
     }
   });
 
   // Filter data to keep only the last "Other" item
   const filteredIndiservicesData = IndiservicesData.filter((item, index) => {
-    return item.lookup_description !== "Other" || index === lastOtherIndex;
+    return item.lookup_description !== 'Other' || index === lastOtherIndex;
   });
 
   let lastComOtherIndex = -1;
   servicesData.forEach((item, index) => {
-    if (item.lookup_description === "Other") {
+    if (item.lookup_description === 'Other') {
       lastComOtherIndex = index;
     }
   });
 
   // Filter data to keep only the last "Other" item
   const filteredCompservicesData = servicesData.filter((item, index) => {
-    return item.lookup_description !== "Other" || index === lastComOtherIndex;
+    return item.lookup_description !== 'Other' || index === lastComOtherIndex;
   });
   const checkTabs = () => {
     switch (tabValue) {
@@ -1177,7 +1177,7 @@ export default AboutYou = props => {
                 </Text>
                 <Text style={AboutYouStyle.want_Heading}>
                   {
-                    'How would you describe yourself? (you can select multiple options)'
+                    'How would you Describe yourself? (you can select multiple options)'
                   }
                 </Text>
                 <FlatList
@@ -1187,7 +1187,7 @@ export default AboutYou = props => {
                   numColumns={2}
                 />
                 {kodieDescribeYourselfId.includes(3) ||
-                kodieDescribeYourselfId.includes(10) || 
+                kodieDescribeYourselfId.includes(10) ||
                 kodieDescribeYourselfId.includes(2) ||
                 kodieDescribeYourselfId.length > 2 ? (
                   <View>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -9,10 +9,10 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native';
-import { PropertyReviewStyle } from './PropertyReviewStyle';
+import {PropertyReviewStyle} from './PropertyReviewStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../../services/CommonServices';
-import { SliderBox } from 'react-native-image-slider-box';
+import {_goBack} from '../../../../services/CommonServices';
+import {SliderBox} from 'react-native-image-slider-box';
 import {
   _COLORS,
   BANNERS,
@@ -27,24 +27,24 @@ import Expenses from './Expenses/Expenses';
 import Documents from './Documents/Documents';
 
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
-import { Config } from '../../../../Config';
+import {Config} from '../../../../Config';
 import axios from 'axios';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { DetailsStyle } from './Details/DetailsStyles';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {DetailsStyle} from './Details/DetailsStyles';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import CustomTabNavigator from '../../../../components/Molecules/CustomTopNavigation/CustomTopNavigation';
-import { Divider } from 'react-native-paper';
+import {Divider} from 'react-native-paper';
 import Share from 'react-native-share';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
-import { BackHandler } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
-import { clockRunning } from 'react-native-reanimated';
+import {BackHandler} from 'react-native';
+import {CommonActions} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
+import {clockRunning} from 'react-native-reanimated';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyReviewDetails = props => {
   const dispatch = useDispatch();
@@ -80,7 +80,7 @@ export default PropertyReviewDetails = props => {
 
   const shareDocFile = async () => {
     setTimeout(() => {
-      Share.open({ url: inviteFriendPath })
+      Share.open({url: inviteFriendPath})
         .then(res => {
           console.log(res);
         })
@@ -94,7 +94,7 @@ export default PropertyReviewDetails = props => {
     //   console.error('Error sharing property ', error);
     // }
   };
-  const Detail_rander = ({ item, index }) => {
+  const Detail_rander = ({item, index}) => {
     return (
       <>
         <View style={DetailsStyle.DetailsView}>
@@ -134,7 +134,7 @@ export default PropertyReviewDetails = props => {
       </>
     );
   };
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={DetailsStyle.DetailsView}>
       {item === 'Pool' ? (
         <MaterialIcons
@@ -228,7 +228,8 @@ export default PropertyReviewDetails = props => {
   const fetchData = async () => {
     try {
       const detailData = {
-        property_id: propertyView || propertyVacantListing ? propertyid : property_id,
+        property_id:
+          propertyView || propertyVacantListing ? propertyid : property_id,
       };
       const url = Config.BASE_URL;
       const property_Detailss = url + 'get_property_details';
@@ -293,7 +294,7 @@ export default PropertyReviewDetails = props => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
     };
   }, []);
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -346,23 +347,23 @@ export default PropertyReviewDetails = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-          ? '#000000'
-          : '#808080';
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-          ? 'Features'
-          : position === 2
-            ? 'Images'
-            : position === 3
-              ? 'Review'
-              : 'null';
+        ? 'Features'
+        : position === 2
+        ? 'Images'
+        : position === 3
+        ? 'Review'
+        : 'null';
 
     return (
       <View style={{}}>
@@ -389,10 +390,12 @@ export default PropertyReviewDetails = props => {
   const goBack = () => {
     props.navigation.pop();
   };
-  const parkingSpaceValueObj = Detail.find(item => "Parking Space" in item);
-const parkingSpaceValue = parkingSpaceValueObj ? parkingSpaceValueObj["Parking Space"] : null;
+  const parkingSpaceValueObj = Detail.find(item => 'Parking Space' in item);
+  const parkingSpaceValue = parkingSpaceValueObj
+    ? parkingSpaceValueObj['Parking Space']
+    : null;
 
-console.log("Parking Space value:", parkingSpaceValue);
+  console.log('Parking Space value:', parkingSpaceValue);
   const checkTabs = () => {
     switch (activeTab) {
       case 'Tab1':
@@ -402,7 +405,7 @@ console.log("Parking Space value:", parkingSpaceValue);
               {property_Detail?.property_description}
             </Text>
             <DividerIcon marginTop={10} />
-            <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+            <Text style={[DetailsStyle.propery_det, {marginHorizontal: 16}]}>
               {'Key features'}
             </Text>
             <FlatList
@@ -416,7 +419,7 @@ console.log("Parking Space value:", parkingSpaceValue);
             />
             <DividerIcon />
             {property_Detail?.additional_key_features_id === '[]' ? null : (
-              <Text style={[DetailsStyle.propery_det, { marginHorizontal: 16 }]}>
+              <Text style={[DetailsStyle.propery_det, {marginHorizontal: 16}]}>
                 {'Additional key features'}
               </Text>
             )}
@@ -464,78 +467,78 @@ console.log("Parking Space value:", parkingSpaceValue);
               {propertyDetailsClp ? (
                 <>
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                       {'Listing Number'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
+                        {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
                       {propertyid}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                       {'Type of Property'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
+                        {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
                       {property_Detail?.property_type}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                       {'Floor Size'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
+                        {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
                       {property_Detail?.floor_size}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                       {'Pets Allowed'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
+                        {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
                       {addtionalFeaturesID[0]}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                       {'Furnished'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
+                        {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {addtionalFeaturesID[1] == "Furnished" ? 'Yes' : 'No'}
+                      {addtionalFeaturesID[1] == 'Furnished' ? 'Yes' : 'No'}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
                   <View style={DetailsStyle.p_rowTextView}>
-                    <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                    <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                       {'Smoking'}
                     </Text>
                     <Text
                       style={[
                         LABEL_STYLES.commontext,
-                        { fontFamily: FONTFAMILY.K_Medium },
+                        {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
                       {'No'}
                     </Text>
@@ -568,78 +571,78 @@ console.log("Parking Space value:", parkingSpaceValue);
             {roomClp ? (
               <>
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Bedrooms'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {Detail[0]?.Bedrooms}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Bathrooms'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {Detail[1]?.Bathrooms}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Kitchen'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Lounge'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Dining Room'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Other'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
@@ -678,78 +681,78 @@ console.log("Parking Space value:", parkingSpaceValue);
             {externalfeaturesClp ? (
               <>
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Car Spaces'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {parkingSpaceValue}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'On-Street Parking Spaces'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Garden'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Pool'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Outdoor Patio'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
                 </View>
                 <DividerIcon marginTop={8} />
                 <View style={DetailsStyle.p_rowTextView}>
-                  <Text style={[LABEL_STYLES.commontext, { fontSize: 12 }]}>
+                  <Text style={[LABEL_STYLES.commontext, {fontSize: 12}]}>
                     {'Other'}
                   </Text>
                   <Text
                     style={[
                       LABEL_STYLES.commontext,
-                      { fontFamily: FONTFAMILY.K_Medium },
+                      {fontFamily: FONTFAMILY.K_Medium},
                     ]}>
                     {'0'}
                   </Text>
@@ -792,8 +795,8 @@ console.log("Parking Space value:", parkingSpaceValue);
                     editMode
                       ? 'Save property'
                       : propertyView
-                        ? 'Edit details'
-                        : 'Add property'
+                      ? 'Edit details'
+                      : 'Add property'
                   }
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
@@ -902,18 +905,18 @@ console.log("Parking Space value:", parkingSpaceValue);
           backProperty
             ? () => props.navigation.navigate('Properties')
             : propertyVacantListing
-              ? () => props.navigation.navigate('VacantPropertiesList')
-              : goBack
+            ? () => props.navigation.navigate('VacantPropertiesList')
+            : goBack
         }
         MiddleText={
           editMode
             ? 'Edit property'
             : propertyView || propertyVacantListing
-              ? property_Detail?.location
-              : 'Add new property'
+            ? property_Detail?.location
+            : 'Add new property'
         }
       />
-      {propertyView || propertyVacantListing? null : (
+      {propertyView || propertyVacantListing ? null : (
         <View
           style={{
             marginTop: 15,
@@ -929,8 +932,7 @@ console.log("Parking Space value:", parkingSpaceValue);
         </View>
       )}
       <ScrollView contentContainerStyle={{}}>
-        {propertyView 
-        ||propertyVacantListing? null : (
+        {propertyView || propertyVacantListing ? null : (
           <View style={[PropertyReviewStyle.headingView]}>
             <Text style={PropertyReviewStyle.heading}>
               {'Review property details'}
@@ -940,10 +942,10 @@ console.log("Parking Space value:", parkingSpaceValue);
         <View
           style={[
             PropertyReviewStyle.slider_view,
-            { marginBottom: '5%', marginTop: propertyView ? 0 : '5%' },
+            {marginBottom: '5%', marginTop: propertyView ? 0 : '5%'},
           ]}>
           {property_Detail.image_path &&
-            property_Detail.image_path.length != 0 ? (
+          property_Detail.image_path.length != 0 ? (
             <SliderBox
               images={property_Detail.image_path}
               sliderBoxHeight={200}
@@ -1006,7 +1008,7 @@ console.log("Parking Space value:", parkingSpaceValue);
               size={20}
               color={_COLORS.Kodie_GreenColor}
             />
-            <Text style={{ flex: 1, color: _COLORS.Kodie_MediumGrayColor }}>
+            <Text style={{flex: 1, color: _COLORS.Kodie_MediumGrayColor}}>
               {property_Detail?.location || ''}
             </Text>
           </View>
@@ -1024,9 +1026,27 @@ console.log("Parking Space value:", parkingSpaceValue);
             TAB3
             TAB4
             Tab1={'Details'}
-            Tab2={editMode ? null : propertyView || propertyVacantListing? 'Leases' : null}
-            Tab3={editMode ? null : propertyView || propertyVacantListing? 'Expenses' : null}
-            Tab4={editMode ? null : propertyView || propertyVacantListing? 'Documents' : null}
+            Tab2={
+              editMode
+                ? null
+                : propertyView || propertyVacantListing
+                ? 'Leases'
+                : null
+            }
+            Tab3={
+              editMode
+                ? null
+                : propertyView || propertyVacantListing
+                ? 'Expenses'
+                : null
+            }
+            Tab4={
+              editMode
+                ? null
+                : propertyView || propertyVacantListing
+                ? 'Documents'
+                : null
+            }
             onPressTab1={() => setActiveTab('Tab1')}
             onPressTab2={() => {
               if (editMode) {
