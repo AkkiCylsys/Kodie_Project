@@ -124,7 +124,7 @@ useEffect(()=>{
   return (
     <SafeAreaView style={PropertyInspectionCSS.MainContainer}>
       <TopHeader
-        onPressLeftButton={() => _goBack(props)}
+        onPressLeftButton={() => props.navigation.navigate("NewInspection")}
         MiddleText={property_Detail?.location || ''}
       />
       <ScrollView>

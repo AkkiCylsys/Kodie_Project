@@ -28,6 +28,7 @@ export const BedroomCss = StyleSheet.create({
   TableView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop:10
   },
   minustextview: {
     flexDirection: 'row',

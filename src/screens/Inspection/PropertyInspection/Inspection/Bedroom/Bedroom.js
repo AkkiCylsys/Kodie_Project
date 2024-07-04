@@ -283,7 +283,7 @@ const ItemUrl = Url + 'add/Item'
         },
       });
       Alert.alert('Success',response?.data?.message);
-      handleInspectionudateItem();
+      // handleInspectionudateItem();
       console.log('API Response:', response.data);
     setIsLoading(false);
     } catch (error) {

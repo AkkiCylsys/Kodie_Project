@@ -103,28 +103,27 @@ const CreateNewInspection = props => {
         setIsLoading(false);
       });
   };
-
   const toggleCheckBox = itemId => {
-    setCheckedItems(prevCheckedItems => ({
-      ...prevCheckedItems,
-      [itemId]: !prevCheckedItems[itemId],
-    }));
+    console.log(itemId, "itemIditemId");
+    setCheckedItems(prevCheckedItems => {
+      const newCheckedItems = {
+        ...prevCheckedItems,
+        [itemId]: !prevCheckedItems[itemId],
+      };
+      console.log(newCheckedItems, "newCheckedItems");
+      return newCheckedItems;
+    });
   };
-  // const getCheckedItemIds = () => {
-  //   return Object.keys(checkedItems)
-  //   .filter(itemId => checkedItems[itemId])
-  //     .join(',');
-  // };
-  // const checkedItemIds = getCheckedItemIds();
-  // console.log(checkedItemIds, "checkedItemIds");
+  
   const getCheckedItemIds = () => {
     return Object.keys(checkedItems)
-      .filter(itemId => checkedItems[itemId] && itemId !== '0')
+      .filter(itemId => checkedItems[itemId] && itemId !== '0' && itemId !== '')
       .join(',');
   };
   
   const checkedItemIds = getCheckedItemIds();
   console.log(checkedItemIds, "checkedItemIds");
+  
   
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -142,7 +141,7 @@ const CreateNewInspection = props => {
     await axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        console.log('API Response:get_inspection_details', response?.data?.data[0]);
         setInspection_Details(response?.data?.data[0]);
         setInspection_value(response?.data?.data[0]?.v_TIM_INSPECTION_TYPE);
         setSelectedDate(
@@ -152,7 +151,7 @@ const CreateNewInspection = props => {
         );
         setCurrentTime(response?.data?.data[0]?.v_TIM_SCHEDULE_TIME);
         setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY);
-
+       console.log(response?.data?.data[0]?.cur_TAM_AREA_KEY,"cur_TAM_AREA_KEY")
         setSelectedAddress({
           latitude: response?.data?.data[0]?.v_TIM_LOCATION_LATITUDE,
           longitude: response?.data?.data[0]?.v_TIM_LOCATION_LONGITUDE,
@@ -405,12 +404,12 @@ const CreateNewInspection = props => {
         TIM_SCHEDULE_TIME: currentTime,
         TIM_SCHEDULE_DATE: selectedDate,
         TIM_LOCATION: selectedAddress.location,
-        TIM_LOCATION_LONGITUDE: selectedAddress.longitude,
-        TIM_LOCATION_LATITUDE: selectedAddress.latitude,
+        TIM_LOCATION_LONGITUDE: parseFloat(selectedAddress.longitude),
+        TIM_LOCATION_LATITUDE: parseFloat(selectedAddress.latitude),
         TIM_ADD_ATTENDENCE: displaySelectedValues,
         TIM_IS_FURNISHED: selectedButtonFurnishedId,
         TIM_DESCRIPTION: Notes,
-        TAM_AREA_KEYS: checkedItemIds.toString(),
+        TAM_AREA_KEYS:checkedItemIds.toString(),
         CREATED_BY: loginData?.Login_details?.user_account_id.toString(),
       };
       console.log('inspecsd', Inspectiondata);
@@ -421,10 +420,9 @@ const CreateNewInspection = props => {
       console.log(res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
-        console.log('TIM_KEY', res?.data?.data?.TIM_KEY);
         alert(res?.data?.message);
         props?.navigation?.navigate('PropertyInspection', {
-          TIM_KEY: res?.data?.data?.TIM_KEY,
+          TIM_KEY: TIM_KEY,
           PropertyId: selectedAddress?.property_id,
           account_id: selectedAddress?.user_Id,
         });

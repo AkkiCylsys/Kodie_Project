@@ -238,7 +238,14 @@ export default NewInspection = (props) => {
     const dayOfWeek = daysOfWeek[getDate.getDay()];
     return (
       <>
-        <View style={NewInspectionStyle.insp_data_View}>
+        <TouchableOpacity style={NewInspectionStyle.insp_data_View} onPress={()=>{
+          props.navigation.navigate('PropertyInspection',{
+            TIM_KEY:item.tim_key,
+            ViewInspection:"ViewInspection",
+            PropertyId:item?.inspection_id,
+            
+          })
+        }}>
           <View style={NewInspectionStyle.insp_cld_main_view}>
             <Text style={NewInspectionStyle.insp_cld_date}>{dayOfMonth}</Text>
             <Text style={NewInspectionStyle.insp_cld_Text}>{dayOfWeek}</Text>
@@ -309,7 +316,7 @@ export default NewInspection = (props) => {
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
         <View style={NewInspectionStyle.subContainer}>
           <DividerIcon />
         </View>
