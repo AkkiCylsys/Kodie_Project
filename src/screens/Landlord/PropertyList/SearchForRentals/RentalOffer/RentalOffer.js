@@ -125,7 +125,11 @@ const RentalOffer = props => {
   const [leaseHolderItem, setLeaseHolderItem] = useState([]);
   const [selectFile, setSelectFile] = useState([]);
   const [getuploadDocByModuleName, setGetuploadDocByModuleName] = useState([]);
-
+  const [peopleStayInPropertyData, setPeopleStayInPropertyData] = useState([]);
+  const [peopleStayInPropertyCode, setPeopleStayInPropertyCode] =
+    useState(null);
+  const [occupantsNames, setOccupantsNames] = useState([]);
+  const [leaseHolderNames, setLeaseHolderNames] = useState([]);
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -173,7 +177,6 @@ const RentalOffer = props => {
         setUserCurrentCity(addressComponent2.long_name);
         console.log('UserCurrentCity....', UserCurrentCity);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
-        // setLocation(MainFullAddress);
         console.log('mainFullAddress....', MainFullAddress);
       })
       .catch(error => console.warn(error));
@@ -223,7 +226,7 @@ const RentalOffer = props => {
     handleDescribeStatus();
     handleTypesPets();
     handleTenantQues();
-  }, []);
+  }, [question]);
 
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
@@ -547,6 +550,7 @@ const RentalOffer = props => {
       const newOccupant = {fullName, emailAddress};
       setOccupants([...occupants, newOccupant]);
       console.log('occupants...', occupants);
+      handleInputChange('occupants', updatedOccupants);
       setFullName('');
       setEmailAddress('');
       setToggleOccupants(false);
@@ -808,11 +812,38 @@ const RentalOffer = props => {
 
           if (questionCode === 'RENTAL_DETIALS') {
             setRentailDetails(data);
-            console.log('rentailDetails.....', rentailDetails);
+            console.log('rentailDetails.....', data);
+            data.forEach(item => {
+              if (item?.tqm_Question_code === 'PEOPLE_STAY_IN_PROPERTY') {
+                console.log('tqm_Question_code deependra', item);
+                setPeopleStayInPropertyCode(item?.tqm_Question_code);
+                handleQuesCode(item?.tqm_Question_code);
+              }
+            });
+          } else if (questionCode === 'PEOPLE_STAY_IN_PROPERTY') {
+            setPeopleStayInPropertyData(data);
+            console.log('data in property stay ', data);
+            if (data[1]?.tqm_Question_code) {
+              try {
+                const parsedCode = JSON.parse(data[1].tqm_Question_code);
+                setOccupantsNames(parsedCode);
+                console.log('parsedCode...', parsedCode);
+              } catch (error) {
+                console.error('Error parsing tqm_Question_code:', error);
+              }
+            }
+            if (data[3]?.tqm_Question_code) {
+              try {
+                const parsedLeaseCode = JSON.parse(data[3].tqm_Question_code);
+                setLeaseHolderNames(parsedLeaseCode);
+                console.log('parsedCode...', parsedLeaseCode);
+              } catch (error) {
+                console.error('Error parsing tqm_Question_code:', error);
+              }
+            }
           } else if (questionCode === 'EMPLOYEMENT&INCOME') {
             setEmployeeQues(data);
-            console.log('employeeQues....', employeeQues);
-            console.log('employeeQues.....', employeeQues);
+            console.log('employeeQues....', data);
           } else if (questionCode === 'RENTAL_HISTORY') {
             setRental_History(data);
           } else if (questionCode === 'PREFERENCES') {
@@ -909,74 +940,6 @@ const RentalOffer = props => {
     }));
   };
 
-  // const handleSubmit = () => {
-  //   const allQuestions = [
-  //     ...question,
-  //     ...employeeQues,
-  //     ...rentailDetails,
-  //     ...rental_History,
-  //     ...preference,
-  //   ];
-
-  //   const allData = {};
-  //   allQuestions.forEach(q => {
-  //     const value = inputValues[q.tqm_Question_code];
-  //     allData[q.id] = value !== undefined ? value : null;
-  //   });
-
-  //   const jsonData = {
-  //     allData: allData,
-  //   };
-
-  //   console.log('JSON Data:', jsonData);
-  //   return jsonData;
-  // };
-
-  // const handleSubmit = () => {
-  //   const allQuestions = [
-  //     ...question,
-  //     ...employeeQues,
-  //     ...rentailDetails,
-  //     ...rental_History,
-  //     ...preference,
-  //   ];
-
-  //   const allData = {};
-  //   allQuestions.forEach(q => {
-  //     const value = inputValues[q.tqm_Question_code];
-  //     allData[q.id] = value !== undefined ? value : null;
-  //   });
-
-  //   // Add additional fields not covered by inputValues
-  //   allData['numberOccupants'] = numberOccupants;
-  //   allData['occupants'] = occupants;
-  //   allData['numberLeaseHolder'] = numberLeaseHolder;
-  //   allData['leaseHolderItem'] = leaseHolderItem;
-  //   allData['numberYearEmp'] = numberYearEmp;
-  //   allData['numberPets'] = numberPets;
-  //   allData['selectedButton'] = selectedButton;
-  //   allData['selectedSomokingButton'] = selectedSomokingButton;
-  //   allData['location'] = location;
-  //   allData['referencesItem'] = referencesItem;
-  //   allData['fullName'] = fullName;
-  //   allData['emailAddress'] = emailAddress;
-  //   allData['leaseFullName'] = leaseFullName;
-  //   allData['leaseEmailAddress'] = leaseEmailAddress;
-  //   allData['leaseConfirmEmailAddress'] = leaseConfirmEmailAddress;
-  //   allData['referenceFullName'] = referenceFullName;
-  //   allData['referenceEmail'] = referenceEmail;
-  //   allData['selectedPetsButton'] = selectedPetsButton;
-  //   allData['selectedPreviousRentalButton'] = selectedPreviousRentalButton;
-  //   allData['selectedRentalBondButton'] = selectedRentalBondButton;
-
-  //   const jsonData = {
-  //     allData: allData,
-  //   };
-
-  //   console.log('JSON Data:', jsonData);
-  //   return jsonData;
-  // };
-
   const handleSubmit = () => {
     const allQuestions = [
       ...question,
@@ -985,42 +948,96 @@ const RentalOffer = props => {
       ...rental_History,
       ...preference,
     ];
-
+  
     const allData = {};
     allQuestions.forEach(q => {
       const value = inputValues[q.tqm_Question_code];
       allData[q.id] = value !== undefined ? value : null;
     });
-
+  
     // Add additional fields using the actual data field names and their corresponding IDs
-    // allData[34] = numberOccupants;
-    // allData[38] = occupants;
-    // allData[35] = numberLeaseHolder;
-    // allData[32] = leaseHolderItem;
-    // allData[37] = numberYearEmp;
-    // allData[36] = numberPets;
-    // allData[42] = selectedButton;
-    // allData[46] = selectedSomokingButton;
-    // allData[33] = location;
-    // allData[41] = referencesItem;
-    // allData[28] = fullName;
-    // allData[27] = emailAddress;
-    // allData[31] = leaseFullName;
-    // allData[30] = leaseEmailAddress;
-    // allData[29] = leaseConfirmEmailAddress;
-    // allData[40] = referenceFullName;
-    // allData[39] = referenceEmail;
-    // allData[43] = selectedPetsButton;
-    // allData[44] = selectedPreviousRentalButton;
-    // allData[45] = selectedRentalBondButton;
-
+    allData[4] = numberOccupants;
+    allData[38] = inputValues['occupants']; // Store occupants data
+    allData[35] = numberLeaseHolder;
+    allData[32] = leaseHolderItem;
+    allData[37] = numberYearEmp;
+    allData[36] = numberPets;
+    allData[42] = selectedButton;
+    allData[46] = selectedSomokingButton;
+    allData[33] = location;
+    allData[41] = referencesItem;
+    allData[28] = fullName;
+    allData[27] = emailAddress;
+    allData[31] = leaseFullName;
+    allData[30] = leaseEmailAddress;
+    allData[29] = leaseConfirmEmailAddress;
+    allData[40] = referenceFullName;
+    allData[39] = referenceEmail;
+    allData[43] = selectedPetsButton;
+    allData[44] = selectedPreviousRentalButton;
+    allData[45] = selectedRentalBondButton;
+  
     const jsonData = {
       allData: allData,
     };
-
+  
     console.log('JSON Data:', jsonData);
     return jsonData;
   };
+  
+// const handleSubmit = () => {
+//   const allQuestions = [
+//     ...question,
+//     ...employeeQues,
+//     ...rentailDetails,
+//     ...rental_History,
+//     ...preference,
+//   ];
+
+//   const allData = {};
+//   allQuestions.forEach(q => {
+//     const value = inputValues[q.tqm_Question_code];
+//     allData[q.id] = value !== undefined ? value : null;
+//   });
+
+//   // Additional fields that are not part of the dynamic questions
+//   const additionalFields = [
+//     { code: 'numberOccupants', value: numberOccupants },
+//     { code: 'occupants', value: inputValues['occupants'] },
+//     { code: 'numberLeaseHolder', value: numberLeaseHolder },
+//     { code: 'leaseHolderItem', value: leaseHolderItem },
+//     { code: 'numberYearEmp', value: numberYearEmp },
+//     { code: 'numberPets', value: numberPets },
+//     { code: 'selectedButton', value: selectedButton },
+//     { code: 'selectedSomokingButton', value: selectedSomokingButton },
+//     { code: 'location', value: location },
+//     { code: 'referencesItem', value: referencesItem },
+//     { code: 'fullName', value: fullName },
+//     { code: 'emailAddress', value: emailAddress },
+//     { code: 'leaseFullName', value: leaseFullName },
+//     { code: 'leaseEmailAddress', value: leaseEmailAddress },
+//     { code: 'leaseConfirmEmailAddress', value: leaseConfirmEmailAddress },
+//     { code: 'referenceFullName', value: referenceFullName },
+//     { code: 'referenceEmail', value: referenceEmail },
+//     { code: 'selectedPetsButton', value: selectedPetsButton },
+//     { code: 'selectedPreviousRentalButton', value: selectedPreviousRentalButton },
+//     { code: 'selectedRentalBondButton', value: selectedRentalBondButton },
+//   ];
+
+//   // Adding additional fields to allData dynamically
+//   additionalFields.forEach(field => {
+//     if (field.value !== undefined) {
+//       allData[field.code] = field.value;
+//     }
+//   });
+
+//   const jsonData = {
+//     allData: allData,
+//   };
+
+//   console.log('JSON Data:', jsonData);
+//   return jsonData;
+// };
 
   const renderQuestionComponent = (question, index) => {
     // console.log("Question inside the details...",question)
@@ -1033,7 +1050,6 @@ const RentalOffer = props => {
               placeholder={`Enter your ${question.tqm_Question_description}`}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text, index);
-                // alert(index);
               }}
               value={inputValues[question.tqm_Question_code] || ''}
             />
@@ -1107,7 +1123,6 @@ const RentalOffer = props => {
               onFocus={() => handleDropdown(question.tqm_Question_code, index)}
               onChange={item => {
                 handleInputChange(question.tqm_Question_code, item.lookup_key);
-                alert(inputValues[question.tqm_Question_code]);
               }}
             />
           </View>
@@ -1118,7 +1133,8 @@ const RentalOffer = props => {
             <View style={RentalOfferStyle.mainfeaturesview} key={index}>
               <View style={RentalOfferStyle.key_feature_Text_view}>
                 <Text style={RentalOfferStyle.key_feature_Text}>
-                  {'Number of occupants'}
+                  {/* {'Number of occupants'} */}
+                  {peopleStayInPropertyData[0]?.tqm_Question_description}
                 </Text>
               </View>
               <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
@@ -1164,7 +1180,8 @@ const RentalOffer = props => {
                     size={25}
                   />
                   <Text style={RentalOfferStyle.AddOccupantText}>
-                    {'Add occupants'}
+                    {/* {'Add occupants'} */}
+                    {peopleStayInPropertyData[1]?.tqm_Question_description}
                   </Text>
                 </TouchableOpacity>
 
@@ -1176,7 +1193,9 @@ const RentalOffer = props => {
                 {toggleOccupants && (
                   <View style={RentalOfferStyle.inputView}>
                     <View style={{marginTop: 11}}>
-                      <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
+                      <Text style={LABEL_STYLES.commontext}>
+                        {occupantsNames[0]?.Fullname}
+                      </Text>
                       <TextInput
                         style={RentalOfferStyle.input}
                         placeholder={'Enter full name'}
@@ -1192,7 +1211,7 @@ const RentalOffer = props => {
                     ) : null}
                     <View style={RentalOfferStyle.inputView}>
                       <Text style={LABEL_STYLES.commontext}>
-                        {'Email address'}
+                        {occupantsNames[1]?.Email_address}
                       </Text>
                       <TextInput
                         style={RentalOfferStyle.input}
@@ -1222,7 +1241,8 @@ const RentalOffer = props => {
             <View style={RentalOfferStyle.mainfeaturesview} key={index}>
               <View style={RentalOfferStyle.key_feature_Text_view}>
                 <Text style={RentalOfferStyle.key_feature_Text}>
-                  {'Number of leaseholders'}
+                  {/* {"Number of leaseholders"} */}
+                  {peopleStayInPropertyData[2]?.tqm_Question_description}
                 </Text>
               </View>
               <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
@@ -1268,7 +1288,8 @@ const RentalOffer = props => {
                     size={25}
                   />
                   <Text style={RentalOfferStyle.AddOccupantText}>
-                    {'Add leaseholders'}
+                    {/* {'Add leaseholders'} */}
+                    {peopleStayInPropertyData[3]?.tqm_Question_description}
                   </Text>
                 </TouchableOpacity>
                 <View style={{marginTop: 10}}>
@@ -1288,7 +1309,7 @@ const RentalOffer = props => {
                     <View>
                       <View style={RentalOfferStyle.inputView}>
                         <Text style={LABEL_STYLES.commontext}>
-                          {'Full name'}
+                          {leaseHolderNames[0]?.Full_name}
                         </Text>
                         <TextInput
                           style={RentalOfferStyle.input}
@@ -1305,7 +1326,7 @@ const RentalOffer = props => {
                       ) : null}
                       <View style={RentalOfferStyle.inputView}>
                         <Text style={LABEL_STYLES.commontext}>
-                          {'Email address'}
+                          {leaseHolderNames[1]?.Email_address}
                         </Text>
                         <TextInput
                           style={RentalOfferStyle.input}
@@ -1325,7 +1346,7 @@ const RentalOffer = props => {
                       ) : null}
                       <View style={RentalOfferStyle.inputView}>
                         <Text style={LABEL_STYLES.commontext}>
-                          {'Confirm email address'}
+                          {leaseHolderNames[2]?.Confirm_email_address}
                         </Text>
                         <TextInput
                           style={RentalOfferStyle.input}
