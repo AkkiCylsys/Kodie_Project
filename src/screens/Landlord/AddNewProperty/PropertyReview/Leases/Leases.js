@@ -73,7 +73,7 @@ export default Leases = props => {
   const lease_summary = () => {
     const url = Config.BASE_URL;
     const LeaseSummary_Data = {
-      p_UPLD_UPD_KEY: 1713,
+      p_UPLD_UPD_KEY: property_id,
     };
     const lease_summary_url =
       // url + `property_lease_details/getAll/${property_id}`;
@@ -419,7 +419,7 @@ export default Leases = props => {
     <>
       <View style={LeasesStyle.mainContainer}>
         <ScrollView>
-          {!lease_summary_data.length >= 0 ? (
+          {!lease_summary_data ? (
             <View>
               <View style={LeasesStyle.add_Lease_view}>
                 <Text style={LeasesStyle.add_Lease_Text}>
@@ -442,55 +442,11 @@ export default Leases = props => {
             </View>
           ) : null}
 
-          {lease_summary_data.length >= 0 ? (
+          {lease_summary_data ? (
             <>
               <Text style={[LeaseSummaryStyle.heading_Text, {marginLeft: 16}]}>
                 {'Lease summary'}
               </Text>
-              {/* <View style={{flex: 1}}>
-                <FlatList
-                  data={lease_summary_data}
-                  showsVerticalScrollIndicator={false}
-                  // keyExtractor={(item,index) => item?.UPLD_LEASE_KEY.toString()}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={LeaseSummary_render}
-                /> */}
-              {/* <View style={{marginHorizontal: 16, marginTop: 16}}>
-                  <Text style={LeaseSummaryStyle.heading_Text}>
-                    {'Tenant details'}
-                  </Text>
-                  {!manuallyTenantDetails.length > 0 ? (
-                    <Text style={LeaseSummaryStyle.invite_tenant_Text}>
-                      {'Invite tenant to connect to this property'}
-                    </Text>
-                  ) : null}
-                  {manuallyTenantDetails.length > 0 ? (
-                    <FlatList
-                      data={manuallyTenantDetails}
-                      scrollEnabled
-                      showsVerticalScrollIndicator={false}
-                      contentContainerStyle={{}}
-                      // keyExtractor={(item,index) => item?.id}
-                      keyExtractor={(item, index) => index}
-                      renderItem={tenantDetails}
-                    />
-                  ) : null}
-                  {manuallyTenantDetails.length > 0 ? null : (
-                    <View style={LeaseSummaryStyle.btn_View}>
-                      <CustomSingleButton
-                        _ButtonText={'+ Add tenant'}
-                        Text_Color={_COLORS.Kodie_WhiteColor}
-                        height={45}
-                        onPress={() => {
-                          refRBSheet3.current.open();
-                          setIsTenantsSheetOpen(true);
-                        }}
-                        disabled={isLoading ? true : false}
-                      />
-                    </View>
-                  )}
-                </View> */}
-              {/* </View> */}
               <View style={LeaseSummaryStyle.subContainer}>
                 <View style={LeaseSummaryStyle.Due_Summary_main_View}>
                   <View style={LeaseSummaryStyle.summary_view}>
@@ -499,12 +455,9 @@ export default Leases = props => {
                         <Text style={LeaseSummaryStyle.Due_Text}>
                           {'Due in'}
                         </Text>
-                        {/* <Text style={LeaseSummaryStyle.Days_Text}>
-                          {lease_summary_data?.DAYS_LEFT !== null
-                            ? `${lease_summary_data?.DAYS_LEFT} days`
-                            : 'Loading...'}
-                        </Text> */}
-                        <Text>{lease_summary_data?.DAYS_LEFT}</Text>
+                        <Text style={LeaseSummaryStyle.Days_Text}>
+                          {`${lease_summary_data?.DAYS_LEFT} days`}
+                        </Text>
                       </View>
                       <Text style={LeaseSummaryStyle.date_cld_Text}>
                         {moment(lease_summary_data?.NEXT_PAYMENT_DATE).format(
