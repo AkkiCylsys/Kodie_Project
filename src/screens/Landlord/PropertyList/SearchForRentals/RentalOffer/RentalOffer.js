@@ -221,10 +221,6 @@ const RentalOffer = props => {
     setTypeOfPetsValue(selectedItems);
   };
   useEffect(() => {
-    handleLeaseTerm();
-    handleStyingProperty();
-    handleDescribeStatus();
-    handleTypesPets();
     handleTenantQues();
   }, [question]);
 
@@ -550,7 +546,7 @@ const RentalOffer = props => {
       const newOccupant = {fullName, emailAddress};
       setOccupants([...occupants, newOccupant]);
       console.log('occupants...', occupants);
-      handleInputChange('occupants', updatedOccupants);
+      // handleInputChange('occupants', occupants);
       setFullName('');
       setEmailAddress('');
       setToggleOccupants(false);
@@ -565,6 +561,7 @@ const RentalOffer = props => {
       };
       setLeaseHolderItem([...leaseHolderItem, newLeaseHolder]);
       console.log('leaseHolderItem...', leaseHolderItem);
+      // handleInputChange('leaseHolderItem', leaseHolderItem);
       setLeaseFullName('');
       setleaseEmailAddress('');
       setLeaseConfirmEmailAddress('');
@@ -595,175 +592,7 @@ const RentalOffer = props => {
     const updatedReferences = referencesItem.filter((_, i) => i !== index);
     setReferencesItem(updatedReferences);
   };
-  // upload Documents
-  const selectDoc = async () => {
-    try {
-      const doc = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf],
-        allowMultiSelection: true,
-      });
-      console.log('doc......', doc);
-      setSelectFile(doc);
-      await uploadDocument(doc);
-      console.log('Documents.....', doc);
-      console.log('selectFile.....', selectFile);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err))
-        console.log('User cancelled the upload', err);
-      else console.log(err);
-    }
-  };
   // Api intrigation....
-  const uploadDocument = async doc => {
-    console.log('uri....', doc[0].uri);
-    console.log('name....', doc[0].name.replace(/\s/g, ''));
-    console.log('type....', doc[0].type);
-    console.log('p_referral_key....', property_id);
-    console.log('p_module_name....', moduleName);
-    const url = Config.BASE_URL;
-    const uploadDoc_url = url + 'uploadDocument';
-    console.log('Request URL:', uploadDoc_url);
-    setIsLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append('documents', {
-        uri: doc[0].uri,
-        name: doc[0].name.replace(/\s/g, ''),
-        type: doc[0].type,
-      });
-      formData.append('p_referral_key', property_id);
-      formData.append('p_module_name', moduleName);
-      const response = await axios.post(uploadDoc_url, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      console.log('API Response uploadDocument:', response?.data);
-
-      if (response?.data?.status === true) {
-        alert(response?.data?.message);
-        // getUploadedDocumentsByModule(); // will intrigate it.
-      } else {
-        alert(response?.data?.message);
-      }
-    } catch (error) {
-      console.error('API failed uploadDocument', error);
-      // alert(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  const handleLeaseTerm = () => {
-    const TenantData = {
-      P_PARENT_CODE: 'RLT',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const propertyType = url + 'lookup_details';
-    console.log('Request URL:', propertyType);
-    setIsLoading(true);
-    axios
-      .post(propertyType, TenantData)
-      .then(response => {
-        console.log('Renal Lease response', response.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          console.log('Renal Lease....', response?.data?.lookup_details);
-          setRentalLeaseData(response?.data?.lookup_details);
-        } else {
-          console.error('Renal_Lease_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('Renal_Lease error:', error);
-        setIsLoading(false);
-      });
-  };
-  const handleStyingProperty = () => {
-    const StyingPropertData = {
-      P_PARENT_CODE: 'PST',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const StyingPropertType = url + 'lookup_details';
-    console.log('Request URL:', StyingPropertType);
-    setIsLoading(true);
-    axios
-      .post(StyingPropertType, StyingPropertData)
-      .then(response => {
-        console.log('Stying_Propert_type', response.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          console.log('Renal Lease....', response?.data?.lookup_details);
-          setValueStyingData(response?.data?.lookup_details);
-        } else {
-          console.error('Stying_Propert_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('Stying_Propert error:', error);
-        setIsLoading(false);
-      });
-  };
-  const handleDescribeStatus = () => {
-    const DescribeStatustData = {
-      P_PARENT_CODE: 'ES',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const DescribeStatustType = url + 'lookup_details';
-    console.log('Request URL:', DescribeStatustType);
-    setIsLoading(true);
-    axios
-      .post(DescribeStatustType, DescribeStatustData)
-      .then(response => {
-        console.log('Describe_Status_type', response.data);
-        if (response?.data?.status === true) {
-          console.log('Describe_Status....', response?.data?.lookup_details);
-          setEmployeeValueData(response?.data?.lookup_details);
-          setIsLoading(false);
-        } else {
-          console.error('Describe_Status_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('Describe_Status error:', error);
-        setIsLoading(false);
-      });
-  };
-  const handleTypesPets = () => {
-    const PetsTypeData = {
-      P_PARENT_CODE: 'TP',
-      P_TYPE: 'OPTION',
-    };
-    const url = Config.BASE_URL;
-    const PetsDataType = url + 'lookup_details';
-    console.log('Request URL:', PetsDataType);
-    setIsLoading(true);
-    axios
-      .post(PetsDataType, PetsTypeData)
-      .then(response => {
-        console.log('Pets_type', response.data);
-        if (response?.data?.status === true) {
-          setIsLoading(false);
-          console.log('Pets_type_....', response?.data?.lookup_details);
-          setPetsData(response?.data?.lookup_details);
-          console.log('pets daa...', response?.data?.lookup_details);
-        } else {
-          console.error('Pets_type_Status_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('Pets_type_Status error:', error);
-        setIsLoading(false);
-      });
-  };
-
   const handleTenantQues = () => {
     const url = Config.BASE_URL;
     const tenantQues_url = url + 'question_details_for_tenant_ques';
@@ -948,23 +777,24 @@ const RentalOffer = props => {
       ...rental_History,
       ...preference,
     ];
-  
+
     const allData = {};
     allQuestions.forEach(q => {
-      const value = inputValues[q.tqm_Question_code];
-      allData[q.id] = value !== undefined ? value : null;
+      const value = inputValues[q?.tqm_Question_code];
+      allData[q?.id] = value !== undefined ? value : null;
     });
-  
-    // Add additional fields using the actual data field names and their corresponding IDs
+
     allData[4] = numberOccupants;
-    allData[38] = inputValues['occupants']; // Store occupants data
-    allData[35] = numberLeaseHolder;
-    allData[32] = leaseHolderItem;
-    allData[37] = numberYearEmp;
-    allData[36] = numberPets;
-    allData[42] = selectedButton;
-    allData[46] = selectedSomokingButton;
-    allData[33] = location;
+    // allData[28] = inputValues['occupants']; // Store occupants data
+    allData[28] = occupants;
+    allData[29] = numberLeaseHolder;
+    // allData[30] = inputValues['leaseHolderItem'];
+    allData[30] = leaseHolderItem;
+    allData[10] = numberYearEmp;
+    allData[25] = numberPets;
+    allData[13] = selectedButton;
+    allData[23] = selectedSomokingButton;
+    allData[18] = location;
     allData[41] = referencesItem;
     allData[28] = fullName;
     allData[27] = emailAddress;
@@ -973,71 +803,17 @@ const RentalOffer = props => {
     allData[29] = leaseConfirmEmailAddress;
     allData[40] = referenceFullName;
     allData[39] = referenceEmail;
-    allData[43] = selectedPetsButton;
-    allData[44] = selectedPreviousRentalButton;
-    allData[45] = selectedRentalBondButton;
-  
+    allData[24] = selectedPetsButton;
+    allData[21] = selectedPreviousRentalButton;
+    allData[20] = selectedRentalBondButton;
+
     const jsonData = {
       allData: allData,
     };
-  
+
     console.log('JSON Data:', jsonData);
     return jsonData;
   };
-  
-// const handleSubmit = () => {
-//   const allQuestions = [
-//     ...question,
-//     ...employeeQues,
-//     ...rentailDetails,
-//     ...rental_History,
-//     ...preference,
-//   ];
-
-//   const allData = {};
-//   allQuestions.forEach(q => {
-//     const value = inputValues[q.tqm_Question_code];
-//     allData[q.id] = value !== undefined ? value : null;
-//   });
-
-//   // Additional fields that are not part of the dynamic questions
-//   const additionalFields = [
-//     { code: 'numberOccupants', value: numberOccupants },
-//     { code: 'occupants', value: inputValues['occupants'] },
-//     { code: 'numberLeaseHolder', value: numberLeaseHolder },
-//     { code: 'leaseHolderItem', value: leaseHolderItem },
-//     { code: 'numberYearEmp', value: numberYearEmp },
-//     { code: 'numberPets', value: numberPets },
-//     { code: 'selectedButton', value: selectedButton },
-//     { code: 'selectedSomokingButton', value: selectedSomokingButton },
-//     { code: 'location', value: location },
-//     { code: 'referencesItem', value: referencesItem },
-//     { code: 'fullName', value: fullName },
-//     { code: 'emailAddress', value: emailAddress },
-//     { code: 'leaseFullName', value: leaseFullName },
-//     { code: 'leaseEmailAddress', value: leaseEmailAddress },
-//     { code: 'leaseConfirmEmailAddress', value: leaseConfirmEmailAddress },
-//     { code: 'referenceFullName', value: referenceFullName },
-//     { code: 'referenceEmail', value: referenceEmail },
-//     { code: 'selectedPetsButton', value: selectedPetsButton },
-//     { code: 'selectedPreviousRentalButton', value: selectedPreviousRentalButton },
-//     { code: 'selectedRentalBondButton', value: selectedRentalBondButton },
-//   ];
-
-//   // Adding additional fields to allData dynamically
-//   additionalFields.forEach(field => {
-//     if (field.value !== undefined) {
-//       allData[field.code] = field.value;
-//     }
-//   });
-
-//   const jsonData = {
-//     allData: allData,
-//   };
-
-//   console.log('JSON Data:', jsonData);
-//   return jsonData;
-// };
 
   const renderQuestionComponent = (question, index) => {
     // console.log("Question inside the details...",question)
