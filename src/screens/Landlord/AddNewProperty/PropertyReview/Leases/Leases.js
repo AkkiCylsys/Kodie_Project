@@ -419,7 +419,7 @@ export default Leases = props => {
     <>
       <View style={LeasesStyle.mainContainer}>
         <ScrollView>
-          {!lease_summary_data ? (
+          {lease_summary_data?.LEASE_KEY ?null: (
             <View>
               <View style={LeasesStyle.add_Lease_view}>
                 <Text style={LeasesStyle.add_Lease_Text}>
@@ -440,9 +440,9 @@ export default Leases = props => {
                 />
               </View>
             </View>
-          ) : null}
+          )}
 
-          {lease_summary_data ? (
+          {lease_summary_data?.LEASE_KEY ? (
             <>
               <Text style={[LeaseSummaryStyle.heading_Text, {marginLeft: 16}]}>
                 {'Lease summary'}

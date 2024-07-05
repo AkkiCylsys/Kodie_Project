@@ -1,19 +1,14 @@
 //ScreenNo:93
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
-  Image,
   FlatList,
 } from 'react-native';
 import {ScheduleCss} from './ScheduleCss';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather';
-import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
+import {_COLORS} from '../../../../Themes';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
@@ -23,64 +18,19 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import { useSelector } from 'react-redux';
-const Detail = [
-  {
-    id: '1',
-    name: 'Bathroom',
-  },
-  {
-    id: '2',
-    name: 'Garden',
-  },
-  {
-    id: '3',
-    name: 'Bedroom',
-  },
-  {
-    id: '4',
-    name: 'Kitchen',
-  },
-  {
-    id: '5',
-    name: 'Dining Room',
-  },
-  {
-    id: '6',
-    name: 'Living Room',
-  },
-  {
-    id: '7',
-    name: 'Exterior',
-  },
-  {
-    id: '8',
-    name: 'Roof ',
-  },
-  {
-    id: '9',
-    name: 'Garage',
-  },
-];
+
 const Schedule = (props) => {
   const isFoucus = useNavigation()
-  const [contractor, setContractor] = useState('');
-  const [email, setEmail] = useState('');
   const [Inspection_Detail, setInspection_Details] = useState([]);
   const [isLoading, setIsLoading] = useState([]);
   const [AreaKey, setAreaKey] = useState([]);
   const [checkedItems, setCheckedItems] = useState({});
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log(
-    'loginresponse_jobdetails..',
-    loginData?.Login_details
-  );
   const [accountDetails, setAccountDetails] = useState(null);
 
 const TIM_KEY = props?.TIM_KEY;
 const newStatus = props?.newStatus;
-const account_id = props?.account_id;
 console.log("newStatus",newStatus);
-  const refRBSheet = useRef();
   useEffect(()=>{
     if(isFoucus){
       if (newStatus === 1 || newStatus == null || newStatus === '') {
@@ -181,10 +131,9 @@ console.log("newStatus",newStatus);
       .join(',');
   };
   const checkedItemIds = getCheckedItemIds();
-  // console.log(checkedItemIds);
   const Detail_render = ({ item, index }) => {
-    const isChecked = checkedItems[item.TAM_AREA_KEY]; // Use a unique identifier for each item
-    return (
+    const isChecked = checkedItems[item.TAM_AREA_KEY]; 
+     return (
       <View style={ScheduleCss.DetailsView}>
         <TouchableOpacity 
         // onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}
@@ -267,53 +216,6 @@ console.log("newStatus",newStatus);
         <DividerIcon />
 </>
         ):null}
-        <RBSheet
-          ref={refRBSheet}
-          closeOnDragDown={true}
-          closeOnPressMask={true}
-          height={250}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: ScheduleCss.bottomModal_container,
-          }}>
-          <View style={ScheduleCss.Container}>
-            <View style={ScheduleCss.ModalContainer}>
-              <Text style={ScheduleCss.ShareText}>Share report</Text>
-              <AntDesign
-                name="close"
-                size={20}
-                color={_COLORS.Kodie_BlackColor}
-              />
-            </View>
-            <View style={ScheduleCss.inputContainer}>
-              <Text
-                style={[LABEL_STYLES._texinputLabel, ScheduleCss.cardHeight]}>
-                {'Email address*'}
-              </Text>
-              <TextInput
-                style={ScheduleCss.emailinput}
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Enter your email address"
-                placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
-                keyboardType="email-address"
-              />
-            </View>
-            <View style={ScheduleCss.ButtonView}>
-              <TouchableOpacity style={ScheduleCss.cancelView}>
-                <Text style={[ScheduleCss.cancelText]}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={ScheduleCss.SaveView}>
-                <Text style={ScheduleCss.DoneText}>Done</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </RBSheet>
       </View>
     </View>
   );
