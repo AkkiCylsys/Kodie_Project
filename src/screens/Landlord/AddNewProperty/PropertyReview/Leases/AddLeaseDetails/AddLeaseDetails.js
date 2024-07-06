@@ -39,20 +39,22 @@ export default AddLeaseDetails = props => {
   // alert(loginData?.Login_details?.user_id)
 
   // alert(JSON.stringify(props.property_id));
+  const leaseDataDetails = props?.leaseData;
+  console.log("leaseDataDetails",leaseDataDetails)
   const property_id = props.property_id;
   console.log('property id in add lease Detail..', property_id);
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(leaseDataDetails?leaseDataDetails.UPLD_COMMENCEMENT_DATE :null);
+  const [selectedEndDate, setSelectedEndDate] = useState(leaseDataDetails?leaseDataDetails.UPLD_LEASE_END_DATE :null);
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalVisibleEndDate, setModalVisibleEndDate] = useState(false);
   const [isDueDayModalVisible, setIsDueDayModalVisible] = useState(false);
-  const [rentalAmount, setRentalAmount] = useState(null);
+  const [rentalAmount, setRentalAmount] = useState(leaseDataDetails?leaseDataDetails.RENTAL_AMMOUNT :null);
   // const [rentalBond, setRentalBond] = useState(null);
-  const [rentalBond, setRentalBond] = useState('');
-  const [rentalDeposit, setRentalDeposit] = useState('');
-  const [rentalEscalation, setRentalEscalation] = useState('');
+  const [rentalBond, setRentalBond] = useState(leaseDataDetails?leaseDataDetails.UPLD_RENTAL_BOND_AMMOUNT :'');
+  const [rentalDeposit, setRentalDeposit] = useState(leaseDataDetails?leaseDataDetails.UPLD_RENTAL_DEPOSIT:'');
+  const [rentalEscalation, setRentalEscalation] = useState(leaseDataDetails?leaseDataDetails.UPLD_RENTAL_ESCALATION :'');
   const [paymentDueDay, setPaymentDueDay] = useState('');
   const [selectedOption, setSelectedOption] = useState('Save');
   const [selected_frequency_Button, setSelected_frequency_Button] =
@@ -60,7 +62,7 @@ export default AddLeaseDetails = props => {
   const [selected_frequency_Id, setSelected_frequency_Id] = useState(1);
   const [selected_payment_Button, setSelected_payment_Button] = useState(false);
   const [notification_type_Data, setNotification_type_Data] = useState([]);
-  const [notification_type_value, setNotification_type_value] = useState(null);
+  const [notification_type_value, setNotification_type_value] = useState(leaseDataDetails?leaseDataDetails.UPLD_SET_NOTIFICATION_TYPE :null);
   const [expiry_reminder_Data, setExpiry_reminder_Data] = useState([]);
   const [expiry_reminder_value, setExpiry_reminder_value] = useState(null);
   const [payment_reminder_Data, setPayment_reminder_Data] = useState([]);
@@ -68,10 +70,9 @@ export default AddLeaseDetails = props => {
   const [rental_reminder_Data, setrental_reminder_Data] = useState([]);
   const [rental_reminder_value, setrental_reminder_value] = useState(null);
   const [lease_term_Data, setLease_term_Data] = useState([]);
-  const [lease_term_value, setlLease_term_value] = useState('');
+  const [lease_term_value, setlLease_term_value] = useState(leaseDataDetails?commencement_date :'');
   const [lease_end_Data, setLease_end_Data] = useState([]);
-  const [lease_end_value, setlLease_end_value] = useState('');
-
+  const [lease_end_value, setlLease_end_value] = useState(leaseDataDetails?leaseDataDetails.UPLD_RENTAL_PAYMENT_FREQUENCY :'');
   const [toggle_expiry, setToggle_expiry] = useState(false);
   const [toggle_lease_expire, setToggle_lease_expire] = useState(0);
   const [toggle_payment, setToggle_payment] = useState(false);
@@ -83,10 +84,12 @@ export default AddLeaseDetails = props => {
   const [isYesSelected, setIsYesSelected] = useState(false);
   const [isYesSelectedId, setIsYesSelectedId] = useState(0);
   const [ProRate, setProRate] = useState('');
-
+  const commencement_date = moment(leaseDataDetails.UPLD_RENTAL_LEASE_TERM).format('dddd D MMMM YYYY');
   const handleButtonClick = isYes => {
     setIsYesSelected(isYes);
   };
+
+  console.log("leaseDataDetails.UPLD_RENTAL_DEPOSIT",leaseDataDetails.UPLD_RENTAL_DEPOSIT);
   // <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
 
   useEffect(() => {
@@ -141,6 +144,8 @@ export default AddLeaseDetails = props => {
   const handlePopUp = () => {
     props.onClose();
   };
+
+  console.log('leaseDataDetails.RENTAL_AMMOUNT',leaseDataDetails.RENTAL_AMMOUNT)
 
   const handle_add_Lease = () => {
     console.log('paymentDueDay....', paymentDueDay);
@@ -826,7 +831,7 @@ export default AddLeaseDetails = props => {
             <View style={{ flex: 1 }}>
               <TextInput
                 style={AddLeaseDetailsStyle.Amountinput}
-                value={ProRate}
+                value={leaseDataDetails ? leaseDataDetails.RENTAL_AMMOUNT:ProRate}
                 onChangeText={setProRate}
                 placeholder="Amount"
                 placeholderTextColor="#999"

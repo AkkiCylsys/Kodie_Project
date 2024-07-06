@@ -13,21 +13,12 @@ import {IMAGES, _COLORS, FONTFAMILY} from '../../../../../Themes';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AddLeaseDetails from './AddLeaseDetails/AddLeaseDetails';
-import LeaseSummary from './LeaseSummary/LeaseSummary';
 import {LeaseSummaryStyle} from './LeaseSummary/LeaseSummaryStyle';
 import {Config} from '../../../../../Config';
 import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import moment from 'moment/moment';
 import Logrentalpayment from './Logrentalpayment/Logrentalpayment';
-import TenantDetails from './TenantDetails/TenantDetails';
-import InviteTenantModal from '../../../../../components/Molecules/InviteTenantModal/InviteTenantModal';
-import {TenantDetailsStyle} from './TenantDetails/TenantDetailsStyle';
-import StarRating from 'react-native-star-rating';
-import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
-import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
-import LeaseBottomModal from '../../../../../components/Molecules/BottomModal/LeaseBottomModal/LeaseBottomModal';
 export default Leases = props => {
   const [isLoading, setIsLoading] = useState(false);
   const property_id = props.property_id;
@@ -346,7 +337,9 @@ export default Leases = props => {
           },
           container: LeasesStyle.bottomModal_container,
         }}>
-        <AddLeaseDetails onClose={handleClose} property_id={property_id} />
+        <AddLeaseDetails onClose={handleClose} property_id={property_id} 
+        leaseData={lease_summary_data}
+        />
       </RBSheet>
       <RBSheet
         ref={refRBSheet2}
