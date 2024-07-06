@@ -480,16 +480,19 @@ export default Login = props => {
       } else if (res?.data?.success == 'true') {
         //  alert("Login successful");
         setIsLoading(false);
-        // if (res.data.code == 6) {
-        //   alert(res.data.message);
-        //   props.navigation.navigate("SignUpSteps");
-        // }
-        //  else {
+        if (res.data.code == 6) {
+          alert(res.data.message);
+          props.navigation.navigate('SignUpSteps', {
+            email: email,
+            user_key: res?.User_key,
+          });
+        }
+         else {
+           props.navigation.navigate('DrawerNavigatorLeftMenu');
 
-        // }
+        }
 
         // alert(JSON.stringify(res))
-        props.navigation.navigate('DrawerNavigatorLeftMenu');
         setEmail('');
         setPassword('');
       } else {

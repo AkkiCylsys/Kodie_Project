@@ -66,7 +66,8 @@ export const NewInspectionStyle = StyleSheet.create({
     fontSize: 12,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
-    marginLeft: 5,
+    marginLeft: 2,
+    alignSelf:'center'
   },
   insp_data_View: {
     flex: 1,
@@ -76,24 +77,30 @@ export const NewInspectionStyle = StyleSheet.create({
     marginTop: 10,
   },
   insp_cld_Text: {
-    fontSize: 12,
+    fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
+    alignSelf:'center'
   },
   insp_cld_date: {
-    fontSize: 12,
+    fontSize: 16,
     color: _COLORS.Kodie_BlackColor,
-    fontFamily: FONTFAMILY.K_Medium,
+    fontFamily: FONTFAMILY.K_Bold,
     alignSelf: "center",
+    marginBottom:10
   },
   insp_cld_main_view: {
+    flex:0.3,
     marginRight: 8,
     marginTop: 10,
   },
   img_Sty: {
     height: 80,
     width: 80,
-    resizeMode: "contain",
+    borderRadius: 10,
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: _COLORS?.Kodie_GrayColor,
   },
   note_b_img_sty: {
     height: 30,
@@ -124,11 +131,9 @@ export const NewInspectionStyle = StyleSheet.create({
    in_progress_txt:{
     fontSize: 12,
     color: _COLORS.Kodie_DarkOrange,
-    backgroundColor: _COLORS.Kodie_LightOrange,
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 10,
     alignSelf: "center",
   },
-  in_progress_view:{ alignSelf: "center" }
+  in_progress_view:{ flex:1,alignSelf: "center",  backgroundColor: _COLORS.Kodie_LightOrange,
+  paddingVertical: 5,
+  paddingHorizontal: 15,borderRadius:15 }
 });

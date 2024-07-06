@@ -23,8 +23,10 @@ const GuestSelectionContent = ({
   applySelection,
   refRBSheet,
 }) => {
+  
   return (
     <View style={{flex: 1}}>
+      
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
           style={{
@@ -76,22 +78,48 @@ const GuestSelectionContent = ({
         keyExtractor={item => item.UAD_KEY.toString()}
         renderItem={({item}) => (
           <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginVertical: 8,
-            }}>
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginVertical: 8,
+          }}>
+              {console.log(item?.image_paths[0],'dfsdfsdfsfsd')}
             <View style={{flexDirection: 'row'}}>
+            {item.image_paths && item.image_paths.length > 0 ? (
               <Image
-                source={IMAGES?.userImage}
+                source={{uri: item.image_paths[0]}}
                 style={{
                   height: 50,
                   width: 50,
                   borderRadius: 50 / 2,
+                  borderWidth:1,
+                  borderColor:_COLORS?.Kodie_GrayColor,
                   alignSelf: 'center',
                 }}
               />
+            ): (<View
+            style={[{
+              height: 50,
+              width: 50,
+              borderRadius: 50 / 2,
+              borderWidth:1,
+              borderColor:_COLORS?.Kodie_GrayColor,
+              justifyContent: "center",
+              paddingHorizontal:7
+            }]}
+          >
+            <Text
+              style={{
+                fontSize: 10,
+                color: _COLORS?.Kodie_BlackColor,
+                textAlign: "center",
+                alignSelf: "center",
+              }}
+            >
+              {"Image not found"}
+            </Text>
+          </View>)}
               <Text
                 style={{
                   fontSize: 16,

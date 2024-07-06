@@ -207,7 +207,20 @@ const JobReviewDetails = props => {
           />
         );
       case 'Tab2':
-        return <JodBiddingDetails JOB_ID={JOB_ID} />;
+        // return <JodBiddingDetails JOB_ID={JOB_ID} />;
+        return (
+          <>
+            {Alert.alert('Bids', 'Coming soon', [
+              {
+                text: 'OK',
+                onPress: () => {
+                  console.log('OK Pressed');
+                  setActiveTab('Tab1');
+                },
+              },
+            ])}
+          </>
+        );
       case 'Tab3':
         return (
           <>

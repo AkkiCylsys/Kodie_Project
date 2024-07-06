@@ -1,33 +1,33 @@
-import React, { useRef } from "react";
-import { View, Text, Image, FlatList } from "react-native";
-import { BottomModalDataStyle } from "./BottomModalDataStyle";
-import { IMAGES, _COLORS } from "../../../Themes";
-import { TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import RBSheet from "react-native-raw-bottom-sheet";
-import { PropertyListCSS } from "../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import React, {useRef} from 'react';
+import {View, Text, Image, FlatList} from 'react-native';
+import {BottomModalDataStyle} from './BottomModalDataStyle';
+import {IMAGES, _COLORS} from '../../../Themes';
+import {TouchableOpacity} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import {PropertyListCSS} from '../../../screens/Landlord/PropertyList/MyProperty/PropertyListCSS';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const data = [
   {
-    id: "1",
-    Data: "View /edit job details",
+    id: '1',
+    Data: 'View /edit job details',
     Icon: (
       <MaterialIcons
         name="preview"
         size={25}
         color={_COLORS.Kodie_GreenColor}
-        style={{ alignSelf: "center" }}
+        style={{alignSelf: 'center'}}
       />
     ),
   },
   {
-    id: "2",
-    Data: "Manage job documents",
+    id: '2',
+    Data: 'Manage job documents',
     Icon: (
       <MaterialCommunityIcons
         name="file-download-outline"
@@ -37,8 +37,8 @@ const data = [
     ),
   },
   {
-    id: "3",
-    Data: "Create job notice / reminder",
+    id: '3',
+    Data: 'Create job notice / reminder',
     Icon: (
       <Ionicons
         name="mail-unread-outline"
@@ -48,8 +48,8 @@ const data = [
     ),
   },
   {
-    id: "4",
-    Data: "Delete job",
+    id: '4',
+    Data: 'Delete job',
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -61,8 +61,8 @@ const data = [
 ];
 const data1 = [
   {
-    id: "1",
-    Data: "Confirm delete job",
+    id: '1',
+    Data: 'Confirm delete job',
     Icon: (
       <MaterialIcons
         name="delete-outline"
@@ -72,8 +72,8 @@ const data1 = [
     ),
   },
   {
-    id: "2",
-    Data: "Archive instead",
+    id: '2',
+    Data: 'Archive instead',
     Icon: (
       <Ionicons
         name="file-tray-full-outline"
@@ -84,11 +84,11 @@ const data1 = [
   },
 ];
 
-const BottomJobModal = (props) => {
+const BottomJobModal = props => {
   const JobId = props.JobId;
-  console.log("JobId...", JobId);
+  console.log('JobId...', JobId);
   const job_sub_type = props.job_sub_type;
-  console.log("job_sub_type...", job_sub_type);
+  console.log('job_sub_type...', job_sub_type);
 
   // alert(JobId);
   const navigation = useNavigation();
@@ -96,21 +96,21 @@ const BottomJobModal = (props) => {
   const handleCloseModal = () => {
     props.onClose();
   };
-  const handleDeleteProperty = (Job_id) => {
-    console.log(Job_id, "catch data");
+  const handleDeleteProperty = Job_id => {
+    console.log(Job_id, 'catch data');
     props.onDelete(Job_id);
-    console.log("Raul data cath........... ", props.onDelete(Job_id));
+    console.log('Raul data cath........... ', props.onDelete(Job_id));
   };
   const FinalDeleteProperty = (Job_id, Address) => {
-    console.log(Job_id, Address, "catch data");
+    console.log(Job_id, Address, 'catch data');
     props.onDelete(Job_id, Address);
-    console.log("come data...........", Job_id);
+    console.log('come data...........', Job_id);
     console.log(
-      "Raul data cath........... ",
-      props.onDeleteData(Job_id, Address)
+      'Raul data cath........... ',
+      props.onDeleteData(Job_id, Address),
     );
   };
-  const BottomData = ({ item, index }) => {
+  const BottomData = ({item, index}) => {
     return (
       <>
         {props?.isDeletePropertyClicked ? (
@@ -118,13 +118,12 @@ const BottomJobModal = (props) => {
             <TouchableOpacity
               style={BottomModalDataStyle.container}
               onPress={() => {
-                if (item.id === "1") {
+                if (item.id === '1') {
                   FinalDeleteProperty();
                 }
-                if (item.id === "2") {
+                if (item.id === '2') {
                 }
-              }}
-            >
+              }}>
               <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
               <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
             </TouchableOpacity>
@@ -133,27 +132,26 @@ const BottomJobModal = (props) => {
           <TouchableOpacity
             style={BottomModalDataStyle.container}
             onPress={() => {
-              if (item.id === "1") {
-                navigation.navigate("CreateJobFirstScreen", {
+              if (item.id === '1') {
+                navigation.navigate('CreateJobFirstScreen', {
                   JobId: JobId,
-                  editMode: "editMode",
+                  editMode: 'editMode',
                   job_sub_type: job_sub_type,
                 });
                 handleCloseModal();
               }
-              if (item.id === "4") {
+              if (item.id === '4') {
                 handleDeleteProperty();
               }
-              if (item.id === "2") {
-                navigation.navigate("JobDetails", {
+              if (item.id === '2') {
+                navigation.navigate('JobDetails', {
                   JOB_ID: JobId,
-                  View_Job_Details: "View_Job_Details",
-                  jobDocTab: "jobDocTab",
+                  View_Job_Details: 'View_Job_Details',
+                  jobDocTab: 'jobDocTab',
                 });
                 handleCloseModal();
               }
-            }}
-          >
+            }}>
             <View style={BottomModalDataStyle.IconView}>{item.Icon}</View>
             <Text style={BottomModalDataStyle.text}>{item.Data}</Text>
           </TouchableOpacity>
@@ -165,12 +163,11 @@ const BottomJobModal = (props) => {
     <View style={BottomModalDataStyle.mainContainer}>
       <TouchableOpacity
         style={{
-          justifyContent: "flex-end",
-          alignSelf: "flex-end",
+          justifyContent: 'flex-end',
+          alignSelf: 'flex-end',
           paddingHorizontal: 20,
         }}
-        onPress={handleCloseModal}
-      >
+        onPress={handleCloseModal}>
         <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
       </TouchableOpacity>
       <FlatList
@@ -178,15 +175,16 @@ const BottomJobModal = (props) => {
         scrollEnabled
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
-        keyExtractor={(item) => item?.id}
+        keyExtractor={item => item?.id}
         renderItem={BottomData}
         ListHeaderComponent={() => {
           return (
             <>
               {props?.isDeletePropertyClicked ? (
                 <Text
-                  style={BottomModalDataStyle.text}
-                >{`Delete job: ${props?.Address}`}</Text>
+                  style={
+                    BottomModalDataStyle.text
+                  }>{`Delete job: ${props?.Address}`}</Text>
               ) : null}
             </>
           );
