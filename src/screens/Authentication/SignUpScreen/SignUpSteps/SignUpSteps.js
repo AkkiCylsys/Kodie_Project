@@ -10,36 +10,31 @@ import {
   ScrollView,
   TextInput,
   Platform,
-  PermissionsAndroid,
   Image,
-  FlatList,
   SafeAreaView,
   KeyboardAvoidingView,
+  BackHandler
 } from 'react-native';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import TopHeader from '../../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../../services/CommonServices';
-import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
-import {SignUpStepStyle} from './SignUpStepsStyle';
-import {AccountStyle} from '../Account/AccountStyle';
-import {LABEL_STYLES, _COLORS, IMAGES} from '../../../../Themes';
 import Entypo from 'react-native-vector-icons/Entypo';
-
-import {useDispatch, useSelector} from 'react-redux';
-import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
-import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
-import Geocoder from 'react-native-geocoding';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useFocusEffect} from '@react-navigation/native';
-import {BackHandler} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import RBSheet from 'react-native-raw-bottom-sheet';
-const labels = ['Step 1', 'Step 2', 'Step 3'];
-import UploadImageData from '../../../../components/Molecules/UploadImage/UploadImage';
 import PhoneInput from 'react-native-phone-number-input';
+import Geocoder from 'react-native-geocoding';
+import {useFocusEffect} from '@react-navigation/native';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPlaces';
+import TopHeader from '../../../../components/Molecules/Header/Header';
+import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
+import UploadImageData from '../../../../components/Molecules/UploadImage/UploadImage';
+import {_goBack} from '../../../../services/CommonServices';
+import {LABEL_STYLES, _COLORS, IMAGES} from '../../../../Themes';
+import {SignUpStepStyle} from './SignUpStepsStyle';
+import {AccountStyle} from '../Account/AccountStyle';
+const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
   currentStepIndicatorSize: 50,
@@ -71,13 +66,8 @@ const getStepIndicatorIconConfig = ({position, stepStatus}) => {
   return iconConfig;
 };
 const SignUpSteps = props => {
-  // const signup_response = useSelector(
-  //   (state) => state?.authenticationReducer?.data
-  // );
-  // console.log("signup_response.....", signup_response);
   const phoneInput = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
-  const ref = React.useRef(null);
   const refRBSheet = useRef();
   const [ImageName, setImageName] = useState('');
   const scrollViewRef = useRef();
@@ -99,12 +89,8 @@ const SignUpSteps = props => {
   const [p_latitude, setP_latitude] = useState('');
   const [p_longitude, setP_longitude] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
-  const [imageError, setImageError] = useState(true);
   const [country_Code_Get, setCountry_Code_Get] = useState('');
-  const [getLat, setGetLat] = useState('');
-  const [getLong, setGetLong] = useState('');
   const addressParts = physicalAddress.split(', ');
-
   const country = addressParts.pop();
   const state = addressParts.pop();
   const city = addressParts.join(', ');
@@ -150,13 +136,11 @@ const SignUpSteps = props => {
     setIsSearch(true);
   };
   const onRegionChange = Region => {
-    // alert(JSON.stringify(Region))
     setP_latitude(Region.latitude);
     console.log('p_latitude...', p_latitude);
     setP_longitude(Region.longitude);
     console.log('p_longitude...', p_longitude);
     getAddress(Region.latitude, Region.longitude);
-    // getAddress();
   };
   const getAddress = (p_latitude, p_longitude) => {
     Geocoder.from(p_latitude, p_longitude)
@@ -183,17 +167,13 @@ const SignUpSteps = props => {
           json.results[0].address_components[8].long_name;
 
         var addressComponent2 = json.results[0].address_components[1];
-        // alert(addressComponent2)
         setUserCurrentCity(addressComponent2.long_name);
         setUserZip_Code(json.results[1]?.address_components[6]?.long_name);
         setPhysicalAddress(MainFullAddress);
         console.log('physicalAddress....', physicalAddress);
-
-        //setAddress(MainFullAddress);
       })
       .catch(error => console.warn(error));
   };
-  // Validation for First Name
   const validateFirstName = text => {
     if (text === '') {
       setFirstNameError('First name is required!');
@@ -206,8 +186,6 @@ const SignUpSteps = props => {
     }
     setFirstName(text);
   };
-
-  // Validation for Last Name
   const validateLastName = text => {
     if (text === '') {
       setLastNameError('Last name is required!');
@@ -222,16 +200,9 @@ const SignUpSteps = props => {
   };
 
   const validMobileNumber = () => {
-    // const mobileReg = /^61[4][0-9]{9}$/;
     const mobileReg = /^(\+?61|0)4[0-9]{8}$/;
-    // const mobileReg = /^(?:\+61|0)(?:(?:2[0-9])|(?:3[0-9])|(?:4[0-9])|(?:7[0-9])|(?:8[0-9]))(?:\d{8})$/;
-    // return mobileReg.test(mobileNumber);
   };
-  // Validation for Phone Number
   const validateMobileNumber = text => {
-    // const mobileReg = /^[6-9]\d{9}$/;
-    // const mobileReg = /^04[0-9]{8}$/;
-    // const mobileReg = /^([6-9]\d{9}$|04[0-9]{8})$/;
     if (text === '') {
       setMobileNumberError('Phone number is required!');
     } else if (!validMobileNumber(text)) {
@@ -241,17 +212,11 @@ const SignUpSteps = props => {
     }
     setMobileNumber(text);
   };
-  // const BreakMobileNumber = mobileNumber.slice(3);
-  // console.log('BreakMobileNumber', BreakMobileNumber);
   const phoneNumber = mobileNumber;
-
-  // Use regular expression to extract country code and the remaining part
   const phoneNumberParts = phoneNumber.match(/^(\+\d{1,2})(\d+)$/);
-
   if (phoneNumberParts) {
     const countryCode = phoneNumberParts[1]; // Extracted country code
     const remainingNumber = phoneNumberParts[2]; // Remaining part of the number
-
     console.log('CountryCode:', countryCode);
     setCountry_Code_Get(countryCode);
     console.log('RemainingsNumber:', remainingNumber);
@@ -262,10 +227,6 @@ const SignUpSteps = props => {
   }
 
   const handleNextBtn = () => {
-    // alert(mobileNumber);
-    // if (!ImageName) {
-    //   setImageError('Please select an image before proceeding.');
-    // } else
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
     } else if (!/^[A-Za-z]+(?:\s)?$/.test(firstName)) {
@@ -276,14 +237,9 @@ const SignUpSteps = props => {
       setLastNameError('Last name should contain only alphabetic characters');
     } else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');
-      // } else if (!validMobileNumber(mobileNumber)) {
-      //   setMobileNumberError('Invalid phone number format.');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
       setMobileNumberError('Invalid phone number format.');
     } else {
-      // ImageName ? refRBSheet.current.close() : null;
-
-      // if (ImageName) {
       props.navigation.navigate('AboutYou', {
         firstName: firstName,
         lastName: lastName,
@@ -302,30 +258,17 @@ const SignUpSteps = props => {
         Bio: bio,
         country_code: country_Code_Get,
       });
-      // }
     }
   };
   useEffect(() => {
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
-    // Platform.OS == "ios" ? CheckIOSMapPermission() : checkpermissionlocation();
   }, []);
 
-  //  go back button...............
   const goBack = () => {
     props.navigation.navigate('LoginScreen');
-    // props.navigation.pop();
   };
-  // const goBack = () => {
-  //   console.log("Detected Platform:", Platform.OS);
-  //   if (Platform.OS === 'ios' || Platform.OS === 'android'){
-  //     props.navigation.navigate("LoginScreen");
-  //   } else {
-  //     props.navigation.navigate("LoginScreen");
-  //   }
-  // };
-
   const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
@@ -369,11 +312,6 @@ const SignUpSteps = props => {
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const handleimage = () => {
-    // if (ImageName == true) {
-    //   refRBSheet.current.open();
-    // } else {
-    //   refRBSheet.current.close();
-    // }
     refRBSheet.current.close();
   };
   const renderPageContent = () => {
@@ -391,7 +329,6 @@ const SignUpSteps = props => {
             style={AccountStyle.ProfileView}
             onPress={() => {
               refRBSheet.current.open();
-              // handleimage();
             }}>
             {ImageName ? (
               <Image
@@ -410,11 +347,7 @@ const SignUpSteps = props => {
                   color={_COLORS.Kodie_ExtraLightGrayColor}
                 />
               </View>
-              // <Image
-              //   style={AccountStyle.profilelogo}
-              //   source={IMAGES.userIcons}
-              //   resizeMode="cover"
-              // />
+             
             )}
 
             <View style={AccountStyle.editlogoview}>
@@ -426,13 +359,7 @@ const SignUpSteps = props => {
               />
             </View>
           </TouchableOpacity>
-          {/* {ImageName ? refRBSheet.current.close() : null} */}
-          {/* <Text style={AccountStyle.edittext}>Edit profile photo</Text> */}
         </View>
-        {/* {ImageName ? null : (
-          <Text style={AccountStyle.error_text}>{imageError}</Text>
-        )} */}
-        {/* {ImageName ? refRBSheet.current.close() : null} */}
         <View style={AccountStyle.card}>
           <View style={AccountStyle.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>First name*</Text>
@@ -489,7 +416,6 @@ const SignUpSteps = props => {
                 }}
                 placeholder={'Enter your phone number'}
                 onChangeText={text => {
-                  // validateMobileNumber(text);
                   const checkValid = phoneInput.current?.isValidNumber(text);
                   if (text === '') {
                     setMobileNumberError('Phone number is required!');
@@ -585,41 +511,7 @@ const SignUpSteps = props => {
             />
           </View>
         </View>
-
-        {/*----------- first RBSheet of signup first steps ---------*/}
-        <RBSheet
-          ref={refRBSheet}
-          height={177}
-          customStyles={{
-            wrapper: {
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            },
-            draggableIcon: {
-              backgroundColor: _COLORS.Kodie_LightGrayColor,
-            },
-            container: AccountStyle.bottomModal_container,
-          }}>
-          <View style={AccountStyle.upload_View}>
-            <Text style={AccountStyle.uploadImgText}>
-              {props.heading_Text || 'Upload image'}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                refRBSheet.current.close();
-              }}>
-              <Entypo
-                name="cross"
-                size={25}
-                color={_COLORS.Kodie_BlackColor}
-                style={AccountStyle.crossIconStyle}
-              />
-            </TouchableOpacity>
-          </View>
-          <UploadImageData
-            heading_Text={'Upload image'}
-            ImageName={handleImageNameChange}
-          />
-        </RBSheet>
+       
       </ScrollView>
     );
   };
@@ -758,6 +650,39 @@ const SignUpSteps = props => {
           {isLoading ? <CommonLoader /> : null}
         </View>
       </KeyboardAvoidingView>
+      <RBSheet
+          ref={refRBSheet}
+          height={177}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            draggableIcon: {
+              backgroundColor: _COLORS.Kodie_LightGrayColor,
+            },
+            container: AccountStyle.bottomModal_container,
+          }}>
+          <View style={AccountStyle.upload_View}>
+            <Text style={AccountStyle.uploadImgText}>
+              {props.heading_Text || 'Upload image'}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                refRBSheet.current.close();
+              }}>
+              <Entypo
+                name="cross"
+                size={25}
+                color={_COLORS.Kodie_BlackColor}
+                style={AccountStyle.crossIconStyle}
+              />
+            </TouchableOpacity>
+          </View>
+          <UploadImageData
+            heading_Text={'Upload image'}
+            ImageName={handleImageNameChange}
+          />
+        </RBSheet>
     </SafeAreaView>
   );
 };

@@ -22,12 +22,9 @@ import CustomSingleButton from '../../../../components/Atoms/CustomButton/Custom
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import TopHeader from '../../../../components/Molecules/Header/Header';
 import {_goBack} from '../../../../services/CommonServices';
-import {Config} from '../../../../Config';
-import axios from 'axios';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {launchImageLibrary} from 'react-native-image-picker';
 import IndividualSignup from './IndividualSignup/IndividualSignup';
 import CompanySignup from './CompanySignup/CompanySignup';
 import {useFocusEffect, useIsFocused} from '@react-navigation/native';
@@ -39,8 +36,6 @@ import IndividualSignupStyle from './IndividualSignup/IndividualSignupStyle';
 import Octicons from 'react-native-vector-icons/Octicons';
 import {MultiSelect} from 'react-native-element-dropdown';
 import CompanySignupStyle from './CompanySignup/CompanySignupStyle';
-import {set} from 'lodash';
-import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
 
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
@@ -90,32 +85,15 @@ export default AboutYou = props => {
   let image = props?.route?.params?.image;
   let Bio = props?.route?.params?.Bio;
   let country_code = props?.route?.params?.country_code;
-  console.log('firstname..', firstName);
-  console.log('lastName..', lastName);
-  console.log('mobileNumber..', mobileNumber);
-  console.log('physicalAddress..', physicalAddress);
-  console.log('organisation..', organisation);
-  console.log('referral..', referral);
-  console.log('email..', email);
-  console.log('country..', country);
-  console.log('state..', state);
-  console.log('city..', city);
-  console.log('p_latitude..', p_latitude);
-  console.log('p_longitude..', p_longitude);
-  console.log('user_key_a..', user_key);
-  console.log('image', image);
-  console.log('Bio..', Bio);
-  console.log('country_code...About_You', country_code);
+  console.log('firstname..', firstName,lastName,mobileNumber,physicalAddress,organisation,referral,email,country,state,city,p_latitude,p_longitude,user_key,image,Bio,country_code);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isClick, setIsClick] = useState(null);
   const [selectManageProperty, setSelectManageProperty] = useState('');
   const [selected, setSelected] = useState([]);
   const [kodiehelpData, setKodiehelpData] = useState([]);
-  const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] =
-    useState('');
+  const [kodieDescribeYourselfId, setKodieDescribeYourselfDataId] = useState('');
   const [manage_property_Data, setmanage_property_Data] = useState([]);
-  const [ImageName, setImageName] = useState('');
   const [kodiehelplookupid, setKodiehelplookupid] = useState(0);
   const [selectedServices, setSelectedServices] = useState([]);
   const [selectedLookupKeys, setSelectedLookupKeys] = useState([]); // State to store selected lookup keys
@@ -151,7 +129,6 @@ export default AboutYou = props => {
   const [IndiselectJobType, setIndiSelectJobType] = useState();
   const [servicesData, setServicesData] = useState([]);
   const [IndiservicesData, setIndiServicesData] = useState([]);
-  const [showProperties, setShowProperties] = useState(true);
   const isvisible = useIsFocused();
   const toggleServicesSelection = lookup_key => {
     if (selectJobTypeid.includes(lookup_key)) {
@@ -476,9 +453,6 @@ export default AboutYou = props => {
       handleServices(selectJobType);
     }
   }, [isvisible, selectJobType]);
-  console.log('Individual', Individual);
-  console.log('CompanyCome', CompanyCome);
-  const refRBSheet = useRef();
   // .....
   const handleBoxPress = lookupID => {
     setIsClick(lookupID);
@@ -633,14 +607,12 @@ export default AboutYou = props => {
     }
 
     getAddress(Region.latitude, Region.longitude);
-    // getAddress();
   };
   const getAddress = (latitude, longitude) => {
     Geocoder.from(latitude, longitude)
       .then(json => {
         console.log('json location.......', json);
         console.log('current address...', json.results[0].formatted_address);
-        // setLocation(json.results[0].formatted_address);
         const formatedAddress = json.results[0].formatted_address;
         setCurrentLocation(formatedAddress);
         let MainFullAddress =
@@ -720,7 +692,6 @@ export default AboutYou = props => {
     props.navigation.pop();
   };
   const renderLabel = ({position, stepStatus}) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
@@ -788,17 +759,6 @@ export default AboutYou = props => {
     switch (tabValue) {
       case 'IndividualSignup':
         return (
-          // <IndividualSignup
-          //   IndividualData={handleIndividualData}
-          //   physicalAddress={physicalAddress}
-          //   Individualp_latitude={p_latitude}
-          //   Individualp_longitude={p_longitude}
-          //   onPresslocation={openMapCom}
-          //   IndividualLocation={location}
-          //   onChangeIndivialLocation={setLocation}
-          //   IndividualOnFocus={() => setIsSearch(true)}
-          // />
-
           <View style={{flex: 1}}>
             <View style={IndividualSignupStyle.card}>
               <View>
@@ -853,7 +813,6 @@ export default AboutYou = props => {
                 <View style={IndividualSignupStyle.inputContainer}>
                   <TouchableOpacity onPress={handleChecked}>
                     <View style={IndividualSignupStyle.chekboxview}>
-                      {/* {isChecked ? ( */}
                       <MaterialIcons
                         name={
                           !isChecked ? 'check-box-outline-blank' : 'check-box'
@@ -869,7 +828,6 @@ export default AboutYou = props => {
                       <Text style={IndividualSignupStyle.commonaddresstext}>
                         {'Same as personal physical address'}
                       </Text>
-                      {/* ) : null} */}
                     </View>
                   </TouchableOpacity>
                   <View style={IndividualSignupStyle.locationConView}>
@@ -884,7 +842,6 @@ export default AboutYou = props => {
                       ) : (
                         <TextInput
                           style={IndividualSignupStyle.locationInput}
-                          // value={location}
                           value={location}
                           onChangeText={setLocation}
                           onFocus={() => setIsSearch(true)}
@@ -904,11 +861,6 @@ export default AboutYou = props => {
                       />
                     </TouchableOpacity>
                   </View>
-                  {/* {locationError ? (
-                  <Text style={PropertyDetailsStyle.error_text}>
-                    {locationError}
-                  </Text>
-                ) : null} */}
                 </View>
               </View>
 
@@ -930,13 +882,6 @@ export default AboutYou = props => {
         );
       case 'CompanySignup':
         return (
-          // <CompanySignup
-          //   CompanyData={handleCompanyData}
-          //   onPressCompanylocation={openMapCom}
-          //   CompanyLocation={Companylocation}
-          //   onChangeCompanyLocation={setCompanyLocation}
-          //   CompanyOnFocus={() => setIsSearch(true)}
-          // />
           <View>
             <View style={CompanySignupStyle.card}>
               <View style={CompanySignupStyle.inputContainer}>
@@ -1066,11 +1011,12 @@ export default AboutYou = props => {
     }
   };
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: _COLORS.Kodie_WhiteColor}}>
+    <SafeAreaView style={AboutYouStyle.mainContainer}>
       <KeyboardAvoidingView
         style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : null}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}>
+        // keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
+        >
         <TopHeader
           MiddleText={IsMap || IsSearch ? 'Location' : 'Account set up'}
           onPressLeftButton={() => {
@@ -1079,17 +1025,9 @@ export default AboutYou = props => {
         />
         {IsMap ? (
           <View
-            style={{
-              flex: 1,
-              backgroundColor: 'transparent',
-            }}>
+            style={AboutYouStyle.mapContainer}>
             <MapScreen
-              style={{
-                height: '100%',
-                width: '100%',
-                alignSelf: 'center',
-                marginBottom: 10,
-              }}
+              style={AboutYouStyle.MapMainView}
               onRegionChange={onRegionChange}
               Maplat={
                 tabValue == 'IndividualSignup' ? latitude : Companylatitude
@@ -1124,16 +1062,6 @@ export default AboutYou = props => {
                 placeholderTextColor={_COLORS.Kodie_BlackColor}
               />
             </View>
-            {/* <TouchableOpacity
-              style={FirstPropertyStyle.c_locationBtn}
-              onPress={() => {}}
-            >
-              <Entypo
-                name="location-pin"
-                size={30}
-                color={_COLORS.Kodie_lightGreenColor}
-              />
-            </TouchableOpacity> */}
             <TouchableOpacity
               style={FirstPropertyStyle.BtnContainer}
               onPress={ConfirmAddress}>
@@ -1154,7 +1082,6 @@ export default AboutYou = props => {
 
               setIsSearch(false);
               setIsMap(true);
-              // setLocation(details.formatted_address);
               setCurrentLocation(details.formatted_address);
             }}
           />
@@ -1344,17 +1271,7 @@ export default AboutYou = props => {
                   }}
                 />
               </View>
-              <View style={{marginHorizontal: 16, marginBottom: 10}}>
-                <CustomSingleButton
-                  disabled={isLoading ? true : false}
-                  _ButtonText={'Fill these details out later'}
-                  Text_Color={_COLORS.Kodie_BlackColor}
-                  backgroundColor={_COLORS.Kodie_WhiteColor}
-                  onPress={() => {
-                    props.navigation.navigate('FirstProperty');
-                  }}
-                />
-              </View>
+             
               <TouchableOpacity
                 style={AboutYouStyle.goBack_View}
                 onPress={goBack}>

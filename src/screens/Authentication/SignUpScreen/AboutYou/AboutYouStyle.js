@@ -6,6 +6,16 @@ export const AboutYouStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: _COLORS.Kodie_WhiteColor,
   },
+  mapContainer:{
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
+  MapMainView:{
+    height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+    marginBottom: 10,
+  },
   Container: {
     marginHorizontal: 16,
   },
@@ -202,7 +212,7 @@ export const AboutYouStyle = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     marginVertical: 29,
-    marginTop: 5,
+    marginTop: 15,
   },
   goBack_Text: {
     color: _COLORS.Kodie_BlackColor,

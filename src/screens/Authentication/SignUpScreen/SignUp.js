@@ -1,5 +1,4 @@
-//ScreenNo:7
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   TextInput,
@@ -8,31 +7,23 @@ import {
   ScrollView,
   TouchableOpacity,
   KeyboardAvoidingView,
-  Keyboard,
   Platform,
   Alert,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
-import {BANNERS} from '../../../Themes/CommonVectors/Images';
-import {SignUpStyles} from './SignUpStyle';
+import { BANNERS } from '../../../Themes/CommonVectors/Images';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import BottomTextsButton from './../../../components/Molecules/BottomTextsButton/BottomTextsButton';
+import BottomTextsButton from '../../../components/Molecules/BottomTextsButton/BottomTextsButton';
 import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
-import {IMAGES, _COLORS} from './../../../Themes/index';
+import { IMAGES, _COLORS } from '../../../Themes/index';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {LABEL_STYLES} from '../../../Themes/CommonStyles/CommonStyles';
-import axios from 'axios';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {Config} from '../../../Config';
-import {fetchRegistrationSuccess} from '../../../redux/Actions/Authentication/AuthenticationApiAction';
-import {useDispatch, useSelector} from 'react-redux';
-// import CryptoJS from "crypto-js";
-import CryptoJS from 'react-native-crypto-js';
+import { LABEL_STYLES } from '../../../Themes/CommonStyles/CommonStyles';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import messaging from '@react-native-firebase/messaging';
-
-import {signupApiActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
-export default SignUp = props => {
+import { encryptPassword, signup } from '../../../services/Authentication/Authentication';
+import {SignUpStyles} from "./SignUpStyle"
+const SignUp = (props) => {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
@@ -41,13 +32,14 @@ export default SignUp = props => {
   const [term, setTerm] = useState(false);
   const [privacy, setPrivacy] = useState(false);
   const [Fcm_token, setFcm_token] = useState('');
-
-  const [signupResponse, setSignupResponse] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const handleTogglePassword = () => {
-    setShowPassword(prevShowPassword => !prevShowPassword);
+    setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+  useEffect(() => {
+    requestUserPermission();
+    handlemessage();
+  }, []);
   async function requestUserPermission() {
     const authStatus = await messaging().requestPermission();
     const enabled =
@@ -55,27 +47,26 @@ export default SignUp = props => {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      console.log('Authorization status:', authStatus);
       getTocken();
     }
   }
   const handlemessage = async () => {
-    messaging().onNotificationOpenedApp(remoteMessage => {
+    messaging().onNotificationOpenedApp((remoteMessage) => {
       console.log(
-        'Notification casued app to open from background state :',
+        'Notification caused app to open from background state:',
         remoteMessage.notification,
       );
     });
-    messaging().onMessage(async remoteMessage => {
+    messaging().onMessage(async (remoteMessage) => {
       console.log('Message handled in the foreground!', remoteMessage);
     });
 
     messaging()
       .getInitialNotification()
-      .then(remoteMessage => {
+      .then((remoteMessage) => {
         if (remoteMessage) {
           console.log(
-            'Notification casued app to open from quit state.',
+            'Notification caused app to open from quit state.',
             remoteMessage.notification,
           );
         }
@@ -84,22 +75,16 @@ export default SignUp = props => {
 
   const getTocken = async () => {
     const token = await messaging().getToken();
-    console.log(token, 'token');
     setFcm_token(token);
   };
-  useEffect(() => {
-    handlemessage();
-    requestUserPermission();
-  }, []);
-  //... Regex signup email validation
-  const validateSignUpEmail = email => {
+
+  const validateSignUpEmail = (email) => {
     const emailPattern =
       /^(?!\d+@)\w+([-+.']\w+)*@(?!\d+\.)\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return emailPattern.test(email);
   };
 
-  //...... email validation define here
-  const handleSignUpEmail = text => {
+  const handleSignUpEmail = (text) => {
     setEmail(text);
     if (text.trim() === '') {
       setEmailError('Email is required!');
@@ -112,8 +97,7 @@ export default SignUp = props => {
     }
   };
 
-  //...... password validation define here
-  const handleSignUpPassword = text => {
+  const handleSignUpPassword = (text) => {
     setPassword(text);
     if (text.trim() === '') {
       setPasswordError('Password is required!');
@@ -121,97 +105,7 @@ export default SignUp = props => {
       setPasswordError('');
     }
   };
-  // .........encrypt password.at........
-  const secretKey = 'XkhZG4fW2t2W';
-  const encryptPassword = (password, secretKey) => {
-    return new Promise((resolve, reject) => {
-      try {
-        const key = secretKey;
-        const keyutf = CryptoJS.enc.Utf8.parse(key);
-        const iv = CryptoJS.enc.Utf8.parse('XkhZG4fW2t2W');
-        const enc = CryptoJS.AES.encrypt(password, keyutf, {iv: iv});
-        const encStr = enc.toString();
-        console.log('Encrypted Password:', encStr);
-        resolve(encStr);
-      } catch (error) {
-        reject(error);
-      }
-    });
-  };
 
-  const Signuphandle = async () => {
-    // const url = "https://e3.cylsys.com/api/v1/register";
-    // const url = 'https://kodieapis.cylsys.com/api/v1/register';
-    const url = 'https://kodietestapi.cylsys.com/api/v1/register';
-    const signupUrl = url;
-    console.log('Request URL:', signupUrl);
-    setIsLoading(true);
-
-    try {
-      // Encrypt the password
-      const encStr = await encryptPassword(password, secretKey);
-      console.log('encryptedpass', encStr);
-
-      const SignUpData = {
-        email: email,
-        password: encStr,
-        is_term_condition: term,
-        is_privacy_policy: privacy,
-        fcm_token: Fcm_token,
-      };
-
-      const response = await axios.post(signupUrl, SignUpData);
-
-      setSignupResponse(response?.data);
-      console.log('SignUp response', response?.data);
-      // alert(JSON.stringify(response?.data));
-      if (response?.data?.code === 3) {
-        Alert.alert('Success!', response?.data?.message);
-        props.navigation.navigate('SignUpVerification', {
-          email: email,
-          password: encStr,
-          is_term_condition: term,
-          is_privacy_policy: privacy,
-          user_key: response?.data?.User_Key,
-        });
-      } else if (response?.data?.code === 1) {
-        Alert.alert('Success!', response?.data?.message);
-        setEmail('');
-        setPassword('');
-        setTerm(false);
-        setPrivacy(false);
-        setIsLoading(false);
-        props.navigation.navigate('SignUpVerification', {
-          email: email,
-          password: encStr,
-          is_term_condition: term,
-          is_privacy_policy: privacy,
-          user_key: response?.data?.User_Key,
-        });
-      } else if (response?.data?.code === 2) {
-        Alert.alert('Success!', response?.data?.message);
-        props.navigation.navigate('LoginScreen');
-      } else {
-        Alert.alert('Success!', response?.data?.message);
-      }
-    } catch (error) {
-      if (error?.response || error?.response?.status === 400) {
-        Alert.alert(
-          'Warning!',
-          'Failed to send OTP via email. Please try again later.',
-        );
-      } else if (error?.response || error?.response?.status === 401) {
-        Alert.alert('Warning!', 'Your Password is Wrong.');
-      } else {
-        // alert('An error occurred. Please try again later.');
-      }
-      console.error('Signup error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  //....... handle signup button validation here
   const handleSubmit = async () => {
     if (email.trim() === '') {
       setEmailError('Email is required!');
@@ -222,15 +116,69 @@ export default SignUp = props => {
     } else if (password.trim() === '') {
       setPasswordError('Password is required!');
     } else if (!term && !privacy) {
-      alert(
-        'Please read and accept both Terms & Conditions and Privacy Policy.',
-      );
+      alert('Please read and accept both Terms & Conditions and Privacy Policy.');
     } else if (!term) {
       alert('Please read and accept Terms & Conditions.');
     } else if (!privacy) {
       alert('Please read and accept our Privacy Policy.');
     } else {
-      Signuphandle();
+      handleSignup();
+    }
+  };
+
+  const handleSignup = async () => {
+    setIsLoading(true);
+
+    try {
+      const encStr = await encryptPassword(password);
+      const SignUpData = {
+        email: email,
+        password: encStr,
+        is_term_condition: term,
+        is_privacy_policy: privacy,
+        fcm_token: Fcm_token,
+      };
+
+      const response = await signup(SignUpData);
+      if (response?.code === 3) {
+        Alert.alert('Success!', response?.message);
+        props.navigation.navigate('SignUpVerification', {
+          email: email,
+          password: encStr,
+          is_term_condition: term,
+          is_privacy_policy: privacy,
+          user_key: response?.User_Key,
+        });
+      } else if (response?.code === 1) {
+        Alert.alert('Success!', response?.message);
+        setEmail('');
+        setPassword('');
+        setTerm(false);
+        setPrivacy(false);
+        props.navigation.navigate('SignUpVerification', {
+          email: email,
+          password: encStr,
+          is_term_condition: term,
+          is_privacy_policy: privacy,
+          user_key: response?.User_Key,
+        });
+      } else if (response?.code === 2) {
+        Alert.alert('Success!', response?.message);
+        props.navigation.navigate('LoginScreen');
+      } else {
+        Alert.alert('Error!', response?.message);
+      }
+    } catch (error) {
+      if (error.response?.status === 400) {
+        Alert.alert('Warning!', 'Failed to send OTP via email. Please try again later.');
+      } else if (error.response?.status === 401) {
+        Alert.alert('Warning!', 'Your Password is Wrong.');
+      } else {
+        Alert.alert('An error occurred. Please try again later.');
+      }
+      console.error('Signup error:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -250,8 +198,6 @@ export default SignUp = props => {
             no hassle.
           </Text>
         </View>
-
-        {/*.............. signup input field start here ..................*/}
         <View style={SignUpStyles.card}>
           <View style={SignUpStyles.inputContainer}>
             <Text style={LABEL_STYLES._texinputLabel}>Email address*</Text>
@@ -321,7 +267,6 @@ export default SignUp = props => {
           <Text style={SignUpStyles.accept_Text}>
             {'Accept the terms of use'}
           </Text>
-          {/*.............. checkbox field start here ..................*/}
           <View style={SignUpStyles.termView}>
             <TouchableOpacity
               onPress={() => {
@@ -340,7 +285,6 @@ export default SignUp = props => {
                 )}
               </View>
             </TouchableOpacity>
-
             <View style={SignUpStyles.termsConView}>
               <Text style={SignUpStyles.termsText}>{'I have read the'}</Text>
               <TouchableOpacity>
@@ -373,7 +317,6 @@ export default SignUp = props => {
                 )}
               </View>
             </TouchableOpacity>
-
             <View style={SignUpStyles.termsConView}>
               <Text style={SignUpStyles.termsText}>{'I have read the'}</Text>
               <TouchableOpacity>
@@ -389,8 +332,6 @@ export default SignUp = props => {
             </View>
           </View>
         </View>
-
-        {/*.............. signup button  here ..................*/}
         <View style={SignUpStyles.signBtnView}>
           <CustomSingleButton
             disabled={isLoading ? true : false}
@@ -402,8 +343,6 @@ export default SignUp = props => {
             DeviderText={'or'}
             style={{marginTop: 32, marginBottom: 30}}
           />
-
-          {/*.............. signup option field here ..................*/}
           <CustomSingleButton
             leftImage={IMAGES.GoogleIcon}
             isLeftImage={true}
@@ -440,3 +379,4 @@ export default SignUp = props => {
     </SafeAreaView>
   );
 };
+export default SignUp;
