@@ -366,7 +366,7 @@ export default AddExpensesDetails = props => {
                 AddExpensesDetailsStyle.inputContainer,
                 AddExpensesDetailsStyle.Tax_input_cont,
               ]}>
-              <Text style={LABEL_STYLES.commontext}>{'Tax (0.000%)'}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Tax (0.00%)'}</Text>
               <TextInput
                 style={[AddExpensesDetailsStyle.input, {flex: 1}]}
                 value={tax}
@@ -378,10 +378,10 @@ export default AddExpensesDetails = props => {
           </View>
           <View
             style={[AddExpensesDetailsStyle.inputContainer, {marginTop: 14}]}>
-            <Text style={LABEL_STYLES.commontext}>{'Due date*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Invoice due date*'}</Text>
             <View style={AddExpensesDetailsStyle.datePickerView}>
               <CalendarModal
-                SelectDate={selectedDate ? selectedDate : 'Start Date'}
+                SelectDate={selectedDate ? selectedDate : 'Enter the invoice due date'}
                 _textInputStyle={{
                   color: selectedDate
                     ? _COLORS.Kodie_BlackColor
