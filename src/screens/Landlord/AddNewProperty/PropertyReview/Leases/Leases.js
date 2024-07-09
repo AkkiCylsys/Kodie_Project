@@ -1,178 +1,136 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  FlatList,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
-import {LeasesStyle} from './LeasesStyle';
-import {IMAGES, _COLORS, FONTFAMILY} from '../../../../../Themes';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, ScrollView, Image, FlatList, TouchableOpacity } from 'react-native';
+import { LeasesStyle } from './LeasesStyle';
+import { IMAGES, _COLORS, FONTFAMILY } from '../../../../../Themes';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import AddLeaseDetails from './AddLeaseDetails/AddLeaseDetails';
-import {LeaseSummaryStyle} from './LeaseSummary/LeaseSummaryStyle';
-import {Config} from '../../../../../Config';
+import { LeaseSummaryStyle } from './LeaseSummary/LeaseSummaryStyle';
+import { Config } from '../../../../../Config';
 import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
-import moment from 'moment/moment';
-import Logrentalpayment from './Logrentalpayment/Logrentalpayment';
-export default Leases = props => {
-  const [isLoading, setIsLoading] = useState(false);
-  const property_id = props.property_id;
-  console.log('property_id.._lease.....', property_id);
+import moment from 'moment';
+import Logrentalpayment from './Logrentalpayment/Logrentalpayment'
+const Leases = (props) => {
+  const { property_id } = props;
+
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
-  const refRBSheet3 = useRef();
   const refRBSheet4 = useRef();
+
+  const [isLoading, setIsLoading] = useState(false);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  const [islogSheetOpen, setIslogSheetOpen] = useState(false);
-  const [isTenantsSheetOpen, setIsTenantsSheetOpen] = useState(false);
-  const [lease_summary_data, setLease_summary_data] = useState([]);
-  const [lease_key, setLease_key] = useState('');
-  const [rental_Receipt_data, setRental_Receipt_data] = useState([]);
-  const [manuallyTenantDetails, setManuallyTenantDetails] = useState([]);
-  const [rating, setRating] = useState(4);
-  console.log(lease_summary_data?.DAYS_LEFT, 'lease_summary_data?.DAYS_LEFT');
+  const [isLogSheetOpen, setIsLogSheetOpen] = useState(false);
+  const [leaseSummaryData, setLeaseSummaryData] = useState([]);
+  const [rentalReceiptData, setRentalReceiptData] = useState([]);
+
   useEffect(() => {
-    if (!isSheetOpen || !islogSheetOpen) {
-      lease_summary();
-      get_retal_receipt();
+    if (!isSheetOpen && !isLogSheetOpen) {
+      fetchLeaseSummary();
+      fetchRentalReceipt();
     }
-  }, [isSheetOpen, islogSheetOpen]);
+  }, [isSheetOpen, isLogSheetOpen]);
+
   const handleClose = () => {
     refRBSheet.current.close();
     setIsSheetOpen(false);
   };
+
   const handleLogClose = () => {
     refRBSheet2.current.close();
-    setIslogSheetOpen(false);
+    setIsLogSheetOpen(false);
   };
-  // Api intrigation.....
-  const lease_summary = () => {
-    const url = Config.BASE_URL;
-    const LeaseSummary_Data = {
-      p_UPLD_UPD_KEY: property_id,
-    };
-    const lease_summary_url = url + 'getPaymentDueday';
-    console.log('Request URL:', lease_summary_url);
+
+  const fetchLeaseSummary = async () => {
+    const url = `${Config.BASE_URL}getPaymentDueday`;
+    const data = { p_UPLD_UPD_KEY: property_id };
+
     setIsLoading(true);
-    axios
-      .post(lease_summary_url, LeaseSummary_Data)
-      .then(response => {
-        console.log('API Response lease_summary:', response?.data);
-        if (response?.data?.success === true) {
-          setLease_summary_data(response?.data?.data);
-          console.log('lease_summaryData..', response?.data?.data);
-          // alert(JSON.stringify(response?.data?.data));
-        } else {
-          // alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed lease_summary', error);
-        setIsLoading(false);
-        // alert(error);
-      });
-    // .finally(() => {
-    //   setIsLoading(false);
-    // });
+    try {
+      const response = await axios.post(url, data);
+      if (response.data.success) {
+        setLeaseSummaryData(response.data.data);
+      } else {
+        console.error('Error fetching lease summary:', response.data.message);
+      }
+    } catch (error) {
+      console.error('API error fetching lease summary:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-  const get_retal_receipt = () => {
-    const url = Config.BASE_URL;
-    const retal_receip_url =
-      url + `property_lease_details/get/paymentdetails/${property_id}`;
-    console.log('Request URL:', retal_receip_url);
+
+  const fetchRentalReceipt = async () => {
+    const url = `${Config.BASE_URL}get/paymentdetails/${property_id}`;
+
     setIsLoading(true);
-    axios
-      .get(retal_receip_url)
-      .then(response => {
-        console.log('API Response retal_receip_url:', response?.data);
-        if (response?.data?.success === true) {
-          setRental_Receipt_data(response?.data?.data);
-          console.log('rental receipt Data..', response?.data?.data);
-          // alert(JSON.stringify(response?.data?.data));
-        } else {
-          // alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed retal_receipt', error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    try {
+      const response = await axios.get(url);
+      if (response.data.success) {
+        setRentalReceiptData(response.data.data);
+        console.log();
+      } else {
+        console.error('Error fetching rental receipt:', response.data.message);
+      }
+    } catch (error) {
+      console.error('API error fetching rental receipt:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-  // Data render.......
-  const rental_recipt_render = ({item, index}) => {
-    return (
-      <View style={{}}>
-        <View style={LeaseSummaryStyle.Account_main_View}>
-          <View style={LeaseSummaryStyle.account_view}>
-            <View>
-              <Text style={LeaseSummaryStyle.Accounting_Text}>
-                {item.Payment_type}
-              </Text>
-              <View style={{flexDirection: 'row'}}>
-                <Text style={LeaseSummaryStyle.Paid_Text}>{'Period: '}</Text>
-                <Text style={LeaseSummaryStyle.Paid_Text}>
-                  {item.UPLD_RENTAL_PAYMENT_PERIOD}
-                </Text>
-              </View>
-            </View>
-            <View>
-              <Text style={LeaseSummaryStyle.Amount_Text}>{'Amount paid'}</Text>
-              <Text style={LeaseSummaryStyle.Accounting_Text}>
-                {` $ ${item.UPLD_TOTAL_AMOUNT}`}
+
+  const renderRentalReceipt = ({ item }) => (
+    <View>
+      <View style={LeaseSummaryStyle.Account_main_View}>
+        <View style={LeaseSummaryStyle.account_view}>
+          <View>
+            <Text style={LeaseSummaryStyle.Accounting_Text}>
+              {item.payment_type}
+            </Text>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={LeaseSummaryStyle.Paid_Text}>Period: </Text>
+              <Text style={LeaseSummaryStyle.Paid_Text}>
+                {item.UPLD_RENTAL_PAYMENT_PERIOD}
               </Text>
             </View>
           </View>
-        </View>
-        <View style={LeaseSummaryStyle.datePaid_main_view}>
-          <View style={LeaseSummaryStyle.paidDate_subView}>
-            <View style={LeaseSummaryStyle.paid_Date_View}>
-              <Text style={LeaseSummaryStyle.date_paid}>{'Date paid:'}</Text>
-              <Text style={LeaseSummaryStyle.Amount_Text}>
-                {item.UPLD_PAYMENT_DATE == null
-                  ? ''
-                  : moment(item.UPLD_PAYMENT_DATE.substring(0, 10)).format(
-                      ' Do   MMMM   YYYY',
-                    )}
-              </Text>
-            </View>
-            <TouchableOpacity style={LeaseSummaryStyle.rent_received_view}>
-              <View style={{flexDirection: 'row'}}>
-                <Entypo
-                  name="dot-single"
-                  size={25}
-                  color={_COLORS.Kodie_GreenColor}
-                />
-                <Text style={LeaseSummaryStyle.rent_received_text}>
-                  {'Paid'}
-                </Text>
-              </View>
-            </TouchableOpacity>
+          <View>
+            <Text style={LeaseSummaryStyle.Amount_Text}>Amount paid</Text>
+            <Text style={LeaseSummaryStyle.Accounting_Text}>
+              ${item.UPLD_TOTAL_AMOUNT}
+            </Text>
           </View>
         </View>
       </View>
-    );
-  };
+      <View style={LeaseSummaryStyle.datePaid_main_view}>
+        <View style={LeaseSummaryStyle.paidDate_subView}>
+          <View style={LeaseSummaryStyle.paid_Date_View}>
+            <Text style={LeaseSummaryStyle.date_paid}>Date paid:</Text>
+            <Text style={LeaseSummaryStyle.Amount_Text}>
+              {item.UPLD_PAYMENT_DATE
+                ? moment(item.UPLD_PAYMENT_DATE.substring(0, 10)).format('Do MMMM YYYY')
+                : ''}
+            </Text>
+          </View>
+          <TouchableOpacity style={LeaseSummaryStyle.rent_received_view}>
+            <View style={{ flexDirection: 'row',justifyContent:'center' }}>
+              <Entypo name="dot-single" size={25} color={_COLORS.Kodie_GreenColor} />
+              <Text style={LeaseSummaryStyle.rent_received_text}>Paid</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+
   return (
     <>
       <View style={LeasesStyle.mainContainer}>
         <ScrollView>
-          {lease_summary_data?.LEASE_KEY ? null : (
+          {!leaseSummaryData?.LEASE_KEY && (
             <View>
               <View style={LeasesStyle.add_Lease_view}>
-                <Text style={LeasesStyle.add_Lease_Text}>
-                  {'Start by adding your lease '}
-                </Text>
+                <Text style={LeasesStyle.add_Lease_Text}>Start by adding your lease</Text>
               </View>
               <View style={LeasesStyle.btn_View}>
                 <CustomSingleButton
@@ -187,49 +145,29 @@ export default Leases = props => {
               </View>
             </View>
           )}
-
-          {lease_summary_data?.LEASE_KEY ? (
+          {leaseSummaryData?.LEASE_KEY && (
             <>
-              <Text style={[LeaseSummaryStyle.heading_Text, {marginLeft: 16}]}>
-                {'Lease summary'}
-              </Text>
+              <Text style={[LeaseSummaryStyle.heading_Text, { marginLeft: 16 }]}>Lease summary</Text>
               <View style={LeaseSummaryStyle.subContainer}>
                 <View style={LeaseSummaryStyle.Due_Summary_main_View}>
                   <View style={LeaseSummaryStyle.summary_view}>
                     <View>
                       <View style={LeaseSummaryStyle.due_View}>
-                        <Text style={LeaseSummaryStyle.Due_Text}>
-                          {'Due in'}
-                        </Text>
+                        <Text style={LeaseSummaryStyle.Due_Text}>Due in</Text>
                         <Text style={LeaseSummaryStyle.Days_Text}>
-                          {`${lease_summary_data?.DAYS_LEFT} days`}
+                          {`${leaseSummaryData?.DAYS_LEFT} days`}
                         </Text>
                       </View>
                       <Text style={LeaseSummaryStyle.date_cld_Text}>
-                        {moment(lease_summary_data?.NEXT_PAYMENT_DATE).format(
-                          'dddd D MMMM YYYY',
-                        )}
+                        {moment(leaseSummaryData?.NEXT_PAYMENT_DATE).format('dddd D MMMM YYYY')}
                       </Text>
                     </View>
                     <View style={LeaseSummaryStyle.due_View}>
-                      <TouchableOpacity
-                        onPress={() => {
-                          refRBSheet.current.open();
-                        }}>
-                        <Image
-                          source={IMAGES.noteBook}
-                          style={LeaseSummaryStyle.note_b_img_sty}
-                        />
+                      <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+                        <Image source={IMAGES.noteBook} style={LeaseSummaryStyle.note_b_img_sty} />
                       </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => {
-                          refRBSheet4.current.open();
-                        }}>
-                        <Entypo
-                          name="dots-three-horizontal"
-                          size={20}
-                          color={_COLORS.Kodie_GrayColor}
-                        />
+                      <TouchableOpacity onPress={() => refRBSheet4.current.open()}>
+                        <Entypo name="dots-three-horizontal" size={20} color={_COLORS.Kodie_GrayColor} />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -237,58 +175,33 @@ export default Leases = props => {
                 <View style={LeaseSummaryStyle.Lease_Term_main_View}>
                   <View style={LeaseSummaryStyle.lease_term_View}>
                     <View>
-                      <Text style={LeaseSummaryStyle.lease_term_Text}>
-                        {'Lease term'}
-                      </Text>
+                      <Text style={LeaseSummaryStyle.lease_term_Text}>Lease term</Text>
                       <View style={LeaseSummaryStyle.sub_View}>
                         <Text style={LeaseSummaryStyle.date_Text}>
-                          {moment(
-                            lease_summary_data?.UPLD_COMMENCEMENT_DATE,
-                          ).format('D MMM YYYY')}
+                          {moment(leaseSummaryData?.UPLD_COMMENCEMENT_DATE).format('D MMM YYYY')}
                         </Text>
                         <Text style={LeaseSummaryStyle.date_Text}>-</Text>
                         <Text style={LeaseSummaryStyle.date_Text}>
-                          {moment(
-                            lease_summary_data?.UPLD_LEASE_END_DATE,
-                          ).format('D MMM YYYY')}
+                          {moment(leaseSummaryData?.UPLD_LEASE_END_DATE).format('D MMM YYYY')}
                         </Text>
                       </View>
                     </View>
                     <View>
-                      <Text style={LeaseSummaryStyle.lease_term_Text}>
-                        {'Rent remaining due'}
+                      <Text style={LeaseSummaryStyle.lease_term_Text}>Rent remaining due</Text>
+                      <Text style={[LeaseSummaryStyle.date_Text, { alignSelf: 'flex-end', fontFamily: FONTFAMILY.K_Bold }]}>
+                        ${leaseSummaryData?.RENTAL_AMMOUNT}
                       </Text>
-                      <Text
-                        style={[
-                          LeaseSummaryStyle.date_Text,
-                          {
-                            alignSelf: 'flex-end',
-                            fontFamily: FONTFAMILY.K_Bold,
-                          },
-                        ]}>{`$ ${lease_summary_data?.RENTAL_AMMOUNT}`}</Text>
                     </View>
                   </View>
                   <View style={LeaseSummaryStyle.summary_view}>
                     <View style={LeaseSummaryStyle.freq_View}>
-                      <Text style={LeaseSummaryStyle.lease_term_Text}>
-                        {'Payment frequency'}
-                      </Text>
-                      <Text style={LeaseSummaryStyle.date_Text}>
-                        {lease_summary_data?.UPLD_RENTAL_PAYMENT_FREQUENCY}
-                      </Text>
+                      <Text style={LeaseSummaryStyle.lease_term_Text}>Payment frequency</Text>
+                      <Text style={LeaseSummaryStyle.date_Text}>{leaseSummaryData?.UPLD_RENTAL_PAYMENT_FREQUENCY}</Text>
                     </View>
-                    <TouchableOpacity
-                      style={LeaseSummaryStyle.rent_received_view}>
+                    <TouchableOpacity style={LeaseSummaryStyle.rent_received_view}>
                       <View style={LeaseSummaryStyle.sub_View}>
-                        <Entypo
-                          name="dot-single"
-                          size={25}
-                          color={_COLORS.Kodie_DarkGreenColor}
-                          style={{alignSelf: 'center'}}
-                        />
-                        <Text style={LeaseSummaryStyle.rent_received_text}>
-                          {'Rent received'}
-                        </Text>
+                        <Entypo name="dot-single" size={25} color={_COLORS.Kodie_DarkGreenColor} style={{ alignSelf: 'center' }} />
+                        <Text style={LeaseSummaryStyle.rent_received_text}>Rent received</Text>
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -296,66 +209,50 @@ export default Leases = props => {
                 <CustomSingleButton
                   onPress={() => {
                     refRBSheet2.current.open();
-                    setIslogSheetOpen(true);
+                    setIsLogSheetOpen(true);
                   }}
                   _ButtonText={'Log a payment'}
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_lightGreenColor}
                   height={45}
-                  disabled={isLoading ? true : false}
                 />
               </View>
             </>
-          ) : null}
-          {rental_Receipt_data.length > 0 ? (
-            <View style={{marginHorizontal: 16}}>
-              <Text style={LeaseSummaryStyle.heading_Text}>
-                {'Rental receipts'}
-              </Text>
+          )}
+          {rentalReceiptData && (
+            <View style={{ marginHorizontal: 16 }}>
+              <Text style={LeaseSummaryStyle.heading_Text}>Rental receipts</Text>
               <FlatList
-                data={rental_Receipt_data}
-                scrollEnabled
-                showsVerticalScrollIndicator={false}
-                contentContainerStyle={{}}
-                // keyExtractor={(item,index) => item?.id}
-                keyExtractor={(item, index) => index}
-                renderItem={rental_recipt_render}
+                data={[rentalReceiptData]}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={renderRentalReceipt}
               />
             </View>
-          ) : null}
+          )}
         </ScrollView>
       </View>
       <RBSheet
         ref={refRBSheet}
         height={720}
         customStyles={{
-          wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
+          wrapper: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+          draggableIcon: { backgroundColor: _COLORS.Kodie_LightGrayColor },
           container: LeasesStyle.bottomModal_container,
         }}>
-        <AddLeaseDetails onClose={handleClose} property_id={property_id} 
-        leaseData={lease_summary_data}
-        />
+        <AddLeaseDetails onClose={handleClose} property_id={property_id} leaseData={leaseSummaryData} />
       </RBSheet>
       <RBSheet
         ref={refRBSheet2}
-        height={510}
-        closeOnDragDown={true}
+        height={720}
         customStyles={{
-          wrapper: {
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          },
-          draggableIcon: {
-            backgroundColor: _COLORS.Kodie_LightGrayColor,
-          },
+          wrapper: { backgroundColor: 'rgba(0, 0, 0, 0.5)' },
+          draggableIcon: { backgroundColor: _COLORS.Kodie_LightGrayColor },
           container: LeaseSummaryStyle.bottomModal_container,
         }}>
-        <Logrentalpayment onClose={handleLogClose} lease_keys={lease_key} />
+        <Logrentalpayment onClose={handleLogClose} lease_keys={leaseSummaryData?.LEASE_KEY} />
       </RBSheet>
     </>
   );
 };
+
+export default Leases;

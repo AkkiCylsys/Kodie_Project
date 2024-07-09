@@ -151,7 +151,7 @@ const Logrentalpayment = props => {
     console.log('Request URL:', PaymentType__url);
     setIsLoading(true);
     const PaymentType_data = {
-      P_PARENT_CODE: 'Payment_type',
+      P_PARENT_CODE: 'PAYMENT_TYPE',
       P_TYPE: 'OPTION',
     };
     axios
@@ -182,13 +182,13 @@ const Logrentalpayment = props => {
 
   const handle_rental_payment = () => {
     const url = Config.BASE_URL;
-    const rental_payment_url = url + 'property_lease_details/create/paymentlog';
+    const rental_payment_url = url + 'create/paymentlog';
     console.log('Request URL:', rental_payment_url);
     setIsLoading(true);
     const rental_payment_Data = {
       lease_key: lease_keys,
       total_amount: totalAmount,
-      Payment_type: paymentTypeValue,
+      p_UPLD_PAYMENT_TYPE: paymentTypeValue,
       payment_date: selectedDate,
       rental_payment_period: selectedpaymetPeriod,
       payment_period_complete: selected_payment_period_Id,

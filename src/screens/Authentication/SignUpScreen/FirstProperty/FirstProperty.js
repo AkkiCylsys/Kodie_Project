@@ -507,7 +507,8 @@ export default FirstProperty = props => {
     console.log('signupAccountApiActionCreator..', res?.data);
     if (res?.data?.status === true) {
       setIsLoading(false);
-      props.navigation.navigate('DrawerNavigatorLeftMenu');
+      registerUser()
+      // props.navigation.navigate('DrawerNavigatorLeftMenu');
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
     } else {
@@ -673,7 +674,9 @@ export default FirstProperty = props => {
     console.log('signupAccountApiActionCreator..', res.data);
     if (res.data.status === true) {
       setIsLoading(false);
-      props.navigation.navigate('DrawerNavigatorLeftMenu');
+      registerUserfill();
+
+      // props.navigation.navigate('DrawerNavigatorLeftMenu');
       setCurrentPage(0);
       setAdditionalFeaturesKeyValue('');
     } else {
