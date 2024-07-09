@@ -139,7 +139,7 @@ export const AddLeaseDetailsStyle = StyleSheet.create({
     marginLeft: 14,
     alignSelf: 'center',
     color: _COLORS.Kodie_BlackColor,
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
   },
   ButtonView: {
