@@ -166,9 +166,9 @@ const Leases = (props) => {
                       <TouchableOpacity onPress={() => refRBSheet.current.open()}>
                         <Image source={IMAGES.noteBook} style={LeaseSummaryStyle.note_b_img_sty} />
                       </TouchableOpacity>
-                      <TouchableOpacity onPress={() => refRBSheet4.current.open()}>
+                      {/* <TouchableOpacity onPress={() => refRBSheet4.current.open()}>
                         <Entypo name="dots-three-horizontal" size={20} color={_COLORS.Kodie_GrayColor} />
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                     </View>
                   </View>
                 </View>
@@ -189,7 +189,7 @@ const Leases = (props) => {
                     <View>
                       <Text style={LeaseSummaryStyle.lease_term_Text}>Rent remaining due</Text>
                       <Text style={[LeaseSummaryStyle.date_Text, { alignSelf: 'flex-end', fontFamily: FONTFAMILY.K_Bold }]}>
-                        ${leaseSummaryData?.RENTAL_AMMOUNT}
+                        {leaseSummaryData?.RENTAL_AMMOUNT}
                       </Text>
                     </View>
                   </View>
@@ -219,7 +219,7 @@ const Leases = (props) => {
               </View>
             </>
           )}
-          {rentalReceiptData && (
+          {rentalReceiptData.length > 0 && (
             <View style={{ marginHorizontal: 16 }}>
               <Text style={LeaseSummaryStyle.heading_Text}>Rental receipts</Text>
               <FlatList
