@@ -80,7 +80,7 @@ const RentalOffer = props => {
   // ...
   const [quesHeading, setQuesHeading] = useState([]);
   const [questionCode, setQuestionCode] = useState('');
-  const [expandedItems, setExpandedItems] = useState({});
+  const [expandedItem, setExpandedItem] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [question, setQuestion] = useState([]);
   const [employeeQues, setEmployeeQues] = useState([]);
@@ -518,11 +518,10 @@ const RentalOffer = props => {
   const toggleRentalDetails = () => {
     setRentalDetails(!RentalDetails);
   };
-  const toggleItem = itemId => {
-    setExpandedItems(prevState => ({
-      ...prevState,
-      [itemId]: !prevState[itemId], // Toggle the expanded state for the clicked item
-    }));
+  const toggleItem = itemChildren => {
+    setExpandedItem(prevState =>
+      prevState === itemChildren ? null : itemChildren,
+    );
   };
   const toggleTenantRooms = () => {
     setTenantRooms(!TenantRooms);
@@ -599,15 +598,19 @@ const RentalOffer = props => {
     console.log('Request URL:', tenantQues_url);
     setIsLoading(true);
     const tenantQuesData = {
-      p_question_code: 'All',
-      p_type: 'OPTION',
+      p_account_id: '1',
+      p_property_id: '1',
     };
     axios
       .post(tenantQues_url, tenantQuesData)
       .then(response => {
-        console.log('API Response tenantQues..', response?.data);
+        // console.log('API Response tenantQues..',JSON.stringify(response?.data));
         if (response?.data?.success === true) {
-          setQuesHeading(response?.data?.data);
+          console.log(
+            'API Response Quesinaries....',
+            JSON.stringify(response?.data?.data[0]?.parent_json),
+          );
+          setQuesHeading(response?.data?.data[0]?.parent_json);
         } else {
           setIsLoading(false);
         }
@@ -617,72 +620,6 @@ const RentalOffer = props => {
         setIsLoading(false);
       })
       .finally(() => {
-        setIsLoading(false);
-      });
-  };
-
-  const handleQuesCode = questionCode => {
-    const url = Config.BASE_URL;
-    const tenantQues_url = url + 'question_details_for_tenant_ques';
-    console.log('Request URL:', tenantQues_url);
-    setIsLoading(true);
-    const tenantQuesData = {
-      p_question_code: questionCode,
-      p_type: 'OPTION',
-    };
-
-    axios
-      .post(tenantQues_url, tenantQuesData)
-      .then(response => {
-        console.log('API Response QuesCode..', response?.data);
-        if (response?.data?.success === true) {
-          const data = response?.data?.data;
-          setAllQuestion(data);
-
-          if (questionCode === 'RENTAL_DETIALS') {
-            setRentailDetails(data);
-            console.log('rentailDetails.....', data);
-            data.forEach(item => {
-              if (item?.tqm_Question_code === 'PEOPLE_STAY_IN_PROPERTY') {
-                console.log('tqm_Question_code deependra', item);
-                setPeopleStayInPropertyCode(item?.tqm_Question_code);
-                handleQuesCode(item?.tqm_Question_code);
-              }
-            });
-          } else if (questionCode === 'PEOPLE_STAY_IN_PROPERTY') {
-            setPeopleStayInPropertyData(data);
-            console.log('data in property stay ', data);
-            if (data[1]?.tqm_Question_code) {
-              try {
-                const parsedCode = JSON.parse(data[1].tqm_Question_code);
-                setOccupantsNames(parsedCode);
-                console.log('parsedCode...', parsedCode);
-              } catch (error) {
-                console.error('Error parsing tqm_Question_code:', error);
-              }
-            }
-            if (data[3]?.tqm_Question_code) {
-              try {
-                const parsedLeaseCode = JSON.parse(data[3].tqm_Question_code);
-                setLeaseHolderNames(parsedLeaseCode);
-                console.log('parsedCode...', parsedLeaseCode);
-              } catch (error) {
-                console.error('Error parsing tqm_Question_code:', error);
-              }
-            }
-          } else if (questionCode === 'EMPLOYEMENT&INCOME') {
-            setEmployeeQues(data);
-            console.log('employeeQues....', data);
-          } else if (questionCode === 'RENTAL_HISTORY') {
-            setRental_History(data);
-          } else if (questionCode === 'PREFERENCES') {
-            setPreference(data);
-          }
-        }
-        setIsLoading(false);
-      })
-      .catch(error => {
-        console.error('API failed QuesCode', error);
         setIsLoading(false);
       });
   };
@@ -719,10 +656,7 @@ const RentalOffer = props => {
 
   const QuesHeadingRender = ({item}) => {
     return (
-      <View
-        style={{
-          marginTop: 5,
-        }}>
+      <View style={{marginTop: 5}}>
         <View style={RentalOfferStyle.propety_details_view}>
           <Text style={RentalOfferStyle.propery_det}>
             {item?.tqm_Question_description}
@@ -730,31 +664,20 @@ const RentalOffer = props => {
           <TouchableOpacity
             style={RentalOfferStyle.down_Arrow_icon}
             onPress={() => {
-              setQuestionCode(item?.tqm_Question_code);
-              handleQuesCode(item?.tqm_Question_code);
-              toggleItem(item?.tqm_Question_code);
+              toggleItem(item?.children);
+              console.log('QuestionChildren...', item?.children);
             }}>
             <AntDesign
-              name={expandedItems[item?.tqm_Question_code] ? 'up' : 'down'}
+              name={expandedItem === item?.children ? 'up' : 'down'}
               size={15}
               color={_COLORS.Kodie_GrayColor}
             />
           </TouchableOpacity>
         </View>
         <DividerIcon />
-        {expandedItems[item?.tqm_Question_code] && (
+        {expandedItem === item?.children && (
           <FlatList
-            data={
-              item?.tqm_Question_code === 'RENTAL_DETIALS'
-                ? rentailDetails
-                : item?.tqm_Question_code === 'EMPLOYEMENT&INCOME'
-                ? employeeQues
-                : item?.tqm_Question_code === 'RENTAL_HISTORY'
-                ? rental_History
-                : item?.tqm_Question_code === 'PREFERENCES'
-                ? preference
-                : question
-            }
+            data={item?.children} // Use item?.children as data
             keyExtractor={(item, index) => index.toString()}
             renderItem={QuestionCodeRender}
           />
@@ -816,7 +739,6 @@ const RentalOffer = props => {
   };
 
   const renderQuestionComponent = (question, index) => {
-    // console.log("Question inside the details...",question)
     switch (question.tqm_Question_type) {
       case 'Input':
         return (
@@ -909,8 +831,7 @@ const RentalOffer = props => {
             <View style={RentalOfferStyle.mainfeaturesview} key={index}>
               <View style={RentalOfferStyle.key_feature_Text_view}>
                 <Text style={RentalOfferStyle.key_feature_Text}>
-                  {/* {'Number of occupants'} */}
-                  {peopleStayInPropertyData[0]?.tqm_Question_description}
+                  {'Number of occupants'}
                 </Text>
               </View>
               <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
@@ -956,8 +877,7 @@ const RentalOffer = props => {
                     size={25}
                   />
                   <Text style={RentalOfferStyle.AddOccupantText}>
-                    {/* {'Add occupants'} */}
-                    {peopleStayInPropertyData[1]?.tqm_Question_description}
+                    {'Add occupants'}
                   </Text>
                 </TouchableOpacity>
 
@@ -1017,8 +937,7 @@ const RentalOffer = props => {
             <View style={RentalOfferStyle.mainfeaturesview} key={index}>
               <View style={RentalOfferStyle.key_feature_Text_view}>
                 <Text style={RentalOfferStyle.key_feature_Text}>
-                  {/* {"Number of leaseholders"} */}
-                  {peopleStayInPropertyData[2]?.tqm_Question_description}
+                  {"Number of leaseholders"}
                 </Text>
               </View>
               <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
@@ -1064,8 +983,7 @@ const RentalOffer = props => {
                     size={25}
                   />
                   <Text style={RentalOfferStyle.AddOccupantText}>
-                    {/* {'Add leaseholders'} */}
-                    {peopleStayInPropertyData[3]?.tqm_Question_description}
+                    {'Add leaseholders'}
                   </Text>
                 </TouchableOpacity>
                 <View style={{marginTop: 10}}>
