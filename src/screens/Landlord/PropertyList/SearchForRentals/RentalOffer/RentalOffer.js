@@ -685,6 +685,37 @@ const RentalOffer = props => {
       </View>
     );
   };
+  // const handleInputChange = (questionCode, value) => {
+  //   setInputValues(prevValues => ({
+  //     ...prevValues,
+  //     [questionCode]: value,
+  //   }));
+  // };
+
+  // const handleSubmit = () => {
+  //   const allQuestions = [
+  //     ...question,
+  //     ...employeeQues,
+  //     ...rentailDetails,
+  //     ...rental_History,
+  //     ...preference,
+  //   ];
+
+  //   const allData = {};
+  //   allQuestions.forEach(q => {
+  //     const value = inputValues[q?.tqm_Question_code];
+  //     allData[q?.id] = value !== undefined ? value : null;
+  //   });
+  //   const jsonData = {
+  //     allData: allData,
+  //   };
+
+  //   console.log('JSON Data:', jsonData);
+  //   return jsonData;
+  // };
+
+  // ....
+
   const handleInputChange = (questionCode, value) => {
     setInputValues(prevValues => ({
       ...prevValues,
@@ -693,49 +724,30 @@ const RentalOffer = props => {
   };
 
   const handleSubmit = () => {
-    const allQuestions = [
-      ...question,
-      ...employeeQues,
-      ...rentailDetails,
-      ...rental_History,
-      ...preference,
-    ];
-
-    const allData = {};
-    allQuestions.forEach(q => {
-      const value = inputValues[q?.tqm_Question_code];
-      allData[q?.id] = value !== undefined ? value : null;
+    const jsonData = [];
+    quesHeading.forEach(parentQuestion => {
+      parentQuestion.children.forEach(childQuestion => {
+        jsonData.push({
+          question_id: childQuestion.id,
+          question_value: inputValues[childQuestion.tqm_Question_code] || '',
+          question_reference:
+            childQuestion.tqm_Question_type == 'Dropdown' ? 1 : 0, // Adjust this value as needed
+          question_is_lookup:
+            childQuestion.tqm_Question_type == 'Dropdown' ? 1 : 0, // Adjust this value as needed
+        });
+      });
     });
 
-    allData[4] = numberOccupants;
-    // allData[28] = inputValues['occupants']; // Store occupants data
-    allData[28] = occupants;
-    allData[29] = numberLeaseHolder;
-    // allData[30] = inputValues['leaseHolderItem'];
-    allData[30] = leaseHolderItem;
-    allData[10] = numberYearEmp;
-    allData[25] = numberPets;
-    allData[13] = selectedButton;
-    allData[23] = selectedSomokingButton;
-    allData[18] = location;
-    allData[41] = referencesItem;
-    allData[28] = fullName;
-    allData[27] = emailAddress;
-    allData[31] = leaseFullName;
-    allData[30] = leaseEmailAddress;
-    allData[29] = leaseConfirmEmailAddress;
-    allData[40] = referenceFullName;
-    allData[39] = referenceEmail;
-    allData[24] = selectedPetsButton;
-    allData[21] = selectedPreviousRentalButton;
-    allData[20] = selectedRentalBondButton;
-
-    const jsonData = {
-      allData: allData,
+    const finalJson = {
+      p_property_id: 0,
+      p_account_id: 0,
+      p_bid_id: 0,
+      json_data: jsonData,
     };
 
-    console.log('JSON Data:', jsonData);
-    return jsonData;
+    console.log('Final JSON:', JSON.stringify(finalJson));
+
+    // You can now send `finalJson` to your API endpoint
   };
 
   const renderQuestionComponent = (question, index) => {
@@ -890,7 +902,8 @@ const RentalOffer = props => {
                   <View style={RentalOfferStyle.inputView}>
                     <View style={{marginTop: 11}}>
                       <Text style={LABEL_STYLES.commontext}>
-                        {occupantsNames[0]?.Fullname}
+                        {/* {occupantsNames[0]?.Fullname} */}
+                        Full name
                       </Text>
                       <TextInput
                         style={RentalOfferStyle.input}
@@ -907,7 +920,8 @@ const RentalOffer = props => {
                     ) : null}
                     <View style={RentalOfferStyle.inputView}>
                       <Text style={LABEL_STYLES.commontext}>
-                        {occupantsNames[1]?.Email_address}
+                        {/* {occupantsNames[1]?.Email_address} */}
+                        Email address
                       </Text>
                       <TextInput
                         style={RentalOfferStyle.input}
@@ -937,7 +951,7 @@ const RentalOffer = props => {
             <View style={RentalOfferStyle.mainfeaturesview} key={index}>
               <View style={RentalOfferStyle.key_feature_Text_view}>
                 <Text style={RentalOfferStyle.key_feature_Text}>
-                  {"Number of leaseholders"}
+                  {'Number of leaseholders'}
                 </Text>
               </View>
               <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
