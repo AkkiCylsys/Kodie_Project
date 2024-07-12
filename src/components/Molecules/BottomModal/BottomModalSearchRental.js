@@ -82,7 +82,9 @@ const BottomModalSearchRental = props => {
             handleClose();
           }
           if (item?.id == '2') {
-            navigation.navigate('RentalOffer');
+            navigation.navigate('RentalOffer', {
+              propertyId: propertyId,
+            });
             handleClose();
           }
         }}>
