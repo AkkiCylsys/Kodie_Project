@@ -548,7 +548,7 @@ export default ViewPropertyDetails = props => {
         <View style={ViewDetailCss.Container}>
           <View style={ViewDetailCss.propety_details_view}>
             <Text style={ViewDetailCss.propery_det}>
-              {'External featuress'}
+              {'External features'}
             </Text>
 
             <TouchableOpacity style={ViewDetailCss.down_Arrow_icon}>

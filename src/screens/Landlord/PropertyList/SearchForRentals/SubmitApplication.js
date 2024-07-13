@@ -126,7 +126,7 @@ export default SubmitApplication = (props) => {
         <View style={SubmitApplicationCss.Container}>
           <View style={SubmitApplicationCss.propety_details_view}>
             <Text style={SubmitApplicationCss.propery_det}>
-              {"External featuress"}
+              {"External features"}
             </Text>
 
             <TouchableOpacity style={SubmitApplicationCss.down_Arrow_icon}>
