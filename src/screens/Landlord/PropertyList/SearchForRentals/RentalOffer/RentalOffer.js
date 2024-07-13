@@ -267,7 +267,7 @@ const RentalOffer = props => {
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
-      addOccupant(questionCode);
+      addOccupant(questionCode, questionId);
     }
   };
   // InviteLeaseHolder
@@ -306,7 +306,7 @@ const RentalOffer = props => {
       setLeaseConfirmEmailAddressError('');
     }
   };
-  const handleValidLeaseHolder = () => {
+  const handleValidLeaseHolder = (questionCode, questionId) => {
     if (leaseFullName === '') {
       setLeaseFullNameError('Lease fullName is required.');
     } else if (leaseEmailAddress === '') {
@@ -328,7 +328,7 @@ const RentalOffer = props => {
         'Email address and confirm email address do not match.',
       );
     } else {
-      addLeaseHolder();
+      addLeaseHolder(questionCode, questionId);
     }
   };
   // Reference validation
@@ -580,7 +580,10 @@ const RentalOffer = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
               onPress={() => {
-                handleAddOccupant(subChildren?.tqm_Question_code);
+                handleAddOccupant(
+                  subChildren?.tqm_Question_code,
+                  subChildren?.id,
+                );
               }}
             />
           </View>
@@ -687,7 +690,10 @@ const RentalOffer = props => {
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 disabled={isLoading ? true : false}
                 onPress={() => {
-                  handleValidLeaseHolder(subChildren?.tqm_Question_code);
+                  handleValidLeaseHolder(
+                    subChildren?.tqm_Question_code,
+                    subChildren?.id,
+                  );
                 }}
               />
             </View>
@@ -780,27 +786,27 @@ const RentalOffer = props => {
     refRBSheet1.current.close();
   };
 
-  const addOccupant = questionCode => {
+  const addOccupant = (questionCode, questionId) => {
     if (fullName && emailAddress) {
-      const newOccupant = {fullName, emailAddress};
+      const newOccupant = {fullName, emailAddress, questionCode, questionId};
       setOccupants([...occupants, newOccupant]);
       console.log('occupants...', occupants);
-      // handleInputChange(questionCode, occupants);
       setFullName('');
       setEmailAddress('');
       setToggleOccupants(false);
     }
   };
-  const addLeaseHolder = questionCode => {
+  const addLeaseHolder = (questionCode, questionId) => {
     if (leaseFullName && leaseEmailAddress && leaseConfirmEmailAddress) {
       const newLeaseHolder = {
         leaseFullName,
         leaseEmailAddress,
         leaseConfirmEmailAddress,
+        questionCode,
+        questionId,
       };
       setLeaseHolderItem([...leaseHolderItem, newLeaseHolder]);
       console.log('leaseHolderItem...', leaseHolderItem);
-      // handleInputChange('leaseHolderItem', leaseHolderItem);
       setLeaseFullName('');
       setleaseEmailAddress('');
       setLeaseConfirmEmailAddress('');
@@ -983,9 +989,19 @@ const RentalOffer = props => {
   // };
   const handleSubmit = () => {
     const jsonData = [];
-
     console.log('quesHeading:', quesHeading);
     console.log('subChildren:', subChildren);
+
+    // Create a mapping of questionCode to id from quesHeading and subChildren
+    const questionCodeToId = {};
+    quesHeading.forEach(parentQuestion => {
+      parentQuestion.children.forEach(childQuestion => {
+        questionCodeToId[childQuestion.tqm_Question_code] = childQuestion.id;
+      });
+    });
+    subChildren.forEach(subChild => {
+      questionCodeToId[subChild.tqm_Question_code] = subChild.id;
+    });
 
     // Process main questions
     quesHeading.forEach(parentQuestion => {
@@ -1001,35 +1017,35 @@ const RentalOffer = props => {
       });
     });
 
-    // Group occupants by their question_code
+    // Group occupants by their question_id
     const occupantGroups = {};
     occupants.forEach(occupant => {
-      if (!occupantGroups[occupant.questionCode]) {
-        occupantGroups[occupant.questionCode] = [];
+      if (!occupantGroups[occupant.questionId]) {
+        occupantGroups[occupant.questionId] = [];
       }
-      occupantGroups[occupant.questionCode].push({
+      occupantGroups[occupant.questionId].push({
         fullName: occupant.fullName,
         emailAddress: occupant.emailAddress,
       });
     });
 
     // Add grouped occupants data to jsonData
-    for (const questionCode in occupantGroups) {
+    for (const questionId in occupantGroups) {
       jsonData.push({
-        question_id: questionCode,
-        question_value: JSON.stringify(occupantGroups[questionCode]),
+        question_id: questionId,
+        question_value: JSON.stringify(occupantGroups[questionId]),
         question_reference: 0,
         question_is_lookup: 0,
       });
     }
 
-    // Group leaseholders by their question_code
+    // Group leaseholders by their question_id
     const leaseHolderGroups = {};
     leaseHolderItem.forEach(leaseHolder => {
-      if (!leaseHolderGroups[leaseHolder.questionCode]) {
-        leaseHolderGroups[leaseHolder.questionCode] = [];
+      if (!leaseHolderGroups[leaseHolder.questionId]) {
+        leaseHolderGroups[leaseHolder.questionId] = [];
       }
-      leaseHolderGroups[leaseHolder.questionCode].push({
+      leaseHolderGroups[leaseHolder.questionId].push({
         fullName: leaseHolder.leaseFullName,
         emailAddress: leaseHolder.leaseEmailAddress,
         confirmEmailAddress: leaseHolder.leaseConfirmEmailAddress,
@@ -1037,22 +1053,25 @@ const RentalOffer = props => {
     });
 
     // Add grouped leaseholders data to jsonData
-    for (const questionCode in leaseHolderGroups) {
+    for (const questionId in leaseHolderGroups) {
       jsonData.push({
-        question_id: questionCode,
-        question_value: JSON.stringify(leaseHolderGroups[questionCode]),
+        question_id: questionId,
+        question_value: JSON.stringify(leaseHolderGroups[questionId]),
         question_reference: 0,
         question_is_lookup: 0,
       });
     }
 
     const finalJson = {
+      // p_property_id: 0,
+      // p_account_id: 0,
+      // p_bid_id: 0,
       json_data: jsonData,
     };
-    setFinalJsonData(finalJson);
+
     console.log('Final JSON:', JSON.stringify(finalJson));
+    setFinalJsonData(finalJson);
     saveAllJson();
-    // You can now send `finalJson` to your API endpoint
   };
 
   const saveAllJson = () => {
@@ -1061,7 +1080,7 @@ const RentalOffer = props => {
     console.log('Request URL:', saveJson_url);
     setIsLoading(true);
     const saveJsonData = {
-      p_property_id:propertyId,
+      p_property_id: propertyId,
       p_account_id: loginData?.Login_details?.user_account_id,
       p_bid_id: 0,
       json_data: finalJsonData,
@@ -1073,7 +1092,8 @@ const RentalOffer = props => {
           console.log(
             'API Response saveJson Data....',
             JSON.stringify(response?.data),
-            alert(response?.data?.data),
+            // alert(response?.data?.data),
+            refRBSheet1.current.open(),
           );
         } else {
           setIsLoading(false);
@@ -1842,7 +1862,7 @@ const RentalOffer = props => {
               onPressLeftButton={() => {
                 setSubmitApplicationBtn(false);
                 setSubmitApplicationBtnId(0);
-                handleSubmit();
+                // handleSubmit();
                 // alert(selectPetFriendlyBtnId)
               }}
               RightButtonText={'Submit'}
@@ -1865,7 +1885,7 @@ const RentalOffer = props => {
                 setSubmitApplicationBtn(true);
                 setSubmitApplicationBtnId(1);
                 // alert(selectPetFriendlyBtnId)
-                refRBSheet1.current.open();
+                handleSubmit();
               }}
             />
           </View>
