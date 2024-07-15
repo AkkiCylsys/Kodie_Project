@@ -535,7 +535,7 @@ const CreateNewInspection = props => {
 
         <View style={{ marginBottom: 15 }}>
           <Text style={LABEL_STYLES.commontext}>
-            {'What type if inspection is this?'}
+            {'What type of inspection is this?'}
           </Text>
           <Dropdown
             style={CreateNewInspectionStyle.dropdown}
