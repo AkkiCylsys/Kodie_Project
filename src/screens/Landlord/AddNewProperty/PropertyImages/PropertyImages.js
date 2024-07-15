@@ -229,8 +229,8 @@ export default PropertyImages = props => {
   const renderLabel = ({position, stepStatus}) => {
     // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
-      position === currentPage // Check if it's the current step
-        ? _COLORS.Kodie_BlackColor // Set the color for the current step
+      position === currentPage
+        ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
         ? '#000000'
         : '#808080';
@@ -318,7 +318,6 @@ export default PropertyImages = props => {
 
     if (MultiImageName && Array.isArray(MultiImageName)) {
       const imagePaths = MultiImageName.map(image => image.path);
-
       imagePaths.forEach((path, index) => {
         formData.append('images', {
           uri: path,
@@ -432,8 +431,8 @@ export default PropertyImages = props => {
                 }
                 inactiveDotColor={_COLORS.Kodie_GrayColor}
                 dotColor={_COLORS.Kodie_GreenColor}
-                autoplay
-                circleLoop
+                autoplay={false}
+                circleLoop={false}
                 resizeMethod={'resize'}
                 resizeMode={'cover'}
                 dotStyle={PropertyImagesStyle.dotStyle}

@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { PropertyExpensesStyle } from "./PropertyExpensesStyle";
 import { _COLORS } from "../../../../../../Themes";
 import Entypo from "react-native-vector-icons/Entypo";
-export default PropertyExpenses = () => {
+const PropertyExpenses = () => {
   return (
-    <View style={PropertyExpensesStyle.mainContainer}>
+    <View style={PropertyExpensesStyle.mainConatiner}>
       <View style={PropertyExpensesStyle.subContainer}>
         <Text style={PropertyExpensesStyle.heading_Text}>
           {"Property expenses"}
@@ -62,3 +62,4 @@ export default PropertyExpenses = () => {
     </View>
   );
 };
+export default PropertyExpenses;

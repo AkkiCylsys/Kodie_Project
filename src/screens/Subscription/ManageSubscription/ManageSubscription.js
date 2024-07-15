@@ -36,7 +36,7 @@ const subscriptionData = [
     rule_desc: 'You get:',
     rule_no_1: 'Easily manage up to 3 properties',
     rule_no_2: 'Single user',
-    rule_no_3: 'Standard financial dashboards(revenues & expenses)',
+    rule_no_3: 'Standard financial dashboards (revenues & expenses)',
     rule_no_4: 'Service & maintenance requests with ease',
     rule_no_5: 'Standard access to contractors',
     rule_no_6: 'Income & expense tracking',
@@ -417,7 +417,7 @@ const ManageSubscription = props => {
           )}
           {SubscriptionStatus == 'active' ? null : (
             <Text style={[ManageSubscriptionStyle.SubUnderlineHeading]}>
-              14-days unlimited FREE trial, then only $69 / month
+              14-days unlimited FREE trial. Thereafter, only S69 / month
             </Text>
           )}
           <View style={ManageSubscriptionStyle.RangeSliderView}>

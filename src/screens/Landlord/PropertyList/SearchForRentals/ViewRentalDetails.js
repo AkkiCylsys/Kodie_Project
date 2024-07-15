@@ -639,7 +639,7 @@ const ViewRentalDetails = props => {
                 setExternalfeaturesClp(!externalfeaturesClp);
               }}>
               <Text style={ViewRentalDetailsStyle.propery_det}>
-                {'External featuress'}
+                {'External features'}
               </Text>
 
               <TouchableOpacity
