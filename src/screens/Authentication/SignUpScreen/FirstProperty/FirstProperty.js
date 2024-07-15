@@ -1085,7 +1085,7 @@ export default FirstProperty = props => {
                             style={FirstPropertyStyle.flor_input_field}
                             value={buildingFlorSize}
                             onChangeText={setBuildingFlorSize}
-                            placeholder="102m2"
+                            placeholder="m2"
                             placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                             keyboardType="number-pad"
                           />
@@ -1104,7 +1104,7 @@ export default FirstProperty = props => {
                             style={FirstPropertyStyle.flor_input_field}
                             value={landArea}
                             onChangeText={setLandArea}
-                            placeholder="102m2"
+                            placeholder="m2"
                             placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                             keyboardType="number-pad"
                           />
