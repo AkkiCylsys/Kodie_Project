@@ -195,12 +195,12 @@ export const PropertyPopupStyle = StyleSheet.create({
     borderRadius: 8,
     borderColor: _COLORS.Kodie_GrayColor,
   },
-  modalContainer: {marginHorizontal: 16, marginVertical: 16},
+  modalContainer: {marginHorizontal: 16,},
   checkStl: {
     height: 120,
     width: '50%',
     alignSelf: 'center',
-    marginVertical: 50,
+    marginVertical: 30,
     resizeMode: 'contain',
   },
   modalMainText: {
@@ -209,7 +209,6 @@ export const PropertyPopupStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
     textAlign: 'center',
     alignSelf: 'center',
-    marginVertical: 10,
   },
   modalSubText: {
     fontFamily: FONTFAMILY.K_Regular,
@@ -217,6 +216,6 @@ export const PropertyPopupStyle = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     textAlign: 'center',
     alignSelf: 'center',
-    marginTop: 19,
+    marginTop: 10,
   },
 });
