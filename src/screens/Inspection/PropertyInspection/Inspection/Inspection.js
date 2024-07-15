@@ -55,8 +55,8 @@ const Inspection = props => {
   const [getCustomeArea, setGetCustomeArea] = useState([]);
   const [getAreaKey, setGetAreaKey] = useState([]);
   console.log(
-    'loginresponse_jobdetails..',
-    loginData?.Login_details?.user_account_id,
+    'getinspection',
+    getinspection
   );
   const TIM_KEY = props?.TIM_KEY;
 
@@ -64,7 +64,8 @@ const Inspection = props => {
   console.log('getinspection.TAM_AREA_KEY', AreaKey);
   console.log('getAreaKey....', getAreaKey);
   const PropertyId = props.PropertyId;
-  const navigateToScreen = (id,name) => {
+  const navigateToScreen = (id,name,TAIM_ITEM_STATUS) => {
+    console.log(TAIM_ITEM_STATUS,"TAIM_ITEM_STATUS");
         navigation.navigate('Bedroom', {
           TeamAreaKey: id,
           AreaName:name,
@@ -72,6 +73,7 @@ const Inspection = props => {
           getinspectionKey: getinspection.v_UPD_KEY,
           PropertyId:PropertyId,
           teamCreateId: loginData?.Login_details?.user_account_id,
+          TAIM_ITEM_STATUS:TAIM_ITEM_STATUS
         });
   };
   const handleCloseModal = () => {
@@ -180,7 +182,8 @@ const Inspection = props => {
       const response = await axios.delete(deleteUrl);
       if (response?.data?.success) {
         Alert.alert('Success', 'Inspection deleted successfully');
-        refRBSheet2.current.close();
+        navigation?.navigate('NewInspection');
+        // refRBSheet2.current.close();
       } else {
         Alert.alert('Error', 'Failed to delete inspection');
       }
@@ -333,7 +336,7 @@ const Inspection = props => {
           {!isEditing ? (
             <TouchableOpacity
               onPress={() =>
-                navigateToScreen(item.area_key_id,item?.area_name)
+                navigateToScreen(item.area_key_id,item?.area_name,item?.TAIM_ITEM_STATUS)
               }
               style={InspectionCss.rightIcon}>
               <Feather

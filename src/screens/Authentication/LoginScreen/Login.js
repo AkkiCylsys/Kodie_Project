@@ -486,8 +486,10 @@ export default Login = props => {
             email: email,
             user_key: res?.User_key,
           });
-        }
-         else {
+        } else if(res.data.code == 9){
+          alert(res.data.message);
+
+        } else {
            props.navigation.navigate('DrawerNavigatorLeftMenu');
 
         }

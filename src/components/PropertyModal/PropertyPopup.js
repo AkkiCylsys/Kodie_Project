@@ -75,10 +75,10 @@ const PropertyPopup = props => {
   console.log('sheet propertyId', propertyId);
   const refRBSheet = useRef();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log(
-    'loginresponse_jobdetails..',
-    loginData?.Login_details?.user_account_id,
-  );
+  // console.log(
+  //   'loginresponse_jobdetails..',
+  //   loginData?.Login_details?.user_account_id,
+  // );
   <SwitchToggle switchOn={on} onPress={() => setOn(!on)} />;
 
   useEffect(() => {

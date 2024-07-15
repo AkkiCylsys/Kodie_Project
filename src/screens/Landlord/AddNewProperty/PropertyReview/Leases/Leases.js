@@ -11,9 +11,10 @@ import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import Logrentalpayment from './Logrentalpayment/Logrentalpayment'
+import { useIsFocused } from '@react-navigation/native';
 const Leases = (props) => {
   const { property_id } = props;
-
+const isFocus =useIsFocused();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet4 = useRef();
@@ -23,23 +24,29 @@ const Leases = (props) => {
   const [isLogSheetOpen, setIsLogSheetOpen] = useState(false);
   const [leaseSummaryData, setLeaseSummaryData] = useState([]);
   const [rentalReceiptData, setRentalReceiptData] = useState([]);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    if (!isSheetOpen && !isLogSheetOpen) {
+    if (!isSheetOpen && !isLogSheetOpen && isFocus) {
       fetchLeaseSummary();
       fetchRentalReceipt();
     }
-  }, [isSheetOpen, isLogSheetOpen]);
+  }, [isSheetOpen, isLogSheetOpen,isFocus]);
 
   const handleClose = () => {
     refRBSheet.current.close();
     setIsSheetOpen(false);
+    setEditMode(false);
   };
 
   const handleLogClose = () => {
     refRBSheet2.current.close();
     setIsLogSheetOpen(false);
   };
+  const handleEditClick =()=>{
+    refRBSheet.current.open();
+    setEditMode(true);
+  }
 
   const fetchLeaseSummary = async () => {
     const url = `${Config.BASE_URL}getPaymentDueday`;
@@ -163,7 +170,7 @@ const Leases = (props) => {
                       </Text>
                     </View>
                     <View style={LeaseSummaryStyle.due_View}>
-                      <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+                      <TouchableOpacity onPress={handleEditClick}>
                         <Image source={IMAGES.noteBook} style={LeaseSummaryStyle.note_b_img_sty} />
                       </TouchableOpacity>
                       {/* <TouchableOpacity onPress={() => refRBSheet4.current.open()}>
@@ -239,7 +246,7 @@ const Leases = (props) => {
           draggableIcon: { backgroundColor: _COLORS.Kodie_LightGrayColor },
           container: LeasesStyle.bottomModal_container,
         }}>
-        <AddLeaseDetails onClose={handleClose} property_id={property_id} leaseData={leaseSummaryData} />
+        <AddLeaseDetails onClose={handleClose} property_id={property_id} leaseData={leaseSummaryData} editMode={editMode}/>
       </RBSheet>
       <RBSheet
         ref={refRBSheet2}

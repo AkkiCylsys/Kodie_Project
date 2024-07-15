@@ -108,7 +108,7 @@ export default AddLeaseDetails = props => {
     setExpiry_reminder_value(leaseDataDetails?.UPLD_LEASE_EXPIRY_REMINDER)
     setProRate(`${leaseDataDetails?.UPLD_PRO_RATA_AMOUNT}`)
     setlLease_end_value({lookup_key:leaseDataDetails?.frequency_key,lookup_description:leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY})
-    // setPaymentDueDay(leaseDataDetails?.frequency_key)
+    setPaymentDueDay(leaseDataDetails?.UPLD_PAYMENT_DUE_DAY)
    }
   }, []);
   
@@ -564,7 +564,7 @@ export default AddLeaseDetails = props => {
     }
   }
   useEffect(() => {
-    if (lease_end_value.lookup_key === 506) {
+    if (lease_end_value.lookup_key === 506 ||lease_end_value.lookup_key === 507 ) {
       updateDateToNextYear();
     }
   }, [lease_end_value.lookup_key, selectedDate]);
@@ -769,6 +769,19 @@ export default AddLeaseDetails = props => {
             maxLength={5}
           />
         );
+        case 507:
+
+        return (
+          <TextInput
+            style={AddLeaseDetailsStyle.input}
+            value={selectedDate}
+            placeholder="Enter the rental amount"
+            placeholderTextColor="#999"
+            keyboardType="number-pad"
+            maxLength={5}
+            onChangeText={()=>setPaymentDueDay(selectedDate)}
+          />
+        );
       default:
         return null;
     }
@@ -777,7 +790,7 @@ export default AddLeaseDetails = props => {
     <View style={AddLeaseDetailsStyle.mainContainer}>
       <View style={AddLeaseDetailsStyle.heading_View}>
         <Text style={AddLeaseDetailsStyle.heading_Text}>
-          {'Add lease details'}
+          {props?.editMode === true ? 'Edit lease details' : 'Add lease details'}
         </Text>
         <View style={{ alignSelf: 'center', marginTop: 5 }}>
           <TouchableOpacity onPress={handlePopUp}>
@@ -938,7 +951,7 @@ export default AddLeaseDetails = props => {
               placeholder="Enter the rental amount"
               placeholderTextColor="#999"
               keyboardType="number-pad"
-              maxLength={5}
+              // maxLength={5}
             />
           </View>
           {rentalAmountError ? (
@@ -1002,7 +1015,8 @@ export default AddLeaseDetails = props => {
                 maxLength={5}
               />
             </View>
-            :null}
+            :
+            <View style={{ flex: 1 }}/>}
           </View>
           <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           <View>
