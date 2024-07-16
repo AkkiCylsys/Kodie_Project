@@ -18,6 +18,7 @@ import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Entypo from "react-native-vector-icons/Entypo";
+import EvilIcons from "react-native-vector-icons/EvilIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
@@ -26,7 +27,7 @@ import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
 
-const HorizontalData = ["All", "Scheduled", "Progress", "Complete"];
+const HorizontalData = ["All", "Scheduled", "inProgress", "Complete", "Cancelled"];
 
 const inspection_data = [
   {
@@ -343,11 +344,13 @@ export default NewInspection = (props) => {
       </View>
       <DividerIcon borderBottomWidth={4} color={_COLORS.Kodie_GrayColor} />
       <SearchBar
+        frontSearchIcon
         filterImage={IMAGES.up_down_Arrow}
-        isFilterImage
+        updownSearch
         height={48}
         marginTop={20}
         searchData={searchInspection}
+        placeholder="Search inspections"
       />
       <View style={NewInspectionStyle.flat_MainView}>
         <FlatList

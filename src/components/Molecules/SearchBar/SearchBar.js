@@ -58,7 +58,7 @@ const SearchBar = props => {
           //   text ? handleSearchChange(text) : setSearch()
           // }
           onChangeText={handleSearchChange}
-          placeholder={truncatePlaceholder(props.placeholder, 15)}
+          placeholder={truncatePlaceholder(props.placeholder, 20)}
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />
         {props.backSearchIcon ? (
