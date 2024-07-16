@@ -69,6 +69,7 @@ const CreateNewInspection = props => {
   const [selectedValues, setSelectedValues] = useState([]);
   const [tempSelectedValues, setTempSelectedValues] = useState([]);
   const [showError, setShowError] = useState(false);
+  const [errorInspection, setErrorInspection] = useState(false);
   const [Inspection_Detail, setInspection_Details] = useState([]);
   const [displaySelectedValues, setDisplaySelectedValues] = useState('');
 
@@ -452,12 +453,17 @@ const CreateNewInspection = props => {
     }
   };
   const handleSubmit = () => {
-    if (selectedAddress == '') {
-      setShowError(true);
-    } else {
+    if (Inspection_value == ''){
+      setErrorInspection(true);
+    }else if
+      (selectedAddress == '') {
+        setShowError(true);
+    }
+     else {
       InspectionView ? UpdateInspection() : Ins_editMode ? UpdateInspection() : SubmitInspection();
     }
   };
+  
   const fetchResults = async searchQuery => {
     // alert(searchQuery)
     setIsLoading(true);
@@ -522,10 +528,9 @@ const CreateNewInspection = props => {
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={
-          InspectionView ? 'Reschedule Inspections' : Ins_editMode ? 'Edit Inspections' : 'Create New Inspections'
+          InspectionView ? 'Reschedule Inspections' : Ins_editMode ? 'Edit Inspections' : 'Create new inspections'
         }
       />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={CreateNewInspectionStyle.Container}>
@@ -554,10 +559,16 @@ const CreateNewInspection = props => {
             value={Inspection_value}
             onChange={item => {
               setInspection_value(item.lookup_key);
+              setErrorInspection(false);
             }}
             renderItem={InspectionType_render}
           />
         </View>
+        {errorInspection ? (
+          <Text style={CreateNewInspectionStyle.errorText}>
+            {'Please select a inspection type.'}
+          </Text>
+        ) : null}
         <Text style={LABEL_STYLES.commontext}>
           {'Schedule time and date of inspection'}
         </Text>

@@ -513,7 +513,7 @@ const Inspection = props => {
               labelField="TAM_AREA_NAME"
               valueField="TAM_AREA_KEY"
               placeholder="Enter address manually"
-              searchPlaceholder="Search..."
+              searchPlaceholder="Search ..."
               value={customeAreavalue}
               onChange={item => {
                 setCustomeAreaValue(item.TAM_AREA_KEY);
