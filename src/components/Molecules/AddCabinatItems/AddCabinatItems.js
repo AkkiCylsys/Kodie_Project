@@ -35,19 +35,24 @@ const data = [
 ];
 
 const AddCabinatItems = (props) => {
-  const { ItemName,Tim_Key,PropertyId,TAIM_ITEM_KEY,Created_Id } = props;
+  const { ItemName,Tim_Key,PropertyId,TAIM_ITEM_KEY,Created_Id ,AreasKey} = props;
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckId, setIscheckId] = useState(0);
   const [statusData, setStatusData] = useState([]);
-  const [statusDataValue, setStatusDataValue] = useState('');
+  const [statusDataValue, setStatusDataValue] = useState([]);
   const [comment, setComment] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 console.log(isCheckId);
   const refRBSheet = useRef();
 useEffect(()=>{
-  handle_Status()
+  handle_Status();
+  getCabinate();
+ 
 },[])
+useEffect(() => {
+  setIsChecked(isCheckId === 1);
+}, [isCheckId]);
 const CreateCabinate = async () => {
   const formData = new FormData();
   formData.append('created_by', Created_Id);
@@ -58,6 +63,7 @@ const CreateCabinate = async () => {
   formData.append('TIIM_key', TAIM_ITEM_KEY);
   formData.append('upd_key', PropertyId);
   formData.append('uad_key', Created_Id);
+  formData.append('TAM_AREA_KEY', AreasKey);
   selectedImages.forEach((file, index) => {
     formData.append('imagePaths', {
       uri: file.path,
@@ -90,6 +96,35 @@ const CreateCabinate = async () => {
     setIsLoading(false);
   }
 };
+const getCabinate = async () => {
+ const getData = {
+  TIIM_KEY:TAIM_ITEM_KEY,
+  TIMKEY:Tim_Key
+ }
+  console.log('getData', getData);
+  const url = Config.BASE_URL;
+  const getCabinate_url = url + 'get/CabinateInspectionDetails';
+  setIsLoading(true);
+  try {
+    console.log('Request URL:', getCabinate_url);
+    const response = await axios.post(getCabinate_url, getData);
+    console.log('getCabinate_url....', response.data.data[0]);
+ 
+    setComment(response?.data?.data[0].TIMC_COMMENTS);
+    setIscheckId(response?.data?.data[0].TIMC_INSPECTED_ITEMS);
+    setSelectedImages(response?.data?.data[0].imageFileNames);
+    setStatusDataValue(parseFloat(response?.data?.data[0].TIMC_STATUS))
+   
+   
+    setIsLoading(false);
+  } catch (error) {
+    // alert(error);
+    console.log('CreateCabinate_error...', error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+console.log("isCheckId",isCheckId);
 const clearState =()=>{
   setComment('');
   setIscheckId(0);
@@ -164,7 +199,8 @@ const clearState =()=>{
         </Text>
         <View style={{flexDirection:'row'}}>
         <TouchableOpacity onPress={() => {
-        setIscheckId(isChecked? 0:1)
+        // setIscheckId(isChecked? 0:1)
+        isChecked ? setIscheckId(0) :setIscheckId(1)
           setIsChecked(!isChecked)}}
           >
           {!isChecked ? (

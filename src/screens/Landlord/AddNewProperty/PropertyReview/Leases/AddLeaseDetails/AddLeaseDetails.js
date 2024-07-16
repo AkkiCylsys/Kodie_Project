@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DividerIcon from '../../../../../../components/Atoms/Devider/DividerIcon';
 import { color } from 'react-native-reanimated';
 import moment from 'moment/moment';
+import { SignupLookupDetails } from '../../../../../../APIs/AllApi';
 const daysOfWeek = [
   { label: "Monday", value: "1" },
   { label: "Tuesday", value: "2" },
@@ -37,7 +38,7 @@ export default AddLeaseDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginData...', loginData);
   const leaseDataDetails = props?.leaseData;
-  console.log("leaseDataDetails",leaseDataDetails)
+  console.log("leaseDataDetails", leaseDataDetails)
   const property_id = props.property_id;
   console.log('property id in add lease Detail..', property_id);
   const [isLoading, setIsLoading] = useState(false);
@@ -68,6 +69,7 @@ export default AddLeaseDetails = props => {
   const [rental_reminder_value, setrental_reminder_value] = useState(0);
   const [lease_end_Data, setLease_end_Data] = useState([]);
   const [lease_end_value, setlLease_end_value] = useState('');
+  const [filteredFrequencies, setFilteredFrequencies] = useState([]);
   const [lease_end_valueError, setlLease_end_valueError] = useState(false);
   const [toggle_expiry, setToggle_expiry] = useState(false);
   const [toggle_lease_expire, setToggle_lease_expire] = useState(0);
@@ -80,7 +82,7 @@ export default AddLeaseDetails = props => {
   const [isYesSelected, setIsYesSelected] = useState(false);
   const [isYesSelectedId, setIsYesSelectedId] = useState(0);
   const [ProRate, setProRate] = useState(0);
- const handleButtonClick = isYes => {
+  const handleButtonClick = isYes => {
     setIsYesSelected(isYes);
   };
   useEffect(() => {
@@ -90,47 +92,40 @@ export default AddLeaseDetails = props => {
     handle_rental_reminder();
     handle_lease_term();
     handle_lease_end();
-   if( leaseDataDetails.LEASE_KEY) {
-    setSelectedDate(moment(leaseDataDetails?.UPLD_COMMENCEMENT_DATE).format('YYYY-MM-DD'));
-    setlLease_term_value(parseFloat(leaseDataDetails?.UPLD_RENTAL_LEASE_TERM));
-    setSelectedEndDate(moment(leaseDataDetails?.UPLD_LEASE_END_DATE).format('YYYY-MM-DD'));
-    setRentalAmount(leaseDataDetails?.RENTAL_AMMOUNT);
-    setRentalBond(`${leaseDataDetails?.UPLD_RENTAL_BOND_AMMOUNT}`);
-    setRentalDeposit(`${leaseDataDetails?.UPLD_RENTAL_DEPOSIT}`);
-    setRentalEscalation(leaseDataDetails?.UPLD_RENTAL_ESCALATION)
-    setNotification_type_value(parseFloat(leaseDataDetails?.UPLD_SET_NOTIFICATION_TYPE))
-    setIsYesSelectedId(leaseDataDetails?.UPLD_FIRST_RENTAL_PAYMENT)
-    setToggle_late_rental(leaseDataDetails?.UPLD_LATE_RENTAL)
-    setToggle_rent_payment(leaseDataDetails?.UPLD_RENT_PAYMENT)
-    setToggle_lease_expire(leaseDataDetails?.UPLD_LEASE_EXPIRE)
-    setrental_reminder_value(leaseDataDetails?.UPLD_LATE_RENTAL_REMINDER)
-    setPayment_reminder_value(leaseDataDetails?.UPLD_RENT_PAYMENT_REMINDER)
-    setExpiry_reminder_value(leaseDataDetails?.UPLD_LEASE_EXPIRY_REMINDER)
-    setProRate(`${leaseDataDetails?.UPLD_PRO_RATA_AMOUNT}`)
-    setlLease_end_value({lookup_key:leaseDataDetails?.frequency_key,lookup_description:leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY})
-    // setPaymentDueDay(leaseDataDetails?.frequency_key)
-   }
+    if (leaseDataDetails.LEASE_KEY) {
+      setSelectedDate(moment(leaseDataDetails?.UPLD_COMMENCEMENT_DATE).format('YYYY-MM-DD'));
+      setlLease_term_value(parseFloat(leaseDataDetails?.UPLD_RENTAL_LEASE_TERM));
+      setSelectedEndDate(moment(leaseDataDetails?.UPLD_LEASE_END_DATE).format('YYYY-MM-DD'));
+      setRentalAmount(leaseDataDetails?.RENTAL_AMMOUNT);
+      setRentalBond(`${leaseDataDetails?.UPLD_RENTAL_BOND_AMMOUNT}`);
+      setRentalDeposit(`${leaseDataDetails?.UPLD_RENTAL_DEPOSIT}`);
+      setRentalEscalation(leaseDataDetails?.UPLD_RENTAL_ESCALATION)
+      setNotification_type_value(parseFloat(leaseDataDetails?.UPLD_SET_NOTIFICATION_TYPE))
+      setIsYesSelectedId(leaseDataDetails?.UPLD_FIRST_RENTAL_PAYMENT)
+      setToggle_late_rental(leaseDataDetails?.UPLD_LATE_RENTAL)
+      setToggle_rent_payment(leaseDataDetails?.UPLD_RENT_PAYMENT)
+      setToggle_lease_expire(leaseDataDetails?.UPLD_LEASE_EXPIRE)
+      setrental_reminder_value(leaseDataDetails?.UPLD_LATE_RENTAL_REMINDER)
+      setPayment_reminder_value(leaseDataDetails?.UPLD_RENT_PAYMENT_REMINDER)
+      setExpiry_reminder_value(leaseDataDetails?.UPLD_LEASE_EXPIRY_REMINDER)
+      setProRate(`${leaseDataDetails?.UPLD_PRO_RATA_AMOUNT}`)
+      setlLease_end_value({ lookup_key: leaseDataDetails?.frequency_key, lookup_description: leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY })
+    }
   }, []);
-  
   const handleOptionClick = option => {
     setSelectedOption(option);
   };
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const toggleModalEndDate = () => {
-    setModalVisibleEndDate(!isModalVisibleEndDate);
+  const toggleModalEndDate = (item) => {
+    // alert(lease_term_value)
+    if (lease_term_value=== 546) {
+      setModalVisibleEndDate(!isModalVisibleEndDate);
+    }
   };
   const toggleModalDueDay = () => {
     setIsDueDayModalVisible(!isDueDayModalVisible);
-  };
-  const handleDayPress = (day) => {
-    const selected = moment(day.dateString).format('YYYY-MM-DD');
-    setSelectedDate(selected);
-    if (lease_term_value) {
-      calculateLeaseEndDate(selected, lease_term_value); // Recalculate end date if lease term is already selected
-    }
   };
   const handleRequestDate = text => {
     setSelectedDate(text);
@@ -140,20 +135,12 @@ export default AddLeaseDetails = props => {
       setSelectedDateError('');
     }
   };
-  const handleDueDay = text => {
-    setPaymentDueDay(text);
-    if (text.trim() === '') {
-      setPaymentDueDayError('Payment due day is required!');
-    } else {
-      setPaymentDueDayError('');
-    }
-  };
   const validateRentalAmount = text => {
     if (text === '') {
-      setRentalAmount(''); 
+      setRentalAmount('');
     } else if (!text.startsWith('$')) {
-      text = '$'+' '+ text;
-    }else if (text === '') {
+      text = '$' + ' ' + text;
+    } else if (text === '') {
       setRentalAmountError('Notice title is required!');
     } else {
       setRentalAmountError('');
@@ -162,9 +149,6 @@ export default AddLeaseDetails = props => {
   };
   const handleEndDayPress = day => {
     setSelectedEndDate(day.dateString);
-  };
-  const handleDueDayPress = day => {
-    setPaymentDueDay(day.dateString);
   };
   const handleShowNotificationData = () => {
     setShowNotificationData(!showNotificationData);
@@ -175,10 +159,8 @@ export default AddLeaseDetails = props => {
   const handlePopUp = () => {
     props.onClose();
   };
-
-  console.log('leaseDataDetails.RENTAL_AMMOUNT',leaseDataDetails.RENTAL_AMMOUNT)
   const handlevalidUpdation = () => {
-   if (selectedDate.trim() === '') {
+    if (selectedDate.trim() === '') {
       setSelectedDateError('Commencement date is required!');
     } else if (lease_term_value == '') {
       setlease_term_valueError(true);
@@ -188,19 +170,17 @@ export default AddLeaseDetails = props => {
       setRentalAmountError('Rental amount is required!');
     } else if (paymentDueDay.trim() == '') {
       setPaymentDueDayError(true);
-    } else{
-        setSelectedDateError('');
-        if(leaseDataDetails.LEASE_KEY){
-          handle_update_Lease();
-        }else{
+    } else {
+      setSelectedDateError('');
+      if (leaseDataDetails.LEASE_KEY) {
+        handle_update_Lease();
+      } else {
         handle_add_Lease();
-        }
       }
+    }
   };
   const handle_add_Lease = () => {
-    console.log('paymentDueDay....', paymentDueDay);
     const url = Config.BASE_URL;
-    // const add_Lease_url = url + 'property_lease_details/create';
     const add_Lease_url = url + 'create/lease';
     console.log('Request URL:', add_Lease_url);
     setIsLoading(true);
@@ -260,7 +240,7 @@ export default AddLeaseDetails = props => {
     setIsLoading(true);
     console.log('selectedDate', selectedDate);
     const lease_Data = {
-      p_UPLD_LEASE_KEY:leaseDataDetails.LEASE_KEY,
+      p_UPLD_LEASE_KEY: leaseDataDetails.LEASE_KEY,
       p_USER_KEY: loginData?.Login_details?.user_id,
       p_UPD_KEY: property_id,
       p_COMMENCEMENT_DATE: selectedDate,
@@ -281,7 +261,7 @@ export default AddLeaseDetails = props => {
       p_LEASE_EXPIRY_REMINDER: expiry_reminder_value,
       p_RENT_PAYMENT_REMINDER: payment_reminder_value,
       p_LATE_RENTAL_REMINDER: rental_reminder_value,
-      p_LEASE_BEFORE_AFTER:true
+      p_LEASE_BEFORE_AFTER: true
     };
     console.log(lease_Data, 'lease_Data////update///');
     axios
@@ -306,186 +286,114 @@ export default AddLeaseDetails = props => {
         setIsLoading(false);
       });
   };
-  const handle_notification_type = () => {
-    const url = Config.BASE_URL;
-    const notification_url = url + 'lookup_details';
-    console.log('Request URL:', notification_url);
+  const handle_notification_type = async () => {
     setIsLoading(true);
-    const notification_data = {
+
+    const res = await SignupLookupDetails({
       P_PARENT_CODE: 'SNT',
       P_TYPE: 'OPTION',
-    };
+    });
 
-    axios
-      .post(notification_url, notification_data)
-      .then(response => {
-        console.log('API Response notification_type:', response?.data);
-        if (response?.data?.status === true) {
-          setNotification_type_Data(response?.data?.lookup_details);
-          // alert(JSON.stringify(response?.data?.lookup_details));
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed notification_type', error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    console.log('notification_type', res);
+
+    setNotification_type_Data(res?.lookup_details);
+    setIsLoading(false);
   };
-  const handle_expiry_reminder = () => {
-    const url = Config.BASE_URL;
-    const expiry_url = url + 'lookup_details';
-    console.log('Request URL:', expiry_url);
+  const handle_expiry_reminder = async () => {
     setIsLoading(true);
-    const notification_data = {
+
+    const res = await SignupLookupDetails({
       P_PARENT_CODE: 'LER',
       P_TYPE: 'OPTION',
-    };
-    axios
-      .post(expiry_url, notification_data)
-      .then(response => {
-        console.log('API Response expiry reminder:', response?.data);
-        if (response?.data?.status === true) {
-          setExpiry_reminder_Data(response?.data?.lookup_details);
-          // alert(JSON.stringify(response?.data?.lookup_details));
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed expiry_reminde', error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    });
+
+    console.log('setExpiry_reminder_Data', res);
+
+    setExpiry_reminder_Data(res?.lookup_details);
+    setIsLoading(false);
   };
-  const handle_payment_reminder = () => {
-    const url = Config.BASE_URL;
-    const payment_url = url + 'lookup_details';
-    console.log('Request URL:', payment_url);
+  const handle_payment_reminder = async () => {
     setIsLoading(true);
-    const notification_data = {
+
+    const res = await SignupLookupDetails({
       P_PARENT_CODE: 'RPR',
       P_TYPE: 'OPTION',
-    };
-    axios
-      .post(payment_url, notification_data)
-      .then(response => {
-        console.log('API Response payment reminder:', response?.data);
-        if (response?.data?.status === true) {
-          setPayment_reminder_Data(response?.data?.lookup_details);
-          // alert(JSON.stringify(response?.data?.lookup_details));
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed payment_reminder', error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    });
+
+    console.log('setPayment_reminder_Data', res);
+
+    setPayment_reminder_Data(res?.lookup_details);
+    setIsLoading(false);
   };
-  const handle_rental_reminder = () => {
-    const url = Config.BASE_URL;
-    const rental_url = url + 'lookup_details';
-    console.log('Request URL:', rental_url);
+
+  const handle_rental_reminder = async () => {
     setIsLoading(true);
-    const notification_data = {
+
+    const res = await SignupLookupDetails({
       P_PARENT_CODE: 'LRR',
       P_TYPE: 'OPTION',
-    };
-    axios
-      .post(rental_url, notification_data)
-      .then(response => {
-        console.log('API Response rental reminder:', response?.data);
-        if (response?.data?.status === true) {
-          setrental_reminder_Data(response?.data?.lookup_details);
-          // alert(JSON.stringify(response?.data?.lookup_details));
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed rental_reminder', error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    });
+
+    console.log('setrental_reminder_Data', res);
+
+    setrental_reminder_Data(res?.lookup_details);
+    setIsLoading(false);
   };
-  const handle_lease_term = () => {
-    const url = Config.BASE_URL;
-    const lease_term__url = url + 'lookup_details';
-    console.log('Request URL:', lease_term__url);
+
+  const handle_lease_term = async () => {
     setIsLoading(true);
-    const lease_term_data = {
+
+    const res = await SignupLookupDetails({
       P_PARENT_CODE: 'RLT',
       P_TYPE: 'OPTION',
-    };
-    axios
-      .post(lease_term__url, lease_term_data)
-      .then(response => {
-        console.log('API Response rental lease terms:', response?.data);
-        if (response?.data?.status === true) {
-          setLease_term_Data(response?.data?.lookup_details);
-          // alert(JSON.stringify(response?.data?.lookup_details));
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed lease_term', error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    });
+
+    console.log('setLease_term_Data', res);
+
+    setLease_term_Data(res?.lookup_details);
+    setIsLoading(false);
   };
-  const handle_lease_end = () => {
-    const url = Config.BASE_URL;
-    const lease_end__url = url + 'lookup_details';
-    console.log('Request URL:', lease_end__url);
+
+  const handle_lease_end = async () => {
     setIsLoading(true);
-    const lease_end_data = {
+
+    const res = await SignupLookupDetails({
       P_PARENT_CODE: 'RENT_PAID',
       P_TYPE: 'OPTION',
-    };
-    axios
-      .post(lease_end__url, lease_end_data)
-      .then(response => {
-        console.log('API Response rental lease terms:', response?.data);
-        if (response?.data?.status === true) {
-          setLease_end_Data(response?.data?.lookup_details);
-          // alert(JSON.stringify(response?.data?.lookup_details));
-        } else {
-          alert(response?.data?.message);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('API failed lease_term', error);
-        setIsLoading(false);
-        // alert(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    });
+
+    console.log('setLease_term_Data', res);
+
+    setLease_end_Data(res?.lookup_details);
+    setIsLoading(false);
+  };
+  const handleLeaseTermChange = (item) => {
+    // alert(item.lookup_key)
+    setlLease_term_value(item.lookup_key);
+    calculateLeaseEndDate(selectedDate, item.lookup_key);
+    setlease_term_valueError(false);
+    let newFrequencies = [];
+    if (item.lookup_key === 79) { // 2 - Month
+      newFrequencies = lease_end_Data.filter(freq =>
+        [500, 501, 502, 503].includes(freq.lookup_key));
+    } else if (item.lookup_key === 80) { // 6 - Month
+      newFrequencies = lease_end_Data.filter(freq =>
+        [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
+    } else if (item.lookup_key === 81) { // 8 - Month
+      newFrequencies = lease_end_Data.filter(freq =>
+        [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
+    } else if (item.lookup_key === 82) { // 10 - Month
+      newFrequencies = lease_end_Data.filter(freq =>
+        [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
+    } else if (item.lookup_key === 83) { // 1 - year
+      newFrequencies = lease_end_Data.filter(freq =>
+        [500, 501, 502, 503, 504, 505, 506].includes(freq.lookup_key));
+    } else if (item.lookup_key === 546) { // other
+      newFrequencies = lease_end_Data.filter(freq =>
+        [507].includes(freq.lookup_key));
+    }
+    setFilteredFrequencies(newFrequencies);
+
   };
   const lease_end_render = item => {
     return (
@@ -564,7 +472,7 @@ export default AddLeaseDetails = props => {
     }
   }
   useEffect(() => {
-    if (lease_end_value.lookup_key === 506 ||lease_end_value.lookup_key === 507) {
+    if (lease_end_value.lookup_key === 506 || lease_end_value.lookup_key === 507) {
       updateDateToNextYear();
     }
   }, [lease_end_value.lookup_key, selectedDate]);
@@ -587,19 +495,18 @@ export default AddLeaseDetails = props => {
         monthsToAdd = 12;
         break;
       default:
-        monthsToAdd = 0;
+        monthsToAdd = null;
     }
 
-    if (startDate && monthsToAdd) {
+    if (startDate && monthsToAdd !== null) {
       const endDate = moment(startDate).add(monthsToAdd, 'months').format('YYYY-MM-DD');
       setSelectedEndDate(endDate);
+    } else {
+      setSelectedEndDate('');
     }
   };
   const renderPaymentDueDayPicker = () => {
-    // alert(lease_end_Data)
-    // console.log(lease_end_value.lookup_key);
-
-    switch (lease_end_value.lookup_key ) {
+    switch (lease_end_value.lookup_key) {
       case 500:
         return (
           <View style={{ flex: 1 }}>
@@ -613,12 +520,10 @@ export default AddLeaseDetails = props => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModalDueDay}
-              // onDayPress={handleDueDayPress}
-              onDayPress={day =>{ 
+              onDayPress={day => {
                 setPaymentDueDay(day.dateString);
                 setPaymentDueDayError(false)
               }}
-              // onChangeText={() => handleDueDay(selectedDate)}
               Visible={isDueDayModalVisible}
               onRequestClose={toggleModalDueDay}
               markedDates={{
@@ -652,9 +557,10 @@ export default AddLeaseDetails = props => {
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) =>{ setPaymentDueDay(item.value);
+            onChange={(item) => {
+              setPaymentDueDay(item.value);
               setPaymentDueDayError(false)
-              
+
             }}
           /></>)
       case 502:
@@ -676,9 +582,10 @@ export default AddLeaseDetails = props => {
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) =>{ setPaymentDueDay(item.value);
+            onChange={(item) => {
+              setPaymentDueDay(item.value);
               setPaymentDueDayError(false)
-              
+
             }}
           />
         );
@@ -701,9 +608,10 @@ export default AddLeaseDetails = props => {
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) =>{ setPaymentDueDay(item.value);
+            onChange={(item) => {
+              setPaymentDueDay(item.value);
               setPaymentDueDayError(false)
-              
+
             }}
           />
         );
@@ -726,9 +634,10 @@ export default AddLeaseDetails = props => {
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) =>{ setPaymentDueDay(item.value);
+            onChange={(item) => {
+              setPaymentDueDay(item.value);
               setPaymentDueDayError(false)
-              
+
             }}
           />
         );
@@ -751,9 +660,10 @@ export default AddLeaseDetails = props => {
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) =>{ setPaymentDueDay(item.value);
+            onChange={(item) => {
+              setPaymentDueDay(item.value);
               setPaymentDueDayError(false)
-              
+
             }}
           />
         );
@@ -769,18 +679,37 @@ export default AddLeaseDetails = props => {
             maxLength={5}
           />
         );
-        case 507:
+      case 507:
 
         return (
-          <TextInput
-            style={AddLeaseDetailsStyle.input}
-            value={selectedDate}
-            placeholder="Enter the rental amount"
-            placeholderTextColor="#999"
-            keyboardType="number-pad"
-            maxLength={5}
-            onChangeText={()=>setPaymentDueDay(selectedDate)}
-          />
+          <View style={{ flex: 1 }}>
+            <CalendarModal
+              SelectDate={
+                paymentDueDay ? paymentDueDay : 'Select payment due date'
+              }
+              _textInputStyle={{
+                color: paymentDueDay
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor,
+              }}
+              calenderIcon={toggleModalDueDay}
+              onDayPress={day => {
+                setPaymentDueDay(day.dateString);
+                setPaymentDueDayError(false)
+              }}
+              Visible={isDueDayModalVisible}
+              onRequestClose={toggleModalDueDay}
+              markedDates={{
+                [paymentDueDay]: {
+                  selected: true,
+                  selectedColor: _COLORS.Kodie_lightGreenColor,
+                  selectedTextColor: _COLORS.Kodie_BlackColor,
+                },
+              }}
+              _closeButton={toggleModalDueDay}
+              _ApplyButton={toggleModalDueDay}
+            />
+          </View>
         );
       default:
         return null;
@@ -816,7 +745,7 @@ export default AddLeaseDetails = props => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModal}
-              onDayPress={day =>{ 
+              onDayPress={day => {
                 const selected = moment(day.dateString).format('YYYY-MM-DD');
                 setSelectedDate(selected);
                 handleRequestDate(day.dateString);
@@ -839,10 +768,10 @@ export default AddLeaseDetails = props => {
             />
           </View>
           {selectedDateError ? (
-                <Text style={AddLeaseDetailsStyle.error}>
-                  {selectedDateError}
-                </Text>
-              ) : null}
+            <Text style={AddLeaseDetailsStyle.error}>
+              {selectedDateError}
+            </Text>
+          ) : null}
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{'Rental lease term*'}</Text>
             <Dropdown
@@ -863,20 +792,15 @@ export default AddLeaseDetails = props => {
               valueField="lookup_key"
               placeholder="Select length of lease"
               value={lease_term_value}
-              onChange={item => {
-                setlLease_term_value(item.lookup_key);
-                calculateLeaseEndDate(selectedDate, item.lookup_key);
-      setlease_term_valueError(false);
-
-              }}
+              onChange={handleLeaseTermChange}
               renderItem={lease_term_render}
             />
           </View>
           {lease_term_valueError ? (
-                <Text style={AddLeaseDetailsStyle.error}>
-                  {'Please select a rental lease term.'}
-                </Text>
-              ) : null}
+            <Text style={AddLeaseDetailsStyle.error}>
+              {'Please select a rental lease term.'}
+            </Text>
+          ) : null}
           <Text style={[LABEL_STYLES.commontext, { marginTop: 12 }]}>
             {'Lease end date*'}
           </Text>
@@ -901,8 +825,8 @@ export default AddLeaseDetails = props => {
                   selectedTextColor: _COLORS.Kodie_BlackColor,
                 },
               }}
-              _closeButton={toggleModalEndDate}
-              _ApplyButton={toggleModalEndDate}
+              _closeButton={()=>setModalVisibleEndDate(!isModalVisibleEndDate)}
+              _ApplyButton={()=>setModalVisibleEndDate(!isModalVisibleEndDate)}
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -919,14 +843,15 @@ export default AddLeaseDetails = props => {
               selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
               inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
               iconStyle={AddLeaseDetailsStyle.iconStyle}
-              data={lease_end_Data}
+              data={filteredFrequencies}
               maxHeight={300}
               labelField="lookup_description"
               valueField="lookup_key"
               placeholder="How often is rent paid"
               value={lease_end_value}
               onChange={item => {
-                setlLease_end_value({lookup_key: item.lookup_key,
+                setlLease_end_value({
+                  lookup_key: item.lookup_key,
                   lookup_description: item?.lookup_description
                 });
                 setlLease_end_valueError(false);
@@ -937,10 +862,10 @@ export default AddLeaseDetails = props => {
 
           </View>
           {lease_end_valueError ? (
-                <Text style={AddLeaseDetailsStyle.error}>
-                  {'Please select a payment frequency'}
-                </Text>
-              ) : null}
+            <Text style={AddLeaseDetailsStyle.error}>
+              {'Please select a payment frequency'}
+            </Text>
+          ) : null}
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{'Rental amount*'}</Text>
             <TextInput
@@ -955,21 +880,21 @@ export default AddLeaseDetails = props => {
             />
           </View>
           {rentalAmountError ? (
-                <Text style={AddLeaseDetailsStyle.error}>
-                  {rentalAmountError}
-                </Text>
-              ) : null}
+            <Text style={AddLeaseDetailsStyle.error}>
+              {rentalAmountError}
+            </Text>
+          ) : null}
           {lease_end_value.lookup_key ? (
             <View style={AddLeaseDetailsStyle.inputContainer}>
               <Text style={LABEL_STYLES.commontext}>{'Payment due day*'}</Text>
               {renderPaymentDueDayPicker()}
             </View>
           ) : null}
-           {paymentDueDayError ? (
-              <Text style={AddLeaseDetailsStyle.error}>
-                {'Payment due day is required!'}
-              </Text>
-            ) : null}
+          {paymentDueDayError ? (
+            <Text style={AddLeaseDetailsStyle.error}>
+              {'Payment due day is required!'}
+            </Text>
+          ) : null}
           <View style={AddLeaseDetailsStyle.probtn}>
             <View style={{ flex: 1 }}>
               <Text style={AddLeaseDetailsStyle.Protext}>
@@ -978,10 +903,10 @@ export default AddLeaseDetails = props => {
             </View>
             <View style={{ margin: 5 }} />
             {isYesSelectedId == 1 ?
-            <View style={{ flex: 1 }}>
-              <Text style={AddLeaseDetailsStyle.Protext1}>Pro rata amount</Text>
-            </View>
-:null}
+              <View style={{ flex: 1 }}>
+                <Text style={AddLeaseDetailsStyle.Protext1}>Pro rata amount</Text>
+              </View>
+              : null}
           </View>
           <View style={AddLeaseDetailsStyle.Twobtn}>
             <View style={AddLeaseDetailsStyle.btn_main_view}>
@@ -1004,18 +929,18 @@ export default AddLeaseDetails = props => {
             </View>
             <View style={{ margin: 5 }} />
             {isYesSelectedId == 1 ?
-            <View style={{ flex: 1 }}>
-              <TextInput
-                style={AddLeaseDetailsStyle.Amountinput}
-                value={ProRate}
-                onChangeText={setProRate}
-                placeholder="Amount"
-                placeholderTextColor="#999"
-                keyboardType="number-pad"
-                maxLength={5}
-              />
-            </View>
-            : <View style={{ flex: 1 }}/>}
+              <View style={{ flex: 1 }}>
+                <TextInput
+                  style={AddLeaseDetailsStyle.Amountinput}
+                  value={ProRate}
+                  onChangeText={setProRate}
+                  placeholder="Amount"
+                  placeholderTextColor="#999"
+                  keyboardType="number-pad"
+                  maxLength={5}
+                />
+              </View>
+              : <View style={{ flex: 1 }} />}
           </View>
           <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           <View>
@@ -1056,7 +981,7 @@ export default AddLeaseDetails = props => {
                   value={rentalBond}
                   onChangeText={setRentalBond}
                   placeholder="Enter the rental bond amount"
-                keyboardType="number-pad"
+                  keyboardType="number-pad"
 
                 />
               </View>
@@ -1067,7 +992,7 @@ export default AddLeaseDetails = props => {
                   value={rentalDeposit}
                   onChangeText={setRentalDeposit}
                   placeholder="Enter the rental deposit amount"
-                keyboardType="number-pad"
+                  keyboardType="number-pad"
 
                 />
               </View>
@@ -1080,7 +1005,7 @@ export default AddLeaseDetails = props => {
                   value={rentalEscalation}
                   onChangeText={setRentalEscalation}
                   placeholder="Period rent escalation %"
-                keyboardType="number-pad"
+                  keyboardType="number-pad"
 
                 />
               </View>

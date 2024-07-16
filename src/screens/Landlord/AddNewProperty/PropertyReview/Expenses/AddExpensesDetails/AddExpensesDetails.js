@@ -57,11 +57,71 @@ export default AddExpensesDetails = props => {
   const [selectedResponsibleData, setSelectedResponsibleData] = useState([]);
   const [selectedButtonRepeatingError, setSelectedButtonRepeatingError] =
     useState('');
-  const [selectedButtonRepeatingId, setSelectedButtonRepeatingId] = useState(0);
+  const [selectedButtonRepeatingId, setSelectedButtonRepeatingId] = useState(1);
   const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
   const [ExpenceResponse, setExpenceResponse] = useState([]);
   const [notes, setNotes] = useState('');
+  const [lease_end_Data, setLease_end_Data] = useState([]);
+  const [lease_end_value, setlLease_end_value] = useState('');
+  const [lease_end_valueError, setlLease_end_valueError] = useState(false);
 
+   // Calculate and Update Account Excl. and Tax based on user input
+   useEffect(() => {
+    if (accountXcl && tax) {
+      const parsedAccountXcl = parseFloat(accountXcl.replace(/[^0-9.-]/g, ''));
+      const parsedTax = parseFloat(tax.replace(/[^0-9]/g, ''));
+      const calculatedTotalAmount = (parsedAccountXcl * (1 + (parsedTax / 100))).toFixed(2);
+      setTotalAmount(formatCurrency(calculatedTotalAmount));
+      setAccountXcl(formatCurrency(parsedAccountXcl));
+    }
+  }, [accountXcl, tax]);
+  // useEffect(() => {
+  //   if (totalAmount && accountXcl && !tax) {
+  //     // Calculate Tax %
+  //     const parsedTotalAmount = parseFloat(totalAmount.replace(/[^0-9.-]/g, ''));
+  //     const parsedAccountXcl = parseFloat(accountXcl.replace(/[^0-9.-]/g, ''));
+  //     const calculatedTax = ((parsedTotalAmount - parsedAccountXcl) / parsedAccountXcl) * 100;
+  //     setTax(calculatedTax.toFixed(2));
+  //   } else if (totalAmount && !accountXcl && tax) {
+  //     // Calculate Total Amount (excl. tax)
+  //     const parsedTotalAmount = parseFloat(totalAmount.replace(/[^0-9.-]/g, ''));
+  //     const parsedTax = parseFloat(tax.replace(/[^0-9]/g, ''));
+  //     const calculatedAccountXcl = (parsedTotalAmount / (1 + (parsedTax / 100))).toFixed(2);
+  //     setAccountXcl(formatCurrency(calculatedAccountXcl));
+  //   }
+  // }, [totalAmount, accountXcl, tax]);
+
+  const formatCurrency = (value) => {
+    return '$'+' ' + parseFloat(value).toLocaleString('en-US', { style: 'currency', currency: 'USD' }).slice(1);
+  };
+
+  const handleAccountXclChange = (text) => {
+    // Remove non-numeric and non-decimal characters except the first minus sign if present
+    let formattedValue = text.replace(/[^0-9.-]/g, '');
+    if (formattedValue && formattedValue.charAt(0) === '-') {
+      formattedValue = '-' + formattedValue.slice(1).replace(/(\..*)\./g, '$1');
+    } else {
+      formattedValue = formattedValue.replace(/(\..*)\./g, '$1');
+    }
+    formattedValue = '$'+ ' ' + formattedValue;
+    setAccountXcl(formattedValue);
+  };
+  const handleTaxChange = (text) => {
+    // Remove all non-numeric characters except the first decimal point
+    let formattedValue = text.replace(/[^\d.]/g, '');
+  
+    // If there are more than two decimal places, truncate it
+    if (formattedValue.includes('.')) {
+      const parts = formattedValue.split('.');
+      if (parts[1].length > 2) {
+        parts[1] = parts[1].slice(0, 2);
+      }
+      formattedValue = parts.join('.');
+    }
+  
+    // Update the state with the formatted tax value
+    setTax(formattedValue);
+  };
   const handleOptionClick = option => {
     setSelectedOption(option);
   };
@@ -85,12 +145,14 @@ export default AddExpensesDetails = props => {
 
   // Validation for Total amount........
   const validateTotalamount = text => {
-    const mobileReg = /^\d{1,5}$/;
     if (text === '') {
+      setTotalAmount(''); 
+    } else
+   if (!text.startsWith('$')) {
+      text = '$'+' '+ text;
+    }else if (text === '') {
       setTotalAmountError('Total amount is required!');
-    } else if (!mobileReg.test(text)) {
-      setTotalAmountError('Invalid amount format');
-    } else {
+    }else {
       setTotalAmountError('');
     }
     setTotalAmount(text);
@@ -155,7 +217,30 @@ export default AddExpensesDetails = props => {
         setIsLoading(false);
       });
   };
-
+  const lease_end_render = item => {
+    return (
+      <ScrollView contentContainerStyle={{ flex: 1, height: '100%' }}>
+        <View style={AddExpensesDetailsStyle.itemView}>
+          {item.lookup_key === lease_end_value.lookup_key ? (
+            <AntDesign
+              color={_COLORS.Kodie_GreenColor}
+              name={'checkcircle'}
+              size={20}
+            />
+          ) : (
+            <Fontisto
+              color={_COLORS.Kodie_GrayColor}
+              name={'radio-btn-passive'}
+              size={20}
+            />
+          )}
+          <Text style={AddExpensesDetailsStyle.textItem}>
+            {item.lookup_description}
+          </Text>
+        </View>
+      </ScrollView>
+    );
+  };
   // API bind Responsible Lookup key code here.....
   const handleResponsible = () => {
     const propertyData = {
@@ -209,6 +294,7 @@ export default AddExpensesDetails = props => {
       repeating_expense: selectedButtonRepeatingId,
       responsible_paying: selectedButtonResponsibleId,
       expense_category: ExpenceCategoryValue,
+      expense_frequency:lease_end_value,
       supplier: suplier,
       expenses_description: expenseDes,
       note: notes,
@@ -216,6 +302,7 @@ export default AddExpensesDetails = props => {
       start_date: selectedPaidDate ? selectedPaidDate : null,
       is_active: 1,
     };
+    console.log(ExpenceData);
     const url = Config.BASE_URL;
     // const ExpenceUrl = url + 'property_expenses_details/create';
     const ExpenceUrl = url + 'create/expenses';
@@ -261,7 +348,10 @@ export default AddExpensesDetails = props => {
       setTotalAmountError('Total amount is required.');
     } else if (selectedDate.trim() === '') {
       setSelectedDateError('Due date is required!');
-    } else if (!ExpenceCategoryValue) {
+    } else if (lease_end_value == '') {
+      setlLease_end_valueError(true);
+    } 
+     else if (!ExpenceCategoryValue) {
       setExpenceCategoryValueError('Select Responsible Category.');
     }
     // else if (selectedPaidDate.trim() === "") {
@@ -277,10 +367,40 @@ export default AddExpensesDetails = props => {
       setExpenceCategoryValueError('');
     }
   };
-
+  const handle_lease_end = () => {
+    const url = Config.BASE_URL;
+    const lease_end__url = url + 'lookup_details';
+    console.log('Request URL:', lease_end__url);
+    setIsLoading(true);
+    const lease_end_data = {
+      P_PARENT_CODE: 'RENT_PAID',
+      P_TYPE: 'OPTION',
+    };
+    axios
+      .post(lease_end__url, lease_end_data)
+      .then(response => {
+        console.log('API Response rental lease terms:', response?.data);
+        if (response?.data?.status === true) {
+          setLease_end_Data(response?.data?.lookup_details);
+          // alert(JSON.stringify(response?.data?.lookup_details));
+        } else {
+          alert(response?.data?.message);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('API failed lease_term', error);
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   useEffect(() => {
     handleExpenceCategory();
     handleResponsible();
+    handle_lease_end();
     // Expencehandle();
   }, []);
   // dropDownRender
@@ -338,7 +458,7 @@ export default AddExpensesDetails = props => {
             <TextInput
               style={AddExpensesDetailsStyle.input}
               value={totalAmount}
-              onChangeText={setTotalAmount}
+              onChangeText={validateTotalamount}
               onBlur={() => validateTotalamount(totalAmount)}
               placeholder="Enter the total amount of the expense"
               placeholderTextColor="#999"
@@ -357,10 +477,11 @@ export default AddExpensesDetails = props => {
               <TextInput
                 style={[AddExpensesDetailsStyle.input, {flex: 1}]}
                 value={accountXcl}
-                onChangeText={setAccountXcl}
+              
                 placeholder="Amount excl."
                 placeholderTextColor="#999"
-              keyboardType="phone-pad"
+                onChangeText={handleAccountXclChange}
+                keyboardType="numeric"
 
               />
             </View>
@@ -373,10 +494,11 @@ export default AddExpensesDetails = props => {
               <TextInput
                 style={[AddExpensesDetailsStyle.input, {flex: 1}]}
                 value={tax}
-                onChangeText={setTax}
+                onChangeText={handleTaxChange}
+                keyboardType="numeric"
                 placeholder="Enter tax %"
                 placeholderTextColor="#999"
-              keyboardType="phone-pad"
+           
 
               />
             </View>
@@ -415,7 +537,7 @@ export default AddExpensesDetails = props => {
           </View>
 
           <View style={AddExpensesDetailsStyle.addition_featureView}>
-            <Text style={AddExpensesDetailsStyle.Furnished_Text}>
+            <Text style={LABEL_STYLES.commontext}>
               {'Repeating expense?*'}
             </Text>
             <RowButtons
@@ -460,13 +582,52 @@ export default AddExpensesDetails = props => {
                 setSelectedButtonRepeatingId(0);
               }}
             />
+          </View>
+          {selectedButtonRepeatingError?
             <Text style={AddExpensesDetailsStyle.errorText}>
               {selectedButtonRepeatingError}
-            </Text>
-          </View>
+            </Text>:null
+}
+{selectedButtonRepeatingId === 1 ? (
+  <>
+          <View style={{marginTop:10,marginBottom:5}}>
+          <Text style={LABEL_STYLES.commontext}>{'Expense frequency*'}</Text>
+            <Dropdown
+              style={[
+                AddExpensesDetailsStyle.dropdown,
+                { flex: 1, borderRadius: 5, height: 45 ,marginTop: 14},
+              ]}
+              placeholderStyle={[
+                AddExpensesDetailsStyle.placeholderStyle,
+                { color: _COLORS.Kodie_LightGrayColor },
+              ]}
+              selectedTextStyle={AddExpensesDetailsStyle.selectedTextStyle}
+              inputSearchStyle={AddExpensesDetailsStyle.inputSearchStyle}
+              iconStyle={AddExpensesDetailsStyle.iconStyle}
+              data={lease_end_Data}
+              maxHeight={300}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              placeholder="How often is rent paid"
+              value={lease_end_value}
+              onChange={item => {
+                setlLease_end_value(item.lookup_key);
+                setlLease_end_valueError(false);
+                // alert(item.lookup_key);
+              }}
+              renderItem={lease_end_render}
+            />
 
+          </View>
+           {lease_end_valueError ? (
+            <Text style={AddExpensesDetailsStyle.error}>
+              {'Please select a payment frequency'}
+            </Text>
+          ) : null}
+          </>
+):null}
           <View style={AddExpensesDetailsStyle.additiontext}>
-            <Text style={AddExpensesDetailsStyle.Furnished_Text}>
+            <Text style={LABEL_STYLES.commontext}>
               {'Who is responsible for paying for this?'}
             </Text>
             <RowButtons
@@ -638,7 +799,7 @@ export default AddExpensesDetails = props => {
             />
           </View>
           {!selectedButtonDeposit ? (
-            <View style={AddExpensesDetailsStyle.inputContainer}>
+             <View style={{marginTop:10,marginBottom:5}}>
               <Text style={LABEL_STYLES.commontext}>{'Paid date*'}</Text>
               <View style={AddExpensesDetailsStyle.datePickerView}>
                 <CalendarModal

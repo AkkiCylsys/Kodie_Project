@@ -12,6 +12,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import Logrentalpayment from './Logrentalpayment/Logrentalpayment'
 import { useIsFocused } from '@react-navigation/native';
+import { CommonLoader } from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 const Leases = (props) => {
   const { property_id } = props;
 const isFocus =useIsFocused();
@@ -258,6 +259,7 @@ const isFocus =useIsFocused();
         }}>
         <Logrentalpayment onClose={handleLogClose} lease_keys={leaseSummaryData?.LEASE_KEY} />
       </RBSheet>
+      {isLoading? <CommonLoader/> : null}
     </>
   );
 };
