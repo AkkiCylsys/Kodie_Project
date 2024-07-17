@@ -83,7 +83,7 @@ const Bedroom = props => {
       console.log('handleInspectionudateItem.....', items);
     } catch (error) {
       console.error('Error:', error);
-      Alert.alert('Error', 'Failed to update inspection item');
+      // Alert.alert('Error', 'Failed to update inspection item');
     } finally {
       setIsLoading(false);
     }

@@ -836,18 +836,18 @@ const CreateNewInspection = props => {
                   return (
                     <View>
                       <TouchableOpacity
+                      style={{marginRight: 50,marginTop:10}}
                         onPress={() => {
-                          refRBSheet1.current.open();
-                          // Alert.alert('Add custom area', 'klhdkujdsgjdsg');
+                          // refRBSheet1.current.open();
+                          Alert.alert('Add custom area', 'Coming soon');
                         }}>
                         <Text
                           style={{
                             color: _COLORS.Kodie_GreenColor,
-                            fontSize: 12,
-                            marginRight: 70,
+                            fontSize: 14,
                             fontFamily: FONTFAMILY.K_Bold,
                           }}>
-                          {'Add custom area'}
+                          {'Add custom area...'}
                         </Text>
                       </TouchableOpacity>
                     </View>

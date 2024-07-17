@@ -212,7 +212,6 @@ const Inspection = props => {
   };
 
   const SubmitInspection = async () => {
-    // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
@@ -243,9 +242,7 @@ const Inspection = props => {
       console.log('scheduule inspection....', res?.data);
       refRBSheet2.current.close();
       if (res?.data?.success == true) {
-        setTIM_key(res?.data?.data);
-        console.log('TIM_KEY', res?.data?.data?.TIM_KEY);
-        alert(res?.data?.message);
+        alert('Inspection duplicate succussfully');
         setIsLoading(false);
       }
     } catch (error) {
@@ -276,31 +273,31 @@ const Inspection = props => {
         iconName = 'bed';
         break;
       case 'Garden':
-        IconComponent = AntDesign;
+        IconComponent = MaterialIcons;
         iconName = 'grass';
         break;
       case 'Kitchen':
-        IconComponent = AntDesign;
+        IconComponent = MaterialIcons;
         iconName = 'kitchen';
         break;
       case 'Dining room':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialIcons;
+        iconName = 'dinner-dining';
         break;
       case 'Living room':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialIcons;
+        iconName = 'family-restroom';
         break;
       case 'Exterior':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialCommunityIcons;
+        iconName = 'home-assistant';
         break;
       case 'Roof':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialCommunityIcons;
+        iconName = 'home-roof';
         break;
       case 'Garage':
-        IconComponent = MaterialIcons;
+        IconComponent = MaterialCommunityIcons;
         iconName = 'garage';
         break;
       // Add cases for other areas if needed

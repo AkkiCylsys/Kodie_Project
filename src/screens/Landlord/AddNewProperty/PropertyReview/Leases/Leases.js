@@ -74,8 +74,9 @@ const isFocus =useIsFocused();
     setIsLoading(true);
     try {
       const response = await axios.get(url);
+      console.log(response?.data?.data);
       if (response.data.success) {
-        setRentalReceiptData(response.data.data);
+        setRentalReceiptData(response?.data?.data);
         console.log();
       } else {
         console.error('Error fetching rental receipt:', response.data.message);
@@ -227,7 +228,7 @@ const isFocus =useIsFocused();
               </View>
             </>
           )}
-          {rentalReceiptData.length > 0 && (
+          {rentalReceiptData && (
             <View style={{ marginHorizontal: 16 }}>
               <Text style={LeaseSummaryStyle.heading_Text}>Rental receipts</Text>
               <FlatList

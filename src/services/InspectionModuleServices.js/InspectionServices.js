@@ -2,6 +2,25 @@ import axios from "axios";
 import { Config } from "../../Config";
 import { handleApiError } from "../../APIs/ErrorHandler";
 
+export const GetInspectionDeatilsByFilter = (data) => {
+  const url = `${Config.BASE_URL}get/AllInspectionDetails/ByFilter`;
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
+      .then(response => {
+        if (response?.data?.success) {
+          resolve(response.data.data);
+        } else {
+          reject(new Error(response?.data?.error || 'Unknown error'));
+        }
+      })
+      .catch(error => {
+        const errorMessage = handleApiError(error);
+      alert(errorMessage); // Display error message in an alert
+      reject(errorMessage);
+      });
+  });
+};
 export const GetInspectionAreas = (teamKey) => {
     const url = `${Config.BASE_URL}get_inspection_area_details/${teamKey}`;
     return new Promise((resolve, reject) => {
@@ -14,7 +33,10 @@ export const GetInspectionAreas = (teamKey) => {
           }
         })
         .catch(error => {
-          reject(handleApiError(error));
+          const errorMessage = handleApiError(error);
+        alert(errorMessage); // Display error message in an alert
+        reject(errorMessage); // Reject with the error message for further handling if needed
+     
         });
     });
   };
@@ -32,7 +54,9 @@ export const GetInspectionAreas = (teamKey) => {
           }
         })
         .catch(error => {
-          reject(handleApiError(error));
+          const errorMessage = handleApiError(error);
+        alert(errorMessage); // Display error message in an alert
+        reject(errorMessage);
         });
     });
   };
@@ -50,7 +74,9 @@ export const GetInspectionAreas = (teamKey) => {
           }
         })
         .catch(error => {
-          reject(handleApiError(error));
+          const errorMessage = handleApiError(error);
+        alert(errorMessage); // Display error message in an alert
+        reject(errorMessage);
         });
     });
   };
@@ -72,7 +98,9 @@ export const GetInspectionAreas = (teamKey) => {
           }
         })
         .catch(error => {
-          reject(handleApiError(error));
+          const errorMessage = handleApiError(error);
+          alert(errorMessage); // Display error message in an alert
+          reject(errorMessage);
         });
     });
   };
@@ -94,7 +122,9 @@ export const GetInspectionAreas = (teamKey) => {
           }
         })
         .catch(error => {
-          reject(handleApiError(error));
+          const errorMessage = handleApiError(error);
+          alert(errorMessage); // Display error message in an alert
+          reject(errorMessage);
         });
     });
   };
