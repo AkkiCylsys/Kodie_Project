@@ -433,10 +433,10 @@ export default NewInspection = (props) => {
           renderItem={Inspection_render}
           onEndReached={loadMoreData}
           onEndReachedThreshold={0.5}
-          ListFooterComponent={isLoading && page > 1 ? <CommonLoader /> : null}
+          // ListFooterComponent={isLoading && page > 1 ? <CommonLoader /> : null}
         />
       </ScrollView>
-      {isLoading && page === 1 ? <CommonLoader /> : null}
+      {isLoading? <CommonLoader /> : null}
     </SafeAreaView>
   );
 };
