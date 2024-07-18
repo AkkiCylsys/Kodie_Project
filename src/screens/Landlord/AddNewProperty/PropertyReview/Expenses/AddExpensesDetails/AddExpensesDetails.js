@@ -49,7 +49,7 @@ export default AddExpensesDetails = props => {
   const [ExpenceCategoryData, setExpenceCategoryData] = useState([]);
   const [selectedOption, setSelectedOption] = useState('Save');
   const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(true);
-  const [selectedButtonRepeating, setSelectedButtonRepeating] = useState(false);
+  const [selectedButtonRepeating, setSelectedButtonRepeating] = useState(true);
   const [selectedButtonResponsible, setSelectedButtonResponsible] =
     useState(false);
   const [selectedButtonResponsibleId, setSelectedButtonResponsibleId] =
@@ -57,7 +57,7 @@ export default AddExpensesDetails = props => {
   const [selectedResponsibleData, setSelectedResponsibleData] = useState([]);
   const [selectedButtonRepeatingError, setSelectedButtonRepeatingError] =
     useState('');
-  const [selectedButtonRepeatingId, setSelectedButtonRepeatingId] = useState(1);
+  const [selectedButtonRepeatingId, setSelectedButtonRepeatingId] = useState(0);
   const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
   const [ExpenceResponse, setExpenceResponse] = useState([]);
   const [notes, setNotes] = useState('');
@@ -348,7 +348,7 @@ export default AddExpensesDetails = props => {
       setTotalAmountError('Total amount is required.');
     } else if (selectedDate.trim() === '') {
       setSelectedDateError('Due date is required!');
-    } else if (lease_end_value == '') {
+    } else if (!selectedButtonRepeating && lease_end_value == ''  ) {
       setlLease_end_valueError(true);
     } 
      else if (!ExpenceCategoryValue) {
@@ -588,7 +588,7 @@ export default AddExpensesDetails = props => {
               {selectedButtonRepeatingError}
             </Text>:null
 }
-{selectedButtonRepeatingId === 1 ? (
+{!selectedButtonRepeating ? (
   <>
           <View style={{marginTop:10,marginBottom:5}}>
           <Text style={LABEL_STYLES.commontext}>{'Expense frequency*'}</Text>
@@ -619,13 +619,14 @@ export default AddExpensesDetails = props => {
             />
 
           </View>
-           {lease_end_valueError ? (
-            <Text style={AddExpensesDetailsStyle.error}>
+          
+          </>
+):null}
+{!selectedButtonRepeating && lease_end_valueError ? (
+            <Text style={AddExpensesDetailsStyle.errorText}>
               {'Please select a payment frequency'}
             </Text>
           ) : null}
-          </>
-):null}
           <View style={AddExpensesDetailsStyle.additiontext}>
             <Text style={LABEL_STYLES.commontext}>
               {'Who is responsible for paying for this?'}
@@ -828,9 +829,11 @@ export default AddExpensesDetails = props => {
                   _ApplyButton={togglePaidModal}
                 />
               </View>
+              {selectedPaidDateError?
               <Text style={AddExpensesDetailsStyle.errorText}>
                 {selectedPaidDateError}
               </Text>
+:null}
             </View>
           ) : null}
 

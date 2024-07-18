@@ -12,12 +12,11 @@ import {
   ScrollView,
   FlatList,
   SafeAreaView,
-  Button,
+  KeyboardAvoidingView,
   Alert
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {Dropdown} from 'react-native-element-dropdown';
-// import {CreateNewInspectionStyle} from './CreateNewCreateNewInspectionStyle';
 import {CreateNewInspectionStyle} from './CreateNewInspectionCss';
 import CalendarModal from '../../../components/Molecules/CalenderModal/CalenderModal';
 import TimePicker from '../../../components/Molecules/ClockPicker/TimePicker';
@@ -32,24 +31,18 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
 import {_goBack} from '../../../services/CommonServices';
-import CustomDropdown from '../../../components/Molecules/CustomDropdown/CustomDropdown';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import moment from 'moment';
 import {useSelector} from 'react-redux';
-import SearchPlaces from '../../../components/Molecules/SearchPlaces/SearchPlaces';
-import MapScreen from '../../../components/Molecules/GoogleMap/googleMap';
-import Geocoder from 'react-native-geocoding';
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
 import debounce from 'lodash/debounce';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import GuestSelectionContent from '../../../components/GuestSelectionContent/GuestSelectionContent';
 import {useNavigation} from '@react-navigation/native';
-import {clockRunning} from 'react-native-reanimated';
 
 const CreateNewInspection = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
   const isVisible = useNavigation();
   const [inspectionType, setInspectionType] = useState([]);
   const [Inspection_value, setInspection_value] = useState(0);
@@ -105,13 +98,11 @@ const CreateNewInspection = props => {
           console.log('setAreaKey..', AreaKey);
         } else {
           console.error('area response_error:', response?.data?.error);
-          // alert('Oops something went wrong! Please try again later.');
           setIsLoading(false);
         }
       })
       .catch(error => {
         console.error('area response error:', error);
-        // alert(error);
         setIsLoading(false);
       });
   };
@@ -129,7 +120,6 @@ const CreateNewInspection = props => {
 
 
   const handleDone = async () => {
-    // alert(value);
     setIsLoading(true);
     const url = Config.BASE_URL;
     const AreaPostUrl = url + `inspection_details/CustomArea`;
@@ -181,7 +171,6 @@ const CreateNewInspection = props => {
     setSelectedDateError(false);
   };
   const getInspectionDetails = async () => {
-    // alert(TIM_KEY)
     setIsLoading(true);
     const url = Config.BASE_URL;
 
@@ -223,11 +212,9 @@ const CreateNewInspection = props => {
         setIsLoading(false);
       })
       .catch(error => {
-        // Handle error
         console.error('API Error PersonalDetails CIP:', error);
       });
   };
-  // alert(JSON.stringify(selectedAddress))
   useEffect(() => {
     if (isVisible) {
       fetchData();
@@ -594,6 +581,9 @@ const CreateNewInspection = props => {
             : 'Create new inspections'
         }
       />
+       <KeyboardAvoidingView
+      // style={CreateNewInspectionStyle.mainConatainer}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={CreateNewInspectionStyle.Container}>
@@ -883,7 +873,7 @@ const CreateNewInspection = props => {
           onPress={handleSubmit}
         />
       </ScrollView>
-
+      </KeyboardAvoidingView>
       <RBSheet
         ref={refRBSheet}
         height={500}

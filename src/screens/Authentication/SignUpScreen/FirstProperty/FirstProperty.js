@@ -109,6 +109,7 @@ export default FirstProperty = props => {
   let individualAddress = props?.route?.params?.individualAddress;
   let country_code = props?.route?.params?.country_code;
   let company_address = props?.route?.params?.company_address;
+  let password = props?.route?.params?.password;
   const [currentPage, setCurrentPage] = useState(2);
   const [isLoading, setIsLoading] = useState(false);
   const [propertyLocation, setPropertyLocation] = useState('');
@@ -524,9 +525,10 @@ export default FirstProperty = props => {
 
     const downloadURL = await storageRef.getDownloadURL();
     try {
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
       await firestore()
         .collection('Users')
-        .doc(userId)
+        .doc(userCredential.user.uid)
         .set({
           name: `${firstName} ${lastName}`,
           email: email,
@@ -692,9 +694,11 @@ export default FirstProperty = props => {
 
     const downloadURL = await storageRef.getDownloadURL();
     try {
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+
       await firestore()
         .collection('Users')
-        .doc(userId)
+        .doc(userCredential.user.uid)
         .set({
           name: `${firstName} ${lastName}`,
           email: email,

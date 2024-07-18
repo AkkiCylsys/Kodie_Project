@@ -5,6 +5,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { AddLeaseDetailsStyle } from './AddLeaseDetailsStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -244,6 +245,9 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
         }
       })
       .catch(error => {
+        if(error?.response?.status === 409){
+          Alert.alert('Warning',error?.response?.data?.message)
+        }
         console.error('API failed add_Lease', error);
         setIsLoading(false);
         // alert(error);

@@ -177,14 +177,14 @@ export default Expenses = props => {
   return (
     <View style={ExpensesStyle.mainContainer}>
       <ScrollView>
-        {Expenses_data.length > 0 ? null : (
+        {Expenses_data?.length > 0 ? null : (
           <View style={ExpensesStyle.add_Expenses_view}>
             <Text style={ExpensesStyle.add_Expenses_Text}>
               {'Start by adding an expense '}
             </Text>
           </View>
         )}
-        {Expenses_data.length > 0 ? (
+        {Expenses_data?.length > 0 ? (
           <>
             <Text style={ExpensesStyle.heading_Text}>
               {'Property expenses'}

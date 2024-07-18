@@ -90,6 +90,7 @@ export default AboutYou = props => {
   let image = props?.route?.params?.image;
   let Bio = props?.route?.params?.Bio;
   let country_code = props?.route?.params?.country_code;
+  let password = props?.route?.params?.password;
   console.log('firstname..', firstName);
   console.log('lastName..', lastName);
   console.log('mobileNumber..', mobileNumber);
@@ -1340,6 +1341,7 @@ export default AboutYou = props => {
                       run_your_business: tabValue == 'IndividualSignup' ? 0 : 1,
                       company_address: Companylocation,
                       country_code: country_code,
+                      password:password
                     });
                   }}
                 />

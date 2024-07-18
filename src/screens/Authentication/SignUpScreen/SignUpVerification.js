@@ -108,6 +108,7 @@ export default SignUpVerification = props => {
           props.navigation.navigate('SignUpSteps', {
             email: email,
             user_key: user_key,
+            password:password
           });
           setIsLoading(false);
         } else {

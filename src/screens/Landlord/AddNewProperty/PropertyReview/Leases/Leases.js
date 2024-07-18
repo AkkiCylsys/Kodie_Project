@@ -228,7 +228,7 @@ const isFocus =useIsFocused();
               </View>
             </>
           )}
-          {rentalReceiptData && (
+          {rentalReceiptData?.length > 0 && (
             <View style={{ marginHorizontal: 16 }}>
               <Text style={LeaseSummaryStyle.heading_Text}>Rental receipts</Text>
               <FlatList
