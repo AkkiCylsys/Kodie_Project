@@ -1,20 +1,31 @@
-//ScreenNo:105
-//ScreenNo:106
-import React, {useState, useRef} from 'react';
-import {View, Text, TouchableOpacity, TextInput, Image, SafeAreaView} from 'react-native';
-import {ReviewInspectionCss} from './ReviewInspectionCss';
+import React, { useState, useRef } from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Image,
+  SafeAreaView,
+} from 'react-native';
+import { ReviewInspectionCss } from './ReviewInspectionCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { IMAGES, LABEL_STYLES, _COLORS } from '../../../../Themes';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+
 const ReviewInspection = () => {
   const [contractor, setContractor] = useState('');
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
+
+  const handleCloseModal = () => {
+    refRBSheet.current.close();
+  };
 
   return (
     <SafeAreaView style={ReviewInspectionCss.MainContainer}>
@@ -68,7 +79,7 @@ const ReviewInspection = () => {
               placeholder={'Add people attending the inspection'}
               style={ReviewInspectionCss.input}
               onChange={text => setContractor(text)}
-              palceholderColor={_COLORS.Kodie_MediumGrayColor}
+              placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
             />
             <Image
               source={IMAGES.userIcons}
@@ -78,7 +89,7 @@ const ReviewInspection = () => {
           </View>
         </TouchableOpacity>
         <Text style={ReviewInspectionCss.inspections}>
-          {'Items needing urgent repair'}
+          {'Damaged items to be noted'}
         </Text>
         <RowTexts leftText={'Bedroom'} rightText={'Cracked wall'} />
         <RowTexts leftText={'Bathroom'} rightText={'Cracked tile'} />
@@ -115,11 +126,13 @@ const ReviewInspection = () => {
           <View style={ReviewInspectionCss.Container}>
             <View style={ReviewInspectionCss.ModalContainer}>
               <Text style={ReviewInspectionCss.ShareText}>Share report</Text>
-              <AntDesign
-                name="close"
-                size={20}
-                color={_COLORS.Kodie_BlackColor}
-              />
+              <TouchableOpacity onPress={handleCloseModal}>
+                <Entypo
+                  name="cross"
+                  size={24}
+                  color={_COLORS.Kodie_BlackColor}
+                />
+              </TouchableOpacity>
             </View>
             <View style={ReviewInspectionCss.inputContainer}>
               <Text
@@ -139,7 +152,10 @@ const ReviewInspection = () => {
               />
             </View>
             <View style={ReviewInspectionCss.ButtonView}>
-              <TouchableOpacity style={ReviewInspectionCss.cancelView}>
+              <TouchableOpacity
+                style={ReviewInspectionCss.cancelView}
+                onPress={handleCloseModal}
+              >
                 <Text style={[ReviewInspectionCss.cancelText]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={ReviewInspectionCss.SaveView}>
@@ -152,4 +168,5 @@ const ReviewInspection = () => {
     </SafeAreaView>
   );
 };
+
 export default ReviewInspection;

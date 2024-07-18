@@ -54,27 +54,24 @@ const Inspection = props => {
   const [getinspection, setGetInspection] = useState([]);
   const [getCustomeArea, setGetCustomeArea] = useState([]);
   const [getAreaKey, setGetAreaKey] = useState([]);
-  console.log(
-    'getinspection',
-    getinspection
-  );
+  console.log('getinspection', getinspection);
   const TIM_KEY = props?.TIM_KEY;
 
   console.log(' props?.', TIM_KEY);
   console.log('getinspection.TAM_AREA_KEY', AreaKey);
   console.log('getAreaKey....', getAreaKey);
   const PropertyId = props.PropertyId;
-  const navigateToScreen = (id,name,TAIM_ITEM_STATUS) => {
-    console.log(TAIM_ITEM_STATUS,"TAIM_ITEM_STATUS");
-        navigation.navigate('Bedroom', {
-          TeamAreaKey: id,
-          AreaName:name,
-          TIM_KEY: TIM_KEY,
-          getinspectionKey: getinspection.v_UPD_KEY,
-          PropertyId:PropertyId,
-          teamCreateId: loginData?.Login_details?.user_account_id,
-          TAIM_ITEM_STATUS:TAIM_ITEM_STATUS
-        });
+  const navigateToScreen = (id, name, TAIM_ITEM_STATUS) => {
+    console.log(TAIM_ITEM_STATUS, 'TAIM_ITEM_STATUS');
+    navigation.navigate('Bedroom', {
+      TeamAreaKey: id,
+      AreaName: name,
+      TIM_KEY: TIM_KEY,
+      getinspectionKey: getinspection.v_UPD_KEY,
+      PropertyId: PropertyId,
+      teamCreateId: loginData?.Login_details?.user_account_id,
+      TAIM_ITEM_STATUS: TAIM_ITEM_STATUS,
+    });
   };
   const handleCloseModal = () => {
     refRBSheet2.current.close();
@@ -324,19 +321,25 @@ const Inspection = props => {
                 />
               </View>
             ) : (
-              <AntDesign
-                name={'minuscircle'}
-                size={20}
-                color={_COLORS.Kodie_lightRedColor}
-                style={InspectionCss.IconStyle}
-              />
+              <TouchableOpacity>
+                <AntDesign
+                  name={'minuscircle'}
+                  size={20}
+                  color={_COLORS.Kodie_lightRedColor}
+                  style={InspectionCss.IconStyle}
+                />
+              </TouchableOpacity>
             )}
             <Text style={InspectionCss.editText}>{item.area_name}</Text>
           </View>
           {!isEditing ? (
             <TouchableOpacity
               onPress={() =>
-                navigateToScreen(item.area_key_id,item?.area_name,item?.TAIM_ITEM_STATUS)
+                navigateToScreen(
+                  item.area_key_id,
+                  item?.area_name,
+                  item?.TAIM_ITEM_STATUS,
+                )
               }
               style={InspectionCss.rightIcon}>
               <Feather
@@ -361,7 +364,6 @@ const Inspection = props => {
     );
   };
 
- 
   return (
     <ScrollView>
       <View style={InspectionCss.MainContainer}>
@@ -567,7 +569,9 @@ const Inspection = props => {
               }
             />
             <View style={InspectionCss.ButtonView}>
-              <TouchableOpacity style={InspectionCss.cancelView}>
+              <TouchableOpacity
+                style={InspectionCss.cancelView}
+                onPress={handleCloseModal}>
                 <Text style={[InspectionCss.cancelText]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
