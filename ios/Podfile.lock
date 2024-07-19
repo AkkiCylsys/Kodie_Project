@@ -962,6 +962,8 @@ PODS:
   - BVLinearGradient (2.8.3):
     - React-Core
   - DoubleConversion (1.1.6)
+  - FBAEMKit (17.0.2):
+    - FBSDKCoreKit_Basics (= 17.0.2)
   - FBLazyVector (0.70.0)
   - FBReactNativeSpec (0.70.0):
     - RCT-Folly (= 2021.07.22.00)
@@ -970,6 +972,18 @@ PODS:
     - React-Core (= 0.70.0)
     - React-jsi (= 0.70.0)
     - ReactCommon/turbomodule/core (= 0.70.0)
+  - FBSDKCoreKit (17.0.2):
+    - FBAEMKit (= 17.0.2)
+    - FBSDKCoreKit_Basics (= 17.0.2)
+  - FBSDKCoreKit_Basics (17.0.2)
+  - FBSDKGamingServicesKit (17.0.2):
+    - FBSDKCoreKit (= 17.0.2)
+    - FBSDKCoreKit_Basics (= 17.0.2)
+    - FBSDKShareKit (= 17.0.2)
+  - FBSDKLoginKit (17.0.2):
+    - FBSDKCoreKit (= 17.0.2)
+  - FBSDKShareKit (17.0.2):
+    - FBSDKCoreKit (= 17.0.2)
   - Firebase (10.20.0):
     - Firebase/Core (= 10.20.0)
   - Firebase/Auth (10.20.0):
@@ -1460,6 +1474,21 @@ PODS:
     - React-Core
   - react-native-document-picker (9.2.0):
     - React-Core
+  - react-native-fbsdk-next (13.0.0):
+    - React-Core
+    - react-native-fbsdk-next/Core (= 13.0.0)
+    - react-native-fbsdk-next/Login (= 13.0.0)
+    - react-native-fbsdk-next/Share (= 13.0.0)
+  - react-native-fbsdk-next/Core (13.0.0):
+    - FBSDKCoreKit (~> 17.0.0)
+    - React-Core
+  - react-native-fbsdk-next/Login (13.0.0):
+    - FBSDKLoginKit (~> 17.0.0)
+    - React-Core
+  - react-native-fbsdk-next/Share (13.0.0):
+    - FBSDKGamingServicesKit (~> 17.0.0)
+    - FBSDKShareKit (~> 17.0.0)
+    - React-Core
   - react-native-geolocation (3.2.1):
     - React-Core
   - react-native-geolocation-service (5.3.1):
@@ -1692,6 +1721,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-contacts (from `../node_modules/react-native-contacts`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
+  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -1741,6 +1771,12 @@ SPEC REPOS:
     - abseil
     - AppAuth
     - BoringSSL-GRPC
+    - FBAEMKit
+    - FBSDKCoreKit
+    - FBSDKCoreKit_Basics
+    - FBSDKGamingServicesKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseAppCheckInterop
@@ -1825,6 +1861,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-contacts"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
+  react-native-fbsdk-next:
+    :path: "../node_modules/react-native-fbsdk-next"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
   react-native-geolocation-service:
@@ -1919,8 +1957,14 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: 1e2348957acdbcad360b80a264a90799984b2ba6
   BVLinearGradient: 880f91a7854faff2df62518f0281afb1c60d49a3
   DoubleConversion: 5189b271737e1565bdce30deb4a08d647e3f5f54
+  FBAEMKit: 619f96ea65427e8afca240d5b0f4703738dfdf5c
   FBLazyVector: 6c76fe46345039d5cf0549e9ddaf5aa169630a4a
   FBReactNativeSpec: 1a270246542f5c52248cb26a96db119cfe3cb760
+  FBSDKCoreKit: a5f384db2e9ee84e98494fed8f983d2bd79accff
+  FBSDKCoreKit_Basics: d35c775aaf243a2d731dfae7be3a74b1987285ab
+  FBSDKGamingServicesKit: bf02b6f115e545910b8a77bf8defaf74a7eccda1
+  FBSDKLoginKit: f8ca5f7ab7c4e5b93e729d94975b0db7fcc511ed
+  FBSDKShareKit: e7ec3bed8e82dabc04e56f3cf44ef99a1864309e
   Firebase: 10c8cb12fb7ad2ae0c09ffc86cd9c1ab392a0031
   FirebaseAnalytics: a2731bf3670747ce8f65368b118d18aa8e368246
   FirebaseAppCheckInterop: 5da5ce93e8797a215e3f677fb0654b74e736c8b8
@@ -1967,6 +2011,7 @@ SPEC CHECKSUMS:
   React-logger: 48d82b9be8e44d86668de4453fdb60255516388b
   react-native-contacts: cb4f3b823550adbce0802901b9e63bf1526ec0af
   react-native-document-picker: 2b3efb60622b7be891b8d0e0e5424632150e0c94
+  react-native-fbsdk-next: 84746ea062dc3b1a422154d7674ba4c5836b6d82
   react-native-geolocation: 491408e38ed91f999525600867e579e715f3465a
   react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-image-picker: 6f8b3ea523b02c622b9e4f9c36f17348aff0909d

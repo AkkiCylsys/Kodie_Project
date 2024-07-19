@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
+import RBSheet from 'react-native-raw-bottom-sheet';
 import TopHeader from "../../../components/Molecules/Header/Header";
 import { _goBack } from "../../../services/CommonServices";
 import { _COLORS, BANNERS, FONTFAMILY, IMAGES } from "../../../Themes";
@@ -17,6 +18,7 @@ import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
 import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
