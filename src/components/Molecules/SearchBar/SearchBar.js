@@ -57,7 +57,8 @@ const SearchBar = props => {
           // onChangeText={(text) =>
           //   text ? handleSearchChange(text) : setSearch()
           // }
-          onChangeText={handleSearchChange}
+          // onChangeText={handleSearchChange}
+          onChangeText={props.searchData}
           placeholder={truncatePlaceholder(props.placeholder, 20)}
           placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
         />

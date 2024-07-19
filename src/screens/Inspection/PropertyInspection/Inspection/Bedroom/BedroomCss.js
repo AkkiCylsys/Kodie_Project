@@ -43,7 +43,7 @@ export const BedroomCss = StyleSheet.create({
   },
   bedText: {
     fontSize: 16,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
     alignSelf: 'flex-start',
     justifyContent: 'flex-start',

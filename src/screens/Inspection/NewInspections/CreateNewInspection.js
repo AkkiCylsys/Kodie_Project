@@ -117,7 +117,9 @@ const CreateNewInspection = props => {
       return newCheckedItems;
     });
   };
-
+  const handleCloseModal = () => {
+    refRBSheet1.current.close();
+  };
 
   const handleDone = async () => {
     setIsLoading(true);
@@ -1056,7 +1058,8 @@ const CreateNewInspection = props => {
               }
             />
             <View style={CreateNewInspectionStyle.ButtonView}>
-              <TouchableOpacity style={CreateNewInspectionStyle.cancelView}>
+              <TouchableOpacity style={CreateNewInspectionStyle.cancelView}
+              onPress={handleClosePopup}>
                 <Text style={[CreateNewInspectionStyle.cancelText]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity

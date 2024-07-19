@@ -175,4 +175,43 @@ export const NewInspectionStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
 
+  in_progress_view:{ flex:1,alignSelf: "center",  backgroundColor: _COLORS.Kodie_LightOrange,
+  paddingVertical: 5,
+  paddingHorizontal: 15,borderRadius:15 },
+  Container: {
+    marginHorizontal: 16,
+    marginVertical: 16,
+  },
+  ModalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  ShareText: {
+    fontFamily: FONTFAMILY.K_Bold,
+    fontSize: 16,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  modalFile: { flexDirection: "row", marginTop: 16 },
+  deleteIconView: {
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_LightWhiteColor,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 8,
+  },
+  editText: {
+    fontSize: 16,
+    fontFamily: FONTFAMILY.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+    alignSelf: "center",
+    marginLeft: 10,
+    marginBottom:5
+  },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
 });

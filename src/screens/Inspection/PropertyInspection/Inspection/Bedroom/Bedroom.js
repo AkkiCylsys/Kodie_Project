@@ -359,9 +359,7 @@ const Bedroom = props => {
                   Text_Color={_COLORS.Kodie_BlackColor}
                   backgroundColor={_COLORS.Kodie_WhiteColor}
                   borderColor={_COLORS.Kodie_WhiteColor}
-                  onPress={() => {
-                    navigation.navigate.pop();
-                  }}
+                  onPress={() => setIsEditing(!isEditing)}
                   disabled={isLoading ? true : false}
                   width={'20%'}
                   marginHorizontal={10}
@@ -375,6 +373,7 @@ const Bedroom = props => {
                   }}
                   disabled={isLoading ? true : false}
                   width={'20%'}
+                  height={'50%'}
                 />
               </View>
             </>
@@ -389,7 +388,10 @@ const Bedroom = props => {
                 }}
                 disabled={isLoading ? true : false}
               />
-              <TouchableOpacity style={BedroomCss.goBack_View}>
+              <TouchableOpacity style={BedroomCss.goBack_View}
+              onPress={() => {
+                props.navigation.navigate('PropertyInspection');
+              }}>
                 <View style={BedroomCss.backIcon}>
                   <Feather
                     name="chevron-left"
