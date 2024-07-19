@@ -138,6 +138,7 @@ const SignUpSteps = props => {
 
   let email = props?.route?.params?.email;
   let user_key = props?.route?.params?.user_key;
+  let password = props?.route?.params?.password;
   console.log('email...', email);
   console.log('user_key...', user_key);
   console.log('countryCode...', country_Code_Get);
@@ -301,6 +302,7 @@ const SignUpSteps = props => {
         image: ImageName,
         Bio: bio,
         country_code: country_Code_Get,
+        password:password
       });
       // }
     }

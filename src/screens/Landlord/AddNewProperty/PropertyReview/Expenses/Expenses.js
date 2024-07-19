@@ -11,65 +11,21 @@ import axios from 'axios';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import moment from 'moment/moment';
 import {Config} from '../../../../../Config';
-const proper_expens_data = [
-  {
-    id: '1',
-    heading: 'Accounting',
-    amount_status: 'Amount due',
-    paidByUser: 'Tenant',
-    Amount: '$100',
-    Date: '9 August 2023',
-    payment_status: 'Awaiting Payment',
-  },
-  {
-    id: '2',
-    heading: 'Repairs and maintenance',
-    amount_status: 'Amount paid',
-    paidByUser: 'LandLord',
-    Amount: '$200',
-    Date: '16 August 2023',
-    payment_status: 'Paid',
-  },
-  {
-    id: '3',
-    heading: 'Cleaning',
-    amount_status: 'Amount due',
-    paidByUser: 'Tenant',
-    Amount: '$300',
-    Date: '23 August 2023',
-    payment_status: 'paid',
-  },
-  {
-    id: '4',
-    heading: 'Repairs and maintenance',
-    amount_status: 'Amount due',
-    paidByUser: 'Tenant',
-    Amount: '$150',
-    Date: '30 August 2023',
-    payment_status: 'paid',
-  },
-];
 export default Expenses = props => {
-  // alert(JSON.stringify(props.property_id));
   const property_id = props.property_id;
   console.log('property_id in Expenses..', property_id);
   const refRBSheet = useRef();
   const [Expenses_data, setExpenses_Data] = useState([]);
-  const [Expenses_value, setExpenses_vata] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const CloseUp = () => {
     refRBSheet.current.close();
     get_Expenses_Details();
   };
-  // Fetch property expenses......
 
   const get_Expenses_Details = async () => {
     const url = Config.BASE_URL;
-    // const Expenses_Details_url =
-    //   url + `property_expenses_details/getAll/${property_id}`;
     const Expenses_Details_url = url + `getAll/Expenses/${property_id}`;
     console.log('Request URL:', Expenses_Details_url);
-    // setIsLoading(true);
     await axios
       .get(Expenses_Details_url)
       .then(response => {
@@ -97,7 +53,6 @@ export default Expenses = props => {
   }, []);
 
   const property_expense_render = ({item, index}) => {
-    // Function to get expense category description based on lookup key
     const getExpenseCategory = lookupKey => {
       switch (lookupKey) {
         case 269:
@@ -165,7 +120,7 @@ export default Expenses = props => {
                   {item.UPED_PAID == 0 ? 'Amount due' : 'Amount paid'}
                 </Text>
                 <Text style={ExpensesStyle.Accounting_Text}>
-                  ${item.UPED_TOTAL_AMOUNT}
+                  {item.UPED_TOTAL_AMOUNT}
                 </Text>
               </View>
             </View>
@@ -222,14 +177,14 @@ export default Expenses = props => {
   return (
     <View style={ExpensesStyle.mainContainer}>
       <ScrollView>
-        {Expenses_data.length > 0 ? null : (
+        {Expenses_data?.length > 0 ? null : (
           <View style={ExpensesStyle.add_Expenses_view}>
             <Text style={ExpensesStyle.add_Expenses_Text}>
               {'Start by adding an expense '}
             </Text>
           </View>
         )}
-        {Expenses_data.length > 0 ? (
+        {Expenses_data?.length > 0 ? (
           <>
             <Text style={ExpensesStyle.heading_Text}>
               {'Property expenses'}

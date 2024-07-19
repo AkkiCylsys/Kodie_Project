@@ -5,6 +5,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { AddLeaseDetailsStyle } from './AddLeaseDetailsStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -25,6 +26,7 @@ import DividerIcon from '../../../../../../components/Atoms/Devider/DividerIcon'
 import { color } from 'react-native-reanimated';
 import moment from 'moment/moment';
 import { SignupLookupDetails } from '../../../../../../APIs/AllApi';
+import { useIsFocused } from '@react-navigation/native';
 const daysOfWeek = [
   { label: "Monday", value: "1" },
   { label: "Tuesday", value: "2" },
@@ -39,6 +41,7 @@ export default AddLeaseDetails = props => {
   console.log('loginData...', loginData);
   const leaseDataDetails = props?.leaseData;
   console.log("leaseDataDetails", leaseDataDetails)
+  const isFocus = useIsFocused()
   const property_id = props.property_id;
   console.log('property id in add lease Detail..', property_id);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +85,7 @@ export default AddLeaseDetails = props => {
   const [isYesSelected, setIsYesSelected] = useState(false);
   const [isYesSelectedId, setIsYesSelectedId] = useState(0);
   const [ProRate, setProRate] = useState(0);
+  const [ProRateError, setProRateError] = useState('');
   const handleButtonClick = isYes => {
     setIsYesSelected(isYes);
   };
@@ -92,6 +96,9 @@ export default AddLeaseDetails = props => {
     handle_rental_reminder();
     handle_lease_term();
     handle_lease_end();
+  
+  }, []);
+  useEffect(()=>{
     if (leaseDataDetails.LEASE_KEY) {
       setSelectedDate(moment(leaseDataDetails?.UPLD_COMMENCEMENT_DATE).format('YYYY-MM-DD'));
       setlLease_term_value(parseFloat(leaseDataDetails?.UPLD_RENTAL_LEASE_TERM));
@@ -109,9 +116,15 @@ export default AddLeaseDetails = props => {
       setPayment_reminder_value(leaseDataDetails?.UPLD_RENT_PAYMENT_REMINDER)
       setExpiry_reminder_value(leaseDataDetails?.UPLD_LEASE_EXPIRY_REMINDER)
       setProRate(`${leaseDataDetails?.UPLD_PRO_RATA_AMOUNT}`)
-      setlLease_end_value({ lookup_key: leaseDataDetails?.frequency_key, lookup_description: leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY })
+      setlLease_end_value({lookup_key: leaseDataDetails?.frequency_key, lookup_description: leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY })
+   setPaymentDueDay(leaseDataDetails?.UPLD_PAYMENT_DUE_DAY)
+   const initialData= parseFloat(leaseDataDetails?.UPLD_RENTAL_LEASE_TERM)
+if(initialData){handleLeaseTermChange({lookup_key:initialData})}
+   
     }
-  }, []);
+  },[])
+
+ 
   const handleOptionClick = option => {
     setSelectedOption(option);
   };
@@ -133,6 +146,14 @@ export default AddLeaseDetails = props => {
       setSelectedDateError('Commencement date is required!');
     } else {
       setSelectedDateError('');
+    }
+  };
+  const handleProRateAmount = text => {
+    setProRate(text);
+    if (text.trim() === '') {
+      setProRateError('Commencement date is required!');
+    } else {
+      setProRateError('');
     }
   };
   const validateRentalAmount = text => {
@@ -224,6 +245,9 @@ export default AddLeaseDetails = props => {
         }
       })
       .catch(error => {
+        if(error?.response?.status === 409){
+          Alert.alert('Warning',error?.response?.data?.message)
+        }
         console.error('API failed add_Lease', error);
         setIsLoading(false);
         // alert(error);
@@ -362,13 +386,12 @@ export default AddLeaseDetails = props => {
       P_TYPE: 'OPTION',
     });
 
-    console.log('setLease_term_Data', res);
+    console.log('handle_lease_end', res);
 
     setLease_end_Data(res?.lookup_details);
     setIsLoading(false);
   };
   const handleLeaseTermChange = (item) => {
-    // alert(item.lookup_key)
     setlLease_term_value(item.lookup_key);
     calculateLeaseEndDate(selectedDate, item.lookup_key);
     setlease_term_valueError(false);
@@ -851,7 +874,7 @@ export default AddLeaseDetails = props => {
               value={lease_end_value}
               onChange={item => {
                 setlLease_end_value({
-                  lookup_key: item.lookup_key,
+                  lookup_key: item?.lookup_key,
                   lookup_description: item?.lookup_description
                 });
                 setlLease_end_valueError(false);

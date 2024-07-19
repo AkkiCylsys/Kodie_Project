@@ -67,7 +67,7 @@ export const NewInspectionStyle = StyleSheet.create({
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontFamily: FONTFAMILY.K_Regular,
     marginLeft: 2,
-    alignSelf:'center'
+    alignSelf: 'center'
   },
   insp_data_View: {
     flex: 1,
@@ -80,17 +80,17 @@ export const NewInspectionStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
-    alignSelf:'center'
+    alignSelf: 'center'
   },
   insp_cld_date: {
     fontSize: 16,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
     alignSelf: "center",
-    marginBottom:10
+    marginBottom: 10
   },
   insp_cld_main_view: {
-    flex:0.3,
+    flex: 0.3,
     marginRight: 8,
     marginTop: 10,
   },
@@ -113,8 +113,8 @@ export const NewInspectionStyle = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  user_main_view:{ flex: 1, flexDirection: "row" },
-  user_img_sty:{
+  user_main_view: { flex: 1, flexDirection: "row" },
+  user_img_sty: {
     height: 38,
     width: 38,
     borderRadius: 38 / 2,
@@ -122,17 +122,59 @@ export const NewInspectionStyle = StyleSheet.create({
     marginHorizontal: 10,
     resizeMode: "contain",
   },
-  user_name_text:{ 
+  user_name_text: {
     flex: 1,
-    color:_COLORS.Kodie_BlackColor,
-    fontSize:12,
-    fontFamily:FONTFAMILY.K_Regular
-   },
-   in_progress_txt:{
+    color: _COLORS.Kodie_BlackColor,
+    fontSize: 12,
+    fontFamily: FONTFAMILY.K_Regular
+  },
+  in_progress_txt: {
     fontSize: 12,
     color: _COLORS.Kodie_DarkOrange,
     alignSelf: "center",
   },
+  in_progress_view: {
+    flex: 1, alignSelf: "center", backgroundColor: _COLORS.Kodie_LightOrange,
+    paddingVertical: 5,
+    paddingHorizontal: 15, borderRadius: 15
+  },
+  containerStyle  :{
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 16,
+    marginVertical: 10,
+  },
+
+  leftButtonStyle  :{
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+  },
+
+  rightButtonStyle  :{
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  },
+
+  textContainerStyle  :{
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  textItemStyle  :{
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  textStyle  :{
+    fontSize: 18,
+    alignSelf: "center",
+    fontFamily: FONTFAMILY?.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+  },
+
   in_progress_view:{ flex:1,alignSelf: "center",  backgroundColor: _COLORS.Kodie_LightOrange,
   paddingVertical: 5,
   paddingHorizontal: 15,borderRadius:15 },

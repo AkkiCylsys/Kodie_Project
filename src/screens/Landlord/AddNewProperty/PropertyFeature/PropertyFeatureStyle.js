@@ -230,4 +230,39 @@ export const PropertyFeatureStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_BlackColor,
   },
+  searchInput: {
+    color: _COLORS.Kodie_BlackColor,
+    borderColor: _COLORS.Kodie_GrayColor,
+    height: 40,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+  },
+  listContainer: {
+    paddingVertical: 10,
+    height: 200,
+  },
+  rowList: {
+    height: 40,
+  },
+  tagContainer: {
+    borderWidth: 1,
+    height: 40,
+    backgroundColor: _COLORS.Kodie_BlackColor,
+  },
+  textTag: {
+    fontSize: 14,
+    color: _COLORS.Kodie_WhiteColor,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  textDropdown: {
+    marginLeft: 20,
+  },
+  dropdownMenu: {
+    flex: 1,
+    borderWidth: 1,
+    height: 50,
+    borderColor: _COLORS.Kodie_GrayColor,
+    marginTop: 10,
+    borderRadius: 8,
+  },
 });

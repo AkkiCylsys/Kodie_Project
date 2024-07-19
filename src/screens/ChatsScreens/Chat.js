@@ -8,6 +8,7 @@ import {
   Modal,
   Image,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import {GiftedChat, Actions, Send, Bubble} from 'react-native-gifted-chat';
@@ -35,6 +36,8 @@ const Chat = props => {
   const [optionsModalVisible, setOptionsModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [unreadMessages, setUnreadMessages] = useState([]);
+
 
   const openOptionsModal = () => {
     setOptionsModalVisible(true);
@@ -51,79 +54,110 @@ const Chat = props => {
     setDeleteModalVisible(false);
   };
 
-  useEffect(() => {
-    // initializeChat();
+  const createDocId = (userId1, userId2) => {
+    return userId1 > userId2 ? `${userId1}-${userId2}` : `${userId2}-${userId1}`;
+  };
 
-    const docid =
-      route.params.userid > loginData.Login_details.user_id
-        ? loginData.Login_details.user_id + '-' + route.params.userid
-        : route.params.userid + '-' + loginData.Login_details.user_id;
-    const messageRef = firestore()
-      .collection('chatrooms')
-      .doc(docid)
-      .collection('messages')
-      .orderBy('createdAt', 'desc');
+ useEffect(() => {
+  const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
+  const messageRef = firestore()
+    .collection('chatrooms')
+    .doc(docid)
+    .collection('messages')
+    .orderBy('createdAt', 'desc');
 
-    const unSubscribe = messageRef.onSnapshot(querySnap => {
-      const allmsg = querySnap.docs.map(docSanp => {
-        const data = docSanp.data();
-        if (data.createdAt) {
-          return {
-            ...docSanp.data(),
-            createdAt: docSanp.data().createdAt.toDate(),
-          };
-        } else {
-          return {
-            ...docSanp.data(),
-            createdAt: new Date(),
-          };
+  const unsubscribe = messageRef.onSnapshot(querySnapshot => {
+    if (querySnapshot && !querySnapshot.empty) {
+      const messages = querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          _id: doc.id,
+          text: data.text,
+          createdAt: data.createdAt ? data.createdAt.toDate() : new Date(),
+          user: {
+            _id: data.user._id,
+            avatar: data.user.avatar,
+          },
+          image: data.image || null,
+          pending: data.pending || false,
+          sent: data.sent || true,
+          seen: data.seen || false,
+        };
+      });
+
+      const newUnreadMessages = messages.filter(
+        message => message.user._id !== loginData.Login_details.user_id && !message.seen
+      );
+
+      setUnreadMessages(newUnreadMessages);
+
+      // Update seen status for all unread messages
+      querySnapshot.docs.forEach(async doc => {
+        const data = doc.data();
+        if (data.user._id !== loginData.Login_details.user_id && !data.seen) {
+          await firestore()
+            .collection('chatrooms')
+            .doc(docid)
+            .collection('messages')
+            .doc(doc.id)
+            .update({ seen: true });
         }
       });
-      setMessageList(allmsg);
-    });
 
-    return () => {
-      unSubscribe();
-    };
-  }, []);
+      setMessageList(messages);
+    } else {
+      setMessageList([]); // Set empty array if no messages found
+      setUnreadMessages([]);
+    }
+  });
+
+  // Cleanup subscription on unmount
+  return () => unsubscribe();
+}, [loginData, route.params.userid]);
+
+
 
   const onSend = async messageArray => {
     const msg = messageArray[0];
-    const {type, text, uri, video, pdf, image, ...otherProps} = msg;
+    const {text, image} = msg;
 
-    // Define the message object according to the format expected by Gifted Chat
     let message = {
-      _id: uuid.v4(), // Generate a unique ID for the message
-      text: text || '', // Ensure text is always present
+      _id: uuid.v4(),
+      text: text || '',
       createdAt: new Date(),
       user: {
         _id: loginData.Login_details.user_id,
         avatar: loginData.Login_details.profile_photo_path,
       },
+      image: image || null,
+      pending: true, // Mark as pending
+      sent: false, // Mark as not sent yet
     };
 
-    if (image) {
-      // If it's an image message, add the image URI to the message object
-      message.image = image;
-    }
-
-    // Add the message to the message list
     setMessageList(previousMessages =>
       GiftedChat.append(previousMessages, message),
     );
 
-    const docid =
-      route.params.userid > loginData.Login_details.user_id
-        ? loginData.Login_details.user_id + '-' + route.params.userid
-        : route.params.userid + '-' + loginData.Login_details.user_id;
+    const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
 
-    // Save the message to Firestore
     try {
-      await firestore()
-        .collection('chatrooms')
-        .doc(docid)
-        .collection('messages')
-        .add({...message, createdAt: firestore.FieldValue.serverTimestamp()});
+      const docRef = firestore().collection('chatrooms').doc(docid);
+
+      // Check if the chatroom exists, create if not
+      const doc = await docRef.get();
+      if (!doc.exists) {
+        await docRef.set({
+          // Initial data for the chatroom if it doesn't exist
+        });
+      }
+
+      // Add message to Firestore
+      await docRef.collection('messages').add({
+        ...message,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        pending: false, // Mark as not pending
+        sent: true, // Mark as sent
+      });
     } catch (error) {
       console.error('Error adding message to Firestore:', error);
     }
@@ -136,12 +170,12 @@ const Chat = props => {
         mediaType: 'any',
         compressImageQuality: Platform.OS === 'ios' ? 0.8 : 1,
       });
+
       closeOptionsModal();
-      var randomNumber = Math.floor(Math.random() * 100) + 1;
+
       // Loop through each selected file and upload it
       for (let i = 0; i < results.length; i++) {
         const result = results[i];
-        console.log('dlkfhdslkhfdshfsd', result);
         const userId = uuid.v4();
         const storageRef = storage().ref(`files/${userId}`);
 
@@ -156,17 +190,39 @@ const Chat = props => {
         }
 
         // Upload the file to storage
-        await storageRef.putFile(result.path);
+        const uploadTask = storageRef.putFile(result.path);
 
-        const downloadURL = await storageRef.getDownloadURL();
-        console.log('downloadURL', downloadURL);
-        // Create a new message object for each image and send it
-        const newMessage = {
-          [messageType]: downloadURL,
-        };
+        uploadTask.on(
+          'state_changed',
+          snapshot => {
+            // Track upload progress if needed
+          },
+          error => {
+            console.error('Error uploading file:', error);
+          },
+          async () => {
+            // Upload completed successfully
+            const downloadURL = await storageRef.getDownloadURL();
+            console.log('Download URL:', downloadURL);
 
-        console.log('newMessage', newMessage);
-        onSend([newMessage]);
+            // Create a new message object for each image/video and send it
+            const newMessage = {
+              _id: uuid.v4(),
+              createdAt: new Date(),
+              user: {
+                _id: loginData.Login_details.user_id,
+                avatar: loginData.Login_details.profile_photo_path,
+              },
+              image: messageType === 'image' ? downloadURL : null,
+              pdf: messageType === 'pdf' ? downloadURL : null,
+              video: messageType === 'video' ? downloadURL : null,
+              pending: true,
+              sent: false,
+            };
+
+            onSend([newMessage]);
+          },
+        );
       }
     } catch (error) {
       console.log('Error picking image, PDF, or video:', error);
@@ -247,22 +303,78 @@ const Chat = props => {
     return (
       <Bubble
         {...props}
-        textStyle={{
+        renderTicks={() => {
+          if (isCurrentUser) {
+            if (props.currentMessage.sent && props.currentMessage.seen) {
+              return <Ionicons name="checkmark-done-sharp" size={18} color="blue" />;
+            } else if (props.currentMessage.sent) {
+              return <Ionicons name="checkmark-done-sharp" size={18} color="gray" />;
+            }
+          }
+          return null;
+        }}
+        renderCustomView={props => {
+          if (props.currentMessage.pending) {
+            return (
+              <View
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  bottom: 0,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                }}>
+                <ActivityIndicator size="large" color="#ffffff" />
+              </View>
+            );
+          }
+          return null;
+        }}
+        renderMessageImage={(props) =>
+          props.currentMessage.image ? (
+            <Image
+              source={{ uri: props.currentMessage.image }}
+              style={{ width: 120, height: 120 , borderRadius:10}}
+            />
+          ) : null
+        }
+        wrapperStyle={{
           left: {
-            color: isCurrentUser ? '#ffffff' : '#000000',
+            backgroundColor: _COLORS.Kodie_WhiteColor,
+            borderColor: _COLORS.Kodie_LightGrayLineColor,
+            borderWidth: 0.5,
+            borderRadius: 10,
+            marginBottom: 5,
           },
           right: {
-            color: isCurrentUser ? '#ffffff' : '#000000',
+            backgroundColor: _COLORS.Kodie_GreenColor,
+            borderColor: _COLORS.Kodie_GreenColor,
+            borderWidth: 0.5,
+            borderRadius: 8,
+            marginBottom: 5,
+          },
+        }}
+        textStyle={{
+          left: {
+            color: _COLORS.Kodie_BlackColor,
+          },
+          right: {
+            color: _COLORS.White,
           },
         }}
         timeTextStyle={{
           left: {
-            color: isCurrentUser ? '#ffffff' : '#aaaaaa',
+            color: _COLORS.Kodie_BlackColor,
           },
           right: {
-            color: isCurrentUser ? '#ffffff' : '#aaaaaa',
+            color: _COLORS.White,
           },
         }}
+        
+        
         containerStyle={{
           marginLeft: isCurrentUser ? 50 : 0,
           marginRight: isCurrentUser ? 0 : 50,
@@ -304,6 +416,7 @@ const Chat = props => {
             </Text>
           </View>
         )}
+        
       </Bubble>
     );
   };
