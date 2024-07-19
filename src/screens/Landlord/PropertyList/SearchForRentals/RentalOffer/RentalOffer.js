@@ -257,7 +257,7 @@ const RentalOffer = props => {
       setEmailAddressError('');
     }
   };
-  const handleAddOccupant = (questionCode, questionId) => {
+  const handleAddOccupant = questionId => {
     if (fullName === '') {
       setFullNameError('Full name is required.');
     } else if (emailAddress === '') {
@@ -267,7 +267,7 @@ const RentalOffer = props => {
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
-      addOccupant(questionCode, questionId);
+      addOccupant(questionId);
     }
   };
   // InviteLeaseHolder
@@ -306,31 +306,31 @@ const RentalOffer = props => {
       setLeaseConfirmEmailAddressError('');
     }
   };
-  const handleValidLeaseHolder = (questionCode, questionId) => {
+  const handleValidLeaseHolder = () => {
     if (leaseFullName === '') {
-      setLeaseFullNameError('Lease fullName is required.');
+      setLeaseFullNameError('Lease full name is required.');
     } else if (leaseEmailAddress === '') {
-      setleaseEmailAddressError('Lease Email Address is required.');
+      setleaseEmailAddressError('Lease email address is required.');
     } else if (!validateResetEmail(leaseEmailAddress)) {
-      setleaseEmailAddressError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
-      );
+      setleaseEmailAddressError('Hold on, this email appears to be invalid. Please enter a valid email address.');
     } else if (leaseConfirmEmailAddress === '') {
-      setLeaseConfirmEmailAddressError(
-        'Lease Confirm Email Address is required.',
-      );
+      setLeaseConfirmEmailAddressError('Lease confirm email address is required.');
     } else if (!validateResetEmail(leaseConfirmEmailAddress)) {
-      setLeaseConfirmEmailAddressError(
-        'Hold on, this email appears to be invalid. Please enter a valid email address.',
-      );
+      setLeaseConfirmEmailAddressError('Hold on, this email appears to be invalid. Please enter a valid email address.');
     } else if (leaseEmailAddress !== leaseConfirmEmailAddress) {
-      setLeaseConfirmEmailAddressError(
-        'Email address and confirm email address do not match.',
-      );
+      setLeaseConfirmEmailAddressError('Email address and confirm email address do not match.');
     } else {
-      addLeaseHolder(questionCode, questionId);
+      // Find the question with id 30
+      const question30 = subChildren.find(item => item.id === 30);
+      addLeaseHolder(
+        leaseFullName,
+        leaseEmailAddress,
+        leaseConfirmEmailAddress,
+        question30.id // Pass questionId to addLeaseHolder
+      );
     }
   };
+  
   // Reference validation
   const validReferenceFullName = text => {
     setReferenceFullName(text);
@@ -515,12 +515,21 @@ const RentalOffer = props => {
     );
   };
   const occupantsRender = () => {
-    const fullNameLabel = JSON.parse(
-      subChildren.find(item => item.id === 28).tqm_Question_code,
-    )[0].Fullname;
-    const emailAddressLabel = JSON.parse(
-      subChildren.find(item => item.id === 28).tqm_Question_code,
-    )[1].Email_address;
+    // Find the question with id 28
+    const question28 = subChildren.find(item => item.id === 28);
+
+    // Parse the tqm_Question_code JSON string
+    const questionData = JSON.parse(question28.tqm_Question_code);
+
+    // Extract labels
+    const fullNameLabel =
+      questionData.find(item => item.Fullname)?.Fullname || 'Full name';
+    const emailAddressLabel =
+      questionData.find(item => item.Email_address)?.Email_address ||
+      'Email address';
+
+    // Extract the id for question 28
+    const questionId = question28.id;
 
     return (
       <View style={RentalOfferStyle.AddOccupantMainView}>
@@ -580,10 +589,7 @@ const RentalOffer = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
               onPress={() => {
-                handleAddOccupant(
-                  subChildren?.tqm_Question_code,
-                  subChildren?.id,
-                );
+                addOccupant(fullName, emailAddress, questionId);
               }}
             />
           </View>
@@ -592,24 +598,23 @@ const RentalOffer = props => {
     );
   };
 
-  const leaseHolderRenderComponets = () => {
-    const fullNameLabel = JSON.parse(
-      subChildren.find(item => item.id === 30).tqm_Question_code,
-    )[0].Full_name;
-    const emailAddressLabel = JSON.parse(
-      subChildren.find(item => item.id === 30).tqm_Question_code,
-    )[1].Email_address;
-    const confirmEmailAddressLabel = JSON.parse(
-      subChildren.find(item => item.id === 30).tqm_Question_code,
-    )[2].Confirm_email_address;
-
+  const leaseHolderRenderComponents = () => {
+    // Extract labels from the subChildren
+    const question30 = subChildren.find(item => item.id === 30);
+    const questionData = JSON.parse(question30.tqm_Question_code);
+    
+    const fullNameLabel = questionData.find(item => item.Full_name)?.Full_name || 'Full name';
+    const emailAddressLabel = questionData.find(item => item.Email_address)?.Email_address || 'Email address';
+    const confirmEmailAddressLabel = questionData.find(item => item.Confirm_email_address)?.Confirm_email_address || 'Confirm email address';
+  
     return (
       <View style={RentalOfferStyle.AddOccupantMainView}>
         <TouchableOpacity
           style={RentalOfferStyle.AddOccupantView}
           onPress={() => {
             setToggleLeaseHolder(!toggleLeaseHolder);
-          }}>
+          }}
+        >
           <Entypo
             name={toggleLeaseHolder ? 'chevron-small-up' : 'chevron-small-down'}
             color={_COLORS.Kodie_BlackColor}
@@ -619,12 +624,10 @@ const RentalOffer = props => {
             {'Add leaseholders'}
           </Text>
         </TouchableOpacity>
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
           {toggleLeaseHolder && (
             <Text style={RentalOfferStyle.AddLeasesubText}>
-              {
-                'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application. '
-              }
+              {'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application.'}
             </Text>
           )}
           <FlatList
@@ -688,13 +691,8 @@ const RentalOffer = props => {
               <CustomSingleButton
                 _ButtonText={'Invite leaseholder'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
-                disabled={isLoading ? true : false}
-                onPress={() => {
-                  handleValidLeaseHolder(
-                    subChildren?.tqm_Question_code,
-                    subChildren?.id,
-                  );
-                }}
+                disabled={isLoading}
+                onPress={handleValidLeaseHolder}
               />
             </View>
           )}
@@ -702,6 +700,8 @@ const RentalOffer = props => {
       </View>
     );
   };
+  
+  
 
   const renderFormSection = section => {
     return (
@@ -751,7 +751,7 @@ const RentalOffer = props => {
           occupantsRender()}
         {section?.tqm_Question_code === 'NOL' &&
           numberLeaseHolder > 0 &&
-          leaseHolderRenderComponets()}
+          leaseHolderRenderComponents()}
       </View>
     );
   };
@@ -786,33 +786,37 @@ const RentalOffer = props => {
     refRBSheet1.current.close();
   };
 
-  const addOccupant = (questionCode, questionId) => {
+  const addOccupant = (fullName, emailAddress, questionId) => {
     if (fullName && emailAddress) {
-      const newOccupant = {fullName, emailAddress, questionCode, questionId};
+      const newOccupant = {fullName, emailAddress, questionId};
       setOccupants([...occupants, newOccupant]);
-      console.log('occupants...', occupants);
       setFullName('');
       setEmailAddress('');
       setToggleOccupants(false);
     }
   };
-  const addLeaseHolder = (questionCode, questionId) => {
-    if (leaseFullName && leaseEmailAddress && leaseConfirmEmailAddress) {
+
+  const addLeaseHolder = (
+    fullName,
+    emailAddress,
+    confirmEmailAddress,
+    questionId,
+  ) => {
+    if (fullName && emailAddress && confirmEmailAddress) {
       const newLeaseHolder = {
-        leaseFullName,
-        leaseEmailAddress,
-        leaseConfirmEmailAddress,
-        questionCode,
-        questionId,
+        leaseFullName: fullName,
+        leaseEmailAddress: emailAddress,
+        leaseConfirmEmailAddress: confirmEmailAddress,
+        questionId, // Ensure questionId is included
       };
       setLeaseHolderItem([...leaseHolderItem, newLeaseHolder]);
-      console.log('leaseHolderItem...', leaseHolderItem);
       setLeaseFullName('');
       setleaseEmailAddress('');
       setLeaseConfirmEmailAddress('');
       setToggleLeaseHolder(false);
     }
   };
+
   const addReferences = () => {
     if (referenceFullName && referenceEmail) {
       const newReferences = {
@@ -961,37 +965,11 @@ const RentalOffer = props => {
     }));
   };
 
-  // const handleSubmit = () => {
-  //   const jsonData = [];
-  //   quesHeading.forEach(parentQuestion => {
-  //     parentQuestion.children.forEach(childQuestion => {
-  //       jsonData.push({
-  //         question_id: childQuestion.id,
-  //         question_value: inputValues[childQuestion.tqm_Question_code] || '',
-  //         question_reference:
-  //           childQuestion.tqm_Question_type == 'Dropdown' ? 1 : 0, // Adjust this value as needed
-  //         question_is_lookup:
-  //           childQuestion.tqm_Question_type == 'Dropdown' ? 1 : 0, // Adjust this value as needed
-  //       });
-  //     });
-  //   });
-
-  //   const finalJson = {
-  //     p_property_id: 0,
-  //     p_account_id: 0,
-  //     p_bid_id: 0,
-  //     json_data: jsonData,
-  //   };
-
-  //   console.log('Final JSON:', JSON.stringify(finalJson));
-
-  //   // You can now send `finalJson` to your API endpoint
-  // };
   const handleSubmit = () => {
     const jsonData = [];
     console.log('quesHeading:', quesHeading);
     console.log('subChildren:', subChildren);
-
+  
     // Create a mapping of questionCode to id from quesHeading and subChildren
     const questionCodeToId = {};
     quesHeading.forEach(parentQuestion => {
@@ -1002,99 +980,69 @@ const RentalOffer = props => {
     subChildren.forEach(subChild => {
       questionCodeToId[subChild.tqm_Question_code] = subChild.id;
     });
-
+  
     // Process main questions
     quesHeading.forEach(parentQuestion => {
       parentQuestion.children.forEach(childQuestion => {
         jsonData.push({
           question_id: childQuestion.id,
           question_value: inputValues[childQuestion.tqm_Question_code] || '',
-          question_reference:
-            childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-          question_is_lookup:
-            childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+          question_reference: childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+          question_is_lookup: childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
         });
       });
     });
-
+  
     // Group occupants by their question_id
-    const occupantGroups = {};
-    occupants.forEach(occupant => {
-      if (!occupantGroups[occupant.questionId]) {
-        occupantGroups[occupant.questionId] = [];
-      }
-      occupantGroups[occupant.questionId].push({
-        fullName: occupant.fullName,
-        emailAddress: occupant.emailAddress,
-      });
-    });
-
+    const occupantGroups = groupBy(occupants, 'questionId');
+    console.log('occupantGroups...', occupantGroups);
     // Add grouped occupants data to jsonData
-    for (const questionId in occupantGroups) {
-      jsonData.push({
-        question_id: questionId,
-        question_value: JSON.stringify(occupantGroups[questionId]),
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-    }
-
+    addGroupedDataToJsonData(jsonData, occupantGroups);
+  
     // Group leaseholders by their question_id
-    const leaseHolderGroups = {};
-    leaseHolderItem.forEach(leaseHolder => {
-      if (!leaseHolderGroups[leaseHolder.questionId]) {
-        leaseHolderGroups[leaseHolder.questionId] = [];
-      }
-      leaseHolderGroups[leaseHolder.questionId].push({
-        fullName: leaseHolder.leaseFullName,
-        emailAddress: leaseHolder.leaseEmailAddress,
-        confirmEmailAddress: leaseHolder.leaseConfirmEmailAddress,
-      });
-    });
-
+    const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
+    console.log('leaseHolderGroups...', leaseHolderGroups);
     // Add grouped leaseholders data to jsonData
-    for (const questionId in leaseHolderGroups) {
-      jsonData.push({
-        question_id: questionId,
-        question_value: JSON.stringify(leaseHolderGroups[questionId]),
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-    }
-
+    addGroupedDataToJsonData(
+      jsonData,
+      leaseHolderGroups,
+      'leaseFullName',
+      'leaseEmailAddress',
+      'leaseConfirmEmailAddress'
+    );
+  
     const finalJson = {
-      // p_property_id: 0,
-      // p_account_id: 0,
-      // p_bid_id: 0,
       json_data: jsonData,
     };
-
+  
     console.log('Final JSON:', JSON.stringify(finalJson));
-    setFinalJsonData(finalJson);
-    saveAllJson();
+    saveAllJson(finalJson);
   };
-
-  const saveAllJson = () => {
+  
+  const saveAllJson = finalJson => {
     const url = Config.BASE_URL;
-    const saveJson_url = url + 'save_json_details';
+    const saveJson_url = `${url}save_json_details`;
     console.log('Request URL:', saveJson_url);
     setIsLoading(true);
+
     const saveJsonData = {
       p_property_id: propertyId,
       p_account_id: loginData?.Login_details?.user_account_id,
       p_bid_id: 0,
-      json_data: finalJsonData,
+      json_data: finalJson.json_data, // Ensure json_data is not stringified here
     };
+
+    console.log('saveJsonData:', JSON.stringify(saveJsonData));
+
     axios
       .post(saveJson_url, saveJsonData)
       .then(response => {
         if (response?.data?.success === true) {
           console.log(
-            'API Response saveJson Data....',
+            'API Response saveJson Data:',
             JSON.stringify(response?.data),
-            // alert(response?.data?.data),
-            refRBSheet1.current.open(),
           );
+          refRBSheet1.current.open();
         } else {
           setIsLoading(false);
         }
@@ -1107,6 +1055,43 @@ const RentalOffer = props => {
         setIsLoading(false);
       });
   };
+
+  // Utility function to group items by a specified key
+  const groupBy = (items, key) => {
+    return items.reduce((result, item) => {
+      (result[item[key]] = result[item[key]] || []).push(item);
+      return result;
+    }, {});
+  };
+
+  const addGroupedDataToJsonData = (
+    jsonData,
+    groups,
+    fullNameKey = 'fullName',
+    emailKey = 'emailAddress',
+    confirmEmailKey
+  ) => {
+    for (const questionId in groups) {
+      const groupData = groups[questionId].map(item => {
+        const data = {
+          fullName: item[fullNameKey],
+          emailAddress: item[emailKey],
+        };
+        if (confirmEmailKey) {
+          data.confirmEmailAddress = item[confirmEmailKey];
+        }
+        return data;
+      });
+  
+      jsonData.push({
+        question_id: questionId,
+        question_value: JSON.stringify(groupData),
+        question_reference: 0,
+        question_is_lookup: 0,
+      });
+    }
+  };
+  
 
   const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
