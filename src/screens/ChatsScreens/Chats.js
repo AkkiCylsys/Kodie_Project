@@ -1,3 +1,4 @@
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,59 +9,49 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
-import TopHeader from '../../components/Molecules/Header/Header';
-import {_goBack} from '../../services/CommonServices';
-import {_COLORS, IMAGES} from '../../Themes';
-import Chat from '../../components/Molecules/Chats/Chat';
-import {ChatsStyle} from './ChatsStyle';
-import {Divider} from 'react-native-paper';
-import SearchBar from '../../components/Molecules/SearchBar/SearchBar';
-import RBSheet from 'react-native-raw-bottom-sheet';
-// import UploadImageData from "../../components/Molecules/UploadImage/UploadImage";
-import ChatPopup from '../../components/Molecules/Chats/ChatPop/ChatPopup';
-import {SwipeListView} from 'react-native-swipe-list-view';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import firestore from '@react-native-firebase/firestore';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import firestore from '@react-native-firebase/firestore';
+import TopHeader from '../../components/Molecules/Header/Header';
+import { IMAGES, _COLORS } from '../../Themes';
+import SearchBar from '../../components/Molecules/SearchBar/SearchBar';
+import { ChatsStyle } from './ChatsStyle';
 
-const Chats = props => {
+const Chats = (props) => {
   const refRBSheet = useRef();
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
-  const toggleView = () => {
-    setVisible(!visible);
-  };
   const [users, setUsers] = useState([]);
   const navigation = useNavigation();
 
   useEffect(() => {
-    let tempData = [];
-    firestore()
-      .collection('Users')
-      .where('email', '!=', loginData.Login_details.email)
-      .get()
-      .then(res => {
-        if (res.docs != []) {
-          res.docs.map(item => {
-            tempData.push(item.data());
-          });
-        }
-        setUsers(tempData);
-      });
-  }, []);
-  const searchPropertyList = query => {
+    if (loginData && loginData.Login_details && loginData.Login_details.email) {
+      let tempData = [];
+      firestore()
+        .collection('Users')
+        .where('email', '!=', loginData.Login_details.email)
+        .get()
+        .then(res => {
+          if (res.docs.length > 0) {
+            res.docs.forEach(doc => {
+              tempData.push(doc.data());
+            });
+          }
+          setUsers(tempData);
+        })
+        .catch(error => console.error('Error fetching users:', error));
+    }
+  }, [loginData]); // Dependency array to run effect on loginData changes
+
+  const searchPropertyList = (query) => {
     setSearchQuery(query);
     const filtered = query
-      ? users.filter(
-          item =>
-            item.name && item.name.toLowerCase().includes(query.toLowerCase()),
+      ? users.filter(item =>
+          item.name && item.name.toLowerCase().includes(query.toLowerCase())
         )
       : users;
-    console.log('filtered.........', filtered);
     setFilteredUsers(filtered);
   };
 
@@ -68,17 +59,14 @@ const Chats = props => {
     <>
       <SafeAreaView style={ChatsStyle.container}>
         <TopHeader
-          // onPressLeftButton={() => _goBack(props)}
           IsNotification={true}
           isprofileImage
-          onPressRightImgProfile={() =>
-            props.navigation.navigate('LandlordProfile')
-          }
+          onPressRightImgProfile={() => props.navigation.navigate('LandlordProfile')}
           onPressLeftButton={() => props.navigation.navigate('Dashboard')}
           MiddleText={'Chats'}
         />
         <KeyboardAvoidingView
-          style={{flex: 1}}
+          style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : null}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}>
           <View style={ChatsStyle.searchview}>
@@ -93,90 +81,50 @@ const Chats = props => {
           <ScrollView>
             <FlatList
               data={searchQuery ? filteredUsers : users}
-              renderItem={({item, index}) => {
-                return (
-                  <View style={{flex: 1, marginHorizontal: 16}}>
-                    <TouchableOpacity
-                      style={[
-                        {
-                          flex: 1,
-                          width: '100%',
-                          alignSelf: 'center',
-                          marginTop: 20,
-                          flexDirection: 'row',
-
-                          borderRadius: 10,
-                          paddingHorizontal: 8,
-                          paddingVertical: 3,
-                          alignItems: 'center',
-                          backgroundColor: 'white',
-                        },
-                      ]}
-                      onPress={() => {
-                        navigation.navigate('Chat', {
-                          data: item,
-                          userid: item.user_key,
-                        });
-                      }}>
-                      {item.image ? (
-                        <View
-                          style={{
-                            width: 50,
-                            height: 50,
-                            borderRadius: 50 / 2,
-                            borderWidth: 1,
-                            borderColor: _COLORS.Kodie_ExtraLightGrayColor,
-                          }}>
-                          <Image
-                            source={{uri: item.image}}
-                            // source={IMAGES.adduser}
-                            style={{
-                              width: 50,
-                              height: 50,
-                              borderRadius: 50 / 2,
-                            }}
-                            resizeMode={'cover'}
-                          />
-                        </View>
-                      ) : (
-                        <FontAwesome
-                          name="user-circle-o"
-                          size={50}
-                          color={_COLORS.Kodie_ExtraLightGrayColor}
-                        />
-                      )}
-                      {/* <FontAwesome
+              renderItem={({ item }) => (
+                <View style={{ marginHorizontal: 10, marginBottom: 10 }}>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: 'white',
+                      paddingVertical: 10,
+                      paddingHorizontal: 10,
+                      borderRadius: 10,
+                      marginTop: 10,
+                    }}
+                    onPress={() => {
+                      navigation.navigate('Chat', { data: item, userid: item.user_key });
+                    }}>
+                    {item.image ? (
+                      <Image
+                        source={{ uri: item.image }}
+                        style={{
+                          width: 50,
+                          height: 50,
+                          borderRadius: 25,
+                          marginRight: 10,
+                          borderWidth: 1,
+                          borderColor: _COLORS.Kodie_ExtraLightGrayColor,
+                        }}
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <FontAwesome
                         name="user-circle-o"
                         size={50}
                         color={_COLORS.Kodie_ExtraLightGrayColor}
-                      /> */}
-
-                      <View>
-                        <Text
-                          style={{
-                            flex: 1,
-                            color: 'black',
-                            marginLeft: 10,
-                            fontSize: 18,
-                          }}>
-                          {/* {`${item.firstName} ${item.lastName}`} */}
-                          {item.name}
-                        </Text>
-                        <Text
-                          style={{
-                            flex: 1,
-                            color: _COLORS.Kodie_BlackColor,
-                            marginLeft: 10,
-                            fontSize: 14,
-                          }}>
-                          {/* {`${item.firstName} ${item.lastName}`} */}
-                          {item.email}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                );
-              }}
+                        style={{ marginRight: 10 }}
+                      />
+                    )}
+                    <View>
+                      <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
+                      <Text style={{ fontSize: 14, color: _COLORS.Kodie_BlackColor }}>{item.email}</Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
             />
           </ScrollView>
         </KeyboardAvoidingView>

@@ -66,15 +66,15 @@ export default AddExpensesDetails = props => {
   const [lease_end_valueError, setlLease_end_valueError] = useState(false);
 
    // Calculate and Update Account Excl. and Tax based on user input
-   useEffect(() => {
-    if (accountXcl && tax) {
-      const parsedAccountXcl = parseFloat(accountXcl.replace(/[^0-9.-]/g, ''));
-      const parsedTax = parseFloat(tax.replace(/[^0-9]/g, ''));
-      const calculatedTotalAmount = (parsedAccountXcl * (1 + (parsedTax / 100))).toFixed(2);
-      setTotalAmount(formatCurrency(calculatedTotalAmount));
-      setAccountXcl(formatCurrency(parsedAccountXcl));
-    }
-  }, [accountXcl, tax]);
+  //  useEffect(() => {
+  //   if (accountXcl && tax) {
+  //     const parsedAccountXcl = parseFloat(accountXcl.replace(/[^0-9.-]/g, ''));
+  //     const parsedTax = parseFloat(tax.replace(/[^0-9]/g, ''));
+  //     const calculatedTotalAmount = (parsedAccountXcl * (1 + (parsedTax / 100))).toFixed(2);
+  //     setTotalAmount(formatCurrency(calculatedTotalAmount));
+  //     setAccountXcl(formatCurrency(parsedAccountXcl));
+  //   }
+  // }, [accountXcl, tax]);
   // useEffect(() => {
   //   if (totalAmount && accountXcl && !tax) {
   //     // Calculate Tax %
@@ -97,14 +97,14 @@ export default AddExpensesDetails = props => {
 
   const handleAccountXclChange = (text) => {
     // Remove non-numeric and non-decimal characters except the first minus sign if present
-    let formattedValue = text.replace(/[^0-9.-]/g, '');
-    if (formattedValue && formattedValue.charAt(0) === '-') {
-      formattedValue = '-' + formattedValue.slice(1).replace(/(\..*)\./g, '$1');
-    } else {
-      formattedValue = formattedValue.replace(/(\..*)\./g, '$1');
-    }
-    formattedValue = '$'+ ' ' + formattedValue;
-    setAccountXcl(formattedValue);
+    // let formattedValue = text.replace(/[^0-9.-]/g, '');
+    // if (formattedValue && formattedValue.charAt(0) === '-') {
+    //   formattedValue = '-' + formattedValue.slice(1).replace(/(\..*)\./g, '$1');
+    // } else {
+    //   formattedValue = formattedValue.replace(/(\..*)\./g, '$1');
+    // }
+    // formattedValue = '$'+ ' ' + formattedValue;
+    setAccountXcl(totalAmount);
   };
   const handleTaxChange = (text) => {
     // Remove all non-numeric characters except the first decimal point
@@ -481,6 +481,7 @@ export default AddExpensesDetails = props => {
                 placeholder="Amount excl."
                 placeholderTextColor="#999"
                 onChangeText={handleAccountXclChange}
+                onFocus={(text)=>handleAccountXclChange(text)}
                 keyboardType="numeric"
 
               />
@@ -492,13 +493,13 @@ export default AddExpensesDetails = props => {
               ]}>
               <Text style={LABEL_STYLES.commontext}>{'Tax (0.00%)'}</Text>
               <TextInput
-                style={[AddExpensesDetailsStyle.input, {flex: 1}]}
+                style={[AddExpensesDetailsStyle.input, {flex: 1,backgroundColor:_COLORS?.Kodie_GrayColor}]}
                 value={tax}
                 onChangeText={handleTaxChange}
                 keyboardType="numeric"
                 placeholder="Enter tax %"
                 placeholderTextColor="#999"
-           
+           editable={false}
 
               />
             </View>

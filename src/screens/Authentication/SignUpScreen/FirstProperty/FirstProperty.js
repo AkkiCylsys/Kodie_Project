@@ -42,6 +42,7 @@ import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import auth from '@react-native-firebase/auth';
 const labels = ['Step 1', 'Step 2', 'Step 3'];
 const firstIndicatorSignUpStepStyle = {
   stepIndicatorSize: 40,
@@ -520,36 +521,44 @@ export default FirstProperty = props => {
   const registerUser = async () => {
     setIsLoading(true);
     const userId = uuid.v4();
-    const storageRef = storage().ref(`user_images/${userId}`);
-    await storageRef.putFile(ImageName.path);
-
-    const downloadURL = await storageRef.getDownloadURL();
+    
     try {
+      let downloadURL = ''; // Initialize as empty
+      
+      if (ImageName && ImageName.path) {
+        const storageRef = storage().ref(`user_images/${userId}`);
+        await storageRef.putFile(ImageName.path);
+        downloadURL = await storageRef.getDownloadURL();
+      } else {
+        // If no image is provided, set a default image URL
+        downloadURL = ''; // Replace with your default image URL
+      }
+  
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-      await firestore()
-        .collection('Users')
-        .doc(userCredential.user.uid)
-        .set({
-          name: `${firstName} ${lastName}`,
-          email: email,
-          mobile: mobileNumber,
-          userId: userId,
-          user_key: String(user_key),
-          image: downloadURL,
-        });
+  
+      await firestore().collection('Users').doc(userCredential.user.uid).set({
+        name: `${firstName} ${lastName}`,
+        email: email,
+        mobile: mobileNumber,
+        userId: userId,
+        user_key: String(user_key),
+        image: downloadURL,
+      });
+  
       await AsyncStorage.setItem('USERID', userId);
       await AsyncStorage.setItem('NAME', firstName);
       await AsyncStorage.setItem('EMAIL', email);
       await AsyncStorage.setItem('MOBILE', mobileNumber);
       await AsyncStorage.setItem('USERKEY', String(user_key));
+  
       console.log('User data saved to AsyncStorage');
       props.navigation.navigate('DrawerNavigatorLeftMenu');
     } catch (error) {
       console.error('Error creating user:', error);
+    } finally {
       setIsLoading(false);
     }
   };
-
   const handleSaveSignupfill = async () => {
     setIsLoading(true);
     let newData = {
@@ -689,35 +698,45 @@ export default FirstProperty = props => {
   const registerUserfill = async () => {
     setIsLoading(true);
     const userId = uuid.v4();
-    const storageRef = storage().ref(`user_images/${userId}`);
-    await storageRef.putFile(ImageName.path);
-
-    const downloadURL = await storageRef.getDownloadURL();
+    
     try {
+      let downloadURL = ''; // Initialize as empty
+      
+      if (ImageName && ImageName.path) {
+        const storageRef = storage().ref(`user_images/${userId}`);
+        await storageRef.putFile(ImageName.path);
+        downloadURL = await storageRef.getDownloadURL();
+      } else {
+        // If no image is provided, set a default image URL
+        downloadURL = ''; // Replace with your default image URL
+      }
+  
       const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-
-      await firestore()
-        .collection('Users')
-        .doc(userCredential.user.uid)
-        .set({
-          name: `${firstName} ${lastName}`,
-          email: email,
-          mobile: mobileNumber,
-          userId: userId,
-          user_key: String(user_key),
-          image: downloadURL,
-        });
+  
+      await firestore().collection('Users').doc(userCredential.user.uid).set({
+        name: `${firstName} ${lastName}`,
+        email: email,
+        mobile: mobileNumber,
+        userId: userId,
+        user_key: String(user_key),
+        image: downloadURL,
+      });
+  
       await AsyncStorage.setItem('USERID', userId);
       await AsyncStorage.setItem('NAME', firstName);
       await AsyncStorage.setItem('EMAIL', email);
       await AsyncStorage.setItem('MOBILE', mobileNumber);
       await AsyncStorage.setItem('USERKEY', String(user_key));
+  
+      console.log('User data saved to AsyncStorage');
       props.navigation.navigate('DrawerNavigatorLeftMenu');
     } catch (error) {
       console.error('Error creating user:', error);
+    } finally {
       setIsLoading(false);
     }
   };
+  
   const goBack = () => {
     props.navigation.pop();
   };
