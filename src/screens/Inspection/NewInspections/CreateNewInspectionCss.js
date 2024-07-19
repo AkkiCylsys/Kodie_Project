@@ -9,6 +9,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
   Container: {
     marginHorizontal: 16,
     marginVertical: 16,
+    // marginBottom:30
   },
   HeadingText: {
     fontSize: 24,
@@ -23,7 +24,8 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     marginVertical: 12,
     borderRadius: 8,
   },
-  errorText: {color: 'red'},
+  errorText1: {color: 'red', marginBottom:20},
+  errorText: {color: 'red',},
   placeholderStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_GrayColor,
@@ -46,7 +48,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  datePickerView: {flexDirection: 'row', marginBottom: 15},
+  datePickerView: {flexDirection: 'row'},
   calenderView: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderRadius: 5,

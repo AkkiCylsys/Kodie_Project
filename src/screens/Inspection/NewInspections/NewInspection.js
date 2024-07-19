@@ -382,7 +382,12 @@ export default NewInspection = props => {
           }}>
           <View style={NewInspectionStyle.insp_cld_main_view}>
             <Text style={NewInspectionStyle.insp_cld_date}>{dayOfMonth}</Text>
-            <Text style={NewInspectionStyle.insp_cld_Text}>{dayOfWeek}</Text>
+            <Text
+              style={NewInspectionStyle.insp_cld_Text}
+              ellipsizeMode="tail"
+              numberOfLines={1}>
+              {dayOfWeek}
+            </Text>
             <Text style={NewInspectionStyle.insp_cld_Text}>
               {item?.scheduled_time}
             </Text>
