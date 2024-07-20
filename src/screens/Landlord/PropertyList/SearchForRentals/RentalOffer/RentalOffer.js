@@ -136,6 +136,7 @@ const RentalOffer = props => {
   const [leaseHolderNames, setLeaseHolderNames] = useState([]);
   const [subChildren, setSubChildren] = useState([]);
   const [finalJsonData, setFinalJsonData] = useState([]);
+  const [editAllQuestion, setEditAllQuestion] = useState([]);
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -228,7 +229,34 @@ const RentalOffer = props => {
   };
   useEffect(() => {
     handleTenantQues();
+    getEditAllQuestion();
   }, [question]);
+
+  const getEditAllQuestion = () => {
+    const url = Config.BASE_URL;
+    const Ques_url = url + 'question_details_for_tenant_ques';
+    console.log('Request URL:', Ques_url);
+    setIsLoading(true);
+    const QuesData = {
+      p_account_id: 730,
+      p_property_id: 964,
+    };
+    axios
+      .post(Ques_url, QuesData)
+      .then(response => {
+        console.log('Response edit question..', response?.data);
+        // if(response?.data?.success===true){
+        //   setEditAllQuestion(response?.data?[0]?.parent_json)
+        // }
+      })
+      .catch(error => {
+        console.error('API failed EdittenantQues', error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
@@ -257,7 +285,7 @@ const RentalOffer = props => {
       setEmailAddressError('');
     }
   };
-  const handleAddOccupant = questionId => {
+  const handleAddOccupant = (fullName, emailAddress, questionId) => {
     if (fullName === '') {
       setFullNameError('Full name is required.');
     } else if (emailAddress === '') {
@@ -267,7 +295,7 @@ const RentalOffer = props => {
         'Hold on, this email appears to be invalid. Please enter a valid email address.',
       );
     } else {
-      addOccupant(questionId);
+      addOccupant(fullName, emailAddress, questionId);
     }
   };
   // InviteLeaseHolder
@@ -312,13 +340,21 @@ const RentalOffer = props => {
     } else if (leaseEmailAddress === '') {
       setleaseEmailAddressError('Lease email address is required.');
     } else if (!validateResetEmail(leaseEmailAddress)) {
-      setleaseEmailAddressError('Hold on, this email appears to be invalid. Please enter a valid email address.');
+      setleaseEmailAddressError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
     } else if (leaseConfirmEmailAddress === '') {
-      setLeaseConfirmEmailAddressError('Lease confirm email address is required.');
+      setLeaseConfirmEmailAddressError(
+        'Lease confirm email address is required.',
+      );
     } else if (!validateResetEmail(leaseConfirmEmailAddress)) {
-      setLeaseConfirmEmailAddressError('Hold on, this email appears to be invalid. Please enter a valid email address.');
+      setLeaseConfirmEmailAddressError(
+        'Hold on, this email appears to be invalid. Please enter a valid email address.',
+      );
     } else if (leaseEmailAddress !== leaseConfirmEmailAddress) {
-      setLeaseConfirmEmailAddressError('Email address and confirm email address do not match.');
+      setLeaseConfirmEmailAddressError(
+        'Email address and confirm email address do not match.',
+      );
     } else {
       // Find the question with id 30
       const question30 = subChildren.find(item => item.id === 30);
@@ -326,11 +362,11 @@ const RentalOffer = props => {
         leaseFullName,
         leaseEmailAddress,
         leaseConfirmEmailAddress,
-        question30.id // Pass questionId to addLeaseHolder
+        question30.id, // Pass questionId to addLeaseHolder
       );
     }
   };
-  
+
   // Reference validation
   const validReferenceFullName = text => {
     setReferenceFullName(text);
@@ -589,7 +625,8 @@ const RentalOffer = props => {
               Text_Color={_COLORS.Kodie_WhiteColor}
               disabled={isLoading ? true : false}
               onPress={() => {
-                addOccupant(fullName, emailAddress, questionId);
+                // addOccupant(fullName, emailAddress, questionId);
+                handleAddOccupant(fullName, emailAddress, questionId);
               }}
             />
           </View>
@@ -602,19 +639,23 @@ const RentalOffer = props => {
     // Extract labels from the subChildren
     const question30 = subChildren.find(item => item.id === 30);
     const questionData = JSON.parse(question30.tqm_Question_code);
-    
-    const fullNameLabel = questionData.find(item => item.Full_name)?.Full_name || 'Full name';
-    const emailAddressLabel = questionData.find(item => item.Email_address)?.Email_address || 'Email address';
-    const confirmEmailAddressLabel = questionData.find(item => item.Confirm_email_address)?.Confirm_email_address || 'Confirm email address';
-  
+
+    const fullNameLabel =
+      questionData.find(item => item.Full_name)?.Full_name || 'Full name';
+    const emailAddressLabel =
+      questionData.find(item => item.Email_address)?.Email_address ||
+      'Email address';
+    const confirmEmailAddressLabel =
+      questionData.find(item => item.Confirm_email_address)
+        ?.Confirm_email_address || 'Confirm email address';
+
     return (
       <View style={RentalOfferStyle.AddOccupantMainView}>
         <TouchableOpacity
           style={RentalOfferStyle.AddOccupantView}
           onPress={() => {
             setToggleLeaseHolder(!toggleLeaseHolder);
-          }}
-        >
+          }}>
           <Entypo
             name={toggleLeaseHolder ? 'chevron-small-up' : 'chevron-small-down'}
             color={_COLORS.Kodie_BlackColor}
@@ -624,10 +665,12 @@ const RentalOffer = props => {
             {'Add leaseholders'}
           </Text>
         </TouchableOpacity>
-        <View style={{ marginTop: 10 }}>
+        <View style={{marginTop: 10}}>
           {toggleLeaseHolder && (
             <Text style={RentalOfferStyle.AddLeasesubText}>
-              {'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application.'}
+              {
+                'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application.'
+              }
             </Text>
           )}
           <FlatList
@@ -700,8 +743,6 @@ const RentalOffer = props => {
       </View>
     );
   };
-  
-  
 
   const renderFormSection = section => {
     return (
@@ -969,7 +1010,7 @@ const RentalOffer = props => {
     const jsonData = [];
     console.log('quesHeading:', quesHeading);
     console.log('subChildren:', subChildren);
-  
+
     // Create a mapping of questionCode to id from quesHeading and subChildren
     const questionCodeToId = {};
     quesHeading.forEach(parentQuestion => {
@@ -980,25 +1021,31 @@ const RentalOffer = props => {
     subChildren.forEach(subChild => {
       questionCodeToId[subChild.tqm_Question_code] = subChild.id;
     });
-  
+
     // Process main questions
     quesHeading.forEach(parentQuestion => {
       parentQuestion.children.forEach(childQuestion => {
-        jsonData.push({
-          question_id: childQuestion.id,
-          question_value: inputValues[childQuestion.tqm_Question_code] || '',
-          question_reference: childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-          question_is_lookup: childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-        });
+        const questionValue =
+          inputValues[childQuestion.tqm_Question_code] || '';
+        if (questionValue) {
+          jsonData.push({
+            question_id: childQuestion.id,
+            question_value: questionValue,
+            question_reference:
+              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+            question_is_lookup:
+              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+          });
+        }
       });
     });
-  
+
     // Group occupants by their question_id
     const occupantGroups = groupBy(occupants, 'questionId');
     console.log('occupantGroups...', occupantGroups);
     // Add grouped occupants data to jsonData
     addGroupedDataToJsonData(jsonData, occupantGroups);
-  
+
     // Group leaseholders by their question_id
     const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
     console.log('leaseHolderGroups...', leaseHolderGroups);
@@ -1008,17 +1055,36 @@ const RentalOffer = props => {
       leaseHolderGroups,
       'leaseFullName',
       'leaseEmailAddress',
-      'leaseConfirmEmailAddress'
+      'leaseConfirmEmailAddress',
     );
-  
+
     const finalJson = {
       json_data: jsonData,
     };
-  
+
     console.log('Final JSON:', JSON.stringify(finalJson));
     saveAllJson(finalJson);
+    resetDynamicFields();
   };
-  
+
+  const resetDynamicFields = () => {
+    // Reset the inputValues object
+    Object.keys(inputValues).forEach(key => {
+      inputValues[key] = '';
+    });
+
+    // If you have other dynamic fields like occupants and leaseholders, reset them as well
+    occupants.length = 0;
+    leaseHolderItem.length = 0;
+
+    // Update the state to trigger a re-render if necessary
+    setInputValues({...inputValues});
+    setOccupants([]);
+    setLeaseHolderItem([]);
+    setNumberOccupants(0);
+    setNumberLeaseHolder(0);
+  };
+
   const saveAllJson = finalJson => {
     const url = Config.BASE_URL;
     const saveJson_url = `${url}save_json_details`;
@@ -1069,7 +1135,7 @@ const RentalOffer = props => {
     groups,
     fullNameKey = 'fullName',
     emailKey = 'emailAddress',
-    confirmEmailKey
+    confirmEmailKey,
   ) => {
     for (const questionId in groups) {
       const groupData = groups[questionId].map(item => {
@@ -1082,7 +1148,7 @@ const RentalOffer = props => {
         }
         return data;
       });
-  
+
       jsonData.push({
         question_id: questionId,
         question_value: JSON.stringify(groupData),
@@ -1091,7 +1157,6 @@ const RentalOffer = props => {
       });
     }
   };
-  
 
   const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
