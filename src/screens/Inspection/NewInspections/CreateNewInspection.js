@@ -13,7 +13,8 @@ import {
   FlatList,
   SafeAreaView,
   KeyboardAvoidingView,
-  Alert
+  Alert,
+  Platform
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -873,6 +874,7 @@ const CreateNewInspection = props => {
           backgroundColor={_COLORS.Kodie_BlackColor}
           disabled={isLoading ? true : false}
           onPress={handleSubmit}
+          marginBottom={Platform.OS === 'ios' ? 0:'29%'}
         />
       </ScrollView>
       </KeyboardAvoidingView>

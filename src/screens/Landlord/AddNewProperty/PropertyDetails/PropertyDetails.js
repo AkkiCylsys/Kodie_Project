@@ -562,6 +562,9 @@ export default PropertyDetails = props => {
                   renderItem={propertyType_render}
                 />
               </View>
+              {error ? (
+                <Text style={PropertyDetailsStyle.errorText}>{error}</Text>
+              ) : null}
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={LABEL_STYLES._texinputLabel}>
                   Property description
@@ -641,8 +644,18 @@ export default PropertyDetails = props => {
                   _ButtonText={'Next'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
+                    let errorMessage = '';
+
                     if (!location) {
-                      setError('Please enter a location.');
+                      errorMessage = 'Please enter a location.';
+                    } else if (!propertyType) {
+                      errorMessage = 'Please select a property type.';
+                    } else if (!propertyDesc) {
+                      errorMessage = 'Please enter a property description.';
+                    }
+
+                    if (errorMessage) {
+                      setError(errorMessage);
                       return;
                     } else {
                       props.navigation.navigate('PropertyFeature', {

@@ -605,7 +605,7 @@ const ProfileDocumentDetails = props => {
         </Text>
         <Text style={ProfileDocumentDetailStyle.upload_doc_sub}>
           {
-            'Documents should be formatted .pdf or .jpg or .png Size per file should not exceed 5 MB'
+            'Documents should be formatted .pdf or .jpg or .png. Size per file should not exceed 5 MB.'
           }
         </Text>
       </View>
