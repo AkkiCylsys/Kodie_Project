@@ -11,9 +11,11 @@ import axios from 'axios';
 import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import Logrentalpayment from './Logrentalpayment/Logrentalpayment'
+import { useIsFocused } from '@react-navigation/native';
+import { CommonLoader } from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 const Leases = (props) => {
   const { property_id } = props;
-
+const isFocus =useIsFocused();
   const refRBSheet = useRef();
   const refRBSheet2 = useRef();
   const refRBSheet4 = useRef();
@@ -23,23 +25,29 @@ const Leases = (props) => {
   const [isLogSheetOpen, setIsLogSheetOpen] = useState(false);
   const [leaseSummaryData, setLeaseSummaryData] = useState([]);
   const [rentalReceiptData, setRentalReceiptData] = useState([]);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
-    if (!isSheetOpen && !isLogSheetOpen) {
+    if (!isSheetOpen && !isLogSheetOpen && isFocus) {
       fetchLeaseSummary();
       fetchRentalReceipt();
     }
-  }, [isSheetOpen, isLogSheetOpen]);
+  }, [isSheetOpen, isLogSheetOpen,isFocus]);
 
   const handleClose = () => {
     refRBSheet.current.close();
     setIsSheetOpen(false);
+    setEditMode(false);
   };
 
   const handleLogClose = () => {
     refRBSheet2.current.close();
     setIsLogSheetOpen(false);
   };
+  const handleEditClick =()=>{
+    refRBSheet.current.open();
+    setEditMode(true);
+  }
 
   const fetchLeaseSummary = async () => {
     const url = `${Config.BASE_URL}getPaymentDueday`;
@@ -66,8 +74,9 @@ const Leases = (props) => {
     setIsLoading(true);
     try {
       const response = await axios.get(url);
+      console.log(response?.data?.data);
       if (response.data.success) {
-        setRentalReceiptData(response.data.data);
+        setRentalReceiptData(response?.data?.data);
         console.log();
       } else {
         console.error('Error fetching rental receipt:', response.data.message);
@@ -163,12 +172,12 @@ const Leases = (props) => {
                       </Text>
                     </View>
                     <View style={LeaseSummaryStyle.due_View}>
-                      <TouchableOpacity onPress={() => refRBSheet.current.open()}>
+                      <TouchableOpacity onPress={handleEditClick}>
                         <Image source={IMAGES.noteBook} style={LeaseSummaryStyle.note_b_img_sty} />
                       </TouchableOpacity>
-                      <TouchableOpacity onPress={() => refRBSheet4.current.open()}>
+                      {/* <TouchableOpacity onPress={() => refRBSheet4.current.open()}>
                         <Entypo name="dots-three-horizontal" size={20} color={_COLORS.Kodie_GrayColor} />
-                      </TouchableOpacity>
+                      </TouchableOpacity> */}
                     </View>
                   </View>
                 </View>
@@ -189,7 +198,7 @@ const Leases = (props) => {
                     <View>
                       <Text style={LeaseSummaryStyle.lease_term_Text}>Rent remaining due</Text>
                       <Text style={[LeaseSummaryStyle.date_Text, { alignSelf: 'flex-end', fontFamily: FONTFAMILY.K_Bold }]}>
-                        ${leaseSummaryData?.RENTAL_AMMOUNT}
+                        {leaseSummaryData?.RENTAL_AMMOUNT}
                       </Text>
                     </View>
                   </View>
@@ -219,7 +228,7 @@ const Leases = (props) => {
               </View>
             </>
           )}
-          {rentalReceiptData && (
+          {rentalReceiptData?.length > 0 && (
             <View style={{ marginHorizontal: 16 }}>
               <Text style={LeaseSummaryStyle.heading_Text}>Rental receipts</Text>
               <FlatList
@@ -239,7 +248,7 @@ const Leases = (props) => {
           draggableIcon: { backgroundColor: _COLORS.Kodie_LightGrayColor },
           container: LeasesStyle.bottomModal_container,
         }}>
-        <AddLeaseDetails onClose={handleClose} property_id={property_id} leaseData={leaseSummaryData} />
+        <AddLeaseDetails onClose={handleClose} property_id={property_id} leaseData={leaseSummaryData} editMode={editMode}/>
       </RBSheet>
       <RBSheet
         ref={refRBSheet2}
@@ -251,6 +260,7 @@ const Leases = (props) => {
         }}>
         <Logrentalpayment onClose={handleLogClose} lease_keys={leaseSummaryData?.LEASE_KEY} />
       </RBSheet>
+      {isLoading? <CommonLoader/> : null}
     </>
   );
 };

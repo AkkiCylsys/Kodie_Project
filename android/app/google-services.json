@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1095041111738-1mhgvv3fn3keb6bc965ufqpt5orjnfim.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kodie",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "1095041111738-v9tqbtu67e7lmgnb76tasn23hki8u2b3.apps.googleusercontent.com",
           "client_type": 3
         }

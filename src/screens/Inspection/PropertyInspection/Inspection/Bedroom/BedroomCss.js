@@ -43,7 +43,7 @@ export const BedroomCss = StyleSheet.create({
   },
   bedText: {
     fontSize: 16,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
     alignSelf: 'flex-start',
     justifyContent: 'flex-start',
@@ -82,13 +82,13 @@ export const BedroomCss = StyleSheet.create({
     borderRadius: 5,
     borderColor: _COLORS.Kodie_LightWhiteColor,
     paddingHorizontal: 5,
-    paddingVertical: 2,
+    paddingVertical: 5,
     alignSelf: 'center',
   },
   IconStyle: {
     alignSelf: 'center',
     justifyContent: 'center',
-    flex: 0.3,
+    // flex: 0.3,
   },
   dropdown1: {
     flex: 0.35,
@@ -221,5 +221,43 @@ export const BedroomCss = StyleSheet.create({
     color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
+  },
+  modalWrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    // backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContainer: {
+    width: '100%',
+    backgroundColor: 'white',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 80,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  closeButton: {
+    alignSelf: 'flex-end',
+    padding: 10,
+  },
+  closeButtonText: {
+    color: _COLORS.Kodie_BlackColor,
+  },
+  itemView: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingVertical: 10,
+    marginHorizontal: 10,
+  },
+  textItem: {
+    marginLeft: 10,
+    color: _COLORS.Kodie_BlackColor,
   },
 });

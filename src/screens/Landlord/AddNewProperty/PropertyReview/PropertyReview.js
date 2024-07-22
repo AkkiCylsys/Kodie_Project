@@ -645,7 +645,7 @@ export default PropertyReview = props => {
                   setExternalfeaturesClp(!externalfeaturesClp);
                 }}>
                 <Text style={DetailsStyle.propery_det}>
-                  {'External featuress'}
+                  {'External features'}
                 </Text>
 
                 <TouchableOpacity

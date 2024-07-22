@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { FONTFAMILY, _COLORS } from "../../../Themes";
+import {StyleSheet} from 'react-native';
+import {FONTFAMILY, _COLORS} from '../../../Themes';
 
 export const CreateNewInspectionStyle = StyleSheet.create({
   mainContainer: {
@@ -23,7 +23,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     marginVertical: 12,
     borderRadius: 8,
   },
-  errorText:{color:'red'},
+  errorText: {color: 'red'},
   placeholderStyle: {
     fontSize: 14,
     color: _COLORS.Kodie_GrayColor,
@@ -46,20 +46,20 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  datePickerView: { flexDirection: "row", marginBottom: 15 },
+  datePickerView: {flexDirection: 'row', marginBottom: 15},
   calenderView: {
     backgroundColor: _COLORS.Kodie_WhiteColor,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignSelf: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignSelf: 'center',
     marginTop: 15,
     flex: 1,
   },
   textInputStyle: {
-    alignSelf: "center",
+    alignSelf: 'center',
     paddingVertical: 6,
     fontSize: 14,
     paddingLeft: 10,
@@ -67,28 +67,28 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     color: _COLORS.Kodie_LightGrayColor,
     fontFamily: FONTFAMILY.K_Medium,
   },
-  spaceView: { margin: 5 },
+  spaceView: {margin: 5},
   locationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  // marginBottom:15,
-  backgroundColor:_COLORS?.Kodie_GrayColor,
-  borderWidth: 1,
-  borderRadius: 8,
-  flex: 1,
-  height: 48,
-  paddingHorizontal: 6,
-  borderColor: '#ccc'
+    // marginBottom:15,
+    backgroundColor: _COLORS?.Kodie_GrayColor,
+    borderWidth: 1,
+    borderRadius: 8,
+    flex: 1,
+    height: 48,
+    paddingHorizontal: 6,
+    borderColor: '#ccc',
   },
   locationInput: {
-   fontSize:14,
-   fontFamily:FONTFAMILY?.K_Medium,
+    fontSize: 14,
+    fontFamily: FONTFAMILY?.K_Medium,
     color: _COLORS.Kodie_BlackColor,
-    alignSelf:'center',
-    marginLeft:5
+    alignSelf: 'center',
+    marginLeft: 5,
   },
   locationIcon: {
-    alignSelf:'center'
+    alignSelf: 'center',
   },
   locationIconView: {
     borderWidth: 1,
@@ -115,13 +115,13 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     position: 'absolute',
   },
   TextInputView: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
     borderRadius: 5,
     borderColor: _COLORS.Kodie_GrayColor,
     marginTop: 12,
-    height:48
+    height: 48,
   },
   input: {
     flex: 1,
@@ -130,22 +130,22 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Medium,
-  alignSelf:'center'
+    alignSelf: 'center',
   },
-  userStyle: { height: 20, width: 20, marginHorizontal: 10 },
-  margin: { marginBottom: 15 },
+  userStyle: {height: 20, width: 20, marginHorizontal: 10},
+  margin: {marginBottom: 15},
   DetailsView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 2,
     marginLeft: 15,
   },
-  DetailsIcon: { height: 30, width: 30 },
+  DetailsIcon: {height: 30, width: 30},
   details_text: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginLeft: 5,
   },
   NotesInput: {
@@ -153,7 +153,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: _COLORS.Kodie_GrayColor,
-    color: "#333",
+    color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
     marginVertical: 12,
@@ -197,11 +197,65 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     marginLeft: 10,
     color: _COLORS.Kodie_BlackColor,
   },
-  bottomModal_container:{
-    borderTopLeftRadius:35,
-    borderTopRightRadius:35,
-    paddingHorizontal:20,
-    paddingVertical:20,
-    paddingBottom:30
-  }
+  bottomModal_container: {
+    borderTopLeftRadius: 35,
+    borderTopRightRadius: 35,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+    paddingBottom: 30,
+  },
+  bottomModal_container: {
+    borderWidth: 0.5,
+    borderColor: _COLORS.Kodie_LightGrayColor,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    elevation: 10,
+  },
+  ModalContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  ShareText: {
+    fontFamily: FONTFAMILY.K_Bold,
+    fontSize: 16,
+    color: _COLORS.Kodie_BlackColor,
+  },
+  inputContainer: {
+    marginVertical: 16,
+  },
+  cardHeight: { marginBottom: 8 },
+  emailinput: {
+    borderWidth: 1,
+    height: 45,
+    padding: 8,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 5,
+  },
+  cancelView: { alignSelf: "center" },
+  cancelText: {
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_SemiBold,
+    color: _COLORS.Kodie_BlackColor,
+    // marginTop:10
+  },
+  SaveView: {
+    borderRadius: 5,
+    backgroundColor: _COLORS.Kodie_BlackColor,
+    marginLeft: 40,
+    paddingHorizontal: 20,
+    paddingVertical: 6,
+  },
+  ButtonView: {
+    flexDirection: "row",
+    alignSelf: "flex-end",
+    justifyContent: "flex-end",
+    marginVertical: 20,
+  },
+  DoneText: {
+    alignSelf: "center",
+    textAlign: "center",
+    fontSize: 14,
+    fontFamily: FONTFAMILY.K_Bold,
+    color: _COLORS.Kodie_WhiteColor,
+  },
 });

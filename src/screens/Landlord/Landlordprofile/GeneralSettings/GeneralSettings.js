@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, SafeAreaView } from "react-native";
 // Screen n0: 197
 import React, { useState } from "react";
 import TopHeader from "../../../../components/Molecules/Header/Header";
@@ -14,7 +14,7 @@ const data = [
 const GeneralSettings = (props) => {
   const [value, setValue] = useState(null);
   return (
-    <View>
+    <SafeAreaView>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
         MiddleText={"General settings"}
@@ -89,7 +89,7 @@ const GeneralSettings = (props) => {
           />
         </TouchableOpacity> */}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

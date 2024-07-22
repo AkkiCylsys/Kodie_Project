@@ -41,7 +41,7 @@ export const InspectionCss = StyleSheet.create({
     height: 25,
     alignSelf: "center",
   },
-  IconStyle: { alignSelf: "center", justifyContent: "center" },
+  IconStyle: { alignSelf: "center", justifyContent: "center",marginTop:5},
   bottomModal_container: {
     borderWidth: 0.5,
     borderColor: _COLORS.Kodie_LightGrayColor,

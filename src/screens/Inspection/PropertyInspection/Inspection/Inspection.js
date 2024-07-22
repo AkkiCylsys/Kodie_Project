@@ -54,25 +54,24 @@ const Inspection = props => {
   const [getinspection, setGetInspection] = useState([]);
   const [getCustomeArea, setGetCustomeArea] = useState([]);
   const [getAreaKey, setGetAreaKey] = useState([]);
-  console.log(
-    'loginresponse_jobdetails..',
-    loginData?.Login_details?.user_account_id,
-  );
+  console.log('getinspection', getinspection);
   const TIM_KEY = props?.TIM_KEY;
 
   console.log(' props?.', TIM_KEY);
   console.log('getinspection.TAM_AREA_KEY', AreaKey);
   console.log('getAreaKey....', getAreaKey);
   const PropertyId = props.PropertyId;
-  const navigateToScreen = (id,name) => {
-        navigation.navigate('Bedroom', {
-          TeamAreaKey: id,
-          AreaName:name,
-          TIM_KEY: TIM_KEY,
-          getinspectionKey: getinspection.v_UPD_KEY,
-          PropertyId:PropertyId,
-          teamCreateId: loginData?.Login_details?.user_account_id,
-        });
+  const navigateToScreen = (id, name, TAIM_ITEM_STATUS) => {
+    console.log(TAIM_ITEM_STATUS, 'TAIM_ITEM_STATUS');
+    navigation.navigate('Bedroom', {
+      TeamAreaKey: id,
+      AreaName: name,
+      TIM_KEY: TIM_KEY,
+      getinspectionKey: getinspection.v_UPD_KEY,
+      PropertyId: PropertyId,
+      teamCreateId: loginData?.Login_details?.user_account_id,
+      TAIM_ITEM_STATUS: TAIM_ITEM_STATUS,
+    });
   };
   const handleCloseModal = () => {
     refRBSheet2.current.close();
@@ -180,7 +179,8 @@ const Inspection = props => {
       const response = await axios.delete(deleteUrl);
       if (response?.data?.success) {
         Alert.alert('Success', 'Inspection deleted successfully');
-        refRBSheet2.current.close();
+        navigation?.navigate('NewInspection');
+        // refRBSheet2.current.close();
       } else {
         Alert.alert('Error', 'Failed to delete inspection');
       }
@@ -209,7 +209,6 @@ const Inspection = props => {
   };
 
   const SubmitInspection = async () => {
-    // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
@@ -240,9 +239,7 @@ const Inspection = props => {
       console.log('scheduule inspection....', res?.data);
       refRBSheet2.current.close();
       if (res?.data?.success == true) {
-        setTIM_key(res?.data?.data);
-        console.log('TIM_KEY', res?.data?.data?.TIM_KEY);
-        alert(res?.data?.message);
+        alert('Inspection duplicate succussfully');
         setIsLoading(false);
       }
     } catch (error) {
@@ -273,31 +270,31 @@ const Inspection = props => {
         iconName = 'bed';
         break;
       case 'Garden':
-        IconComponent = AntDesign;
+        IconComponent = MaterialIcons;
         iconName = 'grass';
         break;
       case 'Kitchen':
-        IconComponent = AntDesign;
+        IconComponent = MaterialIcons;
         iconName = 'kitchen';
         break;
       case 'Dining room':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialIcons;
+        iconName = 'dinner-dining';
         break;
       case 'Living room':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialIcons;
+        iconName = 'family-restroom';
         break;
       case 'Exterior':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialCommunityIcons;
+        iconName = 'home-assistant';
         break;
       case 'Roof':
-        IconComponent = AntDesign;
-        iconName = 'kitchen';
+        IconComponent = MaterialCommunityIcons;
+        iconName = 'home-roof';
         break;
       case 'Garage':
-        IconComponent = MaterialIcons;
+        IconComponent = MaterialCommunityIcons;
         iconName = 'garage';
         break;
       // Add cases for other areas if needed
@@ -321,19 +318,25 @@ const Inspection = props => {
                 />
               </View>
             ) : (
-              <AntDesign
-                name={'minuscircle'}
-                size={20}
-                color={_COLORS.Kodie_lightRedColor}
-                style={InspectionCss.IconStyle}
-              />
+              <TouchableOpacity>
+                <AntDesign
+                  name={'minuscircle'}
+                  size={20}
+                  color={_COLORS.Kodie_lightRedColor}
+                  style={InspectionCss.IconStyle}
+                />
+              </TouchableOpacity>
             )}
             <Text style={InspectionCss.editText}>{item.area_name}</Text>
           </View>
           {!isEditing ? (
             <TouchableOpacity
               onPress={() =>
-                navigateToScreen(item.area_key_id,item?.area_name)
+                navigateToScreen(
+                  item.area_key_id,
+                  item?.area_name,
+                  item?.TAIM_ITEM_STATUS,
+                )
               }
               style={InspectionCss.rightIcon}>
               <Feather
@@ -358,7 +361,6 @@ const Inspection = props => {
     );
   };
 
- 
   return (
     <ScrollView>
       <View style={InspectionCss.MainContainer}>
@@ -510,7 +512,7 @@ const Inspection = props => {
               labelField="TAM_AREA_NAME"
               valueField="TAM_AREA_KEY"
               placeholder="Enter address manually"
-              searchPlaceholder="Search..."
+              searchPlaceholder="Search ..."
               value={customeAreavalue}
               onChange={item => {
                 setCustomeAreaValue(item.TAM_AREA_KEY);
@@ -564,7 +566,9 @@ const Inspection = props => {
               }
             />
             <View style={InspectionCss.ButtonView}>
-              <TouchableOpacity style={InspectionCss.cancelView}>
+              <TouchableOpacity
+                style={InspectionCss.cancelView}
+                onPress={handleCloseModal}>
                 <Text style={[InspectionCss.cancelText]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity

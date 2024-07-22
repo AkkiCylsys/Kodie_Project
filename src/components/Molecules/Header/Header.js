@@ -13,7 +13,7 @@ import {useIsFocused, CommonActions} from '@react-navigation/native';
 
 const TopHeader = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData', loginData.Login_details?.profile_photo_path);
+  // console.log('loginData', loginData.Login_details?.profile_photo_path);
   const signUp_account_response = useSelector(
     state => state?.authenticationReducer?.data,
   );
