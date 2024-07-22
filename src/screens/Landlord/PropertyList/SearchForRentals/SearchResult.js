@@ -27,11 +27,6 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-const staticimage = [
-  // 'https://kodietestapi.cylsys.com/upload/photo/b654ad06-522d-4d46-8a37-951b15845721.jpg',
-  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
-  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
-];
 export default SearchResult = props => {
   const refRBSheet = useRef();
   const navigation = useNavigation();
@@ -116,7 +111,6 @@ export default SearchResult = props => {
         {item?.image_path && item?.image_path.length != 0 ? (
           <View style={{marginTop: 10}}>
             <SliderBox
-              // images={staticimage}
               images={item?.image_path}
               sliderBoxHeight={200}
               onCurrentImagePressed={index =>

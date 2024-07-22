@@ -50,6 +50,7 @@ const RentalOffer = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginresponse_Rental offer..', loginData?.Login_details);
   const propertyId = props?.route?.params?.propertyId;
+  console.log('propertyId..', propertyId);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -137,6 +138,7 @@ const RentalOffer = props => {
   const [subChildren, setSubChildren] = useState([]);
   const [finalJsonData, setFinalJsonData] = useState([]);
   const [editAllQuestion, setEditAllQuestion] = useState([]);
+  const [editData, setEditData] = useState(null);
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -238,16 +240,26 @@ const RentalOffer = props => {
     console.log('Request URL:', Ques_url);
     setIsLoading(true);
     const QuesData = {
-      p_account_id: 730,
-      p_property_id: 964,
+      p_account_id: loginData?.Login_details?.user_account_id,
+      p_property_id: propertyId,
     };
     axios
       .post(Ques_url, QuesData)
       .then(response => {
         console.log('Response edit question..', response?.data);
-        // if(response?.data?.success===true){
-        //   setEditAllQuestion(response?.data?[0]?.parent_json)
-        // }
+        if (response?.data?.success === true) {
+          const data = response?.data?.data[0]?.parent_json;
+          setEditData(data);
+          // Initialize input values with the fetched data
+          const initialValues = {};
+          data.quesHeading.forEach(parentQuestion => {
+            parentQuestion.children.forEach(childQuestion => {
+              initialValues[childQuestion.tqm_Question_code] = childQuestion.value || '';
+            });
+          });
+          setInputValues(initialValues);
+          console.log('response in edit mode...', JSON.stringify(data));
+        }
       })
       .catch(error => {
         console.error('API failed EdittenantQues', error);
@@ -257,6 +269,7 @@ const RentalOffer = props => {
         setIsLoading(false);
       });
   };
+  
 
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
@@ -889,8 +902,8 @@ const RentalOffer = props => {
     console.log('Request URL:', tenantQues_url);
     setIsLoading(true);
     const tenantQuesData = {
-      p_account_id: '1',
-      p_property_id: '1',
+      p_account_id: loginData?.Login_details?.user_account_id,
+      p_property_id: propertyId,
     };
     axios
       .post(tenantQues_url, tenantQuesData)
@@ -1068,16 +1081,13 @@ const RentalOffer = props => {
   };
 
   const resetDynamicFields = () => {
-    // Reset the inputValues object
     Object.keys(inputValues).forEach(key => {
       inputValues[key] = '';
     });
 
-    // If you have other dynamic fields like occupants and leaseholders, reset them as well
     occupants.length = 0;
     leaseHolderItem.length = 0;
 
-    // Update the state to trigger a re-render if necessary
     setInputValues({...inputValues});
     setOccupants([]);
     setLeaseHolderItem([]);
