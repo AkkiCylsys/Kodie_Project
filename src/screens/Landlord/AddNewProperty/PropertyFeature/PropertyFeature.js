@@ -730,20 +730,18 @@ export default PropertyFeature = props => {
                 {'Additional key features'}
               </Text>
               <MultiSelect
-                hideDropdown
+                // hideDropdown
                 items={additionalfeatureskey}
                 uniqueKey="paf_key"
                 noItemsText={'Feature being searched for is not found on the list.'}
                 onSelectedItemsChange={onSelectedItemsChange}
-                selectedItems={
-                  Array.isArray(additionalfeatureskeyvalue)
-                    ? additionalfeatureskeyvalue
-                    : []
-                }
+                selectedItems={additionalfeatureskeyvalue}
+                    
                 selectText="Add features such as pool, aircon, balcony etc."
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={item => {
-                  setAdditionalFeaturesKeyValue(item);
+                  console.warn(item);
+                  // setAdditionalFeaturesKeyValue(item)
                 }}
                 tagBorderColor={_COLORS.Kodie_BlackColor}
                 selectedItemTextColor={_COLORS.Kodie_GreenColor}

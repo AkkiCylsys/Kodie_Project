@@ -45,21 +45,21 @@ const IncomeData = [
     icm_heading: 'Income',
     percentage: '+2.5%',
     price: '$0',
-    compare_text: 'Compared to($10 000 last month)',
+    compare_text: 'Compared to ($10 000 last month)',
   },
   {
     id: '2',
     icm_heading: 'Expenses',
     percentage: '-1.5%',
     price: '$0',
-    compare_text: 'Compared to($10 000 last month)',
+    compare_text: 'Compared to ($10 000 last month)',
   },
   {
     id: '3',
     icm_heading: 'Profit',
     percentage: '+2.5%',
     price: '$0',
-    compare_text: 'Compared to($10 000 last month)',
+    compare_text: 'Compared to ($10 000 last month)',
   },
 ];
 const Notice = [

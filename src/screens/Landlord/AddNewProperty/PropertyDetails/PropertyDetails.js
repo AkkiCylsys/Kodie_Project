@@ -658,6 +658,7 @@ export default PropertyDetails = props => {
                         country: country,
                         editMode: editMode,
                       });
+                      // props.navigation.navigate('MultipleDropDwonDummy')
                     }
                   }}
                   disabled={isLoading ? true : false}

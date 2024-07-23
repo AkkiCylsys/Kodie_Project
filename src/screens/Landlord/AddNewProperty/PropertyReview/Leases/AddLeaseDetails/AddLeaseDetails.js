@@ -151,7 +151,7 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
   const handleProRateAmount = text => {
     setProRate(text);
     if (text.trim() === '') {
-      setProRateError('Commencement date is required!');
+      setProRateError('Pro rate amount is required!');
     } else {
       setProRateError('');
     }
@@ -191,6 +191,8 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
       setRentalAmountError('Rental amount is required!');
     } else if (paymentDueDay.trim() == '') {
       setPaymentDueDayError(true);
+    } else if (ProRate.trim() == ''&& isYesSelected) {
+      setProRate('Rental amount is required!');
     } else {
       setSelectedDateError('');
       if (leaseDataDetails.LEASE_KEY) {
@@ -899,7 +901,7 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
               placeholder="Enter the rental amount"
               placeholderTextColor="#999"
               keyboardType="number-pad"
-              maxLength={5}
+              // maxLength={5}
             />
           </View>
           {rentalAmountError ? (
@@ -956,15 +958,22 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
                 <TextInput
                   style={AddLeaseDetailsStyle.Amountinput}
                   value={ProRate}
-                  onChangeText={setProRate}
+                  onChangeText={handleProRateAmount}
+                  onBlur={()=>handleProRateAmount(ProRate)}
                   placeholder="Amount"
                   placeholderTextColor="#999"
                   keyboardType="number-pad"
                   maxLength={5}
                 />
               </View>
+              
               : <View style={{ flex: 1 }} />}
           </View>
+          {isYesSelected && ProRateError ?  (
+            <Text style={AddLeaseDetailsStyle.error}>
+              {ProRateError}
+            </Text>
+          ) : null}
           <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           <View>
             <View

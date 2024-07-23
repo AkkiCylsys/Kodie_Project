@@ -1249,7 +1249,7 @@ export default FirstProperty = props => {
                         Additional key features
                       </Text>
                       <MultiSelect
-                        hideDropdown
+                        // hideDropdown
                         items={additionalfeatureskey}
                         uniqueKey="paf_key"
                         onSelectedItemsChange={onSelectedItemsChange}
@@ -1257,7 +1257,7 @@ export default FirstProperty = props => {
                         selectText="Add features such as pool, aircon, balcony etc."
                         searchInputPlaceholderText="Search Items..."
                         onChangeInput={item => {
-                          setAdditionalFeaturesKeyValue(item);
+                          console.warn(item);
                         }}
                         tagBorderColor={_COLORS.Kodie_BlackColor}
                         selectedItemTextColor={_COLORS.Kodie_GreenColor}

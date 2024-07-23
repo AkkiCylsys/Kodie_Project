@@ -140,6 +140,7 @@ import MarketplacePropertyListing from '../../MarketplacePropertyListing/Marketp
 import ViewRentalDetails from '../../screens/Landlord/PropertyList/SearchForRentals/ViewRentalDetails';
 import RentalOffer from '../../screens/Landlord/PropertyList/SearchForRentals/RentalOffer/RentalOffer';
 import AddNotices from '../../screens/NotiesList/AddNewNotice/AddNotices';
+import MultipleDropDwonDummy from '../../screens/MultipleDropDwonDummy'
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1071,6 +1072,11 @@ const AllStackRouts = props => {
          <Stack.Screen
           name={'AddNotices'}
           component={AddNotices}
+          options={{headerShown: false}}
+        />
+         <Stack.Screen
+          name={'MultipleDropDwonDummy'}
+          component={MultipleDropDwonDummy}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
