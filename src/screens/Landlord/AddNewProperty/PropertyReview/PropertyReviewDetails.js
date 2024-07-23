@@ -185,9 +185,9 @@ export default PropertyReviewDetails = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Built in robes' ? (
+      ) : item === 'Built-in wardrobes' ? (
         <MaterialCommunityIcons
-          name="cupboard"
+          name="wardrobe"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
@@ -501,7 +501,7 @@ export default PropertyReviewDetails = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {property_Detail?.floor_size}
+                      {`${property_Detail?.floor_size} m²`}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
@@ -954,8 +954,8 @@ export default PropertyReviewDetails = props => {
               }
               inactiveDotColor={_COLORS.Kodie_GrayColor}
               dotColor={_COLORS.Kodie_GreenColor}
-              autoplay
-              // circleLoop
+              // autoplay={false}
+              // circleLoop={false}
               resizeMethod={'resize'}
               resizeMode={'cover'}
               dotStyle={PropertyReviewStyle.dotStyle}

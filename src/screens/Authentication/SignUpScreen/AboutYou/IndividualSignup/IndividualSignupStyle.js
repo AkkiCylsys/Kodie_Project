@@ -25,7 +25,7 @@ export default IndividualSignupStyle = StyleSheet.create({
     marginTop: 10,
   },
   inputContainer: {
-    marginTop: 15,
+    marginTop: 12,
   },
   chekboxview: {
     flexDirection: 'row',
@@ -204,4 +204,5 @@ export default IndividualSignupStyle = StyleSheet.create({
     color: _COLORS.Kodie_WhiteColor,
     fontWeight: 'bold',
   },
+  thetext:{}
 });

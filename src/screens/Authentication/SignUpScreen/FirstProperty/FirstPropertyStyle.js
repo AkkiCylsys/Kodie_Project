@@ -42,7 +42,10 @@ export const FirstPropertyStyle = StyleSheet.create({
     marginTop: 15,
   },
   inputContainer: {
-    marginBottom: 15,
+    // marginBottom: 15,
+  },
+  featureText:{
+    marginTop:20
   },
   input: {
     height: 100,

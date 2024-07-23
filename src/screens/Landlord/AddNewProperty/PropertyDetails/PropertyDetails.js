@@ -75,10 +75,14 @@ export default PropertyDetails = props => {
   const [country, setCountry] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [error, setError] = useState('');
+  const [notesError, setNotesError] = useState('');
+  const [propertyError, setPropertyError] = useState('');
 
   const handleTextInputFocus = () => {
     if (error) {
       setError('');
+      setPropertyError('');
+      setNotesError('');
     }
   };
 
@@ -500,7 +504,7 @@ export default PropertyDetails = props => {
 
             <View style={PropertyDetailsStyle.card}>
               <View style={PropertyDetailsStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Location</Text>
+                <Text style={LABEL_STYLES._texinputLabel}>Location*</Text>
                 <View style={PropertyDetailsStyle.locationConView}>
                   <View style={PropertyDetailsStyle.locationContainer}>
                     <TextInput
@@ -539,7 +543,7 @@ export default PropertyDetails = props => {
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
-                  Property type
+                  Property type*
                 </Text>
                 <Dropdown
                   style={PropertyDetailsStyle.dropdown}
@@ -558,19 +562,23 @@ export default PropertyDetails = props => {
                   value={property_value}
                   onChange={item => {
                     setProperty_value(item.lookup_key);
+                    setPropertyError('');
                   }}
                   renderItem={propertyType_render}
                 />
+                {propertyError ? (
+                  <Text style={PropertyDetailsStyle.errorText}>
+                    {propertyError}
+                  </Text>
+                ) : null}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>
-                  Property description
-                </Text>
+                <Text style={LABEL_STYLES._texinputLabel}>Notes*</Text>
                 <TextInput
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
                   onChangeText={setPropertyDesc}
-                  placeholder="Describe your property here..."
+                  placeholder="Add information about your property"
                   placeholderTextColor="#999"
                   multiline
                   numberOfLines={5}
@@ -580,6 +588,11 @@ export default PropertyDetails = props => {
                 <Text style={PropertyDetailsStyle.characterLimit}>
                   {propertyDesc.length}/1000
                 </Text>
+                {notesError ? (
+                  <Text style={PropertyDetailsStyle.errorText}>
+                    {notesError}
+                  </Text>
+                ) : null}
               </View>
               <View
                 style={{
@@ -641,10 +654,29 @@ export default PropertyDetails = props => {
                   _ButtonText={'Next'}
                   Text_Color={_COLORS.Kodie_WhiteColor}
                   onPress={() => {
+                    let isValid = true;
+
                     if (!location) {
                       setError('Please enter a location.');
-                      return;
+                      isValid = false;
                     } else {
+                      setError('');
+                    }
+
+                    if (!property_value) {
+                      setPropertyError('Please select a property type.');
+                      isValid = false;
+                    } else {
+                      setPropertyError('');
+                    }
+                    if (!propertyDesc) {
+                      setNotesError('Please enter notes.');
+                      isValid = false;
+                    } else {
+                      setNotesError('');
+                    }
+
+                    if (isValid) {
                       props.navigation.navigate('PropertyFeature', {
                         location: location,
                         property_value: property_value,
@@ -664,7 +696,6 @@ export default PropertyDetails = props => {
                   disabled={isLoading ? true : false}
                 />
               </View>
-
               <TouchableOpacity
                 style={PropertyDetailsStyle.goBack_View}
                 onPress={() => {

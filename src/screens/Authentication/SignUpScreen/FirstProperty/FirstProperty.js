@@ -1244,7 +1244,7 @@ export default FirstProperty = props => {
                       <Text
                         style={[
                           LABEL_STYLES._texinputLabel,
-                          FirstPropertyStyle.addition_featureText,
+                          FirstPropertyStyle.featureText,
                         ]}>
                         Additional key features
                       </Text>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,23 +7,23 @@ import {
   TextInput,
   SafeAreaView,
 } from 'react-native';
-import { PropertyFeatureStyle } from './PropertyFeatureStyle';
+import {PropertyFeatureStyle} from './PropertyFeatureStyle';
 import TopHeader from '../../../../components/Molecules/Header/Header';
-import { _goBack } from '../../../../services/CommonServices';
-import { FONTFAMILY, LABEL_STYLES } from '../../../../Themes';
-import { _COLORS } from '../../../../Themes';
+import {_goBack} from '../../../../services/CommonServices';
+import {FONTFAMILY, LABEL_STYLES} from '../../../../Themes';
+import {_COLORS} from '../../../../Themes';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import StepIndicator from 'react-native-step-indicator';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { Config } from '../../../../Config';
+import {Config} from '../../../../Config';
 import axios from 'axios';
-import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import MultiSelect from 'react-native-multiple-select';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAddPropertySecondStepsSuccess } from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchAddPropertySecondStepsSuccess} from '../../../../redux/Actions/AddProperty/AddPropertySecondStep/AddPropertySecondStepApiAction';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 export default PropertyFeature = props => {
   const addPropertySecondStepData = useSelector(
@@ -45,7 +45,7 @@ export default PropertyFeature = props => {
   const editMode = props?.route?.params?.editMode;
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const [additionalfeatureskeyvalue, setAdditionalFeaturesKeyValue] = useState(
-    []
+    [],
   );
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('key_features_id............', additionalfeatureskeyvalue);
@@ -61,16 +61,18 @@ export default PropertyFeature = props => {
   const [florSize, setFlorSize] = useState('');
   const [landArea, setLandArea] = useState('');
   const [property_Detail, setProperty_Details] = useState([]);
-  const [activeColor, setActiveColor] = useState(_COLORS.Kodie_MidLightGreenColor);
+  const [activeColor, setActiveColor] = useState(
+    _COLORS.Kodie_MidLightGreenColor,
+  );
   const keyFeaturesString = property_Detail?.key_features;
 
   useEffect(() => {
     additional_features();
     setActiveColor(_COLORS.Kodie_MidLightGreenColor);
     propertyid > 0 ||
-      (Array.isArray(addPropertySecondStepData) &&
-        addPropertySecondStepData.length > 0) ||
-      typeof addPropertySecondStepData === 'number'
+    (Array.isArray(addPropertySecondStepData) &&
+      addPropertySecondStepData.length > 0) ||
+    typeof addPropertySecondStepData === 'number'
       ? DetailsData()
       : null;
     try {
@@ -136,10 +138,10 @@ export default PropertyFeature = props => {
     }
   };
   const AllCountsData = [
-    { Bedrooms: CountBedroom },
-    { Bathrooms: CountBathroom },
-    { 'Parking Space': CountParking },
-    { Garages: CountParkingStreet },
+    {Bedrooms: CountBedroom},
+    {Bathrooms: CountBathroom},
+    {'Parking Space': CountParking},
+    {Garages: CountParkingStreet},
   ];
   const PreFriedly = `${selectedButtonDepositId}, ${selectedButtonFurnishedId}`;
   const increaseBedroomCount = () => {
@@ -174,7 +176,7 @@ export default PropertyFeature = props => {
       setCountParkingStreet(prevCount => prevCount - 1);
     }
   };
-  const getStepIndicatorIconConfig = ({ position, stepStatus }) => {
+  const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
@@ -227,23 +229,23 @@ export default PropertyFeature = props => {
   const renderStepIndicator = params => (
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
-  const renderLabel = ({ position, stepStatus }) => {
+  const renderLabel = ({position, stepStatus}) => {
     const iconColor =
       position === currentPage
         ? _COLORS.Kodie_BlackColor
         : stepStatus === 'finished'
-          ? '#000000'
-          : '#808080';
+        ? '#000000'
+        : '#808080';
     const iconName =
       position === 0
         ? 'Details'
         : position === 1
-          ? 'Features'
-          : position === 2
-            ? 'Images'
-            : position === 3
-              ? 'Review'
-              : 'null';
+        ? 'Features'
+        : position === 2
+        ? 'Images'
+        : position === 3
+        ? 'Review'
+        : 'null';
 
     return (
       <View style={{}}>
@@ -345,11 +347,10 @@ export default PropertyFeature = props => {
       });
   };
   const additional_features = async () => {
-    
     const url = Config.BASE_URL;
     const additionalApi = url + 'get_key_features';
     console.log('Request URL:', additionalApi);
-    setIsLoading(true); 
+    setIsLoading(true);
     try {
       const response = await axios.get(additionalApi);
       console.log('additional_Data:', response.data);
@@ -593,7 +594,7 @@ nestedScrollEnabled={true}
               <View style={PropertyFeatureStyle.key_feature_mainView}>
                 <View style={PropertyFeatureStyle.key_feature_subView}>
                   <Text style={PropertyFeatureStyle.key_feature_Text}>
-                    {'Building floor size  (optional)'}
+                    {'Building floor size (optional)'}
                   </Text>
                 </View>
 
@@ -628,6 +629,7 @@ nestedScrollEnabled={true}
                 </View>
               </View>
             </View>
+
             <View style={PropertyFeatureStyle.addition_featureView}>
               <Text style={PropertyFeatureStyle.additional_Text}>
                 {'Additional features'}
@@ -735,7 +737,9 @@ nestedScrollEnabled={true}
                 hideDropdown
                 items={additionalfeatureskey}
                 uniqueKey="paf_key"
-                noItemsText={'Feature being searched for is not found on the list.'}
+                noItemsText={
+                  'The feature you are searching for is not available on the list'
+                }
                 onSelectedItemsChange={onSelectedItemsChange}
                 selectedItems={additionalfeatureskeyvalue}
                     

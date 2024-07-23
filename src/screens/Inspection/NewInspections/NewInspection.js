@@ -106,8 +106,7 @@ export default NewInspection = (props) => {
     setIsLoading(true);
     try {
       const url = Config.BASE_URL;
-      const InspectionDeatilsByFilter_url =
-        url + 'get/AllInspectionDetails/ByFilter';
+      const InspectionDeatilsByFilter_url = `${url}get/AllInspectionDetails/ByFilter`;
       const data = {
         v_Filter: filter,
         P_TIM_CREATED_BY: loginData?.Login_details?.user_account_id,
@@ -119,37 +118,48 @@ export default NewInspection = (props) => {
       };
       console.log(data);
       const response = await axios.post(InspectionDeatilsByFilter_url, data);
-      if (response?.data?.success === true) {
+      if (response?.data?.success) {
         setInspectionDetails(response?.data?.data);
+        console.log('Updated inspection details:', response?.data?.data);
+      } else {
+        setInspectionDetails([]);
       }
       setIsLoading(false);
     } catch (error) {
       if (error.response && error.response.status === 500) {
         Alert.alert(
           'Warning',
-          error.response.data.message || 'Internal server issue',
+          error.response.data.message || 'Internal server issue'
         );
-        setIsLoading(false);
       } else if (error.response.status === 404) {
         setInspectionDetails([]);
-        setIsLoading(false);
       }
       console.error('API Error InspectionDeatilsByFilter:', error);
       setIsLoading(false);
     }
   };
+  
 
   const handleDeleteInspection = async () => {
-    console.log('delete');
+    console.log('Attempting to delete inspection...');
     const url = Config.BASE_URL;
-    const deleteUrl = url + `delete_inspection_details/${TIM_KEY}`;
-
+    const deleteUrl = `${url}delete_inspection_details/${Tim_Key}`;
+  
     try {
       const response = await axios.delete(deleteUrl);
+      console.log('Response from delete inspection:', response?.data);
       if (response?.data?.success) {
         Alert.alert('Success', 'Inspection deleted successfully');
-        navigation?.navigate('NewInspection');
-        // refRBSheet2.current.close();
+        // Close the RBSheet
+        if (refRBSheet2.current) {
+          refRBSheet2.current.close();
+        }
+        // Fetch updated inspection details
+        await getInspectionDeatilsByFilter({
+          monthId: _selectedMonthId,
+          year: _selectedYear,
+          filter: selectedFilter,
+        });
       } else {
         Alert.alert('Error', 'Failed to delete inspection');
       }
@@ -158,6 +168,7 @@ export default NewInspection = (props) => {
       console.error('Error:', error.response || error.message);
     }
   };
+  
 
   const SubmitInspection = async () => {
     // alert(selectedAddress?.property_id)
@@ -214,7 +225,7 @@ export default NewInspection = (props) => {
       getInspectionDeatilsByFilter({
         monthId: _selectedMonthId,
         year: _selectedYear,
-        page: nextPage, 
+        page: nextPage,
         filter: selectedFilter,
       });
     }
@@ -342,7 +353,12 @@ export default NewInspection = (props) => {
           }}>
           <View style={NewInspectionStyle.insp_cld_main_view}>
             <Text style={NewInspectionStyle.insp_cld_date}>{dayOfMonth}</Text>
-            <Text style={NewInspectionStyle.insp_cld_Text}>{dayOfWeek}</Text>
+            <Text
+              style={NewInspectionStyle.insp_cld_Text}
+              ellipsizeMode="tail"
+              numberOfLines={1}>
+              {dayOfWeek}
+            </Text>
             <Text style={NewInspectionStyle.insp_cld_Text}>
               {item?.scheduled_time}
             </Text>
@@ -460,26 +476,30 @@ export default NewInspection = (props) => {
         />
       </View>
       <DividerIcon />
-      <View style={NewInspectionStyle.containerStyle}>
-        <TouchableOpacity onPress={navigateToPreviousMonth} style={NewInspectionStyle.leftButtonStyle}>
-          <Entypo name={"chevron-left"} size={22} color={"black"} />
-        </TouchableOpacity>
-        <View style={NewInspectionStyle.textContainerStyle}>
-          <View style={NewInspectionStyle.textItemStyle}>
-            <Text style={NewInspectionStyle.textStyle}>
-              {_MONTHS.find((month) => month.id === _selectedMonthId)?.name}{" "}
-            </Text>
-          </View>
-          <View style={NewInspectionStyle.textItemStyle}>
-            <Text style={NewInspectionStyle.textStyle}>{_selectedYear}</Text>
-          </View>
-        </View>
-        <TouchableOpacity onPress={navigateToNextMonth} style={NewInspectionStyle.rightButtonStyle}>
-          <Entypo name={"chevron-right"} size={22} color={"black"} />
-        </TouchableOpacity>
-      </View>
-      <DividerIcon />
       <ScrollView>
+        <View style={NewInspectionStyle.containerStyle}>
+          <TouchableOpacity
+            onPress={navigateToPreviousMonth}
+            style={NewInspectionStyle.leftButtonStyle}>
+            <Entypo name={'chevron-left'} size={22} color={'black'} />
+          </TouchableOpacity>
+          <View style={NewInspectionStyle.textContainerStyle}>
+            <View style={NewInspectionStyle.textItemStyle}>
+              <Text style={NewInspectionStyle.textStyle}>
+                {_MONTHS.find(month => month.id === _selectedMonthId)?.name}{' '}
+              </Text>
+            </View>
+            <View style={NewInspectionStyle.textItemStyle}>
+              <Text style={NewInspectionStyle.textStyle}>{_selectedYear}</Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={navigateToNextMonth}
+            style={NewInspectionStyle.rightButtonStyle}>
+            <Entypo name={'chevron-right'} size={22} color={'black'} />
+          </TouchableOpacity>
+        </View>
+        <DividerIcon />
         <FlatList
           data={searchQuery ? filteredUsers : InspectionDetails}
           scrollEnabled
@@ -488,7 +508,7 @@ export default NewInspection = (props) => {
           renderItem={Inspection_render}
           onEndReached={loadMoreData}
           onEndReachedThreshold={0.5}
-        // ListFooterComponent={isLoading && page > 1 ? <CommonLoader /> : null}
+          // ListFooterComponent={isLoading && page > 1 ? <CommonLoader /> : null}
         />
       </ScrollView>
       <RBSheet

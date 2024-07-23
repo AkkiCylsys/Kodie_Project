@@ -1075,8 +1075,7 @@ export default AboutYou = props => {
               />
                 </View>
               )}
-              <View style={CompanySignupStyle.inputContainer}>
-                <View style={[CompanySignupStyle.commontextfield]}>
+              <View style={CompanySignupStyle.inputContainer}> 
                   <View>
                     <Text style={[LABEL_STYLES.commontext]}>
                       {'Company physical address'}
@@ -1109,9 +1108,8 @@ export default AboutYou = props => {
                       </TouchableOpacity>
                     </View>
                   </View>
-                </View>
               </View>
-              <View style={CompanySignupStyle.inputContainer}>
+              <View style={CompanySignupStyle.websiteContainer}>
                 <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
                 <TextInput
                   style={CompanySignupStyle.input}
