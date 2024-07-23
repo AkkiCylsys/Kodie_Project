@@ -231,7 +231,7 @@ const RentalOffer = props => {
   };
   useEffect(() => {
     handleTenantQues();
-    getEditAllQuestion();
+    // getEditAllQuestion();
   }, [question]);
 
   const getEditAllQuestion = () => {
@@ -248,28 +248,38 @@ const RentalOffer = props => {
       .then(response => {
         console.log('Response edit question..', response?.data);
         if (response?.data?.success === true) {
-          const data = response?.data?.data[0]?.parent_json;
-          setEditData(data);
-          // Initialize input values with the fetched data
-          const initialValues = {};
-          data.quesHeading.forEach(parentQuestion => {
-            parentQuestion.children.forEach(childQuestion => {
-              initialValues[childQuestion.tqm_Question_code] = childQuestion.value || '';
+          const data = response?.data?.data?.[0]?.parent_json;
+          if (Array.isArray(data)) {
+            const initialValues = {};
+            data.forEach(parentQuestion => {
+              if (Array.isArray(parentQuestion.children)) {
+                parentQuestion.children.forEach(childQuestion => {
+                  // Use the appropriate question code and value
+                  // initialValues[childQuestion.tqm_Question_code] = childQuestion.tqm_Question_value || '';
+                  initialValues[childQuestion.tqm_Question_code] =
+                    childQuestion.tqm_Question_value !== undefined
+                      ? String(childQuestion.tqm_Question_value)
+                      : '';
+                });
+              }
             });
-          });
-          setInputValues(initialValues);
-          console.log('response in edit mode...', JSON.stringify(data));
+            setInputValues(initialValues);
+            console.log('response in edit mode...', JSON.stringify(data));
+          } else {
+            console.error(
+              'Invalid data structure: parent_json is not an array',
+              data,
+            );
+          }
         }
       })
       .catch(error => {
         console.error('API failed EdittenantQues', error);
-        setIsLoading(false);
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
-  
 
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
@@ -1013,17 +1023,95 @@ const RentalOffer = props => {
   };
 
   const handleInputChange = (questionCode, value) => {
+    console.log(`Handling input change for ${questionCode}: ${value}`);
     setInputValues(prevValues => ({
       ...prevValues,
       [questionCode]: value,
     }));
   };
 
+  // const handleSubmit = () => {
+  //   const jsonData = [];
+  //   console.log('quesHeading:', quesHeading);
+  //   console.log('subChildren:', subChildren);
+
+  //   // Create a mapping of questionCode to id from quesHeading and subChildren
+  //   const questionCodeToId = {};
+  //   quesHeading.forEach(parentQuestion => {
+  //     parentQuestion.children.forEach(childQuestion => {
+  //       questionCodeToId[childQuestion.tqm_Question_code] = childQuestion.id;
+  //     });
+  //   });
+  //   subChildren.forEach(subChild => {
+  //     questionCodeToId[subChild.tqm_Question_code] = subChild.id;
+  //   });
+
+  //   // Process main questions
+  //   quesHeading.forEach(parentQuestion => {
+  //     parentQuestion.children.forEach(childQuestion => {
+  //       const questionValue =
+  //         inputValues[childQuestion.tqm_Question_code] || '';
+  //       if (questionValue) {
+  //         jsonData.push({
+  //           question_id: childQuestion.id,
+  //           question_value: questionValue,
+  //           question_reference:
+  //             childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+  //           question_is_lookup:
+  //             childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+  //         });
+  //       }
+  //     });
+  //   });
+    
+  //   // Add location data if available
+  // const locationQuestionId = questionCodeToId[18] || 18; // Dynamically get the ID
+  // if (location) {
+  //   console.log('Adding location data:', {
+  //     question_id: locationQuestionId,
+  //     question_value: location,
+  //     question_reference: 0,
+  //     question_is_lookup: 0,
+  //   });
+  //   jsonData.push({
+  //     question_id: locationQuestionId,
+  //     question_value: location,
+  //     question_reference: 0,
+  //     question_is_lookup: 0,
+  //   });
+  // }
+  //   // Group occupants by their question_id
+  //   const occupantGroups = groupBy(occupants, 'questionId');
+  //   console.log('occupantGroups...', occupantGroups);
+  //   // Add grouped occupants data to jsonData
+  //   addGroupedDataToJsonData(jsonData, occupantGroups);
+
+  //   // Group leaseholders by their question_id
+  //   const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
+  //   console.log('leaseHolderGroups...', leaseHolderGroups);
+  //   // Add grouped leaseholders data to jsonData
+  //   addGroupedDataToJsonData(
+  //     jsonData,
+  //     leaseHolderGroups,
+  //     'leaseFullName',
+  //     'leaseEmailAddress',
+  //     'leaseConfirmEmailAddress',
+  //   );
+
+  //   const finalJson = {
+  //     json_data: jsonData,
+  //   };
+
+  //   console.log('Final JSON:', JSON.stringify(finalJson));
+  //   saveAllJson(finalJson);
+  //   resetDynamicFields();
+  // };
+
   const handleSubmit = () => {
     const jsonData = [];
     console.log('quesHeading:', quesHeading);
     console.log('subChildren:', subChildren);
-
+  
     // Create a mapping of questionCode to id from quesHeading and subChildren
     const questionCodeToId = {};
     quesHeading.forEach(parentQuestion => {
@@ -1034,31 +1122,83 @@ const RentalOffer = props => {
     subChildren.forEach(subChild => {
       questionCodeToId[subChild.tqm_Question_code] = subChild.id;
     });
-
+  
     // Process main questions
     quesHeading.forEach(parentQuestion => {
       parentQuestion.children.forEach(childQuestion => {
-        const questionValue =
-          inputValues[childQuestion.tqm_Question_code] || '';
+        const questionValue = inputValues[childQuestion.tqm_Question_code] || '';
         if (questionValue) {
           jsonData.push({
             question_id: childQuestion.id,
             question_value: questionValue,
-            question_reference:
-              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-            question_is_lookup:
-              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+            question_reference: childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+            question_is_lookup: childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
           });
         }
       });
     });
-
+  
+    // Add Yes/No button values to jsonData
+    const yesNoButtonValues = {
+      'EARN_INCOME': selectedButton, // EARN_INCOME question code
+      'EVER_BROKEN': selectedRentalBondButton, // EVER_BROKEN question code
+      'EVICTED_PREVIOUS_BOND': selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
+      'ANY_PETS': selectedPetsButton, // ANY_PETS question code
+    };
+  
+    Object.keys(yesNoButtonValues).forEach(questionCode => {
+      const questionId = questionCodeToId[questionCode];
+      if (questionId !== undefined) {
+        const isYesSelected = yesNoButtonValues[questionCode]; // Assuming true means Yes
+        if (isYesSelected !== null && isYesSelected !== undefined) {
+          const value = isYesSelected ? 1 : 0; // 1 for Yes, 0 for No
+          jsonData.push({
+            question_id: questionId,
+            question_value: value,
+            question_reference: 0,
+            question_is_lookup: 0,
+          });
+        }
+      }
+    });
+  
+    // Add smoking button value to jsonData
+    const smokingQuestionId = questionCodeToId['S/NS']; // S/NS question code for smoking
+    if (smokingQuestionId !== undefined) {
+      const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
+      if (smokingValue !== null && smokingValue !== undefined) {
+        jsonData.push({
+          question_id: smokingQuestionId,
+          question_value: smokingValue,
+          question_reference: 0,
+          question_is_lookup: 0,
+        });
+      }
+    }
+  
+    // Add location data if available
+    const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS']; // PREVIOUS_ADDRESS question code
+    if (locationQuestionId !== undefined && location) {
+      console.log('Adding location data:', {
+        question_id: locationQuestionId,
+        question_value: location,
+        question_reference: 0,
+        question_is_lookup: 0,
+      });
+      jsonData.push({
+        question_id: locationQuestionId,
+        question_value: location,
+        question_reference: 0,
+        question_is_lookup: 0,
+      });
+    }
+  
     // Group occupants by their question_id
     const occupantGroups = groupBy(occupants, 'questionId');
     console.log('occupantGroups...', occupantGroups);
     // Add grouped occupants data to jsonData
     addGroupedDataToJsonData(jsonData, occupantGroups);
-
+  
     // Group leaseholders by their question_id
     const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
     console.log('leaseHolderGroups...', leaseHolderGroups);
@@ -1070,15 +1210,16 @@ const RentalOffer = props => {
       'leaseEmailAddress',
       'leaseConfirmEmailAddress',
     );
-
+  
     const finalJson = {
       json_data: jsonData,
     };
-
+  
     console.log('Final JSON:', JSON.stringify(finalJson));
-    saveAllJson(finalJson);
+    // saveAllJson(finalJson);
     resetDynamicFields();
   };
+  
 
   const resetDynamicFields = () => {
     Object.keys(inputValues).forEach(key => {
@@ -1250,6 +1391,9 @@ const RentalOffer = props => {
               value={inputValues[question.tqm_Question_code] || ''}
               onFocus={() => handleDropdown(question.tqm_Question_code, index)}
               onChange={item => {
+                console.log(
+                  `Dropdown change for ${question.tqm_Question_code}: ${item.lookup_key}`,
+                );
                 handleInputChange(question.tqm_Question_code, item.lookup_key);
               }}
             />
@@ -1361,7 +1505,7 @@ const RentalOffer = props => {
                 }
                 onPressLeftButton={() => {
                   setSelectedButton(false);
-                  handleInputChange(question.id, 'Yes');
+                  handleInputChange(question.id, 1);
                 }}
                 RightButtonText={'No'}
                 RightButtonbackgroundColor={
@@ -1381,7 +1525,7 @@ const RentalOffer = props => {
                 }
                 onPressRightButton={() => {
                   setSelectedButton(true);
-                  handleInputChange(question.id, 'No');
+                  handleInputChange(question.id, 0);
                 }}
               />
             ) : question.id === 20 ? (
@@ -1404,7 +1548,7 @@ const RentalOffer = props => {
                 }
                 onPressLeftButton={() => {
                   setSelectedRentalBondButton(false);
-                  handleInputChange(question.id, 'Yes');
+                  handleInputChange(question.id, 1);
                 }}
                 RightButtonText={'No'}
                 RightButtonbackgroundColor={
@@ -1424,7 +1568,7 @@ const RentalOffer = props => {
                 }
                 onPressRightButton={() => {
                   setSelectedRentalBondButton(true);
-                  handleInputChange(question.id, 'No');
+                  handleInputChange(question.id, 0);
                 }}
               />
             ) : question.id === 21 ? (
@@ -1447,7 +1591,7 @@ const RentalOffer = props => {
                 }
                 onPressLeftButton={() => {
                   setSelectedPreviousRentalButton(false);
-                  handleInputChange(question.id, 'Yes');
+                  handleInputChange(question.id, 1);
                 }}
                 RightButtonText={'No'}
                 RightButtonbackgroundColor={
@@ -1467,7 +1611,7 @@ const RentalOffer = props => {
                 }
                 onPressRightButton={() => {
                   setSelectedPreviousRentalButton(true);
-                  handleInputChange(question.id, 'No');
+                  handleInputChange(question.id, 0);
                 }}
               />
             ) : question.id === 24 ? (
@@ -1490,7 +1634,7 @@ const RentalOffer = props => {
                 }
                 onPressLeftButton={() => {
                   setSelectedPetsButton(false);
-                  handleInputChange(question.id, 'Yes');
+                  handleInputChange(question.id, 1);
                 }}
                 RightButtonText={'No'}
                 RightButtonbackgroundColor={
@@ -1510,60 +1654,61 @@ const RentalOffer = props => {
                 }
                 onPressRightButton={() => {
                   setSelectedPetsButton(true);
-                  handleInputChange(question.id, 'No');
+                  handleInputChange(question.id, 1);
                 }}
               />
             ) : null}
           </View>
         );
 
-      case 'Smoking/Non-smoking':
-        return (
-          <View>
-            <RowButtons
-              LeftButtonText={'Smoking'}
-              leftButtonbackgroundColor={
-                !selectedSomokingButton
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !selectedSomokingButton
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              LeftButtonborderColor={
-                !selectedSomokingButton
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressLeftButton={() => {
-                setSelectedSomokingButton(false);
-                setSelectedSomokingButtonId(1);
-              }}
-              RightButtonText={'Non-smoking'}
-              RightButtonbackgroundColor={
-                selectedSomokingButton
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                selectedSomokingButton
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              RightButtonborderColor={
-                selectedSomokingButton
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressRightButton={() => {
-                setSelectedSomokingButton(true);
-                setSelectedSomokingButtonId(1);
-              }}
-            />
-          </View>
-        );
+        case 'Smoking/Non-smoking':
+          return (
+            <View>
+              <RowButtons
+                LeftButtonText={'Smoking'}
+                leftButtonbackgroundColor={
+                  !selectedSomokingButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                LeftButtonTextColor={
+                  !selectedSomokingButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                LeftButtonborderColor={
+                  !selectedSomokingButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressLeftButton={() => {
+                  setSelectedSomokingButton(false);
+                  handleInputChange(question.id, 1);
+                }}
+                RightButtonText={'Non-smoking'}
+                RightButtonbackgroundColor={
+                  selectedSomokingButton
+                    ? _COLORS.Kodie_lightGreenColor
+                    : _COLORS.Kodie_WhiteColor
+                }
+                RightButtonTextColor={
+                  selectedSomokingButton
+                    ? _COLORS.Kodie_BlackColor
+                    : _COLORS.Kodie_MediumGrayColor
+                }
+                RightButtonborderColor={
+                  selectedSomokingButton
+                    ? _COLORS.Kodie_GrayColor
+                    : _COLORS.Kodie_LightWhiteColor
+                }
+                onPressRightButton={() => {
+                  setSelectedSomokingButton(true);
+                  handleInputChange(question.id, 0);
+                }}
+              />
+            </View>
+          );
+
       case 'Search':
         return (
           <View key={index}>
@@ -1608,8 +1753,8 @@ const RentalOffer = props => {
               <View style={RentalOfferStyle.locationContainer}>
                 <TextInput
                   style={RentalOfferStyle.locationInput}
-                  value={location}
-                  onChangeText={setLocation}
+                  value={location} // Use the state variable for the value
+                  onChangeText={setLocation} // Update state on change
                   onFocus={() => {
                     setIsSearch(true);
                     props.setOpenMap && props.setOpenMap(true);
