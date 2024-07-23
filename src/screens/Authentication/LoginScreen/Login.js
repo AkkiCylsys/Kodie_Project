@@ -119,6 +119,7 @@ export default Login = props => {
       }
     }
   };
+
   const fetchCurrentLocation = () => {
     Geolocation.getCurrentPosition(
       position => {
@@ -802,8 +803,8 @@ export default Login = props => {
                 // props.navigation.navigate("ContractorSignUpFirstScreen");
                 // props.navigation.navigate("SignUpSteps");
                 // props.navigation.navigate("Account");
-                Alert.alert('Login with Google', 'Coming soon');
-                // signIn();
+                // Alert.alert('Login with Google', 'Coming soon');
+                signIn();
               }}
               leftImage={IMAGES.GoogleIcon}
               isLeftImage={true}
@@ -816,6 +817,7 @@ export default Login = props => {
                 // props.navigation.navigate("ManageSubscription")
                 // props.navigation.navigate("DrawerNavigatorLeftMenu")
                 Alert.alert('Login with Facebook', 'Coming soon')
+                // onFacebookButtonPress()
               }
               leftImage={IMAGES.FacebookIcon}
               isLeftImage={true}

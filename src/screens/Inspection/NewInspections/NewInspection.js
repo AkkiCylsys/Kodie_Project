@@ -8,32 +8,26 @@ import {
   Image,
   SafeAreaView,
   Alert,
-} from 'react-native';
-import TopHeader from '../../../components/Molecules/Header/Header';
-import {_goBack} from '../../../services/CommonServices';
-import {_COLORS, BANNERS, FONTFAMILY, IMAGES} from '../../../Themes';
-import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
-import DividerIcon from '../../../components/Atoms/Devider/DividerIcon';
-import SearchBar from '../../../components/Molecules/SearchBar/SearchBar';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+} from "react-native";
 import RBSheet from 'react-native-raw-bottom-sheet';
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import axios from 'axios';
-import {Config} from '../../../Config';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {NewInspectionStyle} from '../../Inspection/NewInspections/NewInspectionStyle';
-const HorizontalData = [
-  'All',
-  'Scheduled',
-  'inProgress',
-  'Complete',
-  'Cancelled',
-];
-export default NewInspection = props => {
+import TopHeader from "../../../components/Molecules/Header/Header";
+import { _goBack } from "../../../services/CommonServices";
+import { _COLORS, BANNERS, FONTFAMILY, IMAGES } from "../../../Themes";
+import CustomSingleButton from "../../../components/Atoms/CustomButton/CustomSingleButton";
+import DividerIcon from "../../../components/Atoms/Devider/DividerIcon";
+import SearchBar from "../../../components/Molecules/SearchBar/SearchBar";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Entypo from "react-native-vector-icons/Entypo";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { Config } from "../../../Config";
+import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
+import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
+const HorizontalData = ["All", "Scheduled", "inProgress", "Complete", "Cancelled"];
+export default NewInspection = (props) => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
   const [page, setPage] = useState(1);
