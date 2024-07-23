@@ -265,11 +265,11 @@ const SignUpSteps = props => {
   const handleNextBtn = () => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(firstName)) {
+    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(firstName)) {
       setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens.');
     } else if (lastName.trim() === '') {
       setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(lastName)) {
+    } else if (!/^[A-Za-z]+(?:[\s-][A-Za-z]+)*$/.test(lastName)) {
       setLastNameError('Last name should contain only alphabetic characters');
     } else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');

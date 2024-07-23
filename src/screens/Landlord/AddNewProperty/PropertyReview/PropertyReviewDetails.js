@@ -954,8 +954,8 @@ export default PropertyReviewDetails = props => {
               }
               inactiveDotColor={_COLORS.Kodie_GrayColor}
               dotColor={_COLORS.Kodie_GreenColor}
-              autoplay
-              // circleLoop
+              // autoplay={false}
+              // circleLoop={false}
               resizeMethod={'resize'}
               resizeMode={'cover'}
               dotStyle={PropertyReviewStyle.dotStyle}

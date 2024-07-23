@@ -82,7 +82,7 @@ const JobDocumentDetails = props => {
           // DocumentPicker.types.docx,
           // DocumentPicker.types.images,
         ],
-        allowMultiSelection: true,
+        // allowMultiSelection: true,
       });
       //   const doc = await DocumentPicker.pickSingle({
       //     type: [
