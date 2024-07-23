@@ -446,7 +446,9 @@ export default PropertyFeature = props => {
         />
       </View>
 
-      <ScrollView>
+      <ScrollView
+nestedScrollEnabled={true}
+ >
         <View style={PropertyFeatureStyle.headingView}>
           <Text style={PropertyFeatureStyle.heading}>
             {'Property features'}
@@ -730,7 +732,7 @@ export default PropertyFeature = props => {
                 {'Additional key features'}
               </Text>
               <MultiSelect
-                // hideDropdown
+                hideDropdown
                 items={additionalfeatureskey}
                 uniqueKey="paf_key"
                 noItemsText={'Feature being searched for is not found on the list.'}
