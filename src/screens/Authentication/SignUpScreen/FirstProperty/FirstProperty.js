@@ -912,13 +912,13 @@ export default FirstProperty = props => {
                   </View>
                   <View style={FirstPropertyStyle.inputContainer}>
                     <Text style={LABEL_STYLES._texinputLabel}>
-                      Property description
+                      Notes
                     </Text>
                     <TextInput
                       style={FirstPropertyStyle.input}
                       value={propertyDesc}
                       onChangeText={setPropertyDesc}
-                      placeholder="Describe your property here..."
+                      placeholder="Add any information about your property"
                       placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       multiline
                       numberOfLines={5}
