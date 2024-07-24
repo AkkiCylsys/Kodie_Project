@@ -139,6 +139,7 @@ const RentalOffer = props => {
   const [finalJsonData, setFinalJsonData] = useState([]);
   const [editAllQuestion, setEditAllQuestion] = useState([]);
   const [editData, setEditData] = useState(null);
+  const [petsSubChildren, setPetsSubChildren] = useState([]);
   // location....
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -231,54 +232,102 @@ const RentalOffer = props => {
   };
   useEffect(() => {
     handleTenantQues();
-    // getEditAllQuestion();
+    getEditAllQuestion();
   }, [question]);
 
-  const getEditAllQuestion = () => {
+  useEffect(() => {
+    if (inputValues['PREVIOUS_ADDRESS']) {
+      setLocation(inputValues['PREVIOUS_ADDRESS']);
+    }
+  }, [inputValues]);
+
+  const handleLocationChange = text => {
+    setLocation(text);
+    handleInputChange('PREVIOUS_ADDRESS', text);
+  };
+  const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
     const Ques_url = url + 'question_details_for_tenant_ques';
     console.log('Request URL:', Ques_url);
     setIsLoading(true);
+
     const QuesData = {
       p_account_id: loginData?.Login_details?.user_account_id,
       p_property_id: propertyId,
     };
-    axios
-      .post(Ques_url, QuesData)
-      .then(response => {
-        console.log('Response edit question..', response?.data);
-        if (response?.data?.success === true) {
-          const data = response?.data?.data?.[0]?.parent_json;
-          if (Array.isArray(data)) {
-            const initialValues = {};
-            data.forEach(parentQuestion => {
-              if (Array.isArray(parentQuestion.children)) {
-                parentQuestion.children.forEach(childQuestion => {
-                  // Use the appropriate question code and value
-                  // initialValues[childQuestion.tqm_Question_code] = childQuestion.tqm_Question_value || '';
+
+    try {
+      const response = await axios.post(Ques_url, QuesData);
+      console.log('Response edit question..', response?.data);
+
+      if (response?.data?.success === true) {
+        const data = response?.data?.data?.[0]?.parent_json;
+
+        if (Array.isArray(data)) {
+          const initialValues = {};
+          const dropdownQuestions = [];
+
+          data.forEach(parentQuestion => {
+            if (Array.isArray(parentQuestion.children)) {
+              parentQuestion.children.forEach(childQuestion => {
+                if (childQuestion.tqm_Question_type === 'Dropdown') {
+                  dropdownQuestions.push(childQuestion.tqm_Question_code);
+                }
+
+                // Convert to string for comparison or setting
+                if (
+                  childQuestion.tqm_Question_value !== undefined &&
+                  childQuestion.tqm_Question_value !== null
+                ) {
                   initialValues[childQuestion.tqm_Question_code] =
-                    childQuestion.tqm_Question_value !== undefined
-                      ? String(childQuestion.tqm_Question_value)
-                      : '';
-                });
+                    childQuestion.tqm_Question_value;
+                }
+              });
+            }
+          });
+
+          // Fetch dropdown data and set initial values
+          const dropdownDataPromises = dropdownQuestions.map(
+            async questionCode => {
+              const options = await handleDropdown(questionCode);
+              setDropdownData(prevData => ({
+                ...prevData,
+                [questionCode]: options,
+              }));
+
+              // Convert initialValues to match dropdown options format
+              const value = initialValues[questionCode];
+              if (value) {
+                const selectedOption = options.find(
+                  option => String(option.lookup_key) === String(value),
+                );
+                if (selectedOption) {
+                  initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
+                }
               }
-            });
-            setInputValues(initialValues);
-            console.log('response in edit mode...', JSON.stringify(data));
-          } else {
-            console.error(
-              'Invalid data structure: parent_json is not an array',
-              data,
-            );
+            },
+          );
+
+          // Wait for all dropdown data to be fetched and set
+          await Promise.all(dropdownDataPromises);
+
+          setInputValues(initialValues);
+          if (inputValues['PREVIOUS_ADDRESS']) {
+            setLocation(inputValues['PREVIOUS_ADDRESS']);
           }
+          console.log('response in edit mode...', JSON.stringify(data));
+        } else {
+          console.error(
+            'Invalid data structure: parent_json is not an array',
+            data,
+          );
         }
-      })
-      .catch(error => {
-        console.error('API failed EdittenantQues', error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+      }
+    } catch (error) {
+      console.error('API failed EdittenantQues', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   //... Regex login email validation
@@ -946,6 +995,25 @@ const RentalOffer = props => {
           console.log('Sub Children:', subChildren);
           setSubChildren(subChildren);
 
+          // Find the question with tqm_Question_code "MANY_PETS"
+          const preferencesQuestion = parentJson.find(item =>
+            item?.children?.some(
+              child => child?.tqm_Question_code === 'MANY_PETS',
+            ),
+          );
+
+          let petsSubChildren = [];
+          if (preferencesQuestion) {
+            const targetPreferencesQuestion = preferencesQuestion.children.find(
+              child => child.tqm_Question_code === 'MANY_PETS',
+            );
+            petsSubChildren = targetPreferencesQuestion?.sub_children || [];
+          }
+
+          // Store petsSubChildren in a state or variable
+          console.log('Pets Sub Children:', petsSubChildren);
+          setPetsSubChildren(petsSubChildren);
+
           setQuesHeading(parentJson);
         } else {
           setIsLoading(false);
@@ -967,28 +1035,29 @@ const RentalOffer = props => {
         P_PARENT_CODE: questionCode,
         P_TYPE: 'OPTION',
       });
-
+  
       console.log('Dropdown data...', res);
       if (res.status === true) {
-        setDropdownData(prevData => ({
-          ...prevData,
-          [questionCode]: res?.lookup_details,
-        }));
+        setIsLoading(false); // Move this before return
+        return res.lookup_details; // Return options
       } else {
         console.error(
           'Error: Unable to fetch dropdown data',
           JSON.stringify(res),
         );
         setIsLoading(false);
+        return [];
       }
     } catch (error) {
       console.log('error.....', error);
       alert('Lookup Code Miss Match');
       setIsLoading(false);
+      return [];
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Ensure loader is stopped in the end
     }
   };
+  
 
   const QuesHeadingRender = ({item}) => {
     return (
@@ -1030,83 +1099,6 @@ const RentalOffer = props => {
     }));
   };
 
-  // const handleSubmit = () => {
-  //   const jsonData = [];
-  //   console.log('quesHeading:', quesHeading);
-  //   console.log('subChildren:', subChildren);
-
-  //   // Create a mapping of questionCode to id from quesHeading and subChildren
-  //   const questionCodeToId = {};
-  //   quesHeading.forEach(parentQuestion => {
-  //     parentQuestion.children.forEach(childQuestion => {
-  //       questionCodeToId[childQuestion.tqm_Question_code] = childQuestion.id;
-  //     });
-  //   });
-  //   subChildren.forEach(subChild => {
-  //     questionCodeToId[subChild.tqm_Question_code] = subChild.id;
-  //   });
-
-  //   // Process main questions
-  //   quesHeading.forEach(parentQuestion => {
-  //     parentQuestion.children.forEach(childQuestion => {
-  //       const questionValue =
-  //         inputValues[childQuestion.tqm_Question_code] || '';
-  //       if (questionValue) {
-  //         jsonData.push({
-  //           question_id: childQuestion.id,
-  //           question_value: questionValue,
-  //           question_reference:
-  //             childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-  //           question_is_lookup:
-  //             childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-  //         });
-  //       }
-  //     });
-  //   });
-    
-  //   // Add location data if available
-  // const locationQuestionId = questionCodeToId[18] || 18; // Dynamically get the ID
-  // if (location) {
-  //   console.log('Adding location data:', {
-  //     question_id: locationQuestionId,
-  //     question_value: location,
-  //     question_reference: 0,
-  //     question_is_lookup: 0,
-  //   });
-  //   jsonData.push({
-  //     question_id: locationQuestionId,
-  //     question_value: location,
-  //     question_reference: 0,
-  //     question_is_lookup: 0,
-  //   });
-  // }
-  //   // Group occupants by their question_id
-  //   const occupantGroups = groupBy(occupants, 'questionId');
-  //   console.log('occupantGroups...', occupantGroups);
-  //   // Add grouped occupants data to jsonData
-  //   addGroupedDataToJsonData(jsonData, occupantGroups);
-
-  //   // Group leaseholders by their question_id
-  //   const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-  //   console.log('leaseHolderGroups...', leaseHolderGroups);
-  //   // Add grouped leaseholders data to jsonData
-  //   addGroupedDataToJsonData(
-  //     jsonData,
-  //     leaseHolderGroups,
-  //     'leaseFullName',
-  //     'leaseEmailAddress',
-  //     'leaseConfirmEmailAddress',
-  //   );
-
-  //   const finalJson = {
-  //     json_data: jsonData,
-  //   };
-
-  //   console.log('Final JSON:', JSON.stringify(finalJson));
-  //   saveAllJson(finalJson);
-  //   resetDynamicFields();
-  // };
-
   const handleSubmit = () => {
     const jsonData = [];
     console.log('quesHeading:', quesHeading);
@@ -1123,74 +1115,132 @@ const RentalOffer = props => {
       questionCodeToId[subChild.tqm_Question_code] = subChild.id;
     });
   
+    // Use a Set to track processed question codes to prevent duplicates
+    const processedQuestionCodes = new Set();
+  
     // Process main questions
     quesHeading.forEach(parentQuestion => {
       parentQuestion.children.forEach(childQuestion => {
-        const questionValue = inputValues[childQuestion.tqm_Question_code] || '';
-        if (questionValue) {
+        const questionValue = inputValues[childQuestion.tqm_Question_code];
+        if (
+          questionValue !== undefined &&
+          questionValue !== null &&
+          !processedQuestionCodes.has(childQuestion.tqm_Question_code)
+        ) {
           jsonData.push({
             question_id: childQuestion.id,
             question_value: questionValue,
-            question_reference: childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-            question_is_lookup: childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+            question_reference:
+              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
+            question_is_lookup:
+              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
           });
+          processedQuestionCodes.add(childQuestion.tqm_Question_code);
         }
       });
     });
   
     // Add Yes/No button values to jsonData
     const yesNoButtonValues = {
-      'EARN_INCOME': selectedButton, // EARN_INCOME question code
-      'EVER_BROKEN': selectedRentalBondButton, // EVER_BROKEN question code
-      'EVICTED_PREVIOUS_BOND': selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
-      'ANY_PETS': selectedPetsButton, // ANY_PETS question code
+      EARN_INCOME: selectedButton, // EARN_INCOME question code
+      EVER_BROKEN: selectedRentalBondButton, // EVER_BROKEN question code
+      EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
+      ANY_PETS: selectedPetsButton, // ANY_PETS question code
     };
   
     Object.keys(yesNoButtonValues).forEach(questionCode => {
       const questionId = questionCodeToId[questionCode];
-      if (questionId !== undefined) {
-        const isYesSelected = yesNoButtonValues[questionCode]; // Assuming true means Yes
-        if (isYesSelected !== null && isYesSelected !== undefined) {
-          const value = isYesSelected ? 1 : 0; // 1 for Yes, 0 for No
-          jsonData.push({
-            question_id: questionId,
-            question_value: value,
-            question_reference: 0,
-            question_is_lookup: 0,
-          });
-        }
+      const isYesSelected = yesNoButtonValues[questionCode];
+      if (
+        questionId !== undefined &&
+        isYesSelected !== null &&
+        isYesSelected !== undefined &&
+        !processedQuestionCodes.has(questionCode)
+      ) {
+        const value = isYesSelected ? 1 : 0; // 1 for Yes, 0 for No
+        jsonData.push({
+          question_id: questionId,
+          question_value: value,
+          question_reference: 0,
+          question_is_lookup: 0,
+        });
+        processedQuestionCodes.add(questionCode);
       }
     });
   
     // Add smoking button value to jsonData
     const smokingQuestionId = questionCodeToId['S/NS']; // S/NS question code for smoking
-    if (smokingQuestionId !== undefined) {
-      const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
-      if (smokingValue !== null && smokingValue !== undefined) {
-        jsonData.push({
-          question_id: smokingQuestionId,
-          question_value: smokingValue,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
-      }
+    const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
+    if (
+      smokingQuestionId !== undefined &&
+      smokingValue !== null &&
+      smokingValue !== undefined &&
+      !processedQuestionCodes.has('S/NS')
+    ) {
+      jsonData.push({
+        question_id: smokingQuestionId,
+        question_value: smokingValue,
+        question_reference: 0,
+        question_is_lookup: 0,
+      });
+      processedQuestionCodes.add('S/NS');
+    }
+  
+    // Add 'Number of pets' value to jsonData
+    console.log('petsSubChildren:', petsSubChildren);
+    const numberOfPetsQuestion = petsSubChildren.find(
+      subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
+    );
+    console.log('numberOfPetsQuestion:', numberOfPetsQuestion);
+    const petsQuestionId = numberOfPetsQuestion?.id;
+    console.log('petsQuestionId:', petsQuestionId); // Debugging step
+    console.log('numberPets:', numberPets); // Debugging step
+    if (
+      petsQuestionId !== undefined &&
+      numberPets !== null &&
+      numberPets !== undefined &&
+      !processedQuestionCodes.has('NUMBER_OF_PETS')
+    ) {
+      console.log('Adding number of pets to jsonData:', {
+        question_id: petsQuestionId,
+        question_value: numberPets,
+        question_reference: 0,
+        question_is_lookup: 0,
+      });
+      jsonData.push({
+        question_id: petsQuestionId,
+        question_value: numberPets,
+        question_reference: 0,
+        question_is_lookup: 0,
+      });
+      processedQuestionCodes.add('NUMBER_OF_PETS');
     }
   
     // Add location data if available
     const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS']; // PREVIOUS_ADDRESS question code
     if (locationQuestionId !== undefined && location) {
-      console.log('Adding location data:', {
-        question_id: locationQuestionId,
-        question_value: location,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      jsonData.push({
-        question_id: locationQuestionId,
-        question_value: location,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
+      const existingLocationIndex = jsonData.findIndex(
+        item => item.question_id === locationQuestionId
+      );
+      if (existingLocationIndex !== -1) {
+        // Update existing location value
+        jsonData[existingLocationIndex].question_value = location;
+      } else {
+        // Add new location value
+        console.log('Adding location data:', {
+          question_id: locationQuestionId,
+          question_value: location,
+          question_reference: 0,
+          question_is_lookup: 0,
+        });
+        jsonData.push({
+          question_id: locationQuestionId,
+          question_value: location,
+          question_reference: 0,
+          question_is_lookup: 0,
+        });
+      }
+      processedQuestionCodes.add('PREVIOUS_ADDRESS');
     }
   
     // Group occupants by their question_id
@@ -1216,7 +1266,7 @@ const RentalOffer = props => {
     };
   
     console.log('Final JSON:', JSON.stringify(finalJson));
-    // saveAllJson(finalJson);
+    saveAllJson(finalJson);
     resetDynamicFields();
   };
   
@@ -1453,7 +1503,8 @@ const RentalOffer = props => {
             <View style={RentalOfferStyle.mainfeaturesview} key={index}>
               <View style={RentalOfferStyle.key_feature_Text_view}>
                 <Text style={RentalOfferStyle.key_feature_Text}>
-                  {'Number of pets'}
+                  {/* {'Number of pets'} */}
+                  {petsSubChildren[0]?.tqm_Question_description}
                 </Text>
               </View>
               <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
@@ -1661,53 +1712,53 @@ const RentalOffer = props => {
           </View>
         );
 
-        case 'Smoking/Non-smoking':
-          return (
-            <View>
-              <RowButtons
-                LeftButtonText={'Smoking'}
-                leftButtonbackgroundColor={
-                  !selectedSomokingButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                LeftButtonTextColor={
-                  !selectedSomokingButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                LeftButtonborderColor={
-                  !selectedSomokingButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressLeftButton={() => {
-                  setSelectedSomokingButton(false);
-                  handleInputChange(question.id, 1);
-                }}
-                RightButtonText={'Non-smoking'}
-                RightButtonbackgroundColor={
-                  selectedSomokingButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                RightButtonTextColor={
-                  selectedSomokingButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                RightButtonborderColor={
-                  selectedSomokingButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressRightButton={() => {
-                  setSelectedSomokingButton(true);
-                  handleInputChange(question.id, 0);
-                }}
-              />
-            </View>
-          );
+      case 'Smoking/Non-smoking':
+        return (
+          <View>
+            <RowButtons
+              LeftButtonText={'Smoking'}
+              leftButtonbackgroundColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedSomokingButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedSomokingButton(false);
+                handleInputChange(question.id, 1);
+              }}
+              RightButtonText={'Non-smoking'}
+              RightButtonbackgroundColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedSomokingButton
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedSomokingButton(true);
+                handleInputChange(question.id, 0);
+              }}
+            />
+          </View>
+        );
 
       case 'Search':
         return (
@@ -1718,7 +1769,7 @@ const RentalOffer = props => {
               selectedTextStyle={RentalOfferStyle.selectedTextStyle}
               inputSearchStyle={RentalOfferStyle.inputSearchStyle}
               iconStyle={RentalOfferStyle.iconStyle}
-              data={dropdownData[question.tqm_Question_code] || []}
+              data={dropdownData[question.tqm_Question_code]}
               labelField="lookup_description"
               valueField="lookup_key"
               searchPlaceholder="Search..."
@@ -1751,10 +1802,29 @@ const RentalOffer = props => {
           <View key={index} style={{marginTop: 10}}>
             <View style={[RentalOfferStyle.locationConView]}>
               <View style={RentalOfferStyle.locationContainer}>
-                <TextInput
+                {/* <TextInput
                   style={RentalOfferStyle.locationInput}
                   value={location} // Use the state variable for the value
                   onChangeText={setLocation} // Update state on change
+                  onFocus={() => {
+                    setIsSearch(true);
+                    props.setOpenMap && props.setOpenMap(true);
+                  }}
+                  placeholder="Search location"
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                /> */}
+                {/* <TextInput
+                  style={RentalOfferStyle.locationInput}
+                  placeholder="Enter previous address"
+                  value={inputValues['PREVIOUS_ADDRESS'] || location}
+                  onChangeText={text =>
+                    handleInputChange('PREVIOUS_ADDRESS', text)
+                  }
+                /> */}
+                <TextInput
+                  style={RentalOfferStyle.locationInput}
+                  value={location}
+                  onChangeText={handleLocationChange}
                   onFocus={() => {
                     setIsSearch(true);
                     props.setOpenMap && props.setOpenMap(true);
