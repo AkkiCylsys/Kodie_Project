@@ -265,13 +265,15 @@ const SignUpSteps = props => {
   const handleNextBtn = () => {
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(firstName)) {
+    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(firstName.trim())) {
       setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens.');
-    } else if (lastName.trim() === '') {
+    }
+     else if (lastName.trim() === '') {
       setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:[\s-][A-Za-z]+)*$/.test(lastName)) {
-      setLastNameError('Last name should contain only alphabetic characters');
-    } else if (mobileNumber.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(lastName.trim())) {
+      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens.');
+    }
+     else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
       setMobileNumberError('Invalid phone number format.');
