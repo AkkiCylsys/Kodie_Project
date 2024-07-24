@@ -66,6 +66,8 @@ const GenerateReport = (props) => {
             <Text style={GeneralReportStyle.headtext}>Start date </Text>
             <View style={GeneralReportStyle.boxview}>
               <CalendarModal
+                    current={selectedDate}
+
                 SelectDate={selectedDate ? selectedDate : "Start Date"}
                 _textInputStyle={{
                   color: selectedDate
@@ -93,6 +95,8 @@ const GenerateReport = (props) => {
             <Text style={GeneralReportStyle.headtext}>End date</Text>
             <View style={GeneralReportStyle.boxview}>
               <CalendarModal
+                    current={selectedDate}
+
                 SelectDate={selectedDate ? selectedDate : "End Date"}
                 _textInputStyle={{
                   color: selectedDate

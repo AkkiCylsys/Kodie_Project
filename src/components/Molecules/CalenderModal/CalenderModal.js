@@ -105,6 +105,7 @@ const CalendarModal = (props) => {
               dayTextColor={_COLORS.Kodie_BlackColor}
               markedDates={props.markedDates}
               theme={customTheme}
+              current={props.current}
             />
             <View style={CalenderCss.ButtonView}>
               <TouchableOpacity

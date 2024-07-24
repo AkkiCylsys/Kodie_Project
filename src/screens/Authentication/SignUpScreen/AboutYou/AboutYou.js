@@ -37,7 +37,8 @@ import {FirstPropertyStyle} from '../FirstProperty/FirstPropertyStyle';
 import {SignupLookupDetails} from '../../../../APIs/AllApi';
 import IndividualSignupStyle from './IndividualSignup/IndividualSignupStyle';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {MultiSelect} from 'react-native-element-dropdown';
+// import {MultiSelect} from 'react-native-element-dropdown';
+import MultiSelect from 'react-native-multiple-select'
 import CompanySignupStyle from './CompanySignup/CompanySignupStyle';
 import {set} from 'lodash';
 import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';

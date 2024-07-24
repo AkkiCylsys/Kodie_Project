@@ -15,15 +15,12 @@ import { FONTFAMILY, _COLORS } from '../../../../../../Themes';
 import { LABEL_STYLES } from '../../../../../../Themes/CommonStyles/CommonStyles';
 import CalendarModal from '../../../../../../components/Molecules/CalenderModal/CalenderModal';
 import { Dropdown } from 'react-native-element-dropdown';
-import RowButtons from '../../../../../../components/Molecules/RowButtons/RowButtons';
 import SwitchToggle from 'react-native-switch-toggle';
-import CustomDropdown from '../../../../../../components/Molecules/CustomDropdown/CustomDropdown';
 import axios from 'axios';
 import { CommonLoader } from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import { Config } from '../../../../../../Config';
 import { useDispatch, useSelector } from 'react-redux';
 import DividerIcon from '../../../../../../components/Atoms/Devider/DividerIcon';
-import { color } from 'react-native-reanimated';
 import moment from 'moment/moment';
 import { SignupLookupDetails } from '../../../../../../APIs/AllApi';
 import { useIsFocused } from '@react-navigation/native';
@@ -38,12 +35,9 @@ const daysOfWeek = [
 ];
 export default AddLeaseDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData...', loginData);
   const leaseDataDetails = props?.leaseData;
-  console.log("leaseDataDetails", leaseDataDetails)
   const isFocus = useIsFocused()
   const property_id = props.property_id;
-  console.log('property id in add lease Detail..', property_id);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedDateError, setSelectedDateError] = useState('');
@@ -98,32 +92,47 @@ export default AddLeaseDetails = props => {
     handle_lease_end();
   
   }, []);
-  useEffect(()=>{
+  useEffect(() => {
     if (leaseDataDetails.LEASE_KEY) {
-      setSelectedDate(moment(leaseDataDetails?.UPLD_COMMENCEMENT_DATE).format('YYYY-MM-DD'));
+      updateLeaseData();
+    }
+  }, [leaseDataDetails.LEASE_KEY]);
+  useEffect(() => {
+    if (lease_term_value && isFocus) {
+      handleLeaseTermChange({ lookup_key: lease_term_value });
+    }
+  }, [lease_term_value,isFocus]);
+
+  const updateLeaseData = async () => {
+    try {
       setlLease_term_value(parseFloat(leaseDataDetails?.UPLD_RENTAL_LEASE_TERM));
+      setSelectedDate(moment(leaseDataDetails?.UPLD_COMMENCEMENT_DATE).format('YYYY-MM-DD'));
       setSelectedEndDate(moment(leaseDataDetails?.UPLD_LEASE_END_DATE).format('YYYY-MM-DD'));
       setRentalAmount(leaseDataDetails?.RENTAL_AMMOUNT);
       setRentalBond(`${leaseDataDetails?.UPLD_RENTAL_BOND_AMMOUNT}`);
       setRentalDeposit(`${leaseDataDetails?.UPLD_RENTAL_DEPOSIT}`);
-      setRentalEscalation(leaseDataDetails?.UPLD_RENTAL_ESCALATION)
-      setNotification_type_value(parseFloat(leaseDataDetails?.UPLD_SET_NOTIFICATION_TYPE))
-      setIsYesSelectedId(leaseDataDetails?.UPLD_FIRST_RENTAL_PAYMENT)
-      setToggle_late_rental(leaseDataDetails?.UPLD_LATE_RENTAL)
-      setToggle_rent_payment(leaseDataDetails?.UPLD_RENT_PAYMENT)
-      setToggle_lease_expire(leaseDataDetails?.UPLD_LEASE_EXPIRE)
-      setrental_reminder_value(leaseDataDetails?.UPLD_LATE_RENTAL_REMINDER)
-      setPayment_reminder_value(leaseDataDetails?.UPLD_RENT_PAYMENT_REMINDER)
-      setExpiry_reminder_value(leaseDataDetails?.UPLD_LEASE_EXPIRY_REMINDER)
-      setProRate(`${leaseDataDetails?.UPLD_PRO_RATA_AMOUNT}`)
-      setlLease_end_value({lookup_key: leaseDataDetails?.frequency_key, lookup_description: leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY })
-   setPaymentDueDay(leaseDataDetails?.UPLD_PAYMENT_DUE_DAY)
-   const initialData= parseFloat(leaseDataDetails?.UPLD_RENTAL_LEASE_TERM)
-if(initialData){handleLeaseTermChange({lookup_key:initialData})}
-   
-    }
-  },[])
+      setRentalEscalation(leaseDataDetails?.UPLD_RENTAL_ESCALATION);
+      setNotification_type_value(parseFloat(leaseDataDetails?.UPLD_SET_NOTIFICATION_TYPE));
+      setIsYesSelectedId(leaseDataDetails?.UPLD_FIRST_RENTAL_PAYMENT);
+      setToggle_late_rental(leaseDataDetails?.UPLD_LATE_RENTAL);
+      setToggle_rent_payment(leaseDataDetails?.UPLD_RENT_PAYMENT);
+      setToggle_lease_expire(leaseDataDetails?.UPLD_LEASE_EXPIRE);
+      setrental_reminder_value(leaseDataDetails?.UPLD_LATE_RENTAL_REMINDER);
+      setPayment_reminder_value(leaseDataDetails?.UPLD_RENT_PAYMENT_REMINDER);
+      setExpiry_reminder_value(leaseDataDetails?.UPLD_LEASE_EXPIRY_REMINDER);
+      setProRate(`${leaseDataDetails?.UPLD_PRO_RATA_AMOUNT}`);
+      setlLease_end_value({
+        lookup_key: leaseDataDetails?.frequency_key,
+        lookup_description: leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY
+      });
+      setPaymentDueDay(leaseDataDetails?.UPLD_PAYMENT_DUE_DAY);
+  } catch (error) {
 
+      console.error('Failed to update lease data:', error);
+    }
+  };
+  
+  
  
   const handleOptionClick = option => {
     setSelectedOption(option);
@@ -150,7 +159,7 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
   };
   const handleProRateAmount = text => {
     setProRate(text);
-    if (text.trim() === '') {
+    if (text === '') {
       setProRateError('Pro rate amount is required!');
     } else {
       setProRateError('');
@@ -169,7 +178,13 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
     setRentalAmount(text);
   };
   const handleEndDayPress = day => {
-    setSelectedEndDate(day.dateString);
+      const commencementDate = moment(selectedDate);
+      const endDate = moment(day.dateString);
+      if (endDate.isBefore(commencementDate)) {
+        Alert.alert('Error', 'End date cannot be before the commencement date.');
+      } else {
+        setSelectedEndDate(day.dateString);
+      }
   };
   const handleShowNotificationData = () => {
     setShowNotificationData(!showNotificationData);
@@ -191,7 +206,7 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
       setRentalAmountError('Rental amount is required!');
     } else if (paymentDueDay.trim() == '') {
       setPaymentDueDayError(true);
-    } else if (ProRate.trim() == ''&& isYesSelected) {
+    } else if (ProRate == ''&& isYesSelected) {
       setProRate('Rental amount is required!');
     } else {
       setSelectedDateError('');
@@ -278,8 +293,8 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
       p_PAYMENT_DUE_DAY: paymentDueDay,
       p_UPLD_PRO_RATA_AMOUNT: ProRate,
       p_FIRST_RENTAL_PAYMENT: isYesSelectedId,
-      p_UPLD_RENTAL_DEPOSIT: rentalDeposit,
-      p_UPLD_RENTAL_ESCALATION: rentalEscalation,
+      p_UPLD_RENTAL_DEPOSIT: rentalBond,
+      p_UPLD_RENTAL_ESCALATION: rentalBond,
       p_SET_NOTIFICATION_TYPE: notification_type_value,
       p_LEASE_EXPIRE: toggle_lease_expire,
       p_RENT_PAYMENT: toggle_rent_payment,
@@ -393,33 +408,38 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
     setLease_end_Data(res?.lookup_details);
     setIsLoading(false);
   };
-  const handleLeaseTermChange = (item) => {
-    setlLease_term_value(item.lookup_key);
-    calculateLeaseEndDate(selectedDate, item.lookup_key);
-    setlease_term_valueError(false);
-    let newFrequencies = [];
-    if (item.lookup_key === 79) { // 2 - Month
-      newFrequencies = lease_end_Data.filter(freq =>
-        [500, 501, 502, 503].includes(freq.lookup_key));
-    } else if (item.lookup_key === 80) { // 6 - Month
-      newFrequencies = lease_end_Data.filter(freq =>
-        [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
-    } else if (item.lookup_key === 81) { // 8 - Month
-      newFrequencies = lease_end_Data.filter(freq =>
-        [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
-    } else if (item.lookup_key === 82) { // 10 - Month
-      newFrequencies = lease_end_Data.filter(freq =>
-        [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
-    } else if (item.lookup_key === 83) { // 1 - year
-      newFrequencies = lease_end_Data.filter(freq =>
-        [500, 501, 502, 503, 504, 505, 506].includes(freq.lookup_key));
-    } else if (item.lookup_key === 546) { // other
-      newFrequencies = lease_end_Data.filter(freq =>
-        [507].includes(freq.lookup_key));
+  const handleLeaseTermChange = async (item) => {
+    try {
+     
+      setlLease_term_value(item.lookup_key);
+      await calculateLeaseEndDate(selectedDate, item.lookup_key);
+      setlease_term_valueError(false);
+      let newFrequencies = [];
+      if (item.lookup_key === 79) { // 2 - Month
+        newFrequencies = lease_end_Data.filter(freq =>
+          [500, 501, 502, 503].includes(freq.lookup_key));
+      } else if (item.lookup_key === 80) { // 6 - Month
+        newFrequencies = lease_end_Data.filter(freq =>
+          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
+      } else if (item.lookup_key === 81) { // 8 - Month
+        newFrequencies = lease_end_Data.filter(freq =>
+          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
+      } else if (item.lookup_key === 82) { // 10 - Month
+        newFrequencies = lease_end_Data.filter(freq =>
+          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
+      } else if (item.lookup_key === 83) { // 1 - year
+        newFrequencies = lease_end_Data.filter(freq =>
+          [500, 501, 502, 503, 504, 505, 506].includes(freq.lookup_key));
+      } else if (item.lookup_key === 546) { // other
+        newFrequencies = lease_end_Data.filter(freq =>
+          [507].includes(freq.lookup_key));
+      }
+      setFilteredFrequencies(newFrequencies);
+    } catch (error) {
+      console.error('Failed to handle lease term change:', error);
     }
-    setFilteredFrequencies(newFrequencies);
-
   };
+  
   const lease_end_render = item => {
     return (
       <ScrollView contentContainerStyle={{ flex: 1, height: '100%' }}>
@@ -536,6 +556,7 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
         return (
           <View style={{ flex: 1 }}>
             <CalendarModal
+            current={paymentDueDay}
               SelectDate={
                 paymentDueDay ? paymentDueDay : 'Select payment due date'
               }
@@ -709,6 +730,7 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
         return (
           <View style={{ flex: 1 }}>
             <CalendarModal
+            current={paymentDueDay}
               SelectDate={
                 paymentDueDay ? paymentDueDay : 'Select payment due date'
               }
@@ -788,6 +810,7 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
                   selectedTextColor: _COLORS.Kodie_BlackColor,
                 },
               }}
+              current={selectedDate}
               _closeButton={toggleModal}
               _ApplyButton={toggleModal}
             />
@@ -834,6 +857,7 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
               SelectDate={
                 selectedEndDate ? selectedEndDate : 'End date of the lease'
               }
+              current={selectedEndDate}
               _textInputStyle={{
                 color: selectedEndDate
                   ? _COLORS.Kodie_BlackColor
@@ -1021,8 +1045,10 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
                 <Text style={LABEL_STYLES.commontext}>{'Rental deposit'}</Text>
                 <TextInput
                   style={AddLeaseDetailsStyle.input}
-                  value={rentalDeposit}
-                  onChangeText={setRentalDeposit}
+                  // value={rentalDeposit}
+                  value={rentalBond}
+                  onChangeText={setRentalBond}
+                  // onChangeText={setRentalDeposit}
                   placeholder="Enter the rental deposit amount"
                   keyboardType="number-pad"
 
@@ -1034,8 +1060,10 @@ if(initialData){handleLeaseTermChange({lookup_key:initialData})}
                 </Text>
                 <TextInput
                   style={AddLeaseDetailsStyle.input}
-                  value={rentalEscalation}
-                  onChangeText={setRentalEscalation}
+                  // value={rentalEscalation}
+                  value={rentalBond}
+                  onChangeText={setRentalBond}
+                  // onChangeText={setRentalEscalation}
                   placeholder="Period rent escalation %"
                   keyboardType="number-pad"
 
