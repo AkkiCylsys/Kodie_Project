@@ -343,7 +343,7 @@ const Inspection = props => {
                 name={'chevron-right'}
                 size={20}
                 color={_COLORS.Kodie_BlackColor}
-                style={InspectionCss.IconStyle}
+                style={InspectionCss.rightIconStyle}
               />
             </TouchableOpacity>
           ) : (
