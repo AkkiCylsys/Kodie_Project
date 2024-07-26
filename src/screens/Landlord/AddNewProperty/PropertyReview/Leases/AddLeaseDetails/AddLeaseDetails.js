@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,36 +7,36 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { AddLeaseDetailsStyle } from './AddLeaseDetailsStyle';
+import {AddLeaseDetailsStyle} from './AddLeaseDetailsStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Fontisto from 'react-native-vector-icons/Fontisto';
-import { FONTFAMILY, _COLORS } from '../../../../../../Themes';
-import { LABEL_STYLES } from '../../../../../../Themes/CommonStyles/CommonStyles';
+import {FONTFAMILY, _COLORS} from '../../../../../../Themes';
+import {LABEL_STYLES} from '../../../../../../Themes/CommonStyles/CommonStyles';
 import CalendarModal from '../../../../../../components/Molecules/CalenderModal/CalenderModal';
-import { Dropdown } from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 import SwitchToggle from 'react-native-switch-toggle';
 import axios from 'axios';
-import { CommonLoader } from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { Config } from '../../../../../../Config';
-import { useDispatch, useSelector } from 'react-redux';
+import {CommonLoader} from '../../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {Config} from '../../../../../../Config';
+import {useDispatch, useSelector} from 'react-redux';
 import DividerIcon from '../../../../../../components/Atoms/Devider/DividerIcon';
 import moment from 'moment/moment';
-import { SignupLookupDetails } from '../../../../../../APIs/AllApi';
-import { useIsFocused } from '@react-navigation/native';
+import {SignupLookupDetails} from '../../../../../../APIs/AllApi';
+import {useIsFocused} from '@react-navigation/native';
 const daysOfWeek = [
-  { label: "Monday", value: "1" },
-  { label: "Tuesday", value: "2" },
-  { label: "Wednesday", value: "3" },
-  { label: "Thursday", value: "4" },
-  { label: "Friday", value: "5" },
-  { label: "Saturday", value: "6" },
-  { label: "Sunday", value: "7" }
+  {label: 'Monday', value: '1'},
+  {label: 'Tuesday', value: '2'},
+  {label: 'Wednesday', value: '3'},
+  {label: 'Thursday', value: '4'},
+  {label: 'Friday', value: '5'},
+  {label: 'Saturday', value: '6'},
+  {label: 'Sunday', value: '7'},
 ];
 export default AddLeaseDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const leaseDataDetails = props?.leaseData;
-  const isFocus = useIsFocused()
+  const isFocus = useIsFocused();
   const property_id = props.property_id;
   const [isLoading, setIsLoading] = useState(false);
   const [selectedDate, setSelectedDate] = useState('');
@@ -90,7 +90,6 @@ export default AddLeaseDetails = props => {
     handle_rental_reminder();
     handle_lease_term();
     handle_lease_end();
-  
   }, []);
   useEffect(() => {
     if (leaseDataDetails.LEASE_KEY) {
@@ -99,20 +98,28 @@ export default AddLeaseDetails = props => {
   }, [leaseDataDetails.LEASE_KEY]);
   useEffect(() => {
     if (lease_term_value && isFocus) {
-      handleLeaseTermChange({ lookup_key: lease_term_value });
+      handleLeaseTermChange({lookup_key: lease_term_value});
     }
-  }, [lease_term_value,isFocus]);
+  }, [lease_term_value, isFocus]);
 
   const updateLeaseData = async () => {
     try {
-      setlLease_term_value(parseFloat(leaseDataDetails?.UPLD_RENTAL_LEASE_TERM));
-      setSelectedDate(moment(leaseDataDetails?.UPLD_COMMENCEMENT_DATE).format('YYYY-MM-DD'));
-      setSelectedEndDate(moment(leaseDataDetails?.UPLD_LEASE_END_DATE).format('YYYY-MM-DD'));
+      setlLease_term_value(
+        parseFloat(leaseDataDetails?.UPLD_RENTAL_LEASE_TERM),
+      );
+      setSelectedDate(
+        moment(leaseDataDetails?.UPLD_COMMENCEMENT_DATE).format('YYYY-MM-DD'),
+      );
+      setSelectedEndDate(
+        moment(leaseDataDetails?.UPLD_LEASE_END_DATE).format('YYYY-MM-DD'),
+      );
       setRentalAmount(leaseDataDetails?.RENTAL_AMMOUNT);
       setRentalBond(`${leaseDataDetails?.UPLD_RENTAL_BOND_AMMOUNT}`);
       setRentalDeposit(`${leaseDataDetails?.UPLD_RENTAL_DEPOSIT}`);
       setRentalEscalation(leaseDataDetails?.UPLD_RENTAL_ESCALATION);
-      setNotification_type_value(parseFloat(leaseDataDetails?.UPLD_SET_NOTIFICATION_TYPE));
+      setNotification_type_value(
+        parseFloat(leaseDataDetails?.UPLD_SET_NOTIFICATION_TYPE),
+      );
       setIsYesSelectedId(leaseDataDetails?.UPLD_FIRST_RENTAL_PAYMENT);
       setToggle_late_rental(leaseDataDetails?.UPLD_LATE_RENTAL);
       setToggle_rent_payment(leaseDataDetails?.UPLD_RENT_PAYMENT);
@@ -123,26 +130,23 @@ export default AddLeaseDetails = props => {
       setProRate(`${leaseDataDetails?.UPLD_PRO_RATA_AMOUNT}`);
       setlLease_end_value({
         lookup_key: leaseDataDetails?.frequency_key,
-        lookup_description: leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY
+        lookup_description: leaseDataDetails?.UPLD_RENTAL_PAYMENT_FREQUENCY,
       });
       setPaymentDueDay(leaseDataDetails?.UPLD_PAYMENT_DUE_DAY);
-  } catch (error) {
-
+    } catch (error) {
       console.error('Failed to update lease data:', error);
     }
   };
-  
-  
- 
+
   const handleOptionClick = option => {
     setSelectedOption(option);
   };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const toggleModalEndDate = (item) => {
+  const toggleModalEndDate = item => {
     // alert(lease_term_value)
-    if (lease_term_value=== 546) {
+    if (lease_term_value === 546) {
       setModalVisibleEndDate(!isModalVisibleEndDate);
     }
   };
@@ -178,13 +182,13 @@ export default AddLeaseDetails = props => {
     setRentalAmount(text);
   };
   const handleEndDayPress = day => {
-      const commencementDate = moment(selectedDate);
-      const endDate = moment(day.dateString);
-      if (endDate.isBefore(commencementDate)) {
-        Alert.alert('Error', 'End date cannot be before the commencement date.');
-      } else {
-        setSelectedEndDate(day.dateString);
-      }
+    const commencementDate = moment(selectedDate);
+    const endDate = moment(day.dateString);
+    if (endDate.isBefore(commencementDate)) {
+      Alert.alert('Error', 'End date cannot be before the commencement date.');
+    } else {
+      setSelectedEndDate(day.dateString);
+    }
   };
   const handleShowNotificationData = () => {
     setShowNotificationData(!showNotificationData);
@@ -206,7 +210,7 @@ export default AddLeaseDetails = props => {
       setRentalAmountError('Rental amount is required!');
     } else if (paymentDueDay.trim() == '') {
       setPaymentDueDayError(true);
-    } else if (ProRate == ''&& isYesSelected) {
+    } else if (ProRate == '' && isYesSelected) {
       setProRate('Rental amount is required!');
     } else {
       setSelectedDateError('');
@@ -245,7 +249,7 @@ export default AddLeaseDetails = props => {
       lease_expiry_reminder: expiry_reminder_value,
       rent_payment_reminder: payment_reminder_value,
       late_rental_reminder: rental_reminder_value,
-      lease_before_after: true
+      lease_before_after: true,
     };
     console.log(lease_Data, 'lease_Data///////');
     axios
@@ -262,8 +266,8 @@ export default AddLeaseDetails = props => {
         }
       })
       .catch(error => {
-        if(error?.response?.status === 409){
-          Alert.alert('Warning',error?.response?.data?.message)
+        if (error?.response?.status === 409) {
+          Alert.alert('Warning', error?.response?.data?.message);
         }
         console.error('API failed add_Lease', error);
         setIsLoading(false);
@@ -302,7 +306,7 @@ export default AddLeaseDetails = props => {
       p_LEASE_EXPIRY_REMINDER: expiry_reminder_value,
       p_RENT_PAYMENT_REMINDER: payment_reminder_value,
       p_LATE_RENTAL_REMINDER: rental_reminder_value,
-      p_LEASE_BEFORE_AFTER: true
+      p_LEASE_BEFORE_AFTER: true,
     };
     console.log(lease_Data, 'lease_Data////update///');
     axios
@@ -408,41 +412,52 @@ export default AddLeaseDetails = props => {
     setLease_end_Data(res?.lookup_details);
     setIsLoading(false);
   };
-  const handleLeaseTermChange = async (item) => {
+  const handleLeaseTermChange = async item => {
     try {
-     
       setlLease_term_value(item.lookup_key);
       await calculateLeaseEndDate(selectedDate, item.lookup_key);
       setlease_term_valueError(false);
       let newFrequencies = [];
-      if (item.lookup_key === 79) { // 2 - Month
+      if (item.lookup_key === 79) {
+        // 2 - Month
         newFrequencies = lease_end_Data.filter(freq =>
-          [500, 501, 502, 503].includes(freq.lookup_key));
-      } else if (item.lookup_key === 80) { // 6 - Month
+          [500, 501, 502, 503].includes(freq.lookup_key),
+        );
+      } else if (item.lookup_key === 80) {
+        // 6 - Month
         newFrequencies = lease_end_Data.filter(freq =>
-          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
-      } else if (item.lookup_key === 81) { // 8 - Month
+          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key),
+        );
+      } else if (item.lookup_key === 81) {
+        // 8 - Month
         newFrequencies = lease_end_Data.filter(freq =>
-          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
-      } else if (item.lookup_key === 82) { // 10 - Month
+          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key),
+        );
+      } else if (item.lookup_key === 82) {
+        // 10 - Month
         newFrequencies = lease_end_Data.filter(freq =>
-          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key));
-      } else if (item.lookup_key === 83) { // 1 - year
+          [500, 501, 502, 503, 504, 505].includes(freq.lookup_key),
+        );
+      } else if (item.lookup_key === 83) {
+        // 1 - year
         newFrequencies = lease_end_Data.filter(freq =>
-          [500, 501, 502, 503, 504, 505, 506].includes(freq.lookup_key));
-      } else if (item.lookup_key === 546) { // other
+          [500, 501, 502, 503, 504, 505, 506].includes(freq.lookup_key),
+        );
+      } else if (item.lookup_key === 546) {
+        // other
         newFrequencies = lease_end_Data.filter(freq =>
-          [507].includes(freq.lookup_key));
+          [507].includes(freq.lookup_key),
+        );
       }
       setFilteredFrequencies(newFrequencies);
     } catch (error) {
       console.error('Failed to handle lease term change:', error);
     }
   };
-  
+
   const lease_end_render = item => {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, height: '100%' }}>
+      <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
         <View style={AddLeaseDetailsStyle.itemView}>
           {item.lookup_key === lease_end_value.lookup_key ? (
             <AntDesign
@@ -466,8 +481,17 @@ export default AddLeaseDetails = props => {
   };
   const lease_term_render = item => {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, height: '100%', }}>
-        <View style={[AddLeaseDetailsStyle.itemView, { backgroundColor: item.lookup_key === lease_term_value ? _COLORS.Kodie_MidLightGreenColor : _COLORS?.Kodie_WhiteColor }]}>
+      <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
+        <View
+          style={[
+            AddLeaseDetailsStyle.itemView,
+            {
+              backgroundColor:
+                item.lookup_key === lease_term_value
+                  ? _COLORS.Kodie_MidLightGreenColor
+                  : _COLORS?.Kodie_WhiteColor,
+            },
+          ]}>
           {item.lookup_key === lease_term_value ? (
             <AntDesign
               color={_COLORS.Kodie_GreenColor}
@@ -512,12 +536,17 @@ export default AddLeaseDetails = props => {
   };
   const updateDateToNextYear = () => {
     if (selectedDate) {
-      const newDate = moment(selectedDate, 'YYYY-MM-DD').add(1, 'years').format('YYYY-MM-DD');
+      const newDate = moment(selectedDate, 'YYYY-MM-DD')
+        .add(1, 'years')
+        .format('YYYY-MM-DD');
       setPaymentDueDay(newDate);
     }
-  }
+  };
   useEffect(() => {
-    if (lease_end_value.lookup_key === 506 || lease_end_value.lookup_key === 507) {
+    if (
+      lease_end_value.lookup_key === 506 ||
+      lease_end_value.lookup_key === 507
+    ) {
       updateDateToNextYear();
     }
   }, [lease_end_value.lookup_key, selectedDate]);
@@ -544,7 +573,9 @@ export default AddLeaseDetails = props => {
     }
 
     if (startDate && monthsToAdd !== null) {
-      const endDate = moment(startDate).add(monthsToAdd, 'months').format('YYYY-MM-DD');
+      const endDate = moment(startDate)
+        .add(monthsToAdd, 'months')
+        .format('YYYY-MM-DD');
       setSelectedEndDate(endDate);
     } else {
       setSelectedEndDate('');
@@ -554,9 +585,9 @@ export default AddLeaseDetails = props => {
     switch (lease_end_value.lookup_key) {
       case 500:
         return (
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <CalendarModal
-            current={paymentDueDay}
+              current={paymentDueDay}
               SelectDate={
                 paymentDueDay ? paymentDueDay : 'Select payment due date'
               }
@@ -568,7 +599,7 @@ export default AddLeaseDetails = props => {
               calenderIcon={toggleModalDueDay}
               onDayPress={day => {
                 setPaymentDueDay(day.dateString);
-                setPaymentDueDayError(false)
+                setPaymentDueDayError(false);
               }}
               Visible={isDueDayModalVisible}
               onRequestClose={toggleModalDueDay}
@@ -585,40 +616,42 @@ export default AddLeaseDetails = props => {
           </View>
         );
       case 501:
-        return (<>
-          <Dropdown
-            style={[
-              AddLeaseDetailsStyle.dropdown,
-              { flex: 1, borderRadius: 5, height: 45 },
-            ]}
-            placeholderStyle={[
-              AddLeaseDetailsStyle.placeholderStyle,
-              { color: _COLORS.Kodie_LightGrayColor },
-            ]}
-            selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
-            inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
-            iconStyle={AddLeaseDetailsStyle.iconStyle}
-            data={daysOfWeek}
-            labelField="label"
-            valueField="value"
-            placeholder="Select day"
-            value={paymentDueDay}
-            onChange={(item) => {
-              setPaymentDueDay(item.value);
-              setPaymentDueDayError(false)
-
-            }}
-          /></>)
+        return (
+          <>
+            <Dropdown
+              style={[
+                AddLeaseDetailsStyle.dropdown,
+                {flex: 1, borderRadius: 5, height: 45},
+              ]}
+              placeholderStyle={[
+                AddLeaseDetailsStyle.placeholderStyle,
+                {color: _COLORS.Kodie_LightGrayColor},
+              ]}
+              selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
+              inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
+              iconStyle={AddLeaseDetailsStyle.iconStyle}
+              data={daysOfWeek}
+              labelField="label"
+              valueField="value"
+              placeholder="Select day"
+              value={paymentDueDay}
+              onChange={item => {
+                setPaymentDueDay(item.value);
+                setPaymentDueDayError(false);
+              }}
+            />
+          </>
+        );
       case 502:
         return (
           <Dropdown
             style={[
               AddLeaseDetailsStyle.dropdown,
-              { flex: 1, borderRadius: 5, height: 45 },
+              {flex: 1, borderRadius: 5, height: 45},
             ]}
             placeholderStyle={[
               AddLeaseDetailsStyle.placeholderStyle,
-              { color: _COLORS.Kodie_LightGrayColor },
+              {color: _COLORS.Kodie_LightGrayColor},
             ]}
             selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
             inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
@@ -628,10 +661,9 @@ export default AddLeaseDetails = props => {
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) => {
+            onChange={item => {
               setPaymentDueDay(item.value);
-              setPaymentDueDayError(false)
-
+              setPaymentDueDayError(false);
             }}
           />
         );
@@ -640,24 +672,26 @@ export default AddLeaseDetails = props => {
           <Dropdown
             style={[
               AddLeaseDetailsStyle.dropdown,
-              { flex: 1, borderRadius: 5, height: 45 },
+              {flex: 1, borderRadius: 5, height: 45},
             ]}
             placeholderStyle={[
               AddLeaseDetailsStyle.placeholderStyle,
-              { color: _COLORS.Kodie_LightGrayColor },
+              {color: _COLORS.Kodie_LightGrayColor},
             ]}
             selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
             inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
             iconStyle={AddLeaseDetailsStyle.iconStyle}
-            data={Array.from({ length: 31 }, (_, i) => ({ label: `${i + 1}`, value: `${i + 1}` }))}
+            data={Array.from({length: 31}, (_, i) => ({
+              label: `${i + 1}`,
+              value: `${i + 1}`,
+            }))}
             labelField="label"
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) => {
+            onChange={item => {
               setPaymentDueDay(item.value);
-              setPaymentDueDayError(false)
-
+              setPaymentDueDayError(false);
             }}
           />
         );
@@ -666,24 +700,26 @@ export default AddLeaseDetails = props => {
           <Dropdown
             style={[
               AddLeaseDetailsStyle.dropdown,
-              { flex: 1, borderRadius: 5, height: 45 },
+              {flex: 1, borderRadius: 5, height: 45},
             ]}
             placeholderStyle={[
               AddLeaseDetailsStyle.placeholderStyle,
-              { color: _COLORS.Kodie_LightGrayColor },
+              {color: _COLORS.Kodie_LightGrayColor},
             ]}
             selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
             inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
             iconStyle={AddLeaseDetailsStyle.iconStyle}
-            data={Array.from({ length: 31 }, (_, i) => ({ label: `${i + 1}`, value: `${i + 1}` }))}
+            data={Array.from({length: 31}, (_, i) => ({
+              label: `${i + 1}`,
+              value: `${i + 1}`,
+            }))}
             labelField="label"
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) => {
+            onChange={item => {
               setPaymentDueDay(item.value);
-              setPaymentDueDayError(false)
-
+              setPaymentDueDayError(false);
             }}
           />
         );
@@ -692,29 +728,30 @@ export default AddLeaseDetails = props => {
           <Dropdown
             style={[
               AddLeaseDetailsStyle.dropdown,
-              { flex: 1, borderRadius: 5, height: 45 },
+              {flex: 1, borderRadius: 5, height: 45},
             ]}
             placeholderStyle={[
               AddLeaseDetailsStyle.placeholderStyle,
-              { color: _COLORS.Kodie_LightGrayColor },
+              {color: _COLORS.Kodie_LightGrayColor},
             ]}
             selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
             inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
             iconStyle={AddLeaseDetailsStyle.iconStyle}
-            data={Array.from({ length: 31 }, (_, i) => ({ label: `${i + 1}`, value: `${i + 1}` }))}
+            data={Array.from({length: 31}, (_, i) => ({
+              label: `${i + 1}`,
+              value: `${i + 1}`,
+            }))}
             labelField="label"
             valueField="value"
             placeholder="Select day"
             value={paymentDueDay}
-            onChange={(item) => {
+            onChange={item => {
               setPaymentDueDay(item.value);
-              setPaymentDueDayError(false)
-
+              setPaymentDueDayError(false);
             }}
           />
         );
       case 506:
-
         return (
           <TextInput
             style={AddLeaseDetailsStyle.input}
@@ -726,11 +763,10 @@ export default AddLeaseDetails = props => {
           />
         );
       case 507:
-
         return (
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <CalendarModal
-            current={paymentDueDay}
+              current={paymentDueDay}
               SelectDate={
                 paymentDueDay ? paymentDueDay : 'Select payment due date'
               }
@@ -742,7 +778,7 @@ export default AddLeaseDetails = props => {
               calenderIcon={toggleModalDueDay}
               onDayPress={day => {
                 setPaymentDueDay(day.dateString);
-                setPaymentDueDayError(false)
+                setPaymentDueDayError(false);
               }}
               Visible={isDueDayModalVisible}
               onRequestClose={toggleModalDueDay}
@@ -766,9 +802,11 @@ export default AddLeaseDetails = props => {
     <View style={AddLeaseDetailsStyle.mainContainer}>
       <View style={AddLeaseDetailsStyle.heading_View}>
         <Text style={AddLeaseDetailsStyle.heading_Text}>
-          {props?.editMode === true ? 'Edit lease details' : 'Add lease details'}
+          {props?.editMode === true
+            ? 'Edit lease details'
+            : 'Add lease details'}
         </Text>
-        <View style={{ alignSelf: 'center', marginTop: 5 }}>
+        <View style={{alignSelf: 'center', marginTop: 5}}>
           <TouchableOpacity onPress={handlePopUp}>
             <AntDesign
               name="close"
@@ -816,20 +854,18 @@ export default AddLeaseDetails = props => {
             />
           </View>
           {selectedDateError ? (
-            <Text style={AddLeaseDetailsStyle.error}>
-              {selectedDateError}
-            </Text>
+            <Text style={AddLeaseDetailsStyle.error}>{selectedDateError}</Text>
           ) : null}
           <View style={AddLeaseDetailsStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>{'Rental lease term*'}</Text>
             <Dropdown
               style={[
                 AddLeaseDetailsStyle.dropdown,
-                { flex: 1, borderRadius: 5, height: 45 },
+                {flex: 1, borderRadius: 5, height: 45},
               ]}
               placeholderStyle={[
                 AddLeaseDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
+                {color: _COLORS.Kodie_LightGrayColor},
               ]}
               selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
               inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
@@ -846,10 +882,10 @@ export default AddLeaseDetails = props => {
           </View>
           {lease_term_valueError ? (
             <Text style={AddLeaseDetailsStyle.error}>
-              {'Please select a rental lease term.'}
+              {'Please select a rental lease term!'}
             </Text>
           ) : null}
-          <Text style={[LABEL_STYLES.commontext, { marginTop: 12 }]}>
+          <Text style={[LABEL_STYLES.commontext, {marginTop: 12}]}>
             {'Lease end date*'}
           </Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
@@ -874,8 +910,12 @@ export default AddLeaseDetails = props => {
                   selectedTextColor: _COLORS.Kodie_BlackColor,
                 },
               }}
-              _closeButton={()=>setModalVisibleEndDate(!isModalVisibleEndDate)}
-              _ApplyButton={()=>setModalVisibleEndDate(!isModalVisibleEndDate)}
+              _closeButton={() =>
+                setModalVisibleEndDate(!isModalVisibleEndDate)
+              }
+              _ApplyButton={() =>
+                setModalVisibleEndDate(!isModalVisibleEndDate)
+              }
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -883,11 +923,11 @@ export default AddLeaseDetails = props => {
             <Dropdown
               style={[
                 AddLeaseDetailsStyle.dropdown,
-                { flex: 1, borderRadius: 5, height: 45 },
+                {flex: 1, borderRadius: 5, height: 45},
               ]}
               placeholderStyle={[
                 AddLeaseDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
+                {color: _COLORS.Kodie_LightGrayColor},
               ]}
               selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
               inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
@@ -901,18 +941,17 @@ export default AddLeaseDetails = props => {
               onChange={item => {
                 setlLease_end_value({
                   lookup_key: item?.lookup_key,
-                  lookup_description: item?.lookup_description
+                  lookup_description: item?.lookup_description,
                 });
                 setlLease_end_valueError(false);
                 // alert(item.lookup_key);
               }}
               renderItem={lease_end_render}
             />
-
           </View>
           {lease_end_valueError ? (
             <Text style={AddLeaseDetailsStyle.error}>
-              {'Please select a payment frequency'}
+              {'Please select a payment frequency!'}
             </Text>
           ) : null}
           <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -929,9 +968,7 @@ export default AddLeaseDetails = props => {
             />
           </View>
           {rentalAmountError ? (
-            <Text style={AddLeaseDetailsStyle.error}>
-              {rentalAmountError}
-            </Text>
+            <Text style={AddLeaseDetailsStyle.error}>{rentalAmountError}</Text>
           ) : null}
           {lease_end_value.lookup_key ? (
             <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -945,17 +982,19 @@ export default AddLeaseDetails = props => {
             </Text>
           ) : null}
           <View style={AddLeaseDetailsStyle.probtn}>
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               <Text style={AddLeaseDetailsStyle.Protext}>
                 Pro rata first payment*
               </Text>
             </View>
-            <View style={{ margin: 5 }} />
-            {isYesSelectedId == 1 ?
-              <View style={{ flex: 1 }}>
-                <Text style={AddLeaseDetailsStyle.Protext1}>Pro rata amount</Text>
+            <View style={{margin: 5}} />
+            {isYesSelectedId == 1 ? (
+              <View style={{flex: 1}}>
+                <Text style={AddLeaseDetailsStyle.Protext1}>
+                  Pro rata amount
+                </Text>
               </View>
-              : null}
+            ) : null}
           </View>
           <View style={AddLeaseDetailsStyle.Twobtn}>
             <View style={AddLeaseDetailsStyle.btn_main_view}>
@@ -964,7 +1003,10 @@ export default AddLeaseDetails = props => {
                   AddLeaseDetailsStyle.no_view,
                   !isYesSelected && AddLeaseDetailsStyle.selectedBtn,
                 ]}
-                onPress={() => { handleButtonClick(false); setIsYesSelectedId(0) }}>
+                onPress={() => {
+                  handleButtonClick(false);
+                  setIsYesSelectedId(0);
+                }}>
                 <Text style={[AddLeaseDetailsStyle.no_text]}>{'No'}</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -972,36 +1014,38 @@ export default AddLeaseDetails = props => {
                   AddLeaseDetailsStyle.yes_view,
                   isYesSelected && AddLeaseDetailsStyle.selectedBtn,
                 ]}
-                onPress={() => { handleButtonClick(true); setIsYesSelectedId(1) }}>
+                onPress={() => {
+                  handleButtonClick(true);
+                  setIsYesSelectedId(1);
+                }}>
                 <Text style={[AddLeaseDetailsStyle.yes_text]}>{'Yes'}</Text>
               </TouchableOpacity>
             </View>
-            <View style={{ margin: 5 }} />
-            {isYesSelectedId == 1 ?
-              <View style={{ flex: 1 }}>
+            <View style={{margin: 5}} />
+            {isYesSelectedId == 1 ? (
+              <View style={{flex: 1}}>
                 <TextInput
                   style={AddLeaseDetailsStyle.Amountinput}
                   value={ProRate}
                   onChangeText={handleProRateAmount}
-                  onBlur={()=>handleProRateAmount(ProRate)}
+                  onBlur={() => handleProRateAmount(ProRate)}
                   placeholder="Amount"
                   placeholderTextColor="#999"
                   keyboardType="number-pad"
                   maxLength={5}
                 />
               </View>
-              
-              : <View style={{ flex: 1 }} />}
+            ) : (
+              <View style={{flex: 1}} />
+            )}
           </View>
-          {isYesSelected && ProRateError ?  (
-            <Text style={AddLeaseDetailsStyle.error}>
-              {ProRateError}
-            </Text>
+          {isYesSelected && ProRateError ? (
+            <Text style={AddLeaseDetailsStyle.error}>{ProRateError}</Text>
           ) : null}
           <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           <View>
             <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text
                 style={{
                   fontSize: 18,
@@ -1024,7 +1068,7 @@ export default AddLeaseDetails = props => {
                 />
               </TouchableOpacity>
             </View>
-            <Text style={{ fontSize: 12 }}>
+            <Text style={{fontSize: 12}}>
               Enter extra information about your lease
             </Text>
           </View>
@@ -1038,7 +1082,6 @@ export default AddLeaseDetails = props => {
                   onChangeText={setRentalBond}
                   placeholder="Enter the rental bond amount"
                   keyboardType="number-pad"
-
                 />
               </View>
               <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -1051,7 +1094,6 @@ export default AddLeaseDetails = props => {
                   // onChangeText={setRentalDeposit}
                   placeholder="Enter the rental deposit amount"
                   keyboardType="number-pad"
-
                 />
               </View>
               <View style={AddLeaseDetailsStyle.inputContainer}>
@@ -1066,7 +1108,6 @@ export default AddLeaseDetails = props => {
                   // onChangeText={setRentalEscalation}
                   placeholder="Period rent escalation %"
                   keyboardType="number-pad"
-
                 />
               </View>
             </View>
@@ -1074,7 +1115,7 @@ export default AddLeaseDetails = props => {
           <DividerIcon borderColor={_COLORS.Kodie_ExtraLiteGrayColor} />
           <View>
             <View
-              style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
               <Text
                 style={{
                   fontSize: 18,
@@ -1097,7 +1138,7 @@ export default AddLeaseDetails = props => {
                 />
               </TouchableOpacity>
             </View>
-            <Text style={{ fontSize: 12 }}>
+            <Text style={{fontSize: 12}}>
               Select the automatic notifications you would like sent
             </Text>
           </View>
@@ -1119,11 +1160,11 @@ export default AddLeaseDetails = props => {
                   <Dropdown
                     style={[
                       AddLeaseDetailsStyle.dropdown,
-                      { flex: 1, borderRadius: 8, marginLeft: 45 },
+                      {flex: 1, borderRadius: 8, marginLeft: 45},
                     ]}
                     placeholderStyle={[
                       AddLeaseDetailsStyle.placeholderStyle,
-                      { color: _COLORS.Kodie_LightGrayColor },
+                      {color: _COLORS.Kodie_LightGrayColor},
                     ]}
                     selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
                     inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
@@ -1157,7 +1198,7 @@ export default AddLeaseDetails = props => {
                   containerStyle={AddLeaseDetailsStyle.toggle_con}
                   circleStyle={AddLeaseDetailsStyle.toggle_circle}
                 />
-                <View style={{ margin: 5 }} />
+                <View style={{margin: 5}} />
                 <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
                   {'Lease expiry reminder'}
                 </Text>
@@ -1169,7 +1210,7 @@ export default AddLeaseDetails = props => {
                     ]}
                     placeholderStyle={[
                       AddLeaseDetailsStyle.placeholderStyle,
-                      { color: _COLORS.Kodie_LightGrayColor },
+                      {color: _COLORS.Kodie_LightGrayColor},
                     ]}
                     selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
                     inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
@@ -1202,7 +1243,7 @@ export default AddLeaseDetails = props => {
                   containerStyle={AddLeaseDetailsStyle.toggle_con}
                   circleStyle={AddLeaseDetailsStyle.toggle_circle}
                 />
-                <View style={{ margin: 5 }} />
+                <View style={{margin: 5}} />
                 <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
                   {'Rent payment reminder'}
                 </Text>
@@ -1214,7 +1255,7 @@ export default AddLeaseDetails = props => {
                     ]}
                     placeholderStyle={[
                       AddLeaseDetailsStyle.placeholderStyle,
-                      { color: _COLORS.Kodie_LightGrayColor },
+                      {color: _COLORS.Kodie_LightGrayColor},
                     ]}
                     selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
                     inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
@@ -1246,7 +1287,7 @@ export default AddLeaseDetails = props => {
                   containerStyle={AddLeaseDetailsStyle.toggle_con}
                   circleStyle={AddLeaseDetailsStyle.toggle_circle}
                 />
-                <View style={{ margin: 5 }} />
+                <View style={{margin: 5}} />
                 <Text style={AddLeaseDetailsStyle.exp_reminder_text}>
                   {'Late rental reminder'}
                 </Text>
@@ -1258,7 +1299,7 @@ export default AddLeaseDetails = props => {
                     ]}
                     placeholderStyle={[
                       AddLeaseDetailsStyle.placeholderStyle,
-                      { color: _COLORS.Kodie_LightGrayColor },
+                      {color: _COLORS.Kodie_LightGrayColor},
                     ]}
                     selectedTextStyle={AddLeaseDetailsStyle.selectedTextStyle}
                     inputSearchStyle={AddLeaseDetailsStyle.inputSearchStyle}
