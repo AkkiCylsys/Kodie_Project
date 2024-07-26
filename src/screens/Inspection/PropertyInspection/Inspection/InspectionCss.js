@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 export const InspectionCss = StyleSheet.create({
   MainContainer: {
     flex: 1,
@@ -10,8 +10,8 @@ export const InspectionCss = StyleSheet.create({
     marginVertical: 16,
   },
   mainView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   areasText: {
     fontSize: 20,
@@ -19,30 +19,45 @@ export const InspectionCss = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   editView: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignSelf: "flex-end",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
   },
-  IconView: { alignSelf: "center", marginHorizontal: 16 },
+  IconView: {alignSelf: 'center', marginHorizontal: 16},
   editText: {
     fontSize: 16,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginLeft: 10,
   },
-  flatListContainer: { flexDirection: "row", justifyContent: "space-between" },
-  ImageStyle: {height: 35, width: 35, borderWidth:1,borderRadius:5 ,borderColor:_COLORS?.Kodie_MediumGrayColor,justifyContent:'center',alignSelf:'center'},
+  flatListContainer: {flexDirection: 'row', justifyContent: 'space-between'},
+  ImageStyle: {
+    height: 35,
+    width: 35,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: _COLORS?.Kodie_MediumGrayColor,
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
   rightIcon: {
     borderWidth: 1,
     borderRadius: 5,
     borderColor: _COLORS.Kodie_GrayColor,
-    paddingHorizontal: 3,
-    paddingVertical:3,
-    // height: 25,
-    alignSelf: "center",
+    paddingHorizontal: 2,
+    height: 25,
+    alignSelf: 'center',
   },
-  IconStyle: { alignSelf: "center", justifyContent: "center"},
+  IconStyle: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+  rightIconStyle: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    marginTop: 2,
+  },
   bottomModal_container: {
     borderWidth: 0.5,
     borderColor: _COLORS.Kodie_LightGrayColor,
@@ -51,8 +66,8 @@ export const InspectionCss = StyleSheet.create({
     elevation: 10,
   },
   ModalContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   ShareText: {
     fontFamily: FONTFAMILY.K_Bold,
@@ -62,7 +77,7 @@ export const InspectionCss = StyleSheet.create({
   inputContainer: {
     marginVertical: 16,
   },
-  cardHeight: { marginBottom: 8 },
+  cardHeight: {marginBottom: 8},
   emailinput: {
     borderWidth: 1,
     height: 45,
@@ -71,12 +86,12 @@ export const InspectionCss = StyleSheet.create({
     borderRadius: 5,
   },
   ButtonView: {
-    flexDirection: "row",
-    alignSelf: "flex-end",
-    justifyContent: "flex-end",
+    flexDirection: 'row',
+    alignSelf: 'flex-end',
+    justifyContent: 'flex-end',
     marginVertical: 20,
   },
-  cancelView: { alignSelf: "center" },
+  cancelView: {alignSelf: 'center'},
   cancelText: {
     fontSize: 14,
     fontFamily: FONTFAMILY.K_SemiBold,
@@ -91,8 +106,8 @@ export const InspectionCss = StyleSheet.create({
     paddingVertical: 6,
   },
   DoneText: {
-    alignSelf: "center",
-    textAlign: "center",
+    alignSelf: 'center',
+    textAlign: 'center',
     fontSize: 14,
     fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_WhiteColor,
@@ -101,7 +116,7 @@ export const InspectionCss = StyleSheet.create({
     borderWidth: 1,
     height: 50,
     borderColor: _COLORS.Kodie_GrayColor,
-    marginBottom:24,
+    marginBottom: 24,
     borderRadius: 8,
   },
 
@@ -126,7 +141,7 @@ export const InspectionCss = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
-  modalFile: { flexDirection: "row", marginTop: 15 },
+  modalFile: {flexDirection: 'row', marginTop: 15},
   deleteIconView: {
     borderWidth: 1,
     borderColor: _COLORS.Kodie_LightWhiteColor,

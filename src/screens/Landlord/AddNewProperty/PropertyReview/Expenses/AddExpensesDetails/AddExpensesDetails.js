@@ -65,7 +65,7 @@ export default AddExpensesDetails = props => {
   const [lease_end_value, setlLease_end_value] = useState([]);
   const [lease_end_valueError, setlLease_end_valueError] = useState(false);
 
-   // Calculate and Update Account Excl. and Tax based on user input
+  // Calculate and Update Account Excl. and Tax based on user input
   //  useEffect(() => {
   //   if (accountXcl && tax) {
   //     const parsedAccountXcl = parseFloat(accountXcl.replace(/[^0-9.-]/g, ''));
@@ -91,11 +91,17 @@ export default AddExpensesDetails = props => {
   //   }
   // }, [totalAmount, accountXcl, tax]);
 
-  const formatCurrency = (value) => {
-    return '$'+' ' + parseFloat(value).toLocaleString('en-US', { style: 'currency', currency: 'USD' }).slice(1);
+  const formatCurrency = value => {
+    return (
+      '$' +
+      ' ' +
+      parseFloat(value)
+        .toLocaleString('en-US', {style: 'currency', currency: 'USD'})
+        .slice(1)
+    );
   };
 
-  const handleAccountXclChange = (text) => {
+  const handleAccountXclChange = text => {
     // Remove non-numeric and non-decimal characters except the first minus sign if present
     // let formattedValue = text.replace(/[^0-9.-]/g, '');
     // if (formattedValue && formattedValue.charAt(0) === '-') {
@@ -106,10 +112,10 @@ export default AddExpensesDetails = props => {
     // formattedValue = '$'+ ' ' + formattedValue;
     setAccountXcl(totalAmount);
   };
-  const handleTaxChange = (text) => {
+  const handleTaxChange = text => {
     // Remove all non-numeric characters except the first decimal point
     let formattedValue = text.replace(/[^\d.]/g, '');
-  
+
     // If there are more than two decimal places, truncate it
     if (formattedValue.includes('.')) {
       const parts = formattedValue.split('.');
@@ -118,7 +124,7 @@ export default AddExpensesDetails = props => {
       }
       formattedValue = parts.join('.');
     }
-  
+
     // Update the state with the formatted tax value
     setTax(formattedValue);
   };
@@ -146,13 +152,12 @@ export default AddExpensesDetails = props => {
   // Validation for Total amount........
   const validateTotalamount = text => {
     if (text === '') {
-      setTotalAmount(''); 
-    } else
-   if (!text.startsWith('$')) {
-      text = '$'+' '+ text;
-    }else if (text === '') {
+      setTotalAmount('');
+    } else if (!text.startsWith('$')) {
+      text = '$' + ' ' + text;
+    } else if (text === '') {
       setTotalAmountError('Total amount is required!');
-    }else {
+    } else {
       setTotalAmountError('');
     }
     setTotalAmount(text);
@@ -219,7 +224,7 @@ export default AddExpensesDetails = props => {
   };
   const lease_end_render = item => {
     return (
-      <ScrollView contentContainerStyle={{ flex: 1, height: '100%' }}>
+      <ScrollView contentContainerStyle={{flex: 1, height: '100%'}}>
         <View style={AddExpensesDetailsStyle.itemView}>
           {item.lookup_key === lease_end_value.lookup_key ? (
             <AntDesign
@@ -298,7 +303,7 @@ export default AddExpensesDetails = props => {
       supplier: suplier,
       expenses_description: expenseDes,
       note: notes,
-      paid: selectedButtonDepositId,
+      paid: selectedButtonDepositId ? selectedButtonDepositId : null,
       start_date: selectedPaidDate ? selectedPaidDate : null,
       is_active: 1,
     };
@@ -345,13 +350,12 @@ export default AddExpensesDetails = props => {
 
   const handleSaveBtn = () => {
     if (totalAmount.trim() === '') {
-      setTotalAmountError('Total amount is required.');
+      setTotalAmountError('Total amount is required!');
     } else if (selectedDate.trim() === '') {
       setSelectedDateError('Due date is required!');
-    } else if (!selectedButtonRepeating && lease_end_value == ''  ) {
+    } else if (!selectedButtonRepeating && lease_end_value == '') {
       setlLease_end_valueError(true);
-    } 
-     else if (!ExpenceCategoryValue) {
+    } else if (!ExpenceCategoryValue) {
       setExpenceCategoryValueError('Select Responsible Category.');
     }
     // else if (selectedPaidDate.trim() === "") {
@@ -435,7 +439,7 @@ export default AddExpensesDetails = props => {
       </View>
     );
   };
-  
+
   return (
     <View style={AddExpensesDetailsStyle.mainContainer}>
       <View style={AddExpensesDetailsStyle.heading_View}>
@@ -476,14 +480,12 @@ export default AddExpensesDetails = props => {
               </Text>
               <TextInput
                 style={[AddExpensesDetailsStyle.input, {flex: 1}]}
-                value={accountXcl}
-              
+                value={totalAmount}
                 placeholder="Amount excl."
                 placeholderTextColor="#999"
                 onChangeText={handleAccountXclChange}
-                onFocus={(text)=>handleAccountXclChange(text)}
+                onFocus={text => handleAccountXclChange(text)}
                 keyboardType="numeric"
-
               />
             </View>
             <View
@@ -493,14 +495,16 @@ export default AddExpensesDetails = props => {
               ]}>
               <Text style={LABEL_STYLES.commontext}>{'Tax (0.00%)'}</Text>
               <TextInput
-                style={[AddExpensesDetailsStyle.input, {flex: 1,backgroundColor:_COLORS?.Kodie_GrayColor}]}
+                style={[
+                  AddExpensesDetailsStyle.input,
+                  {flex: 1, backgroundColor: _COLORS?.Kodie_GrayColor},
+                ]}
                 value={tax}
                 onChangeText={handleTaxChange}
                 keyboardType="numeric"
                 placeholder="Enter tax %"
                 placeholderTextColor="#999"
-           editable={false}
-
+                editable={false}
               />
             </View>
           </View>
@@ -509,9 +513,10 @@ export default AddExpensesDetails = props => {
             <Text style={LABEL_STYLES.commontext}>{'Invoice due date*'}</Text>
             <View style={AddExpensesDetailsStyle.datePickerView}>
               <CalendarModal
-            current={selectedDate}
-
-                SelectDate={selectedDate ? selectedDate : 'Enter the invoice due date'}
+                current={selectedDate}
+                SelectDate={
+                  selectedDate ? selectedDate : 'Enter the invoice due date'
+                }
                 _textInputStyle={{
                   color: selectedDate
                     ? _COLORS.Kodie_BlackColor
@@ -540,9 +545,7 @@ export default AddExpensesDetails = props => {
           </View>
 
           <View style={AddExpensesDetailsStyle.addition_featureView}>
-            <Text style={LABEL_STYLES.commontext}>
-              {'Repeating expense?*'}
-            </Text>
+            <Text style={LABEL_STYLES.commontext}>{'Repeating expense?*'}</Text>
             <RowButtons
               LeftButtonText={'Yes'}
               leftButtonbackgroundColor={
@@ -586,48 +589,48 @@ export default AddExpensesDetails = props => {
               }}
             />
           </View>
-          {selectedButtonRepeatingError?
+          {selectedButtonRepeatingError ? (
             <Text style={AddExpensesDetailsStyle.errorText}>
               {selectedButtonRepeatingError}
-            </Text>:null
-}
-{!selectedButtonRepeating ? (
-  <>
-          <View style={{marginTop:10,marginBottom:5}}>
-          <Text style={LABEL_STYLES.commontext}>{'Expense frequency*'}</Text>
-            <Dropdown
-              style={[
-                AddExpensesDetailsStyle.dropdown,
-                { flex: 1, borderRadius: 5, height: 45 ,marginTop: 14},
-              ]}
-              placeholderStyle={[
-                AddExpensesDetailsStyle.placeholderStyle,
-                { color: _COLORS.Kodie_LightGrayColor },
-              ]}
-              selectedTextStyle={AddExpensesDetailsStyle.selectedTextStyle}
-              inputSearchStyle={AddExpensesDetailsStyle.inputSearchStyle}
-              iconStyle={AddExpensesDetailsStyle.iconStyle}
-              data={lease_end_Data}
-              maxHeight={300}
-              labelField="lookup_description"
-              valueField="lookup_key"
-              placeholder="How often is rent paid"
-              value={lease_end_value}
-              onChange={item => {
-                setlLease_end_value(item.lookup_key);
-                setlLease_end_valueError(false);
-                // alert(item.lookup_key);
-              }}
-              renderItem={lease_end_render}
-            />
-
-          </View>
-          
-          </>
-):null}
-{!selectedButtonRepeating && lease_end_valueError ? (
+            </Text>
+          ) : null}
+          {!selectedButtonRepeating ? (
+            <>
+              <View style={{marginTop: 10, marginBottom: 5}}>
+                <Text style={LABEL_STYLES.commontext}>
+                  {'Expense frequency*'}
+                </Text>
+                <Dropdown
+                  style={[
+                    AddExpensesDetailsStyle.dropdown,
+                    {flex: 1, borderRadius: 5, height: 45, marginTop: 14},
+                  ]}
+                  placeholderStyle={[
+                    AddExpensesDetailsStyle.placeholderStyle,
+                    {color: _COLORS.Kodie_LightGrayColor},
+                  ]}
+                  selectedTextStyle={AddExpensesDetailsStyle.selectedTextStyle}
+                  inputSearchStyle={AddExpensesDetailsStyle.inputSearchStyle}
+                  iconStyle={AddExpensesDetailsStyle.iconStyle}
+                  data={lease_end_Data}
+                  maxHeight={300}
+                  labelField="lookup_description"
+                  valueField="lookup_key"
+                  placeholder="How often is rent paid"
+                  value={lease_end_value}
+                  onChange={item => {
+                    setlLease_end_value(item.lookup_key);
+                    setlLease_end_valueError(false);
+                    // alert(item.lookup_key);
+                  }}
+                  renderItem={lease_end_render}
+                />
+              </View>
+            </>
+          ) : null}
+          {!selectedButtonRepeating && lease_end_valueError ? (
             <Text style={AddExpensesDetailsStyle.errorText}>
-              {'Please select a payment frequency'}
+              {'Please select a payment frequency!'}
             </Text>
           ) : null}
           <View style={AddExpensesDetailsStyle.additiontext}>
@@ -803,12 +806,11 @@ export default AddExpensesDetails = props => {
             />
           </View>
           {!selectedButtonDeposit ? (
-             <View style={{marginTop:10,marginBottom:5}}>
+            <View style={{marginTop: 10, marginBottom: 5}}>
               <Text style={LABEL_STYLES.commontext}>{'Paid date*'}</Text>
               <View style={AddExpensesDetailsStyle.datePickerView}>
                 <CalendarModal
-            current={selectedPaidDate}
-
+                  current={selectedPaidDate}
                   SelectDate={
                     selectedPaidDate ? selectedPaidDate : 'Start Date'
                   }
@@ -834,11 +836,11 @@ export default AddExpensesDetails = props => {
                   _ApplyButton={togglePaidModal}
                 />
               </View>
-              {selectedPaidDateError?
-              <Text style={AddExpensesDetailsStyle.errorText}>
-                {selectedPaidDateError}
-              </Text>
-:null}
+              {selectedPaidDateError ? (
+                <Text style={AddExpensesDetailsStyle.errorText}>
+                  {selectedPaidDateError}
+                </Text>
+              ) : null}
             </View>
           ) : null}
 

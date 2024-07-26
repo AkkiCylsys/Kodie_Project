@@ -446,7 +446,7 @@ export default Documents = props => {
         </View>
         <View style={DocumentsStyle.card}>
           <FlatList
-            data={showAllDocuments ? uploadDocData : uploadDocData.slice(0, 2)}
+            data={showAllDocuments ? uploadDocData : uploadDocData.slice(0, 0)}
             scrollEnabled
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{}}

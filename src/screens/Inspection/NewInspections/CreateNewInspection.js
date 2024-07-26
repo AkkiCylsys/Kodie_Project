@@ -14,7 +14,7 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Alert,
-  Platform
+  Platform,
 } from 'react-native';
 import TopHeader from '../../../components/Molecules/Header/Header';
 import {Dropdown} from 'react-native-element-dropdown';
@@ -584,301 +584,300 @@ const CreateNewInspection = props => {
             : 'Create new inspections'
         }
       />
-       <KeyboardAvoidingView
-      // style={CreateNewInspectionStyle.mainConatainer}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={CreateNewInspectionStyle.Container}>
-        <Text style={CreateNewInspectionStyle.HeadingText}>
-          {'Tell us about your inspection'}
-        </Text>
-
-        <View style={{}}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'What type of inspection is this?'}
+      <KeyboardAvoidingView
+        // style={CreateNewInspectionStyle.mainConatainer}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={CreateNewInspectionStyle.Container}>
+          <Text style={CreateNewInspectionStyle.HeadingText}>
+            {'Tell us about your inspection'}
           </Text>
-          <Dropdown
-            style={CreateNewInspectionStyle.dropdown}
-            placeholderStyle={[
-              CreateNewInspectionStyle.placeholderStyle,
-              {color: _COLORS.Kodie_LightGrayColor},
-            ]}
-            selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-            inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-            iconStyle={CreateNewInspectionStyle.iconStyle}
-            data={inspectionType}
-            maxHeight={300}
-            labelField="lookup_description"
-            valueField="lookup_key"
-            placeholder="Select inspection type"
-            value={Inspection_value}
-            onChange={item => {
-              setInspection_value(item.lookup_key);
-              setErrorInspection(false);
-            }}
-            renderItem={InspectionType_render}
-          />
-        </View>
-        {errorInspection ? (
-          <Text style={CreateNewInspectionStyle.errorText}>
-            {'Please select a inspection type!'}
-          </Text>
-        ) : null}
-        <Text style={[LABEL_STYLES.commontext, {marginTop: 20}]}>
-          {'Schedule time and date of inspection'}
-        </Text>
-        <View style={CreateNewInspectionStyle.datePickerView}>
-          <CalendarModal
-            current={selectedDate}
 
-            SelectDate={selectedDate ? selectedDate : 'Select Date'}
-            _textInputStyle={{
-              color: selectedDate
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_GrayColor,
-            }}
-            calenderIcon={toggleModal}
-            onDayPress={handleDayPress}
-            Visible={isModalVisible}
-            onRequestClose={toggleModal}
-            markedDates={{
-              [selectedDate]: {
-                selected: true,
-                selectedColor: _COLORS.Kodie_lightGreenColor,
-                selectedTextColor: _COLORS.Kodie_BlackColor,
-              },
-            }}
-            _closeButton={toggleModal}
-            _ApplyButton={toggleModal}
-          />
-
-          <View style={CreateNewInspectionStyle.spaceView} />
-
-          <TimePicker
-            selectedTime={
-              currentTime && currentTime !== ''
-                ? String(currentTime)
-                : 'Select time'
-            }
-            _TextTimeColor={
-              currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
-            }
-            data={new Date()}
-            getData={date => {
-              setCurrentTime(moment(date).format('hh:mm A'));
-            }}
-          />
-        </View>
-
-        {selectedDateError && (
-          <Text style={CreateNewInspectionStyle.errorText}>
-            {'Please select a date!'}
-          </Text>
-        )}
-
-        <View style={{marginBottom: 12, marginTop: 20}}>
-          <Text style={LABEL_STYLES.commontext}>
-            {'Where is the inspection taking place?'}
-          </Text>
-          <Dropdown
-            style={CreateNewInspectionStyle.dropdown}
-            placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
-            selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-            inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-            iconStyle={CreateNewInspectionStyle.iconStyle}
-            data={selectedAddressData}
-            search
-            maxHeight={300}
-            labelField="location"
-            valueField="property_id"
-            placeholder="Select property"
-            searchPlaceholder="Search..."
-            value={selectedAddressDetail}
-            onChange={item => {
-              setSelectedAddressDetail(item?.property_id);
-              setSelectedAddress({
-                latitude: item?.latitude,
-                longitude: item?.longitude,
-                location: item?.location,
-                property_id: item?.property_id,
-                user_Id: item?.account_id,
-              });
-              setShowError(false);
-            }}
-            renderItem={Selected_Time_render}
-          />
-        </View>
-        <View style={CreateNewInspectionStyle.locationContainer}>
-          <Octicons
-            name={'location'}
-            size={22}
-            color={_COLORS.Kodie_ExtraLightGrayColor}
-            style={CreateNewInspectionStyle.locationIcon}
-          />
-          <TextInput
-            style={CreateNewInspectionStyle.locationInput}
-            value={selectedAddress?.location}
-            editable={false}
-            placeholder="Enter new location"
-            placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-          />
-        </View>
-        {showError ? (
-          <Text style={CreateNewInspectionStyle.errorText}>
-            {'Please select a property!'}
-          </Text>
-        ) : null}
-
-        <View style={{marginBottom: 15, marginTop: 15}}>
-          <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
-
-          <TouchableOpacity
-            style={CreateNewInspectionStyle.TextInputView}
-            onPress={() => refRBSheet.current.open()}>
-            <Text
-              style={[
-                CreateNewInspectionStyle.input,
-                {
-                  color: displaySelectedValues
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor,
-                },
-              ]}>
-              {displaySelectedValues
-                ? displaySelectedValues
-                : 'Add people attending the inspection'}
+          <View style={{}}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'What type of inspection is this?'}
             </Text>
+            <Dropdown
+              style={CreateNewInspectionStyle.dropdown}
+              placeholderStyle={[
+                CreateNewInspectionStyle.placeholderStyle,
+                {color: _COLORS.Kodie_LightGrayColor},
+              ]}
+              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+              iconStyle={CreateNewInspectionStyle.iconStyle}
+              data={inspectionType}
+              maxHeight={300}
+              labelField="lookup_description"
+              valueField="lookup_key"
+              placeholder="Select inspection type"
+              value={Inspection_value}
+              onChange={item => {
+                setInspection_value(item.lookup_key);
+                setErrorInspection(false);
+              }}
+              renderItem={InspectionType_render}
+            />
+          </View>
+          {errorInspection ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {'Please select a inspection type!'}
+            </Text>
+          ) : null}
+          <Text style={[LABEL_STYLES.commontext, {marginTop: 20}]}>
+            {'Schedule time and date of inspection'}
+          </Text>
+          <View style={CreateNewInspectionStyle.datePickerView}>
+            <CalendarModal
+              current={selectedDate}
+              SelectDate={selectedDate ? selectedDate : 'Select Date'}
+              _textInputStyle={{
+                color: selectedDate
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_GrayColor,
+              }}
+              calenderIcon={toggleModal}
+              onDayPress={handleDayPress}
+              Visible={isModalVisible}
+              onRequestClose={toggleModal}
+              markedDates={{
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: _COLORS.Kodie_lightGreenColor,
+                  selectedTextColor: _COLORS.Kodie_BlackColor,
+                },
+              }}
+              _closeButton={toggleModal}
+              _ApplyButton={toggleModal}
+            />
 
-            {/* <TextInput
+            <View style={CreateNewInspectionStyle.spaceView} />
+
+            <TimePicker
+              selectedTime={
+                currentTime && currentTime !== ''
+                  ? String(currentTime)
+                  : 'Select time'
+              }
+              _TextTimeColor={
+                currentTime ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_GrayColor
+              }
+              data={new Date()}
+              getData={date => {
+                setCurrentTime(moment(date).format('hh:mm A'));
+              }}
+            />
+          </View>
+
+          {selectedDateError && (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {'Please select a date!'}
+            </Text>
+          )}
+
+          <View style={{marginBottom: 12, marginTop: 20}}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Where is the inspection taking place?'}
+            </Text>
+            <Dropdown
+              style={CreateNewInspectionStyle.dropdown}
+              placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
+              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+              iconStyle={CreateNewInspectionStyle.iconStyle}
+              data={selectedAddressData}
+              search
+              maxHeight={300}
+              labelField="location"
+              valueField="property_id"
+              placeholder="Select property"
+              searchPlaceholder="Search..."
+              value={selectedAddressDetail}
+              onChange={item => {
+                setSelectedAddressDetail(item?.property_id);
+                setSelectedAddress({
+                  latitude: item?.latitude,
+                  longitude: item?.longitude,
+                  location: item?.location,
+                  property_id: item?.property_id,
+                  user_Id: item?.account_id,
+                });
+                setShowError(false);
+              }}
+              renderItem={Selected_Time_render}
+            />
+          </View>
+          <View style={CreateNewInspectionStyle.locationContainer}>
+            <Octicons
+              name={'location'}
+              size={22}
+              color={_COLORS.Kodie_ExtraLightGrayColor}
+              style={CreateNewInspectionStyle.locationIcon}
+            />
+            <TextInput
+              style={CreateNewInspectionStyle.locationInput}
+              value={selectedAddress?.location}
+              editable={false}
+              placeholder="Enter new location"
+              placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+            />
+          </View>
+          {showError ? (
+            <Text style={CreateNewInspectionStyle.errorText}>
+              {'Please select a property!'}
+            </Text>
+          ) : null}
+
+          <View style={{marginBottom: 15, marginTop: 15}}>
+            <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
+
+            <TouchableOpacity
+              style={CreateNewInspectionStyle.TextInputView}
+              onPress={() => refRBSheet.current.open()}>
+              <Text
+                style={[
+                  CreateNewInspectionStyle.input,
+                  {
+                    color: displaySelectedValues
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor,
+                  },
+                ]}>
+                {displaySelectedValues
+                  ? displaySelectedValues
+                  : 'Add people attending the inspection'}
+              </Text>
+
+              {/* <TextInput
               value={displaySelectedValues}
               placeholder={'Add people attending the inspection'}
               style={CreateNewInspectionStyle.input}
               palceholderColor={_COLORS.Kodie_MediumGrayColor}
               editable={false}
             /> */}
-            <Feather
-              name={'user-plus'}
-              size={22}
-              color={_COLORS.Kodie_GrayColor}
-              style={{marginRight: 10}}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text style={LABEL_STYLES.commontext}>
-          {'Is the place furnished or unfurnished?'}
-        </Text>
-        <View style={CreateNewInspectionStyle.margin}>
-          <RowButtons
-            LeftButtonText={'Furnished'}
-            leftButtonbackgroundColor={
-              !selectedButtonFurnished
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            LeftButtonTextColor={
-              !selectedButtonFurnished
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-            LeftButtonborderColor={
-              !selectedButtonFurnished
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_LightWhiteColor
-            }
-            onPressLeftButton={() => {
-              setSelectedButtonFurnished(false);
-              setSelectedButtonFurnishedId(67);
-              // alert(selectedButtonId)
-            }}
-            RightButtonText={'Unfurnished'}
-            RightButtonbackgroundColor={
-              selectedButtonFurnished
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonTextColor={
-              selectedButtonFurnished
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-            RightButtonborderColor={
-              selectedButtonFurnished
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_LightWhiteColor
-            }
-            onPressRightButton={() => {
-              setSelectedButtonFurnished(true);
-              setSelectedButtonFurnishedId(68);
-              // alert(selectedButtonId)
-            }}
-          />
-        </View>
-        <View style={{marginBottom: 15}}>
+              <Feather
+                name={'user-plus'}
+                size={22}
+                color={_COLORS.Kodie_GrayColor}
+                style={{marginRight: 10}}
+              />
+            </TouchableOpacity>
+          </View>
           <Text style={LABEL_STYLES.commontext}>
-            {'Select the areas you would like to include:'}
+            {'Is the place furnished or unfurnished?'}
           </Text>
-          <View style={{marginTop: 10}}>
-            <FlatList
-              data={[...AreaKey, {TAM_AREA_KEY: 'add_custom_area'}]}
-              scrollEnabled
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{}}
-              numColumns={2}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({item}) => {
-                if (item.TAM_AREA_KEY === 'add_custom_area') {
-                  return (
-                    <View>
-                      <TouchableOpacity
-                      style={{marginRight: 50,marginTop:10}}
-                        onPress={() => {
-                          // refRBSheet1.current.open();
-                          Alert.alert('Add custom area', 'Coming soon');
-                        }}>
-                        <Text
-                          style={{
-                            color: _COLORS.Kodie_GreenColor,
-                            fontSize: 14,
-                            fontFamily: FONTFAMILY.K_Bold,
-                          }}>
-                          {'Add custom area...'}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  );
-                }
-                return <Detail_render item={item} />;
+          <View style={CreateNewInspectionStyle.margin}>
+            <RowButtons
+              LeftButtonText={'Furnished'}
+              leftButtonbackgroundColor={
+                !selectedButtonFurnished
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButtonFurnished
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButtonFurnished
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButtonFurnished(false);
+                setSelectedButtonFurnishedId(67);
+                // alert(selectedButtonId)
+              }}
+              RightButtonText={'Unfurnished'}
+              RightButtonbackgroundColor={
+                selectedButtonFurnished
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButtonFurnished
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButtonFurnished
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressRightButton={() => {
+                setSelectedButtonFurnished(true);
+                setSelectedButtonFurnishedId(68);
+                // alert(selectedButtonId)
               }}
             />
           </View>
-        </View>
-        <Text style={LABEL_STYLES.commontext}>{'Notes:'}</Text>
-        <TextInput
-          style={CreateNewInspectionStyle.NotesInput}
-          value={Notes}
-          onChangeText={setNotes}
-          placeholder="Enter any notes about this item"
-          placeholderTextColor="#999"
-          multiline
-          numberOfLines={5}
-          textAlignVertical={'top'}
-        />
-        <CustomSingleButton
-          _ButtonText={
-            InspectionView
-              ? 'Reschedule Inspection'
-              : Ins_editMode
-              ? 'Edit Inspections'
-              : 'Schedule inspection'
-          }
-          Text_Color={_COLORS.Kodie_WhiteColor}
-          backgroundColor={_COLORS.Kodie_BlackColor}
-          disabled={isLoading ? true : false}
-          onPress={handleSubmit}
-          marginBottom={Platform.OS === 'ios' ? 0:'29%'}
-        />
-      </ScrollView>
+          <View style={{marginBottom: 15}}>
+            <Text style={LABEL_STYLES.commontext}>
+              {'Select the areas you would like to include:'}
+            </Text>
+            <View style={{marginTop: 10}}>
+              <FlatList
+                data={[...AreaKey, {TAM_AREA_KEY: 'add_custom_area'}]}
+                scrollEnabled
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{}}
+                numColumns={2}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({item}) => {
+                  if (item.TAM_AREA_KEY === 'add_custom_area') {
+                    return (
+                      <View>
+                        <TouchableOpacity
+                          style={{marginRight: 50, marginTop: 10}}
+                          onPress={() => {
+                            // refRBSheet1.current.open();
+                            Alert.alert('Add custom area', 'Coming soon');
+                          }}>
+                          <Text
+                            style={{
+                              color: _COLORS.Kodie_GreenColor,
+                              fontSize: 14,
+                              fontFamily: FONTFAMILY.K_Bold,
+                            }}>
+                            {'Add custom area...'}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    );
+                  }
+                  return <Detail_render item={item} />;
+                }}
+              />
+            </View>
+          </View>
+          <Text style={LABEL_STYLES.commontext}>{'Notes:'}</Text>
+          <TextInput
+            style={CreateNewInspectionStyle.NotesInput}
+            value={Notes}
+            onChangeText={setNotes}
+            placeholder="Enter any notes about this item"
+            placeholderTextColor="#999"
+            multiline
+            numberOfLines={5}
+            textAlignVertical={'top'}
+          />
+          <CustomSingleButton
+            _ButtonText={
+              InspectionView
+                ? 'Reschedule Inspection'
+                : Ins_editMode
+                ? 'Edit Inspections'
+                : 'Schedule inspection'
+            }
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            backgroundColor={_COLORS.Kodie_BlackColor}
+            disabled={isLoading ? true : false}
+            onPress={handleSubmit}
+            marginBottom={Platform.OS === 'ios' ? 0 : '29%'}
+          />
+        </ScrollView>
       </KeyboardAvoidingView>
       <RBSheet
         ref={refRBSheet}

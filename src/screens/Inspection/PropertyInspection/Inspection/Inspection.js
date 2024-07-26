@@ -138,17 +138,18 @@ const Inspection = props => {
     setIsLoading(true);
     const url = Config.BASE_URL;
     const AreaPostUrl = url + `inspection_details/CustomArea`;
-
+    const InspectionData = {
+      custom_area_name: email,
+      is_standard_check_inspection: selectedButtonStandardId,
+      area_similar: customeAreavalue,
+      area_future_inspection: selectedButtonFutueId,
+      property_id: PropertyId,
+      inspection_id: TIM_KEY,
+      created_by: 543,
+    };
+    console.log('InspectionData.....', InspectionData);
     try {
-      const response = await axios.post(AreaPostUrl, {
-        custom_area_name: email,
-        is_standard_check_inspection: selectedButtonStandardId,
-        area_similar: customeAreavalue,
-        area_future_inspection: selectedButtonFutueId,
-        property_id: PropertyId,
-        inspection_id: TIM_KEY,
-        created_by: 543,
-      });
+      const response = await axios.post(AreaPostUrl, InspectionData);
       console.log(response);
       if (response?.data?.success) {
         Alert.alert('Success', 'Custom area added successfully');
@@ -343,7 +344,7 @@ const Inspection = props => {
                 name={'chevron-right'}
                 size={20}
                 color={_COLORS.Kodie_BlackColor}
-                style={InspectionCss.IconStyle}
+                style={InspectionCss.rightIconStyle}
               />
             </TouchableOpacity>
           ) : (
@@ -472,7 +473,7 @@ const Inspection = props => {
               onPressLeftButton={() => {
                 setSelectedButtonStandard(false);
                 setSelectedButtonStandardId(1);
-                // alert(selectedButtonStandard)
+                // alert(selectedButtonStandardId);
               }}
               RightButtonText={'No'}
               onPressRightButton={() => {
