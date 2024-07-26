@@ -26,6 +26,7 @@ import axios from "axios";
 import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
+import moment from 'moment';
 const HorizontalData = ["All", "Scheduled", "inProgress", "Complete", "Cancelled"];
 export default NewInspection = (props) => {
   const navigation = useNavigation();
@@ -37,6 +38,8 @@ export default NewInspection = (props) => {
   const [inspectionfilter, setInspectionfilter] = useState([]);
   const [sortOrder, setSortOrder] = useState('desc');
   const [Tim_Key, setTim_key] = useState('');
+  const [getinspection, setGetInspection] = useState([]);
+
   const [_selectedMonthId, set_selectedMonthId] = useState(
     new Date().getMonth() + 1,
   );
@@ -67,6 +70,7 @@ export default NewInspection = (props) => {
         year: _selectedYear,
         filter: selectedFilter,
       });
+      getInspectionDetails();
     }
   }, [isFocused, _selectedMonthId, _selectedYear, selectedFilter]);
 
@@ -139,27 +143,42 @@ export default NewInspection = (props) => {
     }
   };
   
+  const getInspectionDetails = () => {
+    setIsLoading(true);
+    const url = Config.BASE_URL;
 
+    const apiUrl = url + `get_inspection_details/${Tim_Key}`;
+
+    axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response: getinspection', response?.data?.data[0]);
+        setGetInspection(response?.data?.data[0]);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error PersonalDetails CIP:', error);
+      });
+  };
   const handleDeleteInspection = async () => {
+    refRBSheet2.current.close();
+
     console.log('Attempting to delete inspection...');
     const url = Config.BASE_URL;
     const deleteUrl = `${url}delete_inspection_details/${Tim_Key}`;
-  
+  setIsLoading(true)
     try {
       const response = await axios.delete(deleteUrl);
       console.log('Response from delete inspection:', response?.data);
       if (response?.data?.success) {
         Alert.alert('Success', 'Inspection deleted successfully');
-        // Close the RBSheet
-        if (refRBSheet2.current) {
-          refRBSheet2.current.close();
-        }
-        // Fetch updated inspection details
         await getInspectionDeatilsByFilter({
           monthId: _selectedMonthId,
           year: _selectedYear,
           filter: selectedFilter,
         });
+  setIsLoading(false)
+
       } else {
         Alert.alert('Error', 'Failed to delete inspection');
       }
@@ -175,7 +194,7 @@ export default NewInspection = (props) => {
     setIsLoading(true);
     try {
       const Inspectiondata = {
-        UPD_KEY: PropertyId,
+        UPD_KEY:getinspection.v_UPD_KEY,
         TIM_INSPECTION_TYPE: getinspection.v_TIM_INSPECTION_TYPE,
         TIM_SCHEDULE_TIME: getinspection.v_TIM_SCHEDULE_TIME,
         TIM_SCHEDULE_DATE: moment(getinspection.v_TIM_SCHEDULE_DATE).format(
@@ -203,6 +222,11 @@ export default NewInspection = (props) => {
       refRBSheet2.current.close();
       if (res?.data?.success == true) {
         alert(res?.data?.message);
+        await getInspectionDeatilsByFilter({
+          monthId: _selectedMonthId,
+          year: _selectedYear,
+          filter: selectedFilter,
+        });
         setIsLoading(false);
       }
     } catch (error) {
@@ -529,6 +553,7 @@ export default NewInspection = (props) => {
           <TouchableOpacity
             style={NewInspectionStyle.modalFile}
             onPress={() => {
+              refRBSheet2.current.close();
               props.navigation.navigate('CreateNewInspection', {
                 TIM_KEY: Tim_Key,
                 Ins_editMode: 'Ins_editMode',

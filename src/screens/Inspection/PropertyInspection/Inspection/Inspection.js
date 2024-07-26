@@ -314,7 +314,7 @@ const Inspection = props => {
                   size={20}
                   color={_COLORS.Kodie_GreenColor}
                   style={{alignSelf: 'center'}}
-                  resizeMode={'center'}
+        
                 />
               </View>
             ) : (
