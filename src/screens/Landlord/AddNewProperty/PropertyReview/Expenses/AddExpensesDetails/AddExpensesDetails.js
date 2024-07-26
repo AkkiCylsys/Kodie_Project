@@ -299,7 +299,7 @@ export default AddExpensesDetails = props => {
       repeating_expense: selectedButtonRepeatingId,
       responsible_paying: selectedButtonResponsibleId,
       expense_category: ExpenceCategoryValue,
-      expense_frequency:lease_end_value,
+      expense_frequency: lease_end_value,
       supplier: suplier,
       expenses_description: expenseDes,
       note: notes,
