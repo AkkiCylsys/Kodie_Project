@@ -62,7 +62,7 @@ export default AddExpensesDetails = props => {
   const [ExpenceResponse, setExpenceResponse] = useState([]);
   const [notes, setNotes] = useState('');
   const [lease_end_Data, setLease_end_Data] = useState([]);
-  const [lease_end_value, setlLease_end_value] = useState('');
+  const [lease_end_value, setlLease_end_value] = useState([]);
   const [lease_end_valueError, setlLease_end_valueError] = useState(false);
 
    // Calculate and Update Account Excl. and Tax based on user input
@@ -509,6 +509,8 @@ export default AddExpensesDetails = props => {
             <Text style={LABEL_STYLES.commontext}>{'Invoice due date*'}</Text>
             <View style={AddExpensesDetailsStyle.datePickerView}>
               <CalendarModal
+            current={selectedDate}
+
                 SelectDate={selectedDate ? selectedDate : 'Enter the invoice due date'}
                 _textInputStyle={{
                   color: selectedDate
@@ -805,6 +807,8 @@ export default AddExpensesDetails = props => {
               <Text style={LABEL_STYLES.commontext}>{'Paid date*'}</Text>
               <View style={AddExpensesDetailsStyle.datePickerView}>
                 <CalendarModal
+            current={selectedPaidDate}
+
                   SelectDate={
                     selectedPaidDate ? selectedPaidDate : 'Start Date'
                   }

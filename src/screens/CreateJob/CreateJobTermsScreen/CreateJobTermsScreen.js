@@ -630,6 +630,7 @@ export default CreateJobTermsScreen = props => {
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
+            current={selectedDate}
               SelectDate={selectedDate ? selectedDate : 'Select Date'}
               _textInputStyle={{
                 color: selectedDate

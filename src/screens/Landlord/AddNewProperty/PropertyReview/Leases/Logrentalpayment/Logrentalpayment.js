@@ -290,6 +290,7 @@ const Logrentalpayment = props => {
             <Text style={LABEL_STYLES.commontext}>{'Payment date*'}</Text>
             <View style={LogrentalPaymentStyle.datePickerView}>
               <CalendarModal
+              current={selectedDate}
                 SelectDate={
                   selectedDate ? selectedDate : 'Date of rental payment'
                 }
@@ -327,6 +328,8 @@ const Logrentalpayment = props => {
             </Text>
             <View style={LogrentalPaymentStyle.datePickerView}>
               <CalendarModal
+              current={selectedpaymetPeriod}
+
                 SelectDate={
                   selectedpaymetPeriod ? selectedpaymetPeriod : 'Week 2 August '
                 }

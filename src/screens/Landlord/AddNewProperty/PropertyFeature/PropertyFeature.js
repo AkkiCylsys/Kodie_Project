@@ -447,7 +447,9 @@ export default PropertyFeature = props => {
         />
       </View>
 
-      <ScrollView>
+      <ScrollView
+nestedScrollEnabled={true}
+ >
         <View style={PropertyFeatureStyle.headingView}>
           <Text style={PropertyFeatureStyle.heading}>
             {'Property features'}
@@ -739,15 +741,13 @@ export default PropertyFeature = props => {
                   'The feature you are searching for is not available on the list'
                 }
                 onSelectedItemsChange={onSelectedItemsChange}
-                selectedItems={
-                  Array.isArray(additionalfeatureskeyvalue)
-                    ? additionalfeatureskeyvalue
-                    : []
-                }
+                selectedItems={additionalfeatureskeyvalue}
+                    
                 selectText="Add features such as pool, aircon, balcony etc."
                 searchInputPlaceholderText="Search Items..."
                 onChangeInput={item => {
-                  setAdditionalFeaturesKeyValue(item);
+                  console.warn(item);
+                  // setAdditionalFeaturesKeyValue(item)
                 }}
                 tagBorderColor={_COLORS.Kodie_BlackColor}
                 selectedItemTextColor={_COLORS.Kodie_GreenColor}
