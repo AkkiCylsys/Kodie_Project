@@ -58,7 +58,7 @@ export default AddExpensesDetails = props => {
   const [selectedButtonRepeatingError, setSelectedButtonRepeatingError] =
     useState('');
   const [selectedButtonRepeatingId, setSelectedButtonRepeatingId] = useState(0);
-  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(0);
+  const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(1);
   const [ExpenceResponse, setExpenceResponse] = useState([]);
   const [notes, setNotes] = useState('');
   const [lease_end_Data, setLease_end_Data] = useState([]);
@@ -299,7 +299,7 @@ export default AddExpensesDetails = props => {
       repeating_expense: selectedButtonRepeatingId,
       responsible_paying: selectedButtonResponsibleId,
       expense_category: ExpenceCategoryValue,
-      expense_frequency:lease_end_value || " ",
+      expense_frequency:lease_end_value,
       supplier: suplier,
       expenses_description: expenseDes,
       note: notes,
