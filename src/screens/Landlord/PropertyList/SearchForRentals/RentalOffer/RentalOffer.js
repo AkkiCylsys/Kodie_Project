@@ -245,47 +245,143 @@ const RentalOffer = props => {
     setLocation(text);
     handleInputChange('PREVIOUS_ADDRESS', text);
   };
+  // const getEditAllQuestion = async () => {
+  //   const url = Config.BASE_URL;
+  //   const Ques_url = url + 'question_details_for_tenant_ques';
+  //   console.log('Request URL:', Ques_url);
+  //   setIsLoading(true);
+
+  //   const QuesData = {
+  //     p_account_id: loginData?.Login_details?.user_account_id,
+  //     p_property_id: propertyId,
+  //   };
+
+  //   try {
+  //     const response = await axios.post(Ques_url, QuesData);
+  //     console.log('Response edit question..', response?.data);
+
+  //     if (response?.data?.success === true) {
+  //       const data = response?.data?.data?.[0]?.parent_json;
+
+  //       if (Array.isArray(data)) {
+  //         const initialValues = {};
+  //         const dropdownQuestions = [];
+
+  //         data.forEach(parentQuestion => {
+  //           if (Array.isArray(parentQuestion.children)) {
+  //             parentQuestion.children.forEach(childQuestion => {
+  //               if (childQuestion.tqm_Question_type === 'Dropdown') {
+  //                 dropdownQuestions.push(childQuestion.tqm_Question_code);
+  //               }
+
+  //               if (
+  //                 childQuestion.tqm_Question_value !== undefined &&
+  //                 childQuestion.tqm_Question_value !== null
+  //               ) {
+  //                 initialValues[childQuestion.tqm_Question_code] =
+  //                   childQuestion.tqm_Question_value;
+  //               }
+  //             });
+  //           }
+  //         });
+
+  //         // Fetch dropdown data and set initial values
+  //         const dropdownDataPromises = dropdownQuestions.map(
+  //           async questionCode => {
+  //             const options = await handleDropdown(questionCode);
+  //             setDropdownData(prevData => ({
+  //               ...prevData,
+  //               [questionCode]: options,
+  //             }));
+
+  //             // Convert initialValues to match dropdown options format
+  //             const value = initialValues[questionCode];
+  //             if (value) {
+  //               const selectedOption = options.find(
+  //                 option => String(option.lookup_key) === String(value),
+  //               );
+  //               if (selectedOption) {
+  //                 initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
+  //               }
+  //             }
+  //           },
+  //         );
+
+  //         // Wait for all dropdown data to be fetched and set
+  //         await Promise.all(dropdownDataPromises);
+
+  //         setInputValues(initialValues);
+  //         if (initialValues['PREVIOUS_ADDRESS']) {
+  //           setLocation(initialValues['PREVIOUS_ADDRESS']);
+  //         }
+  //         console.log('response in edit mode...', JSON.stringify(data));
+  //       } else {
+  //         console.error(
+  //           'Invalid data structure: parent_json is not an array',
+  //           data,
+  //         );
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('API failed EdittenantQues', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
     const Ques_url = url + 'question_details_for_tenant_ques';
     console.log('Request URL:', Ques_url);
     setIsLoading(true);
-
+  
     const QuesData = {
       p_account_id: loginData?.Login_details?.user_account_id,
       p_property_id: propertyId,
     };
-
+  
     try {
       const response = await axios.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
-
+  
       if (response?.data?.success === true) {
         const data = response?.data?.data?.[0]?.parent_json;
-
+  
         if (Array.isArray(data)) {
           const initialValues = {};
           const dropdownQuestions = [];
-
+  
           data.forEach(parentQuestion => {
             if (Array.isArray(parentQuestion.children)) {
               parentQuestion.children.forEach(childQuestion => {
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
                 }
-
-                // Convert to string for comparison or setting
+  
                 if (
                   childQuestion.tqm_Question_value !== undefined &&
                   childQuestion.tqm_Question_value !== null
                 ) {
                   initialValues[childQuestion.tqm_Question_code] =
                     childQuestion.tqm_Question_value;
+  
+                  // Set the initial state for Yes/No and Smoking buttons
+                  if (childQuestion.tqm_Question_code === 'EARN_INCOME') {
+                    setSelectedButton(childQuestion.tqm_Question_value === 1);
+                  } else if (childQuestion.tqm_Question_code === 'EVER_BROKEN') {
+                    setSelectedRentalBondButton(childQuestion.tqm_Question_value === 1);
+                  } else if (childQuestion.tqm_Question_code === 'EVICTED_PREVIOUS_BOND') {
+                    setSelectedPreviousRentalButton(childQuestion.tqm_Question_value === 1);
+                  } else if (childQuestion.tqm_Question_code === 'ANY_PETS') {
+                    setSelectedPetsButton(childQuestion.tqm_Question_value === 1);
+                  } else if (childQuestion.tqm_Question_code === 'S/NS') {
+                    setSelectedSomokingButton(childQuestion.tqm_Question_value === 0); // Assuming 0 means Smoking and 1 means Non-smoking
+                  }
                 }
               });
             }
           });
-
+  
           // Fetch dropdown data and set initial values
           const dropdownDataPromises = dropdownQuestions.map(
             async questionCode => {
@@ -294,7 +390,7 @@ const RentalOffer = props => {
                 ...prevData,
                 [questionCode]: options,
               }));
-
+  
               // Convert initialValues to match dropdown options format
               const value = initialValues[questionCode];
               if (value) {
@@ -307,13 +403,13 @@ const RentalOffer = props => {
               }
             },
           );
-
+  
           // Wait for all dropdown data to be fetched and set
           await Promise.all(dropdownDataPromises);
-
+  
           setInputValues(initialValues);
-          if (inputValues['PREVIOUS_ADDRESS']) {
-            setLocation(inputValues['PREVIOUS_ADDRESS']);
+          if (initialValues['PREVIOUS_ADDRESS']) {
+            setLocation(initialValues['PREVIOUS_ADDRESS']);
           }
           console.log('response in edit mode...', JSON.stringify(data));
         } else {
@@ -329,7 +425,7 @@ const RentalOffer = props => {
       setIsLoading(false);
     }
   };
-
+  
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
     const emailPattern =
@@ -1035,11 +1131,15 @@ const RentalOffer = props => {
         P_PARENT_CODE: questionCode,
         P_TYPE: 'OPTION',
       });
-  
+
       console.log('Dropdown data...', res);
       if (res.status === true) {
-        setIsLoading(false); // Move this before return
-        return res.lookup_details; // Return options
+        const dropdownOptions = res?.lookup_details;
+        setDropdownData(prevData => ({
+          ...prevData,
+          [questionCode]: dropdownOptions,
+        }));
+        return dropdownOptions; // Return the fetched options
       } else {
         console.error(
           'Error: Unable to fetch dropdown data',
@@ -1054,10 +1154,9 @@ const RentalOffer = props => {
       setIsLoading(false);
       return [];
     } finally {
-      setIsLoading(false); // Ensure loader is stopped in the end
+      setIsLoading(false);
     }
   };
-  
 
   const QuesHeadingRender = ({item}) => {
     return (
@@ -1103,7 +1202,7 @@ const RentalOffer = props => {
     const jsonData = [];
     console.log('quesHeading:', quesHeading);
     console.log('subChildren:', subChildren);
-  
+
     // Create a mapping of questionCode to id from quesHeading and subChildren
     const questionCodeToId = {};
     quesHeading.forEach(parentQuestion => {
@@ -1114,10 +1213,10 @@ const RentalOffer = props => {
     subChildren.forEach(subChild => {
       questionCodeToId[subChild.tqm_Question_code] = subChild.id;
     });
-  
+
     // Use a Set to track processed question codes to prevent duplicates
     const processedQuestionCodes = new Set();
-  
+
     // Process main questions
     quesHeading.forEach(parentQuestion => {
       parentQuestion.children.forEach(childQuestion => {
@@ -1125,6 +1224,7 @@ const RentalOffer = props => {
         if (
           questionValue !== undefined &&
           questionValue !== null &&
+          questionValue !== '' && // Check if value is not empty
           !processedQuestionCodes.has(childQuestion.tqm_Question_code)
         ) {
           jsonData.push({
@@ -1139,7 +1239,6 @@ const RentalOffer = props => {
         }
       });
     });
-  
     // Add Yes/No button values to jsonData
     const yesNoButtonValues = {
       EARN_INCOME: selectedButton, // EARN_INCOME question code
@@ -1147,7 +1246,7 @@ const RentalOffer = props => {
       EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
       ANY_PETS: selectedPetsButton, // ANY_PETS question code
     };
-  
+
     Object.keys(yesNoButtonValues).forEach(questionCode => {
       const questionId = questionCodeToId[questionCode];
       const isYesSelected = yesNoButtonValues[questionCode];
@@ -1167,7 +1266,7 @@ const RentalOffer = props => {
         processedQuestionCodes.add(questionCode);
       }
     });
-  
+
     // Add smoking button value to jsonData
     const smokingQuestionId = questionCodeToId['S/NS']; // S/NS question code for smoking
     const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
@@ -1185,7 +1284,7 @@ const RentalOffer = props => {
       });
       processedQuestionCodes.add('S/NS');
     }
-  
+
     // Add 'Number of pets' value to jsonData
     console.log('petsSubChildren:', petsSubChildren);
     const numberOfPetsQuestion = petsSubChildren.find(
@@ -1215,12 +1314,12 @@ const RentalOffer = props => {
       });
       processedQuestionCodes.add('NUMBER_OF_PETS');
     }
-  
+
     // Add location data if available
     const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS']; // PREVIOUS_ADDRESS question code
     if (locationQuestionId !== undefined && location) {
       const existingLocationIndex = jsonData.findIndex(
-        item => item.question_id === locationQuestionId
+        item => item.question_id === locationQuestionId,
       );
       if (existingLocationIndex !== -1) {
         // Update existing location value
@@ -1242,13 +1341,13 @@ const RentalOffer = props => {
       }
       processedQuestionCodes.add('PREVIOUS_ADDRESS');
     }
-  
+
     // Group occupants by their question_id
     const occupantGroups = groupBy(occupants, 'questionId');
     console.log('occupantGroups...', occupantGroups);
     // Add grouped occupants data to jsonData
     addGroupedDataToJsonData(jsonData, occupantGroups);
-  
+
     // Group leaseholders by their question_id
     const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
     console.log('leaseHolderGroups...', leaseHolderGroups);
@@ -1260,16 +1359,15 @@ const RentalOffer = props => {
       'leaseEmailAddress',
       'leaseConfirmEmailAddress',
     );
-  
+
     const finalJson = {
       json_data: jsonData,
     };
-  
+
     console.log('Final JSON:', JSON.stringify(finalJson));
     saveAllJson(finalJson);
     resetDynamicFields();
   };
-  
 
   const resetDynamicFields = () => {
     Object.keys(inputValues).forEach(key => {
@@ -1769,7 +1867,7 @@ const RentalOffer = props => {
               selectedTextStyle={RentalOfferStyle.selectedTextStyle}
               inputSearchStyle={RentalOfferStyle.inputSearchStyle}
               iconStyle={RentalOfferStyle.iconStyle}
-              data={dropdownData[question.tqm_Question_code]}
+              data={dropdownData[question.tqm_Question_code] || []}
               labelField="lookup_description"
               valueField="lookup_key"
               searchPlaceholder="Search..."

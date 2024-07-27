@@ -332,7 +332,7 @@ export default SearchResult = props => {
         </View>
       </View>
       <View style={{flex: 1}}>
-        {searchRentalResponse?.data && searchRentalResponse.data.length > 0 ? (
+        {searchRentalResponse?.data && searchRentalResponse?.data?.length > 0 ? (
           <FlatList
             data={searchRentalResponse.data}
             keyExtractor={(item, index) => `item_${index}`}

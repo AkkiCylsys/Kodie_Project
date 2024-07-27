@@ -96,7 +96,7 @@ export const RentalOfferStyle = StyleSheet.create({
     marginTop: 15,
   },
   propery_det: {
-    fontSize: 12,
+    fontSize: 15,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
   },
