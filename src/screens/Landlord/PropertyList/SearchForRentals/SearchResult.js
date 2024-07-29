@@ -35,6 +35,7 @@ export default SearchResult = props => {
   const [searchRentalData, setSearchRentalData] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [rentalAmount, setRentalAmount] = useState('');
+  const [bibId, setBidId] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const keyFeatureMapping = {};
   additionalfeatureskey.forEach(detail => {
@@ -178,6 +179,7 @@ export default SearchResult = props => {
                 refRBSheet.current.open();
                 setPropertyId(item?.property_id);
                 setRentalAmount(item?.rental_amount);
+                setBidId(item?.bid_id);
               }}>
               <Entypo
                 color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -332,7 +334,8 @@ export default SearchResult = props => {
         </View>
       </View>
       <View style={{flex: 1}}>
-        {searchRentalResponse?.data && searchRentalResponse?.data?.length > 0 ? (
+        {searchRentalResponse?.data &&
+        searchRentalResponse?.data?.length > 0 ? (
           <FlatList
             data={searchRentalResponse.data}
             keyExtractor={(item, index) => `item_${index}`}
@@ -377,6 +380,7 @@ export default SearchResult = props => {
           onClose={onClose}
           propertyId={propertyId}
           rentalAmount={rentalAmount}
+          bibId={bibId}
         />
       </RBSheet>
       {/* </ScrollView> */}

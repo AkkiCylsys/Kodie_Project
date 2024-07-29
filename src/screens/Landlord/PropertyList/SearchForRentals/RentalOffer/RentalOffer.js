@@ -50,7 +50,9 @@ const RentalOffer = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('loginresponse_Rental offer..', loginData?.Login_details);
   const propertyId = props?.route?.params?.propertyId;
+  const bibId = props?.route?.params?.bibId;
   console.log('propertyId..', propertyId);
+  console.log('bibId in rental..', bibId);
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -245,143 +247,72 @@ const RentalOffer = props => {
     setLocation(text);
     handleInputChange('PREVIOUS_ADDRESS', text);
   };
-  // const getEditAllQuestion = async () => {
-  //   const url = Config.BASE_URL;
-  //   const Ques_url = url + 'question_details_for_tenant_ques';
-  //   console.log('Request URL:', Ques_url);
-  //   setIsLoading(true);
-
-  //   const QuesData = {
-  //     p_account_id: loginData?.Login_details?.user_account_id,
-  //     p_property_id: propertyId,
-  //   };
-
-  //   try {
-  //     const response = await axios.post(Ques_url, QuesData);
-  //     console.log('Response edit question..', response?.data);
-
-  //     if (response?.data?.success === true) {
-  //       const data = response?.data?.data?.[0]?.parent_json;
-
-  //       if (Array.isArray(data)) {
-  //         const initialValues = {};
-  //         const dropdownQuestions = [];
-
-  //         data.forEach(parentQuestion => {
-  //           if (Array.isArray(parentQuestion.children)) {
-  //             parentQuestion.children.forEach(childQuestion => {
-  //               if (childQuestion.tqm_Question_type === 'Dropdown') {
-  //                 dropdownQuestions.push(childQuestion.tqm_Question_code);
-  //               }
-
-  //               if (
-  //                 childQuestion.tqm_Question_value !== undefined &&
-  //                 childQuestion.tqm_Question_value !== null
-  //               ) {
-  //                 initialValues[childQuestion.tqm_Question_code] =
-  //                   childQuestion.tqm_Question_value;
-  //               }
-  //             });
-  //           }
-  //         });
-
-  //         // Fetch dropdown data and set initial values
-  //         const dropdownDataPromises = dropdownQuestions.map(
-  //           async questionCode => {
-  //             const options = await handleDropdown(questionCode);
-  //             setDropdownData(prevData => ({
-  //               ...prevData,
-  //               [questionCode]: options,
-  //             }));
-
-  //             // Convert initialValues to match dropdown options format
-  //             const value = initialValues[questionCode];
-  //             if (value) {
-  //               const selectedOption = options.find(
-  //                 option => String(option.lookup_key) === String(value),
-  //               );
-  //               if (selectedOption) {
-  //                 initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
-  //               }
-  //             }
-  //           },
-  //         );
-
-  //         // Wait for all dropdown data to be fetched and set
-  //         await Promise.all(dropdownDataPromises);
-
-  //         setInputValues(initialValues);
-  //         if (initialValues['PREVIOUS_ADDRESS']) {
-  //           setLocation(initialValues['PREVIOUS_ADDRESS']);
-  //         }
-  //         console.log('response in edit mode...', JSON.stringify(data));
-  //       } else {
-  //         console.error(
-  //           'Invalid data structure: parent_json is not an array',
-  //           data,
-  //         );
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('API failed EdittenantQues', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
     const Ques_url = url + 'question_details_for_tenant_ques';
     console.log('Request URL:', Ques_url);
     setIsLoading(true);
-  
+
     const QuesData = {
       p_account_id: loginData?.Login_details?.user_account_id,
       p_property_id: propertyId,
     };
-  
+
     try {
       const response = await axios.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
-  
+
       if (response?.data?.success === true) {
         const data = response?.data?.data?.[0]?.parent_json;
-  
+
         if (Array.isArray(data)) {
           const initialValues = {};
           const dropdownQuestions = [];
-  
+
           data.forEach(parentQuestion => {
             if (Array.isArray(parentQuestion.children)) {
               parentQuestion.children.forEach(childQuestion => {
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
                 }
-  
+
                 if (
                   childQuestion.tqm_Question_value !== undefined &&
                   childQuestion.tqm_Question_value !== null
                 ) {
                   initialValues[childQuestion.tqm_Question_code] =
                     childQuestion.tqm_Question_value;
-  
+
                   // Set the initial state for Yes/No and Smoking buttons
                   if (childQuestion.tqm_Question_code === 'EARN_INCOME') {
                     setSelectedButton(childQuestion.tqm_Question_value === 1);
-                  } else if (childQuestion.tqm_Question_code === 'EVER_BROKEN') {
-                    setSelectedRentalBondButton(childQuestion.tqm_Question_value === 1);
-                  } else if (childQuestion.tqm_Question_code === 'EVICTED_PREVIOUS_BOND') {
-                    setSelectedPreviousRentalButton(childQuestion.tqm_Question_value === 1);
+                  } else if (
+                    childQuestion.tqm_Question_code === 'EVER_BROKEN'
+                  ) {
+                    setSelectedRentalBondButton(
+                      childQuestion.tqm_Question_value === 1,
+                    );
+                  } else if (
+                    childQuestion.tqm_Question_code === 'EVICTED_PREVIOUS_BOND'
+                  ) {
+                    setSelectedPreviousRentalButton(
+                      childQuestion.tqm_Question_value === 1,
+                    );
                   } else if (childQuestion.tqm_Question_code === 'ANY_PETS') {
-                    setSelectedPetsButton(childQuestion.tqm_Question_value === 1);
+                    setSelectedPetsButton(
+                      childQuestion.tqm_Question_value === 1,
+                    );
                   } else if (childQuestion.tqm_Question_code === 'S/NS') {
-                    setSelectedSomokingButton(childQuestion.tqm_Question_value === 0); // Assuming 0 means Smoking and 1 means Non-smoking
+                    setSelectedSomokingButton(
+                      childQuestion.tqm_Question_value === 0,
+                    ); // Assuming 0 means Smoking and 1 means Non-smoking
                   }
                 }
               });
             }
           });
-  
+
           // Fetch dropdown data and set initial values
           const dropdownDataPromises = dropdownQuestions.map(
             async questionCode => {
@@ -390,7 +321,7 @@ const RentalOffer = props => {
                 ...prevData,
                 [questionCode]: options,
               }));
-  
+
               // Convert initialValues to match dropdown options format
               const value = initialValues[questionCode];
               if (value) {
@@ -403,10 +334,10 @@ const RentalOffer = props => {
               }
             },
           );
-  
+
           // Wait for all dropdown data to be fetched and set
           await Promise.all(dropdownDataPromises);
-  
+
           setInputValues(initialValues);
           if (initialValues['PREVIOUS_ADDRESS']) {
             setLocation(initialValues['PREVIOUS_ADDRESS']);
@@ -425,7 +356,7 @@ const RentalOffer = props => {
       setIsLoading(false);
     }
   };
-  
+
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
     const emailPattern =
@@ -1366,6 +1297,7 @@ const RentalOffer = props => {
 
     console.log('Final JSON:', JSON.stringify(finalJson));
     saveAllJson(finalJson);
+    saveBiddingDetails();
     resetDynamicFields();
   };
 
@@ -1393,7 +1325,7 @@ const RentalOffer = props => {
     const saveJsonData = {
       p_property_id: propertyId,
       p_account_id: loginData?.Login_details?.user_account_id,
-      p_bid_id: 0,
+      p_bid_id: bibId,
       json_data: finalJson.json_data, // Ensure json_data is not stringified here
     };
 
@@ -1414,6 +1346,48 @@ const RentalOffer = props => {
       })
       .catch(error => {
         console.error('API failed save Json', error);
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const saveBiddingDetails = () => {
+    const url = Config.BASE_URL;
+    const saveBiddingDetails_url = `${url}save_bidding_details`;
+    console.log('Request URL:', saveBiddingDetails_url);
+    setIsLoading(true);
+
+    const saveBiddingDetailsData = new FormData();
+    saveBiddingDetailsData.append('bid_id', bibId);
+    saveBiddingDetailsData.append(
+      'account_id',
+      loginData?.Login_details?.user_account_id,
+    );
+    saveBiddingDetailsData.append('property_id', propertyId);
+    saveBiddingDetailsData.append('amount', 1000);
+    saveBiddingDetailsData.append('screening_report');
+
+    console.log('saveBiddingDetails_Data:', saveBiddingDetailsData);
+
+    axios
+      .post(saveBiddingDetails_url, saveBiddingDetailsData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(response => {
+        if (response?.data?.success === true) {
+          console.log(
+            'API Response saveBiddingDetails Data:',
+            JSON.stringify(response?.data),
+          );
+        } else {
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('API failed saveBiddingDetails', error);
         setIsLoading(false);
       })
       .finally(() => {

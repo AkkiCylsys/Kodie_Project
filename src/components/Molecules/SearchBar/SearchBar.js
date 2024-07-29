@@ -86,6 +86,22 @@ const SearchBar = props => {
           />
         </TouchableOpacity>
       ) : null}
+      {props.Filter ? (
+        <TouchableOpacity
+          style={[
+            SearchBarStyle.filterView,
+            {
+              height: props.height,
+              marginTop: props.marginTop ? props.marginTop : 20,
+            },
+          ]}>
+          <FontAwesome
+            name={props?.filter || 'location'}
+            size={28}
+            color={_COLORS.Kodie_MediumGrayColor}
+          />
+        </TouchableOpacity>
+      ) : null}
       {props.updownSearch ? (
         <TouchableOpacity
           style={[

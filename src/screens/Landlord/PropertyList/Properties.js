@@ -16,8 +16,11 @@ import {
   useNavigationState,
 } from '@react-navigation/native';
 import ViewRentalDetails from './SearchForRentals/ViewRentalDetails';
+import PropertyRentalOffer from './PropertyRentalOffer/PropertyRentalOffer';
 
 const Properties = props => {
+  const tab3 = props?.route?.params?.tab3
+  console.log("tab3 in p...",tab3)
   const routesLength = useNavigationState(state => state.routes.length);
 
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -28,6 +31,7 @@ const Properties = props => {
   const [openMap, setOpenMap] = useState(false);
   const navigation = useNavigation();
   useEffect(() => {
+    setActiveTab(tab3 == 'tab3' ? 'Tab3' : 'Tab1');
     <PropertyList />;
   }, []);
   useFocusEffect(
@@ -56,9 +60,7 @@ const Properties = props => {
           <PropertyList
             propertyDetail={() => props.navigation.navigate('PropertyDetails')}
             onEdit={data => {
-              // Access propertyid in onEdit function
               const {propertyid} = data;
-              // alert(propertyid);
               props.navigation.navigate('PropertyDetails', {
                 propertyid: propertyid,
                 editMode: 'editMode',
@@ -66,7 +68,6 @@ const Properties = props => {
             }}
             onInvite={() => {
               navigation.navigate('Invitefriend');
-              // alert("hsdjfh")
             }}
             onPropertyView={propView => {
               const {propertyid} = propView;
@@ -88,36 +89,22 @@ const Properties = props => {
               setOpenMap={handleOpenMap}
               closeMap={openMap}
             />
-            {/* {Alert.alert('Search for rentals', 'Coming soon', [
-              {
-                text: 'OK',
-                onPress: () => {
-                  console.log('OK Pressed');
-                  setActiveTab('Tab1');
-                },
-              },
-            ])} */}
           </>
         );
       case 'Tab3':
         return (
-          <>
-            {Alert.alert('Rental offers', 'Coming soon', [
-              {
-                text: 'OK',
-                onPress: () => {
-                  console.log('OK Pressed');
-                  setActiveTab('Tab1');
-                },
-              },
-            ])}
-          </>
-          // <RantalOffer
-          //   ViewApplication={() => {
-          //     Alert.alert('Coming soon');
-          //     //  props.navigation.navigate("ViewApplication")
-          //   }}
-          // />
+          // <>
+          //   {Alert.alert('Rental offers', 'Coming soon', [
+          //     {
+          //       text: 'OK',
+          //       onPress: () => {
+          //         console.log('OK Pressed');
+          //         setActiveTab('Tab1');
+          //       },
+          //     },
+          //   ])}
+          // </>
+          <PropertyRentalOffer />
         );
 
       default:
