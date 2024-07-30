@@ -27,7 +27,7 @@ import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
 import moment from 'moment';
-const HorizontalData = ["All", "Scheduled", "inProgress", "Complete", "Cancelled"];
+const HorizontalData = ["All", "Scheduled", "In Progress", "Complete", "Cancelled"];
 export default NewInspection = (props) => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
