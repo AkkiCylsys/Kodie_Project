@@ -82,6 +82,7 @@ const Notices = props => {
   // console.log('loginResponse.....', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [noticeRemiderDetails, setNoticeRemiderDetails] = useState([]);
+  const [getNoticeRemiderDetails, setgetNoticeRemiderDetails] = useState([]);
   const [selectedFilter, setSelectedFilter] = useState(['All']);
   const [noticeReminderid, setNoticeReminderid] = useState('');
   const refRBSheet = useRef();
@@ -166,7 +167,39 @@ const Notices = props => {
     //......
     setSelectedDate(day.dateString);
   };
-
+  useEffect(() => {
+    getNoticesReminderDetails();
+  }, []);
+  const getNoticesReminderDetails = () => {
+    const url = Config.BASE_URL;
+    const getNoticesReminderDetails_url = url + 'get_notices_reminder_details';
+    console.log('Request URL:', getNoticesReminderDetails_url);
+    setIsLoading(true);
+    const notification_data = {
+      notices_reminder_id: noticeReminderid,
+    };
+    axios
+      .post(getNoticesReminderDetails_url, notification_data)
+      .then(response => {
+        console.log(
+          'API Response getNoticesReminderDetailsData for duplicate...:',
+          response?.data,
+        );
+        setgetNoticeRemiderDetails(response?.data?.data);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error(
+          'API failed getNoticesReminderDetails_url duplicate',
+          error,
+        );
+        setIsLoading(false);
+        // alert(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   const onClose = () => {
     refRBSheet.current.close();
     
@@ -533,6 +566,7 @@ const Notices = props => {
           noticeReminderid={noticeReminderid}
           FinalDeleteProperty={FinalDeleteProperty}
           selectFile={null}
+          getNoticeRemiderDetails={getNoticeRemiderDetails}
         />
       </RBSheet>
     </SafeAreaView>
