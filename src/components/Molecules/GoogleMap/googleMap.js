@@ -212,7 +212,7 @@ const MapScreen = props => {
         }
       });
     } catch (err) {
-      alert("hjhjh")
+      // alert("hjhjh")
       console.warn(err);
     }
   };
