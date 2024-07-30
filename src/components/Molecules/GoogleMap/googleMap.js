@@ -22,7 +22,7 @@ import Geolocation from '@react-native-community/geolocation';
 import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
-//import RNSettings from 'react-native-settings';
+import RNSettings from 'react-native-settings';
  
 import {useNavigation} from '@react-navigation/native';
 const MapScreen = props => {
