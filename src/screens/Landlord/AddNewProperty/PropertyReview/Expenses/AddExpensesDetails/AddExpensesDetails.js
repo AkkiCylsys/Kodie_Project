@@ -303,11 +303,11 @@ export default AddExpensesDetails = props => {
       supplier: suplier,
       expenses_description: expenseDes,
       note: notes,
-      paid: selectedButtonDepositId ? selectedButtonDepositId : null,
+      paid: selectedButtonDepositId ,
       start_date: selectedPaidDate ? selectedPaidDate : null,
       is_active: 1,
     };
-    console.log(ExpenceData);
+    console.log(ExpenceData,'ExpenceData.......');
     const url = Config.BASE_URL;
     // const ExpenceUrl = url + 'property_expenses_details/create';
     const ExpenceUrl = url + 'create/expenses';

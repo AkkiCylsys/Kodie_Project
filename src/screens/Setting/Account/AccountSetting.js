@@ -23,8 +23,8 @@ const AccountSetting = props => {
         />
         <ScrollView>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate("GeneralSettings")} // navigate To General setting
-            // onPress={handleGeneralSettingsPress}
+            // onPress={() => props.navigation.navigate("GeneralSettings")} // navigate To General setting
+            onPress={handleGeneralSettingsPress}
             >
             <RowTab
               isSecondRowText={true}
