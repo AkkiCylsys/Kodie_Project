@@ -59,14 +59,12 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     borderColor: _COLORS?.Kodie_GrayColor,
   },
   SubContainer: {
-    marginHorizontal: 20,
+    flex:1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   flat_MainView: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
-    width: 130,
   },
   locationText: {
     flex: 1,
@@ -74,13 +72,13 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     color: _COLORS.Kodie_MediumGrayColor,
     marginLeft: 5,
     fontFamily: FONTFAMILY.K_Bold,
-    // borderWidth:1
+    marginTop:5
   },
   apartmentView: {
-    flex: 1,
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginLeft: 15,
+    // marginLeft: 15,
   },
   apartmentText: {
     fontSize: 13,
@@ -99,7 +97,6 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   userImg: {
-    flex: 0.5,
     height: 36,
     width: 36,
     borderRadius: 36 / 2,
@@ -111,7 +108,27 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_BlackColor,
     alignSelf:"center",
-    marginLeft:10
+    marginLeft:5
   },
-  userContainer:{flex: 1, flexDirection: 'row'},
+  userMainCon:{
+    flex: 0.3,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop:5
+
+  },
+  userContainer:{flex: 0.5, flexDirection: 'row',justifyContent:"space-between",alignSelf:"center"},
+  ratting:{
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: 30,
+    paddingHorizontal:15,
+    borderColor: _COLORS.Kodie_GrayColor,
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25, 
+    shadowRadius: 3.84, 
+    elevation: 1, 
+    backgroundColor: 'white', 
+  }
 });

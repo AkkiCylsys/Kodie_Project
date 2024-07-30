@@ -9,6 +9,7 @@ import {_COLORS, IMAGES} from '../../../../../Themes';
 import {addressType} from '../../../../../services/PropertyRentalOfferApi/OfferForMyPropertyApi';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import {Divider} from 'react-native-paper';
+import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 const OfferForMyProperties = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [addressTypeData, setAddressTypeData] = useState([]);
@@ -99,26 +100,36 @@ const OfferForMyProperties = () => {
         />
       </View>
       <DividerIcon />
-      <View style={OfferForMyPropertiesStyle.SubContainer}>
-        <View>
-          <Image
-            source={IMAGES.Bathroom}
-            style={OfferForMyPropertiesStyle.imageStyle}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={OfferForMyPropertiesStyle.apartmentView}>
+      <View style={{marginHorizontal: 20}}>
+        <View style={OfferForMyPropertiesStyle.SubContainer}>
           <View>
-            <Text style={OfferForMyPropertiesStyle.apartmentText}>
-              {'Apartment'}
-            </Text>
-            <Text style={OfferForMyPropertiesStyle.cityText}>
-              {'Melbourne'}
-            </Text>
+            <Image
+              source={IMAGES.Bathroom}
+              style={OfferForMyPropertiesStyle.imageStyle}
+              resizeMode="cover"
+            />
+          </View>
+          <View style={{flex: 1, marginLeft: 20}}>
+            <View style={OfferForMyPropertiesStyle.apartmentView}>
+              <View>
+                <Text style={OfferForMyPropertiesStyle.apartmentText}>
+                  {'Apartment'}
+                </Text>
+                <Text style={OfferForMyPropertiesStyle.cityText}>
+                  {'Melbourne'}
+                </Text>
+              </View>
+              <View style={{alignItems: 'flex-end'}}>
+                <Text style={OfferForMyPropertiesStyle.apartmentText}>
+                  {'Bid amount'}
+                </Text>
+                <Text style={OfferForMyPropertiesStyle.amount}>{'$879'}</Text>
+              </View>
+            </View>
             <View style={OfferForMyPropertiesStyle.flat_MainView}>
               <MaterialCommunityIcons
                 name={'map-marker'}
-                size={12}
+                size={15}
                 color={_COLORS.Kodie_GreenColor}
                 style={{marginTop: 10}}
               />
@@ -126,7 +137,7 @@ const OfferForMyProperties = () => {
                 {'gadarwarabvvhvhjvhjvhjjhvhjvhj'}
               </Text>
             </View>
-            <View style={{}}>
+            <View style={OfferForMyPropertiesStyle.userMainCon}>
               <View style={OfferForMyPropertiesStyle.userContainer}>
                 <Image
                   source={IMAGES.Bathroom}
@@ -137,29 +148,30 @@ const OfferForMyProperties = () => {
                   {'Jenny dio'}
                 </Text>
               </View>
-              <View style={OfferForMyPropertiesStyle.userContainer}>
-                <View>
+              <View style={OfferForMyPropertiesStyle.ratting}>
+                <View style={{alignSelf: 'center', alignItems: 'center'}}>
                   <AntDesign
                     color={_COLORS.Kodie_GreenColor}
                     name={'star'}
                     size={20}
                   />
                 </View>
-                <Text style={OfferForMyPropertiesStyle.userName}>
-                  {'Jenny dio'}
-                </Text>
+                <Text style={OfferForMyPropertiesStyle.userName}>{'4.9'}</Text>
               </View>
             </View>
           </View>
-
-          <View>
-            <Text style={OfferForMyPropertiesStyle.apartmentText}>
-              {'Bid amount'}
-            </Text>
-            <Text style={OfferForMyPropertiesStyle.amount}>{'$879'}</Text>
-          </View>
         </View>
+        <DividerIcon />
+        <CustomSingleButton
+          _ButtonText={'View application'}
+          Text_Color={_COLORS.Kodie_WhiteColor}
+          disabled={isLoading ? true : false}
+          isLeftImage={true}
+          onPress={() => {}}
+          backgroundColor={_COLORS.Kodie_BlackColor}
+        />
       </View>
+      <DividerIcon borderBottomWidth={3}/>
     </SafeAreaView>
   );
 };
