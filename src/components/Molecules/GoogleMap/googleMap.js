@@ -130,32 +130,92 @@ const MapScreen = props => {
  
   const checkpermissionlocation = async () => {
     try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Allow Location Access?',
-          message:" Allow Kodie to access this device's location?",
-        },
+      // Check if permission is already granted
+      const permissionGranted = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
       );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        console.log('You can use the location');
-        // RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
-        //   result => {
-        //     if (result === RNSettings.ENABLED) {
-        //       console.log('location is enabled');
-        //     }
-        //   },
-        // );
-        fetchCurrentLocation();
-      } else {
-        console.log('location permission denied');
-        alert('Location permission denied');
+  
+      if (!permissionGranted) {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+          {
+            title: 'Allow Location Access?',
+            message: "Allow Kodie to access this device's location?",
+          }
+        );
+  
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.log('Location permission denied');
+          alert('Location permission denied');
+          return;
+        }
       }
+  
+      console.log('You can use the location');
+  
+      // Check if location is enabled
+      RNSettings.getSetting(RNSettings.LOCATION_SETTING).then((result) => {
+        if (result === RNSettings.ENABLED) {
+          console.log('Location is enabled');
+          getLOcation();
+        } else {
+          Alert.alert(
+            'Location Alert',
+            "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
+            [
+              {
+                text: 'Cancel',
+                onPress: () => navigation.pop(),
+                style: 'cancel',
+              },
+              {
+                text: 'OK',
+                onPress: () => {
+                  RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
+                    (result) => {
+                      if (result === RNSettings.ENABLED) {
+                        console.log('Location is enabled');
+                        getLOcation();
+                      }
+                      else {
+                        Alert.alert(
+                          'Location Alert',
+                          "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
+                          [
+                            {
+                              text: 'Cancel',
+                              onPress: () => navigation.pop(),
+                              style: 'cancel',
+                            },
+                            {
+                              text: 'OK',
+                              onPress: () => {
+                                RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
+                                  (result) => {
+                                    if (result === RNSettings.ENABLED) {
+                                      console.log('Location is enabled');
+                                      getLOcation();
+                                    }
+                                  }
+                                );
+                              },
+                            },
+                          ]
+                        );
+                      }
+                    }
+                  );
+                },
+              },
+            ]
+          );
+        }
+      });
     } catch (err) {
+      alert("hjhjh")
       console.warn(err);
     }
   };
- 
   const CheckIOSMapPermission = () => {
     request(PERMISSIONS.IOS.LOCATION_ALWAYS)
       .then(result => {
