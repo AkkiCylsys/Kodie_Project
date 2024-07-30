@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -27,7 +27,7 @@ import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
 import moment from 'moment';
-const HorizontalData = ["All", "Scheduled", "inProgress", "Complete", "Cancelled"];
+const HorizontalData = ["All", "Scheduled", "Progress", "Complete", "Cancel"];
 export default NewInspection = (props) => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -45,18 +45,18 @@ export default NewInspection = (props) => {
   );
   const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear());
   const [_MONTHS, set_MONTHS] = useState([
-    {id: 1, name: 'January'},
-    {id: 2, name: 'February'},
-    {id: 3, name: 'March'},
-    {id: 4, name: 'April'},
-    {id: 5, name: 'May'},
-    {id: 6, name: 'June'},
-    {id: 7, name: 'July'},
-    {id: 8, name: 'August'},
-    {id: 9, name: 'September'},
-    {id: 10, name: 'October'},
-    {id: 11, name: 'November'},
-    {id: 12, name: 'December'},
+    { id: 1, name: 'January' },
+    { id: 2, name: 'February' },
+    { id: 3, name: 'March' },
+    { id: 4, name: 'April' },
+    { id: 5, name: 'May' },
+    { id: 6, name: 'June' },
+    { id: 7, name: 'July' },
+    { id: 8, name: 'August' },
+    { id: 9, name: 'September' },
+    { id: 10, name: 'October' },
+    { id: 11, name: 'November' },
+    { id: 12, name: 'December' },
   ]);
   const [InspectionDetails, setInspectionDetails] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -92,10 +92,10 @@ export default NewInspection = (props) => {
     setSearchQuery(query);
     const filtered = query
       ? InspectionDetails.filter(
-          item =>
-            item.location &&
-            item.location.toLowerCase().includes(query.toLowerCase()),
-        )
+        item =>
+          item.location &&
+          item.location.toLowerCase().includes(query.toLowerCase()),
+      )
       : InspectionDetails;
     console.log('filtered.........', filtered);
     setFilteredUsers(filtered);
@@ -122,7 +122,7 @@ export default NewInspection = (props) => {
       };
       console.log(data);
       const response = await axios.post(InspectionDeatilsByFilter_url, data);
-      if (response?.data?.success) {
+      if (response?.data?.success === true) {
         setInspectionDetails(response?.data?.data);
         console.log('Updated inspection details:', response?.data?.data);
       } else {
@@ -130,6 +130,7 @@ export default NewInspection = (props) => {
       }
       setIsLoading(false);
     } catch (error) {
+      console.log(error.response,'dssad');
       if (error.response && error.response.status === 500) {
         Alert.alert(
           'Warning',
@@ -142,7 +143,7 @@ export default NewInspection = (props) => {
       setIsLoading(false);
     }
   };
-  
+
   const getInspectionDetails = () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -166,7 +167,7 @@ export default NewInspection = (props) => {
     console.log('Attempting to delete inspection...');
     const url = Config.BASE_URL;
     const deleteUrl = `${url}delete_inspection_details/${Tim_Key}`;
-  setIsLoading(true)
+    setIsLoading(true)
     try {
       const response = await axios.delete(deleteUrl);
       console.log('Response from delete inspection:', response?.data);
@@ -177,7 +178,7 @@ export default NewInspection = (props) => {
           year: _selectedYear,
           filter: selectedFilter,
         });
-  setIsLoading(false)
+        setIsLoading(false)
 
       } else {
         Alert.alert('Error', 'Failed to delete inspection');
@@ -187,14 +188,14 @@ export default NewInspection = (props) => {
       console.error('Error:', error.response || error.message);
     }
   };
-  
+
 
   const SubmitInspection = async () => {
     // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
-        UPD_KEY:getinspection.v_UPD_KEY,
+        UPD_KEY: getinspection.v_UPD_KEY,
         TIM_INSPECTION_TYPE: getinspection.v_TIM_INSPECTION_TYPE,
         TIM_SCHEDULE_TIME: getinspection.v_TIM_SCHEDULE_TIME,
         TIM_SCHEDULE_DATE: moment(getinspection.v_TIM_SCHEDULE_DATE).format(
@@ -288,7 +289,8 @@ export default NewInspection = (props) => {
     });
   };
 
-  const horizontal_render = ({item}) => {
+  const horizontal_render = ({ item }) => {
+    console.log(item,'itemitemitem');
     return (
       <TouchableOpacity
         style={[
@@ -351,7 +353,7 @@ export default NewInspection = (props) => {
     );
   };
 
-  const Inspection_render = ({item, index}) => {
+  const Inspection_render = ({ item, index }) => {
     const getDate = new Date(item.scheduled_date);
     const dayOfMonth = getDate.getDate(); // Extracts the day of the month
     const daysOfWeek = [
@@ -387,17 +389,17 @@ export default NewInspection = (props) => {
               {item?.scheduled_time}
             </Text>
           </View>
-          <View style={{flex: 0.4}}>
+          <View style={{ flex: 0.4 }}>
             {item.image_path && item.image_path.length > 0 ? (
               <Image
-                source={{uri: item?.image_path[0]}}
+                source={{ uri: item?.image_path[0] }}
                 style={NewInspectionStyle.img_Sty}
               />
             ) : (
               <View
                 style={[
                   NewInspectionStyle.img_Sty,
-                  {justifyContent: 'center'},
+                  { justifyContent: 'center' },
                 ]}>
                 <Text
                   style={{
@@ -411,18 +413,18 @@ export default NewInspection = (props) => {
               </View>
             )}
           </View>
-          <View style={{flex: 1, marginLeft: 2}}>
+          <View style={{ flex: 1, marginLeft: 2 }}>
             <View style={NewInspectionStyle.location_main_view}>
               <Entypo
                 name="location-pin"
                 size={18}
                 color={_COLORS.Kodie_GreenColor}
-                style={{alignSelf: 'center'}}
+                style={{ alignSelf: 'center' }}
               />
               <Text style={NewInspectionStyle.location_text}>
                 {item.location}
               </Text>
-              <View style={{margin: 6}} />
+              <View style={{ margin: 6 }} />
               <TouchableOpacity
                 onPress={() => {
                   setTim_key(item?.tim_key);
@@ -445,10 +447,31 @@ export default NewInspection = (props) => {
                   {item.userName}
                 </Text>
               </View>
-              <TouchableOpacity style={NewInspectionStyle.in_progress_view}>
-                <Text style={NewInspectionStyle.in_progress_txt}>
-                  {'Schedule'}
+              <TouchableOpacity style={[NewInspectionStyle.in_progress_view, {
+                backgroundColor: 
+                item.key === 'Complete' ? _COLORS.Kodie_lightGreenColor
+                  :item.key === 'Scheduled' ? '#E7F1FF'
+                    : item.key === 'Progress' ? _COLORS?.Kodie_LightOrange
+                      : '#FFD9D9'
+
+              }]}>
+                <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                  <View style={{height:7,width:7,borderRadius:7/2,margin:5,backgroundColor: 
+                item.key === 'Complete' ? _COLORS.Kodie_ExtraDarkGreen
+                  :item.key === 'Scheduled' ? '#336FC3'
+                    : item.key === 'Progress' ? _COLORS?.Kodie_DarkOrange
+                      : _COLORS.Kodie_redColor}}/>
+                <Text style={[NewInspectionStyle.in_progress_txt,{color: 
+                item.key === 'Complete' ? _COLORS.Kodie_ExtraDarkGreen
+                  :item.key === 'Scheduled' ? '#336FC3'
+                    : item.key === 'Progress' ? _COLORS?.Kodie_DarkOrange
+                      : _COLORS.Kodie_redColor
+
+              }]}>
+                  {item.key}
                 </Text>
+                </View>
+               
               </TouchableOpacity>
             </View>
           </View>
@@ -532,7 +555,7 @@ export default NewInspection = (props) => {
           renderItem={Inspection_render}
           onEndReached={loadMoreData}
           onEndReachedThreshold={0.5}
-          // ListFooterComponent={isLoading && page > 1 ? <CommonLoader /> : null}
+        // ListFooterComponent={isLoading && page > 1 ? <CommonLoader /> : null}
         />
       </ScrollView>
       <RBSheet

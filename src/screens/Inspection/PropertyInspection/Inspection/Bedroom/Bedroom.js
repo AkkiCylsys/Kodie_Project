@@ -124,7 +124,7 @@ const Bedroom = props => {
       console.log('API Response:', response);
       handleInspectionudateItem();
       handleInspectionuEditItem();
-      getInspectionAreas();
+      // getInspectionAreas();
     } catch (error) {
       Alert.alert('Error', 'Failed to add custom item');
       console.error('Error adding custom item:', error);
@@ -151,8 +151,8 @@ const Bedroom = props => {
       Alert.alert('Success', response?.message);
       console.log('API Response UpdateItem:', response);
       handleInspectionudateItem();
-      handleInspectionuEditItem();
-      getInspectionAreas();
+      // handleInspectionuEditItem();
+      // getInspectionAreas();
     } catch (error) {
       Alert.alert('Error', 'Failed to update custom item');
       console.error('Error update custom item:', error);
