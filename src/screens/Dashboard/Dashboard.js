@@ -84,7 +84,7 @@ const Notice = [
 ];
 
 const data = [
-  {label: 'Bharat', value: '1'},
+  {label: 'India', value: '1'},
   {label: 'Australia', value: '2'},
   {label: 'America', value: '3'},
 ];
@@ -387,7 +387,7 @@ export default Dashboard = props => {
                 <View style={DashboardStyle.chartfooterView}>
                   <View style={DashboardStyle.headerView}>
                     <View style={DashboardStyle.incomeBox} />
-                    <Text style={DashboardStyle.incomeText}>Total Income</Text>
+                    <Text style={DashboardStyle.incomeText}>Total income</Text>
                   </View>
                   <View style={DashboardStyle.headerView}>
                     <View style={DashboardStyle.expBox} />
@@ -421,9 +421,10 @@ export default Dashboard = props => {
                   {'Maintenance status'}
                 </Text>
                 <TouchableOpacity
-                  onPress={() => {
-                    setModalVisible(true);
-                  }}>
+                  // onPress={() => {
+                  //   setModalVisible(true);
+                  // }}
+                  >
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}
@@ -498,9 +499,10 @@ export default Dashboard = props => {
               <View style={DashboardStyle.Notice_view}>
                 <Text style={DashboardStyle.maintenance_Text}>{'Notices'}</Text>
                 <TouchableOpacity
-                  onPress={() => {
-                    refRBSheet.current.open();
-                  }}>
+                  // onPress={() => {
+                  //   refRBSheet.current.open();
+                  // }}
+                  >
                   <Entypo
                     name="dots-three-horizontal"
                     size={20}

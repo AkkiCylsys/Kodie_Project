@@ -100,13 +100,18 @@ const Logrentalpayment = props => {
   };
 
   const handleTotalAmount = text => {
-    setTotalAmount(text);
-    if (text.trim() === '') {
+    if (text === '') {
+      setTotalAmount('');
+    } else if (!text.startsWith('$')) {
+      text = '$' + ' ' + text;
+    } else if (text === '') {
       setTotalAmountError('Total amount is required!');
     } else {
       setTotalAmountError('');
     }
+    setTotalAmount(text);
   };
+  
   const handlePaymentDate = text => {
     setSelectedDate(text);
     if (text.trim() === '') {
@@ -202,6 +207,7 @@ const Logrentalpayment = props => {
       p_PLD_DEPOSIT_METHOD:'',
       p_CREATED_BY:loginData?.Login_details?.user_account_id,
     };
+    console.log(rental_payment_Data,'rental_payment_Data.....')
     axios
       .post(rental_payment_url, rental_payment_Data)
       .then(response => {

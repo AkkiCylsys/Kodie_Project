@@ -143,7 +143,7 @@ const DeshboardNotice = props => {
 
                 <TouchableWithoutFeedback onPress={handletextPress}>
                   <Text style={[DeshBoardNoticeCss.continueText]}>
-                    {'Tap to continue'}
+                    {'Tap to continue.'}
                   </Text>
                 </TouchableWithoutFeedback>
               </Text>
@@ -152,7 +152,7 @@ const DeshboardNotice = props => {
           <View style={DeshBoardNoticeCss.spaceLine} />
           <View style={DeshBoardNoticeCss.trialView}>
             <Text style={DeshBoardNoticeCss.trialText}>
-              Your free trial ends in {profileDay} days.
+              Your free trial ends in {profileDay} 30 days.
             </Text>
             {props.ShowUpgradeButton ? (
               <TouchableOpacity
