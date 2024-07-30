@@ -18,9 +18,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import {getCurrentOffer} from '../../../../services/PropertyRentalOfferApi/PropertyRentalOfferApi';
 import {useEffect} from 'react';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import OfferForMyProperties from './OfferForMyProperties/OfferForMyProperties';
 const PropertyRentalOffer = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedButton, setSelectedButton] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonBid, setSelectedButtonBid] = useState(false);
   const [isExpanded, setIsExpanded] = useState([]);
   const [saveCurrentOffer, setSaveCurrentOffer] = useState(false);
@@ -316,6 +317,7 @@ const PropertyRentalOffer = () => {
             }
             onPressLeftButton={() => {
               setSelectedButton(false);
+              // alert(selectedButton)
             }}
             RightButtonText={'My current offers'}
             RightButtonbackgroundColor={
@@ -351,41 +353,47 @@ const PropertyRentalOffer = () => {
         />
         <DividerIcon />
         <View style={PropertyRentalOfferStyle.subContainer}>
-          <View
-            style={[
-              PropertyRentalOfferStyle.flat_MainView,
-              {alignSelf: 'center', marginBottom: 10},
-            ]}>
-            <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
-              <Text style={PropertyRentalOfferStyle.bidsButtonText}>
-                Accepting bids
-              </Text>
-            </TouchableOpacity>
-            <Text style={PropertyRentalOfferStyle.biddingText}>
-              Bidding closes in:
-            </Text>
-            <View style={PropertyRentalOfferStyle.daysViewStl}>
+          {!selectedButton ? null : (
+            <View
+              style={[
+                PropertyRentalOfferStyle.flat_MainView,
+                {alignSelf: 'center', marginBottom: 10},
+              ]}>
+              <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
+                <Text style={PropertyRentalOfferStyle.bidsButtonText}>
+                  Accepting bids
+                </Text>
+              </TouchableOpacity>
               <Text style={PropertyRentalOfferStyle.biddingText}>
-                {'o days'}
+                Bidding closes in:
               </Text>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'o days'}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'6 hrs'}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'10 mins'}
+                </Text>
+              </View>
             </View>
-            <View style={PropertyRentalOfferStyle.daysViewStl}>
-              <Text style={PropertyRentalOfferStyle.biddingText}>
-                {'6 hrs'}
-              </Text>
-            </View>
-            <View style={PropertyRentalOfferStyle.daysViewStl}>
-              <Text style={PropertyRentalOfferStyle.biddingText}>
-                {'10 mins'}
-              </Text>
-            </View>
-          </View>
+          )}
 
-          <FlatList
-            data={saveCurrentOffer}
-            keyExtractor={item => item.property_id}
-            renderItem={currentOffer_render}
-          />
+          {selectedButton ? (
+            <FlatList
+              data={saveCurrentOffer}
+              keyExtractor={item => item.property_id.toString()}
+              renderItem={currentOffer_render}
+            />
+          ) : (
+            <OfferForMyProperties/>
+          )}
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
