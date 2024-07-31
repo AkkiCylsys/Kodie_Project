@@ -13,3 +13,16 @@ export const addressType = async addressData => {
     console.log('error in addressType ..', error);
   }
 };
+
+export const offerForMyProperty = async (offerPropertyData) => {
+  try {
+    const url = Config.BASE_URL;
+    const offerForMyPropertyUrl = url + 'offer_for_my_property_by_account_id';
+    console.log('offerForMyProperty url ...', offerForMyPropertyUrl);
+    const response = await axios.post(offerForMyPropertyUrl, offerPropertyData);
+    return response?.data;
+  } catch (error) {
+    console.log('error in offerForMyProperty ..', error);
+    throw error;  // Rethrow the error for higher-level handling
+  }
+};

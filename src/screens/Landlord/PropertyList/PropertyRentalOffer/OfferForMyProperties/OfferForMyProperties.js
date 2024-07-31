@@ -1,37 +1,78 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, Image} from 'react-native';
+import {View, Text, SafeAreaView, Image, FlatList} from 'react-native';
 import {OfferForMyPropertiesStyle} from './OfferForMyPropertiesStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {Dropdown} from 'react-native-element-dropdown';
 import {_COLORS, IMAGES} from '../../../../../Themes';
-import {addressType} from '../../../../../services/PropertyRentalOfferApi/OfferForMyPropertyApi';
+import {
+  addressType,
+  offerForMyProperty,
+} from '../../../../../services/PropertyRentalOfferApi/OfferForMyPropertyApi';
 import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
-import {Divider} from 'react-native-paper';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
+import {useSelector} from 'react-redux';
+import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { useNavigation } from '@react-navigation/native';
+
 const OfferForMyProperties = () => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  const navigation = useNavigation()
   const [isLoading, setIsLoading] = useState(false);
   const [addressTypeData, setAddressTypeData] = useState([]);
   const [addressTypeValue, setAddressTypeValue] = useState({});
+  const [offerPropertyData, setOfferPropertyData] = useState({});
 
   useEffect(() => {
     handleAddressType();
+    handleOfferForProperty();
   }, []);
-  // Api intrigation...
+
   const handleAddressType = async () => {
+    setIsLoading(true);
     const addressData = {
-      account_id: 730,
+      account_id: loginData?.Login_details?.user_account_id,
     };
     try {
       const response = await addressType(addressData);
       console.log('response in addressData..', response);
       if (response?.success === true) {
-        setAddressTypeData(response?.property_details);
-        console.log('response?.data..', response?.property_details);
+        const propertyDetails = response?.property_details || [];
+        const updatedPropertyDetails = [
+          {latitude: 'All', location: 'All'},
+          ...propertyDetails,
+        ];
+        setAddressTypeData(updatedPropertyDetails);
+        console.log('updatedPropertyDetails:', updatedPropertyDetails);
+        setIsLoading(false);
       }
     } catch (error) {
-      console.error('Error fetching addressDatar:', error);
+      console.error('Error fetching addressData:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleOfferForProperty = async () => {
+    setIsLoading(true);
+    const offerPropertyData = {
+      Filter: addressTypeValue?.latitude ? 'AllData' : 'All',
+      account_id: loginData?.Login_details?.user_account_id,
+      property_id: addressTypeValue?.property_id
+        ? addressTypeValue?.property_id
+        : 0,
+      limit: '10',
+    };
+    try {
+      console.log('payload ..', offerPropertyData);
+      const response = await offerForMyProperty(offerPropertyData);
+      console.log('response in offerForMyProperty..', response?.data);
+      setOfferPropertyData(response?.data || []);
+      setIsLoading(true);
+    } catch (error) {
+      console.error('Error fetching OfferForProperty:', error);
     } finally {
       setIsLoading(false);
     }
@@ -66,41 +107,9 @@ const OfferForMyProperties = () => {
       </View>
     );
   };
-
-  return (
-    <SafeAreaView style={OfferForMyPropertiesStyle.mainContainer}>
-      <View style={{marginHorizontal: 16}}>
-        <Text style={OfferForMyPropertiesStyle.selectPropertyText}>
-          {'Select property:'}
-        </Text>
-        <Dropdown
-          style={OfferForMyPropertiesStyle.dropdown}
-          placeholderStyle={[
-            OfferForMyPropertiesStyle.placeholderStyle,
-            {color: _COLORS.Kodie_LightGrayColor},
-          ]}
-          selectedTextStyle={OfferForMyPropertiesStyle.selectedTextStyle}
-          inputSearchStyle={OfferForMyPropertiesStyle.inputSearchStyle}
-          iconStyle={OfferForMyPropertiesStyle.iconStyle}
-          data={addressTypeData || []}
-          maxHeight={300}
-          labelField="location"
-          valueField="longitude"
-          placeholder="Select property type"
-          value={addressTypeValue}
-          onChange={item => {
-            setAddressTypeValue({
-              latitude: item.latitude,
-              longitude: item.longitude,
-              location: item.location,
-              property_id: item?.property_id,
-            });
-          }}
-          renderItem={property_render}
-        />
-      </View>
-      <DividerIcon />
-      <View style={{marginHorizontal: 20}}>
+  const offerPropertyRender = ({item, index}) => {
+    return (
+      <View key={index} style={{marginHorizontal: 20, marginVertical: 10}}>
         <View style={OfferForMyPropertiesStyle.SubContainer}>
           <View>
             <Image
@@ -113,17 +122,20 @@ const OfferForMyProperties = () => {
             <View style={OfferForMyPropertiesStyle.apartmentView}>
               <View>
                 <Text style={OfferForMyPropertiesStyle.apartmentText}>
-                  {'Apartment'}
+                  {item?.property_type}
                 </Text>
                 <Text style={OfferForMyPropertiesStyle.cityText}>
-                  {'Melbourne'}
+                  {item?.city}
                 </Text>
               </View>
               <View style={{alignItems: 'flex-end'}}>
                 <Text style={OfferForMyPropertiesStyle.apartmentText}>
                   {'Bid amount'}
                 </Text>
-                <Text style={OfferForMyPropertiesStyle.amount}>{'$879'}</Text>
+                <Text
+                  style={
+                    OfferForMyPropertiesStyle.amount
+                  }>{`$${item?.offer_amount || ""}`}</Text>
               </View>
             </View>
             <View style={OfferForMyPropertiesStyle.flat_MainView}>
@@ -134,44 +146,111 @@ const OfferForMyProperties = () => {
                 style={{marginTop: 10}}
               />
               <Text style={OfferForMyPropertiesStyle.locationText}>
-                {'gadarwarabvvhvhjvhjvhjjhvhjvhj'}
+                {item?.location}
               </Text>
             </View>
-            <View style={OfferForMyPropertiesStyle.userMainCon}>
-              <View style={OfferForMyPropertiesStyle.userContainer}>
-                <Image
-                  source={IMAGES.Bathroom}
-                  style={OfferForMyPropertiesStyle.userImg}
-                  resizeMode="cover"
-                />
-                <Text style={OfferForMyPropertiesStyle.userName}>
-                  {'Jenny dio'}
-                </Text>
-              </View>
-              <View style={OfferForMyPropertiesStyle.ratting}>
-                <View style={{alignSelf: 'center', alignItems: 'center'}}>
-                  <AntDesign
-                    color={_COLORS.Kodie_GreenColor}
-                    name={'star'}
-                    size={20}
-                  />
+            {item.account_details?.map((detail, index) => (
+              <View key={index}>
+                {/* Render each account detail - Customize as needed */}
+                <View style={OfferForMyPropertiesStyle.userMainCon}>
+                  <View style={OfferForMyPropertiesStyle.userContainer}>
+                    {Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
+                    detail.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
+                      <Image
+                        source={{uri: detail.UAD_PROFILE_PHOTO_PATH[0]}}
+                        style={OfferForMyPropertiesStyle.userImg}
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <EvilIcons
+                        color={_COLORS.Kodie_GrayColor}
+                        name={'user'}
+                        size={50}
+                      />
+                    )}
+
+                    <Text style={OfferForMyPropertiesStyle.userName}>
+                      {detail?.UAD_FIRST_NAME}
+                    </Text>
+                  </View>
+                  <View style={OfferForMyPropertiesStyle.ratting}>
+                    <View style={{alignSelf: 'center', alignItems: 'center'}}>
+                      <AntDesign
+                        color={_COLORS.Kodie_GreenColor}
+                        name={'star'}
+                        size={20}
+                      />
+                    </View>
+                    <Text style={OfferForMyPropertiesStyle.rattingText}>
+                      {'4.9'}
+                    </Text>
+                  </View>
                 </View>
-                <Text style={OfferForMyPropertiesStyle.userName}>{'4.9'}</Text>
               </View>
-            </View>
+            ))}
           </View>
         </View>
         <DividerIcon />
         <CustomSingleButton
           _ButtonText={'View application'}
           Text_Color={_COLORS.Kodie_WhiteColor}
-          disabled={isLoading ? true : false}
+          disabled={isLoading}
           isLeftImage={true}
-          onPress={() => {}}
+          onPress={() => {
+            navigation.navigate("PropertyViewApplication")
+          }}
           backgroundColor={_COLORS.Kodie_BlackColor}
         />
       </View>
-      <DividerIcon borderBottomWidth={3}/>
+    );
+  };
+  return (
+    <SafeAreaView style={OfferForMyPropertiesStyle.mainContainer}>
+      <View style={{marginHorizontal: 16}}>
+        <Text style={OfferForMyPropertiesStyle.selectPropertyText}>
+          {'Select property:'}
+        </Text>
+        <Dropdown
+          style={OfferForMyPropertiesStyle.dropdown}
+          placeholderStyle={[
+            OfferForMyPropertiesStyle.placeholderStyle,
+            { color: _COLORS.Kodie_LightGrayColor },
+          ]}
+          selectedTextStyle={OfferForMyPropertiesStyle.selectedTextStyle}
+          inputSearchStyle={OfferForMyPropertiesStyle.inputSearchStyle}
+          iconStyle={OfferForMyPropertiesStyle.iconStyle}
+          data={addressTypeData || []}
+          maxHeight={300}
+          labelField="location"
+          valueField="longitude"
+          placeholder="Select property type"
+          value={addressTypeValue}
+          search // Enable search functionality
+          searchPlaceholder="Search..."
+          onChange={item => {
+            setAddressTypeValue({
+              latitude: item.latitude,
+              longitude: item.longitude,
+              location: item.location,
+              property_id: item?.property_id,
+            });
+            handleOfferForProperty(); // Update the list when a new property type is selected
+          }}
+          onFocus={() => {
+            handleOfferForProperty();
+          }}
+          renderItem={property_render}
+        />
+      </View>
+      <DividerIcon />
+
+      <FlatList
+        data={offerPropertyData}
+        keyExtractor={item => item.property_type_id}
+        renderItem={offerPropertyRender}
+      />
+      <DividerIcon borderBottomWidth={3} />
+      {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );
 };

@@ -141,6 +141,7 @@ import ViewRentalDetails from '../../screens/Landlord/PropertyList/SearchForRent
 import RentalOffer from '../../screens/Landlord/PropertyList/SearchForRentals/RentalOffer/RentalOffer';
 import AddNotices from '../../screens/NotiesList/AddNewNotice/AddNotices';
 import PropertyRentalOffer from '../../screens/Landlord/PropertyList/PropertyRentalOffer/PropertyRentalOffer';
+import PropertyViewApplication from '../../screens/Landlord/PropertyList/PropertyRentalOffer/PropertyViewApplication/PropertyViewApplication';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1077,6 +1078,11 @@ const AllStackRouts = props => {
          <Stack.Screen
           name={'PropertyRentalOffer'}
           component={PropertyRentalOffer}
+          options={{headerShown: false}}
+        />
+         <Stack.Screen
+          name={'PropertyViewApplication'}
+          component={PropertyViewApplication}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

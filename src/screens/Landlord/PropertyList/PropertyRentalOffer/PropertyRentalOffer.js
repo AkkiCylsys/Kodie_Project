@@ -19,7 +19,13 @@ import {getCurrentOffer} from '../../../../services/PropertyRentalOfferApi/Prope
 import {useEffect} from 'react';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import OfferForMyProperties from './OfferForMyProperties/OfferForMyProperties';
+import {useSelector} from 'react-redux';
 const PropertyRentalOffer = () => {
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log(
+    'login response property rental offer..',
+    loginData?.Login_details,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonBid, setSelectedButtonBid] = useState(false);
@@ -30,6 +36,7 @@ const PropertyRentalOffer = () => {
     setIsLoading(true);
     const current_Data = {
       account_id: 724,
+      // account_id: loginData?.Login_details?.user_account_id,
       limit: 10,
     };
 
@@ -296,7 +303,6 @@ const PropertyRentalOffer = () => {
   };
   return (
     <SafeAreaView style={PropertyRentalOfferStyle.mainContainer}>
-      <ScrollView>
         <View style={PropertyRentalOfferStyle.rowButtonView}>
           <RowButtons
             LeftButtonText={'Offers for my properties'}
@@ -352,6 +358,7 @@ const PropertyRentalOffer = () => {
           //   textvalue={searchQuery}
         />
         <DividerIcon />
+      <ScrollView>
         <View style={PropertyRentalOfferStyle.subContainer}>
           {!selectedButton ? null : (
             <View
@@ -392,7 +399,7 @@ const PropertyRentalOffer = () => {
               renderItem={currentOffer_render}
             />
           ) : (
-            <OfferForMyProperties/>
+            <OfferForMyProperties />
           )}
         </View>
       </ScrollView>

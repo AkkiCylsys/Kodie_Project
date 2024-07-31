@@ -58,6 +58,12 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     borderWidth: 1,
     borderColor: _COLORS?.Kodie_GrayColor,
   },
+  Img_found: {
+    fontSize: 12,
+    color: _COLORS?.Kodie_BlackColor,
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
   SubContainer: {
     flex:1,
     flexDirection: 'row',
@@ -104,11 +110,19 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     borderColor: _COLORS?.Kodie_GrayColor,
   },
   userName: {
-    fontSize: 13,
-    fontFamily: FONTFAMILY.K_Regular,
+    fontSize: 11,
+    fontFamily: FONTFAMILY.K_Bold,
     color: _COLORS.Kodie_BlackColor,
     alignSelf:"center",
-    marginLeft:5
+    marginLeft:5,
+    width:80
+  },
+  rattingText:{
+    fontSize: 11,
+    fontFamily: FONTFAMILY.K_Bold,
+    color: _COLORS.Kodie_BlackColor,
+    alignSelf:"center",
+    marginLeft:5,
   },
   userMainCon:{
     flex: 0.3,
