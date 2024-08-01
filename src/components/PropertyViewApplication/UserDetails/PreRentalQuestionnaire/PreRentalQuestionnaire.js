@@ -11,57 +11,42 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
-import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../../../Themes';
-import TopHeader from '../../../../../components/Molecules/Header/Header';
-import {RentalOfferStyle} from './RentalOfferStyle';
-import {_goBack} from '../../../../../services/CommonServices';
+import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../../Themes';
+import TopHeader from '../../../Molecules/Header/Header';
+import {PreRentalQuestionnaireStyle} from './PreRentalQuestionnaireStyle';
+import {_goBack} from '../../../../services/CommonServices';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Octicons from 'react-native-vector-icons/Octicons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
-import CalendarModal from '../../../../../components/Molecules/CalenderModal/CalenderModal';
+import DividerIcon from '../../../Atoms/Devider/DividerIcon';
+import CalendarModal from '../../../Molecules/CalenderModal/CalenderModal';
 import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
-import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
-import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
-// import MultiSelect from 'react-native-multiple-select';
-
-import {Config} from '../../../../../Config';
+import CustomSingleButton from '../../../Atoms/CustomButton/CustomSingleButton';
+import RowButtons from '../../../Molecules/RowButtons/RowButtons';
+import {Config} from '../../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import TenantScreeningReportModal from '../../../../../components/Molecules/TenantScreeningReportModal/TenantScreeningReportModal';
-import ApplicationSubmitModal from '../../../../../components/Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
-import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {SignupLookupDetails} from '../../../../../APIs/AllApi';
-import {resolvePlugin} from '@babel/core';
-import MapScreen from '../../../../../components/Molecules/GoogleMap/googleMap';
+import TenantScreeningReportModal from '../../../Molecules/TenantScreeningReportModal/TenantScreeningReportModal';
+import ApplicationSubmitModal from '../../../Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
+import {CommonLoader} from '../../../Molecules/ActiveLoader/ActiveLoader';
+import {SignupLookupDetails} from '../../../../APIs/AllApi';
+import MapScreen from '../../../Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
-import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
+import SearchPlaces from '../../../Molecules/SearchPlaces/SearchPlaces';
 import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
-
-const DocumentData = [
-  {
-    id: 1,
-    fileName: 'Tenant  screening report.pdf',
-  },
-];
-const RentalOffer = props => {
-  const edit_offer = props?.route?.params?.edit_offer;
-  const propertyDetails = props?.route?.params?.propertyDetails;
-  const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginresponse_Rental offer..', loginData?.Account_details[0]);
-  console.log(
-    'loginresponse image photo..',
-    loginData?.Login_details?.profile_photo_path,
-  );
-  const profile_image = loginData?.Login_details?.profile_photo_path;
-  const loginAccountDetails = loginData?.Account_details[0];
-  const propertyId = props?.route?.params?.propertyId;
+const PreRentalQuestionnaire = props => {
+  //   const loginData = useSelector(state => state.authenticationReducer.data);
+  //   console.log('loginresponse_Rental offer..', loginData?.Login_details);
+  //   const propertyId = props?.route?.params?.propertyId;
+  const {accountId, propertyId} = props;
   const bibId = props?.route?.params?.bibId;
   console.log('propertyId..', propertyId);
   console.log('bibId in rental..', bibId);
+  const [fileKey, setFileKey] = useState(0);
+  const [fileName, setFileName] = useState('');
+  const [filePath, setFilePath] = useState('');
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -243,7 +228,7 @@ const RentalOffer = props => {
   };
   useEffect(() => {
     handleTenantQues();
-    edit_offer == 'edit_offer' ? getEditAllQuestion() : null;
+    getEditAllQuestion();
   }, [question]);
 
   useEffect(() => {
@@ -264,8 +249,9 @@ const RentalOffer = props => {
     setIsLoading(true);
 
     const QuesData = {
-      p_account_id: loginData?.Login_details?.user_account_id,
-      p_property_id: propertyId,
+      p_account_id: accountId,
+      //   p_property_id: propertyId,
+      p_property_id: 1734,
     };
 
     try {
@@ -274,7 +260,7 @@ const RentalOffer = props => {
 
       if (response?.data?.success === true) {
         const data = response?.data?.data?.[0]?.parent_json;
-
+        console.log('Response edit question data..', JSON.stringify(data));
         if (Array.isArray(data)) {
           const initialValues = {};
           const dropdownQuestions = [];
@@ -512,12 +498,12 @@ const RentalOffer = props => {
   // render item
   const renderDataItem = item => {
     return (
-      <View style={[RentalOfferStyle.item]}>
-        <Text style={RentalOfferStyle.selectedTextStyle}>
+      <View style={[PreRentalQuestionnaireStyle.item]}>
+        <Text style={PreRentalQuestionnaireStyle.selectedTextStyle}>
           {item.lookup_description}
         </Text>
         <AntDesign
-          style={RentalOfferStyle.icon}
+          style={PreRentalQuestionnaireStyle.icon}
           color={_COLORS.Kodie_WhiteColor}
           name="check"
           size={20}
@@ -527,10 +513,12 @@ const RentalOffer = props => {
   };
   const addOccupantRender = ({item, index}) => {
     return (
-      <View style={RentalOfferStyle.occupants_item_View}>
+      <View style={PreRentalQuestionnaireStyle.occupants_item_View}>
         <View>
-          <Text style={RentalOfferStyle.occupants_name}>{item?.fullName}</Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_name}>
+            {item?.fullName}
+          </Text>
+          <Text style={PreRentalQuestionnaireStyle.occupants_email}>
             {item?.emailAddress}
           </Text>
         </View>
@@ -569,15 +557,15 @@ const RentalOffer = props => {
   };
   const leaseHolderRender = ({item, index}) => {
     return (
-      <View style={RentalOfferStyle.occupants_item_View}>
+      <View style={PreRentalQuestionnaireStyle.occupants_item_View}>
         <View>
-          <Text style={RentalOfferStyle.occupants_name}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_name}>
             {item?.leaseFullName}
           </Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_email}>
             {item?.leaseEmailAddress}
           </Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_email}>
             {item?.leaseConfirmEmailAddress}
           </Text>
         </View>
@@ -616,12 +604,12 @@ const RentalOffer = props => {
   };
   const addReferencesRender = ({item, index}) => {
     return (
-      <View style={RentalOfferStyle.occupants_item_View}>
+      <View style={PreRentalQuestionnaireStyle.occupants_item_View}>
         <View>
-          <Text style={RentalOfferStyle.occupants_name}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_name}>
             {item?.referenceFullName}
           </Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_email}>
             {item?.referenceEmail}
           </Text>
         </View>
@@ -676,9 +664,9 @@ const RentalOffer = props => {
     const questionId = question28.id;
 
     return (
-      <View style={RentalOfferStyle.AddOccupantMainView}>
+      <View style={PreRentalQuestionnaireStyle.AddOccupantMainView}>
         <TouchableOpacity
-          style={RentalOfferStyle.AddOccupantView}
+          style={PreRentalQuestionnaireStyle.AddOccupantView}
           onPress={() => {
             setToggleOccupants(!toggleOccupants);
           }}>
@@ -687,7 +675,7 @@ const RentalOffer = props => {
             color={_COLORS.Kodie_BlackColor}
             size={25}
           />
-          <Text style={RentalOfferStyle.AddOccupantText}>
+          <Text style={PreRentalQuestionnaireStyle.AddOccupantText}>
             {'Add occupants'}
           </Text>
         </TouchableOpacity>
@@ -698,11 +686,11 @@ const RentalOffer = props => {
           renderItem={addOccupantRender}
         />
         {toggleOccupants && (
-          <View style={RentalOfferStyle.inputView}>
+          <View style={PreRentalQuestionnaireStyle.inputView}>
             <View style={{marginTop: 11}}>
               <Text style={LABEL_STYLES.commontext}>{fullNameLabel}</Text>
               <TextInput
-                style={RentalOfferStyle.input}
+                style={PreRentalQuestionnaireStyle.input}
                 placeholder={'Enter full name'}
                 onChangeText={setFullName}
                 onBlur={() => handleValidFullName(fullName)}
@@ -710,12 +698,14 @@ const RentalOffer = props => {
               />
             </View>
             {fullNameError ? (
-              <Text style={RentalOfferStyle.error_text}>{fullNameError}</Text>
+              <Text style={PreRentalQuestionnaireStyle.error_text}>
+                {fullNameError}
+              </Text>
             ) : null}
-            <View style={RentalOfferStyle.inputView}>
+            <View style={PreRentalQuestionnaireStyle.inputView}>
               <Text style={LABEL_STYLES.commontext}>{emailAddressLabel}</Text>
               <TextInput
-                style={RentalOfferStyle.input}
+                style={PreRentalQuestionnaireStyle.input}
                 placeholder={'Enter email address'}
                 onChangeText={setEmailAddress}
                 onBlur={() => handleValidEmial(emailAddress)}
@@ -724,7 +714,7 @@ const RentalOffer = props => {
               />
             </View>
             {emailAddressError ? (
-              <Text style={RentalOfferStyle.error_text}>
+              <Text style={PreRentalQuestionnaireStyle.error_text}>
                 {emailAddressError}
               </Text>
             ) : null}
@@ -758,9 +748,9 @@ const RentalOffer = props => {
         ?.Confirm_email_address || 'Confirm email address';
 
     return (
-      <View style={RentalOfferStyle.AddOccupantMainView}>
+      <View style={PreRentalQuestionnaireStyle.AddOccupantMainView}>
         <TouchableOpacity
-          style={RentalOfferStyle.AddOccupantView}
+          style={PreRentalQuestionnaireStyle.AddOccupantView}
           onPress={() => {
             setToggleLeaseHolder(!toggleLeaseHolder);
           }}>
@@ -769,13 +759,13 @@ const RentalOffer = props => {
             color={_COLORS.Kodie_BlackColor}
             size={25}
           />
-          <Text style={RentalOfferStyle.AddOccupantText}>
+          <Text style={PreRentalQuestionnaireStyle.AddOccupantText}>
             {'Add leaseholders'}
           </Text>
         </TouchableOpacity>
         <View style={{marginTop: 10}}>
           {toggleLeaseHolder && (
-            <Text style={RentalOfferStyle.AddLeasesubText}>
+            <Text style={PreRentalQuestionnaireStyle.AddLeasesubText}>
               {
                 'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application.'
               }
@@ -788,10 +778,10 @@ const RentalOffer = props => {
           />
           {toggleLeaseHolder && (
             <View>
-              <View style={RentalOfferStyle.inputView}>
+              <View style={PreRentalQuestionnaireStyle.inputView}>
                 <Text style={LABEL_STYLES.commontext}>{fullNameLabel}</Text>
                 <TextInput
-                  style={RentalOfferStyle.input}
+                  style={PreRentalQuestionnaireStyle.input}
                   placeholder={'Enter full name'}
                   onChangeText={setLeaseFullName}
                   value={leaseFullName}
@@ -799,14 +789,14 @@ const RentalOffer = props => {
                 />
               </View>
               {leaseFullNameError ? (
-                <Text style={RentalOfferStyle.error_text}>
+                <Text style={PreRentalQuestionnaireStyle.error_text}>
                   {leaseFullNameError}
                 </Text>
               ) : null}
-              <View style={RentalOfferStyle.inputView}>
+              <View style={PreRentalQuestionnaireStyle.inputView}>
                 <Text style={LABEL_STYLES.commontext}>{emailAddressLabel}</Text>
                 <TextInput
-                  style={RentalOfferStyle.input}
+                  style={PreRentalQuestionnaireStyle.input}
                   placeholder={'Enter email address'}
                   onChangeText={setleaseEmailAddress}
                   value={leaseEmailAddress}
@@ -815,16 +805,16 @@ const RentalOffer = props => {
                 />
               </View>
               {leaseEmailAddressError ? (
-                <Text style={RentalOfferStyle.error_text}>
+                <Text style={PreRentalQuestionnaireStyle.error_text}>
                   {leaseEmailAddressError}
                 </Text>
               ) : null}
-              <View style={RentalOfferStyle.inputView}>
+              <View style={PreRentalQuestionnaireStyle.inputView}>
                 <Text style={LABEL_STYLES.commontext}>
                   {confirmEmailAddressLabel}
                 </Text>
                 <TextInput
-                  style={RentalOfferStyle.input}
+                  style={PreRentalQuestionnaireStyle.input}
                   placeholder={'Confirm email address'}
                   onChangeText={setLeaseConfirmEmailAddress}
                   value={leaseConfirmEmailAddress}
@@ -835,7 +825,7 @@ const RentalOffer = props => {
                 />
               </View>
               {leaseConfirmEmailAddressError ? (
-                <Text style={RentalOfferStyle.error_text}>
+                <Text style={PreRentalQuestionnaireStyle.error_text}>
                   {leaseConfirmEmailAddressError}
                 </Text>
               ) : null}
@@ -855,15 +845,15 @@ const RentalOffer = props => {
   const renderFormSection = section => {
     return (
       <View>
-        <View style={RentalOfferStyle.mainfeaturesview}>
-          <View style={RentalOfferStyle.key_feature_Text_view}>
-            <Text style={RentalOfferStyle.key_feature_Text}>
+        <View style={PreRentalQuestionnaireStyle.mainfeaturesview}>
+          <View style={PreRentalQuestionnaireStyle.key_feature_Text_view}>
+            <Text style={PreRentalQuestionnaireStyle.key_feature_Text}>
               {section?.tqm_Question_description}
             </Text>
           </View>
-          <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+          <TouchableOpacity style={PreRentalQuestionnaireStyle.plus_minusview}>
             <TouchableOpacity
-              style={RentalOfferStyle.menusIconView}
+              style={PreRentalQuestionnaireStyle.menusIconView}
               onPress={
                 section?.tqm_Question_code === 'NOO'
                   ? decreaseNumberOccupants
@@ -875,13 +865,13 @@ const RentalOffer = props => {
                 color={'black'} // Adjust color as needed
               />
             </TouchableOpacity>
-            <Text style={RentalOfferStyle.countdata}>
+            <Text style={PreRentalQuestionnaireStyle.countdata}>
               {section?.tqm_Question_code === 'NOO'
                 ? numberOccupants
                 : numberLeaseHolder}
             </Text>
             <TouchableOpacity
-              style={RentalOfferStyle.menusIconView}
+              style={PreRentalQuestionnaireStyle.menusIconView}
               onPress={
                 section?.tqm_Question_code === 'NOO'
                   ? increaseNumberOccupants
@@ -997,7 +987,7 @@ const RentalOffer = props => {
     console.log('Request URL:', tenantQues_url);
     setIsLoading(true);
     const tenantQuesData = {
-      p_account_id: loginData?.Login_details?.user_account_id,
+      p_account_id: accountId,
       p_property_id: propertyId,
     };
     axios
@@ -1101,12 +1091,12 @@ const RentalOffer = props => {
   const QuesHeadingRender = ({item}) => {
     return (
       <View style={{marginTop: 5}}>
-        <View style={RentalOfferStyle.propety_details_view}>
-          <Text style={RentalOfferStyle.propery_det}>
+        <View style={PreRentalQuestionnaireStyle.propety_details_view}>
+          <Text style={PreRentalQuestionnaireStyle.propery_det}>
             {item?.tqm_Question_description}
           </Text>
           <TouchableOpacity
-            style={RentalOfferStyle.down_Arrow_icon}
+            style={PreRentalQuestionnaireStyle.down_Arrow_icon}
             onPress={() => {
               toggleItem(item?.children);
               console.log('QuestionChildren...', item?.children);
@@ -1137,194 +1127,6 @@ const RentalOffer = props => {
       [questionCode]: value,
     }));
   };
-
-  const handleSubmit = () => {
-    const jsonData = [];
-    console.log('quesHeading:', quesHeading);
-    console.log('subChildren:', subChildren);
-
-    // Create a mapping of questionCode to id from quesHeading and subChildren
-    const questionCodeToId = {};
-    quesHeading.forEach(parentQuestion => {
-      parentQuestion.children.forEach(childQuestion => {
-        questionCodeToId[childQuestion.tqm_Question_code] = childQuestion.id;
-      });
-    });
-    subChildren.forEach(subChild => {
-      questionCodeToId[subChild.tqm_Question_code] = subChild.id;
-    });
-
-    // Use a Set to track processed question codes to prevent duplicates
-    const processedQuestionCodes = new Set();
-
-    // Process main questions
-    quesHeading.forEach(parentQuestion => {
-      parentQuestion.children.forEach(childQuestion => {
-        const questionValue = inputValues[childQuestion.tqm_Question_code];
-        if (
-          questionValue !== undefined &&
-          questionValue !== null &&
-          questionValue !== '' && // Check if value is not empty
-          !processedQuestionCodes.has(childQuestion.tqm_Question_code)
-        ) {
-          jsonData.push({
-            question_id: childQuestion.id,
-            question_value: questionValue,
-            question_reference:
-              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-            question_is_lookup:
-              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-          });
-          processedQuestionCodes.add(childQuestion.tqm_Question_code);
-        }
-      });
-    });
-    // Add Yes/No button values to jsonData
-    const yesNoButtonValues = {
-      EARN_INCOME: selectedButton, // EARN_INCOME question code
-      EVER_BROKEN: selectedRentalBondButton, // EVER_BROKEN question code
-      EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
-      ANY_PETS: selectedPetsButton, // ANY_PETS question code
-    };
-
-    Object.keys(yesNoButtonValues).forEach(questionCode => {
-      const questionId = questionCodeToId[questionCode];
-      const isYesSelected = yesNoButtonValues[questionCode];
-      if (
-        questionId !== undefined &&
-        isYesSelected !== null &&
-        isYesSelected !== undefined &&
-        !processedQuestionCodes.has(questionCode)
-      ) {
-        const value = isYesSelected ? 1 : 0; // 1 for Yes, 0 for No
-        jsonData.push({
-          question_id: questionId,
-          question_value: value,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
-        processedQuestionCodes.add(questionCode);
-      }
-    });
-
-    // Add smoking button value to jsonData
-    const smokingQuestionId = questionCodeToId['S/NS']; // S/NS question code for smoking
-    const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
-    if (
-      smokingQuestionId !== undefined &&
-      smokingValue !== null &&
-      smokingValue !== undefined &&
-      !processedQuestionCodes.has('S/NS')
-    ) {
-      jsonData.push({
-        question_id: smokingQuestionId,
-        question_value: smokingValue,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      processedQuestionCodes.add('S/NS');
-    }
-
-    // Add 'Number of pets' value to jsonData
-    console.log('petsSubChildren:', petsSubChildren);
-    const numberOfPetsQuestion = petsSubChildren.find(
-      subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
-    );
-    console.log('numberOfPetsQuestion:', numberOfPetsQuestion);
-    const petsQuestionId = numberOfPetsQuestion?.id;
-    console.log('petsQuestionId:', petsQuestionId); // Debugging step
-    console.log('numberPets:', numberPets); // Debugging step
-    if (
-      petsQuestionId !== undefined &&
-      numberPets !== null &&
-      numberPets !== undefined &&
-      !processedQuestionCodes.has('NUMBER_OF_PETS')
-    ) {
-      console.log('Adding number of pets to jsonData:', {
-        question_id: petsQuestionId,
-        question_value: numberPets,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      jsonData.push({
-        question_id: petsQuestionId,
-        question_value: numberPets,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      processedQuestionCodes.add('NUMBER_OF_PETS');
-    }
-
-    // Add location data if available
-    const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS']; // PREVIOUS_ADDRESS question code
-    if (locationQuestionId !== undefined && location) {
-      const existingLocationIndex = jsonData.findIndex(
-        item => item.question_id === locationQuestionId,
-      );
-      if (existingLocationIndex !== -1) {
-        // Update existing location value
-        jsonData[existingLocationIndex].question_value = location;
-      } else {
-        // Add new location value
-        console.log('Adding location data:', {
-          question_id: locationQuestionId,
-          question_value: location,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
-        jsonData.push({
-          question_id: locationQuestionId,
-          question_value: location,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
-      }
-      processedQuestionCodes.add('PREVIOUS_ADDRESS');
-    }
-
-    // Group occupants by their question_id
-    const occupantGroups = groupBy(occupants, 'questionId');
-    console.log('occupantGroups...', occupantGroups);
-    // Add grouped occupants data to jsonData
-    addGroupedDataToJsonData(jsonData, occupantGroups);
-
-    // Group leaseholders by their question_id
-    const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-    console.log('leaseHolderGroups...', leaseHolderGroups);
-    // Add grouped leaseholders data to jsonData
-    addGroupedDataToJsonData(
-      jsonData,
-      leaseHolderGroups,
-      'leaseFullName',
-      'leaseEmailAddress',
-      'leaseConfirmEmailAddress',
-    );
-
-    const finalJson = {
-      json_data: jsonData,
-    };
-
-    console.log('Final JSON:', JSON.stringify(finalJson));
-    saveAllJson(finalJson);
-    saveBiddingDetails();
-    resetDynamicFields();
-  };
-
-  const resetDynamicFields = () => {
-    Object.keys(inputValues).forEach(key => {
-      inputValues[key] = '';
-    });
-
-    occupants.length = 0;
-    leaseHolderItem.length = 0;
-
-    setInputValues({...inputValues});
-    setOccupants([]);
-    setLeaseHolderItem([]);
-    setNumberOccupants(0);
-    setNumberLeaseHolder(0);
-  };
-
   const saveAllJson = finalJson => {
     const url = Config.BASE_URL;
     const saveJson_url = `${url}save_json_details`;
@@ -1333,7 +1135,7 @@ const RentalOffer = props => {
 
     const saveJsonData = {
       p_property_id: propertyId,
-      p_account_id: loginData?.Login_details?.user_account_id,
+      p_account_id: accountId,
       p_bid_id: bibId,
       json_data: finalJson.json_data, // Ensure json_data is not stringified here
     };
@@ -1369,10 +1171,7 @@ const RentalOffer = props => {
 
     const saveBiddingDetailsData = new FormData();
     saveBiddingDetailsData.append('bid_id', bibId);
-    saveBiddingDetailsData.append(
-      'account_id',
-      loginData?.Login_details?.user_account_id,
-    );
+    saveBiddingDetailsData.append('account_id', accountId);
     saveBiddingDetailsData.append('property_id', propertyId);
     saveBiddingDetailsData.append('amount', 1000);
     saveBiddingDetailsData.append('screening_report');
@@ -1446,7 +1245,7 @@ const RentalOffer = props => {
         return (
           <View key={index}>
             <TextInput
-              style={RentalOfferStyle.input}
+              style={PreRentalQuestionnaireStyle.input}
               placeholder={`Enter your ${question.tqm_Question_description}`}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text, index);
@@ -1459,7 +1258,7 @@ const RentalOffer = props => {
         return (
           <View>
             <TextInput
-              style={RentalOfferStyle.input}
+              style={PreRentalQuestionnaireStyle.input}
               placeholder={`Enter your ${question.tqm_Question_description}`}
               onChangeText={text =>
                 handleInputChange(question.tqm_Question_code, text, index)
@@ -1471,7 +1270,7 @@ const RentalOffer = props => {
         );
       case 'Date':
         return (
-          <View style={RentalOfferStyle.datePickerView}>
+          <View style={PreRentalQuestionnaireStyle.datePickerView}>
             <CalendarModal
               SelectDate={
                 inputValues[question.tqm_Question_code] || 'Start Date'
@@ -1507,11 +1306,11 @@ const RentalOffer = props => {
         return (
           <View>
             <Dropdown
-              style={RentalOfferStyle.dropdown}
-              placeholderStyle={RentalOfferStyle.placeholderStyle}
-              selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-              inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-              iconStyle={RentalOfferStyle.iconStyle}
+              style={PreRentalQuestionnaireStyle.dropdown}
+              placeholderStyle={PreRentalQuestionnaireStyle.placeholderStyle}
+              selectedTextStyle={PreRentalQuestionnaireStyle.selectedTextStyle}
+              inputSearchStyle={PreRentalQuestionnaireStyle.inputSearchStyle}
+              iconStyle={PreRentalQuestionnaireStyle.iconStyle}
               data={dropdownData[question.tqm_Question_code] || []}
               search
               maxHeight={300}
@@ -1546,15 +1345,18 @@ const RentalOffer = props => {
       case 'Count':
         return (
           <View>
-            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
-              <View style={RentalOfferStyle.key_feature_Text_view}>
-                <Text style={RentalOfferStyle.key_feature_Text}>
+            <View
+              style={PreRentalQuestionnaireStyle.mainfeaturesview}
+              key={index}>
+              <View style={PreRentalQuestionnaireStyle.key_feature_Text_view}>
+                <Text style={PreRentalQuestionnaireStyle.key_feature_Text}>
                   {'Number of years employed'}
                 </Text>
               </View>
-              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+              <TouchableOpacity
+                style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
-                  style={RentalOfferStyle.menusIconView}
+                  style={PreRentalQuestionnaireStyle.menusIconView}
                   onPress={decreaseNumberYearEmp}>
                   <AntDesign
                     name="minus"
@@ -1562,9 +1364,11 @@ const RentalOffer = props => {
                     color={_COLORS.Kodie_BlackColor}
                   />
                 </TouchableOpacity>
-                <Text style={RentalOfferStyle.countdata}>{numberYearEmp}</Text>
+                <Text style={PreRentalQuestionnaireStyle.countdata}>
+                  {numberYearEmp}
+                </Text>
                 <TouchableOpacity
-                  style={RentalOfferStyle.menusIconView}
+                  style={PreRentalQuestionnaireStyle.menusIconView}
                   onPress={() => {
                     increaseNumberYearEmp();
                   }}>
@@ -1581,16 +1385,19 @@ const RentalOffer = props => {
       case 'Pets_Count':
         return (
           <View>
-            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
-              <View style={RentalOfferStyle.key_feature_Text_view}>
-                <Text style={RentalOfferStyle.key_feature_Text}>
+            <View
+              style={PreRentalQuestionnaireStyle.mainfeaturesview}
+              key={index}>
+              <View style={PreRentalQuestionnaireStyle.key_feature_Text_view}>
+                <Text style={PreRentalQuestionnaireStyle.key_feature_Text}>
                   {/* {'Number of pets'} */}
                   {petsSubChildren[0]?.tqm_Question_description}
                 </Text>
               </View>
-              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+              <TouchableOpacity
+                style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
-                  style={RentalOfferStyle.menusIconView}
+                  style={PreRentalQuestionnaireStyle.menusIconView}
                   onPress={decreaseNumberPet}>
                   <AntDesign
                     name="minus"
@@ -1598,9 +1405,11 @@ const RentalOffer = props => {
                     color={_COLORS.Kodie_BlackColor}
                   />
                 </TouchableOpacity>
-                <Text style={RentalOfferStyle.countdata}>{numberPets}</Text>
+                <Text style={PreRentalQuestionnaireStyle.countdata}>
+                  {numberPets}
+                </Text>
                 <TouchableOpacity
-                  style={RentalOfferStyle.menusIconView}
+                  style={PreRentalQuestionnaireStyle.menusIconView}
                   onPress={() => {
                     increaseNumberPets();
                   }}>
@@ -1845,11 +1654,11 @@ const RentalOffer = props => {
         return (
           <View key={index}>
             <MultiSelect
-              style={RentalOfferStyle.dropdown}
-              placeholderStyle={RentalOfferStyle.placeholderStyle}
-              selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-              inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-              iconStyle={RentalOfferStyle.iconStyle}
+              style={PreRentalQuestionnaireStyle.dropdown}
+              placeholderStyle={PreRentalQuestionnaireStyle.placeholderStyle}
+              selectedTextStyle={PreRentalQuestionnaireStyle.selectedTextStyle}
+              inputSearchStyle={PreRentalQuestionnaireStyle.inputSearchStyle}
+              iconStyle={PreRentalQuestionnaireStyle.iconStyle}
               data={dropdownData[question.tqm_Question_code] || []}
               labelField="lookup_description"
               valueField="lookup_key"
@@ -1863,8 +1672,8 @@ const RentalOffer = props => {
               renderItem={renderDataItem}
               renderSelectedItem={(item, unSelect) => (
                 <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-                  <View style={RentalOfferStyle.selectedStyle}>
-                    <Text style={RentalOfferStyle.textSelectedStyle}>
+                  <View style={PreRentalQuestionnaireStyle.selectedStyle}>
+                    <Text style={PreRentalQuestionnaireStyle.textSelectedStyle}>
                       {item.lookup_description}
                     </Text>
                     <AntDesign
@@ -1881,55 +1690,30 @@ const RentalOffer = props => {
       case 'Input_location':
         return (
           <View key={index} style={{marginTop: 10}}>
-            <View style={[RentalOfferStyle.locationConView]}>
-              <View style={RentalOfferStyle.locationContainer}>
-                {/* <TextInput
-                  style={RentalOfferStyle.locationInput}
-                  value={location} // Use the state variable for the value
-                  onChangeText={setLocation} // Update state on change
-                  onFocus={() => {
-                    setIsSearch(true);
-                    props.setOpenMap && props.setOpenMap(true);
-                  }}
-                  placeholder="Search location"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                /> */}
-                {/* <TextInput
-                  style={RentalOfferStyle.locationInput}
-                  placeholder="Enter previous address"
-                  value={inputValues['PREVIOUS_ADDRESS'] || location}
-                  onChangeText={text =>
-                    handleInputChange('PREVIOUS_ADDRESS', text)
-                  }
-                /> */}
+            <View style={[PreRentalQuestionnaireStyle.locationConView]}>
+              <View style={PreRentalQuestionnaireStyle.locationContainer}>
                 <TextInput
-                  style={RentalOfferStyle.locationInput}
+                  style={PreRentalQuestionnaireStyle.locationInput}
                   value={location}
                   onChangeText={handleLocationChange}
-                  onFocus={() => {
-                    setIsSearch(true);
-                    props.setOpenMap && props.setOpenMap(true);
-                  }}
                   placeholder="Search location"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
               </View>
               <TouchableOpacity
-                style={RentalOfferStyle.locationIconView}
-                onPress={() => {
-                  setIsMap(true);
-                }}>
+                style={PreRentalQuestionnaireStyle.locationIconView}
+                onPress={() => {}}>
                 <Octicons
                   name={'location'}
                   size={22}
                   color={_COLORS.Kodie_GreenColor}
-                  style={RentalOfferStyle.locationIcon}
+                  style={PreRentalQuestionnaireStyle.locationIcon}
                 />
               </TouchableOpacity>
             </View>
-            <View style={RentalOfferStyle.AddOccupantMainView}>
+            <View style={PreRentalQuestionnaireStyle.AddOccupantMainView}>
               <TouchableOpacity
-                style={RentalOfferStyle.AddOccupantView}
+                style={PreRentalQuestionnaireStyle.AddOccupantView}
                 onPress={() => {
                   setToggleReference(!toggleReference);
                 }}>
@@ -1940,7 +1724,7 @@ const RentalOffer = props => {
                   color={_COLORS.Kodie_BlackColor}
                   size={25}
                 />
-                <Text style={RentalOfferStyle.AddOccupantText}>
+                <Text style={PreRentalQuestionnaireStyle.AddOccupantText}>
                   {'Add rental references'}
                 </Text>
               </TouchableOpacity>
@@ -1950,11 +1734,11 @@ const RentalOffer = props => {
                 renderItem={addReferencesRender}
               />
               {toggleReference && (
-                <View style={RentalOfferStyle.inputView}>
+                <View style={PreRentalQuestionnaireStyle.inputView}>
                   <View style={{marginTop: 11}}>
                     <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
                     <TextInput
-                      style={RentalOfferStyle.input}
+                      style={PreRentalQuestionnaireStyle.input}
                       placeholder={'Enter full name'}
                       onChangeText={setReferenceFullName}
                       value={referenceFullName}
@@ -1962,16 +1746,16 @@ const RentalOffer = props => {
                     />
                   </View>
                   {referenceFullNameError ? (
-                    <Text style={RentalOfferStyle.error_text}>
+                    <Text style={PreRentalQuestionnaireStyle.error_text}>
                       {referenceFullNameError}
                     </Text>
                   ) : null}
-                  <View style={RentalOfferStyle.inputView}>
+                  <View style={PreRentalQuestionnaireStyle.inputView}>
                     <Text style={LABEL_STYLES.commontext}>
                       {'Email address'}
                     </Text>
                     <TextInput
-                      style={RentalOfferStyle.input}
+                      style={PreRentalQuestionnaireStyle.input}
                       placeholder={'Enter email address'}
                       onChangeText={setReferenceEmail}
                       value={referenceEmail}
@@ -1980,7 +1764,7 @@ const RentalOffer = props => {
                     />
                   </View>
                   {referenceEmailError ? (
-                    <Text style={RentalOfferStyle.error_text}>
+                    <Text style={PreRentalQuestionnaireStyle.error_text}>
                       {referenceEmailError}
                     </Text>
                   ) : null}
@@ -2015,328 +1799,98 @@ const RentalOffer = props => {
     );
   };
   return (
-    <SafeAreaView style={RentalOfferStyle.mainContainer}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={'Submit application'}
-      />
-      {IsMap ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-          }}>
-          <MapScreen
-            style={{
-              height: '100%',
-              width: '100%',
-              alignSelf: 'center',
-              marginBottom: 10,
-            }}
-            onRegionChange={onRegionChange}
-            Maplat={latitude}
-            Maplng={longitude}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              width: '96%',
-              borderWidth: 1,
-              borderRadius: 8,
-              backgroundColor: 'white',
-              borderColor: '#E5E4E2',
-              marginTop: 10,
-              position: 'absolute',
-            }}>
-            <TextInput
-              style={{
-                backgroundColor: 'transparent',
-
-                width: '90%',
-                height: 45,
-                alignSelf: 'center',
-                //marginTop: 10,
-              }}
-              onFocus={() => openMapandClose()}
-              placeholder={'Search Place'}
-              placeholderTextColor={_COLORS.Kodie_BlackColor}
-            />
-          </View>
-          <TouchableOpacity
-            style={RentalOfferStyle.BtnContainer}
-            onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
-          </TouchableOpacity>
-        </View>
-      ) : IsSearch ? (
-        <SearchPlaces
-          onPress={(data, details = null) => {
-            console.log('LocationData....', details);
-            setlatitude(details.geometry.location.lat);
-            setlongitude(details.geometry.location.lng);
-            setIsSearch(false);
-            setIsMap(true);
-            setCurrentLocation(details.formatted_address);
-          }}
+    <SafeAreaView style={PreRentalQuestionnaireStyle.mainContainer}>
+      <ScrollView>
+        <FlatList
+          data={quesHeading}
+          keyExtractor={(item, index) => item.id}
+          renderItem={QuesHeadingRender}
         />
-      ) : (
-        <ScrollView>
-          <View style={RentalOfferStyle.container}>
-            <View
-              style={{
-                flexDirection: 'row',
+        <View style={{marginHorizontal: 16}}>
+          <Text style={PreRentalQuestionnaireStyle.inspections}>
+            {'Tenant  screening report (recommended)'}
+          </Text>
+
+          <View style={PreRentalQuestionnaireStyle.container}>
+            <View style={PreRentalQuestionnaireStyle.pdfInfo}>
+              <FontAwesome
+                name="file-pdf-o"
+                size={35}
+                color={_COLORS.Kodie_BlackColor}
+                resizeMode={'contain'}
+              />
+              <View style={PreRentalQuestionnaireStyle.textContainer}>
+                <Text style={PreRentalQuestionnaireStyle.pdfName}>
+                  {"Tenant  screening report.pdf"}
+                </Text>
+                <Text style={PreRentalQuestionnaireStyle.pdfSize}> {'4.5 MB'}</Text>
+              </View>
+            </View>
+            <TouchableOpacity
+              style={PreRentalQuestionnaireStyle.crossIcon}
+              onPress={() => {
+                // setFilePath();
+                // setFileKey();
               }}>
-              {profile_image ? (
-                <Image
-                  source={{uri: profile_image}}
-                  resizeMode={'cover'}
-                  style={RentalOfferStyle.userImg}
-                />
-              ) : (
-                <EvilIcons
-                  color={_COLORS.Kodie_GrayColor}
-                  name={'user'}
-                  size={70}
-                />
-              )}
-              <View style={RentalOfferStyle.userNameView}>
-                <Text style={RentalOfferStyle.username}>
-                  {loginAccountDetails?.UAD_FIRST_NAME}
-                </Text>
-                <Text style={RentalOfferStyle.username}>
-                  {loginAccountDetails?.UAD_LAST_NAME}
-                </Text>
-              </View>
-            </View>
-            <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                }}>
-                <AntDesign
-                  name="star"
-                  size={18}
-                  color={_COLORS.Kodie_lightGreenColor}
-                  style={RentalOfferStyle.starIcon}
-                />
-                <Text style={[RentalOfferStyle.username]}>{'3.9 (81)'}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                }}>
-                <AntDesign
-                  name="checkcircle"
-                  size={18}
-                  color={_COLORS.Kodie_lightGreenColor}
-                  style={RentalOfferStyle.starIcon}
-                />
-                <Text
-                  style={[
-                    RentalOfferStyle.username,
-                    {color: _COLORS.Kodie_GreenColor},
-                  ]}>
-                  {'Verified'}
-                </Text>
-              </View>
-            </View>
-            <TouchableOpacity style={{}}>
               <Entypo
-                name="dots-three-horizontal"
-                size={18}
+                name="cross"
+                size={25}
                 color={_COLORS.Kodie_GrayColor}
-                style={{
-                  alignSelf: 'center',
-                }}
               />
             </TouchableOpacity>
           </View>
-          <DividerIcon
-            borderBottomWidth={3}
-            color={_COLORS.Kodie_LiteWhiteColor}
+        </View>
+        <DividerIcon marginTop={5} />
+        <View style={PreRentalQuestionnaireStyle.submitApplicationbtn}>
+          <RowButtons
+            LeftButtonText={'Reject'}
+            leftButtonbackgroundColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            LeftButtonTextColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_BlackColor
+            }
+            LeftButtonborderColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_BlackColor
+            }
+            onPressLeftButton={() => {
+              setSubmitApplicationBtn(false);
+              setSubmitApplicationBtnId(0);
+              // handleSubmit();
+              // alert(selectPetFriendlyBtnId)
+            }}
+            RightButtonText={'Accept'}
+            RightButtonbackgroundColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonTextColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_BlackColor
+            }
+            RightButtonborderColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_BlackColor
+            }
+            onPressRightButton={() => {
+              setSubmitApplicationBtn(true);
+              setSubmitApplicationBtnId(1);
+            }}
           />
-          <View style={RentalOfferStyle.apartmentView}>
-            <Text style={RentalOfferStyle.propertyHeading}>
-              {propertyDetails?.property_type}
-            </Text>
-            <Text
-              style={[
-                RentalOfferStyle.propertyHeading,
-                {fontFamily: FONTFAMILY.K_Bold},
-              ]}>
-              {propertyDetails?.city}
-            </Text>
-            <View style={RentalOfferStyle.locationView}>
-              <Entypo
-                color={_COLORS.Kodie_GreenColor}
-                name="location-pin"
-                size={20}
-              />
-              <Text
-                style={RentalOfferStyle.location}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {propertyDetails?.location}
-              </Text>
-            </View>
-          </View>
-          <DividerIcon
-            borderBottomWidth={3}
-            color={_COLORS.Kodie_LiteWhiteColor}
-          />
-          <View
-            style={{
-              marginHorizontal: 16,
-            }}>
-            <Text style={[RentalOfferStyle.PreRentaltext]}>
-              {'Pre-rental questionnaire'}
-            </Text>
-          </View>
-          <FlatList
-            data={quesHeading}
-            keyExtractor={(item, index) => item.id}
-            renderItem={QuesHeadingRender}
-          />
-          <View style={{marginHorizontal: 16}}>
-            <Text style={RentalOfferStyle.inspections}>
-              {'Tenant  screening report (recommended)'}
-            </Text>
-            <CustomSingleButton
-              _ButtonText={'Start Now'}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              disabled={isLoading ? true : false}
-              onPress={() => {
-                refRBSheet.current.open();
-              }}
-            />
-            {/* .... */}
-          </View>
-          <DividerIcon marginTop={5} />
-          <View style={RentalOfferStyle.submitApplicationbtn}>
-            <RowButtons
-              LeftButtonText={'Cancel'}
-              leftButtonbackgroundColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              LeftButtonborderColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressLeftButton={() => {
-                setSubmitApplicationBtn(false);
-                setSubmitApplicationBtnId(0);
-                // handleSubmit();
-                // alert(selectPetFriendlyBtnId)
-              }}
-              RightButtonText={'Submit'}
-              RightButtonbackgroundColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonborderColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressRightButton={() => {
-                setSubmitApplicationBtn(true);
-                setSubmitApplicationBtnId(1);
-                // alert(selectPetFriendlyBtnId)
-                handleSubmit();
-              }}
-            />
-          </View>
-          <View style={{marginHorizontal: 16, marginBottom: 20}}>
-            <CustomSingleButton
-              _ButtonText={'Upload'}
-              Text_Color={_COLORS.Kodie_BlackColor}
-              disabled={isLoading ? true : false}
-              isLeftImage={true}
-              leftImage={IMAGES.uploadIcon}
-              onPress={() => {
-                selectDoc();
-              }}
-              backgroundColor={_COLORS.Kodie_lightGreenColor}
-            />
-          </View>
-          <RBSheet
-            height={500}
-            ref={refRBSheet}
-            closeOnDragDown={true}
-            closeOnPressMask={false}
-            customStyles={{
-              wrapper: {
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              },
-              draggableIcon: {
-                backgroundColor: _COLORS.Kodie_LightGrayColor,
-              },
-              container: RentalOfferStyle.bottomModal_container,
-            }}>
-            <TouchableOpacity
-              style={{
-                marginHorizontal: 10,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
-              onPress={() => {
-                onClose();
-              }}>
-              <Text style={RentalOfferStyle.tenantScreenText}>
-                {'Tenant screening report'}
-              </Text>
-              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-            </TouchableOpacity>
-            <TenantScreeningReportModal onClose={onClose} />
-          </RBSheet>
-          <RBSheet
-            height={400}
-            ref={refRBSheet1}
-            closeOnDragDown={true}
-            closeOnPressMask={false}
-            customStyles={{
-              wrapper: {
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              },
-              draggableIcon: {
-                backgroundColor: _COLORS.Kodie_LightGrayColor,
-              },
-              container: RentalOfferStyle.bottomModal_container,
-            }}>
-            <TouchableOpacity
-              style={{
-                justifyContent: 'flex-end',
-                alignSelf: 'flex-end',
-                marginHorizontal: 10,
-              }}
-              onPress={() => {
-                onClose1();
-              }}>
-              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-            </TouchableOpacity>
-            <ApplicationSubmitModal onClose={onClose1} />
-          </RBSheet>
-        </ScrollView>
-      )}
-      {isLoading ? <CommonLoader /> : null}
+        </View>
+      </ScrollView>
+      {/* {isLoading ? <CommonLoader /> : null} */}
     </SafeAreaView>
   );
 };
 
-export default RentalOffer;
+export default PreRentalQuestionnaire;

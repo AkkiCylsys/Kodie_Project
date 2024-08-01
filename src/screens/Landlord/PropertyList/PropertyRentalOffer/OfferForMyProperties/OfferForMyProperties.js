@@ -15,11 +15,11 @@ import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
 import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
 import {useSelector} from 'react-redux';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const OfferForMyProperties = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   const [addressTypeData, setAddressTypeData] = useState([]);
   const [addressTypeValue, setAddressTypeValue] = useState({});
@@ -132,10 +132,9 @@ const OfferForMyProperties = () => {
                 <Text style={OfferForMyPropertiesStyle.apartmentText}>
                   {'Bid amount'}
                 </Text>
-                <Text
-                  style={
-                    OfferForMyPropertiesStyle.amount
-                  }>{`$${item?.offer_amount || ""}`}</Text>
+                <Text style={OfferForMyPropertiesStyle.amount}>{`$${
+                  item?.offer_amount || ''
+                }`}</Text>
               </View>
             </View>
             <View style={OfferForMyPropertiesStyle.flat_MainView}>
@@ -145,13 +144,12 @@ const OfferForMyProperties = () => {
                 color={_COLORS.Kodie_GreenColor}
                 style={{marginTop: 10}}
               />
-              <Text style={OfferForMyPropertiesStyle.locationText}>
+              <Text style={OfferForMyPropertiesStyle.locationText} numberOfLines={2}ellipsizeMode="tail">
                 {item?.location}
               </Text>
             </View>
             {item.account_details?.map((detail, index) => (
               <View key={index}>
-                {/* Render each account detail - Customize as needed */}
                 <View style={OfferForMyPropertiesStyle.userMainCon}>
                   <View style={OfferForMyPropertiesStyle.userContainer}>
                     {Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
@@ -197,7 +195,11 @@ const OfferForMyProperties = () => {
           disabled={isLoading}
           isLeftImage={true}
           onPress={() => {
-            navigation.navigate("PropertyViewApplication")
+            navigation.navigate('PropertyViewApplication', {
+              propertyId: item?.property_id,
+              bid_id: item?.bid_id,
+              tenant_id: item?.tenant_id,
+            });
           }}
           backgroundColor={_COLORS.Kodie_BlackColor}
         />
@@ -214,7 +216,7 @@ const OfferForMyProperties = () => {
           style={OfferForMyPropertiesStyle.dropdown}
           placeholderStyle={[
             OfferForMyPropertiesStyle.placeholderStyle,
-            { color: _COLORS.Kodie_LightGrayColor },
+            {color: _COLORS.Kodie_LightGrayColor},
           ]}
           selectedTextStyle={OfferForMyPropertiesStyle.selectedTextStyle}
           inputSearchStyle={OfferForMyPropertiesStyle.inputSearchStyle}
@@ -246,7 +248,7 @@ const OfferForMyProperties = () => {
 
       <FlatList
         data={offerPropertyData}
-        keyExtractor={item => item.property_type_id}
+        keyExtractor={item => item.property_id}
         renderItem={offerPropertyRender}
       />
       <DividerIcon borderBottomWidth={3} />

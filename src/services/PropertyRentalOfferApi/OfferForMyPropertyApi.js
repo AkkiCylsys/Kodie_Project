@@ -26,3 +26,4 @@ export const offerForMyProperty = async (offerPropertyData) => {
     throw error;  // Rethrow the error for higher-level handling
   }
 };
+

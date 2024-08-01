@@ -61,8 +61,8 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
   },
   imageStyle: {
     flex: 0.5,
-    height: 65,
-    width: 65,
+    height: 80,
+    width: 80,
     borderRadius: 10,
     alignSelf: 'center',
     borderWidth: 1,
