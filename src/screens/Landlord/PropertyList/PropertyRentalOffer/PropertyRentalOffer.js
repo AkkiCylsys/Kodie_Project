@@ -19,7 +19,11 @@ import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {getCurrentOffer} from '../../../../services/PropertyRentalOfferApi/PropertyRentalOfferApi';
+import {
+  getCurrentOffer,
+  withdowBid,
+  withdowBidServices,
+} from '../../../../services/PropertyRentalOfferApi/PropertyRentalOfferApi';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import OfferForMyProperties from './OfferForMyProperties/OfferForMyProperties';
 import {useSelector} from 'react-redux';
@@ -27,15 +31,17 @@ import {useNavigation} from '@react-navigation/native';
 const PropertyRentalOffer = props => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log(
-    'login response property rental offer..',
-    loginData?.Login_details,
-  );
+  // console.log(
+  //   'login response property rental offer..',
+  //   loginData?.Login_details,
+  // );
   const [isLoading, setIsLoading] = useState(false);
   const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonBid, setSelectedButtonBid] = useState(false);
-  const [isExpanded, setIsExpanded] = useState([]);
+  const [expandedPropertyId, setExpandedPropertyId] = useState(null);
   const [saveCurrentOffer, setSaveCurrentOffer] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredpropertyData, setFilteredpropertyData] = useState([]);
 
   const handleGetCurrectOffer = async () => {
     setIsLoading(true);
@@ -57,13 +63,47 @@ const PropertyRentalOffer = props => {
       setIsLoading(false);
     }
   };
-
+  const handleWithdrawBid = async (property_id,bid_id) => {
+    setIsLoading(true);
+    const WithdrawData = {
+      bid_id: bid_id,
+      // account_id: loginData?.Login_details?.user_account_id,
+      account_id: 724,
+      property_id: property_id,
+    };
+    try {
+      const response = await withdowBidServices(WithdrawData);
+      console.log('response in withdrawBid...', response);
+      if(response.success === true){
+        handleGetCurrectOffer()
+      }
+    } catch (error) {
+      console.error('Error fetching WithdrawBid:', error);
+    }
+  };
+  const handleExpandToggle = property_id => {
+    setExpandedPropertyId(prevId =>
+      prevId === property_id ? null : property_id,
+    );
+  };
   useEffect(() => {
     handleGetCurrectOffer();
   }, []);
 
+  const searchCurrentOffer = query => {
+    setSearchQuery(query);
+    const filtered = query
+      ? saveCurrentOffer.filter(
+          item =>
+            item.property_type &&
+            item.property_type.toLowerCase().includes(query.toLowerCase()),
+        )
+      : saveCurrentOffer;
+    console.log('filtered.........', filtered);
+    setFilteredpropertyData(filtered);
+  };
   const currentOffer_render = ({item, index}) => {
-    const ExpandedItem = isExpanded.includes(item.property_id);
+    const isExpanded = expandedPropertyId === item.property_id;
     const keyFeatures = JSON.parse(item.key_features);
     console.log('keyFeatures..', keyFeatures);
     const parkingSpaceFeature = keyFeatures.find(feature =>
@@ -128,8 +168,8 @@ const PropertyRentalOffer = props => {
                       resizeMode={'contain'}
                     />
                   </TouchableOpacity>
-                  <View style={{margin: 3}} />
-                  <TouchableOpacity onPress={() => {}}>
+                  <View />
+                  <TouchableOpacity style={{marginHorizontal: 15}}>
                     <AntDesign
                       name="hearto"
                       size={25}
@@ -137,7 +177,7 @@ const PropertyRentalOffer = props => {
                       resizeMode={'contain'}
                     />
                   </TouchableOpacity>
-                  <View style={{margin: 3}} />
+
                   <TouchableOpacity style={{}} onPress={() => {}}>
                     <MaterialCommunityIcons
                       name={'dots-horizontal'}
@@ -173,28 +213,11 @@ const PropertyRentalOffer = props => {
             </View>
             <DividerIcon
               IsShowIcon
-              iconName={ExpandedItem ? 'chevron-up' : 'chevron-down'}
-              onPress={() => {
-                // setIsExpanded(!isExpanded);
-
-                if (ExpandedItem) {
-                  setIsExpanded(
-                    isExpanded.filter(
-                      property_id => property_id !== item.property_id,
-                    ),
-                  );
-                } else {
-                  setIsExpanded([...isExpanded, item.property_id]);
-                }
-              }}
+              iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+              onPress={() => handleExpandToggle(item.property_id)}
             />
-            {ExpandedItem && (
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
+            {isExpanded && (
+              <View style={PropertyRentalOfferStyle.expandedView}>
                 <View style={PropertyRentalOfferStyle.bedCountView}>
                   <View style={PropertyRentalOfferStyle.locationView}>
                     <Ionicons
@@ -204,10 +227,8 @@ const PropertyRentalOffer = props => {
                       style={PropertyRentalOfferStyle.bedIconView}
                     />
                     <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {
-                        keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
-                          ?.Bedrooms
-                      }
+                      {keyFeatures.find(obj => obj.hasOwnProperty('Bedrooms'))
+                        ?.Bedrooms || 'N/A'}
                     </Text>
                   </View>
                   <View style={PropertyRentalOfferStyle.locationView}>
@@ -218,10 +239,8 @@ const PropertyRentalOffer = props => {
                       style={PropertyRentalOfferStyle.bedIconView}
                     />
                     <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {
-                        keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
-                          ?.Bathrooms
-                      }
+                      {keyFeatures.find(obj => obj.hasOwnProperty('Bathrooms'))
+                        ?.Bathrooms || 'N/A'}
                     </Text>
                   </View>
                   <View style={PropertyRentalOfferStyle.locationView}>
@@ -232,7 +251,6 @@ const PropertyRentalOffer = props => {
                       style={PropertyRentalOfferStyle.bedIconView}
                     />
                     <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {' '}
                       {parkingSpaceValue}
                     </Text>
                   </View>
@@ -244,10 +262,8 @@ const PropertyRentalOffer = props => {
                       style={PropertyRentalOfferStyle.bedIconView}
                     />
                     <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {
-                        keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
-                          ?.Garages
-                      }
+                      {keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
+                        ?.Garages || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -256,7 +272,7 @@ const PropertyRentalOffer = props => {
                     {'Listed price'}
                   </Text>
                   <Text style={PropertyRentalOfferStyle.listprice}>
-                    {`$${item?.offer_amount}`}
+                    {`$${item.offer_amount}`}
                   </Text>
                 </View>
               </View>
@@ -282,6 +298,8 @@ const PropertyRentalOffer = props => {
               }
               onPressLeftButton={() => {
                 setSelectedButtonBid(false);
+                handleWithdrawBid(item?.property_id, item?.bid_id)
+                
               }}
               RightButtonText={'Edit offer'}
               RightButtonbackgroundColor={
@@ -375,9 +393,9 @@ const PropertyRentalOffer = props => {
             Filter
             filter={'filter'}
             marginTop={3}
-            textvalue={'Search offers'}
-            //   searchData={searchPropertyList}
-            //   textvalue={searchQuery}
+            placeholder={'Search offers'}
+            searchData={searchCurrentOffer}
+            textvalue={searchQuery}
           />
           <DividerIcon />
           <ScrollView>
@@ -416,7 +434,7 @@ const PropertyRentalOffer = props => {
 
               {selectedButton ? (
                 <FlatList
-                  data={saveCurrentOffer}
+                  data={searchQuery ? filteredpropertyData : saveCurrentOffer}
                   keyExtractor={item => item.property_id.toString()}
                   renderItem={currentOffer_render}
                 />

@@ -26,10 +26,10 @@ const UserDetails = props => {
         )}
         <View style={UserDetailsStyle.userNameView}>
           <Text style={UserDetailsStyle.username}>
-            {tenantAccountDetails?.UAD_FIRST_NAME || 'First Name'}
+            {tenantAccountDetails?.UAD_FIRST_NAME || ' '}
           </Text>
           <Text style={UserDetailsStyle.username}>
-            {tenantAccountDetails?.UAD_LAST_NAME || 'Last Name '}
+            {tenantAccountDetails?.UAD_LAST_NAME || ' '}
           </Text>
         </View>
       </View>

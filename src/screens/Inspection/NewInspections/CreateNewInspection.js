@@ -181,10 +181,10 @@ const CreateNewInspection = props => {
     await axios
       .get(apiUrl)
       .then(response => {
-        console.log(
-          'API Response:get_inspection_details',
-          response?.data?.data[0],
-        );
+        // console.log(
+        //   'API Response:get_inspection_details',
+        //   response?.data?.data[0],
+        // );
         setInspection_Details(response?.data?.data[0]);
         setInspection_value(response?.data?.data[0]?.v_TIM_INSPECTION_TYPE);
         setSelectedDate(

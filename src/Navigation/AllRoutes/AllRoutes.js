@@ -202,6 +202,7 @@ const BottomNav = props => {
         name="Properties"
         component={Properties}
         options={{
+          tabBarHideOnKeyboard: true,
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIconStyle: {flex: 1},

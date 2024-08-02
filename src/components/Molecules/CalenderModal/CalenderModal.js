@@ -100,7 +100,7 @@ const CalendarModal = (props) => {
               </TouchableOpacity>
             </View>
             <Calendar
-              onDayPress={props.onDayPress}
+              onDayPress={props.editable ? props.onDayPress:undefined}
               todayTextColor={_COLORS.Kodie_BlackColor}
               dayTextColor={_COLORS.Kodie_BlackColor}
               markedDates={props.markedDates}

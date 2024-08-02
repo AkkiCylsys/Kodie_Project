@@ -37,7 +37,7 @@ const OfferForMyProperties = () => {
     };
     try {
       const response = await addressType(addressData);
-      console.log('response in addressData..', response);
+      // console.log('response in addressData..', response);
       if (response?.success === true) {
         const propertyDetails = response?.property_details || [];
         const updatedPropertyDetails = [
@@ -45,7 +45,6 @@ const OfferForMyProperties = () => {
           ...propertyDetails,
         ];
         setAddressTypeData(updatedPropertyDetails);
-        console.log('updatedPropertyDetails:', updatedPropertyDetails);
         setIsLoading(false);
       }
     } catch (error) {
@@ -66,9 +65,8 @@ const OfferForMyProperties = () => {
       limit: '10',
     };
     try {
-      console.log('payload ..', offerPropertyData);
       const response = await offerForMyProperty(offerPropertyData);
-      console.log('response in offerForMyProperty..', response?.data);
+      // console.log('response in offerForMyProperty..', response?.data);
       setOfferPropertyData(response?.data || []);
       setIsLoading(true);
     } catch (error) {
@@ -109,100 +107,118 @@ const OfferForMyProperties = () => {
   };
   const offerPropertyRender = ({item, index}) => {
     return (
-      <View key={index} style={{marginHorizontal: 20, marginVertical: 10}}>
-        <View style={OfferForMyPropertiesStyle.SubContainer}>
-          <View>
-            <Image
-              source={IMAGES.Bathroom}
-              style={OfferForMyPropertiesStyle.imageStyle}
-              resizeMode="cover"
-            />
-          </View>
-          <View style={{flex: 1, marginLeft: 20}}>
-            <View style={OfferForMyPropertiesStyle.apartmentView}>
-              <View>
-                <Text style={OfferForMyPropertiesStyle.apartmentText}>
-                  {item?.property_type}
-                </Text>
-                <Text style={OfferForMyPropertiesStyle.cityText}>
-                  {item?.city}
-                </Text>
-              </View>
-              <View style={{alignItems: 'flex-end'}}>
-                <Text style={OfferForMyPropertiesStyle.apartmentText}>
-                  {'Bid amount'}
-                </Text>
-                <Text style={OfferForMyPropertiesStyle.amount}>{`$${
-                  item?.offer_amount || ''
-                }`}</Text>
-              </View>
+      <View key={index}>
+        <View style={{marginHorizontal: 20, marginVertical: 10}}>
+          <View style={OfferForMyPropertiesStyle.SubContainer}>
+            <View>
+              {item.image_path && item.image_path.length > 0 ? (
+                <Image
+                  source={{uri: item.image_path[0]}}
+                  style={OfferForMyPropertiesStyle.imageStyle}
+                  resizeMode="cover"
+                />
+              ) : (
+                <View
+                  style={[
+                    OfferForMyPropertiesStyle.imageStyle,
+                    {justifyContent: 'center'},
+                  ]}>
+                  <Text style={OfferForMyPropertiesStyle.Img_found}>
+                    {'Image not found'}
+                  </Text>
+                </View>
+              )}
             </View>
-            <View style={OfferForMyPropertiesStyle.flat_MainView}>
-              <MaterialCommunityIcons
-                name={'map-marker'}
-                size={15}
-                color={_COLORS.Kodie_GreenColor}
-                style={{marginTop: 10}}
-              />
-              <Text style={OfferForMyPropertiesStyle.locationText} numberOfLines={2}ellipsizeMode="tail">
-                {item?.location}
-              </Text>
-            </View>
-            {item.account_details?.map((detail, index) => (
-              <View key={index}>
-                <View style={OfferForMyPropertiesStyle.userMainCon}>
-                  <View style={OfferForMyPropertiesStyle.userContainer}>
-                    {Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
-                    detail.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
-                      <Image
-                        source={{uri: detail.UAD_PROFILE_PHOTO_PATH[0]}}
-                        style={OfferForMyPropertiesStyle.userImg}
-                        resizeMode="cover"
-                      />
-                    ) : (
-                      <EvilIcons
-                        color={_COLORS.Kodie_GrayColor}
-                        name={'user'}
-                        size={50}
-                      />
-                    )}
-
-                    <Text style={OfferForMyPropertiesStyle.userName}>
-                      {detail?.UAD_FIRST_NAME}
-                    </Text>
-                  </View>
-                  <View style={OfferForMyPropertiesStyle.ratting}>
-                    <View style={{alignSelf: 'center', alignItems: 'center'}}>
-                      <AntDesign
-                        color={_COLORS.Kodie_GreenColor}
-                        name={'star'}
-                        size={20}
-                      />
-                    </View>
-                    <Text style={OfferForMyPropertiesStyle.rattingText}>
-                      {'4.9'}
-                    </Text>
-                  </View>
+            <View style={{flex: 1, marginLeft: 20}}>
+              <View style={OfferForMyPropertiesStyle.apartmentView}>
+                <View>
+                  <Text style={OfferForMyPropertiesStyle.apartmentText}>
+                    {item?.property_type}
+                  </Text>
+                  <Text style={OfferForMyPropertiesStyle.cityText}>
+                    {item?.city}
+                  </Text>
+                </View>
+                <View style={{alignItems: 'flex-end'}}>
+                  <Text style={OfferForMyPropertiesStyle.apartmentText}>
+                    {'Bid amount'}
+                  </Text>
+                  <Text style={OfferForMyPropertiesStyle.amount}>{`$${
+                    item?.offer_amount || ''
+                  }`}</Text>
                 </View>
               </View>
-            ))}
+              <View style={OfferForMyPropertiesStyle.flat_MainView}>
+                <MaterialCommunityIcons
+                  name={'map-marker'}
+                  size={15}
+                  color={_COLORS.Kodie_GreenColor}
+                  style={{marginTop: 10}}
+                />
+                <Text
+                  style={OfferForMyPropertiesStyle.locationText}
+                  numberOfLines={2}
+                  ellipsizeMode="tail">
+                  {item?.location}
+                </Text>
+              </View>
+              {item.account_details?.map((detail, index) => (
+                <View key={index}>
+                  <View style={OfferForMyPropertiesStyle.userMainCon}>
+                    <View style={OfferForMyPropertiesStyle.userContainer}>
+                      {Array.isArray(detail.UAD_PROFILE_PHOTO_PATH) &&
+                      detail.UAD_PROFILE_PHOTO_PATH.length > 0 ? (
+                        <Image
+                          source={{uri: detail.UAD_PROFILE_PHOTO_PATH[0]}}
+                          style={OfferForMyPropertiesStyle.userImg}
+                          resizeMode="cover"
+                        />
+                      ) : (
+                        <EvilIcons
+                          color={_COLORS.Kodie_GrayColor}
+                          name={'user'}
+                          size={50}
+                        />
+                      )}
+
+                      <Text style={OfferForMyPropertiesStyle.userName}>
+                        {detail?.UAD_FIRST_NAME}
+                      </Text>
+                    </View>
+                    <View style={OfferForMyPropertiesStyle.ratting}>
+                      <View style={{alignSelf: 'center', alignItems: 'center'}}>
+                        <AntDesign
+                          color={_COLORS.Kodie_GreenColor}
+                          name={'star'}
+                          size={20}
+                        />
+                      </View>
+                      <Text style={OfferForMyPropertiesStyle.rattingText}>
+                        {'4.9'}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              ))}
+            </View>
           </View>
+          <DividerIcon />
+          <CustomSingleButton
+            _ButtonText={'View application'}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+            disabled={isLoading}
+            isLeftImage={true}
+            onPress={() => {
+              navigation.navigate('PropertyViewApplication', {
+                propertyId: item?.property_id,
+                bid_id: item?.bid_id,
+                tenant_id: item?.tenant_id,
+              });
+            }}
+            backgroundColor={_COLORS.Kodie_BlackColor}
+          />
         </View>
-        <DividerIcon />
-        <CustomSingleButton
-          _ButtonText={'View application'}
-          Text_Color={_COLORS.Kodie_WhiteColor}
-          disabled={isLoading}
-          isLeftImage={true}
-          onPress={() => {
-            navigation.navigate('PropertyViewApplication', {
-              propertyId: item?.property_id,
-              bid_id: item?.bid_id,
-              tenant_id: item?.tenant_id,
-            });
-          }}
-          backgroundColor={_COLORS.Kodie_BlackColor}
-        />
+        <DividerIcon borderBottomWidth={3} />
       </View>
     );
   };
@@ -251,7 +267,7 @@ const OfferForMyProperties = () => {
         keyExtractor={item => item.property_id}
         renderItem={offerPropertyRender}
       />
-      <DividerIcon borderBottomWidth={3} />
+
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );

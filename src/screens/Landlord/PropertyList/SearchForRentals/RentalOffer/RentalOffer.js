@@ -51,11 +51,11 @@ const RentalOffer = props => {
   const edit_offer = props?.route?.params?.edit_offer;
   const propertyDetails = props?.route?.params?.propertyDetails;
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginresponse_Rental offer..', loginData?.Account_details[0]);
-  console.log(
-    'loginresponse image photo..',
-    loginData?.Login_details?.profile_photo_path,
-  );
+  // console.log('loginresponse_Rental offer..', loginData?.Account_details[0]);
+  // console.log(
+  //   'loginresponse image photo..',
+  //   loginData?.Login_details?.profile_photo_path,
+  // );
   const profile_image = loginData?.Login_details?.profile_photo_path;
   const loginAccountDetails = loginData?.Account_details[0];
   const propertyId = props?.route?.params?.propertyId;

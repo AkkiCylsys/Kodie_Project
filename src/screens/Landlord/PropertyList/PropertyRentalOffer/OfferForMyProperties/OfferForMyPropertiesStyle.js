@@ -52,8 +52,8 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
   },
   imageStyle: {
     flex: 0.5,
-    height: 150,
-    width: 150,
+    height: 130,
+    width: 130,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: _COLORS?.Kodie_GrayColor,
@@ -144,5 +144,11 @@ export const OfferForMyPropertiesStyle = StyleSheet.create({
     shadowRadius: 3.84, 
     elevation: 1, 
     backgroundColor: 'white', 
-  }
+  },
+  Img_found: {
+    fontSize: 12,
+    color: _COLORS?.Kodie_BlackColor,
+    textAlign: 'center',
+    alignSelf: 'center',
+  },
 });

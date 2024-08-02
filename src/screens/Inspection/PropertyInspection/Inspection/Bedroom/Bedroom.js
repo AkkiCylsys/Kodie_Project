@@ -57,7 +57,7 @@ const Bedroom = props => {
     try {
       const areas = await GetInspectionAreas(Team_Key);
       setAreaKey(areas);
-      console.log('get_inspection_area_details....', areas);
+      // console.log('get_inspection_area_details....', areas);
     } catch (error) {
       console.error('get_inspection_area_details error:', error);
       Alert.alert('Error', 'Failed to fetch inspection areas');
@@ -80,7 +80,7 @@ const Bedroom = props => {
     try {
       const items = await UpdateInspectionItem(data);
       setGetItems(items);
-      console.log('handleInspectionudateItem.....', items);
+      // console.log('handleInspectionudateItem.....', items);
     } catch (error) {
       console.error('Error:', error);
       // Alert.alert('Error', 'Failed to update inspection item');
@@ -97,7 +97,7 @@ const Bedroom = props => {
     try {
       const items = await EditInspectionItem(data);
       setEditGetItem(items);
-      console.log('handleInspectionuEditItem.....', items);
+      // console.log('handleInspectionuEditItem.....', items);
     } catch (error) {
       console.error('Error:', error);
       Alert.alert('Error', 'Failed to edit inspection item');
@@ -121,7 +121,7 @@ const Bedroom = props => {
     try {
       const response = await InspectionAddItem(data);
       Alert.alert('Success', response?.message);
-      console.log('API Response:', response);
+      // console.log('API Response:', response);
       handleInspectionudateItem();
       handleInspectionuEditItem();
       getInspectionAreas();

@@ -37,9 +37,6 @@ import SearchPlaces from '../../../Molecules/SearchPlaces/SearchPlaces';
 import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
 const PreRentalQuestionnaire = props => {
-  //   const loginData = useSelector(state => state.authenticationReducer.data);
-  //   console.log('loginresponse_Rental offer..', loginData?.Login_details);
-  //   const propertyId = props?.route?.params?.propertyId;
   const {accountId, propertyId} = props;
   const bibId = props?.route?.params?.bibId;
   console.log('propertyId..', propertyId);
@@ -894,28 +891,13 @@ const PreRentalQuestionnaire = props => {
       </View>
     );
   };
-  const handleDayPress = day => {
-    setSelectedDate(day.dateString);
-  };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-  };
-  const toggleRentalDetails = () => {
-    setRentalDetails(!RentalDetails);
   };
   const toggleItem = itemChildren => {
     setExpandedItem(prevState =>
       prevState === itemChildren ? null : itemChildren,
     );
-  };
-  const toggleTenantRooms = () => {
-    setTenantRooms(!TenantRooms);
-  };
-  const toggleRentalHistory = () => {
-    setRentalHistory(!RentalHistory);
-  };
-  const togglePreferences = () => {
-    setPreferences(!Preferences);
   };
 
   const onClose = () => {
@@ -1251,6 +1233,7 @@ const PreRentalQuestionnaire = props => {
                 handleInputChange(question.tqm_Question_code, text, index);
               }}
               value={inputValues[question.tqm_Question_code] || ''}
+              editable={false}
             />
           </View>
         );
@@ -1265,6 +1248,7 @@ const PreRentalQuestionnaire = props => {
               }
               value={inputValues[question.tqm_Question_code] || ''}
               keyboardType="number-pad"
+              editable={false}
             />
           </View>
         );
@@ -1299,6 +1283,7 @@ const PreRentalQuestionnaire = props => {
               }}
               _closeButton={toggleModal}
               _ApplyButton={toggleModal}
+              editable={false} 
             />
           </View>
         );
@@ -1318,6 +1303,7 @@ const PreRentalQuestionnaire = props => {
               valueField="lookup_key"
               placeholder="Select an option"
               searchPlaceholder="Search..."
+              disable
               value={inputValues[question.tqm_Question_code] || ''}
               onFocus={() => handleDropdown(question.tqm_Question_code, index)}
               onChange={item => {
@@ -1357,7 +1343,8 @@ const PreRentalQuestionnaire = props => {
                 style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
-                  onPress={decreaseNumberYearEmp}>
+                  // onPress={decreaseNumberYearEmp}
+                  >
                   <AntDesign
                     name="minus"
                     size={20}
@@ -1369,9 +1356,10 @@ const PreRentalQuestionnaire = props => {
                 </Text>
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
-                  onPress={() => {
-                    increaseNumberYearEmp();
-                  }}>
+                  // onPress={() => {
+                  //   increaseNumberYearEmp();
+                  // }}
+                  >
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1398,7 +1386,8 @@ const PreRentalQuestionnaire = props => {
                 style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
-                  onPress={decreaseNumberPet}>
+                  // onPress={decreaseNumberPet}
+                  >
                   <AntDesign
                     name="minus"
                     size={20}
@@ -1410,9 +1399,10 @@ const PreRentalQuestionnaire = props => {
                 </Text>
                 <TouchableOpacity
                   style={PreRentalQuestionnaireStyle.menusIconView}
-                  onPress={() => {
-                    increaseNumberPets();
-                  }}>
+                  // onPress={() => {
+                  //   increaseNumberPets();
+                  // }}
+                  >
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1423,184 +1413,189 @@ const PreRentalQuestionnaire = props => {
             </View>
           </View>
         );
-      case 'Yes_no':
-        return (
-          <View>
-            {question.id === 13 ? (
-              <RowButtons
-                LeftButtonText={'Yes'}
-                leftButtonbackgroundColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                LeftButtonTextColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                LeftButtonborderColor={
-                  !selectedButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressLeftButton={() => {
-                  setSelectedButton(false);
-                  handleInputChange(question.id, 1);
-                }}
-                RightButtonText={'No'}
-                RightButtonbackgroundColor={
-                  selectedButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                RightButtonTextColor={
-                  selectedButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                RightButtonborderColor={
-                  selectedButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressRightButton={() => {
-                  setSelectedButton(true);
-                  handleInputChange(question.id, 0);
-                }}
-              />
-            ) : question.id === 20 ? (
-              <RowButtons
-                LeftButtonText={'Yes'}
-                leftButtonbackgroundColor={
-                  !selectedRentalBondButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                LeftButtonTextColor={
-                  !selectedRentalBondButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                LeftButtonborderColor={
-                  !selectedRentalBondButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressLeftButton={() => {
-                  setSelectedRentalBondButton(false);
-                  handleInputChange(question.id, 1);
-                }}
-                RightButtonText={'No'}
-                RightButtonbackgroundColor={
-                  selectedRentalBondButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                RightButtonTextColor={
-                  selectedRentalBondButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                RightButtonborderColor={
-                  selectedRentalBondButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressRightButton={() => {
-                  setSelectedRentalBondButton(true);
-                  handleInputChange(question.id, 0);
-                }}
-              />
-            ) : question.id === 21 ? (
-              <RowButtons
-                LeftButtonText={'Yes'}
-                leftButtonbackgroundColor={
-                  !selectedPreviousRentalButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                LeftButtonTextColor={
-                  !selectedPreviousRentalButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                LeftButtonborderColor={
-                  !selectedPreviousRentalButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressLeftButton={() => {
-                  setSelectedPreviousRentalButton(false);
-                  handleInputChange(question.id, 1);
-                }}
-                RightButtonText={'No'}
-                RightButtonbackgroundColor={
-                  selectedPreviousRentalButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                RightButtonTextColor={
-                  selectedPreviousRentalButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                RightButtonborderColor={
-                  selectedPreviousRentalButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressRightButton={() => {
-                  setSelectedPreviousRentalButton(true);
-                  handleInputChange(question.id, 0);
-                }}
-              />
-            ) : question.id === 24 ? (
-              <RowButtons
-                LeftButtonText={'Yes'}
-                leftButtonbackgroundColor={
-                  !selectedPetsButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                LeftButtonTextColor={
-                  !selectedPetsButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                LeftButtonborderColor={
-                  !selectedPetsButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressLeftButton={() => {
-                  setSelectedPetsButton(false);
-                  handleInputChange(question.id, 1);
-                }}
-                RightButtonText={'No'}
-                RightButtonbackgroundColor={
-                  selectedPetsButton
-                    ? _COLORS.Kodie_lightGreenColor
-                    : _COLORS.Kodie_WhiteColor
-                }
-                RightButtonTextColor={
-                  selectedPetsButton
-                    ? _COLORS.Kodie_BlackColor
-                    : _COLORS.Kodie_MediumGrayColor
-                }
-                RightButtonborderColor={
-                  selectedPetsButton
-                    ? _COLORS.Kodie_GrayColor
-                    : _COLORS.Kodie_LightWhiteColor
-                }
-                onPressRightButton={() => {
-                  setSelectedPetsButton(true);
-                  handleInputChange(question.id, 1);
-                }}
-              />
-            ) : null}
-          </View>
-        );
+        case 'Yes_no':
+          return (
+            <View>
+              {question.id === 13 ? (
+                <RowButtons
+                  LeftButtonText={'Yes'}
+                  leftButtonbackgroundColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedButton(false);
+                    handleInputChange(question.id, 1);
+                  }}
+                  RightButtonText={'No'}
+                  RightButtonbackgroundColor={
+                    selectedButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedButton(true);
+                    handleInputChange(question.id, 0);
+                  }}
+                  disabled={true} // Set this to true to make buttons non-interactive
+                />
+              ) : question.id === 20 ? (
+                <RowButtons
+                  LeftButtonText={'Yes'}
+                  leftButtonbackgroundColor={
+                    !selectedRentalBondButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedRentalBondButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedRentalBondButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedRentalBondButton(false);
+                    handleInputChange(question.id, 1);
+                  }}
+                  RightButtonText={'No'}
+                  RightButtonbackgroundColor={
+                    selectedRentalBondButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedRentalBondButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedRentalBondButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedRentalBondButton(true);
+                    handleInputChange(question.id, 0);
+                  }}
+                  disabled={true} // Set this to true to make buttons non-interactive
+                />
+              ) : question.id === 21 ? (
+                <RowButtons
+                  LeftButtonText={'Yes'}
+                  leftButtonbackgroundColor={
+                    !selectedPreviousRentalButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedPreviousRentalButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedPreviousRentalButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedPreviousRentalButton(false);
+                    handleInputChange(question.id, 1);
+                  }}
+                  RightButtonText={'No'}
+                  RightButtonbackgroundColor={
+                    selectedPreviousRentalButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedPreviousRentalButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedPreviousRentalButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedPreviousRentalButton(true);
+                    handleInputChange(question.id, 0);
+                  }}
+                  disabled={true} // Set this to true to make buttons non-interactive
+                />
+              ) : question.id === 24 ? (
+                <RowButtons
+                  LeftButtonText={'Yes'}
+                  leftButtonbackgroundColor={
+                    !selectedPetsButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedPetsButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedPetsButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedPetsButton(false);
+                    handleInputChange(question.id, 1);
+                  }}
+                  RightButtonText={'No'}
+                  RightButtonbackgroundColor={
+                    selectedPetsButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedPetsButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedPetsButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedPetsButton(true);
+                    handleInputChange(question.id, 0);
+                  }}
+                  disabled={true} // Set this to true to make buttons non-interactive
+                />
+              ) : null}
+            </View>
+          );
+        
 
       case 'Smoking/Non-smoking':
         return (
@@ -1646,6 +1641,7 @@ const PreRentalQuestionnaire = props => {
                 setSelectedSomokingButton(true);
                 handleInputChange(question.id, 0);
               }}
+              disabled={true}
             />
           </View>
         );
@@ -1664,6 +1660,7 @@ const PreRentalQuestionnaire = props => {
               valueField="lookup_key"
               searchPlaceholder="Search..."
               search
+              disable
               value={inputValues[question.tqm_Question_code] || []}
               onChange={items =>
                 handleInputChange(question.tqm_Question_code, items)
@@ -1698,6 +1695,7 @@ const PreRentalQuestionnaire = props => {
                   onChangeText={handleLocationChange}
                   placeholder="Search location"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  editable={false}
                 />
               </View>
               <TouchableOpacity

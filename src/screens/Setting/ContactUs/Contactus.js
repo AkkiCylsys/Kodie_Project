@@ -15,7 +15,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 const Contactus = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData?.Login_details?.email);
+  // console.log('loginResponse.....', loginData?.Login_details?.email);
   const accountEmail = loginData?.Login_details?.email;
   const [check, setCheck] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

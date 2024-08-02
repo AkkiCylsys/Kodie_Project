@@ -29,7 +29,7 @@ const ChangeContactInput = props => {
 
   const phoneInput = useRef(null);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponseContact.....', loginData);
+  // console.log('loginResponseContact.....', loginData);
   // const phoneDataNumber = loginData?.Account_details[0]?.UAD_PHONE_NO;
   // console.log('phoneDataNumber..', phoneDataNumber);
   const navigation = useNavigation();
@@ -54,7 +54,7 @@ const ChangeContactInput = props => {
     await axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        // console.log('API Response:', response?.data?.data[0]);
         if (
           response?.data?.data &&
           Array.isArray(response?.data?.data) &&

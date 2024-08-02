@@ -40,14 +40,14 @@ const PropertyViewApplication = props => {
       const response = await PropertyViewApplicationService(
         propertyViewApplicationData,
       );
-      console.log('response in PropertyViewApplication..', response?.data[0]);
+      // console.log('response in PropertyViewApplication..', response?.data[0]);
       if (response?.success === true) {
         setTenantDetails(response?.data[0]);
         setTenantAccountDetails(response?.data[0]?.account_details[0]);
-        console.log(
-          'Accountdetails...',
-          JSON.stringify(response?.data[0]?.account_details),
-        );
+        // console.log(
+        //   'Accountdetails...',
+        //   JSON.stringify(response?.data[0]?.account_details),
+        // );
         setIsLoading(false);
       }
     } catch (error) {

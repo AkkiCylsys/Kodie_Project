@@ -135,7 +135,7 @@ const DeleteAccount = props => {
     await axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        // console.log('API Response:', response?.data?.data[0]);
         if (
           response?.data?.data &&
           Array.isArray(response?.data?.data) &&

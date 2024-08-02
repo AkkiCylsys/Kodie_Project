@@ -57,7 +57,7 @@ console.log("newStatus",newStatus);
     await axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response getPersonalDetails:', response?.data?.data[0]);
+        // console.log('API Response getPersonalDetails:', response?.data?.data[0]);
         if (
           response?.data?.data &&
           Array.isArray(response.data.data) &&
@@ -84,7 +84,7 @@ console.log("newStatus",newStatus);
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response: dfdd', response?.data?.data[0]);
+        // console.log('API Response: dfdd', response?.data?.data[0]);
         setInspection_Details(response?.data?.data[0]);
         setCheckedItems(response?.data?.data[0]?.cur_TAM_AREA_KEY)
         setIsLoading(false);
