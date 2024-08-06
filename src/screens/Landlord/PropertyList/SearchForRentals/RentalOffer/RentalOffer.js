@@ -252,6 +252,30 @@ const RentalOffer = props => {
     }
   }, [inputValues]);
 
+  // Upload Documents....
+  const selectDoc = async () => {
+    try {
+      const doc = await DocumentPicker.pick({
+        type: [DocumentPicker.types.pdf],
+        // allowMultiSelection: true,
+      });
+      console.log('doc......', doc);
+      setSelectFile(doc);
+      // await uploadDocument(doc);
+      console.log('Documents.....', doc);
+      console.log('selectFile.....', selectFile);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err))
+        console.log('User cancelled the upload', err);
+      else console.log(err);
+    }
+  };
+  const bytesToMB = bytes => {
+    if (bytes === 0) return '0 MB';
+    const MB = bytes / (1024 * 1024);
+    return `${MB.toFixed(2)} MB`;
+  };
+  const fileSizeInMB = selectFile[0] ? bytesToMB(selectFile[0].size) : 'N/A';
   const handleLocationChange = text => {
     setLocation(text);
     handleInputChange('PREVIOUS_ADDRESS', text);
@@ -1375,7 +1399,11 @@ const RentalOffer = props => {
     );
     saveBiddingDetailsData.append('property_id', propertyId);
     saveBiddingDetailsData.append('amount', 1000);
-    saveBiddingDetailsData.append('screening_report');
+    saveBiddingDetailsData.append('screening_report', {
+      uri: selectFile[0].uri,
+      name: selectFile[0].name.replace(/\s/g, ''),
+      type: selectFile[0].type,
+    });
 
     console.log('saveBiddingDetails_Data:', saveBiddingDetailsData);
 
@@ -1883,25 +1911,6 @@ const RentalOffer = props => {
           <View key={index} style={{marginTop: 10}}>
             <View style={[RentalOfferStyle.locationConView]}>
               <View style={RentalOfferStyle.locationContainer}>
-                {/* <TextInput
-                  style={RentalOfferStyle.locationInput}
-                  value={location} // Use the state variable for the value
-                  onChangeText={setLocation} // Update state on change
-                  onFocus={() => {
-                    setIsSearch(true);
-                    props.setOpenMap && props.setOpenMap(true);
-                  }}
-                  placeholder="Search location"
-                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
-                /> */}
-                {/* <TextInput
-                  style={RentalOfferStyle.locationInput}
-                  placeholder="Enter previous address"
-                  value={inputValues['PREVIOUS_ADDRESS'] || location}
-                  onChangeText={text =>
-                    handleInputChange('PREVIOUS_ADDRESS', text)
-                  }
-                /> */}
                 <TextInput
                   style={RentalOfferStyle.locationInput}
                   value={location}
@@ -2018,7 +2027,7 @@ const RentalOffer = props => {
     <SafeAreaView style={RentalOfferStyle.mainContainer}>
       <TopHeader
         onPressLeftButton={() => _goBack(props)}
-        MiddleText={'Submit application'}
+        MiddleText={edit_offer ? 'Edit offer' : 'Submit application'}
       />
       {IsMap ? (
         <View
@@ -2203,6 +2212,33 @@ const RentalOffer = props => {
             <Text style={RentalOfferStyle.inspections}>
               {'Tenant  screening report (recommended)'}
             </Text>
+            {/* ... */}
+            {selectFile.length > 0 && (
+              <View style={RentalOfferStyle.Doc_container}>
+                <View style={RentalOfferStyle.pdfInfo}>
+                  <FontAwesome
+                    name="file-pdf-o"
+                    size={35}
+                    color={_COLORS.Kodie_BlackColor}
+                    resizeMode={'contain'}
+                  />
+                  <View style={RentalOfferStyle.textContainer}>
+                    <Text style={RentalOfferStyle.pdfName}>
+                      {selectFile[0]?.name}
+                    </Text>
+                    <Text style={RentalOfferStyle.pdfSize}>{fileSizeInMB}</Text>
+                  </View>
+                </View>
+                <TouchableOpacity style={RentalOfferStyle.crossIcon}>
+                  <Entypo
+                    name="dots-three-vertical"
+                    size={20}
+                    color={_COLORS.Kodie_GrayColor}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+            {/* ... */}
             <CustomSingleButton
               _ButtonText={'Start Now'}
               Text_Color={_COLORS.Kodie_WhiteColor}
@@ -2262,19 +2298,22 @@ const RentalOffer = props => {
               }}
             />
           </View>
-          <View style={{marginHorizontal: 16, marginBottom: 20}}>
-            <CustomSingleButton
-              _ButtonText={'Upload'}
-              Text_Color={_COLORS.Kodie_BlackColor}
-              disabled={isLoading ? true : false}
-              isLeftImage={true}
-              leftImage={IMAGES.uploadIcon}
-              onPress={() => {
-                selectDoc();
-              }}
-              backgroundColor={_COLORS.Kodie_lightGreenColor}
-            />
-          </View>
+
+          {!selectFile.length > 0 && (
+            <View style={{marginHorizontal: 16, marginBottom: 20}}>
+              <CustomSingleButton
+                _ButtonText={'Upload'}
+                Text_Color={_COLORS.Kodie_BlackColor}
+                disabled={isLoading ? true : false}
+                isLeftImage={true}
+                leftImage={IMAGES.uploadIcon}
+                onPress={() => {
+                  selectDoc();
+                }}
+                backgroundColor={_COLORS.Kodie_lightGreenColor}
+              />
+            </View>
+          )}
           <RBSheet
             height={500}
             ref={refRBSheet}

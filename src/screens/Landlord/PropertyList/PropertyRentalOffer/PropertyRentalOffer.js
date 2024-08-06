@@ -46,8 +46,8 @@ const PropertyRentalOffer = props => {
   const handleGetCurrectOffer = async () => {
     setIsLoading(true);
     const current_Data = {
-      account_id: 724,
-      // account_id: loginData?.Login_details?.user_account_id,
+      // account_id: 724,
+      account_id: loginData?.Login_details?.user_account_id,
       limit: 10,
     };
 
@@ -63,19 +63,20 @@ const PropertyRentalOffer = props => {
       setIsLoading(false);
     }
   };
-  const handleWithdrawBid = async (property_id,bid_id) => {
+  const handleWithdrawBid = async (property_id, bid_id) => {
     setIsLoading(true);
     const WithdrawData = {
       bid_id: bid_id,
-      // account_id: loginData?.Login_details?.user_account_id,
-      account_id: 724,
+      account_id: loginData?.Login_details?.user_account_id,
+      // account_id: 724,
       property_id: property_id,
     };
     try {
       const response = await withdowBidServices(WithdrawData);
       console.log('response in withdrawBid...', response);
-      if(response.success === true){
-        handleGetCurrectOffer()
+      if (response?.success === true) {
+        alert(response?.data);
+        handleGetCurrectOffer();
       }
     } catch (error) {
       console.error('Error fetching WithdrawBid:', error);
@@ -262,8 +263,10 @@ const PropertyRentalOffer = props => {
                       style={PropertyRentalOfferStyle.bedIconView}
                     />
                     <Text style={PropertyRentalOfferStyle.bedcont}>
-                      {keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
-                        ?.Garages || 'N/A'}
+                      {`${
+                        keyFeatures.find(obj => obj.hasOwnProperty('Garages'))
+                          ?.Garages
+                      } m2` || 'N/A'}
                     </Text>
                   </View>
                 </View>
@@ -298,8 +301,7 @@ const PropertyRentalOffer = props => {
               }
               onPressLeftButton={() => {
                 setSelectedButtonBid(false);
-                handleWithdrawBid(item?.property_id, item?.bid_id)
-                
+                handleWithdrawBid(item?.property_id, item?.bid_id);
               }}
               RightButtonText={'Edit offer'}
               RightButtonbackgroundColor={

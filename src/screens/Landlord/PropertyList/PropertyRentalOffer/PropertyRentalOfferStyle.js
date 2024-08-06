@@ -130,6 +130,10 @@ export const PropertyRentalOfferStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
-    alignSelf: 'center',
+    alignSelf: "flex-end",
   },
+  expandedView:{
+    flex:1,flexDirection:'row',
+    justifyContent:"space-between"
+  }
 });
