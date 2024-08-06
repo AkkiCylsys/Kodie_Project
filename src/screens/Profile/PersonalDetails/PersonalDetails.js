@@ -34,7 +34,7 @@ import axios from 'axios';
 
 const PersonalDetails = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginResponse.....', loginData);
+  // console.log('loginResponse.....', loginData);
   const [fullName, setFullName] = useState(
     loginData?.Account_details[0]?.UAD_FIRST_NAME,
   );

@@ -200,7 +200,7 @@ const Inspection = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response: getinspection', response?.data?.data[0]);
+        // console.log('API Response: getinspection', response?.data?.data[0]);
         setGetInspection(response?.data?.data[0]);
         setIsLoading(false);
       })

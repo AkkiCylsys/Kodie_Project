@@ -25,7 +25,7 @@ import { Config } from "../../Config";
 import { useSelector } from "react-redux";
 const PaymentScreen = (props) => {
   const loginData = useSelector((state) => state.authenticationReducer.data);
-  console.log("loginResponse.....", loginData);
+  // console.log("loginResponse.....", loginData);
   const [cardInfo, setCardInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [clintsecretkey, setclintsecretkey] = useState("");

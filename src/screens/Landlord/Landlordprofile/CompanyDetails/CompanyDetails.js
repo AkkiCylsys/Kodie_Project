@@ -494,7 +494,7 @@ export default CompanyDetails = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        // console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         setLocation(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0

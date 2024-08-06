@@ -377,10 +377,10 @@ const Notices = props => {
       notices_reminder_id: noticeReminderid,
       // notices_reminder_id: 24,
     };
-    console.log('noticesDeleteData body.....', noticesDeleteData);
+    // console.log('noticesDeleteData body.....', noticesDeleteData);
     try {
       const response = await axios.post(noticedelete, noticesDeleteData);
-      console.log('API Response:', response.data);
+      // console.log('API Response:', response.data);
       if (response?.data?.status === true) {
         // Alert.alert("notice Deleted", response?.data?.message);
         alert(response?.data?.data);

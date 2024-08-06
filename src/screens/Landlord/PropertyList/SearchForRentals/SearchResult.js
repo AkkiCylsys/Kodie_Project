@@ -27,11 +27,6 @@ import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/Active
 import {FONTFAMILY, fontFamily} from '../../../../Themes/FontStyle/FontStyle';
 import BottomModalSearchRental from '../../../../components/Molecules/BottomModal/BottomModalSearchRental';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
-const staticimage = [
-  // 'https://kodietestapi.cylsys.com/upload/photo/b654ad06-522d-4d46-8a37-951b15845721.jpg',
-  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
-  // 'https://kodietestapi.cylsys.com/upload/photo/87152267-524d-4bae-bf08-2448b26d659e.jpg',
-];
 export default SearchResult = props => {
   const refRBSheet = useRef();
   const navigation = useNavigation();
@@ -40,6 +35,7 @@ export default SearchResult = props => {
   const [searchRentalData, setSearchRentalData] = useState([]);
   const [likedItems, setLikedItems] = useState({});
   const [rentalAmount, setRentalAmount] = useState('');
+  const [bibId, setBidId] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
   const keyFeatureMapping = {};
   additionalfeatureskey.forEach(detail => {
@@ -116,7 +112,6 @@ export default SearchResult = props => {
         {item?.image_path && item?.image_path.length != 0 ? (
           <View style={{marginTop: 10}}>
             <SliderBox
-              // images={staticimage}
               images={item?.image_path}
               sliderBoxHeight={200}
               onCurrentImagePressed={index =>
@@ -184,6 +179,7 @@ export default SearchResult = props => {
                 refRBSheet.current.open();
                 setPropertyId(item?.property_id);
                 setRentalAmount(item?.rental_amount);
+                setBidId(item?.bid_id);
               }}>
               <Entypo
                 color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -338,7 +334,8 @@ export default SearchResult = props => {
         </View>
       </View>
       <View style={{flex: 1}}>
-        {searchRentalResponse?.data && searchRentalResponse.data.length > 0 ? (
+        {searchRentalResponse?.data &&
+        searchRentalResponse?.data?.length > 0 ? (
           <FlatList
             data={searchRentalResponse.data}
             keyExtractor={(item, index) => `item_${index}`}
@@ -383,6 +380,8 @@ export default SearchResult = props => {
           onClose={onClose}
           propertyId={propertyId}
           rentalAmount={rentalAmount}
+          bibId={bibId}
+          propertyDetails={searchRentalResponse?.data}
         />
       </RBSheet>
       {/* </ScrollView> */}

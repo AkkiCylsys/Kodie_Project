@@ -197,7 +197,7 @@ const PropertyList = props => {
         },
       });
 
-      console.log('API Response:', response?.data);
+      // console.log('API Response:', response?.data);
       if (response?.data?.success === true) {
         Alert.alert(
           'Property Deleted',

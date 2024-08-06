@@ -9,19 +9,22 @@ const RowButtons = (props) => {
     <View style={RowButtonsStyle.mainView}>
       <View style={RowButtonsStyle.leftButtonView}>
         <CustomSingleButton
-          disabled={isLoading ? true : false}
+          // disabled={isLoading ? true : false}
+          disabled={isLoading || props.disabled}
           height={props.leftButtonHeight}
           onPress={props.onPressLeftButton}
           backgroundColor={props.leftButtonbackgroundColor}
           _ButtonText={props.LeftButtonText}
           borderColor={props.LeftButtonborderColor}
           Text_Color={props.LeftButtonTextColor}
+          
         />
       </View>
       {props.isShowRightButton?
       <View style={RowButtonsStyle.leftButtonView}>
         <CustomSingleButton
-          disabled={isLoading ? true : false}
+          // disabled={isLoading ? true : false}
+          disabled={isLoading || props.disabled}
           height={props.RightButtonHeight}
           onPress={props.onPressRightButton}
           backgroundColor={props.RightButtonbackgroundColor}
@@ -46,7 +49,8 @@ RowButtons.defaultProps = {
   RightButtonText: "No",
   leftButtonHeight: 45,
   RightButtonHeight: 45,
-  isShowRightButton:true
+  isShowRightButton:true,
+  disabled: false,
 };
 
 export default RowButtons;

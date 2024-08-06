@@ -41,7 +41,7 @@ export default LandlordProfile = props => {
   const isvisible = useIsFocused();
   const [isLoading, setIsLoading] = useState(false);
   const [accountDetails, setAccountDetails] = useState(null);
-  console.log('signUp_account_response...', signUp_account_response);
+  // console.log('signUp_account_response...', signUp_account_response);
   const user_id = loginData?.Login_details?.user_account_id;
   const getPersonalDetails = () => {
     setIsLoading(true);
@@ -51,7 +51,7 @@ export default LandlordProfile = props => {
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        // console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         setIsLoading(false);
       })

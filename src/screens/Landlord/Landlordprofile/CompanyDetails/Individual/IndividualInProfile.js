@@ -148,13 +148,13 @@ const IndividualInProfile = ({
     axios
       .post(describeYourselfApi, describe_yourself_Data)
       .then(response => {
-        console.log('kodie_describeYouself_Data', response?.data);
+        // console.log('kodie_describeYouself_Data', response?.data);
         if (response?.data?.status === true) {
           setIsLoading(false);
-          console.log(
-            'kodie_describeYouself_Data....',
-            response?.data?.lookup_details,
-          );
+          // console.log(
+          //   'kodie_describeYouself_Data....',
+          //   response?.data?.lookup_details,
+          // );
           setKodieDescribeYourselfData(response?.data?.lookup_details);
         } else {
           console.error(
@@ -245,7 +245,7 @@ const IndividualInProfile = ({
     axios
       .get(apiUrl)
       .then(response => {
-        console.log('API Response:', response?.data?.data[0]);
+        // console.log('API Response:', response?.data?.data[0]);
         setAccountDetails(response?.data?.data[0]);
         const initialJobTypeIds = response?.data?.data[0]
           ?.UAD_CATEGORY_SERVICE_YOU_OFFER
