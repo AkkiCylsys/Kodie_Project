@@ -22,10 +22,13 @@ export default CompanySignupStyle = StyleSheet.create({
     color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 10,
+    marginTop: 12,
+  },
+  websiteContainer:{
+    marginTop:24
   },
   inputContainer: {
-    marginTop: 15,
+    marginTop: 20,
   },
   smstext: {
     fontSize: 12,

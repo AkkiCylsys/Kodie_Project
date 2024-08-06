@@ -99,14 +99,14 @@ const isFocus =useIsFocused();
             <View style={{ flexDirection: 'row' }}>
               <Text style={LeaseSummaryStyle.Paid_Text}>Period: </Text>
               <Text style={LeaseSummaryStyle.Paid_Text}>
-                {item.UPLD_RENTAL_PAYMENT_PERIOD}
+                {item.PLD_RENTAL_PAYMENT_PERIOD}
               </Text>
             </View>
           </View>
           <View>
             <Text style={LeaseSummaryStyle.Amount_Text}>Amount paid</Text>
             <Text style={LeaseSummaryStyle.Accounting_Text}>
-              ${item.UPLD_TOTAL_AMOUNT}
+              ${item.PLD_TOTAL_AMOUNT}
             </Text>
           </View>
         </View>
@@ -116,8 +116,8 @@ const isFocus =useIsFocused();
           <View style={LeaseSummaryStyle.paid_Date_View}>
             <Text style={LeaseSummaryStyle.date_paid}>Date paid:</Text>
             <Text style={LeaseSummaryStyle.Amount_Text}>
-              {item.UPLD_PAYMENT_DATE
-                ? moment(item.UPLD_PAYMENT_DATE.substring(0, 10)).format('Do MMMM YYYY')
+              {item.PLD_PAYMENT_DATE
+                ? moment(item.PLD_PAYMENT_DATE.substring(0, 10)).format('Do MMMM YYYY')
                 : ''}
             </Text>
           </View>
@@ -232,7 +232,7 @@ const isFocus =useIsFocused();
             <View style={{ marginHorizontal: 16 }}>
               <Text style={LeaseSummaryStyle.heading_Text}>Rental receipts</Text>
               <FlatList
-                data={[rentalReceiptData]}
+                data={rentalReceiptData}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderRentalReceipt}
               />
@@ -258,7 +258,7 @@ const isFocus =useIsFocused();
           draggableIcon: { backgroundColor: _COLORS.Kodie_LightGrayColor },
           container: LeaseSummaryStyle.bottomModal_container,
         }}>
-        <Logrentalpayment onClose={handleLogClose} lease_keys={leaseSummaryData?.LEASE_KEY} />
+        <Logrentalpayment onClose={handleLogClose} lease_keys={leaseSummaryData?.LEASE_KEY} property_id={property_id}/>
       </RBSheet>
       {isLoading? <CommonLoader/> : null}
     </>

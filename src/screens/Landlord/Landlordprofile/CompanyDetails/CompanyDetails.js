@@ -21,7 +21,8 @@ import {_COLORS, LABEL_STYLES} from '../../../../Themes';
 import ServicesBox from '../../../../components/Molecules/ServicesBox/ServicesBox';
 import axios from 'axios';
 import {Config} from '../../../../Config';
-import {MultiSelect} from 'react-native-element-dropdown';
+// import {MultiSelect} from 'react-native-element-dropdown';
+import MultiSelect from 'react-native-multiple-select';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import Geocoder from 'react-native-geocoding';
 import MapScreen from '../../../../components/Molecules/GoogleMap/googleMap';
@@ -537,11 +538,13 @@ export default CompanyDetails = props => {
             ? initialJobTypeIds
             : [],
         );
+
         setservicesValue(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 1
             ? initialServiceIds
             : [],
         );
+        
         setIndiservicesValue(
           response?.data?.data[0]?.UAD_HOW_TO_RUN_YOUR_BUSINESS == 0
             ? initialServiceIds
@@ -711,6 +714,37 @@ console.log("IndiservicesData...dee",IndiservicesData)
                     {'The type of service you perform'}
                   </Text>
                   <MultiSelect
+                items={filteredIndiservicesData}
+                uniqueKey="lookup_key"
+                noItemsText={'Feature being searched for is not found on the list.'}
+                onSelectedItemsChange={(item)=>setIndiservicesValue(item)}
+                selectedItems={IndiservicesValue}
+                    
+                selectText="Select items"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={item => {
+                  console.warn(item);
+                  // setAdditionalFeaturesKeyValue(item)
+                }}
+                tagBorderColor={_COLORS.Kodie_BlackColor}
+                selectedItemTextColor={_COLORS.Kodie_GreenColor}
+                selectedItemIconColor={_COLORS.Kodie_GreenColor}
+                itemTextColor="#000"
+                displayKey="lookup_description"
+                searchInputStyle={CompanyDetailsStyle.searchInput}
+                styleListContainer={CompanyDetailsStyle.listContainer}
+                styleRowList={CompanyDetailsStyle.rowList}
+                tagContainerStyle={CompanyDetailsStyle.tagContainer}
+                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+                styleTextTag={CompanyDetailsStyle.textTag}
+                styleTextDropdown={CompanyDetailsStyle.textDropdown}
+                styleDropdownMenu={CompanyDetailsStyle.dropdownMenu}
+                submitButtonColor={_COLORS.Kodie_GreenColor}
+                submitButtonText={
+                  IndiservicesValue.length > 0 ? 'Done' : 'Cancel'
+                }
+              />
+                  {/* <MultiSelect
                     style={[IndividualProfileStyle.dropdown]}
                     placeholderStyle={IndividualProfileStyle.placeholderStyle}
                     selectedTextStyle={IndividualProfileStyle.selectedTextStyle}
@@ -732,7 +766,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                       borderRadius: 20,
                       alignSelf: 'center',
                     }}
-                  />
+                  /> */}
                 </View>
               )}
               <View style={IndividualProfileStyle.inputContainer}>
@@ -852,6 +886,37 @@ console.log("IndiservicesData...dee",IndiservicesData)
                     {'The type of service you perform'}
                   </Text>
                   <MultiSelect
+                items={filteredCompservicesData}
+                uniqueKey="lookup_key"
+                noItemsText={'Feature being searched for is not found on the list.'}
+                onSelectedItemsChange={(item)=>setservicesValue(item)}
+                selectedItems={servicesValue}
+                    
+                selectText="Select items"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={item => {
+                  console.warn(item);
+                  // setAdditionalFeaturesKeyValue(item)
+                }}
+                tagBorderColor={_COLORS.Kodie_BlackColor}
+                selectedItemTextColor={_COLORS.Kodie_GreenColor}
+                selectedItemIconColor={_COLORS.Kodie_GreenColor}
+                itemTextColor="#000"
+                displayKey="lookup_description"
+                searchInputStyle={CompanyDetailsStyle.searchInput}
+                styleListContainer={CompanyDetailsStyle.listContainer}
+                styleRowList={CompanyDetailsStyle.rowList}
+                tagContainerStyle={CompanyDetailsStyle.tagContainer}
+                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+                styleTextTag={CompanyDetailsStyle.textTag}
+                styleTextDropdown={CompanyDetailsStyle.textDropdown}
+                styleDropdownMenu={CompanyDetailsStyle.dropdownMenu}
+                submitButtonColor={_COLORS.Kodie_GreenColor}
+                submitButtonText={
+                  servicesValue.length > 0 ? 'Done' : 'Cancel'
+                }
+              />
+                  {/* <MultiSelect
                     style={[CompanyInProfileStyle.dropdown]}
                     placeholderStyle={CompanyInProfileStyle.placeholderStyle}
                     selectedTextStyle={CompanyInProfileStyle.selectedTextStyle}
@@ -873,7 +938,7 @@ console.log("IndiservicesData...dee",IndiservicesData)
                       borderRadius: 20,
                       alignSelf: 'center',
                     }}
-                  />
+                  /> */}
                 </View>
               )}
               <View style={CompanyInProfileStyle.inputContainer}>

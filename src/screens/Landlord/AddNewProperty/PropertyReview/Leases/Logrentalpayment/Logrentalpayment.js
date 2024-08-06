@@ -16,6 +16,7 @@ import axios from 'axios';
 import {Config} from '../../../../../../Config';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import { useSelector } from 'react-redux';
 const data = [
   {label: '3-month', value: '1'},
   {label: '6-month', value: '2'},
@@ -25,7 +26,9 @@ const Logrentalpayment = props => {
   //   console.log("lease_keys...", props.lease_keys);
   //   alert(JSON.stringify(props.lease_keys));
   const lease_keys = props.lease_keys;
-  console.log('lease_keys in log rental payment...', lease_keys);
+  const property_id = props.property_id;
+  const loginData = useSelector(state => state.authenticationReducer.data);
+  console.log('lease_keys in log rental payment...', loginData);
   const [isLoading, setIsLoading] = useState(false);
   const [totalAmount, setTotalAmount] = useState('');
   const [totalAmountError, setTotalAmountError] = useState('');
@@ -97,13 +100,18 @@ const Logrentalpayment = props => {
   };
 
   const handleTotalAmount = text => {
-    setTotalAmount(text);
-    if (text.trim() === '') {
+    if (text === '') {
+      setTotalAmount('');
+    } else if (!text.startsWith('$')) {
+      text = '$' + ' ' + text;
+    } else if (text === '') {
       setTotalAmountError('Total amount is required!');
     } else {
       setTotalAmountError('');
     }
+    setTotalAmount(text);
   };
+  
   const handlePaymentDate = text => {
     setSelectedDate(text);
     if (text.trim() === '') {
@@ -186,16 +194,20 @@ const Logrentalpayment = props => {
     console.log('Request URL:', rental_payment_url);
     setIsLoading(true);
     const rental_payment_Data = {
-      lease_key: lease_keys,
-      total_amount: totalAmount,
-      p_UPLD_PAYMENT_TYPE: paymentTypeValue,
-      payment_date: selectedDate,
-      rental_payment_period: selectedpaymetPeriod,
-      payment_period_complete: selected_payment_period_Id,
-      payment_period_skipped: selected_payment_skipped_Id,
-      create_rental_receipt: selected_Create_rental_Id,
-      note: notes,
+      p_LEASE_KEY: lease_keys,
+      p_UPD_KEY:property_id,
+      p_TOTAL_AMOUNT: totalAmount,
+      p_PAYMENT_TYPE: paymentTypeValue,
+      p_PAYMENT_DATE: selectedDate,
+      p_RENTAL_PAYMENT_PERIOD: selectedpaymetPeriod,
+      p_PAYMENT_PERIOD_COMPLETE: selected_payment_period_Id,
+      p_PAYMENT_PERIOD_SKIPPED: selected_payment_skipped_Id,
+      p_CREATE_RENTAL_RECEIPT: selected_Create_rental_Id,
+      p_NOTE: notes,
+      p_PLD_DEPOSIT_METHOD:'',
+      p_CREATED_BY:loginData?.Login_details?.user_account_id,
     };
+    console.log(rental_payment_Data,'rental_payment_Data.....')
     axios
       .post(rental_payment_url, rental_payment_Data)
       .then(response => {
@@ -290,6 +302,7 @@ const Logrentalpayment = props => {
             <Text style={LABEL_STYLES.commontext}>{'Payment date*'}</Text>
             <View style={LogrentalPaymentStyle.datePickerView}>
               <CalendarModal
+              current={selectedDate}
                 SelectDate={
                   selectedDate ? selectedDate : 'Date of rental payment'
                 }
@@ -327,6 +340,8 @@ const Logrentalpayment = props => {
             </Text>
             <View style={LogrentalPaymentStyle.datePickerView}>
               <CalendarModal
+              current={selectedpaymetPeriod}
+
                 SelectDate={
                   selectedpaymetPeriod ? selectedpaymetPeriod : 'Week 2 August '
                 }

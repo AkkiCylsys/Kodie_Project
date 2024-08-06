@@ -50,7 +50,7 @@ const subscriptionData = [
     cardHeading: 'Portfolio Pioneer',
     amount: 149,
     duration: 'Month',
-    description: 'The best place to get started',
+    description: 'For the property up-and-comer',
     rule_desc: 'You get:',
     rule_no_1: 'Up to 10 properties',
     rule_no_2: 'Up to 3 users',
@@ -206,8 +206,8 @@ const ManageSubscription = props => {
               LeftButtonText={'Contact us'}
               RightButtonText={'Subscribe'}
               onPressLeftButton={() =>
-                // props.navigation.navigate("ContractorProfile")
-                alert('Coming soon')
+                props.navigation.navigate("Contactus")
+                // alert('Coming soon')
               }
               isShowRightButton={SubscriptionStatus == 'active' ? false : true}
               onPressRightButton={handleSubscribePress}
@@ -225,8 +225,8 @@ const ManageSubscription = props => {
               LeftButtonText={'Contact us'}
               RightButtonText={'Subscribe'}
               onPressLeftButton={() =>
-                // props.navigation.navigate("ContractorProfile")
-                alert('Contact us pressed')
+                props.navigation.navigate("Contactus")
+                // alert('Contact us pressed')
               }
               isShowRightButton={SubscriptionStatus == 'active' ? false : true}
               onPressRightButton={handleSubscribePress}

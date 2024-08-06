@@ -432,6 +432,8 @@ const PreScreening = props => {
                 </Text>
                 <View style={PreScreeningStyle.datePickerView}>
                   <CalendarModal
+                    current={selectedDate}
+
                     SelectDate={selectedDate ? selectedDate : 'Start Date'}
                     _textInputStyle={{
                       color: selectedDate

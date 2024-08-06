@@ -37,7 +37,8 @@ import {FirstPropertyStyle} from '../FirstProperty/FirstPropertyStyle';
 import {SignupLookupDetails} from '../../../../APIs/AllApi';
 import IndividualSignupStyle from './IndividualSignup/IndividualSignupStyle';
 import Octicons from 'react-native-vector-icons/Octicons';
-import {MultiSelect} from 'react-native-element-dropdown';
+// import {MultiSelect} from 'react-native-element-dropdown';
+import MultiSelect from 'react-native-multiple-select'
 import CompanySignupStyle from './CompanySignup/CompanySignupStyle';
 import {set} from 'lodash';
 import {onPress} from 'deprecated-react-native-prop-types/DeprecatedTextPropTypes';
@@ -821,6 +822,37 @@ export default AboutYou = props => {
                     {'The type of service you perform'}
                   </Text>
                   <MultiSelect
+                items={filteredIndiservicesData}
+                uniqueKey="lookup_key"
+                noItemsText={'Feature being searched for is not found on the list.'}
+                onSelectedItemsChange={(item)=>setIndiservicesValue(item)}
+                selectedItems={IndiservicesValue}
+                    
+                selectText="Select items"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={item => {
+                  console.warn(item);
+                  // setAdditionalFeaturesKeyValue(item)
+                }}
+                tagBorderColor={_COLORS.Kodie_BlackColor}
+                selectedItemTextColor={_COLORS.Kodie_GreenColor}
+                selectedItemIconColor={_COLORS.Kodie_GreenColor}
+                itemTextColor="#000"
+                displayKey="lookup_description"
+                searchInputStyle={AboutYouStyle.searchInput}
+                styleListContainer={AboutYouStyle.listContainer}
+                styleRowList={AboutYouStyle.rowList}
+                tagContainerStyle={AboutYouStyle.tagContainer}
+                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+                styleTextTag={AboutYouStyle.textTag}
+                styleTextDropdown={AboutYouStyle.textDropdown}
+                styleDropdownMenu={AboutYouStyle.dropdownMenu}
+                submitButtonColor={_COLORS.Kodie_GreenColor}
+                submitButtonText={
+                  IndiservicesValue.length > 0 ? 'Done' : 'Cancel'
+                }
+              />
+                  {/* <MultiSelect
                     style={[IndividualSignupStyle.dropdown]}
                     placeholderStyle={IndividualSignupStyle.placeholderStyle}
                     selectedTextStyle={IndividualSignupStyle.selectedTextStyle}
@@ -843,7 +875,7 @@ export default AboutYou = props => {
                       borderRadius: 20,
                       alignSelf: 'center',
                     }}
-                  />
+                  /> */}
                 </View>
               )}
               <View style={IndividualSignupStyle.inputContainer}>
@@ -988,7 +1020,7 @@ export default AboutYou = props => {
                   <Text style={[LABEL_STYLES.commontext]}>
                     {'The type of service you perform'}
                   </Text>
-                  <MultiSelect
+                  {/* <MultiSelect
                     style={[CompanySignupStyle.dropdown]}
                     placeholderStyle={CompanySignupStyle.placeholderStyle}
                     selectedTextStyle={CompanySignupStyle.selectedTextStyle}
@@ -1010,11 +1042,41 @@ export default AboutYou = props => {
                       borderRadius: 20,
                       alignSelf: 'center',
                     }}
-                  />
+                  /> */}
+                   <MultiSelect
+                items={filteredCompservicesData}
+                uniqueKey="lookup_key"
+                noItemsText={'Feature being searched for is not found on the list.'}
+                onSelectedItemsChange={(item)=>setservicesValue(item)}
+                selectedItems={servicesValue}
+                    
+                selectText="Select items"
+                searchInputPlaceholderText="Search Items..."
+                onChangeInput={item => {
+                  console.warn(item);
+                  // setAdditionalFeaturesKeyValue(item)
+                }}
+                tagBorderColor={_COLORS.Kodie_BlackColor}
+                selectedItemTextColor={_COLORS.Kodie_GreenColor}
+                selectedItemIconColor={_COLORS.Kodie_GreenColor}
+                itemTextColor="#000"
+                displayKey="lookup_description"
+                searchInputStyle={AboutYouStyle.searchInput}
+                styleListContainer={AboutYouStyle.listContainer}
+                styleRowList={AboutYouStyle.rowList}
+                tagContainerStyle={AboutYouStyle.tagContainer}
+                tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+                styleTextTag={AboutYouStyle.textTag}
+                styleTextDropdown={AboutYouStyle.textDropdown}
+                styleDropdownMenu={AboutYouStyle.dropdownMenu}
+                submitButtonColor={_COLORS.Kodie_GreenColor}
+                submitButtonText={
+                  servicesValue.length > 0 ? 'Done' : 'Cancel'
+                }
+              />
                 </View>
               )}
-              <View style={CompanySignupStyle.inputContainer}>
-                <View style={[CompanySignupStyle.commontextfield]}>
+              <View style={CompanySignupStyle.inputContainer}> 
                   <View>
                     <Text style={[LABEL_STYLES.commontext]}>
                       {'Company physical address'}
@@ -1047,9 +1109,8 @@ export default AboutYou = props => {
                       </TouchableOpacity>
                     </View>
                   </View>
-                </View>
               </View>
-              <View style={CompanySignupStyle.inputContainer}>
+              <View style={CompanySignupStyle.websiteContainer}>
                 <Text style={LABEL_STYLES.commontext}>{'Website'}</Text>
                 <TextInput
                   style={CompanySignupStyle.input}

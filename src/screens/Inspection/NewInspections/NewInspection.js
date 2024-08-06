@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -26,7 +26,8 @@ import axios from "axios";
 import { Config } from "../../../Config";
 import { CommonLoader } from "../../../components/Molecules/ActiveLoader/ActiveLoader";
 import { NewInspectionStyle } from "../../Inspection/NewInspections/NewInspectionStyle";
-const HorizontalData = ["All", "Scheduled", "inProgress", "Complete", "Cancelled"];
+import moment from 'moment';
+const HorizontalData = ["All", "Scheduled", "Progress", "Complete", "Cancel"];
 export default NewInspection = (props) => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
@@ -37,23 +38,25 @@ export default NewInspection = (props) => {
   const [inspectionfilter, setInspectionfilter] = useState([]);
   const [sortOrder, setSortOrder] = useState('desc');
   const [Tim_Key, setTim_key] = useState('');
+  const [getinspection, setGetInspection] = useState([]);
+
   const [_selectedMonthId, set_selectedMonthId] = useState(
     new Date().getMonth() + 1,
   );
   const [_selectedYear, set_selectedYear] = useState(new Date().getFullYear());
   const [_MONTHS, set_MONTHS] = useState([
-    {id: 1, name: 'January'},
-    {id: 2, name: 'February'},
-    {id: 3, name: 'March'},
-    {id: 4, name: 'April'},
-    {id: 5, name: 'May'},
-    {id: 6, name: 'June'},
-    {id: 7, name: 'July'},
-    {id: 8, name: 'August'},
-    {id: 9, name: 'September'},
-    {id: 10, name: 'October'},
-    {id: 11, name: 'November'},
-    {id: 12, name: 'December'},
+    { id: 1, name: 'January' },
+    { id: 2, name: 'February' },
+    { id: 3, name: 'March' },
+    { id: 4, name: 'April' },
+    { id: 5, name: 'May' },
+    { id: 6, name: 'June' },
+    { id: 7, name: 'July' },
+    { id: 8, name: 'August' },
+    { id: 9, name: 'September' },
+    { id: 10, name: 'October' },
+    { id: 11, name: 'November' },
+    { id: 12, name: 'December' },
   ]);
   const [InspectionDetails, setInspectionDetails] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -67,6 +70,7 @@ export default NewInspection = (props) => {
         year: _selectedYear,
         filter: selectedFilter,
       });
+      getInspectionDetails();
     }
   }, [isFocused, _selectedMonthId, _selectedYear, selectedFilter]);
 
@@ -88,10 +92,10 @@ export default NewInspection = (props) => {
     setSearchQuery(query);
     const filtered = query
       ? InspectionDetails.filter(
-          item =>
-            item.location &&
-            item.location.toLowerCase().includes(query.toLowerCase()),
-        )
+        item =>
+          item.location &&
+          item.location.toLowerCase().includes(query.toLowerCase()),
+      )
       : InspectionDetails;
     console.log('filtered.........', filtered);
     setFilteredUsers(filtered);
@@ -106,8 +110,7 @@ export default NewInspection = (props) => {
     setIsLoading(true);
     try {
       const url = Config.BASE_URL;
-      const InspectionDeatilsByFilter_url =
-        url + 'get/AllInspectionDetails/ByFilter';
+      const InspectionDeatilsByFilter_url = `${url}get/AllInspectionDetails/ByFilter`;
       const data = {
         v_Filter: filter,
         P_TIM_CREATED_BY: loginData?.Login_details?.user_account_id,
@@ -121,35 +124,62 @@ export default NewInspection = (props) => {
       const response = await axios.post(InspectionDeatilsByFilter_url, data);
       if (response?.data?.success === true) {
         setInspectionDetails(response?.data?.data);
+        console.log('Updated inspection details:', response?.data?.data);
+      } else {
+        setInspectionDetails([]);
       }
       setIsLoading(false);
     } catch (error) {
+      console.log(error.response,'dssad');
       if (error.response && error.response.status === 500) {
         Alert.alert(
           'Warning',
-          error.response.data.message || 'Internal server issue',
+          error.response.data.message || 'Internal server issue'
         );
-        setIsLoading(false);
       } else if (error.response.status === 404) {
         setInspectionDetails([]);
-        setIsLoading(false);
       }
       console.error('API Error InspectionDeatilsByFilter:', error);
       setIsLoading(false);
     }
   };
 
-  const handleDeleteInspection = async () => {
-    console.log('delete');
+  const getInspectionDetails = () => {
+    setIsLoading(true);
     const url = Config.BASE_URL;
-    const deleteUrl = url + `delete_inspection_details/${TIM_KEY}`;
 
+    const apiUrl = url + `get_inspection_details/${Tim_Key}`;
+
+    axios
+      .get(apiUrl)
+      .then(response => {
+        console.log('API Response: getinspection', response?.data?.data[0]);
+        setGetInspection(response?.data?.data[0]);
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.error('API Error PersonalDetails CIP:', error);
+      });
+  };
+  const handleDeleteInspection = async () => {
+    refRBSheet2.current.close();
+
+    console.log('Attempting to delete inspection...');
+    const url = Config.BASE_URL;
+    const deleteUrl = `${url}delete_inspection_details/${Tim_Key}`;
+    setIsLoading(true)
     try {
       const response = await axios.delete(deleteUrl);
+      console.log('Response from delete inspection:', response?.data);
       if (response?.data?.success) {
         Alert.alert('Success', 'Inspection deleted successfully');
-        navigation?.navigate('NewInspection');
-        // refRBSheet2.current.close();
+        await getInspectionDeatilsByFilter({
+          monthId: _selectedMonthId,
+          year: _selectedYear,
+          filter: selectedFilter,
+        });
+        setIsLoading(false)
+
       } else {
         Alert.alert('Error', 'Failed to delete inspection');
       }
@@ -159,12 +189,13 @@ export default NewInspection = (props) => {
     }
   };
 
+
   const SubmitInspection = async () => {
     // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
-        UPD_KEY: PropertyId,
+        UPD_KEY: getinspection.v_UPD_KEY,
         TIM_INSPECTION_TYPE: getinspection.v_TIM_INSPECTION_TYPE,
         TIM_SCHEDULE_TIME: getinspection.v_TIM_SCHEDULE_TIME,
         TIM_SCHEDULE_DATE: moment(getinspection.v_TIM_SCHEDULE_DATE).format(
@@ -192,6 +223,11 @@ export default NewInspection = (props) => {
       refRBSheet2.current.close();
       if (res?.data?.success == true) {
         alert(res?.data?.message);
+        await getInspectionDeatilsByFilter({
+          monthId: _selectedMonthId,
+          year: _selectedYear,
+          filter: selectedFilter,
+        });
         setIsLoading(false);
       }
     } catch (error) {
@@ -214,7 +250,7 @@ export default NewInspection = (props) => {
       getInspectionDeatilsByFilter({
         monthId: _selectedMonthId,
         year: _selectedYear,
-        page: nextPage, 
+        page: nextPage,
         filter: selectedFilter,
       });
     }
@@ -253,7 +289,8 @@ export default NewInspection = (props) => {
     });
   };
 
-  const horizontal_render = ({item}) => {
+  const horizontal_render = ({ item }) => {
+    console.log(item,'itemitemitem');
     return (
       <TouchableOpacity
         style={[
@@ -316,7 +353,7 @@ export default NewInspection = (props) => {
     );
   };
 
-  const Inspection_render = ({item, index}) => {
+  const Inspection_render = ({ item, index }) => {
     const getDate = new Date(item.scheduled_date);
     const dayOfMonth = getDate.getDate(); // Extracts the day of the month
     const daysOfWeek = [
@@ -342,22 +379,27 @@ export default NewInspection = (props) => {
           }}>
           <View style={NewInspectionStyle.insp_cld_main_view}>
             <Text style={NewInspectionStyle.insp_cld_date}>{dayOfMonth}</Text>
-            <Text style={NewInspectionStyle.insp_cld_Text}>{dayOfWeek}</Text>
+            <Text
+              style={NewInspectionStyle.insp_cld_Text}
+              ellipsizeMode="tail"
+              numberOfLines={1}>
+              {dayOfWeek}
+            </Text>
             <Text style={NewInspectionStyle.insp_cld_Text}>
               {item?.scheduled_time}
             </Text>
           </View>
-          <View style={{flex: 0.4}}>
+          <View style={{ flex: 0.4 }}>
             {item.image_path && item.image_path.length > 0 ? (
               <Image
-                source={{uri: item?.image_path[0]}}
+                source={{ uri: item?.image_path[0] }}
                 style={NewInspectionStyle.img_Sty}
               />
             ) : (
               <View
                 style={[
                   NewInspectionStyle.img_Sty,
-                  {justifyContent: 'center'},
+                  { justifyContent: 'center' },
                 ]}>
                 <Text
                   style={{
@@ -371,18 +413,18 @@ export default NewInspection = (props) => {
               </View>
             )}
           </View>
-          <View style={{flex: 1, marginLeft: 2}}>
+          <View style={{ flex: 1, marginLeft: 2 }}>
             <View style={NewInspectionStyle.location_main_view}>
               <Entypo
                 name="location-pin"
                 size={18}
                 color={_COLORS.Kodie_GreenColor}
-                style={{alignSelf: 'center'}}
+                style={{ alignSelf: 'center' }}
               />
               <Text style={NewInspectionStyle.location_text}>
                 {item.location}
               </Text>
-              <View style={{margin: 6}} />
+              <View style={{ margin: 6 }} />
               <TouchableOpacity
                 onPress={() => {
                   setTim_key(item?.tim_key);
@@ -405,10 +447,31 @@ export default NewInspection = (props) => {
                   {item.userName}
                 </Text>
               </View>
-              <TouchableOpacity style={NewInspectionStyle.in_progress_view}>
-                <Text style={NewInspectionStyle.in_progress_txt}>
-                  {'Schedule'}
+              <TouchableOpacity style={[NewInspectionStyle.in_progress_view, {
+                backgroundColor: 
+                item.key === 'Complete' ? _COLORS.Kodie_lightGreenColor
+                  :item.key === 'Scheduled' ? '#E7F1FF'
+                    : item.key === 'Progress' ? _COLORS?.Kodie_LightOrange
+                      : '#FFD9D9'
+
+              }]}>
+                <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+                  <View style={{height:7,width:7,borderRadius:7/2,margin:5,backgroundColor: 
+                item.key === 'Complete' ? _COLORS.Kodie_ExtraDarkGreen
+                  :item.key === 'Scheduled' ? '#336FC3'
+                    : item.key === 'Progress' ? _COLORS?.Kodie_DarkOrange
+                      : _COLORS.Kodie_redColor}}/>
+                <Text style={[NewInspectionStyle.in_progress_txt,{color: 
+                item.key === 'Complete' ? _COLORS.Kodie_ExtraDarkGreen
+                  :item.key === 'Scheduled' ? '#336FC3'
+                    : item.key === 'Progress' ? _COLORS?.Kodie_DarkOrange
+                      : _COLORS.Kodie_redColor
+
+              }]}>
+                  {item.key}
                 </Text>
+                </View>
+               
               </TouchableOpacity>
             </View>
           </View>
@@ -460,26 +523,30 @@ export default NewInspection = (props) => {
         />
       </View>
       <DividerIcon />
-      <View style={NewInspectionStyle.containerStyle}>
-        <TouchableOpacity onPress={navigateToPreviousMonth} style={NewInspectionStyle.leftButtonStyle}>
-          <Entypo name={"chevron-left"} size={22} color={"black"} />
-        </TouchableOpacity>
-        <View style={NewInspectionStyle.textContainerStyle}>
-          <View style={NewInspectionStyle.textItemStyle}>
-            <Text style={NewInspectionStyle.textStyle}>
-              {_MONTHS.find((month) => month.id === _selectedMonthId)?.name}{" "}
-            </Text>
-          </View>
-          <View style={NewInspectionStyle.textItemStyle}>
-            <Text style={NewInspectionStyle.textStyle}>{_selectedYear}</Text>
-          </View>
-        </View>
-        <TouchableOpacity onPress={navigateToNextMonth} style={NewInspectionStyle.rightButtonStyle}>
-          <Entypo name={"chevron-right"} size={22} color={"black"} />
-        </TouchableOpacity>
-      </View>
-      <DividerIcon />
       <ScrollView>
+        <View style={NewInspectionStyle.containerStyle}>
+          <TouchableOpacity
+            onPress={navigateToPreviousMonth}
+            style={NewInspectionStyle.leftButtonStyle}>
+            <Entypo name={'chevron-left'} size={22} color={'black'} />
+          </TouchableOpacity>
+          <View style={NewInspectionStyle.textContainerStyle}>
+            <View style={NewInspectionStyle.textItemStyle}>
+              <Text style={NewInspectionStyle.textStyle}>
+                {_MONTHS.find(month => month.id === _selectedMonthId)?.name}{' '}
+              </Text>
+            </View>
+            <View style={NewInspectionStyle.textItemStyle}>
+              <Text style={NewInspectionStyle.textStyle}>{_selectedYear}</Text>
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={navigateToNextMonth}
+            style={NewInspectionStyle.rightButtonStyle}>
+            <Entypo name={'chevron-right'} size={22} color={'black'} />
+          </TouchableOpacity>
+        </View>
+        <DividerIcon />
         <FlatList
           data={searchQuery ? filteredUsers : InspectionDetails}
           scrollEnabled
@@ -509,6 +576,7 @@ export default NewInspection = (props) => {
           <TouchableOpacity
             style={NewInspectionStyle.modalFile}
             onPress={() => {
+              refRBSheet2.current.close();
               props.navigation.navigate('CreateNewInspection', {
                 TIM_KEY: Tim_Key,
                 Ins_editMode: 'Ins_editMode',

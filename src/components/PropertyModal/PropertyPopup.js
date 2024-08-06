@@ -325,6 +325,7 @@ const PropertyPopup = props => {
               <Text style={LABEL_STYLES.commontext}>{'Commencement date'}</Text>
               <View style={PropertyPopupStyle.datePickerView}>
                 <CalendarModal
+                current={selectedCommDate}
                   SelectDate={
                     selectedCommDate ? selectedCommDate : 'Start Date'
                   }

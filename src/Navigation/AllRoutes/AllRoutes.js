@@ -142,6 +142,7 @@ import RentalOffer from '../../screens/Landlord/PropertyList/SearchForRentals/Re
 import AddNotices from '../../screens/NotiesList/AddNewNotice/AddNotices';
 import PropertyRentalOffer from '../../screens/Landlord/PropertyList/PropertyRentalOffer/PropertyRentalOffer';
 import PropertyViewApplication from '../../screens/Landlord/PropertyList/PropertyRentalOffer/PropertyViewApplication/PropertyViewApplication';
+import MultipleDropDwonDummy from '../../screens/MultipleDropDwonDummy';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1020,7 +1021,7 @@ const AllStackRouts = props => {
           component={PaymentScreen}
           options={{headerShown: false}}
         /> */}
-      
+
         <Stack.Screen
           name={'CreditCard'}
           component={CreditCard}
@@ -1071,19 +1072,24 @@ const AllStackRouts = props => {
           component={RentalOffer}
           options={{headerShown: false}}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={'AddNotices'}
           component={AddNotices}
           options={{headerShown: false}}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={'PropertyRentalOffer'}
           component={PropertyRentalOffer}
           options={{headerShown: false}}
         />
-         <Stack.Screen
+        <Stack.Screen
           name={'PropertyViewApplication'}
           component={PropertyViewApplication}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'MultipleDropDwonDummy'}
+          component={MultipleDropDwonDummy}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

@@ -182,9 +182,9 @@ export default PropertyReview = props => {
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
         />
-      ) : item === 'Built in robes' ? (
+      ) : item === 'Built-in wardrobes' ? (
         <MaterialCommunityIcons
-          name="cupboard"
+          name="wardrobe"
           size={25}
           color={_COLORS.Kodie_GreenColor}
           resizeMode={'contain'}
@@ -489,7 +489,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {property_Detail?.floor_size}
+                      {`${property_Detail?.floor_size} m²`}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />

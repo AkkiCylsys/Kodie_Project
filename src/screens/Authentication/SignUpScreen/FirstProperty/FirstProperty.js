@@ -912,13 +912,13 @@ export default FirstProperty = props => {
                   </View>
                   <View style={FirstPropertyStyle.inputContainer}>
                     <Text style={LABEL_STYLES._texinputLabel}>
-                      Property description
+                      Notes
                     </Text>
                     <TextInput
                       style={FirstPropertyStyle.input}
                       value={propertyDesc}
                       onChangeText={setPropertyDesc}
-                      placeholder="Describe your property here..."
+                      placeholder="Add any information about your property"
                       placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                       multiline
                       numberOfLines={5}
@@ -1244,12 +1244,12 @@ export default FirstProperty = props => {
                       <Text
                         style={[
                           LABEL_STYLES._texinputLabel,
-                          FirstPropertyStyle.addition_featureText,
+                          FirstPropertyStyle.featureText,
                         ]}>
                         Additional key features
                       </Text>
                       <MultiSelect
-                        hideDropdown
+                        // hideDropdown
                         items={additionalfeatureskey}
                         uniqueKey="paf_key"
                         onSelectedItemsChange={onSelectedItemsChange}
@@ -1257,7 +1257,7 @@ export default FirstProperty = props => {
                         selectText="Add features such as pool, aircon, balcony etc."
                         searchInputPlaceholderText="Search Items..."
                         onChangeInput={item => {
-                          setAdditionalFeaturesKeyValue(item);
+                          console.warn(item);
                         }}
                         tagBorderColor={_COLORS.Kodie_BlackColor}
                         selectedItemTextColor={_COLORS.Kodie_GreenColor}

@@ -313,6 +313,7 @@ const AddBiddingDetails = props => {
               <Text style={LABEL_STYLES.commontext}>{'Commencement date'}</Text>
               <View style={AddBiddingDetailsCss.datePickerView}>
                 <CalendarModal
+                current={selectedCommDate}
                   SelectDate={
                     selectedCommDate ? selectedCommDate : 'Start Date'
                   }

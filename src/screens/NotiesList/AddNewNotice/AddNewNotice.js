@@ -1159,6 +1159,8 @@ const AddNewNotice = props => {
               <View style={AddNewNoticeStyle.datetimeview}>
                 <View style={AddNewNoticeStyle.dateview}>
                   <CalendarModal
+              current={selectedDate}
+
                     // SelectDate={selectedDate ? selectedDate : "Select Date"}
                     SelectDate={
                       selectedDate
@@ -1219,6 +1221,7 @@ const AddNewNotice = props => {
                 <View style={AddNewNoticeStyle.dateview}>
                   <View style={{flex: 1}}>
                     <CalendarModal
+                    current={selectedToDate}
                       // SelectDate={selectedDate ? selectedDate : "Select Date"}
                       SelectDate={
                         selectedToDate

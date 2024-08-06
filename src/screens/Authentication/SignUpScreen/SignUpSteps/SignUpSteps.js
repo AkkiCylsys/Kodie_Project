@@ -263,26 +263,21 @@ const SignUpSteps = props => {
   }
 
   const handleNextBtn = () => {
-    // alert(mobileNumber);
-    // if (!ImageName) {
-    //   setImageError('Please select an image before proceeding.');
-    // } else
     if (firstName.trim() === '') {
       setFirstNameError('First name is required!');
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(firstName)) {
-      setFirstNameError('First name should contain only alphabetic characters');
-    } else if (lastName.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(firstName.trim())) {
+      setFirstNameError('First name should only contain alphabetic characters, spaces, or hyphens.');
+    }
+     else if (lastName.trim() === '') {
       setLastNameError('Last name is required!');
-    } else if (!/^[A-Za-z]+(?:\s)?$/.test(lastName)) {
-      setLastNameError('Last name should contain only alphabetic characters');
-    } else if (mobileNumber.trim() === '') {
+    } else if (!/^[A-Za-z]+(?:[ -][A-Za-z]+)*$/.test(lastName.trim())) {
+      setLastNameError('Last name should only contain alphabetic characters, spaces, or hyphens.');
+    }
+     else if (mobileNumber.trim() === '') {
       setMobileNumberError('Phone number is required!');
-      // } else if (!validMobileNumber(mobileNumber)) {
-      //   setMobileNumberError('Invalid phone number format.');
     } else if (!phoneInput.current?.isValidNumber(mobileNumber)) {
       setMobileNumberError('Invalid phone number format.');
     } else {
-      // ImageName ? refRBSheet.current.close() : null;
 
       // if (ImageName) {
       props.navigation.navigate('AboutYou', {

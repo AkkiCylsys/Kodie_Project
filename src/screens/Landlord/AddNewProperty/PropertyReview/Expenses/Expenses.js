@@ -130,7 +130,7 @@ export default Expenses = props => {
               <View style={ExpensesStyle.paid_Date_View}>
                 <Text style={ExpensesStyle.date_paid}>{'Date paid:'}</Text>
                 <Text style={ExpensesStyle.Amount_Text}>
-                  {moment(item.UPED_DUE_DATE.substring(0, 10)).format('DD-MMM')}
+                  {item.UPED_PAID == 0? moment(item.UPED_START_DATE.substring(0, 10)).format('DD-MMM'): '-'}
                 </Text>
               </View>
               <TouchableOpacity
@@ -148,9 +148,9 @@ export default Expenses = props => {
                     name="dot-single"
                     size={25}
                     color={
-                      item.UPED_PAID == 0
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_DarkOrange
+                      item.UPED_PAID == 1
+                        ? _COLORS.Kodie_DarkOrange
+                        : _COLORS.Kodie_GreenColor
                     }
                   />
                   <Text
@@ -158,12 +158,12 @@ export default Expenses = props => {
                       ExpensesStyle.rent_received_text,
                       {
                         color:
-                          item.UPED_PAID == 0
-                            ? _COLORS.Kodie_GreenColor
-                            : _COLORS.Kodie_DarkOrange,
+                          item.UPED_PAID == 1
+                            ? _COLORS.Kodie_DarkOrange
+                            : _COLORS.Kodie_GreenColor,
                       },
                     ]}>
-                    {item.UPED_PAID == 0 ? 'Paid' : 'Awaiting payment'}
+                    {item.UPED_PAID == 1 ? 'Awaiting payment' : 'Paid'}
                   </Text>
                 </View>
               </TouchableOpacity>
