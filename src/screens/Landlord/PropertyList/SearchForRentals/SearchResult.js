@@ -381,6 +381,7 @@ export default SearchResult = props => {
           propertyId={propertyId}
           rentalAmount={rentalAmount}
           bibId={bibId}
+          propertyDetails={searchRentalResponse?.data}
         />
       </RBSheet>
       {/* </ScrollView> */}
