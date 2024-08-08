@@ -53,6 +53,7 @@ import MapComponent from '../../components/Molecules/GoogleMap/mapComponets';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 export default CreateJobFirstScreen = props => {
+  const createJobId = useSelector(state => state.AddCreateJobReducer.data);
   const mapRef = useRef(null);
   const navigation = useNavigation();
   const [getLat, setGetLat] = useState('');
@@ -282,7 +283,11 @@ export default CreateJobFirstScreen = props => {
     handleJob_priority();
     handleRatingThreshold();
     handleJobType();
-    JobId > 0 ? getJobDetails() : null; //edit by Deependra..
+    JobId > 0 ||
+    (Array.isArray(createJobId) && createJobId.length > 0) ||
+    typeof createJobId === 'number'
+      ? getJobDetails()
+      : null; //edit by Deependra..
     Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {
       language: 'en',
     });
@@ -720,7 +725,8 @@ export default CreateJobFirstScreen = props => {
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetails_Data = {
-      jm_job_id: JobId,
+      jm_job_id:  createJobId && !Array.isArray(createJobId)
+      ? createJobId : JobId,
     };
     axios
       .post(jobDetails_url, jobDetails_Data)
@@ -935,7 +941,7 @@ export default CreateJobFirstScreen = props => {
               />
             </View>
             <View style={{marginTop: 12}}>
-              <Text style={LABEL_STYLES.commontext}>{'Job priority:'}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Job priority *'}</Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -959,11 +965,11 @@ export default CreateJobFirstScreen = props => {
             </View>
             {jobPriorityValueError ? (
               <Text style={CreateJobFirstStyle.error_text}>
-                {'Job priority is require.'}
+                {'Job priority is required.'}
               </Text>
             ) : null}
             <View style={{marginTop: 12}}>
-              <Text style={LABEL_STYLES.commontext}>{'Property type'}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Property type *'}</Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}

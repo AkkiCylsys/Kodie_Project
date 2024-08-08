@@ -41,22 +41,11 @@ import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/Searc
 import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
 
-const DocumentData = [
-  {
-    id: 1,
-    fileName: 'Tenant  screening report.pdf',
-  },
-];
 const RentalOffer = props => {
   const edit_offer = props?.route?.params?.edit_offer;
   const propertyDetails = props?.route?.params?.propertyDetails;
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginresponse_Rental offer..', loginData?.Account_details[0]);
-  // console.log(
-  //   'loginresponse image photo..',
-  //   loginData?.Login_details?.profile_photo_path,
-  // );
-  console.log("propertyDetails....",propertyDetails)
+  console.log('propertyDetails....', propertyDetails);
   const profile_image = loginData?.Login_details?.profile_photo_path;
   const loginAccountDetails = loginData?.Account_details[0];
   const propertyId = props?.route?.params?.propertyId;
@@ -87,26 +76,15 @@ const RentalOffer = props => {
   const [TenantRooms, setTenantRooms] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [RentalLeaseData, setRentalLeaseData] = useState([]);
-  const [EmployeeValueData, setEmployeeValueData] = useState(null);
-  const [valueStyingData, setValueStyingData] = useState([]);
-  const [petsData, setPetsData] = useState([]);
   const [Preferences, setPreferences] = useState(false);
   const [submitApplicationBtn, setSubmitApplicationBtn] = useState(false);
   const [submitApplicationBtnId, setSubmitApplicationBtnId] = useState(0);
   // ...
   const [quesHeading, setQuesHeading] = useState([]);
-  const [questionCode, setQuestionCode] = useState('');
   const [expandedItem, setExpandedItem] = useState(null);
   const [inputValues, setInputValues] = useState({});
   const [question, setQuestion] = useState([]);
-  const [employeeQues, setEmployeeQues] = useState([]);
-  const [rentailDetails, setRentailDetails] = useState([]);
-  const [rental_History, setRental_History] = useState([]);
   const [preference, setPreference] = useState([]);
-  const [personalDetails, setPersonalDetails] = useState({});
-  const [employmentStatus, setEmploymentStatus] = useState({});
-  const [income, setIncome] = useState('');
   const [dropdownData, setDropdownData] = useState({});
   const [allQuestion, setAllQuestion] = useState([]);
   const [numberOccupants, setNumberOccupants] = useState(0);
@@ -122,9 +100,7 @@ const RentalOffer = props => {
   const [selectedPetsButton, setSelectedPetsButton] = useState(false);
   const [selectedPreviousRentalButton, setSelectedPreviousRentalButton] =
     useState(false);
-  const [selectedButtonId, setSelectedButtonId] = useState(0);
   const [selectedSomokingButton, setSelectedSomokingButton] = useState(false);
-  const [selectedSomokingButtonId, setSelectedSomokingButtonId] = useState(0);
   const [typeOfPetsValue, setTypeOfPetsValue] = useState([]);
   const [toggleReference, setToggleReference] = useState(false);
 
@@ -141,16 +117,7 @@ const RentalOffer = props => {
   const [occupants, setOccupants] = useState([]);
   const [leaseHolderItem, setLeaseHolderItem] = useState([]);
   const [selectFile, setSelectFile] = useState([]);
-  const [getuploadDocByModuleName, setGetuploadDocByModuleName] = useState([]);
-  const [peopleStayInPropertyData, setPeopleStayInPropertyData] = useState([]);
-  const [peopleStayInPropertyCode, setPeopleStayInPropertyCode] =
-    useState(null);
-  const [occupantsNames, setOccupantsNames] = useState([]);
-  const [leaseHolderNames, setLeaseHolderNames] = useState([]);
   const [subChildren, setSubChildren] = useState([]);
-  const [finalJsonData, setFinalJsonData] = useState([]);
-  const [editAllQuestion, setEditAllQuestion] = useState([]);
-  const [editData, setEditData] = useState(null);
   const [petsSubChildren, setPetsSubChildren] = useState([]);
   // location....
   const ConfirmAddress = () => {
@@ -239,9 +206,6 @@ const RentalOffer = props => {
   const increaseNumberPets = () => {
     setNumberPets(prevCount => prevCount + 1);
   };
-  const onSelectedItemsChange = selectedItems => {
-    setTypeOfPetsValue(selectedItems);
-  };
   useEffect(() => {
     handleTenantQues();
     edit_offer == 'edit_offer' ? getEditAllQuestion() : null;
@@ -282,162 +246,50 @@ const RentalOffer = props => {
     handleInputChange('PREVIOUS_ADDRESS', text);
   };
 
-  
-  // const getEditAllQuestion = async () => {
-  //   const url = Config.BASE_URL;
-  //   const Ques_url = url + 'question_details_for_tenant_ques';
-  //   console.log('Request URL:', Ques_url);
-  //   setIsLoading(true);
-
-  //   const QuesData = {
-  //     p_account_id: loginData?.Login_details?.user_account_id,
-  //     p_property_id: propertyId,
-  //   };
-
-  //   try {
-  //     const response = await axios.post(Ques_url, QuesData);
-  //     console.log('Response edit question..', response?.data);
-
-  //     if (response?.data?.success === true) {
-  //       const data = response?.data?.data?.[0]?.parent_json;
-
-  //       if (Array.isArray(data)) {
-  //         const initialValues = {};
-  //         const dropdownQuestions = [];
-
-  //         data.forEach(parentQuestion => {
-  //           if (Array.isArray(parentQuestion.children)) {
-  //             parentQuestion.children.forEach(childQuestion => {
-  //               if (childQuestion.tqm_Question_type === 'Dropdown') {
-  //                 dropdownQuestions.push(childQuestion.tqm_Question_code);
-  //               }
-
-  //               if (
-  //                 childQuestion.tqm_Question_value !== undefined &&
-  //                 childQuestion.tqm_Question_value !== null
-  //               ) {
-  //                 initialValues[childQuestion.tqm_Question_code] =
-  //                   childQuestion.tqm_Question_value;
-
-  //                 // Set the initial state for Yes/No and Smoking buttons
-  //                 if (childQuestion.tqm_Question_code === 'EARN_INCOME') {
-  //                   setSelectedButton(childQuestion.tqm_Question_value === 1);
-  //                 } else if (
-  //                   childQuestion.tqm_Question_code === 'EVER_BROKEN'
-  //                 ) {
-  //                   setSelectedRentalBondButton(
-  //                     childQuestion.tqm_Question_value === 1,
-  //                   );
-  //                 } else if (
-  //                   childQuestion.tqm_Question_code === 'EVICTED_PREVIOUS_BOND'
-  //                 ) {
-  //                   setSelectedPreviousRentalButton(
-  //                     childQuestion.tqm_Question_value === 1,
-  //                   );
-  //                 } else if (childQuestion.tqm_Question_code === 'ANY_PETS') {
-  //                   setSelectedPetsButton(
-  //                     childQuestion.tqm_Question_value === 1,
-  //                   );
-  //                 } else if (childQuestion.tqm_Question_code === 'S/NS') {
-  //                   setSelectedSomokingButton(
-  //                     childQuestion.tqm_Question_value === 0,
-  //                   ); // Assuming 0 means Smoking and 1 means Non-smoking
-  //                 }
-  //               }
-  //             });
-  //           }
-  //         });
-
-  //         // Fetch dropdown data and set initial values
-  //         const dropdownDataPromises = dropdownQuestions.map(
-  //           async questionCode => {
-  //             const options = await handleDropdown(questionCode);
-  //             setDropdownData(prevData => ({
-  //               ...prevData,
-  //               [questionCode]: options,
-  //             }));
-
-  //             // Convert initialValues to match dropdown options format
-  //             const value = initialValues[questionCode];
-  //             if (value) {
-  //               const selectedOption = options.find(
-  //                 option => String(option.lookup_key) === String(value),
-  //               );
-  //               if (selectedOption) {
-  //                 initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
-  //               }
-  //             }
-  //           },
-  //         );
-
-  //         // Wait for all dropdown data to be fetched and set
-  //         await Promise.all(dropdownDataPromises);
-
-  //         setInputValues(initialValues);
-  //         if (initialValues['PREVIOUS_ADDRESS']) {
-  //           setLocation(initialValues['PREVIOUS_ADDRESS']);
-  //         }
-  //         console.log('response in edit mode...', JSON.stringify(data));
-  //       } else {
-  //         console.error(
-  //           'Invalid data structure: parent_json is not an array',
-  //           data,
-  //         );
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('API failed EdittenantQues', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
     const Ques_url = url + 'question_details_for_tenant_ques';
     console.log('Request URL:', Ques_url);
     setIsLoading(true);
-  
+
     const QuesData = {
       p_account_id: loginData?.Login_details?.user_account_id,
       p_property_id: propertyId,
     };
-  
+
     try {
       const response = await axios.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
-  
+
       if (response?.data?.success === true) {
         const data = response?.data?.data?.[0]?.parent_json;
-  
+
         if (Array.isArray(data)) {
           const initialValues = {};
           const dropdownQuestions = [];
-  
+
           data.forEach(parentQuestion => {
             if (Array.isArray(parentQuestion.children)) {
               parentQuestion.children.forEach(childQuestion => {
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
                 }
-  
+                // Set the initial state for Yes/No buttons dynamically
+                if (childQuestion.tqm_Question_type === 'Yes_no') {
+                  const value = childQuestion.tqm_Question_value;
+                  setButtonState(childQuestion.tqm_Question_code, value);
+                }
                 if (
                   childQuestion.tqm_Question_value !== undefined &&
                   childQuestion.tqm_Question_value !== null
                 ) {
                   initialValues[childQuestion.tqm_Question_code] =
                     childQuestion.tqm_Question_value;
-  
-                  // Set the initial state for Yes/No buttons dynamically
-                  if (childQuestion.tqm_Question_type === 'YesNo') {
-                    const value = childQuestion.tqm_Question_value === 1;
-                    setButtonState(childQuestion.tqm_Question_code, value);
-                  }
                 }
               });
             }
           });
-  
+
           // Fetch dropdown data and set initial values
           const dropdownDataPromises = dropdownQuestions.map(
             async questionCode => {
@@ -446,7 +298,7 @@ const RentalOffer = props => {
                 ...prevData,
                 [questionCode]: options,
               }));
-  
+
               // Convert initialValues to match dropdown options format
               const value = initialValues[questionCode];
               if (value) {
@@ -459,10 +311,10 @@ const RentalOffer = props => {
               }
             },
           );
-  
+
           // Wait for all dropdown data to be fetched and set
           await Promise.all(dropdownDataPromises);
-  
+
           setInputValues(initialValues);
           if (initialValues['PREVIOUS_ADDRESS']) {
             setLocation(initialValues['PREVIOUS_ADDRESS']);
@@ -481,36 +333,31 @@ const RentalOffer = props => {
       setIsLoading(false);
     }
   };
+
+  const setButtonState = (questionCode, value) => {
+    console.log('value in buttons....', value);
+    const isYesSelected = value === 0; // true if Yes is selected, false if No is selected
   
-  // Helper function to set the state of Yes/No buttons dynamically
- // Helper function to set the state of Yes/No buttons dynamically
-const setButtonState = (questionCode, value) => {
-  console.log("value in buttons....", value);
-  const isYesSelected = value === 1; // true if Yes is selected, false if No is selected
-
-  switch (questionCode) {
-    case 'EARN_INCOME':
-      setSelectedButton(isYesSelected);
-      break;
-    case 'EVER_BROKEN':
-      setSelectedRentalBondButton(isYesSelected);
-      break;
-    case 'EVICTED_PREVIOUS_BOND':
-      setSelectedPreviousRentalButton(isYesSelected);
-      break;
-    case 'ANY_PETS':
-      setSelectedPetsButton(isYesSelected);
-      break;
-    case 'S/NS':
-      setSelectedSmokingButton(!isYesSelected); // Assuming 0 means Smoking and 1 means Non-smoking
-      break;
-    default:
-      console.warn(`Unhandled Yes/No question code: ${questionCode}`);
-  }
-};
-
-  
-
+    switch (questionCode) {
+      case 'EARN_INCOME':
+        setSelectedButton(isYesSelected);
+        break;
+      case 'EVER_BROKEN':
+        setSelectedRentalBondButton(isYesSelected);
+        break;
+      case 'EVICTED_PREVIOUS_BOND':
+        setSelectedPreviousRentalButton(isYesSelected);
+        break;
+      case 'ANY_PETS':
+        setSelectedPetsButton(isYesSelected);
+        break;
+      case 'S/NS':
+        setSelectedSmokingButton(isYesSelected); // Assuming 0 means Smoking and 1 means Non-smoking
+        break;
+      default:
+        console.warn(`Unhandled Yes/No question code: ${questionCode}`);
+    }
+  };
 
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
@@ -1050,28 +897,14 @@ const setButtonState = (questionCode, value) => {
       </View>
     );
   };
-  const handleDayPress = day => {
-    setSelectedDate(day.dateString);
-  };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const toggleRentalDetails = () => {
-    setRentalDetails(!RentalDetails);
-  };
+
   const toggleItem = itemChildren => {
     setExpandedItem(prevState =>
       prevState === itemChildren ? null : itemChildren,
     );
-  };
-  const toggleTenantRooms = () => {
-    setTenantRooms(!TenantRooms);
-  };
-  const toggleRentalHistory = () => {
-    setRentalHistory(!RentalHistory);
-  };
-  const togglePreferences = () => {
-    setPreferences(!Preferences);
   };
 
   const onClose = () => {
@@ -1332,14 +1165,19 @@ const setButtonState = (questionCode, value) => {
       EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
       ANY_PETS: selectedPetsButton, // ANY_PETS question code
     };
-    
+
     Object.keys(yesNoButtonValues).forEach(questionCode => {
       const questionId = questionCodeToId[questionCode];
       const isYesSelected = yesNoButtonValues[questionCode];
-    
+
       // Set value based on selection
-      const value = (isYesSelected === undefined || isYesSelected === null) ? 1 : (isYesSelected ? 0 : 1);
-    
+      const value =
+        isYesSelected === undefined || isYesSelected === null
+          ? 1
+          : isYesSelected
+          ? 0
+          : 1;
+
       if (
         questionId !== undefined &&
         !processedQuestionCodes.has(questionCode)
@@ -1512,13 +1350,16 @@ const setButtonState = (questionCode, value) => {
     const saveBiddingDetails_url = `${url}save_bidding_details`;
     console.log('Request URL:', saveBiddingDetails_url);
     setIsLoading(true);
-  
+
     const saveBiddingDetailsData = new FormData();
     saveBiddingDetailsData.append('bid_id', bibId);
-    saveBiddingDetailsData.append('account_id', loginData?.Login_details?.user_account_id);
+    saveBiddingDetailsData.append(
+      'account_id',
+      loginData?.Login_details?.user_account_id,
+    );
     saveBiddingDetailsData.append('property_id', propertyId);
     saveBiddingDetailsData.append('amount', 1000);
-  
+
     // Check if selectFile is defined and has at least one file
     if (selectFile && selectFile.length > 0) {
       const file = selectFile[0];
@@ -1528,9 +1369,9 @@ const setButtonState = (questionCode, value) => {
         type: file.type,
       });
     }
-  
+
     console.log('saveBiddingDetails_Data:', saveBiddingDetailsData);
-  
+
     axios
       .post(saveBiddingDetails_url, saveBiddingDetailsData, {
         headers: {
@@ -1539,7 +1380,10 @@ const setButtonState = (questionCode, value) => {
       })
       .then(response => {
         if (response?.data?.success === true) {
-          console.log('API Response saveBiddingDetails Data:', JSON.stringify(response?.data));
+          console.log(
+            'API Response saveBiddingDetails Data:',
+            JSON.stringify(response?.data),
+          );
         } else {
           setIsLoading(false);
         }
@@ -1552,7 +1396,6 @@ const setButtonState = (questionCode, value) => {
         setIsLoading(false);
       });
   };
-  
 
   // Utility function to group items by a specified key
   const groupBy = (items, key) => {
@@ -1592,17 +1435,17 @@ const setButtonState = (questionCode, value) => {
 
   // ....buttons
 
-  const renderYesNoButton = (question, isSelected, setSelectedState) => (
+  const renderYesNoButton = (question, isYesSelected, setSelectedState) => (
     <RowButtons
       LeftButtonText={'Yes'}
       leftButtonbackgroundColor={
-        isSelected ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_WhiteColor
+        isYesSelected ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_WhiteColor
       }
       LeftButtonTextColor={
-        isSelected ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_MediumGrayColor
+        isYesSelected ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_MediumGrayColor
       }
       LeftButtonborderColor={
-        isSelected ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor
+        isYesSelected ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor
       }
       onPressLeftButton={() => {
         setSelectedState(true);
@@ -1610,13 +1453,17 @@ const setButtonState = (questionCode, value) => {
       }}
       RightButtonText={'No'}
       RightButtonbackgroundColor={
-        !isSelected ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_WhiteColor
+        !isYesSelected
+          ? _COLORS.Kodie_lightGreenColor
+          : _COLORS.Kodie_WhiteColor
       }
       RightButtonTextColor={
-        !isSelected ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_MediumGrayColor
+        !isYesSelected
+          ? _COLORS.Kodie_BlackColor
+          : _COLORS.Kodie_MediumGrayColor
       }
       RightButtonborderColor={
-        !isSelected ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor
+        !isYesSelected ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor
       }
       onPressRightButton={() => {
         setSelectedState(false);
@@ -1799,185 +1646,6 @@ const setButtonState = (questionCode, value) => {
             </View>
           </View>
         );
-      // case 'Yes_no':
-      //   return (
-      //     <View>
-      //       {question.id === 13 ? (
-      //         <RowButtons
-      //           LeftButtonText={'Yes'}
-      //           leftButtonbackgroundColor={
-      //             !selectedButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           LeftButtonTextColor={
-      //             !selectedButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           LeftButtonborderColor={
-      //             !selectedButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressLeftButton={() => {
-      //             setSelectedButton(false);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //           RightButtonText={'No'}
-      //           RightButtonbackgroundColor={
-      //             selectedButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           RightButtonTextColor={
-      //             selectedButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           RightButtonborderColor={
-      //             selectedButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressRightButton={() => {
-      //             setSelectedButton(true);
-      //             handleInputChange(question.id, 0);
-      //           }}
-      //         />
-      //       ) : question.id === 20 ? (
-      //         <RowButtons
-      //           LeftButtonText={'Yes'}
-      //           leftButtonbackgroundColor={
-      //             !selectedRentalBondButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           LeftButtonTextColor={
-      //             !selectedRentalBondButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           LeftButtonborderColor={
-      //             !selectedRentalBondButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressLeftButton={() => {
-      //             setSelectedRentalBondButton(false);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //           RightButtonText={'No'}
-      //           RightButtonbackgroundColor={
-      //             selectedRentalBondButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           RightButtonTextColor={
-      //             selectedRentalBondButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           RightButtonborderColor={
-      //             selectedRentalBondButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressRightButton={() => {
-      //             setSelectedRentalBondButton(true);
-      //             handleInputChange(question.id, 0);
-      //           }}
-      //         />
-      //       ) : question.id === 21 ? (
-      //         <RowButtons
-      //           LeftButtonText={'Yes'}
-      //           leftButtonbackgroundColor={
-      //             !selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           LeftButtonTextColor={
-      //             !selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           LeftButtonborderColor={
-      //             !selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressLeftButton={() => {
-      //             setSelectedPreviousRentalButton(false);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //           RightButtonText={'No'}
-      //           RightButtonbackgroundColor={
-      //             selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           RightButtonTextColor={
-      //             selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           RightButtonborderColor={
-      //             selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressRightButton={() => {
-      //             setSelectedPreviousRentalButton(true);
-      //             handleInputChange(question.id, 0);
-      //           }}
-      //         />
-      //       ) : question.id === 24 ? (
-      //         <RowButtons
-      //           LeftButtonText={'Yes'}
-      //           leftButtonbackgroundColor={
-      //             !selectedPetsButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           LeftButtonTextColor={
-      //             !selectedPetsButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           LeftButtonborderColor={
-      //             !selectedPetsButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressLeftButton={() => {
-      //             setSelectedPetsButton(false);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //           RightButtonText={'No'}
-      //           RightButtonbackgroundColor={
-      //             selectedPetsButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           RightButtonTextColor={
-      //             selectedPetsButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           RightButtonborderColor={
-      //             selectedPetsButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressRightButton={() => {
-      //             setSelectedPetsButton(true);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //         />
-      //       ) : null}
-      //     </View>
-      //   );
-
       case 'Yes_no':
         if (question.id === 13) {
           return renderYesNoButton(question, selectedButton, setSelectedButton);
@@ -1994,7 +1662,11 @@ const setButtonState = (questionCode, value) => {
             setSelectedPreviousRentalButton,
           );
         } else if (question.id === 24) {
-          return renderYesNoButton(question, selectedPetsButton, setSelectedPetsButton);
+          return renderYesNoButton(
+            question,
+            selectedPetsButton,
+            setSelectedPetsButton,
+          );
         }
       case 'Smoking/Non-smoking':
         return (

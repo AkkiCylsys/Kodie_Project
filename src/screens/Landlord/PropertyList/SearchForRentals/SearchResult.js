@@ -37,6 +37,7 @@ export default SearchResult = props => {
   const [rentalAmount, setRentalAmount] = useState('');
   const [bibId, setBidId] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
+  const [propertyDetailsItem, setPropertyDetailsItem] = useState([]);
   const keyFeatureMapping = {};
   additionalfeatureskey.forEach(detail => {
     keyFeatureMapping[detail.paf_key] = detail.features_name;
@@ -180,6 +181,7 @@ export default SearchResult = props => {
                 setPropertyId(item?.property_id);
                 setRentalAmount(item?.rental_amount);
                 setBidId(item?.bid_id);
+                setPropertyDetailsItem(item)
               }}>
               <Entypo
                 color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -381,7 +383,7 @@ export default SearchResult = props => {
           propertyId={propertyId}
           rentalAmount={rentalAmount}
           bibId={bibId}
-          propertyDetails={searchRentalResponse?.data}
+          propertyDetails={propertyDetailsItem}
         />
       </RBSheet>
       {/* </ScrollView> */}

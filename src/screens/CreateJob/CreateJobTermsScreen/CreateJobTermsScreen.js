@@ -29,8 +29,8 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import {Config} from '../../../Config';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
-
 import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {fetchCreateJobSuccess} from '../../../redux/Actions/AddJob/CreateJob/CreateJobApiAction';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 const data = [
   {label: '3 hours', value: '1'},
@@ -39,13 +39,14 @@ const data = [
   {label: '6 hours', value: '4'},
 ];
 export default CreateJobTermsScreen = props => {
+  const dispatch = useDispatch();
+  const createJobId = useSelector(state => state.AddCreateJobReducer.data);
+  console.log('createJobId.....', createJobId);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData);
 
   const handlePriceRangeChange = priceRange => {
     console.log('Price Range in Parent Component:', priceRange);
     setPriceRanges(priceRange);
-    // Do something with the price range in the parent component
   };
   const handlemaxRange = high => {
     console.log('High Range in Parent Component:', high);
@@ -107,8 +108,7 @@ export default CreateJobTermsScreen = props => {
   const [bookingInsuranceData, setBookingInsuranceData] = useState([]);
   const [selectedButtonBookingInsurance, setSelectedButtonBookingInsurance] =
     useState(false);
-  // const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
-  //   useState(262);
+
   const [selectedButtonBookingInsuranceId, setSelectedButtoBookingInsuranceId] =
     useState(null);
   const [jobDetailsData, setJobDetailsData] = useState([]);
@@ -127,7 +127,6 @@ export default CreateJobTermsScreen = props => {
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
     const iconConfig = {
       name: 'feed',
-      // name: stepStatus === "finished" ? "check" : (position + 1).toString(),
       color: stepStatus === 'finished' ? '#ffffff' : '#fe7013',
       size: 20,
     };
@@ -179,7 +178,6 @@ export default CreateJobTermsScreen = props => {
     <MaterialIcons {...getStepIndicatorIconConfig(params)} />
   );
   const renderLabel = ({position, stepStatus}) => {
-    // const iconColor = stepStatus === "finished" ? "#000000" : "#808080";
     const iconColor =
       position === currentPage // Check if it's the current step
         ? _COLORS.Kodie_BlackColor // Set the color for the current step
@@ -245,9 +243,12 @@ export default CreateJobTermsScreen = props => {
     if (priceRanges) {
       setFormattedPriceRanges(`$${priceRanges}`);
     }
-    JobId > 0 ? getJobDetails() : null;
-  }, []); // if facing some priceRanges related issue please priceRanges in array depandency.
-  // alert(`Formatted Price Range: ${formattedPriceRanges}`);
+    JobId > 0 ||
+    (Array.isArray(createJobId) && createJobId.length > 0) ||
+    typeof createJobId === 'number'
+      ? getJobDetails()
+      : null;
+  }, []);
   console.log(`Formatted Price Range: ${formattedPriceRanges}`);
 
   // renderitems.....
@@ -470,16 +471,12 @@ export default CreateJobTermsScreen = props => {
         console.log('API Response jobCreate..:', response?.data);
         if (response?.data?.success === true) {
           alert(response?.data?.message);
+          dispatch(fetchCreateJobSuccess(response?.data?.job_id));
           props.navigation.navigate('CreateJobSecondScreen', {
             job_id: response?.data?.job_id,
           });
           setIsLoading(false);
-          // setSelectedDate(''),
-          //   setCurrentTime(''),
-          //   setHourlyNeedValue('')
-          //   setneedServicesValue(''),
-          //   setSelectedButtonResponsibleId('');
-          // setSelectedButtoBookingInsuranceId('');
+
           // setIsLoading(false);
         } else {
           // alert(response?.data?.message);
@@ -503,7 +500,8 @@ export default CreateJobTermsScreen = props => {
     console.log('Request URL:', jobDetails_url);
     setIsLoading(true);
     const jobDetails_Data = {
-      jm_job_id: JobId,
+      jm_job_id:
+        createJobId && !Array.isArray(createJobId) ? createJobId : JobId,
     };
     axios
       .post(jobDetails_url, jobDetails_Data)
@@ -521,7 +519,8 @@ export default CreateJobTermsScreen = props => {
           setFormattedPriceRanges(response?.data?.data?.job_budget);
           const payingThis = parseInt(response?.data?.data?.job_payment_by_key);
           console.log('payingThis...', payingThis);
-          setSelectedButtonResponsible(payingThis === '259');
+          setSelectedButtonResponsible(payingThis === 259 ? false : payingThis === 260 ? true : null);
+          // setSelectedButtonResponsible(true);
           setSelectedButtonBookingInsurance(
             parseInt(response?.data?.data?.job_insurence_key),
           );
@@ -547,9 +546,11 @@ export default CreateJobTermsScreen = props => {
 
   const updateCreateJob = () => {
     const url = Config.BASE_URL;
-    const update_createJob_url = url + `job/updateJob/${JobId}`;
-    // const update_createJob_url = url + `job/updateJob/308`;
-    // const update_createJob_url = url + "job/updateJob/1";
+    const update_createJob_url =
+      url +
+      `job/updateJob/${
+        createJobId && !Array.isArray(createJobId) ? createJobId : JobId
+      }`;
     console.log('Request URL u:', update_createJob_url);
     setIsLoading(true);
     const update_createJob_Data = {
@@ -579,15 +580,10 @@ export default CreateJobTermsScreen = props => {
         if (response?.data?.success === true) {
           alert(response?.data?.message);
           props.navigation.navigate('CreateJobSecondScreen', {
-            JobId: JobId,
+            JobId:
+              createJobId && !Array.isArray(createJobId) ? createJobId : JobId,
             editMode: editMode,
           });
-          // setSelectedDate(''),
-          //   setCurrentTime(''),
-          //   setHourlyNeedValue(''),
-          //   setneedServicesValue(''),
-          //   setSelectedButtonResponsibleId('');
-          // setSelectedButtoBookingInsuranceId('');
           // setIsLoading(false);
         } else {
           alert(response?.data?.message);
@@ -606,8 +602,6 @@ export default CreateJobTermsScreen = props => {
   return (
     <SafeAreaView style={CreateJobTermsStyle.mainContainer}>
       <TopHeader
-        // isprofileImage
-        // IsNotification
         onPressLeftButton={() => _goBack(props)}
         MiddleText={editMode ? 'Edit job' : 'Create new job request'}
       />
@@ -615,7 +609,6 @@ export default CreateJobTermsScreen = props => {
         <StepIndicator
           customSignUpStepStyle={firstIndicatorSignUpStepStyle}
           currentPosition={1}
-          // onPress={onStepPress}
           renderStepIndicator={renderStepIndicator}
           labels={stepLabels}
           stepCount={4}
@@ -626,11 +619,11 @@ export default CreateJobTermsScreen = props => {
         <View style={CreateJobTermsStyle.container}>
           <Text style={CreateJobTermsStyle.terms_Text}>{'Terms'}</Text>
           <Text style={[LABEL_STYLES.commontext, CreateJobTermsStyle.heading]}>
-            {' What date and time would you prefer? '}
+            {' What date and time would you prefer? * '}
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
-            current={selectedDate}
+              current={selectedDate}
               SelectDate={selectedDate ? selectedDate : 'Select Date'}
               _textInputStyle={{
                 color: selectedDate
@@ -728,8 +721,6 @@ export default CreateJobTermsScreen = props => {
           <RangeSlider
             from={1}
             to={2000}
-            // from={minBudget !== null ? minBudget : 1}
-            // to={maxBudget !== null ? maxBudget : 2000}
             onPriceRangeChange={handlePriceRangeChange}
             onHighRange={handlemaxRange}
             onLowRange={handleminRange}
@@ -849,8 +840,20 @@ export default CreateJobTermsScreen = props => {
               onPress={() =>
                 // props.navigation.navigate("CreateJobSecondScreen")
                 // handleCreateJob()
+                // {
+                //   JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
+                // }
                 {
-                  JobId ? updateCreateJob() : handleValidatiomtionCreateJob();
+                  if (
+                    (Array.isArray(createJobId) && createJobId.length > 0) ||
+                    JobId ||
+                    editMode ||
+                    typeof createJobId === 'number'
+                  ) {
+                    updateCreateJob();
+                  } else {
+                    handleValidatiomtionCreateJob();
+                  }
                 }
               }
             />

@@ -447,7 +447,7 @@ const PropertyList2 = props => {
             />
             {proteryTypeValueError ? (
               <Text style={PropertyList2Css.error_text}>
-                {'Property type is required!!.'}
+                {'Property type is required!'}
               </Text>
             ) : null}
             <View style={PropertyList2Css.rowView}>

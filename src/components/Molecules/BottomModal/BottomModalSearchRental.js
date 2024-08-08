@@ -88,7 +88,7 @@ const BottomModalSearchRental = props => {
             navigation.navigate('RentalOffer', {
               propertyId: propertyId,
               bibId: bibId,
-              propertyDetails:props?.propertyDetails[0]
+              propertyDetails:props?.propertyDetails
             });
             handleClose();
           }
