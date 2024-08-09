@@ -52,6 +52,7 @@ export default CreateJobFirstScreen = props => {
   const [currentPage, setCurrentPage] = useState(0);
   const [aboutyourNeed, setAboutyourNeed] = useState('');
   const [location, setLocation] = useState('');
+  const [takingPlaceError, setTakingPlaceError] = useState(false);
   const [isClick, setIsClick] = useState(false);
   const [Check, setCheck] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -95,6 +96,8 @@ export default CreateJobFirstScreen = props => {
       setJobPriorityValueError(true);
     } else if (property_value == '') {
       setProperty_valueError(true);
+    } else if (selectedAddress == '') {
+      setTakingPlaceError(true);
     } else {
       props.navigation.navigate('CreateJobTermsScreen', {
         selectJobType: selectJobTypeid,
@@ -112,6 +115,7 @@ export default CreateJobFirstScreen = props => {
       });
     }
   };
+
   const goBack = () => {
     props.navigation.pop();
     props.navigation.navigate('Jobs', {
@@ -859,7 +863,7 @@ export default CreateJobFirstScreen = props => {
           }}
         />
       ) : (
-        <ScrollView>
+        <ScrollView keyboardShouldPersistTaps="always">
           <View style={CreateJobFirstStyle.mainView}>
             <Text style={CreateJobFirstStyle.heading}>{'Job details'}</Text>
             <Text style={CreateJobFirstStyle.servicestext}>
@@ -955,6 +959,7 @@ export default CreateJobFirstScreen = props => {
                   setJobPriorityValueError(false);
                 }}
                 renderItem={jobPriority_render}
+                dropdownPosition='bottom'
               />
             </View>
             {jobPriorityValueError ? (
@@ -987,12 +992,12 @@ export default CreateJobFirstScreen = props => {
             </View>
             {property_valueError ? (
               <Text style={CreateJobFirstStyle.error_text}>
-                {'Property type is require.'}
+                {'Property type is required!'}
               </Text>
             ) : null}
             <View style={{marginTop: 12}}>
               <Text style={LABEL_STYLES.commontext}>
-                {'Where is the job taking place?'}
+                {'Where is the job taking place?*'}
               </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
@@ -1015,11 +1020,13 @@ export default CreateJobFirstScreen = props => {
                     location: item.location,
                     property_id: item?.property_id,
                   });
+                  setTakingPlaceError(false);
                 }}
                 renderItem={Selected_Time_render}
               />
             </View>
-            {!selectedAddress ? (
+
+            {/* {!selectedAddress ? (
               <View style={CreateJobFirstStyle.locationContainer}>
                 <TextInput
                   style={CreateJobFirstStyle.locationInput}
@@ -1028,18 +1035,13 @@ export default CreateJobFirstScreen = props => {
                   onFocus={() => {
                     setIsSearch(true);
                   }}
-                  // editable={false}
                   placeholder="Enter new location"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                 />
                 <TouchableOpacity
                   style={CreateJobFirstStyle.locationIconView}
                   onPress={() => {
-                    // Platform.OS == "ios"
-                    //   ? CheckIOSMapPermission
-                    //   : checkpermissionlocation();
                     setIsMap(true);
-                    // onRegionChange(Region);
                   }}>
                   <Octicons
                     name={'location'}
@@ -1049,8 +1051,12 @@ export default CreateJobFirstScreen = props => {
                   />
                 </TouchableOpacity>
               </View>
+            ) : null} */}
+            {takingPlaceError ? (
+              <Text style={CreateJobFirstStyle.error_text}>
+                {'Job taking place is required!'}
+              </Text>
             ) : null}
-
             <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>{'Rating threshold'}</Text>
               <Dropdown
