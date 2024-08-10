@@ -35,7 +35,9 @@ const CustomSidebarMenu = props => {
         break;
       case 'RentalOffers':
         setselectedId('RentalOffers');
-        Alert.alert('Rental Offers!', 'Coming soon');
+        props.navigation.navigate('Properties', {
+          tab3: 'tab3',
+        });
         break;
       case 'vacantProperties':
         setselectedId('vacantProperties');
@@ -94,7 +96,6 @@ const CustomSidebarMenu = props => {
       dispatch(logoutActionCreator());
     }, 3000);
     refRBSheet.current.close();
-
   };
   const handleGeneralSettingsPress = () => {
     Alert.alert('Alert', 'Coming soon');

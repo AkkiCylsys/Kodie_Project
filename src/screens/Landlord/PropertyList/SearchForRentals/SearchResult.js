@@ -197,7 +197,7 @@ export default SearchResult = props => {
             name="location-pin"
             size={20}
           />
-          <Text style={SearchResultCss.location}>{item?.location || ''}</Text>
+          <Text style={SearchResultCss.location} numberOfLines={2} ellipsizeMode="tail">{item?.location || ''}</Text>
         </View>
         <View style={SearchResultCss.availableBtn}>
           <Text style={SearchResultCss.availabletext}>
@@ -294,17 +294,17 @@ export default SearchResult = props => {
                 : propertyType === 27
                 ? 'Farm'
                 : ''
-            };$${searchInputData?.input_minRange} to $${
+            }; $${searchInputData?.input_minRange} to $${
               searchInputData?.input_maxRange
-            };${AllCountsData[0]?.Bedrooms}Beds;${
+            }; ${AllCountsData[0]?.Bedrooms} Beds; ${
               AllCountsData[1]?.Bathrooms
-            }Baths;${AllCountsData[2]?.Parking_Space}parking space;${
+            } Baths; ${AllCountsData[2]?.Parking_Space} parking space; ${
               AllCountsData[3]?.StreetParking
-            } on-street parking;${
+            } on-street parking; ${
               searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'
                 : 'unfurnished'
-            };${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'};${
+            }; ${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'}; ${
               searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
             }`}
           </Text>

@@ -115,7 +115,6 @@ export default CreateJobTermsScreen = props => {
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-    setSelectedDate('');
   };
   const apply_toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -519,7 +518,9 @@ export default CreateJobTermsScreen = props => {
           setFormattedPriceRanges(response?.data?.data?.job_budget);
           const payingThis = parseInt(response?.data?.data?.job_payment_by_key);
           console.log('payingThis...', payingThis);
-          setSelectedButtonResponsible(payingThis === 259 ? false : payingThis === 260 ? true : null);
+          setSelectedButtonResponsible(
+            payingThis === 259 ? false : payingThis === 260 ? true : null,
+          );
           // setSelectedButtonResponsible(true);
           setSelectedButtonBookingInsurance(
             parseInt(response?.data?.data?.job_insurence_key),
@@ -623,8 +624,7 @@ export default CreateJobTermsScreen = props => {
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
-              current={selectedDate}
-              SelectDate={selectedDate ? selectedDate : 'Select Date'}
+              SelectDate={selectedDate}
               _textInputStyle={{
                 color: selectedDate
                   ? _COLORS.Kodie_BlackColor
@@ -632,7 +632,11 @@ export default CreateJobTermsScreen = props => {
               }}
               calenderIcon={toggleModal}
               // onDayPress={handleDayPress}
-              onDayPress={day => handleRequestDate(day.dateString)}
+              onDayPress={day => {
+                // const selected = moment(day.dateString).format('YYYY-MM-DD');
+                // setSelectedDate(selected);
+                handleRequestDate(day.dateString);
+              }}
               onChangeText={() => handleRequestDate(selectedDate)}
               Visible={isModalVisible}
               onRequestClose={toggleModal}
@@ -643,6 +647,7 @@ export default CreateJobTermsScreen = props => {
                   selectedTextColor: _COLORS.Kodie_BlackColor,
                 },
               }}
+              current={selectedDate || moment().format('YYYY-MM-DD')}
               _closeButton={toggleModal}
               _ApplyButton={apply_toggleModal}
             />
