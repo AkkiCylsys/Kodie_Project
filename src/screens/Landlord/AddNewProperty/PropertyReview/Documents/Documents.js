@@ -492,7 +492,7 @@ export default Documents = props => {
           />
         </RBSheet>
       </ScrollView>
-      {isLoading ? <CommonLoader /> : null}
+      {/* {isLoading ? <CommonLoader /> : null} */}
     </View>
   );
 };

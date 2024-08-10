@@ -253,7 +253,7 @@ export default LeaseSummary = props => {
             <View>
               <Text style={LeaseSummaryStyle.Amount_Text}>{'Amount paid'}</Text>
               <Text style={LeaseSummaryStyle.Accounting_Text}>
-                {` $ ${item.UPLD_TOTAL_AMOUNT}`}
+                {`${item.UPLD_TOTAL_AMOUNT}`}
               </Text>
             </View>
           </View>
