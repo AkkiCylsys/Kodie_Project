@@ -6,10 +6,11 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  BackHandler,
 } from 'react-native';
-import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
+import {Dropdown} from 'react-native-element-dropdown';
 import {IMAGES} from '../../../../Themes';
-import {FONTFAMILY, _COLORS} from '../../../../Themes';
+import {_COLORS} from '../../../../Themes';
 import {PropertyList2Css} from './PropertyList2Css';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -25,8 +26,19 @@ import SearchPlaces from '../../../../components/Molecules/SearchPlaces/SearchPl
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import axios from 'axios';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
+import ToggleButton from '../../../../components/Molecules/ToggleButton/ToggleButton';
+import MultiSelect from 'react-native-multiple-select';
+
 const PropertyList2 = props => {
+  const [furnished, setFurnished] = useState('Yes');
+  const [petAllowed, setPetAllowed] = useState('Yes');
+  const [externalStorage, setExternalStorage] = useState('Yes');
+  const [garden, setGarden] = useState('Yes');
   const [value, setValue] = useState(null);
   const [openMap, setOpenMap] = useState(false);
   const [selected, setSelected] = useState([]);
@@ -52,6 +64,7 @@ const PropertyList2 = props => {
   const [CountBathroom, setCountBathroom] = useState(0);
   const [CountParking, setCountParking] = useState(0);
   const [CountParkingStreet, setCountParkingStreet] = useState(0);
+  const [floorSize, setlFloorSize] = useState('');
   const [location, setLocation] = useState('');
   const [locationError, setLocationError] = useState('');
   const [UserCurrentCity, setUserCurrentCity] = useState('');
@@ -92,6 +105,24 @@ const PropertyList2 = props => {
     input_addtional_keyFeature: additionalfeatureskeyvalue,
     city: city,
   };
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        if (IsMap || IsSearch) {
+          setIsMap(false);
+          setIsSearch(false);
+          return true;
+        }
+        return false;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, [IsMap, IsSearch]),
+  );
   // ...Location
   const ConfirmAddress = () => {
     setIsMap(false);
@@ -160,6 +191,9 @@ const PropertyList2 = props => {
     setMin(low);
   };
 
+  const onSelectedItemsChange = selectedItems => {
+    setAdditionalFeaturesKeyValue(selectedItems);
+  };
   // renderItem....
   const additional_key_feature_render = item => {
     return (
@@ -344,6 +378,13 @@ const PropertyList2 = props => {
             Maplng={longitude}
             // Maplat={getLat}
             // Maplng={getLong}
+            iscancel={() => {
+              if (IsMap || IsSearch) {
+                setIsMap(false);
+                setIsSearch(false);
+                return true;
+              }
+            }}
           />
           {/* <MapComponent/> */}
           <View
@@ -588,12 +629,143 @@ const PropertyList2 = props => {
                   </TouchableOpacity>
                 </TouchableOpacity>
               </View>
+              <View style={PropertyList2Css.floorSizeView}>
+                <Text
+                  style={[
+                    PropertyList2Css.key_feature_Text,
+                    {alignSelf: 'center'},
+                  ]}>
+                  {'Building floor size'}
+                </Text>
+                <View>
+                  <TextInput
+                    placeholder="102m2"
+                    value={floorSize}
+                    onChangeText={text => setlFloorSize(text)}
+                    keyboardType="number-pad"
+                    style={PropertyList2Css.textInputStyle}
+                  />
+                </View>
+              </View>
+              <View style={PropertyList2Css.floorSizeView}>
+                <Text
+                  style={[
+                    PropertyList2Css.key_feature_Text,
+                    {alignSelf: 'center'},
+                  ]}>
+                  {'Land area'}
+                </Text>
+                <View>
+                  <TextInput
+                    placeholder="102m2"
+                    value={floorSize}
+                    onChangeText={text => setlFloorSize(text)}
+                    keyboardType="number-pad"
+                    style={PropertyList2Css.textInputStyle}
+                  />
+                </View>
+              </View>
             </View>
 
-            <Text style={[PropertyList2Css.inputText, {marginVertical: 23}]}>
+            <Text style={[PropertyList2Css.inputText]}>
               {'Additional features'}
             </Text>
-            <Text style={PropertyList2Css.inputText}>
+            <View style={PropertyList2Css.additionalFeatureView}>
+              <View style={PropertyList2Css.featureItem}>
+                <Text
+                  style={[
+                    PropertyList2Css.inputText,
+                    {alignSelf: 'flex-start'},
+                  ]}>
+                  {'Furnished?'}
+                </Text>
+                <View style={PropertyList2Css.btn_main_view}>
+                  <ToggleButton
+                    tabValue={furnished}
+                    setTabValue={setFurnished}
+                    activeColor={_COLORS.Kodie_GreenColor}
+                    inactiveColor={_COLORS.Kodie_WhiteColor}
+                    activeTextColor={_COLORS.Kodie_WhiteColor}
+                    inactiveTextColor={_COLORS.Kodie_BlackColor}
+                    firstTabLabel="Yes"
+                    secondTabLabel="No"
+                    width={180}
+                  />
+                </View>
+              </View>
+
+              <View style={PropertyList2Css.featureItem}>
+                <Text
+                  style={[
+                    PropertyList2Css.inputText,
+                    {alignSelf: 'flex-start'},
+                  ]}>
+                  {'Pets allowed?'}
+                </Text>
+                <View style={PropertyList2Css.btn_main_view}>
+                  <ToggleButton
+                    tabValue={petAllowed}
+                    setTabValue={setPetAllowed}
+                    activeColor={_COLORS.Kodie_GreenColor}
+                    inactiveColor={_COLORS.Kodie_WhiteColor}
+                    activeTextColor={_COLORS.Kodie_WhiteColor}
+                    inactiveTextColor={_COLORS.Kodie_BlackColor}
+                    firstTabLabel="Yes"
+                    secondTabLabel="No"
+                    width={180}
+                  />
+                </View>
+              </View>
+            </View>
+
+            <View style={PropertyList2Css.additionalFeatureView}>
+              <View style={PropertyList2Css.featureItem}>
+                <Text
+                  style={[
+                    PropertyList2Css.inputText,
+                    {alignSelf: 'flex-start'},
+                  ]}>
+                  {'Garden?'}
+                </Text>
+                <View style={PropertyList2Css.btn_main_view}>
+                  <ToggleButton
+                    tabValue={garden}
+                    setTabValue={setGarden}
+                    activeColor={_COLORS.Kodie_GreenColor}
+                    inactiveColor={_COLORS.Kodie_WhiteColor}
+                    activeTextColor={_COLORS.Kodie_WhiteColor}
+                    inactiveTextColor={_COLORS.Kodie_BlackColor}
+                    firstTabLabel="Yes"
+                    secondTabLabel="No"
+                    width={180}
+                  />
+                </View>
+              </View>
+
+              <View style={PropertyList2Css.featureItem}>
+                <Text
+                  style={[
+                    PropertyList2Css.inputText,
+                    {alignSelf: 'flex-start'},
+                  ]}>
+                  {'External storage?'}
+                </Text>
+                <View style={PropertyList2Css.btn_main_view}>
+                  <ToggleButton
+                    tabValue={externalStorage}
+                    setTabValue={setExternalStorage}
+                    activeColor={_COLORS.Kodie_GreenColor}
+                    inactiveColor={_COLORS.Kodie_WhiteColor}
+                    activeTextColor={_COLORS.Kodie_WhiteColor}
+                    inactiveTextColor={_COLORS.Kodie_BlackColor}
+                    firstTabLabel="Yes"
+                    secondTabLabel="No"
+                    width={180}
+                  />
+                </View>
+              </View>
+            </View>
+            {/* <Text style={PropertyList2Css.inputText}>
               {'Furnished or unfurnished? '}
             </Text>
             <RowButtons
@@ -727,11 +899,11 @@ const PropertyList2 = props => {
                 setSecureByDepositBtnId(1);
                 // alert(selectPetFriendlyBtnId)
               }}
-            />
+            /> */}
             <Text style={PropertyList2Css.inputText}>
               {'Additional key features'}
             </Text>
-            <MultiSelect
+            {/* <MultiSelect
               style={PropertyList2Css.dropdown}
               placeholderStyle={PropertyList2Css.placeholderStyle}
               selectedTextStyle={PropertyList2Css.selectedTextStyle}
@@ -772,6 +944,39 @@ const PropertyList2 = props => {
                   </View>
                 </TouchableOpacity>
               )}
+            /> */}
+            <MultiSelect
+              hideDropdown
+              items={additionalfeatureskey}
+              uniqueKey="paf_key"
+              noItemsText={
+                'The feature you are searching for is not available on the list'
+              }
+              onSelectedItemsChange={onSelectedItemsChange}
+              selectedItems={additionalfeatureskeyvalue}
+              selectText="Add features such as pool, aircon, balcony etc."
+              searchInputPlaceholderText="Search Items..."
+              onChangeInput={item => {
+                console.warn(item);
+                // setAdditionalFeaturesKeyValue(item)
+              }}
+              tagBorderColor={_COLORS.Kodie_BlackColor}
+              selectedItemTextColor={_COLORS.Kodie_GreenColor}
+              selectedItemIconColor={_COLORS.Kodie_GreenColor}
+              itemTextColor="#000"
+              displayKey="features_name"
+              searchInputStyle={PropertyList2Css.searchInput}
+              styleListContainer={PropertyList2Css.listContainer}
+              styleRowList={PropertyList2Css.rowList}
+              tagContainerStyle={PropertyList2Css.tagContainer}
+              tagRemoveIconColor={_COLORS.Kodie_WhiteColor}
+              styleTextTag={PropertyList2Css.textTag}
+              styleTextDropdown={PropertyList2Css.textDropdown}
+              styleDropdownMenu={PropertyList2Css.dropdownMenu}
+              submitButtonColor={_COLORS.Kodie_GreenColor}
+              submitButtonText={
+                additionalfeatureskeyvalue.length > 0 ? 'Done' : 'Cancel'
+              }
             />
             <CustomSingleButton
               _ButtonText={'Search'}
