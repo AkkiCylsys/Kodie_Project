@@ -57,8 +57,7 @@ const CreateNewInspection = props => {
   const [selectedAddressDetail, setSelectedAddressDetail] = useState([]);
   const [AreaKey, setAreaKey] = useState([]);
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
-  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
-    useState(67);
+  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] = useState(67);
   const [checkedItems, setCheckedItems] = useState({});
   const [TIM_key, setTIM_key] = useState([]);
   const [query, setQuery] = useState('');
@@ -103,7 +102,7 @@ const CreateNewInspection = props => {
         }
       })
       .catch(error => {
-        console.error('area response error:', error);
+        // console.error('area response error:', error);
         setIsLoading(false);
       });
   };
