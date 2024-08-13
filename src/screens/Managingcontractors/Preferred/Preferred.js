@@ -45,7 +45,7 @@ const Preferred = () => {
   const [PreferredData, setPreferredData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData.....', loginData);
+  // console.log('loginData.....', loginData);
   const [ContractorId, setContractorId] = useState();
   useEffect(() => {
     if (isvisible) {

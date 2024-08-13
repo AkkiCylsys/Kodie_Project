@@ -40,7 +40,7 @@ const AddCustomItems = (props) =>{
             },
           });
           Alert.alert('Success', 'Custom item added successfully');
-          console.log('API Response:', response.data);
+          // console.log('API Response:', response.data);
           props?.onClose()
         } catch (error) {
           Alert.alert('Error', 'Failed to add custom item');

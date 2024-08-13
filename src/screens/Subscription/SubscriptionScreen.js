@@ -20,10 +20,10 @@ const SubscriptionScreen = props => {
   const customerID = props.route.params.customerID;
   console.log('customerID in subscription screen...', customerID);
 
-  console.log(
-    'loginResponse.....',
-    loginData?.Account_details[0]?.UAD_FIRST_NAME,
-  );
+  // console.log(
+  //   'loginResponse.....',
+  //   loginData?.Account_details[0]?.UAD_FIRST_NAME,
+  // );
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

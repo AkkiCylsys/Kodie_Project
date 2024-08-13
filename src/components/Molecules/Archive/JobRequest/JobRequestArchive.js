@@ -720,7 +720,7 @@ const JobRequestArchive = () => {
         p_job_id: jobId,
       });
 
-      console.log('Archive API Response:', response?.data);
+      // console.log('Archive API Response:', response?.data);
 
       if (response?.data && response?.data?.success) {
         console.log('Job archived successfully');

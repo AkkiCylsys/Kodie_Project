@@ -8,128 +8,397 @@ import {
   Image,
   SafeAreaView,
   KeyboardAvoidingView,
+  Platform,
+  Button
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import firestore from '@react-native-firebase/firestore';
 import TopHeader from '../../components/Molecules/Header/Header';
-import { IMAGES, _COLORS } from '../../Themes';
+import { IMAGES, _COLORS, FONTFAMILY } from '../../Themes';
 import SearchBar from '../../components/Molecules/SearchBar/SearchBar';
 import { ChatsStyle } from './ChatsStyle';
+import { CommonLoader } from '../../components/Molecules/ActiveLoader/ActiveLoader';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import DividerIcon from '../../components/Atoms/Devider/DividerIcon';
 
 const Chats = (props) => {
-  const refRBSheet = useRef();
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
-  const [users, setUsers] = useState([]);
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
+  const bottomSheetRef = useRef(null);
 
+  const isFocus = useIsFocused();
   useEffect(() => {
-    if (loginData && loginData.Login_details && loginData.Login_details.email) {
-      let tempData = [];
-      firestore()
-        .collection('Users')
-        .where('email', '!=', loginData.Login_details.email)
-        .get()
-        .then(res => {
-          if (res.docs.length > 0) {
-            res.docs.forEach(doc => {
-              tempData.push(doc.data());
-            });
-          }
-          setUsers(tempData);
-        })
-        .catch(error => console.error('Error fetching users:', error));
+    if (loginData?.Login_details?.email && loginData?.Login_details?.user_id && isFocus) {
+      fetchData();
     }
-  }, [loginData]); // Dependency array to run effect on loginData changes
-
-  const searchPropertyList = (query) => {
-    setSearchQuery(query);
-    const filtered = query
-      ? users.filter(item =>
-          item.name && item.name.toLowerCase().includes(query.toLowerCase())
-        )
-      : users;
-    setFilteredUsers(filtered);
+  }, [loginData, searchQuery, isFocus]);
+  const formatDate = (timestamp) => {
+    const now = new Date();
+    let messageDate;
+  
+    // Check if timestamp is a Firestore Timestamp
+    if (timestamp instanceof firestore.Timestamp) {
+      messageDate = timestamp.toDate();
+    } else if (timestamp instanceof Date) {
+      messageDate = timestamp;
+    } else {
+      // Handle other possible formats here
+      messageDate = new Date(timestamp); // assuming timestamp is a valid date string or number
+    }
+  
+    const nowWithoutTime = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const messageDateWithoutTime = new Date(messageDate.getFullYear(), messageDate.getMonth(), messageDate.getDate());
+  
+    const diffInDays = (nowWithoutTime - messageDateWithoutTime) / (1000 * 60 * 60 * 24);
+  
+    if (diffInDays === 0) {
+      // Message is from today, show the time
+      const hours = messageDate.getHours().toString().padStart(2, '0');
+      const minutes = messageDate.getMinutes().toString().padStart(2, '0');
+      return `${hours}:${minutes}`;
+    } else if (diffInDays === 1) {
+      // Message is from yesterday
+      return 'Yesterday';
+    } else {
+      // Older messages
+      return messageDate.toLocaleDateString(); // Use a locale-aware date string
+    }
   };
+  
 
+  const fetchData = async () => {
+    setIsLoading(true);
+    try {
+      // Fetch all users
+      const usersSnapshot = await firestore().collection('Users').get();
+      const allUsersData = usersSnapshot.docs.map(doc => doc.data());
+      console.log('All Users:', allUsersData);
+      setAllUsers(allUsersData)
+      // Create a map of allUsers by user_key for easy lookup
+      const allUsersMap = new Map(allUsersData.map(user => [user.user_key, user]));
+  
+      // Fetch chatrooms
+      const chatroomsSnapshot = await firestore().collection('chatrooms').get();
+      const relevantUserIds = new Set();
+      console.log('Chatrooms Snapshot:', chatroomsSnapshot);
+  
+      // Process each chatroom
+      chatroomsSnapshot.docs.forEach(doc => {
+        const docId = doc.id;
+        const userIds = docId.split('-');
+        const userIdString = loginData.Login_details.user_id.toString();
+  
+        if (userIds.includes(userIdString)) {
+          userIds.forEach(userId => {
+            if (userId !== userIdString) {
+              relevantUserIds.add(userId);
+            }
+          });
+        }
+      });
+  
+      console.log('Relevant User IDs:', [...relevantUserIds]);
+  
+      // Fetch user details for relevant user IDs
+      const chatUsers = await Promise.all([...relevantUserIds].map(async userId => {
+        const userDoc = await firestore().collection('Users').doc(userId).get();
+        return { id: userDoc.id, ...userDoc.data() };
+      }));
+      console.log('Chat Users:', chatUsers);
+  
+      if (chatroomsSnapshot.empty) {
+        console.log('No chatrooms found.');
+        setIsLoading(false);
+        return;
+      }
+  
+      const chatroomIds = chatroomsSnapshot.docs.map(doc => doc.id);
+      console.log('Chatroom IDs:', chatroomIds);
+  
+      // Fetch messages for each chatroom
+      const messagesByChatroom = {};
+      const unseenCountsByUser = {};
+  
+      for (const chatroomId of chatroomIds) {
+        const messagesSnapshot = await firestore()
+          .collection('chatrooms')
+          .doc(chatroomId)
+          .collection('messages')
+          .orderBy('createdAt', 'desc') // Ensure messages are ordered by time (latest first)
+          .get();
+  
+        if (!messagesSnapshot.empty) {
+          const messagesData = messagesSnapshot.docs.map(doc => {
+            const msgData = doc.data(); // Ensure we reference msgData correctly
+            return {
+              ...msgData,
+              id: doc.id,
+              createdAt: msgData.createdAt instanceof Date ? msgData.createdAt : msgData.createdAt.toDate() // Check and convert if necessary
+            };
+          });
+  
+          messagesByChatroom[chatroomId] = messagesData;
+          messagesData.forEach(msg => {
+            if (!msg.seen) {
+              const userId = msg.user._id;
+              if (!unseenCountsByUser[userId]) {
+                unseenCountsByUser[userId] = 0;
+              }
+              unseenCountsByUser[userId]++;
+            }
+          });
+        }
+      }
+  
+      console.log('Messages By Chatroom:', messagesByChatroom);
+      console.log('Unseen Counts By User:', unseenCountsByUser);
+  
+      const filteredChatUsers = chatUsers
+        .map(user => allUsersMap.get(user.id)) // Match user by ID
+        .filter(user => user !== undefined);
+  
+      const updatedUsers = filteredChatUsers.map(user => {
+        console.log('Processing User:', user);
+        // Find chatrooms related to this user
+        const userChatroomIds = chatroomIds.filter(chatroomId => chatroomId.includes(user.user_key));
+  
+        // Get the last message and unseen count for these chatrooms
+        const lastMessage = userChatroomIds
+          .map(chatroomId => messagesByChatroom[chatroomId] ? messagesByChatroom[chatroomId][0] : null)
+          .filter(msg => msg !== null)
+          .sort((a, b) => b.createdAt - a.createdAt)[0]; // Sort by timestamp directly
+  
+        const lastMessageTime = lastMessage ? formatDate(lastMessage.createdAt) : '';
+        const unseenCount = unseenCountsByUser[user.user_key];
+        console.log('unseenCountunseenCount',unseenCount);
+        const sendStatus = lastMessage ? (lastMessage.sendStatus === true ? 1 : 0) : 0;
+        const UserStatus = lastMessage?.user?._id == loginData?.Login_details?.user_id ? 0 : 1;
+        console.log('Last Message:', lastMessage);
+        let lastMessageText = '';
+        if (lastMessage) {
+          if (lastMessage.image) {
+            lastMessageText = 'Photo';
+          } else if (lastMessage.pdf) {
+            lastMessageText = 'PDF';
+          } else {
+            lastMessageText = lastMessage.text;
+          }
+        }
+        return {
+          ...user,
+          lastMessage: lastMessageText,
+          lastMessageTimestamp: lastMessage?.createdAt || null, // Store the timestamp for sorting
+          lastMessageTime,
+          unseenCount,
+          sendStatus,
+          UserStatus
+        };
+      });
+  
+      console.log('Updated Users:', updatedUsers);
+  
+      // Sort users based on the timestamp of their last message
+      const sortedUsers = updatedUsers.sort((a, b) => {
+        if (a.lastMessageTimestamp && b.lastMessageTimestamp) {
+          return b.lastMessageTimestamp - a.lastMessageTimestamp;
+        }
+        return 0;
+      });
+  
+      console.log('Sorted Users:', sortedUsers);
+  
+      setFilteredUsers(
+        searchQuery
+          ? sortedUsers.filter(item =>
+            item.name?.toLowerCase().includes(searchQuery.toLowerCase())
+          )
+          : sortedUsers
+      );
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      setIsLoading(false);
+    }
+  };
+  
+  console.log(filteredUsers);
+  const truncateText = (text, length = 20) => {
+    if (text.length > length) {
+      return `${text.substring(0, length)}...`;
+    }
+    return text;
+  };
   return (
-    <>
-      <SafeAreaView style={ChatsStyle.container}>
-        <TopHeader
-          IsNotification={true}
-          isprofileImage
-          onPressRightImgProfile={() => props.navigation.navigate('LandlordProfile')}
-          onPressLeftButton={() => props.navigation.navigate('Dashboard')}
-          MiddleText={'Chats'}
-        />
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : null}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}>
-          <View style={ChatsStyle.searchview}>
-            <SearchBar
-              filterImage={IMAGES.filter}
-              frontSearchIcon
-              marginTop={3}
-              searchData={searchPropertyList}
-              textvalue={searchQuery}
-            />
-          </View>
-          <ScrollView>
-            <FlatList
-              data={searchQuery ? filteredUsers : users}
-              renderItem={({ item }) => (
-                <View style={{ marginHorizontal: 10, marginBottom: 10 }}>
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      backgroundColor: 'white',
-                      paddingVertical: 10,
-                      paddingHorizontal: 10,
-                      borderRadius: 10,
-                      marginTop: 10,
-                    }}
-                    onPress={() => {
-                      navigation.navigate('Chat', { data: item, userid: item.user_key });
-                    }}>
-                    {item.image ? (
-                      <Image
-                        source={{ uri: item.image }}
-                        style={{
-                          width: 50,
-                          height: 50,
-                          borderRadius: 25,
-                          marginRight: 10,
-                          borderWidth: 1,
-                          borderColor: _COLORS.Kodie_ExtraLightGrayColor,
-                        }}
-                        resizeMode="cover"
-                      />
-                    ) : (
-                      <FontAwesome
-                        name="user-circle-o"
-                        size={50}
-                        color={_COLORS.Kodie_ExtraLightGrayColor}
-                        style={{ marginRight: 10 }}
-                      />
-                    )}
-                    <View>
-                      <Text style={{ fontSize: 18, color: 'black' }}>{item.name}</Text>
-                      <Text style={{ fontSize: 14, color: _COLORS.Kodie_BlackColor }}>{item.email}</Text>
+    <SafeAreaView style={ChatsStyle.container}>
+      <TopHeader
+        IsNotification={true}
+        isprofileImage
+        onPressRightImgProfile={() => props.navigation.navigate('LandlordProfile')}
+        onPressLeftButton={() => props.navigation.navigate('Dashboard')}
+        MiddleText={'Chats'}
+      />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : null}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}>
+        <View style={ChatsStyle.searchview}>
+          <SearchBar
+            filterImage={IMAGES.filter}
+            frontSearchIcon
+            marginTop={3}
+            searchData={setSearchQuery}
+            textvalue={searchQuery}
+          />
+        </View>
+        <ScrollView>
+          <FlatList
+            data={filteredUsers}
+            renderItem={({ item }) => (
+              <View style={ChatsStyle.chatItem}>
+                <TouchableOpacity
+                  style={ChatsStyle.chatItemContent}
+                  onPress={() => {
+                    navigation.navigate('Chat', { data: item, userid: item.user_key });
+                  }}>
+                  {item.image ? (
+                    <Image
+                      source={{ uri: item.image }}
+                      style={ChatsStyle.userImage}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <FontAwesome
+                      name="user-circle-o"
+                      size={50}
+                      color={_COLORS.Kodie_ExtraLightGrayColor}
+                      style={ChatsStyle.userIcon}
+                    />
+                  )}
+                  <View style={ChatsStyle.userInfo}>
+                    <View style={{ flex: 1 }}>
+                      <Text style={ChatsStyle.userName}>{item.name}</Text>
+                      <View style={{ flexDirection: 'row' }}>
+                        {item.UserStatus == 1 ? null : (
+                          <Ionicons name="checkmark-done-sharp" size={18} color={item.sendStatus == 0 ? _COLORS.Kodie_ExtraLightGrayColor : 'blue'} />
+                        )}
+                        {item.lastMessage === 'Photo' ? 
+                         <FontAwesome 
+                         name="photo"
+                          size={20} 
+                          color={_COLORS.Kodie_ExtraLightGrayColor}
+                          style={{marginHorizontal:5}} />
+                         :null
+                       }
+                       {item.lastMessage === 'Pdf' ? 
+                         <FontAwesome 
+                         name="file-pdf-o"
+                          size={20} 
+                          color={_COLORS.Kodie_ExtraLightGrayColor}
+                          style={{marginHorizontal:5}} />
+                         :null
+                       }
+                        <Text style={ChatsStyle.userMessage}>{truncateText(item.lastMessage)}</Text>
+                      </View>
                     </View>
-                  </TouchableOpacity>
-                </View>
+                    <View>
+                      <Text style={[ChatsStyle.messageTime, { color: item.unseenCount > 0 ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_BlackColor }]}>{item.lastMessageTime}</Text>
+                      {item.unseenCount > 0 ? (
+                        <View style={ChatsStyle.unseenCountContainer}>
+                          <Text style={ChatsStyle.unseenCountText}>{item.unseenCount}</Text>
+                        </View>
+                      ) : null}
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        </ScrollView>
+
+        <View style={ChatsStyle.bottomButton}>
+          <TouchableOpacity
+            style={ChatsStyle.bottomButtonTouchable}
+            onPress={() => bottomSheetRef.current.open()}>
+            <FontAwesome
+              name="users"
+              size={30}
+              color={_COLORS.Kodie_WhiteColor}
+              style={ChatsStyle.bottomButtonIcon}
+            />
+          </TouchableOpacity>
+        </View>
+        {isLoading ? <CommonLoader /> : null}
+        <RBSheet
+          ref={bottomSheetRef}
+          height={800}
+          closeOnDragDown={true}
+          closeOnPressMask={false}
+          customStyles={{
+            wrapper: {
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              
+            },
+            draggableIcon: {
+              backgroundColor: '#000',
+            },
+            container: {
+              borderTopLeftRadius: 15,
+              borderTopRightRadius: 15,
+              // marginBottom:100
+            },
+          }}>
+          <View style={{marginBottom:100}}> 
+            <View style={ChatsStyle.bottomSheetHeader}>
+              <Text style={ChatsStyle.bottomSheetTitle}>Invite Members</Text>
+              <TouchableOpacity
+                onPress={() => bottomSheetRef.current.close()}>
+                <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+              </TouchableOpacity>
+            </View>
+            <DividerIcon />
+            <FlatList
+              data={allUsers}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => {
+                  navigation.navigate('Chat', { data: item, userid: item.user_key });
+                  bottomSheetRef.current.close();
+                }
+                } style={ChatsStyle.bottomSheetUserItem}>
+                  {item.image ? (
+                    <Image
+                      source={{ uri: item.image }}
+                      style={ChatsStyle.bottomSheetUserImage}
+                      resizeMode="cover"
+                    />
+                  ) : (
+                    <FontAwesome
+                      name="user-circle-o"
+                      size={50}
+                      color={_COLORS.Kodie_ExtraLightGrayColor}
+                      style={ChatsStyle.bottomSheetUserIcon}
+                    />
+                  )}
+                  <View>
+                    <Text style={ChatsStyle.bottomSheetUserInfo}>{item.name}</Text>
+                    <Text style={ChatsStyle.bottomSheetUserEmail}>{item.email}</Text>
+                  </View>
+                </TouchableOpacity>
               )}
               keyExtractor={(item, index) => index.toString()}
             />
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </>
+          </View>
+        </RBSheet>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

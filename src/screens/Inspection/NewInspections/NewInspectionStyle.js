@@ -130,7 +130,6 @@ export const NewInspectionStyle = StyleSheet.create({
   },
   in_progress_txt: {
     fontSize: 12,
-    color: _COLORS.Kodie_DarkOrange,
     alignSelf: "center",
   },
   in_progress_view: {
@@ -175,7 +174,7 @@ export const NewInspectionStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
 
-  in_progress_view:{ flex:1,alignSelf: "center",  backgroundColor: _COLORS.Kodie_LightOrange,
+  in_progress_view:{ flex:1,alignSelf: "center",
   paddingVertical: 5,
   paddingHorizontal: 15,borderRadius:15 },
   Container: {

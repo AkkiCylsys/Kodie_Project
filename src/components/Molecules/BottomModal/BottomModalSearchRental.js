@@ -63,9 +63,12 @@ const data = [
 ];
 const BottomModalSearchRental = props => {
   const navigation = useNavigation();
-  const propertyId = props.propertyId;
-  const rentalAmount = props.rentalAmount;
+  // const propertyId = props.propertyId;
+  // const rentalAmount = props.rentalAmount;
+  // const bibId = props.bibId;
+  const {propertyId, rentalAmount, bibId} = props;
   console.log('propertyId.....', propertyId);
+  console.log('bibId.....', bibId);
   const handleClose = () => {
     props.onClose();
   };
@@ -84,6 +87,8 @@ const BottomModalSearchRental = props => {
           if (item?.id == '2') {
             navigation.navigate('RentalOffer', {
               propertyId: propertyId,
+              bibId: bibId,
+              propertyDetails:props?.propertyDetails[0]
             });
             handleClose();
           }

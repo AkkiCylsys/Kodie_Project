@@ -11,58 +11,39 @@ import {
   Alert,
 } from 'react-native';
 import React, {useState, useEffect, useRef} from 'react';
-import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../../../Themes';
-import TopHeader from '../../../../../components/Molecules/Header/Header';
-import {RentalOfferStyle} from './RentalOfferStyle';
-import {_goBack} from '../../../../../services/CommonServices';
+import {_COLORS, FONTFAMILY, IMAGES, LABEL_STYLES} from '../../../../Themes';
+import TopHeader from '../../../Molecules/Header/Header';
+import {PreRentalQuestionnaireStyle} from './PreRentalQuestionnaireStyle';
+import {_goBack} from '../../../../services/CommonServices';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Octicons from 'react-native-vector-icons/Octicons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import DividerIcon from '../../../../../components/Atoms/Devider/DividerIcon';
-import CalendarModal from '../../../../../components/Molecules/CalenderModal/CalenderModal';
+import DividerIcon from '../../../Atoms/Devider/DividerIcon';
+import CalendarModal from '../../../Molecules/CalenderModal/CalenderModal';
 import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
-import CustomSingleButton from '../../../../../components/Atoms/CustomButton/CustomSingleButton';
-import RowButtons from '../../../../../components/Molecules/RowButtons/RowButtons';
-// import MultiSelect from 'react-native-multiple-select';
-
-import {Config} from '../../../../../Config';
+import CustomSingleButton from '../../../Atoms/CustomButton/CustomSingleButton';
+import RowButtons from '../../../Molecules/RowButtons/RowButtons';
+import {Config} from '../../../../Config';
 import axios from 'axios';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import TenantScreeningReportModal from '../../../../../components/Molecules/TenantScreeningReportModal/TenantScreeningReportModal';
-import ApplicationSubmitModal from '../../../../../components/Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
-import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {SignupLookupDetails} from '../../../../../APIs/AllApi';
-import {resolvePlugin} from '@babel/core';
-import MapScreen from '../../../../../components/Molecules/GoogleMap/googleMap';
+import TenantScreeningReportModal from '../../../Molecules/TenantScreeningReportModal/TenantScreeningReportModal';
+import ApplicationSubmitModal from '../../../Molecules/TenantScreeningReportModal/ApplicationSubmitModal';
+import {CommonLoader} from '../../../Molecules/ActiveLoader/ActiveLoader';
+import {SignupLookupDetails} from '../../../../APIs/AllApi';
+import MapScreen from '../../../Molecules/GoogleMap/googleMap';
 import Geocoder from 'react-native-geocoding';
-import SearchPlaces from '../../../../../components/Molecules/SearchPlaces/SearchPlaces';
+import SearchPlaces from '../../../Molecules/SearchPlaces/SearchPlaces';
 import DocumentPicker from 'react-native-document-picker';
 import {useSelector} from 'react-redux';
-
-const DocumentData = [
-  {
-    id: 1,
-    fileName: 'Tenant  screening report.pdf',
-  },
-];
-const RentalOffer = props => {
-  const edit_offer = props?.route?.params?.edit_offer;
-  const propertyDetails = props?.route?.params?.propertyDetails;
-  const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginresponse_Rental offer..', loginData?.Account_details[0]);
-  // console.log(
-  //   'loginresponse image photo..',
-  //   loginData?.Login_details?.profile_photo_path,
-  // );
-  console.log("propertyDetails....",propertyDetails)
-  const profile_image = loginData?.Login_details?.profile_photo_path;
-  const loginAccountDetails = loginData?.Account_details[0];
-  const propertyId = props?.route?.params?.propertyId;
+const PreRentalQuestionnaire = props => {
+  const {accountId, propertyId} = props;
   const bibId = props?.route?.params?.bibId;
   console.log('propertyId..', propertyId);
   console.log('bibId in rental..', bibId);
+  const [fileKey, setFileKey] = useState(0);
+  const [fileName, setFileName] = useState('');
+  const [filePath, setFilePath] = useState('');
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -244,7 +225,7 @@ const RentalOffer = props => {
   };
   useEffect(() => {
     handleTenantQues();
-    edit_offer == 'edit_offer' ? getEditAllQuestion() : null;
+    getEditAllQuestion();
   }, [question]);
 
   useEffect(() => {
@@ -253,191 +234,77 @@ const RentalOffer = props => {
     }
   }, [inputValues]);
 
-  // Upload Documents....
-  const selectDoc = async () => {
-    try {
-      const doc = await DocumentPicker.pick({
-        type: [DocumentPicker.types.pdf],
-        // allowMultiSelection: true,
-      });
-      console.log('doc......', doc);
-      setSelectFile(doc);
-      // await uploadDocument(doc);
-      console.log('Documents.....', doc);
-      console.log('selectFile.....', selectFile);
-    } catch (err) {
-      if (DocumentPicker.isCancel(err))
-        console.log('User cancelled the upload', err);
-      else console.log(err);
-    }
-  };
-  const bytesToMB = bytes => {
-    if (bytes === 0) return '0 MB';
-    const MB = bytes / (1024 * 1024);
-    return `${MB.toFixed(2)} MB`;
-  };
-  const fileSizeInMB = selectFile[0] ? bytesToMB(selectFile[0].size) : 'N/A';
   const handleLocationChange = text => {
     setLocation(text);
     handleInputChange('PREVIOUS_ADDRESS', text);
   };
-
-  
-  // const getEditAllQuestion = async () => {
-  //   const url = Config.BASE_URL;
-  //   const Ques_url = url + 'question_details_for_tenant_ques';
-  //   console.log('Request URL:', Ques_url);
-  //   setIsLoading(true);
-
-  //   const QuesData = {
-  //     p_account_id: loginData?.Login_details?.user_account_id,
-  //     p_property_id: propertyId,
-  //   };
-
-  //   try {
-  //     const response = await axios.post(Ques_url, QuesData);
-  //     console.log('Response edit question..', response?.data);
-
-  //     if (response?.data?.success === true) {
-  //       const data = response?.data?.data?.[0]?.parent_json;
-
-  //       if (Array.isArray(data)) {
-  //         const initialValues = {};
-  //         const dropdownQuestions = [];
-
-  //         data.forEach(parentQuestion => {
-  //           if (Array.isArray(parentQuestion.children)) {
-  //             parentQuestion.children.forEach(childQuestion => {
-  //               if (childQuestion.tqm_Question_type === 'Dropdown') {
-  //                 dropdownQuestions.push(childQuestion.tqm_Question_code);
-  //               }
-
-  //               if (
-  //                 childQuestion.tqm_Question_value !== undefined &&
-  //                 childQuestion.tqm_Question_value !== null
-  //               ) {
-  //                 initialValues[childQuestion.tqm_Question_code] =
-  //                   childQuestion.tqm_Question_value;
-
-  //                 // Set the initial state for Yes/No and Smoking buttons
-  //                 if (childQuestion.tqm_Question_code === 'EARN_INCOME') {
-  //                   setSelectedButton(childQuestion.tqm_Question_value === 1);
-  //                 } else if (
-  //                   childQuestion.tqm_Question_code === 'EVER_BROKEN'
-  //                 ) {
-  //                   setSelectedRentalBondButton(
-  //                     childQuestion.tqm_Question_value === 1,
-  //                   );
-  //                 } else if (
-  //                   childQuestion.tqm_Question_code === 'EVICTED_PREVIOUS_BOND'
-  //                 ) {
-  //                   setSelectedPreviousRentalButton(
-  //                     childQuestion.tqm_Question_value === 1,
-  //                   );
-  //                 } else if (childQuestion.tqm_Question_code === 'ANY_PETS') {
-  //                   setSelectedPetsButton(
-  //                     childQuestion.tqm_Question_value === 1,
-  //                   );
-  //                 } else if (childQuestion.tqm_Question_code === 'S/NS') {
-  //                   setSelectedSomokingButton(
-  //                     childQuestion.tqm_Question_value === 0,
-  //                   ); // Assuming 0 means Smoking and 1 means Non-smoking
-  //                 }
-  //               }
-  //             });
-  //           }
-  //         });
-
-  //         // Fetch dropdown data and set initial values
-  //         const dropdownDataPromises = dropdownQuestions.map(
-  //           async questionCode => {
-  //             const options = await handleDropdown(questionCode);
-  //             setDropdownData(prevData => ({
-  //               ...prevData,
-  //               [questionCode]: options,
-  //             }));
-
-  //             // Convert initialValues to match dropdown options format
-  //             const value = initialValues[questionCode];
-  //             if (value) {
-  //               const selectedOption = options.find(
-  //                 option => String(option.lookup_key) === String(value),
-  //               );
-  //               if (selectedOption) {
-  //                 initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
-  //               }
-  //             }
-  //           },
-  //         );
-
-  //         // Wait for all dropdown data to be fetched and set
-  //         await Promise.all(dropdownDataPromises);
-
-  //         setInputValues(initialValues);
-  //         if (initialValues['PREVIOUS_ADDRESS']) {
-  //           setLocation(initialValues['PREVIOUS_ADDRESS']);
-  //         }
-  //         console.log('response in edit mode...', JSON.stringify(data));
-  //       } else {
-  //         console.error(
-  //           'Invalid data structure: parent_json is not an array',
-  //           data,
-  //         );
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('API failed EdittenantQues', error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
   const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
     const Ques_url = url + 'question_details_for_tenant_ques';
     console.log('Request URL:', Ques_url);
     setIsLoading(true);
-  
+
     const QuesData = {
-      p_account_id: loginData?.Login_details?.user_account_id,
-      p_property_id: propertyId,
+      p_account_id: accountId,
+      //   p_property_id: propertyId,
+      p_property_id: 1734,
     };
-  
+
     try {
       const response = await axios.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
-  
+
       if (response?.data?.success === true) {
         const data = response?.data?.data?.[0]?.parent_json;
-  
+        console.log('Response edit question data..', JSON.stringify(data));
         if (Array.isArray(data)) {
           const initialValues = {};
           const dropdownQuestions = [];
-  
+
           data.forEach(parentQuestion => {
             if (Array.isArray(parentQuestion.children)) {
               parentQuestion.children.forEach(childQuestion => {
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
                 }
-  
+
                 if (
                   childQuestion.tqm_Question_value !== undefined &&
                   childQuestion.tqm_Question_value !== null
                 ) {
                   initialValues[childQuestion.tqm_Question_code] =
                     childQuestion.tqm_Question_value;
-  
-                  // Set the initial state for Yes/No buttons dynamically
-                  if (childQuestion.tqm_Question_type === 'YesNo') {
-                    const value = childQuestion.tqm_Question_value === 1;
-                    setButtonState(childQuestion.tqm_Question_code, value);
+
+                  // Set the initial state for Yes/No and Smoking buttons
+                  if (childQuestion.tqm_Question_code === 'EARN_INCOME') {
+                    setSelectedButton(childQuestion.tqm_Question_value === 1);
+                  } else if (
+                    childQuestion.tqm_Question_code === 'EVER_BROKEN'
+                  ) {
+                    setSelectedRentalBondButton(
+                      childQuestion.tqm_Question_value === 1,
+                    );
+                  } else if (
+                    childQuestion.tqm_Question_code === 'EVICTED_PREVIOUS_BOND'
+                  ) {
+                    setSelectedPreviousRentalButton(
+                      childQuestion.tqm_Question_value === 1,
+                    );
+                  } else if (childQuestion.tqm_Question_code === 'ANY_PETS') {
+                    setSelectedPetsButton(
+                      childQuestion.tqm_Question_value === 1,
+                    );
+                  } else if (childQuestion.tqm_Question_code === 'S/NS') {
+                    setSelectedSomokingButton(
+                      childQuestion.tqm_Question_value === 0,
+                    ); // Assuming 0 means Smoking and 1 means Non-smoking
                   }
                 }
               });
             }
           });
-  
+
           // Fetch dropdown data and set initial values
           const dropdownDataPromises = dropdownQuestions.map(
             async questionCode => {
@@ -446,7 +313,7 @@ const RentalOffer = props => {
                 ...prevData,
                 [questionCode]: options,
               }));
-  
+
               // Convert initialValues to match dropdown options format
               const value = initialValues[questionCode];
               if (value) {
@@ -459,10 +326,10 @@ const RentalOffer = props => {
               }
             },
           );
-  
+
           // Wait for all dropdown data to be fetched and set
           await Promise.all(dropdownDataPromises);
-  
+
           setInputValues(initialValues);
           if (initialValues['PREVIOUS_ADDRESS']) {
             setLocation(initialValues['PREVIOUS_ADDRESS']);
@@ -481,36 +348,6 @@ const RentalOffer = props => {
       setIsLoading(false);
     }
   };
-  
-  // Helper function to set the state of Yes/No buttons dynamically
- // Helper function to set the state of Yes/No buttons dynamically
-const setButtonState = (questionCode, value) => {
-  console.log("value in buttons....", value);
-  const isYesSelected = value === 1; // true if Yes is selected, false if No is selected
-
-  switch (questionCode) {
-    case 'EARN_INCOME':
-      setSelectedButton(isYesSelected);
-      break;
-    case 'EVER_BROKEN':
-      setSelectedRentalBondButton(isYesSelected);
-      break;
-    case 'EVICTED_PREVIOUS_BOND':
-      setSelectedPreviousRentalButton(isYesSelected);
-      break;
-    case 'ANY_PETS':
-      setSelectedPetsButton(isYesSelected);
-      break;
-    case 'S/NS':
-      setSelectedSmokingButton(!isYesSelected); // Assuming 0 means Smoking and 1 means Non-smoking
-      break;
-    default:
-      console.warn(`Unhandled Yes/No question code: ${questionCode}`);
-  }
-};
-
-  
-
 
   //... Regex login email validation
   const validateResetEmail = resetEmail => {
@@ -658,12 +495,12 @@ const setButtonState = (questionCode, value) => {
   // render item
   const renderDataItem = item => {
     return (
-      <View style={[RentalOfferStyle.item]}>
-        <Text style={RentalOfferStyle.selectedTextStyle}>
+      <View style={[PreRentalQuestionnaireStyle.item]}>
+        <Text style={PreRentalQuestionnaireStyle.selectedTextStyle}>
           {item.lookup_description}
         </Text>
         <AntDesign
-          style={RentalOfferStyle.icon}
+          style={PreRentalQuestionnaireStyle.icon}
           color={_COLORS.Kodie_WhiteColor}
           name="check"
           size={20}
@@ -673,10 +510,12 @@ const setButtonState = (questionCode, value) => {
   };
   const addOccupantRender = ({item, index}) => {
     return (
-      <View style={RentalOfferStyle.occupants_item_View}>
+      <View style={PreRentalQuestionnaireStyle.occupants_item_View}>
         <View>
-          <Text style={RentalOfferStyle.occupants_name}>{item?.fullName}</Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_name}>
+            {item?.fullName}
+          </Text>
+          <Text style={PreRentalQuestionnaireStyle.occupants_email}>
             {item?.emailAddress}
           </Text>
         </View>
@@ -715,15 +554,15 @@ const setButtonState = (questionCode, value) => {
   };
   const leaseHolderRender = ({item, index}) => {
     return (
-      <View style={RentalOfferStyle.occupants_item_View}>
+      <View style={PreRentalQuestionnaireStyle.occupants_item_View}>
         <View>
-          <Text style={RentalOfferStyle.occupants_name}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_name}>
             {item?.leaseFullName}
           </Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_email}>
             {item?.leaseEmailAddress}
           </Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_email}>
             {item?.leaseConfirmEmailAddress}
           </Text>
         </View>
@@ -762,12 +601,12 @@ const setButtonState = (questionCode, value) => {
   };
   const addReferencesRender = ({item, index}) => {
     return (
-      <View style={RentalOfferStyle.occupants_item_View}>
+      <View style={PreRentalQuestionnaireStyle.occupants_item_View}>
         <View>
-          <Text style={RentalOfferStyle.occupants_name}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_name}>
             {item?.referenceFullName}
           </Text>
-          <Text style={RentalOfferStyle.occupants_email}>
+          <Text style={PreRentalQuestionnaireStyle.occupants_email}>
             {item?.referenceEmail}
           </Text>
         </View>
@@ -822,9 +661,9 @@ const setButtonState = (questionCode, value) => {
     const questionId = question28.id;
 
     return (
-      <View style={RentalOfferStyle.AddOccupantMainView}>
+      <View style={PreRentalQuestionnaireStyle.AddOccupantMainView}>
         <TouchableOpacity
-          style={RentalOfferStyle.AddOccupantView}
+          style={PreRentalQuestionnaireStyle.AddOccupantView}
           onPress={() => {
             setToggleOccupants(!toggleOccupants);
           }}>
@@ -833,7 +672,7 @@ const setButtonState = (questionCode, value) => {
             color={_COLORS.Kodie_BlackColor}
             size={25}
           />
-          <Text style={RentalOfferStyle.AddOccupantText}>
+          <Text style={PreRentalQuestionnaireStyle.AddOccupantText}>
             {'Add occupants'}
           </Text>
         </TouchableOpacity>
@@ -844,11 +683,11 @@ const setButtonState = (questionCode, value) => {
           renderItem={addOccupantRender}
         />
         {toggleOccupants && (
-          <View style={RentalOfferStyle.inputView}>
+          <View style={PreRentalQuestionnaireStyle.inputView}>
             <View style={{marginTop: 11}}>
               <Text style={LABEL_STYLES.commontext}>{fullNameLabel}</Text>
               <TextInput
-                style={RentalOfferStyle.input}
+                style={PreRentalQuestionnaireStyle.input}
                 placeholder={'Enter full name'}
                 onChangeText={setFullName}
                 onBlur={() => handleValidFullName(fullName)}
@@ -856,12 +695,14 @@ const setButtonState = (questionCode, value) => {
               />
             </View>
             {fullNameError ? (
-              <Text style={RentalOfferStyle.error_text}>{fullNameError}</Text>
+              <Text style={PreRentalQuestionnaireStyle.error_text}>
+                {fullNameError}
+              </Text>
             ) : null}
-            <View style={RentalOfferStyle.inputView}>
+            <View style={PreRentalQuestionnaireStyle.inputView}>
               <Text style={LABEL_STYLES.commontext}>{emailAddressLabel}</Text>
               <TextInput
-                style={RentalOfferStyle.input}
+                style={PreRentalQuestionnaireStyle.input}
                 placeholder={'Enter email address'}
                 onChangeText={setEmailAddress}
                 onBlur={() => handleValidEmial(emailAddress)}
@@ -870,7 +711,7 @@ const setButtonState = (questionCode, value) => {
               />
             </View>
             {emailAddressError ? (
-              <Text style={RentalOfferStyle.error_text}>
+              <Text style={PreRentalQuestionnaireStyle.error_text}>
                 {emailAddressError}
               </Text>
             ) : null}
@@ -904,9 +745,9 @@ const setButtonState = (questionCode, value) => {
         ?.Confirm_email_address || 'Confirm email address';
 
     return (
-      <View style={RentalOfferStyle.AddOccupantMainView}>
+      <View style={PreRentalQuestionnaireStyle.AddOccupantMainView}>
         <TouchableOpacity
-          style={RentalOfferStyle.AddOccupantView}
+          style={PreRentalQuestionnaireStyle.AddOccupantView}
           onPress={() => {
             setToggleLeaseHolder(!toggleLeaseHolder);
           }}>
@@ -915,13 +756,13 @@ const setButtonState = (questionCode, value) => {
             color={_COLORS.Kodie_BlackColor}
             size={25}
           />
-          <Text style={RentalOfferStyle.AddOccupantText}>
+          <Text style={PreRentalQuestionnaireStyle.AddOccupantText}>
             {'Add leaseholders'}
           </Text>
         </TouchableOpacity>
         <View style={{marginTop: 10}}>
           {toggleLeaseHolder && (
-            <Text style={RentalOfferStyle.AddLeasesubText}>
+            <Text style={PreRentalQuestionnaireStyle.AddLeasesubText}>
               {
                 'Each tenant who is party to the lease agreement is considered a leaseholder. Each leaseholder will receive an email link to submit a completed application.'
               }
@@ -934,10 +775,10 @@ const setButtonState = (questionCode, value) => {
           />
           {toggleLeaseHolder && (
             <View>
-              <View style={RentalOfferStyle.inputView}>
+              <View style={PreRentalQuestionnaireStyle.inputView}>
                 <Text style={LABEL_STYLES.commontext}>{fullNameLabel}</Text>
                 <TextInput
-                  style={RentalOfferStyle.input}
+                  style={PreRentalQuestionnaireStyle.input}
                   placeholder={'Enter full name'}
                   onChangeText={setLeaseFullName}
                   value={leaseFullName}
@@ -945,14 +786,14 @@ const setButtonState = (questionCode, value) => {
                 />
               </View>
               {leaseFullNameError ? (
-                <Text style={RentalOfferStyle.error_text}>
+                <Text style={PreRentalQuestionnaireStyle.error_text}>
                   {leaseFullNameError}
                 </Text>
               ) : null}
-              <View style={RentalOfferStyle.inputView}>
+              <View style={PreRentalQuestionnaireStyle.inputView}>
                 <Text style={LABEL_STYLES.commontext}>{emailAddressLabel}</Text>
                 <TextInput
-                  style={RentalOfferStyle.input}
+                  style={PreRentalQuestionnaireStyle.input}
                   placeholder={'Enter email address'}
                   onChangeText={setleaseEmailAddress}
                   value={leaseEmailAddress}
@@ -961,16 +802,16 @@ const setButtonState = (questionCode, value) => {
                 />
               </View>
               {leaseEmailAddressError ? (
-                <Text style={RentalOfferStyle.error_text}>
+                <Text style={PreRentalQuestionnaireStyle.error_text}>
                   {leaseEmailAddressError}
                 </Text>
               ) : null}
-              <View style={RentalOfferStyle.inputView}>
+              <View style={PreRentalQuestionnaireStyle.inputView}>
                 <Text style={LABEL_STYLES.commontext}>
                   {confirmEmailAddressLabel}
                 </Text>
                 <TextInput
-                  style={RentalOfferStyle.input}
+                  style={PreRentalQuestionnaireStyle.input}
                   placeholder={'Confirm email address'}
                   onChangeText={setLeaseConfirmEmailAddress}
                   value={leaseConfirmEmailAddress}
@@ -981,7 +822,7 @@ const setButtonState = (questionCode, value) => {
                 />
               </View>
               {leaseConfirmEmailAddressError ? (
-                <Text style={RentalOfferStyle.error_text}>
+                <Text style={PreRentalQuestionnaireStyle.error_text}>
                   {leaseConfirmEmailAddressError}
                 </Text>
               ) : null}
@@ -1001,15 +842,15 @@ const setButtonState = (questionCode, value) => {
   const renderFormSection = section => {
     return (
       <View>
-        <View style={RentalOfferStyle.mainfeaturesview}>
-          <View style={RentalOfferStyle.key_feature_Text_view}>
-            <Text style={RentalOfferStyle.key_feature_Text}>
+        <View style={PreRentalQuestionnaireStyle.mainfeaturesview}>
+          <View style={PreRentalQuestionnaireStyle.key_feature_Text_view}>
+            <Text style={PreRentalQuestionnaireStyle.key_feature_Text}>
               {section?.tqm_Question_description}
             </Text>
           </View>
-          <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+          <TouchableOpacity style={PreRentalQuestionnaireStyle.plus_minusview}>
             <TouchableOpacity
-              style={RentalOfferStyle.menusIconView}
+              style={PreRentalQuestionnaireStyle.menusIconView}
               onPress={
                 section?.tqm_Question_code === 'NOO'
                   ? decreaseNumberOccupants
@@ -1021,13 +862,13 @@ const setButtonState = (questionCode, value) => {
                 color={'black'} // Adjust color as needed
               />
             </TouchableOpacity>
-            <Text style={RentalOfferStyle.countdata}>
+            <Text style={PreRentalQuestionnaireStyle.countdata}>
               {section?.tqm_Question_code === 'NOO'
                 ? numberOccupants
                 : numberLeaseHolder}
             </Text>
             <TouchableOpacity
-              style={RentalOfferStyle.menusIconView}
+              style={PreRentalQuestionnaireStyle.menusIconView}
               onPress={
                 section?.tqm_Question_code === 'NOO'
                   ? increaseNumberOccupants
@@ -1050,28 +891,13 @@ const setButtonState = (questionCode, value) => {
       </View>
     );
   };
-  const handleDayPress = day => {
-    setSelectedDate(day.dateString);
-  };
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
-  };
-  const toggleRentalDetails = () => {
-    setRentalDetails(!RentalDetails);
   };
   const toggleItem = itemChildren => {
     setExpandedItem(prevState =>
       prevState === itemChildren ? null : itemChildren,
     );
-  };
-  const toggleTenantRooms = () => {
-    setTenantRooms(!TenantRooms);
-  };
-  const toggleRentalHistory = () => {
-    setRentalHistory(!RentalHistory);
-  };
-  const togglePreferences = () => {
-    setPreferences(!Preferences);
   };
 
   const onClose = () => {
@@ -1143,7 +969,7 @@ const setButtonState = (questionCode, value) => {
     console.log('Request URL:', tenantQues_url);
     setIsLoading(true);
     const tenantQuesData = {
-      p_account_id: loginData?.Login_details?.user_account_id,
+      p_account_id: accountId,
       p_property_id: propertyId,
     };
     axios
@@ -1247,12 +1073,12 @@ const setButtonState = (questionCode, value) => {
   const QuesHeadingRender = ({item}) => {
     return (
       <View style={{marginTop: 5}}>
-        <View style={RentalOfferStyle.propety_details_view}>
-          <Text style={RentalOfferStyle.propery_det}>
+        <View style={PreRentalQuestionnaireStyle.propety_details_view}>
+          <Text style={PreRentalQuestionnaireStyle.propery_det}>
             {item?.tqm_Question_description}
           </Text>
           <TouchableOpacity
-            style={RentalOfferStyle.down_Arrow_icon}
+            style={PreRentalQuestionnaireStyle.down_Arrow_icon}
             onPress={() => {
               toggleItem(item?.children);
               console.log('QuestionChildren...', item?.children);
@@ -1283,194 +1109,6 @@ const setButtonState = (questionCode, value) => {
       [questionCode]: value,
     }));
   };
-
-  const handleSubmit = () => {
-    const jsonData = [];
-    console.log('quesHeading:', quesHeading);
-    console.log('subChildren:', subChildren);
-
-    // Create a mapping of questionCode to id from quesHeading and subChildren
-    const questionCodeToId = {};
-    quesHeading.forEach(parentQuestion => {
-      parentQuestion.children.forEach(childQuestion => {
-        questionCodeToId[childQuestion.tqm_Question_code] = childQuestion.id;
-      });
-    });
-    subChildren.forEach(subChild => {
-      questionCodeToId[subChild.tqm_Question_code] = subChild.id;
-    });
-
-    // Use a Set to track processed question codes to prevent duplicates
-    const processedQuestionCodes = new Set();
-
-    // Process main questions
-    quesHeading.forEach(parentQuestion => {
-      parentQuestion.children.forEach(childQuestion => {
-        const questionValue = inputValues[childQuestion.tqm_Question_code];
-        if (
-          questionValue !== undefined &&
-          questionValue !== null &&
-          questionValue !== '' && // Check if value is not empty
-          !processedQuestionCodes.has(childQuestion.tqm_Question_code)
-        ) {
-          jsonData.push({
-            question_id: childQuestion.id,
-            question_value: questionValue,
-            question_reference:
-              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-            question_is_lookup:
-              childQuestion.tqm_Question_type === 'Dropdown' ? 1 : 0,
-          });
-          processedQuestionCodes.add(childQuestion.tqm_Question_code);
-        }
-      });
-    });
-    // Add Yes/No button values to jsonData
-    const yesNoButtonValues = {
-      EARN_INCOME: selectedButton, // EARN_INCOME question code
-      EVER_BROKEN: selectedRentalBondButton, // EVER_BROKEN question code
-      EVICTED_PREVIOUS_BOND: selectedPreviousRentalButton, // EVICTED_PREVIOUS_BOND question code
-      ANY_PETS: selectedPetsButton, // ANY_PETS question code
-    };
-    
-    Object.keys(yesNoButtonValues).forEach(questionCode => {
-      const questionId = questionCodeToId[questionCode];
-      const isYesSelected = yesNoButtonValues[questionCode];
-    
-      // Set value based on selection
-      const value = (isYesSelected === undefined || isYesSelected === null) ? 1 : (isYesSelected ? 0 : 1);
-    
-      if (
-        questionId !== undefined &&
-        !processedQuestionCodes.has(questionCode)
-      ) {
-        jsonData.push({
-          question_id: questionId,
-          question_value: value,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
-        processedQuestionCodes.add(questionCode);
-      }
-    });
-    // Add smoking button value to jsonData
-    const smokingQuestionId = questionCodeToId['S/NS']; // S/NS question code for smoking
-    const smokingValue = selectedSomokingButton ? 0 : 1; // Assuming true means Smoking and false means Non-smoking
-    if (
-      smokingQuestionId !== undefined &&
-      smokingValue !== null &&
-      smokingValue !== undefined &&
-      !processedQuestionCodes.has('S/NS')
-    ) {
-      jsonData.push({
-        question_id: smokingQuestionId,
-        question_value: smokingValue,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      processedQuestionCodes.add('S/NS');
-    }
-
-    // Add 'Number of pets' value to jsonData
-    console.log('petsSubChildren:', petsSubChildren);
-    const numberOfPetsQuestion = petsSubChildren.find(
-      subChild => subChild.tqm_Question_code === 'NUMBER_OF_PETS',
-    );
-    console.log('numberOfPetsQuestion:', numberOfPetsQuestion);
-    const petsQuestionId = numberOfPetsQuestion?.id;
-    console.log('petsQuestionId:', petsQuestionId); // Debugging step
-    console.log('numberPets:', numberPets); // Debugging step
-    if (
-      petsQuestionId !== undefined &&
-      numberPets !== null &&
-      numberPets !== undefined &&
-      !processedQuestionCodes.has('NUMBER_OF_PETS')
-    ) {
-      console.log('Adding number of pets to jsonData:', {
-        question_id: petsQuestionId,
-        question_value: numberPets,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      jsonData.push({
-        question_id: petsQuestionId,
-        question_value: numberPets,
-        question_reference: 0,
-        question_is_lookup: 0,
-      });
-      processedQuestionCodes.add('NUMBER_OF_PETS');
-    }
-
-    // Add location data if available
-    const locationQuestionId = questionCodeToId['PREVIOUS_ADDRESS']; // PREVIOUS_ADDRESS question code
-    if (locationQuestionId !== undefined && location) {
-      const existingLocationIndex = jsonData.findIndex(
-        item => item.question_id === locationQuestionId,
-      );
-      if (existingLocationIndex !== -1) {
-        // Update existing location value
-        jsonData[existingLocationIndex].question_value = location;
-      } else {
-        // Add new location value
-        console.log('Adding location data:', {
-          question_id: locationQuestionId,
-          question_value: location,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
-        jsonData.push({
-          question_id: locationQuestionId,
-          question_value: location,
-          question_reference: 0,
-          question_is_lookup: 0,
-        });
-      }
-      processedQuestionCodes.add('PREVIOUS_ADDRESS');
-    }
-
-    // Group occupants by their question_id
-    const occupantGroups = groupBy(occupants, 'questionId');
-    console.log('occupantGroups...', occupantGroups);
-    // Add grouped occupants data to jsonData
-    addGroupedDataToJsonData(jsonData, occupantGroups);
-
-    // Group leaseholders by their question_id
-    const leaseHolderGroups = groupBy(leaseHolderItem, 'questionId');
-    console.log('leaseHolderGroups...', leaseHolderGroups);
-    // Add grouped leaseholders data to jsonData
-    addGroupedDataToJsonData(
-      jsonData,
-      leaseHolderGroups,
-      'leaseFullName',
-      'leaseEmailAddress',
-      'leaseConfirmEmailAddress',
-    );
-
-    const finalJson = {
-      json_data: jsonData,
-    };
-
-    console.log('Final JSON:', JSON.stringify(finalJson));
-    saveAllJson(finalJson);
-    saveBiddingDetails();
-    resetDynamicFields();
-  };
-
-  const resetDynamicFields = () => {
-    Object.keys(inputValues).forEach(key => {
-      inputValues[key] = '';
-    });
-
-    occupants.length = 0;
-    leaseHolderItem.length = 0;
-
-    setInputValues({...inputValues});
-    setOccupants([]);
-    setLeaseHolderItem([]);
-    setNumberOccupants(0);
-    setNumberLeaseHolder(0);
-  };
-
   const saveAllJson = finalJson => {
     const url = Config.BASE_URL;
     const saveJson_url = `${url}save_json_details`;
@@ -1479,7 +1117,7 @@ const setButtonState = (questionCode, value) => {
 
     const saveJsonData = {
       p_property_id: propertyId,
-      p_account_id: loginData?.Login_details?.user_account_id,
+      p_account_id: accountId,
       p_bid_id: bibId,
       json_data: finalJson.json_data, // Ensure json_data is not stringified here
     };
@@ -1512,25 +1150,16 @@ const setButtonState = (questionCode, value) => {
     const saveBiddingDetails_url = `${url}save_bidding_details`;
     console.log('Request URL:', saveBiddingDetails_url);
     setIsLoading(true);
-  
+
     const saveBiddingDetailsData = new FormData();
     saveBiddingDetailsData.append('bid_id', bibId);
-    saveBiddingDetailsData.append('account_id', loginData?.Login_details?.user_account_id);
+    saveBiddingDetailsData.append('account_id', accountId);
     saveBiddingDetailsData.append('property_id', propertyId);
     saveBiddingDetailsData.append('amount', 1000);
-  
-    // Check if selectFile is defined and has at least one file
-    if (selectFile && selectFile.length > 0) {
-      const file = selectFile[0];
-      saveBiddingDetailsData.append('screening_report', {
-        uri: file.uri,
-        name: file.name.replace(/\s/g, ''),
-        type: file.type,
-      });
-    }
-  
+    saveBiddingDetailsData.append('screening_report');
+
     console.log('saveBiddingDetails_Data:', saveBiddingDetailsData);
-  
+
     axios
       .post(saveBiddingDetails_url, saveBiddingDetailsData, {
         headers: {
@@ -1539,7 +1168,10 @@ const setButtonState = (questionCode, value) => {
       })
       .then(response => {
         if (response?.data?.success === true) {
-          console.log('API Response saveBiddingDetails Data:', JSON.stringify(response?.data));
+          console.log(
+            'API Response saveBiddingDetails Data:',
+            JSON.stringify(response?.data),
+          );
         } else {
           setIsLoading(false);
         }
@@ -1552,7 +1184,6 @@ const setButtonState = (questionCode, value) => {
         setIsLoading(false);
       });
   };
-  
 
   // Utility function to group items by a specified key
   const groupBy = (items, key) => {
@@ -1590,53 +1221,19 @@ const setButtonState = (questionCode, value) => {
     }
   };
 
-  // ....buttons
-
-  const renderYesNoButton = (question, isSelected, setSelectedState) => (
-    <RowButtons
-      LeftButtonText={'Yes'}
-      leftButtonbackgroundColor={
-        isSelected ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_WhiteColor
-      }
-      LeftButtonTextColor={
-        isSelected ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_MediumGrayColor
-      }
-      LeftButtonborderColor={
-        isSelected ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor
-      }
-      onPressLeftButton={() => {
-        setSelectedState(true);
-        handleInputChange(question.id, 1);
-      }}
-      RightButtonText={'No'}
-      RightButtonbackgroundColor={
-        !isSelected ? _COLORS.Kodie_lightGreenColor : _COLORS.Kodie_WhiteColor
-      }
-      RightButtonTextColor={
-        !isSelected ? _COLORS.Kodie_BlackColor : _COLORS.Kodie_MediumGrayColor
-      }
-      RightButtonborderColor={
-        !isSelected ? _COLORS.Kodie_GrayColor : _COLORS.Kodie_LightWhiteColor
-      }
-      onPressRightButton={() => {
-        setSelectedState(false);
-        handleInputChange(question.id, 0);
-      }}
-    />
-  );
-
   const renderQuestionComponent = (question, index) => {
     switch (question.tqm_Question_type) {
       case 'Input':
         return (
           <View key={index}>
             <TextInput
-              style={RentalOfferStyle.input}
+              style={PreRentalQuestionnaireStyle.input}
               placeholder={`Enter your ${question.tqm_Question_description}`}
               onChangeText={text => {
                 handleInputChange(question.tqm_Question_code, text, index);
               }}
               value={inputValues[question.tqm_Question_code] || ''}
+              editable={false}
             />
           </View>
         );
@@ -1644,19 +1241,20 @@ const setButtonState = (questionCode, value) => {
         return (
           <View>
             <TextInput
-              style={RentalOfferStyle.input}
+              style={PreRentalQuestionnaireStyle.input}
               placeholder={`Enter your ${question.tqm_Question_description}`}
               onChangeText={text =>
                 handleInputChange(question.tqm_Question_code, text, index)
               }
               value={inputValues[question.tqm_Question_code] || ''}
               keyboardType="number-pad"
+              editable={false}
             />
           </View>
         );
       case 'Date':
         return (
-          <View style={RentalOfferStyle.datePickerView}>
+          <View style={PreRentalQuestionnaireStyle.datePickerView}>
             <CalendarModal
               SelectDate={
                 inputValues[question.tqm_Question_code] || 'Start Date'
@@ -1685,6 +1283,7 @@ const setButtonState = (questionCode, value) => {
               }}
               _closeButton={toggleModal}
               _ApplyButton={toggleModal}
+              editable={false} 
             />
           </View>
         );
@@ -1692,11 +1291,11 @@ const setButtonState = (questionCode, value) => {
         return (
           <View>
             <Dropdown
-              style={RentalOfferStyle.dropdown}
-              placeholderStyle={RentalOfferStyle.placeholderStyle}
-              selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-              inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-              iconStyle={RentalOfferStyle.iconStyle}
+              style={PreRentalQuestionnaireStyle.dropdown}
+              placeholderStyle={PreRentalQuestionnaireStyle.placeholderStyle}
+              selectedTextStyle={PreRentalQuestionnaireStyle.selectedTextStyle}
+              inputSearchStyle={PreRentalQuestionnaireStyle.inputSearchStyle}
+              iconStyle={PreRentalQuestionnaireStyle.iconStyle}
               data={dropdownData[question.tqm_Question_code] || []}
               search
               maxHeight={300}
@@ -1704,6 +1303,7 @@ const setButtonState = (questionCode, value) => {
               valueField="lookup_key"
               placeholder="Select an option"
               searchPlaceholder="Search..."
+              disable
               value={inputValues[question.tqm_Question_code] || ''}
               onFocus={() => handleDropdown(question.tqm_Question_code, index)}
               onChange={item => {
@@ -1731,28 +1331,35 @@ const setButtonState = (questionCode, value) => {
       case 'Count':
         return (
           <View>
-            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
-              <View style={RentalOfferStyle.key_feature_Text_view}>
-                <Text style={RentalOfferStyle.key_feature_Text}>
+            <View
+              style={PreRentalQuestionnaireStyle.mainfeaturesview}
+              key={index}>
+              <View style={PreRentalQuestionnaireStyle.key_feature_Text_view}>
+                <Text style={PreRentalQuestionnaireStyle.key_feature_Text}>
                   {'Number of years employed'}
                 </Text>
               </View>
-              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+              <TouchableOpacity
+                style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
-                  style={RentalOfferStyle.menusIconView}
-                  onPress={decreaseNumberYearEmp}>
+                  style={PreRentalQuestionnaireStyle.menusIconView}
+                  // onPress={decreaseNumberYearEmp}
+                  >
                   <AntDesign
                     name="minus"
                     size={20}
                     color={_COLORS.Kodie_BlackColor}
                   />
                 </TouchableOpacity>
-                <Text style={RentalOfferStyle.countdata}>{numberYearEmp}</Text>
+                <Text style={PreRentalQuestionnaireStyle.countdata}>
+                  {numberYearEmp}
+                </Text>
                 <TouchableOpacity
-                  style={RentalOfferStyle.menusIconView}
-                  onPress={() => {
-                    increaseNumberYearEmp();
-                  }}>
+                  style={PreRentalQuestionnaireStyle.menusIconView}
+                  // onPress={() => {
+                  //   increaseNumberYearEmp();
+                  // }}
+                  >
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1766,29 +1373,36 @@ const setButtonState = (questionCode, value) => {
       case 'Pets_Count':
         return (
           <View>
-            <View style={RentalOfferStyle.mainfeaturesview} key={index}>
-              <View style={RentalOfferStyle.key_feature_Text_view}>
-                <Text style={RentalOfferStyle.key_feature_Text}>
+            <View
+              style={PreRentalQuestionnaireStyle.mainfeaturesview}
+              key={index}>
+              <View style={PreRentalQuestionnaireStyle.key_feature_Text_view}>
+                <Text style={PreRentalQuestionnaireStyle.key_feature_Text}>
                   {/* {'Number of pets'} */}
                   {petsSubChildren[0]?.tqm_Question_description}
                 </Text>
               </View>
-              <TouchableOpacity style={RentalOfferStyle.plus_minusview}>
+              <TouchableOpacity
+                style={PreRentalQuestionnaireStyle.plus_minusview}>
                 <TouchableOpacity
-                  style={RentalOfferStyle.menusIconView}
-                  onPress={decreaseNumberPet}>
+                  style={PreRentalQuestionnaireStyle.menusIconView}
+                  // onPress={decreaseNumberPet}
+                  >
                   <AntDesign
                     name="minus"
                     size={20}
                     color={_COLORS.Kodie_BlackColor}
                   />
                 </TouchableOpacity>
-                <Text style={RentalOfferStyle.countdata}>{numberPets}</Text>
+                <Text style={PreRentalQuestionnaireStyle.countdata}>
+                  {numberPets}
+                </Text>
                 <TouchableOpacity
-                  style={RentalOfferStyle.menusIconView}
-                  onPress={() => {
-                    increaseNumberPets();
-                  }}>
+                  style={PreRentalQuestionnaireStyle.menusIconView}
+                  // onPress={() => {
+                  //   increaseNumberPets();
+                  // }}
+                  >
                   <AntDesign
                     name="plus"
                     size={20}
@@ -1799,203 +1413,190 @@ const setButtonState = (questionCode, value) => {
             </View>
           </View>
         );
-      // case 'Yes_no':
-      //   return (
-      //     <View>
-      //       {question.id === 13 ? (
-      //         <RowButtons
-      //           LeftButtonText={'Yes'}
-      //           leftButtonbackgroundColor={
-      //             !selectedButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           LeftButtonTextColor={
-      //             !selectedButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           LeftButtonborderColor={
-      //             !selectedButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressLeftButton={() => {
-      //             setSelectedButton(false);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //           RightButtonText={'No'}
-      //           RightButtonbackgroundColor={
-      //             selectedButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           RightButtonTextColor={
-      //             selectedButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           RightButtonborderColor={
-      //             selectedButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressRightButton={() => {
-      //             setSelectedButton(true);
-      //             handleInputChange(question.id, 0);
-      //           }}
-      //         />
-      //       ) : question.id === 20 ? (
-      //         <RowButtons
-      //           LeftButtonText={'Yes'}
-      //           leftButtonbackgroundColor={
-      //             !selectedRentalBondButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           LeftButtonTextColor={
-      //             !selectedRentalBondButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           LeftButtonborderColor={
-      //             !selectedRentalBondButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressLeftButton={() => {
-      //             setSelectedRentalBondButton(false);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //           RightButtonText={'No'}
-      //           RightButtonbackgroundColor={
-      //             selectedRentalBondButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           RightButtonTextColor={
-      //             selectedRentalBondButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           RightButtonborderColor={
-      //             selectedRentalBondButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressRightButton={() => {
-      //             setSelectedRentalBondButton(true);
-      //             handleInputChange(question.id, 0);
-      //           }}
-      //         />
-      //       ) : question.id === 21 ? (
-      //         <RowButtons
-      //           LeftButtonText={'Yes'}
-      //           leftButtonbackgroundColor={
-      //             !selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           LeftButtonTextColor={
-      //             !selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           LeftButtonborderColor={
-      //             !selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressLeftButton={() => {
-      //             setSelectedPreviousRentalButton(false);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //           RightButtonText={'No'}
-      //           RightButtonbackgroundColor={
-      //             selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           RightButtonTextColor={
-      //             selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           RightButtonborderColor={
-      //             selectedPreviousRentalButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressRightButton={() => {
-      //             setSelectedPreviousRentalButton(true);
-      //             handleInputChange(question.id, 0);
-      //           }}
-      //         />
-      //       ) : question.id === 24 ? (
-      //         <RowButtons
-      //           LeftButtonText={'Yes'}
-      //           leftButtonbackgroundColor={
-      //             !selectedPetsButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           LeftButtonTextColor={
-      //             !selectedPetsButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           LeftButtonborderColor={
-      //             !selectedPetsButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressLeftButton={() => {
-      //             setSelectedPetsButton(false);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //           RightButtonText={'No'}
-      //           RightButtonbackgroundColor={
-      //             selectedPetsButton
-      //               ? _COLORS.Kodie_lightGreenColor
-      //               : _COLORS.Kodie_WhiteColor
-      //           }
-      //           RightButtonTextColor={
-      //             selectedPetsButton
-      //               ? _COLORS.Kodie_BlackColor
-      //               : _COLORS.Kodie_MediumGrayColor
-      //           }
-      //           RightButtonborderColor={
-      //             selectedPetsButton
-      //               ? _COLORS.Kodie_GrayColor
-      //               : _COLORS.Kodie_LightWhiteColor
-      //           }
-      //           onPressRightButton={() => {
-      //             setSelectedPetsButton(true);
-      //             handleInputChange(question.id, 1);
-      //           }}
-      //         />
-      //       ) : null}
-      //     </View>
-      //   );
+        case 'Yes_no':
+          return (
+            <View>
+              {question.id === 13 ? (
+                <RowButtons
+                  LeftButtonText={'Yes'}
+                  leftButtonbackgroundColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedButton(false);
+                    handleInputChange(question.id, 1);
+                  }}
+                  RightButtonText={'No'}
+                  RightButtonbackgroundColor={
+                    selectedButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedButton(true);
+                    handleInputChange(question.id, 0);
+                  }}
+                  disabled={true} // Set this to true to make buttons non-interactive
+                />
+              ) : question.id === 20 ? (
+                <RowButtons
+                  LeftButtonText={'Yes'}
+                  leftButtonbackgroundColor={
+                    !selectedRentalBondButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedRentalBondButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedRentalBondButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedRentalBondButton(false);
+                    handleInputChange(question.id, 1);
+                  }}
+                  RightButtonText={'No'}
+                  RightButtonbackgroundColor={
+                    selectedRentalBondButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedRentalBondButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedRentalBondButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedRentalBondButton(true);
+                    handleInputChange(question.id, 0);
+                  }}
+                  disabled={true} // Set this to true to make buttons non-interactive
+                />
+              ) : question.id === 21 ? (
+                <RowButtons
+                  LeftButtonText={'Yes'}
+                  leftButtonbackgroundColor={
+                    !selectedPreviousRentalButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedPreviousRentalButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedPreviousRentalButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedPreviousRentalButton(false);
+                    handleInputChange(question.id, 1);
+                  }}
+                  RightButtonText={'No'}
+                  RightButtonbackgroundColor={
+                    selectedPreviousRentalButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedPreviousRentalButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedPreviousRentalButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedPreviousRentalButton(true);
+                    handleInputChange(question.id, 0);
+                  }}
+                  disabled={true} // Set this to true to make buttons non-interactive
+                />
+              ) : question.id === 24 ? (
+                <RowButtons
+                  LeftButtonText={'Yes'}
+                  leftButtonbackgroundColor={
+                    !selectedPetsButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  LeftButtonTextColor={
+                    !selectedPetsButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  LeftButtonborderColor={
+                    !selectedPetsButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressLeftButton={() => {
+                    setSelectedPetsButton(false);
+                    handleInputChange(question.id, 1);
+                  }}
+                  RightButtonText={'No'}
+                  RightButtonbackgroundColor={
+                    selectedPetsButton
+                      ? _COLORS.Kodie_lightGreenColor
+                      : _COLORS.Kodie_WhiteColor
+                  }
+                  RightButtonTextColor={
+                    selectedPetsButton
+                      ? _COLORS.Kodie_BlackColor
+                      : _COLORS.Kodie_MediumGrayColor
+                  }
+                  RightButtonborderColor={
+                    selectedPetsButton
+                      ? _COLORS.Kodie_GrayColor
+                      : _COLORS.Kodie_LightWhiteColor
+                  }
+                  onPressRightButton={() => {
+                    setSelectedPetsButton(true);
+                    handleInputChange(question.id, 0);
+                  }}
+                  disabled={true} // Set this to true to make buttons non-interactive
+                />
+              ) : null}
+            </View>
+          );
+        
 
-      case 'Yes_no':
-        if (question.id === 13) {
-          return renderYesNoButton(question, selectedButton, setSelectedButton);
-        } else if (question.id === 20) {
-          return renderYesNoButton(
-            question,
-            selectedRentalBondButton,
-            setSelectedRentalBondButton,
-          );
-        } else if (question.id === 21) {
-          return renderYesNoButton(
-            question,
-            selectedPreviousRentalButton,
-            setSelectedPreviousRentalButton,
-          );
-        } else if (question.id === 24) {
-          return renderYesNoButton(question, selectedPetsButton, setSelectedPetsButton);
-        }
       case 'Smoking/Non-smoking':
         return (
           <View>
@@ -2040,6 +1641,7 @@ const setButtonState = (questionCode, value) => {
                 setSelectedSomokingButton(true);
                 handleInputChange(question.id, 0);
               }}
+              disabled={true}
             />
           </View>
         );
@@ -2048,16 +1650,17 @@ const setButtonState = (questionCode, value) => {
         return (
           <View key={index}>
             <MultiSelect
-              style={RentalOfferStyle.dropdown}
-              placeholderStyle={RentalOfferStyle.placeholderStyle}
-              selectedTextStyle={RentalOfferStyle.selectedTextStyle}
-              inputSearchStyle={RentalOfferStyle.inputSearchStyle}
-              iconStyle={RentalOfferStyle.iconStyle}
+              style={PreRentalQuestionnaireStyle.dropdown}
+              placeholderStyle={PreRentalQuestionnaireStyle.placeholderStyle}
+              selectedTextStyle={PreRentalQuestionnaireStyle.selectedTextStyle}
+              inputSearchStyle={PreRentalQuestionnaireStyle.inputSearchStyle}
+              iconStyle={PreRentalQuestionnaireStyle.iconStyle}
               data={dropdownData[question.tqm_Question_code] || []}
               labelField="lookup_description"
               valueField="lookup_key"
               searchPlaceholder="Search..."
               search
+              disable
               value={inputValues[question.tqm_Question_code] || []}
               onChange={items =>
                 handleInputChange(question.tqm_Question_code, items)
@@ -2066,8 +1669,8 @@ const setButtonState = (questionCode, value) => {
               renderItem={renderDataItem}
               renderSelectedItem={(item, unSelect) => (
                 <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-                  <View style={RentalOfferStyle.selectedStyle}>
-                    <Text style={RentalOfferStyle.textSelectedStyle}>
+                  <View style={PreRentalQuestionnaireStyle.selectedStyle}>
+                    <Text style={PreRentalQuestionnaireStyle.textSelectedStyle}>
                       {item.lookup_description}
                     </Text>
                     <AntDesign
@@ -2084,36 +1687,31 @@ const setButtonState = (questionCode, value) => {
       case 'Input_location':
         return (
           <View key={index} style={{marginTop: 10}}>
-            <View style={[RentalOfferStyle.locationConView]}>
-              <View style={RentalOfferStyle.locationContainer}>
+            <View style={[PreRentalQuestionnaireStyle.locationConView]}>
+              <View style={PreRentalQuestionnaireStyle.locationContainer}>
                 <TextInput
-                  style={RentalOfferStyle.locationInput}
+                  style={PreRentalQuestionnaireStyle.locationInput}
                   value={location}
                   onChangeText={handleLocationChange}
-                  onFocus={() => {
-                    setIsSearch(true);
-                    props.setOpenMap && props.setOpenMap(true);
-                  }}
                   placeholder="Search location"
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  editable={false}
                 />
               </View>
               <TouchableOpacity
-                style={RentalOfferStyle.locationIconView}
-                onPress={() => {
-                  setIsMap(true);
-                }}>
+                style={PreRentalQuestionnaireStyle.locationIconView}
+                onPress={() => {}}>
                 <Octicons
                   name={'location'}
                   size={22}
                   color={_COLORS.Kodie_GreenColor}
-                  style={RentalOfferStyle.locationIcon}
+                  style={PreRentalQuestionnaireStyle.locationIcon}
                 />
               </TouchableOpacity>
             </View>
-            <View style={RentalOfferStyle.AddOccupantMainView}>
+            <View style={PreRentalQuestionnaireStyle.AddOccupantMainView}>
               <TouchableOpacity
-                style={RentalOfferStyle.AddOccupantView}
+                style={PreRentalQuestionnaireStyle.AddOccupantView}
                 onPress={() => {
                   setToggleReference(!toggleReference);
                 }}>
@@ -2124,7 +1722,7 @@ const setButtonState = (questionCode, value) => {
                   color={_COLORS.Kodie_BlackColor}
                   size={25}
                 />
-                <Text style={RentalOfferStyle.AddOccupantText}>
+                <Text style={PreRentalQuestionnaireStyle.AddOccupantText}>
                   {'Add rental references'}
                 </Text>
               </TouchableOpacity>
@@ -2134,11 +1732,11 @@ const setButtonState = (questionCode, value) => {
                 renderItem={addReferencesRender}
               />
               {toggleReference && (
-                <View style={RentalOfferStyle.inputView}>
+                <View style={PreRentalQuestionnaireStyle.inputView}>
                   <View style={{marginTop: 11}}>
                     <Text style={LABEL_STYLES.commontext}>{'Full name'}</Text>
                     <TextInput
-                      style={RentalOfferStyle.input}
+                      style={PreRentalQuestionnaireStyle.input}
                       placeholder={'Enter full name'}
                       onChangeText={setReferenceFullName}
                       value={referenceFullName}
@@ -2146,16 +1744,16 @@ const setButtonState = (questionCode, value) => {
                     />
                   </View>
                   {referenceFullNameError ? (
-                    <Text style={RentalOfferStyle.error_text}>
+                    <Text style={PreRentalQuestionnaireStyle.error_text}>
                       {referenceFullNameError}
                     </Text>
                   ) : null}
-                  <View style={RentalOfferStyle.inputView}>
+                  <View style={PreRentalQuestionnaireStyle.inputView}>
                     <Text style={LABEL_STYLES.commontext}>
                       {'Email address'}
                     </Text>
                     <TextInput
-                      style={RentalOfferStyle.input}
+                      style={PreRentalQuestionnaireStyle.input}
                       placeholder={'Enter email address'}
                       onChangeText={setReferenceEmail}
                       value={referenceEmail}
@@ -2164,7 +1762,7 @@ const setButtonState = (questionCode, value) => {
                     />
                   </View>
                   {referenceEmailError ? (
-                    <Text style={RentalOfferStyle.error_text}>
+                    <Text style={PreRentalQuestionnaireStyle.error_text}>
                       {referenceEmailError}
                     </Text>
                   ) : null}
@@ -2199,358 +1797,98 @@ const setButtonState = (questionCode, value) => {
     );
   };
   return (
-    <SafeAreaView style={RentalOfferStyle.mainContainer}>
-      <TopHeader
-        onPressLeftButton={() => _goBack(props)}
-        MiddleText={edit_offer ? 'Edit offer' : 'Submit application'}
-      />
-      {IsMap ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: 'transparent',
-          }}>
-          <MapScreen
-            style={{
-              height: '100%',
-              width: '100%',
-              alignSelf: 'center',
-              marginBottom: 10,
-            }}
-            onRegionChange={onRegionChange}
-            Maplat={latitude}
-            Maplng={longitude}
-          />
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              width: '96%',
-              borderWidth: 1,
-              borderRadius: 8,
-              backgroundColor: 'white',
-              borderColor: '#E5E4E2',
-              marginTop: 10,
-              position: 'absolute',
-            }}>
-            <TextInput
-              style={{
-                backgroundColor: 'transparent',
-
-                width: '90%',
-                height: 45,
-                alignSelf: 'center',
-                //marginTop: 10,
-              }}
-              onFocus={() => openMapandClose()}
-              placeholder={'Search Place'}
-              placeholderTextColor={_COLORS.Kodie_BlackColor}
-            />
-          </View>
-          <TouchableOpacity
-            style={RentalOfferStyle.BtnContainer}
-            onPress={ConfirmAddress}>
-            <Image source={IMAGES?.Shape} style={{height: 25, width: 25}} />
-          </TouchableOpacity>
-        </View>
-      ) : IsSearch ? (
-        <SearchPlaces
-          onPress={(data, details = null) => {
-            console.log('LocationData....', details);
-            setlatitude(details.geometry.location.lat);
-            setlongitude(details.geometry.location.lng);
-            setIsSearch(false);
-            setIsMap(true);
-            setCurrentLocation(details.formatted_address);
-          }}
+    <SafeAreaView style={PreRentalQuestionnaireStyle.mainContainer}>
+      <ScrollView>
+        <FlatList
+          data={quesHeading}
+          keyExtractor={(item, index) => item.id}
+          renderItem={QuesHeadingRender}
         />
-      ) : (
-        <ScrollView>
-          <View style={RentalOfferStyle.container}>
-            <View
-              style={{
-                flexDirection: 'row',
-              }}>
-              {profile_image ? (
-                <Image
-                  source={{uri: profile_image}}
-                  resizeMode={'cover'}
-                  style={RentalOfferStyle.userImg}
-                />
-              ) : (
-                <EvilIcons
-                  color={_COLORS.Kodie_GrayColor}
-                  name={'user'}
-                  size={70}
-                />
-              )}
-              <View style={RentalOfferStyle.userNameView}>
-                <Text style={RentalOfferStyle.username}>
-                  {loginAccountDetails?.UAD_FIRST_NAME}
-                </Text>
-                <Text style={RentalOfferStyle.username}>
-                  {loginAccountDetails?.UAD_LAST_NAME}
-                </Text>
-              </View>
-            </View>
-            <View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                }}>
-                <AntDesign
-                  name="star"
-                  size={18}
-                  color={_COLORS.Kodie_lightGreenColor}
-                  style={RentalOfferStyle.starIcon}
-                />
-                <Text style={[RentalOfferStyle.username]}>{'3.9 (81)'}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: 'row',
-                }}>
-                <AntDesign
-                  name="checkcircle"
-                  size={18}
-                  color={_COLORS.Kodie_lightGreenColor}
-                  style={RentalOfferStyle.starIcon}
-                />
-                <Text
-                  style={[
-                    RentalOfferStyle.username,
-                    {color: _COLORS.Kodie_GreenColor},
-                  ]}>
-                  {'Verified'}
-                </Text>
-              </View>
-            </View>
-            <TouchableOpacity style={{}}>
-              <Entypo
-                name="dots-three-horizontal"
-                size={18}
-                color={_COLORS.Kodie_GrayColor}
-                style={{
-                  alignSelf: 'center',
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-          <DividerIcon
-            borderBottomWidth={3}
-            color={_COLORS.Kodie_LiteWhiteColor}
-          />
-          <View style={RentalOfferStyle.apartmentView}>
-            <Text style={RentalOfferStyle.propertyHeading}>
-              {propertyDetails?.property_type}
-            </Text>
-            <Text
-              style={[
-                RentalOfferStyle.propertyHeading,
-                {fontFamily: FONTFAMILY.K_Bold},
-              ]}>
-              {propertyDetails?.city}
-            </Text>
-            <View style={RentalOfferStyle.locationView}>
-              <Entypo
-                color={_COLORS.Kodie_GreenColor}
-                name="location-pin"
-                size={20}
-              />
-              <Text
-                style={RentalOfferStyle.location}
-                numberOfLines={1}
-                ellipsizeMode="tail">
-                {propertyDetails?.location}
-              </Text>
-            </View>
-          </View>
-          <DividerIcon
-            borderBottomWidth={3}
-            color={_COLORS.Kodie_LiteWhiteColor}
-          />
-          <View
-            style={{
-              marginHorizontal: 16,
-            }}>
-            <Text style={[RentalOfferStyle.PreRentaltext]}>
-              {'Pre-rental questionnaire'}
-            </Text>
-          </View>
-          <FlatList
-            data={quesHeading}
-            keyExtractor={(item, index) => item.id}
-            renderItem={QuesHeadingRender}
-          />
-          <View style={{marginHorizontal: 16}}>
-            <Text style={RentalOfferStyle.inspections}>
-              {'Tenant  screening report (recommended)'}
-            </Text>
-            {/* ... */}
-            {selectFile.length > 0 && (
-              <View style={RentalOfferStyle.Doc_container}>
-                <View style={RentalOfferStyle.pdfInfo}>
-                  <FontAwesome
-                    name="file-pdf-o"
-                    size={35}
-                    color={_COLORS.Kodie_BlackColor}
-                    resizeMode={'contain'}
-                  />
-                  <View style={RentalOfferStyle.textContainer}>
-                    <Text style={RentalOfferStyle.pdfName}>
-                      {selectFile[0]?.name}
-                    </Text>
-                    <Text style={RentalOfferStyle.pdfSize}>{fileSizeInMB}</Text>
-                  </View>
-                </View>
-                <TouchableOpacity style={RentalOfferStyle.crossIcon}>
-                  <Entypo
-                    name="dots-three-vertical"
-                    size={20}
-                    color={_COLORS.Kodie_GrayColor}
-                  />
-                </TouchableOpacity>
-              </View>
-            )}
-            {/* ... */}
-            <CustomSingleButton
-              _ButtonText={'Start Now'}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-              disabled={isLoading ? true : false}
-              onPress={() => {
-                refRBSheet.current.open();
-              }}
-            />
-            {/* .... */}
-          </View>
-          <DividerIcon marginTop={5} />
-          <View style={RentalOfferStyle.submitApplicationbtn}>
-            <RowButtons
-              LeftButtonText={'Cancel'}
-              leftButtonbackgroundColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              LeftButtonborderColor={
-                !submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressLeftButton={() => {
-                setSubmitApplicationBtn(false);
-                setSubmitApplicationBtnId(0);
-                // handleSubmit();
-                // alert(selectPetFriendlyBtnId)
-              }}
-              RightButtonText={'Submit'}
-              RightButtonbackgroundColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_WhiteColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              RightButtonborderColor={
-                submitApplicationBtn
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_BlackColor
-              }
-              onPressRightButton={() => {
-                setSubmitApplicationBtn(true);
-                setSubmitApplicationBtnId(1);
-                // alert(selectPetFriendlyBtnId)
-                handleSubmit();
-              }}
-            />
-          </View>
+        <View style={{marginHorizontal: 16}}>
+          <Text style={PreRentalQuestionnaireStyle.inspections}>
+            {'Tenant  screening report (recommended)'}
+          </Text>
 
-          {!selectFile.length > 0 && (
-            <View style={{marginHorizontal: 16, marginBottom: 20}}>
-              <CustomSingleButton
-                _ButtonText={'Upload'}
-                Text_Color={_COLORS.Kodie_BlackColor}
-                disabled={isLoading ? true : false}
-                isLeftImage={true}
-                leftImage={IMAGES.uploadIcon}
-                onPress={() => {
-                  selectDoc();
-                }}
-                backgroundColor={_COLORS.Kodie_lightGreenColor}
+          <View style={PreRentalQuestionnaireStyle.container}>
+            <View style={PreRentalQuestionnaireStyle.pdfInfo}>
+              <FontAwesome
+                name="file-pdf-o"
+                size={35}
+                color={_COLORS.Kodie_BlackColor}
+                resizeMode={'contain'}
               />
+              <View style={PreRentalQuestionnaireStyle.textContainer}>
+                <Text style={PreRentalQuestionnaireStyle.pdfName}>
+                  {"Tenant  screening report.pdf"}
+                </Text>
+                <Text style={PreRentalQuestionnaireStyle.pdfSize}> {'4.5 MB'}</Text>
+              </View>
             </View>
-          )}
-          <RBSheet
-            height={500}
-            ref={refRBSheet}
-            closeOnDragDown={true}
-            closeOnPressMask={false}
-            customStyles={{
-              wrapper: {
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              },
-              draggableIcon: {
-                backgroundColor: _COLORS.Kodie_LightGrayColor,
-              },
-              container: RentalOfferStyle.bottomModal_container,
-            }}>
             <TouchableOpacity
-              style={{
-                marginHorizontal: 10,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}
+              style={PreRentalQuestionnaireStyle.crossIcon}
               onPress={() => {
-                onClose();
+                // setFilePath();
+                // setFileKey();
               }}>
-              <Text style={RentalOfferStyle.tenantScreenText}>
-                {'Tenant screening report'}
-              </Text>
-              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
+              <Entypo
+                name="cross"
+                size={25}
+                color={_COLORS.Kodie_GrayColor}
+              />
             </TouchableOpacity>
-            <TenantScreeningReportModal onClose={onClose} />
-          </RBSheet>
-          <RBSheet
-            height={400}
-            ref={refRBSheet1}
-            closeOnDragDown={true}
-            closeOnPressMask={false}
-            customStyles={{
-              wrapper: {
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              },
-              draggableIcon: {
-                backgroundColor: _COLORS.Kodie_LightGrayColor,
-              },
-              container: RentalOfferStyle.bottomModal_container,
-            }}>
-            <TouchableOpacity
-              style={{
-                justifyContent: 'flex-end',
-                alignSelf: 'flex-end',
-                marginHorizontal: 10,
-              }}
-              onPress={() => {
-                onClose1();
-              }}>
-              <Entypo name="cross" size={24} color={_COLORS.Kodie_BlackColor} />
-            </TouchableOpacity>
-            <ApplicationSubmitModal onClose={onClose1} />
-          </RBSheet>
-        </ScrollView>
-      )}
-      {isLoading ? <CommonLoader /> : null}
+          </View>
+        </View>
+        <DividerIcon marginTop={5} />
+        <View style={PreRentalQuestionnaireStyle.submitApplicationbtn}>
+          <RowButtons
+            LeftButtonText={'Reject'}
+            leftButtonbackgroundColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            LeftButtonTextColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_BlackColor
+            }
+            LeftButtonborderColor={
+              !submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_BlackColor
+            }
+            onPressLeftButton={() => {
+              setSubmitApplicationBtn(false);
+              setSubmitApplicationBtnId(0);
+              // handleSubmit();
+              // alert(selectPetFriendlyBtnId)
+            }}
+            RightButtonText={'Accept'}
+            RightButtonbackgroundColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_WhiteColor
+            }
+            RightButtonTextColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_WhiteColor
+                : _COLORS.Kodie_BlackColor
+            }
+            RightButtonborderColor={
+              submitApplicationBtn
+                ? _COLORS.Kodie_BlackColor
+                : _COLORS.Kodie_BlackColor
+            }
+            onPressRightButton={() => {
+              setSubmitApplicationBtn(true);
+              setSubmitApplicationBtnId(1);
+            }}
+          />
+        </View>
+      </ScrollView>
+      {/* {isLoading ? <CommonLoader /> : null} */}
     </SafeAreaView>
   );
 };
 
-export default RentalOffer;
+export default PreRentalQuestionnaire;

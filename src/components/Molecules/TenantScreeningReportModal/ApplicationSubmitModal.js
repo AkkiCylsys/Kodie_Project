@@ -10,7 +10,9 @@ import {_COLORS, FONTFAMILY, LABEL_STYLES} from '../../../Themes';
 import {ApplicationSubmitModalStyle} from './ApplicationSubmitModalStyle';
 import Feather from 'react-native-vector-icons/Feather';
 import CustomSingleButton from '../../Atoms/CustomButton/CustomSingleButton';
+import {useNavigation} from '@react-navigation/native';
 const ApplicationSubmitModal = props => {
+  const navigation = useNavigation();
   const onClose = () => {
     props.onClose();
   };
@@ -52,8 +54,12 @@ const ApplicationSubmitModal = props => {
           <CustomSingleButton
             _ButtonText={'Continue'}
             Text_Color={_COLORS.Kodie_WhiteColor}
-            // disabled={isLoading ? true : false}
-            onPress={() => {}}
+            onPress={() => {
+              navigation.navigate('Properties', {
+                tab3: 'tab3',
+              });
+              onClose();
+            }}
           />
         </View>
         <TouchableOpacity

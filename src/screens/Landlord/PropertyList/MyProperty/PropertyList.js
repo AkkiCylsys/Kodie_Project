@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,19 +8,14 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import {SwipeListView} from 'react-native-swipe-list-view';
-import {useFocusEffect} from '@react-navigation/native';
 import {
   _COLORS,
   LABEL_STYLES,
-  BANNERS,
   IMAGES,
-  FONTFAMILY,
 } from '../../../../Themes';
 import Modal from 'react-native-modal';
-
-import {PropertyListCSS} from './PropertyListCSS';
-import {_goBack} from '../../../../services/CommonServices/index';
+import { PropertyListCSS } from './PropertyListCSS';
+import { _goBack } from '../../../../services/CommonServices/index';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SearchBar from '../../../../components/Molecules/SearchBar/SearchBar';
@@ -29,12 +24,12 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import BottomModalData from '../../../../components/Molecules/BottomModal/BottomModalData';
 import RowButtons from '../../../../components/Molecules/RowButtons/RowButtons';
 import axios from 'axios';
-import {CommonLoader} from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {useIsFocused} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {Config} from '../../../../Config';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { useIsFocused } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { Config } from '../../../../Config';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-
+import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 const HorizontalData = [
   'All',
   'Recent',
@@ -63,7 +58,7 @@ const PropertyList = props => {
     useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredpropertyData, setFilteredpropertyData] = useState([]);
-
+  const swipeableRef = useRef();
   const handleCloseModal = () => {
     setIsDeleteData_Clicked(false);
     setIsDeleteBottomSheetVisible(false);
@@ -78,14 +73,54 @@ const PropertyList = props => {
     setSearchQuery(query);
     const filtered = query
       ? propertyData.filter(
-          item =>
-            item.property_type &&
-            item.property_type.toLowerCase().includes(query.toLowerCase()),
-        )
+        item =>
+          item.property_type &&
+          item.property_type.toLowerCase().includes(query.toLowerCase()),
+      )
       : propertyData;
     console.log('filtered.........', filtered);
     setFilteredpropertyData(filtered);
   };
+  const archiveProperty = async (id) => {
+    setIsLoading(true);
+    try {
+      const url = Config.BASE_URL;
+      const archive_apiUrl = url +'archieve_property';
+      const response = await axios.post(archive_apiUrl, {
+        property_id: id,
+      });
+      setPropertyData(prevData =>
+        prevData.map(item =>
+          item.property_id === id
+            ? { ...item, isArchived: true }
+            : item
+        )
+      );
+      setTimeout(() => {
+        if (response?.data?.success === true) {
+          // Remove the item from the list
+          getPropertyDetailsByFilter(selectedFilter);
+         
+          
+        } else {
+          // If the request failed, revert the item to its original state
+          setPropertyData(prevData =>
+            prevData.map(item =>
+              item.property_id === id
+                ? { ...item, isArchived: false }
+                : item
+            )
+          );
+        }
+      }, 200); 
+    
+    } catch (error) {
+      Alert.alert('Error', 'An error occurred while archiving the property.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const getPropertyDetailsByFilter = async filter => {
     setIsLoading(true);
     try {
@@ -110,6 +145,33 @@ const PropertyList = props => {
     }
   };
 
+  const renderRightActions = (id, isArchived,location) => {
+    if (isArchived) return null;
+    return (
+      <View style={PropertyListCSS.actionsContainer}>
+        <TouchableOpacity
+          style={[PropertyListCSS.actionButton, PropertyListCSS.moreButton]}
+          onPress={() => {
+            setIsDeleteBottomSheetVisible(true);
+            setPropertyDelId(id);
+            setAddress(location);
+            setPropId(id);
+          }}
+        >
+          <MaterialCommunityIcons name="dots-horizontal" size={24} color="white" />
+          <Text style={PropertyListCSS.actionText}>More</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[PropertyListCSS.actionButton, PropertyListCSS.archiveButton]}
+          onPress={() => archiveProperty(id)}
+        >
+          <MaterialCommunityIcons name="archive" size={24} color="white" />
+          <Text style={PropertyListCSS.actionText}>{selectedFilter == 'Archive' ? 'Unarchive' : 'Archive'}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   useEffect(() => {
     getPropertyDetailsByFilter(selectedFilter);
   }, [selectedFilter, isvisible]);
@@ -129,13 +191,13 @@ const PropertyList = props => {
     try {
       const url = Config.BASE_URL;
       const response = await axios.delete(url + 'delete_property_by_id', {
-        data: JSON.stringify({property_id: propertyDelId}),
+        data: JSON.stringify({ property_id: propertyDelId }),
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
-      console.log('API Response:', response?.data);
+      // console.log('API Response:', response?.data);
       if (response?.data?.success === true) {
         Alert.alert(
           'Property Deleted',
@@ -151,7 +213,7 @@ const PropertyList = props => {
     }
   };
 
-  const horizontal_render = ({item}) => {
+  const horizontal_render = ({ item }) => {
     return (
       <TouchableOpacity
         style={[
@@ -180,7 +242,7 @@ const PropertyList = props => {
         <Text
           style={[
             PropertyListCSS.item_style,
-            {color: selectedFilter === item ? 'white' : 'black'},
+            { color: selectedFilter === item ? 'white' : 'black' },
           ]}>
           {item}
         </Text>
@@ -194,110 +256,136 @@ const PropertyList = props => {
       </TouchableOpacity>
     );
   };
-  const propertyData1_render = ({item, index}) => {
+  const propertyData1_render = ({ item, index }) => {
+const isArchived = item.isArchived;
     const isExpanded = expandedItems.includes(item.property_id);
     return (
-      <TouchableOpacity
-        onPress={() => {
-          props?.onPropertyView?.({
-            propertyid: item?.property_id,
-          });
-        }}>
-        {item.result ? null : (
-          <>
-            <View key={index} style={PropertyListCSS.flatListContainer}>
-              <View style={PropertyListCSS.flat_MainView}>
-                <View style={PropertyListCSS.flexContainer}>
-                  <Text style={PropertyListCSS.apartmentText}>
-                    {item.property_type}
-                  </Text>
-                  <Text style={LABEL_STYLES.commontext}>
-                    {item.state ? item.state : item.city}
-                  </Text>
-                  <View style={PropertyListCSS.flat_MainView}>
-                    <MaterialCommunityIcons
-                      name={'map-marker'}
-                      size={12}
-                      color={_COLORS.Kodie_GreenColor}
-                    />
-                    <Text style={PropertyListCSS.locationText}>
-                      {item.location}
-                    </Text>
-                  </View>
-                </View>
-                {item.image_path && item.image_path.length > 0 ? (
-                  <Image
-                    source={{uri: item?.image_path[0]}}
-                    style={PropertyListCSS.imageStyle}
-                    resizeMode="cover"
-                  />
-                ) : (
-                  <View
-                    style={[
-                      PropertyListCSS.imageStyle,
-                      {justifyContent: 'center'},
-                    ]}>
-                    <Text style={PropertyListCSS.Img_found}>
-                      {'Image not found'}
-                    </Text>
-                  </View>
-                )}
+      <Swipeable
+        // ref={swipeableRef}
+        // overshootRight={false}
+        // onSwipeableWillClose={() => {
+        //   if (item.isArchived) {
+        //     swipeableRef.current?.close(); 
+        //   }
+        // }}
+         renderRightActions={() => renderRightActions(item.property_id, isArchived,item.location)} >
+        <TouchableOpacity
+          style={[
 
-                <View
-                  style={[
-                    PropertyListCSS.flexContainer,
-                    {alignSelf: 'center'},
-                  ]}>
-                  <View style={PropertyListCSS.noteStyle}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        props?.onEdit?.({
-                          propertyid: item?.property_id,
-                        });
-                      }}>
-                      <SimpleLineIcons
-                        name="note"
-                        size={25}
-                        color={_COLORS.Kodie_LightGrayColor}
-                        resizeMode={'contain'}
-                      />
-                      {/* <Image
+            { flex: 1, backgroundColor: item.isArchived ? _COLORS.Kodie_GreenColor : _COLORS.Kodie_WhiteColor } // Apply green background if archived
+          ]}
+          onPress={() => {
+            props?.onPropertyView?.({
+              propertyid: item?.property_id,
+            });
+          }}>
+          {item.result ? null : (
+            <>
+             {
+              item.isArchived ? <View style={[PropertyListCSS.actionsContainer,{justifyContent:'flex-start',alignItems:'center'}]}> 
+               <TouchableOpacity
+                style={[PropertyListCSS.actionButton, PropertyListCSS.archiveButton,{height:120}]}
+              >
+                <MaterialCommunityIcons name="archive" size={24} color="white" style={{justifyContent:'flex-start',alignSelf:'center'}}/>
+                <Text style={PropertyListCSS.actionText}>{selectedFilter == 'Archive' ? 'Unarchive' : 'Archive'}</Text>
+              </TouchableOpacity>
+              </View> : (
+              <>
+          
+              <View key={index} style={PropertyListCSS.flatListContainer}>
+               
+                      <View style={PropertyListCSS.flat_MainView}>
+                        <View style={PropertyListCSS.flexContainer}>
+                          <Text style={PropertyListCSS.apartmentText}>
+                            {item.property_type}
+                          </Text>
+                          <Text style={LABEL_STYLES.commontext}>
+                            {item.state ? item.state : item.city}
+                          </Text>
+                          <View style={PropertyListCSS.flat_MainView}>
+                            <MaterialCommunityIcons
+                              name={'map-marker'}
+                              size={12}
+                              color={_COLORS.Kodie_GreenColor}
+                            />
+                            <Text style={PropertyListCSS.locationText}>
+                              {item.location}
+                            </Text>
+                          </View>
+                        </View>
+                        {item.image_path && item.image_path.length > 0 ? (
+                          <Image
+                            source={{ uri: item?.image_path[0] }}
+                            style={PropertyListCSS.imageStyle}
+                            resizeMode="cover"
+                          />
+                        ) : (
+                          <View
+                            style={[
+                              PropertyListCSS.imageStyle,
+                              { justifyContent: 'center' },
+                            ]}>
+                            <Text style={PropertyListCSS.Img_found}>
+                              {'Image not found'}
+                            </Text>
+                          </View>
+                        )}
+
+                        <View
+                          style={[
+                            PropertyListCSS.flexContainer,
+                            { alignSelf: 'center' },
+                          ]}>
+                          <View style={PropertyListCSS.noteStyle}>
+                            <TouchableOpacity
+                              onPress={() => {
+                                props?.onEdit?.({
+                                  propertyid: item?.property_id,
+                                });
+                              }}>
+                              <SimpleLineIcons
+                                name="note"
+                                size={25}
+                                color={_COLORS.Kodie_LightGrayColor}
+                                resizeMode={'contain'}
+                              />
+                              {/* <Image
                     source={IMAGES.noteBook}
                     style={PropertyListCSS.noteIcon}
                   /> */}
-                    </TouchableOpacity>
-                    <View style={{margin: 3}} />
-                    <TouchableOpacity
-                      style={{}}
-                      onPress={() => {
-                        // refRBSheetDelete.current.open();
-                        setIsDeleteBottomSheetVisible(true);
-                        setPropertyDelId(item.property_id);
-                        // alert(propertyDelId);
-                        setAddress(item?.location);
-                        setPropId(item?.property_id);
-                        console.log('property id..', item.property_id);
-                      }}>
-                      <MaterialCommunityIcons
-                        name={'dots-horizontal'}
-                        size={25}
-                        color={_COLORS.Kodie_LightGrayColor}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                  <TouchableOpacity
-                    style={[
-                      PropertyListCSS.buttonView,
-                      {
-                        backgroundColor: item.isRentPanding
-                          ? _COLORS.Kodie_LightOrange
-                          : item.isRentReceived
-                          ? _COLORS.Kodie_mostLightGreenColor
-                          : _COLORS.Kodie_LightGrayColor,
-                      },
-                    ]}
-                    onPress={props.onInvite}>
-                    {/* <View
+                            </TouchableOpacity>
+                            <View style={{ margin: 3 }} />
+                            <TouchableOpacity
+                              style={{}}
+                              onPress={() => {
+                                // refRBSheetDelete.current.open();
+                                setIsDeleteBottomSheetVisible(true);
+                                setPropertyDelId(item.property_id);
+                                // alert(propertyDelId);
+                                setAddress(item?.location);
+                                setPropId(item?.property_id);
+                                console.log('property id..', item.property_id);
+                              }}>
+                              <MaterialCommunityIcons
+                                name={'dots-horizontal'}
+                                size={25}
+                                color={_COLORS.Kodie_LightGrayColor}
+                              />
+                            </TouchableOpacity>
+                          </View>
+                          <TouchableOpacity
+                            style={[
+                              PropertyListCSS.buttonView,
+                              {
+                                backgroundColor: item.isRentPanding
+                                  ? _COLORS.Kodie_LightOrange
+                                  : item.isRentReceived
+                                    ? _COLORS.Kodie_mostLightGreenColor
+                                    : _COLORS.Kodie_LightGrayColor,
+                              },
+                            ]}
+                            onPress={props.onInvite}>
+                            {/* <View
                   style={[
                     PropertyListCSS.roundButton,
                     {
@@ -309,70 +397,74 @@ const PropertyList = props => {
                     },
                   ]}
                 /> */}
-                    <Text
-                      style={[
-                        PropertyListCSS.buttonText,
-                        {
-                          color: item.isRentPanding
-                            ? _COLORS.Kodie_DarkOrange
-                            : item.isRentReceived
-                            ? _COLORS.Kodie_GreenColor
-                            : _COLORS.Kodie_MediumGrayColor,
-                        },
-                      ]}>
-                      {'+ Invite Tenant'}
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <DividerIcon
-                IsShowIcon
-                iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
-                onPress={() => {
-                  if (isExpanded) {
-                    setExpandedItems(
-                      expandedItems.filter(
-                        property_id => property_id !== item.property_id,
-                      ),
-                    );
-                  } else {
-                    setExpandedItems([...expandedItems, item.property_id]);
-                  }
-                }}
-              />
-            </View>
-            {isExpanded && (
-              <View style={PropertyListCSS.expandedContent}>
-                <View style={PropertyListCSS.flexContainer}>
-                  <Text style={LABEL_STYLES.commonMidtext}>
-                    Current tenant:
-                  </Text>
-                  <Text style={LABEL_STYLES.commontext}>
-                    {item.tanentname || 'Vacant'}
-                  </Text>
-                </View>
+                            <Text
+                              style={[
+                                PropertyListCSS.buttonText,
+                                {
+                                  color: item.isRentPanding
+                                    ? _COLORS.Kodie_DarkOrange
+                                    : item.isRentReceived
+                                      ? _COLORS.Kodie_GreenColor
+                                      : _COLORS.Kodie_MediumGrayColor,
+                                },
+                              ]}>
+                              {'+ Invite Tenant'}
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                      <DividerIcon
+                        IsShowIcon
+                        iconName={isExpanded ? 'chevron-up' : 'chevron-down'}
+                        onPress={() => {
+                          if (isExpanded) {
+                            setExpandedItems(
+                              expandedItems.filter(
+                                property_id => property_id !== item.property_id,
+                              ),
+                            );
+                          } else {
+                            setExpandedItems([...expandedItems, item.property_id]);
+                          }
+                        }}
+                      />
 
-                <View style={[PropertyListCSS.rentView]}>
-                  <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
-                  <Text style={LABEL_STYLES.commontext}>
-                    {item.rent || '$0'}
-                  </Text>
-                </View>
-                <View style={[PropertyListCSS.rentView]}>
-                  <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
-                  <Text style={LABEL_STYLES.commontext}>
-                    {item.spend || `$0`}
-                  </Text>
-                </View>
               </View>
-            )}
-            <DividerIcon />
-          </>
-        )}
-      </TouchableOpacity>
+              {isExpanded && (
+                <View style={PropertyListCSS.expandedContent}>
+                  <View style={PropertyListCSS.flexContainer}>
+                    <Text style={LABEL_STYLES.commonMidtext}>
+                      Current tenant:
+                    </Text>
+                    <Text style={LABEL_STYLES.commontext}>
+                      {item.tanentname || 'Vacant'}
+                    </Text>
+                  </View>
+
+                  <View style={[PropertyListCSS.rentView]}>
+                    <Text style={LABEL_STYLES.commonMidtext}>Weekly rent</Text>
+                    <Text style={LABEL_STYLES.commontext}>
+                      {item.rent || '$0'}
+                    </Text>
+                  </View>
+                  <View style={[PropertyListCSS.rentView]}>
+                    <Text style={LABEL_STYLES.commonMidtext}>Total spend</Text>
+                    <Text style={LABEL_STYLES.commontext}>
+                      {item.spend || `$0`}
+                    </Text>
+                  </View>
+                </View>
+              )}
+              <DividerIcon />
+              </>
+              )}
+            </>
+          )}
+        </TouchableOpacity>
+      </Swipeable>
     );
   };
-  const propertyData2_render = ({item}) => {
+  const propertyData2_render = ({ item }) => {
     const isExpanded = expandedItems.includes(item.id);
     return (
       <>
@@ -421,8 +513,8 @@ const PropertyList = props => {
                     backgroundColor: item.isRentPanding
                       ? _COLORS.Kodie_LightOrange
                       : item.isRentReceived
-                      ? _COLORS.Kodie_mostLightGreenColor
-                      : _COLORS.Kodie_LightGrayColor,
+                        ? _COLORS.Kodie_mostLightGreenColor
+                        : _COLORS.Kodie_LightGrayColor,
                   },
                 ]}>
                 <View
@@ -432,8 +524,8 @@ const PropertyList = props => {
                       backgroundColor: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_LightGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_LightGrayColor,
                     },
                   ]}
                 />
@@ -444,8 +536,8 @@ const PropertyList = props => {
                       color: item.isRentPanding
                         ? _COLORS.Kodie_DarkOrange
                         : item.isRentReceived
-                        ? _COLORS.Kodie_GreenColor
-                        : _COLORS.Kodie_MediumGrayColor,
+                          ? _COLORS.Kodie_GreenColor
+                          : _COLORS.Kodie_MediumGrayColor,
                     },
                   ]}>
                   {item.buttonName}
@@ -518,10 +610,10 @@ const PropertyList = props => {
   };
 
   return (
-    <View style={PropertyListCSS.mainContainer}>
+    <GestureHandlerRootView style={PropertyListCSS.mainContainer}>
       <ScrollView
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{marginBottom: 50}}>
+        contentContainerStyle={{ marginBottom: 50 }}>
         <View style={PropertyListCSS.Container}>
           <RowButtons
             LeftButtonText={'Properties I own'}
@@ -672,7 +764,7 @@ const PropertyList = props => {
         />
       </Modal>
       {isLoading ? <CommonLoader /> : null}
-    </View>
+    </GestureHandlerRootView>
   );
 };
 

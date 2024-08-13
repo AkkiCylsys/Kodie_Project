@@ -62,7 +62,7 @@ export default AddExpensesDetails = props => {
   const [ExpenceResponse, setExpenceResponse] = useState([]);
   const [notes, setNotes] = useState('');
   const [lease_end_Data, setLease_end_Data] = useState([]);
-  const [lease_end_value, setlLease_end_value] = useState([]);
+  const [lease_end_value, setlLease_end_value] = useState('');
   const [lease_end_valueError, setlLease_end_valueError] = useState(false);
 
   // Calculate and Update Account Excl. and Tax based on user input
@@ -299,7 +299,7 @@ export default AddExpensesDetails = props => {
       repeating_expense: selectedButtonRepeatingId,
       responsible_paying: selectedButtonResponsibleId,
       expense_category: ExpenceCategoryValue,
-      expense_frequency: lease_end_value,
+      expense_frequency: lease_end_value || '',
       supplier: suplier,
       expenses_description: expenseDes,
       note: notes,

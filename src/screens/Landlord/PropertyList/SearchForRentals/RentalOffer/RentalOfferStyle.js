@@ -96,7 +96,7 @@ export const RentalOfferStyle = StyleSheet.create({
     marginTop: 15,
   },
   propery_det: {
-    fontSize: 12,
+    fontSize: 15,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Bold,
   },
@@ -501,5 +501,50 @@ export const RentalOfferStyle = StyleSheet.create({
     width: 160,
   },
   error_text: {color: 'red', marginLeft: 10},
-
+  Doc_container: {
+    flex: 1,
+    backgroundColor: _COLORS.Kodie_WhiteColor,
+    borderWidth: 1,
+    borderColor: _COLORS.Kodie_GrayColor,
+    borderRadius: 4,
+    marginVertical:10,
+  },
+  textContainer: {
+    // flex:1,
+    flexDirection: "column",
+    marginLeft: 10,
+    // borderWidth:1
+  },
+  pdfInfo: {
+    flex:1,
+    flexDirection: "row",
+    alignItems: "center",
+    padding:10,
+  },
+  pdfName: {
+    flex: 0.5,
+    fontSize: 14,
+    color: _COLORS.Kodie_BlackColor,
+    fontFamily: FONTFAMILY.K_Bold,
+    width: 250,
+  },
+  pdfSize: {
+    fontSize: 12,
+    color: _COLORS.Kodie_MediumGrayColor,
+    fontFamily: FONTFAMILY.K_Medium,
+  },
+  pdfIcon: {
+    width: 45,
+    height: 45,
+    resizeMode: "cover",
+  },
+  crossIcon: {
+    flex: 1,
+    alignItems: "flex-end",
+    justifyContent: "center",
+    position: "absolute",
+    top: 20,
+    right: 5,
+    zIndex: 1,
+  },
 });

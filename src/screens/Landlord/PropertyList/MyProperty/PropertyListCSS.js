@@ -175,4 +175,43 @@ export const PropertyListCSS = StyleSheet.create({
     marginLeft: -10,
   },
   weeklyRent: {flex: 0.5, alignItems: 'flex-end'},
+  actionsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    // backgroundColor: 'transparent',
+  },
+  actionButton: {
+    // padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: "29%",
+    height: '100%',
+    marginBottom:10
+  },
+  archiveButton: {
+    backgroundColor: _COLORS.Kodie_GreenColor,
+  },
+  moreButton: {
+    backgroundColor: _COLORS.Kodie_GrayColor, // Blue color for the "More" button
+  },
+  actionText: {
+    color: 'white',
+    fontSize: 13,
+    fontWeight: 'bold',
+  },
+  modal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    width: '80%',
+  },
+  modalTitle: {
+    fontSize: 16,
+    marginBottom: 20,
+  },
 });

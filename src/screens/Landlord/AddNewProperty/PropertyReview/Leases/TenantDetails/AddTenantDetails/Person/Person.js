@@ -19,7 +19,7 @@ export default Person = props => {
     props.onClose();
   };
   const loginData = useSelector(state => state.authenticationReducer.data);
-  console.log('loginData.....', loginData);
+  // console.log('loginData.....', loginData);
   const property_id = props.property_id;
   const [firstName, setFirstName] = useState('');
   const [firstNameError, setFirstNameError] = useState('');
