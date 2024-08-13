@@ -624,7 +624,7 @@ export default CreateJobTermsScreen = props => {
           </Text>
           <View style={CreateJobTermsStyle.datePickerView}>
             <CalendarModal
-              SelectDate={selectedDate}
+              SelectDate={selectedDate?selectedDate:"Select date"}
               _textInputStyle={{
                 color: selectedDate
                   ? _COLORS.Kodie_BlackColor
@@ -763,7 +763,7 @@ export default CreateJobTermsScreen = props => {
                 setSelectedButtonResponsibleId(259);
               }}
               RightButtonText={
-                selectedResponsibleData[1]?.lookup_description || 'Landloard'
+                selectedResponsibleData[1]?.lookup_description || 'Landlord'
               }
               RightButtonbackgroundColor={
                 selectedButtonResponsible

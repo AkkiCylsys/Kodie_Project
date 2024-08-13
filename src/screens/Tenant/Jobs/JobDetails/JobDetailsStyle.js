@@ -26,18 +26,19 @@ export const JobDetailsStyle = StyleSheet.create({
   },
   bidsview: {
     width: 106,
-    height: 29,
+    height: 23,
     backgroundColor: _COLORS.Kodie_GreenColor,
     borderRadius: 4,
     alignItems: "center",
     position: "absolute",
     right: 0,
-    marginTop: 170,
+    marginTop: 177,
   },
   bidstext: {
     color: _COLORS.Kodie_WhiteColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Medium,
+    textAlign:"center"
   },
   mainView: {
     marginHorizontal: 15,

@@ -246,31 +246,150 @@ const RentalOffer = props => {
     handleInputChange('PREVIOUS_ADDRESS', text);
   };
 
+  // const getEditAllQuestion = async () => {
+  //   const url = Config.BASE_URL;
+  //   const Ques_url = url + 'question_details_for_tenant_ques';
+  //   console.log('Request URL:', Ques_url);
+  //   setIsLoading(true);
+
+  //   const QuesData = {
+  //     p_account_id: loginData?.Login_details?.user_account_id,
+  //     p_property_id: propertyId,
+  //   };
+
+  //   try {
+  //     const response = await axios.post(Ques_url, QuesData);
+  //     console.log('Response edit question..', response?.data);
+
+  //     if (response?.data?.success === true) {
+  //       const data = response?.data?.data?.[0]?.parent_json;
+
+  //       if (Array.isArray(data)) {
+  //         const initialValues = {};
+  //         const dropdownQuestions = [];
+
+  //         data.forEach(parentQuestion => {
+  //           if (Array.isArray(parentQuestion.children)) {
+  //             parentQuestion.children.forEach(childQuestion => {
+  //               if (childQuestion.tqm_Question_type === 'Dropdown') {
+  //                 dropdownQuestions.push(childQuestion.tqm_Question_code);
+  //               }
+  //               // Set the initial state for Yes/No buttons dynamically
+  //               if (childQuestion.tqm_Question_type === 'Yes_no') {
+  //                 const value = childQuestion.tqm_Question_value;
+  //                 setButtonState(childQuestion.tqm_Question_code, value);
+  //               }
+  //               if (
+  //                 childQuestion.tqm_Question_value !== undefined &&
+  //                 childQuestion.tqm_Question_value !== null
+  //               ) {
+  //                 initialValues[childQuestion.tqm_Question_code] =
+  //                   childQuestion.tqm_Question_value;
+  //               }
+  //             });
+  //           }
+  //         });
+
+  //         // Fetch dropdown data and set initial values
+  //         const dropdownDataPromises = dropdownQuestions.map(
+  //           async questionCode => {
+  //             const options = await handleDropdown(questionCode);
+  //             setDropdownData(prevData => ({
+  //               ...prevData,
+  //               [questionCode]: options,
+  //             }));
+
+  //             // Convert initialValues to match dropdown options format
+  //             const value = initialValues[questionCode];
+  //             if (value) {
+  //               const selectedOption = options.find(
+  //                 option => String(option.lookup_key) === String(value),
+  //               );
+  //               if (selectedOption) {
+  //                 initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
+  //               }
+  //             }
+  //           },
+  //         );
+
+  //         // Wait for all dropdown data to be fetched and set
+  //         await Promise.all(dropdownDataPromises);
+
+  //         setInputValues(initialValues);
+  //         if (initialValues['PREVIOUS_ADDRESS']) {
+  //           setLocation(initialValues['PREVIOUS_ADDRESS']);
+  //         }
+  //         console.log('response in edit mode...', JSON.stringify(data));
+  //       } else {
+  //         console.error(
+  //           'Invalid data structure: parent_json is not an array',
+  //           data,
+  //         );
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('API failed EdittenantQues', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const getEditAllQuestion = async () => {
     const url = Config.BASE_URL;
     const Ques_url = url + 'question_details_for_tenant_ques';
     console.log('Request URL:', Ques_url);
     setIsLoading(true);
-
+  
     const QuesData = {
       p_account_id: loginData?.Login_details?.user_account_id,
       p_property_id: propertyId,
     };
-
+  
     try {
       const response = await axios.post(Ques_url, QuesData);
       console.log('Response edit question..', response?.data);
-
+  
       if (response?.data?.success === true) {
         const data = response?.data?.data?.[0]?.parent_json;
-
+  
         if (Array.isArray(data)) {
           const initialValues = {};
           const dropdownQuestions = [];
-
+          let occupants = [];
+          let leaseHolders = [];
+  
           data.forEach(parentQuestion => {
             if (Array.isArray(parentQuestion.children)) {
               parentQuestion.children.forEach(childQuestion => {
+                // Extracting occupant data
+                if (childQuestion.tqm_Question_description === 'Add Occupant') {
+                  console.log('Raw Occupant Data:', childQuestion.tqm_Question_value);
+                  try {
+                    const parsedOccupants = JSON.parse(childQuestion.tqm_Question_value);
+                    if (Array.isArray(parsedOccupants)) {
+                      occupants = parsedOccupants;
+                    } else {
+                      console.error('Occupant data is not an array:', parsedOccupants);
+                    }
+                  } catch (e) {
+                    console.error('Error parsing occupants:', e);
+                  }
+                }
+  
+                // Extracting leaseholder data
+                if (childQuestion.tqm_Question_description === 'Add leaseholders') {
+                  console.log('Raw Leaseholder Data:', childQuestion.tqm_Question_value);
+                  try {
+                    const parsedLeaseHolders = JSON.parse(childQuestion.tqm_Question_value);
+                    if (Array.isArray(parsedLeaseHolders)) {
+                      leaseHolders = parsedLeaseHolders;
+                    } else {
+                      console.error('Leaseholder data is not an array:', parsedLeaseHolders);
+                    }
+                  } catch (e) {
+                    console.error('Error parsing leaseholders:', e);
+                  }
+                }
                 if (childQuestion.tqm_Question_type === 'Dropdown') {
                   dropdownQuestions.push(childQuestion.tqm_Question_code);
                 }
@@ -279,52 +398,51 @@ const RentalOffer = props => {
                   const value = childQuestion.tqm_Question_value;
                   setButtonState(childQuestion.tqm_Question_code, value);
                 }
-                if (
-                  childQuestion.tqm_Question_value !== undefined &&
-                  childQuestion.tqm_Question_value !== null
-                ) {
-                  initialValues[childQuestion.tqm_Question_code] =
-                    childQuestion.tqm_Question_value;
+                if (childQuestion.tqm_Question_value !== undefined && childQuestion.tqm_Question_value !== null) {
+                  initialValues[childQuestion.tqm_Question_code] = childQuestion.tqm_Question_value;
                 }
+  
+                
               });
             }
           });
-
+  
           // Fetch dropdown data and set initial values
-          const dropdownDataPromises = dropdownQuestions.map(
-            async questionCode => {
-              const options = await handleDropdown(questionCode);
-              setDropdownData(prevData => ({
-                ...prevData,
-                [questionCode]: options,
-              }));
-
-              // Convert initialValues to match dropdown options format
-              const value = initialValues[questionCode];
-              if (value) {
-                const selectedOption = options.find(
-                  option => String(option.lookup_key) === String(value),
-                );
-                if (selectedOption) {
-                  initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
-                }
+          const dropdownDataPromises = dropdownQuestions.map(async questionCode => {
+            const options = await handleDropdown(questionCode);
+            setDropdownData(prevData => ({
+              ...prevData,
+              [questionCode]: options,
+            }));
+  
+            // Convert initialValues to match dropdown options format
+            const value = initialValues[questionCode];
+            if (value) {
+              const selectedOption = options.find(option => String(option.lookup_key) === String(value));
+              if (selectedOption) {
+                initialValues[questionCode] = selectedOption.lookup_key; // Ensure value matches valueField
               }
-            },
-          );
-
+            }
+          });
+  
           // Wait for all dropdown data to be fetched and set
           await Promise.all(dropdownDataPromises);
-
+  
+          // Set input values
           setInputValues(initialValues);
           if (initialValues['PREVIOUS_ADDRESS']) {
             setLocation(initialValues['PREVIOUS_ADDRESS']);
           }
+  
+          // Set the state for occupants and leaseholders
+          setOccupants(occupants);
+          setLeaseHolderItem(leaseHolders);
+  
+          console.log('Occupants after parsing:', occupants);
+          console.log('Leaseholders after parsing:', leaseHolders);
           console.log('response in edit mode...', JSON.stringify(data));
         } else {
-          console.error(
-            'Invalid data structure: parent_json is not an array',
-            data,
-          );
+          console.error('Invalid data structure: parent_json is not an array', data);
         }
       }
     } catch (error) {
@@ -333,11 +451,10 @@ const RentalOffer = props => {
       setIsLoading(false);
     }
   };
-
   const setButtonState = (questionCode, value) => {
     console.log('value in buttons....', value);
     const isYesSelected = value === 0; // true if Yes is selected, false if No is selected
-  
+
     switch (questionCode) {
       case 'EARN_INCOME':
         setSelectedButton(isYesSelected);
@@ -850,7 +967,7 @@ const RentalOffer = props => {
       <View>
         <View style={RentalOfferStyle.mainfeaturesview}>
           <View style={RentalOfferStyle.key_feature_Text_view}>
-            <Text style={RentalOfferStyle.key_feature_Text}>
+            <Text style={[RentalOfferStyle.key_feature_Text, {width: 150}]}>
               {section?.tqm_Question_description}
             </Text>
           </View>

@@ -382,14 +382,18 @@ export const RentalOfferStyle = StyleSheet.create({
   },
   key_feature_Text_view: {
     // flex: 1,
+    alignSelf:"center"
   },
   key_feature_Text: {
+    flex:1,
     color: _COLORS.Kodie_ExtraminLiteGrayColor,
     fontSize: 12,
     fontFamily: FONTFAMILY.K_SemiBold,
     alignSelf: 'center',
+    alignItems:"center"
   },
   plus_minusview: {
+    flex:1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
