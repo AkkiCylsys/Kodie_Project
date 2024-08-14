@@ -6,9 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-  KeyboardAvoidingView,
-  Keyboard,
-  TouchableWithoutFeedback,
   Image,
 } from 'react-native';
 import {PropertyRentalOfferStyle} from './PropertyRentalOfferStyle';
@@ -335,120 +332,109 @@ const PropertyRentalOffer = props => {
     );
   };
   return (
-    <KeyboardAvoidingView
-      style={{flex: 1}}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}>
-      <TouchableWithoutFeedback
-        keyboardShouldPersistTaps="handled"
-        onPress={() => {
-          Keyboard.dismiss();
-        }}>
-        <SafeAreaView style={PropertyRentalOfferStyle.mainContainer}>
-          <View style={PropertyRentalOfferStyle.rowButtonView}>
-            <RowButtons
-              LeftButtonText={'Offers for my properties'}
-              leftButtonbackgroundColor={
-                !selectedButton
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              LeftButtonTextColor={
-                !selectedButton
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              LeftButtonborderColor={
-                !selectedButton
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressLeftButton={() => {
-                setSelectedButton(false);
-                // alert(selectedButton)
-              }}
-              RightButtonText={'My current offers'}
-              RightButtonbackgroundColor={
-                selectedButton
-                  ? _COLORS.Kodie_lightGreenColor
-                  : _COLORS.Kodie_WhiteColor
-              }
-              RightButtonTextColor={
-                selectedButton
-                  ? _COLORS.Kodie_BlackColor
-                  : _COLORS.Kodie_MediumGrayColor
-              }
-              RightButtonborderColor={
-                selectedButton
-                  ? _COLORS.Kodie_GrayColor
-                  : _COLORS.Kodie_LightWhiteColor
-              }
-              onPressRightButton={() => {
-                setSelectedButton(true);
-              }}
-            />
-          </View>
-          <DividerIcon borderBottomWidth={5} />
-          <SearchBar
-            filterImage={IMAGES.filter}
-            frontSearchIcon
-            Filter
-            filter={'filter'}
-            marginTop={3}
-            placeholder={'Search offers'}
-            searchData={searchCurrentOffer}
-            textvalue={searchQuery}
-          />
-          <DividerIcon />
-          <ScrollView>
-            <View style={PropertyRentalOfferStyle.subContainer}>
-              {!selectedButton ? null : (
-                <View
-                  style={[
-                    PropertyRentalOfferStyle.flat_MainView,
-                    {alignSelf: 'center', marginBottom: 10},
-                  ]}>
-                  <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
-                    <Text style={PropertyRentalOfferStyle.bidsButtonText}>
-                      Accepting bids
-                    </Text>
-                  </TouchableOpacity>
-                  <Text style={PropertyRentalOfferStyle.biddingText}>
-                    Bidding closes in:
-                  </Text>
-                  <View style={PropertyRentalOfferStyle.daysViewStl}>
-                    <Text style={PropertyRentalOfferStyle.biddingText}>
-                      {'o days'}
-                    </Text>
-                  </View>
-                  <View style={PropertyRentalOfferStyle.daysViewStl}>
-                    <Text style={PropertyRentalOfferStyle.biddingText}>
-                      {'6 hrs'}
-                    </Text>
-                  </View>
-                  <View style={PropertyRentalOfferStyle.daysViewStl}>
-                    <Text style={PropertyRentalOfferStyle.biddingText}>
-                      {'10 mins'}
-                    </Text>
-                  </View>
-                </View>
-              )}
-
-              {selectedButton ? (
-                <FlatList
-                  data={searchQuery ? filteredpropertyData : saveCurrentOffer}
-                  keyExtractor={item => item.property_id.toString()}
-                  renderItem={currentOffer_render}
-                />
-              ) : (
-                <OfferForMyProperties />
-              )}
+    <SafeAreaView style={PropertyRentalOfferStyle.mainContainer}>
+      <View style={PropertyRentalOfferStyle.rowButtonView}>
+        <RowButtons
+          LeftButtonText={'Offers for my properties'}
+          leftButtonbackgroundColor={
+            !selectedButton
+              ? _COLORS.Kodie_lightGreenColor
+              : _COLORS.Kodie_WhiteColor
+          }
+          LeftButtonTextColor={
+            !selectedButton
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_MediumGrayColor
+          }
+          LeftButtonborderColor={
+            !selectedButton
+              ? _COLORS.Kodie_GrayColor
+              : _COLORS.Kodie_LightWhiteColor
+          }
+          onPressLeftButton={() => {
+            setSelectedButton(false);
+            // alert(selectedButton)
+          }}
+          RightButtonText={'My current offers'}
+          RightButtonbackgroundColor={
+            selectedButton
+              ? _COLORS.Kodie_lightGreenColor
+              : _COLORS.Kodie_WhiteColor
+          }
+          RightButtonTextColor={
+            selectedButton
+              ? _COLORS.Kodie_BlackColor
+              : _COLORS.Kodie_MediumGrayColor
+          }
+          RightButtonborderColor={
+            selectedButton
+              ? _COLORS.Kodie_GrayColor
+              : _COLORS.Kodie_LightWhiteColor
+          }
+          onPressRightButton={() => {
+            setSelectedButton(true);
+          }}
+        />
+      </View>
+      <DividerIcon borderBottomWidth={5} />
+      <SearchBar
+        filterImage={IMAGES.filter}
+        frontSearchIcon
+        Filter
+        filter={'filter'}
+        marginTop={3}
+        placeholder={'Search offers'}
+        searchData={searchCurrentOffer}
+        textvalue={searchQuery}
+      />
+      <DividerIcon />
+      <ScrollView>
+        <View style={PropertyRentalOfferStyle.subContainer}>
+          {!selectedButton ? null : (
+            <View
+              style={[
+                PropertyRentalOfferStyle.flat_MainView,
+                {alignSelf: 'center', marginBottom: 10},
+              ]}>
+              <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
+                <Text style={PropertyRentalOfferStyle.bidsButtonText}>
+                  Accepting bids
+                </Text>
+              </TouchableOpacity>
+              <Text style={PropertyRentalOfferStyle.biddingText}>
+                Bidding closes in:
+              </Text>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'o days'}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'6 hrs'}
+                </Text>
+              </View>
+              <View style={PropertyRentalOfferStyle.daysViewStl}>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  {'10 mins'}
+                </Text>
+              </View>
             </View>
-          </ScrollView>
-          {isLoading ? <CommonLoader /> : null}
-        </SafeAreaView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+          )}
+
+          {selectedButton ? (
+            <FlatList
+              data={searchQuery ? filteredpropertyData : saveCurrentOffer}
+              keyExtractor={item => item.property_id.toString()}
+              renderItem={currentOffer_render}
+            />
+          ) : (
+            <OfferForMyProperties />
+          )}
+        </View>
+      </ScrollView>
+      {isLoading ? <CommonLoader /> : null}
+    </SafeAreaView>
   );
 };
 

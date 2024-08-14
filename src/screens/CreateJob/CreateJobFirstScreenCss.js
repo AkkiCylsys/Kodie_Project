@@ -65,7 +65,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
     color: '#333',
     paddingLeft: 10,
     fontFamily: FONTFAMILY.K_Medium,
-    marginTop: 20,
+    marginTop: 12,
   },
   jobD_: {height: 100},
 
