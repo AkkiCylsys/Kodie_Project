@@ -92,11 +92,6 @@ const DeshboardNotice = props => {
     // props.onClose();
     setShow(!show);
   };
-  const handletextPress = () => {
-    // alert('Coming soon')
-    // Yaha par aap click event ka logic likh sakte hain
-    console.log('Text clicked!');
-  };
   return (
     <>
       {show ? null : (
@@ -141,7 +136,9 @@ const DeshboardNotice = props => {
                   'We are happy to have you on board. You have almost completed your profile set up.  '
                 }
 
-                <TouchableWithoutFeedback onPress={handletextPress}>
+                <TouchableWithoutFeedback onPress={()=>{
+                  props?.continue()
+                }}>
                   <Text style={[DeshBoardNoticeCss.continueText]}>
                     {'Tap to continue.'}
                   </Text>

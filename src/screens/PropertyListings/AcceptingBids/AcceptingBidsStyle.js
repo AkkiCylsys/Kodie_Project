@@ -111,6 +111,7 @@ export const AcceptingBidsStyle = StyleSheet.create({
     fontSize: 11,
     fontFamily: FONTFAMILY.K_Regular,
     color: _COLORS.Kodie_WhiteColor,
+    alignSelf:"center"
   },
   biddingText: {
     fontSize: 10,

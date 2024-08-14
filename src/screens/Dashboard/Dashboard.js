@@ -295,6 +295,10 @@ export default Dashboard = props => {
             onPress={() => {
               props.navigation.navigate('ManageSubscription');
             }}
+            continue={()=>{
+              props.navigation.navigate('EditProfile');
+            }}
+
           />
           <View style={DashboardStyle.container}>
             <Text style={DashboardStyle.Name_Text}>{`Hi ${

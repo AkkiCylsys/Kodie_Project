@@ -37,6 +37,7 @@ export default SearchResult = props => {
   const [rentalAmount, setRentalAmount] = useState('');
   const [bibId, setBidId] = useState('');
   const [additionalfeatureskey, setAdditionalfeatureskey] = useState([]);
+  const [propertyDetailsItem, setPropertyDetailsItem] = useState([]);
   const keyFeatureMapping = {};
   additionalfeatureskey.forEach(detail => {
     keyFeatureMapping[detail.paf_key] = detail.features_name;
@@ -180,6 +181,7 @@ export default SearchResult = props => {
                 setPropertyId(item?.property_id);
                 setRentalAmount(item?.rental_amount);
                 setBidId(item?.bid_id);
+                setPropertyDetailsItem(item)
               }}>
               <Entypo
                 color={_COLORS.Kodie_ExtraminLiteGrayColor}
@@ -195,7 +197,7 @@ export default SearchResult = props => {
             name="location-pin"
             size={20}
           />
-          <Text style={SearchResultCss.location}>{item?.location || ''}</Text>
+          <Text style={SearchResultCss.location} numberOfLines={2} ellipsizeMode="tail">{item?.location || ''}</Text>
         </View>
         <View style={SearchResultCss.availableBtn}>
           <Text style={SearchResultCss.availabletext}>
@@ -292,17 +294,17 @@ export default SearchResult = props => {
                 : propertyType === 27
                 ? 'Farm'
                 : ''
-            };$${searchInputData?.input_minRange} to $${
+            }; $${searchInputData?.input_minRange} to $${
               searchInputData?.input_maxRange
-            };${AllCountsData[0]?.Bedrooms}Beds;${
+            }; ${AllCountsData[0]?.Bedrooms} Beds; ${
               AllCountsData[1]?.Bathrooms
-            }Baths;${AllCountsData[2]?.Parking_Space}parking space;${
+            } Baths; ${AllCountsData[2]?.Parking_Space} parking space; ${
               AllCountsData[3]?.StreetParking
-            } on-street parking;${
+            } on-street parking; ${
               searchInputData?.input_Fur_unFurnished == 67
                 ? 'Furnished'
                 : 'unfurnished'
-            };${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'};${
+            }; ${searchInputData?.input_petFrendly == 0 ? 'Yes' : 'No'}; ${
               searchInputData?.input_secureDeposit == 0 ? 'Yes' : 'No'
             }`}
           </Text>
@@ -381,7 +383,7 @@ export default SearchResult = props => {
           propertyId={propertyId}
           rentalAmount={rentalAmount}
           bibId={bibId}
-          propertyDetails={searchRentalResponse?.data}
+          propertyDetails={propertyDetailsItem}
         />
       </RBSheet>
       {/* </ScrollView> */}

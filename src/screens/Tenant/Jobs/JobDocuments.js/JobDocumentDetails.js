@@ -432,7 +432,7 @@ const JobDocumentDetails = props => {
         style={{
           marginHorizontal: 16,
         }}>
-        <View>
+        <View style={{marginVertical:10}}>
           <Text style={JobDocumentDetailStyle.upload_doc_text}>
             {'Upload documents'}
           </Text>

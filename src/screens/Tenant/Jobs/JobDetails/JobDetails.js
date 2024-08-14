@@ -30,6 +30,7 @@ import JodBiddingDetails from '../../../CreateJob/ReviewJobDetails/JobBiddingDet
 import JobDocuments from '../JobDocuments.js/JobDocuments';
 import {CommonActions, useIsFocused} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import { fetchCreateJobSuccess } from '../../../../redux/Actions/AddJob/CreateJob/CreateJobApiAction';
 const stepLabels = ['Step 1', 'Step 2', 'Step 3', 'Step 4'];
 
 // const images = [
@@ -52,7 +53,7 @@ const Apartment_data = [
   {label: 'Farm', value: '6'},
 ];
 const JobDetails = props => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const isFocued = useIsFocused();
   let job_id = props?.route?.params?.job_id;
   let JOB_ID = props?.route?.params?.JOB_ID;
@@ -72,7 +73,6 @@ const JobDetails = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [myJobType, setMyJobType] = useState(0);
   const handleJobDetailsSuccess = jobTypeMy => {
-    console.log('jobTypeMy in JobDetails component:', jobTypeMy);
     setMyJobType(jobTypeMy);
     console.log('myJobType key....', myJobType);
   };
@@ -82,11 +82,7 @@ const JobDetails = props => {
   }, [imageFileData]);
   const handleImageFilePath = async imagesFilePath => {
     setImageFileData(imagesFilePath);
-    // console.log("imagesFilePath....sdfs.", imagesFilePath);
     console.log('imagesFilePath....sdfs.', imagesFilePath);
-    console.log('images__imageFileData...', imageFileData);
-    // alert(JSON.stringify(imagesFilePath.length))
-    console.log('length', imagesFilePath.length);
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
@@ -199,6 +195,7 @@ const JobDetails = props => {
             imagesFilePath={handleImageFilePath}
             onPress={() => {
               props.navigation.pop(4);
+              dispatch(fetchCreateJobSuccess());
               props.navigation.navigate('Jobs', {
                 myJob_Type: myJobType,
               });

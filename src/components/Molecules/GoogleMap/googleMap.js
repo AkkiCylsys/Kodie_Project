@@ -25,7 +25,7 @@ import {CommonLoader} from '../ActiveLoader/ActiveLoader';
 import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
 import RNSettings from 'react-native-settings';
- 
+
 import {useNavigation} from '@react-navigation/native';
 const MapScreen = props => {
   const mapRef = useRef(null);
@@ -61,12 +61,13 @@ const MapScreen = props => {
     }
   };
  
+
   // useLayoutEffect(() => {
   //   Geocoder.init('AIzaSyDScJ03PP_dCxbRtighRoi256jTXGvJ1Dw', {language: 'en'});
   //   Platform.OS == 'ios' ? CheckIOSMapPermission() : checkpermissionlocation();
- 
+
   // }, []);
- 
+
   const getLOcation = () => {
     // Geolocation.getCurrentPosition(position => {
     //   console.log('you are here.');
@@ -118,17 +119,16 @@ const MapScreen = props => {
               console.log('location is enabled');
               getLOcation();
             } else {
-              // alert(
-              //   'You din`t allowed the location, so you are not able to use location.please on location.',
-              // );
               Alert.alert(
                 'Location Alert',
- 
+
                 "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
                 [
                   {
                     text: 'Cancel',
-                    onPress: () => navigation.pop(),
+                    onPress: () => {
+                      props.iscancel ? props.iscancel() : navigation.pop();
+                    },
                     style: 'cancel',
                   },
                   {
@@ -158,36 +158,34 @@ const MapScreen = props => {
       },
     );
   };
- 
- 
- 
+
   const checkpermissionlocation = async () => {
     try {
       // Check if permission is already granted
       const permissionGranted = await PermissionsAndroid.check(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       );
-  
+
       if (!permissionGranted) {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
           {
             title: 'Allow Location Access?',
             message: "Allow Kodie to access this device's location?",
-          }
+          },
         );
-  
+
         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
           console.log('Location permission denied');
           alert('Location permission denied');
           return;
         }
       }
-  
+
       console.log('You can use the location');
-  
+
       // Check if location is enabled
-      RNSettings.getSetting(RNSettings.LOCATION_SETTING).then((result) => {
+      RNSettings.getSetting(RNSettings.LOCATION_SETTING).then(result => {
         if (result === RNSettings.ENABLED) {
           console.log('Location is enabled');
           getLOcation();
@@ -198,49 +196,52 @@ const MapScreen = props => {
             [
               {
                 text: 'Cancel',
-                onPress: () => navigation.pop(),
+                onPress: () =>
+                  props.iscancel ? props.iscancel() : navigation.pop(),
                 style: 'cancel',
               },
               {
                 text: 'OK',
                 onPress: () => {
-                  RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
-                    (result) => {
-                      if (result === RNSettings.ENABLED) {
-                        console.log('Location is enabled');
-                        getLOcation();
-                      }
-                      else {
-                        Alert.alert(
-                          'Location Alert',
-                          "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
-                          [
-                            {
-                              text: 'Cancel',
-                              onPress: () => navigation.pop(),
-                              style: 'cancel',
+                  RNSettings.openSetting(
+                    RNSettings.ACTION_LOCATION_SOURCE_SETTINGS,
+                  ).then(result => {
+                    if (result === RNSettings.ENABLED) {
+                      console.log('Location is enabled');
+                      getLOcation();
+                    } else {
+                      Alert.alert(
+                        'Location Alert',
+                        "You didn't allow access to the location, so you are not able to use location services. Please enable location access.",
+                        [
+                          {
+                            text: 'Cancel',
+                            onPress: () =>
+                              props.iscancel
+                                ? props.iscancel()
+                                : navigation.pop(),
+                            style: 'cancel',
+                          },
+                          {
+                            text: 'OK',
+                            onPress: () => {
+                              RNSettings.openSetting(
+                                RNSettings.ACTION_LOCATION_SOURCE_SETTINGS,
+                              ).then(result => {
+                                if (result === RNSettings.ENABLED) {
+                                  console.log('Location is enabled');
+                                  getLOcation();
+                                }
+                              });
                             },
-                            {
-                              text: 'OK',
-                              onPress: () => {
-                                RNSettings.openSetting(RNSettings.ACTION_LOCATION_SOURCE_SETTINGS).then(
-                                  (result) => {
-                                    if (result === RNSettings.ENABLED) {
-                                      console.log('Location is enabled');
-                                      getLOcation();
-                                    }
-                                  }
-                                );
-                              },
-                            },
-                          ]
-                        );
-                      }
+                          },
+                        ],
+                      );
                     }
-                  );
+                  });
                 },
               },
-            ]
+            ],
           );
         }
       });
@@ -356,7 +357,7 @@ const MapScreen = props => {
             }}
             onPress={props?.onPress}>
             <Icon name="location-pin" size={30} color={'red'} />
- 
+
             <Callout tooltip onPress={props?.onPressTooltip}>
               {/* <View style={GoogleMapStyle.tooltipView}>
       <Text style={GoogleMapStyle.tooltipText}>
@@ -370,5 +371,5 @@ const MapScreen = props => {
     </>
   );
 };
- 
-export default MapScreen
+
+export default MapScreen;
