@@ -25,6 +25,8 @@ import {IMAGES, _COLORS} from '../../Themes';
 import {useSelector} from 'react-redux';
 import {FONTFAMILY} from '../../Themes/FontStyle/FontStyle';
 import storage from '@react-native-firebase/storage';
+
+import Geolocation from '@react-native-community/geolocation';
 const Chat = props => {
   const [messageList, setMessageList] = useState([]);
   const route = useRoute();
@@ -289,28 +291,84 @@ const clearChat = async () => {
       console.log('Error picking image from camera:', error);
     }
   };
-
+  const handleSendLocation = async () => {
+    try {
+      Geolocation.getCurrentPosition(
+        async position => {
+          const { latitude, longitude } = position.coords;
+          const locationMessage = {
+            text: `My location: https://www.google.com/maps?q=${latitude},${longitude}`,
+            createdAt: new Date(),
+            user: {
+              _id: loginData.Login_details.user_id,
+              avatar: loginData.Login_details.profile_photo_path,
+            },
+            location: {
+              latitude,
+              longitude,
+            },
+          };
+  
+          const docid = createDocId(loginData.Login_details.user_id, route.params.userid);
+  
+          // Determine if sending to group or individual chat
+          const chatCollection ='messages';
+          const chatRoomId =  docid;
+  
+          await firestore()
+            .collection('chatrooms')
+            .doc(chatRoomId)
+            .collection(chatCollection)
+            .add(locationMessage);
+  
+          console.log('Location sent successfully');
+        },
+        error => {
+          console.error('Error getting location:', error);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 20000,
+          maximumAge: 1000,
+        },
+      );
+    } catch (error) {
+      console.error('Error sending location:', error);
+    }
+  };
+  
   const renderSend = props => {
     return (
       <View
         style={{
-          // flex: 0.5,
           flexDirection: 'row',
           alignItems: 'center',
           alignSelf: 'center',
           paddingHorizontal: 10,
-          marginTop:10,
-          justifyContent: 'center', // Center-align the send box
+          marginTop: 10,
+          justifyContent: 'center',
         }}>
+         {/* Location Icon */}
+         <TouchableOpacity
+          onPress={handleSendLocation}  // Implement sendLocation function to send user's location
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginLeft: 10,  // Adjust spacing as necessary
+          }}>
+          <Ionicons
+            name="location-outline"
+            size={25}
+            color={_COLORS.Kodie_ExtraLightGrayColor}
+          />
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={openOptionsModal}
           style={{
             alignItems: 'center',
             justifyContent: 'center',
             alignSelf: 'center',
-
             marginLeft: Platform.OS ? 20 : 18,
-            // marginBottom: 8,
           }}>
           <Foundation
             name="paperclip"
@@ -318,6 +376,9 @@ const clearChat = async () => {
             color={_COLORS.Kodie_ExtraLightGrayColor}
           />
         </TouchableOpacity>
+  
+       
+  
         <Send {...props}>
           <View
             style={{
@@ -337,6 +398,7 @@ const clearChat = async () => {
       </View>
     );
   };
+  
 
   const renderBubble = props => {
     const isCurrentUser =
@@ -560,20 +622,6 @@ const clearChat = async () => {
         visible={ClearChatModalVisible}
         onRequestClose={()=>setClearChatModalVisible(false)}>
         <View style={{marginTop:100,left:250,position:'absolute'}}>
-          {/* <TouchableOpacity
-            style={styles.modalCloseButton}
-            onPress={()=>setClearChatModalVisible(false)}>
-            <Icon
-              name="close"
-              size={20}
-              color={_COLORS.Kodie_BlackColor}
-              style={{
-                alignItems: 'flex-end',
-                alignSelf: 'flex-end',
-              }}
-            />
-          </TouchableOpacity> */}
-      
             <TouchableOpacity
               onPress={clearChat}
               style={styles.modalOption}>

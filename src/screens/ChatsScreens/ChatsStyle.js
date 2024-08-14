@@ -133,4 +133,8 @@ export const ChatsStyle = StyleSheet.create({
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
   },
+  bottomSheetButton:{
+    flexDirection:'row',
+    marginHorizontal:16
+  }
 });

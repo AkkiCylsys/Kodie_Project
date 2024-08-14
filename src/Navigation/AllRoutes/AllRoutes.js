@@ -143,6 +143,8 @@ import AddNotices from '../../screens/NotiesList/AddNewNotice/AddNotices';
 import PropertyRentalOffer from '../../screens/Landlord/PropertyList/PropertyRentalOffer/PropertyRentalOffer';
 import PropertyViewApplication from '../../screens/Landlord/PropertyList/PropertyRentalOffer/PropertyViewApplication/PropertyViewApplication';
 import MultipleDropDwonDummy from '../../screens/MultipleDropDwonDummy';
+import CreateGroup from '../../screens/ChatsScreens/CreateGroup';
+import GroupChat from '../../screens/ChatsScreens/GroupChat';
 const Tab = createBottomTabNavigator();
 const BottomNav = props => {
   return (
@@ -1090,6 +1092,16 @@ const AllStackRouts = props => {
         <Stack.Screen
           name={'MultipleDropDwonDummy'}
           component={MultipleDropDwonDummy}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'CreateGroup'}
+          component={CreateGroup}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'GroupChat'}
+          component={GroupChat}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

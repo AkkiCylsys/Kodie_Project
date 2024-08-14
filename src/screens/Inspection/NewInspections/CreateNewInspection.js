@@ -819,7 +819,7 @@ const CreateNewInspection = props => {
             </Text>
             <View style={{marginTop: 10}}>
               <FlatList
-                data={[...AreaKey, {TAM_AREA_KEY: 'add_custom_area'}]}
+            data={[...(Array.isArray(AreaKey) ? AreaKey : []), {TAM_AREA_KEY: 'add_custom_area'}]}
                 scrollEnabled
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{}}

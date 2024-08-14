@@ -73,7 +73,6 @@ const Chats = (props) => {
     }
   };
   
-
   const fetchData = async () => {
     setIsLoading(true);
     try {
@@ -81,107 +80,54 @@ const Chats = (props) => {
       const usersSnapshot = await firestore().collection('Users').get();
       const allUsersData = usersSnapshot.docs.map(doc => doc.data());
       console.log('All Users:', allUsersData);
-      setAllUsers(allUsersData)
-      // Create a map of allUsers by user_key for easy lookup
+      setAllUsers(allUsersData);
+  
       const allUsersMap = new Map(allUsersData.map(user => [user.user_key, user]));
   
       // Fetch chatrooms
       const chatroomsSnapshot = await firestore().collection('chatrooms').get();
       const relevantUserIds = new Set();
-      console.log('Chatrooms Snapshot:', chatroomsSnapshot);
   
-      // Process each chatroom
-      chatroomsSnapshot.docs.forEach(doc => {
+      const lastMessagesByUser = {};
+  
+      // Loop through each chatroom
+      for (const doc of chatroomsSnapshot.docs) {
         const docId = doc.id;
         const userIds = docId.split('-');
         const userIdString = loginData.Login_details.user_id.toString();
   
         if (userIds.includes(userIdString)) {
-          userIds.forEach(userId => {
+          for (const userId of userIds) {
             if (userId !== userIdString) {
               relevantUserIds.add(userId);
-            }
-          });
-        }
-      });
   
-      console.log('Relevant User IDs:', [...relevantUserIds]);
+              // Fetch the last message for the chatroom
+              const messagesSnapshot = await firestore()
+                .collection('chatrooms')
+                .doc(docId)
+                .collection('messages')
+                .orderBy('createdAt', 'desc')
+                .limit(1)
+                .get();
   
-      // Fetch user details for relevant user IDs
-      const chatUsers = await Promise.all([...relevantUserIds].map(async userId => {
-        const userDoc = await firestore().collection('Users').doc(userId).get();
-        return { id: userDoc.id, ...userDoc.data() };
-      }));
-      console.log('Chat Users:', chatUsers);
+              if (!messagesSnapshot.empty) {
+                const lastMessage = messagesSnapshot.docs[0].data();
+                lastMessage.createdAt = lastMessage.createdAt.toDate();
   
-      if (chatroomsSnapshot.empty) {
-        console.log('No chatrooms found.');
-        setIsLoading(false);
-        return;
-      }
-  
-      const chatroomIds = chatroomsSnapshot.docs.map(doc => doc.id);
-      console.log('Chatroom IDs:', chatroomIds);
-  
-      // Fetch messages for each chatroom
-      const messagesByChatroom = {};
-      const unseenCountsByUser = {};
-  
-      for (const chatroomId of chatroomIds) {
-        const messagesSnapshot = await firestore()
-          .collection('chatrooms')
-          .doc(chatroomId)
-          .collection('messages')
-          .orderBy('createdAt', 'desc') // Ensure messages are ordered by time (latest first)
-          .get();
-  
-        if (!messagesSnapshot.empty) {
-          const messagesData = messagesSnapshot.docs.map(doc => {
-            const msgData = doc.data(); // Ensure we reference msgData correctly
-            return {
-              ...msgData,
-              id: doc.id,
-              createdAt: msgData.createdAt instanceof Date ? msgData.createdAt : msgData.createdAt.toDate() // Check and convert if necessary
-            };
-          });
-  
-          messagesByChatroom[chatroomId] = messagesData;
-          messagesData.forEach(msg => {
-            if (!msg.seen) {
-              const userId = msg.user._id;
-              if (!unseenCountsByUser[userId]) {
-                unseenCountsByUser[userId] = 0;
+                lastMessagesByUser[userId] = lastMessage;
               }
-              unseenCountsByUser[userId]++;
             }
-          });
+          }
         }
       }
   
-      console.log('Messages By Chatroom:', messagesByChatroom);
-      console.log('Unseen Counts By User:', unseenCountsByUser);
+      const chatUsers = [...relevantUserIds].map(userId => allUsersMap.get(userId));
   
-      const filteredChatUsers = chatUsers
-        .map(user => allUsersMap.get(user.id)) // Match user by ID
-        .filter(user => user !== undefined);
-  
-      const updatedUsers = filteredChatUsers.map(user => {
-        console.log('Processing User:', user);
-        // Find chatrooms related to this user
-        const userChatroomIds = chatroomIds.filter(chatroomId => chatroomId.includes(user.user_key));
-  
-        // Get the last message and unseen count for these chatrooms
-        const lastMessage = userChatroomIds
-          .map(chatroomId => messagesByChatroom[chatroomId] ? messagesByChatroom[chatroomId][0] : null)
-          .filter(msg => msg !== null)
-          .sort((a, b) => b.createdAt - a.createdAt)[0]; // Sort by timestamp directly
-  
+      const updatedUsers = chatUsers.map(user => {
+        const lastMessage = lastMessagesByUser[user.user_key];
         const lastMessageTime = lastMessage ? formatDate(lastMessage.createdAt) : '';
-        const unseenCount = unseenCountsByUser[user.user_key];
-        console.log('unseenCountunseenCount',unseenCount);
-        const sendStatus = lastMessage ? (lastMessage.sendStatus === true ? 1 : 0) : 0;
-        const UserStatus = lastMessage?.user?._id == loginData?.Login_details?.user_id ? 0 : 1;
-        console.log('Last Message:', lastMessage);
+        const unseenCount = lastMessage && !lastMessage.seen && lastMessage.user._id !== loginData.Login_details.user_id ? 1 : 0;
+  
         let lastMessageText = '';
         if (lastMessage) {
           if (lastMessage.image) {
@@ -192,36 +138,43 @@ const Chats = (props) => {
             lastMessageText = lastMessage.text;
           }
         }
+  
         return {
           ...user,
           lastMessage: lastMessageText,
-          lastMessageTimestamp: lastMessage?.createdAt || null, // Store the timestamp for sorting
+          lastMessageTimestamp: lastMessage?.createdAt || null,
           lastMessageTime,
           unseenCount,
-          sendStatus,
-          UserStatus
+          sendStatus: lastMessage.sendStatus === true ? 1 : 0,
+          UserStatus: lastMessage?.user?._id === loginData?.Login_details?.user_id ? 0 : 1,
         };
       });
   
-      console.log('Updated Users:', updatedUsers);
-  
-      // Sort users based on the timestamp of their last message
+      // Fetch groups
+      const groupsSnapshot = await firestore().collection('groups').get();
+      const groups = groupsSnapshot.docs.map(doc => ({
+        group_key: doc.id,
+        ...doc.data(),
+        type: 'group',
+      }));
+
+      // Combine users and groups
       const sortedUsers = updatedUsers.sort((a, b) => {
         if (a.lastMessageTimestamp && b.lastMessageTimestamp) {
           return b.lastMessageTimestamp - a.lastMessageTimestamp;
         }
         return 0;
       });
-  
-      console.log('Sorted Users:', sortedUsers);
-  
+
+      const combinedData = [...sortedUsers, ...groups];
       setFilteredUsers(
         searchQuery
-          ? sortedUsers.filter(item =>
+          ? combinedData.filter(item =>
             item.name?.toLowerCase().includes(searchQuery.toLowerCase())
           )
-          : sortedUsers
+          : combinedData
       );
+
       setIsLoading(false);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -229,13 +182,19 @@ const Chats = (props) => {
     }
   };
   
+  
   console.log(filteredUsers);
-  const truncateText = (text, length = 20) => {
+  const truncateText = (text = '', length = 20) => {
     if (text.length > length) {
       return `${text.substring(0, length)}...`;
     }
     return text;
   };
+
+  const navigateToGroupChat = (groupId) => {
+    navigation.navigate('GroupChat', { groupId });
+  };
+
   return (
     <SafeAreaView style={ChatsStyle.container}>
       <TopHeader
@@ -265,9 +224,17 @@ const Chats = (props) => {
               <View style={ChatsStyle.chatItem}>
                 <TouchableOpacity
                   style={ChatsStyle.chatItemContent}
+                  // onPress={() => {
+                  //   navigation.navigate('Chat', { data: item, userid: item.user_key });
+                  // }}
                   onPress={() => {
-                    navigation.navigate('Chat', { data: item, userid: item.user_key });
-                  }}>
+                    if (item.type === 'group') {
+                      navigateToGroupChat(item.group_key);
+                    } else {
+                      navigation.navigate('Chat', { data: item, userid: item.user_key });
+                    }
+                  }}
+                  >
                   {item.image ? (
                     <Image
                       source={{ uri: item.image }}
@@ -284,7 +251,7 @@ const Chats = (props) => {
                   )}
                   <View style={ChatsStyle.userInfo}>
                     <View style={{ flex: 1 }}>
-                      <Text style={ChatsStyle.userName}>{item.name}</Text>
+                      <Text style={ChatsStyle.userName}>{item.type === 'group'?item.groupName :item.name}</Text>
                       <View style={{ flexDirection: 'row' }}>
                         {item.UserStatus == 1 ? null : (
                           <Ionicons name="checkmark-done-sharp" size={18} color={item.sendStatus == 0 ? _COLORS.Kodie_ExtraLightGrayColor : 'blue'} />
@@ -320,7 +287,7 @@ const Chats = (props) => {
                 </TouchableOpacity>
               </View>
             )}
-            keyExtractor={(item, index) => index.toString()}
+            keyExtractor={(item, index) => item.user_key || item.group_key || index.toString()}
           />
         </ScrollView>
 
@@ -365,6 +332,16 @@ const Chats = (props) => {
               </TouchableOpacity>
             </View>
             <DividerIcon />
+            <TouchableOpacity
+            style={ChatsStyle.bottomSheetButton}
+            onPress={() => {
+              bottomSheetRef.current.close();
+              props.navigation.navigate('CreateGroup');
+            }}>
+            <FontAwesome name="users" size={25} color={_COLORS.Kodie_ExtraLightGrayColor} style={{marginRight:16}}/>
+            <Text style={ChatsStyle.bottomSheetUserInfo}>Create Group</Text>
+          </TouchableOpacity>
+          <DividerIcon style={{ marginTop: 15 }} />
             <FlatList
               data={allUsers}
               renderItem={({ item }) => (
