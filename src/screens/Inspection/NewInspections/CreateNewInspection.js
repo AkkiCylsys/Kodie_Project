@@ -57,8 +57,7 @@ const CreateNewInspection = props => {
   const [selectedAddressDetail, setSelectedAddressDetail] = useState([]);
   const [AreaKey, setAreaKey] = useState([]);
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
-  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
-    useState(67);
+  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] = useState(67);
   const [checkedItems, setCheckedItems] = useState({});
   const [TIM_key, setTIM_key] = useState([]);
   const [query, setQuery] = useState('');
@@ -103,7 +102,7 @@ const CreateNewInspection = props => {
         }
       })
       .catch(error => {
-        console.error('area response error:', error);
+        // console.error('area response error:', error);
         setIsLoading(false);
       });
   };
@@ -121,7 +120,12 @@ const CreateNewInspection = props => {
   const handleCloseModal = () => {
     refRBSheet1.current.close();
   };
-
+  const handlePress = () => {
+    refRBSheet.current.open();
+  };
+  const handleRemove = () => {
+    setDisplaySelectedValues('');
+  };
   const handleDone = async () => {
     setIsLoading(true);
     const url = Config.BASE_URL;
@@ -730,11 +734,11 @@ const CreateNewInspection = props => {
           ) : null}
 
           <View style={{marginBottom: 15, marginTop: 15}}>
-            <Text style={LABEL_STYLES.commontext}>{'Add attendees'}</Text>
+            <Text style={LABEL_STYLES.commontext}>Add attendees</Text>
 
             <TouchableOpacity
               style={CreateNewInspectionStyle.TextInputView}
-              onPress={() => refRBSheet.current.open()}>
+              onPress={handlePress}>
               <Text
                 style={[
                   CreateNewInspectionStyle.input,
@@ -744,18 +748,9 @@ const CreateNewInspection = props => {
                       : _COLORS.Kodie_MediumGrayColor,
                   },
                 ]}>
-                {displaySelectedValues
-                  ? displaySelectedValues
-                  : 'Add people attending the inspection'}
+                {displaySelectedValues || 'Add people attending the inspection'}
               </Text>
 
-              {/* <TextInput
-              value={displaySelectedValues}
-              placeholder={'Add people attending the inspection'}
-              style={CreateNewInspectionStyle.input}
-              palceholderColor={_COLORS.Kodie_MediumGrayColor}
-              editable={false}
-            /> */}
               <Feather
                 name={'user-plus'}
                 size={22}
@@ -763,6 +758,7 @@ const CreateNewInspection = props => {
                 style={{marginRight: 10}}
               />
             </TouchableOpacity>
+            <TouchableOpacity onPress={handleRemove}/>
           </View>
           <Text style={LABEL_STYLES.commontext}>
             {'Is the place furnished or unfurnished?'}

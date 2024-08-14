@@ -6,7 +6,9 @@ import {
   TextInput,
   FlatList,
   Image,
-  Keyboard
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView
 } from 'react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -25,7 +27,11 @@ const GuestSelectionContent = ({
 }) => {
   
   return (
-    <View style={{flex: 1,marginHorizontal:16,marginVertical:16}}>
+    
+    <KeyboardAvoidingView 
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+    style={{flex: 1,marginHorizontal:16,marginVertical:16}} >
       
       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <Text
@@ -72,7 +78,7 @@ const GuestSelectionContent = ({
           placeholderTextColor={_COLORS.Kodie_BlackColor}
         />
       </View>
-
+      <ScrollView keyboardShouldPersistTaps="handled" style={{flex:1}}>
       <FlatList
         data={results}
         keyExtractor={item => item.UAD_KEY.toString()}
@@ -133,7 +139,7 @@ const GuestSelectionContent = ({
             </View>
             <TouchableOpacity
               onPress={() => {handleSelect(item);
-                Keyboard.dismiss();
+                // Keyboard.dismiss();
               }}
               style={{
                 paddingHorizontal: 15,
@@ -170,6 +176,7 @@ const GuestSelectionContent = ({
           flexDirection: 'row',
           justifyContent: 'flex-end',
           alignItems: 'flex-end',
+          marginBottom:30
         }}>
         <TouchableOpacity
           style={{paddingHorizontal: 20, paddingVertical: 10}}
@@ -201,7 +208,8 @@ const GuestSelectionContent = ({
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

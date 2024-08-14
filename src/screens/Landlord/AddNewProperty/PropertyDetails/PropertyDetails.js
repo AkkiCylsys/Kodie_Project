@@ -346,6 +346,15 @@ export default PropertyDetails = props => {
     }
   };
 
+
+  const handleNote = text => {
+    setPropertyDesc(text);
+    if (text.trim() === '') {
+      setNotesError('please enter note!');
+    } else {
+      setNotesError('');
+    }
+  };
   //dropDown render Item....
   const propertyType_render = item => {
     return (
@@ -577,13 +586,14 @@ export default PropertyDetails = props => {
                 <TextInput
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
-                  onChangeText={setPropertyDesc}
+                  onChangeText={handleNote}
                   placeholder="Add information about your property"
                   placeholderTextColor="#999"
                   multiline
                   numberOfLines={5}
                   maxLength={1000}
                   textAlignVertical={'top'}
+                  onBlur={()=>handleNote(propertyDesc)}
                 />
                 <Text style={PropertyDetailsStyle.characterLimit}>
                   {propertyDesc.length}/1000
@@ -657,22 +667,19 @@ export default PropertyDetails = props => {
                     let isValid = true;
 
                     if (!location) {
-                      setError('Please enter a location.');
+                      setError('Please enter a location!');
+                      isValid = false;
+                    } else if (!property_value) {
+                      setError('');
+                      setPropertyError('Please select a property type!');
+                      isValid = false;
+                    } else if (!propertyDesc) {
+                      setPropertyError('');
+                      setNotesError('Please enter notes!');
                       isValid = false;
                     } else {
                       setError('');
-                    }
-
-                    if (!property_value) {
-                      setPropertyError('Please select a property type.');
-                      isValid = false;
-                    } else {
                       setPropertyError('');
-                    }
-                    if (!propertyDesc) {
-                      setNotesError('Please enter notes.');
-                      isValid = false;
-                    } else {
                       setNotesError('');
                     }
 
@@ -690,12 +697,12 @@ export default PropertyDetails = props => {
                         country: country,
                         editMode: editMode,
                       });
-                      // props.navigation.navigate('MultipleDropDwonDummy')
                     }
                   }}
                   disabled={isLoading ? true : false}
                 />
               </View>
+
               <TouchableOpacity
                 style={PropertyDetailsStyle.goBack_View}
                 onPress={() => {

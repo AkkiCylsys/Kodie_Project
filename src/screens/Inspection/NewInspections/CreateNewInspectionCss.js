@@ -9,7 +9,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
   Container: {
     marginHorizontal: 16,
     marginVertical: 16,
-    // marginBottom:30
+    marginBottom:10
   },
   HeadingText: {
     fontSize: 24,
@@ -251,7 +251,7 @@ export const CreateNewInspectionStyle = StyleSheet.create({
     flexDirection: "row",
     alignSelf: "flex-end",
     justifyContent: "flex-end",
-    marginVertical: 20,
+    // marginVertical: 20,
   },
   DoneText: {
     alignSelf: "center",

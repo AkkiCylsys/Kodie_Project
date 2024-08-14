@@ -32,8 +32,12 @@ const isFocus =useIsFocused();
       fetchLeaseSummary();
       fetchRentalReceipt();
     }
-  }, [isSheetOpen, isLogSheetOpen,isFocus]);
-
+  }, [isSheetOpen, isLogSheetOpen,isFocus,leaseSummaryData]);
+// useEffect(()=> {
+//   if (isFocus) {
+//     fetchLeaseSummary();
+//   }
+// },[isFocus,leaseSummaryData])
   const handleClose = () => {
     refRBSheet.current.close();
     setIsSheetOpen(false);
@@ -106,7 +110,7 @@ const isFocus =useIsFocused();
           <View>
             <Text style={LeaseSummaryStyle.Amount_Text}>Amount paid</Text>
             <Text style={LeaseSummaryStyle.Accounting_Text}>
-              ${item.PLD_TOTAL_AMOUNT}
+              {item.PLD_TOTAL_AMOUNT}
             </Text>
           </View>
         </View>

@@ -489,7 +489,7 @@ export default PropertyReview = props => {
                         LABEL_STYLES.commontext,
                         {fontFamily: FONTFAMILY.K_Medium},
                       ]}>
-                      {`${property_Detail?.floor_size} m²`}
+                      {`${property_Detail?.floor_size || ''} m²`}
                     </Text>
                   </View>
                   <DividerIcon marginTop={8} />
