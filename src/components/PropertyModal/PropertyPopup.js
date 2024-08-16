@@ -39,7 +39,7 @@ const reminder_data = [
 ];
 const PropertyPopup = props => {
   const [value, setValue] = useState(null);
-  const [selectedCommDate, setselectedCommDate] = useState(null);
+  const [selectedCommDate, setselectedCommDate] = useState("");
   const [isModalVisible, setModalVisible] = useState(false);
   const [listPrice, setListPrice] = useState(0);
   const [rentalBond, setRentalBond] = useState('');
