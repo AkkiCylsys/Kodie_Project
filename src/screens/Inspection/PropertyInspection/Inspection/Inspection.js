@@ -509,7 +509,7 @@ const Inspection = props => {
               selectedTextStyle={InspectionCss.selectedTextStyle}
               inputSearchStyle={InspectionCss.inputSearchStyle}
               iconStyle={InspectionCss.iconStyle}
-              data={getCustomeArea}
+              data={getCustomeArea || []}
               search
               maxHeight={300}
               labelField="TAM_AREA_NAME"

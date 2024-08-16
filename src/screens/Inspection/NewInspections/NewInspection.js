@@ -172,7 +172,8 @@ export default NewInspection = (props) => {
       const response = await axios.delete(deleteUrl);
       console.log('Response from delete inspection:', response?.data);
       if (response?.data?.success) {
-        Alert.alert('Success', 'Inspection deleted successfully');
+        // Alert.alert('Success', 'Inspection deleted successfully');
+        Alert.alert(JSON.stringify(response?.data))
         await getInspectionDeatilsByFilter({
           monthId: _selectedMonthId,
           year: _selectedYear,

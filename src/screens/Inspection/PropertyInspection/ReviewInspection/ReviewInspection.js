@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, {useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,12 @@ import {
   Image,
   SafeAreaView,
 } from 'react-native';
-import { ReviewInspectionCss } from './ReviewInspectionCss';
+import {ReviewInspectionCss} from './ReviewInspectionCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { IMAGES, LABEL_STYLES, _COLORS } from '../../../../Themes';
+import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -22,37 +22,46 @@ const ReviewInspection = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
+  const [isFileVisible, setIsFileVisible] = useState(true);
 
   const handleCloseModal = () => {
     refRBSheet.current.close();
   };
 
+  const handleRemoveFile = () => {
+    setIsFileVisible(false);
+  };
   return (
     <SafeAreaView style={ReviewInspectionCss.MainContainer}>
       <View style={ReviewInspectionCss.Container}>
         <Text style={ReviewInspectionCss.inspections}>{'Review results'}</Text>
-        <View style={ReviewInspectionCss.PdfContainer}>
-          <View style={ReviewInspectionCss.Pdfview}>
-            <FontAwesome
-              name={'file-pdf-o'}
-              size={35}
-              color={_COLORS.Kodie_BlackColor}
-            />
-            <View style={ReviewInspectionCss.pdfTextView}>
-              <Text style={ReviewInspectionCss.PDF_Text}>
-                {'Inspection report.pdf'}
-              </Text>
-              <Text style={[ReviewInspectionCss.MBText]}>{'4,8 MB'}</Text>
+        {isFileVisible && (
+          <View style={ReviewInspectionCss.PdfContainer}>
+            <View style={ReviewInspectionCss.Pdfview}>
+              <FontAwesome
+                name={'file-pdf-o'}
+                size={35}
+                color={_COLORS.Kodie_BlackColor}
+              />
+              <View style={ReviewInspectionCss.pdfTextView}>
+                <Text style={ReviewInspectionCss.PDF_Text}>
+                  {'Inspection report.pdf'}
+                </Text>
+                <Text style={[ReviewInspectionCss.MBText]}>{'4,8 MB'}</Text>
+              </View>
             </View>
+            <TouchableOpacity
+              style={ReviewInspectionCss.closeIconView}
+              onPress={handleRemoveFile} // Add onPress to handle file removal
+            >
+              <AntDesign
+                name="closecircle"
+                size={15}
+                color={_COLORS.Kodie_MediumGrayColor}
+              />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity style={ReviewInspectionCss.closeIconView}>
-            <AntDesign
-              name="closecircle"
-              size={15}
-              color={_COLORS.Kodie_MediumGrayColor}
-            />
-          </TouchableOpacity>
-        </View>
+        )}
         <DividerIcon />
         <Text style={ReviewInspectionCss.inspections}>
           {'Items needing urgent repair'}
@@ -154,8 +163,7 @@ const ReviewInspection = () => {
             <View style={ReviewInspectionCss.ButtonView}>
               <TouchableOpacity
                 style={ReviewInspectionCss.cancelView}
-                onPress={handleCloseModal}
-              >
+                onPress={handleCloseModal}>
                 <Text style={[ReviewInspectionCss.cancelText]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity style={ReviewInspectionCss.SaveView}>
