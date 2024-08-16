@@ -96,7 +96,7 @@ const Inspection = props => {
         console.log('Selected_CustomeArea', response?.data);
         if (response?.data?.success === true) {
           console.log('Selected_CustomeArea....', response?.data?.data[0]);
-          setGetCustomeArea(response?.data?.data[0]);
+          setGetCustomeArea(response?.data?.data);
           setIsLoading(false);
         } else {
           console.error('Selected_CustomeArea_error:', response?.data?.error);
@@ -507,7 +507,7 @@ const Inspection = props => {
               selectedTextStyle={InspectionCss.selectedTextStyle}
               inputSearchStyle={InspectionCss.inputSearchStyle}
               iconStyle={InspectionCss.iconStyle}
-              data={getCustomeArea}
+              data={getCustomeArea || []}
               search
               maxHeight={300}
               labelField="TAM_AREA_NAME"
