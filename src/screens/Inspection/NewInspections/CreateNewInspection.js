@@ -602,6 +602,7 @@ console.log('data',data);
           <View style={{}}>
             <Text style={LABEL_STYLES.commontext}>
               {'What type of inspection is this?'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <Dropdown
               style={CreateNewInspectionStyle.dropdown}
@@ -632,6 +633,7 @@ console.log('data',data);
           ) : null}
           <Text style={[LABEL_STYLES.commontext, {marginTop: 20}]}>
             {'Schedule time and date of inspection'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
           </Text>
           <View style={CreateNewInspectionStyle.datePickerView}>
             <CalendarModal
@@ -684,6 +686,7 @@ console.log('data',data);
           <View style={{marginBottom: 12, marginTop: 20}}>
             <Text style={LABEL_STYLES.commontext}>
               {'Where is the inspection taking place?'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <Dropdown
               style={CreateNewInspectionStyle.dropdown}
