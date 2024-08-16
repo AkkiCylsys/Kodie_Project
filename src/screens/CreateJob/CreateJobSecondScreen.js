@@ -51,7 +51,7 @@ const CreateJobSecondScreen = props => {
 
   // validation...
   const handleValidate = () => {
-    if (editMode || updateAllImage && updateAllImage.length > 0) {
+    if (editMode || (updateAllImage && updateAllImage.length > 0)) {
       if (allImagePaths.length === 0) {
         props.navigation.navigate('JobDetails', {
           JobId: JobId,
@@ -357,7 +357,7 @@ const CreateJobSecondScreen = props => {
       setIsLoading(false);
     }
   };
-  
+
   const getJobDetails = () => {
     const url = Config.BASE_URL;
     const jobDetails_url = url + 'job/get';
@@ -456,7 +456,8 @@ const CreateJobSecondScreen = props => {
     console.log('formData', formData);
     console.log('length data ...', formData.length);
     const url = Config.BASE_URL;
-    const update_uploadFile_url = url + `job/updatejobimages/${JobId > 0 ? JobId : job_id}`;
+    const update_uploadFile_url =
+      url + `job/updatejobimages/${JobId > 0 ? JobId : job_id}`;
     console.log('Request URL image:', update_uploadFile_url);
     setIsLoading(true);
     try {
@@ -518,10 +519,11 @@ const CreateJobSecondScreen = props => {
             {(imagePaths && imagePaths.length > 0) ||
             (leftImagePaths && leftImagePaths.length > 0) ||
             (rightImagePaths && rightImagePaths.length > 0) ||
-            (editMode || updateAllImage && updateAllImage.length > 0) ? (
+            editMode ||
+            (updateAllImage && updateAllImage.length > 0) ? (
               <SliderBox
                 images={
-                  editMode || updateAllImage && updateAllImage.length > 0
+                  editMode || (updateAllImage && updateAllImage.length > 0)
                     ? [...updateAllImage, ...allImagePaths]
                     : [...allImagePaths]
                 }
@@ -548,7 +550,8 @@ const CreateJobSecondScreen = props => {
 
           <View style={CreateJobSecondStyle.heading_View}>
             <Text style={CreateJobSecondStyle.heading_Text}>
-              {'Upload clear images of the front profile *'}
+              {'Upload clear images of the front profile'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <AntDesign
               name="questioncircle"

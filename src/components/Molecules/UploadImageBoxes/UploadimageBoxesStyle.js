@@ -46,7 +46,7 @@ export const UploadImageBoxesStyle = StyleSheet.create({
   plusIcon: {
     position: "absolute",
     alignSelf: "flex-end",
-    top: 44,
+    top: 38,
     borderColor: _COLORS.Kodie_LightWhiteColor,
   },
 });

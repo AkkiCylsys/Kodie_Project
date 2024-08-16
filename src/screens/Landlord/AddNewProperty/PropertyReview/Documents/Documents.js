@@ -269,9 +269,10 @@ export default Documents = props => {
   // Api intrigation ......
   const getAllDocuments = () => {
     const url = Config.BASE_URL;
-    const getDocument_url = url + `get/document/${property_id}`;
+    const getDocument_url = `${url}get/document/${property_id}`;
     console.log('Request URL:', getDocument_url);
     setIsLoading(true);
+  
     axios
       .get(getDocument_url)
       .then(response => {
@@ -280,18 +281,24 @@ export default Documents = props => {
           setUploadDocData(response?.data?.data);
           console.log('getAlluploadDocData..', response?.data?.data);
         } else {
-          // alert(response?.data?.message);
-          setIsLoading(false);
+          setUploadDocData([]); // Handle no data scenario
+          console.log('No documents found.');
         }
       })
       .catch(error => {
-        console.error('API failed AllDocuments', error);
-        setIsLoading(false);
+        if (error.response?.status === 404) {
+          // Handle the 404 specifically
+          setUploadDocData([]); // Set to empty array when no documents exist
+          console.log('No documents found (404).');
+        } else {
+          console.error('API failed AllDocuments', error);
+        }
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
+  
   const getUploadedDocumentsByModule = moduleName => {
     const url = Config.BASE_URL;
     // const getDocumentUrl = url + 'tanant_details/get/documents';

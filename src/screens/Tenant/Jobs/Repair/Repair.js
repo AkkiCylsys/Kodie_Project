@@ -338,7 +338,7 @@ export default Repair = props => {
                             : _COLORS.Kodie_GreenColor,
                         },
                       ]}>
-                      {'Awaiting'}
+                      {'Pending'}
                     </Text>
                   </TouchableOpacity>
                 </View>

@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, Image, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  SafeAreaView,
+  Image,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 import {OfferForMyPropertiesStyle} from './OfferForMyPropertiesStyle';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -224,50 +231,49 @@ const OfferForMyProperties = () => {
   };
   return (
     <SafeAreaView style={OfferForMyPropertiesStyle.mainContainer}>
-      <View style={{marginHorizontal: 16}}>
-        <Text style={OfferForMyPropertiesStyle.selectPropertyText}>
-          {'Select property:'}
-        </Text>
-        <Dropdown
-          style={OfferForMyPropertiesStyle.dropdown}
-          placeholderStyle={[
-            OfferForMyPropertiesStyle.placeholderStyle,
-            {color: _COLORS.Kodie_LightGrayColor},
-          ]}
-          selectedTextStyle={OfferForMyPropertiesStyle.selectedTextStyle}
-          inputSearchStyle={OfferForMyPropertiesStyle.inputSearchStyle}
-          iconStyle={OfferForMyPropertiesStyle.iconStyle}
-          data={addressTypeData || []}
-          maxHeight={300}
-          labelField="location"
-          valueField="longitude"
-          placeholder="Select property type"
-          value={addressTypeValue}
-          search // Enable search functionality
-          searchPlaceholder="Search..."
-          onChange={item => {
-            setAddressTypeValue({
-              latitude: item.latitude,
-              longitude: item.longitude,
-              location: item.location,
-              property_id: item?.property_id,
-            });
-            handleOfferForProperty(); // Update the list when a new property type is selected
-          }}
-          onFocus={() => {
-            handleOfferForProperty();
-          }}
-          renderItem={property_render}
+        <View style={{marginHorizontal: 16}}>
+          <Text style={OfferForMyPropertiesStyle.selectPropertyText}>
+            {'Select property:'}
+          </Text>
+          <Dropdown
+            style={OfferForMyPropertiesStyle.dropdown}
+            placeholderStyle={[
+              OfferForMyPropertiesStyle.placeholderStyle,
+              {color: _COLORS.Kodie_LightGrayColor},
+            ]}
+            selectedTextStyle={OfferForMyPropertiesStyle.selectedTextStyle}
+            inputSearchStyle={OfferForMyPropertiesStyle.inputSearchStyle}
+            iconStyle={OfferForMyPropertiesStyle.iconStyle}
+            data={addressTypeData || []}
+            maxHeight={300}
+            labelField="location"
+            valueField="longitude"
+            placeholder="Select property type"
+            value={addressTypeValue}
+            search // Enable search functionality
+            searchPlaceholder="Search..."
+            onChange={item => {
+              setAddressTypeValue({
+                latitude: item.latitude,
+                longitude: item.longitude,
+                location: item.location,
+                property_id: item?.property_id,
+              });
+              handleOfferForProperty(); // Update the list when a new property type is selected
+            }}
+            onFocus={() => {
+              handleOfferForProperty();
+            }}
+            renderItem={property_render}
+          />
+        </View>
+        <DividerIcon />
+
+        <FlatList
+          data={offerPropertyData}
+          keyExtractor={item => item.property_id}
+          renderItem={offerPropertyRender}
         />
-      </View>
-      <DividerIcon />
-
-      <FlatList
-        data={offerPropertyData}
-        keyExtractor={item => item.property_id}
-        renderItem={offerPropertyRender}
-      />
-
       {isLoading ? <CommonLoader /> : null}
     </SafeAreaView>
   );

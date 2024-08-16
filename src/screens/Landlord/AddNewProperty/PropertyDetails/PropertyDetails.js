@@ -346,7 +346,6 @@ export default PropertyDetails = props => {
     }
   };
 
-
   const handleNote = text => {
     setPropertyDesc(text);
     if (text.trim() === '') {
@@ -513,7 +512,10 @@ export default PropertyDetails = props => {
 
             <View style={PropertyDetailsStyle.card}>
               <View style={PropertyDetailsStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Location*</Text>
+                <Text style={LABEL_STYLES._texinputLabel}>
+                  {'Location'}
+                  <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+                </Text>
                 <View style={PropertyDetailsStyle.locationConView}>
                   <View style={PropertyDetailsStyle.locationContainer}>
                     <TextInput
@@ -552,7 +554,9 @@ export default PropertyDetails = props => {
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
                 <Text style={PropertyDetailsStyle.property_Text}>
-                  Property type*
+                  Property type
+            <Text style={{color:_COLORS?.Kodie_redColor}}>*</Text>
+
                 </Text>
                 <Dropdown
                   style={PropertyDetailsStyle.dropdown}
@@ -582,7 +586,10 @@ export default PropertyDetails = props => {
                 ) : null}
               </View>
               <View style={PropertyDetailsStyle.inputContainer}>
-                <Text style={LABEL_STYLES._texinputLabel}>Notes*</Text>
+                <Text style={LABEL_STYLES._texinputLabel}>Notes 
+            <Text style={{color:_COLORS?.Kodie_redColor}}>*</Text>
+
+                </Text>
                 <TextInput
                   style={PropertyDetailsStyle.input}
                   value={propertyDesc}
@@ -593,7 +600,7 @@ export default PropertyDetails = props => {
                   numberOfLines={5}
                   maxLength={1000}
                   textAlignVertical={'top'}
-                  onBlur={()=>handleNote(propertyDesc)}
+                  onBlur={() => handleNote(propertyDesc)}
                 />
                 <Text style={PropertyDetailsStyle.characterLimit}>
                   {propertyDesc.length}/1000

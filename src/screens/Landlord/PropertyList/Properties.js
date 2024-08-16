@@ -93,17 +93,6 @@ const Properties = props => {
         );
       case 'Tab3':
         return (
-          // <>
-          //   {Alert.alert('Rental offers', 'Coming soon', [
-          //     {
-          //       text: 'OK',
-          //       onPress: () => {
-          //         console.log('OK Pressed');
-          //         setActiveTab('Tab1');
-          //       },
-          //     },
-          //   ])}
-          // </>
           <PropertyRentalOffer />
         );
 

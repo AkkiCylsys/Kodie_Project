@@ -94,9 +94,11 @@ export default CreateJobFirstScreen = props => {
       setservicesValueError(true);
     } else if (jobPriorityValue == '') {
       setJobPriorityValueError(true);
-    } else if (property_value == '') {
-      setProperty_valueError(true);
-    } else if (selectedAddress == '') {
+    }
+    // else if (property_value == '') {
+    //   setProperty_valueError(true);
+    // }
+    else if (selectedAddress == '') {
       setTakingPlaceError(true);
     } else {
       props.navigation.navigate('CreateJobTermsScreen', {
@@ -868,6 +870,7 @@ export default CreateJobFirstScreen = props => {
             <Text style={CreateJobFirstStyle.heading}>{'Job details'}</Text>
             <Text style={CreateJobFirstStyle.servicestext}>
               {'Select the type of job you need:'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
           </View>
 
@@ -886,6 +889,7 @@ export default CreateJobFirstScreen = props => {
             <View style={{flex: 1}}>
               <Text style={LABEL_STYLES.commontext}>
                 {'What service are you looking for?'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
                 style={[
@@ -939,7 +943,10 @@ export default CreateJobFirstScreen = props => {
               />
             </View>
             <View style={{marginTop: 12}}>
-              <Text style={LABEL_STYLES.commontext}>{'Job priority *'}</Text>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Job priority'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -959,7 +966,7 @@ export default CreateJobFirstScreen = props => {
                   setJobPriorityValueError(false);
                 }}
                 renderItem={jobPriority_render}
-                dropdownPosition='bottom'
+                dropdownPosition="bottom"
               />
             </View>
             {jobPriorityValueError ? (
@@ -967,8 +974,11 @@ export default CreateJobFirstScreen = props => {
                 {'Job priority is required.'}
               </Text>
             ) : null}
-            <View style={{marginTop: 12}}>
-              <Text style={LABEL_STYLES.commontext}>{'Property type *'}</Text>
+            {/* <View style={{marginTop: 12}}>
+              <Text style={LABEL_STYLES.commontext}>
+                {'Property type'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
                 placeholderStyle={CreateJobFirstStyle.placeholderStyle}
@@ -994,10 +1004,11 @@ export default CreateJobFirstScreen = props => {
               <Text style={CreateJobFirstStyle.error_text}>
                 {'Property type is required!'}
               </Text>
-            ) : null}
+            ) : null} */}
             <View style={{marginTop: 12}}>
               <Text style={LABEL_STYLES.commontext}>
-                {'Where is the job taking place?*'}
+                {'Where is the job taking place?'}
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
               <Dropdown
                 style={CreateJobFirstStyle.dropdown}
@@ -1019,6 +1030,7 @@ export default CreateJobFirstScreen = props => {
                     longitude: item.longitude,
                     location: item.location,
                     property_id: item?.property_id,
+                    propertyType: item?.type_id,
                   });
                   setTakingPlaceError(false);
                 }}
@@ -1056,6 +1068,22 @@ export default CreateJobFirstScreen = props => {
               <Text style={CreateJobFirstStyle.error_text}>
                 {'Job taking place is required!'}
               </Text>
+            ) : null}
+            {selectedAddress?.propertyType ? (
+              <View style={{marginTop: 12}}>
+                <Text style={LABEL_STYLES.commontext}>{'Property type'}</Text>
+                <TextInput
+                  style={[
+                    CreateJobFirstStyle.input,
+                    {backgroundColor: _COLORS?.Kodie_GrayColor},
+                  ]}
+                  value={selectedAddress?.propertyType}
+                  onChangeText={setAboutyourNeed}
+                  placeholder="Describe the job you need help with..."
+                  placeholderTextColor={_COLORS.Kodie_LightGrayColor}
+                  editable={false}
+                />
+              </View>
             ) : null}
             <View style={CreateJobFirstStyle.jobDetailsView}>
               <Text style={LABEL_STYLES.commontext}>{'Rating threshold'}</Text>
