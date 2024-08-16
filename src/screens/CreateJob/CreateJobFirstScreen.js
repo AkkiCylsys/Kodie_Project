@@ -88,6 +88,7 @@ export default CreateJobFirstScreen = props => {
 
   // validation.....
   const handleNextbtn = () => {
+    console.log('selectedAddress?.property_type_id',selectedAddress?.property_type_id);
     if (selectJobTypeid == '') {
       setSelectJobTypeidError('The type of job you need is required!');
     } else if (servicesValue == '') {
@@ -107,7 +108,7 @@ export default CreateJobFirstScreen = props => {
         aboutyourNeed: aboutyourNeed,
         jobPriorityValue: jobPriorityValue,
         // property_value: property_value,
-        property_value: selectedAddress?.property_id,
+        property_value: selectedAddress?.property_type_id,
         location: location || selectedAddress.location,
         ratingThresholdValue: ratingThresholdValue,
         latitude: latitude || selectedAddress.latitude,
@@ -1031,6 +1032,7 @@ export default CreateJobFirstScreen = props => {
                     location: item.location,
                     property_id: item?.property_id,
                     propertyType: item?.type_id,
+                    property_type_id:item?.property_type_id
                   });
                   setTakingPlaceError(false);
                 }}
