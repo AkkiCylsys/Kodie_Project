@@ -125,6 +125,7 @@ const ChangeContactInput = props => {
         <View style={ChangeContactInputStyle.secondview}>
           <Text style={ChangeContactInputStyle.oldnumbertext}>
             Enter your new phone number with country code
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
           </Text>
           <View
             style={{

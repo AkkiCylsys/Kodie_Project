@@ -15,7 +15,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 const Contactus = props => {
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log('loginResponse.....', loginData?.Login_details?.email);
   const accountEmail = loginData?.Login_details?.email;
   const [check, setCheck] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,6 +63,7 @@ const Contactus = props => {
           alert(response?.data?.message);
           setAboutHelp('');
           setCheck(false)
+          props.navigation.navigate("Help_FeedBack")
         } else {
           alert(response?.data?.message);
           setIsLoading(false);
@@ -86,7 +86,9 @@ const Contactus = props => {
         MiddleText={'Contact us'}
       />
       <View style={ContactusStyle.inputContainer}>
-        <Text style={LABEL_STYLES.commontext}>{'Tell us how we can help'}</Text>
+        <Text style={LABEL_STYLES.commontext}>{'Tell us how we can help'}
+        <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+        </Text>
         <TextInput
           style={[ContactusStyle.input, {height: 119}]}
           value={aboutHelp}
@@ -95,9 +97,6 @@ const Contactus = props => {
           }}
           placeholder="Tell us how we can help"
           placeholderTextColor="#999"
-          // onBlur={() => {
-          //   handleAbouthelp(aboutHelp);
-          // }}
           multiline
           numberOfLines={5}
           textAlignVertical={'top'}
@@ -139,7 +138,6 @@ const Contactus = props => {
           Text_Color={_COLORS.Kodie_WhiteColor}
           disabled={isLoading ? true : false}
           onPress={() => {
-            // props.navigation.navigate("AppInfo");
             handleSubmit();
           }}
         />
