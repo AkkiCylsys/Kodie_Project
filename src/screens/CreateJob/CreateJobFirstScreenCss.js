@@ -21,7 +21,7 @@ export const CreateJobFirstStyle = StyleSheet.create({
   },
   formContainer: {
     marginHorizontal: 16,
-    marginTop: 24,
+    // marginTop: 15,
     marginBottom: 80,
   },
   dropdown: {
