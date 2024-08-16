@@ -30,14 +30,14 @@ const isFocus =useIsFocused();
   useEffect(() => {
     if (!isSheetOpen && !isLogSheetOpen && isFocus) {
       fetchLeaseSummary();
-      fetchRentalReceipt();
     }
+  
   }, [isSheetOpen, isLogSheetOpen,isFocus,leaseSummaryData]);
-// useEffect(()=> {
-//   if (isFocus) {
-//     fetchLeaseSummary();
-//   }
-// },[isFocus,leaseSummaryData])
+useEffect(()=> {
+  if (isFocus) {
+    fetchRentalReceipt();
+  }
+},[isFocus])
   const handleClose = () => {
     refRBSheet.current.close();
     setIsSheetOpen(false);
@@ -46,6 +46,7 @@ const isFocus =useIsFocused();
 
   const handleLogClose = () => {
     refRBSheet2.current.close();
+    fetchRentalReceipt()
     setIsLogSheetOpen(false);
   };
   const handleEditClick =()=>{
@@ -62,8 +63,10 @@ const isFocus =useIsFocused();
       const response = await axios.post(url, data);
       if (response.data.success) {
         setLeaseSummaryData(response.data.data);
+        setIsLoading(false);
       } else {
         console.error('Error fetching lease summary:', response.data.message);
+        setIsLoading(false);
       }
     } catch (error) {
       console.error('API error fetching lease summary:', error);
@@ -81,9 +84,11 @@ const isFocus =useIsFocused();
       console.log(response?.data?.data);
       if (response.data.success) {
         setRentalReceiptData(response?.data?.data);
-        console.log();
+        setIsLoading(false);
       } else {
         console.error('Error fetching rental receipt:', response.data.message);
+        setIsLoading(false);
+
       }
     } catch (error) {
       console.error('API error fetching rental receipt:', error);

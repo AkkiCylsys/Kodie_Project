@@ -27,7 +27,6 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RowButtons from '../../../components/Molecules/RowButtons/RowButtons';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -76,6 +75,7 @@ const CreateNewInspection = props => {
   const refRBSheet = useRef();
   const refRBSheet1 = useRef();
   const [email, setEmail] = useState('');
+  const [customAreaName, setCustomAreaName] = useState('');
   const [customeAreavalue, setCustomeAreaValue] = useState([]);
   const [getCustomeArea, setGetCustomeArea] = useState([]);
   const TIM_KEY = props?.route?.params?.TIM_KEY;
@@ -84,27 +84,83 @@ const CreateNewInspection = props => {
   console.log(InspectionView, Ins_editMode, TIM_KEY);
   const Area_key = async () => {
     const url = Config.BASE_URL;
-    const AreaGetUrl = url + 'get_inspection_area';
+    const AreaData = {
+      p_TIM_KEY: 0,
+      p_TAM_CREATED_BY: loginData?.Login_details?.user_account_id,
+    };
+    const AreaGetUrl = `${url}get_inspection_area`;
     console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
-    await axios
-      .get(AreaGetUrl)
-      .then(response => {
-        console.log('area response', response?.data);
-        if (response?.data?.success === true) {
-          setIsLoading(false);
-          console.log('area response....', response?.data?.data);
-          setAreaKey(response?.data?.data[0]);
-          console.log('setAreaKey..', AreaKey);
-        } else {
-          console.error('area response_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        // console.error('area response error:', error);
-        setIsLoading(false);
-      });
+    try {
+      const response = await axios.post(AreaGetUrl, AreaData);
+      console.log('area response', response?.data);
+      if (response?.data?.success === true) {
+        setAreaKey(response?.data?.data || []);
+        console.log('setAreaKey:', response?.data?.data);
+      } else {
+        console.error('area response_error:', response?.data?.error);
+      }
+    } catch (error) {
+      console.error('area response error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const Detail_render = ({ item }) => {
+    const isChecked = checkedItems[item.TAM_AREA_KEY];
+    return (
+      <View style={CreateNewInspectionStyle.DetailsView}>
+        <TouchableOpacity onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}>
+          <MaterialIcons
+            name={isChecked ? 'check-box' : 'check-box-outline-blank'}
+            size={25}
+            color={
+              isChecked
+                ? _COLORS?.Kodie_GreenColor
+                : _COLORS.Kodie_MediumGrayColor
+            }
+          />
+        </TouchableOpacity>
+        <Text style={CreateNewInspectionStyle.details_text}>
+          {item.TAM_AREA_NAME}
+        </Text>
+      </View>
+    );
+  };
+  const handleAddCustomArea = async () => {
+    refRBSheet1.current.close()
+    if (customAreaName.trim() === '') {
+      Alert.alert('Validation', 'Custom area name cannot be empty.');
+      return;
+    }
+    const baseurl = Config.BASE_URL;
+    const url =  `${baseurl}inspection_details/CustomArea`;
+    const data = {
+      custom_area_name: customAreaName,
+      is_standard_check_inspection: selectedButtonStandardId,
+      area_similar: customeAreavalue,
+      area_future_inspection: selectedButtonFutueId,
+      property_id: 0,
+      inspection_id: 0,
+      created_by: loginData?.Login_details?.user_account_id.toString() ,
+    };
+console.log('data',data);
+    try {
+      const response = await axios.post(url, data);
+      console.log(response);
+      if (response?.data?.success) {
+        Alert.alert('Success', 'Custom area added successfully.');
+        setCustomAreaName('');
+        customeAreavalue([]) // Clear the input after successful submission
+        Area_key(); // Refresh the area list
+      } else {
+        Alert.alert('Error', response.data.message || 'Failed to add custom area.');
+      }
+    } catch (error) {
+      console.error('Error adding custom area:', error);
+      // Alert.alert('Error', 'An error occurred while adding the custom area.');
+    }
   };
   const toggleCheckBox = itemId => {
     console.log(itemId, 'itemIditemId');
@@ -125,41 +181,6 @@ const CreateNewInspection = props => {
   };
   const handleRemove = () => {
     setDisplaySelectedValues('');
-  };
-  const handleDone = async () => {
-    setIsLoading(true);
-    const url = Config.BASE_URL;
-    const AreaPostUrl = url + `inspection_details/CustomArea`;
-
-    try {
-      const response = await axios.post(AreaPostUrl, {
-        custom_area_name: email,
-        is_standard_check_inspection: selectedButtonStandardId,
-        area_similar: customeAreavalue,
-        area_future_inspection: selectedButtonFutueId,
-        property_id: PropertyId,
-        inspection_id: TIM_KEY,
-        created_by: 543,
-      });
-      console.log(response);
-      if (response?.data?.success) {
-        Alert.alert('Success', 'Custom area added successfully');
-        refRBSheet1.current.close();
-        setEmail('');
-        setSelectedButtonStandardId('');
-        setSelectedButtonFutueId('');
-        setCustomeAreaValue('');
-        await getInspectionAreas();
-      } else {
-        Alert.alert('Error', 'Failed to add custom area');
-        console.error('Error:', response?.data?.error || 'Unknown error');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to add custom area');
-      console.error('Error:', error.response || error.message);
-    } finally {
-      setIsLoading(false);
-    }
   };
   const getCheckedItemIds = () => {
     return Object.keys(checkedItems)
@@ -362,33 +383,13 @@ const CreateNewInspection = props => {
       </View>
     );
   };
-  const Detail_render = ({item, index}) => {
-    const isChecked = checkedItems[item.TAM_AREA_KEY]; // Use a unique identifier for each item
-    return (
-      <View style={CreateNewInspectionStyle.DetailsView}>
-        <TouchableOpacity onPress={() => toggleCheckBox(item.TAM_AREA_KEY)}>
-          <MaterialIcons
-            name={isChecked ? 'check-box' : 'check-box-outline-blank'}
-            size={25}
-            color={
-              isChecked
-                ? _COLORS?.Kodie_GreenColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-          />
-        </TouchableOpacity>
-        <Text style={CreateNewInspectionStyle.details_text}>
-          {item.TAM_AREA_NAME}
-        </Text>
-      </View>
-    );
-  };
+
   const SubmitInspection = async () => {
     // alert(selectedAddress?.property_id)
     setIsLoading(true);
     try {
       const Inspectiondata = {
-        UPD_KEY: selectedAddress?.property_id,
+        UPD_KEY: selectedAddressDetail,
         TIM_INSPECTION_TYPE: Inspection_value,
         TIM_SCHEDULE_TIME: currentTime,
         TIM_SCHEDULE_DATE: selectedDate,
@@ -447,7 +448,7 @@ const CreateNewInspection = props => {
     try {
       const Inspectiondata = {
         TIM_KEY: TIM_KEY,
-        UPD_KEY: selectedAddress?.property_id,
+        UPD_KEY: selectedAddressDetail,
         TIM_INSPECTION_TYPE: Inspection_value,
         TIM_SCHEDULE_TIME: currentTime,
         TIM_SCHEDULE_DATE: selectedDate,
@@ -815,21 +816,21 @@ const CreateNewInspection = props => {
             </Text>
             <View style={{marginTop: 10}}>
               <FlatList
-            data={[...(Array.isArray(AreaKey) ? AreaKey : []), {TAM_AREA_KEY: 'add_custom_area'}]}
+            data={[...(Array.isArray(AreaKey) ? AreaKey : []), {TAMAREAKEY: 'add_custom_area'}]}
                 scrollEnabled
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{}}
                 numColumns={2}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({item}) => {
-                  if (item.TAM_AREA_KEY === 'add_custom_area') {
+                  if (item.TAMAREAKEY === 'add_custom_area') {
                     return (
                       <View>
                         <TouchableOpacity
                           style={{marginRight: 50, marginTop: 10}}
                           onPress={() => {
-                            // refRBSheet1.current.open();
-                            Alert.alert('Add custom area', 'Coming soon');
+                            refRBSheet1.current.open();
+                            // Alert.alert('Add custom area', 'Coming soon');
                           }}>
                           <Text
                             style={{
@@ -934,8 +935,8 @@ const CreateNewInspection = props => {
             </Text>
             <TextInput
               style={CreateNewInspectionStyle.emailinput}
-              value={email}
-              onChangeText={setEmail}
+              value={customAreaName}
+              onChangeText={setCustomAreaName}
               placeholder="Create a name for your custom area"
               placeholderTextColor={_COLORS.Kodie_MediumGrayColor}
               keyboardType="email-address"
@@ -999,7 +1000,7 @@ const CreateNewInspection = props => {
             selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
             inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
             iconStyle={CreateNewInspectionStyle.iconStyle}
-            data={getCustomeArea}
+            data={AreaKey}
             search
             maxHeight={300}
             labelField="TAM_AREA_NAME"
@@ -1066,7 +1067,7 @@ const CreateNewInspection = props => {
             </TouchableOpacity>
             <TouchableOpacity
               style={CreateNewInspectionStyle.SaveView}
-              onPress={handleDone}
+              onPress={handleAddCustomArea}
               disabled={isLoading}>
               <Text style={CreateNewInspectionStyle.DoneText}>Done</Text>
             </TouchableOpacity>

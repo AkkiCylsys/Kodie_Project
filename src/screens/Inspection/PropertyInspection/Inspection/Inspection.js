@@ -85,28 +85,30 @@ const Inspection = props => {
     getInspectionCustomeAreas();
   }, []);
 
-  const getInspectionCustomeAreas = () => {
+  const getInspectionCustomeAreas = async() => {
     const url = Config.BASE_URL;
-    const CustomAreaGetUrl = url + `get_inspection_area`;
-    console.log('Request URL custome area:', CustomAreaGetUrl);
+    const AreaData = {
+      p_TIM_KEY: 0,
+      p_TAM_CREATED_BY: loginData?.Login_details?.user_account_id,
+    };
+    const AreaGetUrl = `${url}get_inspection_area`;
+    console.log('Request URL:', AreaGetUrl);
     setIsLoading(true);
-    axios
-      .get(CustomAreaGetUrl)
-      .then(response => {
-        console.log('Selected_CustomeArea', response?.data);
-        if (response?.data?.success === true) {
-          console.log('Selected_CustomeArea....', response?.data?.data[0]);
-          setGetCustomeArea(response?.data?.data[0]);
-          setIsLoading(false);
-        } else {
-          console.error('Selected_CustomeArea_error:', response?.data?.error);
-          setIsLoading(false);
-        }
-      })
-      .catch(error => {
-        console.error('Selected_CustomeArea error:', error);
-        setIsLoading(false);
-      });
+    try {
+      const response = await axios.post(AreaGetUrl, AreaData);
+      console.log('area response', response?.data);
+      if (response?.data?.success === true) {
+        setGetCustomeArea(response?.data?.data || []);
+        console.log('setAreaKey:', response?.data?.data);
+      } else {
+        console.error('area response_error:', response?.data?.error);
+      }
+    } catch (error) {
+      console.error('area response error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+   
   };
   const getInspectionAreas = () => {
     const url = Config.BASE_URL;
