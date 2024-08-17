@@ -581,6 +581,11 @@ export default AddLeaseDetails = props => {
       setSelectedEndDate('');
     }
   };
+  const disableOutOfRangeDates = day => {
+    return (
+      day.dateString < selectedDate || day.dateString > selectedEndDate
+    );
+  };
   const renderPaymentDueDayPicker = () => {
     switch (lease_end_value.lookup_key) {
       case 500:
@@ -597,9 +602,14 @@ export default AddLeaseDetails = props => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModalDueDay}
+              minDate={selectedDate}
+              maxDate={selectedEndDate}
+              hideExtraDays
               onDayPress={day => {
-                setPaymentDueDay(day.dateString);
-                setPaymentDueDayError(false);
+                if (!disableOutOfRangeDates(day)) {
+                  setPaymentDueDay(day.dateString);
+                  setPaymentDueDayError(false);
+                }
               }}
               Visible={isDueDayModalVisible}
               onRequestClose={toggleModalDueDay}
@@ -776,9 +786,14 @@ export default AddLeaseDetails = props => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModalDueDay}
+              minDate={selectedDate}
+              maxDate={selectedEndDate}
+              hideExtraDays
               onDayPress={day => {
-                setPaymentDueDay(day.dateString);
-                setPaymentDueDayError(false);
+                if (!disableOutOfRangeDates(day)) {
+                  setPaymentDueDay(day.dateString);
+                  setPaymentDueDayError(false);
+                }
               }}
               Visible={isDueDayModalVisible}
               onRequestClose={toggleModalDueDay}
@@ -893,6 +908,7 @@ export default AddLeaseDetails = props => {
               SelectDate={
                 selectedEndDate ? selectedEndDate : 'End date of the lease'
               }
+              hideExtraDays
               current={selectedEndDate}
               _textInputStyle={{
                 color: selectedEndDate
