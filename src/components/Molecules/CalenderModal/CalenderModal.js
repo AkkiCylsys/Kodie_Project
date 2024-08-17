@@ -104,6 +104,9 @@ const CalendarModal = props => {
               markedDates={props.markedDates}
               theme={customTheme}
               current={props.current}
+              minDate={props.minDate}
+              maxDate={props.maxDate}
+              hideExtraDays={props.hideExtraDays}
             />
             <View style={CalenderCss.ButtonView}>
               <TouchableOpacity

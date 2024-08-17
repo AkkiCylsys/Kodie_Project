@@ -49,6 +49,7 @@ export default PropertyFeature = props => {
   );
   const loginData = useSelector(state => state.authenticationReducer.data);
   console.log('key_features_id............', additionalfeatureskeyvalue);
+  console.log('propertyid............', propertyid);
   const [selectedButtonDeposit, setSelectedButtonDeposit] = useState(false);
   const [selectedButtonDepositId, setSelectedButtonDepositId] = useState(70);
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
@@ -389,9 +390,10 @@ export default PropertyFeature = props => {
       additional_key_features: additionalfeatureskeyvalue,
       autolist: selectedButtonId,
       property_id:
-        addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
-          ? addPropertySecondStepData
-          : propertyid,
+        // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+        //   ? addPropertySecondStepData
+        //   : 
+          propertyid,
       p_city: city,
       p_state: state,
       p_country: country,
@@ -409,9 +411,8 @@ export default PropertyFeature = props => {
         if (response?.data?.success === true) {
           setIsLoading(false);
           props.navigation.navigate('PropertyImages', {
-            property_id: addPropertySecondStepData
-              ? addPropertySecondStepData
-              : propertyid,
+            property_id: 
+               propertyid,
             editMode: editMode,
           });
         } else {

@@ -244,7 +244,9 @@ const Logrentalpayment = props => {
         </View>
         <View style={LogrentalPaymentStyle.card}>
           <View style={LogrentalPaymentStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Payment type'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Payment type'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <Dropdown
               style={[
                 LogrentalPaymentStyle.dropdown,
@@ -277,7 +279,9 @@ const Logrentalpayment = props => {
             </Text>
           ) : null}
           <View style={LogrentalPaymentStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Total amount*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Total amount'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={LogrentalPaymentStyle.input}
               value={totalAmount}
@@ -295,7 +299,9 @@ const Logrentalpayment = props => {
             </Text>
           ) : null}
           <View style={LogrentalPaymentStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Payment date*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Payment date'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <View style={LogrentalPaymentStyle.datePickerView}>
               <CalendarModal
                 current={selectedDate}
@@ -332,7 +338,8 @@ const Logrentalpayment = props => {
           ) : null}
           <View style={LogrentalPaymentStyle.inputContainer}>
             <Text style={LABEL_STYLES.commontext}>
-              {'Rental payment period*'}
+              {'Rental payment period'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <View style={LogrentalPaymentStyle.datePickerView}>
               <CalendarModal

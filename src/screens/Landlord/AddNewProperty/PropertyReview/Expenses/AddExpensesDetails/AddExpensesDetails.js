@@ -458,7 +458,9 @@ export default AddExpensesDetails = props => {
       <ScrollView>
         <View style={AddExpensesDetailsStyle.card}>
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Total amount*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Total amount'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={AddExpensesDetailsStyle.input}
               value={totalAmount}
@@ -510,7 +512,9 @@ export default AddExpensesDetails = props => {
           </View>
           <View
             style={[AddExpensesDetailsStyle.inputContainer, {marginTop: 14}]}>
-            <Text style={LABEL_STYLES.commontext}>{'Invoice due date*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Invoice due date'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <View style={AddExpensesDetailsStyle.datePickerView}>
               <CalendarModal
                 current={selectedDate}
@@ -545,7 +549,9 @@ export default AddExpensesDetails = props => {
           </View>
 
           <View style={AddExpensesDetailsStyle.addition_featureView}>
-            <Text style={LABEL_STYLES.commontext}>{'Repeating expense?*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Repeating expense?'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <RowButtons
               LeftButtonText={'Yes'}
               leftButtonbackgroundColor={
@@ -598,7 +604,8 @@ export default AddExpensesDetails = props => {
             <>
               <View style={{marginTop: 10, marginBottom: 5}}>
                 <Text style={LABEL_STYLES.commontext}>
-                  {'Expense frequency*'}
+                  {'Expense frequency'}
+                  <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
                 </Text>
                 <Dropdown
                   style={[
@@ -692,7 +699,9 @@ export default AddExpensesDetails = props => {
             </Text>
           </View>
           <View style={AddExpensesDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Expense category*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Expense category'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <Dropdown
               style={[AddExpensesDetailsStyle.dropdown, {marginTop: 14}]}
               placeholderStyle={[
@@ -807,7 +816,9 @@ export default AddExpensesDetails = props => {
           </View>
           {!selectedButtonDeposit ? (
             <View style={{marginTop: 10, marginBottom: 5}}>
-              <Text style={LABEL_STYLES.commontext}>{'Paid date*'}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Paid date'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <View style={AddExpensesDetailsStyle.datePickerView}>
                 <CalendarModal
                   current={selectedPaidDate}

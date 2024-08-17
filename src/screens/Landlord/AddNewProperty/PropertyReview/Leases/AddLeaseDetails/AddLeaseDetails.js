@@ -581,6 +581,11 @@ export default AddLeaseDetails = props => {
       setSelectedEndDate('');
     }
   };
+  const disableOutOfRangeDates = day => {
+    return (
+      day.dateString < selectedDate || day.dateString > selectedEndDate
+    );
+  };
   const renderPaymentDueDayPicker = () => {
     switch (lease_end_value.lookup_key) {
       case 500:
@@ -597,9 +602,14 @@ export default AddLeaseDetails = props => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModalDueDay}
+              minDate={selectedDate}
+              maxDate={selectedEndDate}
+              hideExtraDays
               onDayPress={day => {
-                setPaymentDueDay(day.dateString);
-                setPaymentDueDayError(false);
+                if (!disableOutOfRangeDates(day)) {
+                  setPaymentDueDay(day.dateString);
+                  setPaymentDueDayError(false);
+                }
               }}
               Visible={isDueDayModalVisible}
               onRequestClose={toggleModalDueDay}
@@ -776,9 +786,14 @@ export default AddLeaseDetails = props => {
                   : _COLORS.Kodie_GrayColor,
               }}
               calenderIcon={toggleModalDueDay}
+              minDate={selectedDate}
+              maxDate={selectedEndDate}
+              hideExtraDays
               onDayPress={day => {
-                setPaymentDueDay(day.dateString);
-                setPaymentDueDayError(false);
+                if (!disableOutOfRangeDates(day)) {
+                  setPaymentDueDay(day.dateString);
+                  setPaymentDueDayError(false);
+                }
               }}
               Visible={isDueDayModalVisible}
               onRequestClose={toggleModalDueDay}
@@ -818,7 +833,9 @@ export default AddLeaseDetails = props => {
       </View>
       <ScrollView>
         <View style={AddLeaseDetailsStyle.card}>
-          <Text style={[LABEL_STYLES.commontext]}>{'Commencement date*'}</Text>
+          <Text style={[LABEL_STYLES.commontext]}>{'Commencement date'}
+          <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+          </Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
             <CalendarModal
               SelectDate={
@@ -857,7 +874,9 @@ export default AddLeaseDetails = props => {
             <Text style={AddLeaseDetailsStyle.error}>{selectedDateError}</Text>
           ) : null}
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Rental lease term*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Rental lease term'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <Dropdown
               style={[
                 AddLeaseDetailsStyle.dropdown,
@@ -886,13 +905,15 @@ export default AddLeaseDetails = props => {
             </Text>
           ) : null}
           <Text style={[LABEL_STYLES.commontext, {marginTop: 12}]}>
-            {'Lease end date*'}
+            {'Lease end date'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
           </Text>
           <View style={AddLeaseDetailsStyle.datePickerView}>
             <CalendarModal
               SelectDate={
                 selectedEndDate ? selectedEndDate : 'End date of the lease'
               }
+              hideExtraDays
               current={selectedEndDate}
               _textInputStyle={{
                 color: selectedEndDate
@@ -919,7 +940,9 @@ export default AddLeaseDetails = props => {
             />
           </View>
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Payment frequency*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Payment frequency'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <Dropdown
               style={[
                 AddLeaseDetailsStyle.dropdown,
@@ -955,7 +978,9 @@ export default AddLeaseDetails = props => {
             </Text>
           ) : null}
           <View style={AddLeaseDetailsStyle.inputContainer}>
-            <Text style={LABEL_STYLES.commontext}>{'Rental amount*'}</Text>
+            <Text style={LABEL_STYLES.commontext}>{'Rental amount'}
+            <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+            </Text>
             <TextInput
               style={AddLeaseDetailsStyle.input}
               value={rentalAmount}
@@ -972,7 +997,9 @@ export default AddLeaseDetails = props => {
           ) : null}
           {lease_end_value.lookup_key ? (
             <View style={AddLeaseDetailsStyle.inputContainer}>
-              <Text style={LABEL_STYLES.commontext}>{'Payment due day*'}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Payment due day'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               {renderPaymentDueDayPicker()}
             </View>
           ) : null}
@@ -984,7 +1011,8 @@ export default AddLeaseDetails = props => {
           <View style={AddLeaseDetailsStyle.probtn}>
             <View style={{flex: 1}}>
               <Text style={AddLeaseDetailsStyle.Protext}>
-                Pro rata first payment*
+                Pro rata first payment
+                <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
               </Text>
             </View>
             <View style={{margin: 5}} />
