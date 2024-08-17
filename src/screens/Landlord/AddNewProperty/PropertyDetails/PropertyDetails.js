@@ -77,7 +77,7 @@ export default PropertyDetails = props => {
   const [error, setError] = useState('');
   const [notesError, setNotesError] = useState('');
   const [propertyError, setPropertyError] = useState('');
-
+  const loginData = useSelector(state => state.authenticationReducer.data);
   const handleTextInputFocus = () => {
     if (error) {
       setError('');
@@ -157,6 +157,9 @@ export default PropertyDetails = props => {
           response?.data?.property_details[0]?.auto_list,
         );
         setSelectedButton(autoListValue === 0);
+        setCity(response?.data?.property_details[0]?.city)
+        setCountry(response?.data?.property_details[0]?.country)
+        setState(response?.data?.property_details[0]?.state)
         setPropertyDesc(
           response?.data?.property_details[0]?.property_description,
         );
@@ -175,6 +178,68 @@ export default PropertyDetails = props => {
       // Alert.alert('Warning', error?.response?.data?.message);
       setIsLoading(false);
     }
+  };
+  const updatePropertyDetails = () => {
+    const updateData = {
+      user: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
+      location: location,
+      location_longitude: longitude,
+      location_latitude: latitude,
+      islocation: 1,
+      property_description: propertyDesc,
+      property_type: property_value,
+      key_features: property_Detail?.key_features,
+      additional_features: property_Detail?.additional_features_id,
+      UPD_FLOOR_SIZE: property_Detail?.floor_size,
+      UPD_LAND_AREA: property_Detail?.land_area,
+      additional_key_features: property_Detail?.additional_key_features_id,
+      autolist: selectedButtonId,
+      property_id:
+        // addPropertySecondStepData && !Array.isArray(addPropertySecondStepData)
+        //   ? addPropertySecondStepData
+        //   : 
+          propertyid,
+      p_city: city,
+      p_state: state,
+      p_country: country,
+    };
+    console.log('updateData', updateData);
+    const url = Config.BASE_URL;
+    const update_property_details = url + 'update_property_details';
+    console.log('Request URL:', update_property_details);
+    setIsLoading(true);
+    console.log('updated data in edit mode cgheck...', updateData);
+    axios
+      .put(update_property_details, updateData)
+      .then(response => {
+        console.log('update_property_details', response?.data);
+        if (response?.data?.success === true) {
+          setIsLoading(false);
+          props.navigation.navigate('PropertyFeature', {
+            location: location,
+            property_value: property_value,
+            propertyDesc: propertyDesc,
+            selectedButtonId: selectedButtonId,
+            latitude: latitude,
+            longitude: longitude,
+            city: city,
+            state: state,
+            country: country,
+            propertyid: 
+               propertyid,
+            editMode: editMode,
+          });
+         
+        } else {
+          console.error('update_property_detailserror:', response?.data?.error);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('update_property_details error:', error);
+        setIsLoading(false);
+      });
   };
 
   const getStepIndicatorIconConfig = ({position, stepStatus}) => {
@@ -388,6 +453,86 @@ export default PropertyDetails = props => {
   };
   const goBack = () => {
     props.navigation.pop();
+  };
+  const property_details = async () => {
+    const url = Config.BASE_URL;
+    const additionalApi = url + 'add_property_details';
+    console.log('Request URL:', additionalApi);
+    setIsLoading(true);
+    let data = {
+      user: loginData?.Login_details?.user_id,
+      user_account_details_id: loginData?.Login_details?.user_account_id,
+      location: location,
+      location_longitude: longitude,
+      location_latitude: latitude,
+      islocation: 1,
+      property_description: propertyDesc,
+      property_type: property_value > 0 ? property_value : 0,
+      key_features: 0,
+      additional_features: 0,
+      additional_key_features: 0,
+      autolist: selectedButtonId,
+      UPD_FLOOR_SIZE: 0,
+      UPD_LAND_AREA: 0,
+      p_city: city,
+      p_state: state,
+      p_country: country,
+    };
+    console.log('Property details data..', data);
+    axios
+      .post(additionalApi, {
+        user: loginData?.Login_details?.user_id,
+        user_account_details_id: loginData?.Login_details?.user_account_id,
+        location: location,
+        location_longitude: longitude,
+        location_latitude: latitude,
+        islocation: 1,
+        property_description: propertyDesc,
+        property_type: property_value > 0 ? property_value : 0,
+        key_features: 0,
+        additional_features: 1,
+        additional_key_features: 0,
+        autolist: selectedButtonId,
+        UPD_FLOOR_SIZE: 0,
+        UPD_LAND_AREA: 0,
+        p_city: city,
+        p_state: state,
+        p_country: country,
+      })
+
+      .then(response => {
+        console.log('property_details', response?.data);
+        if (response?.data?.success === true) {
+          setIsLoading(false);
+
+          console.log(
+            'response?.data?.Property_id',
+            response?.data?.Property_id,
+          );
+
+          props.navigation.navigate('PropertyFeature', {
+            location: location,
+            property_value: property_value,
+            propertyDesc: propertyDesc,
+            selectedButtonId: selectedButtonId,
+            latitude: latitude,
+            longitude: longitude,
+            city: city,
+            state: state,
+            country: country,
+            editMode: editMode,
+            propertyid: response?.data?.Property_id,
+          });
+          console.log('property_details....', response?.data);
+        } else {
+          console.error('property_details_error:', response?.data?.error);
+          setIsLoading(false);
+        }
+      })
+      .catch(error => {
+        console.error('property_details error:', error);
+        setIsLoading(false);
+      });
   };
   return (
     <SafeAreaView style={PropertyDetailsStyle.mainContainer}>
@@ -691,19 +836,20 @@ export default PropertyDetails = props => {
                     }
 
                     if (isValid) {
-                      props.navigation.navigate('PropertyFeature', {
-                        location: location,
-                        property_value: property_value,
-                        propertyDesc: propertyDesc,
-                        selectedButtonId: selectedButtonId,
-                        latitude: latitude,
-                        longitude: longitude,
-                        propertyid: propertyid,
-                        city: city,
-                        state: state,
-                        country: country,
-                        editMode: editMode,
-                      });
+                     propertyid? updatePropertyDetails(): property_details();
+                      // props.navigation.navigate('PropertyFeature', {
+                      //   location: location,
+                      //   property_value: property_value,
+                      //   propertyDesc: propertyDesc,
+                      //   selectedButtonId: selectedButtonId,
+                      //   latitude: latitude,
+                      //   longitude: longitude,
+                      //   propertyid: propertyid,
+                      //   city: city,
+                      //   state: state,
+                      //   country: country,
+                      //   editMode: editMode,
+                      // });
                     }
                   }}
                   disabled={isLoading ? true : false}

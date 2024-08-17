@@ -88,6 +88,7 @@ export default CreateJobFirstScreen = props => {
 
   // validation.....
   const handleNextbtn = () => {
+    console.log('selectedAddress?.property_type_id',selectedAddress?.property_type_id);
     if (selectJobTypeid == '') {
       setSelectJobTypeidError('The type of job you need is required!');
     } else if (servicesValue == '') {
@@ -106,7 +107,8 @@ export default CreateJobFirstScreen = props => {
         servicesValue: servicesValue,
         aboutyourNeed: aboutyourNeed,
         jobPriorityValue: jobPriorityValue,
-        property_value: property_value,
+        // property_value: property_value,
+        property_value: selectedAddress?.property_type_id,
         location: location || selectedAddress.location,
         ratingThresholdValue: ratingThresholdValue,
         latitude: latitude || selectedAddress.latitude,
@@ -873,7 +875,6 @@ export default CreateJobFirstScreen = props => {
               <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
           </View>
-
           <FlatList
             data={jobTypeData}
             keyExtractor={item => item.lookup_key.toString()}
@@ -1031,6 +1032,7 @@ export default CreateJobFirstScreen = props => {
                     location: item.location,
                     property_id: item?.property_id,
                     propertyType: item?.type_id,
+                    property_type_id:item?.property_type_id
                   });
                   setTakingPlaceError(false);
                 }}
@@ -1078,8 +1080,6 @@ export default CreateJobFirstScreen = props => {
                     {backgroundColor: _COLORS?.Kodie_GrayColor},
                   ]}
                   value={selectedAddress?.propertyType}
-                  onChangeText={setAboutyourNeed}
-                  placeholder="Describe the job you need help with..."
                   placeholderTextColor={_COLORS.Kodie_LightGrayColor}
                   editable={false}
                 />
@@ -1116,14 +1116,16 @@ export default CreateJobFirstScreen = props => {
                 renderItem={ratingThreshold_render}
               />
             </View>
-            <CustomSingleButton
-              disabled={isLoading ? true : false}
-              onPress={() => {
-                handleNextbtn();
-              }}
-              _ButtonText={'Next'}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-            />
+            <View style={{marginTop: 27}}>
+              <CustomSingleButton
+                disabled={isLoading ? true : false}
+                onPress={() => {
+                  handleNextbtn();
+                }}
+                _ButtonText={'Next'}
+                Text_Color={_COLORS.Kodie_WhiteColor}
+              />
+            </View>
             <TouchableOpacity
               style={CreateJobFirstStyle.goBack_View}
               onPress={() => {
