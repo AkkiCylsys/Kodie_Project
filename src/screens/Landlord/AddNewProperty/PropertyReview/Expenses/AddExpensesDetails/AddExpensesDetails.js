@@ -816,7 +816,9 @@ export default AddExpensesDetails = props => {
           </View>
           {!selectedButtonDeposit ? (
             <View style={{marginTop: 10, marginBottom: 5}}>
-              <Text style={LABEL_STYLES.commontext}>{'Paid date*'}</Text>
+              <Text style={LABEL_STYLES.commontext}>{'Paid date'}
+              <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
+              </Text>
               <View style={AddExpensesDetailsStyle.datePickerView}>
                 <CalendarModal
                   current={selectedPaidDate}
