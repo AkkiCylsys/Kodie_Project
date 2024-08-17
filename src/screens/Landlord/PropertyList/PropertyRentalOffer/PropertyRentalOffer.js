@@ -332,7 +332,7 @@ const PropertyRentalOffer = props => {
     );
   };
   return (
-    <SafeAreaView style={PropertyRentalOfferStyle.mainContainer}>
+    <View style={PropertyRentalOfferStyle.mainContainer}>
       <View style={PropertyRentalOfferStyle.rowButtonView}>
         <RowButtons
           LeftButtonText={'Offers for my properties'}
@@ -377,47 +377,49 @@ const PropertyRentalOffer = props => {
         />
       </View>
       <DividerIcon borderBottomWidth={5} />
-      <SearchBar
-        filterImage={IMAGES.filter}
-        frontSearchIcon
-        Filter
-        filter={'filter'}
-        marginTop={3}
-        placeholder={'Search offers'}
-        searchData={searchCurrentOffer}
-        textvalue={searchQuery}
-      />
-      <DividerIcon />
       <ScrollView>
         <View style={PropertyRentalOfferStyle.subContainer}>
           {!selectedButton ? null : (
-            <View
-              style={[
-                PropertyRentalOfferStyle.flat_MainView,
-                {alignSelf: 'center', marginBottom: 10},
-              ]}>
-              <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
-                <Text style={PropertyRentalOfferStyle.bidsButtonText}>
-                  Accepting bids
-                </Text>
-              </TouchableOpacity>
-              <Text style={PropertyRentalOfferStyle.biddingText}>
-                Bidding closes in:
-              </Text>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
+            <View>
+              <SearchBar
+                filterImage={IMAGES.filter}
+                frontSearchIcon
+                Filter
+                filter={'filter'}
+                marginTop={3}
+                placeholder={'Search offers'}
+                searchData={searchCurrentOffer}
+                textvalue={searchQuery}
+              />
+              <DividerIcon />
+              <View
+                style={[
+                  PropertyRentalOfferStyle.flat_MainView,
+                  {alignSelf: 'center', marginBottom: 10},
+                ]}>
+                <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
+                  <Text style={PropertyRentalOfferStyle.bidsButtonText}>
+                    Accepting bids
+                  </Text>
+                </TouchableOpacity>
                 <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'o days'}
+                  Bidding closes in:
                 </Text>
-              </View>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'6 hrs'}
-                </Text>
-              </View>
-              <View style={PropertyRentalOfferStyle.daysViewStl}>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  {'10 mins'}
-                </Text>
+                <View style={PropertyRentalOfferStyle.daysViewStl}>
+                  <Text style={PropertyRentalOfferStyle.biddingText}>
+                    {'o days'}
+                  </Text>
+                </View>
+                <View style={PropertyRentalOfferStyle.daysViewStl}>
+                  <Text style={PropertyRentalOfferStyle.biddingText}>
+                    {'6 hrs'}
+                  </Text>
+                </View>
+                <View style={PropertyRentalOfferStyle.daysViewStl}>
+                  <Text style={PropertyRentalOfferStyle.biddingText}>
+                    {'10 mins'}
+                  </Text>
+                </View>
               </View>
             </View>
           )}
@@ -434,7 +436,7 @@ const PropertyRentalOffer = props => {
         </View>
       </ScrollView>
       {isLoading ? <CommonLoader /> : null}
-    </SafeAreaView>
+    </View>
   );
 };
 

@@ -23,7 +23,7 @@ import CustomSingleButton from '../../../../../components/Atoms/CustomButton/Cus
 import {useSelector} from 'react-redux';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
 import {useNavigation} from '@react-navigation/native';
-
+import SearchBar from '../../../../../components/Molecules/SearchBar/SearchBar';
 const OfferForMyProperties = () => {
   const loginData = useSelector(state => state.authenticationReducer.data);
   const navigation = useNavigation();
@@ -31,6 +31,10 @@ const OfferForMyProperties = () => {
   const [addressTypeData, setAddressTypeData] = useState([]);
   const [addressTypeValue, setAddressTypeValue] = useState({});
   const [offerPropertyData, setOfferPropertyData] = useState({});
+  const [filteredOfferPropertyData, setFilteredOfferPropertyData] = useState(
+    [],
+  );
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     handleAddressType();
@@ -73,7 +77,7 @@ const OfferForMyProperties = () => {
     };
     try {
       const response = await offerForMyProperty(offerPropertyData);
-      // console.log('response in offerForMyProperty..', response?.data);
+      console.log('response in offerForMyProperty..', response?.data);
       setOfferPropertyData(response?.data || []);
       setIsLoading(true);
     } catch (error) {
@@ -81,6 +85,18 @@ const OfferForMyProperties = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+  const searchOfferForMyProperty = query => {
+    setSearchQuery(query);
+    const filtered = query
+      ? offerPropertyData.filter(
+          item =>
+            item.property_type &&
+            item.property_type.toLowerCase().includes(query.toLowerCase()),
+        )
+      : offerPropertyData;
+    console.log('filtered.........', filtered);
+    setFilteredOfferPropertyData(filtered);
   };
 
   const property_render = item => {
@@ -115,7 +131,7 @@ const OfferForMyProperties = () => {
   const offerPropertyRender = ({item, index}) => {
     return (
       <View key={index}>
-        <View style={{marginHorizontal: 20, marginVertical: 10}}>
+        <View style={{flex: 1, marginHorizontal: 20, marginVertical: 10}}>
           <View style={OfferForMyPropertiesStyle.SubContainer}>
             <View>
               {item.image_path && item.image_path.length > 0 ? (
@@ -230,52 +246,64 @@ const OfferForMyProperties = () => {
     );
   };
   return (
-    <SafeAreaView style={OfferForMyPropertiesStyle.mainContainer}>
-        <View style={{marginHorizontal: 16}}>
-          <Text style={OfferForMyPropertiesStyle.selectPropertyText}>
-            {'Select property:'}
-          </Text>
-          <Dropdown
-            style={OfferForMyPropertiesStyle.dropdown}
-            placeholderStyle={[
-              OfferForMyPropertiesStyle.placeholderStyle,
-              {color: _COLORS.Kodie_LightGrayColor},
-            ]}
-            selectedTextStyle={OfferForMyPropertiesStyle.selectedTextStyle}
-            inputSearchStyle={OfferForMyPropertiesStyle.inputSearchStyle}
-            iconStyle={OfferForMyPropertiesStyle.iconStyle}
-            data={addressTypeData || []}
-            maxHeight={300}
-            labelField="location"
-            valueField="longitude"
-            placeholder="Select property type"
-            value={addressTypeValue}
-            search // Enable search functionality
-            searchPlaceholder="Search..."
-            onChange={item => {
-              setAddressTypeValue({
-                latitude: item.latitude,
-                longitude: item.longitude,
-                location: item.location,
-                property_id: item?.property_id,
-              });
-              handleOfferForProperty(); // Update the list when a new property type is selected
-            }}
-            onFocus={() => {
-              handleOfferForProperty();
-            }}
-            renderItem={property_render}
-          />
-        </View>
-        <DividerIcon />
-
-        <FlatList
-          data={offerPropertyData}
-          keyExtractor={item => item.property_id}
-          renderItem={offerPropertyRender}
+    <View style={OfferForMyPropertiesStyle.mainContainer}>
+      <View style={{}}>
+        <SearchBar
+          filterImage={IMAGES.filter}
+          frontSearchIcon
+          Filter
+          filter={'filter'}
+          marginTop={3}
+          placeholder={'Search offers'}
+          searchData={searchOfferForMyProperty}
+          textvalue={searchQuery}
         />
+        <DividerIcon />
+      </View>
+      <View style={{marginHorizontal: 16}}>
+        <Text style={OfferForMyPropertiesStyle.selectPropertyText}>
+          {'Select property:'}
+        </Text>
+        <Dropdown
+          style={OfferForMyPropertiesStyle.dropdown}
+          placeholderStyle={[
+            OfferForMyPropertiesStyle.placeholderStyle,
+            {color: _COLORS.Kodie_LightGrayColor},
+          ]}
+          selectedTextStyle={OfferForMyPropertiesStyle.selectedTextStyle}
+          inputSearchStyle={OfferForMyPropertiesStyle.inputSearchStyle}
+          iconStyle={OfferForMyPropertiesStyle.iconStyle}
+          data={addressTypeData || []}
+          maxHeight={300}
+          labelField="location"
+          valueField="longitude"
+          placeholder="Select property type"
+          value={addressTypeValue}
+          search // Enable search functionality
+          searchPlaceholder="Search..."
+          onChange={item => {
+            setAddressTypeValue({
+              latitude: item.latitude,
+              longitude: item.longitude,
+              location: item.location,
+              property_id: item?.property_id,
+            });
+            handleOfferForProperty(); // Update the list when a new property type is selected
+          }}
+          onFocus={() => {
+            handleOfferForProperty();
+          }}
+          renderItem={property_render}
+        />
+      </View>
+      <DividerIcon />
+      <FlatList
+        data={searchQuery ? filteredOfferPropertyData : offerPropertyData}
+        keyExtractor={item => item.property_id}
+        renderItem={offerPropertyRender}
+      />
       {isLoading ? <CommonLoader /> : null}
-    </SafeAreaView>
+    </View>
   );
 };
 
