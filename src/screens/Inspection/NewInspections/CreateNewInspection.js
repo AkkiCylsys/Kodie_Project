@@ -56,7 +56,8 @@ const CreateNewInspection = props => {
   const [selectedAddressDetail, setSelectedAddressDetail] = useState([]);
   const [AreaKey, setAreaKey] = useState([]);
   const [selectedButtonFurnished, setSelectedButtonFurnished] = useState(false);
-  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] = useState(67);
+  const [selectedButtonFurnishedId, setSelectedButtonFurnishedId] =
+    useState(67);
   const [checkedItems, setCheckedItems] = useState({});
   const [TIM_key, setTIM_key] = useState([]);
   const [query, setQuery] = useState('');
@@ -107,7 +108,7 @@ const CreateNewInspection = props => {
     }
   };
 
-  const Detail_render = ({ item }) => {
+  const Detail_render = ({item}) => {
     const isChecked = checkedItems[item.TAM_AREA_KEY];
     return (
       <View style={CreateNewInspectionStyle.DetailsView}>
@@ -129,13 +130,13 @@ const CreateNewInspection = props => {
     );
   };
   const handleAddCustomArea = async () => {
-    refRBSheet1.current.close()
+    refRBSheet1.current.close();
     if (customAreaName.trim() === '') {
       Alert.alert('Validation', 'Custom area name cannot be empty.');
       return;
     }
     const baseurl = Config.BASE_URL;
-    const url =  `${baseurl}inspection_details/CustomArea`;
+    const url = `${baseurl}inspection_details/CustomArea`;
     const data = {
       custom_area_name: customAreaName,
       is_standard_check_inspection: selectedButtonStandardId,
@@ -143,19 +144,22 @@ const CreateNewInspection = props => {
       area_future_inspection: selectedButtonFutueId,
       property_id: 0,
       inspection_id: 0,
-      created_by: loginData?.Login_details?.user_account_id.toString() ,
+      created_by: loginData?.Login_details?.user_account_id.toString(),
     };
-console.log('data',data);
+    console.log('data', data);
     try {
       const response = await axios.post(url, data);
       console.log(response);
       if (response?.data?.success) {
         Alert.alert('Success', 'Custom area added successfully.');
         setCustomAreaName('');
-        customeAreavalue([]) // Clear the input after successful submission
+        customeAreavalue([]); // Clear the input after successful submission
         Area_key(); // Refresh the area list
       } else {
-        Alert.alert('Error', response.data.message || 'Failed to add custom area.');
+        Alert.alert(
+          'Error',
+          response.data.message || 'Failed to add custom area.',
+        );
       }
     } catch (error) {
       console.error('Error adding custom area:', error);
@@ -350,10 +354,10 @@ console.log('data',data);
     );
   };
   const Selected_Time_render = item => {
-    const isSelected =
-      item?.longitude === selectedAddress.longitude &&
-      item?.latitude === selectedAddress.latitude;
-
+    // const isSelected =
+    //   item?.longitude === selectedAddress.longitude &&
+    //   item?.latitude === selectedAddress.latitude;
+    const isSelected = selectedAddress?.property_id === item.property_id;
     return (
       <View contentContainerStyle={{flex: 1, height: '100%'}}>
         <View
@@ -421,7 +425,7 @@ console.log('data',data);
         setInspection_value();
         setCurrentTime('');
         setSelectedDate('');
-        setSelectedAddressDetail([]);
+        setSelectedAddressDetail('');
         setTempSelectedValues([]);
         setSelectedValues([]);
         setSelectedButtonFurnishedId();
@@ -705,11 +709,12 @@ console.log('data',data);
               onChange={item => {
                 setSelectedAddressDetail(item?.property_id);
                 setSelectedAddress({
-                  latitude: item?.latitude,
-                  longitude: item?.longitude,
-                  location: item?.location,
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                  location: item.location,
                   property_id: item?.property_id,
-                  user_Id: item?.account_id,
+                  propertyType: item?.type_id,
+                  property_type_id: item?.property_type_id,
                 });
                 setShowError(false);
               }}
@@ -762,7 +767,7 @@ console.log('data',data);
                 style={{marginRight: 10}}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleRemove}/>
+            <TouchableOpacity onPress={handleRemove} />
           </View>
           <Text style={LABEL_STYLES.commontext}>
             {'Is the place furnished or unfurnished?'}
@@ -819,7 +824,10 @@ console.log('data',data);
             </Text>
             <View style={{marginTop: 10}}>
               <FlatList
-            data={[...(Array.isArray(AreaKey) ? AreaKey : []), {TAMAREAKEY: 'add_custom_area'}]}
+                data={[
+                  ...(Array.isArray(AreaKey) ? AreaKey : []),
+                  {TAMAREAKEY: 'add_custom_area'},
+                ]}
                 scrollEnabled
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{}}
@@ -948,73 +956,76 @@ console.log('data',data);
           <Text style={CreateNewInspectionStyle.cancelText}>
             {'Would you like to use a standard inspection checklist?'}
           </Text>
-          <RowButtons
-            LeftButtonText={'Yes'}
-            leftButtonbackgroundColor={
-              !selectedButtonStandard
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            LeftButtonTextColor={
-              !selectedButtonStandard
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-            LeftButtonborderColor={
-              !selectedButtonStandard
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_LightWhiteColor
-            }
-            onPressLeftButton={() => {
-              setSelectedButtonStandard(false);
-              setSelectedButtonStandardId(1);
-              // alert(selectedButtonStandard)
-            }}
-            RightButtonText={'No'}
-            onPressRightButton={() => {
-              setSelectedButtonStandard(true);
-              setSelectedButtonStandardId(0);
+          <View style={{marginBottom: 15}}>
+            <RowButtons
+              LeftButtonText={'Yes'}
+              leftButtonbackgroundColor={
+                !selectedButtonStandard
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              LeftButtonTextColor={
+                !selectedButtonStandard
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              LeftButtonborderColor={
+                !selectedButtonStandard
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+              onPressLeftButton={() => {
+                setSelectedButtonStandard(false);
+                setSelectedButtonStandardId(1);
+                // alert(selectedButtonStandard)
+              }}
+              RightButtonText={'No'}
+              onPressRightButton={() => {
+                setSelectedButtonStandard(true);
+                setSelectedButtonStandardId(0);
 
-              // alert(selectedButtonStandard)
-            }}
-            RightButtonbackgroundColor={
-              selectedButtonStandard
-                ? _COLORS.Kodie_lightGreenColor
-                : _COLORS.Kodie_WhiteColor
-            }
-            RightButtonTextColor={
-              selectedButtonStandard
-                ? _COLORS.Kodie_BlackColor
-                : _COLORS.Kodie_MediumGrayColor
-            }
-            RightButtonborderColor={
-              selectedButtonStandard
-                ? _COLORS.Kodie_GrayColor
-                : _COLORS.Kodie_LightWhiteColor
-            }
-          />
-          <Text
-            style={[CreateNewInspectionStyle.cancelText, {marginVertical: 12}]}>
-            {' Select the area most similar to your custom area:'}
-          </Text>
-          <Dropdown
-            style={CreateNewInspectionStyle.dropdown}
-            placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
-            selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
-            inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
-            iconStyle={CreateNewInspectionStyle.iconStyle}
-            data={AreaKey}
-            search
-            maxHeight={300}
-            labelField="TAM_AREA_NAME"
-            valueField="TAM_AREA_KEY"
-            placeholder="Enter address manually"
-            searchPlaceholder="Search ..."
-            value={customeAreavalue}
-            onChange={item => {
-              setCustomeAreaValue(item.TAM_AREA_KEY);
-            }}
-          />
+                // alert(selectedButtonStandard)
+              }}
+              RightButtonbackgroundColor={
+                selectedButtonStandard
+                  ? _COLORS.Kodie_lightGreenColor
+                  : _COLORS.Kodie_WhiteColor
+              }
+              RightButtonTextColor={
+                selectedButtonStandard
+                  ? _COLORS.Kodie_BlackColor
+                  : _COLORS.Kodie_MediumGrayColor
+              }
+              RightButtonborderColor={
+                selectedButtonStandard
+                  ? _COLORS.Kodie_GrayColor
+                  : _COLORS.Kodie_LightWhiteColor
+              }
+            />
+          </View>
+          <View style={{marginBottom: 15}}>
+            <Text style={CreateNewInspectionStyle.cancelText}>
+              {' Select the area most similar to your custom area:'}
+            </Text>
+            <Dropdown
+              style={CreateNewInspectionStyle.dropdown}
+              placeholderStyle={CreateNewInspectionStyle.placeholderStyle}
+              selectedTextStyle={CreateNewInspectionStyle.selectedTextStyle}
+              inputSearchStyle={CreateNewInspectionStyle.inputSearchStyle}
+              iconStyle={CreateNewInspectionStyle.iconStyle}
+              data={AreaKey}
+              search
+              maxHeight={300}
+              labelField="TAM_AREA_NAME"
+              valueField="TAM_AREA_KEY"
+              placeholder="Enter address manually"
+              searchPlaceholder="Search ..."
+              value={customeAreavalue}
+              onChange={item => {
+                setCustomeAreaValue(item.TAM_AREA_KEY);
+              }}
+            />
+          </View>
           <Text style={CreateNewInspectionStyle.cancelText}>
             {'Make this a standard area for future inspections?'}
           </Text>
