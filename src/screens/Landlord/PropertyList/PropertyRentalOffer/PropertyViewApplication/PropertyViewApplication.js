@@ -19,16 +19,24 @@ import PreRentalQuestionnaire from '../../../../../components/PropertyViewApplic
 import {useSelector} from 'react-redux';
 import {PropertyViewApplicationService} from '../../../../../services/PropertyRentalOfferApi/PropertyViewApplicationApi';
 import {CommonLoader} from '../../../../../components/Molecules/ActiveLoader/ActiveLoader';
+import {SignupLookupDetails} from '../../../../../APIs/AllApi';
+import { acceptingLandlord } from '../../../../../services/PropertyRentalOfferApi/AcceptingBiddingApi';
 const PropertyViewApplication = props => {
   const propertyId = props.route.params.propertyId;
   const bid_id = props.route.params.bid_id;
   const tenant_id = props.route.params.tenant_id;
+  const landlord_id = props.route.params.landlord_id;
+  console.log('bid_id..', bid_id);
   const [isLoading, setIsLoading] = useState(false);
   const [tenantDetails, setTenantDetails] = useState(false);
   const [tenantAccountDetails, setTenantAccountDetails] = useState(false);
-
+  const [acceptBiddingData, setAcceptBiddingData] = useState([]);
   const loginData = useSelector(state => state.authenticationReducer.data);
 
+  useEffect(() => {
+    handlePropertyViewApplication();
+    handleAcceptBidding();
+  }, []);
   const handlePropertyViewApplication = async () => {
     setIsLoading(true);
     const propertyViewApplicationData = {
@@ -40,14 +48,9 @@ const PropertyViewApplication = props => {
       const response = await PropertyViewApplicationService(
         propertyViewApplicationData,
       );
-      // console.log('response in PropertyViewApplication..', response?.data[0]);
       if (response?.success === true) {
         setTenantDetails(response?.data[0]);
         setTenantAccountDetails(response?.data[0]?.account_details[0]);
-        // console.log(
-        //   'Accountdetails...',
-        //   JSON.stringify(response?.data[0]?.account_details),
-        // );
         setIsLoading(false);
       }
     } catch (error) {
@@ -57,9 +60,35 @@ const PropertyViewApplication = props => {
     }
   };
 
-  useEffect(() => {
-    handlePropertyViewApplication();
-  }, []);
+  const handleAcceptBidding = async () => {
+    setIsLoading(true);
+    try {
+      const res = await SignupLookupDetails({
+        P_PARENT_CODE: 'ACCEPT_LANDLORD',
+        P_TYPE: 'OPTION',
+      });
+
+      console.log('accept bidding button data...', res);
+      if (res.status === true) {
+        setAcceptBiddingData(res?.lookup_details);
+        console.log('res?.lookup_details....', res?.lookup_details);
+      } else {
+        console.error(
+          'Error: Unable to fetch Accept bidding data',
+          JSON.stringify(res),
+        );
+        setIsLoading(false);
+        return [];
+      }
+    } catch (error) {
+      console.log('error in accept bidding.....', error);
+      setIsLoading(false);
+      return [];
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   return (
     <SafeAreaView style={PropertyViewApplicationStyle.mainContainer}>
       <TopHeader
@@ -119,6 +148,10 @@ const PropertyViewApplication = props => {
         <PreRentalQuestionnaire
           accountId={loginData?.Login_details?.user_account_id}
           propertyId={propertyId}
+          bid_id={bid_id}
+          tenant_id={tenant_id}
+          landlord_id={landlord_id}
+          acceptBiddingData={acceptBiddingData}
         />
         {isLoading ? <CommonLoader /> : null}
       </ScrollView>

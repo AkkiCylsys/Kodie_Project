@@ -236,6 +236,8 @@ const OfferForMyProperties = () => {
                 propertyId: item?.property_id,
                 bid_id: item?.bid_id,
                 tenant_id: item?.tenant_id,
+                landlord_id : item?.landlord_id
+
               });
             }}
             backgroundColor={_COLORS.Kodie_BlackColor}

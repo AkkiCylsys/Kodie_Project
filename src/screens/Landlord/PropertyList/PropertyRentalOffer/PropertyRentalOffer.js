@@ -28,10 +28,6 @@ import {useNavigation} from '@react-navigation/native';
 const PropertyRentalOffer = props => {
   const navigation = useNavigation();
   const loginData = useSelector(state => state.authenticationReducer.data);
-  // console.log(
-  //   'login response property rental offer..',
-  //   loginData?.Login_details,
-  // );
   const [isLoading, setIsLoading] = useState(false);
   const [selectedButton, setSelectedButton] = useState(true);
   const [selectedButtonBid, setSelectedButtonBid] = useState(false);
@@ -114,6 +110,35 @@ const PropertyRentalOffer = props => {
       <TouchableOpacity onPress={() => {}}>
         <>
           <View key={index} style={PropertyRentalOfferStyle.flatListContainer}>
+          <View
+                style={[
+                  PropertyRentalOfferStyle.flat_MainView,
+                  {alignSelf: 'center', marginBottom: 10},
+                ]}>
+                <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
+                  <Text style={PropertyRentalOfferStyle.bidsButtonText}>
+                    Accepting bids
+                  </Text>
+                </TouchableOpacity>
+                <Text style={PropertyRentalOfferStyle.biddingText}>
+                  Bidding closes in:
+                </Text>
+                <View style={PropertyRentalOfferStyle.daysViewStl}>
+                  <Text style={PropertyRentalOfferStyle.biddingText}>
+                    {'o days'}
+                  </Text>
+                </View>
+                <View style={PropertyRentalOfferStyle.daysViewStl}>
+                  <Text style={PropertyRentalOfferStyle.biddingText}>
+                    {'6 hrs'}
+                  </Text>
+                </View>
+                <View style={PropertyRentalOfferStyle.daysViewStl}>
+                  <Text style={PropertyRentalOfferStyle.biddingText}>
+                    {'10 mins'}
+                  </Text>
+                </View>
+              </View>
             <View style={PropertyRentalOfferStyle.flat_MainView}>
               <View style={PropertyRentalOfferStyle.flexContainer}>
                 <Text style={PropertyRentalOfferStyle.apartmentText}>
@@ -355,7 +380,7 @@ const PropertyRentalOffer = props => {
             setSelectedButton(false);
             // alert(selectedButton)
           }}
-          RightButtonText={'My current offers'}
+          RightButtonText={'My rental applications'}
           RightButtonbackgroundColor={
             selectedButton
               ? _COLORS.Kodie_lightGreenColor
@@ -392,35 +417,6 @@ const PropertyRentalOffer = props => {
                 textvalue={searchQuery}
               />
               <DividerIcon />
-              <View
-                style={[
-                  PropertyRentalOfferStyle.flat_MainView,
-                  {alignSelf: 'center', marginBottom: 10},
-                ]}>
-                <TouchableOpacity style={PropertyRentalOfferStyle.bidsButton}>
-                  <Text style={PropertyRentalOfferStyle.bidsButtonText}>
-                    Accepting bids
-                  </Text>
-                </TouchableOpacity>
-                <Text style={PropertyRentalOfferStyle.biddingText}>
-                  Bidding closes in:
-                </Text>
-                <View style={PropertyRentalOfferStyle.daysViewStl}>
-                  <Text style={PropertyRentalOfferStyle.biddingText}>
-                    {'o days'}
-                  </Text>
-                </View>
-                <View style={PropertyRentalOfferStyle.daysViewStl}>
-                  <Text style={PropertyRentalOfferStyle.biddingText}>
-                    {'6 hrs'}
-                  </Text>
-                </View>
-                <View style={PropertyRentalOfferStyle.daysViewStl}>
-                  <Text style={PropertyRentalOfferStyle.biddingText}>
-                    {'10 mins'}
-                  </Text>
-                </View>
-              </View>
             </View>
           )}
 
