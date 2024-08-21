@@ -115,6 +115,8 @@ const PropertyInspection = props => {
         return (
           <ReviewInspection
             ViewApplication={() => props.navigation.navigate('ViewApplication')}
+            TIM_KEY={TIM_KEY} 
+            PropertyId={PropertyId}
           />
         );
 

@@ -44,6 +44,7 @@ const Logrentalpayment = props => {
   const [selectedpaymetPeriodError, setSelectedpaymetPeriodError] =
     useState('');
   const [value, setValue] = useState(null);
+  const [leaseSummaryData, setLeaseSummaryData] = useState([]);
   const [selectedOption, setSelectedOption] = useState('Save');
   const [selected_payment_period_Button, setSelected_payment_period_Button] =
     useState(false);
@@ -59,6 +60,7 @@ const Logrentalpayment = props => {
 
   useEffect(() => {
     handlePaymentType();
+    fetchLeaseSummary();
   }, []);
 
   const handleOptionClick = option => {
@@ -95,6 +97,26 @@ const Logrentalpayment = props => {
       setSelectedpaymetPeriodError('Rental payment period is required!');
     } else {
       handle_rental_payment();
+    }
+  };
+  const fetchLeaseSummary = async () => {
+    const url = `${Config.BASE_URL}getPaymentDueday`;
+    const data = {p_UPLD_UPD_KEY: property_id};
+
+    setIsLoading(true);
+    try {
+      const response = await axios.post(url, data);
+      if (response.data.success) {
+        setLeaseSummaryData(response.data.data);
+        setIsLoading(false);
+      } else {
+        console.error('Error fetching lease summary:', response.data.message);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('API error fetching lease summary:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -192,7 +214,7 @@ const Logrentalpayment = props => {
     const rental_payment_Data = {
       p_LEASE_KEY: lease_keys,
       p_UPD_KEY: property_id,
-      p_TOTAL_AMOUNT: totalAmount,
+      p_TOTAL_AMOUNT: leaseSummaryData?.RENTAL_AMMOUNT,
       p_PAYMENT_TYPE: paymentTypeValue,
       p_PAYMENT_DATE: selectedDate,
       p_RENTAL_PAYMENT_PERIOD: selectedpaymetPeriod,
@@ -283,8 +305,8 @@ const Logrentalpayment = props => {
             <Text style={{color: _COLORS?.Kodie_redColor}}>*</Text>
             </Text>
             <TextInput
-              style={LogrentalPaymentStyle.input}
-              value={totalAmount}
+              style={[LogrentalPaymentStyle.input,{backgroundColor:_COLORS.Kodie_GrayColor}]}
+              value={leaseSummaryData?.RENTAL_AMMOUNT}
               onChangeText={handleTotalAmount} // Apply formatting on text change
               onBlur={() => handleTotalAmount(totalAmount)}
               placeholder="Enter the total amount of the expense"

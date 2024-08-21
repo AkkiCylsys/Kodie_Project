@@ -1,5 +1,5 @@
 // Screen 2,3,4,5,6
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   BackHandler,
@@ -22,9 +22,9 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {userSubscribedCreator} from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
-import {logos} from '../../../Themes/CommonVectors/Images';
-import {LoginStyles} from './LoginCss';
+import { userSubscribedCreator } from '../../../redux/Actions/Subscription/SubscriptionApiCreator';
+import { logos } from '../../../Themes/CommonVectors/Images';
+import { LoginStyles } from './LoginCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CustomSingleButton from '../../../components/Atoms/CustomButton/CustomSingleButton';
@@ -37,21 +37,21 @@ import {
   IMAGES,
   _COLORS,
 } from './../../../Themes/index';
-import {useFocusEffect, useTheme} from '@react-navigation/native';
-import {CommonLoader} from '../../../components/Molecules/ActiveLoader/ActiveLoader';
-import {CountdownCircleTimer} from 'react-native-countdown-circle-timer';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchLoginSuccess} from '../../../redux/Actions/Authentication/AuthenticationApiAction';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
+import { CommonLoader } from '../../../components/Molecules/ActiveLoader/ActiveLoader';
+import { CountdownCircleTimer } from 'react-native-countdown-circle-timer';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchLoginSuccess } from '../../../redux/Actions/Authentication/AuthenticationApiAction';
 import axios from 'axios';
-import {Config} from '../../../Config';
+import { Config } from '../../../Config';
 import DeviceInfo from 'react-native-device-info';
 // import CryptoJS from "crypto-js";
 import CryptoJS from 'react-native-crypto-js';
 import messaging from '@react-native-firebase/messaging';
 // import {NavigationActions, StackActions} from 'react-navigation';
-import {loginApiActionCreator} from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
+import { loginApiActionCreator } from '../../../redux/Actions/Authentication/AuthenticationApiCreator';
 import Geolocation from '@react-native-community/geolocation';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geocoder from 'react-native-geocoding';
 import RNSettings from 'react-native-settings';
 export default Login = props => {
@@ -69,6 +69,8 @@ export default Login = props => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [confirmPasswordError, setConfirmPasswordError] = useState('');
   const [isClick, setIsClick] = useState(0);
+  const [IsSusscessPasswordScreen, setIsSusscessPasswordScreen] = useState(550);
+  
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
@@ -124,7 +126,7 @@ export default Login = props => {
     Geolocation.getCurrentPosition(
       position => {
         console.log('you are here.');
-        const {latitude, longitude} = position.coords;
+        const { latitude, longitude } = position.coords;
         console.log('position.coords in map components....', position.coords);
         // setlatitude(latitude);
         // setLat(latitude);
@@ -287,6 +289,7 @@ export default Login = props => {
       const onBackPress = () => {
         BackHandler.exitApp();
         refRBSheet.current.close();
+        setIsSusscessPasswordScreen(550)
         setIsClick(0);
         return true;
       };
@@ -364,6 +367,7 @@ export default Login = props => {
   //... inner reset password Next Button code define here
   const handleButtonPress = () => {
     if (isClick === 3) {
+      openSheetWithHeight(550)
       refRBSheet.current.close();
     } else if (isClick === 0) {
       handleforgetValidation();
@@ -487,11 +491,11 @@ export default Login = props => {
             email: email,
             user_key: res?.User_key,
           });
-        } else if(res.data.code == 9){
+        } else if (res.data.code == 9) {
           alert(res.data.message);
 
         } else {
-           props.navigation.navigate('DrawerNavigatorLeftMenu');
+          props.navigation.navigate('DrawerNavigatorLeftMenu');
 
         }
 
@@ -620,7 +624,7 @@ export default Login = props => {
         const key = secretKey;
         const keyutf = CryptoJS.enc.Utf8.parse(key);
         const iv = CryptoJS.enc.Utf8.parse('XkhZG4fW2t2W');
-        const enc = CryptoJS.AES.encrypt(password, keyutf, {iv: iv});
+        const enc = CryptoJS.AES.encrypt(password, keyutf, { iv: iv });
         const encStr = enc.toString();
         console.log('Encrypted Password:', encStr);
         resolve(encStr);
@@ -640,6 +644,7 @@ export default Login = props => {
   };
   //------ create_password Api code here
   const create_password = async () => {
+
     try {
       const encryptedPassword = await encryptPassword(newpassword, secretKey);
       console.log('encryptedPassword', encryptedPassword);
@@ -658,6 +663,7 @@ export default Login = props => {
       console.log('API Response create_password:', response?.data);
 
       if (response?.data?.success === true) {
+        openSheetWithHeight(400)
         if (
           response?.data?.message ==
           'Try again with a password you haven’t used before'
@@ -680,6 +686,10 @@ export default Login = props => {
     } finally {
       setIsLoading(false);
     }
+  };
+  const openSheetWithHeight = (height) => {
+    setIsSusscessPasswordScreen(height);
+    refRBSheet.current.open();
   };
 
   return (
@@ -766,9 +776,10 @@ export default Login = props => {
             {passwordError ? (
               <Text style={LoginStyles.error_text}>{passwordError}</Text>
             ) : null}
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 onPress={() => {
+                  openSheetWithHeight(550)
                   refRBSheet.current.open();
                   setIsClick(0);
                   setResetEmail('');
@@ -780,10 +791,10 @@ export default Login = props => {
                   setConfirmPasswordError('');
                   setResetEmailError('');
                 }}
-                style={{flex: 0.5}}>
+                style={{ flex: 0.5 }}>
                 <Text style={LoginStyles.forgot}>Forgot password?</Text>
               </TouchableOpacity>
-              <View style={{flex: 0.9}} />
+              <View style={{ flex: 0.9 }} />
             </View>
             <CustomSingleButton
               disabled={isLoading ? true : false}
@@ -795,7 +806,7 @@ export default Login = props => {
             {/* <View style={LoginStyles.loderview}></View> */}
             <DividerIcon
               DeviderText={'or'}
-              style={{marginTop: 32, marginBottom: 30}}
+              style={{ marginTop: 32, marginBottom: 30 }}
             />
             <CustomSingleButton
               disabled={isLoading ? true : false}
@@ -814,9 +825,9 @@ export default Login = props => {
             <CustomSingleButton
               disabled={isLoading ? true : false}
               onPress={() =>
-                // props.navigation.navigate("ManageSubscription")
+                 props.navigation.navigate("PointofInterest")
                 // props.navigation.navigate("DrawerNavigatorLeftMenu")
-                Alert.alert('Login with Facebook', 'Coming soon')
+               // Alert.alert('Login with Facebook', 'Coming soon')
                 // onFacebookButtonPress()
               }
               leftImage={IMAGES.FacebookIcon}
@@ -841,7 +852,7 @@ export default Login = props => {
         ref={refRBSheet}
         closeOnDragDown={true}
         closeOnPressMask={false}
-        height={Platform.OS === 'android' ? 550 : 480}
+        height={IsSusscessPasswordScreen}
         customStyles={{
           wrapper: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -856,6 +867,7 @@ export default Login = props => {
           <TouchableOpacity
             onPress={() => {
               refRBSheet.current.close();
+              setIsSusscessPasswordScreen(550)
               setIsClick(0);
               setResetEmail('');
               setVerificationcode('');
@@ -914,7 +926,7 @@ export default Login = props => {
                 <TextInput
                   style={[
                     LoginStyles.input,
-                    {backgroundColor: _COLORS?.Kodie_LightGrayLineColor},
+                    { backgroundColor: _COLORS?.Kodie_LightGrayLineColor },
                   ]}
                   value={resetEmail}
                   placeholder="Your Email Address"
@@ -924,7 +936,7 @@ export default Login = props => {
                 />
               </View>
               <View style={LoginStyles.varifycode}>
-                <View style={[LoginStyles.inputContainer, {flex: 1}]}>
+                <View style={[LoginStyles.inputContainer, { flex: 1 }]}>
                   <Text style={LABEL_STYLES._texinputLabel}>
                     Verification code
                   </Text>
@@ -960,8 +972,8 @@ export default Login = props => {
                       onComplete={() => {
                         setIsTimeron(false);
                       }}>
-                      {({remainingTime}) => (
-                        <Text style={{color: _COLORS.Kodie_WhiteColor}}>
+                      {({ remainingTime }) => (
+                        <Text style={{ color: _COLORS.Kodie_WhiteColor }}>
                           {remainingTime} S
                         </Text>
                       )}
@@ -985,7 +997,7 @@ export default Login = props => {
           {/* ------ Reset passowrd 2 section start code  here ........... */}
           {isClick === 2 && (
             <ScrollView
-              contentContainerStyle={{marginBottom: 90}}
+              contentContainerStyle={{ marginBottom: 90 }}
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled">
               <View style={LoginStyles.inputContainer}>
@@ -1081,11 +1093,11 @@ export default Login = props => {
                   resizeMode={'contain'}
                 />
               </View>
-              <CustomSingleButton
+              {/* <CustomSingleButton
                 _ButtonText={'Back to login'}
                 Text_Color={_COLORS.Kodie_WhiteColor}
                 onPress={() => refRBSheet.current.close()}
-              />
+              /> */}
             </>
           )}
 
@@ -1097,21 +1109,27 @@ export default Login = props => {
           )}
 
           {/* ------ Next button section start code  here ........... */}
-          <View
-            style={[
-              {
-                marginBottom: -150,
-                marginTop:
-                  isClick === 1 || isClick === 2 || isClick === 90 ? 10 : 180,
-              },
-            ]}>
-            <CustomSingleButton
-              disabled={isLoading ? true : false}
-              onPress={handleButtonPress}
-              _ButtonText={buttonLabels[isClick]}
-              Text_Color={_COLORS.Kodie_WhiteColor}
-            />
-          </View>
+
+        </View>
+        <View style={[{
+          width: '100%',
+          position: 'absolute',
+          bottom: 0,
+          padding: 20,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center'
+          // marginBottom: -150,
+          // marginTop:
+          //   isClick === 1 || isClick === 2 || isClick === 90 ? 10 : 180,
+        },
+        ]}>
+          <CustomSingleButton
+            disabled={isLoading ? true : false}
+            onPress={handleButtonPress}
+            _ButtonText={buttonLabels[isClick]}
+            Text_Color={_COLORS.Kodie_WhiteColor}
+          />
         </View>
       </RBSheet>
       {isLoading ? <CommonLoader /> : null}

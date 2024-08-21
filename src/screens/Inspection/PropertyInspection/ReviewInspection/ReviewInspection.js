@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   TextInput,
   Image,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {ReviewInspectionCss} from './ReviewInspectionCss';
 import RBSheet from 'react-native-raw-bottom-sheet';
@@ -16,21 +17,48 @@ import {IMAGES, LABEL_STYLES, _COLORS} from '../../../../Themes';
 import DividerIcon from '../../../../components/Atoms/Devider/DividerIcon';
 import RowTexts from '../../../../components/Molecules/RowTexts/RowTexts';
 import CustomSingleButton from '../../../../components/Atoms/CustomButton/CustomSingleButton';
+import { GetInspectioncabinateDetail } from '../../../../services/InspectionModuleServices.js/InspectionServices';
+import { useNavigation } from '@react-navigation/native';
+import { CommonLoader } from '../../../../components/Molecules/ActiveLoader/ActiveLoader';
 
-const ReviewInspection = () => {
+const ReviewInspection = (props) => {
+  const navigation = useNavigation();
   const [contractor, setContractor] = useState('');
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const refRBSheet = useRef();
   const [isFileVisible, setIsFileVisible] = useState(true);
-
+  const [Damaged_ItemStatus, setDamaged_ItemStatus] = useState([]);
+  const [Urgent_ItemStatus, setUrgent_ItemStatus] = useState([]);
+  const TIM_KEY = props?.TIM_KEY;
   const handleCloseModal = () => {
     refRBSheet.current.close();
   };
+  useEffect(()=>{
+    handlePostRequest();
+  },[])
+  const handlePostRequest = async () => {
+    setIsLoading(true);
 
+    try {
+      const payload = { P_TIM_KEY: TIM_KEY };
+      const data = await GetInspectioncabinateDetail(payload);
+      console.log(data[0]?.DAMAGED_ITEMS);
+      setDamaged_ItemStatus(data[0]?.DAMAGED_ITEMS);
+      setUrgent_ItemStatus(data[0]?.URGENT_ITEMS);
+      setIsLoading(false)
+    } catch (err) {
+     console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleRemoveFile = () => {
     setIsFileVisible(false);
   };
+  const renderItem = ({ item }) => (
+    <RowTexts leftText={item?.TAM_AREA_NAME} rightText={item?.TAIM_ITEM_NAME} />
+  );
   return (
     <SafeAreaView style={ReviewInspectionCss.MainContainer}>
       <View style={ReviewInspectionCss.Container}>
@@ -66,16 +94,20 @@ const ReviewInspection = () => {
         <Text style={ReviewInspectionCss.inspections}>
           {'Items needing urgent repair'}
         </Text>
-        <RowTexts leftText={'Bedroom'} rightText={'Light fitting'} />
-        <RowTexts leftText={'Bathroom'} rightText={'Toilet seat'} />
-        <RowTexts leftText={'Patio'} rightText={'Outdoor table'} />
-        <RowTexts leftText={'Kitchen'} rightText={'Oven thermostat'} />
+        <FlatList
+          data={Urgent_ItemStatus}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()} // Adjust the keyExtractor if necessary
+        />
         <CustomSingleButton
           _ButtonText={'+ Create new job'}
           Text_Color={_COLORS.Kodie_WhiteColor}
           backgroundColor={_COLORS.Kodie_BlackColor}
           height={40}
-          disabled={isLoading ? true : false}
+          onPress ={()=> navigation.navigate('CreateJobFirstScreen',{
+            ReviewInspection:'ReviewInspection'
+          })}
+
         />
         <DividerIcon color={_COLORS.Kodie_WhiteColor} />
         <Text style={ReviewInspectionCss.inspections}>
@@ -100,10 +132,12 @@ const ReviewInspection = () => {
         <Text style={ReviewInspectionCss.inspections}>
           {'Damaged items to be noted'}
         </Text>
-        <RowTexts leftText={'Bedroom'} rightText={'Cracked wall'} />
-        <RowTexts leftText={'Bathroom'} rightText={'Cracked tile'} />
-        <RowTexts leftText={'Patio'} rightText={'Worn out ceiling'} />
-        <RowTexts leftText={'Kitchen'} rightText={'Damaged countertop'} />
+        <FlatList
+          data={Damaged_ItemStatus}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()} // Adjust the keyExtractor if necessary
+        />
+       
         <DividerIcon />
         <Text style={ReviewInspectionCss.inspections}>{'Notes'}</Text>
         <Text style={ReviewInspectionCss.MBText}>{'No notes'}</Text>
@@ -118,6 +152,7 @@ const ReviewInspection = () => {
           }}
           disabled={isLoading ? true : false}
         />
+        {isLoading? <CommonLoader/>:null}
         <RBSheet
           ref={refRBSheet}
           closeOnDragDown={true}

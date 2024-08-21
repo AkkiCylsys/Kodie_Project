@@ -64,7 +64,7 @@ export default AddExpensesDetails = props => {
   const [lease_end_Data, setLease_end_Data] = useState([]);
   const [lease_end_value, setlLease_end_value] = useState('');
   const [lease_end_valueError, setlLease_end_valueError] = useState(false);
-
+  const [leaseSummaryData, setLeaseSummaryData] = useState([]);
   // Calculate and Update Account Excl. and Tax based on user input
   //  useEffect(() => {
   //   if (accountXcl && tax) {
@@ -99,6 +99,26 @@ export default AddExpensesDetails = props => {
         .toLocaleString('en-US', {style: 'currency', currency: 'USD'})
         .slice(1)
     );
+  };
+  const fetchLeaseSummary = async () => {
+    const url = `${Config.BASE_URL}getPaymentDueday`;
+    const data = {p_UPLD_UPD_KEY: property_id};
+
+    setIsLoading(true);
+    try {
+      const response = await axios.post(url, data);
+      if (response.data.success) {
+        setLeaseSummaryData(response.data.data);
+        setIsLoading(false);
+      } else {
+        console.error('Error fetching lease summary:', response.data.message);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error('API error fetching lease summary:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleAccountXclChange = text => {
@@ -405,7 +425,8 @@ export default AddExpensesDetails = props => {
     handleExpenceCategory();
     handleResponsible();
     handle_lease_end();
-    // Expencehandle();
+    fetchLeaseSummary();
+        // Expencehandle();
   }, []);
   // dropDownRender
   const expenseCategory_render = item => {

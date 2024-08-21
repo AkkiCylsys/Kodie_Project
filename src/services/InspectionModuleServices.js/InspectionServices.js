@@ -128,3 +128,24 @@ export const GetInspectionAreas = (teamKey) => {
         });
     });
   };
+
+
+export const GetInspectioncabinateDetail = (data) => {
+  const url = `${Config.BASE_URL}cabinetStatus`;
+
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
+      .then(response => {
+        if (response?.data?.success) {
+          resolve(response.data.data);
+        } else {
+          reject(new Error(response?.data?.error || 'Unknown error'));
+        }
+      })
+      .catch(error => {
+        const errorMessage = handleApiError(error);
+      alert(errorMessage); // Display error message in an alert
+      reject(errorMessage);
+      });
+  });
+};

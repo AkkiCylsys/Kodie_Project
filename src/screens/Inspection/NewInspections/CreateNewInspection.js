@@ -410,7 +410,7 @@ console.log('data',data);
       console.log('scheduule inspection....', res?.data);
       if (res?.data?.success == true) {
         setTIM_key(res?.data?.data);
-        console.log('TIM_KEY', res?.data?.data?.TIM_KEY);
+        console.log('TIM_KEY', res?.data?.data);
         alert(res?.data?.message);
         props?.navigation?.navigate('PropertyInspection', {
           TIM_KEY: res?.data?.data?.TIM_KEY,
