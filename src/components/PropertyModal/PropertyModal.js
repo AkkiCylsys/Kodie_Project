@@ -164,7 +164,7 @@ const PropertyModal = props => {
       {/* RBSheet for additional actions */}
       <RBSheet
         ref={refRBSheet}
-        height={isSaveClick == true ? 350 : 530}
+        height={isSaveClick == true ? 450 : 650}
         closeOnDragDown={true}
         customStyles={{
           wrapper: {

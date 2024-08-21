@@ -1,5 +1,5 @@
-import { StyleSheet } from "react-native";
-import { _COLORS, FONTFAMILY } from "../../../../Themes";
+import {StyleSheet} from 'react-native';
+import {_COLORS, FONTFAMILY} from '../../../../Themes';
 export const PropertyReviewStyle = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -16,8 +16,8 @@ export const PropertyReviewStyle = StyleSheet.create({
   },
   slider_view: {
     flex: 1,
-    justifyContent: "center",
-    alignSelf: "center",
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   dotStyle: {
     width: 10,
@@ -30,11 +30,20 @@ export const PropertyReviewStyle = StyleSheet.create({
     marginHorizontal: 16,
   },
   apartment_View: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  share_View: { flexDirection: "row" },
-  share_sty: { marginRight: 10 },
+  share_View: {
+    flexDirection: 'row',
+  },
+  location_View: {
+    flexDirection: 'row',
+  },
+  location_text: {
+    flex: 1,
+    color: _COLORS.Kodie_MediumGrayColor,
+  },
+  share_sty: {marginRight: 10},
   apartment_text: {
     fontSize: 14,
     color: _COLORS.Kodie_BlackColor,
@@ -50,7 +59,7 @@ export const PropertyReviewStyle = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTFAMILY.K_Regular,
     marginVertical: 10,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   propery_det: {
     fontSize: 12,
@@ -58,8 +67,8 @@ export const PropertyReviewStyle = StyleSheet.create({
     fontFamily: FONTFAMILY.K_Bold,
   },
   propety_details_view: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
   },
   down_Arrow_icon: {
@@ -70,8 +79,8 @@ export const PropertyReviewStyle = StyleSheet.create({
     borderColor: _COLORS.Kodie_GrayColor,
   },
   goBack_View: {
-    flexDirection: "row",
-    alignSelf: "center",
+    flexDirection: 'row',
+    alignSelf: 'center',
     marginVertical: 29,
   },
   goBack_Text: {
@@ -88,25 +97,25 @@ export const PropertyReviewStyle = StyleSheet.create({
   btnView: {
     marginTop: 24,
     marginHorizontal: 16,
-    marginBottom:10
+    marginBottom: 10,
   },
   DetailsView: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginVertical: 5,
     marginLeft: 15,
   },
-  DetailsIcon: { height: 30, width: 30 },
+  DetailsIcon: {height: 30, width: 30},
   details_text: {
     fontSize: 12,
     color: _COLORS.Kodie_BlackColor,
     fontFamily: FONTFAMILY.K_Regular,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginLeft: 5,
   },
   Details_Tab: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginHorizontal: 16,
     marginTop: 10,
   },
@@ -116,7 +125,7 @@ export const PropertyReviewStyle = StyleSheet.create({
     color: _COLORS.Kodie_BlackColor,
   },
   activeTab: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderBottomWidth: 1.5,
   },
 });
