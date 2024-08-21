@@ -861,6 +861,7 @@ export default PropertyReviewDetails = props => {
           //   },
           // ])}
           // </>
+        
         );
 
       case 'Tab3':
@@ -1013,10 +1014,9 @@ export default PropertyReviewDetails = props => {
             </Text>
           </View>
         </View>
-        <DividerIcon marginBottom={1} />
-
         <View
           style={{
+            borderBottomWidth: 3,
             borderColor: _COLORS.Kodie_GrayColor,
             elevation: 1,
           }}>
